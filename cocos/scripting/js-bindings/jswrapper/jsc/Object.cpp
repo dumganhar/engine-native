@@ -162,8 +162,29 @@ namespace se {
         return nullptr;
     }
 
-    Object* Object::createTypedArray(void* data, size_t byteLength, TypedArrayType type, const char* hackFuncName)
+    template<typename T>
+    static bool _setArrayElement(Object* arr, void* data, size_t byteLength)
     {
+        T* p = (T*)data;
+        size_t count = byteLength / sizeof(T);
+        for (size_t i = 0; i < count; ++i)
+        {
+            if (!arr->setArrayElement((uint32_t)i, se::Value(p[i])))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    Object* Object::createTypedArray(TypedArrayType type, void* data, size_t byteLength)
+    {
+        if (type == TypedArrayType::UINT8_CLAMPED)
+        {
+            SE_LOGE("Doesn't support to create Uint8ClampedArray with Object::createTypedArray API!");
+            return nullptr;
+        }
+
 #if (__MAC_OS_X_VERSION_MAX_ALLOWED >= 101200 || __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
         if (isSupportTypedArrayAPI())
         {
@@ -172,31 +193,28 @@ namespace se {
             JSValueRef exception = nullptr;
             JSTypedArrayType jscTypedArrayType = kJSTypedArrayTypeNone;
             switch (type) {
-                case TypedArrayType::INT8_ARRAY:
+                case TypedArrayType::INT8:
                     jscTypedArrayType = kJSTypedArrayTypeInt8Array;
                     break;
-                case TypedArrayType::INT16_ARRAY:
+                case TypedArrayType::INT16:
                     jscTypedArrayType = kJSTypedArrayTypeInt16Array;
                     break;
-                case TypedArrayType::INT32_ARRAY:
+                case TypedArrayType::INT32:
                     jscTypedArrayType = kJSTypedArrayTypeInt32Array;
                     break;
-                case TypedArrayType::UINT8_ARRAY:
+                case TypedArrayType::UINT8:
                     jscTypedArrayType = kJSTypedArrayTypeUint8Array;
                     break;
-                case TypedArrayType::UINT8_CLAMPED_ARRAY:
-                    jscTypedArrayType = kJSTypedArrayTypeUint8ClampedArray;
-                    break;
-                case TypedArrayType::UINT16_ARRAY:
+                case TypedArrayType::UINT16:
                     jscTypedArrayType = kJSTypedArrayTypeUint16Array;
                     break;
-                case TypedArrayType::UINT32_ARRAY:
+                case TypedArrayType::UINT32:
                     jscTypedArrayType = kJSTypedArrayTypeUint32Array;
                     break;
-                case TypedArrayType::FLOAT32_ARRAY:
+                case TypedArrayType::FLOAT32:
                     jscTypedArrayType = kJSTypedArrayTypeFloat32Array;
                     break;
-                case TypedArrayType::FLOAT64_ARRAY:
+                case TypedArrayType::FLOAT64:
                     jscTypedArrayType = kJSTypedArrayTypeFloat64Array;
                     break;
                 default:
@@ -215,29 +233,74 @@ namespace se {
 #endif
         {
             HandleObject arr(Object::createArrayObject(byteLength));
+            Type objectType = Type::UNKNOWN;
+
             if (!arr.isEmpty())
             {
-                uint8_t* p = (uint8_t*)data;
-                for (size_t i = 0; i < byteLength; ++i)
-                {
-                    arr->setArrayElement((uint32_t)i, se::Value(p[i]));
+                const char* typedArrayCtor = nullptr;
+                switch (type) {
+                    case TypedArrayType::INT8:
+                        typedArrayCtor = "Int8Array";
+                        objectType = Type::TYPED_ARRAY_INT8;
+                        _setArrayElement<int8_t>(arr.get(), data, byteLength);
+                        break;
+                    case TypedArrayType::INT16:
+                        typedArrayCtor = "Int16Array";
+                        objectType = Type::TYPED_ARRAY_INT16;
+                        _setArrayElement<int16_t>(arr.get(), data, byteLength);
+                        break;
+                    case TypedArrayType::INT32:
+                        typedArrayCtor = "Int32Array";
+                        objectType = Type::TYPED_ARRAY_INT32;
+                        _setArrayElement<int32_t>(arr.get(), data, byteLength);
+                        break;
+                    case TypedArrayType::UINT8:
+                        typedArrayCtor = "Uint8Array";
+                        objectType = Type::TYPED_ARRAY_UINT8;
+                        _setArrayElement<uint8_t>(arr.get(), data, byteLength);
+                        break;
+                    case TypedArrayType::UINT16:
+                        typedArrayCtor = "Uint16Array";
+                        objectType = Type::TYPED_ARRAY_UINT16;
+                        _setArrayElement<uint16_t>(arr.get(), data, byteLength);
+                        break;
+                    case TypedArrayType::UINT32:
+                        typedArrayCtor = "Uint32Array";
+                        objectType = Type::TYPED_ARRAY_UINT32;
+                        _setArrayElement<uint32_t>(arr.get(), data, byteLength);
+                        break;
+                    case TypedArrayType::FLOAT32:
+                        typedArrayCtor = "Float32Array";
+                        objectType = Type::TYPED_ARRAY_FLOAT32;
+                        _setArrayElement<float>(arr.get(), data, byteLength);
+                        break;
+                    case TypedArrayType::FLOAT64:
+                        typedArrayCtor = "Float64Array";
+                        objectType = Type::TYPED_ARRAY_FLOAT64;
+                        _setArrayElement<double>(arr.get(), data, byteLength);
+                        break;
+                    default:
+                        assert(false); // Should never go here.
+                        break;
                 }
 
-                ValueArray args;
-                args.push_back(Value(arr));
                 Value func;
-                bool ok = ScriptEngine::getInstance()->getGlobalObject()->getProperty(hackFuncName, &func);
+                bool ok = ScriptEngine::getInstance()->getGlobalObject()->getProperty(typedArrayCtor, &func);
                 if (ok && func.isObject() && func.toObject()->isFunction())
                 {
-                    Value ret;
-                    ok = func.toObject()->call(args, nullptr, &ret);
-                    if (ok && ret.isObject())
+                    JSValueRef exception = nullptr;
+                    JSObjectRef ret = JSObjectCallAsConstructor(__cx, func.toObject()->_obj, 1, &arr->_obj, &exception);
+                    if (exception == nullptr)
                     {
-                        Object* obj = Object::_createJSObject(nullptr, ret.toObject()->_obj);
+                        Object* obj = Object::_createJSObject(nullptr, ret);
                         if (obj != nullptr)
-                            obj->_type = Type::TYPED_ARRAY;
+                            obj->_type = objectType;
 
                         return obj;
+                    }
+                    else
+                    {
+                        ScriptEngine::getInstance()->_clearException(exception);
                     }
                 }
             }
@@ -248,17 +311,7 @@ namespace se {
 
     Object* Object::createUint8TypedArray(uint8_t* data, size_t dataCount)
     {
-        return createTypedArray(data, dataCount, TypedArrayType::UINT8_ARRAY, "__jsc_createUint8TypedArray");
-    }
-
-    Object* Object::createInt32TypedArray(int32_t* data, size_t dataCount)
-    {
-        return createTypedArray(data, dataCount, TypedArrayType::INT32_ARRAY, "__jsc_createInt32TypedArray");
-    }
-
-    Object* Object::createFloat32TypedArray(float* data, size_t dataCount)
-    {
-        return createTypedArray(data, dataCount, TypedArrayType::FLOAT32_ARRAY, "__jsc_createFloat32TypedArray");
+        return createTypedArray(TypedArrayType::UINT8, data, dataCount);
     }
 
     Object* Object::createJSONObject(const std::string& jsonStr)
@@ -589,8 +642,19 @@ namespace se {
 
     bool Object::isTypedArray() const
     {
-        if (_type == Type::TYPED_ARRAY)
+        if (_type == Type::TYPED_ARRAY_INT8
+            || _type == Type::TYPED_ARRAY_INT16
+            || _type == Type::TYPED_ARRAY_INT32
+            || _type == Type::TYPED_ARRAY_UINT8
+            || _type == Type::TYPED_ARRAY_UINT8_CLAMPED
+            || _type == Type::TYPED_ARRAY_UINT16
+            || _type == Type::TYPED_ARRAY_UINT32
+            || _type == Type::TYPED_ARRAY_FLOAT32
+            || _type == Type::TYPED_ARRAY_FLOAT64
+            )
+        {
             return true;
+        }
 
 #if (__MAC_OS_X_VERSION_MAX_ALLOWED >= 101200 || __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
         if (isSupportTypedArrayAPI())
@@ -598,14 +662,166 @@ namespace se {
             JSTypedArrayType type = JSValueGetTypedArrayType(__cx, _obj, nullptr);
             bool ret = (type != kJSTypedArrayTypeNone && type != kJSTypedArrayTypeArrayBuffer);
             if (ret)
-                _type = Type::TYPED_ARRAY;
+            {
+                switch (type) {
+                    case kJSTypedArrayTypeInt8Array:
+                        _type = Type::TYPED_ARRAY_INT8;
+                        break;
+                    case kJSTypedArrayTypeInt16Array:
+                        _type = Type::TYPED_ARRAY_INT16;
+                        break;
+                    case kJSTypedArrayTypeInt32Array:
+                        _type = Type::TYPED_ARRAY_INT32;
+                        break;
+                    case kJSTypedArrayTypeUint8Array:
+                        _type = Type::TYPED_ARRAY_UINT8;
+                        break;
+                    case kJSTypedArrayTypeUint8ClampedArray:
+                        _type = Type::TYPED_ARRAY_UINT8_CLAMPED;
+                        break;
+                    case kJSTypedArrayTypeUint16Array:
+                        _type = Type::TYPED_ARRAY_UINT16;
+                        break;
+                    case kJSTypedArrayTypeUint32Array:
+                        _type = Type::TYPED_ARRAY_UINT32;
+                        break;
+                    case kJSTypedArrayTypeFloat32Array:
+                        _type = Type::TYPED_ARRAY_FLOAT32;
+                        break;
+                    case kJSTypedArrayTypeFloat64Array:
+                        _type = Type::TYPED_ARRAY_FLOAT64;
+                        break;
+                    default:
+                        break;
+                }
+            }
             return ret;
         }
 #endif
-        bool ret = isInstanceOfConstructor(__cx, _obj, "__jscTypedArrayConstructor");
-        if (ret)
-            _type = Type::TYPED_ARRAY;
-        return ret;
+        return isInstanceOfConstructor(__cx, _obj, "__jscTypedArrayConstructor");
+    }
+
+    Object::TypedArrayType Object::getTypedArrayType() const
+    {
+        if (_type == Type::TYPED_ARRAY_INT8)
+            return TypedArrayType::INT8;
+        else if (_type == Type::TYPED_ARRAY_INT16)
+            return TypedArrayType::INT16;
+        else if (_type == Type::TYPED_ARRAY_INT32)
+            return TypedArrayType::INT32;
+        else if (_type == Type::TYPED_ARRAY_UINT8)
+            return TypedArrayType::UINT8;
+        else if (_type == Type::TYPED_ARRAY_UINT8_CLAMPED)
+            return TypedArrayType::UINT8_CLAMPED;
+        else if (_type == Type::TYPED_ARRAY_UINT16)
+            return TypedArrayType::UINT16;
+        else if (_type == Type::TYPED_ARRAY_UINT32)
+            return TypedArrayType::UINT32;
+        else if (_type == Type::TYPED_ARRAY_FLOAT32)
+            return TypedArrayType::FLOAT32;
+        else if (_type == Type::TYPED_ARRAY_FLOAT64)
+            return TypedArrayType::FLOAT64;
+
+        TypedArrayType typedArrayType = TypedArrayType::NONE;
+
+#if (__MAC_OS_X_VERSION_MAX_ALLOWED >= 101200 || __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
+        if (isSupportTypedArrayAPI())
+        {
+            JSTypedArrayType type = JSValueGetTypedArrayType(__cx, _obj, nullptr);
+            bool ret = (type != kJSTypedArrayTypeNone && type != kJSTypedArrayTypeArrayBuffer);
+            if (ret)
+            {
+                switch (type) {
+                    case kJSTypedArrayTypeInt8Array:
+                        _type = Type::TYPED_ARRAY_INT8;
+                        typedArrayType = TypedArrayType::INT8;
+                        break;
+                    case kJSTypedArrayTypeInt16Array:
+                        _type = Type::TYPED_ARRAY_INT16;
+                        typedArrayType = TypedArrayType::INT16;
+                        break;
+                    case kJSTypedArrayTypeInt32Array:
+                        _type = Type::TYPED_ARRAY_INT32;
+                        typedArrayType = TypedArrayType::INT32;
+                        break;
+                    case kJSTypedArrayTypeUint8Array:
+                        _type = Type::TYPED_ARRAY_UINT8;
+                        typedArrayType = TypedArrayType::UINT8;
+                        break;
+                    case kJSTypedArrayTypeUint8ClampedArray:
+                        _type = Type::TYPED_ARRAY_UINT8_CLAMPED;
+                        typedArrayType = TypedArrayType::UINT8_CLAMPED;
+                        break;
+                    case kJSTypedArrayTypeUint16Array:
+                        _type = Type::TYPED_ARRAY_UINT16;
+                        typedArrayType = TypedArrayType::UINT16;
+                        break;
+                    case kJSTypedArrayTypeUint32Array:
+                        _type = Type::TYPED_ARRAY_UINT32;
+                        typedArrayType = TypedArrayType::UINT32;
+                        break;
+                    case kJSTypedArrayTypeFloat32Array:
+                        _type = Type::TYPED_ARRAY_FLOAT32;
+                        typedArrayType = TypedArrayType::FLOAT32;
+                        break;
+                    case kJSTypedArrayTypeFloat64Array:
+                        _type = Type::TYPED_ARRAY_FLOAT64;
+                        typedArrayType = TypedArrayType::FLOAT64;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return typedArrayType;
+        }
+#endif
+        if (isInstanceOfConstructor(__cx, _obj, "Int8Array"))
+        {
+            _type = Type::TYPED_ARRAY_INT8;
+            typedArrayType = TypedArrayType::INT8;
+        }
+        else if (isInstanceOfConstructor(__cx, _obj, "Int16Array"))
+        {
+            _type = Type::TYPED_ARRAY_INT16;
+            typedArrayType = TypedArrayType::INT16;
+        }
+        else if (isInstanceOfConstructor(__cx, _obj, "Int32Array"))
+        {
+            _type = Type::TYPED_ARRAY_INT32;
+            typedArrayType = TypedArrayType::INT32;
+        }
+        else if (isInstanceOfConstructor(__cx, _obj, "Uint8Array"))
+        {
+            _type = Type::TYPED_ARRAY_UINT8;
+            typedArrayType = TypedArrayType::UINT8;
+        }
+        else if (isInstanceOfConstructor(__cx, _obj, "Uint8ClampedArray"))
+        {
+            _type = Type::TYPED_ARRAY_UINT8_CLAMPED;
+            typedArrayType = TypedArrayType::UINT8_CLAMPED;
+        }
+        else if (isInstanceOfConstructor(__cx, _obj, "Uint16Array"))
+        {
+            _type = Type::TYPED_ARRAY_UINT16;
+            typedArrayType = TypedArrayType::UINT16;
+        }
+        else if (isInstanceOfConstructor(__cx, _obj, "Uint32Array"))
+        {
+            _type = Type::TYPED_ARRAY_UINT32;
+            typedArrayType = TypedArrayType::UINT32;
+        }
+        else if (isInstanceOfConstructor(__cx, _obj, "Float32Array"))
+        {
+            _type = Type::TYPED_ARRAY_FLOAT32;
+            typedArrayType = TypedArrayType::FLOAT32;
+        }
+        else if (isInstanceOfConstructor(__cx, _obj, "Float64Array"))
+        {
+            _type = Type::TYPED_ARRAY_FLOAT64;
+            typedArrayType = TypedArrayType::FLOAT64;
+        }
+
+        return typedArrayType;
     }
 
     bool Object::getTypedArrayData(uint8_t** ptr, size_t* length) const

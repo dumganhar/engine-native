@@ -86,13 +86,13 @@ SE_BIND_FUNC(js_cocos2dx_GLNode_create)
 
 bool js_register_cocos2dx_GLNode(se::Object* obj)
 {
-    auto cls = se::Class::create("Node", obj, nullptr, _SE(js_cocos2dx_GLNode_constructor));
+    auto cls = se::Class::create("GLNode", obj, nullptr, _SE(js_cocos2dx_GLNode_constructor));
 
     cls->defineFunction("ctor", _SE(js_cocos2dx_GLNode_ctor));
     cls->defineStaticFunction("create", _SE(js_cocos2dx_GLNode_create));
     cls->defineFinalizeFunction(_SE(js_cocos2dx_GLNode_finalize));
     cls->install();
-    JSBClassType::registerClass<cocos2d::Node>(cls);
+    JSBClassType::registerClass<JSB_GLNode>(cls);
 
     __jsb_cocos2dx_GLNode_proto = cls->getProto();
     __jsb_cocos2dx_GLNode_class = cls;

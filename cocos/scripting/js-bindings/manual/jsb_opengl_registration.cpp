@@ -4,6 +4,7 @@
 #include "cocos/scripting/js-bindings/manual/jsb_global.h"
 #include "scripting/js-bindings/manual/jsb_opengl_functions.hpp"
 #include "scripting/js-bindings/manual/jsb_opengl_node.hpp"
+#include "scripting/js-bindings/manual/jsb_opengl_manual.hpp"
 
 bool JSB_register_opengl(se::Object* obj)
 {

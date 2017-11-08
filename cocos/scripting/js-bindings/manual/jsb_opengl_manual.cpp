@@ -1,263 +1,250 @@
-/*
- * Copyright (c) 2013 Zynga Inc.
- * Copyright (c) 2013-2017 Chukong Technologies Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-#include "scripting/js-bindings/manual/js_bindings_config.h"
-#ifdef JSB_INCLUDE_OPENGL
-
-#include "scripting/js-bindings/manual/jsb_opengl_manual.h"
-#include "scripting/js-bindings/manual/js_manual_conversions.h"
-#include "scripting/js-bindings/manual/js_bindings_core.h"
-#include "scripting/js-bindings/manual/jsb_opengl_functions.h"
+#include "scripting/js-bindings/manual/jsb_opengl_manual.hpp"
+#include "scripting/js-bindings/manual/jsb_opengl_functions.hpp"
+#include "scripting/js-bindings/manual/jsb_conversions.hpp"
 #include "platform/CCGL.h"
-
 
 // Helper functions that link "glGenXXXs" (OpenGL ES 2.0 spec), with "gl.createXXX" (WebGL spec)
 bool JSB_glGenTextures(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 0, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 0, false, "Invalid number of arguments" );
+
     GLuint texture;
     glGenTextures(1, &texture);
 
-    s.rval().set(INT_TO_JSVAL(texture));
+    s.rval().setUint32(texture);
     return true;
 }
+SE_BIND_FUNC(JSB_glGenTextures)
 
 bool JSB_glGenBuffers(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 0, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 0, false, "Invalid number of arguments" );
+
     GLuint buffer;
     glGenBuffers(1, &buffer);
-    s.rval().set(INT_TO_JSVAL(buffer));
+    s.rval().setUint32(buffer);
     return true;
 }
+SE_BIND_FUNC(JSB_glGenBuffers)
 
 bool JSB_glGenRenderbuffers(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 0, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 0, false, "Invalid number of arguments" );
+
     GLuint renderbuffers;
     glGenRenderbuffers(1, &renderbuffers);
-    s.rval().set(INT_TO_JSVAL(renderbuffers));
+    s.rval().setUint32(renderbuffers);
     return true;
 }
+SE_BIND_FUNC(JSB_glGenRenderbuffers)
 
 bool JSB_glGenFramebuffers(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 0, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 0, false, "Invalid number of arguments" );
+
     GLuint framebuffers;
     glGenFramebuffers(1, &framebuffers);
-    s.rval().set(INT_TO_JSVAL(framebuffers));
+    s.rval().setUint32(framebuffers);
     return true;
 }
+SE_BIND_FUNC(JSB_glGenFramebuffers)
 
 bool JSB_glDeleteTextures(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 1, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 1, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     glDeleteTextures(1, &arg0);
-    s.rval().set(JSVAL_VOID);
+
     return true;
 }
+SE_BIND_FUNC(JSB_glDeleteTextures)
 
 bool JSB_glDeleteBuffers(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 1, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 1, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     glDeleteBuffers(1, &arg0);
-    s.rval().set(JSVAL_VOID);
+
     return true;
 }
+SE_BIND_FUNC(JSB_glDeleteBuffers)
 
 bool JSB_glDeleteRenderbuffers(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 1, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 1, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     glDeleteRenderbuffers(1, &arg0);
-    s.rval().set(JSVAL_VOID);
+
     return true;
 }
+SE_BIND_FUNC(JSB_glDeleteRenderbuffers)
 
 bool JSB_glDeleteFramebuffers(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 1, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 1, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     glDeleteFramebuffers(1, &arg0);
-    s.rval().set(JSVAL_VOID);
+
     return true;
 }
+SE_BIND_FUNC(JSB_glDeleteFramebuffers)
 
 bool JSB_glShaderSource(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 2, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 2, false, "Invalid number of arguments" );
+
     bool ok = true;
-    uint32_t arg0; const char *arg1;
+    uint32_t arg0; std::string arg1;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    ok &= jsval_to_charptr(cx, args.get(1), &arg1);
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    ok &= seval_to_std_string(args[1], &arg1);
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glShaderSource(arg0, 1, &arg1, NULL);
-    s.rval().set(JSVAL_VOID);
+    const GLchar* sources[] = { arg1.c_str() };
+    glShaderSource(arg0, 1, sources, nullptr);
+
     return true;
 }
+SE_BIND_FUNC(JSB_glShaderSource)
 
 bool JSB_glGetShaderiv(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 2, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 2, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0, arg1;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    ok &= jsval_to_uint(args[1], &arg1 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    ok &= seval_to_uint32(args[1], &arg1 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     GLint ret;
     glGetShaderiv(arg0, arg1, &ret);
-    s.rval().set(INT_TO_JSVAL(ret));
+    s.rval().setInt32(ret);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetShaderiv)
 
 bool JSB_glGetProgramiv(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 2, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 2, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0, arg1;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    ok &= jsval_to_uint(args[1], &arg1 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    ok &= seval_to_uint32(args[1], &arg1 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     GLint ret;
     glGetProgramiv(arg0, arg1, &ret);
-    s.rval().set(INT_TO_JSVAL(ret));
+    s.rval().setInt32(ret);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetProgramiv)
 
 bool JSB_glGetProgramInfoLog(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 1, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 1, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     GLsizei length;
     glGetProgramiv(arg0, GL_INFO_LOG_LENGTH, &length);
     GLchar* src = new (std::nothrow) GLchar[length];
     glGetProgramInfoLog(arg0, length, NULL, src);
     
-    s.rval().set(charptr_to_jsval(cx, src));
+    s.rval().setString(src);
     CC_SAFE_DELETE_ARRAY(src);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetProgramInfoLog)
 
 // DOMString? getShaderInfoLog(WebGLShader? shader);
 bool JSB_glGetShaderInfoLog(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 1, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 1, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     GLsizei length;
     glGetShaderiv(arg0, GL_INFO_LOG_LENGTH, &length);
     GLchar* src = new (std::nothrow) GLchar[length];
     glGetShaderInfoLog(arg0, length, NULL, src);
     
-    s.rval().set(charptr_to_jsval(cx, src));
+    s.rval().setString(src);
     CC_SAFE_DELETE_ARRAY(src);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetShaderInfoLog)
 
 // DOMString? getShaderSource(WebGLShader? shader);
 bool JSB_glGetShaderSource(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 1, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 1, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     GLsizei length;
     glGetShaderiv(arg0, GL_SHADER_SOURCE_LENGTH, &length);
     GLchar* src = new (std::nothrow) GLchar[length];
     glGetShaderSource(arg0, length, NULL, src);
 
-    s.rval().set(charptr_to_jsval(cx, src));
+    s.rval().setString(src);
     CC_SAFE_DELETE_ARRAY(src);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetShaderSource)
 
 //  interface WebGLActiveInfo {
 //      readonly attribute GLint size;
@@ -267,14 +254,14 @@ bool JSB_glGetShaderSource(se::State& s) {
 bool JSB_glGetActiveAttrib(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 2, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 2, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0, arg1;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    ok &= jsval_to_uint(args[1], &arg1 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    ok &= seval_to_uint32(args[1], &arg1 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     GLsizei length;
     glGetProgramiv(arg0, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length);
@@ -284,23 +271,17 @@ bool JSB_glGetActiveAttrib(se::State& s) {
 
     glGetActiveAttrib(arg0, arg1, length, NULL, &size, &type, buffer);
 
-    jsval retval = JSVAL_VOID;
+    se::HandleObject object(se::Object::createPlainObject());
+    object->setProperty("size", se::Value((int32_t)size));
+    object->setProperty("type", se::Value((int32_t)type));
+    object->setProperty("name", se::Value((char*)buffer));
+    s.rval().setObject(object.get());
 
-    JS::RootedObject object(cx, JS_NewObject(cx, NULL, JS::NullPtr(), JS::NullPtr() ));
-    JSB_PRECONDITION2(ok, cx, false, "Error creating JS Object");
-
-    JS::RootedValue jsname(cx, charptr_to_jsval(cx, buffer));
-    if (!JS_DefineProperty(cx, object, "size", (int32_t)size, JSPROP_ENUMERATE | JSPROP_PERMANENT) ||
-        !JS_DefineProperty(cx, object, "type", (int32_t)type, JSPROP_ENUMERATE | JSPROP_PERMANENT) ||
-        !JS_DefineProperty(cx, object, "name", jsname, JSPROP_ENUMERATE | JSPROP_PERMANENT) )
-        return false;
-
-    retval = OBJECT_TO_JSVAL(object);
-
-    s.rval().set(retval);
     CC_SAFE_DELETE_ARRAY(buffer);
+
     return true;
 }
+SE_BIND_FUNC(JSB_glGetActiveAttrib)
 
 
 //  interface WebGLActiveInfo {
@@ -312,14 +293,14 @@ bool JSB_glGetActiveAttrib(se::State& s) {
 bool JSB_glGetActiveUniform(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 2, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 2, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0, arg1;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    ok &= jsval_to_uint(args[1], &arg1 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    ok &= seval_to_uint32(args[1], &arg1 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     GLsizei length;
     glGetProgramiv(arg0, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length);
@@ -329,36 +310,28 @@ bool JSB_glGetActiveUniform(se::State& s) {
 
     glGetActiveUniform(arg0, arg1, length, NULL, &size, &type, buffer);
 
-    jsval retval = JSVAL_VOID;
+    se::HandleObject object(se::Object::createPlainObject());
+    object->setProperty("size", se::Value((int32_t)size));
+    object->setProperty("type", se::Value((int32_t)type));
+    object->setProperty("name", se::Value((char*)buffer));
+    s.rval().setObject(object.get());
 
-    
-    JS::RootedObject object(cx, JS_NewObject(cx, NULL, JS::NullPtr(), JS::NullPtr() ));
-    JSB_PRECONDITION2(ok, cx, false, "Error creating JS Object");
-
-    JS::RootedValue jsname(cx, charptr_to_jsval(cx, buffer));
-    if (!JS_DefineProperty(cx, object, "size", (int32_t)size, JSPROP_ENUMERATE | JSPROP_PERMANENT) ||
-        !JS_DefineProperty(cx, object, "type", (int32_t)type, JSPROP_ENUMERATE | JSPROP_PERMANENT) ||
-        !JS_DefineProperty(cx, object, "name", jsname, JSPROP_ENUMERATE | JSPROP_PERMANENT) )
-        return false;
-
-    retval = OBJECT_TO_JSVAL(object);
-
-    s.rval().set(retval);
     CC_SAFE_DELETE_ARRAY(buffer);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetActiveUniform)
 
 // sequence<WebGLShader>? getAttachedShaders(WebGLProgram? program);
 bool JSB_glGetAttachedShaders(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 1, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 1, false, "Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+    ok &= seval_to_uint32(args[0], &arg0 );
+    SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     GLsizei length;
     glGetProgramiv(arg0, GL_ATTACHED_SHADERS, &length);
@@ -367,31 +340,29 @@ bool JSB_glGetAttachedShaders(se::State& s) {
     //Fix bug 2448, it seems that glGetAttachedShaders will crash if we send NULL to the third parameter (eg Windows), same as in lua binding
     GLsizei realShaderCount = 0;
     glGetAttachedShaders(arg0, length, &realShaderCount, buffer);
-    
-    JS::RootedObject jsobj(cx, JS_NewArrayObject(cx, length));
-    JSB_PRECONDITION2(jsobj, cx, false, "Error creating JS Object");
 
-    for( int i=0; i<length; i++) {
-        JS::RootedValue e(cx, INT_TO_JSVAL(buffer[i]));
-        JS_SetElement(cx, jsobj, i, e );
+    se::HandleObject jsobj(se::Object::createArrayObject(length));
+    for( int i=0; i<length; i++)
+    {
+        jsobj->setArrayElement(i, se::Value(buffer[i]));
     }
 
-    s.rval().set(OBJECT_TO_JSVAL(jsobj));
+    s.rval().setObject(jsobj.get());
     CC_SAFE_DELETE_ARRAY(buffer);
     return true;
 
 }
+SE_BIND_FUNC(JSB_glGetAttachedShaders)
 
 // sequence<DOMString>? getSupportedExtensions();
 bool JSB_glGetSupportedExtensions(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 0, cx, false, "Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 0, false, "Invalid number of arguments" );
+
     const GLubyte *extensions = glGetString(GL_EXTENSIONS);
 
-    JS::RootedObject jsobj(cx, JS_NewArrayObject(cx, 0));
-    JSB_PRECONDITION2(jsobj, cx, false, "Error creating JS Object");
+    se::HandleObject jsobj(se::Object::createArrayObject(1));
 
     // copy, to be able to add '\0'
     size_t len = strlen((char*)extensions);
@@ -399,13 +370,12 @@ bool JSB_glGetSupportedExtensions(se::State& s) {
     strncpy((char*)copy, (const char*)extensions, len );
 
     size_t start_extension = 0;
-    int element=0;
+
     for( size_t i=0; i<len+1; i++) {
         if( copy[i]==' ' || copy[i]==',' || i==len ) {
             copy[i] = 0;
 
-            JS::RootedValue str(cx, charptr_to_jsval(cx, (const char*)&copy[start_extension]));
-            JS_SetElement(cx, jsobj, element++, str );
+            jsobj->setArrayElement((uint32_t)i, se::Value((const char*)&copy[start_extension]));
 
             start_extension = i+1;
 
@@ -413,46 +383,48 @@ bool JSB_glGetSupportedExtensions(se::State& s) {
         }
     }
 
-    s.rval().set(OBJECT_TO_JSVAL(jsobj));
+    s.rval().setObject(jsobj.get());
     CC_SAFE_DELETE_ARRAY(copy);
     return true;
     
 }
+SE_BIND_FUNC(JSB_glGetSupportedExtensions)
 
 // any getTexParameter(GLenum target, GLenum pname);
 bool JSB_glGetTexParameterfv(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 2, cx, false, "JSB_glGetTexParameterfv: Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 2, false,"JSB_glGetTexParameterfv: Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0, arg1;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    ok &= jsval_to_uint(args[1], &arg1 );
+    ok &= seval_to_uint32(args[0], &arg0 );
+    ok &= seval_to_uint32(args[1], &arg1 );
 
-    JSB_PRECONDITION2(ok, cx, false, "JSB_glGetTexParameterfv: Error processing arguments");
+    SE_PRECONDITION2(ok, false, "JSB_glGetTexParameterfv: Error processing arguments");
 
     GLfloat param;
     glGetTexParameterfv(arg0, arg1, &param);
 
-    s.rval().set(DOUBLE_TO_JSVAL(param));
+    s.rval().setFloat(param);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetTexParameterfv)
 
 // any getUniform(WebGLProgram? program, WebGLUniformLocation? location);
 bool JSB_glGetUniformfv(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
-    JSB_PRECONDITION2( argc == 2, cx, false, "JSB_glGetUniformfv: Invalid number of arguments" );
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    SE_PRECONDITION2(argc == 2, false,"JSB_glGetUniformfv: Invalid number of arguments" );
+
     bool ok = true;
     uint32_t arg0, arg1;
 
-    ok &= jsval_to_uint(args[0], &arg0 );
-    ok &= jsval_to_uint(args[1], &arg1 );
+    ok &= seval_to_uint32(args[0], &arg0 );
+    ok &= seval_to_uint32(args[1], &arg1 );
 
-    JSB_PRECONDITION2(ok, cx, false, "JSB_glGetUniformfv: Error processing arguments");
+    SE_PRECONDITION2(ok, false, "JSB_glGetUniformfv: Error processing arguments");
 
     GLint activeUniforms;
     glGetProgramiv(arg0, GL_ACTIVE_UNIFORMS, &activeUniforms);
@@ -464,7 +436,7 @@ bool JSB_glGetUniformfv(se::State& s) {
     GLenum type = -1;
 
     bool isLocationFound = false;
-    for(int i = 0; i  <  activeUniforms; ++i)
+    for (int i = 0; i  <  activeUniforms; ++i)
     {
         glGetActiveUniform(arg0, i, length, NULL, &size, &type, namebuffer);
         if(arg1 == glGetUniformLocation(arg0, namebuffer))
@@ -473,6 +445,7 @@ bool JSB_glGetUniformfv(se::State& s) {
             break;
         }
     }
+
     if(!isLocationFound)
     {
         size = -1;
@@ -520,50 +493,46 @@ bool JSB_glGetUniformfv(se::State& s) {
             utype = GL_INT;
             break;
         case GL_INT_VEC2:
-            usize = 1;
+            usize = 2;
             utype = GL_INT;
             break;
         case GL_INT_VEC3:
-            usize = 1;
+            usize = 3;
             utype = GL_INT;
             break;
         case GL_INT_VEC4:
-            usize = 1;
+            usize = 4;
             utype = GL_INT;
             break;
 
         default:
-            JSB_PRECONDITION2(false, cx, false, "JSB_glGetUniformfv: Uniform Type not supported");
+            SE_REPORT_ERROR("JSB_glGetUniformfv: Uniform Type (%d) not supported", (int)type);
+            return false;
     }
 
-    JSObject *typedArray = NULL;
-    if( utype == GL_FLOAT) {
-        // FIXME: glew on windows will cause array overflow after invoking glGetUniformfv.
-        // It seems that glGetUniformfv re-assign the memory with a wrong size which is 4x than we pass in.
-        // For temporary solution, we allocate 4x array. 
-        GLfloat* param = new (std::nothrow) GLfloat[usize*4];
+    if( utype == GL_FLOAT)
+    {
+        GLfloat* param = new (std::nothrow) GLfloat[usize];
         glGetUniformfv(arg0, arg1, param);
 
-        typedArray = JS_NewFloat32Array(cx, usize);
-        float *buffer = (float*)JS_GetArrayBufferViewData(typedArray);
-        memcpy( buffer, param, sizeof(float) * usize);
+        se::HandleObject obj(se::Object::createFloat32TypedArray(param, usize));
+        s.rval().setObject(obj);
         CC_SAFE_DELETE_ARRAY(param);
-    } else if( utype == GL_INT ) {
-        // FIXME: glew on windows will cause array overflow after invoking glGetUniformfv.
-        // It seems that glGetUniformfv re-assign the memory with a wrong size which is 4x than we pass in.
-        // For temporary solution, we allocate 4x array. 
-        GLint* param = new (std::nothrow) GLint[usize*4];
+        return true;
+    }
+    else if( utype == GL_INT )
+    {
+        GLint* param = new (std::nothrow) GLint[usize];
         glGetUniformiv(arg0, arg1, param);
 
-        typedArray = JS_NewInt32Array(cx, usize);
-        GLint *buffer = (GLint*)JS_GetArrayBufferViewData(typedArray);
-        memcpy( buffer, param, sizeof(GLint) * usize);
+        se::HandleObject obj(se::Object::createInt32TypedArray(param, usize));
+        s.rval().setObject(obj);
         CC_SAFE_DELETE_ARRAY(param);
+        return true;
     }
 
-    s.rval().set(OBJECT_TO_JSVAL(typedArray));
-    return true;
+    SE_REPORT_ERROR("Supported type: %d", utype);
+    return false;
 }
+SE_BIND_FUNC(JSB_glGetUniformfv)
 
-
-#endif // JSB_INCLUDE_OPENGL

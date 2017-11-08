@@ -162,7 +162,7 @@ namespace se {
         return nullptr;
     }
 
-    Object* Object::createUint8TypedArray(uint8_t* data, size_t byteLength)
+    Object* Object::createTypedArray(void* data, size_t byteLength, TypedArrayType type, const char* hackFuncName)
     {
 #if (__MAC_OS_X_VERSION_MAX_ALLOWED >= 101200 || __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
         if (isSupportTypedArrayAPI())
@@ -170,7 +170,39 @@ namespace se {
             void* copiedData = malloc(byteLength);
             memcpy(copiedData, data, byteLength);
             JSValueRef exception = nullptr;
-            JSObjectRef jsobj = JSObjectMakeTypedArrayWithBytesNoCopy(__cx, kJSTypedArrayTypeUint8Array, copiedData, byteLength, myJSTypedArrayBytesDeallocator, nullptr, &exception);
+            JSTypedArrayType jscTypedArrayType = kJSTypedArrayTypeNone;
+            switch (type) {
+                case TypedArrayType::INT8_ARRAY:
+                    jscTypedArrayType = kJSTypedArrayTypeInt8Array;
+                    break;
+                case TypedArrayType::INT16_ARRAY:
+                    jscTypedArrayType = kJSTypedArrayTypeInt16Array;
+                    break;
+                case TypedArrayType::INT32_ARRAY:
+                    jscTypedArrayType = kJSTypedArrayTypeInt32Array;
+                    break;
+                case TypedArrayType::UINT8_ARRAY:
+                    jscTypedArrayType = kJSTypedArrayTypeUint8Array;
+                    break;
+                case TypedArrayType::UINT8_CLAMPED_ARRAY:
+                    jscTypedArrayType = kJSTypedArrayTypeUint8ClampedArray;
+                    break;
+                case TypedArrayType::UINT16_ARRAY:
+                    jscTypedArrayType = kJSTypedArrayTypeUint16Array;
+                    break;
+                case TypedArrayType::UINT32_ARRAY:
+                    jscTypedArrayType = kJSTypedArrayTypeUint32Array;
+                    break;
+                case TypedArrayType::FLOAT32_ARRAY:
+                    jscTypedArrayType = kJSTypedArrayTypeFloat32Array;
+                    break;
+                case TypedArrayType::FLOAT64_ARRAY:
+                    jscTypedArrayType = kJSTypedArrayTypeFloat64Array;
+                    break;
+                default:
+                    break;
+            }
+            JSObjectRef jsobj = JSObjectMakeTypedArrayWithBytesNoCopy(__cx, jscTypedArrayType, copiedData, byteLength, myJSTypedArrayBytesDeallocator, nullptr, &exception);
             if (exception != nullptr)
             {
                 ScriptEngine::getInstance()->_clearException(exception);
@@ -194,7 +226,7 @@ namespace se {
                 ValueArray args;
                 args.push_back(Value(arr));
                 Value func;
-                bool ok = ScriptEngine::getInstance()->getGlobalObject()->getProperty("__jsc_createUint8TypedArray", &func);
+                bool ok = ScriptEngine::getInstance()->getGlobalObject()->getProperty(hackFuncName, &func);
                 if (ok && func.isObject() && func.toObject()->isFunction())
                 {
                     Value ret;
@@ -212,6 +244,21 @@ namespace se {
         }
 
         return nullptr;
+    }
+
+    Object* Object::createUint8TypedArray(uint8_t* data, size_t dataCount)
+    {
+        return createTypedArray(data, dataCount, TypedArrayType::UINT8_ARRAY, "__jsc_createUint8TypedArray");
+    }
+
+    Object* Object::createInt32TypedArray(int32_t* data, size_t dataCount)
+    {
+        return createTypedArray(data, dataCount, TypedArrayType::INT32_ARRAY, "__jsc_createInt32TypedArray");
+    }
+
+    Object* Object::createFloat32TypedArray(float* data, size_t dataCount)
+    {
+        return createTypedArray(data, dataCount, TypedArrayType::FLOAT32_ARRAY, "__jsc_createFloat32TypedArray");
     }
 
     Object* Object::createJSONObject(const std::string& jsonStr)
@@ -588,7 +635,7 @@ namespace se {
 #endif
         {
             Value func;
-            bool ok = ScriptEngine::getInstance()->getGlobalObject()->getProperty("__jsc_getUint8ArrayData", &func);
+            bool ok = ScriptEngine::getInstance()->getGlobalObject()->getProperty("__jsc_getTypedArrayData", &func);
             if (ok && func.isObject() && func.toObject()->isFunction())
             {
                 ValueArray args;

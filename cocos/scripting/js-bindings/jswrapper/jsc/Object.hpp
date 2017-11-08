@@ -66,6 +66,26 @@ namespace se {
         static Object* createUint8TypedArray(uint8_t* bytes, size_t byteLength);
 
         /**
+         *  @brief Creates a JavaScript Typed Array Object with int32 format from an existing pointer.
+         *  @param[in] data A pointer to the int32 data buffer to be used as the backing store of the Typed Array object.
+         *  @param[in] dataCount The number of int32 data.
+         *  @return A JavaScript Typed Array Object whose backing store is the same as the one pointed data, or nullptr if there is an error.
+         *  @note The return value (non-null) has to be released manually.
+         *        dataCount parameter isn't mean byte length of data, it's the number of how many int32 data.
+         */
+        static Object* createInt32TypedArray(int32_t* data, size_t dataCount);
+
+        /**
+         *  @brief Creates a JavaScript Typed Array Object with float32 format from an existing pointer.
+         *  @param[in] data A pointer to the float32 data buffer to be used as the backing store of the Typed Array object.
+         *  @param[in] dataCount The number of float32 data.
+         *  @return A JavaScript Typed Array Object whose backing store is the same as the one pointed data, or nullptr if there is an error.
+         *  @note The return value (non-null) has to be released manually.
+         *        dataCount parameter isn't mean byte length of data, it's the number of how many float32 data.
+         */
+        static Object* createFloat32TypedArray(float* data, size_t dataCount);
+
+        /**
          *  @brief Creates a JavaScript Array Buffer object from an existing pointer.
          *  @param[in] bytes A pointer to the byte buffer to be used as the backing store of the Typed Array object.
          *  @param[in] byteLength The number of bytes pointed to by the parameter bytes.
@@ -332,6 +352,22 @@ namespace se {
         virtual ~Object();
 
         bool init(Class* cls, JSObjectRef obj);
+
+        enum class TypedArrayType
+        {
+            NONE,
+            INT8_ARRAY,
+            INT16_ARRAY,
+            INT32_ARRAY,
+            UINT8_ARRAY,
+            UINT8_CLAMPED_ARRAY,
+            UINT16_ARRAY,
+            UINT32_ARRAY,
+            FLOAT32_ARRAY,
+            FLOAT64_ARRAY
+        };
+
+        static Object* createTypedArray(void* data, size_t byteLength, TypedArrayType type, const char* hackFuncName);
 
         enum class Type : char
         {

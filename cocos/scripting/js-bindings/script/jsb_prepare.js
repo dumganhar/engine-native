@@ -42,6 +42,14 @@ if (window.scriptEngineType == "JavaScriptCore") {
         return new Uint8Array(arr);
     };
 
+    window.__jsc_createInt32TypedArray = function(arr) {
+        return new Int32Array(arr);
+    };
+
+    window.__jsc_createFloat32TypedArray = function(arr) {
+        return new Float32Array(arr);
+    };
+
     window.__jsc_getArrayBufferData = function(arrBuf) {
         var typedArr = new Uint8Array(arrBuf);
         var len = typedArr.length;
@@ -52,11 +60,12 @@ if (window.scriptEngineType == "JavaScriptCore") {
         return arr;
     };
 
-    window.__jsc_getUint8ArrayData = function(typedArr) {
-        var len = typedArr.length;
+    window.__jsc_getTypedArrayData = function(typedArr) {
+        var uint8Array = new Uint8Array(typedArr.buffer);
+        var len = uint8Array.length;
         var arr = new Array(len);
         for (var i = 0; i < len; ++i) {
-            arr[i] = typedArr[i];
+            arr[i] = uint8Array[i];
         }
         return arr;
     };

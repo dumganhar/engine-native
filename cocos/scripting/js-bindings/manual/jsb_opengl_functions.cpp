@@ -120,6 +120,7 @@ bool JSB_glActiveTexture(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glActiveTexture)
 
 // Arguments: GLuint, GLuint
 // Ret value: void
@@ -139,6 +140,7 @@ bool JSB_glAttachShader(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glAttachShader)
 
 // Arguments: GLuint, GLuint, char*
 // Ret value: void
@@ -158,6 +160,7 @@ bool JSB_glBindAttribLocation(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBindAttribLocation)
 
 // Arguments: GLenum, GLuint
 // Ret value: void
@@ -176,6 +179,7 @@ bool JSB_glBindBuffer(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBindBuffer)
 
 // Arguments: GLenum, GLuint
 // Ret value: void
@@ -194,6 +198,7 @@ bool JSB_glBindFramebuffer(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBindFramebuffer)
 
 // Arguments: GLenum, GLuint
 // Ret value: void
@@ -212,6 +217,7 @@ bool JSB_glBindRenderbuffer(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBindRenderbuffer)
 
 // Arguments: GLenum, GLuint
 // Ret value: void
@@ -230,6 +236,7 @@ bool JSB_glBindTexture(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBindTexture)
 
 // Arguments: GLclampf, GLclampf, GLclampf, GLclampf
 // Ret value: void
@@ -250,6 +257,7 @@ bool JSB_glBlendColor(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBlendColor)
 
 // Arguments: GLenum
 // Ret value: void
@@ -267,6 +275,7 @@ bool JSB_glBlendEquation(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBlendEquation)
 
 // Arguments: GLenum, GLenum
 // Ret value: void
@@ -285,6 +294,7 @@ bool JSB_glBlendEquationSeparate(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBlendEquationSeparate)
 
 // Arguments: GLenum, GLenum
 // Ret value: void
@@ -303,6 +313,7 @@ bool JSB_glBlendFunc(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBlendFunc)
 
 // Arguments: GLenum, GLenum, GLenum, GLenum
 // Ret value: void
@@ -323,6 +334,7 @@ bool JSB_glBlendFuncSeparate(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBlendFuncSeparate)
 
 // Arguments: GLenum, ArrayBufferView, GLenum
 // Ret value: void
@@ -343,6 +355,7 @@ bool JSB_glBufferData(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBufferData)
 
 // Arguments: GLenum, GLintptr, ArrayBufferView
 // Ret value: void
@@ -363,6 +376,7 @@ bool JSB_glBufferSubData(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glBufferSubData)
 
 // Arguments: GLenum
 // Ret value: GLenum
@@ -381,6 +395,7 @@ bool JSB_glCheckFramebufferStatus(se::State& s) {
     s.rval().setUint32((uint32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glCheckFramebufferStatus)
 
 // Arguments: GLbitfield
 // Ret value: void
@@ -398,6 +413,7 @@ bool JSB_glClear(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glClear)
 
 // Arguments: GLclampf, GLclampf, GLclampf, GLclampf
 // Ret value: void
@@ -418,6 +434,7 @@ bool JSB_glClearColor(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glClearColor)
 
 // Arguments: GLclampf
 // Ret value: void
@@ -435,6 +452,7 @@ bool JSB_glClearDepthf(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glClearDepthf)
 
 // Arguments: GLint
 // Ret value: void
@@ -452,6 +470,7 @@ bool JSB_glClearStencil(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glClearStencil)
 
 // Arguments: GLboolean, GLboolean, GLboolean, GLboolean
 // Ret value: void
@@ -472,6 +491,7 @@ bool JSB_glColorMask(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glColorMask)
 
 // Arguments: GLuint
 // Ret value: void
@@ -489,6 +509,7 @@ bool JSB_glCompileShader(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glCompileShader)
 
 // Arguments: GLenum, GLint, GLenum, GLsizei, GLsizei, GLint, GLsizei, ArrayBufferView
 // Ret value: void
@@ -514,6 +535,7 @@ bool JSB_glCompressedTexImage2D(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glCompressedTexImage2D)
 
 // Arguments: GLenum, GLint, GLint, GLint, GLsizei, GLsizei, GLenum, GLsizei, ArrayBufferView
 // Ret value: void
@@ -540,6 +562,7 @@ bool JSB_glCompressedTexSubImage2D(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glCompressedTexSubImage2D)
 
 // Arguments: GLenum, GLint, GLenum, GLint, GLint, GLsizei, GLsizei, GLint
 // Ret value: void
@@ -564,6 +587,7 @@ bool JSB_glCopyTexImage2D(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glCopyTexImage2D)
 
 // Arguments: GLenum, GLint, GLint, GLint, GLint, GLint, GLsizei, GLsizei
 // Ret value: void
@@ -588,6 +612,7 @@ bool JSB_glCopyTexSubImage2D(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glCopyTexSubImage2D)
 
 // Arguments: 
 // Ret value: GLuint
@@ -601,6 +626,7 @@ bool JSB_glCreateProgram(se::State& s) {
     s.rval().setUint32((uint32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glCreateProgram)
 
 // Arguments: GLenum
 // Ret value: GLuint
@@ -619,6 +645,7 @@ bool JSB_glCreateShader(se::State& s) {
     s.rval().setUint32((uint32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glCreateShader)
 
 // Arguments: GLenum
 // Ret value: void
@@ -636,6 +663,7 @@ bool JSB_glCullFace(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glCullFace)
 
 // Arguments: GLuint
 // Ret value: void
@@ -653,6 +681,7 @@ bool JSB_glDeleteProgram(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDeleteProgram)
 
 // Arguments: GLuint
 // Ret value: void
@@ -670,6 +699,7 @@ bool JSB_glDeleteShader(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDeleteShader)
 
 // Arguments: GLenum
 // Ret value: void
@@ -687,6 +717,7 @@ bool JSB_glDepthFunc(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDepthFunc)
 
 // Arguments: GLboolean
 // Ret value: void
@@ -704,6 +735,7 @@ bool JSB_glDepthMask(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDepthMask)
 
 // Arguments: GLclampf, GLclampf
 // Ret value: void
@@ -722,6 +754,7 @@ bool JSB_glDepthRangef(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDepthRangef)
 
 // Arguments: GLuint, GLuint
 // Ret value: void
@@ -740,6 +773,7 @@ bool JSB_glDetachShader(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDetachShader)
 
 // Arguments: GLenum
 // Ret value: void
@@ -757,6 +791,7 @@ bool JSB_glDisable(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDisable)
 
 // Arguments: GLuint
 // Ret value: void
@@ -774,6 +809,7 @@ bool JSB_glDisableVertexAttribArray(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDisableVertexAttribArray)
 
 // Arguments: GLenum, GLint, GLsizei
 // Ret value: void
@@ -793,6 +829,7 @@ bool JSB_glDrawArrays(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDrawArrays)
 
 // Arguments: GLenum, GLsizei, GLenum, ArrayBufferView
 // Ret value: void
@@ -814,6 +851,7 @@ bool JSB_glDrawElements(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glDrawElements)
 
 // Arguments: GLenum
 // Ret value: void
@@ -831,6 +869,7 @@ bool JSB_glEnable(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glEnable)
 
 // Arguments: GLuint
 // Ret value: void
@@ -848,6 +887,7 @@ bool JSB_glEnableVertexAttribArray(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glEnableVertexAttribArray)
 
 // Arguments: 
 // Ret value: void
@@ -859,6 +899,7 @@ bool JSB_glFinish(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glFinish)
 
 // Arguments: 
 // Ret value: void
@@ -870,6 +911,7 @@ bool JSB_glFlush(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glFlush)
 
 // Arguments: GLenum, GLenum, GLenum, GLuint
 // Ret value: void
@@ -890,6 +932,7 @@ bool JSB_glFramebufferRenderbuffer(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glFramebufferRenderbuffer)
 
 // Arguments: GLenum, GLenum, GLenum, GLuint, GLint
 // Ret value: void
@@ -911,6 +954,7 @@ bool JSB_glFramebufferTexture2D(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glFramebufferTexture2D)
 
 // Arguments: GLenum
 // Ret value: void
@@ -928,6 +972,7 @@ bool JSB_glFrontFace(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glFrontFace)
 
 // Arguments: GLenum
 // Ret value: void
@@ -945,6 +990,7 @@ bool JSB_glGenerateMipmap(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glGenerateMipmap)
 
 // Arguments: GLuint, char*
 // Ret value: int
@@ -964,6 +1010,7 @@ bool JSB_glGetAttribLocation(se::State& s) {
     s.rval().setInt32(ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetAttribLocation)
 
 // Arguments: 
 // Ret value: GLenum
@@ -977,6 +1024,7 @@ bool JSB_glGetError(se::State& s) {
     s.rval().setUint32((uint32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetError)
 
 // Arguments: GLuint, char*
 // Ret value: int
@@ -997,6 +1045,7 @@ bool JSB_glGetUniformLocation(se::State& s) {
     s.rval().setInt32(ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glGetUniformLocation)
 
 // Arguments: GLenum, GLenum
 // Ret value: void
@@ -1015,6 +1064,7 @@ bool JSB_glHint(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glHint)
 
 // Arguments: GLuint
 // Ret value: GLboolean
@@ -1033,6 +1083,7 @@ bool JSB_glIsBuffer(se::State& s) {
     s.rval().setInt32((int32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glIsBuffer)
 
 // Arguments: GLenum
 // Ret value: GLboolean
@@ -1051,6 +1102,7 @@ bool JSB_glIsEnabled(se::State& s) {
     s.rval().setInt32((int32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glIsEnabled)
 
 // Arguments: GLuint
 // Ret value: GLboolean
@@ -1069,6 +1121,7 @@ bool JSB_glIsFramebuffer(se::State& s) {
     s.rval().setInt32((int32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glIsFramebuffer)
 
 // Arguments: GLuint
 // Ret value: GLboolean
@@ -1087,6 +1140,7 @@ bool JSB_glIsProgram(se::State& s) {
     s.rval().setInt32((int32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glIsProgram)
 
 // Arguments: GLuint
 // Ret value: GLboolean
@@ -1105,6 +1159,7 @@ bool JSB_glIsRenderbuffer(se::State& s) {
     s.rval().setInt32((int32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glIsRenderbuffer)
 
 // Arguments: GLuint
 // Ret value: GLboolean
@@ -1123,6 +1178,7 @@ bool JSB_glIsShader(se::State& s) {
     s.rval().setInt32((int32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glIsShader)
 
 // Arguments: GLuint
 // Ret value: GLboolean
@@ -1141,6 +1197,7 @@ bool JSB_glIsTexture(se::State& s) {
     s.rval().setInt32((int32_t)ret_val);
     return true;
 }
+SE_BIND_FUNC(JSB_glIsTexture)
 
 // Arguments: GLfloat
 // Ret value: void
@@ -1158,6 +1215,7 @@ bool JSB_glLineWidth(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glLineWidth)
 
 // Arguments: GLuint
 // Ret value: void
@@ -1175,6 +1233,7 @@ bool JSB_glLinkProgram(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glLinkProgram)
 
 // Arguments: GLenum, GLint
 // Ret value: void
@@ -1193,6 +1252,7 @@ bool JSB_glPixelStorei(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glPixelStorei)
 
 // Arguments: GLfloat, GLfloat
 // Ret value: void
@@ -1211,6 +1271,7 @@ bool JSB_glPolygonOffset(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glPolygonOffset)
 
 // Arguments: GLint, GLint, GLsizei, GLsizei, GLenum, GLenum, ArrayBufferView
 // Ret value: void
@@ -1235,6 +1296,7 @@ bool JSB_glReadPixels(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glReadPixels)
 
 // Arguments: 
 // Ret value: void
@@ -1246,6 +1308,7 @@ bool JSB_glReleaseShaderCompiler(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glReleaseShaderCompiler)
 
 // Arguments: GLenum, GLenum, GLsizei, GLsizei
 // Ret value: void
@@ -1266,6 +1329,7 @@ bool JSB_glRenderbufferStorage(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glRenderbufferStorage)
 
 // Arguments: GLclampf, GLboolean
 // Ret value: void
@@ -1284,6 +1348,7 @@ bool JSB_glSampleCoverage(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glSampleCoverage)
 
 // Arguments: GLint, GLint, GLsizei, GLsizei
 // Ret value: void
@@ -1304,6 +1369,7 @@ bool JSB_glScissor(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glScissor)
 
 // Arguments: GLenum, GLint, GLuint
 // Ret value: void
@@ -1323,6 +1389,7 @@ bool JSB_glStencilFunc(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glStencilFunc)
 
 // Arguments: GLenum, GLenum, GLint, GLuint
 // Ret value: void
@@ -1343,6 +1410,7 @@ bool JSB_glStencilFuncSeparate(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glStencilFuncSeparate)
 
 // Arguments: GLuint
 // Ret value: void
@@ -1360,6 +1428,7 @@ bool JSB_glStencilMask(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glStencilMask)
 
 // Arguments: GLenum, GLuint
 // Ret value: void
@@ -1378,6 +1447,7 @@ bool JSB_glStencilMaskSeparate(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glStencilMaskSeparate)
 
 // Arguments: GLenum, GLenum, GLenum
 // Ret value: void
@@ -1397,6 +1467,7 @@ bool JSB_glStencilOp(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glStencilOp)
 
 // Arguments: GLenum, GLenum, GLenum, GLenum
 // Ret value: void
@@ -1417,6 +1488,7 @@ bool JSB_glStencilOpSeparate(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glStencilOpSeparate)
 
 // Arguments: GLenum, GLint, GLint, GLsizei, GLsizei, GLint, GLenum, GLenum, ArrayBufferView
 // Ret value: void
@@ -1443,6 +1515,7 @@ bool JSB_glTexImage2D(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glTexImage2D)
 
 // Arguments: GLenum, GLenum, GLfloat
 // Ret value: void
@@ -1462,6 +1535,7 @@ bool JSB_glTexParameterf(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glTexParameterf)
 
 // Arguments: GLenum, GLenum, GLint
 // Ret value: void
@@ -1481,6 +1555,7 @@ bool JSB_glTexParameteri(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glTexParameteri)
 
 // Arguments: GLenum, GLint, GLint, GLint, GLsizei, GLsizei, GLenum, GLenum, ArrayBufferView
 // Ret value: void
@@ -1507,6 +1582,7 @@ bool JSB_glTexSubImage2D(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glTexSubImage2D)
 
 // Arguments: GLint, GLfloat
 // Ret value: void
@@ -1525,6 +1601,7 @@ bool JSB_glUniform1f(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform1f)
 
 // Arguments: GLint, GLsizei, TypedArray/Sequence
 // Ret value: void
@@ -1544,6 +1621,7 @@ bool JSB_glUniform1fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform1fv)
 
 // Arguments: GLint, GLint
 // Ret value: void
@@ -1562,6 +1640,7 @@ bool JSB_glUniform1i(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform1i)
 
 // Arguments: GLint, GLsizei, TypedArray/Sequence
 // Ret value: void
@@ -1581,6 +1660,7 @@ bool JSB_glUniform1iv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform1iv)
 
 // Arguments: GLint, GLfloat, GLfloat
 // Ret value: void
@@ -1600,6 +1680,7 @@ bool JSB_glUniform2f(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform2f)
 
 // Arguments: GLint, GLsizei, TypedArray/Sequence
 // Ret value: void
@@ -1619,6 +1700,7 @@ bool JSB_glUniform2fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform2fv)
 
 // Arguments: GLint, GLint, GLint
 // Ret value: void
@@ -1638,6 +1720,7 @@ bool JSB_glUniform2i(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform2i)
 
 // Arguments: GLint, GLsizei, TypedArray/Sequence
 // Ret value: void
@@ -1657,6 +1740,7 @@ bool JSB_glUniform2iv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform2iv)
 
 // Arguments: GLint, GLfloat, GLfloat, GLfloat
 // Ret value: void
@@ -1677,6 +1761,7 @@ bool JSB_glUniform3f(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform3f)
 
 // Arguments: GLint, GLsizei, TypedArray/Sequence
 // Ret value: void
@@ -1696,6 +1781,7 @@ bool JSB_glUniform3fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform3fv)
 
 // Arguments: GLint, GLint, GLint, GLint
 // Ret value: void
@@ -1716,6 +1802,7 @@ bool JSB_glUniform3i(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform3i)
 
 // Arguments: GLint, GLsizei, TypedArray/Sequence
 // Ret value: void
@@ -1735,6 +1822,7 @@ bool JSB_glUniform3iv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform3iv)
 
 // Arguments: GLint, GLfloat, GLfloat, GLfloat, GLfloat
 // Ret value: void
@@ -1756,6 +1844,7 @@ bool JSB_glUniform4f(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform4f)
 
 // Arguments: GLint, GLsizei, TypedArray/Sequence
 // Ret value: void
@@ -1775,6 +1864,7 @@ bool JSB_glUniform4fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform4fv)
 
 // Arguments: GLint, GLint, GLint, GLint, GLint
 // Ret value: void
@@ -1796,6 +1886,7 @@ bool JSB_glUniform4i(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform4i)
 
 // Arguments: GLint, GLsizei, TypedArray/Sequence
 // Ret value: void
@@ -1815,6 +1906,7 @@ bool JSB_glUniform4iv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniform4iv)
 
 // Arguments: GLint, GLboolean, TypedArray/Sequence
 // Ret value: void
@@ -1835,6 +1927,7 @@ bool JSB_glUniformMatrix2fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniformMatrix2fv)
 
 // Arguments: GLint, GLboolean, TypedArray/Sequence
 // Ret value: void
@@ -1855,6 +1948,7 @@ bool JSB_glUniformMatrix3fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniformMatrix3fv)
 
 // Arguments: GLint, GLboolean, TypedArray/Sequence
 // Ret value: void
@@ -1875,6 +1969,7 @@ bool JSB_glUniformMatrix4fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUniformMatrix4fv)
 
 // Arguments: GLuint
 // Ret value: void
@@ -1892,6 +1987,7 @@ bool JSB_glUseProgram(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glUseProgram)
 
 // Arguments: GLuint
 // Ret value: void
@@ -1909,6 +2005,7 @@ bool JSB_glValidateProgram(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glValidateProgram)
 
 // Arguments: GLuint, GLfloat
 // Ret value: void
@@ -1927,6 +2024,7 @@ bool JSB_glVertexAttrib1f(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glVertexAttrib1f)
 
 // Arguments: GLuint, TypedArray/Sequence
 // Ret value: void
@@ -1946,6 +2044,7 @@ bool JSB_glVertexAttrib1fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glVertexAttrib1fv)
 
 // Arguments: GLuint, GLfloat, GLfloat
 // Ret value: void
@@ -1965,6 +2064,7 @@ bool JSB_glVertexAttrib2f(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glVertexAttrib2f)
 
 // Arguments: GLuint, TypedArray/Sequence
 // Ret value: void
@@ -1984,6 +2084,7 @@ bool JSB_glVertexAttrib2fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glVertexAttrib2fv)
 
 // Arguments: GLuint, GLfloat, GLfloat, GLfloat
 // Ret value: void
@@ -2004,6 +2105,7 @@ bool JSB_glVertexAttrib3f(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glVertexAttrib3f)
 
 // Arguments: GLuint, TypedArray/Sequence
 // Ret value: void
@@ -2023,6 +2125,7 @@ bool JSB_glVertexAttrib3fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glVertexAttrib3fv)
 
 // Arguments: GLuint, GLfloat, GLfloat, GLfloat, GLfloat
 // Ret value: void
@@ -2044,6 +2147,7 @@ bool JSB_glVertexAttrib4f(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glVertexAttrib4f)
 
 // Arguments: GLuint, TypedArray/Sequence
 // Ret value: void
@@ -2063,6 +2167,7 @@ bool JSB_glVertexAttrib4fv(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glVertexAttrib4fv)
 
 // Arguments: GLuint, GLint, GLenum, GLboolean, GLsizei, GLvoid*
 // Ret value: void
@@ -2085,6 +2190,7 @@ bool JSB_glVertexAttribPointer(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glVertexAttribPointer)
 
 // Arguments: GLint, GLint, GLsizei, GLsizei
 // Ret value: void
@@ -2105,3 +2211,4 @@ bool JSB_glViewport(se::State& s) {
     s.rval().setUndefined();
     return true;
 }
+SE_BIND_FUNC(JSB_glViewport)

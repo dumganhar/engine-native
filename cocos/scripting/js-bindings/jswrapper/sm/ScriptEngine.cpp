@@ -101,7 +101,7 @@ namespace se {
 
         bool __log(JSContext *cx, uint32_t argc, JS::Value* vp)
         {
-            JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+            
             if (argc > 0) {
                 JSString *string = JS::ToString(cx, args[0]);
                 if (string) {

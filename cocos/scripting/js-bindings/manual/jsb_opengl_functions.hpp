@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cocos/scripting/js-bindings/jswrapper/State.hpp"
+#include "cocos/scripting/js-bindings/jswrapper/SeApi.h"
 
 SE_DECLARE_FUNC(JSB_glActiveTexture);
 SE_DECLARE_FUNC(JSB_glAttachShader);

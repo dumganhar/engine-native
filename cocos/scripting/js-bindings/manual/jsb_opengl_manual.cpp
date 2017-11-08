@@ -515,7 +515,7 @@ bool JSB_glGetUniformfv(se::State& s) {
         GLfloat* param = new (std::nothrow) GLfloat[usize];
         glGetUniformfv(arg0, arg1, param);
 
-        se::HandleObject obj(se::Object::createFloat32TypedArray(param, usize));
+        se::HandleObject obj(se::Object::createTypedArray(se::Object::TypedArrayType::FLOAT32, param, usize));
         s.rval().setObject(obj);
         CC_SAFE_DELETE_ARRAY(param);
         return true;
@@ -525,7 +525,7 @@ bool JSB_glGetUniformfv(se::State& s) {
         GLint* param = new (std::nothrow) GLint[usize];
         glGetUniformiv(arg0, arg1, param);
 
-        se::HandleObject obj(se::Object::createInt32TypedArray(param, usize));
+        se::HandleObject obj(se::Object::createTypedArray(se::Object::TypedArrayType::INT32, param, usize));
         s.rval().setObject(obj);
         CC_SAFE_DELETE_ARRAY(param);
         return true;

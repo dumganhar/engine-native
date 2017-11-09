@@ -143,6 +143,12 @@ namespace se {
 
     Object* Object::createTypedArray(TypedArrayType type, void* data, size_t byteLength)
     {
+        if (type == TypedArrayType::NONE)
+        {
+            SE_LOGE("Don't pass se::Object::TypedArrayType::NONE to createTypedArray API!");
+            return nullptr;
+        }
+
         if (type == TypedArrayType::UINT8_CLAMPED)
         {
             SE_LOGE("Doesn't support to create Uint8ClampedArray with Object::createTypedArray API!");

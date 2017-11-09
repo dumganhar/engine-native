@@ -67,6 +67,7 @@ namespace se {
          *  @param[in] byteLength The number of bytes pointed to by the parameter bytes.
          *  @return A JavaScript Typed Array Object whose backing store is the same as the one pointed data, or nullptr if there is an error.
          *  @note The return value (non-null) has to be released manually.
+         *  @deprecated This method is deprecated, please use `se::Object::createTypedArray` instead.
          */
         SE_DEPRECATED_ATTRIBUTE static Object* createUint8TypedArray(uint8_t* bytes, size_t byteLength);
 

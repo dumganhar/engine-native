@@ -101,6 +101,23 @@ static bool JSB_jsval_typedarray_to_data(const se::Value& v, GLData<T>& data)
 
 bool JSB_get_arraybufferview_dataptr(const se::Value& v, GLsizei *count, GLvoid **data)
 {
+    assert(count != nullptr && data != nullptr);
+
+    if (v.isObject())
+    {
+        se::Object* obj = v.toObject();
+        if (obj->isTypedArray())
+        {
+            uint8_t* ptr = nullptr;
+            size_t length = 0;
+            if (obj->getTypedArrayData(&ptr, &length) && ptr != nullptr && length > 0)
+            {
+                *data = ptr;
+                *count = (GLsizei)length;
+                return true;
+            }
+        }
+    }
     return false;
 }
 
@@ -1696,7 +1713,7 @@ bool JSB_glUniform2fv(se::State& s) {
     ok &= JSB_jsval_typedarray_to_data<float>(args[1], data);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glUniform2fv((GLint)arg0 , (GLsizei)data.count() , (GLfloat*)data.data() );
+    glUniform2fv((GLint)arg0 , (GLsizei)(data.count()/2) , (GLfloat*)data.data() );
     s.rval().setUndefined();
     return true;
 }
@@ -1736,7 +1753,7 @@ bool JSB_glUniform2iv(se::State& s) {
     ok &= JSB_jsval_typedarray_to_data<int32_t>(args[1], data);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glUniform2iv((GLint)arg0 , (GLsizei)data.count() , (GLint*)data.data());
+    glUniform2iv((GLint)arg0 , (GLsizei)(data.count()/2) , (GLint*)data.data());
     s.rval().setUndefined();
     return true;
 }
@@ -1777,7 +1794,7 @@ bool JSB_glUniform3fv(se::State& s) {
     ok &= JSB_jsval_typedarray_to_data<float>(args[1], data);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glUniform3fv((GLint)arg0 , (GLsizei)data.count() , (GLfloat*)data.data());
+    glUniform3fv((GLint)arg0 , (GLsizei)(data.count()/3) , (GLfloat*)data.data());
     s.rval().setUndefined();
     return true;
 }
@@ -1818,7 +1835,7 @@ bool JSB_glUniform3iv(se::State& s) {
     ok &= JSB_jsval_typedarray_to_data<int32_t>(args[1], data);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glUniform3iv((GLint)arg0 , (GLsizei)data.count() , (GLint*)data.data());
+    glUniform3iv((GLint)arg0 , (GLsizei)(data.count()/3) , (GLint*)data.data());
     s.rval().setUndefined();
     return true;
 }
@@ -1860,7 +1877,7 @@ bool JSB_glUniform4fv(se::State& s) {
     ok &= JSB_jsval_typedarray_to_data<float>(args[1], data);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glUniform4fv((GLint)arg0 , (GLsizei)data.count() , (GLfloat*)data.data());
+    glUniform4fv((GLint)arg0 , (GLsizei)(data.count()/4) , (GLfloat*)data.data());
     s.rval().setUndefined();
     return true;
 }
@@ -1902,7 +1919,7 @@ bool JSB_glUniform4iv(se::State& s) {
     ok &= JSB_jsval_typedarray_to_data<int32_t>(args[1], data);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glUniform4iv((GLint)arg0 , (GLsizei)data.count() , (GLint*)data.data());
+    glUniform4iv((GLint)arg0 , (GLsizei)(data.count()/4) , (GLint*)data.data());
     s.rval().setUndefined();
     return true;
 }
@@ -1923,7 +1940,7 @@ bool JSB_glUniformMatrix2fv(se::State& s) {
     ok &= JSB_jsval_typedarray_to_data<float>(args[2], data);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glUniformMatrix2fv(arg0, (GLsizei)data.count(), (GLboolean)arg1 , (GLfloat*)data.data());
+    glUniformMatrix2fv(arg0, (GLsizei)(data.count()/4), (GLboolean)arg1 , (GLfloat*)data.data());
     s.rval().setUndefined();
     return true;
 }
@@ -1944,7 +1961,7 @@ bool JSB_glUniformMatrix3fv(se::State& s) {
     ok &= JSB_jsval_typedarray_to_data<float>(args[2], data);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glUniformMatrix3fv(arg0, (GLsizei)data.count(), (GLboolean)arg1 , (GLfloat*)data.data());
+    glUniformMatrix3fv(arg0, (GLsizei)(data.count()/9), (GLboolean)arg1 , (GLfloat*)data.data());
     s.rval().setUndefined();
     return true;
 }
@@ -1965,7 +1982,7 @@ bool JSB_glUniformMatrix4fv(se::State& s) {
     ok &= JSB_jsval_typedarray_to_data<float>(args[2], data);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
-    glUniformMatrix4fv(arg0, (GLsizei)data.count(), (GLboolean)arg1 , (GLfloat*)data.data());
+    glUniformMatrix4fv(arg0, (GLsizei)(data.count()/16), (GLboolean)arg1 , (GLfloat*)data.data());
     s.rval().setUndefined();
     return true;
 }

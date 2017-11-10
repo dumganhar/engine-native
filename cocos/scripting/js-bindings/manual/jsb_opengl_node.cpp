@@ -1,5 +1,6 @@
 #include "jsb_opengl_node.hpp"
 #include "cocos/scripting/js-bindings/jswrapper/SeApi.h"
+#include "cocos/scripting/js-bindings/auto/jsb_cocos2dx_auto.hpp"
 #include "cocos/scripting/js-bindings/manual/jsb_conversions.hpp"
 #include "cocos/scripting/js-bindings/manual/jsb_global.h"
 #include "scripting/js-bindings/manual/jsb_opengl_functions.hpp"
@@ -86,7 +87,7 @@ SE_BIND_FUNC(js_cocos2dx_GLNode_create)
 
 bool js_register_cocos2dx_GLNode(se::Object* obj)
 {
-    auto cls = se::Class::create("GLNode", obj, nullptr, _SE(js_cocos2dx_GLNode_constructor));
+    auto cls = se::Class::create("GLNode", obj, __jsb_cocos2d_Node_proto, _SE(js_cocos2dx_GLNode_constructor));
 
     cls->defineFunction("ctor", _SE(js_cocos2dx_GLNode_ctor));
     cls->defineStaticFunction("create", _SE(js_cocos2dx_GLNode_create));

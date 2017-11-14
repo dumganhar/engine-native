@@ -367,19 +367,20 @@ bool JSB_glGetSupportedExtensions(se::State& s) {
     // copy, to be able to add '\0'
     size_t len = strlen((char*)extensions);
     GLubyte* copy = new (std::nothrow) GLubyte[len+1];
+    copy[len] = '\0';
     strncpy((char*)copy, (const char*)extensions, len );
 
     size_t start_extension = 0;
-
+    uint32_t element = 0;
     for( size_t i=0; i<len+1; i++) {
         if( copy[i]==' ' || copy[i]==',' || i==len ) {
             copy[i] = 0;
 
-            jsobj->setArrayElement((uint32_t)i, se::Value((const char*)&copy[start_extension]));
+            jsobj->setArrayElement(element, se::Value((const char*)&copy[start_extension]));
 
             start_extension = i+1;
-
-            i++;
+            ++element;
+            ++i;
         }
     }
 

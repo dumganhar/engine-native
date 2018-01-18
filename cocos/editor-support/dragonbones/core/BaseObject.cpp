@@ -154,7 +154,7 @@ void BaseObject::returnToPool()
     _isInPool = true;
 }
 
-std::vector<BaseObject*>& getAllObjects()
+std::vector<BaseObject*>& BaseObject::getAllObjects()
 {
     return __allDragonBonesObjects;
 }

@@ -4562,9 +4562,8 @@ extern se::Object* __jsb_cocos2d_Node_proto;
 
 static bool js_dragonBones_CCArmatureDisplay_finalize(se::State& s)
 {
+    CCLOGINFO("jsbindings: finalizing JS object %p (dragonBones::CCArmatureDisplay)", s.nativeThisObject());
     dragonBones::CCArmatureDisplay* cobj = (dragonBones::CCArmatureDisplay*)s.nativeThisObject();
-    CCLOG("jsbindings: finalizing JS object %p (dragonBones::CCArmatureDisplay): ref: %u", s.nativeThisObject(), cobj->getReferenceCount());
-
     if (cobj->getReferenceCount() == 1)
         cobj->autorelease();
     else

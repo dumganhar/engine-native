@@ -456,7 +456,7 @@ bool register_all_dragonbones_manual(se::Object* obj)
         // Destroy CCFactory singlton.
         dragonBones::CCFactory::destroyInstance();
 
-        // World clock is a static variable and needs to be clear and reset.
+        // World clock is a static variable and needs to be cleared and reset.
         dragonBones::WorldClock::clock.clear();
         dragonBones::WorldClock::clock.time = 0.0f;
         dragonBones::WorldClock::clock.timeScale = 1.0f;

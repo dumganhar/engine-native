@@ -31,9 +31,8 @@ CCArmatureDisplay::CCArmatureDisplay() :
 
 CCArmatureDisplay::~CCArmatureDisplay()
 {
-    printf("CCArmatureDisplay::~CCArmatureDisplay: %p\n", this);
-    CC_SAFE_RELEASE(_dispatcher);
     dispose();
+    CC_SAFE_RELEASE(_dispatcher);
 }
 
 // cleared by armature

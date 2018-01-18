@@ -28,7 +28,13 @@ CCArmatureDisplay::CCArmatureDisplay() :
     this->setEventDispatcher(_dispatcher);
     _dispatcher->setEnabled(true);
 }
-CCArmatureDisplay::~CCArmatureDisplay() {}
+
+CCArmatureDisplay::~CCArmatureDisplay()
+{
+    printf("CCArmatureDisplay::~CCArmatureDisplay: %p\n", this);
+    CC_SAFE_RELEASE(_dispatcher);
+    dispose();
+}
 
 // cleared by armature
 void CCArmatureDisplay::_onClear()

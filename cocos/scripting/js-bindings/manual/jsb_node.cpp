@@ -176,9 +176,9 @@ static const char* SCHEDULE_FUNC_ID_KEY = "__seScheFuncId";
 static std::unordered_map<uint32_t/*targetId*/, std::unordered_map<uint32_t/*funcId*/, ScheduleElement>> __js_target_schedulekey_map;
 static std::unordered_map<uint32_t/*targetId*/, std::pair<int/*priority*/, se::Object*>> __js_target_schedule_update_map;
 
+#if COCOS2D_DEBUG > 1
 static void printElementsInTargetSchedulerMap()
 {
-#if COCOS2D_DEBUG > 0
     SE_LOGD("--------------------------\nschedule target count: %d\n", (int)__js_target_schedulekey_map.size());
     for (const auto& e1 : __js_target_schedulekey_map)
     {
@@ -205,8 +205,8 @@ static void printElementsInTargetSchedulerMap()
         SE_LOGD("schedule target: %u, functions: %s\n", e1.first, functionIDStr.c_str());
     }
     SE_LOGD("-------------------------- \n");
-#endif
 }
+#endif
 
 static bool isScheduleExist(uint32_t jsFuncId, uint32_t jsTargetId, const ScheduleElement** outElement)
 {

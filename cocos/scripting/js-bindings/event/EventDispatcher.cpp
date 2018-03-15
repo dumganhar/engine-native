@@ -152,7 +152,7 @@ void EventDispatcher::dispatchTickEvent(float dt)
 
     if (_tickVal.isUndefined())
     {
-        jsb_run_script("jsb/index.js", &_tickVal);
+        se::ScriptEngine::getInstance()->getGlobalObject()->getProperty("gameTick", &_tickVal);
     }
 
     prevTime = std::chrono::steady_clock::now();

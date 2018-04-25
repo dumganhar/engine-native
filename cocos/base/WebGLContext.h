@@ -37,7 +37,7 @@
 
 namespace bgfx {
 
-class WebGLRendererContext;
+class WebGLRenderContext;
 
 class WebGLContext
 {
@@ -60,12 +60,57 @@ public:
     bool init(const Init& _init);
     void shutdown();
 
+    void clear(GLbitfield mask);
+    void clearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
+    GLuint createBuffer();
+
     CommandBuffer& getCommandBuffer(CommandBuffer::Enum _cmd)
     {
         CommandBuffer& cmdbuf = _cmd < CommandBuffer::End ? m_submit->m_cmdPre : m_submit->m_cmdPost;
         uint8_t cmd = (uint8_t)_cmd;
         cmdbuf.write(cmd);
         return cmdbuf;
+    }
+
+    BGFX_API_FUNC(void reset(uint32_t _width, uint32_t _height, uint32_t _flags) )
+    {
+//cjh        BX_WARN(g_caps.limits.maxTextureSize >= _width
+//                &&  g_caps.limits.maxTextureSize >= _height
+//                , "Frame buffer resolution width or height can't be larger than limits.maxTextureSize %d (width %d, height %d)."
+//                , g_caps.limits.maxTextureSize
+//                , _width
+//                , _height
+//                );
+//        m_init.resolution.width  = bx::clamp(_width,  1u, g_caps.limits.maxTextureSize);
+//        m_init.resolution.height = bx::clamp(_height, 1u, g_caps.limits.maxTextureSize);
+//        m_init.resolution.reset  = 0
+//        | _flags
+//        | (g_platformDataChangedSinceReset ? BGFX_RESET_INTERNAL_FORCE : 0)
+//        ;
+//        g_platformDataChangedSinceReset = false;
+//
+//        m_flipAfterRender = !!(_flags & BGFX_RESET_FLIP_AFTER_RENDER);
+//
+//        for (uint32_t ii = 0; ii < BGFX_CONFIG_MAX_VIEWS; ++ii)
+//        {
+//            m_view[ii].setFrameBuffer(BGFX_INVALID_HANDLE);
+//        }
+//
+//        for (uint16_t ii = 0, num = m_textureHandle.getNumHandles(); ii < num; ++ii)
+//        {
+//            uint16_t textureIdx = m_textureHandle.getHandleAt(ii);
+//            const TextureRef& textureRef = m_textureRef[textureIdx];
+//            if (BackbufferRatio::Count != textureRef.m_bbRatio)
+//            {
+//                TextureHandle handle = { textureIdx };
+//                resizeTexture(handle
+//                              , uint16_t(m_init.resolution.width)
+//                              , uint16_t(m_init.resolution.height)
+//                              , textureRef.m_numMips
+//                              );
+//                m_init.resolution.reset |= BGFX_RESET_INTERNAL_FORCE;
+//            }
+//        }
     }
 
     void frameNoRenderWait();
@@ -182,11 +227,13 @@ public:
     }
 #endif // BGFX_CONFIG_MULTITHREADED
 
+    static WebGLContext* s_ctx;
+
     Frame  m_frame[1+(BGFX_CONFIG_MULTITHREADED ? 1 : 0)];
     Frame* m_render;
     Frame* m_submit;
 
-    WebGLRendererContext* m_renderCtx;
+    WebGLRenderContext* m_renderCtx;
 
     Init     m_init;
     int64_t  m_frameTimeLast;

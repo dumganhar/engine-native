@@ -545,6 +545,10 @@ struct Caps
     uint16_t formats[TextureFormat::Count];
 };
 
+void clear(GLbitfield mask);
+void clearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
+GLuint createBuffer();
+
 /// Advance to next frame. When using multithreaded renderer, this call
 /// just swaps internal buffers, kicks render thread, and returns. In
 /// singlethreaded renderer this call does frame rendering.

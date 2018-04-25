@@ -58,6 +58,9 @@ using any = float;
 class WebGLRenderContext
 {
 public:
+    WebGLRenderContext();
+    ~WebGLRenderContext();
+
     WebGLContextAttributes getContextAttributes(); //cjh
     bool isContextLost(); //cjh
     std::vector<std::string> getSupportedExtensions();
@@ -204,7 +207,20 @@ public:
     void viewport(GLint x, GLint y, GLsizei width, GLsizei height);
 
     //
+    bool isDeviceRemoved();
+    void flip();
     void submit(Frame* _render);
+
+private:
+    bool m_flip = false;
+
+    WebGLBuffer _indexBuffers[BGFX_CONFIG_MAX_INDEX_BUFFERS];
+    WebGLBuffer _vertexBuffers[BGFX_CONFIG_MAX_VERTEX_BUFFERS];
+    WebGLShader _shaders[BGFX_CONFIG_MAX_SHADERS];
+    WebGLProgram _program[BGFX_CONFIG_MAX_PROGRAMS];
+    WebGLTexture _textures[BGFX_CONFIG_MAX_TEXTURES];
+    WebGLFramebuffer _framebuffers[BGFX_CONFIG_MAX_FRAME_BUFFERS];
+    WebGLRenderbuffer _renderbuffers[BGFX_CONFIG_MAX_RENDER_BUFFERS];
 };
 
 } // namespace bgfx {

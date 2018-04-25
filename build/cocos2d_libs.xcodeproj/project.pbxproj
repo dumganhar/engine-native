@@ -313,6 +313,10 @@
 		1AEC72D0208F024600240C0F /* timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72CD208F024500240C0F /* timer.cpp */; };
 		1AEC72D1208F024600240C0F /* timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72CE208F024500240C0F /* timer.h */; };
 		1AEC72D2208F024600240C0F /* timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72CE208F024500240C0F /* timer.h */; };
+		1AEC72D4208F2AF600240C0F /* bx_string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72D3208F2AF600240C0F /* bx_string.cpp */; };
+		1AEC72D5208F2AF600240C0F /* bx_string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72D3208F2AF600240C0F /* bx_string.cpp */; };
+		1AEC72D7208F2EAF00240C0F /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72D6208F2EAF00240C0F /* debug.cpp */; };
+		1AEC72D8208F2EAF00240C0F /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72D6208F2EAF00240C0F /* debug.cpp */; };
 		294D7D9A1D0E93A2002CE7B7 /* CCDevice-apple.h in Headers */ = {isa = PBXBuildFile; fileRef = 294D7D981D0E93A2002CE7B7 /* CCDevice-apple.h */; };
 		294D7D9B1D0E93A2002CE7B7 /* CCDevice-apple.h in Headers */ = {isa = PBXBuildFile; fileRef = 294D7D981D0E93A2002CE7B7 /* CCDevice-apple.h */; };
 		294D7D9C1D0E93A2002CE7B7 /* CCDevice-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 294D7D991D0E93A2002CE7B7 /* CCDevice-apple.mm */; };
@@ -1297,6 +1301,8 @@
 		1AEC72CA208EFF8B00240C0F /* bgfx_p.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bgfx_p.h; sourceTree = "<group>"; };
 		1AEC72CD208F024500240C0F /* timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = timer.cpp; sourceTree = "<group>"; };
 		1AEC72CE208F024500240C0F /* timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timer.h; sourceTree = "<group>"; };
+		1AEC72D3208F2AF600240C0F /* bx_string.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bx_string.cpp; sourceTree = "<group>"; };
+		1AEC72D6208F2EAF00240C0F /* debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = debug.cpp; sourceTree = "<group>"; };
 		294D7D981D0E93A2002CE7B7 /* CCDevice-apple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCDevice-apple.h"; sourceTree = "<group>"; };
 		294D7D991D0E93A2002CE7B7 /* CCDevice-apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CCDevice-apple.mm"; sourceTree = "<group>"; };
 		461785FE20522468008256E1 /* SocketIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketIO.cpp; sourceTree = "<group>"; };
@@ -2074,15 +2080,15 @@
 		1AEC7252208EC81900240C0F /* bx */ = {
 			isa = PBXGroup;
 			children = (
-				1AEC72CD208F024500240C0F /* timer.cpp */,
-				1AEC72CE208F024500240C0F /* timer.h */,
 				1AEC7277208EC81900240C0F /* allocator.cpp */,
 				1AEC7276208EC81900240C0F /* allocator.h */,
 				1AEC7295208EC89500240C0F /* bx_p.h */,
+				1AEC72D3208F2AF600240C0F /* bx_string.cpp */,
 				1AEC729D208EC99A00240C0F /* bx_string.h */,
 				1AEC7294208EC89500240C0F /* bx.cpp */,
 				1AEC7256208EC81900240C0F /* bx.h */,
 				1AEC7257208EC81900240C0F /* config.h */,
+				1AEC72D6208F2EAF00240C0F /* debug.cpp */,
 				1AEC729A208EC8DF00240C0F /* debug.h */,
 				1AEC7258208EC81900240C0F /* inline */,
 				1AEC7278208EC81900240C0F /* macros.h */,
@@ -2095,6 +2101,8 @@
 				1AEC72A0208ECC3300240C0F /* spscqueue.h */,
 				1AEC7255208EC81900240C0F /* thread.cpp */,
 				1AEC7275208EC81900240C0F /* thread.h */,
+				1AEC72CD208F024500240C0F /* timer.cpp */,
+				1AEC72CE208F024500240C0F /* timer.h */,
 			);
 			path = bx;
 			sourceTree = "<group>";
@@ -3699,6 +3707,7 @@
 				1AEC72B4208EDFAD00240C0F /* WebGLFrame.cpp in Sources */,
 				46FDDB8D202ADDCE00931238 /* ccTypes.cpp in Sources */,
 				4DED47DE1DFFA4AF0070C5C4 /* b2Collision.cpp in Sources */,
+				1AEC72D4208F2AF600240C0F /* bx_string.cpp in Sources */,
 				46FDDAA9202ACC6A00931238 /* Types.cpp in Sources */,
 				4DED48001DFFA4AF0070C5C4 /* b2BlockAllocator.cpp in Sources */,
 				1A52DB32205BCD9200350EE3 /* SHA1.cpp in Sources */,
@@ -3790,6 +3799,7 @@
 				469303842046AE05004A3D6C /* MappingUtils.cpp in Sources */,
 				4617865F2052607E008256E1 /* jsb_xmlhttprequest.cpp in Sources */,
 				469304082046AE06004A3D6C /* jsb_global.cpp in Sources */,
+				1AEC72D7208F2EAF00240C0F /* debug.cpp in Sources */,
 				50ABC0151926664800A911A9 /* CCImage.cpp in Sources */,
 				4DED48341DFFA4AF0070C5C4 /* b2ChainAndCircleContact.cpp in Sources */,
 				4DED47E21DFFA4AF0070C5C4 /* b2Distance.cpp in Sources */,
@@ -3882,6 +3892,7 @@
 				46FDDA9A202ACC6A00931238 /* Model.cpp in Sources */,
 				4693038F2046AE05004A3D6C /* Value.cpp in Sources */,
 				1A37E9C6200DD0680078AF72 /* CCReachability.cpp in Sources */,
+				1AEC72D8208F2EAF00240C0F /* debug.cpp in Sources */,
 				BA68D7991D62F4B600B7A3F9 /* clipper.cpp in Sources */,
 				469303A12046AE05004A3D6C /* ScriptEngine.mm in Sources */,
 				46FDDB8C202ADDCE00931238 /* CCAutoreleasePool.cpp in Sources */,
@@ -3909,6 +3920,7 @@
 				4DED47F31DFFA4AF0070C5C4 /* b2CircleShape.cpp in Sources */,
 				1A52DB7D205BCDD000350EE3 /* Utils.cpp in Sources */,
 				1A29D770205665D200168D9A /* jsb_cocos2dx_manual.cpp in Sources */,
+				1AEC72D5208F2AF600240C0F /* bx_string.cpp in Sources */,
 				4DED48611DFFA4AF0070C5C4 /* b2GearJoint.cpp in Sources */,
 				1A52DAF9205BB81400350EE3 /* CCThreadPool.cpp in Sources */,
 				4617864A20522469008256E1 /* CCDownloader.cpp in Sources */,

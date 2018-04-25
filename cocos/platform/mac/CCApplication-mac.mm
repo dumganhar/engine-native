@@ -36,6 +36,9 @@ THE SOFTWARE.
 #import "scripting/js-bindings/event/EventDispatcher.h"
 #import "renderer/gfx/DeviceGraphics.h"
 #import "scripting/js-bindings/jswrapper/SeApi.h"
+#include "base/bgfx_platform.h"
+#include "base/bgfx.h"
+#include "bx/thread.h"
 
 NS_CC_BEGIN
 
@@ -54,6 +57,71 @@ namespace
         glViewport(0, 0, g_width, g_height);
         glDepthMask(GL_TRUE);
         return true;
+    }
+
+    int32_t threadFunc(bx::Thread* _thread, void* _userData)
+    {
+        BX_UNUSED(_thread);
+
+        CFBundleRef mainBundle = CFBundleGetMainBundle();
+        if (mainBundle != nil)
+        {
+            CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
+            if (resourcesURL != nil)
+            {
+                char path[PATH_MAX];
+                if (CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8*)path, PATH_MAX) )
+                {
+                    chdir(path);
+                }
+
+                CFRelease(resourcesURL);
+            }
+        }
+
+//        MainThreadEntry* self = (MainThreadEntry*)_userData;
+//        return main(self->m_argc, self->m_argv);
+
+        bgfx::Init init;
+        init.type     = bgfx::RendererType::OpenGLES;
+//        init.vendorId = BGFX_PCI_ID_NONE;
+        init.resolution.width  = 960;
+        init.resolution.height = 640;
+        init.resolution.reset  = 0;
+        bgfx::init(init);
+
+        float r = 0;
+        float g = 0;
+        float b = 0;
+        bool sub = false;
+
+        while(true)
+        {
+            if (sub)
+                r -= 0.01f;
+            else
+                r += 0.01f;
+
+            if (r >= 1.0f)
+            {
+                sub = true;
+                r = 1.0f;
+            }
+            else if (r < 0.0f)
+            {
+                sub = false;
+                r = 0.0f;
+            }
+
+            bgfx::clearColor(r, g, b, 1);
+            bgfx::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            GLuint id = bgfx::createBuffer();
+            bgfx::frame();
+        }
+
+        bgfx::shutdown();
+
+        return 0;
     }
 }
 
@@ -93,14 +161,17 @@ void Application::start()
 {
     ccInvalidateStateCache();
 
-    se::ScriptEngine* se = se::ScriptEngine::getInstance();
-    se->addRegisterCallback(setCanvasCallback);
-    
-    if(!applicationDidFinishLaunching())
-        return;
+//cjh    se::ScriptEngine* se = se::ScriptEngine::getInstance();
+//    se->addRegisterCallback(setCanvasCallback);
+//
+//    if(!applicationDidFinishLaunching())
+//        return;
 
     if (!_view)
         return;
+
+    bx::Thread thread;
+    thread.init(threadFunc, nullptr);
 
     std::chrono::steady_clock::time_point prevTime;
     std::chrono::steady_clock::time_point now;
@@ -109,13 +180,15 @@ void Application::start()
     while (!CAST_VIEW(_view)->windowShouldClose())
     {
         prevTime = std::chrono::steady_clock::now();
+
+        bgfx::renderFrame();
         
         CAST_VIEW(_view)->pollEvents();
-        _scheduler->update(dt);
-        EventDispatcher::dispatchTickEvent(dt);
-
+//cjh        _scheduler->update(dt);
+//        EventDispatcher::dispatchTickEvent(dt);
+//
         CAST_VIEW(_view)->swapBuffers();
-        PoolManager::getInstance()->getCurrentPool()->clear();
+//        PoolManager::getInstance()->getCurrentPool()->clear();
 
         now = std::chrono::steady_clock::now();
         dt = std::chrono::duration_cast<std::chrono::microseconds>(now - prevTime).count() / 1000000.f;

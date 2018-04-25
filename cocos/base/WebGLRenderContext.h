@@ -214,13 +214,13 @@ public:
 private:
     bool m_flip = false;
 
-    WebGLBuffer _indexBuffers[BGFX_CONFIG_MAX_INDEX_BUFFERS];
-    WebGLBuffer _vertexBuffers[BGFX_CONFIG_MAX_VERTEX_BUFFERS];
-    WebGLShader _shaders[BGFX_CONFIG_MAX_SHADERS];
-    WebGLProgram _program[BGFX_CONFIG_MAX_PROGRAMS];
-    WebGLTexture _textures[BGFX_CONFIG_MAX_TEXTURES];
-    WebGLFramebuffer _framebuffers[BGFX_CONFIG_MAX_FRAME_BUFFERS];
-    WebGLRenderbuffer _renderbuffers[BGFX_CONFIG_MAX_RENDER_BUFFERS];
+//cjh    WebGLBuffer _indexBuffers[BGFX_CONFIG_MAX_INDEX_BUFFERS];
+//    WebGLBuffer _vertexBuffers[BGFX_CONFIG_MAX_VERTEX_BUFFERS];
+//    WebGLShader _shaders[BGFX_CONFIG_MAX_SHADERS];
+//    WebGLProgram _program[BGFX_CONFIG_MAX_PROGRAMS];
+//    WebGLTexture _textures[BGFX_CONFIG_MAX_TEXTURES];
+//    WebGLFramebuffer _framebuffers[BGFX_CONFIG_MAX_FRAME_BUFFERS];
+//    WebGLRenderbuffer _renderbuffers[BGFX_CONFIG_MAX_RENDER_BUFFERS];
 };
 
 } // namespace bgfx {

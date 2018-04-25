@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include "base/FakeGL.h"
+
 #include "bx/platform.h"
 #include "bx/thread.h"
 #include "bx/timer.h"
@@ -34,6 +36,7 @@
 
 #include "WebGLCommandBuffer.h"
 #include "WebGLFrame.h"
+
 
 namespace bgfx {
 
@@ -139,6 +142,7 @@ public:
 
         BGFX_PROFILER_SCOPE("bgfx/API thread wait", 0xff2040ff);
         int64_t start = bx::getHPCounter();
+
         bool ok = m_apiSem.wait(_msecs);
         if (ok)
         {
@@ -236,15 +240,15 @@ public:
     WebGLRenderContext* m_renderCtx;
 
     Init     m_init;
-    int64_t  m_frameTimeLast;
-    uint32_t m_frames;
-    uint32_t m_debug;
+    int64_t  m_frameTimeLast = 0;
+    uint32_t m_frames = 0;
+    uint32_t m_debug = 0;
     
-    bool m_rendererInitialized;
-    bool m_exit;
-    bool m_flipAfterRender;
-    bool m_singleThreaded;
-    bool m_flipped;
+    bool m_rendererInitialized = false;
+    bool m_exit = false;
+    bool m_flipAfterRender = false;
+    bool m_singleThreaded = false;
+    bool m_flipped = false;
 };
 
 } // namespace bgfx {

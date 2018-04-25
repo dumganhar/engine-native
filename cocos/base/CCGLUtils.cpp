@@ -25,6 +25,8 @@
 #include "CCGLUtils.h"
 #include <stdio.h>
 
+using namespace fakegl;
+
 NS_CC_BEGIN
 
 //FIXME: Consider to use variable to enable/disable cache state since using macro will not be able to close it if there're serious bugs.

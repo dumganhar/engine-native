@@ -32,6 +32,11 @@
 
 #define BGFX_API_THREAD_MAGIC UINT32_C(0x78666762)
 
+namespace {
+    std::string __strSyncCommandReturn;
+    float __floatSyncCommandReturn[256];
+}
+
 namespace bgfx {
 
     extern bool s_renderFrameCalled;
@@ -347,9 +352,15 @@ namespace bgfx {
     {
         BGFX_MUTEX_SCOPE(m_resourceApiLock);
         getCommandBuffer(CommandBuffer::createBuffer);
-        GLuint id = 0;
 
-        return id;
+        // wait for render thread to finish
+        renderSemWait();
+        m_flipped = true;
+        frameNoRenderWait();
+        renderSemWait();
+        frameNoRenderWait();
+
+        return (GLuint)__floatSyncCommandReturn[0];
     }
 
     uint32_t WebGLContext::frame(bool _capture)
@@ -524,7 +535,9 @@ namespace bgfx {
 
                 case CommandBuffer::createBuffer:
                 {
-                    usleep(2000 * 1000);
+                    usleep(1000 * 1000);
+                    static GLuint bufferID = 0;
+                    __floatSyncCommandReturn[0] = ++bufferID;
                 }
                     break;
 
@@ -586,6 +599,11 @@ namespace bgfx {
         if (!m_flipAfterRender)
         {
             BGFX_PROFILER_SCOPE("bgfx/flip", 0xff2040ff);
+            if (m_flipped)
+            {
+                static int sss = 0;
+                printf("Sync command called!: %d\n", ++sss);
+            }
             flip();
         }
 

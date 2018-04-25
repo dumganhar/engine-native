@@ -34,6 +34,7 @@
 #include <regex>
 
 using namespace cocos2d;
+using namespace fakegl;
 
 namespace {
 
@@ -994,7 +995,7 @@ SE_BIND_FUNC(JSB_glClearColor)
 
 // Arguments: GLclampf
 // Ret value: void
-static bool JSB_glClearDepthf(se::State& s) {
+static bool JSB_glClearDepth(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
     SE_PRECONDITION2( argc == 1, false, "Invalid number of arguments" );
@@ -1008,7 +1009,7 @@ static bool JSB_glClearDepthf(se::State& s) {
 
     return true;
 }
-SE_BIND_FUNC(JSB_glClearDepthf)
+SE_BIND_FUNC(JSB_glClearDepth)
 
 // Arguments: GLint
 // Ret value: void
@@ -1326,7 +1327,7 @@ SE_BIND_FUNC(JSB_glDepthMask)
 
 // Arguments: GLclampf, GLclampf
 // Ret value: void
-static bool JSB_glDepthRangef(se::State& s) {
+static bool JSB_glDepthRange(se::State& s) {
     const auto& args = s.args();
     int argc = (int)args.size();
     SE_PRECONDITION2( argc == 2, false, "Invalid number of arguments" );
@@ -1341,7 +1342,7 @@ static bool JSB_glDepthRangef(se::State& s) {
 
     return true;
 }
-SE_BIND_FUNC(JSB_glDepthRangef)
+SE_BIND_FUNC(JSB_glDepthRange)
 
 // Arguments: GLuint, GLuint
 // Ret value: void
@@ -4404,7 +4405,7 @@ bool JSB_register_opengl(se::Object* obj)
     __glObj->defineFunction("checkFramebufferStatus", _SE(JSB_glCheckFramebufferStatus));
     __glObj->defineFunction("clear", _SE(JSB_glClear));
     __glObj->defineFunction("clearColor", _SE(JSB_glClearColor));
-    __glObj->defineFunction("clearDepth", _SE(JSB_glClearDepthf));
+    __glObj->defineFunction("clearDepth", _SE(JSB_glClearDepth));
     __glObj->defineFunction("clearStencil", _SE(JSB_glClearStencil));
     __glObj->defineFunction("colorMask", _SE(JSB_glColorMask));
     __glObj->defineFunction("compileShader", _SE(JSB_glCompileShader));
@@ -4423,7 +4424,7 @@ bool JSB_register_opengl(se::Object* obj)
     __glObj->defineFunction("deleteTexture", _SE(JSB_glDeleteTextures));
     __glObj->defineFunction("depthFunc", _SE(JSB_glDepthFunc));
     __glObj->defineFunction("depthMask", _SE(JSB_glDepthMask));
-    __glObj->defineFunction("depthRange", _SE(JSB_glDepthRangef));
+    __glObj->defineFunction("depthRange", _SE(JSB_glDepthRange));
     __glObj->defineFunction("detachShader", _SE(JSB_glDetachShader));
     __glObj->defineFunction("disable", _SE(JSB_glDisable));
     __glObj->defineFunction("disableVertexAttribArray", _SE(JSB_glDisableVertexAttribArray));

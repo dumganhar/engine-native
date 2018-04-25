@@ -54,14 +54,16 @@ namespace
                 g_width,
                 g_height);
         se->evalString(commandBuf);
-        glViewport(0, 0, g_width, g_height);
-        glDepthMask(GL_TRUE);
+        fakegl::glViewport(0, 0, g_width, g_height);
+        fakegl::glDepthMask(GL_TRUE);
         return true;
     }
 
     int32_t threadFunc(bx::Thread* _thread, void* _userData)
     {
         BX_UNUSED(_thread);
+
+        Application* app = (Application*)_userData;
 
         CFBundleRef mainBundle = CFBundleGetMainBundle();
         if (mainBundle != nil)
@@ -90,10 +92,20 @@ namespace
         init.resolution.reset  = 0;
         bgfx::init(init);
 
+        se::ScriptEngine* se = se::ScriptEngine::getInstance();
+        se->addRegisterCallback(setCanvasCallback);
+
+        if(!app->applicationDidFinishLaunching())
+            return -1;
+
         float r = 0;
         float g = 0;
         float b = 0;
         bool sub = false;
+
+        std::chrono::steady_clock::time_point prevTime;
+        std::chrono::steady_clock::time_point now;
+        float dt = 0.f;
 
         while(true)
         {
@@ -113,10 +125,19 @@ namespace
                 r = 0.0f;
             }
 
-            bgfx::clearColor(r, g, b, 1);
-            bgfx::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-            GLuint id = bgfx::createBuffer();
+            app->_scheduler->update(dt);
+            EventDispatcher::dispatchTickEvent(dt);
+
+//cjh            bgfx::clearColor(r, g, b, 1);
+//            bgfx::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+//            GLuint id = bgfx::createBuffer();
+//            printf("bgfx::createBuffer returns: %u\n", id);
             bgfx::frame();
+
+            PoolManager::getInstance()->getCurrentPool()->clear();
+
+            now = std::chrono::steady_clock::now();
+            dt = std::chrono::duration_cast<std::chrono::microseconds>(now - prevTime).count() / 1000000.f;
         }
 
         bgfx::shutdown();
@@ -161,17 +182,11 @@ void Application::start()
 {
     ccInvalidateStateCache();
 
-//cjh    se::ScriptEngine* se = se::ScriptEngine::getInstance();
-//    se->addRegisterCallback(setCanvasCallback);
-//
-//    if(!applicationDidFinishLaunching())
-//        return;
-
     if (!_view)
         return;
 
     bx::Thread thread;
-    thread.init(threadFunc, nullptr);
+    thread.init(threadFunc, this);
 
     std::chrono::steady_clock::time_point prevTime;
     std::chrono::steady_clock::time_point now;

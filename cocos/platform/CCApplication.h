@@ -168,6 +168,7 @@ private:
     bool _multiTouch = false;
     void* _delegate = nullptr;
     float _animationInterval = 1.0f / 60;
+public: //FIXME:cjh DONT MAKE IT PUBLIC
     Scheduler* _scheduler = nullptr;
 };
 

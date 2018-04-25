@@ -174,7 +174,7 @@ void DeviceGraphics::clear(uint8_t flags, Color4F *color, double depth, int32_t 
     if (flags & ClearFlag::DEPTH)
     {
         mask |= GL_DEPTH_BUFFER_BIT;
-        GL_CHECK(glClearDepth(depth));
+        GL_CHECK(glClearDepthf(depth));
         
         GL_CHECK(glEnable(GL_DEPTH_TEST));
         GL_CHECK(glDepthMask(GL_TRUE));
@@ -636,14 +636,14 @@ void DeviceGraphics::initStates()
     GL_CHECK(glDepthFunc(GL_LESS));
     GL_CHECK(glDepthMask(GL_FALSE));
     GL_CHECK(glDisable(GL_POLYGON_OFFSET_FILL));
-    GL_CHECK(glDepthRange(0, 1));
+    GL_CHECK(glDepthRangef(0, 1));
     
     GL_CHECK(glDisable(GL_STENCIL_TEST));
     GL_CHECK(glStencilFunc(GL_ALWAYS, 0, 0xff));
     GL_CHECK(glStencilMask(0xff));
     GL_CHECK(glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP));
     
-    GL_CHECK(glClearDepth(1));
+    GL_CHECK(glClearDepthf(1));
     GL_CHECK(glClearColor(0, 0, 0, 0));
     GL_CHECK(glClearStencil(0));
     

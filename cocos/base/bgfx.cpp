@@ -497,22 +497,22 @@ uint32_t frame(bool _capture)
         WebGLContext::s_ctx->reset(_width, _height, _flags);
     }
 
-    void clear(GLbitfield mask)
-    {
-        BGFX_CHECK_API_THREAD();
-        WebGLContext::s_ctx->clear(mask);
-    }
-
-    void clearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
-    {
-        BGFX_CHECK_API_THREAD();
-        WebGLContext::s_ctx->clearColor(red, green, blue, alpha);
-    }
-
-    GLuint createBuffer()
-    {
-        BGFX_CHECK_API_THREAD();
-        return WebGLContext::s_ctx->createBuffer();
-    }
+//    void clear(GLbitfield mask)
+//    {
+//        BGFX_CHECK_API_THREAD();
+//        WebGLContext::s_ctx->clear(mask);
+//    }
+//
+//    void clearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
+//    {
+//        BGFX_CHECK_API_THREAD();
+//        WebGLContext::s_ctx->clearColor(red, green, blue, alpha);
+//    }
+//
+//    GLuint createBuffer()
+//    {
+//        BGFX_CHECK_API_THREAD();
+//        return WebGLContext::s_ctx->createBuffer();
+//    }
 
 } // namespace bgfx

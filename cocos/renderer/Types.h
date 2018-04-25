@@ -34,6 +34,8 @@
 #include "Macro.h"
 #include "platform/CCGL.h"
 
+using namespace fakegl; //FIXME:cjh
+
 RENDERER_BEGIN
 
 enum ClearFlag : uint8_t

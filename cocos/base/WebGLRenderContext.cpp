@@ -24,6 +24,8 @@
 
 #include "WebGLRenderContext.h"
 
+using namespace fakegl;
+
 namespace bgfx {
 
     WebGLRenderContext::WebGLRenderContext()

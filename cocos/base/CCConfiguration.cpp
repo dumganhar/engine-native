@@ -28,6 +28,8 @@ THE SOFTWARE.
 #include "platform/CCFileUtils.h"
 #include "base/CCLog.h"
 
+using namespace fakegl;
+
 NS_CC_BEGIN
 
 //cjh extern const char* cocos2dVersion();

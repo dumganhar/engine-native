@@ -1,4 +1,5 @@
 #include "FakeGL.h"
+#include "WebGLContext.h"
 
 namespace fakegl {
 
@@ -359,7 +360,7 @@ void glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar* 
 
 const GLubyte* glGetString(GLenum name)
 {
-    return 0;
+    return WebGLContext::s_ctx->getString(name);
 }
 
 void glGetTexParameterfv(GLenum target, GLenum pname, GLfloat* params)

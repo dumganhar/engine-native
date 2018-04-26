@@ -23,8 +23,7 @@
  ****************************************************************************/
 
 #include "WebGLRenderContext.h"
-
-using namespace fakegl;
+#include <OpenGL/OpenGL.h>
 
 namespace bgfx {
 
@@ -38,58 +37,42 @@ namespace bgfx {
         
     }
 
-    WebGLContextAttributes getContextAttributes()
-    {
-        return WebGLContextAttributes();
-    }
-
-    bool isContextLost()
-    {
-        return false;
-    }
-
-    std::vector<std::string> getSupportedExtensions()
-    {
-        return std::vector<std::string>();
-    }
-
-    //    object getExtension(const std::string& name); //cjh
     void WebGLRenderContext::activeTexture(GLenum texture)
     {
 
     }
 
-    void WebGLRenderContext::attachShader(WebGLProgram program, WebGLShader shader)
+    void WebGLRenderContext::attachShader(GLuint program, GLuint shader)
     {
 
     }
 
-    void WebGLRenderContext::bindAttribLocation(WebGLProgram program, GLuint index, const std::string& name)
+    void WebGLRenderContext::bindAttribLocation(GLuint program, GLuint index, const GLchar* name)
     {
 
     }
 
-    void WebGLRenderContext::bindBuffer(GLenum target, WebGLBuffer buffer)
+    void WebGLRenderContext::bindBuffer(GLenum target, GLuint buffer)
     {
 
     }
 
-    void WebGLRenderContext::bindFramebuffer(GLenum target, WebGLFramebuffer framebuffer)
+    void WebGLRenderContext::bindFramebuffer(GLenum target, GLuint framebuffer)
     {
 
     }
 
-    void WebGLRenderContext::bindRenderbuffer(GLenum target, WebGLRenderbuffer renderbuffer)
+    void WebGLRenderContext::bindRenderbuffer(GLenum target, GLuint renderbuffer)
     {
 
     }
 
-    void WebGLRenderContext::bindTexture(GLenum target, WebGLTexture texture)
+    void WebGLRenderContext::bindTexture(GLenum target, GLuint texture)
     {
 
     }
 
-    void WebGLRenderContext::blendColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
+    void WebGLRenderContext::blendColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
     {
 
     }
@@ -114,32 +97,32 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::bufferData(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage)
+    void WebGLRenderContext::bufferData(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage)
     {
 
     }
 
-    void WebGLRenderContext::bufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid *data)
+    void WebGLRenderContext::bufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data)
     {
 
     }
 
-    GLenum WebGLRenderContext::checkFramebufferStatus(GLenum target)
+    GLenum checkFramebufferStatus(GLenum target)
     {
         return 0;
     }
 
     void WebGLRenderContext::clear(GLbitfield mask)
     {
-        glClear(mask);
+
     }
 
-    void WebGLRenderContext::clearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
+    void WebGLRenderContext::clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
     {
-        glClearColor(red, green, blue, alpha);
+
     }
 
-    void WebGLRenderContext::clearDepth(GLclampf depth)
+    void WebGLRenderContext::clearDepthf(GLclampf depth)
     {
 
     }
@@ -154,17 +137,17 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::compileShader(WebGLShader shader)
+    void WebGLRenderContext::compileShader(GLuint shader)
     {
 
     }
 
-    void WebGLRenderContext::compressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data)
+    void WebGLRenderContext::compressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid* data)
     {
 
     }
 
-    void WebGLRenderContext::compressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid *data)
+    void WebGLRenderContext::compressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid* data)
     {
 
     }
@@ -179,32 +162,12 @@ namespace bgfx {
 
     }
 
-    WebGLBuffer WebGLRenderContext::createBuffer()
+    GLuint WebGLRenderContext::createProgram(void)
     {
         return 0;
     }
 
-    WebGLFramebuffer WebGLRenderContext::createFramebuffer()
-    {
-        return 0;
-    }
-
-    WebGLProgram WebGLRenderContext::createProgram()
-    {
-        return 0;
-    }
-
-    WebGLRenderbuffer WebGLRenderContext::createRenderbuffer()
-    {
-        return 0;
-    }
-
-    WebGLShader WebGLRenderContext::createShader(GLenum type)
-    {
-        return 0;
-    }
-
-    WebGLTexture WebGLRenderContext::createTexture()
+    GLuint WebGLRenderContext::createShader(GLenum type)
     {
         return 0;
     }
@@ -214,32 +177,32 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::deleteBuffer(WebGLBuffer buffer)
+    void WebGLRenderContext::deleteBuffers(GLsizei n, const GLuint* buffers)
     {
 
     }
 
-    void WebGLRenderContext::deleteFramebuffer(WebGLFramebuffer framebuffer)
+    void WebGLRenderContext::deleteFramebuffers(GLsizei n, const GLuint* framebuffers)
     {
 
     }
 
-    void WebGLRenderContext::deleteProgram(WebGLProgram program)
+    void WebGLRenderContext::deleteProgram(GLuint program)
     {
 
     }
 
-    void WebGLRenderContext::deleteRenderbuffer(WebGLRenderbuffer renderbuffer)
+    void WebGLRenderContext::deleteRenderbuffers(GLsizei n, const GLuint* renderbuffers)
     {
 
     }
 
-    void WebGLRenderContext::deleteShader(WebGLShader shader)
+    void WebGLRenderContext::deleteShader(GLuint shader)
     {
 
     }
 
-    void WebGLRenderContext::deleteTexture(WebGLTexture texture)
+    void WebGLRenderContext::deleteTextures(GLsizei n, const GLuint* textures)
     {
 
     }
@@ -254,12 +217,12 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::depthRange(GLclampf zNear, GLclampf zFar)
+    void WebGLRenderContext::depthRangef(GLclampf zNear, GLclampf zFar)
     {
 
     }
 
-    void WebGLRenderContext::detachShader(WebGLProgram program, WebGLShader shader)
+    void WebGLRenderContext::detachShader(GLuint program, GLuint shader)
     {
 
     }
@@ -279,7 +242,7 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::drawElements(GLenum mode, GLsizei count, GLenum type, GLintptr offset)
+    void WebGLRenderContext::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices)
     {
 
     }
@@ -294,22 +257,22 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::finish()
+    void WebGLRenderContext::finish(void)
     {
 
     }
 
-    void WebGLRenderContext::flush()
+    void WebGLRenderContext::flush(void)
     {
 
     }
 
-    void WebGLRenderContext::framebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, WebGLRenderbuffer renderbuffer)
+    void WebGLRenderContext::framebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
     {
 
     }
 
-    void WebGLRenderContext::framebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, WebGLTexture texture, GLint level)
+    void WebGLRenderContext::framebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
     {
 
     }
@@ -319,112 +282,159 @@ namespace bgfx {
 
     }
 
+    void WebGLRenderContext::genBuffers(GLsizei n, GLuint* buffers)
+    {
+
+    }
+
     void WebGLRenderContext::generateMipmap(GLenum target)
     {
 
     }
 
-    WebGLActiveInfo WebGLRenderContext::getActiveAttrib(WebGLProgram program, GLuint index)
+    void WebGLRenderContext::genFramebuffers(GLsizei n, GLuint* framebuffers)
     {
-        return {};
+
     }
 
-    WebGLActiveInfo WebGLRenderContext::getActiveUniform(WebGLProgram program, GLuint index)
+    void WebGLRenderContext::genRenderbuffers(GLsizei n, GLuint* renderbuffers)
     {
-        return {};
+
     }
 
-    std::vector<WebGLShader> WebGLRenderContext::getAttachedShaders(WebGLProgram program)
+    void WebGLRenderContext::genTextures(GLsizei n, GLuint* textures)
     {
-        return std::vector<WebGLShader>();
+
     }
 
-    GLint WebGLRenderContext::getAttribLocation(WebGLProgram program, const std::string& name)
+    void WebGLRenderContext::getActiveAttrib(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, GLchar* name)
+    {
+
+    }
+
+    void WebGLRenderContext::getActiveUniform(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, GLchar* name)
+    {
+
+    }
+
+    void WebGLRenderContext::getAttachedShaders(GLuint program, GLsizei maxcount, GLsizei* count, GLuint* shaders)
+    {
+
+    }
+
+    int  getAttribLocation(GLuint program, const GLchar* name)
     {
         return 0;
     }
 
-    any WebGLRenderContext::getBufferParameter(GLenum target, GLenum pname)
+    void WebGLRenderContext::getBooleanv(GLenum pname, GLboolean* params)
+    {
+
+    }
+
+    void WebGLRenderContext::getBufferParameteriv(GLenum target, GLenum pname, GLint* params)
+    {
+
+    }
+
+    GLenum getError(void)
     {
         return 0;
     }
 
-    any WebGLRenderContext::getParameter(GLenum pname)
+    void WebGLRenderContext::getFloatv(GLenum pname, GLfloat* params)
+    {
+
+    }
+
+    void WebGLRenderContext::getFramebufferAttachmentParameteriv(GLenum target, GLenum attachment, GLenum pname, GLint* params)
+    {
+
+    }
+
+    void WebGLRenderContext::getIntegerv(GLenum pname, GLint* params)
+    {
+
+    }
+
+    void WebGLRenderContext::getProgramiv(GLuint program, GLenum pname, GLint* params)
+    {
+
+    }
+
+    void WebGLRenderContext::getProgramInfoLog(GLuint program, GLsizei bufsize, GLsizei* length, GLchar* infolog)
+    {
+
+    }
+
+    void WebGLRenderContext::getRenderbufferParameteriv(GLenum target, GLenum pname, GLint* params)
+    {
+
+    }
+
+    void WebGLRenderContext::getShaderiv(GLuint shader, GLenum pname, GLint* params)
+    {
+
+    }
+
+    void WebGLRenderContext::getShaderInfoLog(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar* infolog)
+    {
+
+    }
+
+    void WebGLRenderContext::getShaderPrecisionFormat(GLenum shadertype, GLenum precisiontype, GLint* range, GLint* precision)
+    {
+
+    }
+
+    void WebGLRenderContext::getShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar* source)
+    {
+
+    }
+
+    const GLubyte* getString(GLenum name)
     {
         return 0;
     }
 
-    GLenum WebGLRenderContext::getError()
+    void WebGLRenderContext::getTexParameterfv(GLenum target, GLenum pname, GLfloat* params)
     {
-        return 0;
+
     }
 
-    any WebGLRenderContext::getFramebufferAttachmentParameter(GLenum target, GLenum attachment, GLenum pname)
+    void WebGLRenderContext::getTexParameteriv(GLenum target, GLenum pname, GLint* params)
     {
-        return 0;
+
     }
 
-    any WebGLRenderContext::getProgramParameter(WebGLProgram program, GLenum pname)
+    void WebGLRenderContext::getUniformfv(GLuint program, GLint location, GLfloat* params)
     {
-        return 0;
+
     }
 
-    const std::string& WebGLRenderContext::getProgramInfoLog(WebGLProgram program)
+    void WebGLRenderContext::getUniformiv(GLuint program, GLint location, GLint* params)
     {
-        static const std::string EMPTY = "";
-        return EMPTY;
+
     }
 
-    any WebGLRenderContext::getRenderbufferParameter(GLenum target, GLenum pname)
+    int WebGLRenderContext::getUniformLocation(GLuint program, const GLchar* name)
     {
-        return 0;
+
     }
 
-    any WebGLRenderContext::getShaderParameter(WebGLShader shader, GLenum pname)
+    void WebGLRenderContext::getVertexAttribfv(GLuint index, GLenum pname, GLfloat* params)
     {
-        return 0;
+
     }
 
-    WebGLShaderPrecisionFormat WebGLRenderContext::getShaderPrecisionFormat(GLenum shadertype, GLenum precisiontype)
+    void WebGLRenderContext::getVertexAttribiv(GLuint index, GLenum pname, GLint* params)
     {
-        return WebGLShaderPrecisionFormat();
+
     }
 
-    const std::string& WebGLRenderContext::getShaderInfoLog(WebGLShader shader)
+    void WebGLRenderContext::getVertexAttribPointerv(GLuint index, GLenum pname, GLvoid** pointer)
     {
-        static const std::string EMPTY;
-        return EMPTY;
-    }
 
-    const std::string& WebGLRenderContext::getShaderSource(WebGLShader shader)
-    {
-        static const std::string EMPTY;
-        return EMPTY;
-    }
-
-    any WebGLRenderContext::getTexParameter(GLenum target, GLenum pname)
-    {
-        return 0;
-    }
-
-    any WebGLRenderContext::getUniform(WebGLProgram program, WebGLUniformLocation location)
-    {
-        return 0;
-    }
-
-    WebGLUniformLocation WebGLRenderContext::getUniformLocation(WebGLProgram program, const std::string& name)
-    {
-        return 0;
-    }
-
-    any WebGLRenderContext::getVertexAttrib(GLuint index, GLenum pname)
-    {
-        return 0;
-    }
-
-    GLintptr WebGLRenderContext::getVertexAttribOffset(GLuint index, GLenum pname)
-    {
-        return 0;
     }
 
     void WebGLRenderContext::hint(GLenum target, GLenum mode)
@@ -432,7 +442,7 @@ namespace bgfx {
 
     }
 
-    GLboolean WebGLRenderContext::isBuffer(WebGLBuffer buffer)
+    GLboolean WebGLRenderContext::isBuffer(GLuint buffer)
     {
         return 0;
     }
@@ -442,27 +452,27 @@ namespace bgfx {
         return 0;
     }
 
-    GLboolean WebGLRenderContext::isFramebuffer(WebGLFramebuffer framebuffer)
+    GLboolean WebGLRenderContext::isFramebuffer(GLuint framebuffer)
     {
         return 0;
     }
 
-    GLboolean WebGLRenderContext::isProgram(WebGLProgram program)
+    GLboolean WebGLRenderContext::isProgram(GLuint program)
     {
         return 0;
     }
 
-    GLboolean WebGLRenderContext::isRenderbuffer(WebGLRenderbuffer renderbuffer)
+    GLboolean WebGLRenderContext::isRenderbuffer(GLuint renderbuffer)
     {
         return 0;
     }
 
-    GLboolean WebGLRenderContext::isShader(WebGLShader shader)
+    GLboolean WebGLRenderContext::isShader(GLuint shader)
     {
         return 0;
     }
 
-    GLboolean WebGLRenderContext::isTexture(WebGLTexture texture)
+    GLboolean WebGLRenderContext::isTexture(GLuint texture)
     {
         return 0;
     }
@@ -472,7 +482,7 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::linkProgram(WebGLProgram program)
+    void WebGLRenderContext::linkProgram(GLuint program)
     {
 
     }
@@ -487,7 +497,12 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid *pixels)
+    void WebGLRenderContext::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* pixels)
+    {
+
+    }
+
+    void WebGLRenderContext::releaseShaderCompiler(void)
     {
 
     }
@@ -507,7 +522,12 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::shaderSource(WebGLShader shader, const std::string& source)
+    void WebGLRenderContext::shaderBinary(GLsizei n, const GLuint* shaders, GLenum binaryformat, const GLvoid* binary, GLsizei length)
+    {
+
+    }
+
+    void WebGLRenderContext::shaderSource(GLuint shader, GLsizei count, const GLchar* const *string, const GLint* length)
     {
 
     }
@@ -542,7 +562,7 @@ namespace bgfx {
 
     }
 
-    void WebGLRenderContext::texImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
+    void WebGLRenderContext::texImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* pixels)
     {
 
     }
@@ -552,167 +572,188 @@ namespace bgfx {
 
     }
 
+    void WebGLRenderContext::texParameterfv(GLenum target, GLenum pname, const GLfloat* params)
+    {
+
+    }
+
     void WebGLRenderContext::texParameteri(GLenum target, GLenum pname, GLint param)
     {
 
     }
 
-    void WebGLRenderContext::texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels)
+    void WebGLRenderContext::texParameteriv(GLenum target, GLenum pname, const GLint* params)
     {
 
     }
 
-    void WebGLRenderContext::uniform1f(WebGLUniformLocation location, GLfloat x)
+    void WebGLRenderContext::texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* pixels)
     {
 
     }
 
-    void WebGLRenderContext::uniform2f(WebGLUniformLocation location, GLfloat x, GLfloat y)
+    void WebGLRenderContext::uniform1f(GLint location, GLfloat x)
     {
 
     }
 
-    void WebGLRenderContext::uniform3f(WebGLUniformLocation location, GLfloat x, GLfloat y, GLfloat z)
+    void WebGLRenderContext::uniform1fv(GLint location, GLsizei count, const GLfloat* v)
     {
 
     }
 
-    void WebGLRenderContext::uniform4f(WebGLUniformLocation location, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
+    void WebGLRenderContext::uniform1i(GLint location, GLint x)
     {
 
     }
 
-    void WebGLRenderContext::uniform1i(WebGLUniformLocation location, GLint x)
+    void WebGLRenderContext::uniform1iv(GLint location, GLsizei count, const GLint* v)
     {
 
     }
 
-    void WebGLRenderContext::uniform2i(WebGLUniformLocation location, GLint x, GLint y)
+    void WebGLRenderContext::uniform2f(GLint location, GLfloat x, GLfloat y)
     {
 
     }
 
-    void WebGLRenderContext::uniform3i(WebGLUniformLocation location, GLint x, GLint y, GLint z)
+    void WebGLRenderContext::uniform2fv(GLint location, GLsizei count, const GLfloat* v)
     {
 
     }
 
-    void WebGLRenderContext::uniform4i(WebGLUniformLocation location, GLint x, GLint y, GLint z, GLint w)
+    void WebGLRenderContext::uniform2i(GLint location, GLint x, GLint y)
     {
 
     }
 
-    void WebGLRenderContext::uniform1fv(WebGLUniformLocation location, GLsizei count, const GLfloat *value)
+    void WebGLRenderContext::uniform2iv(GLint location, GLsizei count, const GLint* v)
     {
 
     }
 
-    void WebGLRenderContext::uniform2fv(WebGLUniformLocation location, GLsizei count, const GLfloat *value)
+    void WebGLRenderContext::uniform3f(GLint location, GLfloat x, GLfloat y, GLfloat z)
     {
 
     }
 
-    void WebGLRenderContext::uniform3fv(WebGLUniformLocation location, GLsizei count, const GLfloat *value)
+    void WebGLRenderContext::uniform3fv(GLint location, GLsizei count, const GLfloat* v)
     {
 
     }
 
-    void WebGLRenderContext::uniform4fv(WebGLUniformLocation location, GLsizei count, const GLfloat *value)
+    void WebGLRenderContext::uniform3i(GLint location, GLint x, GLint y, GLint z)
     {
 
     }
 
-    void WebGLRenderContext::uniform1iv(WebGLUniformLocation location, GLsizei count, const GLint *value)
+    void WebGLRenderContext::uniform3iv(GLint location, GLsizei count, const GLint* v)
     {
 
     }
 
-    void WebGLRenderContext::uniform2iv(WebGLUniformLocation location, GLsizei count, const GLint *value)
+    void WebGLRenderContext::uniform4f(GLint location, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
     {
 
     }
 
-    void WebGLRenderContext::uniform3iv(WebGLUniformLocation location, GLsizei count, const GLint *value)
+    void WebGLRenderContext::uniform4fv(GLint location, GLsizei count, const GLfloat* v)
     {
 
     }
 
-    void WebGLRenderContext::uniform4iv(WebGLUniformLocation location, GLsizei count, const GLint *value)
+    void WebGLRenderContext::uniform4i(GLint location, GLint x, GLint y, GLint z, GLint w)
     {
 
     }
 
-    void WebGLRenderContext::uniformMatrix2fv(WebGLUniformLocation location, GLsizei count, GLboolean transpose, const GLfloat *value)
+    void WebGLRenderContext::uniform4iv(GLint location, GLsizei count, const GLint* v)
     {
 
     }
 
-    void WebGLRenderContext::uniformMatrix3fv(WebGLUniformLocation location, GLsizei count, GLboolean transpose, const GLfloat *value)
+    void WebGLRenderContext::uniformMatrix2fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value)
     {
 
     }
 
-    void WebGLRenderContext::uniformMatrix4fv(WebGLUniformLocation location, GLsizei count, GLboolean transpose, const GLfloat *value)
+    void WebGLRenderContext::uniformMatrix3fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value)
     {
 
     }
 
-    void WebGLRenderContext::useProgram(WebGLProgram program)
+    void WebGLRenderContext::uniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value)
     {
 
     }
 
-    void WebGLRenderContext::validateProgram(WebGLProgram program)
+    void WebGLRenderContext::useProgram(GLuint program)
     {
 
     }
 
-    void WebGLRenderContext::vertexAttrib1f(GLuint index, GLfloat x)
+    void WebGLRenderContext::validateProgram(GLuint program)
     {
 
     }
 
-    void WebGLRenderContext::vertexAttrib2f(GLuint index, GLfloat x, GLfloat y)
+    void WebGLRenderContext::vertexAttrib1f(GLuint indx, GLfloat x)
     {
 
     }
 
-    void WebGLRenderContext::vertexAttrib3f(GLuint index, GLfloat x, GLfloat y, GLfloat z)
+    void WebGLRenderContext::vertexAttrib1fv(GLuint indx, const GLfloat* values)
     {
 
     }
 
-    void WebGLRenderContext::vertexAttrib4f(GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
+    void WebGLRenderContext::vertexAttrib2f(GLuint indx, GLfloat x, GLfloat y)
     {
 
     }
 
-    void WebGLRenderContext::vertexAttrib1fv(GLuint index, const GLfloat *v)
+    void WebGLRenderContext::vertexAttrib2fv(GLuint indx, const GLfloat* values)
     {
 
     }
 
-    void WebGLRenderContext::vertexAttrib2fv(GLuint index, const GLfloat *v)
+    void WebGLRenderContext::vertexAttrib3f(GLuint indx, GLfloat x, GLfloat y, GLfloat z)
     {
 
     }
 
-    void WebGLRenderContext::vertexAttrib3fv(GLuint index, const GLfloat *v)
+    void WebGLRenderContext::vertexAttrib3fv(GLuint indx, const GLfloat* values)
     {
 
     }
 
-    void WebGLRenderContext::vertexAttrib4fv(GLuint index, const GLfloat *v)
+    void WebGLRenderContext::vertexAttrib4f(GLuint indx, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
     {
 
     }
 
-    void WebGLRenderContext::vertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, GLintptr offset)
+    void WebGLRenderContext::vertexAttrib4fv(GLuint indx, const GLfloat* values)
+    {
+
+    }
+
+    void WebGLRenderContext::vertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
     {
 
     }
 
     void WebGLRenderContext::viewport(GLint x, GLint y, GLsizei width, GLsizei height)
+    {
+
+    }
+
+
+    void WebGLRenderContext::drawBuffer(GLenum mode)
+    {
+
+    }
+
+    void WebGLRenderContext::readBuffer(GLenum mode)
     {
 
     }

@@ -321,8 +321,6 @@
 		1AEC72DC2090720300240C0F /* FakeGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72D92090720200240C0F /* FakeGL.cpp */; };
 		1AEC72DD2090720300240C0F /* FakeGL.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72DA2090720200240C0F /* FakeGL.h */; };
 		1AEC72DE2090720300240C0F /* FakeGL.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72DA2090720200240C0F /* FakeGL.h */; };
-		1AEC72E02090731F00240C0F /* FakeGLTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72DF2090731F00240C0F /* FakeGLTypes.h */; };
-		1AEC72E12090731F00240C0F /* FakeGLTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72DF2090731F00240C0F /* FakeGLTypes.h */; };
 		294D7D9A1D0E93A2002CE7B7 /* CCDevice-apple.h in Headers */ = {isa = PBXBuildFile; fileRef = 294D7D981D0E93A2002CE7B7 /* CCDevice-apple.h */; };
 		294D7D9B1D0E93A2002CE7B7 /* CCDevice-apple.h in Headers */ = {isa = PBXBuildFile; fileRef = 294D7D981D0E93A2002CE7B7 /* CCDevice-apple.h */; };
 		294D7D9C1D0E93A2002CE7B7 /* CCDevice-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 294D7D991D0E93A2002CE7B7 /* CCDevice-apple.mm */; };
@@ -1311,7 +1309,6 @@
 		1AEC72D6208F2EAF00240C0F /* debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = debug.cpp; sourceTree = "<group>"; };
 		1AEC72D92090720200240C0F /* FakeGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FakeGL.cpp; sourceTree = "<group>"; };
 		1AEC72DA2090720200240C0F /* FakeGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeGL.h; sourceTree = "<group>"; };
-		1AEC72DF2090731F00240C0F /* FakeGLTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeGLTypes.h; sourceTree = "<group>"; };
 		294D7D981D0E93A2002CE7B7 /* CCDevice-apple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCDevice-apple.h"; sourceTree = "<group>"; };
 		294D7D991D0E93A2002CE7B7 /* CCDevice-apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CCDevice-apple.mm"; sourceTree = "<group>"; };
 		461785FE20522468008256E1 /* SocketIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketIO.cpp; sourceTree = "<group>"; };
@@ -2478,7 +2475,6 @@
 				46FDDAFB202ADDCE00931238 /* etc1.h */,
 				1AEC72D92090720200240C0F /* FakeGL.cpp */,
 				1AEC72DA2090720200240C0F /* FakeGL.h */,
-				1AEC72DF2090731F00240C0F /* FakeGLTypes.h */,
 				46FDDB44202ADDCE00931238 /* firePngData.h */,
 				46FDDB16202ADDCE00931238 /* pvr.cpp */,
 				46FDDAEB202ADDCE00931238 /* pvr.h */,
@@ -3029,7 +3025,6 @@
 				46FDDBDD202ADDCE00931238 /* TGAlib.h in Headers */,
 				BAEA45551E279D5C00FA219F /* tinydir.h in Headers */,
 				46FDDAB7202ACC6A00931238 /* IndexBuffer.h in Headers */,
-				1AEC72E02090731F00240C0F /* FakeGLTypes.h in Headers */,
 				4617864520522469008256E1 /* HttpAsynConnection-apple.h in Headers */,
 				4617865D2052607E008256E1 /* jsb_xmlhttprequest.hpp in Headers */,
 				46FDDA7B202ACC6A00931238 /* Camera.h in Headers */,
@@ -3270,7 +3265,6 @@
 				1A28FF8E1F20AFAB007A1D9D /* NSRunLoop+SRWebSocket.h in Headers */,
 				46FDDBA0202ADDCE00931238 /* CCVector.h in Headers */,
 				46FDDB54202ADDCE00931238 /* utlist.h in Headers */,
-				1AEC72E12090731F00240C0F /* FakeGLTypes.h in Headers */,
 				469303932046AE05004A3D6C /* SeApi.h in Headers */,
 				46FDDA84202ACC6A00931238 /* Technique.h in Headers */,
 				BA68D7801D62F4A500B7A3F9 /* shapes.h in Headers */,

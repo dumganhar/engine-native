@@ -545,9 +545,40 @@ struct Caps
     uint16_t formats[TextureFormat::Count];
 };
 
-//void clear(GLbitfield mask);
-//void clearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
-//GLuint createBuffer();
+/// Allocate buffer to pass to bgfx calls. Data will be freed inside bgfx.
+///
+/// @attention C99 equivalent is `bgfx_alloc`.
+///
+const Memory* alloc(uint32_t _size);
+
+/// Allocate buffer and copy data into it. Data will be freed inside bgfx.
+///
+/// @param[in] _data Pointer to data to be copied.
+/// @param[in] _size Size of data to be copied.
+///
+/// @attention C99 equivalent is `bgfx_copy`.
+///
+const Memory* copy(
+                   const void* _data
+                   , uint32_t _size
+                   );
+
+/// Make reference to data to pass to bgfx. Unlike `bgfx::alloc`, this call
+/// doesn't allocate memory for data. It just copies the _data pointer. You
+/// can pass `ReleaseFn` function pointer to release this memory after it's
+/// consumed, otherwise you must make sure _data is available for at least 2
+/// `bgfx::frame` calls. `ReleaseFn` function must be able to be called
+/// from any thread.
+///
+/// @attention Data passed must be available for at least 2 `bgfx::frame` calls.
+/// @attention C99 equivalent are `bgfx_make_ref`, `bgfx_make_ref_release`.
+///
+const Memory* makeRef(
+                      const void* _data
+                      , uint32_t _size
+                      , ReleaseFn _releaseFn = NULL
+                      , void* _userData = NULL
+                      );
 
 /// Advance to next frame. When using multithreaded renderer, this call
 /// just swaps internal buffers, kicks render thread, and returns. In

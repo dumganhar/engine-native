@@ -2,7 +2,8 @@
 #include "bgfx_platform.h"
 #include "bgfx_config.h"
 #include "bx/bx.h"
-#include "WebGLContext.h"
+#include "bx/bx_p.h"
+#include "FakeGL.h"
 
 namespace bgfx {
 
@@ -263,9 +264,9 @@ RenderFrame::Enum renderFrame(int32_t _msecs)
 {
     if (BX_ENABLED(BGFX_CONFIG_MULTITHREADED) )
     {
-        if (NULL == WebGLContext::s_ctx)
+        if (!fakegl::isInited())
         {
-//cjh            s_renderFrameCalled = true;
+            s_renderFrameCalled = true;
 //            s_threadIndex = ~BGFX_API_THREAD_MAGIC;
             return RenderFrame::NoContext;
         }
@@ -275,13 +276,11 @@ RenderFrame::Enum renderFrame(int32_t _msecs)
         ? BGFX_CONFIG_API_SEMAPHORE_TIMEOUT
         : _msecs
         ;
-        RenderFrame::Enum result = WebGLContext::s_ctx->renderFrame(msecs);
+        RenderFrame::Enum result = fakegl::renderFrame(msecs);
         if (RenderFrame::Exiting == result)
         {
-            WebGLContext* ctx = WebGLContext::s_ctx;
-            ctx->apiSemWait();
-            WebGLContext::s_ctx = NULL;
-            ctx->renderSemPost();
+            fakegl::apiSemWait();
+            fakegl::renderSemPost();
         }
 
         return result;
@@ -294,7 +293,7 @@ RenderFrame::Enum renderFrame(int32_t _msecs)
 uint32_t frame(bool _capture)
 {
     BGFX_CHECK_API_THREAD();
-    return WebGLContext::s_ctx->frame(_capture);
+    return fakegl::frame(_capture);
 }
 
     Resolution::Resolution()
@@ -318,7 +317,7 @@ uint32_t frame(bool _capture)
 
     bool init(const Init& _init)
     {
-        if (NULL != WebGLContext::s_ctx)
+        if (fakegl::isInited())
         {
             BX_TRACE("bgfx is already initialized.");
             return false;
@@ -401,8 +400,7 @@ uint32_t frame(bool _capture)
 
         errorState = ErrorState::ContextAllocated;
 
-        WebGLContext::s_ctx = BX_ALIGNED_NEW(g_allocator, WebGLContext, 64);
-        if (WebGLContext::s_ctx->init(_init) )
+        if (fakegl::init(_init) )
         {
             BX_TRACE("Init complete.");
             return true;
@@ -413,11 +411,6 @@ uint32_t frame(bool _capture)
 
         switch (errorState)
         {
-            case ErrorState::ContextAllocated:
-                BX_ALIGNED_DELETE(g_allocator, WebGLContext::s_ctx, 64);
-                WebGLContext::s_ctx = NULL;
-                BX_FALLTHROUGH;
-
             case ErrorState::Default:
                 if (NULL != s_callbackStub)
                 {
@@ -459,11 +452,7 @@ uint32_t frame(bool _capture)
         BX_TRACE("Shutdown...");
 
         BGFX_CHECK_API_THREAD();
-        WebGLContext* ctx = WebGLContext::s_ctx; // it's going to be NULLd inside shutdown.
-        ctx->shutdown();
-        BX_CHECK(NULL == s_ctx, "bgfx is should be uninitialized here.");
-
-        BX_ALIGNED_DELETE(g_allocator, ctx, 16);
+        fakegl::shutdown();
 
         BX_TRACE("Shutdown complete.");
 
@@ -493,26 +482,62 @@ uint32_t frame(bool _capture)
     void reset(uint32_t _width, uint32_t _height, uint32_t _flags)
     {
         BGFX_CHECK_API_THREAD();
-        BX_CHECK(0 == (_flags&BGFX_RESET_RESERVED_MASK), "Do not set reset reserved flags!");
-        WebGLContext::s_ctx->reset(_width, _height, _flags);
+        BX_CHECK(0 == (_flags & BGFX_RESET_RESERVED_MASK), "Do not set reset reserved flags!");
+        fakegl::reset(_width, _height, _flags);
     }
 
-//    void clear(GLbitfield mask)
-//    {
-//        BGFX_CHECK_API_THREAD();
-//        WebGLContext::s_ctx->clear(mask);
-//    }
-//
-//    void clearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
-//    {
-//        BGFX_CHECK_API_THREAD();
-//        WebGLContext::s_ctx->clearColor(red, green, blue, alpha);
-//    }
-//
-//    GLuint createBuffer()
-//    {
-//        BGFX_CHECK_API_THREAD();
-//        return WebGLContext::s_ctx->createBuffer();
-//    }
+    const Memory* alloc(uint32_t _size)
+    {
+        BX_CHECK(0 < _size, "Invalid memory operation. _size is 0.");
+        Memory* mem = (Memory*)BX_ALLOC(g_allocator, sizeof(Memory) + _size);
+        mem->size = _size;
+        mem->data = (uint8_t*)mem + sizeof(Memory);
+        return mem;
+    }
+
+    const Memory* copy(const void* _data, uint32_t _size)
+    {
+        BX_CHECK(0 < _size, "Invalid memory operation. _size is 0.");
+        const Memory* mem = alloc(_size);
+        bx::memCopy(mem->data, _data, _size);
+        return mem;
+    }
+
+    struct MemoryRef
+    {
+        Memory mem;
+        ReleaseFn releaseFn;
+        void* userData;
+    };
+
+    const Memory* makeRef(const void* _data, uint32_t _size, ReleaseFn _releaseFn, void* _userData)
+    {
+        MemoryRef* memRef = (MemoryRef*)BX_ALLOC(g_allocator, sizeof(MemoryRef) );
+        memRef->mem.size  = _size;
+        memRef->mem.data  = (uint8_t*)_data;
+        memRef->releaseFn = _releaseFn;
+        memRef->userData  = _userData;
+        return &memRef->mem;
+    }
+
+    bool isMemoryRef(const Memory* _mem)
+    {
+        return _mem->data != (uint8_t*)_mem + sizeof(Memory);
+    }
+
+    void release(const Memory* _mem)
+    {
+        BX_CHECK(NULL != _mem, "_mem can't be NULL");
+        Memory* mem = const_cast<Memory*>(_mem);
+        if (isMemoryRef(mem) )
+        {
+            MemoryRef* memRef = reinterpret_cast<MemoryRef*>(mem);
+            if (NULL != memRef->releaseFn)
+            {
+                memRef->releaseFn(mem->data, memRef->userData);
+            }
+        }
+        BX_FREE(g_allocator, mem);
+    }
 
 } // namespace bgfx

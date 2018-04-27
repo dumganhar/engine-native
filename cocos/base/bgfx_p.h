@@ -68,3 +68,8 @@
 
 #define BGFX_RESET_INTERNAL_FORCE              UINT32_C(0x80000000)
 
+namespace bgfx {
+
+void release(const Memory* _mem);
+
+} // namespace bgfx {

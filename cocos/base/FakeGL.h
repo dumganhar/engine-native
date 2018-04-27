@@ -34,6 +34,8 @@
 ** compliant with the OpenGL(R) version 1.2.1 Specification.
 */
 
+#include "bgfx.h"
+#include "bgfx_platform.h"
 
 #define GL_APIENTRY
 #define GL_API
@@ -626,6 +628,24 @@ GL_API void           GL_APIENTRY glViewport (GLint x, GLint y, GLsizei width, G
 
 GL_API void glDrawBuffer (GLenum mode);
 GL_API void glReadBuffer(GLenum mode);
+
+bool isInited();
+bool init(const bgfx::Init& _init);
+void shutdown();
+
+void apiSemPost();
+bool apiSemWait(int32_t _msecs = -1);
+void renderSemPost();
+void renderSemWait();
+void reset(uint32_t _width, uint32_t _height, uint32_t _flags);
+
+void frameNoRenderWait();
+void swap();
+uint32_t frame(bool _capture);
+
+// render thread
+void flip();
+bgfx::RenderFrame::Enum renderFrame(int32_t _msecs = -1);
 
 } // namespace fakegl {
 

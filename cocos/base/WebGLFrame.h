@@ -88,14 +88,12 @@ public:
         //            }
     }
 
-private:
     CommandBuffer m_cmdPre;
     CommandBuffer m_cmdPost;
 
     int64_t m_waitSubmit;
     int64_t m_waitRender;
 
-    friend class WebGLContext;
 };
 
 } // namespace bgfx {

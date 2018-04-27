@@ -419,7 +419,7 @@ namespace bgfx {
 
     int WebGLRenderContext::getUniformLocation(GLuint program, const GLchar* name)
     {
-
+        return 0;
     }
 
     void WebGLRenderContext::getVertexAttribfv(GLuint index, GLenum pname, GLfloat* params)

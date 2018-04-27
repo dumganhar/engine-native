@@ -295,10 +295,6 @@
 		1AEC72B5208EDFAD00240C0F /* WebGLFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72B2208EDFAD00240C0F /* WebGLFrame.cpp */; };
 		1AEC72B6208EDFAD00240C0F /* WebGLFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72B3208EDFAD00240C0F /* WebGLFrame.h */; };
 		1AEC72B7208EDFAD00240C0F /* WebGLFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72B3208EDFAD00240C0F /* WebGLFrame.h */; };
-		1AEC72BA208EE0B000240C0F /* WebGLContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72B8208EE0B000240C0F /* WebGLContext.cpp */; };
-		1AEC72BB208EE0B000240C0F /* WebGLContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72B8208EE0B000240C0F /* WebGLContext.cpp */; };
-		1AEC72BC208EE0B000240C0F /* WebGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72B9208EE0B000240C0F /* WebGLContext.h */; };
-		1AEC72BD208EE0B000240C0F /* WebGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72B9208EE0B000240C0F /* WebGLContext.h */; };
 		1AEC72BF208EFB3E00240C0F /* bgfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72BE208EFB3E00240C0F /* bgfx.cpp */; };
 		1AEC72C0208EFB3E00240C0F /* bgfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC72BE208EFB3E00240C0F /* bgfx.cpp */; };
 		1AEC72C2208EFB8000240C0F /* bgfx_platform.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AEC72C1208EFB8000240C0F /* bgfx_platform.h */; };
@@ -1296,8 +1292,6 @@
 		1AEC72AD208ED50700240C0F /* WebGLCommandBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebGLCommandBuffer.h; sourceTree = "<group>"; };
 		1AEC72B2208EDFAD00240C0F /* WebGLFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WebGLFrame.cpp; sourceTree = "<group>"; };
 		1AEC72B3208EDFAD00240C0F /* WebGLFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebGLFrame.h; sourceTree = "<group>"; };
-		1AEC72B8208EE0B000240C0F /* WebGLContext.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WebGLContext.cpp; sourceTree = "<group>"; };
-		1AEC72B9208EE0B000240C0F /* WebGLContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebGLContext.h; sourceTree = "<group>"; };
 		1AEC72BE208EFB3E00240C0F /* bgfx.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bgfx.cpp; sourceTree = "<group>"; };
 		1AEC72C1208EFB8000240C0F /* bgfx_platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bgfx_platform.h; sourceTree = "<group>"; };
 		1AEC72C4208EFBCA00240C0F /* bgfx_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bgfx_config.h; sourceTree = "<group>"; };
@@ -2484,8 +2478,6 @@
 				46FDDAEE202ADDCE00931238 /* utlist.h */,
 				1AEC72AC208ED50700240C0F /* WebGLCommandBuffer.cpp */,
 				1AEC72AD208ED50700240C0F /* WebGLCommandBuffer.h */,
-				1AEC72B8208EE0B000240C0F /* WebGLContext.cpp */,
-				1AEC72B9208EE0B000240C0F /* WebGLContext.h */,
 				1AEC72B2208EDFAD00240C0F /* WebGLFrame.cpp */,
 				1AEC72B3208EDFAD00240C0F /* WebGLFrame.h */,
 				1AEC72A9208ED0DB00240C0F /* WebGLRenderContext.cpp */,
@@ -3140,7 +3132,6 @@
 				1A28FF691F20AFAB007A1D9D /* SRConstants.h in Headers */,
 				4DED47E81DFFA4AF0070C5C4 /* b2DynamicTree.h in Headers */,
 				4DED47FE1DFFA4AF0070C5C4 /* b2Shape.h in Headers */,
-				1AEC72BC208EE0B000240C0F /* WebGLContext.h in Headers */,
 				ED3057891BEC773E0083C3ED /* tinyxml2.h in Headers */,
 				4DED481C1DFFA4AF0070C5C4 /* b2Body.h in Headers */,
 				4DED47FC1DFFA4AF0070C5C4 /* b2PolygonShape.h in Headers */,
@@ -3403,7 +3394,6 @@
 				469303812046AE05004A3D6C /* config.hpp in Headers */,
 				4DED47FF1DFFA4AF0070C5C4 /* b2Shape.h in Headers */,
 				BA68D7821D62F4A500B7A3F9 /* utils.h in Headers */,
-				1AEC72BD208EE0B000240C0F /* WebGLContext.h in Headers */,
 				4DED485B1DFFA4AF0070C5C4 /* b2DistanceJoint.h in Headers */,
 				1A28FF9C1F20AFAB007A1D9D /* SRWebSocket.h in Headers */,
 				BA68D7901D62F4A500B7A3F9 /* sweep.h in Headers */,
@@ -3647,7 +3637,6 @@
 				1AEC728A208EC81900240C0F /* allocator.cpp in Sources */,
 				469304122046AE06004A3D6C /* jsb_classtype.cpp in Sources */,
 				50ABBFFF1926664800A911A9 /* CCFileUtils-apple.mm in Sources */,
-				1AEC72BA208EE0B000240C0F /* WebGLContext.cpp in Sources */,
 				4DED48701DFFA4AF0070C5C4 /* b2PrismaticJoint.cpp in Sources */,
 				4DED48681DFFA4AF0070C5C4 /* b2MotorJoint.cpp in Sources */,
 				4617866B2052609B008256E1 /* jsb_cocos2dx_network_auto.cpp in Sources */,
@@ -4040,7 +4029,6 @@
 				4DED47D51DFFA4AF0070C5C4 /* b2BroadPhase.cpp in Sources */,
 				46FDDB66202ADDCE00931238 /* ccRandom.cpp in Sources */,
 				1AEC72B5208EDFAD00240C0F /* WebGLFrame.cpp in Sources */,
-				1AEC72BB208EE0B000240C0F /* WebGLContext.cpp in Sources */,
 				1A28FF841F20AFAB007A1D9D /* SRRandom.m in Sources */,
 				BA68D77E1D62F4A500B7A3F9 /* shapes.cc in Sources */,
 				46FDDA96202ACC6A00931238 /* RendererUtils.cpp in Sources */,

@@ -1,7 +1,1511 @@
 #include "FakeGL.h"
-#include "WebGLContext.h"
+#include "WebGLCommandBuffer.h"
+#include "WebGLRenderContext.h"
+#include "WebGLFrame.h"
+
+#include "bx/platform.h"
+#include "bx/thread.h"
+#include "bx/timer.h"
+
+#include "bgfx.h"
+#include "bgfx_p.h"
+#include "bgfx_platform.h"
+
+#include <unistd.h>
+
+#define BGFX_DEBUG_NONE                  UINT32_C(0x00000000) //!< No debug. //cjh
+#define BGFX_API_THREAD_MAGIC UINT32_C(0x78666762)
+
+namespace bgfx {
+    extern bool s_renderFrameCalled;
+}
+
+using namespace bgfx;
+
+namespace {
+    std::string __strSyncCommandReturn;
+    float __floatSyncCommandReturn[256];
+
+    Frame  m_frame[1+(BGFX_CONFIG_MULTITHREADED ? 1 : 0)];
+    Frame* m_render;
+    Frame* m_submit;
+
+    WebGLRenderContext* m_renderCtx;
+
+    Init     m_init;
+    int64_t  m_frameTimeLast = 0;
+    uint32_t m_frames = 0;
+    uint32_t m_debug = 0;
+
+    bool _isGLContextInitialized = false;
+    bool m_rendererInitialized = false;
+    bool m_exit = false;
+    bool m_flipAfterRender = false;
+    bool m_singleThreaded = false;
+    bool m_flipped = false;
+
+#if BGFX_CONFIG_MULTITHREADED
+    bx::Semaphore m_renderSem;
+    bx::Semaphore m_apiSem;
+    bx::Semaphore m_encoderEndSem;
+    bx::Mutex     m_encoderApiLock;
+    bx::Mutex     m_resourceApiLock;
+    bx::Thread    m_thread;
+#endif
+}
 
 namespace fakegl {
+
+    static int32_t renderThread(bx::Thread* /*_self*/, void* /*_userData*/)
+    {
+        //cjh        BX_TRACE("render thread start");
+        //        BGFX_PROFILER_SET_CURRENT_THREAD_NAME("bgfx - Render Thread");
+        while (RenderFrame::Exiting != bgfx::renderFrame() ) {};
+        //cjh        BX_TRACE("render thread exit");
+        return bx::kExitSuccess;
+    }
+
+    uint32_t frame(bool _capture = false);
+
+    CommandBuffer& getCommandBuffer(CommandBuffer::Enum _cmd)
+    {
+        CommandBuffer& cmdbuf = _cmd < CommandBuffer::End ? m_submit->m_cmdPre : m_submit->m_cmdPost;
+        uint8_t cmd = (uint8_t)_cmd;
+        cmdbuf.write(cmd);
+        return cmdbuf;
+    }
+
+    void reset(uint32_t _width, uint32_t _height, uint32_t _flags)
+    {
+        //cjh        BX_WARN(g_caps.limits.maxTextureSize >= _width
+        //                &&  g_caps.limits.maxTextureSize >= _height
+        //                , "Frame buffer resolution width or height can't be larger than limits.maxTextureSize %d (width %d, height %d)."
+        //                , g_caps.limits.maxTextureSize
+        //                , _width
+        //                , _height
+        //                );
+        //        m_init.resolution.width  = bx::clamp(_width,  1u, g_caps.limits.maxTextureSize);
+        //        m_init.resolution.height = bx::clamp(_height, 1u, g_caps.limits.maxTextureSize);
+        //        m_init.resolution.reset  = 0
+        //        | _flags
+        //        | (g_platformDataChangedSinceReset ? BGFX_RESET_INTERNAL_FORCE : 0)
+        //        ;
+        //        g_platformDataChangedSinceReset = false;
+        //
+        //        m_flipAfterRender = !!(_flags & BGFX_RESET_FLIP_AFTER_RENDER);
+        //
+        //        for (uint32_t ii = 0; ii < BGFX_CONFIG_MAX_VIEWS; ++ii)
+        //        {
+        //            m_view[ii].setFrameBuffer(BGFX_INVALID_HANDLE);
+        //        }
+        //
+        //        for (uint16_t ii = 0, num = m_textureHandle.getNumHandles(); ii < num; ++ii)
+        //        {
+        //            uint16_t textureIdx = m_textureHandle.getHandleAt(ii);
+        //            const TextureRef& textureRef = m_textureRef[textureIdx];
+        //            if (BackbufferRatio::Count != textureRef.m_bbRatio)
+        //            {
+        //                TextureHandle handle = { textureIdx };
+        //                resizeTexture(handle
+        //                              , uint16_t(m_init.resolution.width)
+        //                              , uint16_t(m_init.resolution.height)
+        //                              , textureRef.m_numMips
+        //                              );
+        //                m_init.resolution.reset |= BGFX_RESET_INTERNAL_FORCE;
+        //            }
+        //        }
+    }
+
+#if BGFX_CONFIG_MULTITHREADED
+    void apiSemPost()
+    {
+        if (!m_singleThreaded)
+        {
+            m_apiSem.post();
+        }
+    }
+
+    bool apiSemWait(int32_t _msecs/* = -1*/)
+    {
+        if (m_singleThreaded)
+        {
+            return true;
+        }
+
+        BGFX_PROFILER_SCOPE("bgfx/API thread wait", 0xff2040ff);
+        int64_t start = bx::getHPCounter();
+
+        bool ok = m_apiSem.wait(_msecs);
+        if (ok)
+        {
+            m_render->m_waitSubmit = bx::getHPCounter()-start;
+            //cjh            m_submit->m_perfStats.waitSubmit = m_submit->m_waitSubmit;
+            return true;
+        }
+
+        return false;
+    }
+
+    void renderSemPost()
+    {
+        if (!m_singleThreaded)
+        {
+            m_renderSem.post();
+        }
+    }
+
+    void renderSemWait()
+    {
+        if (!m_singleThreaded)
+        {
+            BGFX_PROFILER_SCOPE("bgfx/Render thread wait", 0xff2040ff);
+            int64_t start = bx::getHPCounter();
+            bool ok = m_renderSem.wait();
+            BX_CHECK(ok, "Semaphore wait failed."); BX_UNUSED(ok);
+            m_submit->m_waitRender = bx::getHPCounter() - start;
+            //cjh            m_submit->m_perfStats.waitRender = m_submit->m_waitRender;
+        }
+    }
+#else
+    void apiSemPost()
+    {
+    }
+
+    bool apiSemWait(int32_t _msecs/* = -1*/)
+    {
+        BX_UNUSED(_msecs);
+        return true;
+    }
+
+    void renderSemPost()
+    {
+    }
+
+    void renderSemWait()
+    {
+    }
+
+    void encoderApiWait()
+    {
+        m_encoderStats[0].cpuTimeBegin = m_encoder[0].m_cpuTimeBegin;
+        m_encoderStats[0].cpuTimeEnd   = m_encoder[0].m_cpuTimeEnd;
+        m_submit->m_perfStats.numEncoders = 1;
+    }
+#endif // BGFX_CONFIG_MULTITHREADED
+
+    bool isInited()
+    {
+        return _isGLContextInitialized;
+    }
+
+    bool init(const Init& _init)
+    {
+        BX_CHECK(!m_rendererInitialized, "Already initialized?");
+
+        m_render = &m_frame[0];
+        m_submit = &m_frame[BGFX_CONFIG_MULTITHREADED ? 1 : 0];
+        m_frames = 0;
+        m_renderCtx = NULL;
+        m_rendererInitialized = false;
+        m_exit = false;
+        m_flipAfterRender = false;
+        m_singleThreaded = false;
+
+        m_init = _init;
+        m_init.resolution.reset &= ~BGFX_RESET_INTERNAL_FORCE;
+
+        m_exit    = false;
+        m_flipped = true;
+        m_frames  = 0;
+        m_debug   = BGFX_DEBUG_NONE;
+        m_frameTimeLast = bx::getHPCounter();
+
+        m_submit->create();
+
+#if BGFX_CONFIG_MULTITHREADED
+        m_render->create();
+
+        if (s_renderFrameCalled)
+        {
+            // When bgfx::renderFrame is called before init render thread
+            // should not be created.
+            BX_TRACE("Application called bgfx::renderFrame directly, not creating render thread.");
+            m_singleThreaded = true
+            //cjh            && ~BGFX_API_THREAD_MAGIC == s_threadIndex
+            ;
+        }
+        else
+        {
+            BX_TRACE("Creating rendering thread.");
+            //cjh            m_thread.init(renderThread, this, 0, "bgfx - renderer backend thread");
+            m_singleThreaded = false;
+        }
+#else
+        BX_TRACE("Multithreaded renderer is disabled.");
+        m_singleThreaded = true;
+#endif // BGFX_CONFIG_MULTITHREADED
+
+        BX_TRACE("Running in %s-threaded mode", m_singleThreaded ? "single" : "multi");
+
+        //cjh        s_threadIndex = BGFX_API_THREAD_MAGIC;
+
+        //cjh        for (uint32_t ii = 0; ii < BX_COUNTOF(m_viewRemap); ++ii)
+        //        {
+        //            m_viewRemap[ii] = ViewId(ii);
+        //        }
+        //
+        //        for (uint32_t ii = 0; ii < BGFX_CONFIG_MAX_VIEWS; ++ii)
+        //        {
+        //            resetView(ViewId(ii) );
+        //        }
+        //
+        //        for (uint32_t ii = 0; ii < BX_COUNTOF(m_clearColor); ++ii)
+        //        {
+        //            m_clearColor[ii][0] = 0.0f;
+        //            m_clearColor[ii][1] = 0.0f;
+        //            m_clearColor[ii][2] = 0.0f;
+        //            m_clearColor[ii][3] = 1.0f;
+        //        }
+        //
+        //        m_declRef.init();
+
+        CommandBuffer& cmdbuf = getCommandBuffer(CommandBuffer::RendererInit);
+        cmdbuf.write(_init);
+
+        frameNoRenderWait();
+
+
+        // Make sure renderer init is called from render thread.
+        // g_caps is initialized and available after this point.
+        frame();
+
+        if (!m_rendererInitialized)
+        {
+            getCommandBuffer(CommandBuffer::RendererShutdownEnd);
+            frame();
+            frame();
+            //cjh            m_declRef.shutdown(m_vertexDeclHandle);
+            m_submit->destroy();
+#if BGFX_CONFIG_MULTITHREADED
+            m_render->destroy();
+#endif // BGFX_CONFIG_MULTITHREADED
+            return false;
+        }
+
+        frame();
+
+        if (BX_ENABLED(BGFX_CONFIG_MULTITHREADED) )
+        {
+            //cjh            m_submit->m_transientVb = createTransientVertexBuffer(_init.limits.transientVbSize);
+            //            m_submit->m_transientIb = createTransientIndexBuffer(_init.limits.transientIbSize);
+            frame();
+        }
+
+        //cjh        g_internalData.caps = getCaps();
+
+        _isGLContextInitialized = true;
+        return true;
+    }
+
+    void shutdown()
+    {
+        getCommandBuffer(CommandBuffer::RendererShutdownBegin);
+        frame();
+
+        //cjh        destroyTransientVertexBuffer(m_submit->m_transientVb);
+        //        destroyTransientIndexBuffer(m_submit->m_transientIb);
+        //        m_textVideoMemBlitter.shutdown();
+        //        m_clearQuad.shutdown();
+        frame();
+
+        if (BX_ENABLED(BGFX_CONFIG_MULTITHREADED) )
+        {
+            frame();
+        }
+
+        frame(); // If any VertexDecls needs to be destroyed.
+
+        getCommandBuffer(CommandBuffer::RendererShutdownEnd);
+        frame();
+
+#if BGFX_CONFIG_MULTITHREADED
+        // Render thread shutdown sequence.
+        renderSemWait(); // Wait for previous frame.
+        apiSemPost();   // OK to set context to NULL.
+        // s_ctx is NULL here.
+        renderSemWait(); // In RenderFrame::Exiting state.
+
+        if (m_thread.isRunning() )
+        {
+            m_thread.shutdown();
+        }
+
+        m_render->destroy();
+#endif // BGFX_CONFIG_MULTITHREADED
+
+        m_submit->destroy();
+        _isGLContextInitialized = false;
+    }
+
+    uint32_t frame(bool _capture)
+    {
+        //cjh        m_encoder[0].end(true);
+
+#if BGFX_CONFIG_MULTITHREADED
+        bx::MutexScope resourceApiScope(m_resourceApiLock);
+
+        //cjh        encoderApiWait();
+        bx::MutexScope encoderApiScope(m_encoderApiLock);
+#else
+        encoderApiWait();
+#endif // BGFX_CONFIG_MULTITHREADED
+
+        //cjh        m_submit->m_capture = _capture;
+
+        BGFX_PROFILER_SCOPE("bgfx/API thread frame", 0xff2040ff);
+        // wait for render thread to finish
+        renderSemWait();
+        frameNoRenderWait();
+
+        //cjh        m_encoder[0].begin(m_submit, 0);
+
+        return m_frames;
+    }
+
+    void frameNoRenderWait()
+    {
+        swap();
+
+        // release render thread
+        apiSemPost();
+    }
+
+    void swap()
+    {
+        //cjh        freeDynamicBuffers();
+        //cjh        m_submit->m_resolution = m_init.resolution;
+        //cjh        m_init.resolution.reset &= ~BGFX_RESET_INTERNAL_FORCE;
+        //cjh        m_submit->m_debug = m_debug;
+        //        m_submit->m_perfStats.numViews = 0;
+
+        //        bx::memCopy(m_submit->m_viewRemap, m_viewRemap, sizeof(m_viewRemap) );
+        //        bx::memCopy(m_submit->m_view, m_view, sizeof(m_view) );
+        //
+        //        if (m_colorPaletteDirty > 0)
+        //        {
+        //            --m_colorPaletteDirty;
+        //            bx::memCopy(m_submit->m_colorPalette, m_clearColor, sizeof(m_clearColor) );
+        //        }
+        //
+        //        freeAllHandles(m_submit);
+        //        m_submit->resetFreeHandles();
+
+        m_submit->finish();
+
+        bx::xchg(m_render, m_submit);
+
+        //cjh        bx::memCopy(m_render->m_occlusion, m_submit->m_occlusion, sizeof(m_submit->m_occlusion) );
+
+        if (!BX_ENABLED(BGFX_CONFIG_MULTITHREADED)
+            ||  m_singleThreaded)
+        {
+            renderFrame();
+        }
+
+        m_frames++;
+        m_submit->start();
+
+        //cjh        bx::memSet(m_seq, 0, sizeof(m_seq) );
+
+        //cjh        m_submit->m_textVideoMem->resize(
+        //                                         m_render->m_textVideoMem->m_small
+        //                                         , m_init.resolution.width
+        //                                         , m_init.resolution.height
+        //                                         );
+
+        int64_t now = bx::getHPCounter();
+        //cjh        m_submit->m_perfStats.cpuTimeFrame = now - m_frameTimeLast;
+        m_frameTimeLast = now;
+    }
+
+    WebGLRenderContext* rendererCreate(const Init& _init)
+    {
+        WebGLRenderContext* renderCtx = new WebGLRenderContext();
+        return renderCtx;
+    }
+
+    void rendererDestroy(WebGLRenderContext* _renderCtx)
+    {
+        if (NULL != _renderCtx)
+        {
+            delete _renderCtx;
+            //            s_rendererCreator[_renderCtx->getRendererType()].destroyFn();
+        }
+    }
+
+    void rendererExecCommands(CommandBuffer& _cmdbuf)
+    {
+        _cmdbuf.reset();
+
+        bool end = false;
+
+        if (NULL == m_renderCtx)
+        {
+            uint8_t command;
+            _cmdbuf.read(command);
+
+            switch (command)
+            {
+                case CommandBuffer::RendererShutdownEnd:
+                    m_exit = true;
+                    return;
+
+                case CommandBuffer::End:
+                    return;
+
+                default:
+                {
+                    BX_CHECK(CommandBuffer::RendererInit == command
+                             , "RendererInit must be the first command in command buffer before initialization. Unexpected command %d?"
+                             , command
+                             );
+                    BX_CHECK(!m_rendererInitialized, "This shouldn't happen! Bad synchronization?");
+
+                    Init init;
+                    _cmdbuf.read(init);
+
+                    m_renderCtx = rendererCreate(init);
+
+                    m_rendererInitialized = NULL != m_renderCtx;
+
+                    if (!m_rendererInitialized)
+                    {
+                        _cmdbuf.read(command);
+                        BX_CHECK(CommandBuffer::End == command, "Unexpected command %d?"
+                                 , command
+                                 );
+                        return;
+                    }
+                }
+                    break;
+            }
+        }
+
+        do
+        {
+            uint8_t command;
+            _cmdbuf.read(command);
+
+            switch (command)
+            {
+                case CommandBuffer::activeTexture:
+                {
+                    GLenum texture;
+                    _cmdbuf.read(texture);
+                    m_renderCtx->activeTexture(texture);
+                }
+                    break;
+
+                case CommandBuffer::attachShader:
+                {
+                    GLuint program;
+                    GLuint shader;
+                    _cmdbuf.read(program);
+                    _cmdbuf.read(shader);
+                    m_renderCtx->attachShader(program, shader);
+                }
+                    break;
+
+                case CommandBuffer::bindAttribLocation:
+                {
+                    GLuint program;
+                    GLuint index;
+                    Memory* m;
+                    _cmdbuf.read(program);
+                    _cmdbuf.read(index);
+                    _cmdbuf.read(m);
+                    const GLchar* name = (const GLchar*)m->data;
+                    m_renderCtx->bindAttribLocation(program, index, name);
+                    release(m);
+                }
+                    break;
+
+                case CommandBuffer::bindBuffer:
+                {
+                    GLenum target;
+                    GLuint buffer;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(buffer);
+                    m_renderCtx->bindBuffer(target, buffer);
+                }
+                    break;
+
+                case CommandBuffer::bindFramebuffer:
+                {
+                    GLenum target;
+                    GLuint framebuffer;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(framebuffer);
+                    m_renderCtx->bindFramebuffer(target, framebuffer);
+                }
+                    break;
+
+                case CommandBuffer::bindRenderbuffer:
+                {
+                    GLenum target;
+                    GLuint renderbuffer;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(renderbuffer);
+                    m_renderCtx->bindRenderbuffer(target, renderbuffer);
+                }
+                    break;
+
+                case CommandBuffer::bindTexture:
+                {
+                    GLenum target;
+                    GLuint texture;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(texture);
+                    m_renderCtx->bindTexture(target, texture);
+                }
+                    break;
+
+                case CommandBuffer::blendColor:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::blendEquation:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::blendEquationSeparate:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::blendFunc:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::blendFuncSeparate:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::bufferData:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::bufferSubData:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::checkFramebufferStatus:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::clear:
+                {
+                    GLbitfield mask;
+                    _cmdbuf.read(mask);
+                    m_renderCtx->clear(mask);
+                }
+                    break;
+
+                case CommandBuffer::clearColor:
+                {
+                    GLclampf red, green, blue, alpha;
+                    _cmdbuf.read(red);
+                    _cmdbuf.read(green);
+                    _cmdbuf.read(blue);
+                    _cmdbuf.read(alpha);
+                    m_renderCtx->clearColor(red, green, blue, alpha);
+                }
+                    break;
+
+                case CommandBuffer::clearDepthf:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::clearStencil:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::colorMask:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::compileShader:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::compressedTexImage2D:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::compressedTexSubImage2D:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::copyTexImage2D:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::copyTexSubImage2D:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::createProgram:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::createShader:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::cullFace:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::deleteBuffers:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::deleteFramebuffers:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::deleteProgram:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::deleteRenderbuffers:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::deleteShader:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::deleteTextures:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::depthFunc:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::depthMask:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::depthRangef:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::detachShader:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::disable:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::disableVertexAttribArray:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::drawArrays:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::drawElements:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::enable:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::enableVertexAttribArray:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::_finish:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::flush:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::framebufferRenderbuffer:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::framebufferTexture2D:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::frontFace:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::genBuffers:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::generateMipmap:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::genFramebuffers:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::genRenderbuffers:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::genTextures:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getActiveAttrib:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getActiveUniform:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getAttachedShaders:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getAttribLocation:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getBooleanv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getBufferParameteriv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getError:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getFloatv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getFramebufferAttachmentParameteriv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getIntegerv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getProgramiv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getProgramInfoLog:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getRenderbufferParameteriv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getShaderiv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getShaderInfoLog:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getShaderPrecisionFormat:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getShaderSource:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getString:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getTexParameterfv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getTexParameteriv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getUniformfv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getUniformiv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getUniformLocation:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getVertexAttribfv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getVertexAttribiv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::getVertexAttribPointerv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::hint:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::isBuffer:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::isEnabled:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::isFramebuffer:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::isProgram:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::isRenderbuffer:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::isShader:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::isTexture:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::lineWidth:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::linkProgram:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::pixelStorei:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::polygonOffset:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::readPixels:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::releaseShaderCompiler:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::renderbufferStorage:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::sampleCoverage:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::scissor:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::shaderBinary:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::shaderSource:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::stencilFunc:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::stencilFuncSeparate:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::stencilMask:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::stencilMaskSeparate:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::stencilOp:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::stencilOpSeparate:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::texImage2D:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::texParameterf:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::texParameterfv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::texParameteri:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::texParameteriv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::texSubImage2D:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform1f:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform1fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform1i:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform1iv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform2f:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform2fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform2i:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform2iv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform3f:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform3fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform3i:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform3iv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform4f:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform4fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform4i:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniform4iv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniformMatrix2fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniformMatrix3fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::uniformMatrix4fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::useProgram:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::validateProgram:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::vertexAttrib1f:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::vertexAttrib1fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::vertexAttrib2f:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::vertexAttrib2fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::vertexAttrib3f:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::vertexAttrib3fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::vertexAttrib4f:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::vertexAttrib4fv:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::vertexAttribPointer:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::viewport:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::drawBuffer:
+                {
+
+                }
+                    break;
+
+                case CommandBuffer::readBuffer:
+                {
+
+                }
+                    break;
+
+
+                case CommandBuffer::RendererShutdownBegin:
+                {
+                    BX_CHECK(m_rendererInitialized, "This shouldn't happen! Bad synchronization?");
+                    m_rendererInitialized = false;
+                }
+                    break;
+
+                case CommandBuffer::RendererShutdownEnd:
+                {
+                    BX_CHECK(!m_rendererInitialized && !m_exit, "This shouldn't happen! Bad synchronization?");
+
+                    rendererDestroy(m_renderCtx);
+                    m_renderCtx = NULL;
+
+                    m_exit = true;
+                }
+                    BX_FALLTHROUGH;
+
+                case CommandBuffer::End:
+                    end = true;
+                    break;
+
+                default:
+                    break;
+            }
+
+
+        } while (!end);
+    }
+
+    void flip()
+    {
+        if (m_rendererInitialized
+            && !m_flipped)
+        {
+            m_renderCtx->flip();
+            m_flipped = true;
+
+            if (m_renderCtx->isDeviceRemoved() )
+            {
+                // Something horribly went wrong, fallback to noop renderer.
+                rendererDestroy(m_renderCtx);
+
+                Init init;
+                init.type = RendererType::Noop;
+                m_renderCtx = rendererCreate(init);
+                //cjh                g_caps.rendererType = RendererType::Noop;
+            }
+        }
+    }
+
+    RenderFrame::Enum renderFrame(int32_t _msecs)
+    {
+        BGFX_PROFILER_SCOPE("bgfx::renderFrame", 0xff2040ff);
+
+        if (!m_flipAfterRender)
+        {
+            BGFX_PROFILER_SCOPE("bgfx/flip", 0xff2040ff);
+            if (m_flipped)
+            {
+                static int sss = 0;
+                printf("Sync command called!: %d\n", ++sss);
+            }
+            flip();
+        }
+
+        if (apiSemWait(_msecs) )
+        {
+            {
+                BGFX_PROFILER_SCOPE("bgfx/Exec commands pre", 0xff2040ff);
+                rendererExecCommands(m_render->m_cmdPre);
+            }
+
+            if (m_rendererInitialized)
+            {
+                BGFX_PROFILER_SCOPE("bgfx/Render submit", 0xff2040ff);
+                //cjh                m_renderCtx->submit(m_render, m_clearQuad, m_textVideoMemBlitter);
+                m_flipped = false;
+            }
+
+            {
+                BGFX_PROFILER_SCOPE("bgfx/Exec commands post", 0xff2040ff);
+                rendererExecCommands(m_render->m_cmdPost);
+            }
+
+            renderSemPost();
+
+            if (m_flipAfterRender)
+            {
+                BGFX_PROFILER_SCOPE("bgfx/flip", 0xff2040ff);
+                flip();
+            }
+        }
+        else
+        {
+            return RenderFrame::Timeout;
+        }
+
+        return m_exit
+        ? RenderFrame::Exiting
+        : RenderFrame::Render
+        ;
+    }
+
+
+// OPENGL API IMPLEMENTATION BEGIN
 
 void glActiveTexture(GLenum texture)
 {
@@ -360,7 +1864,7 @@ void glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar* 
 
 const GLubyte* glGetString(GLenum name)
 {
-    return WebGLContext::s_ctx->getString(name);
+    return 0;
 }
 
 void glGetTexParameterfv(GLenum target, GLenum pname, GLfloat* params)

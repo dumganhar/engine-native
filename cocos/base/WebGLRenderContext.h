@@ -108,7 +108,6 @@ public:
     void getRenderbufferParameteriv(GLenum target, GLenum pname, GLint* params);
     void getShaderiv(GLuint shader, GLenum pname, GLint* params);
     void getShaderInfoLog(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar* infolog);
-    void getShaderPrecisionFormat(GLenum shadertype, GLenum precisiontype, GLint* range, GLint* precision);
     void getShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar* source);
     const GLubyte* getString(GLenum name);
     void getTexParameterfv(GLenum target, GLenum pname, GLfloat* params);
@@ -132,11 +131,9 @@ public:
     void pixelStorei(GLenum pname, GLint param);
     void polygonOffset(GLfloat factor, GLfloat units);
     void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* pixels);
-    void releaseShaderCompiler(void);
     void renderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
     void sampleCoverage(GLclampf value, GLboolean invert);
     void scissor(GLint x, GLint y, GLsizei width, GLsizei height);
-    void shaderBinary(GLsizei n, const GLuint* shaders, GLenum binaryformat, const GLvoid* binary, GLsizei length);
     void shaderSource(GLuint shader, GLsizei count, const GLchar* const *string, const GLint* length);
     void stencilFunc(GLenum func, GLint ref, GLuint mask);
     void stencilFuncSeparate(GLenum face, GLenum func, GLint ref, GLuint mask);

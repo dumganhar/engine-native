@@ -24,6 +24,7 @@ using namespace bgfx;
 
 namespace {
     std::string __strSyncCommandReturn;
+    GLint __intSyncCommandReturn[256];
     float __floatSyncCommandReturn[256];
 
     Frame  m_frame[1+(BGFX_CONFIG_MULTITHREADED ? 1 : 0)];
@@ -592,37 +593,66 @@ namespace fakegl {
 
                 case CommandBuffer::blendEquationSeparate:
                 {
-
+                    GLenum modeRGB, modeAlpha;
+                    _cmdbuf.read(modeRGB);
+                    _cmdbuf.read(modeAlpha);
+                    m_renderCtx->blendEquationSeparate(modeRGB, modeAlpha);
                 }
                     break;
 
                 case CommandBuffer::blendFunc:
                 {
-
+                    GLenum sfactor;
+                    GLenum dfactor;
+                    _cmdbuf.read(sfactor);
+                    _cmdbuf.read(dfactor);
+                    m_renderCtx->blendFunc(sfactor, dfactor);
                 }
                     break;
 
                 case CommandBuffer::blendFuncSeparate:
                 {
-
+                    GLenum srcRGB, dstRGB, srcAlpha, dstAlpha;
+                    _cmdbuf.read(srcRGB);
+                    _cmdbuf.read(dstRGB);
+                    _cmdbuf.read(srcAlpha);
+                    _cmdbuf.read(dstAlpha);
+                    m_renderCtx->blendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
                 }
                     break;
 
                 case CommandBuffer::bufferData:
                 {
-
+                    GLenum target;
+                    const Memory* memory;
+                    GLenum usage;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(memory);
+                    _cmdbuf.read(usage);
+                    m_renderCtx->bufferData(target, memory->size, memory->data, usage);
+                    release(memory);
                 }
                     break;
 
                 case CommandBuffer::bufferSubData:
                 {
-
+                    GLenum target;
+                    GLintptr offset;
+                    const Memory* memory;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(offset);
+                    _cmdbuf.read(memory);
+                    m_renderCtx->bufferSubData(target, offset, memory->size, memory->data);
+                    release(memory);
                 }
                     break;
 
                 case CommandBuffer::checkFramebufferStatus:
                 {
-
+                    GLenum target;
+                    _cmdbuf.read(target);
+                    GLenum status = m_renderCtx->checkFramebufferStatus(target);
+                    __intSyncCommandReturn[0] = status;
                 }
                     break;
 
@@ -647,247 +677,480 @@ namespace fakegl {
 
                 case CommandBuffer::clearDepthf:
                 {
-
+                    GLclampf depth;
+                    _cmdbuf.read(depth);
+                    m_renderCtx->clearDepthf(depth);
                 }
                     break;
 
                 case CommandBuffer::clearStencil:
                 {
-
+                    GLint s;
+                    _cmdbuf.read(s);
+                    m_renderCtx->clearStencil(s);
                 }
                     break;
 
                 case CommandBuffer::colorMask:
                 {
-
+                    GLboolean red, green, blue, alpha;
+                    _cmdbuf.read(red);
+                    _cmdbuf.read(green);
+                    _cmdbuf.read(blue);
+                    _cmdbuf.read(alpha);
+                    m_renderCtx->colorMask(red, green, blue, alpha);
                 }
                     break;
 
                 case CommandBuffer::compileShader:
                 {
-
+                    GLuint shader;
+                    _cmdbuf.read(shader);
+                    m_renderCtx->compileShader(shader);
                 }
                     break;
 
                 case CommandBuffer::compressedTexImage2D:
                 {
-
+                    GLenum target;
+                    GLint level;
+                    GLenum internalformat;
+                    GLsizei width;
+                    GLsizei height;
+                    GLint border;
+                    Memory* memory;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(level);
+                    _cmdbuf.read(internalformat);
+                    _cmdbuf.read(width);
+                    _cmdbuf.read(height);
+                    _cmdbuf.read(border);
+                    _cmdbuf.read(memory);
+                    m_renderCtx->compressedTexImage2D(target, level, internalformat, width, height, border, memory->size, memory->data);
+                    release(memory);
                 }
                     break;
 
                 case CommandBuffer::compressedTexSubImage2D:
                 {
-
+                    GLenum target;
+                    GLint level;
+                    GLint xoffset;
+                    GLint yoffset;
+                    GLsizei width;
+                    GLsizei height;
+                    GLenum format;
+                    Memory* memory;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(level);
+                    _cmdbuf.read(xoffset);
+                    _cmdbuf.read(yoffset);
+                    _cmdbuf.read(width);
+                    _cmdbuf.read(height);
+                    _cmdbuf.read(format);
+                    _cmdbuf.read(memory);
+                    m_renderCtx->compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, memory->size, memory->data);
+                    release(memory);
                 }
                     break;
 
                 case CommandBuffer::copyTexImage2D:
                 {
-
+                    GLenum target;
+                    GLint level;
+                    GLenum internalformat;
+                    GLint x;
+                    GLint y;
+                    GLsizei width;
+                    GLsizei height;
+                    GLint border;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(level);
+                    _cmdbuf.read(internalformat);
+                    _cmdbuf.read(x);
+                    _cmdbuf.read(y);
+                    _cmdbuf.read(width);
+                    _cmdbuf.read(height);
+                    _cmdbuf.read(border);
+                    m_renderCtx->copyTexImage2D(target, level, internalformat, x, y, width, height, border);
                 }
                     break;
 
                 case CommandBuffer::copyTexSubImage2D:
                 {
-
+                    GLenum target;
+                    GLint level;
+                    GLint xoffset;
+                    GLint yoffset;
+                    GLint x;
+                    GLint y;
+                    GLsizei width;
+                    GLsizei height;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(level);
+                    _cmdbuf.read(xoffset);
+                    _cmdbuf.read(yoffset);
+                    _cmdbuf.read(x);
+                    _cmdbuf.read(y);
+                    _cmdbuf.read(width);
+                    _cmdbuf.read(height);
+                    m_renderCtx->copyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
                 }
                     break;
 
                 case CommandBuffer::createProgram:
                 {
-
+                    GLuint id = m_renderCtx->createProgram();
+                    __intSyncCommandReturn[0] = id;
                 }
                     break;
 
                 case CommandBuffer::createShader:
                 {
-
+                    GLenum type;
+                    _cmdbuf.read(type);
+                    GLuint id = m_renderCtx->createShader(type);
+                    __intSyncCommandReturn[0] = id;
                 }
                     break;
 
                 case CommandBuffer::cullFace:
                 {
-
+                    GLenum mode;
+                    _cmdbuf.read(mode);
+                    m_renderCtx->cullFace(mode);
                 }
                     break;
 
                 case CommandBuffer::deleteBuffers:
                 {
-
+                    GLsizei n;
+                    const Memory* buffers;
+                    _cmdbuf.read(n);
+                    _cmdbuf.read(buffers);
+                    m_renderCtx->deleteBuffers(n, (const GLuint*)buffers->data);
+                    release(buffers);
                 }
                     break;
 
                 case CommandBuffer::deleteFramebuffers:
                 {
-
+                    GLsizei n;
+                    const Memory* buffers;
+                    _cmdbuf.read(n);
+                    _cmdbuf.read(buffers);
+                    m_renderCtx->deleteFramebuffers(n, (const GLuint*)buffers->data);
+                    release(buffers);
                 }
                     break;
 
                 case CommandBuffer::deleteProgram:
                 {
-
+                    GLuint program;
+                    _cmdbuf.read(program);
+                    m_renderCtx->deleteProgram(program);
                 }
                     break;
 
                 case CommandBuffer::deleteRenderbuffers:
                 {
-
+                    GLsizei n;
+                    const Memory* buffers;
+                    _cmdbuf.read(n);
+                    _cmdbuf.read(buffers);
+                    m_renderCtx->deleteRenderbuffers(n, (const GLuint*)buffers->data);
+                    release(buffers);
                 }
                     break;
 
                 case CommandBuffer::deleteShader:
                 {
-
+                    GLuint shader;
+                    _cmdbuf.read(shader);
+                    m_renderCtx->deleteShader(shader);
                 }
                     break;
 
                 case CommandBuffer::deleteTextures:
                 {
-
+                    GLsizei n;
+                    const Memory* buffers;
+                    _cmdbuf.read(n);
+                    _cmdbuf.read(buffers);
+                    m_renderCtx->deleteTextures(n, (const GLuint*)buffers->data);
+                    release(buffers);
                 }
                     break;
 
                 case CommandBuffer::depthFunc:
                 {
-
+                    GLenum func;
+                    _cmdbuf.read(func);
+                    m_renderCtx->depthFunc(func);
                 }
                     break;
 
                 case CommandBuffer::depthMask:
                 {
-
+                    GLboolean flag;
+                    _cmdbuf.read(flag);
+                    m_renderCtx->depthMask(flag);
                 }
                     break;
 
                 case CommandBuffer::depthRangef:
                 {
-
+                    GLclampf zNear;
+                    GLclampf zFar;
+                    _cmdbuf.read(zNear);
+                    _cmdbuf.read(zFar);
+                    m_renderCtx->depthRangef(zNear, zFar);
                 }
                     break;
 
                 case CommandBuffer::detachShader:
                 {
-
+                    GLuint program;
+                    GLuint shader;
+                    _cmdbuf.read(program);
+                    _cmdbuf.read(shader);
+                    m_renderCtx->detachShader(program, shader);
                 }
                     break;
 
                 case CommandBuffer::disable:
                 {
-
+                    GLenum cap;
+                    _cmdbuf.read(cap);
+                    m_renderCtx->disable(cap);
                 }
                     break;
 
                 case CommandBuffer::disableVertexAttribArray:
                 {
-
+                    GLuint index;
+                    _cmdbuf.read(index);
+                    m_renderCtx->disableVertexAttribArray(index);
                 }
                     break;
 
                 case CommandBuffer::drawArrays:
                 {
-
+                    GLenum mode;
+                    GLint first;
+                    GLsizei count;
+                    _cmdbuf.read(mode);
+                    _cmdbuf.read(first);
+                    _cmdbuf.read(count);
+                    m_renderCtx->drawArrays(mode, first, count);
                 }
                     break;
 
                 case CommandBuffer::drawElements:
                 {
-
+                    GLenum mode;
+                    GLsizei count;
+                    GLenum type;
+                    const GLvoid *indices;
+                    _cmdbuf.read(mode);
+                    _cmdbuf.read(count);
+                    _cmdbuf.read(type);
+                    _cmdbuf.read(indices);
+                    m_renderCtx->drawElements(mode, count, type, indices);
                 }
                     break;
 
                 case CommandBuffer::enable:
                 {
-
+                    GLenum cap;
+                    _cmdbuf.read(cap);
+                    m_renderCtx->enable(cap);
                 }
                     break;
 
                 case CommandBuffer::enableVertexAttribArray:
                 {
-
+                    GLuint index;
+                    _cmdbuf.read(index);
+                    m_renderCtx->enableVertexAttribArray(index);
                 }
                     break;
 
                 case CommandBuffer::_finish:
                 {
-
+                    m_renderCtx->finish();
                 }
                     break;
 
                 case CommandBuffer::flush:
                 {
-
+                    m_renderCtx->flush();
                 }
                     break;
 
                 case CommandBuffer::framebufferRenderbuffer:
                 {
-
+                    GLenum target;
+                    GLenum attachment;
+                    GLenum renderbuffertarget;
+                    GLuint renderbuffer;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(attachment);
+                    _cmdbuf.read(renderbuffertarget);
+                    _cmdbuf.read(renderbuffer);
+                    m_renderCtx->framebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
                 }
                     break;
 
                 case CommandBuffer::framebufferTexture2D:
                 {
-
+                    GLenum target;
+                    GLenum attachment;
+                    GLenum textarget;
+                    GLuint texture;
+                    GLint level;
+                    _cmdbuf.read(target);
+                    _cmdbuf.read(attachment);
+                    _cmdbuf.read(textarget);
+                    _cmdbuf.read(texture);
+                    _cmdbuf.read(level);
+                    m_renderCtx->framebufferTexture2D(target, attachment, textarget, texture, level);
                 }
                     break;
 
                 case CommandBuffer::frontFace:
                 {
-
+                    GLenum mode;
+                    _cmdbuf.read(mode);
+                    m_renderCtx->frontFace(mode);
                 }
                     break;
 
                 case CommandBuffer::genBuffers:
                 {
-
+                    GLsizei n;
+                    _cmdbuf.read(n);
+                    assert(n < sizeof(__intSyncCommandReturn) / sizeof(__intSyncCommandReturn[0]));
+                    m_renderCtx->genBuffers(n, (GLuint*)__intSyncCommandReturn);
                 }
                     break;
 
                 case CommandBuffer::generateMipmap:
                 {
-
+                    GLenum target;
+                    _cmdbuf.read(target);
+                    m_renderCtx->generateMipmap(target);
                 }
                     break;
 
                 case CommandBuffer::genFramebuffers:
                 {
-
+                    GLsizei n;
+                    _cmdbuf.read(n);
+                    assert(n < sizeof(__intSyncCommandReturn) / sizeof(__intSyncCommandReturn[0]));
+                    m_renderCtx->genFramebuffers(n, (GLuint*)__intSyncCommandReturn);
                 }
                     break;
 
                 case CommandBuffer::genRenderbuffers:
                 {
-
+                    GLsizei n;
+                    _cmdbuf.read(n);
+                    assert(n < sizeof(__intSyncCommandReturn) / sizeof(__intSyncCommandReturn[0]));
+                    m_renderCtx->genRenderbuffers(n, (GLuint*)__intSyncCommandReturn);
                 }
                     break;
 
                 case CommandBuffer::genTextures:
                 {
-
+                    GLsizei n;
+                    _cmdbuf.read(n);
+                    assert(n < sizeof(__intSyncCommandReturn) / sizeof(__intSyncCommandReturn[0]));
+                    m_renderCtx->genTextures(n, (GLuint*)__intSyncCommandReturn);
                 }
                     break;
 
                 case CommandBuffer::getActiveAttrib:
                 {
+                    GLuint program;
+                    GLuint index;
+                    GLsizei bufsize;
+                    _cmdbuf.read(program);
+                    _cmdbuf.read(index);
+                    _cmdbuf.read(bufsize);
 
+                    GLsizei length = 0;
+                    GLint size = 0;
+                    GLenum type = 0;
+                    m_renderCtx->getProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length);
+                    GLchar* name = new (std::nothrow) GLchar[length];
+
+                    m_renderCtx->getActiveAttrib(program, index, bufsize, &length, &size, &type, name);
+                    __intSyncCommandReturn[0] = length;
+                    __intSyncCommandReturn[1] = size;
+                    __intSyncCommandReturn[2] = type;
+                    __strSyncCommandReturn = (const char*)name;
+                    free(name);
                 }
                     break;
 
                 case CommandBuffer::getActiveUniform:
                 {
+                    GLuint program;
+                    GLuint index;
+                    GLsizei bufsize;
+                    _cmdbuf.read(program);
+                    _cmdbuf.read(index);
+                    _cmdbuf.read(bufsize);
 
+                    GLsizei length = 0;
+                    GLint size = 0;
+                    GLenum type = 0;
+                    m_renderCtx->getProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length);
+                    GLchar* name = new (std::nothrow) GLchar[length];
+
+                    m_renderCtx->getActiveUniform(program, index, bufsize, &length, &size, &type, name);
+                    __intSyncCommandReturn[0] = length;
+                    __intSyncCommandReturn[1] = size;
+                    __intSyncCommandReturn[2] = type;
+                    __strSyncCommandReturn = (const char*)name;
+                    free(name);
                 }
                     break;
 
                 case CommandBuffer::getAttachedShaders:
                 {
+                    GLuint program;
+                    GLsizei maxcount;
+                    _cmdbuf.read(program);
+                    _cmdbuf.read(maxcount);
 
+                    GLsizei length;
+                    m_renderCtx->getProgramiv(program, GL_ATTACHED_SHADERS, &length);
+
+                    GLuint* buffer = new (std::nothrow) GLuint[length];
+                    memset(buffer, 0, length * sizeof(GLuint));
+
+                    GLsizei count = 0;
+                    m_renderCtx->getAttachedShaders(program, maxcount, &count, buffer);
+                    __intSyncCommandReturn[0] = count;
+                    assert(count < sizeof(__intSyncCommandReturn) / sizeof(__intSyncCommandReturn[0]));
+                    for (GLsizei i = 0; i < count; ++i)
+                    {
+                        __intSyncCommandReturn[i+1] = buffer[i];
+                    }
                 }
                     break;
 
                 case CommandBuffer::getAttribLocation:
                 {
-
+                    GLuint program;
+                    const Memory *name;
+                    _cmdbuf.read(program);
+                    _cmdbuf.read(name);
+                    int location = m_renderCtx->getAttribLocation(program, (const GLchar*)name->data);
+                    __intSyncCommandReturn[0] = location;
+                    release(name);
                 }
                     break;
 

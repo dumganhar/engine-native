@@ -11,8 +11,8 @@ namespace bgfx {
 
 #if BGFX_CONFIG_MULTITHREADED
 #    define BGFX_CHECK_API_THREAD() \
-BX_CHECK(NULL != s_ctx, "Library is not initialized yet."); \
-BX_CHECK(BGFX_API_THREAD_MAGIC == s_threadIndex, "Must be called from main thread.")
+BX_CHECK(fakegl::isInited(), "Library is not initialized yet."); \
+//cjh BX_CHECK(BGFX_API_THREAD_MAGIC == s_threadIndex, "Must be called from main thread.")
 #    define BGFX_CHECK_RENDER_THREAD() BX_CHECK(BGFX_API_THREAD_MAGIC != s_threadIndex, "Must be called from render thread.")
 #else
 #    define BGFX_CHECK_API_THREAD()
@@ -482,7 +482,7 @@ uint32_t frame(bool _capture)
     void reset(uint32_t _width, uint32_t _height, uint32_t _flags)
     {
         BGFX_CHECK_API_THREAD();
-        BX_CHECK(0 == (_flags & BGFX_RESET_RESERVED_MASK), "Do not set reset reserved flags!");
+//cjh        BX_CHECK(0 == (_flags & BGFX_RESET_RESERVED_MASK), "Do not set reset reserved flags!");
         fakegl::reset(_width, _height, _flags);
     }
 

@@ -92,11 +92,11 @@ namespace
         init.resolution.reset  = 0;
         bgfx::init(init);
 
-        se::ScriptEngine* se = se::ScriptEngine::getInstance();
-        se->addRegisterCallback(setCanvasCallback);
-
-        if(!app->applicationDidFinishLaunching())
-            return -1;
+//cjh        se::ScriptEngine* se = se::ScriptEngine::getInstance();
+//        se->addRegisterCallback(setCanvasCallback);
+//
+//        if(!app->applicationDidFinishLaunching())
+//            return -1;
 
         float r = 0;
         float g = 0;
@@ -125,11 +125,11 @@ namespace
                 r = 0.0f;
             }
 
-            app->_scheduler->update(dt);
-            EventDispatcher::dispatchTickEvent(dt);
+//cjh            app->_scheduler->update(dt);
+//            EventDispatcher::dispatchTickEvent(dt);
 
-//cjh            bgfx::clearColor(r, g, b, 1);
-//            bgfx::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            fakegl::glClearColor(r, g, b, 1);
+            fakegl::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 //            GLuint id = bgfx::createBuffer();
 //            printf("bgfx::createBuffer returns: %u\n", id);
             bgfx::frame();

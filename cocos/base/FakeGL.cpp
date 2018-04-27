@@ -202,6 +202,8 @@ namespace fakegl {
     {
         BX_CHECK(!m_rendererInitialized, "Already initialized?");
 
+        _isGLContextInitialized = true;
+
         m_render = &m_frame[0];
         m_submit = &m_frame[BGFX_CONFIG_MULTITHREADED ? 1 : 0];
         m_frames = 0;
@@ -230,7 +232,7 @@ namespace fakegl {
             // When bgfx::renderFrame is called before init render thread
             // should not be created.
             BX_TRACE("Application called bgfx::renderFrame directly, not creating render thread.");
-            m_singleThreaded = true
+//cjh            m_singleThreaded = true
             //cjh            && ~BGFX_API_THREAD_MAGIC == s_threadIndex
             ;
         }
@@ -274,7 +276,6 @@ namespace fakegl {
 
         frameNoRenderWait();
 
-
         // Make sure renderer init is called from render thread.
         // g_caps is initialized and available after this point.
         frame();
@@ -303,7 +304,7 @@ namespace fakegl {
 
         //cjh        g_internalData.caps = getCaps();
 
-        _isGLContextInitialized = true;
+
         return true;
     }
 
@@ -572,13 +573,20 @@ namespace fakegl {
 
                 case CommandBuffer::blendColor:
                 {
-
+                    GLfloat red, green, blue, alpha;
+                    _cmdbuf.read(red);
+                    _cmdbuf.read(green);
+                    _cmdbuf.read(blue);
+                    _cmdbuf.read(alpha);
+                    m_renderCtx->blendColor(red, green, blue, alpha);
                 }
                     break;
 
                 case CommandBuffer::blendEquation:
                 {
-
+                    GLenum mode;
+                    _cmdbuf.read(mode);
+                    m_renderCtx->blendEquation(mode);
                 }
                     break;
 
@@ -1584,12 +1592,17 @@ GLenum glCheckFramebufferStatus(GLenum target)
 
 void glClear(GLbitfield mask)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::clear);
+    cmd.write(mask);
 }
 
 void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::clearColor);
+    cmd.write(red);
+    cmd.write(green);
+    cmd.write(blue);
+    cmd.write(alpha);
 }
 
 void glClearDepthf(GLclampf depth)

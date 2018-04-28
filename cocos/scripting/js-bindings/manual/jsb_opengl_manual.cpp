@@ -1912,18 +1912,6 @@ static bool JSB_glReadPixels(se::State& s) {
 }
 SE_BIND_FUNC(JSB_glReadPixels)
 
-// Arguments:
-// Ret value: void
-static bool JSB_glReleaseShaderCompiler(se::State& s) {
-    const auto& args = s.args();
-    int argc = (int)args.size();
-    SE_PRECONDITION2( argc == 0, false, "Invalid number of arguments" );
-    JSB_GL_CHECK(glReleaseShaderCompiler( ));
-
-    return true;
-}
-SE_BIND_FUNC(JSB_glReleaseShaderCompiler)
-
 // Arguments: GLenum, GLenum, GLsizei, GLsizei
 // Ret value: void
 static bool JSB_glRenderbufferStorage(se::State& s) {
@@ -4469,7 +4457,6 @@ bool JSB_register_opengl(se::Object* obj)
     __glObj->defineFunction("pixelStorei", _SE(JSB_glPixelStorei));
     __glObj->defineFunction("polygonOffset", _SE(JSB_glPolygonOffset));
     __glObj->defineFunction("readPixels", _SE(JSB_glReadPixels));
-    __glObj->defineFunction("releaseShaderCompiler", _SE(JSB_glReleaseShaderCompiler));
     __glObj->defineFunction("renderbufferStorage", _SE(JSB_glRenderbufferStorage));
     __glObj->defineFunction("sampleCoverage", _SE(JSB_glSampleCoverage));
     __glObj->defineFunction("scissor", _SE(JSB_glScissor));

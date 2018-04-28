@@ -1082,9 +1082,7 @@ namespace fakegl {
                     GLsizei length = 0;
                     GLint size = 0;
                     GLenum type = 0;
-                    m_renderCtx->getProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length);
-                    GLchar* name = new (std::nothrow) GLchar[length];
-
+                    GLchar* name = new (std::nothrow) GLchar[bufsize];
                     m_renderCtx->getActiveAttrib(program, index, bufsize, &length, &size, &type, name);
                     __intSyncCommandReturn[0] = length;
                     __intSyncCommandReturn[1] = size;
@@ -1106,8 +1104,7 @@ namespace fakegl {
                     GLsizei length = 0;
                     GLint size = 0;
                     GLenum type = 0;
-                    m_renderCtx->getProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length);
-                    GLchar* name = new (std::nothrow) GLchar[length];
+                    GLchar* name = new (std::nothrow) GLchar[bufsize];
 
                     m_renderCtx->getActiveUniform(program, index, bufsize, &length, &size, &type, name);
                     __intSyncCommandReturn[0] = length;
@@ -1125,12 +1122,7 @@ namespace fakegl {
                     _cmdbuf.read(program);
                     _cmdbuf.read(maxcount);
 
-                    GLsizei length;
-                    m_renderCtx->getProgramiv(program, GL_ATTACHED_SHADERS, &length);
-
-                    GLuint* buffer = new (std::nothrow) GLuint[length];
-                    memset(buffer, 0, length * sizeof(GLuint));
-
+                    GLuint* buffer = new (std::nothrow) GLuint[maxcount];
                     GLsizei count = 0;
                     m_renderCtx->getAttachedShaders(program, maxcount, &count, buffer);
                     __intSyncCommandReturn[0] = count;
@@ -1209,11 +1201,9 @@ namespace fakegl {
                 case CommandBuffer::getIntegerv:
                 {
                     GLenum pname;
-                    GLsizei count;
                     _cmdbuf.read(pname);
-                    _cmdbuf.read(count);
-                    assert(count < sizeof(__intSyncCommandReturn) / sizeof(__intSyncCommandReturn[0]));
                     m_renderCtx->getIntegerv(pname, __intSyncCommandReturn);
+                    //FIXME: how to determine how many integer value opengl actually returns.
                 }
                     break;
 
@@ -1221,12 +1211,10 @@ namespace fakegl {
                 {
                     GLuint program;
                     GLenum pname;
-                    GLuint count;
                     _cmdbuf.read(program);
                     _cmdbuf.read(pname);
-                    _cmdbuf.read(count);
-                    assert(count < sizeof(__intSyncCommandReturn) / sizeof(__intSyncCommandReturn[0]));
                     m_renderCtx->getProgramiv(program, pname, __intSyncCommandReturn);
+                    //FIXME: how to determine how many integer value opengl actually returns.
                 }
                     break;
 
@@ -1239,6 +1227,7 @@ namespace fakegl {
                     GLsizei length;
                     GLchar* infolog = (GLchar*)malloc(bufsize);
                     m_renderCtx->getProgramInfoLog(program, bufsize, &length, infolog);
+                    __intSyncCommandReturn[0] = (GLint)length;
                     __strSyncCommandReturn = infolog;
                     free(infolog);
                 }
@@ -1331,18 +1320,11 @@ namespace fakegl {
                 {
                     GLuint program;
                     GLint location;
-                    GLsizei floatCount;
+                    GLfloat* params;
                     _cmdbuf.read(program);
                     _cmdbuf.read(location);
-                    _cmdbuf.read(floatCount);
-                    assert(floatCount < sizeof(__floatSyncCommandReturn)/sizeof(__floatSyncCommandReturn[0]));
-                    GLfloat* params = (GLfloat*)malloc(sizeof(GLfloat) * floatCount);
+                    _cmdbuf.read(params);
                     m_renderCtx->getUniformfv(program, location, params);
-                    for (GLsizei i = 0; i < floatCount; ++i)
-                    {
-                        __floatSyncCommandReturn[i] = params[i];
-                    }
-                    free(params);
                 }
                     break;
 
@@ -1350,28 +1332,21 @@ namespace fakegl {
                 {
                     GLuint program;
                     GLint location;
-                    GLsizei intCount;
+                    GLint* params;
                     _cmdbuf.read(program);
                     _cmdbuf.read(location);
-                    _cmdbuf.read(intCount);
-                    assert(intCount < sizeof(__intSyncCommandReturn)/sizeof(__intSyncCommandReturn[0]));
-                    GLint* params = (GLint*)malloc(sizeof(GLint) * intCount);
+                    _cmdbuf.read(params);
                     m_renderCtx->getUniformiv(program, location, params);
-                    for (GLsizei i = 0; i < intCount; ++i)
-                    {
-                        __intSyncCommandReturn[i] = params[i];
-                    }
-                    free(params);
                 }
                     break;
 
                 case CommandBuffer::getUniformLocation:
                 {
                     GLuint program;
-                    const Memory* name;
+                    const GLchar* name;
                     _cmdbuf.read(program);
                     _cmdbuf.read(name);
-                    GLint location = m_renderCtx->getUniformLocation(program, (const GLchar*)name->data);
+                    GLint location = m_renderCtx->getUniformLocation(program, name);
                     __intSyncCommandReturn[0] = location;
                 }
                     break;
@@ -1380,12 +1355,11 @@ namespace fakegl {
                 {
                     GLuint index;
                     GLenum pname;
-                    GLsizei count;
+                    GLfloat* params;
                     _cmdbuf.read(index);
                     _cmdbuf.read(pname);
-                    _cmdbuf.read(count);
-                    assert(count < sizeof(__floatSyncCommandReturn)/sizeof(__floatSyncCommandReturn[0]));
-                    m_renderCtx->getVertexAttribfv(index, pname, __floatSyncCommandReturn);
+                    _cmdbuf.read(params);
+                    m_renderCtx->getVertexAttribfv(index, pname, params);
                 }
                     break;
 
@@ -1393,12 +1367,11 @@ namespace fakegl {
                 {
                     GLuint index;
                     GLenum pname;
-                    GLsizei count;
+                    GLint* params;
                     _cmdbuf.read(index);
                     _cmdbuf.read(pname);
-                    _cmdbuf.read(count);
-                    assert(count < sizeof(__intSyncCommandReturn)/sizeof(__intSyncCommandReturn[0]));
-                    m_renderCtx->getVertexAttribiv(index, pname, __intSyncCommandReturn);
+                    _cmdbuf.read(params);
+                    m_renderCtx->getVertexAttribiv(index, pname, params);
                 }
                     break;
 
@@ -1406,11 +1379,11 @@ namespace fakegl {
                 {
                     GLuint index;
                     GLenum pname;
+                    GLvoid** pointer;
                     _cmdbuf.read(index);
                     _cmdbuf.read(pname);
-                    GLvoid *pointer;
-                    m_renderCtx->getVertexAttribPointerv(index, pname, &pointer);
-                    __intSyncCommandReturn[0] = (int)(intptr_t)pointer;
+                    _cmdbuf.read(pointer);
+                    m_renderCtx->getVertexAttribPointerv(index, pname, pointer);
                 }
                     break;
 
@@ -1525,7 +1498,21 @@ namespace fakegl {
 
                 case CommandBuffer::readPixels:
                 {
-                    assert(false);//cjh
+                    GLint x;
+                    GLint y;
+                    GLsizei width;
+                    GLsizei height;
+                    GLenum format;
+                    GLenum type;
+                    GLvoid *pixels;
+                    _cmdbuf.read(x);
+                    _cmdbuf.read(y);
+                    _cmdbuf.read(width);
+                    _cmdbuf.read(height);
+                    _cmdbuf.read(format);
+                    _cmdbuf.read(type);
+                    _cmdbuf.read(pixels);
+                    m_renderCtx->readPixels(x, y, width, height, format, type, pixels);
                 }
                     break;
 
@@ -1661,7 +1648,7 @@ namespace fakegl {
                     GLint border;
                     GLenum format;
                     GLenum type;
-                    const Memory* pixels;
+                    const GLvoid* pixels;
                     _cmdbuf.read(target);
                     _cmdbuf.read(level);
                     _cmdbuf.read(internalformat);
@@ -1671,8 +1658,7 @@ namespace fakegl {
                     _cmdbuf.read(format);
                     _cmdbuf.read(type);
                     _cmdbuf.read(pixels);
-                    m_renderCtx->texImage2D(target, level, internalformat, width, height, border, format, type, pixels->data);
-                    release(pixels);
+                    m_renderCtx->texImage2D(target, level, internalformat, width, height, border, format, type, pixels);
                 }
                     break;
 
@@ -2258,79 +2244,130 @@ namespace fakegl {
 
 // OPENGL API IMPLEMENTATION BEGIN
 
+static void blockMainThreadAndWaitResultFromGLThread()
+{
+    renderSemWait();
+    m_flipped = true;
+    frameNoRenderWait();
+    renderSemWait();
+    frameNoRenderWait();
+}
+
 void glActiveTexture(GLenum texture)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::activeTexture);
+    cmd.write(texture);
 }
 
 void glAttachShader(GLuint program, GLuint shader)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::attachShader);
+    cmd.write(program);
+    cmd.write(shader);
 }
 
 void glBindAttribLocation(GLuint program, GLuint index, const GLchar* name)
 {
-
+    assert(name && strlen(name) > 0);
+    auto& cmd = getCommandBuffer(CommandBuffer::bindAttribLocation);
+    cmd.write(program);
+    cmd.write(index);
+    const Memory* m = bgfx::copy(name, (uint32_t)strlen(name) + 1);
+    cmd.write(m);
 }
 
 void glBindBuffer(GLenum target, GLuint buffer)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::bindBuffer);
+    cmd.write(target);
+    cmd.write(buffer);
 }
 
 void glBindFramebuffer(GLenum target, GLuint framebuffer)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::bindFramebuffer);
+    cmd.write(target);
+    cmd.write(framebuffer);
 }
 
 void glBindRenderbuffer(GLenum target, GLuint renderbuffer)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::bindRenderbuffer);
+    cmd.write(target);
+    cmd.write(renderbuffer);
 }
 
 void glBindTexture(GLenum target, GLuint texture)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::bindTexture);
+    cmd.write(target);
+    cmd.write(texture);
 }
 
 void glBlendColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::blendColor);
+    cmd.write(red);
+    cmd.write(green);
+    cmd.write(blue);
+    cmd.write(alpha);
 }
 
 void glBlendEquation(GLenum mode)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::blendEquation);
+    cmd.write(mode);
 }
 
 void glBlendEquationSeparate(GLenum modeRGB, GLenum modeAlpha)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::blendEquationSeparate);
+    cmd.write(modeRGB);
+    cmd.write(modeAlpha);
 }
 
 void glBlendFunc(GLenum sfactor, GLenum dfactor)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::blendFunc);
+    cmd.write(sfactor);
+    cmd.write(dfactor);
 }
 
 void glBlendFuncSeparate(GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::blendFuncSeparate);
+    cmd.write(srcRGB);
+    cmd.write(dstRGB);
+    cmd.write(srcAlpha);
+    cmd.write(dstAlpha);
 }
 
 void glBufferData(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::bufferData);
+    cmd.write(target);
+    cmd.write(size);
+    const Memory* m = bgfx::copy(data, (uint32_t)size);
+    cmd.write(m);
+    cmd.write(usage);
 }
 
 void glBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::bufferSubData);
+    cmd.write(target);
+    cmd.write(offset);
+    cmd.write(size);
+    const Memory* m = bgfx::copy(data, (uint32_t)size);
+    cmd.write(m);
 }
 
 GLenum glCheckFramebufferStatus(GLenum target)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::checkFramebufferStatus);
+    cmd.write(target);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 void glClear(GLbitfield mask)
@@ -2350,638 +2387,1112 @@ void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
 
 void glClearDepthf(GLclampf depth)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::clearDepthf);
+    cmd.write(depth);
 }
 
 void glClearStencil(GLint s)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::clearStencil);
+    cmd.write(s);
 }
 
 void glColorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::colorMask);
+    cmd.write(red);
+    cmd.write(green);
+    cmd.write(blue);
+    cmd.write(alpha);
 }
 
 void glCompileShader(GLuint shader)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::compileShader);
+    cmd.write(shader);
 }
 
 void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid* data)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::compressedTexImage2D);
+    cmd.write(target);
+    cmd.write(level);
+    cmd.write(internalformat);
+    cmd.write(width);
+    cmd.write(height);
+    cmd.write(border);
+    const Memory* m = bgfx::copy(data, (uint32_t)imageSize);
+    cmd.write(m);
 }
 
 void glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid* data)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::compressedTexSubImage2D);
+    cmd.write(target);
+    cmd.write(level);
+    cmd.write(xoffset);
+    cmd.write(yoffset);
+    cmd.write(width);
+    cmd.write(height);
+    cmd.write(format);
+    const Memory* m = bgfx::copy(data, (uint32_t)imageSize);
+    cmd.write(m);
 }
 
 void glCopyTexImage2D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::copyTexImage2D);
+    cmd.write(target);
+    cmd.write(level);
+    cmd.write(internalformat);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(width);
+    cmd.write(height);
+    cmd.write(border);
 }
 
 void glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::copyTexSubImage2D);
+    cmd.write(target);
+    cmd.write(level);
+    cmd.write(xoffset);
+    cmd.write(yoffset);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(width);
+    cmd.write(height);
 }
 
-GLuint glCreateProgram(void)
+GLuint glCreateProgram()
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::createProgram);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 GLuint glCreateShader(GLenum type)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::createShader);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 void glCullFace(GLenum mode)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::cullFace);
+    cmd.write(mode);
 }
 
 void glDeleteBuffers(GLsizei n, const GLuint* buffers)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::deleteBuffers);
+    cmd.write(n);
+    const Memory* m = bgfx::copy(buffers, sizeof(GLuint) * n);
+    cmd.write(m);
 }
 
 void glDeleteFramebuffers(GLsizei n, const GLuint* framebuffers)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::deleteFramebuffers);
+    cmd.write(n);
+    const Memory* m = bgfx::copy(framebuffers, sizeof(GLuint) * n);
+    cmd.write(m);
 }
 
 void glDeleteProgram(GLuint program)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::deleteProgram);
+    cmd.write(program);
 }
 
 void glDeleteRenderbuffers(GLsizei n, const GLuint* renderbuffers)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::deleteRenderbuffers);
+    cmd.write(n);
+    const Memory* m = bgfx::copy(renderbuffers, sizeof(GLuint) * n);
+    cmd.write(m);
 }
 
 void glDeleteShader(GLuint shader)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::deleteShader);
+    cmd.write(shader);
 }
 
 void glDeleteTextures(GLsizei n, const GLuint* textures)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::deleteTextures);
+    cmd.write(n);
+    const Memory* m = bgfx::copy(textures, sizeof(GLuint) * n);
+    cmd.write(m);
 }
 
 void glDepthFunc(GLenum func)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::depthFunc);
+    cmd.write(func);
 }
 
 void glDepthMask(GLboolean flag)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::depthMask);
+    cmd.write(flag);
 }
 
 void glDepthRangef(GLclampf zNear, GLclampf zFar)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::depthRangef);
+    cmd.write(zNear);
+    cmd.write(zFar);
 }
 
 void glDetachShader(GLuint program, GLuint shader)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::detachShader);
+    cmd.write(program)
+    cmd.write(shader);
 }
 
 void glDisable(GLenum cap)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::disable);
+    cmd.write(cap);
 }
 
 void glDisableVertexAttribArray(GLuint index)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::disableVertexAttribArray);
+    cmd.write(index);
 }
 
 void glDrawArrays(GLenum mode, GLint first, GLsizei count)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::drawArrays);
+    cmd.write(mode);
+    cmd.write(first);
+    cmd.write(count);
 }
 
 void glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::drawElements);
+    cmd.write(mode);
+    cmd.write(count);
+    cmd.write(type);
+    cmd.write(indices);
 }
 
 void glEnable(GLenum cap)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::enable);
+    cmd.write(cap);
 }
 
 void glEnableVertexAttribArray(GLuint index)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::enableVertexAttribArray);
+    cmd.write(index);
 }
 
-void glFinish(void)
+void glFinish()
 {
-
+    getCommandBuffer(CommandBuffer::_finish);
 }
 
-void glFlush(void)
+void glFlush()
 {
-
+    getCommandBuffer(CommandBuffer::flush);
 }
 
 void glFramebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::framebufferRenderbuffer);
+    cmd.write(target);
+    cmd.write(attachment);
+    cmd.write(renderbuffertarget);
+    cmd.write(renderbuffer);
 }
 
 void glFramebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::framebufferTexture2D);
+    cmd.write(target);
+    cmd.write(attachment);
+    cmd.write(textarget);
+    cmd.write(texture);
+    cmd.write(level);
 }
 
 void glFrontFace(GLenum mode)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::frontFace);
+    cmd.write(mode);
 }
 
 void glGenBuffers(GLsizei n, GLuint* buffers)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::genBuffers);
+    cmd.write(n);
+    blockMainThreadAndWaitResultFromGLThread();
+    for (GLsizei i = 0; i < n; ++i)
+    {
+        buffers[i] = __intSyncCommandReturn[i];
+    }
 }
 
 void glGenerateMipmap(GLenum target)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::generateMipmap);
+    cmd.write(target);
 }
 
 void glGenFramebuffers(GLsizei n, GLuint* framebuffers)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::genFramebuffers);
+    cmd.write(n);
+    blockMainThreadAndWaitResultFromGLThread();
+    for (GLsizei i = 0; i < n; ++i)
+    {
+        framebuffers[i] = __intSyncCommandReturn[i];
+    }
 }
 
 void glGenRenderbuffers(GLsizei n, GLuint* renderbuffers)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::genRenderbuffers);
+    cmd.write(n);
+    blockMainThreadAndWaitResultFromGLThread();
+    for (GLsizei i = 0; i < n; ++i)
+    {
+        renderbuffers[i] = __intSyncCommandReturn[i];
+    }
 }
 
 void glGenTextures(GLsizei n, GLuint* textures)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::genTextures);
+    cmd.write(n);
+    blockMainThreadAndWaitResultFromGLThread();
+    for (GLsizei i = 0; i < n; ++i)
+    {
+        textures[i] = __intSyncCommandReturn[i];
+    }
 }
 
 void glGetActiveAttrib(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, GLchar* name)
 {
+    auto& cmd = getCommandBuffer(CommandBuffer::getActiveAttrib);
+    cmd.write(program);
+    cmd.write(index);
+    cmd.write(bufsize);
 
+    blockMainThreadAndWaitResultFromGLThread();
+    if (length)
+    {
+        *length = (GLsizei)__intSyncCommandReturn[0];
+    }
+
+    if (size)
+    {
+        *size = __intSyncCommandReturn[1];
+    }
+
+    if (type)
+    {
+        *type = (GLenum)__intSyncCommandReturn[2];
+    }
+
+    strncpy(name, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
 }
 
 void glGetActiveUniform(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, GLchar* name)
 {
+    auto& cmd = getCommandBuffer(CommandBuffer::getActiveUniform);
+    cmd.write(program);
+    cmd.write(index);
+    cmd.write(bufsize);
 
+    blockMainThreadAndWaitResultFromGLThread();
+    if (length)
+    {
+        *length = (GLsizei)__intSyncCommandReturn[0];
+    }
+
+    if (size)
+    {
+        *size = __intSyncCommandReturn[1];
+    }
+
+    if (type)
+    {
+        *type = (GLenum)__intSyncCommandReturn[2];
+    }
+
+    strncpy(name, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
 }
 
 void glGetAttachedShaders(GLuint program, GLsizei maxcount, GLsizei* count, GLuint* shaders)
 {
+    auto& cmd = getCommandBuffer(CommandBuffer::getAttachedShaders);
+    cmd.write(program);
+    cmd.write(maxcount);
+    blockMainThreadAndWaitResultFromGLThread();
+    GLsizei realCount = (GLsizei)__intSyncCommandReturn[0];;
+    if (count)
+    {
+        *count = realCount;
+    }
 
+    if (shaders)
+    {
+        for (GLsizei i = 0; i < realCount; ++i)
+        {
+            shaders[i] = (GLuint)__intSyncCommandReturn[i+1];
+        }
+    }
 }
 
-int glGetAttribLocation(GLuint program, const GLchar* name)
+GLint glGetAttribLocation(GLuint program, const GLchar* name)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::getAttribLocation);
+    cmd.write(program);
+    const Memory* m = bgfx::copy(name, (uint32_t)strlen(name) + 1);
+    cmd.write(m);
+    blockMainThreadAndWaitResultFromGLThread();
+
+    return __intSyncCommandReturn[0];
 }
 
 void glGetBooleanv(GLenum pname, GLboolean* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getBooleanv);
+    cmd.write(pname);
+    assert(false);//cjh
 }
 
 void glGetBufferParameteriv(GLenum target, GLenum pname, GLint* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getBufferParameteriv);
+    assert(false);//cjh
 }
 
-GLenum glGetError(void)
+GLenum glGetError()
 {
-    return 0;
+    getCommandBuffer(CommandBuffer::getError);
+    blockMainThreadAndWaitResultFromGLThread();
+    return (GLenum)__intSyncCommandReturn[0];
 }
 
 void glGetFloatv(GLenum pname, GLfloat* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getFloatv);
+    assert(false);//cjh
 }
 
 void glGetFramebufferAttachmentParameteriv(GLenum target, GLenum attachment, GLenum pname, GLint* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getFramebufferAttachmentParameteriv);
+    assert(false);//cjh
 }
 
 void glGetIntegerv(GLenum pname, GLint* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getIntegerv);
+    cmd.write(pname);
+    blockMainThreadAndWaitResultFromGLThread();
+    if (params)
+    {
+        *params = __intSyncCommandReturn[0];
+    }
 }
 
 void glGetProgramiv(GLuint program, GLenum pname, GLint* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getProgramiv);
+    cmd.write(program);
+    cmd.write(pname);
+    blockMainThreadAndWaitResultFromGLThread();
+    if (params)
+    {
+        *params = __intSyncCommandReturn[0];
+    }
 }
 
 void glGetProgramInfoLog(GLuint program, GLsizei bufsize, GLsizei* length, GLchar* infolog)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getProgramInfoLog);
+    cmd.write(program);
+    cmd.write(bufsize);
+    blockMainThreadAndWaitResultFromGLThread();
+    GLsizei infoLogLen = __intSyncCommandReturn[0];
+    if (length)
+    {
+        *length = infoLogLen;
+    }
+    if (infolog)
+    {
+        assert(infoLogLen == __strSyncCommandReturn.length());
+        strncpy(infolog, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
+    }
 }
 
 void glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getRenderbufferParameteriv);
+    assert(false);
 }
 
 void glGetShaderiv(GLuint shader, GLenum pname, GLint* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getShaderiv);
+    cmd.write(shader);
+    cmd.write(pname);
+    blockMainThreadAndWaitResultFromGLThread();
+    if (params)
+    {
+        *params = __intSyncCommandReturn[0];
+    }
 }
 
 void glGetShaderInfoLog(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar* infolog)
 {
-
-}
-
-void glGetShaderPrecisionFormat(GLenum shadertype, GLenum precisiontype, GLint* range, GLint* precision)
-{
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getShaderInfoLog);
+    cmd.write(shader);
+    cmd.write(bufsize);
+    blockMainThreadAndWaitResultFromGLThread();
+    GLsizei infoLogLen = __intSyncCommandReturn[0];
+    if (length)
+    {
+        *length = infoLogLen;
+    }
+    if (infolog)
+    {
+        assert(infoLogLen == __strSyncCommandReturn.length());
+        strncpy(infolog, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
+    }
 }
 
 void glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar* source)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getShaderSource);
+    cmd.write(shader);
+    cmd.write(bufsize);
+    blockMainThreadAndWaitResultFromGLThread();
+    GLsizei sourceLen = __intSyncCommandReturn[0];
+    if (length)
+    {
+        *length = sourceLen;
+    }
+    if (source)
+    {
+        assert(sourceLen == __strSyncCommandReturn.length());
+        strncpy(source, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
+    }
 }
 
 const GLubyte* glGetString(GLenum name)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::getString);
+    cmd.write(name);
+    blockMainThreadAndWaitResultFromGLThread();
+    static std::string str;
+    str = __strSyncCommandReturn;
+    return (const GLubyte*)str.c_str();
 }
 
 void glGetTexParameterfv(GLenum target, GLenum pname, GLfloat* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getTexParameterfv);
+    cmd.write(target);
+    cmd.write(pname);
+    blockMainThreadAndWaitResultFromGLThread();
+    if (params)
+    {
+        *params = __floatSyncCommandReturn[0];
+    }
 }
 
 void glGetTexParameteriv(GLenum target, GLenum pname, GLint* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getTexParameteriv);
+    cmd.write(target);
+    cmd.write(pname);
+    blockMainThreadAndWaitResultFromGLThread();
+    if (params)
+    {
+        *params = __intSyncCommandReturn[0];
+    }
 }
 
 void glGetUniformfv(GLuint program, GLint location, GLfloat* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getUniformfv);
+    cmd.write(program);
+    cmd.write(location);
+    cmd.write(params);
+    blockMainThreadAndWaitResultFromGLThread();
 }
 
 void glGetUniformiv(GLuint program, GLint location, GLint* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getUniformiv);
+    cmd.write(program);
+    cmd.write(location);
+    cmd.write(params);
+    blockMainThreadAndWaitResultFromGLThread();
 }
 
-int glGetUniformLocation(GLuint program, const GLchar* name)
+GLint glGetUniformLocation(GLuint program, const GLchar* name)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::getUniformLocation);
+    cmd.write(program);
+    cmd.write(name);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 void glGetVertexAttribfv(GLuint index, GLenum pname, GLfloat* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getVertexAttribfv);
+    cmd.write(index);
+    cmd.write(pname);
+    cmd.write(params);
+    blockMainThreadAndWaitResultFromGLThread();
 }
 
 void glGetVertexAttribiv(GLuint index, GLenum pname, GLint* params)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getVertexAttribiv);
+    cmd.write(index);
+    cmd.write(pname);
+    cmd.write(params);
+    blockMainThreadAndWaitResultFromGLThread();
 }
 
 void glGetVertexAttribPointerv(GLuint index, GLenum pname, GLvoid** pointer)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::getVertexAttribPointerv);
+    cmd.write(index);
+    cmd.write(pname);
+    cmd.write(pointer);
+    blockMainThreadAndWaitResultFromGLThread();
 }
 
 void glHint(GLenum target, GLenum mode)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::hint);
+    cmd.write(target);
+    cmd.write(mode);
 }
 
 GLboolean glIsBuffer(GLuint buffer)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::isBuffer);
+    cmd.write(buffer);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 GLboolean glIsEnabled(GLenum cap)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::isEnabled);
+    cmd.write(cap);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 GLboolean glIsFramebuffer(GLuint framebuffer)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::isFramebuffer);
+    cmd.write(framebuffer);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 GLboolean glIsProgram(GLuint program)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::isProgram);
+    cmd.write(program);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 GLboolean glIsRenderbuffer(GLuint renderbuffer)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::isRenderbuffer);
+    cmd.write(renderbuffer);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 GLboolean glIsShader(GLuint shader)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::isShader);
+    cmd.write(shader);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 GLboolean glIsTexture(GLuint texture)
 {
-    return 0;
+    auto& cmd = getCommandBuffer(CommandBuffer::isTexture);
+    cmd.write(texture);
+    blockMainThreadAndWaitResultFromGLThread();
+    return __intSyncCommandReturn[0];
 }
 
 void glLineWidth(GLfloat width)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::lineWidth);
+    cmd.write(width);
 }
 
 void glLinkProgram(GLuint program)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::linkProgram);
+    cmd.write(program);
 }
 
 void glPixelStorei(GLenum pname, GLint param)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::pixelStorei);
+    cmd.write(pname);
+    cmd.write(param);
 }
 
 void glPolygonOffset(GLfloat factor, GLfloat units)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::polygonOffset);
+    cmd.write(factor);
+    cmd.write(units);
 }
 
 void glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* pixels)
 {
-
-}
-
-void glReleaseShaderCompiler(void)
-{
-
+    auto& cmd = getCommandBuffer(CommandBuffer::readPixels);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(width);
+    cmd.write(height);
+    cmd.write(format);
+    cmd.write(type);
+    cmd.write(pixels);
+    blockMainThreadAndWaitResultFromGLThread();
 }
 
 void glRenderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::renderbufferStorage);
+    cmd.write(target);
+    cmd.write(internalformat);
+    cmd.write(width);
+    cmd.write(height);
 }
 
 void glSampleCoverage(GLclampf value, GLboolean invert)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::sampleCoverage);
+    cmd.write(value);
+    cmd.write(invert);
 }
 
 void glScissor(GLint x, GLint y, GLsizei width, GLsizei height)
 {
-
-}
-
-void glShaderBinary(GLsizei n, const GLuint* shaders, GLenum binaryformat, const GLvoid* binary, GLsizei length)
-{
-
+    auto& cmd = getCommandBuffer(CommandBuffer::scissor);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(width);
+    cmd.write(height);
 }
 
 void glShaderSource(GLuint shader, GLsizei count, const GLchar* const *string, const GLint* length)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::shaderSource);
+    cmd.write(shader);
+    cmd.write(count);
 }
 
 void glStencilFunc(GLenum func, GLint ref, GLuint mask)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::stencilFunc);
+    cmd.write(func);
+    cmd.write(ref);
+    cmd.write(mask);
 }
 
 void glStencilFuncSeparate(GLenum face, GLenum func, GLint ref, GLuint mask)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::stencilFuncSeparate);
+    cmd.write(face);
+    cmd.write(func);
+    cmd.write(ref);
+    cmd.write(mask);
 }
 
 void glStencilMask(GLuint mask)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::stencilMask);
+    cmd.write(mask);
 }
 
 void glStencilMaskSeparate(GLenum face, GLuint mask)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::stencilMaskSeparate);
+    cmd.write(face);
+    cmd.write(mask);
 }
 
 void glStencilOp(GLenum fail, GLenum zfail, GLenum zpass)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::stencilOp);
+    cmd.write(fail);
+    cmd.write(zfail);
+    cmd.write(zpass);
 }
 
 void glStencilOpSeparate(GLenum face, GLenum fail, GLenum zfail, GLenum zpass)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::stencilOpSeparate);
+    cmd.write(face);
+    cmd.write(fail);
+    cmd.write(zfail);
+    cmd.write(zpass);
 }
 
 void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* pixels)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::texImage2D);
+    cmd.write(target);
+    cmd.write(level);
+    cmd.write(internalformat);
+    cmd.write(width);
+    cmd.write(height);
+    cmd.write(border);
+    cmd.write(format);
+    cmd.write(type);
+    cmd.write(pixels);
+    blockMainThreadAndWaitResultFromGLThread();
 }
 
 void glTexParameterf(GLenum target, GLenum pname, GLfloat param)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::texParameterf);
+    cmd.write(target);
+    cmd.write(pname);
+    cmd.write(param);
 }
 
 void glTexParameterfv(GLenum target, GLenum pname, const GLfloat* params)
 {
-
+    assert(false);//cjh
+    auto& cmd = getCommandBuffer(CommandBuffer::texParameterfv);
+    cmd.write(target);
+    cmd.write(pname);
 }
 
 void glTexParameteri(GLenum target, GLenum pname, GLint param)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::texParameteri);
+    cmd.write(target);
+    cmd.write(pname);
+    cmd.write(param);
 }
 
 void glTexParameteriv(GLenum target, GLenum pname, const GLint* params)
 {
-
+    assert(false); //cjh
+    auto& cmd = getCommandBuffer(CommandBuffer::texParameteriv);
 }
 
 void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* pixels)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::texSubImage2D);
+    cmd.write(target);
+    cmd.write(level);
+    cmd.write(xoffset);
+    cmd.write(yoffset);
+    cmd.write(width);
+    cmd.write(height);
+    cmd.write(format);
+    cmd.write(type);
+    cmd.write(pixels);
+    blockMainThreadAndWaitResultFromGLThread();
 }
 
 void glUniform1f(GLint location, GLfloat x)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform1f);
+    cmd.write(location);
+    cmd.write(x);
 }
 
 void glUniform1fv(GLint location, GLsizei count, const GLfloat* v)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform1fv);
+    cmd.write(location);
+    cmd.write(count);
+    const Memory* m = bgfx::copy(v, count * sizeof(GLfloat));
+    cmd.write(m);
 }
 
 void glUniform1i(GLint location, GLint x)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform1i);
+    cmd.write(location);
+    cmd.write(x);
 }
 
 void glUniform1iv(GLint location, GLsizei count, const GLint* v)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform1iv);
+    cmd.write(location);
+    cmd.write(count);
+    const Memory* m = bgfx::copy(v, count * sizeof(GLint));
+    cmd.write(m);
 }
 
 void glUniform2f(GLint location, GLfloat x, GLfloat y)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform2f);
+    cmd.write(location);
+    cmd.write(x);
+    cmd.write(y);
 }
 
 void glUniform2fv(GLint location, GLsizei count, const GLfloat* v)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform2fv);
+    cmd.write(location);
+    cmd.write(count);
+    const Memory* m = bgfx::copy(v, count * sizeof(GLfloat) * 2);
+    cmd.write(m);
 }
 
 void glUniform2i(GLint location, GLint x, GLint y)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform2i);
+    cmd.write(location);
+    cmd.write(x);
+    cmd.write(y);
 }
 
 void glUniform2iv(GLint location, GLsizei count, const GLint* v)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform2iv);
+    cmd.write(location);
+    cmd.write(count);
+    const Memory* m = bgfx::copy(v, count * sizeof(GLint) * 2);
+    cmd.write(m);
 }
 
 void glUniform3f(GLint location, GLfloat x, GLfloat y, GLfloat z)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform3f);
+    cmd.write(location);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(z);
 }
 
 void glUniform3fv(GLint location, GLsizei count, const GLfloat* v)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform3fv);
+    cmd.write(location);
+    cmd.write(count);
+    const Memory* m = bgfx::copy(v, count * sizeof(GLfloat) * 3);
+    cmd.write(m);
 }
 
 void glUniform3i(GLint location, GLint x, GLint y, GLint z)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform3i);
+    cmd.write(location);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(z);
 }
 
 void glUniform3iv(GLint location, GLsizei count, const GLint* v)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform3iv);
+    cmd.write(location);
+    cmd.write(count);
+    const Memory* m = bgfx::copy(v, count * sizeof(GLint) * 3);
+    cmd.write(m);
 }
 
 void glUniform4f(GLint location, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform4f);
+    cmd.write(location);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(z);
+    cmd.write(w);
 }
 
 void glUniform4fv(GLint location, GLsizei count, const GLfloat* v)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform4fv);
+    cmd.write(location);
+    cmd.write(count);
+    const Memory* m = bgfx::copy(v, count * sizeof(GLfloat) * 4);
+    cmd.write(m);
 }
 
 void glUniform4i(GLint location, GLint x, GLint y, GLint z, GLint w)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform4i);
+    cmd.write(location);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(z);
+    cmd.write(w);
 }
 
 void glUniform4iv(GLint location, GLsizei count, const GLint* v)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniform4iv);
+    cmd.write(location);
+    cmd.write(count);
+    const Memory* m = bgfx::copy(v, count * sizeof(GLint) * 4);
+    cmd.write(m);
 }
 
 void glUniformMatrix2fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniformMatrix2fv);
+    cmd.write(location);
+    cmd.write(count);
+    cmd.write(transpose);
+    const Memory* m = bgfx::copy(value, count * sizeof(GLfloat) * 2);
+    cmd.write(m);
 }
 
 void glUniformMatrix3fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniformMatrix3fv);
+    cmd.write(location);
+    cmd.write(count);
+    cmd.write(transpose);
+    const Memory* m = bgfx::copy(value, count * sizeof(GLfloat) * 3);
+    cmd.write(m);
 }
 
 void glUniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::uniformMatrix4fv);
+    cmd.write(location);
+    cmd.write(count);
+    cmd.write(transpose);
+    const Memory* m = bgfx::copy(value, count * sizeof(GLfloat) * 4);
+    cmd.write(m);
 }
 
 void glUseProgram(GLuint program)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::useProgram);
+    cmd.write(program);
 }
 
 void glValidateProgram(GLuint program)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::validateProgram);
+    cmd.write(program);
 }
 
-void glVertexAttrib1f(GLuint indx, GLfloat x)
+void glVertexAttrib1f(GLuint index, GLfloat x)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::vertexAttrib1f);
+    cmd.write(index);
+    cmd.write(x);
 }
 
-void glVertexAttrib1fv(GLuint indx, const GLfloat* values)
+void glVertexAttrib1fv(GLuint index, const GLfloat* values)
 {
-
+    assert(false);//cjh
+    auto& cmd = getCommandBuffer(CommandBuffer::vertexAttrib1fv);
 }
 
-void glVertexAttrib2f(GLuint indx, GLfloat x, GLfloat y)
+void glVertexAttrib2f(GLuint index, GLfloat x, GLfloat y)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::vertexAttrib2f);
+    cmd.write(index);
+    cmd.write(x);
+    cmd.write(y);
 }
 
-void glVertexAttrib2fv(GLuint indx, const GLfloat* values)
+void glVertexAttrib2fv(GLuint index, const GLfloat* values)
 {
-
+    assert(false);//cjh
+    auto& cmd = getCommandBuffer(CommandBuffer::vertexAttrib2fv);
 }
 
-void glVertexAttrib3f(GLuint indx, GLfloat x, GLfloat y, GLfloat z)
+void glVertexAttrib3f(GLuint index, GLfloat x, GLfloat y, GLfloat z)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::vertexAttrib3f);
+    cmd.write(index);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(z);
 }
 
-void glVertexAttrib3fv(GLuint indx, const GLfloat* values)
+void glVertexAttrib3fv(GLuint index, const GLfloat* values)
 {
-
+    assert(false);//cjh
+    auto& cmd = getCommandBuffer(CommandBuffer::vertexAttrib3fv);
 }
 
-void glVertexAttrib4f(GLuint indx, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
+void glVertexAttrib4f(GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::vertexAttrib4f);
+    cmd.write(index);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(z);
+    cmd.write(w);
 }
 
-void glVertexAttrib4fv(GLuint indx, const GLfloat* values)
+void glVertexAttrib4fv(GLuint index, const GLfloat* values)
 {
-
+    assert(false);//cjh
+    auto& cmd = getCommandBuffer(CommandBuffer::vertexAttrib4fv);
 }
 
-void glVertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
+void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::vertexAttribPointer);
+    cmd.write(index);
+    cmd.write(size);
+    cmd.write(type);
+    cmd.write(normalized);
+    cmd.write(stride);
+    cmd.write(ptr);
 }
 
 void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::viewport);
+    cmd.write(x);
+    cmd.write(y);
+    cmd.write(width);
+    cmd.write(height);
 }
 
 void glDrawBuffer(GLenum mode)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::drawBuffer);
+    cmd.write(mode);
 }
 
 void glReadBuffer(GLenum mode)
 {
-
+    auto& cmd = getCommandBuffer(CommandBuffer::readBuffer);
+    cmd.write(mode);
 }
+
 
 
 } // namespace fakegl {

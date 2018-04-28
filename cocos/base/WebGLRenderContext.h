@@ -64,7 +64,7 @@ public:
     void compressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid* data);
     void copyTexImage2D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border);
     void copyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
-    GLuint createProgram(void);
+    GLuint createProgram();
     GLuint createShader(GLenum type);
     void cullFace(GLenum mode);
     void deleteBuffers(GLsizei n, const GLuint* buffers);
@@ -83,8 +83,8 @@ public:
     void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices);
     void enable(GLenum cap);
     void enableVertexAttribArray(GLuint index);
-    void finish(void);
-    void flush(void);
+    void finish();
+    void flush();
     void framebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
     void framebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
     void frontFace(GLenum mode);
@@ -96,10 +96,10 @@ public:
     void getActiveAttrib(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, GLchar* name);
     void getActiveUniform(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, GLchar* name);
     void getAttachedShaders(GLuint program, GLsizei maxcount, GLsizei* count, GLuint* shaders);
-    int  getAttribLocation(GLuint program, const GLchar* name);
+    GLint getAttribLocation(GLuint program, const GLchar* name);
     void getBooleanv(GLenum pname, GLboolean* params);
     void getBufferParameteriv(GLenum target, GLenum pname, GLint* params);
-    GLenum getError(void);
+    GLenum getError();
     void getFloatv(GLenum pname, GLfloat* params);
     void getFramebufferAttachmentParameteriv(GLenum target, GLenum attachment, GLenum pname, GLint* params);
     void getIntegerv(GLenum pname, GLint* params);
@@ -114,7 +114,7 @@ public:
     void getTexParameteriv(GLenum target, GLenum pname, GLint* params);
     void getUniformfv(GLuint program, GLint location, GLfloat* params);
     void getUniformiv(GLuint program, GLint location, GLint* params);
-    int  getUniformLocation(GLuint program, const GLchar* name);
+    GLint getUniformLocation(GLuint program, const GLchar* name);
     void getVertexAttribfv(GLuint index, GLenum pname, GLfloat* params);
     void getVertexAttribiv(GLuint index, GLenum pname, GLint* params);
     void getVertexAttribPointerv(GLuint index, GLenum pname, GLvoid** pointer);
@@ -168,15 +168,15 @@ public:
     void uniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
     void useProgram(GLuint program);
     void validateProgram(GLuint program);
-    void vertexAttrib1f(GLuint indx, GLfloat x);
-    void vertexAttrib1fv(GLuint indx, const GLfloat* values);
-    void vertexAttrib2f(GLuint indx, GLfloat x, GLfloat y);
-    void vertexAttrib2fv(GLuint indx, const GLfloat* values);
-    void vertexAttrib3f(GLuint indx, GLfloat x, GLfloat y, GLfloat z);
-    void vertexAttrib3fv(GLuint indx, const GLfloat* values);
-    void vertexAttrib4f(GLuint indx, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
-    void vertexAttrib4fv(GLuint indx, const GLfloat* values);
-    void vertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+    void vertexAttrib1f(GLuint index, GLfloat x);
+    void vertexAttrib1fv(GLuint index, const GLfloat* values);
+    void vertexAttrib2f(GLuint index, GLfloat x, GLfloat y);
+    void vertexAttrib2fv(GLuint index, const GLfloat* values);
+    void vertexAttrib3f(GLuint index, GLfloat x, GLfloat y, GLfloat z);
+    void vertexAttrib3fv(GLuint index, const GLfloat* values);
+    void vertexAttrib4f(GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+    void vertexAttrib4fv(GLuint index, const GLfloat* values);
+    void vertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
     void viewport(GLint x, GLint y, GLsizei width, GLsizei height);
 
     void drawBuffer(GLenum mode);

@@ -162,7 +162,7 @@ namespace bgfx {
         glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
     }
 
-    GLuint WebGLRenderContext::createProgram(void)
+    GLuint WebGLRenderContext::createProgram()
     {
         return glCreateProgram();
     }
@@ -257,12 +257,12 @@ namespace bgfx {
         glEnableVertexAttribArray(index);
     }
 
-    void WebGLRenderContext::finish(void)
+    void WebGLRenderContext::finish()
     {
         glFinish();
     }
 
-    void WebGLRenderContext::flush(void)
+    void WebGLRenderContext::flush()
     {
         glFlush();
     }
@@ -322,7 +322,7 @@ namespace bgfx {
         glGetAttachedShaders(program, maxcount, count, shaders);
     }
 
-    int WebGLRenderContext::getAttribLocation(GLuint program, const GLchar* name)
+    GLint WebGLRenderContext::getAttribLocation(GLuint program, const GLchar* name)
     {
         return glGetAttribLocation(program, name);
     }
@@ -337,7 +337,7 @@ namespace bgfx {
         glGetBufferParameteriv(target, pname, params);
     }
 
-    GLenum WebGLRenderContext::getError(void)
+    GLenum WebGLRenderContext::getError()
     {
         return glGetError();
     }
@@ -412,7 +412,7 @@ namespace bgfx {
         glGetUniformiv(program, location, params);
     }
 
-    int WebGLRenderContext::getUniformLocation(GLuint program, const GLchar* name)
+    GLint WebGLRenderContext::getUniformLocation(GLuint program, const GLchar* name)
     {
         return glGetUniformLocation(program, name);
     }
@@ -682,49 +682,49 @@ namespace bgfx {
         glValidateProgram(program);
     }
 
-    void WebGLRenderContext::vertexAttrib1f(GLuint indx, GLfloat x)
+    void WebGLRenderContext::vertexAttrib1f(GLuint index, GLfloat x)
     {
-        glVertexAttrib1f(indx, x);
+        glVertexAttrib1f(index, x);
     }
 
-    void WebGLRenderContext::vertexAttrib1fv(GLuint indx, const GLfloat* values)
+    void WebGLRenderContext::vertexAttrib1fv(GLuint index, const GLfloat* values)
     {
-        glVertexAttrib1fv(indx, values);
+        glVertexAttrib1fv(index, values);
     }
 
-    void WebGLRenderContext::vertexAttrib2f(GLuint indx, GLfloat x, GLfloat y)
+    void WebGLRenderContext::vertexAttrib2f(GLuint index, GLfloat x, GLfloat y)
     {
-        glVertexAttrib2f(indx, x, y);
+        glVertexAttrib2f(index, x, y);
     }
 
-    void WebGLRenderContext::vertexAttrib2fv(GLuint indx, const GLfloat* values)
+    void WebGLRenderContext::vertexAttrib2fv(GLuint index, const GLfloat* values)
     {
-        glVertexAttrib2fv(indx, values);
+        glVertexAttrib2fv(index, values);
     }
 
-    void WebGLRenderContext::vertexAttrib3f(GLuint indx, GLfloat x, GLfloat y, GLfloat z)
+    void WebGLRenderContext::vertexAttrib3f(GLuint index, GLfloat x, GLfloat y, GLfloat z)
     {
-        glVertexAttrib3f(indx, x, y, z);
+        glVertexAttrib3f(index, x, y, z);
     }
 
-    void WebGLRenderContext::vertexAttrib3fv(GLuint indx, const GLfloat* values)
+    void WebGLRenderContext::vertexAttrib3fv(GLuint index, const GLfloat* values)
     {
-        glVertexAttrib3fv(indx, values);
+        glVertexAttrib3fv(index, values);
     }
 
-    void WebGLRenderContext::vertexAttrib4f(GLuint indx, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
+    void WebGLRenderContext::vertexAttrib4f(GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
     {
-        glVertexAttrib4f(indx, x, y, z, w);
+        glVertexAttrib4f(index, x, y, z, w);
     }
 
-    void WebGLRenderContext::vertexAttrib4fv(GLuint indx, const GLfloat* values)
+    void WebGLRenderContext::vertexAttrib4fv(GLuint index, const GLfloat* values)
     {
-        glVertexAttrib4fv(indx, values);
+        glVertexAttrib4fv(index, values);
     }
 
-    void WebGLRenderContext::vertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
+    void WebGLRenderContext::vertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
     {
-        glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
+        glVertexAttribPointer(index, size, type, normalized, stride, ptr);
     }
 
     void WebGLRenderContext::viewport(GLint x, GLint y, GLsizei width, GLsizei height)

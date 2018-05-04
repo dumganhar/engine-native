@@ -31,12 +31,17 @@
 #include "renderer/gfx/DeviceGraphics.h"
 #include "scripting/js-bindings/jswrapper/jsc/ScriptEngine.hpp"
 #include "scripting/js-bindings/event/EventDispatcher.h"
+#include "base/bgfx_platform.h"
+#include "base/bgfx.h"
+#include "bx/thread.h"
 
 #import "CCEAGLView-ios.h"
 #import <UIKit/UIKit.h>
 
 namespace
 {
+    bx::Thread* __gameLogicThread = nullptr;
+
     bool setCanvasCallback(se::Object* global)
     {
         CGRect bounds = [UIScreen mainScreen].bounds;
@@ -49,9 +54,81 @@ namespace
                 (int)(width),
                 (int)(height));
         se->evalString(commandBuf);
-        glViewport(0, 0, width, height);
-        glDepthMask(GL_TRUE);
+        fakegl::glViewport(0, 0, width, height);
+        fakegl::glDepthMask(GL_TRUE);
         return true;
+    }
+
+    int32_t threadFunc(bx::Thread* _thread, void* _userData)
+    {
+        BX_UNUSED(_thread);
+
+        cocos2d::Application* app = (cocos2d::Application*)_userData;
+
+        //        MainThreadEntry* self = (MainThreadEntry*)_userData;
+        //        return main(self->m_argc, self->m_argv);
+
+        bgfx::Init init;
+        init.type     = bgfx::RendererType::OpenGLES;
+        //        init.vendorId = BGFX_PCI_ID_NONE;
+        init.resolution.width  = 960;
+        init.resolution.height = 640;
+        init.resolution.reset  = 0;
+        bgfx::init(init);
+
+        printf("after bgfx::init ... \n");
+
+        se::ScriptEngine* se = se::ScriptEngine::getInstance();
+        se->addRegisterCallback(setCanvasCallback);
+
+        if(!app->applicationDidFinishLaunching())
+            return -1;
+
+        float r = 0;
+        float g = 0;
+        float b = 0;
+        bool sub = false;
+
+        std::chrono::steady_clock::time_point prevTime;
+        std::chrono::steady_clock::time_point now;
+        float dt = 0.f;
+
+        while(true)
+        {
+            if (sub)
+                r -= 0.01f;
+            else
+                r += 0.01f;
+
+            if (r >= 1.0f)
+            {
+                sub = true;
+                r = 1.0f;
+            }
+            else if (r < 0.0f)
+            {
+                sub = false;
+                r = 0.0f;
+            }
+
+            app->_scheduler->update(dt);
+            cocos2d::EventDispatcher::dispatchTickEvent(dt);
+
+            //            fakegl::glClearColor(r, g, b, 1);
+            //            fakegl::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            //            GLuint id = bgfx::createBuffer();
+            //            printf("bgfx::createBuffer returns: %u\n", id);
+            bgfx::frame();
+
+            cocos2d::PoolManager::getInstance()->getCurrentPool()->clear();
+
+            now = std::chrono::steady_clock::now();
+            dt = std::chrono::duration_cast<std::chrono::microseconds>(now - prevTime).count() / 1000000.f;
+        }
+
+        bgfx::shutdown();
+
+        return 0;
     }
 }
 
@@ -121,12 +198,16 @@ namespace
 -(void) firstStart:(id) view
 {
     if ([view isReady]) {
-        cocos2d::ccInvalidateStateCache();
-        se::ScriptEngine* se = se::ScriptEngine::getInstance();
-        se->addRegisterCallback(setCanvasCallback);
 
-        if(!_application->applicationDidFinishLaunching())
-            return;
+        __gameLogicThread = new bx::Thread();
+        __gameLogicThread->init(threadFunc, cocos2d::Application::getInstance());
+
+//cjh        cocos2d::ccInvalidateStateCache();
+//        se::ScriptEngine* se = se::ScriptEngine::getInstance();
+//        se->addRegisterCallback(setCanvasCallback);
+//
+//        if(!_application->applicationDidFinishLaunching())
+//            return;
 
         [self startMainLoop];
     }
@@ -151,13 +232,13 @@ namespace
 
 -(void) setAnimationInterval:(double)intervalNew
 {
-    [self stopMainLoop];
-    
-    self.interval = 60.0 * intervalNew;
-    
-    _displayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(doCaller:)];
-    [_displayLink setFrameInterval: self.interval];
-    [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+//cjh    [self stopMainLoop];
+//
+//    self.interval = 60.0 * intervalNew;
+//
+//    _displayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(doCaller:)];
+//    [_displayLink setFrameInterval: self.interval];
+//    [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
 -(void) doCaller: (id) sender
@@ -167,13 +248,14 @@ namespace
     static float dt = 0.f;
 
     prevTime = std::chrono::steady_clock::now();
-    
-    _scheduler->update(dt);
-    cocos2d::EventDispatcher::dispatchTickEvent(dt);
-    
+
+    bgfx::renderFrame();
+//cjh    _scheduler->update(dt);
+//    cocos2d::EventDispatcher::dispatchTickEvent(dt);
+
     [(CCEAGLView*)(_application->getView()) swapBuffers];
-    cocos2d::PoolManager::getInstance()->getCurrentPool()->clear();
-    
+//    cocos2d::PoolManager::getInstance()->getCurrentPool()->clear();
+
     now = std::chrono::steady_clock::now();
     dt = std::chrono::duration_cast<std::chrono::microseconds>(now - prevTime).count() / 1000000.f;
 }
@@ -201,6 +283,9 @@ Application::~Application()
 {
     [(CCEAGLView*)_view release];
     _view = nullptr;
+
+    delete __gameLogicThread;
+    __gameLogicThread = nullptr;
 
     delete _scheduler;
     _scheduler = nullptr;

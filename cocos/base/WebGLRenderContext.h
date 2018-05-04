@@ -24,7 +24,15 @@
 
 #pragma once
 
+#include "platform/CCPlatformConfig.h"
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC
 #include <OpenGL/gltypes.h>
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#include <OpenGLES/gltypes.h>
+#else
+#error "Please include platform gl header file!"
+#endif
 
 #include <string>
 

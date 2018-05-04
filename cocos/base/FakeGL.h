@@ -34,6 +34,8 @@
 ** compliant with the OpenGL(R) version 1.2.1 Specification.
 */
 
+#include "platform/CCPlatformConfig.h"
+
 #include "bgfx.h"
 #include "bgfx_platform.h"
 
@@ -44,8 +46,13 @@
 /*-------------------------------------------------------------------------
  * Data type definitions
  *-----------------------------------------------------------------------*/
-
+#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC
 #include <OpenGL/gltypes.h>
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#include <OpenGLES/gltypes.h>
+#else
+#error "Please include gl header file!"
+#endif
 
 /*-------------------------------------------------------------------------
  * Token definitions
@@ -200,6 +207,7 @@
 #define GL_UNPACK_ALIGNMENT                              0x0CF5
 #define GL_PACK_ALIGNMENT                                0x0D05
 #define GL_MAX_TEXTURE_SIZE                              0x0D33
+#define GL_MAX_SAMPLES                                   0x8D57
 #define GL_MAX_VIEWPORT_DIMS                             0x0D3A
 #define GL_SUBPIXEL_BITS                                 0x0D50
 #define GL_RED_BITS                                      0x0D52

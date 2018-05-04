@@ -3,6 +3,7 @@
 #include "bgfx_config.h"
 #include "bx/bx.h"
 #include "bx/bx_p.h"
+#include "bx/thread.h"
 #include "FakeGL.h"
 
 namespace bgfx {

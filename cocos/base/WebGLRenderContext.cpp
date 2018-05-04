@@ -23,7 +23,17 @@
  ****************************************************************************/
 
 #include "WebGLRenderContext.h"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC
 #include <OpenGL/gl.h>
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#include <OpenGLES/ES2/gl.h>
+#define glClearDepth                glClearDepthf
+#define glDepthRange                glDepthRangef
+#define glDrawBuffer 
+#define glReadBuffer
+#else
+#error "Please include platform gl header file!"
+#endif
 
 namespace bgfx {
 

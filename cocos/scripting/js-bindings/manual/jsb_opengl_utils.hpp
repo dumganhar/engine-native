@@ -46,7 +46,7 @@
                     } \
                 } while(false)
 
-#if COCOS2D_DEBUG > 0
+#if 0//cjh COCOS2D_DEBUG > 0
     #define JSB_GL_CHECK(_call)   _JSB_GL_CHECK(_call)
     #define JSB_GL_CHECK_VOID(_call)   _JSB_GL_CHECK_VOID(_call)
     #define JSB_GL_CHECK_ERROR() \

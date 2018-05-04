@@ -51,20 +51,11 @@ namespace {
     bx::Semaphore m_encoderEndSem;
     bx::Mutex     m_encoderApiLock;
     bx::Mutex     m_resourceApiLock;
-    bx::Thread    m_thread;
+//    bx::Thread    m_thread;
 #endif
 }
 
 namespace fakegl {
-
-    static int32_t renderThread(bx::Thread* /*_self*/, void* /*_userData*/)
-    {
-        //cjh        BX_TRACE("render thread start");
-        //        BGFX_PROFILER_SET_CURRENT_THREAD_NAME("bgfx - Render Thread");
-        while (RenderFrame::Exiting != bgfx::renderFrame() ) {};
-        //cjh        BX_TRACE("render thread exit");
-        return bx::kExitSuccess;
-    }
 
     uint32_t frame(bool _capture = false);
 
@@ -122,6 +113,7 @@ namespace fakegl {
     {
         if (!m_singleThreaded)
         {
+//            printf("apiSemPost\n");
             m_apiSem.post();
         }
     }
@@ -133,6 +125,7 @@ namespace fakegl {
             return true;
         }
 
+//        printf("apiSemWait\n");
         BGFX_PROFILER_SCOPE("bgfx/API thread wait", 0xff2040ff);
         int64_t start = bx::getHPCounter();
 
@@ -151,6 +144,7 @@ namespace fakegl {
     {
         if (!m_singleThreaded)
         {
+//            printf("renderSemPost\n");
             m_renderSem.post();
         }
     }
@@ -159,6 +153,7 @@ namespace fakegl {
     {
         if (!m_singleThreaded)
         {
+//            printf("renderSemWait\n");
             BGFX_PROFILER_SCOPE("bgfx/Render thread wait", 0xff2040ff);
             int64_t start = bx::getHPCounter();
             bool ok = m_renderSem.wait();
@@ -337,10 +332,10 @@ namespace fakegl {
         // s_ctx is NULL here.
         renderSemWait(); // In RenderFrame::Exiting state.
 
-        if (m_thread.isRunning() )
-        {
-            m_thread.shutdown();
-        }
+//        if (m_thread.isRunning() )
+//        {
+//            m_thread.shutdown();
+//        }
 
         m_render->destroy();
 #endif // BGFX_CONFIG_MULTITHREADED
@@ -629,8 +624,15 @@ namespace fakegl {
                     _cmdbuf.read(target);
                     _cmdbuf.read(memory);
                     _cmdbuf.read(usage);
-                    m_renderCtx->bufferData(target, memory->size, memory->data, usage);
-                    release(memory);
+                    if (memory != nullptr)
+                    {
+                        m_renderCtx->bufferData(target, memory->size, memory->data, usage);
+                        release(memory);
+                    }
+                    else
+                    {
+                        m_renderCtx->bufferData(target, 0, nullptr, usage);
+                    }
                 }
                     break;
 
@@ -642,8 +644,15 @@ namespace fakegl {
                     _cmdbuf.read(target);
                     _cmdbuf.read(offset);
                     _cmdbuf.read(memory);
-                    m_renderCtx->bufferSubData(target, offset, memory->size, memory->data);
-                    release(memory);
+                    if (memory != nullptr)
+                    {
+                        m_renderCtx->bufferSubData(target, offset, memory->size, memory->data);
+                        release(memory);
+                    }
+                    else
+                    {
+                        m_renderCtx->bufferSubData(target, offset, 0, nullptr);
+                    }
                 }
                     break;
 
@@ -1563,7 +1572,7 @@ namespace fakegl {
                     _cmdbuf.read(count);
                     _cmdbuf.read(string);
                     assert(count == 1);
-                    m_renderCtx->shaderSource(shader, count, (const GLchar**)&string->data, __intSyncCommandReturn);
+                    m_renderCtx->shaderSource(shader, count, (const GLchar**)&string->data, nullptr);
                     release(string);
                 }
                     break;
@@ -2346,8 +2355,11 @@ void glBufferData(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usa
 {
     auto& cmd = getCommandBuffer(CommandBuffer::bufferData);
     cmd.write(target);
-    cmd.write(size);
-    const Memory* m = bgfx::copy(data, (uint32_t)size);
+    const Memory* m = nullptr;
+    if (size > 0 && data != nullptr)
+    {
+        m = bgfx::copy(data, (uint32_t)size);
+    }
     cmd.write(m);
     cmd.write(usage);
 }
@@ -2357,8 +2369,11 @@ void glBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvo
     auto& cmd = getCommandBuffer(CommandBuffer::bufferSubData);
     cmd.write(target);
     cmd.write(offset);
-    cmd.write(size);
-    const Memory* m = bgfx::copy(data, (uint32_t)size);
+    const Memory* m = nullptr;
+    if (size > 0 && data != nullptr)
+    {
+        m = bgfx::copy(data, (uint32_t)size);
+    }
     cmd.write(m);
 }
 
@@ -2475,6 +2490,7 @@ GLuint glCreateProgram()
 GLuint glCreateShader(GLenum type)
 {
     auto& cmd = getCommandBuffer(CommandBuffer::createShader);
+    cmd.write(type);
     blockMainThreadAndWaitResultFromGLThread();
     return __intSyncCommandReturn[0];
 }
@@ -2551,7 +2567,7 @@ void glDepthRangef(GLclampf zNear, GLclampf zFar)
 void glDetachShader(GLuint program, GLuint shader)
 {
     auto& cmd = getCommandBuffer(CommandBuffer::detachShader);
-    cmd.write(program)
+    cmd.write(program);
     cmd.write(shader);
 }
 
@@ -2704,7 +2720,8 @@ void glGetActiveAttrib(GLuint program, GLuint index, GLsizei bufsize, GLsizei* l
         *type = (GLenum)__intSyncCommandReturn[2];
     }
 
-    strncpy(name, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
+    assert(bufsize > __strSyncCommandReturn.length());
+    strncpy(name, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length() + 1);
 }
 
 void glGetActiveUniform(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, GLchar* name)
@@ -2730,7 +2747,8 @@ void glGetActiveUniform(GLuint program, GLuint index, GLsizei bufsize, GLsizei* 
         *type = (GLenum)__intSyncCommandReturn[2];
     }
 
-    strncpy(name, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
+    assert(bufsize > __strSyncCommandReturn.length());
+    strncpy(name, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length()+1);
 }
 
 void glGetAttachedShaders(GLuint program, GLsizei maxcount, GLsizei* count, GLuint* shaders)
@@ -2834,7 +2852,8 @@ void glGetProgramInfoLog(GLuint program, GLsizei bufsize, GLsizei* length, GLcha
     if (infolog)
     {
         assert(infoLogLen == __strSyncCommandReturn.length());
-        strncpy(infolog, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
+        assert(bufsize > __strSyncCommandReturn.length());
+        strncpy(infolog, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length()+1);
     }
 }
 
@@ -2870,7 +2889,8 @@ void glGetShaderInfoLog(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar*
     if (infolog)
     {
         assert(infoLogLen == __strSyncCommandReturn.length());
-        strncpy(infolog, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
+        assert(bufsize > __strSyncCommandReturn.length());
+        strncpy(infolog, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length()+1);
     }
 }
 
@@ -2888,7 +2908,8 @@ void glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length, GLchar* 
     if (source)
     {
         assert(sourceLen == __strSyncCommandReturn.length());
-        strncpy(source, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length());
+        assert(bufsize > __strSyncCommandReturn.length());
+        strncpy(source, __strSyncCommandReturn.c_str(), __strSyncCommandReturn.length()+1);
     }
 }
 
@@ -3109,9 +3130,14 @@ void glScissor(GLint x, GLint y, GLsizei width, GLsizei height)
 
 void glShaderSource(GLuint shader, GLsizei count, const GLchar* const *string, const GLint* length)
 {
+    assert(count == 1);
+    assert(length == nullptr);
+    assert(string != nullptr && string[0] != nullptr);
     auto& cmd = getCommandBuffer(CommandBuffer::shaderSource);
     cmd.write(shader);
     cmd.write(count);
+    const Memory* m = bgfx::copy(string[0], (uint32_t)strlen(string[0]) + 1);
+    cmd.write(m);
 }
 
 void glStencilFunc(GLenum func, GLint ref, GLuint mask)
@@ -3367,7 +3393,7 @@ void glUniformMatrix2fv(GLint location, GLsizei count, GLboolean transpose, cons
     cmd.write(location);
     cmd.write(count);
     cmd.write(transpose);
-    const Memory* m = bgfx::copy(value, count * sizeof(GLfloat) * 2);
+    const Memory* m = bgfx::copy(value, count * sizeof(GLfloat) * 4);
     cmd.write(m);
 }
 
@@ -3377,7 +3403,7 @@ void glUniformMatrix3fv(GLint location, GLsizei count, GLboolean transpose, cons
     cmd.write(location);
     cmd.write(count);
     cmd.write(transpose);
-    const Memory* m = bgfx::copy(value, count * sizeof(GLfloat) * 3);
+    const Memory* m = bgfx::copy(value, count * sizeof(GLfloat) * 9);
     cmd.write(m);
 }
 
@@ -3387,7 +3413,7 @@ void glUniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, cons
     cmd.write(location);
     cmd.write(count);
     cmd.write(transpose);
-    const Memory* m = bgfx::copy(value, count * sizeof(GLfloat) * 4);
+    const Memory* m = bgfx::copy(value, count * sizeof(GLfloat) * 16);
     cmd.write(m);
 }
 

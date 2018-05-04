@@ -638,42 +638,6 @@ static bool js_loadImage(se::State& s)
                     se::HandleObject retObj(se::Object::createPlainObject());
                     Data data;
                     data.copy(img->getData(), img->getDataLen());
-
-#ifdef CC_NEW_RENDERER
-                    // Convert to RGBA8888 because Web engine only supports it.
-                    //FIX ME: How to handle other formats?
-                    if (Image::PixelFormat::RGB888 == img->getRenderFormat())
-                    {
-                        size_t imageBytes = img->getWidth() * img->getHeight() * 4;
-                        unsigned char* convertedData = (unsigned char*)malloc(imageBytes);
-                        auto dataT = data.getBytes();
-                        for (size_t i = 0, len = data.getSize() / 3; i < len; ++i)
-                        {
-                            convertedData[i * 4] = *dataT++;
-                            convertedData[i * 4 + 1] = *dataT++;
-                            convertedData[i * 4 + 2] = *dataT++;
-                            convertedData[i * 4 + 3] = 255;
-                        }
-                        data.copy(convertedData, imageBytes);
-                        free(convertedData);
-                    }
-
-                    se::Value dataVal;
-                    Data_to_seval(data, &dataVal);
-                    retObj->setProperty("data", dataVal);
-                    retObj->setProperty("width", se::Value(img->getWidth()));
-                    retObj->setProperty("height", se::Value(img->getHeight()));
-                    retObj->setProperty("premultiplyAlpha", se::Value(img->hasPremultipliedAlpha()));
-                    retObj->setProperty("bpp", se::Value(32));
-                    retObj->setProperty("hasAlpha", se::Value(img->hasAlpha()));
-                    retObj->setProperty("compressed", se::Value(img->isCompressed()));
-                    retObj->setProperty("numberOfMipmaps", se::Value(img->getNumberOfMipmaps()));
-
-                    const auto& pixelFormatInfo = img->getPixelFormatInfo();
-                    retObj->setProperty("glFormat", se::Value(GL_RGBA));
-                    retObj->setProperty("glInternalFormat", se::Value(GL_RGBA));
-                    retObj->setProperty("glType", se::Value(pixelFormatInfo.type));
-#else
                     se::Value dataVal;
                     Data_to_seval(data, &dataVal);
                     retObj->setProperty("data", dataVal);
@@ -689,8 +653,6 @@ static bool js_loadImage(se::State& s)
                     retObj->setProperty("glFormat", se::Value(pixelFormatInfo.format));
                     retObj->setProperty("glInternalFormat", se::Value(pixelFormatInfo.internalFormat));
                     retObj->setProperty("glType", se::Value(pixelFormatInfo.type));
-#endif
-
                     se::ValueArray seArgs;
                     seArgs.push_back(se::Value(retObj));
                     callbackVal.toObject()->call(seArgs, nullptr);
@@ -739,52 +701,23 @@ static bool js_setDebugViewText(se::State& s)
 }
 SE_BIND_FUNC(js_setDebugViewText)
 
-static bool js_getTextTextureInfo(se::State& s)
+static bool js_openDebugView(se::State& s)
 {
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 3) {
-
-        /*
-         const char * text,
-         const FontDefinition& textDefinition,
-         TextAlign align,
-         int &width,
-         int &height,
-         bool& hasPremultipliedAlpha
-         */
-
-        std::string text;
-        ok = seval_to_std_string(args[0], &text);
-        SE_PRECONDITION2(ok, false, "Convert arg0 text failed!");
-        FontDefinition fontDef;
-        ok = seval_to_FontDefinition(args[1], &fontDef);
-        SE_PRECONDITION2(ok, false, "Convert arg1 fontDef failed!");
-        int32_t align;
-        ok = seval_to_int32(args[2], &align);
-        Device::TextAlign textAlign = (Device::TextAlign)align;
-        int width = 0;
-        int height = 0;
-        bool hasPremultipliedAlpha = false;
-        Data data = Device::getTextureDataForText(text.c_str(), fontDef, textAlign, width, height, hasPremultipliedAlpha);
-
-        se::HandleObject retObj(se::Object::createPlainObject());
-        se::Value dataVal;
-        if (Data_to_seval(data, &dataVal))
-            retObj->setProperty("data", dataVal);
-
-        retObj->setProperty("width", se::Value(width));
-        retObj->setProperty("height", se::Value(height));
-        retObj->setProperty("hasPremultipliedAlpha", se::Value(hasPremultipliedAlpha));
-
-        s.rval().setObject(retObj);
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
-    return false;
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+    openDebugViewJNI();
+#endif
+    return true;
 }
-SE_BIND_FUNC(js_getTextTextureInfo)
+SE_BIND_FUNC(js_openDebugView)
+
+static bool js_disableBatchGLCommandsToNative(se::State& s)
+{
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+    disableBatchGLCommandsToNativeJNI();
+#endif
+    return true;
+}
+SE_BIND_FUNC(js_disableBatchGLCommandsToNative)
 
 bool jsb_register_global_variables(se::Object* global)
 {
@@ -810,6 +743,8 @@ bool jsb_register_global_variables(se::Object* global)
 
     __jsbObj->defineFunction("loadImage", _SE(js_loadImage));
     __jsbObj->defineFunction("setDebugViewText", _SE(js_setDebugViewText));
+    __jsbObj->defineFunction("openDebugView", _SE(js_openDebugView));
+    __jsbObj->defineFunction("disableBatchGLCommandsToNative", _SE(js_disableBatchGLCommandsToNative));
 
     global->defineFunction("__getPlatform", _SE(JSBCore_platform));
     global->defineFunction("__getOS", _SE(JSBCore_os));

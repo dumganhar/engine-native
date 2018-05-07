@@ -35,6 +35,8 @@
 #error "Please include platform gl header file!"
 #endif
 
+#include "platform/CCApplication.h"
+
 namespace bgfx {
 
     WebGLRenderContext::WebGLRenderContext()
@@ -787,6 +789,7 @@ namespace bgfx {
 //                m_needPresent = false;
 //            }
         }
+        cocos2d::Application::getInstance()->swapBuffers();
     }
 
     void WebGLRenderContext::submit(Frame* _render)

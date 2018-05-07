@@ -253,7 +253,7 @@ namespace
 //cjh    _scheduler->update(dt);
 //    cocos2d::EventDispatcher::dispatchTickEvent(dt);
 
-    [(CCEAGLView*)(_application->getView()) swapBuffers];
+//    [(CCEAGLView*)(_application->getView()) swapBuffers];
 //    cocos2d::PoolManager::getInstance()->getCurrentPool()->clear();
 
     now = std::chrono::steady_clock::now();
@@ -265,6 +265,11 @@ namespace
 NS_CC_BEGIN
 
 Application* Application::_instance = nullptr;
+
+void Application::swapBuffers()
+{
+    [(CCEAGLView*)_view swapBuffers];
+}
 
 Application::Application(const std::string& name)
 {

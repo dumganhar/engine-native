@@ -154,6 +154,8 @@ public:
      * @lua NA
      */
     bool openURL(const std::string &url);
+
+    void swapBuffers();
     
 protected:
     virtual void onCreateView(int& x, int& y, int& width, int& height, 

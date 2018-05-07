@@ -180,6 +180,11 @@ Application::~Application()
     Application::_instance = nullptr;
 }
 
+void Application::swapBuffers()
+{
+    CAST_VIEW(_view)->swapBuffers();
+}
+
 void Application::start()
 {
     ccInvalidateStateCache();
@@ -204,7 +209,7 @@ void Application::start()
 //cjh        _scheduler->update(dt);
 //        EventDispatcher::dispatchTickEvent(dt);
 //
-        CAST_VIEW(_view)->swapBuffers();
+//        CAST_VIEW(_view)->swapBuffers();
 //        PoolManager::getInstance()->getCurrentPool()->clear();
 
         now = std::chrono::steady_clock::now();
@@ -299,8 +304,8 @@ void Application::onCreateView(int&x, int& y, int& width, int& height, PixelForm
 {
     x = 0;
     y = 0;
-    width = 960;
-    height = 640;
+    width = 640;
+    height = 960;
     
     pixelformat = PixelFormat::RGBA8;
     depthFormat = DepthFormat::DEPTH24_STENCIL8;

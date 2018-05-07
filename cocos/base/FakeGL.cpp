@@ -1717,7 +1717,7 @@ namespace fakegl {
                     GLsizei height;
                     GLenum format;
                     GLenum type;
-                    const Memory* pixels;
+                    const GLvoid* pixels;
                     _cmdbuf.read(target);
                     _cmdbuf.read(level);
                     _cmdbuf.read(xoffset);
@@ -1727,8 +1727,7 @@ namespace fakegl {
                     _cmdbuf.read(format);
                     _cmdbuf.read(type);
                     _cmdbuf.read(pixels);
-                    m_renderCtx->texSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels->data);
-                    release(pixels);
+                    m_renderCtx->texSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
                 }
                     break;
 

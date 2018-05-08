@@ -15,6 +15,31 @@
 
 namespace bx
 {
+int32_t toString(char* _dst, int32_t _max, double _value)
+{
+	return 0; //cjh
+}
+int32_t toString(char* _dst, int32_t _max, int32_t _value, uint32_t _base)
+{
+	return 0;//cjh
+}
+
+int32_t toString(char* _dst, int32_t _max, int64_t _value, uint32_t _base)
+{
+	return 0;//cjh
+}
+
+int32_t toString(char* _dst, int32_t _max, uint32_t _value, uint32_t _base)
+{
+	return 0;//cjh
+}
+
+int32_t toString(char* _dst, int32_t _max, uint64_t _value, uint32_t _base)
+{
+	return 0;//cjh
+}
+
+
 	inline bool isInRange(char _ch, char _from, char _to)
 	{
 		return unsigned(_ch - _from) <= unsigned(_to-_from);
@@ -1143,5 +1168,7 @@ namespace bx
 
 		return prettify<1024, 'i', 'B', toUpper>(_out, _count, _value);
 	}
+
+
 
 } // namespace bx

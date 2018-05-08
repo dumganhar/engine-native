@@ -199,4 +199,9 @@ bool Application::openURL(const std::string &url)
     return openURLJNI(url);
 }
 
+void Application::swapBuffers()
+{
+
+}
+
 NS_CC_END

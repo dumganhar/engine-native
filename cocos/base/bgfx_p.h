@@ -38,7 +38,7 @@
 #endif // BGFX_CONFIG_DEBUG
 
 #include "bgfx.h"
-#include "config.h"
+#include "bgfx_config.h"
 
 #include <inttypes.h>
 

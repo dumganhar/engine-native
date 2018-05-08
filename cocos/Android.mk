@@ -52,6 +52,19 @@ base/CCLog.cpp \
 base/CCScheduler.cpp \
 base/csscolorparser.cpp \
 base/CCGLUtils.cpp \
+base/bgfx.cpp \
+base/FakeGL.cpp \
+base/WebGLCommandBuffer.cpp \
+base/WebGLFrame.cpp \
+base/WebGLRenderContext.cpp \
+base/bx/allocator.cpp \
+base/bx/bx.cpp \
+base/bx/bx_string.cpp \
+base/bx/debug.cpp \
+base/bx/mutex.cpp \
+base/bx/semaphore.cpp \
+base/bx/thread.cpp \
+base/bx/timer.cpp \
 renderer/Types.cpp \
 renderer/gfx/DeviceGraphics.cpp \
 renderer/gfx/FrameBuffer.cpp \
@@ -131,6 +144,7 @@ scripting/js-bindings/event/EventDispatcher.cpp \
 
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH) \
+					$(LOCAL_PATH)/base \
                     $(LOCAL_PATH)/.. \
                     $(LOCAL_PATH)/platform \
                     $(LOCAL_PATH)/editor-support \

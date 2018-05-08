@@ -31,6 +31,12 @@
 #define glDepthRange                glDepthRangef
 #define glDrawBuffer 
 #define glReadBuffer
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#include <GLES2/gl2.h>
+#define glClearDepth                glClearDepthf
+#define glDepthRange                glDepthRangef
+#define glDrawBuffer
+#define glReadBuffer
 #else
 #error "Please include platform gl header file!"
 #endif

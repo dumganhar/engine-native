@@ -259,6 +259,19 @@ static uint32_t s_threadIndex(0);
 static BX_THREAD_LOCAL uint32_t s_threadIndex(0);
 #endif
 
+void AllocatorStub::checkLeaks()
+{
+#if BGFX_CONFIG_MEMORY_TRACKING
+    // BK - CallbackStub will be deleted after printing this info, so there is always one
+    // leak if CallbackStub is used.
+    BX_WARN(uint32_t(NULL != s_callbackStub ? 1 : 0) == m_numBlocks
+            , "MEMORY LEAK: %d (max: %d)"
+            , m_numBlocks
+            , m_maxBlocks
+            );
+#endif // BGFX_CONFIG_MEMORY_TRACKING
+}
+
 bool s_renderFrameCalled = false;
 
 RenderFrame::Enum renderFrame(int32_t _msecs)

@@ -12,6 +12,7 @@
 #include "bgfx_platform.h"
 
 #include <unistd.h>
+#include <assert.h>
 
 #define BGFX_DEBUG_NONE                  UINT32_C(0x00000000) //!< No debug. //cjh
 #define BGFX_API_THREAD_MAGIC UINT32_C(0x78666762)

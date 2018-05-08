@@ -30,6 +30,8 @@
 #include <OpenGL/gltypes.h>
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #include <OpenGLES/gltypes.h>
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#include "platform/android/gltypes-android.h"
 #else
 #error "Please include platform gl header file!"
 #endif

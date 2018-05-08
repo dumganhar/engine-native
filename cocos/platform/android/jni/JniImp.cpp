@@ -38,6 +38,13 @@
 #include "audio/include/AudioEngine.h"
 #include "base/CCGLUtils.h"
 
+#include "base/bgfx_platform.h"
+#include "base/bgfx.h"
+#include "bx/thread.h"
+
+#include <queue>
+
+
 #define  JNI_IMP_LOG_TAG    "JniImp"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,JNI_IMP_LOG_TAG,__VA_ARGS__)
 
@@ -85,6 +92,8 @@ namespace
     bool g_isGameFinished = false;
 
     cocos2d::Application* g_app = nullptr;
+    bx::Thread* g_logicThread = nullptr;
+    std::queue<cocos2d::TouchEvent> g_touchEventQueue;
 
     bool setCanvasCallback(se::Object* global)
     {
@@ -95,10 +104,83 @@ namespace
                 g_width,
                 g_height);
         se->evalString(commandBuf);
-        glViewport(0, 0, g_width, g_height);
-        glDepthMask(GL_TRUE);
+        fakegl::glViewport(0, 0, g_width, g_height);
+        fakegl::glDepthMask(GL_TRUE);
         
         return true;
+    }
+
+    int32_t threadFunc(bx::Thread* _thread, void* _userData)
+    {
+        BX_UNUSED(_thread);
+
+        Application* app = (Application*)_userData;
+
+        bgfx::Init init;
+        init.type     = bgfx::RendererType::OpenGLES;
+//        init.vendorId = BGFX_PCI_ID_NONE;
+        init.resolution.width  = 960;
+        init.resolution.height = 640;
+        init.resolution.reset  = 0;
+        bgfx::init(init);
+
+        printf("after bgfx::init ... \n");
+
+        EventDispatcher::init();
+
+        se::ScriptEngine* se = se::ScriptEngine::getInstance();
+        se->addRegisterCallback(setCanvasCallback);
+
+        if(!app->applicationDidFinishLaunching())
+            return -1;
+
+        std::chrono::steady_clock::time_point prevTime;
+        std::chrono::steady_clock::time_point now;
+        float dt = 0.f;
+        float dtSum = 0.f;
+        uint32_t jsbInvocationTotalCount = 0;
+        uint32_t jsbInvocationTotalFrames = 0;
+
+        while(true)
+        {
+            if (!g_touchEventQueue.empty())
+            {
+                const auto& touchEvent = g_touchEventQueue.front();
+                cocos2d::EventDispatcher::dispatchTouchEvent(touchEvent);
+                g_touchEventQueue.pop();
+            }
+
+            app->_scheduler->update(dt);
+            EventDispatcher::dispatchTickEvent(dt);
+
+            bgfx::frame();
+
+            PoolManager::getInstance()->getCurrentPool()->clear();
+
+            now = std::chrono::steady_clock::now();
+            dt = std::chrono::duration_cast<std::chrono::microseconds>(now - prevTime).count() / 1000000.f;
+            prevTime = std::chrono::steady_clock::now();
+
+            if (__isOpenDebugView)
+            {
+                dtSum += dt;
+                ++jsbInvocationTotalFrames;
+                jsbInvocationTotalCount += __jsbInvocationCount;
+
+                if (dtSum > 1.0f)
+                {
+                    dtSum = 0.0f;
+                    setJSBInvocationCountJNI(jsbInvocationTotalCount / jsbInvocationTotalFrames);
+                    jsbInvocationTotalCount = 0;
+                    jsbInvocationTotalFrames = 0;
+                }
+            }
+            __jsbInvocationCount = 0;
+        }
+
+        bgfx::shutdown();
+
+        return 0;
     }
 }
 
@@ -145,19 +227,25 @@ extern "C"
         if (!defaultResourcePath.empty())
             FileUtils::getInstance()->setDefaultResourceRootPath(defaultResourcePath);
 
-        se::ScriptEngine* se = se::ScriptEngine::getInstance();
-        se->addRegisterCallback(setCanvasCallback);
+        g_logicThread = new bx::Thread();
+        g_logicThread->init(threadFunc, Application::getInstance());
+        LOGD("nativeInit end ...");
 
-        EventDispatcher::init();
+        //cjh se::ScriptEngine* se = se::ScriptEngine::getInstance();
+        // se->addRegisterCallback(setCanvasCallback);
 
-        g_app->start();
+        // EventDispatcher::init();
+
+        // g_app->start();
     }
 
     JNIEXPORT void Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeFinish(JNIEnv*  env, jobject thiz)
     {
         g_isGameFinished = true;
         LOGD("CocosRenderer.nativeFinish");
-        se::ScriptEngine::destroyInstance();
+        delete g_logicThread;
+        g_logicThread = nullptr;
+        se::ScriptEngine::destroyInstance(); // Should move this to the point before the logic thread exits.
         cocos2d::experimental::AudioEngine::end();
         JniHelper::callObjectVoidMethod(thiz, Cocos2dxRendererClassName, "onGameFinished");
     }
@@ -167,37 +255,40 @@ extern "C"
         if (g_isGameFinished) {
             return;
         }
-        static std::chrono::steady_clock::time_point prevTime;
-        static std::chrono::steady_clock::time_point now;
-        static float dt = 0.f;
-        static float dtSum = 0.f;
-        static uint32_t jsbInvocationTotalCount = 0;
-        static uint32_t jsbInvocationTotalFrames = 0;
 
-        g_app->getScheduler()->update(dt);
-        EventDispatcher::dispatchTickEvent(dt);
-        PoolManager::getInstance()->getCurrentPool()->clear();
+        bgfx::renderFrame();
 
-        now = std::chrono::steady_clock::now();
-        dt = std::chrono::duration_cast<std::chrono::microseconds>(now - prevTime).count() / 1000000.f;
+        // static std::chrono::steady_clock::time_point prevTime;
+        // static std::chrono::steady_clock::time_point now;
+        // static float dt = 0.f;
+        // static float dtSum = 0.f;
+        // static uint32_t jsbInvocationTotalCount = 0;
+        // static uint32_t jsbInvocationTotalFrames = 0;
 
-        prevTime = std::chrono::steady_clock::now();
+        // g_app->getScheduler()->update(dt);
+        // EventDispatcher::dispatchTickEvent(dt);
+        // PoolManager::getInstance()->getCurrentPool()->clear();
 
-        if (__isOpenDebugView)
-        {
-            dtSum += dt;
-            ++jsbInvocationTotalFrames;
-            jsbInvocationTotalCount += __jsbInvocationCount;
+        // now = std::chrono::steady_clock::now();
+        // dt = std::chrono::duration_cast<std::chrono::microseconds>(now - prevTime).count() / 1000000.f;
 
-            if (dtSum > 1.0f)
-            {
-                dtSum = 0.0f;
-                setJSBInvocationCountJNI(jsbInvocationTotalCount / jsbInvocationTotalFrames);
-                jsbInvocationTotalCount = 0;
-                jsbInvocationTotalFrames = 0;
-            }
-        }
-        __jsbInvocationCount = 0;
+        // prevTime = std::chrono::steady_clock::now();
+
+        // if (__isOpenDebugView)
+        // {
+        //     dtSum += dt;
+        //     ++jsbInvocationTotalFrames;
+        //     jsbInvocationTotalCount += __jsbInvocationCount;
+
+        //     if (dtSum > 1.0f)
+        //     {
+        //         dtSum = 0.0f;
+        //         setJSBInvocationCountJNI(jsbInvocationTotalCount / jsbInvocationTotalFrames);
+        //         jsbInvocationTotalCount = 0;
+        //         jsbInvocationTotalFrames = 0;
+        //     }
+        // }
+        // __jsbInvocationCount = 0;
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause()
@@ -264,8 +355,10 @@ extern "C"
         touchInfo.x = x;
         touchInfo.y = y;
         touchEvent.touches.push_back(touchInfo);
+
+        g_touchEventQueue.push(touchEvent);
         
-        cocos2d::EventDispatcher::dispatchTouchEvent(touchEvent);
+//cjh        cocos2d::EventDispatcher::dispatchTouchEvent(touchEvent);
     }
 
     static void dispatchTouchEventWithPoints(JNIEnv* env, cocos2d::TouchEvent::Type type, jintArray ids, jfloatArray xs, jfloatArray ys)
@@ -294,7 +387,9 @@ extern "C"
             touchEvent.touches.push_back(touchInfo);
         }
 
-        cocos2d::EventDispatcher::dispatchTouchEvent(touchEvent);
+        g_touchEventQueue.push(touchEvent);
+
+//cjh        cocos2d::EventDispatcher::dispatchTouchEvent(touchEvent);
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin(JNIEnv * env, jobject thiz, jint id, jfloat x, jfloat y)

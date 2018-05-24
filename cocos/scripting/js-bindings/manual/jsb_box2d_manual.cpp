@@ -1112,7 +1112,8 @@ bool register_all_box2d_manual(se::Object* obj)
             se->clearException();
 
             // The mapping of native object & se::Object was cleared in above code.
-            // So the private data (native object) may be a different object associated with other se::Object.
+            // The private data (native object) may be a different object associated with other se::Object.
+            // Therefore, don't clear the mapping again.
             seObj->clearPrivateData(false);
             seObj->unroot();
             seObj->decRef();

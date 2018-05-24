@@ -206,8 +206,9 @@ spTrackEntry_setDisposeCallback([](spTrackEntry* entry){
             se->clearException();
 
             // The mapping of native object & se::Object was cleared in above code.
-            // So the private data (native object) may be a different object associated with other se::Object.
-            seObj->clearPrivateData();
+            // The private data (native object) may be a different object associated with other se::Object. 
+            // Therefore, don't clear the mapping again.
+            seObj->clearPrivateData(false);
             seObj->unroot();
             seObj->decRef();
         };

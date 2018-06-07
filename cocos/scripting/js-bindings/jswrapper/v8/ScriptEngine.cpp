@@ -43,6 +43,72 @@ uint32_t __jsbInvocationCount = 0;
 #define RETRUN_VAL_IF_FAIL(cond, val) \
     if (!(cond)) return val
 
+
+static bool g_isFirstInit = true;
+static v8::StartupData g_natives;
+static v8::StartupData g_snapshot;
+
+static void ClearStartupData(v8::StartupData* data) {
+    data->data = nullptr;
+    data->raw_size = 0;
+}
+
+
+static void DeleteStartupData(v8::StartupData* data) {
+    delete[] data->data;
+    ClearStartupData(data);
+}
+
+
+static void FreeStartupData() {
+    DeleteStartupData(&g_natives);
+    DeleteStartupData(&g_snapshot);
+}
+
+static void loadV8StartupData(const char* blob_file, v8::StartupData* startup_data,
+          void (*setter_fn)(v8::StartupData*)) {
+    ClearStartupData(startup_data);
+
+//    CHECK(blob_file);
+
+//    FILE* file = fopen(blob_file, "rb");
+//    if (!file) {
+//        fprintf(stderr, "Failed to open startup resource '%s'.\n", blob_file);
+//        return;
+//    }
+//
+//    fseek(file, 0, SEEK_END);
+//    startup_data->raw_size = static_cast<int>(ftell(file));
+//    rewind(file);
+//
+//    startup_data->data = new char[startup_data->raw_size];
+//    int read_size = static_cast<int>(fread(const_cast<char*>(startup_data->data),
+//                                           1, startup_data->raw_size, file));
+//    fclose(file);
+//
+//    if (startup_data->raw_size == read_size) {
+//        (*setter_fn)(startup_data);
+//    } else {
+//        fprintf(stderr, "Corrupted startup resource '%s'.\n", blob_file);
+//    }
+
+    SE_LOGD("loadV8StartupData 1");
+    const auto& fileDelegate = se::ScriptEngine::getInstance()->getFileOperationDelegate();
+    fileDelegate.onGetDataFromFile(blob_file, [=](const uint8_t* data, size_t len){
+        SE_LOGD("loadV8StartupData 2");
+        if (data != nullptr && len > 0)
+        {
+            SE_LOGD("loadV8StartupData 3");
+            startup_data->raw_size = static_cast<int>(len);
+            startup_data->data = new char[startup_data->raw_size];
+            memcpy((void*)startup_data->data, data, len);
+            (*setter_fn)(startup_data);
+        }
+        SE_LOGD("loadV8StartupData 4");
+    });
+    SE_LOGD("loadV8StartupData 5");
+}
+
 namespace se {
 
     Class* __jsb_CCPrivateData_class = nullptr;
@@ -344,12 +410,6 @@ namespace se {
     , _isInCleanup(false)
     , _isErrorHandleWorking(false)
     {
-        //        RETRUN_VAL_IF_FAIL(v8::V8::InitializeICUDefaultLocation(nullptr, "/Users/james/Project/v8/out.gn/x64.debug/icudtl.dat"), false);
-        //        v8::V8::InitializeExternalStartupData("/Users/james/Project/v8/out.gn/x64.debug/natives_blob.bin", "/Users/james/Project/v8/out.gn/x64.debug/snapshot_blob.bin"); //TODO
-        _platform = v8::platform::CreateDefaultPlatform();
-        v8::V8::InitializePlatform(_platform);
-        bool ok = v8::V8::Initialize();
-        assert(ok);
     }
 
     ScriptEngine::~ScriptEngine()
@@ -363,6 +423,27 @@ namespace se {
 
     bool ScriptEngine::init()
     {
+        std::chrono::steady_clock::time_point prevTime = std::chrono::steady_clock::now();
+
+        if (g_isFirstInit)
+        {
+            //        RETRUN_VAL_IF_FAIL(v8::V8::InitializeICUDefaultLocation(nullptr, "/Users/james/Project/v8/out.gn/x64.debug/icudtl.dat"), false);
+            //        v8::V8::InitializeExternalStartupData("/Users/james/Project/v8/out.gn/osx/natives_blob.bin", "/Users/james/Project/v8/out.gn/osx/snapshot_blob.bin"); //TODO
+
+//
+//            loadV8StartupData("/Users/james/Project/v8/out.gn/osx/natives_blob.bin", &g_natives, v8::V8::SetNativesDataBlob);
+//            loadV8StartupData("/Users/james/Project/v8/out.gn/osx/snapshot_blob.bin", &g_snapshot, v8::V8::SetSnapshotDataBlob);
+
+            loadV8StartupData("res/natives_blob.bin", &g_natives, v8::V8::SetNativesDataBlob);
+            loadV8StartupData("res/snapshot_blob.bin", &g_snapshot, v8::V8::SetSnapshotDataBlob);
+
+            _platform = v8::platform::CreateDefaultPlatform();
+            v8::V8::InitializePlatform(_platform);
+            bool ok = v8::V8::Initialize();
+            assert(ok);
+            g_isFirstInit = false;
+        }
+
         cleanup();
         SE_LOGD("Initializing V8, version: %s\n", v8::V8::GetVersion());
         ++_vmId;
@@ -439,6 +520,9 @@ namespace se {
             hook();
         }
         _afterInitHookArray.clear();
+
+        long long microSeconds = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - prevTime).count();
+        SE_LOGD("Init V8 wastes: %fms\n", (float)(microSeconds * 0.001));
 
         return _isValid;
     }

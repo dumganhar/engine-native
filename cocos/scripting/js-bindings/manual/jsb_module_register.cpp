@@ -32,16 +32,12 @@
 
 #include "cocos/scripting/js-bindings/auto/jsb_cocos2dx_extension_auto.hpp"
 #include "cocos/scripting/js-bindings/auto/jsb_cocos2dx_network_auto.hpp"
-#include "cocos/scripting/js-bindings/auto/jsb_renderer_auto.hpp"
-#include "cocos/scripting/js-bindings/auto/jsb_gfx_auto.hpp"
 #include "cocos/scripting/js-bindings/auto/jsb_cocos2dx_auto.hpp"
 
 #include "cocos/scripting/js-bindings/manual/jsb_cocos2dx_extension_manual.hpp"
 #include "cocos/scripting/js-bindings/manual/jsb_global.h"
 #include "cocos/scripting/js-bindings/manual/jsb_node.hpp"
 #include "cocos/scripting/js-bindings/manual/jsb_conversions.hpp"
-#include "cocos/scripting/js-bindings/manual/jsb_gfx_manual.hpp"
-#include "cocos/scripting/js-bindings/manual/jsb_renderer_manual.hpp"
 #include "cocos/scripting/js-bindings/manual/jsb_opengl_manual.hpp"
 #include "cocos/scripting/js-bindings/manual/jsb_platform.h"
 #include "cocos/scripting/js-bindings/manual/jsb_cocos2dx_manual.hpp"
@@ -86,10 +82,6 @@ bool jsb_register_all_modules()
 
     se->addRegisterCallback(jsb_register_global_variables);
     se->addRegisterCallback(JSB_register_opengl);
-    se->addRegisterCallback(register_all_gfx);
-    se->addRegisterCallback(jsb_register_gfx_manual);
-    se->addRegisterCallback(register_all_renderer);
-    se->addRegisterCallback(jsb_register_renderer_manual);
     se->addRegisterCallback(register_all_cocos2dx);
     se->addRegisterCallback(register_all_cocos2dx_manual);
     se->addRegisterCallback(register_platform_bindings);

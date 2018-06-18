@@ -23,3 +23,32 @@
  ****************************************************************************/
 
 #include "jsb_opengl_utils.hpp"
+#include "cocos/scripting/js-bindings/jswrapper/SeApi.h"
+
+const char* glEnumName(GLenum _enum)
+{
+#define GLENUM(_ty) case _ty: return #_ty
+    
+    switch (_enum)
+    {
+            GLENUM(GL_TEXTURE);
+            GLENUM(GL_RENDERBUFFER);
+            
+            GLENUM(GL_INVALID_ENUM);
+            GLENUM(GL_INVALID_FRAMEBUFFER_OPERATION);
+            GLENUM(GL_INVALID_VALUE);
+            GLENUM(GL_INVALID_OPERATION);
+            GLENUM(GL_OUT_OF_MEMORY);
+            
+            GLENUM(GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT);
+            GLENUM(GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT);
+            //            GLENUM(GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER);
+            //            GLENUM(GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER);
+            GLENUM(GL_FRAMEBUFFER_UNSUPPORTED);
+    }
+    
+#undef GLENUM
+    
+    SE_LOGE("Unknown enum? %x", _enum);
+    return "<GLenum?>";
+}

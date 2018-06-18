@@ -3548,10 +3548,10 @@ static bool JSB_glGetParameter(se::State& s)
         case GL_MAX_FRAGMENT_UNIFORM_VECTORS:
         {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-            GL_CHECK(glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS, intbuffer));
+            JSB_GL_CHECK(glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS, intbuffer));
             s.rval().setInt32(intbuffer[0] / 4);
 #else
-            GL_CHECK(glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_VECTORS, intbuffer));
+            JSB_GL_CHECK(glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_VECTORS, intbuffer));
             s.rval().setInt32(intbuffer[0]);
 #endif
         }
@@ -3559,10 +3559,10 @@ static bool JSB_glGetParameter(se::State& s)
         case GL_MAX_VERTEX_UNIFORM_VECTORS:
         {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-            GL_CHECK(glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, intbuffer));
+            JSB_GL_CHECK(glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, intbuffer));
             s.rval().setInt32(intbuffer[0] / 4);
 #else
-            GL_CHECK(glGetIntegerv(GL_MAX_VERTEX_UNIFORM_VECTORS, intbuffer));
+            JSB_GL_CHECK(glGetIntegerv(GL_MAX_VERTEX_UNIFORM_VECTORS, intbuffer));
             s.rval().setInt32(intbuffer[0]);
 #endif
         }
@@ -3570,10 +3570,10 @@ static bool JSB_glGetParameter(se::State& s)
         case GL_MAX_VARYING_VECTORS:
         {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-//            GL_CHECK(glGetIntegerv(GL_MAX_VARYING_COMPONENTS, intbuffer));
+//            JSB_GL_CHECK(glGetIntegerv(GL_MAX_VARYING_COMPONENTS, intbuffer));
             s.rval().setInt32(8);//FIXME:cjh: intbuffer[0] / 4);
 #else
-            GL_CHECK(glGetIntegerv(GL_MAX_VARYING_VECTORS, intbuffer));
+            JSB_GL_CHECK(glGetIntegerv(GL_MAX_VARYING_VECTORS, intbuffer));
             s.rval().setInt32(intbuffer[0]);
 #endif
         }

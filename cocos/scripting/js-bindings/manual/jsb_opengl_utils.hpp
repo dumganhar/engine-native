@@ -25,7 +25,9 @@
 
 #pragma once
 
-#include "cocos/renderer/gfx/GFXUtils.h"
+#include "platform/CCGL.h"
+
+const char* glEnumName(GLenum _enum);
 
 #define _JSB_GL_CHECK(_call) \
                 do { \

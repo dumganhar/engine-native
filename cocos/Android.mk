@@ -7,25 +7,11 @@ LOCAL_MODULE_FILENAME := libcocos2d
 
 LOCAL_ARM_MODE := arm
 
-ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-MATHNEONFILE := math/MathUtil.cpp.neon
-else
-MATHNEONFILE := math/MathUtil.cpp
-endif
-
 LOCAL_SRC_FILES := \
 cocos2d.cpp \
 platform/CCFileUtils.cpp \
 platform/CCImage.cpp \
 platform/CCSAXParser.cpp \
-$(MATHNEONFILE) \
-math/CCGeometry.cpp \
-math/CCVertex.cpp \
-math/Mat4.cpp \
-math/Quaternion.cpp \
-math/Vec2.cpp \
-math/Vec3.cpp \
-math/Vec4.cpp \
 base/CCAutoreleasePool.cpp \
 base/CCConfiguration.cpp \
 base/CCData.cpp \

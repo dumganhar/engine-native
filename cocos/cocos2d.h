@@ -54,18 +54,6 @@ THE SOFTWARE.
 #include "base/ccUTF8.h"
 #include "base/ccUtils.h"
 
-
-// math
-#include "math/CCGeometry.h"
-#include "math/CCVertex.h"
-#include "math/Mat4.h"
-#include "math/MathUtil.h"
-#include "math/Quaternion.h"
-#include "math/Vec2.h"
-#include "math/Vec3.h"
-#include "math/Vec4.h"
-
-
 // include
 
 // renderer

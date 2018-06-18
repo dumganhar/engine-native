@@ -26,7 +26,7 @@
 
 #include "base/ccMacros.h"
 #include "base/CCData.h"
-#include "math/CCGeometry.h"
+#include "base/ccTypes.h"
 
 #include <string>
 

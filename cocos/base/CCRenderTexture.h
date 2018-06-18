@@ -24,7 +24,6 @@
 #pragma once
 
 #include "base/ccMacros.h"
-#include "math/Vec2.h"
 #include "platform/CCGL.h"
 
 NS_CC_BEGIN
@@ -73,7 +72,8 @@ private:
     int _height = 0;
     
     // device resolution
-    Vec2 _deviceResolution;
+    int _deviceResolutionWidth;
+    int _deviceResolutionHeight;
 };
 
 NS_CC_END

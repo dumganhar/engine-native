@@ -35,7 +35,8 @@
 NS_CC_BEGIN
 
 RenderTexture::RenderTexture(int width, int height)
-: _deviceResolution( {(float)width, (float)height} )
+: _deviceResolutionWidth(width)
+, _deviceResolutionHeight(height)
 {
 }
 
@@ -80,8 +81,8 @@ RenderTexture::~RenderTexture()
 
 void RenderTexture::init(int factor)
 {
-    _width = _deviceResolution.x / factor;
-    _height = _deviceResolution.y / factor;
+    _width = _deviceResolutionWidth / factor;
+    _height = _deviceResolutionHeight / factor;
     
     if (! initProgram())
         return;
@@ -122,7 +123,7 @@ void RenderTexture::draw()
     glGetIntegerv(GL_CURRENT_PROGRAM, &prevProgram);
 
     glBindFramebuffer(GL_FRAMEBUFFER, _mainFBO);
-    ccViewport(0, 0, _deviceResolution.x, _deviceResolution.y);
+    ccViewport(0, 0, _deviceResolutionWidth, _deviceResolutionHeight);
 
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);

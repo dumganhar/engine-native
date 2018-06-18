@@ -31,8 +31,6 @@ THE SOFTWARE.
 
 #include <string>
 
-#include "math/CCGeometry.h"
-#include "math/CCMath.h"
 #include "base/CCRef.h"
 #include "platform/CCGL.h"
 
@@ -226,6 +224,69 @@ struct CC_DLL BlendFunc
     {
         return src < a.src || (src == a.src && dst < a.dst);
     }
+};
+
+class CC_DLL Size
+{
+public:
+    /**Width of the Size.*/
+    float width;
+    /**Height of the Size.*/
+    float height;
+    
+public:
+    /**
+     @{
+     Constructor.
+     @param width Width of the size.
+     @param height Height of the size.
+     @param other Copy constructor.
+     @param point Conversion from a point.
+     */
+    Size();
+    Size(float width, float height);
+    Size(const Size& other);
+    /**@}*/
+    
+    /**
+     * @js NA
+     * @lua NA
+     */
+    Size& operator= (const Size& other);
+
+    /**
+     * @js NA
+     * @lua NA
+     */
+    Size operator+(const Size& right) const;
+    /**
+     * @js NA
+     * @lua NA
+     */
+    Size operator-(const Size& right) const;
+    /**
+     * @js NA
+     * @lua NA
+     */
+    Size operator*(float a) const;
+    /**
+     * @js NA
+     * @lua NA
+     */
+    Size operator/(float a) const;
+    /**
+     Set the width and height of Size.
+     * @js NA
+     * @lua NA
+     */
+    void setSize(float width, float height);
+    /**
+     Check if two size is the same.
+     * @js NA
+     */
+    bool equals(const Size& target) const;
+    /**Size(0,0).*/
+    static const Size ZERO;
 };
 
 extern const std::string CC_DLL STD_STRING_EMPTY;

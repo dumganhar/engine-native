@@ -28,6 +28,7 @@ Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
 #include "base/ccTypes.h"
 #include <cstdio>
+#include <cmath>
 
 NS_CC_BEGIN
 

@@ -29,6 +29,7 @@
 #include "base/ccTypes.h"
 
 #include <string>
+#include <functional>
 
 #ifndef OBJC_CLASS
 #ifdef __OBJC__

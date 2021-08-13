@@ -29,9 +29,24 @@
 
 namespace cc {
 
+class Scene;
+
 class SceneAsset : public Asset {
 public:
+    virtual void initDefault (const std::string& uuid) override;
 
+    virtual bool validate () override {
+        return _scene != nullptr;
+    }
+
+private:
+    /**
+     * @en The scene node
+     * @zh 场景节点。
+
+    @editable
+    @serializable*/
+    Scene* _scene = nullptr;
 };
 
 } // namespace cc {

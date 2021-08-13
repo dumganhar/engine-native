@@ -25,31 +25,36 @@
 
 #pragma once
 
-#include "core/assets/Asset.h"
+#include "base/Random.h"
+
+#include <string>
 
 namespace cc {
 
+static const char* NonUuidMark = ".";
+
 /**
- * @en Class for text file.
- * @zh 文本资源。
+ * ID generator for runtime.
  */
-class TextAsset : public Asset {
+class IDGenerator {
 public:
-
-
     /**
-     * @en The text content.
-     * @zh 此资源包含的文本。
+     * @param [category] You can specify a unique category to avoid id collision with other instance of IdGenerator.
+     */
+    IDGenerator (const std::string& category);
 
-    @serializable
-    @editable*/
-    std::string text;
+    uint32_t getNewId ();
 
-    std::string toString() const {
-        return text;
-    }
+private:
+    uint32_t _id = 0;
+
+    std::string _prefix;
 };
 
+/*
+* The global id generator might have a conflict problem once every 365 days,
+* if the game runs at 60 FPS and each frame 4760273 counts of new id are requested.
+*/
+extern IDGenerator __globalIDGenerator;
+
 } // namespace cc {
-
-

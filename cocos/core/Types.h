@@ -34,6 +34,10 @@ namespace cc {
 using MacroRecord = std::unordered_map<std::string, Value>;
 #define Record std::unordered_map
 
+struct Error {
+
+};
+
 } // namespace cc {
 
 

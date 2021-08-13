@@ -26,24 +26,42 @@
 #pragma once
 
 #include "base/Value.h"
+#include "core/Types.h"
 #include "core/data/Object.h"
 
 #include "core/Any.h"
 
 #include <string>
 #include <unordered_map>
+#include <any>
 
 namespace cc {
+
+class Node;
 
 class Asset : public CCObject {
 public:
     virtual ~Asset() = default;
 
-    const std::string& getNativeUrl();
+    const std::string& getNativeUrl() const;
 
     using NativeDep = std::unordered_map<std::string, Value>;
-    NativeDep getNativeDep();
+    NativeDep getNativeDep() const;
 
+    /**
+     * @param error - null or the error info
+     * @param node - the created node or null
+     */
+    using CreateNodeCallback = std::function<void(Error, Node*)>;
+    /**
+     * @en
+     * Create a new node using this asset in the scene.<br/>
+     * If this type of asset don't have its corresponding node type, this method should be null.
+     * @zh
+     * 使用该资源在场景中创建一个新节点。<br/>
+     * 如果这类资源没有相应的节点类型，该方法应该是空的。
+     */
+    virtual void createNode(const CreateNodeCallback& cb) {}
 
     void addRef();
     void decRef();
@@ -58,6 +76,19 @@ public:
     virtual bool validate() { return true; }
 
     virtual bool destroy() override;
+
+    // SERIALIZATION
+
+    /**
+     * @return
+     */
+    virtual std::any _serialize (std::any ctxForExporting) { return std::any(); };
+
+    /**
+     *
+     * @param data
+     */
+    virtual void _deserialize (std::any serializedData, std::any handle) {};
 
 protected:
     Asset() = default;

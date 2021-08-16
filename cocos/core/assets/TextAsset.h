@@ -33,7 +33,7 @@ namespace cc {
  * @en Class for text file.
  * @zh 文本资源。
  */
-class TextAsset : public Asset {
+class TextAsset final : public Asset {
 public:
 
 

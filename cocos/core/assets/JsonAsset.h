@@ -26,6 +26,7 @@
 #pragma once
 
 #include "core/assets/Asset.h"
+#include "rapidjson/document.h"
 
 namespace cc {
 
@@ -34,10 +35,11 @@ namespace cc {
  * @zh Json 资源。
  * Json 资源加载后将直接解析为对象。如果你希望获得 JSON 的原始文本，你需要使用文本资源（使用文件名后缀“.txt”）。
  */
-class JsonAsset : public Asset {
+class JsonAsset final : public Asset {
 public:
 
-    
+private:
+    rapidjson::Value _json;
 };
 
 } // namespace cc {

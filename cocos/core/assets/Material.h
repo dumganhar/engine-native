@@ -91,7 +91,7 @@ struct IMaterialInfo {
     std::vector<PassOverrides> states;
 };
 
-class Material : public Asset {
+class Material final : public Asset {
 public:
     /**
      * @en Get hash for a material

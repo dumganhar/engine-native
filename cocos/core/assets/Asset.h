@@ -29,10 +29,6 @@
 #include "core/Types.h"
 #include "core/data/Object.h"
 
-#include "core/Any.h"
-
-#include <string>
-#include <unordered_map>
 #include <any>
 
 namespace cc {
@@ -69,11 +65,11 @@ public:
 
     virtual void onLoaded() {}
 
-    virtual Any getNativeAsset();
-    virtual void setNativeAsset(Any obj);
+    virtual std::any getNativeAsset() const;
+    virtual void setNativeAsset(const std::any& obj);
 
     virtual void initDefault(const std::string& uuid);
-    virtual bool validate() { return true; }
+    virtual bool validate() const { return true; }
 
     virtual bool destroy() override;
 
@@ -102,10 +98,10 @@ private:
 
     std::string _uuid;
 
-    uint32_t _ref = 0;
+    uint32_t _ref {0};
 
-    bool _loaded = true;
-    bool _isDefault = false;
+    bool _loaded {true};
+    bool _isDefault {false};
 
 };
 

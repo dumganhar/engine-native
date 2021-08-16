@@ -26,8 +26,11 @@
 #pragma once
 
 #include "base/Value.h"
+#include "math/Vec3.h"
 
 #include <unordered_map>
+#include <vector>
+#include <string>
 
 namespace cc {
 
@@ -36,6 +39,23 @@ using MacroRecord = std::unordered_map<std::string, Value>;
 
 struct Error {
 
+};
+
+using HTMLElement = void*;
+
+using Uint8Array = std::vector<uint8_t>;
+using Uint16Array = std::vector<uint16_t>;
+using Uint32Array = std::vector<uint32_t>;
+using Float32Array = std::vector<float>;
+
+struct BoundingBox {
+    Vec3 min;
+    Vec3 max;
+};
+
+struct VertexIdChannel {
+    uint32_t stream;
+    uint32_t index;
 };
 
 } // namespace cc {

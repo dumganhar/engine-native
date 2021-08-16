@@ -836,10 +836,9 @@ cocos_source_files(
                  cocos/renderer/pipeline/helper/DefineMap.cpp
 )
 
+
 ##### scene
 cocos_source_files(
-                 cocos/scene/AABB.h
-                 cocos/scene/AABB.cpp
                  cocos/scene/BakedSkinningModel.h
                  cocos/scene/BakedSkinningModel.cpp
                  cocos/scene/Camera.h
@@ -848,8 +847,6 @@ cocos_source_files(
                  cocos/scene/DirectionalLight.h
                  cocos/scene/DirectionalLight.cpp
                  cocos/scene/DrawBatch2D.h
-                 cocos/scene/Frustum.h
-                 cocos/scene/Frustum.cpp
                  cocos/scene/Light.h
                  cocos/scene/Light.cpp
                  cocos/scene/Model.h
@@ -1352,6 +1349,12 @@ cocos_source_files(
 
     cocos/core/utils/IDGenerator.cpp
     cocos/core/utils/IDGenerator.h
+
+    cocos/core/geometry/AABB.h
+    cocos/core/geometry/AABB.cpp
+    
+    cocos/core/geometry/Frustum.h
+    cocos/core/geometry/Frustum.cpp
 
 )
 

@@ -23,7 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "scene/Frustum.h"
+#include "core/geometry/Frustum.h"
 #include "scene/Define.h"
 
 namespace cc {

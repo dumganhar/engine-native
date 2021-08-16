@@ -25,9 +25,9 @@
 
 #pragma once
 
+#include "core/geometry/AABB.h"
+#include "core/geometry/Frustum.h"
 #include "math/Vec3.h"
-#include "scene/AABB.h"
-#include "scene/Frustum.h"
 
 namespace cc {
 namespace scene {

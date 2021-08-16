@@ -27,10 +27,11 @@
 
 #include <cstdint>
 #include "bindings/manual/jsb_conversions.h"
+#include "core/geometry/AABB.h"
 #include "physics/spec/ILifecycle.h"
-#include "scene/AABB.h"
 #include "scene/Node.h"
 #include "scene/Sphere.h"
+
 
 namespace cc {
 namespace physics {

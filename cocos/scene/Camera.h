@@ -26,13 +26,14 @@
 #pragma once
 
 #include <cstdint>
+#include "core/geometry/Frustum.h"
 #include "math/Mat4.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
 #include "renderer/gfx-base/GFXDef-common.h"
-#include "scene/Frustum.h"
 #include "scene/Node.h"
 #include "scene/RenderWindow.h"
+
 
 namespace cc {
 namespace scene {

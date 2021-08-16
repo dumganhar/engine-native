@@ -24,7 +24,7 @@
  ****************************************************************************/
 
 #pragma once
-#include "scene/BaseNode.h"
+#include "scene-graph/BaseNode.h"
 
 namespace cc {
 namespace scene {

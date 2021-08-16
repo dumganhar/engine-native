@@ -23,7 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "scene/Node.h"
+#include "scene-graph/Node.h"
 #include "scene/Define.h"
 
 namespace cc {

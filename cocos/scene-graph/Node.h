@@ -32,8 +32,8 @@
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
-#include "scene/BaseNode.h"
-#include "scene/Scene.h"
+#include "scene-graph/BaseNode.h"
+#include "scene-graph/Scene.h"
 
 namespace cc {
 namespace scene {

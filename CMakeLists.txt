@@ -855,12 +855,6 @@ cocos_source_files(
                  cocos/scene/Model.h
                  cocos/scene/Model.cpp
                  cocos/scene/MorphModel.h
-                 cocos/scene/BaseNode.h
-                 cocos/scene/BaseNode.cpp
-                 cocos/scene/Node.h
-                 cocos/scene/Node.cpp
-                 cocos/scene/Scene.h
-                 cocos/scene/Scene.cpp
                  cocos/scene/Pass.h
                  cocos/scene/Pass.cpp
                  cocos/scene/RenderScene.h
@@ -876,6 +870,24 @@ cocos_source_files(
                  cocos/scene/SpotLight.cpp
                  cocos/scene/SubModel.h
                  cocos/scene/SubModel.cpp
+)
+
+##### scene graph
+cocos_source_files(
+                 cocos/scene-graph/BaseNode.h
+                 cocos/scene-graph/BaseNode.cpp
+                 cocos/scene-graph/Node.h
+                 cocos/scene-graph/Node.cpp
+                 cocos/scene-graph/Scene.h
+                 cocos/scene-graph/Scene.cpp
+                 cocos/scene-graph/ComponentScheduler.h
+                 cocos/scene-graph/ComponentScheduler.cpp
+)
+
+##### components
+cocos_source_files(
+                 cocos/components/Component.h
+                 cocos/components/Component.cpp
 )
 
 if(CC_USE_GLES2 OR CC_USE_GLES3)

@@ -26,10 +26,11 @@
 #pragma once
 
 #include <algorithm>
+#include "core/geometry/Frustum.h"
 #include "math/Mat3.h"
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
-#include "scene/Frustum.h"
+
 
 namespace cc {
 namespace scene {

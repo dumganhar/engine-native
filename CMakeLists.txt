@@ -1204,6 +1204,157 @@ if(USE_PHYSICS_PHYSX)
     )
 endif()
 
+##### core
+
+cocos_source_files(
+
+    cocos/core/Any.h
+    cocos/core/ArrayBuffer.h
+    cocos/core/CoreModuleHeader.h
+    cocos/core/Director.cpp
+    cocos/core/Director.h
+    cocos/core/Game.cpp
+    cocos/core/Game.h
+    cocos/core/Root.cpp
+    cocos/core/Root.h
+    cocos/core/Scheduler.cpp
+    cocos/core/Scheduler.h
+    cocos/core/SplashScreen.cpp
+    cocos/core/SplashScreen.h
+    cocos/core/Types.h
+
+    cocos/core/asset-manager
+    cocos/core/asset-manager/AssetManager.cpp
+    cocos/core/asset-manager/AssetManager.h
+    cocos/core/asset-manager/AssetManagerModuleHeader.h
+    cocos/core/asset-manager/Bundle.cpp
+    cocos/core/asset-manager/Bundle.h
+    cocos/core/asset-manager/Cache.cpp
+    cocos/core/asset-manager/Cache.h
+    cocos/core/asset-manager/CacheManager.cpp
+    cocos/core/asset-manager/CacheManager.h
+    cocos/core/asset-manager/Config.cpp
+    cocos/core/asset-manager/Config.h
+    cocos/core/asset-manager/DependMaps.cpp
+    cocos/core/asset-manager/DependMaps.h
+    cocos/core/asset-manager/DependUtil.cpp
+    cocos/core/asset-manager/DependUtil.h
+    cocos/core/asset-manager/Deserialize.cpp
+    cocos/core/asset-manager/Deserialize.h
+    cocos/core/asset-manager/DownloadFile.cpp
+    cocos/core/asset-manager/DownloadFile.h
+    cocos/core/asset-manager/DownloadImage.cpp
+    cocos/core/asset-manager/DownloadImage.h
+    cocos/core/asset-manager/DownloadScript.cpp
+    cocos/core/asset-manager/DownloadScript.h
+    cocos/core/asset-manager/Downloader.cpp
+    cocos/core/asset-manager/Downloader.h
+    cocos/core/asset-manager/Factory.cpp
+    cocos/core/asset-manager/Factory.h
+    cocos/core/asset-manager/Fetch.cpp
+    cocos/core/asset-manager/Fetch.h
+    cocos/core/asset-manager/Helper.cpp
+    cocos/core/asset-manager/Helper.h
+    cocos/core/asset-manager/Load.cpp
+    cocos/core/asset-manager/Load.h
+    cocos/core/asset-manager/PackManager.cpp
+    cocos/core/asset-manager/PackManager.h
+    cocos/core/asset-manager/Parser.cpp
+    cocos/core/asset-manager/Parser.h
+    cocos/core/asset-manager/Pipeline.cpp
+    cocos/core/asset-manager/Pipeline.h
+    cocos/core/asset-manager/PlistParser.cpp
+    cocos/core/asset-manager/PlistParser.h
+    cocos/core/asset-manager/PreProcess.cpp
+    cocos/core/asset-manager/PreProcess.h
+    cocos/core/asset-manager/ReleaseManager.cpp
+    cocos/core/asset-manager/ReleaseManager.h
+    cocos/core/asset-manager/RequestItem.cpp
+    cocos/core/asset-manager/RequestItem.h
+    cocos/core/asset-manager/Shared.cpp
+    cocos/core/asset-manager/Shared.h
+    cocos/core/asset-manager/Task.cpp
+    cocos/core/asset-manager/Task.h
+    cocos/core/asset-manager/UrlTransformer.cpp
+    cocos/core/asset-manager/UrlTransformer.h
+    cocos/core/asset-manager/Utilities.cpp
+    cocos/core/asset-manager/Utilities.h
+    cocos/core/asset-manager/WeakCache.cpp
+    cocos/core/asset-manager/WeakCache.h
+
+    cocos/core/assets/Asset.cpp
+    cocos/core/assets/Asset.h
+    cocos/core/assets/AssetEnum.cpp
+    cocos/core/assets/AssetEnum.h
+    cocos/core/assets/AssetsModuleHeader.h
+    cocos/core/assets/BufferAsset.cpp
+    cocos/core/assets/BufferAsset.h
+    cocos/core/assets/EffectAsset.cpp
+    cocos/core/assets/EffectAsset.h
+    cocos/core/assets/ImageAsset.cpp
+    cocos/core/assets/ImageAsset.h
+    cocos/core/assets/JsonAsset.cpp
+    cocos/core/assets/JsonAsset.h
+    cocos/core/assets/Material.cpp
+    cocos/core/assets/Material.h
+    cocos/core/assets/Prefab.cpp
+    cocos/core/assets/Prefab.h
+    cocos/core/assets/RenderTexture.cpp
+    cocos/core/assets/RenderTexture.h
+    cocos/core/assets/RenderingSubMesh.cpp
+    cocos/core/assets/RenderingSubMesh.h
+    cocos/core/assets/SceneAsset.cpp
+    cocos/core/assets/SceneAsset.h
+    cocos/core/assets/SimpleTexture.cpp
+    cocos/core/assets/SimpleTexture.h
+    cocos/core/assets/TextAsset.cpp
+    cocos/core/assets/TextAsset.h
+    cocos/core/assets/Texture2D.cpp
+    cocos/core/assets/Texture2D.h
+    cocos/core/assets/TextureBase.cpp
+    cocos/core/assets/TextureBase.h
+    cocos/core/assets/TextureCube.cpp
+    cocos/core/assets/TextureCube.h
+
+    cocos/core/data/Object.cpp
+    cocos/core/data/Object.h
+
+    cocos/core/event/CallbacksInvoker.cpp
+    cocos/core/event/CallbacksInvoker.h
+    cocos/core/event/Event.cpp
+    cocos/core/event/Event.h
+    cocos/core/event/EventModuleHeader.h
+    cocos/core/event/EventTarget.cpp
+    cocos/core/event/EventTarget.h
+    cocos/core/event/EventTargetFactory.cpp
+    cocos/core/event/EventTargetFactory.h
+
+    cocos/core/scene-graph/BaseNode.cpp
+    cocos/core/scene-graph/BaseNode.h
+    cocos/core/scene-graph/Find.cpp
+    cocos/core/scene-graph/Find.h
+    cocos/core/scene-graph/Layers.h
+    cocos/core/scene-graph/Node.cpp
+    cocos/core/scene-graph/Node.h
+    cocos/core/scene-graph/NodeActivator.cpp
+    cocos/core/scene-graph/NodeActivator.h
+    cocos/core/scene-graph/NodeEnum.h
+    cocos/core/scene-graph/NodeEvent.h
+    cocos/core/scene-graph/NodeEventProcessor.cpp
+    cocos/core/scene-graph/NodeEventProcessor.h
+    cocos/core/scene-graph/NodeUIProperties.cpp
+    cocos/core/scene-graph/NodeUIProperties.h
+    cocos/core/scene-graph/Scene.cpp
+    cocos/core/scene-graph/Scene.h
+    cocos/core/scene-graph/SceneGlobal.cpp
+    cocos/core/scene-graph/SceneGlobal.h
+    cocos/core/scene-graph/SceneGraphModuleHeader.h
+
+    cocos/core/utils/IDGenerator.cpp
+    cocos/core/utils/IDGenerator.h
+
+)
+
 ##### script bindings
 ######## dop
 cocos_source_files(

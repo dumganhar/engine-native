@@ -102,8 +102,8 @@ void PhysXShape::setMask(uint32_t m) {
 void PhysXShape::updateEventListener(EShapeFilterFlag flag) {
 }
 
-scene::AABB &PhysXShape::getAABB() {
-    static scene::AABB aabb;
+geometry::AABB &PhysXShape::getAABB() {
+    static geometry::AABB aabb;
     if (_mShape) {
         auto bounds = physx::PxShapeExt::getWorldBounds(getShape(), *getSharedBody().getImpl().rigidActor);
         pxSetVec3Ext(aabb.getLayout()->center, (bounds.maximum + bounds.minimum) / 2);
@@ -112,8 +112,8 @@ scene::AABB &PhysXShape::getAABB() {
     return aabb;
 }
 
-scene::Sphere &PhysXShape::getBoundingSphere() {
-    static scene::Sphere sphere;
+geometry::Sphere &PhysXShape::getBoundingSphere() {
+    static geometry::Sphere sphere;
     if (_mShape) sphere.define(getAABB());
     return sphere;
 }

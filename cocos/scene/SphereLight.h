@@ -43,7 +43,7 @@ public:
 
     void update() override;
 
-    inline void setAABB(AABB *aabb) { _aabb = aabb; }
+    inline void setAABB(geometry::AABB *aabb) { _aabb = aabb; }
     inline void setIlluminance(float illum) { _illuminance = illum; }
     inline void setPosition(const Vec3 &pos) { _pos = pos; }
     inline void setRange(float range) {
@@ -52,19 +52,19 @@ public:
     }
     inline void setSize(float size) { _size = size; }
 
-    inline AABB *      getAABB() const { return _aabb; }
-    inline float       getIlluminance() const { return _illuminance; }
-    inline const Vec3 &getPosition() const { return _pos; }
-    inline float       getRange() const { return _range; }
-    inline float       getSize() const { return _size; }
+    inline geometry::AABB *getAABB() const { return _aabb; }
+    inline float           getIlluminance() const { return _illuminance; }
+    inline const Vec3 &    getPosition() const { return _pos; }
+    inline float           getRange() const { return _range; }
+    inline float           getSize() const { return _size; }
 
 private:
-    bool  _needUpdate{false};
-    float _illuminance{0.F};
-    float _range{0.F};
-    float _size{0.F};
-    Vec3  _pos;
-    AABB *_aabb{nullptr};
+    bool            _needUpdate{false};
+    float           _illuminance{0.F};
+    float           _range{0.F};
+    float           _size{0.F};
+    Vec3            _pos;
+    geometry::AABB *_aabb{nullptr};
 };
 
 } // namespace scene

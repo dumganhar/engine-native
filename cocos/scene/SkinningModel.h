@@ -43,7 +43,7 @@ struct JointTransform {
 };
 
 struct JointInfo {
-    AABB *                      bound{nullptr};
+    geometry::AABB *            bound{nullptr};
     Node *                      target{nullptr};
     Mat4                        bindpose;
     JointTransform              transform;

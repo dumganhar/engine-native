@@ -31,21 +31,18 @@
 namespace cc {
 namespace pipeline {
 
-void PipelineSceneData::activate(gfx::Device *device, RenderPipeline *pipeline)
-{
-    _device = device;
+void PipelineSceneData::activate(gfx::Device *device, RenderPipeline *pipeline) {
+    _device   = device;
     _pipeline = pipeline;
 
-    _sphere = CC_NEW(scene::Sphere);
+    _sphere = CC_NEW(geometry::Sphere);
 }
 
-void PipelineSceneData::setPipelineSharedSceneData(scene::PipelineSharedSceneData *data)
-{
+void PipelineSceneData::setPipelineSharedSceneData(scene::PipelineSharedSceneData *data) {
     _sharedSceneData = data;
 }
 
-void PipelineSceneData::destroy()
-{
+void PipelineSceneData::destroy() {
     CC_SAFE_DELETE(_sphere);
 
     for (auto &pair : _shadowFrameBufferMap) {

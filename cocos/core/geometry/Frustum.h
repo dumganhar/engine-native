@@ -29,7 +29,7 @@
 #include "math/Vec3.h"
 
 namespace cc {
-namespace scene {
+namespace geometry {
 enum class ShapeEnums {
     SHAPE_RAY              = (1 << 0),
     SHAPE_LINE             = (1 << 1),
@@ -54,5 +54,5 @@ struct Frustum final {
     ShapeEnums           type{ShapeEnums::SHAPE_FRUSTUM};
 };
 
-} // namespace scene
+} // namespace geometry
 } // namespace cc

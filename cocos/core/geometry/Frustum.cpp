@@ -27,7 +27,7 @@
 #include "scene/Define.h"
 
 namespace cc {
-namespace scene {
+namespace geometry {
 namespace {
 const std::vector<cc::Vec3> VEC_VALS{
     {1, 1, 1},
@@ -74,5 +74,5 @@ void Frustum::update(const Mat4 &m, const Mat4 &inv) {
         i++;
     }
 }
-} // namespace scene
+} // namespace geometry
 } // namespace cc

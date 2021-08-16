@@ -24,6 +24,7 @@ conversions:
     "cc::gfx::": "gfx."
     "cc::pipeline::": "nr."
     "cc::scene::": "ns."
+    "cc::geometry::": "ns."
   to_native:
     # jsval to int
     int32_t: "ok &= seval_to_int32(${in_value}, (int32_t*)&${out_value})"
@@ -152,6 +153,6 @@ conversions:
     "@shared_ptr<.*DownloadTask.*": "ok &= DownloadTask_to_seval(*${in_value}, &${out_value})"
     "Data": "ok &= Data_to_seval(${in_value}, &${out_value})"
     "se_object_ptr": "${out_value}.setObject(${in_value})"
-    "String":  "${out_value}.setString(${in_value})"
+    "String": "${out_value}.setString(${in_value})"
     object: "ok &= native_ptr_to_seval(${in_value}, &${out_value})"
     rooted_object: "ok &= native_ptr_to_rooted_seval<${ntype.replace('*', '').replace('const ', '')}>((${ntype.replace('const ', '')})${in_value}, &${out_value})"

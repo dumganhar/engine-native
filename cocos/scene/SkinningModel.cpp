@@ -104,11 +104,11 @@ void SkinningModel::updateTransform(uint32_t stamp) {
         root->updateWorldTransform();
         _transformUpdated = true;
     }
-    Vec3 v3Min{INFINITY, INFINITY, INFINITY};
-    Vec3 v3Max{-INFINITY, -INFINITY, -INFINITY};
-    AABB ab1;
-    Vec3 v31;
-    Vec3 v32;
+    Vec3           v3Min{INFINITY, INFINITY, INFINITY};
+    Vec3           v3Max{-INFINITY, -INFINITY, -INFINITY};
+    geometry::AABB ab1;
+    Vec3           v31;
+    Vec3           v32;
     for (JointInfo& jointInfo : _joints) {
         updateWorldMatrix(&jointInfo, stamp);
         jointInfo.bound->transform(_worldMatrix, &ab1);
@@ -117,7 +117,7 @@ void SkinningModel::updateTransform(uint32_t stamp) {
         Vec3::max(v3Max, v32, &v3Max);
     }
     if (_modelBounds.getValid() && _worldBounds) {
-        AABB::fromPoints(v3Min, v3Max, &_modelBounds);
+        geometry::AABB::fromPoints(v3Min, v3Max, &_modelBounds);
         _modelBounds.transform(root->getNodeLayout()->worldMatrix, _worldBounds);
     }
 }

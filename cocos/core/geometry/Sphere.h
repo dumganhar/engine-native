@@ -30,7 +30,7 @@
 #include "math/Vec3.h"
 
 namespace cc {
-namespace scene {
+namespace geometry {
 
 class Sphere {
 public:
@@ -59,5 +59,5 @@ private:
     Vec3  _center;
 };
 
-} // namespace scene
+} // namespace geometry
 } // namespace cc

@@ -1230,6 +1230,10 @@ cocos_source_files(
     cocos/core/Game.h
     cocos/core/Root.cpp
     cocos/core/Root.h
+    
+    cocos/core/System.cpp
+    cocos/core/System.h
+    
     cocos/core/Scheduler.cpp
     cocos/core/Scheduler.h
     cocos/core/SplashScreen.cpp

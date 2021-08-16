@@ -26,12 +26,95 @@
 #pragma once
 
 #include "core/assets/Asset.h"
+#include "renderer/gfx-base/GFXDef.h"
+
+#include <variant>
 
 namespace cc {
 
-class RenderingSubMesh : public Asset {
-public:
+/**
+ * @en Array views for index buffer
+ * @zh 允许存储索引的数组视图。
+ */
+using IBArray = std::variant<Uint8Array, Uint16Array, Uint32Array>;
 
+/**
+ * @en The interface of geometric information
+ * @zh 几何信息。
+ */
+struct IGeometricInfo {
+    /**
+     * @en Vertex positions
+     * @zh 顶点位置。
+     */
+    Float32Array positions;
+
+    /**
+     * @en Indices data
+     * @zh 索引数据。
+     */
+    IBArray indices;
+
+    /**
+     * @en Whether the geometry is treated as double sided
+     * @zh 是否将图元按双面对待。
+     */
+    bool doubleSided;
+
+    /**
+     * @en The bounding box
+     * @zh 此几何体的轴对齐包围盒。
+     */
+    BoundingBox boundingBox;
+};
+
+/**
+ * @en Flat vertex buffer
+ * @zh 扁平化顶点缓冲区
+ */
+struct IFlatBuffer {
+    uint32_t stride;
+    uint32_t count;
+    Uint8Array buffer;
+};
+
+class Mesh;
+
+namespace gfx {
+    class Buffer;
+}
+/**
+ * @en Sub mesh for rendering which contains all geometry data, it can be used to create [[InputAssembler]].
+ * @zh 包含所有顶点数据的渲染子网格，可以用来创建 [[InputAssembler]]。
+ */
+class RenderingSubMesh final : public Asset {
+public:
+    Mesh* mesh {nullptr};
+
+    uint32_t subMeshIdx {0};
+
+private:
+    std::vector<IFlatBuffer> _flatBuffers;
+
+    std::vector<gfx::Buffer*> _jointMappedBuffers;
+
+    std::vector<uint32_t> _jointMappedBufferIndices;
+
+    VertexIdChannel _vertexIdChannel;
+
+    IGeometricInfo _geometricInfo;
+
+    std::vector<gfx::Buffer*> _vertexBuffers;
+
+    gfx::AttributeList _attributes;
+
+    gfx::Buffer* _indexBuffer {nullptr};
+
+    gfx::Buffer* _indirectBuffer {nullptr};
+
+    gfx::PrimitiveMode _primitiveMode {gfx::PrimitiveMode::TRIANGLE_LIST};
+
+    gfx::InputAssemblerInfo _iaInfo;
 };
 
 } // namespace cc {

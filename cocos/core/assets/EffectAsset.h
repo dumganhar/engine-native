@@ -141,7 +141,7 @@ struct IShaderInfo {
 //cjh    [name: string]: boolean[] | number[] | string[];
 using IPreCompileInfo = std::unordered_map<std::string, Value>;
 
-class EffectAsset : public Asset {
+class EffectAsset final : public Asset {
 public:
     /**
      * @en Register the effect asset to the static map
@@ -204,7 +204,7 @@ public:
     virtual void onLoaded() override;
     virtual bool destroy() override;
     virtual void initDefault(const std::string& uuid) override;
-    virtual bool validate() override;
+    virtual bool validate () const override;
 
 protected:
     void _precompile();

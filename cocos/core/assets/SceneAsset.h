@@ -31,11 +31,11 @@ namespace cc {
 
 class Scene;
 
-class SceneAsset : public Asset {
+class SceneAsset final : public Asset {
 public:
     virtual void initDefault (const std::string& uuid) override;
 
-    virtual bool validate () override {
+    virtual bool validate () const override {
         return _scene != nullptr;
     }
 

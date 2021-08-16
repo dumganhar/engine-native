@@ -310,6 +310,8 @@ public:
     void _destruct ();
 
     void _destroyImmediate ();
+
+    virtual std::string toString() const { return ""; };
 };
 
 } // namespace cc {

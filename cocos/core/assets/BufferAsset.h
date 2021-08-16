@@ -36,9 +36,11 @@ public:
     BufferAsset() = default;
     virtual ~BufferAsset() = default;
 
-    virtual Any getNativeAsset() override;
-    virtual void setNativeAsset(Any obj) override;
-    virtual bool validate() override { return !_buffer.empty(); }
+    inline const ArrayBuffer& getBuffer() const { return _buffer; }
+
+    virtual std::any getNativeAsset() const override;
+    virtual void setNativeAsset(const std::any& obj) override;
+    virtual bool validate() const override { return !_buffer.empty(); }
     
 private:
     ArrayBuffer _buffer;

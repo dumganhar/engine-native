@@ -37,7 +37,7 @@ namespace cc {
  * @en Class for prefab handling.
  * @zh 预制资源类。
  */
-class Prefab : public Asset {
+class Prefab final : public Asset {
 public:
 
     /**
@@ -108,7 +108,7 @@ public:
     Node* _instantiate();
 
     virtual void initDefault(const std::string& uuid) override;
-    virtual bool validate() override { _data.has_value(); }
+    virtual bool validate() const override { _data.has_value(); }
 
 };
 

@@ -27,10 +27,11 @@
 
 #include <tuple>
 #include <vector>
+#include "core/geometry/AABB.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
-#include "scene/AABB.h"
 #include "scene/Node.h"
+
 
 namespace cc {
 namespace scene {

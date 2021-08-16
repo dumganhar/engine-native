@@ -29,19 +29,20 @@
 #include "Define.h"
 #include "RenderPipeline.h"
 #include "SceneCulling.h"
+#include "core/geometry/AABB.h"
 #include "gfx-base/GFXBuffer.h"
 #include "gfx-base/GFXDescriptorSet.h"
 #include "math/Quaternion.h"
 #include "platform/Application.h"
-#include "scene/AABB.h"
 #include "scene/Light.h"
 #include "scene/RenderScene.h"
 #include "scene/Sphere.h"
 #include "scene/SpotLight.h"
 
+
 namespace cc {
 namespace pipeline {
-bool         castBoundsInitialized = false;
+bool        castBoundsInitialized = false;
 scene::AABB castWorldBounds;
 
 RenderObject genRenderObject(const scene::Model *model, const scene::Camera *camera) {
@@ -176,7 +177,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
         isShadowMap = true;
     }
 
-    RenderObjectList               renderObjects;
+    RenderObjectList renderObjects;
 
     if (skyBox->enabled && skyBox->model && (camera->clearFlag & skyboxFlag)) {
         renderObjects.emplace_back(genRenderObject(skyBox->model, camera));

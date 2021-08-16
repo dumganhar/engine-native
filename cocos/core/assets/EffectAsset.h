@@ -32,63 +32,64 @@
 #include "base/Value.h"
 #include "core/Types.h"
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
+
 
 namespace cc {
 
 struct IPropertyInfo {
-    int32_t type; // auto-extracted from shader
-    ValueVector handleInfo; //cjh check: ?: [string, number, number]; // auto-generated from 'target'
-    uint32_t samplerHash; // auto-generated from 'sampler'
+    int32_t             type;        // auto-extracted from shader
+    ValueVector         handleInfo;  //cjh check: ?: [string, number, number]; // auto-generated from 'target'
+    uint32_t            samplerHash; // auto-generated from 'sampler'
     std::vector<double> numberValue; //cjh     ?: number[] | string;
-    std::string stringValue;
+    std::string         stringValue;
 };
 
 // Pass instance itself are compliant to IPassStates too
 struct IPassStates {
-    int32_t priority;
-    gfx::PrimitiveMode primitive;
+    int32_t                priority;
+    gfx::PrimitiveMode     primitive;
     scene::RenderPassStage stage;
-    gfx::RasterizerState rasterizerState;
+    gfx::RasterizerState   rasterizerState;
     gfx::DepthStencilState depthStencilState;
-    gfx::BlendState blendState;
+    gfx::BlendState        blendState;
     gfx::DynamicStateFlags dynamicStates;
-    std::string strPhase;  //cjh? phase?: string | number;
-    int32_t intPhase; //cjh: check logic
+    std::string            strPhase; //cjh? phase?: string | number;
+    int32_t                intPhase; //cjh: check logic
 };
 
 using PassOverrides = IPassStates;
 
 struct IPassInfo : public IPassStates {
-    std::string program; // auto-generated from 'vert' and 'frag'
-    MacroRecord embeddedMacros;
-    int32_t propertyIndex;
-    std::string switch_;
+    std::string                                    program; // auto-generated from 'vert' and 'frag'
+    MacroRecord                                    embeddedMacros;
+    int32_t                                        propertyIndex;
+    std::string                                    switch_;
     std::unordered_map<std::string, IPropertyInfo> properties;
 };
 
 struct ITechniqueInfo {
     std::vector<IPassInfo> passes;
-    std::string name;
+    std::string            name;
 };
 
 struct IBlockInfo {
-    int32_t binding;
-    std::string name;
+    int32_t                   binding;
+    std::string               name;
     std::vector<gfx::Uniform> members;
-    uint32_t count;
-    gfx::ShaderStageFlags stageFlags;
-    gfx::DescriptorType descriptorType;
+    uint32_t                  count;
+    gfx::ShaderStageFlags     stageFlags;
+    gfx::DescriptorType       descriptorType;
 };
 
 struct ISamplerTextureInfo {
-    int32_t binding;//cjh : number;
-    std::string name;
-    gfx::Type type;
-    uint32_t count;
+    int32_t               binding; //cjh : number;
+    std::string           name;
+    gfx::Type             type;
+    uint32_t              count;
     gfx::ShaderStageFlags stageFlags;
-    gfx::DescriptorType descriptorType;
+    gfx::DescriptorType   descriptorType;
 };
 
 struct IAttributeInfo : public gfx::Attribute {
@@ -96,15 +97,15 @@ struct IAttributeInfo : public gfx::Attribute {
 };
 
 struct IDefineInfo {
-    std::string name;
-    std::string type;
-    std::vector<float> range; //cjh number is float?  ?: number[];
+    std::string              name;
+    std::string              type;
+    std::vector<float>       range; //cjh number is float?  ?: number[];
     std::vector<std::string> options;
-    std::string defaultVal;
+    std::string              defaultVal;
 };
 
 struct IBuiltin {
-    std::string name;
+    std::string              name;
     std::vector<std::string> defines;
 };
 
@@ -114,8 +115,8 @@ struct IBuiltinInfo {
 };
 
 struct IBuiltins {
-    IBuiltinInfo globals;
-    IBuiltinInfo locals;
+    IBuiltinInfo                             globals;
+    IBuiltinInfo                             locals;
     std::unordered_map<std::string, int32_t> statistics;
 };
 
@@ -125,23 +126,22 @@ struct IShaderSource {
 };
 
 struct IShaderInfo {
-    std::string name;
-    uint64_t hash; //cjh hash is 64 bit?
-    IShaderSource glsl4;
-    IShaderSource glsl3;
-    IShaderSource glsl1;
-    IBuiltins builtins;
-    std::vector<IDefineInfo> defines;
-    std::vector<IBlockInfo> blocks;
+    std::string                      name;
+    uint64_t                         hash; //cjh hash is 64 bit?
+    IShaderSource                    glsl4;
+    IShaderSource                    glsl3;
+    IShaderSource                    glsl1;
+    IBuiltins                        builtins;
+    std::vector<IDefineInfo>         defines;
+    std::vector<IBlockInfo>          blocks;
     std::vector<ISamplerTextureInfo> samplerTextures;
-    std::vector<IAttributeInfo> attributes;
+    std::vector<IAttributeInfo>      attributes;
 };
 
 //cjh    [name: string]: boolean[] | number[] | string[];
 using IPreCompileInfo = std::unordered_map<std::string, Value>;
 
-class EffectAsset : public Asset
-{
+class EffectAsset : public Asset {
 public:
     /**
      * @en Register the effect asset to the static map
@@ -201,16 +201,16 @@ public:
      * @en The loaded callback which should be invoked by the [[Loader]], will automatically register the effect.
      * @zh 通过 [[Loader]] 加载完成时的回调，将自动注册 effect 资源。
      */
-    virtual void onLoaded () override;
-    virtual void destroy () override;
-    virtual void initDefault (const std::string& uuid) override;
-    virtual bool validate () override;
+    virtual void onLoaded() override;
+    virtual bool destroy() override;
+    virtual void initDefault(const std::string& uuid) override;
+    virtual bool validate() override;
 
 protected:
-    void _precompile ();
+    void _precompile();
 
 protected:
     static std::unordered_map<std::string, EffectAsset> __effects;
 };
 
-} // namespace cc {
+} // namespace cc

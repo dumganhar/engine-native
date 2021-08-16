@@ -28,9 +28,10 @@
 #include <cstdint>
 #include <memory>
 #include "base/Macros.h"
+#include "core/geometry/AABB.h"
 #include "physics/spec/IShape.h"
-#include "scene/AABB.h"
 #include "scene/Sphere.h"
+
 
 #define CC_PHYSICS_SHAPE_CLASS(CLASS)                                       \
     class CC_DLL CLASS final : public I##CLASS {                            \
@@ -62,11 +63,11 @@ namespace physics {
 
 CC_PHYSICS_SHAPE_CLASS(SphereShape)
 void setRadius(float v) override;
-};
+}; // namespace physics
 
 CC_PHYSICS_SHAPE_CLASS(BoxShape)
 void setSize(float x, float y, float z) override;
-};
+}; // namespace cc
 
 CC_PHYSICS_SHAPE_CLASS(CapsuleShape)
 void setRadius(float v) override;

@@ -35,6 +35,8 @@ namespace cc {
 
 class RequestItem;
 class Asset;
+class Bundle;
+class Pipeline;
 
 struct IXHROptions { //cjh why to inherit from map? } : public Record<std::string, std::any> {
     std::string xhrResponseType;
@@ -102,10 +104,10 @@ using AssetType = std::function<void()>;
 extern Cache<Asset*> assets;  //cjh EDITOR ? new WeakCache<Asset>() : new Cache<Asset>();
 extern Cache<std::any> files;
 extern Cache<std::any> parsed;
-//cjh TODO: extern Cache<Bundle> bundles;
-//cjh TODO: extern const pipeline = new Pipeline('normal load', []);
-//extern const fetchPipeline = new Pipeline('fetch', []);
-//extern const transformPipeline = new Pipeline('transform url', []);
+extern Cache<Bundle*> bundles;
+extern Pipeline* pipeline; //cjh implement in cpp = new ('normal load', []);
+extern Pipeline* fetchPipeline;//cjh = new Pipeline('fetch', []);
+extern Pipeline* transformPipeline; //cjh = new Pipeline('transform url', []);
 extern Cache<std::vector<std::any>> references; //cjh = EDITOR ? new Cache<any[]>() : null;
 
 static const char* RequestType_UUID = "uuid";

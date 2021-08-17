@@ -29,14 +29,15 @@
 #include <vector>
 #include "base/Ref.h"
 #include "core/System.h"
+
 namespace cc {
 
 using ccSchedulerFunc = std::function<void(float)>;
-
+class Scheduler;
 /**
- * @cond
- */
-class CC_DLL Timer : public Ref {
+	 * @cond
+	 */
+class CC_DLL Timer {
 public:
     /** get interval in seconds */
     inline float getInterval() const { return _interval; };
@@ -55,14 +56,14 @@ protected:
     Timer() = default;
 
 protected:
-    Scheduler*   _scheduler     = nullptr;
-    float        _elapsed       = 0.f;
-    bool         _runForever    = false;
-    bool         _useDelay      = false;
-    unsigned int _timesExecuted = 0;
-    unsigned int _repeat        = 0; //0 = once, 1 is 2 x executed
-    float        _delay         = 0.f;
-    float        _interval      = 0.f;
+    Scheduler* _scheduler{nullptr};
+    float      _elapsed{0.f};
+    bool       _runForever{false};
+    bool       _useDelay{false};
+    uint32_t   _timesExecuted{0};
+    uint32_t   _repeat{0}; //0 = once, 1 is 2 x executed
+    float      _delay{0.f};
+    float      _interval{0.f};
 };
 
 class CC_DLL TimerTargetCallback final : public Timer {
@@ -70,7 +71,7 @@ public:
     TimerTargetCallback() = default;
 
     // Initializes a timer with a target, a lambda and an interval in seconds, repeat in number of times to repeat, delay in seconds.
-    bool initWithCallback(Scheduler* scheduler, const ccSchedulerFunc& callback, void* target, const std::string& key, float seconds, unsigned int repeat, float delay);
+    bool initWithCallback(Scheduler* scheduler, const ccSchedulerFunc& callback, ISchedulable* target, const std::string& key, float seconds, uint32_t repeat, float delay);
 
     inline const ccSchedulerFunc& getCallback() const { return _callback; };
     inline const std::string&     getKey() const { return _key; };
@@ -79,8 +80,8 @@ public:
     void cancel() override;
 
 private:
-    void*           _target   = nullptr;
-    ccSchedulerFunc _callback = nullptr;
+    ISchedulable*   _target{nullptr};
+    ccSchedulerFunc _callback{nullptr};
     std::string     _key;
 };
 
@@ -95,19 +96,19 @@ private:
  */
 class ListEntry {
 public:
-    ISchedulable* _target;
-    uint32_t      _priority;
-    bool          _paused;
-    bool          _markedForDeletion;
+    ISchedulable* _target{nullptr};
+    Priority      _priority{Priority::LOW};
+    bool          _paused{false};
+    bool          _markedForDeletion{false};
 
-    ListEntry(ISchedulable* target, uint32_t& priority, bool& paused, bool& markedForDeletion);
+    ListEntry(ISchedulable* target, uint32_t priority, bool paused, bool markedForDeletion);
     ~ListEntry();
 
-    static ListEntry* get(ISchedulable* target, uint32_t& priority, bool& paused, bool& markedForDeletion);
+    static ListEntry* get(ISchedulable* target, uint32_t priority, bool paused, bool markedForDeletion);
     static void       put(ListEntry* entry);
 
 private:
-    static std::vector<ListEntry*>* _listEntries;
+    static std::vector<ListEntry*> _listEntries;
 };
 
 /**
@@ -121,19 +122,19 @@ private:
  */
 class HashUpdateEntry {
 public:
-    void* _list;//unknown usage
-    ListEntry*                     _entry;
-    ISchedulable*                  _target;
-    std::function<void(float)>*    _callback;
+    void*           _list; //unknown usage
+    ListEntry*      _entry{nullptr};
+    ISchedulable*   _target{nullptr};
+    ccSchedulerFunc _callback{nullptr};
 
     HashUpdateEntry(void* list, ListEntry* entry, ISchedulable* target, ccSchedulerFunc* callback);
     ~HashUpdateEntry();
 
-    static HashUpdateEntry* get(std::vector<HashUpdateEntry*>* list, ListEntry* entry, ISchedulable* target, ccSchedulerFunc* callback);
+    static HashUpdateEntry* get(std::vector<HashUpdateEntry*>& list, ListEntry* entry, ISchedulable* target, ccSchedulerFunc* callback);
     static void             put(HashUpdateEntry* entry);
 
 private:
-    static std::vector<HashUpdateEntry*>* _hashUpdateEntries;
+    static std::vector<HashUpdateEntry*> _hashUpdateEntries;
 };
 
 /**
@@ -149,18 +150,18 @@ private:
  */
 class HashTimerEntry {
 public:
-    std::vector<Timer*>* _timers;
-    ISchedulable*        _target;
-    uint32_t             _timerIndex;
-    Timer*               _currentTimer;
-    bool                 _currentTimerSalvaged;
-    bool                 _paused;
+    std::vector<Timer*> _timers;
+    ISchedulable*       _target{nullptr};
+    uint32_t            _timerIndex{0};
+    Timer*              _currentTimer{nullptr};
+    bool                _currentTimerSalvaged{false};
+    bool                _paused{false};
 
-    static HashTimerEntry* get(std::vector<Timer>* timers, ISchedulable* target, uint32_t timerIndex, Timer* currentTimer, bool& currentTimerSalvaged, bool& paused);
+    static HashTimerEntry* get(std::vector<Timer*>& timers, ISchedulable* target, uint32_t timerIndex, Timer* currentTimer, bool currentTimerSalvaged, bool paused);
     static void            put(HashTimerEntry* entry);
 
 private:
-    static std::vector<HashTimerEntry*>* _hashTimerEntries;
+    static std::vector<HashTimerEntry*> _hashTimerEntries;
 };
 
 /**
@@ -186,30 +187,34 @@ private:
  */
 class Scheduler final : public System {
 private:
-    double                   _timeScale;
-    std::vector<ListEntry*>* _updatesNegList;
-    std::vector<ListEntry*>* _updates0List;
-    std::vector<ListEntry*>* _updatesPosList;
+    double                  _timeScale;
+    std::vector<ListEntry*> _updatesNegList;
+    std::vector<ListEntry*> _updates0List;
+    std::vector<ListEntry*> _updatesPosList;
 
-    std::unordered_map<void*, HashUpdateEntry*>* _hashForUpdates;
-    std::unordered_map<void*, HashTimerEntry*>*  _hashForTimers;
+    std::unordered_map<void*, HashUpdateEntry*> _hashForUpdates;
+    std::unordered_map<void*, HashTimerEntry*>  _hashForTimers;
 
     //Old ts code for _currentTarget, _currentTargetSalved
-    HashTimerEntry*     _currentTimer;
-    bool                _currentTimerSalvaged;
-    bool                _updateHashLocked;
+    HashTimerEntry*     _currentTimer{nullptr};
+    bool                _currentTimerSalvaged{false};
+    bool                _updateHashLocked{false};
     std::vector<Timer*> _arrayForTimers;
 
     //Previous: _removeHashElement, now: _removeTimerFromHash
     void _removeTimerFromHash(HashTimerEntry* element);
     void _removeUpdateFromHash(HashUpdateEntry* element);
-    void _priorityIn(std::vector<ListEntry*>* pplist, ListEntry* listElement, uint32_t& priority);
-    void _appendIn(std::vector<ListEntry*>* pplist, ListEntry* listElement);
+    void _priorityIn(std::vector<ListEntry*>& pplist, ListEntry* listElement, Priority priority);
+    void _appendIn(std::vector<ListEntry*>& pplist, ListEntry* listElement);
 
 public:
     Scheduler();
     ~Scheduler();
     static void enableForTarget(ISchedulable* target);
+
+    bool inline isCurrentTimerSalvaged() const { return _currentTimerSalvaged; }
+
+    bool inline isUpdateHashLocked() const { return _updateHashLocked; }
 
     /**
      * @en
@@ -263,8 +268,8 @@ public:
      * @param [delay=0]
      * @param [paused=fasle]
      */
-    void schedule(ccSchedulerFunc* callback, ISchedulable* target, uint32_t& interval, uint32_t& repeat, uint32_t& delay, bool paused = false);
-    
+    void schedule(ccSchedulerFunc& callback, ISchedulable* target, uint32_t interval, uint32_t repeat, uint32_t delay, bool paused = false);
+
     /**
      * @en
      * Schedules the update callback for a given target,
@@ -277,8 +282,8 @@ public:
      * @param priority
      * @param paused
      */
-    void scheduleUpdate(ISchedulable* target, uint32_t& priority, bool paused);
-    
+    void scheduleUpdate(ISchedulable* target, Priority priority, bool paused);
+
     /**
      * @en
      * Unschedules a callback for a callback and a given target.
@@ -289,24 +294,24 @@ public:
      * @param callback The callback to be unscheduled
      * @param target The target bound to the callback.
      */
-    void unschedule(ccSchedulerFunc* callback, ISchedulable* target);
-    
+    void unschedule(ccSchedulerFunc& callback, ISchedulable* target);
+
     /**
-     * @en Unschedules the update callback for a given target.
-     * @zh 取消指定对象的 update 定时器。
-     * @param target The target to be unscheduled.
-     */
+		 * @en Unschedules the update callback for a given target.
+		 * @zh 取消指定对象的 update 定时器。
+		 * @param target The target to be unscheduled.
+		 */
     void unscheduleUpdate(ISchedulable* target);
-    
+
     /**
-     * @en
-     * Unschedules all scheduled callbacks for a given target.
-     * This also includes the "update" callback.
-     * @zh 取消指定对象的所有定时器，包括 update 定时器。
-     * @param target The target to be unscheduled.
-     */
+		 * @en
+		 * Unschedules all scheduled callbacks for a given target.
+		 * This also includes the "update" callback.
+		 * @zh 取消指定对象的所有定时器，包括 update 定时器。
+		 * @param target The target to be unscheduled.
+		 */
     void unscheduleAllForTarget(ISchedulable* target);
-    
+
     /**
      * @en
      * Unschedules all scheduled callbacks from all targets including the system callbacks.<br/>
@@ -316,7 +321,7 @@ public:
      * 不要调用此函数，除非你确定你在做什么。
      */
     void unscheduleAll();
-    
+
     /**
      * @en
      * Unschedules all callbacks from all targets with a minimum priority.<br/>
@@ -327,8 +332,8 @@ public:
      * @param minPriority The minimum priority of selector to be unscheduled. Which means, all selectors which
      *        priority is higher than minPriority will be unscheduled.
      */
-    void unscheduleAllWithMinPriority(uint32_t& minPriority);
-    
+    void unscheduleAllWithMinPriority(uint32_t minPriority);
+
     /**
      * @en Checks whether a callback for a given target is scheduled.
      * @zh 检查指定的回调函数和回调对象组合是否存在定时器。
@@ -336,8 +341,8 @@ public:
      * @param target The target of the callback.
      * @return True if the specified callback is invoked, false if not.
      */
-    bool isScheduled(ccSchedulerFunc* callback, ISchedulable* target);
-    
+    bool isScheduled(ccSchedulerFunc& callback, ISchedulable* target);
+
     /**
      * @en
      * Pauses the target.<br/>
@@ -350,7 +355,7 @@ public:
      * @param target
      */
     void pauseTarget(ISchedulable* target);
-    
+
     /**
      * @en
      * Pause all selectors from all targets.<br/>
@@ -360,7 +365,7 @@ public:
      * 不要调用这个方法，除非你知道你正在做什么。
      */
     void pauseAllTarget();
-    
+
     /**
      * @en
      * Pause all selectors from all targets with a minimum priority. <br/>
@@ -370,8 +375,8 @@ public:
      * 你应该只暂停优先级的值大于 PRIORITY_NON_SYSTEM_MIN 的定时器。
      * @param minPriority
      */
-    void pauseAllTargetsWithMinPriority(uint32_t& minPriority);
-    
+    void pauseAllTargetsWithMinPriority(uint32_t minPriority);
+
     /**
      * @en
      * Resume selectors on a set of targets.<br/>
@@ -381,8 +386,8 @@ public:
      * 这个函数是 pauseAllCallbacks 的逆操作。
      * @param targetsToResume
      */
-    void resumeTargets(std::vector<ISchedulable*> targetsToResume);
-    
+    void resumeTargets(ccSchedulerFunc& targetsToResume);
+
     /**
      * @en
      * Resumes the target.<br/>

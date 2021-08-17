@@ -187,7 +187,7 @@ private:
  */
 class Scheduler final : public System {
 private:
-    double                  _timeScale;
+    float                  _timeScale;
     std::vector<ListEntry*> _updatesNegList;
     std::vector<ListEntry*> _updates0List;
     std::vector<ListEntry*> _updatesPosList;
@@ -231,15 +231,15 @@ public:
      * 注意：它影响该 Scheduler 下管理的所有定时器。
      * @param timeScale
      */
-    void inline setTimeScale(double& t) { _timeScale = t; }
-    double inline getTimeScale() { return _timeScale; }
+    void inline setTimeScale(float t) { _timeScale = t; }
+    float inline getTimeScale() const { return _timeScale; }
 
     /**
      * @en 'update' the scheduler. (You should NEVER call this method, unless you know what you are doing.)
      * @zh update 调度函数。(不应该直接调用这个方法，除非完全了解这么做的结果)
      * @param dt delta time
      */
-    void update(uint32_t& dt);
+    void update(float dt);
 
     /**
      * @en
@@ -332,7 +332,7 @@ public:
      * @param minPriority The minimum priority of selector to be unscheduled. Which means, all selectors which
      *        priority is higher than minPriority will be unscheduled.
      */
-    void unscheduleAllWithMinPriority(uint32_t minPriority);
+    void unscheduleAllWithMinPriority(Priority minPriority);
 
     /**
      * @en Checks whether a callback for a given target is scheduled.
@@ -375,7 +375,7 @@ public:
      * 你应该只暂停优先级的值大于 PRIORITY_NON_SYSTEM_MIN 的定时器。
      * @param minPriority
      */
-    void pauseAllTargetsWithMinPriority(uint32_t minPriority);
+    void pauseAllTargetsWithMinPriority(Priority minPriority);
 
     /**
      * @en

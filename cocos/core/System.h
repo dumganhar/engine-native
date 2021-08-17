@@ -84,13 +84,13 @@ public:
      * @zh 系统的帧更新函数，它会在所有组件的 update 和 lateUpdate 之间被调用
      * @param dt Delta time after the last frame
      */
-    virtual void update(uint32_t dt) = 0;
+    virtual void update(float dt) = 0;
 
     /**
      * @en Post update function of the system, it will be invoked after all components late update phase and before the rendering process.
      * @zh 系统的帧后处理函数，它会在所有组件的 lateUpdate 之后以及渲染之前被调用
      * @param dt Delta time after the last frame
      */
-    virtual void postUpdate(uint32_t dt) = 0;
+    virtual void postUpdate(float dt) = 0;
 };
 } // namespace cc

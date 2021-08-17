@@ -1339,6 +1339,7 @@ cocos_source_files(
     cocos/core/event/EventTargetFactory.h
     cocos/core/event/EventEmitter.h
     cocos/core/event/EventEmitter.cpp
+    
 
     cocos/core/scene-graph/BaseNode.cpp
     cocos/core/scene-graph/BaseNode.h
@@ -1395,6 +1396,11 @@ cocos_source_files(
     cocos/core/geometry/Triangle.cpp
     cocos/core/geometry/Triangle.h
 
+    cocos/core/platform/event-manager/InputManager.h
+    cocos/core/platform/event-manager/InputManager.cpp
+    cocos/core/platform/event-manager/Touch.h
+    cocos/core/platform/event-manager/Touch.cpp
+    
 )
 
 ##### script bindings

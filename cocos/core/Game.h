@@ -285,7 +285,7 @@ public:
      * @en Expected frame rate of the game.
      * @zh 游戏的设定帧率。
      */
-    uint32_t getFrameRate() const {
+    inline uint32_t getFrameRate() const {
         return _frameRate;
     }
     // void setFrameRate (frameRate: number | string) {
@@ -354,7 +354,7 @@ public:
      * @en Check whether the game is paused.
      * @zh 判断游戏是否暂停。
      */
-    bool isPaused() const {
+    inline bool isPaused() const {
         return _paused;
     }
 

@@ -1325,8 +1325,9 @@ cocos_source_files(
     cocos/core/event/EventTarget.h
     cocos/core/event/EventTargetFactory.cpp
     cocos/core/event/EventTargetFactory.h
-    cocos/core/event/EventEmitter.hpp
-    
+    cocos/core/event/EventEmitter.h
+    cocos/core/event/EventEmitter.cpp
+
     cocos/core/scene-graph/BaseNode.cpp
     cocos/core/scene-graph/BaseNode.h
     cocos/core/scene-graph/Find.cpp

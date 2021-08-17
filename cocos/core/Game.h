@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "core/event/EventEmitter.hpp"
+#include "core/event/EventEmitter.h"
 #include "scene/Node.h"
 #include <vector>
 #include <string>
@@ -29,7 +29,7 @@
 
 namespace cc {
 namespace gfx {
-class Device;
+    class Device;
 }
 
 using scene::Node;
@@ -41,7 +41,7 @@ struct ISceneInfo {
 
 struct LayerItem {
     std::string name;
-    int32_t value;
+    int32_t value = 0;
 };
 
 struct IGameConfig {
@@ -152,7 +152,7 @@ struct IGameConfig {
     };
 };
 
-class Game : public EventEmitter {
+class Game final : public EventEmitter {
 
 public:
     Game() = default;
@@ -322,8 +322,8 @@ public:
     std::unordered_map<int, Node*> _persistRootNodes;
 
     // states
-    bool _configLoaded = false; // whether config loaded
-    bool _isCloning = false;    // deserializing or instantiating
+    bool _configLoaded{false}; // whether config loaded
+    bool _isCloning{false};    // deserializing or instantiating
 
     //  @Game play control
 
@@ -470,7 +470,7 @@ public:
      * @zh 检查节点是否是常驻根节点。
      * @param node - The node to be checked
      */
-    bool isPersistRootNode (Node* node);
+    bool isPersistRootNode(Node* node);
 
 private:
     //  @Engine loading
@@ -516,10 +516,10 @@ private:
     gfx::Device* _gfxDevice = nullptr;
 
     // states
-    bool _inited = false;
-    bool _engineInited = false; // whether the engine has inited
-    bool _rendererInitialized = false;
-    bool _paused = true;
+    bool _inited{false};
+    bool _engineInited{false}; // whether the engine has inited
+    bool _rendererInitialized{false};
+    bool _paused{true};
 
     // frame control
     uint32_t _frameRate = 60;

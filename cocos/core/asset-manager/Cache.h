@@ -53,7 +53,15 @@ public:
      * @param map - An object used to initialize
      *
      */
-    Cache(const Record<std::string, T>& map);
+    explicit Cache(const Record<std::string, T>& map) {
+        if (map) {
+            _map = map;
+            _count = static_cast<uint32_t>(map.size());
+        } else {
+            _map.clear();
+            _count = 0;
+        }
+    }
 
     /**
      * @en

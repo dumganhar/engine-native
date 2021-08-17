@@ -156,7 +156,7 @@ class Game final : public EventEmitter {
 
 public:
     Game() = default;
-    virtual ~Game() = default;
+    ~Game() = default;
 
     /**
      * @en Event triggered when game hide to background.<br>
@@ -331,9 +331,7 @@ public:
      * @en Run the game frame by frame with a fixed delta time correspond to frame rate.
      * @zh 以固定帧间隔执行一帧游戏循环，帧间隔与设定的帧率匹配。
      */
-    void step() {
-        // legacyCC.director.tick(this.frameTime / 1000);
-    }
+    void step();
 
     /**
      * @en Pause the game main loop. This will pause:<br>
@@ -470,7 +468,7 @@ public:
      * @zh 检查节点是否是常驻根节点。
      * @param node - The node to be checked
      */
-    bool isPersistRootNode(Node* node);
+    bool isPersistRootNode(Node* node) const;
 
 private:
     //  @Engine loading
@@ -522,13 +520,13 @@ private:
     bool _paused{true};
 
     // frame control
-    uint32_t _frameRate = 60;
-    int _intervalId = 0; // interval target of main
-    float _initTime = 0;
-    float _startTime = 0;
-    float _deltaTime = 0;
+    uint32_t _frameRate{60};
+    int _intervalId{0}; // interval target of main
+    float _initTime{0};
+    float _startTime{0};
+    float _deltaTime{0};
 
-    using frameBC = std::function<void(uint32_t)>;
+    using frameCB = std::function<void(uint32_t)>;
 
 };
 

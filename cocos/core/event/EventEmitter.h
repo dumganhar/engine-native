@@ -13,7 +13,7 @@
 
 class EventEmitter {
 public:
-    uint32_t maxListeners = 10;
+    uint32_t maxListeners{10};
 
     uint32_t listeners() const {
         return this->_listeners;
@@ -59,5 +59,5 @@ private:
         return static_cast<typename Traits<Callback>::fn>(cb);
     }
 
-    uint32_t _listeners = 0;
+    uint32_t _listeners{0};
 };

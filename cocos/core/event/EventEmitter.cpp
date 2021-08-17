@@ -1,3 +1,7 @@
+/****************************************************************************
+// References: https://github.com/pcgpcgpcg/testbeastclion/blob/b2b441b4642e68302166d98f42fc42c988132e90/utils/EventEmitter.hpp
+// Modified by wanxiang.xie@cocos.com
+****************************************************************************/
 #include "core/event/EventEmitter.h"
 
 template <typename Callback>

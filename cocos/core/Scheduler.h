@@ -44,7 +44,7 @@ public:
     /** set interval in seconds */
     inline void setInterval(float interval) { _interval = interval; };
 
-    void setupTimerWithInterval(float seconds, unsigned int repeat, float delay);
+    void setupTimerWithInterval(float interval, uint32_t repeat, float delay);
 
     virtual void trigger(float dt) = 0;
     virtual void cancel()          = 0;
@@ -61,7 +61,7 @@ protected:
     bool       _runForever{false};
     bool       _useDelay{false};
     uint32_t   _timesExecuted{0};
-    uint32_t   _repeat{0}; //0 = once, 1 is 2 x executed
+    uint32_t   _repeat{0};
     float      _delay{0.f};
     float      _interval{0.f};
 };
@@ -187,7 +187,7 @@ private:
  */
 class Scheduler final : public System {
 private:
-    float                  _timeScale;
+    float                  _timeScale{1.f};
     std::vector<ListEntry*> _updatesNegList;
     std::vector<ListEntry*> _updates0List;
     std::vector<ListEntry*> _updatesPosList;
@@ -406,7 +406,7 @@ public:
      * @zh 返回指定对象的定时器是否处于暂停状态。
      * @param target
      */
-    bool isTargetPaused(ISchedulable* target);
+    bool isTargetPaused(ISchedulable* target) const;
 };
 
 } // namespace cc

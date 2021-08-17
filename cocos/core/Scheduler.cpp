@@ -32,9 +32,9 @@ constexpr int      INITIAL_TIMER_COUND{10};
 
 namespace cc {
 
-    void Timer::setupTimerWithInterval(float seconds, unsigned int repeat, float delay) {
+    void Timer::setupTimerWithInterval(float interval, uint32_t repeat, float delay) {
         _elapsed = -1;
-        _interval = seconds;
+        _interval = interval;
         _delay = delay;
         _useDelay = _delay > 0.0F;
         _repeat = repeat;

@@ -26,9 +26,9 @@
 #pragma once
 
 #include "Define.h"
+#include "core/geometry/Sphere.h"
 #include "scene/Define.h"
 #include "scene/Light.h"
-#include "scene/Sphere.h"
 
 namespace cc {
 
@@ -55,7 +55,7 @@ public:
     inline const RenderObjectList &                                            getShadowObjects() const { return _shadowObjects; }
     inline void                                                                setRenderObjects(RenderObjectList &&ro) { _renderObjects = std::forward<RenderObjectList>(ro); }
     inline void                                                                setShadowObjects(RenderObjectList &&ro) { _shadowObjects = std::forward<RenderObjectList>(ro); }
-    inline scene::Sphere *                                                     getSphere() const { return _sphere; }
+    inline geometry::Sphere *                                                  getSphere() const { return _sphere; }
 
 private:
     RenderObjectList _renderObjects;
@@ -64,7 +64,7 @@ private:
     scene::PipelineSharedSceneData *_sharedSceneData = nullptr;
     RenderPipeline *                _pipeline        = nullptr;
     gfx::Device *                   _device          = nullptr;
-    scene::Sphere *                 _sphere          = nullptr;
+    geometry::Sphere *              _sphere          = nullptr;
 
     std::unordered_map<const scene::Light *, gfx::Framebuffer *> _shadowFrameBufferMap;
 };

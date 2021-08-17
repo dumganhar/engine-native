@@ -26,9 +26,19 @@
 #pragma once
 
 #include "renderer/gfx-base/GFXFramebuffer.h"
+#include "renderer/gfx-base/GFXDef-common.h"
 
 namespace cc {
 namespace scene {
+
+struct IRenderWindowInfo {
+    std::string title;
+    uint32_t width{0};
+    uint32_t height{0};
+    gfx::RenderPassInfo renderPassInfo;
+    uint32_t swapchainBufferIndices{0};
+    bool shouldSyncSizeWithSwapchain{false};
+};
 
 struct RenderWindow final {
     bool              hasOnScreenAttachments{false};

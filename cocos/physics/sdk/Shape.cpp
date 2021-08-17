@@ -89,11 +89,11 @@
         _impl->updateEventListener(v);                               \
     }                                                                \
                                                                      \
-    scene::AABB& CLASS::getAABB() {                                  \
+    geometry::AABB& CLASS::getAABB() {                               \
         return _impl->getAABB();                                     \
     }                                                                \
                                                                      \
-    scene::Sphere& CLASS::getBoundingSphere() {                      \
+    geometry::Sphere& CLASS::getBoundingSphere() {                   \
         return _impl->getBoundingSphere();                           \
     }
 

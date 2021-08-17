@@ -30,20 +30,19 @@
 #include "RenderPipeline.h"
 #include "SceneCulling.h"
 #include "core/geometry/AABB.h"
+#include "core/geometry/Sphere.h"
 #include "gfx-base/GFXBuffer.h"
 #include "gfx-base/GFXDescriptorSet.h"
 #include "math/Quaternion.h"
 #include "platform/Application.h"
 #include "scene/Light.h"
 #include "scene/RenderScene.h"
-#include "scene/Sphere.h"
 #include "scene/SpotLight.h"
-
 
 namespace cc {
 namespace pipeline {
 bool        castBoundsInitialized = false;
-scene::AABB castWorldBounds;
+geometry::AABB castWorldBounds;
 
 RenderObject genRenderObject(const scene::Model *model, const scene::Camera *camera) {
     float depth = 0;
@@ -57,7 +56,7 @@ RenderObject genRenderObject(const scene::Model *model, const scene::Camera *cam
     return {depth, model};
 }
 
-void getShadowWorldMatrix(const scene::Sphere *sphere, const cc::Quaternion &rotation, const cc::Vec3 &dir, cc::Mat4 *shadowWorldMat, cc::Vec3 *out) {
+void getShadowWorldMatrix(const geometry::Sphere *sphere, const cc::Quaternion &rotation, const cc::Vec3 &dir, cc::Mat4 *shadowWorldMat, cc::Vec3 *out) {
     Vec3 translation(dir);
     translation.negate();
     const auto distance = sphere->getRadius() * COEFFICIENT_OF_EXPANSION;
@@ -147,7 +146,7 @@ void updateDirLight(scene::Shadow *shadows, const scene::Light *light, std::arra
 
 void lightCollecting(scene::Camera *camera, std::vector<const scene::Light *> *validLights) {
     validLights->clear();
-    auto *              sphere    = CC_NEW(scene::Sphere);
+    auto *              sphere    = CC_NEW(geometry::Sphere);
     const auto *        scene     = camera->scene;
     const scene::Light *mainLight = scene->getMainLight();
     validLights->emplace_back(mainLight);

@@ -32,7 +32,6 @@
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "core/scene-graph/Node.h"
 
-
 namespace cc {
 namespace scene {
 
@@ -74,7 +73,7 @@ public:
     inline void setReceiveShadow(bool value) { _receiveShadow = value; }
     inline void setTransform(Node *node) { _transform = node; }
     inline void seVisFlag(uint32_t flags) { _visFlags = flags; }
-    inline void setBounds(AABB *world) {
+    inline void setBounds(geometry::AABB *world) {
         _worldBounds = world;
         _modelBounds.set(_worldBounds->getCenter(), _worldBounds->getHalfExtents());
     }
@@ -93,7 +92,7 @@ public:
     inline uint32_t                           getInstancedBufferSize() const { return std::get<1>(_instancedBuffer); }
     inline gfx::Buffer *                      getLocalBuffer() const { return _localBuffer; }
     inline float *                            getLocalData() const { return _localData; }
-    inline const AABB &                       getModelBounds() const { return _modelBounds; }
+    inline const geometry::AABB &             getModelBounds() const { return _modelBounds; }
     inline Node *                             getNode() const { return _node; }
     inline bool                               getReceiveShadow() const { return _receiveShadow; }
     inline const std::vector<SubModel *> &    getSubModels() const { return _subModels; }
@@ -101,14 +100,14 @@ public:
     inline bool                               getTransformUpdated() const { return _transformUpdated; }
     inline int32_t                            getUpdatStamp() const { return _updateStamp; }
     inline uint32_t                           getVisFlags() const { return _visFlags; }
-    inline AABB *                             getWorldBounds() const { return _worldBounds; }
+    inline geometry::AABB *                   getWorldBounds() const { return _worldBounds; }
     inline ModelType                          getType() const { return _type; };
 
 protected:
-    ModelType _type{ModelType::DEFAULT};
-    bool      _transformUpdated{false};
-    AABB *    _worldBounds{nullptr};
-    AABB      _modelBounds;
+    ModelType       _type{ModelType::DEFAULT};
+    bool            _transformUpdated{false};
+    geometry::AABB *_worldBounds{nullptr};
+    geometry::AABB  _modelBounds;
 
 private:
     bool _enabled{false};

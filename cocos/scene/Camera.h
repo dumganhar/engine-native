@@ -34,7 +34,6 @@
 #include "core/scene-graph/Node.h"
 #include "scene/RenderWindow.h"
 
-
 namespace cc {
 namespace scene {
 
@@ -42,30 +41,30 @@ namespace scene {
 class RenderScene;
 
 struct Camera final {
-    uint32_t      width{0};
-    uint32_t      height{0};
-    uint32_t      clearFlag{0};
-    float         exposure{0};
-    float         clearDepth{0};
-    Vec4          viewPort;
-    uint32_t      clearStencil{0};
-    uint32_t      visibility{0};
-    Node *        node{nullptr};
-    RenderScene * scene{nullptr};
-    RenderWindow *window{nullptr};
-    Frustum       frustum;
-    Vec3          forward;
-    Vec3          position;
-    gfx::Color    clearColor;
-    Mat4          matView;
-    Mat4          matViewProj;
-    Mat4          matViewProjInv;
-    Mat4          matProj;
-    Mat4          matProjInv;
-    Mat4          matViewProjOffscreen;
-    Mat4          matViewProjInvOffscreen;
-    Mat4          matProjOffscreen;
-    Mat4          matProjInvOffscreen;
+    uint32_t          width{0};
+    uint32_t          height{0};
+    uint32_t          clearFlag{0};
+    float             exposure{0};
+    float             clearDepth{0};
+    Vec4              viewPort;
+    uint32_t          clearStencil{0};
+    uint32_t          visibility{0};
+    Node *            node{nullptr};
+    RenderScene *     scene{nullptr};
+    RenderWindow *    window{nullptr};
+    geometry::Frustum frustum;
+    Vec3              forward;
+    Vec3              position;
+    gfx::Color        clearColor;
+    Mat4              matView;
+    Mat4              matViewProj;
+    Mat4              matViewProjInv;
+    Mat4              matProj;
+    Mat4              matProjInv;
+    Mat4              matViewProjOffscreen;
+    Mat4              matViewProjInvOffscreen;
+    Mat4              matProjOffscreen;
+    Mat4              matProjInvOffscreen;
 };
 
 } // namespace scene

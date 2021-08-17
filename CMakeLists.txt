@@ -863,8 +863,6 @@ cocos_source_files(
                  cocos/scene/RenderWindow.h
                  cocos/scene/SkinningModel.h
                  cocos/scene/SkinningModel.cpp
-                 cocos/scene/Sphere.h
-                 cocos/scene/Sphere.cpp
                  cocos/scene/SphereLight.h
                  cocos/scene/SphereLight.cpp
                  cocos/scene/SpotLight.h
@@ -1244,8 +1242,8 @@ cocos_source_files(
     cocos/core/asset-manager/Cache.h
     cocos/core/asset-manager/CacheManager.cpp
     cocos/core/asset-manager/CacheManager.h
-    cocos/core/asset-manager/Config.cpp
-    cocos/core/asset-manager/Config.h
+    cocos/core/asset-manager/AssetManagerConfig.cpp
+    cocos/core/asset-manager/AssetManagerConfig.h
     cocos/core/asset-manager/DependMaps.cpp
     cocos/core/asset-manager/DependMaps.h
     cocos/core/asset-manager/DependUtil.cpp
@@ -1339,6 +1337,8 @@ cocos_source_files(
     cocos/core/event/EventTarget.h
     cocos/core/event/EventTargetFactory.cpp
     cocos/core/event/EventTargetFactory.h
+    cocos/core/event/EventEmitter.h
+    cocos/core/event/EventEmitter.cpp
 
     cocos/core/scene-graph/BaseNode.cpp
     cocos/core/scene-graph/BaseNode.h
@@ -1366,11 +1366,34 @@ cocos_source_files(
     cocos/core/utils/IDGenerator.cpp
     cocos/core/utils/IDGenerator.h
 
-    cocos/core/geometry/AABB.h
     cocos/core/geometry/AABB.cpp
-    
-    cocos/core/geometry/Frustum.h
+    cocos/core/geometry/AABB.h
+    cocos/core/geometry/Capsule.cpp
+    cocos/core/geometry/Capsule.h
+    cocos/core/geometry/Curve.cpp
+    cocos/core/geometry/Curve.h
+    cocos/core/geometry/Distance.cpp
+    cocos/core/geometry/Distance.h
+    cocos/core/geometry/Enums.cpp
+    cocos/core/geometry/Enums.h
     cocos/core/geometry/Frustum.cpp
+    cocos/core/geometry/Frustum.h
+    cocos/core/geometry/Intersect.cpp
+    cocos/core/geometry/Intersect.h
+    cocos/core/geometry/Line.cpp
+    cocos/core/geometry/Line.h
+    cocos/core/geometry/Obb.cpp
+    cocos/core/geometry/Obb.h
+    cocos/core/geometry/Plane.cpp
+    cocos/core/geometry/Plane.h
+    cocos/core/geometry/Ray.cpp
+    cocos/core/geometry/Ray.h
+    cocos/core/geometry/Spec.cpp
+    cocos/core/geometry/Spec.h
+    cocos/core/geometry/Sphere.cpp
+    cocos/core/geometry/Sphere.h
+    cocos/core/geometry/Triangle.cpp
+    cocos/core/geometry/Triangle.h
 
 )
 

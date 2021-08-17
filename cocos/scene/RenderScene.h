@@ -37,6 +37,10 @@
 namespace cc {
 namespace scene {
 
+struct IRenderSceneInfo {
+    std::string name;
+};
+
 class RenderScene final {
 public:
     RenderScene()                    = default;

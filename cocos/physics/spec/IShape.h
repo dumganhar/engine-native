@@ -28,10 +28,9 @@
 #include <cstdint>
 #include "bindings/manual/jsb_conversions.h"
 #include "core/geometry/AABB.h"
+#include "core/geometry/Sphere.h"
 #include "physics/spec/ILifecycle.h"
 #include "scene/Node.h"
-#include "scene/Sphere.h"
-
 
 namespace cc {
 namespace physics {
@@ -54,19 +53,19 @@ class IBaseShape : virtual public ILifecycle {
 public:
     ~IBaseShape() override = default;
     ;
-    virtual void           initialize(scene::Node *node)              = 0;
-    virtual uintptr_t      getImpl()                                  = 0;
-    virtual void           setMaterial(uint16_t id, float f, float df, float r,
-                                       uint8_t m0, uint8_t m1)        = 0;
-    virtual void           setAsTrigger(bool v)                       = 0;
-    virtual void           setCenter(float x, float y, float z)       = 0;
-    virtual scene::AABB &  getAABB()                                  = 0;
-    virtual scene::Sphere &getBoundingSphere()                        = 0;
-    virtual void           updateEventListener(EShapeFilterFlag flag) = 0;
-    virtual uint32_t       getGroup()                                 = 0;
-    virtual void           setGroup(uint32_t g)                       = 0;
-    virtual uint32_t       getMask()                                  = 0;
-    virtual void           setMask(uint32_t m)                        = 0;
+    virtual void              initialize(scene::Node *node)              = 0;
+    virtual uintptr_t         getImpl()                                  = 0;
+    virtual void              setMaterial(uint16_t id, float f, float df, float r,
+                                          uint8_t m0, uint8_t m1)        = 0;
+    virtual void              setAsTrigger(bool v)                       = 0;
+    virtual void              setCenter(float x, float y, float z)       = 0;
+    virtual geometry::AABB &  getAABB()                                  = 0;
+    virtual geometry::Sphere &getBoundingSphere()                        = 0;
+    virtual void              updateEventListener(EShapeFilterFlag flag) = 0;
+    virtual uint32_t          getGroup()                                 = 0;
+    virtual void              setGroup(uint32_t g)                       = 0;
+    virtual uint32_t          getMask()                                  = 0;
+    virtual void              setMask(uint32_t m)                        = 0;
 };
 
 class ISphereShape : virtual public IBaseShape {
@@ -133,7 +132,7 @@ public:
 } // namespace cc
 
 template <>
-inline bool nativevalue_to_se(const cc::scene::AABB &from, se::Value &to, se::Object *ctx) {
+inline bool nativevalue_to_se(const cc::geometry::AABB &from, se::Value &to, se::Object *ctx) {
     se::HandleObject obj(se::Object::createPlainObject());
     se::Value        tmp;
     if (nativevalue_to_se(from.getCenter(), tmp, ctx)) obj->setProperty("center", tmp);
@@ -143,7 +142,7 @@ inline bool nativevalue_to_se(const cc::scene::AABB &from, se::Value &to, se::Ob
 }
 
 template <>
-inline bool nativevalue_to_se(const cc::scene::Sphere &from, se::Value &to, se::Object *ctx) {
+inline bool nativevalue_to_se(const cc::geometry::Sphere &from, se::Value &to, se::Object *ctx) {
     se::HandleObject obj(se::Object::createPlainObject());
     se::Value        tmp(from.getRadius());
     obj->setProperty("radius", tmp);

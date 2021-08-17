@@ -23,11 +23,11 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "scene/Sphere.h"
+#include "core/geometry/Sphere.h"
 #include <algorithm>
 
 namespace cc {
-namespace scene {
+namespace geometry {
 
 int Sphere::interset(const Plane &plane) const {
     const float dot = plane.n.dot(_center);

@@ -26,7 +26,7 @@
 #include "AABB.h"
 
 namespace cc {
-namespace scene {
+namespace geometry {
 bool AABB::aabbAabb(AABB *aabb) const {
     Vec3 aMin;
     Vec3 aMax;
@@ -126,5 +126,5 @@ void AABB::fromPoints(const Vec3 &minPos, const Vec3 &maxPos, AABB *dst) {
     dst->setHalfExtents(v3Tmp * 0.5);
 }
 
-} // namespace scene
+} // namespace geometry
 } // namespace cc

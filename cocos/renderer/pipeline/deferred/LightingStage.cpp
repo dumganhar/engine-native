@@ -34,6 +34,7 @@
 #include "DeferredPipeline.h"
 #include "LightingFlow.h"
 #include "base/Utils.h"
+#include "core/geometry/Sphere.h"
 #include "gfx-base/GFXCommandBuffer.h"
 #include "gfx-base/GFXDescriptorSet.h"
 #include "gfx-base/GFXDevice.h"
@@ -41,7 +42,6 @@
 #include "gfx-base/GFXQueue.h"
 #include "pipeline/Define.h"
 #include "scene/RenderScene.h"
-#include "scene/Sphere.h"
 #include "scene/SphereLight.h"
 
 namespace cc {
@@ -96,13 +96,13 @@ void LightingStage::gatherLights(scene::Camera *camera) {
     gfx::CommandBuffer *cmdBuf = pipeline->getCommandBuffers()[0];
     const auto *        scene  = camera->scene;
 
-    scene::Sphere sphere;
-    auto          exposure   = camera->exposure;
-    uint          idx        = 0;
-    int           elementLen = sizeof(cc::Vec4) / sizeof(float);
-    uint          fieldLen   = elementLen * _maxDeferredLights;
-    uint          offset     = 0;
-    cc::Vec4      tmpArray;
+    geometry::Sphere sphere;
+    auto             exposure   = camera->exposure;
+    uint             idx        = 0;
+    int              elementLen = sizeof(cc::Vec4) / sizeof(float);
+    uint             fieldLen   = elementLen * _maxDeferredLights;
+    uint             offset     = 0;
+    cc::Vec4         tmpArray;
 
     uint i = 0;
     for (auto *light : scene->getSphereLights()) {
@@ -222,7 +222,7 @@ void LightingStage::initLightingBuffer() {
     auto *const device = _pipeline->getDevice();
 
     // color/pos/dir/angle 都是vec4存储, 最后一个vec4只要x存储光源个数
-    uint stride = utils::alignTo(sizeof(Vec4) * 4, device->getCapabilities().uboOffsetAlignment);
+    uint stride    = utils::alignTo(sizeof(Vec4) * 4, device->getCapabilities().uboOffsetAlignment);
     uint totalSize = stride * _maxDeferredLights;
 
     // create lighting buffer and view

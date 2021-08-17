@@ -1301,7 +1301,7 @@ static bool js_physics_SphereShape_getAABB(se::State& s) // NOLINT(readability-i
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::AABB& result = cobj->getAABB();
+        cc::geometry::AABB& result = cobj->getAABB();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_SphereShape_getAABB : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -1320,7 +1320,7 @@ static bool js_physics_SphereShape_getBoundingSphere(se::State& s) // NOLINT(rea
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::Sphere& result = cobj->getBoundingSphere();
+        cc::geometry::Sphere& result = cobj->getBoundingSphere();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_SphereShape_getBoundingSphere : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -1666,7 +1666,7 @@ static bool js_physics_BoxShape_getAABB(se::State& s) // NOLINT(readability-iden
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::AABB& result = cobj->getAABB();
+        cc::geometry::AABB& result = cobj->getAABB();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_BoxShape_getAABB : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -1685,7 +1685,7 @@ static bool js_physics_BoxShape_getBoundingSphere(se::State& s) // NOLINT(readab
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::Sphere& result = cobj->getBoundingSphere();
+        cc::geometry::Sphere& result = cobj->getBoundingSphere();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_BoxShape_getBoundingSphere : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -2035,7 +2035,7 @@ static bool js_physics_CapsuleShape_getAABB(se::State& s) // NOLINT(readability-
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::AABB& result = cobj->getAABB();
+        cc::geometry::AABB& result = cobj->getAABB();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_CapsuleShape_getAABB : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -2054,7 +2054,7 @@ static bool js_physics_CapsuleShape_getBoundingSphere(se::State& s) // NOLINT(re
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::Sphere& result = cobj->getBoundingSphere();
+        cc::geometry::Sphere& result = cobj->getBoundingSphere();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_CapsuleShape_getBoundingSphere : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -2440,7 +2440,7 @@ static bool js_physics_PlaneShape_getAABB(se::State& s) // NOLINT(readability-id
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::AABB& result = cobj->getAABB();
+        cc::geometry::AABB& result = cobj->getAABB();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_PlaneShape_getAABB : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -2459,7 +2459,7 @@ static bool js_physics_PlaneShape_getBoundingSphere(se::State& s) // NOLINT(read
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::Sphere& result = cobj->getBoundingSphere();
+        cc::geometry::Sphere& result = cobj->getBoundingSphere();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_PlaneShape_getBoundingSphere : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -2829,7 +2829,7 @@ static bool js_physics_TrimeshShape_getAABB(se::State& s) // NOLINT(readability-
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::AABB& result = cobj->getAABB();
+        cc::geometry::AABB& result = cobj->getAABB();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_TrimeshShape_getAABB : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -2848,7 +2848,7 @@ static bool js_physics_TrimeshShape_getBoundingSphere(se::State& s) // NOLINT(re
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::Sphere& result = cobj->getBoundingSphere();
+        cc::geometry::Sphere& result = cobj->getBoundingSphere();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_TrimeshShape_getBoundingSphere : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -3214,7 +3214,7 @@ static bool js_physics_CylinderShape_getAABB(se::State& s) // NOLINT(readability
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::AABB& result = cobj->getAABB();
+        cc::geometry::AABB& result = cobj->getAABB();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_CylinderShape_getAABB : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -3233,7 +3233,7 @@ static bool js_physics_CylinderShape_getBoundingSphere(se::State& s) // NOLINT(r
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::Sphere& result = cobj->getBoundingSphere();
+        cc::geometry::Sphere& result = cobj->getBoundingSphere();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_CylinderShape_getBoundingSphere : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -3603,7 +3603,7 @@ static bool js_physics_ConeShape_getAABB(se::State& s) // NOLINT(readability-ide
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::AABB& result = cobj->getAABB();
+        cc::geometry::AABB& result = cobj->getAABB();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_ConeShape_getAABB : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -3622,7 +3622,7 @@ static bool js_physics_ConeShape_getBoundingSphere(se::State& s) // NOLINT(reada
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::Sphere& result = cobj->getBoundingSphere();
+        cc::geometry::Sphere& result = cobj->getBoundingSphere();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_ConeShape_getBoundingSphere : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -3992,7 +3992,7 @@ static bool js_physics_TerrainShape_getAABB(se::State& s) // NOLINT(readability-
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::AABB& result = cobj->getAABB();
+        cc::geometry::AABB& result = cobj->getAABB();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_TerrainShape_getAABB : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -4011,7 +4011,7 @@ static bool js_physics_TerrainShape_getBoundingSphere(se::State& s) // NOLINT(re
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::scene::Sphere& result = cobj->getBoundingSphere();
+        cc::geometry::Sphere& result = cobj->getBoundingSphere();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_physics_TerrainShape_getBoundingSphere : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -4826,18 +4826,18 @@ bool register_all_physics(se::Object* obj)
     }
     se::Object* ns = nsVal.toObject();
 
+    js_register_physics_World(ns);
     js_register_physics_RigidBody(ns);
     js_register_physics_SphereShape(ns);
-    js_register_physics_CylinderShape(ns);
-    js_register_physics_TrimeshShape(ns);
-    js_register_physics_PlaneShape(ns);
-    js_register_physics_DistanceJoint(ns);
-    js_register_physics_RevoluteJoint(ns);
-    js_register_physics_CapsuleShape(ns);
     js_register_physics_BoxShape(ns);
-    js_register_physics_World(ns);
+    js_register_physics_CapsuleShape(ns);
+    js_register_physics_PlaneShape(ns);
+    js_register_physics_TrimeshShape(ns);
+    js_register_physics_CylinderShape(ns);
     js_register_physics_ConeShape(ns);
     js_register_physics_TerrainShape(ns);
+    js_register_physics_RevoluteJoint(ns);
+    js_register_physics_DistanceJoint(ns);
     return true;
 }
 

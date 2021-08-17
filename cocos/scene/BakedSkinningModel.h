@@ -40,10 +40,10 @@ struct BakedAnimInfo {
     }
 };
 struct BakedJointInfo {
-    std::vector<AABB *> boundsInfo;
-    uint8_t *           jointTextureInfo{nullptr};
-    BakedAnimInfo       animInfo;
-    gfx::Buffer *       buffer{nullptr};
+    std::vector<geometry::AABB *> boundsInfo;
+    uint8_t *                     jointTextureInfo{nullptr};
+    BakedAnimInfo                 animInfo;
+    gfx::Buffer *                 buffer{nullptr};
 };
 class BakedSkinningModel : public Model {
 public:
@@ -56,7 +56,7 @@ public:
 
     void        updateTransform(uint32_t stamp) override;
     void        updateUBOs(uint32_t stamp) override;
-    inline void updateModelBounds(AABB *modelBounds) {
+    inline void updateModelBounds(geometry::AABB *modelBounds) {
         if (modelBounds == nullptr) {
             _modelBounds.setValid(false);
             return;

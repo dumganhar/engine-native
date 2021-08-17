@@ -154,7 +154,7 @@ public:
      * 回收 requestItem 用于复用
      *
      */
-    void recycle ();
+    void recycle();
 
 private:
     std::string _id;

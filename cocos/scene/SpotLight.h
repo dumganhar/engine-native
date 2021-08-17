@@ -43,7 +43,7 @@ public:
 
     void update() override;
 
-    inline void setAABB(AABB *aabb) { _aabb = aabb; }
+    inline void setAABB(geometry::AABB *aabb) { _aabb = aabb; }
     inline void setAngle(float angle) {
         _spotAngle  = angle;
         _angle      = acos(_spotAngle) * 2;
@@ -54,7 +54,7 @@ public:
         _needUpdate = true;
     }
     inline void setDirection(const Vec3 &dir) { _dir = dir; }
-    inline void setFrustum(Frustum frustum) { _frustum = std::move(frustum); }
+    inline void setFrustum(geometry::Frustum frustum) { _frustum = std::move(frustum); }
     inline void setIlluminance(float illu) { _illuminance = illu; }
     inline void setNeedUpdate(bool value) { _needUpdate = value; }
     inline void setRange(float range) {
@@ -64,30 +64,30 @@ public:
     inline void setPosition(const Vec3 &pos) { _pos = pos; }
     inline void setSize(float size) { _size = size; }
 
-    inline AABB *         getAABB() const { return _aabb; }
-    inline float          getAngle() const { return _angle; }
-    inline float          getSpotAngle() const { return _spotAngle; }
-    inline float          getAspect() const { return _aspect; }
-    inline const Vec3 &   getDirection() const { return _dir; }
-    inline const Frustum &getFrustum() const { return _frustum; }
-    inline float          getIlluminance() const { return _illuminance; }
-    inline bool           getNeedUpdate() const { return _needUpdate; }
-    inline float          getRange() const { return _range; }
-    inline const Vec3 &   getPosition() const { return _pos; }
-    inline float          getSize() const { return _size; }
+    inline geometry::AABB *         getAABB() const { return _aabb; }
+    inline float                    getAngle() const { return _angle; }
+    inline float                    getSpotAngle() const { return _spotAngle; }
+    inline float                    getAspect() const { return _aspect; }
+    inline const Vec3 &             getDirection() const { return _dir; }
+    inline const geometry::Frustum &getFrustum() const { return _frustum; }
+    inline float                    getIlluminance() const { return _illuminance; }
+    inline bool                     getNeedUpdate() const { return _needUpdate; }
+    inline float                    getRange() const { return _range; }
+    inline const Vec3 &             getPosition() const { return _pos; }
+    inline float                    getSize() const { return _size; }
 
 private:
-    bool    _needUpdate{false};
-    float   _illuminance{0.F};
-    float   _range{0.F};
-    float   _size{0.F};
-    float   _angle{0.F};
-    float   _spotAngle{0.F};
-    float   _aspect{0.F};
-    Vec3    _dir;
-    Vec3    _pos;
-    AABB *  _aabb{nullptr};
-    Frustum _frustum;
+    bool              _needUpdate{false};
+    float             _illuminance{0.F};
+    float             _range{0.F};
+    float             _size{0.F};
+    float             _angle{0.F};
+    float             _spotAngle{0.F};
+    float             _aspect{0.F};
+    Vec3              _dir;
+    Vec3              _pos;
+    geometry::AABB *  _aabb{nullptr};
+    geometry::Frustum _frustum;
 };
 
 } // namespace scene

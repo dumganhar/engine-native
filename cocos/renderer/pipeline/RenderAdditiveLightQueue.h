@@ -43,11 +43,11 @@ class RenderBatchedQueue;
 class ForwardPipeline;
 
 struct AdditiveLightPass {
-    const scene::SubModel *      subModel = nullptr;
-    const scene::Pass *          pass     = nullptr;
-    gfx::Shader *                shader   = nullptr;
-    vector<uint>                 dynamicOffsets;
-    vector<uint>                 lights;
+    const scene::SubModel *subModel = nullptr;
+    const scene::Pass *    pass     = nullptr;
+    gfx::Shader *          shader   = nullptr;
+    vector<uint>           dynamicOffsets;
+    vector<uint>           lights;
 };
 
 class RenderAdditiveLightQueue : public Object {
@@ -85,7 +85,7 @@ private:
     gfx::Buffer *                     _lightBuffer          = nullptr;
     gfx::Buffer *                     _firstLightBufferView = nullptr;
 
-    std::array<float, UBOShadow::COUNT>                            _shadowUBO{};
+    std::array<float, UBOShadow::COUNT> _shadowUBO{};
 
     uint  _lightBufferStride       = 0;
     uint  _lightBufferElementCount = 0;

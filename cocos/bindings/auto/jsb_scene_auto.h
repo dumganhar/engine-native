@@ -76,33 +76,33 @@ SE_DECLARE_FUNC(js_scene_DirectionalLight_setDirection);
 SE_DECLARE_FUNC(js_scene_DirectionalLight_setIlluminance);
 SE_DECLARE_FUNC(js_scene_DirectionalLight_DirectionalLight);
 
-extern se::Object* __jsb_cc_scene_Plane_proto;
-extern se::Class* __jsb_cc_scene_Plane_class;
+extern se::Object* __jsb_cc_geometry_Plane_proto;
+extern se::Class* __jsb_cc_geometry_Plane_class;
 
-bool js_register_cc_scene_Plane(se::Object* obj);
+bool js_register_cc_geometry_Plane(se::Object* obj);
 bool register_all_scene(se::Object* obj);
 
 template<>
-bool sevalue_to_native(const se::Value &, cc::scene::Plane *, se::Object *ctx);
-JSB_REGISTER_OBJECT_TYPE(cc::scene::Plane);
+bool sevalue_to_native(const se::Value &, cc::geometry::Plane *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::geometry::Plane);
 
-extern se::Object* __jsb_cc_scene_Frustum_proto;
-extern se::Class* __jsb_cc_scene_Frustum_class;
+extern se::Object* __jsb_cc_geometry_Frustum_proto;
+extern se::Class* __jsb_cc_geometry_Frustum_class;
 
-bool js_register_cc_scene_Frustum(se::Object* obj);
+bool js_register_cc_geometry_Frustum(se::Object* obj);
 bool register_all_scene(se::Object* obj);
 
 template<>
-bool sevalue_to_native(const se::Value &, cc::scene::Frustum *, se::Object *ctx);
-JSB_REGISTER_OBJECT_TYPE(cc::scene::Frustum);
+bool sevalue_to_native(const se::Value &, cc::geometry::Frustum *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::geometry::Frustum);
 
-extern se::Object* __jsb_cc_scene_AABB_proto;
-extern se::Class* __jsb_cc_scene_AABB_class;
+extern se::Object* __jsb_cc_geometry_AABB_proto;
+extern se::Class* __jsb_cc_geometry_AABB_class;
 
-bool js_register_cc_scene_AABB(se::Object* obj);
+bool js_register_cc_geometry_AABB(se::Object* obj);
 bool register_all_scene(se::Object* obj);
 
-JSB_REGISTER_OBJECT_TYPE(cc::scene::AABB);
+JSB_REGISTER_OBJECT_TYPE(cc::geometry::AABB);
 SE_DECLARE_FUNC(js_scene_AABB_getLayout);
 SE_DECLARE_FUNC(js_scene_AABB_initWithData);
 SE_DECLARE_FUNC(js_scene_AABB_AABB);

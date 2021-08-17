@@ -31,9 +31,8 @@
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
 
-
 namespace cc {
-namespace scene {
+namespace geometry {
 
 struct AABBLayout {
     cc::Vec3 center;
@@ -74,5 +73,5 @@ private:
     bool        _isValid{true};
 };
 
-} // namespace scene
+} // namespace geometry
 } // namespace cc

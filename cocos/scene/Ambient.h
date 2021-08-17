@@ -24,18 +24,45 @@
  ****************************************************************************/
 
 #pragma once
-#include "scene/BaseNode.h"
-
+#include "core/scene-graph/SceneGlobal.h"
+#include "math/Color.h"
 namespace cc {
 namespace scene {
-class Scene final : public BaseNode {
+
+class Ambient final {
 public:
-    Scene()              = default;
-    Scene(const Scene &) = delete;
-    Scene(Scene &&)      = delete;
-    ~Scene() override    = default;
-    Scene &operator=(const Scene &) = delete;
-    Scene &operator=(Scene &&) = delete;
+    static float sunIllum;
+    static float skyIllum;
+    Ambient(/* args */) = default;
+    ~Ambient()          = default;
+    inline const Color& getGroundAlbedo() const {
+        return _groundAlbedo;
+    }
+    inline void setGroundAlbedo(const Color& color) {
+        _groundAlbedo.set(color);
+    }
+    inline float getSkyIllum() const {
+        return _skyIllum;
+    }
+    inline void setSkyIllum(float illum) {
+        _skyIllum = illum;
+    }
+    inline const Color& getSkyColor() const {
+        return _skyColor;
+    }
+    inline void setSkyColor(const Color& color) {
+        _skyColor = color;
+    }
+    inline void initialize(const scenegraph::AmbientInfo& info) {
+    }
+    inline void destroy() {}
+
+protected:
+    Color _skyColor{51, 128, 204, 1.0};
+    Color _groundAlbedo{51, 51, 51, 255};
+    bool  _enabled{false};
+    float _skyIllum{0};
 };
+
 } // namespace scene
 } // namespace cc

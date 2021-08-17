@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,49 +23,48 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#pragma once
-
-#include <cstdint>
-#include "core/geometry/Frustum.h"
-#include "math/Mat4.h"
-#include "math/Vec3.h"
-#include "math/Vec4.h"
-#include "renderer/gfx-base/GFXDef-common.h"
-#include "core/scene-graph/Node.h"
-#include "scene/RenderWindow.h"
+#include "ComponentScheduler.h"
 
 namespace cc {
-namespace scene {
+namespace scenegraph {
+// LifeCycleInvoker
+LifeCycleInvoker::LifeCycleInvoker(std::function<void(std::vector<Component*>, float)> invokeFunc) : _invoke(std::move(invokeFunc)) {}
 
-// As RenderScene includes Camera.h, so use forward declaration here.
-class RenderScene;
+void LifeCycleInvoker::stableRemoveInactive() {}
 
-struct Camera final {
-    uint32_t          width{0};
-    uint32_t          height{0};
-    uint32_t          clearFlag{0};
-    float             exposure{0};
-    float             clearDepth{0};
-    Vec4              viewPort;
-    uint32_t          clearStencil{0};
-    uint32_t          visibility{0};
-    Node *            node{nullptr};
-    RenderScene *     scene{nullptr};
-    RenderWindow *    window{nullptr};
-    geometry::Frustum frustum;
-    Vec3              forward;
-    Vec3              position;
-    gfx::Color        clearColor;
-    Mat4              matView;
-    Mat4              matViewProj;
-    Mat4              matViewProjInv;
-    Mat4              matProj;
-    Mat4              matProjInv;
-    Mat4              matViewProjOffscreen;
-    Mat4              matViewProjInvOffscreen;
-    Mat4              matProjOffscreen;
-    Mat4              matProjInvOffscreen;
-};
+LifeCycleInvoker::~LifeCycleInvoker() = default;
 
-} // namespace scene
+// OneOffInvoker
+void OneOffInvoker::add(Component* comp) {}
+
+void OneOffInvoker::remove(Component* comp) {}
+
+void OneOffInvoker::cancelInactive(uint32_t flagToClear) {}
+
+void OneOffInvoker::invoke() {}
+
+// ReusableInvoker
+void ReusableInvoker::add(Component* comp) {}
+
+void ReusableInvoker::remove(Component* comp) {}
+
+void ReusableInvoker::invoke(float dt) {}
+
+// ComponentScheduler
+ComponentScheduler::ComponentScheduler() {
+    unscheduleAll();
+}
+
+ComponentScheduler::~ComponentScheduler() = default;
+
+void ComponentScheduler::unscheduleAll(){};
+void ComponentScheduler::onEnabled(Component* comp){};
+void ComponentScheduler::onDisabled(Component* comp){};
+void ComponentScheduler::enableComp(Component* comp, LifeCycleInvoker* invoke){};
+void ComponentScheduler::disableComp(Component* comp){};
+void ComponentScheduler::startPhase(){};
+void ComponentScheduler::updatePhase(float dt){};
+void ComponentScheduler::lateUpdatePhase(float dt){};
+
+} // namespace scenegraph
 } // namespace cc

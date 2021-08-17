@@ -22,22 +22,18 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+#pragma once
 
-#include "scene/BaseNode.h"
+#include "components/Component.h"
 
 namespace cc {
-namespace scene {
-void BaseNode::setParent(BaseNode *parent) {
-    if (_parent == parent) {
-        return;
-    }
-    if (_parent != nullptr) {
-        _parent->removeChild(this);
-    }
-    _parent = parent;
-    if (_parent) {
-        _parent->addChild(this);
-    }
-}
-} // namespace scene
+namespace framework {
+class UITransform : public components::Component {
+private:
+    /* data */
+public:
+    UITransform(/* args */) = default;
+    ~UITransform()          = default;
+};
+} // namespace framework
 } // namespace cc

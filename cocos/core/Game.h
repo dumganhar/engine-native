@@ -41,7 +41,7 @@ struct ISceneInfo {
 
 struct LayerItem {
     std::string name;
-    int32_t value = 0;
+    int32_t value{0};
 };
 
 struct IGameConfig {
@@ -59,7 +59,7 @@ struct IGameConfig {
      * @en
      * Left bottom corner fps information will show when "showFPS" equals true, otherwise it will be hide.
      */
-    bool showFPS;
+    bool showFPS{false};
 
     /**
      * @zh
@@ -67,7 +67,7 @@ struct IGameConfig {
      * @en
      * Expose class name to chrome debug tools, the class intantiate performance is a little bit slower when exposed.
      */
-    bool exposeClassName;
+    bool exposeClassName{false};
 
     /**
      * @zh
@@ -75,7 +75,7 @@ struct IGameConfig {
      * @en
      * Set the wanted frame rate for your game, but the real fps depends on your game implementation and the running environment.
      */
-    uint32_t frameRate;
+    uint32_t frameRate{60};
 
     /**
      * @zh
@@ -226,30 +226,30 @@ public:
      * @en Web Canvas 2d API as renderer backend.
      * @zh 使用 Web Canvas 2d API 作为渲染器后端。
      */
-    static const uint32_t RENDER_TYPE_CANVAS = 0;
+    static const uint32_t RENDER_TYPE_CANVAS{0};
     /**
      * @en WebGL API as renderer backend.
      * @zh 使用 WebGL API 作为渲染器后端。
      */
-    static const uint32_t RENDER_TYPE_WEBGL = 1;
+    static const uint32_t RENDER_TYPE_WEBGL{1};
     /**
      * @en OpenGL API as renderer backend.
      * @zh 使用 OpenGL API 作为渲染器后端。
      */
-    static const uint32_t RENDER_TYPE_OPENGL = 2;
+    static const uint32_t RENDER_TYPE_OPENGL{2};
 
     /**
      * @en If delta time since last frame is more than this threshold in seconds,
      * the game timer will consider user is debugging and adjust the delta time to [[frameTime]].
      * @zh 如果距离上一帧的帧间隔超过了这个阈值（单位是 s），那么就会被认为正在调试，帧间隔会被自动调节为 [[frameTime]].
      */
-    static const uint32_t DEBUG_DT_THRESHOLD = 1;
+    static const uint32_t DEBUG_DT_THRESHOLD{1};
 
     /**
      * @en The renderer backend of the game.
      * @zh 游戏的渲染器类型。
      */
-    int32_t renderType = -1;
+    int32_t renderType{-1};
 
 
     // public eventTargetOn = super.on;
@@ -282,14 +282,21 @@ public:
     }
 
     /**
+     * @en Set frame rate of game.
+     * @zh 设置游戏帧率。
+     * @deprecated since v3.3.0 please use [[game.frameRate]]
+     */
+    inline void setFrameRate (uint32_t frameRate) {
+        _frameRate = frameRate;
+    }
+
+    /**
      * @en Expected frame rate of the game.
      * @zh 游戏的设定帧率。
      */
     inline uint32_t getFrameRate() const {
         return _frameRate;
     }
-    // void setFrameRate (frameRate: number | string) {
-    // }
 
     /**
      * @en The delta time since last frame, unit: s.
@@ -317,7 +324,7 @@ public:
      * @en The expected delta time of each frame in milliseconds
      * @zh 期望帧率对应的每帧时间（以 ms 为单位）
      */
-    float frameTime = 1000.F / 60;
+    float frameTime{1000.F / 60};
 
     std::unordered_map<int, Node*> _persistRootNodes;
 

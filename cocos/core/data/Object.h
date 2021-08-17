@@ -199,6 +199,7 @@ public:
 //cjh    public declare [editorExtrasTag]: unknown;
 
     uint32_t _objFlags = 0;
+
 protected:
     std::string _name;
 

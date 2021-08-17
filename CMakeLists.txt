@@ -1230,8 +1230,8 @@ cocos_source_files(
     cocos/core/asset-manager/Cache.h
     cocos/core/asset-manager/CacheManager.cpp
     cocos/core/asset-manager/CacheManager.h
-    cocos/core/asset-manager/Config.cpp
-    cocos/core/asset-manager/Config.h
+    cocos/core/asset-manager/AssetManagerConfig.cpp
+    cocos/core/asset-manager/AssetManagerConfig.h
     cocos/core/asset-manager/DependMaps.cpp
     cocos/core/asset-manager/DependMaps.h
     cocos/core/asset-manager/DependUtil.cpp

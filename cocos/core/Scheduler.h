@@ -297,19 +297,19 @@ public:
     void unschedule(ccSchedulerFunc& callback, ISchedulable* target);
 
     /**
-		 * @en Unschedules the update callback for a given target.
-		 * @zh 取消指定对象的 update 定时器。
-		 * @param target The target to be unscheduled.
-		 */
+     * @en Unschedules the update callback for a given target.
+     * @zh 取消指定对象的 update 定时器。
+     * @param target The target to be unscheduled.
+     */
     void unscheduleUpdate(ISchedulable* target);
 
     /**
-		 * @en
-		 * Unschedules all scheduled callbacks for a given target.
-		 * This also includes the "update" callback.
-		 * @zh 取消指定对象的所有定时器，包括 update 定时器。
-		 * @param target The target to be unscheduled.
-		 */
+     * @en
+     * Unschedules all scheduled callbacks for a given target.
+     * This also includes the "update" callback.
+     * @zh 取消指定对象的所有定时器，包括 update 定时器。
+     * @param target The target to be unscheduled.
+     */
     void unscheduleAllForTarget(ISchedulable* target);
 
     /**

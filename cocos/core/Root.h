@@ -24,6 +24,7 @@
  ****************************************************************************/
 
 #include <cstdint>
+#include <vector>
 #include "scene/RenderWindow.h"
 #include "scene/RenderScene.h"
 #include "scene/Model.h"
@@ -117,14 +118,14 @@ public:
      */
     void destroyScenes();
 
-    template <class T, class = typename std::enable_if_t<std::is_base_of<scene::Model, T>::value>::type>
+    template <typename T, typename std::enable_if_t<std::is_base_of<scene::Model, T>::value>>
     T *createModel();
 
     void destroyModel(scene::Model *);
 
     scene::Camera *createCamera();
 
-    template <class T, class = typename std::enable_if_t<std::is_base_of<scene::Light, T>::value>::type>
+    template <typename T, typename std::enable_if_t<std::is_base_of<scene::Light, T>::value>>
     T *createLight();
 
     void destroyLight(scene::Light *);
@@ -161,7 +162,7 @@ public:
      * @zh
      * 窗口列表
      */
-    const Vector<scene::RenderWindow *> &getWindows() const { return _windows; }
+    const std::vector<scene::RenderWindow *> &getWindows() const { return _windows; }
 
     /**
      * @zh
@@ -180,7 +181,7 @@ public:
      * @zh
      * 场景列表
      */
-    const Vector<scene::RenderScene *> &getScenes() const { return _scenes; }
+    const std::vector<scene::RenderScene *> &getScenes() const { return _scenes; }
 
     /**
      * @zh
@@ -217,23 +218,23 @@ public:
     // @TODO: minggo
     // public get dataPoolManager ()
 
-    bool getUseDeferredPipeline() const { return _useDeferredPipeline; }
+    bool isUsingDeferredPipeline() const { return _useDeferredPipeline; }
 
 private:
-    gfx::Device *                 _device{nullptr};
-    scene::RenderWindow *         _mainWindow{nullptr};
-    scene::RenderWindow *         _curWindow{nullptr};
-    scene::RenderWindow *         _tempWindow{nullptr};
-    Vector<scene::RenderWindow *> _windows;
-    pipeline::RenderPipeline *    _pipeline{nullptr};
-    scene::DrawBatch2D *          _batcher2D{nullptr};
-    Vector<scene::RenderScene *>  _scenes;
-    float                         _cumulativeTime{0.F};
-    float                         _frameTime{0.F};
-    uint32_t                      _frameCount{0};
-    uint32_t                      _fps{0};
-    uint32_t                      _fixedFPS{0};
-    bool                          _useDeferredPipeline{false};
+    gfx::Device *                      _device{nullptr};
+    scene::RenderWindow *              _mainWindow{nullptr};
+    scene::RenderWindow *              _curWindow{nullptr};
+    scene::RenderWindow *              _tempWindow{nullptr};
+    std::vector<scene::RenderWindow *> _windows;
+    pipeline::RenderPipeline *         _pipeline{nullptr};
+    scene::DrawBatch2D *               _batcher2D{nullptr};
+    std::vector<scene::RenderScene *>  _scenes;
+    float                              _cumulativeTime{0.F};
+    float                              _frameTime{0.F};
+    uint32_t                           _frameCount{0};
+    uint32_t                           _fps{0};
+    uint32_t                           _fixedFPS{0};
+    bool                               _useDeferredPipeline{false};
 };
 
 } // namespace cc

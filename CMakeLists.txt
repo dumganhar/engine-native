@@ -1231,7 +1231,6 @@ cocos_source_files(
     cocos/core/Root.cpp
     cocos/core/Root.h
     
-    cocos/core/System.cpp
     cocos/core/System.h
     
     cocos/core/Scheduler.cpp

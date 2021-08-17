@@ -22,20 +22,3 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-
-#pragma once
-#include "scene-graph/BaseNode.h"
-
-namespace cc {
-namespace scenegraph {
-class Scene final : public BaseNode {
-public:
-    Scene()              = default;
-    Scene(const Scene &) = delete;
-    Scene(Scene &&)      = delete;
-    ~Scene() override    = default;
-    Scene &operator=(const Scene &) = delete;
-    Scene &operator=(Scene &&) = delete;
-};
-} // namespace scene
-} // namespace cc

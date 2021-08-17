@@ -27,53 +27,50 @@
 
 #include <string>
 
-#define EDITOR 0 //cjh
-#define warnID //cjh
+#define EDITOR  0 //cjh
+#define WARN_ID   //cjh
 
 namespace cc {
 
 // definitions for CCObject.Flags
 
 enum ObjectState {
-    Destroyed = 1 << 0,
-    RealDestroyed = 1 << 1,
-    ToDestroy = 1 << 2,
-    DontSave = 1 << 3,
-    EditorOnly = 1 << 4,
-    Dirty = 1 << 5,
-    DontDestroy = 1 << 6,
-    Destroying = 1 << 7,
-    Deactivating = 1 << 8,
-    LockedInEditor = 1 << 9,
-    HideInHierarchy = 1 << 10,
+    DESTROYED         = 1 << 0,
+    REAL_DESTROYED    = 1 << 1,
+    TO_DESTROY        = 1 << 2,
+    DONT_SAVE         = 1 << 3,
+    EDITOR_ONLY       = 1 << 4,
+    DIRTY             = 1 << 5,
+    DONT_DESTROY      = 1 << 6,
+    DESTROYING        = 1 << 7,
+    DEACTIVATING      = 1 << 8,
+    LOCKED_IN_EDITOR  = 1 << 9,
+    HIDE_IN_HIERARCHY = 1 << 10,
 
-    IsOnEnableCalled = 1 << 11,
-    IsEditorOnEnableCalled = 1 << 12,
-    IsPreloadStarted = 1 << 13,
-    IsOnLoadCalled = 1 << 14,
-    IsOnLoadStarted = 1 << 15,
-    IsStartCalled = 1 << 16,
+    IS_ON_ENABLE_CALLED        = 1 << 11,
+    IS_EDITOR_ON_ENABLE_CALLED = 1 << 12,
+    IS_PRELOAD_STARTED         = 1 << 13,
+    IS_ON_LOAD_CALLED          = 1 << 14,
+    IS_ON_LOAD_STARTED         = 1 << 15,
+    IS_START_CALLED            = 1 << 16,
 
-    IsRotationLocked = 1 << 17,
-    IsScaleLocked = 1 << 18,
-    IsAnchorLocked = 1 << 19,
-    IsSizeLocked = 1 << 20,
-    IsPositionLocked = 1 << 21,
+    IS_ROTATION_LOCKED = 1 << 17,
+    IS_SCALE_LOCKED    = 1 << 18,
+    IS_ANCHOR_LOCKED   = 1 << 19,
+    IS_SIZE_LOCKED     = 1 << 20,
+    IS_POSITION_LOCKED = 1 << 21,
 
     // Distributed
-    IsReplicated = 1 << 22,
-    IsClientLoad = 1 << 23,
+    IS_REPLICATED  = 1 << 22,
+    IS_CLIENT_LOAD = 1 << 23,
 
     // var Hide = HideInGame | HideInEditor;
     // should not clone or serialize these flags
-    PersistentMask = ~(ToDestroy | Dirty | Destroying | DontDestroy | Deactivating
-                           | IsPreloadStarted | IsOnLoadStarted | IsOnLoadCalled | IsStartCalled
-                           | IsOnEnableCalled | IsEditorOnEnableCalled
-                           | IsRotationLocked | IsScaleLocked | IsAnchorLocked | IsSizeLocked | IsPositionLocked
-    /* RegisteredInEditor */),
+    PERSISTENT_MASK = ~(TO_DESTROY | DIRTY | DESTROYING | DONT_DESTROY | DEACTIVATING | IS_PRELOAD_STARTED | IS_ON_LOAD_STARTED | IS_ON_LOAD_CALLED | IS_START_CALLED | IS_ON_ENABLE_CALLED | IS_EDITOR_ON_ENABLE_CALLED | IS_ROTATION_LOCKED | IS_SCALE_LOCKED | IS_ANCHOR_LOCKED | IS_SIZE_LOCKED | IS_POSITION_LOCKED
+                        /* RegisteredInEditor */),
 
     // all the hideFlags
-    AllHideMasks = DontSave | EditorOnly | LockedInEditor | HideInHierarchy,
+    ALL_HIDE_MASKS = DONT_SAVE | EDITOR_ONLY | LOCKED_IN_EDITOR | HIDE_IN_HIERARCHY,
 };
 
 /**
@@ -86,36 +83,36 @@ enum ObjectState {
 class CCObject /*cjh implements EditorExtendableObject*/ {
 public:
     enum class Flags {
-        Destroyed,
+        DESTROYED,
         // ToDestroy: ToDestroy,
 
         /**
          * @en The object will not be saved.
          * @zh 该对象将不会被保存。
          */
-        DontSave,
+        DONT_SAVE,
 
         /**
          * @en The object will not be saved when building a player.
          * @zh 构建项目时，该对象将不会被保存。
          */
-        EditorOnly,
+        EDITOR_ONLY,
 
-        Dirty,
+        DIRTY,
 
         /**
          * @en Dont destroy automatically when loading a new scene.
          * @zh 加载一个新场景时，不自动删除该对象。
          * @private
          */
-        DontDestroy,
+        DONT_DESTROY,
 
         /**
          * @en
          * @zh
          * @private
          */
-        PersistentMask,
+        PERSISTENT_MASK,
 
         // FLAGS FOR ENGINE
 
@@ -124,14 +121,14 @@ public:
          * @zh
          * @private
          */
-        Destroying,
+        DESTROYING,
 
         /**
          * @en The node is deactivating.
          * @zh 节点正在反激活的过程中。
          * @private
          */
-        Deactivating,
+        DEACTIVATING,
 
         /**
          * @en
@@ -148,20 +145,20 @@ public:
          * @zh 锁定节点，锁定后场景内不能点击。
          * @private
          */
-        LockedInEditor,
+        LOCKED_IN_EDITOR,
 
         /**
           * @en Hide the object in editor.
           * @zh 在编辑器中隐藏该对象。
           */
-        HideInHierarchy,
+        HIDE_IN_HIERARCHY,
 
         /**
           * @en The object will not be saved and hide the object in editor,and lock node, when the node is locked,
           * cannot be clicked in the scene,and The object will not be saved when building a player.
           * @zh 该对象将不会被保存,构建项目时，该对象将不会被保存, 锁定节点，锁定后场景内不能点击, 在编辑器中隐藏该对象。
           */
-        AllHideMasks,
+        ALL_HIDE_MASKS,
 
         // FLAGS FOR EDITOR
 
@@ -177,32 +174,33 @@ public:
 
         // FLAGS FOR COMPONENT
 
-        IsPreloadStarted,
-        IsOnLoadStarted,
-        IsOnLoadCalled,
-        IsOnEnableCalled,
-        IsStartCalled,
-        IsEditorOnEnableCalled,
+        IS_PRELOAD_STARTED,
+        IS_ON_LOAD_STARTED,
+        IS_ON_LOAD_CALLED,
+        IS_ON_ENABLE_CALLED,
+        IS_START_CALLED,
+        IS_EDITOR_ON_ENABLE_CALLED,
 
-        IsPositionLocked,
-        IsRotationLocked,
-        IsScaleLocked,
-        IsAnchorLocked,
-        IsSizeLocked,
+        IS_POSITION_LOCKED,
+        IS_ROTATION_LOCKED,
+        IS_SCALE_LOCKED,
+        IS_ANCHOR_LOCKED,
+        IS_SIZE_LOCKED,
 
-        IsReplicated,
-        IsClientLoad,
+        IS_REPLICATED,
+        IS_CLIENT_LOAD,
     };
 
-    static void _deferredDestroy ();
+    static void deferredDestroy();
 
-//cjh    public declare [editorExtrasTag]: unknown;
+    //cjh    public declare [editorExtrasTag]: unknown;
 
     uint32_t _objFlags = 0;
+
 protected:
     std::string _name;
 
-    CCObject(const char* name = "");
+    explicit CCObject(const char* name = "");
 
 public:
     // MEMBER
@@ -216,26 +214,26 @@ public:
      * obj.name = "New Obj";
      * ```
      */
-    const std::string& getName () const { return _name; }
-    void setName (const std::string& value) { _name = value; }
+    const std::string& getName() const { return _name; }
+    void               setName(const std::string& value) { _name = value; }
 
     /**
      * @en After inheriting CCObject objects, control whether you need to hide, lock, serialize, and other functions.
      * @zh 在继承 CCObject 对象后，控制是否需要隐藏，锁定，序列化等功能。
      */
-    void setHideFlags (Flags hideFlags);
-    Flags getHideFlags ();
+    void  setHideFlags(Flags hideFlags);
+    Flags getHideFlags();
 
-    void setReplicated (bool value) {
+    void setReplicated(bool value) {
         if (value) {
-            _objFlags |= IsReplicated;
+            _objFlags |= IS_REPLICATED;
         } else {
-            _objFlags &= ~IsReplicated;
+            _objFlags &= ~IS_REPLICATED;
         }
     }
 
-    bool isReplicated () {
-        return !!(_objFlags & IsReplicated);
+    bool isReplicated() const {
+        return !!(_objFlags & IS_REPLICATED);
     }
 
     /**
@@ -264,8 +262,8 @@ public:
      * log(node.isValid);    // false, destroyed in the end of last frame
      * ```
      */
-    bool isValid () const {
-        return !(_objFlags & Destroyed);
+    bool isValid() const {
+        return !(_objFlags & DESTROYED);
     }
 
     /**
@@ -284,7 +282,7 @@ public:
      * obj.destroy();
      * ```
      */
-    virtual bool destroy ();
+    virtual bool destroy();
 
     /**
      * Clear all references in the instance.
@@ -307,11 +305,11 @@ public:
      *       }
      *
      */
-    void _destruct ();
+    void destruct();
 
-    void _destroyImmediate ();
+    void destroyImmediate();
 
     virtual std::string toString() const { return ""; };
 };
 
-} // namespace cc {
+} // namespace cc

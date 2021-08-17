@@ -393,6 +393,8 @@ endif()
 cocos_source_files(MODULE ccmath
     cocos/math/Geometry.cpp
     cocos/math/Geometry.h
+    cocos/math/Color.cpp
+    cocos/math/Color.h
     cocos/math/Math.h
     cocos/math/Math.cpp
     cocos/math/MathBase.h
@@ -839,6 +841,8 @@ cocos_source_files(
 
 ##### scene
 cocos_source_files(
+                 cocos/scene/Ambient.h
+                 cocos/scene/Ambient.cpp
                  cocos/scene/BakedSkinningModel.h
                  cocos/scene/BakedSkinningModel.cpp
                  cocos/scene/Camera.h
@@ -867,18 +871,6 @@ cocos_source_files(
                  cocos/scene/SpotLight.cpp
                  cocos/scene/SubModel.h
                  cocos/scene/SubModel.cpp
-)
-
-##### scene graph
-cocos_source_files(
-                 cocos/scene-graph/BaseNode.h
-                 cocos/scene-graph/BaseNode.cpp
-                 cocos/scene-graph/Node.h
-                 cocos/scene-graph/Node.cpp
-                 cocos/scene-graph/Scene.h
-                 cocos/scene-graph/Scene.cpp
-                 cocos/scene-graph/ComponentScheduler.h
-                 cocos/scene-graph/ComponentScheduler.cpp
 )
 
 ##### components
@@ -1213,6 +1205,16 @@ if(USE_PHYSICS_PHYSX)
     )
 endif()
 
+##### components
+cocos_source_files(
+    cocos/core/components/Component.h
+)
+
+##### 2d
+cocos_source_files(
+    cocos/2d/framework/UITransform.h
+)
+
 ##### core
 
 cocos_source_files(
@@ -1345,6 +1347,8 @@ cocos_source_files(
     cocos/core/scene-graph/Layers.h
     cocos/core/scene-graph/Node.cpp
     cocos/core/scene-graph/Node.h
+    cocos/core/scene-graph/ComponentScheduler.h
+    cocos/core/scene-graph/ComponentScheduler.cpp
     cocos/core/scene-graph/NodeActivator.cpp
     cocos/core/scene-graph/NodeActivator.h
     cocos/core/scene-graph/NodeEnum.h

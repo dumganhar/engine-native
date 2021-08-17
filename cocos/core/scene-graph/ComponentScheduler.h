@@ -29,6 +29,7 @@
 #include "components/Component.h"
 namespace cc {
 namespace scenegraph {
+using components::Component;
 class LifeCycleInvoker {
 public:
     static void stableRemoveInactive();
@@ -36,7 +37,7 @@ public:
     ~LifeCycleInvoker();
 
 protected:
-    std::function<void(std::vector<Component*>, float)> _invoke;
+    std::function<void(std::vector<components::Component*>, float)> _invoke;
 
 private:
     std::vector<Component*> _zero;
@@ -61,7 +62,7 @@ public:
     void invoke(float);
 };
 
-class ComponentScheduler {
+class ComponentScheduler final {
 public:
     ComponentScheduler();
     ~ComponentScheduler();

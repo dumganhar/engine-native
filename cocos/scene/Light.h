@@ -26,7 +26,7 @@
 #pragma once
 
 #include "math/Vec3.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 namespace scene {

@@ -31,7 +31,7 @@
 #include "math/Vec3.h"
 #include "math/Vec4.h"
 #include "renderer/gfx-base/GFXDef-common.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 #include "scene/RenderWindow.h"
 
 

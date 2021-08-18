@@ -23,7 +23,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "core/Root.h"
+#include "core/memop/CachedArray.h"
 
 namespace cc {
+
 }

@@ -23,7 +23,38 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "core/Root.h"
+#pragma once
+
+#include <functional>
+#include <vector>
 
 namespace cc {
+
+/**
+ * @en Circular object pool, it creates a pre-allocated object list, and should be requested in loop.
+ * One common usage of CircularPool is the ring buffer.
+ * @zh 循环对象池，可以初始化一个预设的对象列表，并被依次循环使用。一个常见你的用例就是 Ring Buffer。
+ */
+template<typename T>
+class CircularPool final {
+public:
+    using CreateFn = std::function<T*()>;
+    
+    /**
+     * @param fn The allocator function for the initial data in pool.
+     * @param size The size of the circular pool
+     */
+    CircularPool(const CreateFn &fn, uint32_t size);
+    
+    /**
+     * @en Request an data object at the current cursor, if the cursor reaches the end, it will start over.
+     * @zh 从尾部请求一个对象，超过长度则从头开始。
+     */
+    T* request();
+    
+private:
+    uint32_t _cursor{0};
+    std::vector<T*> _data;
+};
+
 }

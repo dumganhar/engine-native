@@ -1219,6 +1219,10 @@ cocos_source_files(
 
     cocos/core/Any.h
     cocos/core/ArrayBuffer.h
+    cocos/core/CachedArray.h
+    cocos/core/CachedArray.cpp
+    cocos/core/CircularPool.h
+    cocos/core/CircularPool.cpp
     cocos/core/CoreModuleHeader.h
     cocos/core/Director.cpp
     cocos/core/Director.h

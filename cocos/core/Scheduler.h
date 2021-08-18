@@ -123,7 +123,7 @@ private:
  */
 class HashUpdateEntry final {
 public:
-    void*           _list; //unknown usage
+    void*           _list{nullptr}; //unknown usage
     ListEntry*      _entry{nullptr};
     ISchedulable*   _target{nullptr};
     ccSchedulerFunc _callback{nullptr};

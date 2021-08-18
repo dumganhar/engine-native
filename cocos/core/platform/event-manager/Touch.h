@@ -29,13 +29,16 @@
 namespace cc {
 
 /**
- * @en The touch point class
+ * @en The  point class
  * @zh 封装了触点相关的信息。
  */
 class Touch final{
 public:
+    Touch(float x, float y) {
+        setTouchInfo(0, x, y);
+    }
 
-    Touch(float x, float y, uint32_t id = 0) {
+    Touch(float x, float y, uint32_t id) {
         setTouchInfo(id, x, y);
     }
 
@@ -46,7 +49,7 @@ public:
      * @zh 获取当前触点位置。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getLocation() const;
+    const Vec2& getLocation() const;
 
     /**
      * @en Returns X axis location value.
@@ -76,20 +79,20 @@ public:
      * @zh 获取当前触点在 UI 坐标系中 X 轴位置。
      */
 
-    Vec2 getUILocationX() const;
+    float getUILocationX() const;
 
     /**
      * @en Returns Y axis location value in UI coordinates.
      * @zh 获取当前触点在 UI 坐标系中 Y 轴位置。
      */
-    Vec2 getUILocationY() const;
+    float getUILocationY() const;
 
     /**
      * @en Returns the previous touch location.
      * @zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getPreviousLocation() const;
+    const Vec2& getPreviousLocation() const;
 
     /**
      * @en Returns the previous touch location in UI coordinates.
@@ -99,14 +102,14 @@ public:
     Vec2 getUIPreviousLocation() const;
 
     /**
-     * @en Returns the start touch location.
+     * @en Returns the start  location.
      * @zh 获取触点落下时的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getStartLocation() const;
+    const Vec2& getStartLocation() const;
 
     /**
-     * @en Returns the start touch location in UI coordinates.
+     * @en Returns the start  location in UI coordinates.
      * @zh 获取触点落下时在 UI 坐标系中的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
@@ -127,28 +130,28 @@ public:
     Vec2 getUIDelta() const;
 
     /**
-     * @en Returns the current touch location in screen coordinates.
+     * @en Returns the current  location in screen coordinates.
      * @zh 获取当前事件在游戏窗口内的坐标位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
     Vec2 getLocationInView() const;
 
     /**
-     * @en Returns the previous touch location in screen coordinates.
+     * @en Returns the previous  location in screen coordinates.
      * @zh 获取触点在上一次事件时在游戏窗口中的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
     Vec2 getPreviousLocationInView() const;
 
     /**
-     * @en Returns the start touch location in screen coordinates.
+     * @en Returns the start  location in screen coordinates.
      * @zh 获取触点落下时在游戏窗口中的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
     Vec2 getStartLocationInView() const;
 
     /**
-     * @en Returns the id of the touch point.
+     * @en Returns the id of the  point.
      * @zh 触点的标识 ID，可以用来在多点触摸中跟踪触点。
      */
     inline uint32_t getID() const { 
@@ -156,29 +159,31 @@ public:
     }
 
     /**
-     * @en Resets touch point information.
+     * @en Resets  point information.
      * @zh 重置触点相关的信息。
-     * @param id - The id of the touch point
-     * @param x - x position of the touch point
-     * @param y - y position of the touch point
+     * @param id - The id of the  point
+     * @param x - x position of the  point
+     * @param y - y position of the  point
      */
-    void setTouchInfo(uint32_t id = 0, float x = 0, float y = 0);
+    void setTouchInfo(uint32_t id = 0);
+
+    void setTouchInfo(uint32_t id, float x, float y);
 
     /**
-     * @en Sets touch point location.
+     * @en Sets  point location.
      * @zh 设置触点位置。
      * @param point - The location
      */
-    void setPoint(Vec2 point);
+    void setPoint(const Vec2& point);
 
     void setPoint(float x, float y);
 
     /**
-     * @en Sets the location previously registered for the current touch.
+     * @en Sets the location previously registered for the current .
      * @zh 设置触点在前一次触发时收集的位置。
      * @param point - The location
      */
-    void setPrevPoint(Vec2 point);
+    void setPrevPoint(const Vec2& point);
 
     void setPrevPoint(float x, float y);
 

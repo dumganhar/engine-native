@@ -25,11 +25,12 @@
 
 #pragma once
 
-#include <android/native_window.h>
-#include "math/Vec2.h"
-#include "core/platform/event-manager/Touch.h"
 #include <vector>
 #include <unordered_map>
+
+#include "math/Vec2.h"
+#include "core/platform/event-manager/Touch.h"
+
 
 // const uint32_t TOUCH_TIMEOUT = macro.TOUCH_TIMEOUT;
 namespace cc {
@@ -46,47 +47,36 @@ public:
     InputManager() = default;
     ~InputManager() = default;
 
-    Vec2 _preTouchPoint; 
-    Vec2 _prevMousePoint;
-    std::vector<Touch> _prevTouchPool;
-    uint32_t _preTouchPoolPointer{0};
-
-    std::vector<Touch> _touches;
-    std::unordered_map<uint32_t, uint32_t> _touchesIntegerDict;
-    uint32_t _indexBitsUsed{0};
-    uint32_t _maxTouches{0};
-
-    IView* _glView{nullptr};
-
     /**
      * Clear events when game is resumed.
      */
-    void clearEvents();
+    void clearEvents() const;
 
-    void frameDispatchEvents();
+    void frameDispatchEvents() const;
 
 private:
+
     // #region Mouse Handle
     // void _dispatchMouseEvent(MouseInputEvent inputEvent);
 
     // void _dispatchTouchEvent (TouchInputEvent inputEvent);
 
-    void handleTouchesStart(std::vector<Touch> touches);
+    void handleTouchesStart(const std::vector<Touch>& touches) const;
 
-    void handleTouchesMove(std::vector<Touch> touches);
+    void handleTouchesMove(const std::vector<Touch>& touches) const;
 
-    void handleTouchesEnd(std::vector<Touch> touches);
+    void handleTouchesEnd(const std::vector<Touch>& touches) const;
 
-    void handleTouchesCancel(std::vector<Touch> touches);
+    void handleTouchesCancel(const std::vector<Touch>& touches) const;
 
-    std::vector<Touch> getSetOfTouchesEndOrCancel(std::vector<Touch> touches) const;
+    std::vector<Touch> getSetOfTouchesEndOrCancel(const std::vector<Touch>& touches) const;
 
     void setPreTouch(Touch touch);
 
     Touch getPreTouch(Touch touch) const;
 
     // TODO(PP): remove this private method
-    void getViewPixelRatio();
+    void getViewPixelRatio() const;
     
     // Touch getTouch(MouseInputEvent inputEvent) const;
 
@@ -96,9 +86,9 @@ private:
 
     uint32_t getUnusedIndex() const;
 
-    void removeUsedIndexBit();
+    void removeUsedIndexBit(uint32_t index);
 
-    void getUsefulTouches();
+    void getUsefulTouches() const;
     // #endregion Touch Handle
 
     // #region Keyboard Handle
@@ -110,15 +100,26 @@ private:
     /**
      * Whether enable accelerometer event.
      */
-    void setAccelerometer(bool isEnabled);
+    void setAccelerometer(bool isEnabled) const;
 
     /**
      * set accelerometer interval value in mile seconds
      * @method setAccelerometerInterval
      * @param {Number} intervalInMileSeconds
      */
-    void setAccelerometerInterval(uint64_t intervalInMileSeconds);
+    void setAccelerometerInterval(uint32_t intervalInMileSeconds) const;
 
+    Vec2 _preTouchPoint; 
+    Vec2 _prevMousePoint;
+    std::vector<Touch> _prevTouchPool;
+    uint32_t _preTouchPoolPointer{0};
+
+    std::vector<Touch> _touches;
+    std::unordered_map<uint32_t, uint32_t> _touchesIntegerDict;
+    uint32_t _indexBitsUsed{0};
+    uint32_t _maxTouches{0};
+
+    IView* _glView{nullptr};
 };
 
 } // namespace cc

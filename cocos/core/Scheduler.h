@@ -54,7 +54,7 @@ public:
 
 protected:
     Timer() = default;
-    virtual ~Timer() = 0; 
+    virtual ~Timer() = default; 
 protected:
     Scheduler* _scheduler{nullptr};
     float      _elapsed{0.f};

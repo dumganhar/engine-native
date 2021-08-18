@@ -62,7 +62,7 @@ public:
     }
     
     System() = default;
-    virtual ~System() = 0;
+    virtual ~System() = default;
 
     inline std::string getId() const { return id; }
     inline void        setId(std::string& s) { id = s; }

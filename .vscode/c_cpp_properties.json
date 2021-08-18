@@ -7,16 +7,19 @@
                 "cocos",
                 "cocos/renderer",
                 "cocos/platform",
+                "cocos/core",
+                "cocos/base",
                 "cocos/platform/ios",
                 "cocos/editor-support",
                 "cocos/bindings/jswrapper",
                 "external/sources",
                 "external/sources/khronos",
                 "external/win32/include",
-                "external/win32/include/glslang",
-                "external/win32/include/v8"
+                "external/win32/include/v8",
+                "E:/engine-native/cocos"
             ],
-            "compileCommands": "${workspaceFolder}/compile_commands.json"
+            "compileCommands": "${workspaceFolder}/compile_commands.json",
+            "cppStandard": "c++14"
         }
     ],
     "version": 4

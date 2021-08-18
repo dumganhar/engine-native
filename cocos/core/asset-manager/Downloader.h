@@ -131,17 +131,17 @@ private:
 
     Cache<std::vector<CompleteCallback>> _downloading;
     std::vector<IDownloadRequest> _queue;
-    bool _queueDirty = false;
+    bool _queueDirty{false};
     // the number of loading thread
-    uint32_t _totalNum = 0;
+    uint32_t _totalNum{0};
     // the number of request that launched in this period
-    uint32_t _totalNumThisPeriod = 0;
+    uint32_t _totalNumThisPeriod{0};
     // last time, if now - lastTime > period, refresh _totalNumThisPeriod.
-    int64_t _lastDate = -1;
+    int64_t _lastDate{-1};
     // if _totalNumThisPeriod equals max, move request to next period using setTimeOut.
-    bool _checkNextPeriod = false;
+    bool _checkNextPeriod{false};
     std::string _remoteServerAddress;
-    float _maxInterval = 1.0f / 30.0f;
+    float _maxInterval{1.0f / 30.0f};
 };
 
 } // namespace cc {

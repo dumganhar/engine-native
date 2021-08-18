@@ -61,19 +61,19 @@ private:
 
     // void _dispatchTouchEvent (TouchInputEvent inputEvent);
 
-    void handleTouchesStart(const std::vector<Touch>& touches) const;
+    void handleTouchesStart(const std::vector<Touch *>& touches) const;
 
-    void handleTouchesMove(const std::vector<Touch>& touches) const;
+    void handleTouchesMove(const std::vector<Touch *>& touches) const;
 
-    void handleTouchesEnd(const std::vector<Touch>& touches) const;
+    void handleTouchesEnd(const std::vector<Touch *>& touches) const;
 
-    void handleTouchesCancel(const std::vector<Touch>& touches) const;
+    void handleTouchesCancel(const std::vector<Touch *>& touches) const;
 
-    std::vector<Touch> getSetOfTouchesEndOrCancel(const std::vector<Touch>& touches) const;
+    std::vector<Touch*> getSetOfTouchesEndOrCancel(const std::vector<Touch *>& touches) const;
 
-    void setPreTouch(Touch touch);
+    void setPreTouch(Touch* touch);
 
-    Touch getPreTouch(Touch touch) const;
+    Touch getPreTouch(Touch* touch) const;
 
     // TODO(PP): remove this private method
     void getViewPixelRatio() const;
@@ -111,10 +111,10 @@ private:
 
     Vec2 _preTouchPoint; 
     Vec2 _prevMousePoint;
-    std::vector<Touch> _prevTouchPool;
+    std::vector<Touch *> _prevTouchPool;
     uint32_t _preTouchPoolPointer{0};
 
-    std::vector<Touch> _touches;
+    std::vector<Touch *> _touches;
     std::unordered_map<uint32_t, uint32_t> _touchesIntegerDict;
     uint32_t _indexBitsUsed{0};
     uint32_t _maxTouches{0};

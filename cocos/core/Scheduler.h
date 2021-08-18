@@ -94,7 +94,7 @@ private:
  * @param paused
  * @param markedForDeletion selector will no longer be called and entry will be removed at end of the next tick
  */
-class ListEntry {
+class ListEntry final {
 public:
     ISchedulable* _target{nullptr};
     Priority      _priority{Priority::LOW};
@@ -120,7 +120,7 @@ private:
  * @param target hash key (retained)
  * @param callback
  */
-class HashUpdateEntry {
+class HashUpdateEntry final {
 public:
     void*           _list; //unknown usage
     ListEntry*      _entry{nullptr};
@@ -148,7 +148,7 @@ private:
  * @param currentTimerSalvaged
  * @param paused
  */
-class HashTimerEntry {
+class HashTimerEntry final {
 public:
     std::vector<Timer*> _timers;
     ISchedulable*       _target{nullptr};

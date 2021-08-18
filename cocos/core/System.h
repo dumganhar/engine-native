@@ -45,7 +45,7 @@ protected:
     bool     _executeInEditMode{false};
 
 public:
-    System(){};
+    System() = default;
     virtual ~System() = 0;
 
     inline std::string getId() const { return id; }

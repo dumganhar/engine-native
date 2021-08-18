@@ -22,7 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 ****************************************************************************/
-#include "Scheduler.h"
+#include "core/Scheduler.h"
 
 namespace {
 constexpr unsigned CC_REPEAT_FOREVER{UINT_MAX - 1};

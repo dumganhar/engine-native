@@ -54,7 +54,7 @@ public:
 
 protected:
     Timer() = default;
-
+    virtual ~Timer() = 0; 
 protected:
     Scheduler* _scheduler{nullptr};
     float      _elapsed{0.f};
@@ -101,12 +101,13 @@ public:
     bool          _paused{false};
     bool          _markedForDeletion{false};
 
-    ListEntry(ISchedulable* target, uint32_t priority, bool paused, bool markedForDeletion);
-    ~ListEntry();
-
     static ListEntry* get(ISchedulable* target, uint32_t priority, bool paused, bool markedForDeletion);
     static void       put(ListEntry* entry);
 
+    ListEntry(ISchedulable* target, uint32_t priority, bool paused, bool markedForDeletion);
+    ~ListEntry();
+
+    
 private:
     static std::vector<ListEntry*> _listEntries;
 };
@@ -127,11 +128,10 @@ public:
     ISchedulable*   _target{nullptr};
     ccSchedulerFunc _callback{nullptr};
 
-    HashUpdateEntry(void* list, ListEntry* entry, ISchedulable* target, ccSchedulerFunc* callback);
-    ~HashUpdateEntry();
-
     static HashUpdateEntry* get(std::vector<HashUpdateEntry*>& list, ListEntry* entry, ISchedulable* target, ccSchedulerFunc* callback);
     static void             put(HashUpdateEntry* entry);
+    HashUpdateEntry(void* list, ListEntry* entry, ISchedulable* target, ccSchedulerFunc* callback);
+    ~HashUpdateEntry();
 
 private:
     static std::vector<HashUpdateEntry*> _hashUpdateEntries;
@@ -208,9 +208,10 @@ private:
     void _appendIn(std::vector<ListEntry*>& pplist, ListEntry* listElement);
 
 public:
+    static void enableForTarget(ISchedulable* target);
     Scheduler();
     ~Scheduler();
-    static void enableForTarget(ISchedulable* target);
+    
 
     bool inline isCurrentTimerSalvaged() const { return _currentTimerSalvaged; }
 

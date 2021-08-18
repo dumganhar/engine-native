@@ -45,18 +45,6 @@ protected:
     bool     _executeInEditMode{false};
 
 public:
-    System() = default;
-    virtual ~System() = 0;
-
-    inline std::string getId() const { return id; }
-    inline void        setId(std::string& s) { id = s; }
-
-    inline Priority getPriority() const { return _priority; }
-    inline void     setPriority(Priority i) { _priority = i; }
-
-    inline bool getExecuteInEditMode() const { return _executeInEditMode; }
-    inline void setExecuteInEditMode(bool b) { _executeInEditMode = b; }
-
     /**
      * @en Sorting between different systems.
      * @zh 不同系统间排序。
@@ -72,6 +60,20 @@ public:
             return 0;
         }
     }
+    
+    System() = default;
+    virtual ~System() = 0;
+
+    inline std::string getId() const { return id; }
+    inline void        setId(std::string& s) { id = s; }
+
+    inline Priority getPriority() const { return _priority; }
+    inline void     setPriority(Priority i) { _priority = i; }
+
+    inline bool getExecuteInEditMode() const { return _executeInEditMode; }
+    inline void setExecuteInEditMode(bool b) { _executeInEditMode = b; }
+
+    
 
     /**
      * @en Init the system, will be invoked by [[Director]] when registered, should be implemented if needed.

@@ -41,14 +41,14 @@ namespace cc {
  * @zh
  * 加速计事件。
  */
-class EventAccelerometer final : public event::Event {
+class EventAcceleration final : public event::Event {
 public:
     /**
      * @param acc - The acceleration
      * @param bubbles - Indicate whether the event bubbles up through the hierarchy or not.
      */
-    EventAccelerometer(Acceleration acc, bool bubbles);
-    ~EventAccelerometer() = default;
+    EventAcceleration(Acceleration acc, bool bubbles);
+    ~EventAcceleration() = default;
 
     /**
      * @en The acceleration object

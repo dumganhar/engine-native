@@ -1409,6 +1409,10 @@ cocos_source_files(
     cocos/core/platform/event-manager/Event.cpp
     cocos/core/platform/event-manager/EventEnum.h
     cocos/core/platform/event-manager/EventEnum.cpp
+    cocos/core/platform/event-manager/EventListener.h
+    cocos/core/platform/event-manager/EventListener.cpp
+    cocos/core/platform/event-manager/EventManager.h
+    cocos/core/platform/event-manager/EventManager.cpp
     cocos/core/platform/event-manager/InputManager.h
     cocos/core/platform/event-manager/InputManager.cpp
     cocos/core/platform/event-manager/KeyCode.h

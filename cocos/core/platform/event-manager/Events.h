@@ -84,14 +84,14 @@ public:
      * 注意：第一根手指按下不动，接着按第二根手指，这时候触点信息就只有变动的这根手指（第二根手指）的信息。
      * 如果需要获取全部手指的信息，请使用 `getAllTouches`。
      */
-    const std::vector<Touch *>& getTouches() const;
+    const std::vector<Touch>& getTouches() const;
 
     /**
      * @en Returns touches of event.
      * @zh 获取所有触摸点的列表。
      * 注意：如果手指行为是 touch end，这个时候列表是没有该手指信息的。如需知道该手指信息，可通过 `getTouches` 获取识别。
      */
-    const std::vector<Touch *>& getAllTouches() const;
+    const std::vector<Touch>& getAllTouches() const;
 
     /**
      * @en Sets touch location.
@@ -197,7 +197,7 @@ public:
      * @en The current touch object
      * @zh 当前触点对象
      */
-    Touch* touch;
+    Touch* touch{nullptr};
 
     /**
      * @en Indicate whether the touch event is simulated or real
@@ -206,8 +206,8 @@ public:
     bool simulate{false};
 
 private:
-    std::vector<Touch *> _touches;
-    std::vector<Touch *> _allTouches;
+    std::vector<Touch> _touches;
+    std::vector<Touch> _allTouches;
 
 };
 

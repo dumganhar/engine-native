@@ -1377,6 +1377,15 @@ cocos_source_files(
     cocos/core/utils/IDGenerator.cpp
     cocos/core/utils/IDGenerator.h
 
+
+    cocos/core/platform/event-manager/InputManager.h
+    cocos/core/platform/event-manager/InputManager.cpp
+    cocos/core/platform/event-manager/Touch.h
+    cocos/core/platform/event-manager/Touch.cpp
+    
+)
+
+cocos_source_files(MODULE ccgeometry
     cocos/core/geometry/AABB.cpp
     cocos/core/geometry/AABB.h
     cocos/core/geometry/Capsule.cpp
@@ -2045,8 +2054,12 @@ if(USE_MODULES)
     add_library(ccutils ${ccutils_SOURCE_LIST} ${CC_UTILS_SOURCES})
     add_library(ccunzip ${ccunzip_SOURCE_LIST} ${CC_UNZIP_SOURCES})
     add_library(ccbindings ${ccbindings_SOURCE_LIST})
+    add_library(ccgeometry ${ccgeometry_SOURCE_LIST})
 
     target_include_directories(ccmath PRIVATE
+        ${CWD}/cocos
+    )
+    target_include_directories(ccgeometry PRIVATE
         ${CWD}/cocos
     )
     target_include_directories(ccunzip PRIVATE
@@ -2087,6 +2100,9 @@ if(USE_MODULES)
         ${se_libs_name}
         uv
     )
+    target_link_libraries(ccgeometry PUBLIC 
+        ccmath
+    )
     if(ANDROID)
         target_link_libraries(ccmath PUBLIC
             android_platform
@@ -2114,6 +2130,7 @@ if(USE_MODULES)
 else()
     list(APPEND COCOS2D_SOURCE_LIST
         ${ccmath_SOURCE_LIST}
+        ${ccgeometry_SOURCE_LIST}
         ${cclog_SOURCE_LIST}
         ${ccfilesystem_SOURCE_LIST}
         ${ccunzip_SOURCE_LIST}

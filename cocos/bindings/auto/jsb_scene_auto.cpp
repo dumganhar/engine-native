@@ -17,7 +17,6 @@
 #include "scene/RenderWindow.h"
 #include "scene/Camera.h"
 #include "scene/Define.h"
-#include "core/geometry/Plane.h"
 
 #ifndef JSB_ALLOC
 #define JSB_ALLOC(kls, ...) new (std::nothrow) kls(__VA_ARGS__)
@@ -436,238 +435,138 @@ bool js_register_scene_DirectionalLight(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_geometry_ShapeBase_proto = nullptr;
-se::Class* __jsb_cc_geometry_ShapeBase_class = nullptr;
-
-static bool js_scene_ShapeBase_getType(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::geometry::ShapeBase>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_ShapeBase_getType : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        auto result = static_cast<int>(cobj->getType());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_ShapeBase_getType : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_ShapeBase_getType)
-
-static bool js_scene_ShapeBase_setType(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::geometry::ShapeBase>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_ShapeBase_setType : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::geometry::ShapeEnum, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_ShapeBase_setType : Error processing arguments");
-        cobj->setType(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_ShapeBase_setType)
-
-
-static bool js_cc_geometry_ShapeBase_finalize(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::geometry::ShapeBase>(s));
-    if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
-    {
-        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
-        auto* cobj = SE_THIS_OBJECT<cc::geometry::ShapeBase>(s);
-        JSB_FREE(cobj);
-    }
-    return true;
-}
-SE_BIND_FINALIZE_FUNC(js_cc_geometry_ShapeBase_finalize)
-
-bool js_register_scene_ShapeBase(se::Object* obj) // NOLINT(readability-identifier-naming)
-{
-    auto* cls = se::Class::create("ShapeBase", obj, nullptr, nullptr);
-
-    cls->defineFunction("getType", _SE(js_scene_ShapeBase_getType));
-    cls->defineFunction("setType", _SE(js_scene_ShapeBase_setType));
-    cls->defineFinalizeFunction(_SE(js_cc_geometry_ShapeBase_finalize));
-    cls->install();
-    JSBClassType::registerClass<cc::geometry::ShapeBase>(cls);
-
-    __jsb_cc_geometry_ShapeBase_proto = cls->getProto();
-    __jsb_cc_geometry_ShapeBase_class = cls;
-
-    se::ScriptEngine::getInstance()->clearException();
-    return true;
-}
 se::Object* __jsb_cc_geometry_Plane_proto = nullptr;
 se::Class* __jsb_cc_geometry_Plane_class = nullptr;
 
-static bool js_scene_Plane_getW(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Plane_get_d(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::geometry::Plane>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Plane_getW : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        float result = cobj->getW();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_Plane_getW : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_Plane_getW)
+    SE_PRECONDITION2(cobj, false, "js_scene_Plane_get_d : Invalid Native Object");
 
-static bool js_scene_Plane_getX(se::State& s) // NOLINT(readability-identifier-naming)
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->d, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->d, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_scene_Plane_get_d)
+
+static bool js_scene_Plane_set_d(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::geometry::Plane>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Plane_set_d : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->d, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_scene_Plane_set_d : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_scene_Plane_set_d)
+
+static bool js_scene_Plane_get_n(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::geometry::Plane>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Plane_getX : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        float result = cobj->getX();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_Plane_getX : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_Plane_getX)
+    SE_PRECONDITION2(cobj, false, "js_scene_Plane_get_n : Invalid Native Object");
 
-static bool js_scene_Plane_getY(se::State& s) // NOLINT(readability-identifier-naming)
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->n, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->n, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_scene_Plane_get_n)
+
+static bool js_scene_Plane_set_n(se::State& s) // NOLINT(readability-identifier-naming)
 {
+    const auto& args = s.args();
     auto* cobj = SE_THIS_OBJECT<cc::geometry::Plane>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Plane_getY : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        float result = cobj->getY();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_Plane_getY : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_Plane_getY)
+    SE_PRECONDITION2(cobj, false, "js_scene_Plane_set_n : Invalid Native Object");
 
-static bool js_scene_Plane_getZ(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::geometry::Plane>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Plane_getZ : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
     CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        float result = cobj->getZ();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_Plane_getZ : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
+    ok &= sevalue_to_native(args[0], &cobj->n, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_scene_Plane_set_n : Error processing new value");
+    return true;
 }
-SE_BIND_FUNC(js_scene_Plane_getZ)
+SE_BIND_PROP_SET(js_scene_Plane_set_n)
 
-static bool js_scene_Plane_transform(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::geometry::Plane>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Plane_transform : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::Mat4, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_Plane_transform : Error processing arguments");
-        cobj->transform(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_Plane_transform)
 
-static bool js_scene_Plane_create(se::State& s) // NOLINT(readability-identifier-naming)
+template<>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Plane * to, se::Object *ctx)
 {
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 4) {
-        HolderType<float, false> arg0 = {};
-        HolderType<float, false> arg1 = {};
-        HolderType<float, false> arg2 = {};
-        HolderType<float, false> arg3 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        ok &= sevalue_to_native(args[3], &arg3, nullptr);
-        SE_PRECONDITION2(ok, false, "js_scene_Plane_create : Error processing arguments");
-        cc::geometry::Plane* result = cc::geometry::Plane::create(arg0.value(), arg1.value(), arg2.value(), arg3.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_Plane_create : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+    assert(from.isObject());
+    se::Object *json = from.toObject();
+    auto* data = reinterpret_cast<cc::geometry::Plane*>(json->getPrivateData());
+    if (data) {
+        *to = *data;
         return true;
     }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
-    return false;
+    se::Value field;
+    bool ok = true;
+    json->getProperty("d", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->d), ctx);
+    }
+    json->getProperty("n", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->n), ctx);
+    }
+    return ok;
 }
-SE_BIND_FUNC(js_scene_Plane_create)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_geometry_Plane_finalize)
 
-static bool js_scene_Plane_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor_overloaded.c
+static bool js_scene_Plane_constructor(se::State& s) // NOLINT(readability-identifier-naming)
 {
     CC_UNUSED bool ok = true;
     const auto& args = s.args();
     size_t argc = args.size();
-    do {
-        if (argc == 0) {
-            cc::geometry::Plane* cobj = JSB_ALLOC(cc::geometry::Plane);
-            s.thisObject()->setPrivateData(cobj);
-            se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
-            return true;
+
+    if(argc == 0)
+    {
+        cc::geometry::Plane* cobj = JSB_ALLOC(cc::geometry::Plane);
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::geometry::Plane* cobj = JSB_ALLOC(cc::geometry::Plane);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
         }
-    } while(false);
-    do {
-        if (argc == 4) {
-            HolderType<float, false> arg0 = {};
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            HolderType<float, false> arg1 = {};
-            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
-            if (!ok) { ok = true; break; }
-            HolderType<float, false> arg2 = {};
-            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-            if (!ok) { ok = true; break; }
-            HolderType<float, false> arg3 = {};
-            ok &= sevalue_to_native(args[3], &arg3, s.thisObject());
-            if (!ok) { ok = true; break; }
-            cc::geometry::Plane* cobj = JSB_ALLOC(cc::geometry::Plane, arg0.value(), arg1.value(), arg2.value(), arg3.value());
-            s.thisObject()->setPrivateData(cobj);
-            se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
-            return true;
-        }
-    } while(false);
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    cc::geometry::Plane* cobj = JSB_ALLOC(cc::geometry::Plane);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->d), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->n), nullptr);
+    }
+
+    if(!ok) {
+        JSB_FREE(cobj);
+        SE_REPORT_ERROR("Argument convertion error");
+        return false;
+    }
+
+    s.thisObject()->setPrivateData(cobj);
+    se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+    return true;
 }
 SE_BIND_CTOR(js_scene_Plane_constructor, __jsb_cc_geometry_Plane_class, js_cc_geometry_Plane_finalize)
 
@@ -688,14 +587,10 @@ SE_BIND_FINALIZE_FUNC(js_cc_geometry_Plane_finalize)
 
 bool js_register_scene_Plane(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto* cls = se::Class::create("Plane", obj, __jsb_cc_geometry_ShapeBase_proto, _SE(js_scene_Plane_constructor));
+    auto* cls = se::Class::create("Plane", obj, nullptr, _SE(js_scene_Plane_constructor));
 
-    cls->defineFunction("getW", _SE(js_scene_Plane_getW));
-    cls->defineFunction("getX", _SE(js_scene_Plane_getX));
-    cls->defineFunction("getY", _SE(js_scene_Plane_getY));
-    cls->defineFunction("getZ", _SE(js_scene_Plane_getZ));
-    cls->defineFunction("transform", _SE(js_scene_Plane_transform));
-    cls->defineStaticFunction("create", _SE(js_scene_Plane_create));
+    cls->defineProperty("d", _SE(js_scene_Plane_get_d), _SE(js_scene_Plane_set_d));
+    cls->defineProperty("n", _SE(js_scene_Plane_get_n), _SE(js_scene_Plane_set_n));
     cls->defineFinalizeFunction(_SE(js_cc_geometry_Plane_finalize));
     cls->install();
     JSBClassType::registerClass<cc::geometry::Plane>(cls);
@@ -736,6 +631,33 @@ static bool js_scene_Frustum_set_vertices(se::State& s) // NOLINT(readability-id
 }
 SE_BIND_PROP_SET(js_scene_Frustum_set_vertices)
 
+static bool js_scene_Frustum_get_planes(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::geometry::Frustum>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Frustum_get_planes : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->planes, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->planes, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_scene_Frustum_get_planes)
+
+static bool js_scene_Frustum_set_planes(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::geometry::Frustum>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Frustum_set_planes : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->planes, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_scene_Frustum_set_planes : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_scene_Frustum_set_planes)
+
 
 template<>
 bool sevalue_to_native(const se::Value &from, cc::geometry::Frustum * to, se::Object *ctx)
@@ -752,6 +674,14 @@ bool sevalue_to_native(const se::Value &from, cc::geometry::Frustum * to, se::Ob
     json->getProperty("vertices", &field);
     if(!field.isNullOrUndefined()) {
         ok &= sevalue_to_native(field, &(to->vertices), ctx);
+    }
+    json->getProperty("planes", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->planes), ctx);
+    }
+    json->getProperty("type", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->type), ctx);
     }
     return ok;
 }
@@ -772,9 +702,33 @@ static bool js_scene_Frustum_constructor(se::State& s) // NOLINT(readability-ide
         return true;
     }
 
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::geometry::Frustum* cobj = JSB_ALLOC(cc::geometry::Frustum);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
     cc::geometry::Frustum* cobj = JSB_ALLOC(cc::geometry::Frustum);
     if (argc > 0 && !args[0].isUndefined()) {
         ok &= sevalue_to_native(args[0], &(cobj->vertices), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->planes), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->type), nullptr);
     }
 
     if(!ok) {
@@ -809,6 +763,7 @@ bool js_register_scene_Frustum(se::Object* obj) // NOLINT(readability-identifier
     auto* cls = se::Class::create("Frustum", obj, nullptr, _SE(js_scene_Frustum_constructor));
 
     cls->defineProperty("vertices", _SE(js_scene_Frustum_get_vertices), _SE(js_scene_Frustum_set_vertices));
+    cls->defineProperty("planes", _SE(js_scene_Frustum_get_planes), _SE(js_scene_Frustum_set_planes));
     cls->defineFinalizeFunction(_SE(js_cc_geometry_Frustum_finalize));
     cls->install();
     JSBClassType::registerClass<cc::geometry::Frustum>(cls);
@@ -888,7 +843,7 @@ SE_BIND_FINALIZE_FUNC(js_cc_geometry_AABB_finalize)
 
 bool js_register_scene_AABB(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto* cls = se::Class::create("AABB", obj, __jsb_cc_geometry_ShapeBase_proto, _SE(js_scene_AABB_constructor));
+    auto* cls = se::Class::create("AABB", obj, nullptr, _SE(js_scene_AABB_constructor));
 
     cls->defineFunction("getLayout", _SE(js_scene_AABB_getLayout));
     cls->defineFunction("initWithData", _SE(js_scene_AABB_initWithData));
@@ -5103,6 +5058,18 @@ bool sevalue_to_native(const se::Value &from, cc::scene::BakedAnimInfo * to, se:
     }
     se::Value field;
     bool ok = true;
+    json->getProperty("buffer", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->buffer), ctx);
+    }
+    json->getProperty("data", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->data), ctx);
+    }
+    json->getProperty("dirty", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->dirty), ctx);
+    }
     return ok;
 }
 
@@ -5122,7 +5089,34 @@ static bool js_scene_BakedAnimInfo_constructor(se::State& s) // NOLINT(readabili
         return true;
     }
 
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::scene::BakedAnimInfo* cobj = JSB_ALLOC(cc::scene::BakedAnimInfo);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
     cc::scene::BakedAnimInfo* cobj = JSB_ALLOC(cc::scene::BakedAnimInfo);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->buffer), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->data), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->dirty), nullptr);
+    }
 
     if(!ok) {
         JSB_FREE(cobj);
@@ -5182,6 +5176,22 @@ bool sevalue_to_native(const se::Value &from, cc::scene::BakedJointInfo * to, se
     }
     se::Value field;
     bool ok = true;
+    json->getProperty("boundsInfo", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->boundsInfo), ctx);
+    }
+    json->getProperty("jointTextureInfo", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->jointTextureInfo), ctx);
+    }
+    json->getProperty("animInfo", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->animInfo), ctx);
+    }
+    json->getProperty("buffer", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->buffer), ctx);
+    }
     return ok;
 }
 
@@ -5201,7 +5211,37 @@ static bool js_scene_BakedJointInfo_constructor(se::State& s) // NOLINT(readabil
         return true;
     }
 
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::scene::BakedJointInfo* cobj = JSB_ALLOC(cc::scene::BakedJointInfo);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
     cc::scene::BakedJointInfo* cobj = JSB_ALLOC(cc::scene::BakedJointInfo);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->boundsInfo), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->jointTextureInfo), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->animInfo), nullptr);
+    }
+    if (argc > 3 && !args[3].isUndefined()) {
+        ok &= sevalue_to_native(args[3], &(cobj->buffer), nullptr);
+    }
 
     if(!ok) {
         JSB_FREE(cobj);
@@ -5365,6 +5405,26 @@ bool sevalue_to_native(const se::Value &from, cc::scene::DrawBatch2D * to, se::O
     }
     se::Value field;
     bool ok = true;
+    json->getProperty("visFlags", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->visFlags), ctx);
+    }
+    json->getProperty("descriptorSet", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->descriptorSet), ctx);
+    }
+    json->getProperty("inputAssembler", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->inputAssembler), ctx);
+    }
+    json->getProperty("passes", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->passes), ctx);
+    }
+    json->getProperty("shaders", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->shaders), ctx);
+    }
     return ok;
 }
 
@@ -5384,7 +5444,40 @@ static bool js_scene_DrawBatch2D_constructor(se::State& s) // NOLINT(readability
         return true;
     }
 
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::scene::DrawBatch2D* cobj = JSB_ALLOC(cc::scene::DrawBatch2D);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
     cc::scene::DrawBatch2D* cobj = JSB_ALLOC(cc::scene::DrawBatch2D);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->visFlags), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->descriptorSet), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->inputAssembler), nullptr);
+    }
+    if (argc > 3 && !args[3].isUndefined()) {
+        ok &= sevalue_to_native(args[3], &(cobj->passes), nullptr);
+    }
+    if (argc > 4 && !args[4].isUndefined()) {
+        ok &= sevalue_to_native(args[4], &(cobj->shaders), nullptr);
+    }
 
     if(!ok) {
         JSB_FREE(cobj);
@@ -5443,6 +5536,22 @@ bool sevalue_to_native(const se::Value &from, cc::scene::JointTransform * to, se
     }
     se::Value field;
     bool ok = true;
+    json->getProperty("node", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->node), ctx);
+    }
+    json->getProperty("local", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->local), ctx);
+    }
+    json->getProperty("world", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->world), ctx);
+    }
+    json->getProperty("stamp", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->stamp), ctx);
+    }
     return ok;
 }
 
@@ -5462,7 +5571,37 @@ static bool js_scene_JointTransform_constructor(se::State& s) // NOLINT(readabil
         return true;
     }
 
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::scene::JointTransform* cobj = JSB_ALLOC(cc::scene::JointTransform);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
     cc::scene::JointTransform* cobj = JSB_ALLOC(cc::scene::JointTransform);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->node), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->local), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->world), nullptr);
+    }
+    if (argc > 3 && !args[3].isUndefined()) {
+        ok &= sevalue_to_native(args[3], &(cobj->stamp), nullptr);
+    }
 
     if(!ok) {
         JSB_FREE(cobj);
@@ -5521,6 +5660,34 @@ bool sevalue_to_native(const se::Value &from, cc::scene::JointInfo * to, se::Obj
     }
     se::Value field;
     bool ok = true;
+    json->getProperty("bound", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->bound), ctx);
+    }
+    json->getProperty("target", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->target), ctx);
+    }
+    json->getProperty("bindpose", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->bindpose), ctx);
+    }
+    json->getProperty("transform", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->transform), ctx);
+    }
+    json->getProperty("parents", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->parents), ctx);
+    }
+    json->getProperty("buffers", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->buffers), ctx);
+    }
+    json->getProperty("indices", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->indices), ctx);
+    }
     return ok;
 }
 
@@ -5540,7 +5707,46 @@ static bool js_scene_JointInfo_constructor(se::State& s) // NOLINT(readability-i
         return true;
     }
 
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::scene::JointInfo* cobj = JSB_ALLOC(cc::scene::JointInfo);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
     cc::scene::JointInfo* cobj = JSB_ALLOC(cc::scene::JointInfo);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->bound), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->target), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->bindpose), nullptr);
+    }
+    if (argc > 3 && !args[3].isUndefined()) {
+        ok &= sevalue_to_native(args[3], &(cobj->transform), nullptr);
+    }
+    if (argc > 4 && !args[4].isUndefined()) {
+        ok &= sevalue_to_native(args[4], &(cobj->parents), nullptr);
+    }
+    if (argc > 5 && !args[5].isUndefined()) {
+        ok &= sevalue_to_native(args[5], &(cobj->buffers), nullptr);
+    }
+    if (argc > 6 && !args[6].isUndefined()) {
+        ok &= sevalue_to_native(args[6], &(cobj->indices), nullptr);
+    }
 
     if(!ok) {
         JSB_FREE(cobj);
@@ -7326,7 +7532,6 @@ bool register_all_scene(se::Object* obj)
     js_register_scene_Node(ns);
     js_register_scene_Light(ns);
     js_register_scene_DirectionalLight(ns);
-    js_register_scene_ShapeBase(ns);
     js_register_scene_Plane(ns);
     js_register_scene_Frustum(ns);
     js_register_scene_AABB(ns);

@@ -20,7 +20,6 @@
 #include "cocos/scene/RenderWindow.h"
 #include "cocos/scene/Camera.h"
 #include "cocos/scene/Define.h"
-#include "cocos/core/geometry/Plane.h"
 
 extern se::Object* __jsb_cc_scene_BaseNode_proto;
 extern se::Class* __jsb_cc_scene_BaseNode_class;
@@ -77,30 +76,15 @@ SE_DECLARE_FUNC(js_scene_DirectionalLight_setDirection);
 SE_DECLARE_FUNC(js_scene_DirectionalLight_setIlluminance);
 SE_DECLARE_FUNC(js_scene_DirectionalLight_DirectionalLight);
 
-extern se::Object* __jsb_cc_geometry_ShapeBase_proto;
-extern se::Class* __jsb_cc_geometry_ShapeBase_class;
-
-bool js_register_cc_geometry_ShapeBase(se::Object* obj);
-bool register_all_scene(se::Object* obj);
-
-JSB_REGISTER_OBJECT_TYPE(cc::geometry::ShapeBase);
-SE_DECLARE_FUNC(js_scene_ShapeBase_getType);
-SE_DECLARE_FUNC(js_scene_ShapeBase_setType);
-
 extern se::Object* __jsb_cc_geometry_Plane_proto;
 extern se::Class* __jsb_cc_geometry_Plane_class;
 
 bool js_register_cc_geometry_Plane(se::Object* obj);
 bool register_all_scene(se::Object* obj);
 
+template<>
+bool sevalue_to_native(const se::Value &, cc::geometry::Plane *, se::Object *ctx);
 JSB_REGISTER_OBJECT_TYPE(cc::geometry::Plane);
-SE_DECLARE_FUNC(js_scene_Plane_getW);
-SE_DECLARE_FUNC(js_scene_Plane_getX);
-SE_DECLARE_FUNC(js_scene_Plane_getY);
-SE_DECLARE_FUNC(js_scene_Plane_getZ);
-SE_DECLARE_FUNC(js_scene_Plane_transform);
-SE_DECLARE_FUNC(js_scene_Plane_create);
-SE_DECLARE_FUNC(js_scene_Plane_Plane);
 
 extern se::Object* __jsb_cc_geometry_Frustum_proto;
 extern se::Class* __jsb_cc_geometry_Frustum_class;

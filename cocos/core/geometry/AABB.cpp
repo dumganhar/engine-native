@@ -25,8 +25,20 @@
 
 #include "AABB.h"
 
+#include "cocos/core/geometry/Enums.h"
+#include "cocos/core/geometry/Sphere.h"
 namespace cc {
 namespace geometry {
+
+Sphere *AABB::toBoundingSphere(Sphere *out, const AABB &a) {
+    Vec3 v3Tmp1;
+    Vec3 v3Tmp2;
+    a.getBoundary(&v3Tmp1, &v3Tmp2);
+    out->setRadius((v3Tmp2 - v3Tmp1).length() * 0.5F);
+    out->setCenter((v3Tmp2 + v3Tmp1) * 0.5F);
+    return out;
+}
+
 bool AABB::aabbAabb(AABB *aabb) const {
     Vec3 aMin;
     Vec3 aMax;
@@ -115,7 +127,15 @@ void AABB::transformExtentM4(Vec3 *out, const Vec3 &extent, const Mat4 &m4) {
 }
 
 AABB::AABB() {
+    setType(ShapeEnum::SHAPE_AABB);
     _aabbLayout = &_embedLayout;
+}
+
+AABB::AABB(float px, float py, float pz, float hw, float hh, float hl) {
+    setType(ShapeEnum::SHAPE_AABB);
+    _aabbLayout = &_embedLayout;
+    setCenter(px, py, pz);
+    setHalfExtents(hw, hh, hl);
 }
 
 void AABB::fromPoints(const Vec3 &minPos, const Vec3 &maxPos, AABB *dst) {

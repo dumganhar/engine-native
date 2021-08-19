@@ -391,6 +391,8 @@ endif()
 
 ######### module math
 cocos_source_files(MODULE ccmath
+    cocos/math/Utils.h
+    cocos/math/Utils.cpp
     cocos/math/Geometry.cpp
     cocos/math/Geometry.h
     cocos/math/Color.cpp
@@ -1379,11 +1381,10 @@ cocos_source_files(
     cocos/core/geometry/AABB.h
     cocos/core/geometry/Capsule.cpp
     cocos/core/geometry/Capsule.h
-    cocos/core/geometry/Curve.cpp
-    cocos/core/geometry/Curve.h
+    # cocos/core/geometry/Curve.cpp
+    # cocos/core/geometry/Curve.h
     cocos/core/geometry/Distance.cpp
     cocos/core/geometry/Distance.h
-    cocos/core/geometry/Enums.cpp
     cocos/core/geometry/Enums.h
     cocos/core/geometry/Frustum.cpp
     cocos/core/geometry/Frustum.h

@@ -59,7 +59,7 @@ void Frustum::update(const Mat4 &m, const Mat4 &inv) {
     planes[5].n.set(m.m[3] - m.m[2], m.m[7] - m.m[6], m.m[11] - m.m[10]);
     planes[5].d = -(m.m[15] - m.m[14]);
 
-    if (type != ShapeEnums::SHAPE_FRUSTUM_ACCURATE) {
+    if (getType() != ShapeEnum::SHAPE_FRUSTUM_ACCURATE) {
         return;
     }
 

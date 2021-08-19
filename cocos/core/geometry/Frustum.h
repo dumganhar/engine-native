@@ -26,32 +26,114 @@
 #pragma once
 
 #include <array>
+#include "core/geometry/Enums.h"
+#include "core/geometry/Plane.h"
+#include "math/Mat4.h"
 #include "math/Vec3.h"
 
 namespace cc {
 namespace geometry {
-enum class ShapeEnums {
-    SHAPE_RAY              = (1 << 0),
-    SHAPE_LINE             = (1 << 1),
-    SHAPE_SPHERE           = (1 << 2),
-    SHAPE_AABB             = (1 << 3),
-    SHAPE_OBB              = (1 << 4),
-    SHAPE_PLANE            = (1 << 5),
-    SHAPE_TRIANGLE         = (1 << 6),
-    SHAPE_FRUSTUM          = (1 << 7),
-    SHAPE_FRUSTUM_ACCURATE = (1 << 8),
-    SHAPE_CAPSULE          = (1 << 9),
-};
-struct Plane final {
-    float d{0.F};
-    Vec3  n;
-};
 
-struct Frustum final {
+class Frustum final : public ShapeBase {
+public:
+    /**
+     * @en
+     * Create a ortho frustum.
+     * @zh
+     * 创建一个正交视锥体。
+     * @param out 正交视锥体。
+     * @param width 正交视锥体的宽度。
+     * @param height 正交视锥体的高度。
+     * @param near 正交视锥体的近平面值。
+     * @param far 正交视锥体的远平面值。
+     * @param transform 正交视锥体的变换矩阵。
+     * @return {Frustum} frustum.
+     */
+    static void createOrtho(Frustum *out, float width,
+                            float       height,
+                            float       near,
+                            float       far,
+                            const Mat4 &transform) {
+        Vec3 tempV3;
+
+        auto halfWidth  = width / 2;
+        auto halfHeight = height / 2;
+        tempV3.set(halfWidth, halfHeight, near);
+        Vec3::transformMat4(tempV3, transform, &out->vertices[0]);
+        tempV3.set(-halfWidth, halfHeight, near);
+        Vec3::transformMat4(tempV3, transform, &out->vertices[1]);
+        tempV3.set(-halfWidth, -halfHeight, near);
+        Vec3::transformMat4(tempV3, transform, &out->vertices[2]);
+        tempV3.set(halfWidth, -halfHeight, near);
+        Vec3::transformMat4(tempV3, transform, &out->vertices[3]);
+        tempV3.set(halfWidth, halfHeight, far);
+        Vec3::transformMat4(tempV3, transform, &out->vertices[4]);
+        tempV3.set(-halfWidth, halfHeight, far);
+        Vec3::transformMat4(tempV3, transform, &out->vertices[5]);
+        tempV3.set(-halfWidth, -halfHeight, far);
+        Vec3::transformMat4(tempV3, transform, &out->vertices[6]);
+        tempV3.set(halfWidth, -halfHeight, far);
+        Vec3::transformMat4(tempV3, transform, &out->vertices[7]);
+
+        Plane::fromPoints(&out->planes[0], out->vertices[1], out->vertices[6], out->vertices[5]);
+        Plane::fromPoints(&out->planes[1], out->vertices[3], out->vertices[4], out->vertices[7]);
+        Plane::fromPoints(&out->planes[2], out->vertices[6], out->vertices[3], out->vertices[7]);
+        Plane::fromPoints(&out->planes[3], out->vertices[0], out->vertices[5], out->vertices[4]);
+        Plane::fromPoints(&out->planes[4], out->vertices[2], out->vertices[0], out->vertices[3]);
+        Plane::fromPoints(&out->planes[0], out->vertices[7], out->vertices[5], out->vertices[6]);
+    }
+
+    /**
+     * @en
+     * create a new frustum.
+     * @zh
+     * 创建一个新的截锥体。
+     * @return {Frustum} frustum.
+     */
+    static Frustum *create() {
+        return new Frustum();
+    }
+
+    /**
+     * @en
+     * Clone a frustum.
+     * @zh
+     * 克隆一个截锥体。
+     */
+    static Frustum *clone(const Frustum &f) {
+        return Frustum::copy(new Frustum(), f);
+    }
+
+    /**
+     * @en
+     * Copy the values from one frustum to another.
+     * @zh
+     * 从一个截锥体拷贝到另一个截锥体。
+     */
+    static Frustum *copy(Frustum *out, const Frustum &f) {
+        out->setType(f.getType());
+        out->planes   = f.planes;
+        out->vertices = f.vertices;
+        return out;
+    }
+
+    /**
+     * @en
+     * Set whether to use accurate intersection testing function on this frustum.
+     * @zh
+     * 设置是否在此截锥体上使用精确的相交测试函数。
+     */
+    void setAccurate(bool accurate) {
+        setType(accurate ? ShapeEnum::SHAPE_FRUSTUM_ACCURATE : ShapeEnum::SHAPE_FRUSTUM);
+    }
+
+    Frustum() {
+        setType(ShapeEnum::SHAPE_FRUSTUM);
+    }
+
     std::array<Vec3, 8>  vertices;
     std::array<Plane, 6> planes;
     void                 update(const Mat4 &m, const Mat4 &inv);
-    ShapeEnums           type{ShapeEnums::SHAPE_FRUSTUM};
 };
 
 } // namespace geometry

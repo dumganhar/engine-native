@@ -22,7 +22,7 @@
 #pragma once
 
 #include "core/event/EventEmitter.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -32,7 +32,7 @@ namespace gfx {
     class Device;
 }
 
-using scene::Node;
+using scenegraph::Node;
 
 struct ISceneInfo {
     std::string url;
@@ -155,8 +155,17 @@ struct IGameConfig {
 class Game final : public EventEmitter {
 
 public:
-    Game() = default;
-    ~Game() = default;
+
+    /**
+    * @en
+    * This is a Game instance.
+    * @zh
+    * 这是一个 Game 类的实例，包含游戏主体信息并负责驱动游戏的游戏对象。
+    */
+    static Game& getInstance() {
+		static Game instance;
+		return instance;
+	}
 
     /**
      * @en Event triggered when game hide to background.<br>
@@ -478,6 +487,10 @@ public:
     bool isPersistRootNode(Node* node) const;
 
 private:
+    Game() = default;
+
+    ~Game() = default;
+
     //  @Engine loading
     void initEngine();
 

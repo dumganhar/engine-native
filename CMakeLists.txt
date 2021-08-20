@@ -1212,12 +1212,6 @@ cocos_source_files(
 ##### core
 
 cocos_source_files(
-
-    cocos/core/memop/Pool.h
-    cocos/core/memop/Pool.cpp
-    coocs/core/memop/RecyclePool.h
-    cocos/core/memop/RecyclePool.cpp
-
     cocos/core/Any.h
     cocos/core/ArrayBuffer.h
 
@@ -1240,8 +1234,11 @@ cocos_source_files(
     # memop
     cocos/core/memop/CachedArray.h
     cocos/core/memop/CachedArray.cpp
-    cocos/core/memop/CircularPool.h
-    cocos/core/memop/CircularPool.cpp
+    cocos/core/memop/Pool.h
+    cocos/core/memop/Pool.cpp
+    cocos/core/memop/RecyclePool.h
+    cocos/core/memop/RecyclePool.cpp
+
 
     cocos/core/asset-manager
     cocos/core/asset-manager/AssetManager.cpp
@@ -1409,8 +1406,6 @@ cocos_source_files(
 
     cocos/core/platform/event-manager/Acceleration.h
     cocos/core/platform/event-manager/Acceleration.cpp
-    cocos/core/platform/event-manager/Event.h
-    cocos/core/platform/event-manager/Event.cpp
     cocos/core/platform/event-manager/EventEnum.h
     cocos/core/platform/event-manager/EventEnum.cpp
     cocos/core/platform/event-manager/EventListener.h

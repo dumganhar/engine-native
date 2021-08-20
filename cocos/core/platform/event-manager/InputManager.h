@@ -43,9 +43,12 @@ struct IView {
  *  This class manages all events of input. include: touch, mouse, accelerometer, keyboard
  */
 class InputManager final {
-public:    
-    InputManager() = default;
-    ~InputManager() = default;
+public:
+
+    static InputManager& getInstance() { 
+        static InputManager instance;
+        return instance;
+    }
 
     /**
      * Clear events when game is resumed.
@@ -55,6 +58,10 @@ public:
     void frameDispatchEvents() const;
 
 private:
+
+    InputManager() = default;
+    
+    ~InputManager() = default;
 
     // #region Mouse Handle
     // void _dispatchMouseEvent(MouseInputEvent inputEvent);

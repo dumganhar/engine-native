@@ -1213,6 +1213,11 @@ cocos_source_files(
 
 cocos_source_files(
 
+    cocos/core/memop/Pool.h
+    cocos/core/memop/Pool.cpp
+    coocs/core/memop/RecyclePool.h
+    cocos/core/memop/RecyclePool.cpp
+
     cocos/core/Any.h
     cocos/core/ArrayBuffer.h
 
@@ -1402,8 +1407,20 @@ cocos_source_files(
     cocos/core/geometry/Triangle.cpp
     cocos/core/geometry/Triangle.h
 
+    cocos/core/platform/event-manager/Acceleration.h
+    cocos/core/platform/event-manager/Acceleration.cpp
+    cocos/core/platform/event-manager/Event.h
+    cocos/core/platform/event-manager/Event.cpp
+    cocos/core/platform/event-manager/EventEnum.h
+    cocos/core/platform/event-manager/EventEnum.cpp
+    cocos/core/platform/event-manager/EventListener.h
+    cocos/core/platform/event-manager/EventListener.cpp
+    cocos/core/platform/event-manager/EventManager.h
+    cocos/core/platform/event-manager/EventManager.cpp
     cocos/core/platform/event-manager/InputManager.h
     cocos/core/platform/event-manager/InputManager.cpp
+    cocos/core/platform/event-manager/KeyCode.h
+    cocos/core/platform/event-manager/KeyCode.cpp
     cocos/core/platform/event-manager/Touch.h
     cocos/core/platform/event-manager/Touch.cpp
     

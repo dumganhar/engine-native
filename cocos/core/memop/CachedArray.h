@@ -27,6 +27,8 @@
 
 #include <functional>
 #include <cstdint>
+#include <algorithm>
+#include <vector>
 
 namespace cc {
 
@@ -41,15 +43,25 @@ namespace cc {
 template <typename T>
 class CachedArray final {
 public:
-    using CompareFn = std::function<int32_t(const T &, const T &)>;
+    using CompareFn = std::function<int32_t(T *, T *)>;
 
-    explicit CachedArray(uint32_t length);
+    explicit CachedArray(uint32_t length) {
+        _array.reverse(length);
+    }
 
     /**
      * @param length Initial length
      * @param compareFn Comparison function for sorting
      */
-    CachedArray(uint32_t length, const CompareFn &compareFn);
+    CachedArray(uint32_t length, const CompareFn &compareFn) {
+        _array.reverse(length);
+        _compareFn = compareFn;
+    }
+
+    CachedArray(const CachedArray &) = delete;
+    CachedArray(CachedArray &&)      = delete;
+    CachedArray &operator=(const CachedArray &) = delete;
+    CachedArray &operator=(CachedArray &&) = delete;
 
     /**
      * @en
@@ -58,7 +70,11 @@ public:
      * 向数组末尾添加一个元素
      * @param item The item to be added
      */
-    void push(const T &item);
+    void push(T *item) {
+        if (_length < _array.capacity()) {
+            _array[_length++] = item;
+        }
+    }
 
     /**
      * @en
@@ -67,8 +83,12 @@ public:
      * 弹出数组最后一个元素，CachedArray 的 [[length]] 会减少，但是内部数组的实际长度不变
      * @return The last element.
      */
-    const T &pop() const;
-    T &      pop();
+    T *pop() {
+        if (_length == 0) {
+            return nullptr;
+        }
+        return _array[_length--];
+    }
 
     /**
      * @en
@@ -78,8 +98,12 @@ public:
      * @param idx The index of the requested element
      * @return The element at given index
      */
-    const T &get(uint32_t idx) const;
-    T &      get(uint32_t idx);
+    T *get(uint32_t idx) const {
+        if (idx < _length) {
+            return _array[idx];
+        }
+        return nullptr;
+    }
 
     /**
      * @en
@@ -87,7 +111,9 @@ public:
      * @zh
      * 清空数组所有元素。[[length]] 会被设为 0，但内部数组的实际长度不变
      */
-    void clear();
+    void clear() {
+        _length = 0;
+    }
 
     /**
      * @en
@@ -95,7 +121,10 @@ public:
      * @zh
      * 清空数组所有元素。[[length]] 会被设为 0，并且清空内部数组
      */
-    void destroy();
+    void destroy() {
+        _length = 0;
+        _array.clear();
+    }
 
     /**
      * @en
@@ -103,7 +132,13 @@ public:
      * @zh
      * 排序所有现有元素
      */
-    void sort();
+    void sort() {
+        if (_compareFn) {
+            std::sort(_array.begin(), _array.begin() + _length, _compareFn);
+        } else {
+            std::sort(_array.begin(), _array.begin() + _length);
+        }
+    }
 
     /**
      * @en
@@ -112,25 +147,44 @@ public:
      * 添加一个指定数组中的所有元素到当前数组末尾
      * @param array The given array to be appended
      */
-    void concat(const std::vector<T> &array);
+    void concat(const std::vector<T *> &array) {
+        size_t freeSize             = _array.capacity() - _length;
+        size_t elementsToBeConcated = std::min(freeSize, array.size());
+        _array.insert(_array.begin() + _length, array.begin(), array.begin() + elementsToBeConcated);
+        _length += elementsToBeConcated;
+    }
 
     /**
      * @en Delete the element at the specified location and move the last element to that location.
      * @zh 删除指定位置的元素并将最后一个元素移动至该位置。
      * @param idx The index of the element to be deleted
      */
-    void fastRemove(uint32_t idx);
+    void fastRemove(uint32_t idx) {
+        if (idx >= _length) {
+            return;
+        }
+
+        const uint32_t last = --_length;
+        _array[idx]         = _array[last];
+    }
 
     /**
      * @en Returns the first index at which a given element can be found in the array.
      * @zh 返回在数组中可以找到一个给定元素的第一个索引。
      * @param val The element
      */
-    int32_t indexOf(const T &val);
+    int32_t indexOf(T *val) {
+        auto it = std::find(_array.begin(), _array.begin() + _length, val);
+        if (it != _array.end()) {
+            return it - _array.begin();
+        }
+
+        return -1;
+    }
 
 public:
-    std::vector<T> _array;
-    uint32_t       _length{0};
+    std::vector<T *> _array;
+    uint32_t         _length{0};
 
 private:
     CompareFn _compareFn{nullptr};

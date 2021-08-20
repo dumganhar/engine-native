@@ -30,7 +30,7 @@
 #include "base/Macros.h"
 #include "physics/physx/PhysXInc.h"
 #include "physics/spec/IBody.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 
@@ -53,7 +53,7 @@ class PhysXRigidBody;
 
 class PhysXSharedBody final {
 public:
-    static PhysXSharedBody *getSharedBody(const scene::Node *node, PhysXWorld *world, PhysXRigidBody *body);
+    static PhysXSharedBody *getSharedBody(const scenegraph::Node *node, PhysXWorld *world, PhysXRigidBody *body);
     PhysXSharedBody()                             = delete;
     PhysXSharedBody(const PhysXSharedBody &other) = delete;
     PhysXSharedBody(PhysXSharedBody &&other)      = delete;
@@ -63,7 +63,7 @@ public:
     inline bool         isKinematic() { return static_cast<int>(_mType) & static_cast<int>(ERigidBodyType::KINEMATIC); }
     inline bool         isStaticOrKinematic() { return static_cast<int>(_mType) & static_cast<int>(ERigidBodyType::STATIC) || static_cast<int>(_mType) & static_cast<int>(ERigidBodyType::KINEMATIC); }
     inline bool         isDynamic() { return !isStaticOrKinematic(); }
-    inline scene::Node *getNode() const { return _mNode; }
+    inline scenegraph::Node *getNode() const { return _mNode; }
     inline PhysXWorld & getWorld() const { return *_mWrappedWorld; }
     union UActor {
         uintptr_t              ptr;
@@ -92,7 +92,7 @@ public:
     inline uint32_t getMask() const { return _mFilterData.word1; }
 
 private:
-    static std::map<scene::Node *, PhysXSharedBody *> sharedBodesMap;
+    static std::map<scenegraph::Node *, PhysXSharedBody *> sharedBodesMap;
     const uint32_t                                    _mID;
     uint8_t                                           _mRef;
     bool                                              _mIsStatic;
@@ -100,7 +100,7 @@ private:
     float                                             _mMass;
     int                                               _mIndex;
     physx::PxFilterData                               _mFilterData;
-    scene::Node *                                     _mNode;
+    scenegraph::Node *                                     _mNode;
     UActor                                            _mImpl;
     physx::PxRigidStatic *                            _mStaticActor;
     physx::PxRigidDynamic *                           _mDynamicActor;
@@ -109,7 +109,7 @@ private:
     std::vector<PhysXShape *>                         _mWrappedShapes;
     std::vector<PhysXJoint *>                         _mWrappedJoints0;
     std::vector<PhysXJoint *>                         _mWrappedJoints1;
-    PhysXSharedBody(scene::Node *node, PhysXWorld *world, PhysXRigidBody *body);
+    PhysXSharedBody(scenegraph::Node *node, PhysXWorld *world, PhysXRigidBody *body);
     ~PhysXSharedBody();
     void initActor();
     void switchActor(bool isStaticBefore);

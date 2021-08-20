@@ -49,7 +49,7 @@ struct Camera final {
     Vec4              viewPort;
     uint32_t          clearStencil{0};
     uint32_t          visibility{0};
-    Node *            node{nullptr};
+    scenegraph::Node *node{nullptr};
     RenderScene *     scene{nullptr};
     RenderWindow *    window{nullptr};
     geometry::Frustum frustum;

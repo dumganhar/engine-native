@@ -30,7 +30,7 @@
 #include "core/geometry/AABB.h"
 #include "core/geometry/Sphere.h"
 #include "physics/spec/ILifecycle.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 namespace physics {
@@ -53,7 +53,7 @@ class IBaseShape : virtual public ILifecycle {
 public:
     ~IBaseShape() override = default;
     ;
-    virtual void              initialize(scene::Node *node)              = 0;
+    virtual void              initialize(scenegraph::Node *node)              = 0;
     virtual uintptr_t         getImpl()                                  = 0;
     virtual void              setMaterial(uint16_t id, float f, float df, float r,
                                           uint8_t m0, uint8_t m1)        = 0;

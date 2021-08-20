@@ -33,7 +33,7 @@
 #include "physics/physx/PhysXRigidBody.h"
 #include "physics/physx/PhysXSharedBody.h"
 #include "physics/spec/IWorld.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 namespace physics {
@@ -71,7 +71,7 @@ public:
     void destroy() override;
 
     inline PhysXSharedBody *getSharedBody(
-        const scene::Node *   node,
+        const scenegraph::Node *   node,
         PhysXRigidBody *const body = nullptr) {
         return PhysXSharedBody::getSharedBody(node, this, body);
     }

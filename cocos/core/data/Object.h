@@ -27,7 +27,7 @@
 
 #include <string>
 
-#define EDITOR  0 //cjh
+//#define EDITOR  0 //cjh
 #define WARN_ID   //cjh
 
 namespace cc {

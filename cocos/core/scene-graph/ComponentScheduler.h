@@ -26,7 +26,7 @@
 #pragma once
 #include <functional>
 #include <vector>
-#include "components/Component.h"
+#include "core/components/Component.h"
 namespace cc {
 namespace scenegraph {
 using components::Component;

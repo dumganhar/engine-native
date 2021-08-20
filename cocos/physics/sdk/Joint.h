@@ -29,7 +29,7 @@
 #include <memory>
 #include "base/Macros.h"
 #include "physics/spec/IJoint.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 
 #define CC_PHYSICS_JOINT_CLASS(CLASS)                     \
     class CC_DLL CLASS final : virtual public I##CLASS {  \
@@ -40,7 +40,7 @@
         CLASS();                                          \
         ~CLASS() override;                                \
         uintptr_t getImpl() override;                     \
-        void      initialize(scene::Node* node) override; \
+        void      initialize(scenegraph::Node* node) override; \
         void      onEnable() override;                    \
         void      onDisable() override;                   \
         void      onDestroy() override;                   \

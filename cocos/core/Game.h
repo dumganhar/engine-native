@@ -22,7 +22,7 @@
 #pragma once
 
 #include "core/event/EventEmitter.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -32,7 +32,7 @@ namespace gfx {
     class Device;
 }
 
-using scene::Node;
+using scenegraph::Node;
 
 struct ISceneInfo {
     std::string url;

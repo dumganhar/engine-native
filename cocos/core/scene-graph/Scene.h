@@ -24,7 +24,7 @@
  ****************************************************************************/
 
 #pragma once
-#include "scene-graph/BaseNode.h"
+#include "core/scene-graph/BaseNode.h"
 
 namespace cc {
 namespace scenegraph {

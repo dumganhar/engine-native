@@ -39,9 +39,6 @@
 namespace cc {
 namespace event_listener{
 
-using components::Component;
-using scenegraph::Node;
-
 struct IEventListenerCreateInfo {
     int32_t                                   event;
     std::unordered_map<std::string, std::any> x;
@@ -49,7 +46,7 @@ struct IEventListenerCreateInfo {
 
 struct IListenerMask {
     int32_t   index{0};
-    Component comp;
+    components::Component comp;
 };
 
 class EventListener {
@@ -216,14 +213,14 @@ public:
      * @zh 设置此侦听器的场景图优先级。
      * @param {Node} node
      */
-    void setSceneGraphPriority(Node* node);
+    void setSceneGraphPriority(scenegraph::Node* node);
 
     /**
      * @en Gets scene graph priority of this listener<br/>
      * @zh 获取此侦听器的场景图优先级。
      * @return 如果它是固定优先级侦听器，则为场景图优先级侦听器非 null 。
      */
-    Node* getSceneGraphPriority() const {
+    scenegraph::Node* getSceneGraphPriority() const {
         return _node;
     }
 
@@ -284,7 +281,7 @@ private:
 
     // scene graph based priority
     // @type {Node}
-    Node* _node{nullptr}; // scene graph based priority
+    scenegraph::Node* _node{nullptr}; // scene graph based priority
 
     // Whether the listener is paused
     bool _paused{true}; // Whether the listener is paused
@@ -381,5 +378,5 @@ class KeyboardEventListener final : public EventListener {
 
     bool checkAvailable() const;
 };
-}
+}  // namespace event_listener
 } // namespace cc

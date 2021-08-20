@@ -37,9 +37,7 @@
 
 
 namespace cc {
-
-using event_listener::EventListener;
-using scenegraph::Node;
+namespace event_listener{
 
 class EventListenerVector {
 public:
@@ -104,7 +102,7 @@ public:
      * @param node - 暂停目标节点
      * @param recursive - 是否往子节点递归暂停。默认为 false。
      */
-    void pauseTarget(Node* node, bool recursive = false) const;
+    void pauseTarget(scenegraph::Node* node, bool recursive = false) const;
 
     /**
      * @en
@@ -116,7 +114,7 @@ public:
      * @param node - 监听器节点。
      * @param recursive - 是否往子节点递归。默认为 false。
      */
-    void resumeTarget(Node* node, bool recursive = false) const;
+    void resumeTarget(scenegraph::Node* node, bool recursive = false) const;
 
     void frameUpdateListeners() const;
 
@@ -151,7 +149,7 @@ public:
      * @param nodeOrPriority - 监听程序的优先级。
      * @returns
      */
-    void addListener(EventListener* listener, Node* node) const;
+    void addListener(EventListener* listener, scenegraph::Node* node) const;
 
     void addListener(EventListener* listener, int32_t priority) const;
 
@@ -199,7 +197,7 @@ public:
      * @param listenerType - 监听器类型。
      * @param recursive - 递归子节点的同类型监听器一并移除。默认为 false。
      */
-    void removeListener(Node* node, bool recursive = false) const;
+    void removeListener(scenegraph::Node* node, bool recursive = false) const;
 
     void removeListener(int32_t eventType, bool recursive = false) const;
 
@@ -287,7 +285,7 @@ public:
 private:
     EventManager() = default;
     ~EventManager() = default;
-    void setDirtyForNode(Node* node) const;
+    void setDirtyForNode(scenegraph::Node* node) const;
     void addListener(EventListener* listener) const;
     void forceAddEventListener(EventListener* listener) const;
     void getListeners(std::string listenerID) const;
@@ -304,8 +302,8 @@ private:
     void onTouchEventCallback(event_listener::TouchOneByOneEventListener* listeners, std::any argsObj) const;
     void dispatchTouchEvent(EventTouch* event) const;
     void onTouchesEventCallback(std::any listener, std::any callbackParams) const;
-    void associateNodeAndEventListener(Node* node, EventListener* listener) const;
-    void dissociateNodeAndEventListener(Node* node, EventListener* listener) const;
+    void associateNodeAndEventListener(scenegraph::Node* node, EventListener* listener) const;
+    void dissociateNodeAndEventListener(scenegraph::Node* node, EventListener* listener) const;
     void dispatchEventToListeners(EventListenerVector* listeners, std::function<bool>(std::any, std::any), std::any eventOrArgs) const;
     void setDirty(std::string listenerID, int32_t flag) const;
     void clearCurTouch() const;
@@ -326,5 +324,5 @@ private:
     std::any _currentTouchListener {nullptr};
 
 };
-
+}  // namespace event_listener
 } // namespace cc

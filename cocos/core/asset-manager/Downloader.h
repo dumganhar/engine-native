@@ -36,11 +36,11 @@ using DownloadHandler = std::function<void(const std::string& url, const IDownlo
 
 struct IDownloadRequest {
     std::string id;
-    int32_t priority;
+    int32_t priority{0};
     std::string url;
     IDownloadParseOptions options;
-    CompleteCallback done;
-    DownloadHandler handler;
+    CompleteCallback done{nullptr};
+    DownloadHandler handler{nullptr};
 };
 
 /**

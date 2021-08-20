@@ -21,18 +21,18 @@
 
 #pragma once
 
-#include "core/event/EventEmitter.h"
-#include "scene/Node.h"
 #include <vector>
 #include <string>
 #include <unordered_map>
+
+#include "core/event/EventEmitter.h"
+#include "core/scene-graph/Node.h"
+
 
 namespace cc {
 namespace gfx {
     class Device;
 }
-
-using scene::Node;
 
 struct ISceneInfo {
     std::string url;
@@ -155,8 +155,17 @@ struct IGameConfig {
 class Game final : public EventEmitter {
 
 public:
-    Game() = default;
-    ~Game() = default;
+
+    /**
+    * @en
+    * This is a Game instance.
+    * @zh
+    * 这是一个 Game 类的实例，包含游戏主体信息并负责驱动游戏的游戏对象。
+    */
+    static Game& getInstance() {
+		static Game instance;
+		return instance;
+	}
 
     /**
      * @en Event triggered when game hide to background.<br>
@@ -326,7 +335,7 @@ public:
      */
     float frameTime{1000.F / 60};
 
-    std::unordered_map<int, Node*> _persistRootNodes;
+    std::unordered_map<int, scenegraph::Node*> _persistRootNodes;
 
     // states
     bool _configLoaded{false}; // whether config loaded
@@ -461,23 +470,27 @@ public:
      * 目标节点必须位于为层级的根节点，否则无效。
      * @param node - The node to be made persistent
      */
-    void addPersistRootNode(Node* node);
+    void addPersistRootNode(scenegraph::Node* node);
 
     /**
      * @en Remove a persistent root node.
      * @zh 取消常驻根节点。
      * @param node - The node to be removed from persistent node list
      */
-    void removePersistRootNode(Node* node);
+    void removePersistRootNode(scenegraph::Node* node);
 
     /**
      * @en Check whether the node is a persistent root node.
      * @zh 检查节点是否是常驻根节点。
      * @param node - The node to be checked
      */
-    bool isPersistRootNode(Node* node) const;
+    bool isPersistRootNode(scenegraph::Node* node) const;
 
 private:
+    Game() = default;
+
+    ~Game() = default;
+
     //  @Engine loading
     void initEngine();
 

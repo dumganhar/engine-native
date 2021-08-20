@@ -1217,12 +1217,15 @@ cocos_source_files(
 
 cocos_source_files(
 
+    cocos/core/memop/Pool.h
+    cocos/core/memop/Pool.cpp
+    coocs/core/memop/RecyclePool.h
+    cocos/core/memop/RecyclePool.cpp
+
     cocos/core/Any.h
     cocos/core/ArrayBuffer.h
     cocos/core/CachedArray.h
     cocos/core/CachedArray.cpp
-    cocos/core/CircularPool.h
-    cocos/core/CircularPool.cpp
     cocos/core/CoreModuleHeader.h
     cocos/core/Director.cpp
     cocos/core/Director.h

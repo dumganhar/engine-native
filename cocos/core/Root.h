@@ -134,21 +134,21 @@ public:
      * @zh
      * GFX 设备
      */
-    gfx::Device *getDevice() const { return _device; }
+    inline gfx::Device *getDevice() const { return _device; }
 
     /**
      * @zh
      * 主窗口
      */
-    scene::RenderWindow *getMainWindow() const { return _mainWindow; }
+    inline scene::RenderWindow *getMainWindow() const { return _mainWindow; }
 
     /**
      * @zh
      * 当前窗口
      */
-    void setCurWindow(scene::RenderWindow *window) { _curWindow = window; }
+    inline void setCurWindow(scene::RenderWindow *window) { _curWindow = window; }
 
-    scene::RenderWindow *getCurWindow() const { return _curWindow; }
+    inline scene::RenderWindow *getCurWindow() const { return _curWindow; }
 
     /**
      * @zh
@@ -156,56 +156,56 @@ public:
      */
     void setTempWindow(scene::RenderWindow *window);
 
-    scene::RenderWindow *getTempWindow() const { return _tempWindow; }
+    inline scene::RenderWindow *getTempWindow() const { return _tempWindow; }
 
     /**
      * @zh
      * 窗口列表
      */
-    const std::vector<scene::RenderWindow *> &getWindows() const { return _windows; }
+    inline const std::vector<scene::RenderWindow *> &getWindows() const { return _windows; }
 
     /**
      * @zh
      * 渲染管线
      */
-    pipeline::RenderPipeline *getPipeline() const { return _pipeline; }
+    inline pipeline::RenderPipeline *getPipeline() const { return _pipeline; }
 
     /**
      * @zh
      * UI实例
      * 引擎内部使用，用户无需调用此接口
      */
-    scene::DrawBatch2D *getBatcher2D() const { return _batcher2D; }
+    inline scene::DrawBatch2D *getBatcher2D() const { return _batcher2D; }
 
     /**
      * @zh
      * 场景列表
      */
-    const std::vector<scene::RenderScene *> &getScenes() const { return _scenes; }
+    inline const std::vector<scene::RenderScene *> &getScenes() const { return _scenes; }
 
     /**
      * @zh
      * 累计时间（秒）
      */
-    float getCumulativeTime() const { return _cumulativeTime; }
+    inline float getCumulativeTime() const { return _cumulativeTime; }
 
     /**
      * @zh
      * 帧时间（秒）
      */
-    float getFrameTime() const { return _frameTime; }
+    inline float getFrameTime() const { return _frameTime; }
 
     /**
      * @zh
      * 一秒内的累计帧数
      */
-    uint32_t getFrameCount() const { return _frameCount; }
+    inline uint32_t getFrameCount() const { return _frameCount; }
 
     /**
      * @zh
      * 每秒帧率
      */
-    uint32_t getFps() const { return _fps; }
+    inline uint32_t getFps() const { return _fps; }
 
     /**
      * @zh
@@ -213,12 +213,12 @@ public:
      */
     void setFixedFPS(uint32_t fps);
 
-    uint32_t getFixedFPS() const { return _fixedFPS; }
+    inline uint32_t getFixedFPS() const { return _fixedFPS; }
 
     // @TODO: minggo
     // public get dataPoolManager ()
 
-    bool isUsingDeferredPipeline() const { return _useDeferredPipeline; }
+    inline bool isUsingDeferredPipeline() const { return _useDeferredPipeline; }
 
 private:
     gfx::Device *                      _device{nullptr};

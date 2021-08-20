@@ -43,10 +43,14 @@ struct Error {
 
 using HTMLElement = void*;
 
+using Int8Array = std::vector<int8_t>;
+using Int16Array = std::vector<int16_t>;
+using Int32Array = std::vector<int32_t>;
 using Uint8Array = std::vector<uint8_t>;
 using Uint16Array = std::vector<uint16_t>;
 using Uint32Array = std::vector<uint32_t>;
 using Float32Array = std::vector<float>;
+using Float64Array = std::vector<double>;
 
 struct BoundingBox {
     Vec3 min;

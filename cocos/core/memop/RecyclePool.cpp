@@ -23,7 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "core/memop/CircularPool.h"
+#include "core/memop/RecyclePool.h"
 
 namespace cc {
 

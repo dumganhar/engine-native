@@ -25,6 +25,8 @@
 
 #pragma once
 #include <vector>
+#include "NodeEvent.h"
+#include "NodeEventProcessor.h"
 #include "core/components/Component.h"
 #include "core/data/Object.h"
 #include "core/event/Event.h"
@@ -33,8 +35,7 @@
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
-#include "NodeEvent.h"
-#include "NodeEventProcessor.h"
+
 
 namespace cc {
 namespace scenegraph {
@@ -118,24 +119,24 @@ public:
 
     inline components::Component *              getComponent(const std::string &name) { return nullptr; }
     inline components::Component *              getComponentInChildren(const std::string &name) { return nullptr; }
-    inline std::vector<components::Component *> getComponentsInChildren(const std::string &name) {}
+    inline std::vector<components::Component *> getComponentsInChildren(const std::string &name) { return {}; }
 
-    inline const std::vector<BaseNode *> &getChilds() { return _children; }
-    inline BaseNode *                     getParent() const { return _parent; }
-    inline std::vector<components::Component *>       getComponents() const { return _components; }
-    inline NodeEventProcessor *           getEventProcessor() const { return _eventProcessor; }
-    virtual inline uint32_t               getFlagsChanged() const { return _flagChange; }
-    virtual inline uint32_t               getLayer() const { return _layer; }
-    virtual inline uint32_t               getDirtyFlag() const { return _dirtyFlag; }
-    virtual inline const Vec3 &           getPosition() const { return _localPosition; }
-    virtual inline const Vec3 &           getScale() const { return _localScale; }
-    virtual inline const Quaternion &     getRotation() const { return _localRotation; }
-    virtual inline const Mat4 &           getWorldMatrix() const { return _worldMatrix; }
-    virtual inline const Vec3 &           getWorldPosition() const { return _worldPosition; }
-    virtual inline const Quaternion &     getWorldRotation() const { return _worldRotation; }
-    virtual inline const Vec3 &           getWorldScale() const { return _worldScale; }
-    virtual inline const Mat4 &           getWorldRTMatrix() const { return _rtMat; }
-    inline BaseNode *                     getChildByUuid(const std::string &uid) const {
+    inline const std::vector<BaseNode *> &      getChilds() { return _children; }
+    inline BaseNode *                           getParent() const { return _parent; }
+    inline std::vector<components::Component *> getComponents() const { return _components; }
+    inline NodeEventProcessor *                 getEventProcessor() const { return _eventProcessor; }
+    virtual inline uint32_t                     getFlagsChanged() const { return _flagChange; }
+    virtual inline uint32_t                     getLayer() const { return _layer; }
+    virtual inline uint32_t                     getDirtyFlag() const { return _dirtyFlag; }
+    virtual inline const Vec3 &                 getPosition() const { return _localPosition; }
+    virtual inline const Vec3 &                 getScale() const { return _localScale; }
+    virtual inline const Quaternion &           getRotation() const { return _localRotation; }
+    virtual inline const Mat4 &                 getWorldMatrix() const { return _worldMatrix; }
+    virtual inline const Vec3 &                 getWorldPosition() const { return _worldPosition; }
+    virtual inline const Quaternion &           getWorldRotation() const { return _worldRotation; }
+    virtual inline const Vec3 &                 getWorldScale() const { return _worldScale; }
+    virtual inline const Mat4 &                 getWorldRTMatrix() const { return _rtMat; }
+    inline BaseNode *                           getChildByUuid(const std::string &uid) const {
         if (!uid.empty()) {
             return nullptr;
         }
@@ -152,42 +153,42 @@ public:
     inline void      insertChild(BaseNode *child, uint32_t siblingIndex) {}
 
 protected:
-    std::vector<BaseNode *>  _children;
+    std::vector<BaseNode *>              _children;
     std::vector<components::Component *> _components;
-    BaseNode *               _parent{nullptr};
-    uint32_t                 _flagChange{0};
-    uint32_t                 _dirtyFlag{0};
-    uint32_t                 _objFlags{0};
-    bool                     _persistNode{false};
-    uint32_t                 _layer{0};
-    cc::Vec3                 _worldScale{Vec3::ONE};
-    cc::Vec3                 _worldPosition{Vec3::ZERO};
-    cc::Quaternion           _worldRotation{Quaternion::identity()};
-    Mat4                     _rtMat{Mat4::IDENTITY};
-    cc::Mat4                 _worldMatrix{Mat4::IDENTITY};
-    cc::Vec3                 _localScale{Vec3::ONE};
-    cc::Vec3                 _localPosition{Vec3::ZERO};
-    cc::Quaternion           _localRotation{Quaternion::identity()};
-    std::string              _id{"Node"};
-    bool                     _active{true};
-    bool                     _activeInHierarchy{true};
-    Scene *                  _scene{nullptr};
-    NodeEventProcessor *     _eventProcessor{nullptr};
-    uint32_t                 _siblingIndex{0};
-    inline void              updateScene() {}
-    inline void              onSetParent(BaseNode *oldParent, bool keepWorldTransform = false) {}
-    inline void              onPostActivated(bool active) {}
-    inline void              onBatchCreated(bool dontChildPrefab) {}
-    inline void              onPreDestroy() {}
-    inline void              instantiate(BaseNode *cloned, bool isSyncedNode) {}
-    inline void              onPreDestroyBase() {}
-    inline void              onSiblingIndexChanged(uint32_t siblingIndex) {}
+    BaseNode *                           _parent{nullptr};
+    uint32_t                             _flagChange{0};
+    uint32_t                             _dirtyFlag{0};
+    uint32_t                             _objFlags{0};
+    bool                                 _persistNode{false};
+    uint32_t                             _layer{0};
+    cc::Vec3                             _worldScale{Vec3::ONE};
+    cc::Vec3                             _worldPosition{Vec3::ZERO};
+    cc::Quaternion                       _worldRotation{Quaternion::identity()};
+    Mat4                                 _rtMat{Mat4::IDENTITY};
+    cc::Mat4                             _worldMatrix{Mat4::IDENTITY};
+    cc::Vec3                             _localScale{Vec3::ONE};
+    cc::Vec3                             _localPosition{Vec3::ZERO};
+    cc::Quaternion                       _localRotation{Quaternion::identity()};
+    std::string                          _id{"Node"};
+    bool                                 _active{true};
+    bool                                 _activeInHierarchy{true};
+    Scene *                              _scene{nullptr};
+    NodeEventProcessor *                 _eventProcessor{nullptr};
+    uint32_t                             _siblingIndex{0};
+    inline void                          updateScene() {}
+    inline void                          onSetParent(BaseNode *oldParent, bool keepWorldTransform = false) {}
+    inline void                          onPostActivated(bool active) {}
+    inline void                          onBatchCreated(bool dontChildPrefab) {}
+    inline void                          onPreDestroy() {}
+    inline void                          instantiate(BaseNode *cloned, bool isSyncedNode) {}
+    inline void                          onPreDestroyBase() {}
+    inline void                          onSiblingIndexChanged(uint32_t siblingIndex) {}
 
     // for walk
     static std::vector<std::vector<BaseNode *>> stacks;
     static uint32_t                             stackId;
 
-    static void       setScene(BaseNode *);
+    static void                   setScene(BaseNode *);
     static components::Component *findComponent(BaseNode *, components::Component *);
     static components::Component *findComponents(BaseNode *, components::Component *, std::vector<components::Component *>);
     static components::Component *findChildComponent(std::vector<BaseNode *>, components::Component *);

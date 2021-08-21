@@ -36,7 +36,7 @@ struct IRenderWindowInfo {
     uint32_t width{0};
     uint32_t height{0};
     gfx::RenderPassInfo renderPassInfo;
-    uint32_t swapchainBufferIndices{0};
+    int32_t swapchainBufferIndices{0};
     bool shouldSyncSizeWithSwapchain{false};
 };
 

@@ -51,7 +51,7 @@ public:
 
     inline void setColor(const Vec3 &color) { _color = color; }
     inline void setColorTemperatureRGB(const Vec3 &value) { _colorTemperatureRGB = value; }
-    inline void setNode(Node *node) {
+    inline void setNode(scenegraph::Node *node) {
         _node = node;
     }
     inline void setUseColorTemperature(bool value) { _useColorTemperature = value; }
@@ -59,13 +59,13 @@ public:
 
     inline const Vec3 &getColor() const { return _color; }
     inline const Vec3 &getColorTemperatureRGB() const { return _colorTemperatureRGB; }
-    inline Node *      getNode() const { return _node; }
+    inline scenegraph::Node *      getNode() const { return _node; }
     inline LightType   getType() const { return _type; }
     inline bool        getUseColorTemperature() const { return _useColorTemperature; }
 
 protected:
     bool      _useColorTemperature{false};
-    Node *    _node{nullptr};
+    scenegraph::Node *    _node{nullptr};
     LightType _type{LightType::UNKNOWN};
     Vec3      _color;
     Vec3      _colorTemperatureRGB;

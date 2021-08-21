@@ -36,7 +36,7 @@ namespace cc {
 namespace scene {
 
 struct JointTransform {
-    Node *node{nullptr};
+    scenegraph::Node *node{nullptr};
     Mat4  local;
     Mat4  world;
     int   stamp{-1};
@@ -44,7 +44,7 @@ struct JointTransform {
 
 struct JointInfo {
     geometry::AABB *            bound{nullptr};
-    Node *                      target{nullptr};
+    scenegraph::Node *                      target{nullptr};
     Mat4                        bindpose;
     JointTransform              transform;
     std::vector<JointTransform> parents;

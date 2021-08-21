@@ -41,7 +41,7 @@
         CLASS();                                                               \
         ~CLASS() override;                                                     \
         uintptr_t         getImpl() override;                                  \
-        void              initialize(scene::Node* node) override;              \
+        void              initialize(scenegraph::Node* node) override;              \
         void              onEnable() override;                                 \
         void              onDisable() override;                                \
         void              onDestroy() override;                                \

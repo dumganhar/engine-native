@@ -873,8 +873,8 @@ cocos_source_files(
 
 ##### components
 cocos_source_files(
-                 cocos/components/Component.h
-                 cocos/components/Component.cpp
+                 cocos/core/components/Component.h
+                 cocos/core/components/Component.cpp
 )
 
 if(CC_USE_GLES2 OR CC_USE_GLES3)
@@ -1198,15 +1198,11 @@ if(USE_PHYSICS_PHYSX)
         cocos/physics/physx/joints/PhysXRevolute.cpp
         cocos/physics/physx/joints/PhysXDistance.h
         cocos/physics/physx/joints/PhysXDistance.cpp
-        cocos/bindings/auto/jsb_physics_auto.cpp
-        cocos/bindings/auto/jsb_physics_auto.h
+        # cocos/bindings/auto/jsb_physics_auto.cpp
+        # cocos/bindings/auto/jsb_physics_auto.h
     )
 endif()
 
-##### components
-cocos_source_files(
-    cocos/core/components/Component.h
-)
 
 ##### 2d
 cocos_source_files(
@@ -1216,16 +1212,9 @@ cocos_source_files(
 ##### core
 
 cocos_source_files(
-
-    cocos/core/memop/Pool.h
-    cocos/core/memop/Pool.cpp
-    coocs/core/memop/RecyclePool.h
-    cocos/core/memop/RecyclePool.cpp
-
     cocos/core/Any.h
     cocos/core/ArrayBuffer.h
-    cocos/core/CachedArray.h
-    cocos/core/CachedArray.cpp
+
     cocos/core/CoreModuleHeader.h
     cocos/core/Director.cpp
     cocos/core/Director.h
@@ -1241,6 +1230,15 @@ cocos_source_files(
     cocos/core/SplashScreen.cpp
     cocos/core/SplashScreen.h
     cocos/core/Types.h
+
+    # memop
+    cocos/core/memop/CachedArray.h
+    cocos/core/memop/CachedArray.cpp
+    cocos/core/memop/Pool.h
+    cocos/core/memop/Pool.cpp
+    cocos/core/memop/RecyclePool.h
+    cocos/core/memop/RecyclePool.cpp
+
 
     cocos/core/asset-manager
     cocos/core/asset-manager/AssetManager.cpp
@@ -1353,8 +1351,8 @@ cocos_source_files(
 
     cocos/core/scene-graph/BaseNode.cpp
     cocos/core/scene-graph/BaseNode.h
-    cocos/core/scene-graph/Find.cpp
-    cocos/core/scene-graph/Find.h
+    # cocos/core/scene-graph/Find.cpp
+    # cocos/core/scene-graph/Find.h
     cocos/core/scene-graph/Layers.h
     cocos/core/scene-graph/Node.cpp
     cocos/core/scene-graph/Node.h
@@ -1372,7 +1370,7 @@ cocos_source_files(
     cocos/core/scene-graph/Scene.h
     cocos/core/scene-graph/SceneGlobal.cpp
     cocos/core/scene-graph/SceneGlobal.h
-    cocos/core/scene-graph/SceneGraphModuleHeader.h
+    # cocos/core/scene-graph/SceneGraphModuleHeader.h
 
     cocos/core/utils/IDGenerator.cpp
     cocos/core/utils/IDGenerator.h
@@ -1408,8 +1406,6 @@ cocos_source_files(
 
     cocos/core/platform/event-manager/Acceleration.h
     cocos/core/platform/event-manager/Acceleration.cpp
-    cocos/core/platform/event-manager/Event.h
-    cocos/core/platform/event-manager/Event.cpp
     cocos/core/platform/event-manager/EventEnum.h
     cocos/core/platform/event-manager/EventEnum.cpp
     cocos/core/platform/event-manager/EventListener.h
@@ -1425,54 +1421,55 @@ cocos_source_files(
     
 )
 
-##### script bindings
-######## dop
-cocos_source_files(
-    NO_WERROR    cocos/bindings/dop/BufferPool.cpp
-                 cocos/bindings/dop/BufferPool.h
-    NO_WERROR    cocos/bindings/dop/jsb_dop.cpp
-                 cocos/bindings/dop/jsb_dop.h
-                 cocos/bindings/dop/PoolType.h
-                 cocos/bindings/dop/BufferAllocator.h
-    NO_WERROR    cocos/bindings/dop/BufferAllocator.cpp
-)
+# Comment JSB binding code temporarily
+# ##### script bindings
+# ######## dop
+# cocos_source_files(
+#     NO_WERROR    cocos/bindings/dop/BufferPool.cpp
+#                  cocos/bindings/dop/BufferPool.h
+#     NO_WERROR    cocos/bindings/dop/jsb_dop.cpp
+#                  cocos/bindings/dop/jsb_dop.h
+#                  cocos/bindings/dop/PoolType.h
+#                  cocos/bindings/dop/BufferAllocator.h
+#     NO_WERROR    cocos/bindings/dop/BufferAllocator.cpp
+# )
 
-######## auto
-cocos_source_files(
-    NO_WERROR    cocos/bindings/auto/jsb_cocos_auto.cpp
-                 cocos/bindings/auto/jsb_cocos_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_extension_auto.cpp
-                 cocos/bindings/auto/jsb_extension_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_gfx_auto.cpp
-                 cocos/bindings/auto/jsb_gfx_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_network_auto.cpp
-                 cocos/bindings/auto/jsb_network_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_pipeline_auto.cpp
-                 cocos/bindings/auto/jsb_pipeline_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_scene_auto.cpp
-                 cocos/bindings/auto/jsb_scene_auto.h
-)
+# ######## auto
+# cocos_source_files(
+#     NO_WERROR    cocos/bindings/auto/jsb_cocos_auto.cpp
+#                  cocos/bindings/auto/jsb_cocos_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_extension_auto.cpp
+#                  cocos/bindings/auto/jsb_extension_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_gfx_auto.cpp
+#                  cocos/bindings/auto/jsb_gfx_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_network_auto.cpp
+#                  cocos/bindings/auto/jsb_network_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_pipeline_auto.cpp
+#                  cocos/bindings/auto/jsb_pipeline_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_scene_auto.cpp
+#                  cocos/bindings/auto/jsb_scene_auto.h
+# )
 
-if(USE_AUDIO)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/auto/jsb_audio_auto.cpp
-                     cocos/bindings/auto/jsb_audio_auto.h
-    )
-endif()
+# if(USE_AUDIO)
+#     cocos_source_files(
+#         NO_WERROR    cocos/bindings/auto/jsb_audio_auto.cpp
+#                      cocos/bindings/auto/jsb_audio_auto.h
+#     )
+# endif()
 
-if(USE_VIDEO)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/auto/jsb_video_auto.cpp
-                     cocos/bindings/auto/jsb_video_auto.h
-    )
-endif()
+# if(USE_VIDEO)
+#     cocos_source_files(
+#         NO_WERROR    cocos/bindings/auto/jsb_video_auto.cpp
+#                      cocos/bindings/auto/jsb_video_auto.h
+#     )
+# endif()
 
-if(USE_WEBVIEW)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/auto/jsb_webview_auto.cpp
-                     cocos/bindings/auto/jsb_webview_auto.h
-    )
-endif()
+# if(USE_WEBVIEW)
+#     cocos_source_files(
+#         NO_WERROR    cocos/bindings/auto/jsb_webview_auto.cpp
+#                      cocos/bindings/auto/jsb_webview_auto.h
+#     )
+# endif()
 
 if(USE_MIDDLEWARE)
     cocos_source_files(
@@ -1491,8 +1488,8 @@ if(USE_MIDDLEWARE)
                      cocos/editor-support/SharedBufferManager.h
                      cocos/editor-support/TypedArrayPool.cpp
                      cocos/editor-support/TypedArrayPool.h
-        NO_WERROR    cocos/bindings/auto/jsb_editor_support_auto.cpp
-                     cocos/bindings/auto/jsb_editor_support_auto.h
+        # NO_WERROR    cocos/bindings/auto/jsb_editor_support_auto.cpp
+        #              cocos/bindings/auto/jsb_editor_support_auto.h
     )
 
     if(USE_SPINE)
@@ -1659,10 +1656,10 @@ if(USE_MIDDLEWARE)
                          cocos/editor-support/spine-creator-support/spine-cocos2dx.h
             NO_WERROR    cocos/editor-support/spine-creator-support/VertexEffectDelegate.cpp
                          cocos/editor-support/spine-creator-support/VertexEffectDelegate.h
-            NO_WERROR    cocos/bindings/auto/jsb_spine_auto.cpp
-                         cocos/bindings/auto/jsb_spine_auto.h
-            NO_WERROR    cocos/bindings/manual/jsb_spine_manual.cpp
-                         cocos/bindings/manual/jsb_spine_manual.h
+            # NO_WERROR    cocos/bindings/auto/jsb_spine_auto.cpp
+            #              cocos/bindings/auto/jsb_spine_auto.h
+            # NO_WERROR    cocos/bindings/manual/jsb_spine_manual.cpp
+            #              cocos/bindings/manual/jsb_spine_manual.h
         )
     endif()
 
@@ -1752,82 +1749,82 @@ if(USE_MIDDLEWARE)
                          cocos/editor-support/dragonbones-creator-support/CCSlot.h
             NO_WERROR    cocos/editor-support/dragonbones-creator-support/CCTextureAtlasData.cpp
                          cocos/editor-support/dragonbones-creator-support/CCTextureAtlasData.h
-            NO_WERROR    cocos/bindings/auto/jsb_dragonbones_auto.cpp
-                         cocos/bindings/auto/jsb_dragonbones_auto.h
-            NO_WERROR    cocos/bindings/manual/jsb_dragonbones_manual.cpp
-                         cocos/bindings/manual/jsb_dragonbones_manual.h
+            # NO_WERROR    cocos/bindings/auto/jsb_dragonbones_auto.cpp
+            #              cocos/bindings/auto/jsb_dragonbones_auto.h
+            # NO_WERROR    cocos/bindings/manual/jsb_dragonbones_manual.cpp
+            #              cocos/bindings/manual/jsb_dragonbones_manual.h
         )
     endif()
 endif()
 
-######## manual
-cocos_source_files(
-    NO_WERROR    cocos/bindings/manual/jsb_classtype.cpp
-                 cocos/bindings/manual/jsb_classtype.h
-    #NO_WERROR   cocos/bindings/manual/jsb_extension_manual.cpp
-                 #cocos/bindings/manual/jsb_extension_manual.h
-    NO_WERROR    cocos/bindings/manual/jsb_cocos_manual.cpp
-                 cocos/bindings/manual/jsb_cocos_manual.h
-    NO_WERROR    cocos/bindings/manual/jsb_conversions.cpp
-                 cocos/bindings/manual/jsb_conversions.h
-    NO_WERROR    cocos/bindings/manual/jsb_gfx_manual.cpp
-                 cocos/bindings/manual/jsb_gfx_manual.h
-    NO_WERROR    cocos/bindings/manual/jsb_global.cpp
-                 cocos/bindings/manual/jsb_global.h
-    NO_WERROR    cocos/bindings/manual/jsb_helper.cpp
-                 cocos/bindings/manual/jsb_helper.h
-                 cocos/bindings/manual/jsb_module_register.h
-                 cocos/bindings/manual/jsb_platform.h
-    NO_WERROR    cocos/bindings/manual/jsb_scene_manual.cpp
-    NO_WERROR    cocos/bindings/manual/jsb_scene_manual_ext.cpp
-                 cocos/bindings/manual/jsb_scene_manual.h
-    NO_WERROR    cocos/bindings/manual/jsb_network_manual.cpp
-                 cocos/bindings/manual/jsb_network_manual.h
-    NO_WERROR    cocos/bindings/manual/jsb_xmlhttprequest.cpp
-                 cocos/bindings/manual/jsb_xmlhttprequest.h
-                 cocos/bindings/manual/jsb_pipeline_manual.h
-    NO_WERROR    cocos/bindings/manual/jsb_pipeline_manual.cpp
-)
+# ######## manual
+# cocos_source_files(
+#     NO_WERROR    cocos/bindings/manual/jsb_classtype.cpp
+#                  cocos/bindings/manual/jsb_classtype.h
+#     #NO_WERROR   cocos/bindings/manual/jsb_extension_manual.cpp
+#                  #cocos/bindings/manual/jsb_extension_manual.h
+#     NO_WERROR    cocos/bindings/manual/jsb_cocos_manual.cpp
+#                  cocos/bindings/manual/jsb_cocos_manual.h
+#     NO_WERROR    cocos/bindings/manual/jsb_conversions.cpp
+#                  cocos/bindings/manual/jsb_conversions.h
+#     NO_WERROR    cocos/bindings/manual/jsb_gfx_manual.cpp
+#                  cocos/bindings/manual/jsb_gfx_manual.h
+#     NO_WERROR    cocos/bindings/manual/jsb_global.cpp
+#                  cocos/bindings/manual/jsb_global.h
+#     NO_WERROR    cocos/bindings/manual/jsb_helper.cpp
+#                  cocos/bindings/manual/jsb_helper.h
+#                  cocos/bindings/manual/jsb_module_register.h
+#                  cocos/bindings/manual/jsb_platform.h
+#     NO_WERROR    cocos/bindings/manual/jsb_scene_manual.cpp
+#     NO_WERROR    cocos/bindings/manual/jsb_scene_manual_ext.cpp
+#                  cocos/bindings/manual/jsb_scene_manual.h
+#     NO_WERROR    cocos/bindings/manual/jsb_network_manual.cpp
+#                  cocos/bindings/manual/jsb_network_manual.h
+#     NO_WERROR    cocos/bindings/manual/jsb_xmlhttprequest.cpp
+#                  cocos/bindings/manual/jsb_xmlhttprequest.h
+#                  cocos/bindings/manual/jsb_pipeline_manual.h
+#     NO_WERROR    cocos/bindings/manual/jsb_pipeline_manual.cpp
+# )
 
-if(USE_SOCKET)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/manual/jsb_socketio.cpp
-                     cocos/bindings/manual/jsb_socketio.h
-        NO_WERROR    cocos/bindings/manual/jsb_websocket.cpp
-                     cocos/bindings/manual/jsb_websocket.h
-    )
-endif()
+# if(USE_SOCKET)
+#     cocos_source_files(
+#         NO_WERROR    cocos/bindings/manual/jsb_socketio.cpp
+#                      cocos/bindings/manual/jsb_socketio.h
+#         NO_WERROR    cocos/bindings/manual/jsb_websocket.cpp
+#                      cocos/bindings/manual/jsb_websocket.h
+#     )
+# endif()
 
-if(NOT IOS AND USE_WEBSOCKET_SERVER)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/manual/jsb_websocket_server.cpp
-                     cocos/bindings/manual/jsb_websocket_server.h
-    )
-endif()
+# if(NOT IOS AND USE_WEBSOCKET_SERVER)
+#     cocos_source_files(
+#         NO_WERROR    cocos/bindings/manual/jsb_websocket_server.cpp
+#                      cocos/bindings/manual/jsb_websocket_server.h
+#     )
+# endif()
 
-if(ANDROID)
-    cocos_source_files(
-                     cocos/bindings/manual/jsb_platform_android.cpp
-                     cocos/bindings/manual/JavaScriptJavaBridge.cpp
-                     cocos/bindings/manual/JavaScriptJavaBridge.h
-    )
-elseif(OHOS)
-    cocos_source_files(
-        cocos/bindings/manual/jsb_platform_ohos.cpp
-        cocos/bindings/manual/JavaScriptJavaBridge.cpp
-        cocos/bindings/manual/JavaScriptJavaBridge.h
-    )
-elseif(APPLE)
-    cocos_source_files(
-                    cocos/bindings/manual/jsb_platfrom_apple.mm
-                     cocos/bindings/manual/JavaScriptObjCBridge.h
-                     cocos/bindings/manual/JavaScriptObjCBridge.mm
-    )
-elseif(WIN32)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/manual/jsb_platfrom_win32.cpp
-    )
-endif()
+# if(ANDROID)
+#     cocos_source_files(
+#                      cocos/bindings/manual/jsb_platform_android.cpp
+#                      cocos/bindings/manual/JavaScriptJavaBridge.cpp
+#                      cocos/bindings/manual/JavaScriptJavaBridge.h
+#     )
+# elseif(OHOS)
+#     cocos_source_files(
+#         cocos/bindings/manual/jsb_platform_ohos.cpp
+#         cocos/bindings/manual/JavaScriptJavaBridge.cpp
+#         cocos/bindings/manual/JavaScriptJavaBridge.h
+#     )
+# elseif(APPLE)
+#     cocos_source_files(
+#                     cocos/bindings/manual/jsb_platfrom_apple.mm
+#                      cocos/bindings/manual/JavaScriptObjCBridge.h
+#                      cocos/bindings/manual/JavaScriptObjCBridge.mm
+#     )
+# elseif(WIN32)
+#     cocos_source_files(
+#         NO_WERROR    cocos/bindings/manual/jsb_platfrom_win32.cpp
+#     )
+# endif()
 
 ############# module bindings 
 if(USE_SE_V8)

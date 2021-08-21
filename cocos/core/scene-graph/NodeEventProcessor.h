@@ -24,10 +24,13 @@
  ****************************************************************************/
 
 #pragma once
-#include "BaseNode.h"
+
 #include "core/event/Event.h"
 namespace cc {
 namespace scenegraph {
+
+class BaseNode;
+
 class NodeEventProcessor final {
 private:
     BaseNode* _node{nullptr};
@@ -35,7 +38,7 @@ private:
 public:
     NodeEventProcessor(/* args */) = default;
     ~NodeEventProcessor()          = default;
-    inline BaseNode* getNode() { return _node; }
+    inline BaseNode* getNode() const { return _node; }
     inline void      reattach() {}
     inline void      destroy() {}
     inline void      dispatchEvent(event::Event eve) {}

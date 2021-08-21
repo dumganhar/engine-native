@@ -45,11 +45,11 @@ using physx::PxVec3;
 
 namespace cc {
 namespace physics {
-std::map<scene::Node *, PhysXSharedBody *> PhysXSharedBody::sharedBodesMap = std::map<scene::Node *, PhysXSharedBody *>();
+std::map<scenegraph::Node *, PhysXSharedBody *> PhysXSharedBody::sharedBodesMap = std::map<scenegraph::Node *, PhysXSharedBody *>();
 
 static int idCounter = 0;
 PhysXSharedBody::PhysXSharedBody(
-    scene::Node *         node,
+    scenegraph::Node *         node,
     PhysXWorld *const     world,
     PhysXRigidBody *const body) : _mID(idCounter++),
                                   _mRef(0),
@@ -65,16 +65,16 @@ PhysXSharedBody::PhysXSharedBody(
     _mNode     = node;
 };
 
-PhysXSharedBody *PhysXSharedBody::getSharedBody(const scene::Node *node, PhysXWorld *const world, PhysXRigidBody *const body) {
-    auto             iter = sharedBodesMap.find(const_cast<scene::Node *>(node));
+PhysXSharedBody *PhysXSharedBody::getSharedBody(const scenegraph::Node *node, PhysXWorld *const world, PhysXRigidBody *const body) {
+    auto             iter = sharedBodesMap.find(const_cast<scenegraph::Node *>(node));
     PhysXSharedBody *newSB;
     if (iter != sharedBodesMap.end()) {
         newSB = iter->second;
     } else {
-        newSB                     = new PhysXSharedBody(const_cast<scene::Node *>(node), world, body);
+        newSB                     = new PhysXSharedBody(const_cast<scenegraph::Node *>(node), world, body);
         newSB->_mFilterData.word0 = 1;
         newSB->_mFilterData.word1 = world->getMaskByIndex(0);
-        sharedBodesMap.insert(std::pair<scene::Node *, PhysXSharedBody *>(const_cast<scene::Node *>(node), newSB));
+        sharedBodesMap.insert(std::pair<scenegraph::Node *, PhysXSharedBody *>(const_cast<scenegraph::Node *>(node), newSB));
     }
     if (body != nullptr) {
         auto g                    = body->getInitialGroup();

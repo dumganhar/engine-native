@@ -34,7 +34,7 @@ enum struct Priority : uint32_t {
     LOW       = 0,
     MEDIUM    = 100,
     HIGH      = 200,
-    SCHEDULER = (1 << 31),
+    SCHEDULER = (1U << 31U),
 };
 
 class System : public ISchedulable {

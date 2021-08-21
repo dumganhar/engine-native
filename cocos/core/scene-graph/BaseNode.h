@@ -25,7 +25,7 @@
 
 #pragma once
 #include <vector>
-#include "components/Component.h"
+#include "core/components/Component.h"
 #include "core/data/Object.h"
 #include "core/event/Event.h"
 #include "math/Mat3.h"
@@ -59,7 +59,7 @@ public:
     void                walk(std::function<void(BaseNode *)>, std::function<void(BaseNode *)>);
     inline void         addComponent(const std::string &className) {}
     inline void         removeComponent(const std::string &className) {}
-    inline void         removeComponent(Component *cmp) {}
+    inline void         removeComponent(components::Component *cmp) {}
     inline void         on(NodeEventType type, const std::function<void(BaseNode *)> &callback) {}
     inline void         off(NodeEventType type, const std::function<void(BaseNode *)> &callback) {}
     inline void         once(NodeEventType type, const std::function<void(BaseNode *)> &callback) {}
@@ -116,13 +116,13 @@ public:
     inline bool getActive() const { return _active; }
     inline bool getActiveInHierarchy() const { return _activeInHierarchy; }
 
-    inline Component *              getComponent(const std::string &name) { return nullptr; }
-    inline Component *              getComponentInChildren(const std::string &name) { return nullptr; }
-    inline std::vector<Component *> getComponentsInChildren(const std::string &name) {}
+    inline components::Component *              getComponent(const std::string &name) { return nullptr; }
+    inline components::Component *              getComponentInChildren(const std::string &name) { return nullptr; }
+    inline std::vector<components::Component *> getComponentsInChildren(const std::string &name) {}
 
     inline const std::vector<BaseNode *> &getChilds() { return _children; }
     inline BaseNode *                     getParent() const { return _parent; }
-    inline std::vector<Component *>       getComponents() const { return _components; }
+    inline std::vector<components::Component *>       getComponents() const { return _components; }
     inline NodeEventProcessor *           getEventProcessor() const { return _eventProcessor; }
     virtual inline uint32_t               getFlagsChanged() const { return _flagChange; }
     virtual inline uint32_t               getLayer() const { return _layer; }
@@ -153,7 +153,7 @@ public:
 
 protected:
     std::vector<BaseNode *>  _children;
-    std::vector<Component *> _components;
+    std::vector<components::Component *> _components;
     BaseNode *               _parent{nullptr};
     uint32_t                 _flagChange{0};
     uint32_t                 _dirtyFlag{0};
@@ -188,10 +188,10 @@ protected:
     static uint32_t                             stackId;
 
     static void       setScene(BaseNode *);
-    static Component *findComponent(BaseNode *, Component *);
-    static Component *findComponents(BaseNode *, Component *, std::vector<Component *>);
-    static Component *findChildComponent(std::vector<BaseNode *>, Component *);
-    static Component *findChildComponents(std::vector<BaseNode *>, Component *, std::vector<Component *>);
+    static components::Component *findComponent(BaseNode *, components::Component *);
+    static components::Component *findComponents(BaseNode *, components::Component *, std::vector<components::Component *>);
+    static components::Component *findChildComponent(std::vector<BaseNode *>, components::Component *);
+    static components::Component *findChildComponents(std::vector<BaseNode *>, components::Component *, std::vector<components::Component *>);
 };
 } // namespace scenegraph
 } // namespace cc

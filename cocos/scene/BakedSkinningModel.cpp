@@ -34,7 +34,7 @@ void BakedSkinningModel::updateTransform(uint32_t stamp) {
     BakedAnimInfo&  animInfo  = _jointMedium.animInfo;
     geometry::AABB* skelBound = !_jointMedium.boundsInfo.empty() ? _jointMedium.boundsInfo[*animInfo.data] : nullptr;
     if (_worldBounds && skelBound) {
-        Node* node = getTransform();
+        scenegraph::Node* node = getTransform();
         skelBound->transform(node->getWorldMatrix(), _worldBounds);
     }
 }

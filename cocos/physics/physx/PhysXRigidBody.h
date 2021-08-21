@@ -42,7 +42,7 @@ public:
     inline PhysXSharedBody &      getSharedBody() { return *_mSharedBody; }
     inline uintptr_t              getImpl() override { return reinterpret_cast<uintptr_t>(this); }
     inline uintptr_t              getNodeHandle() override { return reinterpret_cast<uintptr_t>(this->_mSharedBody->getNode());}
-    void                          initialize(scene::Node *node, ERigidBodyType t, uint32_t g) override;
+    void                          initialize(scenegraph::Node *node, ERigidBodyType t, uint32_t g) override;
     void                          onEnable() override;
     void                          onDisable() override;
     void                          onDestroy() override;

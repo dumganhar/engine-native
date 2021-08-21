@@ -31,7 +31,7 @@
 #include <utility>
 #include <vector>
 
-#include "components/Component.h"
+#include "core/components/Component.h"
 #include "core/platform/event-manager/Acceleration.h"
 #include "core/platform/event-manager/Events.h"
 #include "core/scene-graph/node.h"

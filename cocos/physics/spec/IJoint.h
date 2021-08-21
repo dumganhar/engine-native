@@ -27,7 +27,7 @@
 
 #include <cstdint>
 #include "physics/spec/ILifecycle.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 namespace physics {
@@ -35,7 +35,7 @@ namespace physics {
 class IBaseJoint : virtual public ILifecycle {
 public:
     ~IBaseJoint() override                          = default;
-    virtual void      initialize(scene::Node* node) = 0;
+    virtual void      initialize(scenegraph::Node* node) = 0;
     virtual uintptr_t getImpl()                     = 0;
     virtual void      setEnableCollision(bool v)    = 0;
     virtual void      setConnectedBody(uintptr_t v) = 0;

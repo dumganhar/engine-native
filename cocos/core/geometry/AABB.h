@@ -27,7 +27,6 @@
 
 #include <algorithm>
 #include "core/geometry/Enums.h"
-#include "core/geometry/Frustum.h"
 #include "math/Mat3.h"
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
@@ -36,6 +35,8 @@ namespace cc {
 namespace geometry {
 
 class Sphere;
+class Frustum;
+class Plane;
 
 struct AABBLayout {
     cc::Vec3 center;
@@ -84,6 +85,19 @@ public:
         out->setHalfExtents(hw, hh, hl);
         return out;
     }
+
+    /**
+      * @en
+      * Merge tow AABB.
+      * @zh
+      * 合并两个 AABB 到 out。
+      * @param out 接受操作的 AABB。
+      * @param a 输入的 AABB。
+      * @param b 输入的 AABB。
+      * @returns {AABB} out 接受操作的 AABB。
+      */
+    static AABB *merge(AABB *out, const AABB &a, const AABB &b);
+
     /**
       * @en
       * AABB to sphere
@@ -95,8 +109,8 @@ public:
 
     static Sphere *toBoundingSphere(Sphere *out, const AABB &a);
 
-    static void fromPoints(const Vec3 &minPos, const Vec3 &maxPos, AABB *dst);
-    static void transformExtentM4(Vec3 *out, const Vec3 &extent, const Mat4 &m4);
+    static AABB *fromPoints(const Vec3 &minPos, const Vec3 &maxPos, AABB *dst);
+    static void  transformExtentM4(Vec3 *out, const Vec3 &extent, const Mat4 &m4);
 
     AABB(float px, float py, float pz, float hw, float hh, float hl);
     AABB();
@@ -125,7 +139,7 @@ public:
     inline AABBLayout *getLayout() { return _aabbLayout; }
 
 private:
-    AABBLayout  _embedLayout;
+    AABBLayout  _embedLayout{};
     AABBLayout *_aabbLayout{nullptr};
     bool        _isValid{true};
 };

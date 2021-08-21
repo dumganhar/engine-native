@@ -19,16 +19,7 @@ float random() {
 }
 
 Vec3ElementType absMaxComponent(const Vec3 &v) {
-    if (abs(v.x) > abs(v.y)) {
-        if (abs(v.x) > abs(v.z)) {
-            return v.x;
-        }
-        return v.z;
-    }
-    if (abs(v.y) > abs(v.z)) {
-        return v.y;
-    }
-    return v.z;
+    return absMax(absMax(v.x, v.y), v.z);
 }
 
 Vec3ElementType maxComponent(const Vec3 &v) {

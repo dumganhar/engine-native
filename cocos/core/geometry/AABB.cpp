@@ -25,18 +25,32 @@
 
 #include "AABB.h"
 
+#include <cassert>
 #include "cocos/core/geometry/Enums.h"
 #include "cocos/core/geometry/Sphere.h"
+
 namespace cc {
 namespace geometry {
 
 Sphere *AABB::toBoundingSphere(Sphere *out, const AABB &a) {
-    Vec3 v3Tmp1;
-    Vec3 v3Tmp2;
-    a.getBoundary(&v3Tmp1, &v3Tmp2);
-    out->setRadius((v3Tmp2 - v3Tmp1).length() * 0.5F);
-    out->setCenter((v3Tmp2 + v3Tmp1) * 0.5F);
+    out->setCenter(a.getCenter());
+    out->setRadius(a.getHalfExtents().length());
     return out;
+}
+
+AABB *AABB::fromPoints(const Vec3 &minPos, const Vec3 &maxPos, AABB *dst) {
+    assert(minPos < maxPos); // minPos must be less than maxPos
+    dst->setCenter((minPos + maxPos) * 0.5F);
+    dst->setHalfExtents((maxPos - minPos) * 0.5F);
+    return dst;
+}
+
+AABB *AABB::merge(AABB *out, const AABB &a, const AABB &b) {
+    Vec3 minCornor;
+    Vec3 maxCorner;
+    Vec3::max(a.getCenter() + a.getHalfExtents(), b.getCenter() + b.getHalfExtents(), &maxCorner);
+    Vec3::min(a.getCenter() - a.getHalfExtents(), b.getCenter() - b.getHalfExtents(), &minCornor);
+    return AABB::fromPoints(minCornor, maxCorner, out);
 }
 
 bool AABB::aabbAabb(AABB *aabb) const {
@@ -81,24 +95,12 @@ bool AABB::aabbFrustum(const Frustum &frustum) const {
 }
 
 void AABB::getBoundary(cc::Vec3 *minPos, cc::Vec3 *maxPos) const {
-    Vec3::subtract(getCenter(), getHalfExtents(), minPos);
-    Vec3::add(getCenter(), getHalfExtents(), maxPos);
+    *maxPos = getCenter() + getHalfExtents();
+    *minPos = getCenter() - getHalfExtents();
 }
 
 void AABB::merge(const AABB &aabb) {
-    cc::Vec3 minA = getCenter() - getHalfExtents();
-    cc::Vec3 minB = aabb.getCenter() - aabb.getHalfExtents();
-    cc::Vec3 maxA = getCenter() + getHalfExtents();
-    cc::Vec3 maxB = aabb.getCenter() + aabb.getHalfExtents();
-    cc::Vec3 maxP;
-    cc::Vec3 minP;
-    cc::Vec3::max(maxA, maxB, &maxP);
-    cc::Vec3::min(minA, minB, &minP);
-
-    cc::Vec3 addP = maxP + minP;
-    cc::Vec3 subP = maxP - minP;
-    setCenter(addP * 0.5F);
-    setHalfExtents(subP * 0.5F);
+    AABB::merge(this, aabb, *this);
 }
 
 void AABB::set(const cc::Vec3 &centerVal, const cc::Vec3 &halfExtentVal) {
@@ -114,15 +116,15 @@ void AABB::transform(const Mat4 &m, AABB *out) const {
 
 void AABB::transformExtentM4(Vec3 *out, const Vec3 &extent, const Mat4 &m4) {
     Mat3 m3Tmp;
-    m3Tmp.m[0] = abs(m4.m[0]);
-    m3Tmp.m[1] = abs(m4.m[1]);
-    m3Tmp.m[2] = abs(m4.m[2]);
-    m3Tmp.m[3] = abs(m4.m[4]);
-    m3Tmp.m[4] = abs(m4.m[5]);
-    m3Tmp.m[5] = abs(m4.m[6]);
-    m3Tmp.m[6] = abs(m4.m[8]);
-    m3Tmp.m[7] = abs(m4.m[9]);
-    m3Tmp.m[8] = abs(m4.m[10]);
+    m3Tmp.m[0] = std::abs(m4.m[0]);
+    m3Tmp.m[1] = std::abs(m4.m[1]);
+    m3Tmp.m[2] = std::abs(m4.m[2]);
+    m3Tmp.m[3] = std::abs(m4.m[4]);
+    m3Tmp.m[4] = std::abs(m4.m[5]);
+    m3Tmp.m[5] = std::abs(m4.m[6]);
+    m3Tmp.m[6] = std::abs(m4.m[8]);
+    m3Tmp.m[7] = std::abs(m4.m[9]);
+    m3Tmp.m[8] = std::abs(m4.m[10]);
     out->transformMat3(extent, m3Tmp);
 }
 
@@ -136,14 +138,6 @@ AABB::AABB(float px, float py, float pz, float hw, float hh, float hl) {
     _aabbLayout = &_embedLayout;
     setCenter(px, py, pz);
     setHalfExtents(hw, hh, hl);
-}
-
-void AABB::fromPoints(const Vec3 &minPos, const Vec3 &maxPos, AABB *dst) {
-    Vec3 v3Tmp;
-    Vec3::add(maxPos, minPos, &v3Tmp);
-    dst->setCenter(v3Tmp * 0.5);
-    Vec3::subtract(maxPos, minPos, &v3Tmp);
-    dst->setHalfExtents(v3Tmp * 0.5);
 }
 
 } // namespace geometry

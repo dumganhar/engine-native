@@ -419,7 +419,8 @@ public:
      * @zh 运行主循环
      */
     void tick(float dt);
-
+	Director();
+    ~Director() = default;
 private:
     static std::shared_ptr<Director> Instance;
 
@@ -432,8 +433,7 @@ private:
     std::vector<System*> _systems;
 
     scenegraph::Scene* _scene;
-    Director();
-    ~Director();
+    
     void _initOnRendererInitialized();
     //TODO: return Promise in js, c++ need adaption
     void _init();

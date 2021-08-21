@@ -782,7 +782,7 @@ static bool js_physics_RigidBody_initialize(se::State& s) // NOLINT(readability-
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 3) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         HolderType<cc::physics::ERigidBodyType, false> arg1 = {};
         HolderType<unsigned int, false> arg2 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
@@ -1396,7 +1396,7 @@ static bool js_physics_SphereShape_initialize(se::State& s) // NOLINT(readabilit
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_SphereShape_initialize : Error processing arguments");
         cobj->initialize(arg0.value());
@@ -1761,7 +1761,7 @@ static bool js_physics_BoxShape_initialize(se::State& s) // NOLINT(readability-i
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_BoxShape_initialize : Error processing arguments");
         cobj->initialize(arg0.value());
@@ -2130,7 +2130,7 @@ static bool js_physics_CapsuleShape_initialize(se::State& s) // NOLINT(readabili
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_CapsuleShape_initialize : Error processing arguments");
         cobj->initialize(arg0.value());
@@ -2535,7 +2535,7 @@ static bool js_physics_PlaneShape_initialize(se::State& s) // NOLINT(readability
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_PlaneShape_initialize : Error processing arguments");
         cobj->initialize(arg0.value());
@@ -2924,7 +2924,7 @@ static bool js_physics_TrimeshShape_initialize(se::State& s) // NOLINT(readabili
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_TrimeshShape_initialize : Error processing arguments");
         cobj->initialize(arg0.value());
@@ -3309,7 +3309,7 @@ static bool js_physics_CylinderShape_initialize(se::State& s) // NOLINT(readabil
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_CylinderShape_initialize : Error processing arguments");
         cobj->initialize(arg0.value());
@@ -3698,7 +3698,7 @@ static bool js_physics_ConeShape_initialize(se::State& s) // NOLINT(readability-
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_ConeShape_initialize : Error processing arguments");
         cobj->initialize(arg0.value());
@@ -4087,7 +4087,7 @@ static bool js_physics_TerrainShape_initialize(se::State& s) // NOLINT(readabili
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_TerrainShape_initialize : Error processing arguments");
         cobj->initialize(arg0.value());
@@ -4382,7 +4382,7 @@ static bool js_physics_RevoluteJoint_initialize(se::State& s) // NOLINT(readabil
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_RevoluteJoint_initialize : Error processing arguments");
         cobj->initialize(arg0.value());
@@ -4625,7 +4625,7 @@ static bool js_physics_DistanceJoint_initialize(se::State& s) // NOLINT(readabil
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::scene::Node*, false> arg0 = {};
+        HolderType<cc::scenegraph::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_physics_DistanceJoint_initialize : Error processing arguments");
         cobj->initialize(arg0.value());

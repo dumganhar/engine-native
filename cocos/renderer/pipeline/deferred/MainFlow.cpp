@@ -23,47 +23,56 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "LightingFlow.h"
-#include "../SceneCulling.h"
+#include "MainFlow.h"
 #include "DeferredPipeline.h"
+#include "GbufferStage.h"
 #include "LightingStage.h"
+#include "PostprocessStage.h"
 #include "gfx-base/GFXDescriptorSet.h"
 #include "gfx-base/GFXDevice.h"
-#include "gfx-base/GFXFramebuffer.h"
+#include "gfx-base/GFXRenderPass.h"
+#include "gfx-base/GFXSampler.h"
+#include "pipeline/SceneCulling.h"
 
 namespace cc {
 namespace pipeline {
-RenderFlowInfo LightingFlow::initInfo = {
-    "LightingFlow",
-    static_cast<uint>(DeferredFlowPriority::LIGHTING),
+RenderFlowInfo MainFlow::initInfo = {
+    "MainFlow",
+    static_cast<uint>(DeferredFlowPriority::MAIN),
     static_cast<uint>(RenderFlowTag::SCENE),
     {},
 };
-const RenderFlowInfo &LightingFlow::getInitializeInfo() { return LightingFlow::initInfo; }
+const RenderFlowInfo &MainFlow::getInitializeInfo() { return MainFlow::initInfo; }
 
-LightingFlow::~LightingFlow() = default;
+MainFlow::~MainFlow() = default;
 
-bool LightingFlow::initialize(const RenderFlowInfo &info) {
+bool MainFlow::initialize(const RenderFlowInfo &info) {
     RenderFlow::initialize(info);
 
     if (_stages.empty()) {
-        auto *stage = CC_NEW(LightingStage);
-        stage->initialize(LightingStage::getInitializeInfo());
-        _stages.emplace_back(stage);
+        auto *gbufferStage = CC_NEW(GbufferStage);
+        gbufferStage->initialize(GbufferStage::getInitializeInfo());
+        _stages.emplace_back(gbufferStage);
+        auto *lightingStage = CC_NEW(LightingStage);
+        lightingStage->initialize(LightingStage::getInitializeInfo());
+        _stages.emplace_back(lightingStage);
+        auto *postprocessStage = CC_NEW(PostprocessStage);
+        postprocessStage->initialize(PostprocessStage::getInitializeInfo());
+        _stages.emplace_back(postprocessStage);
     }
 
     return true;
 }
 
-void LightingFlow::activate(RenderPipeline *pipeline) {
+void MainFlow::activate(RenderPipeline *pipeline) {
     RenderFlow::activate(pipeline);
 }
 
-void LightingFlow::render(scene::Camera *camera) {
+void MainFlow::render(scene::Camera *camera) {
     RenderFlow::render(camera);
 }
 
-void LightingFlow::destroy() {
+void MainFlow::destroy() {
     RenderFlow::destroy();
 }
 

@@ -23,50 +23,30 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "GbufferFlow.h"
-#include "DeferredPipeline.h"
-#include "GbufferStage.h"
-#include "gfx-base/GFXDescriptorSet.h"
-#include "gfx-base/GFXDevice.h"
-#include "gfx-base/GFXRenderPass.h"
-#include "gfx-base/GFXSampler.h"
-#include "pipeline/SceneCulling.h"
+#pragma once
+
+#include "../RenderFlow.h"
 
 namespace cc {
 namespace pipeline {
-RenderFlowInfo GbufferFlow::initInfo = {
-    "GbufferFlow",
-    static_cast<uint>(DeferredFlowPriority::GBUFFER),
-    static_cast<uint>(RenderFlowTag::SCENE),
-    {},
+
+class GbufferStage;
+
+class CC_DLL MainFlow : public RenderFlow {
+public:
+    static const RenderFlowInfo &getInitializeInfo();
+
+    MainFlow() = default;
+    ~MainFlow() override;
+
+    bool initialize(const RenderFlowInfo &info) override;
+    void activate(RenderPipeline *pipeline) override;
+    void destroy() override;
+    void render(scene::Camera *camera) override;
+
+private:
+    static RenderFlowInfo initInfo;
 };
-const RenderFlowInfo &GbufferFlow::getInitializeInfo() { return GbufferFlow::initInfo; }
-
-GbufferFlow::~GbufferFlow() = default;
-
-bool GbufferFlow::initialize(const RenderFlowInfo &info) {
-    RenderFlow::initialize(info);
-
-    if (_stages.empty()) {
-        auto *gbufferStage = CC_NEW(GbufferStage);
-        gbufferStage->initialize(GbufferStage::getInitializeInfo());
-        _stages.emplace_back(gbufferStage);
-    }
-
-    return true;
-}
-
-void GbufferFlow::activate(RenderPipeline *pipeline) {
-    RenderFlow::activate(pipeline);
-}
-
-void GbufferFlow::render(scene::Camera *camera) {
-    RenderFlow::render(camera);
-}
-
-void GbufferFlow::destroy() {
-    RenderFlow::destroy();
-}
 
 } // namespace pipeline
 } // namespace cc

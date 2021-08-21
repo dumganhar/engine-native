@@ -59,7 +59,7 @@ struct IMaterialInfo {
      * @zh
      * 这个材质将使用的 EffectAsset，直接提供资源引用，和 `effectName` 至少要指定一个。
      */
-    EffectAsset* effectAsset = nullptr;
+    EffectAsset* effectAsset{nullptr};
     /**
      * @en
      * The name of the EffectAsset to use. Must provide if `effectAsset` is not specified.
@@ -73,7 +73,7 @@ struct IMaterialInfo {
      * @zh
      * 这个材质将使用第几个 technique，默认为 0。
      */
-    uint32_t technique = 0;
+    uint32_t technique{0};
     /**
      * @en
      * The shader macro definitions. Default to 0 or the specified value in [[EffectAsset]].
@@ -98,14 +98,14 @@ public:
      * @zh 获取一个材质的哈希值
      * @param material
      */
-    static uint64_t getHash (Material* material);
+    static uint64_t getHash(Material* material);
 
 protected:
     /* @type(EffectAsset) */
-    EffectAsset* _effectAsset = nullptr;
+    EffectAsset* _effectAsset{nullptr};
 
     /* @serializable */
-    uint32_t _techIdx = 0;
+    uint32_t _techIdx{0};
 
     /* @serializable */
     std::vector<MacroRecord> _defines;
@@ -118,7 +118,7 @@ protected:
 
     std::vector<gfx::Pass*> _passes;
 
-    uint64_t _hash = 0;
+    uint64_t _hash{0};
 
 public:
     Material() = default;
@@ -127,7 +127,7 @@ public:
      * @en The current [[EffectAsset]].
      * @zh 当前使用的 [[EffectAsset]] 资源。
      */
-    inline EffectAsset* effectAsset () {
+    inline EffectAsset* effectAsset() {
         return _effectAsset;
     }
 
@@ -135,7 +135,7 @@ public:
      * @en Name of the current [[EffectAsset]].
      * @zh 当前使用的 [[EffectAsset]] 资源名。
      */
-    inline std::string effectName () {
+    inline std::string effectName() {
         return _effectAsset ? _effectAsset->getName() : "";
     }
 
@@ -143,7 +143,7 @@ public:
      * @en The current technique index.
      * @zh 当前的 technique 索引。
      */
-    inline uint32_t technique () const {
+    inline uint32_t technique() const {
         return _techIdx;
     }
 
@@ -151,7 +151,7 @@ public:
      * @en The passes defined in this material.
      * @zh 当前正在使用的 pass 数组。
      */
-    std::vector<gfx::Pass*>& getPasses () {
+    std::vector<gfx::Pass*>& getPasses() {
         return _passes;
     }
 
@@ -159,7 +159,7 @@ public:
      * @en The hash value of this material.
      * @zh 材质的 hash。
      */
-    inline uint64_t getHash () const {
+    inline uint64_t getHash() const {
         return _hash;
     }
 
@@ -167,7 +167,7 @@ public:
      * @en The parent material
      * @zh 父材质
      */
-    virtual Material* getParent () {
+    virtual Material* getParent() const {
         return nullptr;
     }
 
@@ -175,7 +175,7 @@ public:
      * @en The owner render component
      * @zh 该材质所归属的渲染组件
      */
-    virtual RenderableComponent* getOwner() {
+    virtual RenderableComponent* getOwner() const {
         return nullptr;
     }
 };

@@ -93,7 +93,10 @@ struct IRequest : public IOptions {
 
 using CompleteCallback = std::function<void(const Error* err, const std::any& data)>;
 using CompleteCallbackNoData = std::function<void(const Error* err)>;
-using CompleteCallbackWithData = std::function<void(const Error* err, const std::any& data)>;
+
+template <typename T>
+using CompleteCallbackWithData = std::function<void(const Error* err, const T& data)>;
+
 using ProgressCallback = std::function<void(uint32_t finished, uint32_t total, RequestItem* item)>;
 using Request = std::variant<std::string, std::vector<std::string>, IRequest, std::vector<IRequest>>;
 

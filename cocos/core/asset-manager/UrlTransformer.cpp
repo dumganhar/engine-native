@@ -23,3 +23,4 @@
  THE SOFTWARE.
 ****************************************************************************/
 
+#include "core/asset-manager/UrlTransformer.h"

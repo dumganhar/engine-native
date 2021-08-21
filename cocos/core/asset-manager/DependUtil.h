@@ -51,6 +51,8 @@ class Asset;
  */
 class DependUtil final {
 public:
+    static DependUtil* getInstance();
+
     Cache<IDependencies> _depends;
 
     void init();

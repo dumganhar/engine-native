@@ -392,7 +392,7 @@ public:
      * 这个函数是 pauseAllCallbacks 的逆操作。
      * @param std::vector<System *> targetsToResume
      */
-    void resumeTargets(std::vector<System*>&);
+    void resumeTargets(const std::vector<System*>&);
 
     /**
      * @en

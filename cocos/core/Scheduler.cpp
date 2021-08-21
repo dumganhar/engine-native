@@ -43,7 +43,6 @@ static void releaseVector(std::vector<T*>& v) {
     //if it's still in use, then should not consider the capacity
     for (auto i : v) {
         delete i;
-        i = nullptr;
     }v.clear();
 }
 
@@ -51,7 +50,6 @@ template<class F, class S>
 static void releaseMap(std::unordered_map<F, S*>& m) {
     for (auto i : m) {
         delete i.second;
-        i.second = nullptr;
     }
     m.clear();
 }
@@ -306,7 +304,7 @@ namespace cc {
             elementUpdate->_entry->_paused = false;
         }
     }
-    void Scheduler::resumeTargets(std::vector<System*>& targetsToResume) {
+    void Scheduler::resumeTargets(const std::vector<System*>& targetsToResume) {
         if (!targetsToResume.empty()) {
             for (auto i : targetsToResume) {
                 resumeTarget(i);

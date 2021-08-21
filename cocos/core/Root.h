@@ -33,6 +33,7 @@
 #include "scene/DrawBatch2D.h"
 #include "renderer/pipeline/RenderPipeline.h"
 #include "renderer/gfx-base/GFXDevice.h"
+#include "core/memop/Pool.h"
 
 #pragma once
 
@@ -40,8 +41,8 @@ namespace cc {
 
 class Root final {
 public:
-    Root(gfx::Device *device);
-    ~Root() = default;
+    explicit Root(gfx::Device *device);
+    ~Root();
 
     // @minggo IRootInfo seems is not use, and how to return Promise?
     void initialize();
@@ -229,8 +230,10 @@ private:
     pipeline::RenderPipeline *         _pipeline{nullptr};
     scene::DrawBatch2D *               _batcher2D{nullptr};
     std::vector<scene::RenderScene *>  _scenes;
+    Pool<scene::Camera>                *_cameraPool{nullptr};
     float                              _cumulativeTime{0.F};
     float                              _frameTime{0.F};
+    float                              _fpsTime{0.F};
     uint32_t                           _frameCount{0};
     uint32_t                           _fps{0};
     uint32_t                           _fixedFPS{0};

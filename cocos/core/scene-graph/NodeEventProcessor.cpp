@@ -22,3 +22,38 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+#include "core/scene-graph/NodeEventProcessor.h"
+#include "core/scene-graph/BaseNode.h"
+namespace cc {
+namespace scenegraph {
+bool NodeEventProcessor::hasEventListener(NodeEventType  /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool  /*useCapture*/) {
+    bool has = false;
+    return has;
+}
+
+bool NodeEventProcessor::hasEventListener(NodeEventType  /*type*/) {
+    bool has = false;
+    return has;
+}
+
+void NodeEventProcessor::targetOff(NodeEventType target) {
+}
+
+bool NodeEventProcessor::on(NodeEventType  /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool  /*useCapture*/) {
+    return false;
+}
+
+bool NodeEventProcessor::once(NodeEventType  /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool  /*useCapture*/) {
+    return false;
+}
+
+bool NodeEventProcessor::off(NodeEventType  /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool  /*useCapture*/) {
+    return false;
+}
+
+void NodeEventProcessor::emit(NodeEventType type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
+}
+
+} // namespace scenegraph
+} // namespace cc

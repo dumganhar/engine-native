@@ -25,9 +25,10 @@
 #include "math/Mat3.h"
 
 #include <cmath>
-#include "math/Quaternion.h"
-#include "math/MathUtil.h"
 #include "base/Macros.h"
+#include "math/Math.h"
+#include "math/MathUtil.h"
+#include "math/Quaternion.h"
 
 NS_CC_MATH_BEGIN
 
@@ -82,6 +83,29 @@ void Mat3::identity(Mat3 &mat) {
     mat.m[6] = 0;
     mat.m[7] = 0;
     mat.m[8] = 1;
+}
+
+void Mat3::fromViewUp(Mat3 &out, const Vec3 &view) {
+    fromViewUp(out, view, Vec3(0, 1, 0));
+}
+void Mat3::fromViewUp(Mat3 &out, const Vec3 &view, const Vec3 &up) {
+    if (view.lengthSquared() < math::EPSILON * math::EPSILON) {
+        Mat3::identity(out);
+        return;
+    }
+    Vec3 vTempA{Vec3::ZERO};
+    Vec3 vTempB{Vec3::ZERO};
+
+    Vec3::cross(up, view, &vTempA);
+    vTempA.normalize();
+    if (vTempA.lengthSquared() < math::EPSILON * math::EPSILON) {
+        Mat3::identity(out);
+        return;
+    }
+    Vec3::cross(view, vTempA, &vTempB);
+    out.set(vTempA.x, vTempA.y, vTempA.z,
+            vTempB.x, vTempB.y, vTempB.z,
+            view.x, view.y, view.z);
 }
 
 void Mat3::transpose() {

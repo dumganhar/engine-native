@@ -26,18 +26,27 @@
 #pragma once
 
 #include <vector>
-#include "cocos/bindings/manual/jsb_conversions.h"
+#include "core/scene-graph/BaseNode.h"
+#include "core/scene-graph/NodeEnum.h"
+#include "core/scene-graph/Scene.h"
 #include "math/Mat3.h"
 #include "math/Mat4.h"
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
-#include "BaseNode.h"
-#include "Scene.h"
+
 
 namespace cc {
 namespace scenegraph {
-enum class TransformBit;
+/**
+ * Event types emitted by Node
+ */
+using EventType = NodeEventType;
+/**
+ * Bit masks for Node transformation parts
+ */
+using TransformDirtyBit = TransformBit;
+class NodeUiProperties;
 // This struct defines the memory layout shared between JS and C++.
 struct NodeLayout {
     uint32_t       dirtyFlag{0};
@@ -53,56 +62,114 @@ struct NodeLayout {
 
 class Node final : public BaseNode {
 public:
-    Node()             = default;
+    Node();
+    explicit Node(const std::string &name);
     Node(const Node &) = delete;
     Node(Node &&)      = delete;
     ~Node() override   = default;
     Node &operator=(const Node &) = delete;
     Node &operator=(Node &&) = delete;
 
-    void initWithData(uint8_t *, uint8_t *, const se::Value &);
-    void invalidateChildren(TransformBit dirtyBit);
+    static bool  isStatic;
+    static void  setDirtyNode(int idx, Node *node);
+    static Node *getDirtyNode(int idx);
+    static Node *find(const std::string &, Node *referenceNode = nullptr);
+    template <typename T>
+    static bool isNode(T *obj);
+    static void resetHasChangedFlags();
+    static void clearNodeArray();
+
+    NodeUiProperties *uiProps;
+    void              invalidateChildren(TransformBit dirtyBit);
 
     void updateWorldTransform() override;
     void updateWorldRTMatrix() override;
 
-    void        setWorldPosition(float x, float y, float z) override;
-    void        setWorldRotation(float x, float y, float z, float w) override;
-    static void setDirtyNode(int idx, Node *node);
+    void translate(const Vec3 &, NodeSpace ns = NodeSpace::LOCAL);
+    void rotate(const Quaternion &rot, NodeSpace ns);
+    void lookAt(const Vec3 &pos, const Vec3 &up);
+    void setWorldPosition(float x, float y, float z) override;
+    void setWorldRotation(float x, float y, float z, float w) override;
+    void setRotationFromEuler(float x, float y, float z);
+    void setParent(BaseNode *val, bool isKeepWorld) override;
+    void inverseTransformPoint(Vec3 &out, const Vec3 &p);
+    void setWorldRotationFromEuler(float x, float y, float z);
+    /**
+     * Set local transformation with rotation, position and scale separately.
+     */
+    void        setRTS(Quaternion *rot = nullptr, Vec3 *pos = nullptr, Vec3 *scale = nullptr);
+    inline void pauseSystemEvents(bool recursive) {}
+    inline void resumeSystemEvents(bool recursive) {}
 
-    inline void setFlagsChanged(uint32_t value) override { *_flagChunk = value; }
-    inline void setDirtyFlag(uint32_t value) override { _nodeLayout->dirtyFlag = value; }
-    inline void setLayer(uint32_t layer) override { _nodeLayout->layer = layer; }
-    inline void setWorldMatrix(const Mat4 &matrix) override { _nodeLayout->worldMatrix.set(matrix); }
+    inline void setRotationFromEuler(float x, float y) {
+        setRotationFromEuler(x, y, _euler.z);
+    }
+    inline void setRotationFromEuler(const Vec3 &val) {
+        setRotationFromEuler(val.x, val.y, val.z);
+    }
+
+    inline void setFlagsChanged(uint32_t value) override { _flagChange = value; }
+    inline void setDirtyFlag(uint32_t value) override { _dirtyFlag = value; }
+    inline void setLayer(uint32_t layer) override { _layer = layer; }
+    inline void setWorldMatrix(const Mat4 &matrix) override { _worldMatrix.set(matrix); }
     inline void setWorldPosition(const Vec3 &pos) override { setWorldPosition(pos.x, pos.y, pos.z); }
     inline void setWorldRotation(const Quaternion &rotation) override { setWorldRotation(rotation.x, rotation.y, rotation.z, rotation.w); }
-    inline void setWorldScale(const Vec3 &scale) override { _nodeLayout->worldScale.set(scale); }
-    inline void setLocalPosition(const Vec3 &pos) override { _nodeLayout->localPosition.set(pos); }
-    inline void setLocalPosition(float x, float y, float z) override { _nodeLayout->localPosition.set(x, y, z); }
-    inline void setLocalRotation(const Quaternion &rotation) override { _nodeLayout->localRotation.set(rotation); }
-    inline void setLocalRotation(float x, float y, float z, float w) override { _nodeLayout->localRotation.set(x, y, z, w); }
-    inline void setLocalScale(const Vec3 &scale) override { _nodeLayout->localScale.set(scale); }
+    inline void setWorldScale(const Vec3 &scale) override { _worldScale.set(scale); }
+    inline void setLocalPosition(const Vec3 &pos) override { _localPosition.set(pos); }
+    inline void setLocalPosition(float x, float y, float z) override { _localPosition.set(x, y, z); }
+    inline void setLocalRotation(const Quaternion &rotation) override { _localRotation.set(rotation); }
+    inline void setLocalRotation(float x, float y, float z, float w) override { _localRotation.set(x, y, z, w); }
+    inline void setLocalScale(const Vec3 &scale) override { _localScale.set(scale); }
+    inline void setEulerAngles(const Vec3 &val) {
+        setRotationFromEuler(val.x, val.y, val.z);
+    }
+    inline void setForward(const Vec3 &dir) {
+        uint32_t   len    = dir.length();
+        Vec3       v3Temp = dir * -1 / len;
+        Quaternion qTemp{Quaternion::identity()};
+        Quaternion::fromViewUp(qTemp, v3Temp);
+        setWorldRotation(qTemp);
+    }
+    void setAngle(float);
 
-    inline uint32_t          getFlagsChanged() const override { return *_flagChunk; }
-    inline uint32_t          getLayer() const override { return _nodeLayout->layer; }
-    inline uint32_t          getDirtyFlag() const override { return _nodeLayout->dirtyFlag; }
-    inline const Vec3 &      getPosition() const override { return _nodeLayout->localPosition; }
-    inline const Vec3 &      getScale() const override { return _nodeLayout->localScale; }
-    inline const Quaternion &getRotation() const override { return _nodeLayout->localRotation; }
-    inline const NodeLayout *getNodeLayout() const { return _nodeLayout; };
-    inline const Mat4 &      getWorldMatrix() const override { return _nodeLayout->worldMatrix; }
-    inline const Vec3 &      getWorldPosition() const override { return _nodeLayout->worldPosition; }
-    inline const Quaternion &getWorldRotation() const override { return _nodeLayout->worldRotation; }
-    inline const Vec3 &      getWorldScale() const override { return _nodeLayout->worldScale; }
-    inline const Mat4 &      getWorldRTMatrix() const override { return _rtMat; };
-    static Node *            getDirtyNode(int idx);
-    static Node *            find(const String &, Node *referenceNode = nullptr);
+    inline Vec3 getEulerAngles() {
+        if (_eulerDirty) {
+            Quaternion::toEuler(&_euler, _localRotation);
+            _eulerDirty = false;
+        }
+        return _euler;
+    }
+    inline float getAngle() const {
+        return _euler.z;
+    }
+    inline Vec3 getForward() {
+        Vec3 forward{0, 0, -1};
+        forward.transformQuat(_worldRotation);
+        return forward;
+    }
+    inline Vec3 getUp() {
+        Vec3 up{0, 1, 0};
+        up.transformQuat(_worldRotation);
+        return up;
+    }
+    inline Vec3 getRight() {
+        Vec3 right{1, 0, 0};
+        right.transformQuat(_worldRotation);
+        return right;
+    }
+
+protected:
+    bool onPreDestroy() override;
+    bool _eulerDirty{false};
+    void onSetParent(BaseNode *oldParent, bool keepWorldTransform) override;
 
 private:
-    NodeLayout *       _nodeLayout{nullptr};
-    uint32_t *         _flagChunk{nullptr};
-    static se::Object *dirtyNodes;
+    static std::vector<BaseNode *> dirtyNodes;
+    static uint32_t                clearFrame;
+    static uint32_t                clearRound;
+    TransformBit                   _dirtyFlagsPri{TransformBit::NONE};
+    Vec3                           _euler{0, 0, 0};
 };
 
-} // namespace scene
+} // namespace scenegraph
 } // namespace cc

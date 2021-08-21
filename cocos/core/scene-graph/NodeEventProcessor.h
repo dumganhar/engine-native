@@ -25,23 +25,38 @@
 
 #pragma once
 
+#include <any>
+#include <functional>
+#include <string>
+#include "core/event/CallbacksInvoker.h"
 #include "core/event/Event.h"
+#include "core/scene-graph/BaseNode.h"
+#include "core/scene-graph/NodeEvent.h"
+
 namespace cc {
 namespace scenegraph {
-
 class BaseNode;
-
 class NodeEventProcessor final {
 private:
-    BaseNode* _node{nullptr};
+    BaseNode *_node{nullptr};
 
 public:
     NodeEventProcessor(/* args */) = default;
     ~NodeEventProcessor()          = default;
-    inline BaseNode* getNode() const { return _node; }
+    inline BaseNode *getNode() { return _node; }
     inline void      reattach() {}
     inline void      destroy() {}
     inline void      dispatchEvent(event::Event eve) {}
+
+    event::CallbacksInvoker *bubblingTargets{nullptr};
+
+    static bool hasEventListener(NodeEventType, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    static bool hasEventListener(NodeEventType);
+    static bool on(NodeEventType type, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    static bool once(NodeEventType type, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    static bool off(NodeEventType type, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    void        emit(NodeEventType, const std::any &, const std::any &, const std::any &, const std::any &);
+    void        targetOff(NodeEventType);
 };
 
 } // namespace scenegraph

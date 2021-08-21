@@ -30,7 +30,8 @@ namespace scenegraph {
 // LifeCycleInvoker
 LifeCycleInvoker::LifeCycleInvoker(std::function<void(std::vector<Component*>, float)> invokeFunc) : _invoke(std::move(invokeFunc)) {}
 
-void LifeCycleInvoker::stableRemoveInactive() {}
+void LifeCycleInvoker::stableRemoveInactive(const std::vector<Component*>& components, uint32_t flagToClear) {
+}
 
 LifeCycleInvoker::~LifeCycleInvoker() = default;
 
@@ -65,6 +66,9 @@ void ComponentScheduler::disableComp(Component* comp){};
 void ComponentScheduler::startPhase(){};
 void ComponentScheduler::updatePhase(float dt){};
 void ComponentScheduler::lateUpdatePhase(float dt){};
+void ComponentScheduler::startForNewComps(){};
+void ComponentScheduler::scheduleImmediate(Component* comp){};
+void ComponentScheduler::deferredSchedule(){};
 
 } // namespace scenegraph
 } // namespace cc

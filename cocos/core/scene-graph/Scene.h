@@ -37,5 +37,5 @@ public:
     Scene &operator=(const Scene &) = delete;
     Scene &operator=(Scene &&) = delete;
 };
-} // namespace scene
+} // namespace scenegraph
 } // namespace cc

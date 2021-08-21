@@ -139,6 +139,11 @@ public:
     static float angle(const Vec3 &v1, const Vec3 &v2);
 
     /**
+     * Transforms the current vector with given scale, rotation and translation in reverse order
+     */
+    static void transformInverseRTS(Vec3 &out, const Vec3 &v, const Quaternion &r, const Vec3 &t, const Vec3 &s);
+
+    /**
      * Adds the elements of the specified vector to this one.
      *
      * @param v The vector to add.

@@ -1375,14 +1375,7 @@ cocos_source_files(
     # cocos/core/scene-graph/SceneGraphModuleHeader.h
 
     cocos/core/utils/IDGenerator.cpp
-    cocos/core/utils/IDGenerator.h
-
-
-    cocos/core/platform/event-manager/InputManager.h
-    cocos/core/platform/event-manager/InputManager.cpp
-    cocos/core/platform/event-manager/Touch.h
-    cocos/core/platform/event-manager/Touch.cpp
-    
+    cocos/core/utils/IDGenerator.h    
 )
 
 cocos_source_files(MODULE ccgeometry

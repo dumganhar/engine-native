@@ -1238,7 +1238,6 @@ cocos_source_files(
     cocos/core/memop/RecyclePool.cpp
 
 
-    cocos/core/asset-manager
     cocos/core/asset-manager/AssetManager.cpp
     cocos/core/asset-manager/AssetManager.h
     cocos/core/asset-manager/AssetManagerModuleHeader.h

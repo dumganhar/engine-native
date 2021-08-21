@@ -25,11 +25,12 @@
 
 #pragma once
 
+#include <any>
+#include <functional>
+
 #include "base/Value.h"
 #include "core/Types.h"
 #include "core/data/Object.h"
-
-#include <any>
 
 namespace cc {
 

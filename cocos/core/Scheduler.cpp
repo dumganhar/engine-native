@@ -501,7 +501,7 @@ namespace cc {
 
     void Scheduler::scheduleUpdate(System* target, Priority priority, bool paused) {
         const std::string targetId{ target->uuid == "" ? target->uuid : target->id };
-        CCASSERT(target != "",1510);
+        CCASSERT(targetId != "",1510);
         auto hashElement = _hashForUpdates[targetId];
         if (hashElement && hashElement->_entry) {
             if (hashElement->_entry->_priority != priority) {

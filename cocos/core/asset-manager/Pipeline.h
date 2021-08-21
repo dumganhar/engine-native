@@ -34,7 +34,7 @@
 
 namespace cc {
 
-using IAsyncPipe = std::function<void(Task&&, CompleteCallbackNoData)>;
+using IAsyncPipe = std::function<void(const Task&, CompleteCallbackNoData)>;
 using ISyncPipe = std::function<const Error*(const Task& task)>;
 using IPipe = std::variant<IAsyncPipe, ISyncPipe>;
 

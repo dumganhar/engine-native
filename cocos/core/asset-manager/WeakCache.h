@@ -37,7 +37,8 @@ namespace cc {
 //cjh How to implement ES6 WeakRef in C++: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef
 template <typename T>
 class WeakRef {
-    WeakRef(T obj) = default;
+public:
+    WeakRef(T obj) {}
     T deref () {} //cjh How to implement deref?
 };
 

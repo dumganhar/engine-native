@@ -210,7 +210,7 @@ public:
      * @zh 将触摸点的屏幕坐标转换为 WebGL View 下的坐标。
      * @deprecated since v2.0
      */
-    Vec2 convertToGL(Vec2& uiPoint);
+    Vec2 convertToGL(const Vec2& uiPoint);
 
     /**
      * @en
@@ -220,7 +220,7 @@ public:
      * @zh 将触摸点的 WebGL View 坐标转换为屏幕坐标。
      * @deprecated since v2.0
      */
-    Vec2 convertToUI(Vec2& glPoint);
+    Vec2 convertToUI(const Vec2& glPoint);
 
     /**
      * @en End the life of director in the next frame
@@ -261,7 +261,7 @@ public:
      * @param onBeforeLoadScene - The function invoked at the scene before loading.
      * @param onLaunched - The function invoked at the scene after launch.
      */
-    void runSceneImmediate(std::variant<Scene, SceneAsset>, std::function<void*()> onBeforeLoadScene, std::function<void*()> onLaunched);
+    void runSceneImmediate(const std::variant<Scene, SceneAsset>&, const std::function<void*()>& onBeforeLoadScene, const std::function<void*()>& onLaunched);
     /**
      * @en
      * Run a scene. Replaces the running scene with a new one or enter the first scene.<br>
@@ -272,7 +272,7 @@ public:
      * @param onLaunched - The function invoked at the scene after launch.
      * @private
      */
-    void runScene(std::variant<Scene, SceneAsset> scene, std::function<void*()> onBeforeLoadScene, std::function<void*()> onLaunched);
+    void runScene(const std::variant<Scene *, SceneAsset *>& scene, const std::function<void*()>& onBeforeLoadScene, const std::function<void*()>& onLaunched);
 
     /**
      * @en Loads the scene by its name.
@@ -282,7 +282,7 @@ public:
      * @param onLaunched - callback, will be called after scene launched.
      * @return if error, return false
      */
-    bool loadScene(std::string sceneName, std::function<void*()> onLaunched, std::function<void*()> onUnloaded);
+    bool loadScene(const std::string& sceneName, const std::function<void*()>& onLaunched, const std::function<void*()>& onUnloaded);
     /**
      * @en
      * Pre-loads the scene to reduces loading time. You can call this method at any time you want.<br>
@@ -295,7 +295,7 @@ public:
      * @param sceneName 场景名称。
      * @param onLoaded 加载回调。
      */
-    void preloadScene(std::string sceneName, std::function<void*()> onLoaded);
+    void preloadScene(const std::string& sceneName, const std::function<void*()>& onLoaded);
 
     /**
      * @en
@@ -311,7 +311,7 @@ public:
      * @param onLoaded 加载回调。
      */
     template <typename... A, typename... B>
-    void preloadScene(std::string sceneName, std::function<void*(A...)> onProgress, std::function<void*(B...)> onLoaded);
+    void preloadScene(const std::string& sceneName, const std::function<void*(A...)>& onProgress, const std::function<void*(B...)>& onLoaded);
 
     /**
      * @en Resume game logic execution after pause, if the current scene is not paused, nothing will happen.
@@ -374,14 +374,14 @@ public:
      * @en Register a system.
      * @zh 注册一个系统。
      */
-    void registerSystem(std::string& name, System* sys, uint32_t priority);
+    void registerSystem(const std::string& name, System* sys, uint32_t priority);
     void unregisterSystem(System* sys);
 
     /**
      * @en get a system.
      * @zh 获取一个 system。
      */
-    System* getSystem(std::string& name);
+    System* getSystem(const std::string& name);
 
     /**
      * @en Returns the `AnimationManager` associated with this director. Please use getSystem(AnimationManager.ID)

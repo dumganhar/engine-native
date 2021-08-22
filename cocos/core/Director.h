@@ -41,6 +41,7 @@
 #include "core/Game.h"
 #include "core/Root.h"
 #include "core/Scheduler.h"
+#include "core/asset-manager/AssetManager.h"
 #include "core/event/EventEmitter.h"
 #include "core/scene-graph/BaseNode.h"
 #include "core/scene-graph/ComponentScheduler.h"
@@ -185,42 +186,14 @@ public:
      */
     static std::string EVENT_END_FRAME;
 
-    static const Director* getInstance() {
-        if (!Director::instance) {
-            Director::instance = new Director();
-        }
-        return Director::instance;
+    static Director& getInstance() {
+        static Director instance;
+        return instance;
     }
 
     scenegraph::ComponentScheduler* _compScheduler{nullptr};
     scenegraph::NodeActivator*      _nodeActivator{nullptr};
 
-    /**
-     * @en Calculates delta time since last time it was called, the result is saved to an internal property.
-     * @zh 计算从上一帧到现在的时间间隔，结果保存在私有属性中
-     * @deprecated since v3.3.0 no need to use it anymore
-     * calculateDeltaTime (now) {}
-     */
-
-    /**
-     * @en
-     * Converts a view coordinate to an WebGL coordinate<br/>
-     * Useful to convert (multi) touches coordinates to the current layout (portrait or landscape)<br/>
-     * Implementation can be found in directorWebGL.
-     * @zh 将触摸点的屏幕坐标转换为 WebGL View 下的坐标。
-     * @deprecated since v2.0
-     */
-    Vec2 convertToGL(const Vec2& uiPoint);
-
-    /**
-     * @en
-     * Converts an OpenGL coordinate to a view coordinate<br/>
-     * Useful to convert node points to window points for calls such as glScissor<br/>
-     * Implementation can be found in directorWebGL.
-     * @zh 将触摸点的 WebGL View 坐标转换为屏幕坐标。
-     * @deprecated since v2.0
-     */
-    Vec2 convertToUI(const Vec2& glPoint);
 
     /**
      * @en End the life of director in the next frame
@@ -423,7 +396,6 @@ public:
     Director();
     ~Director();
 private:
-    static Director* instance;
 
     bool                 _invalid{false};
     bool                 _paused{false};

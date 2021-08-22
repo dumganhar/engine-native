@@ -30,7 +30,7 @@ namespace scenegraph {
 // LifeCycleInvoker
 LifeCycleInvoker::LifeCycleInvoker(std::function<void(std::vector<Component*>, float)> invokeFunc) : _invoke(std::move(invokeFunc)) {}
 
-void LifeCycleInvoker::stableRemoveInactive(const std::vector<Component*>& components, uint32_t flagToClear) {
+void LifeCycleInvoker::stableRemoveInactive(const std::vector<Component*>& components, uint flagToClear) {
 }
 
 LifeCycleInvoker::~LifeCycleInvoker() = default;
@@ -40,7 +40,7 @@ void OneOffInvoker::add(Component* comp) {}
 
 void OneOffInvoker::remove(Component* comp) {}
 
-void OneOffInvoker::cancelInactive(uint32_t flagToClear) {}
+void OneOffInvoker::cancelInactive(uint flagToClear) {}
 
 void OneOffInvoker::invoke() {}
 

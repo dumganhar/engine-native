@@ -27,6 +27,7 @@
 #include <any>
 #include <string>
 #include <vector>
+#include "base/TypeDef.h"
 #include "core/components/Component.h"
 #include "core/data/Object.h"
 #include "core/event/Event.h"
@@ -53,12 +54,12 @@ public:
     BaseNode &operator=(const BaseNode &) = delete;
     BaseNode &operator=(const BaseNode &&) = delete;
 
-    static const uint32_t TRANSFORM_ON;
-    static const uint32_t DESTROYING;
-    static const uint32_t DEACTIVATING;
-    static const uint32_t DONT_DESTROY;
-    virtual inline void   updateWorldTransform() {}
-    virtual inline void   updateWorldRTMatrix() {}
+    static const uint   TRANSFORM_ON;
+    static const uint   DESTROYING;
+    static const uint   DEACTIVATING;
+    static const uint   DONT_DESTROY;
+    virtual inline void updateWorldTransform() {}
+    virtual inline void updateWorldRTMatrix() {}
 
     virtual inline void           setWorldPosition(float x, float y, float z) {}
     virtual inline void           setWorldRotation(float x, float y, float z, float w) {}
@@ -91,7 +92,7 @@ public:
         }
     }
     inline void updateSiblingIndex() {
-        uint32_t i = 0;
+        uint i = 0;
         for (auto *child : _children) {
             child->_siblingIndex = i++;
         }
@@ -120,10 +121,10 @@ public:
         _name = name;
     }
     inline void         setActive(bool isActive) {}
-    inline void         setSiblingIndex(uint32_t idx) {}
-    virtual inline void setFlagsChanged(uint32_t value) {}
-    virtual inline void setDirtyFlag(uint32_t value) {}
-    virtual inline void setLayer(uint32_t layer) {}
+    inline void         setSiblingIndex(uint idx) {}
+    virtual inline void setFlagsChanged(uint value) {}
+    virtual inline void setDirtyFlag(uint value) {}
+    virtual inline void setLayer(uint layer) {}
     virtual inline void setWorldMatrix(const Mat4 &matrix) {}
     virtual inline void setWorldPosition(const Vec3 &pos) {}
     virtual inline void setWorldRotation(const Quaternion &rotation) {}
@@ -155,9 +156,9 @@ public:
     inline BaseNode *                           getParent() const { return _parent; }
     inline std::vector<components::Component *> getComponents() const { return _components; }
     inline NodeEventProcessor *                 getEventProcessor() const { return _eventProcessor; }
-    virtual inline uint32_t                     getFlagsChanged() const { return _flagChange; }
-    virtual inline uint32_t                     getLayer() const { return _layer; }
-    virtual inline uint32_t                     getDirtyFlag() const { return _dirtyFlag; }
+    virtual inline uint                         getFlagsChanged() const { return _flagChange; }
+    virtual inline uint                         getLayer() const { return _layer; }
+    virtual inline uint                         getDirtyFlag() const { return _dirtyFlag; }
     virtual inline const Vec3 &                 getPosition() const { return _localPosition; }
     virtual inline const Vec3 &                 getScale() const { return _localScale; }
     virtual inline const Quaternion &           getRotation() const { return _localRotation; }
@@ -169,7 +170,7 @@ public:
     inline BaseNode *                           getChildByUuid(const std::string &) const;
     BaseNode *                                  getChildByName(const std::string &) const;
     BaseNode *                                  getChildByPath(const std::string &) const;
-    inline uint32_t                             getSiblingIndex() const { return _siblingIndex; }
+    inline uint                                 getSiblingIndex() const { return _siblingIndex; }
     inline void                                 insertChild(BaseNode *child, uint32_t siblingIndex) {
         child->_parent = this;
         child->setSiblingIndex(siblingIndex);
@@ -179,11 +180,11 @@ protected:
     std::vector<BaseNode *>              _children;
     std::vector<components::Component *> _components;
     BaseNode *                           _parent{nullptr};
-    uint32_t                             _flagChange{0};
-    uint32_t                             _dirtyFlag{0};
-    uint32_t                             _objFlags{0};
+    uint                                 _flagChange{0};
+    uint                                 _dirtyFlag{0};
+    uint                                 _objFlags{0};
     bool                                 _persistNode{false};
-    uint32_t                             _layer{0};
+    uint                                 _layer{0};
     cc::Vec3                             _worldScale{Vec3::ONE};
     cc::Vec3                             _worldPosition{Vec3::ZERO};
     cc::Quaternion                       _worldRotation{Quaternion::identity()};
@@ -197,8 +198,8 @@ protected:
     bool                                 _activeInHierarchy{true};
     Scene *                              _scene{nullptr};
     NodeEventProcessor *                 _eventProcessor{nullptr};
-    uint32_t                             _siblingIndex{0};
-    uint32_t                             _eventMask{0};
+    uint                                 _siblingIndex{0};
+    uint                                 _eventMask{0};
     inline void                          updateScene() {
         if (_parent == nullptr) {
             return;
@@ -213,14 +214,14 @@ protected:
     }
     static BaseNode *   instantiate(BaseNode *cloned, bool isSyncedNode);
     bool                onPreDestroyBase();
-    inline void         onSiblingIndexChanged(uint32_t siblingIndex) {}
+    inline void         onSiblingIndexChanged(uint siblingIndex) {}
     virtual inline void checkMultipleComp(components::Component *comp) {}
     // for walk
     static std::vector<std::vector<BaseNode *>> stacks;
-    static int32_t                              stackId;
+    static index_t                              stackId;
 
     static void                                 setScene(BaseNode *);
-    static int32_t                              getIdxOfChilds(BaseNode *parent, BaseNode *target);
+    static index_t                              getIdxOfChild(const std::vector<BaseNode *> &, BaseNode *);
     static components::Component *              findComponent(BaseNode *, const std::string &);
     static components::Component *              findComponents(BaseNode *, const std::string &, const std::vector<components::Component *> &);
     static components::Component *              findChildComponent(const std::vector<BaseNode *> &, const std::string &);

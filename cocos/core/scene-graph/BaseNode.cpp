@@ -32,23 +32,23 @@
 namespace cc {
 namespace scenegraph {
 using components::Component;
-const uint32_t BaseNode::TRANSFORM_ON{1 << 0};
-const uint32_t BaseNode::DESTROYING{static_cast<uint32_t>(CCObject::Flags::DESTROYING)};
-const uint32_t BaseNode::DEACTIVATING{static_cast<uint32_t>(CCObject::Flags::DEACTIVATING)};
-const uint32_t BaseNode::DONT_DESTROY{static_cast<uint32_t>(CCObject::Flags::DONT_DESTROY)};
-int32_t        BaseNode::stackId{0};
+const uint BaseNode::TRANSFORM_ON{1 << 0};
+const uint BaseNode::DESTROYING{static_cast<uint>(CCObject::Flags::DESTROYING)};
+const uint BaseNode::DEACTIVATING{static_cast<uint>(CCObject::Flags::DEACTIVATING)};
+const uint BaseNode::DONT_DESTROY{static_cast<uint>(CCObject::Flags::DONT_DESTROY)};
+index_t    BaseNode::stackId{0};
 
-BaseNode::BaseNode(const std::string& name) : CCObject(name.c_str()) {
+BaseNode::BaseNode(const std::string& name) : CCObject(name) {
     if (name.empty()) {
-        _name = "New Node";
+        _name.append("New Node");
         return;
     }
     _name = name;
 }
 
-void BaseNode::onBatchCreated(bool  /*dontChildPrefab*/) {
+void BaseNode::onBatchCreated(bool /*dontChildPrefab*/) {
     if (_parent) {
-        int32_t idx = getIdxOfChilds(_parent, this);
+        index_t idx = getIdxOfChild(_parent->_children, this);
         if (idx != -1) {
             _siblingIndex = idx;
         }
@@ -73,12 +73,12 @@ void BaseNode::on(NodeEventType type, const std::function<void(BaseNode*)>& call
         default:
             break;
     }
-    _eventProcessor->on(type, callback, target, useCapture);
+    cc::scenegraph::NodeEventProcessor::on(type, callback, target, useCapture);
 }
 
 void BaseNode::off(NodeEventType type, const std::function<void(BaseNode*)>& callback, const std::any& target, bool useCapture) {
-    _eventProcessor->off(type, callback, target, useCapture);
-    bool hasListeners = _eventProcessor->hasEventListener(type);
+    cc::scenegraph::NodeEventProcessor::off(type, callback, target, useCapture);
+    bool hasListeners = cc::scenegraph::NodeEventProcessor::hasEventListener(type);
     if (!hasListeners) {
         switch (type) {
             case NodeEventType::TRANSFORM_CHANGED:
@@ -91,7 +91,7 @@ void BaseNode::off(NodeEventType type, const std::function<void(BaseNode*)>& cal
 }
 
 void BaseNode::once(NodeEventType type, const std::function<void(BaseNode*)>& callback, const std::any& target, bool useCapture) {
-    _eventProcessor->once(type, callback, target, useCapture);
+    cc::scenegraph::NodeEventProcessor::once(type, callback, target, useCapture);
 }
 void BaseNode::emit(NodeEventType type, const std::any& arg) {
     _eventProcessor->emit(type, arg, nullptr, nullptr, nullptr);
@@ -103,16 +103,16 @@ void BaseNode::dispatchEvent(event::Event eve) {
     _eventProcessor->dispatchEvent(eve);
 }
 bool BaseNode::hasEventListener(NodeEventType type, const std::function<void(BaseNode*)>& callback, const std::any& target) {
-    return _eventProcessor->hasEventListener(type, callback, target);
+    return cc::scenegraph::NodeEventProcessor::hasEventListener(type, callback, target);
 }
 void BaseNode::targetOff(NodeEventType target) {
     _eventProcessor->targetOff(target);
-    if ((_eventMask & TRANSFORM_ON) && !_eventProcessor->hasEventListener(NodeEventType::TRANSFORM_CHANGED)) {
+    if ((_eventMask & TRANSFORM_ON) && !cc::scenegraph::NodeEventProcessor::hasEventListener(NodeEventType::TRANSFORM_CHANGED)) {
         _eventMask &= ~TRANSFORM_ON;
     }
 }
 
-void BaseNode::setParent(BaseNode* parent, bool  /*isKeepWorld*/) {
+void BaseNode::setParent(BaseNode* parent, bool /*isKeepWorld*/) {
     if (_parent == parent) {
         return;
     }
@@ -130,11 +130,11 @@ Scene* BaseNode::getScene() const {
 }
 
 void BaseNode::walk(const std::function<void(BaseNode*)>& preFunc, const std::function<void(BaseNode*)>& postFunc) {
-    uint32_t               index{1};
-    int32_t                i{0};
+    uint                   index{1};
+    index_t                i{0};
     std::vector<BaseNode*> children;
     BaseNode*              curr{nullptr};
-    auto                   stacksCount = static_cast<uint32_t>(stacks.size());
+    auto                   stacksCount = static_cast<uint>(stacks.size());
     if (stackId >= stacksCount) {
         stacks.resize(stackId + 1);
     }
@@ -148,7 +148,7 @@ void BaseNode::walk(const std::function<void(BaseNode*)>& preFunc, const std::fu
     bool      afterChildren{false};
     while (index) {
         index--;
-        auto stackCount = static_cast<uint32_t>(stack.size());
+        auto stackCount = static_cast<uint>(stack.size());
         if (index >= stackCount) {
             continue;
         }
@@ -183,7 +183,7 @@ void BaseNode::walk(const std::function<void(BaseNode*)>& preFunc, const std::fu
             }
             continue;
         }
-        auto childCount = static_cast<uint32_t>(children.size());
+        auto childCount = static_cast<uint>(children.size());
         if (childCount > 0) {
             i++;
             if (i < childCount && children[i] != nullptr) {
@@ -195,7 +195,7 @@ void BaseNode::walk(const std::function<void(BaseNode*)>& preFunc, const std::fu
                 afterChildren = true;
                 if (parent->_parent != nullptr) {
                     children    = parent->_parent->_children;
-                    int32_t idx = getIdxOfChilds(this, parent);
+                    index_t idx = getIdxOfChild(_children, parent);
                     if (idx != -1) {
                         i = idx;
                     }
@@ -235,7 +235,7 @@ std::vector<components::Component*> BaseNode::getComponentsInChildren(const std:
     return findChildComponents(_children, name, _components);
 }
 
-Component* BaseNode::addComponent(const std::string&  /*className*/) {
+Component* BaseNode::addComponent(const std::string& /*className*/) {
     return nullptr;
 }
 
@@ -266,7 +266,7 @@ bool BaseNode::onPreDestroyBase() {
     if (!destroyByParent) {
         if (_parent) {
             emit(NodeEventType::PARENT_CHANGED, this);
-            int32_t childIdx = getIdxOfChilds(_parent, this);
+            index_t childIdx = getIdxOfChild(_parent->_children, this);
             if (childIdx != -1) {
                 std::remove(_parent->_children.begin(), _parent->_children.end(), this);
             }
@@ -286,7 +286,7 @@ bool BaseNode::onPreDestroyBase() {
     return destroyByParent;
 }
 
-void BaseNode::onSetParent(BaseNode* oldParent, bool  /*keepWorldTransform*/) {
+void BaseNode::onSetParent(BaseNode* oldParent, bool /*keepWorldTransform*/) {
     if (_parent) {
         if ((oldParent == nullptr || oldParent->_scene != _parent->_scene) && _parent->_scene != nullptr) {
             walk(setScene, nullptr);
@@ -310,10 +310,10 @@ void BaseNode::setScene(BaseNode* node) {
     node->updateScene();
 }
 
-int32_t BaseNode::getIdxOfChilds(BaseNode* parent, BaseNode* target) {
-    auto iteChild = std::find(parent->_children.begin(), parent->_children.end(), target);
-    if (iteChild != parent->_children.end()) {
-        return std::distance(std::begin(parent->_children), iteChild);
+index_t BaseNode::getIdxOfChild(const std::vector<BaseNode*>& child, BaseNode* target) {
+    auto iteChild = std::find(child.begin(), child.end(), target);
+    if (iteChild != child.end()) {
+        return iteChild - child.begin();
     }
     return -1;
 }
@@ -364,13 +364,17 @@ BaseNode* BaseNode::getChildByPath(const std::string& path) const {
             continue;
         }
         BaseNode* next{nullptr};
-        for (auto* child : lastNode->_children) {
-            if (child->_name == segment) {
-                next = child;
-                break;
+        if (lastNode) {
+            for (auto* child : lastNode->_children) {
+                if (child->_name == segment) {
+                    next = child;
+                    break;
+                }
             }
+            lastNode = next;
+        } else {
+            break;
         }
-        lastNode = next;
     }
     return lastNode;
 }
@@ -388,7 +392,7 @@ components::Component* BaseNode::findChildComponent(const std::vector<BaseNode*>
     return nullptr;
 }
 
-std::vector<components::Component*> BaseNode::findChildComponents(const std::vector<BaseNode*>&  /*childs*/, const std::string&  /*className*/, std::vector<components::Component*> comps) {
+std::vector<components::Component*> BaseNode::findChildComponents(const std::vector<BaseNode*>& /*childs*/, const std::string& /*className*/, std::vector<components::Component*> comps) {
     return comps;
 }
 

@@ -34,7 +34,7 @@
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
-
+#include "base/TypeDef.h"
 
 namespace cc {
 namespace scenegraph {
@@ -49,8 +49,8 @@ using TransformDirtyBit = TransformBit;
 class NodeUiProperties;
 // This struct defines the memory layout shared between JS and C++.
 struct NodeLayout {
-    uint32_t       dirtyFlag{0};
-    uint32_t       layer{0};
+    uint       dirtyFlag{0};
+    uint           layer{0};
     cc::Vec3       worldScale;
     cc::Vec3       worldPosition;
     cc::Quaternion worldRotation;
@@ -71,8 +71,8 @@ public:
     Node &operator=(Node &&) = delete;
 
     static bool  isStatic;
-    static void  setDirtyNode(int idx, Node *node);
-    static Node *getDirtyNode(int idx);
+    static void  setDirtyNode(const index_t idx, Node *node);
+    static Node *getDirtyNode(const index_t idx);
     static Node *find(const std::string &, Node *referenceNode = nullptr);
     template <typename T>
     static bool isNode(T *obj);
@@ -108,9 +108,9 @@ public:
         setRotationFromEuler(val.x, val.y, val.z);
     }
 
-    inline void setFlagsChanged(uint32_t value) override { _flagChange = value; }
-    inline void setDirtyFlag(uint32_t value) override { _dirtyFlag = value; }
-    inline void setLayer(uint32_t layer) override { _layer = layer; }
+    inline void setFlagsChanged(uint value) override { _flagChange = value; }
+    inline void setDirtyFlag(uint value) override { _dirtyFlag = value; }
+    inline void setLayer(uint layer) override { _layer = layer; }
     inline void setWorldMatrix(const Mat4 &matrix) override { _worldMatrix.set(matrix); }
     inline void setWorldPosition(const Vec3 &pos) override { setWorldPosition(pos.x, pos.y, pos.z); }
     inline void setWorldRotation(const Quaternion &rotation) override { setWorldRotation(rotation.x, rotation.y, rotation.z, rotation.w); }
@@ -124,7 +124,7 @@ public:
         setRotationFromEuler(val.x, val.y, val.z);
     }
     inline void setForward(const Vec3 &dir) {
-        uint32_t   len    = dir.length();
+        uint   len    = dir.length();
         Vec3       v3Temp = dir * -1 / len;
         Quaternion qTemp{Quaternion::identity()};
         Quaternion::fromViewUp(qTemp, v3Temp);
@@ -165,8 +165,8 @@ protected:
 
 private:
     static std::vector<BaseNode *> dirtyNodes;
-    static uint32_t                clearFrame;
-    static uint32_t                clearRound;
+    static uint                clearFrame;
+    static uint                clearRound;
     TransformBit                   _dirtyFlagsPri{TransformBit::NONE};
     Vec3                           _euler{0, 0, 0};
 };

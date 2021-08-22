@@ -33,8 +33,8 @@
 namespace cc {
 namespace scenegraph {
 std::vector<BaseNode *> Node::dirtyNodes;
-uint32_t                Node::clearFrame{0};
-uint32_t                Node::clearRound{1000};
+uint                Node::clearFrame{0};
+uint                Node::clearRound{1000};
 bool                    Node::isStatic{false};
 
 Node::Node() : BaseNode("") {}
@@ -44,7 +44,7 @@ void Node::updateWorldTransform() {
     if (!getDirtyFlag()) {
         return;
     }
-    int        i    = 0;
+    index_t        i    = 0;
     auto * curr = dynamic_cast<BaseNode *>(this);
     Mat3       mat3;
     Mat3       m43;
@@ -54,7 +54,7 @@ void Node::updateWorldTransform() {
         curr = curr->getParent();
     }
     Node *   child{nullptr};
-    uint32_t dirtyBits = 0;
+    uint dirtyBits = 0;
     while (i) {
         child = getDirtyNode(--i);
         if (!child) {
@@ -63,16 +63,16 @@ void Node::updateWorldTransform() {
         dirtyBits |= child->getDirtyFlag();
         auto *currChild = child;
         if (curr) {
-            if (dirtyBits & static_cast<uint32_t>(TransformBit::POSITION)) {
+            if (dirtyBits & static_cast<uint>(TransformBit::POSITION)) {
                 currChild->_worldPosition.transformMat4(currChild->_localPosition, curr->getWorldMatrix());
                 currChild->_worldMatrix.m[12] = currChild->_worldPosition.x;
                 currChild->_worldMatrix.m[13] = currChild->_worldPosition.y;
                 currChild->_worldMatrix.m[14] = currChild->_worldPosition.z;
             }
-            if (dirtyBits & static_cast<uint32_t>(TransformBit::RS)) {
+            if (dirtyBits & static_cast<uint>(TransformBit::RS)) {
                 Mat4::fromRTS(currChild->_localRotation, currChild->_localPosition, currChild->_localScale, &currChild->_worldMatrix);
                 Mat4::multiply(curr->getWorldMatrix(), currChild->_worldMatrix, &currChild->_worldMatrix);
-                if (dirtyBits & static_cast<uint32_t>(TransformBit::ROTATION)) {
+                if (dirtyBits & static_cast<uint>(TransformBit::ROTATION)) {
                     Quaternion::multiply(curr->getWorldRotation(), currChild->_localRotation, &currChild->_worldRotation);
                 }
                 quat = currChild->_worldRotation;
@@ -83,23 +83,23 @@ void Node::updateWorldTransform() {
                 currChild->_worldScale.set(mat3.m[0], mat3.m[4], mat3.m[8]);
             }
         } else if (child) {
-            if (dirtyBits & static_cast<uint32_t>(TransformBit::POSITION)) {
+            if (dirtyBits & static_cast<uint>(TransformBit::POSITION)) {
                 currChild->_worldPosition.set(currChild->_localPosition);
                 currChild->_worldMatrix.m[12] = currChild->_worldPosition.x;
                 currChild->_worldMatrix.m[13] = currChild->_worldPosition.y;
                 currChild->_worldMatrix.m[14] = currChild->_worldPosition.z;
             }
-            if (dirtyBits & static_cast<uint32_t>(TransformBit::RS)) {
-                if (dirtyBits & static_cast<uint32_t>(TransformBit::ROTATION)) {
+            if (dirtyBits & static_cast<uint>(TransformBit::RS)) {
+                if (dirtyBits & static_cast<uint>(TransformBit::ROTATION)) {
                     currChild->_worldRotation.set(currChild->_localRotation);
                 }
-                if (dirtyBits & static_cast<uint32_t>(TransformBit::SCALE)) {
+                if (dirtyBits & static_cast<uint>(TransformBit::SCALE)) {
                     currChild->_worldScale.set(currChild->_localScale);
                     Mat4::fromRTS(currChild->_worldRotation, currChild->_worldPosition, currChild->_worldScale, &currChild->_worldMatrix);
                 }
             }
         }
-        child->setDirtyFlag(static_cast<uint32_t>(TransformBit::NONE));
+        child->setDirtyFlag(static_cast<uint>(TransformBit::NONE));
         curr = child;
     }
 }
@@ -110,13 +110,13 @@ void Node::updateWorldRTMatrix() {
 }
 
 void Node::invalidateChildren(TransformBit dirtyBit) {
-    uint32_t       curDirtyBit{static_cast<uint32_t>(dirtyBit)};
-    const uint32_t childDirtyBit{curDirtyBit | static_cast<uint32_t>(TransformBit::POSITION)};
+    uint       curDirtyBit{static_cast<uint>(dirtyBit)};
+    const uint childDirtyBit{curDirtyBit | static_cast<uint>(TransformBit::POSITION)};
     setDirtyNode(0, this);
     int i{0};
     while (i >= 0) {
         BaseNode *      cur             = getDirtyNode(i--);
-        const uint32_t &hasChangedFlags = cur->getFlagsChanged();
+        const uint &hasChangedFlags = cur->getFlagsChanged();
         if ((cur->getDirtyFlag() & hasChangedFlags & curDirtyBit) != curDirtyBit) {
             cur->setDirtyFlag(cur->getDirtyFlag() | curDirtyBit);
             cur->setFlagsChanged(hasChangedFlags | curDirtyBit);
@@ -154,10 +154,10 @@ void Node::setWorldRotation(float x, float y, float z, float w) {
     invalidateChildren(TransformBit::ROTATION);
 }
 
-void Node::setDirtyNode(int idx, Node *node) {
+void Node::setDirtyNode(const index_t idx, Node *node) {
     dirtyNodes[idx] = node;
 }
-Node *Node::getDirtyNode(const int idx) {
+Node *Node::getDirtyNode(const index_t idx) {
     return dynamic_cast<Node *>(dirtyNodes[idx]);
 }
 
@@ -240,7 +240,7 @@ void Node::lookAt(const Vec3 &pos, const Vec3 &up) {
 void Node::inverseTransformPoint(Vec3 &out, const Vec3 &p) {
     out.set(p.x, p.y, p.z);
     BaseNode *cur{this};
-    int32_t   i{0};
+    index_t   i{0};
     while (cur->getParent()) {
         setDirtyNode(i++, dynamic_cast<Node *>(cur));
         cur = cur->getParent();
@@ -269,19 +269,19 @@ void Node::setWorldRotationFromEuler(float x, float y, float z) {
 }
 
 void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
-    uint32_t dirtyBit = 0;
+    uint dirtyBit = 0;
     if (rot) {
-        dirtyBit |= static_cast<uint32_t>(TransformBit::ROTATION);
+        dirtyBit |= static_cast<uint>(TransformBit::ROTATION);
         _localRotation = _worldRotation;
         _eulerDirty    = true;
     }
     if (pos) {
         _localPosition = _worldPosition;
-        dirtyBit |= static_cast<uint32_t>(TransformBit::POSITION);
+        dirtyBit |= static_cast<uint>(TransformBit::POSITION);
     }
     if (scale) {
         _localScale = _worldScale;
-        dirtyBit |= static_cast<uint32_t>(TransformBit::SCALE);
+        dirtyBit |= static_cast<uint>(TransformBit::SCALE);
     }
     if (dirtyBit) {
         invalidateChildren(static_cast<TransformBit>(dirtyBit));

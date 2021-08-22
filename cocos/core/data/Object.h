@@ -200,7 +200,7 @@ public:
 protected:
     std::string _name;
 
-    explicit CCObject(const char* name = "");
+    explicit CCObject(const std::string &name);
 
 public:
     // MEMBER

@@ -185,15 +185,15 @@ public:
      */
     static std::string EVENT_END_FRAME;
 
-    static std::shared_ptr<Director> getInstance() {
-        if (!Instance) {
-            Instance = std::make_shared<Director>();
+    static const Director* getInstance() {
+        if (!instance) {
+            instance = new Director();
         }
-        return Instance;
+        return instance;
     }
 
-    scenegraph::ComponentScheduler* _compScheduler;
-    scenegraph::NodeActivator*      _nodeActivator;
+    scenegraph::ComponentScheduler* _compScheduler{nullptr};
+    scenegraph::NodeActivator*      _nodeActivator{nullptr};
 
     /**
      * @en Calculates delta time since last time it was called, the result is saved to an internal property.
@@ -317,15 +317,15 @@ public:
      * @en Resume game logic execution after pause, if the current scene is not paused, nothing will happen.
      * @zh 恢复暂停场景的游戏逻辑，如果当前场景没有暂停将没任何事情发生。
      */
-    void resume() { _paused = false; }
+    inline void resume() { _paused = false; }
 
-    Root* getRoot() { return _root; }
+    Root* getRoot() const { return _root; }
 
     /**
      * @en Returns current logic Scene.
      * @zh 获取当前逻辑场景。
      */
-    scenegraph::Scene* getScene() { return _scene; }
+    scenegraph::Scene* getScene() const { return _scene; }
 
     /**
      * @en Returns the delta time since last frame.
@@ -369,7 +369,7 @@ public:
      * @en Sets the scheduler associated with this director.
      * @zh 设置和 director 相关联的调度器。
      */
-    inline void setScheduler(Scheduler* scheduler);
+    void setScheduler(Scheduler* scheduler);
     /**
      * @en Register a system.
      * @zh 注册一个系统。
@@ -381,14 +381,14 @@ public:
      * @en get a system.
      * @zh 获取一个 system。
      */
-    System* getSystem(const std::string& name);
+    System* getSystem (const std::string& name) const ;
 
     /**
      * @en Returns the `AnimationManager` associated with this director. Please use getSystem(AnimationManager.ID)
      * @zh 获取和 director 相关联的 `AnimationManager`（动画管理器）。请使用 getSystem(AnimationManager.ID) 来替代
      * @deprecated since 3.0.0
      */
-    std::string getAnimationManager();
+    std::string getAnimationManager() const ;
 
     // Loop management
     /**
@@ -423,17 +423,17 @@ public:
     Director();
     ~Director();
 private:
-    static std::shared_ptr<Director> Instance;
+    static Director* instance;
 
     bool                 _invalid{false};
     bool                 _paused{false};
     Root*                _root{nullptr};
     std::string          _loadingScene;
-    uint32_t             _totalFrames;
-    Scheduler*           _scheduler;
+    uint32_t             _totalFrames{0};
+    Scheduler*           _scheduler{nullptr};
     std::vector<System*> _systems;
 
-    scenegraph::Scene* _scene;
+    scenegraph::Scene* _scene{nullptr};
     void _initOnRendererInitialized();
     //TODO: return Promise in js, c++ need adaption
     void _init();

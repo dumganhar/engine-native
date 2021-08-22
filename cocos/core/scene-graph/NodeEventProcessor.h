@@ -28,6 +28,7 @@
 #include <any>
 #include <functional>
 #include <string>
+#include <variant>
 #include "core/event/CallbacksInvoker.h"
 #include "core/event/Event.h"
 #include "core/scene-graph/BaseNode.h"
@@ -50,13 +51,18 @@ public:
 
     event::CallbacksInvoker *bubblingTargets{nullptr};
 
-    static bool hasEventListener(NodeEventType, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
-    static bool hasEventListener(NodeEventType);
-    static bool on(NodeEventType type, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
-    static bool once(NodeEventType type, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
-    static bool off(NodeEventType type, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
-    void        emit(NodeEventType, const std::any &, const std::any &, const std::any &, const std::any &);
-    void        targetOff(NodeEventType);
+    static bool hasEventListener(const std::string &);
+    static bool hasEventListener(const std::string &, const std::function<void(BaseNode *)> &);
+    static bool hasEventListener(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    static bool on(const std::string &, const std::function<void(BaseNode *)> &);
+    static bool on(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    static bool once(const std::string &, const std::function<void(BaseNode *)> &);
+    static bool once(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    static bool off(const std::string &, const std::function<void(BaseNode *)> &);
+    static bool off(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    void        emit(const std::string &, const std::any &);
+    void        emit(const std::string &, const std::any &, const std::any &, const std::any &, const std::any &);
+    void        targetOff(const std::string &);
 };
 
 } // namespace scenegraph

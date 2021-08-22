@@ -27,32 +27,52 @@
 #include "core/scene-graph/BaseNode.h"
 namespace cc {
 namespace scenegraph {
-bool NodeEventProcessor::hasEventListener(NodeEventType  /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool  /*useCapture*/) {
+bool NodeEventProcessor::hasEventListener(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
     bool has = false;
     return has;
 }
 
-bool NodeEventProcessor::hasEventListener(NodeEventType  /*type*/) {
+bool NodeEventProcessor::hasEventListener(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/) {
     bool has = false;
     return has;
 }
 
-void NodeEventProcessor::targetOff(NodeEventType target) {
+bool NodeEventProcessor::hasEventListener(const std::string & /*type*/) {
+    bool has = false;
+    return has;
 }
 
-bool NodeEventProcessor::on(NodeEventType  /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool  /*useCapture*/) {
+void NodeEventProcessor::targetOff(const std::string &target) {
+}
+
+bool NodeEventProcessor::on(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*unused*/) {
     return false;
 }
 
-bool NodeEventProcessor::once(NodeEventType  /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool  /*useCapture*/) {
+bool NodeEventProcessor::on(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
     return false;
 }
 
-bool NodeEventProcessor::off(NodeEventType  /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool  /*useCapture*/) {
+bool NodeEventProcessor::once(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*unused*/) {
     return false;
 }
 
-void NodeEventProcessor::emit(NodeEventType type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
+bool NodeEventProcessor::once(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+    return false;
+}
+
+bool NodeEventProcessor::off(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*unused*/) {
+    return false;
+}
+
+bool NodeEventProcessor::off(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+    return false;
+}
+
+void NodeEventProcessor::emit(const std::string &type, const std::any &args) {
+}
+
+void NodeEventProcessor::emit(const std::string &type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
 }
 
 } // namespace scenegraph

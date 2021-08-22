@@ -33,8 +33,8 @@
 namespace cc {
 namespace scenegraph {
 std::vector<BaseNode *> Node::dirtyNodes;
-uint                Node::clearFrame{0};
-uint                Node::clearRound{1000};
+uint                    Node::clearFrame{0};
+uint                    Node::clearRound{1000};
 bool                    Node::isStatic{false};
 
 Node::Node() : BaseNode("") {}
@@ -44,8 +44,8 @@ void Node::updateWorldTransform() {
     if (!getDirtyFlag()) {
         return;
     }
-    index_t        i    = 0;
-    auto * curr = dynamic_cast<BaseNode *>(this);
+    index_t    i    = 0;
+    auto *     curr = dynamic_cast<BaseNode *>(this);
     Mat3       mat3;
     Mat3       m43;
     Quaternion quat;
@@ -53,8 +53,8 @@ void Node::updateWorldTransform() {
         setDirtyNode(i++, reinterpret_cast<Node *>(curr));
         curr = curr->getParent();
     }
-    Node *   child{nullptr};
-    uint dirtyBits = 0;
+    Node *child{nullptr};
+    uint  dirtyBits = 0;
     while (i) {
         child = getDirtyNode(--i);
         if (!child) {
@@ -115,13 +115,13 @@ void Node::invalidateChildren(TransformBit dirtyBit) {
     setDirtyNode(0, this);
     int i{0};
     while (i >= 0) {
-        BaseNode *      cur             = getDirtyNode(i--);
+        BaseNode *  cur             = getDirtyNode(i--);
         const uint &hasChangedFlags = cur->getFlagsChanged();
         if ((cur->getDirtyFlag() & hasChangedFlags & curDirtyBit) != curDirtyBit) {
             cur->setDirtyFlag(cur->getDirtyFlag() | curDirtyBit);
             cur->setFlagsChanged(hasChangedFlags | curDirtyBit);
-            int childCount{static_cast<int>(cur->getChilds().size())};
-            for (BaseNode *curChild : cur->getChilds()) {
+            int childCount{static_cast<int>(cur->getChildren().size())};
+            for (BaseNode *curChild : cur->getChildren()) {
                 setDirtyNode(++i, reinterpret_cast<Node *>(curChild));
             }
         }

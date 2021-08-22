@@ -186,10 +186,10 @@ public:
     static std::string EVENT_END_FRAME;
 
     static const Director* getInstance() {
-        if (!instance) {
-            instance = new Director();
+        if (!Director::instance) {
+            Director::instance = new Director();
         }
-        return instance;
+        return Director::instance;
     }
 
     scenegraph::ComponentScheduler* _compScheduler{nullptr};

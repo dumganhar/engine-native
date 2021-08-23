@@ -233,7 +233,7 @@ protected:
     virtual void     onSetParent(BaseNode *oldParent, bool keepWorldTransform = false);
     void             walkInternal(std::function<void(BaseNode *)>, std::function<void(BaseNode *)>);
     virtual void     onBatchCreated(bool dontChildPrefab);
-    virtual bool     onPreDestroy();
+    virtual bool     onPreDestroy() override;
     static BaseNode *instantiate(BaseNode *cloned, bool isSyncedNode);
     bool             onPreDestroyBase();
     inline void      onSiblingIndexChanged(uint siblingIndex) {}

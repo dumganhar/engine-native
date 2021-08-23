@@ -34,8 +34,7 @@ std::vector<CCObject*> objectsToDestroy;
 }
 
 /* static */
-void CCObject::deferredDestroy()
-{
+void CCObject::deferredDestroy() {
     size_t deleteCount = objectsToDestroy.size();
     for (size_t i = 0; i < deleteCount; ++i) {
         CCObject* obj = objectsToDestroy[i];
@@ -51,18 +50,18 @@ void CCObject::deferredDestroy()
         objectsToDestroy.erase(objectsToDestroy.begin(), objectsToDestroy.begin() + deleteCount);
     }
 
-//cjh TODO:    if (EDITOR) {
-//        deferredDestroyTimer = null;
-//    }
+    //cjh TODO:    if (EDITOR) {
+    //        deferredDestroyTimer = null;
+    //    }
 }
 
-CCObject::CCObject(const char* name/* = ""*/)
+CCObject::CCObject(const std::string& name /* = ""*/)
 : _name(name) {
 }
 
 bool CCObject::destroy() {
     if (!!(_objFlags & Flags::DESTROYED)) {
-//cjh TODO:        warnID(5000);
+        //cjh TODO:        warnID(5000);
         return false;
     }
     if (!!(_objFlags & Flags::TO_DESTROY)) {
@@ -71,38 +70,38 @@ bool CCObject::destroy() {
     _objFlags |= Flags::TO_DESTROY;
     objectsToDestroy.emplace_back(this);
 
-//cjh TODO:   if (EDITOR && deferredDestroyTimer === null && legacyCC.engine && !legacyCC.engine._isUpdating) {
-//        // auto destroy immediate in edit mode
-//        // @ts-expect-error no function
-//        deferredDestroyTimer = setImmediate(CCObject._deferredDestroy);
-//    }
+    //cjh TODO:   if (EDITOR && deferredDestroyTimer === null && legacyCC.engine && !legacyCC.engine._isUpdating) {
+    //        // auto destroy immediate in edit mode
+    //        // @ts-expect-error no function
+    //        deferredDestroyTimer = setImmediate(CCObject._deferredDestroy);
+    //    }
     return true;
 }
 
 void CCObject::destruct() {
-//cjh TODO: it seems that this function doesn't need to be implemented in c++
-//    const ctor: any = this.constructor;
-//    let destruct = ctor.__destruct__;
-//    if (!destruct) {
-//        destruct = compileDestruct(this, ctor);
-//        js.value(ctor, '__destruct__', destruct, true);
-//    }
-//    destruct(this);
+    //cjh TODO: it seems that this function doesn't need to be implemented in c++
+    //    const ctor: any = this.constructor;
+    //    let destruct = ctor.__destruct__;
+    //    if (!destruct) {
+    //        destruct = compileDestruct(this, ctor);
+    //        js.value(ctor, '__destruct__', destruct, true);
+    //    }
+    //    destruct(this);
 }
 
-void CCObject::destroyImmediate () {
+void CCObject::destroyImmediate() {
     if (!!(_objFlags & Flags::DESTROYED)) {
-//cjh TODO:        errorID(5000);
+        //cjh TODO:        errorID(5000);
         return;
     }
 
     onPreDestroy();
 
-//cjh TODO:    if (!EDITOR || legacyCC.GAME_VIEW) {
-        destruct();
-//    }
+    //cjh TODO:    if (!EDITOR || legacyCC.GAME_VIEW) {
+    destruct();
+    //    }
 
     _objFlags |= Flags::DESTROYED;
 }
 
-} // namespace cc {
+} // namespace cc

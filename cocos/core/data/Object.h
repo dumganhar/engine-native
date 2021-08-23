@@ -27,15 +27,13 @@
 
 #include <string>
 
-#include "base/TypeDef.h"
 #include "base/Macros.h"
+#include "base/TypeDef.h"
 
 //#define EDITOR  0 //cjh
-#define WARN_ID   //cjh
+#define WARN_ID //cjh
 
 namespace cc {
-
-
 
 /**
  * @en
@@ -46,43 +44,42 @@ namespace cc {
  */
 class CCObject /*cjh implements EditorExtendableObject*/ {
 public:
-
     // definitions for CCObject.Flags
     enum class Flags : FlagBits {
-        ZERO = 0,
-        DESTROYED         = 1 << 0,
-        REAL_DESTROYED    = 1 << 1,
-        TO_DESTROY        = 1 << 2,
+        ZERO           = 0,
+        DESTROYED      = 1 << 0,
+        REAL_DESTROYED = 1 << 1,
+        TO_DESTROY     = 1 << 2,
         /**
          * @en The object will not be saved.
          * @zh 该对象将不会被保存。
          */
-        DONT_SAVE         = 1 << 3,
+        DONT_SAVE = 1 << 3,
         /**
          * @en The object will not be saved when building a player.
          * @zh 构建项目时，该对象将不会被保存。
          */
-        EDITOR_ONLY       = 1 << 4,
-        DIRTY             = 1 << 5,
+        EDITOR_ONLY = 1 << 4,
+        DIRTY       = 1 << 5,
         /**
          * @en Dont destroy automatically when loading a new scene.
          * @zh 加载一个新场景时，不自动删除该对象。
          * @private
          */
-        DONT_DESTROY      = 1 << 6,
-        DESTROYING        = 1 << 7,
+        DONT_DESTROY = 1 << 6,
+        DESTROYING   = 1 << 7,
         /**
          * @en The node is deactivating.
          * @zh 节点正在反激活的过程中。
          * @private
          */
-        DEACTIVATING      = 1 << 8,
+        DEACTIVATING = 1 << 8,
         /**
          * @en The lock node, when the node is locked, cannot be clicked in the scene.
          * @zh 锁定节点，锁定后场景内不能点击。
          * @private
          */
-        LOCKED_IN_EDITOR  = 1 << 9,
+        LOCKED_IN_EDITOR = 1 << 9,
         /**
           * @en Hide the object in editor.
           * @zh 在编辑器中隐藏该对象。
@@ -120,7 +117,6 @@ public:
         ALL_HIDE_MASKS = DONT_SAVE | EDITOR_ONLY | LOCKED_IN_EDITOR | HIDE_IN_HIERARCHY,
     };
 
-
     static void deferredDestroy();
 
     //cjh    public declare [editorExtrasTag]: unknown;
@@ -130,7 +126,7 @@ public:
 protected:
     std::string _name;
 
-    explicit CCObject(const char* name = "");
+    explicit CCObject(const std::string& name = "");
 
 public:
     // MEMBER
@@ -231,7 +227,7 @@ public:
     virtual std::string toString() const { return ""; };
 
 protected:
-    virtual void onPreDestroy() {}
+    virtual bool onPreDestroy() {}
 };
 
 CC_ENUM_BITWISE_OPERATORS(CCObject::Flags);
@@ -240,14 +236,12 @@ inline bool CCObject::isValid() const {
     return !(_objFlags & Flags::DESTROYED);
 }
 
-inline void CCObject::setHideFlags(Flags hideFlags)
-{
+inline void CCObject::setHideFlags(Flags hideFlags) {
     Flags flags = hideFlags | Flags::ALL_HIDE_MASKS;
-    _objFlags = (_objFlags & ~Flags::ALL_HIDE_MASKS) | flags;
+    _objFlags   = (_objFlags & ~Flags::ALL_HIDE_MASKS) | flags;
 }
 
-inline CCObject::Flags CCObject::getHideFlags() const
-{
+inline CCObject::Flags CCObject::getHideFlags() const {
     return _objFlags & Flags::ALL_HIDE_MASKS;
 }
 
@@ -264,4 +258,3 @@ inline bool CCObject::isReplicated() const {
 }
 
 } // namespace cc
-

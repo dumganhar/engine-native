@@ -207,7 +207,7 @@ void BaseNode::setParent(BaseNode* parent, bool isKeepWorld) {
     }
     BaseNode* oldParent = _parent;
     BaseNode* newParent = parent;
-    if (CC_DEBUG && oldParent && (oldParent->_objFlags & DEACTIVATING)) {
+    if (CC_DEBUG && oldParent && !!(oldParent->_objFlags & Flags::DEACTIVATING)) {
         // TODO: errorID not implemented
     }
     _parent       = newParent;
@@ -215,7 +215,7 @@ void BaseNode::setParent(BaseNode* parent, bool isKeepWorld) {
     onSetParent(oldParent, isKeepWorld);
     emit(NodeEventType::PARENT_CHANGED, oldParent);
     if (oldParent) {
-        if (!(oldParent->_objFlags & DESTROYING)) {
+        if (!(oldParent->_objFlags & Flags::DESTROYING)) {
             index_t removeAt = getIdxOfChild(oldParent->_children, this);
             // TODO: DEV
             /*if (DEV && removeAt < 0) {
@@ -231,7 +231,7 @@ void BaseNode::setParent(BaseNode* parent, bool isKeepWorld) {
         }
     }
     if (newParent) {
-        if (CC_DEBUG && newParent->_objFlags & DEACTIVATING) {
+        if (CC_DEBUG && !!(newParent->_objFlags & Flags::DEACTIVATING)) {
             // TODO:errorID(3821);
         }
         newParent->_children.emplace_back(this);
@@ -389,9 +389,9 @@ void BaseNode::removeComponent(Component* comp) {
 }
 
 bool BaseNode::onPreDestroyBase() {
-    auto destroyingFlag = DESTROYING;
+    Flags destroyingFlag = Flags::DESTROYING;
     _objFlags |= destroyingFlag;
-    bool destroyByParent = (!!_parent) && ((_parent->_objFlags & destroyingFlag) != 0);
+    bool destroyByParent = (!!_parent) && (!!(_parent->_objFlags & destroyingFlag));
     // TODO
     /*if (!destroyByParent && EDITOR) {
         this._registerIfAttached !(false);
@@ -494,7 +494,7 @@ void BaseNode::setSiblingIndex(index_t index) {
     if (!_parent) {
         return;
     }
-    if (_parent->_objFlags & DEACTIVATING) {
+    if (!!(_parent->_objFlags & Flags::DEACTIVATING)) {
         // TODO: errorID(3821);
         return;
     }

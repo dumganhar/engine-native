@@ -25,9 +25,89 @@
 
 #include "core/geometry/Sphere.h"
 #include <algorithm>
+#include "core/geometry/AABB.h"
 
 namespace cc {
 namespace geometry {
+
+Sphere *Sphere::create(float cx, float cy, float cz, float radius) {
+    return new Sphere(cx, cy, cz, radius);
+}
+
+Sphere *Sphere::clone(const Sphere &p) {
+    return new Sphere(p._center.x, p._center.y, p._center.z, p._radius);
+}
+
+Sphere *Sphere::copy(Sphere *out, const Sphere &p) {
+    out->_center = p._center;
+    out->_radius = p._radius;
+    return out;
+}
+
+Sphere *Sphere::fromPoints(Sphere *out, const Vec3 &minPos, const Vec3 &maxPos) {
+    out->_center = 0.5F * (minPos + maxPos);
+    out->_radius = 0.5F * (maxPos - minPos).length();
+    return out;
+}
+
+Sphere *Sphere::set(Sphere *out, float cx, float cy, float cz, float r) {
+    out->_center = {cx, cy, cz};
+    out->_radius = r;
+    return out;
+}
+
+Sphere *Sphere::mergePoint(Sphere *out, const Sphere &s, const Vec3 &point) {
+    // if sphere.radius Less than 0,
+    // Set this point as anchor,
+    // And set radius to 0.
+    if (s._radius < 0.0) {
+        out->_center = point;
+        out->_radius = 0.0F;
+        return out;
+    }
+
+    auto offset = point - s._center;
+    auto dist   = offset.length();
+
+    if (dist > s._radius) {
+        auto half = (dist - s._radius) * 0.5F;
+        out->_radius += half;
+        offset.scale(half / dist);
+        out->_center = out->_center + offset;
+    }
+
+    return out;
+}
+
+Sphere *Sphere::mergeAABB(Sphere *out, const Sphere &s, const AABB &a) {
+    Vec3 aabbMin;
+    Vec3 aabbMax;
+    a.getBoundary(&aabbMin, &aabbMax);
+    Sphere::mergePoint(out, s, aabbMin);
+    Sphere::mergePoint(out, s, aabbMax);
+    return out;
+}
+
+Sphere::Sphere(float cx, float cy, float cz, float radius) {
+    setType(ShapeEnum::SHAPE_SPHERE);
+    _center = {cx, cy, cz};
+    _radius = radius;
+}
+
+void Sphere::getBoundary(Vec3 *minPos, Vec3 *maxPos) const {
+    Vec3 half = {_radius, _radius, _radius};
+    *minPos   = _center - half;
+    *maxPos   = _center + half;
+}
+
+void Sphere::transform(const Mat4 &m,
+                       const Vec3 & /*pos*/,
+                       const Quaternion & /*rot*/,
+                       const Vec3 &scale,
+                       Sphere *    out) const {
+    Vec3::transformMat4(_center, m, &out->_center);
+    out->_radius = _radius * mathutils::maxComponent(scale);
+}
 
 int Sphere::interset(const Plane &plane) const {
     const float dot = plane.n.dot(_center);
@@ -117,5 +197,5 @@ bool Sphere::sphereFrustum(const Frustum &frustum) {
                        [self](const Plane &plane) { return self->interset(plane) != -1; });
 }
 
-} // namespace scene
+} // namespace geometry
 } // namespace cc

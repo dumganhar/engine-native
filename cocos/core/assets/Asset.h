@@ -32,6 +32,9 @@
 #include "core/Types.h"
 #include "core/data/Object.h"
 
+#include <any>
+#include <functional>
+
 namespace cc {
 
 class Node;
@@ -60,14 +63,14 @@ public:
      */
     virtual void createNode(const CreateNodeCallback& cb) {}
 
-    void addRef();
-    void decRef();
+    void            addRef();
+    void            decRef();
     inline uint32_t getRefCount() const { return _ref; }
 
     virtual void onLoaded() {}
 
     virtual std::any getNativeAsset() const;
-    virtual void setNativeAsset(const std::any& obj);
+    virtual void     setNativeAsset(const std::any& obj);
 
     virtual void initDefault(const std::string& uuid);
     virtual bool validate() const { return true; }
@@ -79,19 +82,18 @@ public:
     /**
      * @return
      */
-    virtual std::any _serialize (std::any ctxForExporting) { return std::any(); };
+    virtual std::any _serialize(std::any ctxForExporting) { return std::any(); };
 
     /**
      *
      * @param data
      */
-    virtual void _deserialize (std::any serializedData, std::any handle) {};
+    virtual void _deserialize(std::any serializedData, std::any handle){};
 
 protected:
     Asset() = default;
 
-    void _setRawAsset (const std::string& filename, bool inLibrary/* = true*/);
-
+    void _setRawAsset(const std::string& filename, bool inLibrary /* = true*/);
 
 private:
     std::string _native;
@@ -99,11 +101,10 @@ private:
 
     std::string _uuid;
 
-    uint32_t _ref {0};
+    uint32_t _ref{0};
 
-    bool _loaded {true};
-    bool _isDefault {false};
-
+    bool _loaded{true};
+    bool _isDefault{false};
 };
 
-} // namespace cc {
+} // namespace cc

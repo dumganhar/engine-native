@@ -34,10 +34,10 @@
 #include "core/components/Component.h"
 #include "core/platform/event-manager/Acceleration.h"
 #include "core/platform/event-manager/Events.h"
-#include "core/scene-graph/node.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
-namespace event_listener{
+namespace event_listener {
 
 struct IEventListenerCreateInfo {
     int32_t                                   event;
@@ -45,7 +45,7 @@ struct IEventListenerCreateInfo {
 };
 
 struct IListenerMask {
-    int32_t   index{0};
+    int32_t               index{0};
     components::Component comp;
 };
 
@@ -378,5 +378,5 @@ class KeyboardEventListener final : public EventListener {
 
     bool checkAvailable() const;
 };
-}  // namespace event_listener
+} // namespace event_listener
 } // namespace cc

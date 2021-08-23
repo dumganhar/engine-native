@@ -84,7 +84,7 @@ public:
     inline bool isChildOf(BaseNode *parent) { return parent != nullptr; }
 
     inline void setPersistNode(bool val) {
-        val ? _objFlags |= DONT_DESTROY : _objFlags &= ~DONT_DESTROY;
+        val ? _objFlags |= Flags::DONT_DESTROY : _objFlags &= ~Flags::DONT_DESTROY;
     };
     inline void setName(const std::string &name) {
         _name = name;
@@ -105,7 +105,7 @@ public:
     virtual inline void setLocalScale(const Vec3 &scale) {}
 
     inline bool getPersistNode() const {
-        return (_objFlags & DONT_DESTROY) > 0;
+        return static_cast<FlagBits>(_objFlags & Flags::DONT_DESTROY) > 0;
     }
     inline std::string getName() const {
         return _name;
@@ -157,7 +157,7 @@ protected:
     BaseNode *               _parent{nullptr};
     uint32_t                 _flagChange{0};
     uint32_t                 _dirtyFlag{0};
-    uint32_t                 _objFlags{0};
+    Flags                    _objFlags{Flags::ZERO};
     bool                     _persistNode{false};
     uint32_t                 _layer{0};
     cc::Vec3                 _worldScale{Vec3::ONE};
@@ -178,7 +178,7 @@ protected:
     inline void              onSetParent(BaseNode *oldParent, bool keepWorldTransform = false) {}
     inline void              onPostActivated(bool active) {}
     inline void              onBatchCreated(bool dontChildPrefab) {}
-    inline void              onPreDestroy() {}
+    virtual void             onPreDestroy() override {}
     inline void              instantiate(BaseNode *cloned, bool isSyncedNode) {}
     inline void              onPreDestroyBase() {}
     inline void              onSiblingIndexChanged(uint32_t siblingIndex) {}

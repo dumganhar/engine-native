@@ -64,11 +64,11 @@ public:
      * @default null
      * @private
      */
-    inline const std::any& getNativeAsset() const {
+    virtual std::any getNativeAsset() const {
         return _file;
     }
 
-    inline void setNativeAsset(const std::any& obj) {
+    virtual void setNativeAsset(const std::any& obj) {
         _file = obj;
     }
 

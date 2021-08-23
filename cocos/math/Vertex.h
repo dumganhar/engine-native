@@ -27,9 +27,9 @@
 #ifndef __CCVERTEX_H__
 #define __CCVERTEX_H__
 
+#include <vector>
 #include "base/Macros.h"
 #include "math/Vec2.h"
-#include <vector>
 
 /**
  * @addtogroup base

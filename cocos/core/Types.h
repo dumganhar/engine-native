@@ -62,6 +62,26 @@ struct VertexIdChannel {
     uint32_t index;
 };
 
+struct NativeDep {
+    std::string uuid;
+    std::string ext;
+    bool __isNative__{false};
+
+    explicit NativeDep() = default;
+
+    explicit NativeDep(bool isNative_, const std::string& uuid_, const std::string& ext_)
+    : uuid(uuid_)
+    , ext(ext_)
+    , __isNative__(isNative_)
+    , _isValid(true)
+    {}
+
+    inline bool isValid() const { return _isValid; }
+
+private:
+    bool _isValid{false};
+};
+
 } // namespace cc {
 
 

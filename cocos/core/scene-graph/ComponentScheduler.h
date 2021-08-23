@@ -26,8 +26,8 @@
 #pragma once
 #include <functional>
 #include <vector>
-#include "core/components/Component.h"
 #include "base/TypeDef.h"
+#include "core/components/Component.h"
 
 namespace cc {
 namespace scenegraph {

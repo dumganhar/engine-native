@@ -26,6 +26,7 @@
 #pragma once
 
 #include <vector>
+#include "base/TypeDef.h"
 #include "core/scene-graph/BaseNode.h"
 #include "core/scene-graph/NodeEnum.h"
 #include "core/scene-graph/Scene.h"
@@ -34,7 +35,6 @@
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
-#include "base/TypeDef.h"
 
 namespace cc {
 namespace scenegraph {
@@ -49,7 +49,7 @@ using TransformDirtyBit = TransformBit;
 class NodeUiProperties;
 // This struct defines the memory layout shared between JS and C++.
 struct NodeLayout {
-    uint       dirtyFlag{0};
+    uint           dirtyFlag{0};
     uint           layer{0};
     cc::Vec3       worldScale;
     cc::Vec3       worldPosition;
@@ -124,7 +124,7 @@ public:
         setRotationFromEuler(val.x, val.y, val.z);
     }
     inline void setForward(const Vec3 &dir) {
-        uint   len    = dir.length();
+        uint       len    = dir.length();
         Vec3       v3Temp = dir * -1 / len;
         Quaternion qTemp{Quaternion::identity()};
         Quaternion::fromViewUp(qTemp, v3Temp);
@@ -165,8 +165,8 @@ protected:
 
 private:
     static std::vector<BaseNode *> dirtyNodes;
-    static uint                clearFrame;
-    static uint                clearRound;
+    static uint                    clearFrame;
+    static uint                    clearRound;
     TransformBit                   _dirtyFlagsPri{TransformBit::NONE};
     Vec3                           _euler{0, 0, 0};
 };

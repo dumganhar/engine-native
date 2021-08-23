@@ -28,7 +28,6 @@
 #include <string>
 #include <unordered_map>
 
-
 #include "core/Types.h"
 #include "core/event/Event.h"
 #include "core/platform/event-manager/EventEnum.h"

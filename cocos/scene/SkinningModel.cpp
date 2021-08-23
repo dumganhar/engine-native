@@ -28,7 +28,6 @@
 #include <array>
 #include <utility>
 
-
 namespace cc {
 namespace scene {
 void SkinningModel::updateWorldMatrix(JointInfo* info, uint32_t stamp) {

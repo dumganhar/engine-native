@@ -46,7 +46,7 @@ public:
      * @en
      * Returns the url of this asset's native object, if none it will returns an empty string.
      * @zh
-     * 返回该资源对应的目标平台资源的 URL，如果没有将返回一个空字符串。
+     * 返回该资源对应的目标平台资源的 URL，如果没有将返回一个空字符串。//
      * @readOnly
      */
     std::string getNativeUrl() const;
@@ -87,8 +87,8 @@ public:
      */
     virtual void createNode(const CreateNodeCallback& cb) {}
 
-    void addRef();
-    void decRef(bool autoRelease = true);
+    void            addRef();
+    void            decRef(bool autoRelease = true);
     inline uint32_t getRefCount() const { return _ref; }
 
     virtual void onLoaded() {}
@@ -103,13 +103,13 @@ public:
     /**
      * @return
      */
-    virtual std::any _serialize (std::any ctxForExporting) { return std::any(); };
+    virtual std::any _serialize(std::any ctxForExporting) { return std::any(); };
 
     /**
      *
      * @param data
      */
-    virtual void _deserialize (std::any serializedData, std::any handle) {};
+    virtual void _deserialize(std::any serializedData, std::any handle){};
 
     virtual std::string toString() const override { return _nativeUrl; }
 
@@ -127,8 +127,7 @@ protected:
      * @param inLibrary
      * @private
      */
-    void _setRawAsset (const std::string& filename, bool inLibrary = true);
-
+    void _setRawAsset(const std::string& filename, bool inLibrary = true);
 
 private:
     std::string _native;
@@ -137,11 +136,10 @@ private:
     std::string _uuid;
 
     std::any _file;
-    uint32_t _ref {0};
+    uint32_t _ref{0};
 
-    bool _loaded {true};
-    bool _isDefault {false};
-
+    bool _loaded{true};
+    bool _isDefault{false};
 };
 
-} // namespace cc {
+} // namespace cc

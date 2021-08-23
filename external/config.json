@@ -1,9 +1,9 @@
 {
-    "version": "v3.3.0-native",
+    "version": "v3d-gfx-69",
     "from": {
         "type": "github",
         "owner": "cocos-creator",
         "name": "engine-native-external",
-        "checkout": "v3.3.0-native"
+        "checkout": "v3d-gfx-69"
     }
 }

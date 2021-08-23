@@ -85,7 +85,7 @@ public:
     void emit(const std::string &, const std::any &);
     void emit(const std::string &, const std::any &, const std::any &, const std::any &, const std::any &);
 
-    void        dispatchEvent(event::Event eve);
+    void        dispatchEvent(const event::Event &);
     bool        hasEventListener(const std::string &);
     bool        hasEventListener(const std::string &, const std::function<void(BaseNode *)> &);
     bool        hasEventListener(const std::string &, const std::function<void(BaseNode *)> &, const std::any &);
@@ -161,10 +161,10 @@ public:
     components::Component *getComponent(const std::string &name) const;
     template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
     components::Component *getComponent(const T &type) const {}
-    // TODO
+    // TODO(Lenovo):
     template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
-    inline std::vector<components::Component *> getComponents(const T &) const {};
-    inline std::vector<components::Component *> getComponents(const std::string &) const {};
+    inline std::vector<components::Component *> getComponents(const T & /*unused*/) const {};
+    inline std::vector<components::Component *> getComponents(const std::string & /*unused*/) const {};
     components::Component *                     getComponentInChildren(const std::string &name) const;
     template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
     components::Component *              getComponentInChildren(const T &comp) const {}
@@ -244,7 +244,7 @@ protected:
 
     static void    setScene(BaseNode *);
     static index_t getIdxOfChild(const std::vector<BaseNode *> &, BaseNode *);
-    // TODO
+    // TODO(Lenovo):
     static components::Component *findComponent(BaseNode *, const std::string &);
     template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
     static components::Component *findComponent(BaseNode *, const T &);

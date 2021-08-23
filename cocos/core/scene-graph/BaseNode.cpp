@@ -161,7 +161,7 @@ void BaseNode::emit(const std::string& type, const std::any& arg) {
 void BaseNode::emit(const std::string& type, const std::any& arg1, const std::any& arg2, const std::any& arg3, const std::any& arg4) {
     _eventProcessor->emit(type, arg1, arg2, arg3, arg4);
 }
-void BaseNode::dispatchEvent(event::Event eve) {
+void BaseNode::dispatchEvent(const event::Event &eve) {
     _eventProcessor->dispatchEvent(eve);
 }
 
@@ -542,7 +542,7 @@ BaseNode* BaseNode::getChildByPath(const std::string& path) const {
     return lastNode;
 }
 
-// TODO(Lenovo): Component内部如何通过名称获取组件还未确定，所以这里暂时没有实现
+// TODO(Lenovo): How to get a Component by name internally has not been determined, so there is no implementation here
 components::Component* BaseNode::findComponent(BaseNode* /*unused*/, const std::string& /*unused*/) {
     return nullptr;
 }

@@ -67,6 +67,20 @@ Vec3 Vec3::fromColor(unsigned int color) {
 
 Vec3::~Vec3() = default;
 
+void Vec3::transformInverseRTS(Vec3 &out, const Vec3 &v, const Quaternion &r, const Vec3 &t, const Vec3 &s) {
+    const float x = v.x - t.x;
+    const float y = v.y - t.y;
+    const float z = v.z - t.z;
+
+    const float ix = r.w * x - r.y * z + r.z * y;
+    const float iy = r.w * y - r.z * x + r.x * z;
+    const float iz = r.w * z - r.x * y + r.y * x;
+    const float iw = r.x * x + r.y * y + r.z * z;
+    out.x          = (ix * r.w + iw * r.x + iy * r.z - iz * r.y) / s.x;
+    out.y          = (iy * r.w + iw * r.y + iz * r.x - ix * r.z) / s.y;
+    out.z          = (iz * r.w + iw * r.z + ix * r.y - iy * r.x) / s.z;
+}
+
 float Vec3::angle(const Vec3 &v1, const Vec3 &v2) {
     float dx = v1.y * v2.z - v1.z * v2.y;
     float dy = v1.z * v2.x - v1.x * v2.z;

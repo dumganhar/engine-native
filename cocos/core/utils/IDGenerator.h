@@ -29,9 +29,15 @@
 
 #include <string>
 
+#pragma once
+
+#include "base/Random.h"
+
+#include <string>
+
 namespace cc {
 
-static const char* NonUuidMark = ".";
+static const char* nonUuidMark = ".";
 
 /**
  * ID generator for runtime.
@@ -41,9 +47,9 @@ public:
     /**
      * @param [category] You can specify a unique category to avoid id collision with other instance of IdGenerator.
      */
-    IDGenerator (const std::string& category);
+    explicit IDGenerator(const std::string& category);
 
-    uint32_t getNewId ();
+    std::string getNewId();
 
 private:
     uint32_t _id = 0;
@@ -57,4 +63,4 @@ private:
 */
 extern IDGenerator __globalIDGenerator;
 
-} // namespace cc {
+} // namespace cc

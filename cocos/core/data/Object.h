@@ -28,13 +28,13 @@
 #include <string>
 
 //#define EDITOR  0 //cjh
-#define WARN_ID   //cjh
+#define WARN_ID //cjh
 
 namespace cc {
 
 // definitions for CCObject.Flags
 
-enum ObjectState {
+enum class ObjectState {
     DESTROYED         = 1 << 0,
     REAL_DESTROYED    = 1 << 1,
     TO_DESTROY        = 1 << 2,
@@ -200,7 +200,7 @@ public:
 protected:
     std::string _name;
 
-    explicit CCObject(const char* name = "");
+    explicit CCObject(const std::string &name);
 
 public:
     // MEMBER
@@ -226,14 +226,14 @@ public:
 
     void setReplicated(bool value) {
         if (value) {
-            _objFlags |= IS_REPLICATED;
+            _objFlags |= static_cast<uint32_t>(ObjectState::IS_REPLICATED);
         } else {
-            _objFlags &= ~IS_REPLICATED;
+            _objFlags &= ~static_cast<uint32_t>(ObjectState::IS_REPLICATED);
         }
     }
 
     bool isReplicated() const {
-        return !!(_objFlags & IS_REPLICATED);
+        return !!(_objFlags & static_cast<uint32_t>(ObjectState::IS_REPLICATED));
     }
 
     /**
@@ -263,7 +263,7 @@ public:
      * ```
      */
     bool isValid() const {
-        return !(_objFlags & DESTROYED);
+        return !(_objFlags & static_cast<uint32_t>(ObjectState::DESTROYED));
     }
 
     /**

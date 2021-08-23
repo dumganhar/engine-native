@@ -200,6 +200,12 @@ public:
     static void fromScaling(Mat3 &out, const Vec2 &vec);
 
     /**
+     * Sets a third order matrix with view direction and up direction. Then save the results to out matrix
+     */
+    static void fromViewUp(Mat3 &out, const Vec3 &view);
+    static void fromViewUp(Mat3 &out, const Vec3 &view, const Vec3 &up);
+
+    /**
      * Calculates a 3x3 matrix from the given quaternion.
      */
 

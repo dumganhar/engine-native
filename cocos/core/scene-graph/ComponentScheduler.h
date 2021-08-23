@@ -27,17 +27,20 @@
 #include <functional>
 #include <vector>
 #include "core/components/Component.h"
+#include "base/TypeDef.h"
+
 namespace cc {
 namespace scenegraph {
 using components::Component;
+using Invoker = std::function<void(std::vector<Component*>, float)>;
 class LifeCycleInvoker {
 public:
-    static void stableRemoveInactive();
-    explicit LifeCycleInvoker(std::function<void(std::vector<Component*>, float)>);
+    static void stableRemoveInactive(const std::vector<Component*>&, uint);
+    explicit LifeCycleInvoker(Invoker);
     ~LifeCycleInvoker();
 
 protected:
-    std::function<void(std::vector<components::Component*>, float)> _invoke;
+    Invoker _invoke;
 
 private:
     std::vector<Component*> _zero;
@@ -50,7 +53,7 @@ public:
     using LifeCycleInvoker::LifeCycleInvoker;
     void add(Component*);
     void remove(Component*);
-    void cancelInactive(uint32_t);
+    void cancelInactive(uint);
     void invoke();
 };
 

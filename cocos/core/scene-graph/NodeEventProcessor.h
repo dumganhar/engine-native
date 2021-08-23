@@ -25,23 +25,44 @@
 
 #pragma once
 
+#include <any>
+#include <functional>
+#include <string>
+#include <variant>
+#include "core/event/CallbacksInvoker.h"
 #include "core/event/Event.h"
+#include "core/scene-graph/BaseNode.h"
+#include "core/scene-graph/NodeEvent.h"
+
 namespace cc {
 namespace scenegraph {
-
 class BaseNode;
-
 class NodeEventProcessor final {
 private:
-    BaseNode* _node{nullptr};
+    BaseNode *_node{nullptr};
 
 public:
     NodeEventProcessor(/* args */) = default;
     ~NodeEventProcessor()          = default;
-    inline BaseNode* getNode() const { return _node; }
+    inline BaseNode *getNode() { return _node; }
     inline void      reattach() {}
     inline void      destroy() {}
     inline void      dispatchEvent(event::Event eve) {}
+
+    event::CallbacksInvoker *bubblingTargets{nullptr};
+
+    static bool hasEventListener(const std::string &);
+    static bool hasEventListener(const std::string &, const std::function<void(BaseNode *)> &);
+    static bool hasEventListener(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    static bool on(const std::string &, const std::function<void(BaseNode *)> &);
+    static bool on(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    static bool once(const std::string &, const std::function<void(BaseNode *)> &);
+    static bool once(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    static bool off(const std::string &, const std::function<void(BaseNode *)> &);
+    static bool off(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
+    void        emit(const std::string &, const std::any &);
+    void        emit(const std::string &, const std::any &, const std::any &, const std::any &, const std::any &);
+    void        targetOff(const std::string &);
 };
 
 } // namespace scenegraph

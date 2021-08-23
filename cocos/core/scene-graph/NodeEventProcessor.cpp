@@ -22,3 +22,58 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+#include "core/scene-graph/NodeEventProcessor.h"
+#include "core/scene-graph/BaseNode.h"
+namespace cc {
+namespace scenegraph {
+bool NodeEventProcessor::hasEventListener(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+    bool has = false;
+    return has;
+}
+
+bool NodeEventProcessor::hasEventListener(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/) {
+    bool has = false;
+    return has;
+}
+
+bool NodeEventProcessor::hasEventListener(const std::string & /*type*/) {
+    bool has = false;
+    return has;
+}
+
+void NodeEventProcessor::targetOff(const std::string &target) {
+}
+
+bool NodeEventProcessor::on(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*unused*/) {
+    return false;
+}
+
+bool NodeEventProcessor::on(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+    return false;
+}
+
+bool NodeEventProcessor::once(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*unused*/) {
+    return false;
+}
+
+bool NodeEventProcessor::once(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+    return false;
+}
+
+bool NodeEventProcessor::off(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*unused*/) {
+    return false;
+}
+
+bool NodeEventProcessor::off(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+    return false;
+}
+
+void NodeEventProcessor::emit(const std::string &type, const std::any &args) {
+}
+
+void NodeEventProcessor::emit(const std::string &type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
+}
+
+} // namespace scenegraph
+} // namespace cc

@@ -32,17 +32,16 @@
 
 namespace cc {
 
-
 /**
  * @en Image source in memory
  * @zh 内存图像源。
  */
 struct IMemoryImageSource {
     ArrayBuffer _data;
-    bool _compressed {false};
-    uint32_t width {0};
-    uint32_t height {0};
-    uint32_t format {0};
+    bool        _compressed{false};
+    uint32_t    width{0};
+    uint32_t    height{0};
+    uint32_t    format{0};
 };
 
 using ImageSource = IMemoryImageSource;
@@ -54,47 +53,47 @@ using ImageSource = IMemoryImageSource;
 class ImageAsset final : public Asset {
 public:
     virtual std::any getNativeAsset() const override { return std::any(_nativeData); }
-    virtual void setNativeAsset(const std::any& obj) override;
+    virtual void     setNativeAsset(const std::any &obj) override;
 
     /**
      * @en Image data.
      * @zh 此图像资源的图像数据。
      */
-    const ArrayBuffer& getData () const;
+    const ArrayBuffer &getData() const;
 
     /**
      * @en The pixel width of the image.
      * @zh 此图像资源的像素宽度。
      */
-    uint32_t getWidth () const;
+    uint32_t getWidth() const;
 
     /**
      * @en The pixel height of the image.
      * @zh 此图像资源的像素高度。
      */
-    uint32_t getHeight () const;
+    uint32_t getHeight() const;
 
     /**
      * @en The pixel format of the image.
      * @zh 此图像资源的像素格式。
      */
-    PixelFormat getFormat () const;
+    PixelFormat getFormat() const;
 
     /**
      * @en Whether the image is in compressed texture format.
      * @zh 此图像资源是否为压缩像素格式。
      */
-    bool isCompressed () const;
+    bool isCompressed() const;
 
     /**
      * @en The original source image URL, it could be empty.
      * @zh 此图像资源的原始图像源的 URL。当原始图像元不是 HTML 文件时可能为空。
      * @deprecated Please use [[nativeUrl]]
      */
-    const std::string& getUrl () const;
+    const std::string &getUrl() const;
 
 private:
     ImageSource _nativeData;
 };
 
-} // namespace cc {
+} // namespace cc

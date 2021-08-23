@@ -35,7 +35,6 @@
 #include <string>
 #include <unordered_map>
 
-
 namespace cc {
 
 struct IPropertyInfo {
@@ -147,25 +146,25 @@ public:
      * @en Register the effect asset to the static map
      * @zh 将指定 effect 注册到全局管理器。
      */
-    static void registerAsset(const EffectAsset& asset);
+    static void registerAsset(const EffectAsset &asset);
 
     /**
      * @en Unregister the effect asset from the static map
      * @zh 将指定 effect 从全局管理器移除。
      */
-    static void removeAsset(const std::string& name);
+    static void removeAsset(const std::string &name);
 
     /**
      * @en Get the effect asset by the given name.
      * @zh 获取指定名字的 effect 资源。
      */
-    static EffectAsset* getAsset(const std::string& name);
+    static EffectAsset *getAsset(const std::string &name);
 
     /**
      * @en Get all registered effect assets.
      * @zh 获取所有已注册的 effect 资源。
      */
-    static std::unordered_map<std::string, EffectAsset>& getAllAssets() { return __effects; }
+    static std::unordered_map<std::string, EffectAsset> &getAllAssets() { return __effects; }
 
     /**
      * @en The techniques used by the current effect.
@@ -203,8 +202,8 @@ public:
      */
     virtual void onLoaded() override;
     virtual bool destroy() override;
-    virtual void initDefault(const std::string& uuid) override;
-    virtual bool validate () const override;
+    virtual void initDefault(const std::string &uuid) override;
+    virtual bool validate() const override;
 
 protected:
     void _precompile();

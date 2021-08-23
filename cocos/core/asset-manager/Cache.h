@@ -40,7 +40,7 @@ namespace cc {
  * 用于缓存某些内容
  *
  */
-template<typename T>
+template <typename T>
 class Cache {
 public:
     /**
@@ -53,9 +53,9 @@ public:
      * @param map - An object used to initialize
      *
      */
-    explicit Cache(const Record<std::string, T>& map) {
+    explicit Cache(const Record<std::string, T> &map) {
         if (map) {
-            _map = map;
+            _map   = map;
             _count = static_cast<uint32_t>(map.size());
         } else {
             _map.clear();
@@ -79,10 +79,9 @@ public:
      * cache.add('test', null);
      *
      */
-    void add (const std::string& key, const T& val) {
+    void add(const std::string &key, const T &val) {
         auto iter = _map.find(key);
-        if (iter == _map.end())
-        {
+        if (iter == _map.end()) {
             ++_count;
         }
 
@@ -104,7 +103,7 @@ public:
      * let test = cache.get('test');
      *
      */
-    T get (const std::string& key) const {
+    T get(const std::string &key) const {
         auto iter = _map.find(key);
         if (iter != _map.end()) {
             return iter.second;
@@ -127,7 +126,7 @@ public:
      * var exist = cache.has('test');
      *
      */
-    bool has(const std::string& key) const {
+    bool has(const std::string &key) const {
         return (_map.find(key) != _map.end());
     }
 
@@ -146,9 +145,9 @@ public:
      * var content = cache.remove('test');
      *
      */
-    T remove (const std::string& key) {
-        auto iter = _map.find(key);
-        const T ret = nullptr;
+    T remove(const std::string &key) {
+        auto    iter = _map.find(key);
+        const T ret  = nullptr;
         if (iter != _map.end()) {
             ret = _map.second;
             _map.erase(iter);
@@ -170,7 +169,7 @@ public:
      * cache.clear();
      *
      */
-    void clear () {
+    void clear() {
         if (_count != 0) {
             _map.clear();
             _count = 0;
@@ -193,8 +192,8 @@ public:
      * cache.forEach((val, key) => console.log(key));
      *
      */
-    void forEach (const std::function<void(T, const std::string&)>& func) {
-        for (const auto& e : _map) {
+    void forEach(const std::function<void(T, const std::string &)> &func) {
+        for (const auto &e : _map) {
             func(e.second, e.first);
         }
     }
@@ -214,8 +213,8 @@ public:
      * var val = cache.find((val, key) => key === 'test');
      *
      */
-    T find (const std::function<bool(T, const std::string&)>& predicate) {
-        for (const auto& e : _map) {
+    T find(const std::function<bool(T, const std::string &)> &predicate) {
+        for (const auto &e : _map) {
             if (predicate(e.second, e.first)) {
                 return e.second;
             }
@@ -231,7 +230,7 @@ public:
      * 缓存数量
      *
      */
-    inline uint32_t getCount () const {
+    inline uint32_t getCount() const {
         return _count;
     }
 
@@ -243,13 +242,13 @@ public:
      * 销毁这个 cache
      *
      */
-    void destroy () {
+    void destroy() {
         _map.clear();
     }
 
 protected:
     Record<std::string, T> _map;
-    uint32_t _count {0};
+    uint32_t               _count{0};
 };
 
-} // namespace cc {
+} // namespace cc

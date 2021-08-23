@@ -34,9 +34,9 @@ namespace cc {
 
 struct IDependencies {
     Record<std::string, std::any> nativeDep;
-    std::vector<std::string> deps;
-    bool parsedFromExistAsset{false};
-    std::vector<std::string> persistDeps;
+    std::vector<std::string>      deps;
+    bool                          parsedFromExistAsset{false};
+    std::vector<std::string>      persistDeps;
 };
 
 class Asset;
@@ -51,7 +51,7 @@ class Asset;
  */
 class DependUtil final {
 public:
-    static DependUtil* getInstance();
+    static DependUtil *getInstance();
 
     Cache<IDependencies> _depends;
 
@@ -70,7 +70,7 @@ public:
      * @example
      * var dep = dependUtil.getNativeDep('fcmR3XADNLgJ1ByKhqcC5Z');
      */
-    Record<std::string, std::any> getNativeDep(const std::string& uuid);
+    Record<std::string, std::any> getNativeDep(const std::string &uuid);
 
     /**
      * @en
@@ -86,7 +86,7 @@ public:
      * var deps = dependUtil.getDeps('fcmR3XADNLgJ1ByKhqcC5Z');
      *
      */
-    std::vector<std::string> getDeps(const std::string& uuid);
+    std::vector<std::string> getDeps(const std::string &uuid);
 
     /**
      * @en
@@ -104,9 +104,9 @@ public:
      * var deps = dependUtil.getDepsRecursively('fcmR3XADNLgJ1ByKhqcC5Z');
      *
      */
-    std::vector<std::string> getDepsRecursively(const std::string& uuid);
+    std::vector<std::string> getDepsRecursively(const std::string &uuid);
 
-    void remove(const std::string& uuid);
+    void remove(const std::string &uuid);
 
     /**
      * @en
@@ -125,15 +125,14 @@ public:
      * });
      *
      */
-    IDependencies* parse(const std::string& uuid, const std::any& json);
+    IDependencies *parse(const std::string &uuid, const std::any &json);
 
 private:
-    IDependencies parseDepsFromAsset(const Asset* asset);
+    IDependencies parseDepsFromAsset(const Asset *asset);
 
-    std::vector<std::string> parseDepsFromJson(const std::vector<std::any>& json);
+    std::vector<std::string> parseDepsFromJson(const std::vector<std::any> &json);
 
-    void descend(const std::string& uuid, const Record<std::string, std::any>& exclude, const std::vector<std::string>& depends);
+    void descend(const std::string &uuid, const Record<std::string, std::any> &exclude, const std::vector<std::string> &depends);
 };
 
-} // namespace cc {
-
+} // namespace cc

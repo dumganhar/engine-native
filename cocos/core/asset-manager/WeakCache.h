@@ -33,21 +33,20 @@
 
 namespace cc {
 
-
 //cjh How to implement ES6 WeakRef in C++: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef
 template <typename T>
 class WeakRef {
 public:
     WeakRef(T obj) {}
-    T deref () {} //cjh How to implement deref?
+    T deref() {} //cjh How to implement deref?
 };
 
 template <typename T>
 class WeakCache : public ICache<T> {
 public:
-    explicit WeakCache (const Record<std::string, T>& map) : ICache<T>() {
+    explicit WeakCache(const Record<std::string, T> &map) : ICache<T>() {
         if (map) {
-            for (const auto& e : map) {
+            for (const auto &e : map) {
                 _weakMap[e.first] = new WeakRef(e.second);
             }
         }
@@ -57,23 +56,23 @@ public:
         destroy();
     }
 
-    void add (const std::string& key, T val) {
+    void add(const std::string &key, T val) {
         _weakMap[key] = new WeakRef(val);
     }
 
-    bool has (const std::string& key) {
+    bool has(const std::string &key) {
         bool found = false;
-        auto iter = _weakMap.find(key);
+        auto iter  = _weakMap.find(key);
         if (iter != _weakMap.end() && iter.second->deref() != nullptr) {
             found = true;
         }
         return found;
     }
 
-    T get (const std::string& key) {
+    T get(const std::string &key) {
         bool found = false;
-        T ret = nullptr;
-        auto iter = _weakMap.find(key);
+        T    ret   = nullptr;
+        auto iter  = _weakMap.find(key);
         if (iter != _weakMap.end() && iter.second->deref() != nullptr) {
             found = true;
         }
@@ -84,8 +83,8 @@ public:
         return ret;
     }
 
-    T remove (const std::string& key) {
-        T ret = nullptr;
+    T remove(const std::string &key) {
+        T    ret  = nullptr;
         auto iter = _weakMap.find(key);
         if (iter != _weakMap.end()) {
             T val = iter.second;
@@ -97,23 +96,23 @@ public:
         return ret;
     }
 
-    void clear () {
+    void clear() {
         destroy(); //cjh clear & destroy is the same ?
     }
 
-    void forEach (const std::function<void(T, const std::string&)>& func) {
-        for (const auto& key : _weakMap) {
-            const auto& val = get(key);
+    void forEach(const std::function<void(T, const std::string &)> &func) {
+        for (const auto &key : _weakMap) {
+            const auto &val = get(key);
             if (val) {
                 func(val, key);
             }
         }
     }
 
-    T find (const std::function<bool(T, const std::string&)>& predicate) {
+    T find(const std::function<bool(T, const std::string &)> &predicate) {
         for (const auto e : _weakMap) {
-            const auto& key = e.first;
-            const auto& val = get(key);
+            const auto &key = e.first;
+            const auto &val = get(key);
             if (val && predicate(val, key)) {
                 return _weakMap[key].deref();
             }
@@ -121,10 +120,10 @@ public:
         return nullptr;
     }
 
-    uint32_t getCount () const {
+    uint32_t getCount() const {
         uint32_t count = 0;
-        for (const auto& key : _weakMap) {
-            const auto& val = get(key);
+        for (const auto &key : _weakMap) {
+            const auto &val = get(key);
             if (val != nullptr && val->deref() != nullptr) {
                 ++count;
             }
@@ -132,8 +131,8 @@ public:
         return count;
     }
 
-    void destroy () {
-        for (const auto& e : _weakMap) {
+    void destroy() {
+        for (const auto &e : _weakMap) {
             delete e.second;
         }
         _weakMap.clear();
@@ -143,4 +142,4 @@ protected:
     Record<std::string, WeakRef<T>> _weakMap;
 };
 
-} // namespace cc {
+} // namespace cc

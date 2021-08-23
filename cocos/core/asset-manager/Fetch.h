@@ -33,6 +33,6 @@
 
 namespace cc {
 
-void fetch(const Task& task, const CompleteCallbackNoData& done);
+void fetch(const Task &task, const CompleteCallbackNoData &done);
 
-} // namespace cc {
+} // namespace cc

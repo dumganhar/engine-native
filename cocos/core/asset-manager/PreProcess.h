@@ -25,11 +25,11 @@
 
 #pragma once
 
-#include "core/asset-manager/Task.h"
 #include "core/asset-manager/Shared.h"
+#include "core/asset-manager/Task.h"
 
 namespace cc {
 
-void preprocess (const Task& task, const CompleteCallbackNoData& done);
+void preprocess(const Task &task, const CompleteCallbackNoData &done);
 
-} // namespace cc {
+} // namespace cc

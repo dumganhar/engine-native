@@ -35,31 +35,31 @@ class Asset;
 
 class ReleaseManager final {
 public:
-    static ReleaseManager* getInstance();
+    static ReleaseManager *getInstance();
 
     void init();
 
-    void addPersistNodeRef(Node* node);
+    void addPersistNodeRef(Node *node);
 
-    void removePersistNodeRef(Node* node);
+    void removePersistNodeRef(Node *node);
 
     // do auto release
-    void autoRelease(Scene* oldScene, Scene* newScene, const Record<std::string, Node*>& persistNodes);
+    void autoRelease(Scene *oldScene, Scene *newScene, const Record<std::string, Node *> &persistNodes);
 
-    void tryRelease(Asset* asset, bool force = false);
+    void tryRelease(Asset *asset, bool force = false);
 
 private:
     void freeAssets();
 
-    void free(Asset* asset, bool force = false);
+    void free(Asset *asset, bool force = false);
 
 private:
     Cache<std::vector<std::string>> _persistNodeDeps;
-    Cache<Asset> _toDelete;
-    bool _eventListener {false};
+    Cache<Asset>                    _toDelete;
+    bool                            _eventListener{false};
 
     friend class Game;
     friend class Director;
 };
 
-} // namespace cc {
+} // namespace cc

@@ -29,8 +29,8 @@
 
 #include "core/assets/Asset.h"
 
-#include "core/assets/ImageAsset.h"
 #include "core/assets/AssetEnum.h"
+#include "core/assets/ImageAsset.h"
 
 namespace cc {
 
@@ -43,27 +43,27 @@ struct ITexture2DCreateInfo {
      * @en The pixel width
      * @zh 像素宽度。
      */
-    uint32_t width {0};
+    uint32_t width{0};
 
     /**
      * @en The pixel height
      * @zh 像素高度。
      */
-    uint32_t height {0};
+    uint32_t height{0};
 
     /**
      * @en The pixel format
      * @zh 像素格式。
      * @default PixelFormat.RGBA8888
      */
-    PixelFormat format {PixelFormat::RGBA8888};
+    PixelFormat format{PixelFormat::RGBA8888};
 
     /**
      * @en The mipmap level count
      * @zh mipmap 层级。
      * @default 1
      */
-    uint32_t mipmapLevel {1};
+    uint32_t mipmapLevel{1};
 };
 
 /**
@@ -78,11 +78,11 @@ public:
      * @zh 所有层级 Mipmap，注意，这里不包含自动生成的 Mipmap。
      * 当设置 Mipmap 时，贴图的尺寸以及像素格式可能会改变。
      */
-    const std::vector<ImageAsset*>& getMipmaps () const {
+    const std::vector<ImageAsset *> &getMipmaps() const {
         return _mipmaps;
     }
 
-    void setMipmaps (const std::vector<ImageAsset*>& value);
+    void setMipmaps(const std::vector<ImageAsset *> &value);
 
     /**
      * @en Level 0 mipmap image.
@@ -92,13 +92,13 @@ public:
      * 注意，`this.image = img` 等价于 `this.mipmaps = [img]`，
      * 也就是说，通过 `this.image` 设置 0 级 Mipmap 时将隐式地清除之前的所有 Mipmap。
      */
-    ImageAsset* getImage () const;
+    ImageAsset *getImage() const;
 
-    void setImage (ImageAsset* value);
+    void setImage(ImageAsset *value);
 
-    void initialize ();
+    void initialize();
 
-    virtual void onLoaded () override;
+    virtual void onLoaded() override;
 
     /**
      * @en Reset the current texture with given size, pixel format and mipmap images.
@@ -107,7 +107,7 @@ public:
      * mipmap 图像的数据不会自动更新到贴图中，你必须显式调用 [[uploadData]] 来上传贴图数据。
      * @param info The create information
      */
-    void reset (const ITexture2DCreateInfo& info);
+    void reset(const ITexture2DCreateInfo &info);
 
     /**
      * @en Reset the current texture with given size, pixel format and mipmap images.
@@ -120,7 +120,7 @@ public:
      * @param mipmapLevel Mipmap level count
      * @deprecated since v1.0 please use [[reset]] instead
      */
-    void create (uint32_t width, uint32_t height, PixelFormat format = PixelFormat::RGBA8888, uint32_t mipmapLevel = 1);
+    void create(uint32_t width, uint32_t height, PixelFormat format = PixelFormat::RGBA8888, uint32_t mipmapLevel = 1);
 
     virtual std::string toString() const override;
 
@@ -132,51 +132,49 @@ public:
      * @returns HTML element or `null`
      * @deprecated Please use [[image.data]] instead
      */
-    HTMLElement* getHtmlElementObj ();
+    HTMLElement *getHtmlElementObj();
 
     /**
      * @en Destroy the current 2d texture, clear up all mipmap levels and the related GPU resources.
      * @zh 销毁此贴图，清空所有 Mipmap 并释放占用的 GPU 资源。
      */
-    virtual bool destroy () override;
+    virtual bool destroy() override;
 
     /**
      * @en Gets the description of the 2d texture
      * @zh 返回此贴图的描述。
      * @returns The description
      */
-    std::string description () const;
+    std::string description() const;
 
     /**
      * @en Release used GPU resources.
      * @zh 释放占用的 GPU 资源。
      * @deprecated please use [[destroy]] instead
      */
-    void releaseTexture ();
+    void releaseTexture();
 
     // SERIALIZATION
 
     /**
      * @return
      */
-    virtual std::any _serialize (std::any ctxForExporting) override;
+    virtual std::any _serialize(std::any ctxForExporting) override;
 
     /**
      *
      * @param data
      */
-    virtual void _deserialize (std::any serializedData, std::any handle) override;
+    virtual void _deserialize(std::any serializedData, std::any handle) override;
 
-    virtual gfx::TextureInfo _getGfxTextureCreateInfo (gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
+    virtual gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 
-    virtual void initDefault (const std::string& uuid) override;
+    virtual void initDefault(const std::string &uuid) override;
 
-    virtual bool validate () const override;
+    virtual bool validate() const override;
 
 private:
-    std::vector<ImageAsset*> _mipmaps;//cjh how about using std::vector<std::shared_ptr<ImageAsset>>?
+    std::vector<ImageAsset *> _mipmaps; //cjh how about using std::vector<std::shared_ptr<ImageAsset>>?
 };
 
-} // namespace cc {
-
-
+} // namespace cc

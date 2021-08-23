@@ -36,7 +36,7 @@ namespace gfx {
 class Sampler;
 class Device;
 class Texture;
-}
+} // namespace gfx
 /**
  * @en The base texture class, it defines features shared by all textures.
  * @zh 贴图资源基类。它定义了所有贴图共用的概念。
@@ -61,7 +61,7 @@ public:
      * @en Pixel height of the texture
      * @zh 此贴图的像素高度。
      */
-    uint32_t getHeight () const {
+    uint32_t getHeight() const {
         return _height;
     }
 
@@ -90,14 +90,14 @@ protected:
     /*@serializable*/
     int32_t _anisotropy = 0;
 
-    uint32_t _width = 1;
+    uint32_t _width  = 1;
     uint32_t _height = 1;
 
-    std::string _id;
+    std::string           _id;
     std::vector<uint32_t> _samplerInfo;
-    uint64_t _samplerHash = 0;
-    gfx::Sampler* _gfxSampler = nullptr;
-    gfx::Device* _gfxDevice = nullptr;
+    uint64_t              _samplerHash = 0;
+    gfx::Sampler *        _gfxSampler  = nullptr;
+    gfx::Device *         _gfxDevice   = nullptr;
 
     uint64_t _textureHash = 0;
 
@@ -109,7 +109,7 @@ public:
      * @zh 获取标识符。
      * @returns The id
      */
-    inline const std::string& getId () const {
+    inline const std::string &getId() const {
         return _id;
     }
 
@@ -118,7 +118,7 @@ public:
      * @zh 获取像素格式。
      * @returns The pixel format
      */
-    inline PixelFormat getPixelFormat () const {
+    inline PixelFormat getPixelFormat() const {
         return _format;
     }
 
@@ -127,7 +127,7 @@ public:
      * @zh 获取各向异性。
      * @returns The anisotropy
      */
-    inline int32_t getAnisotropy () const {
+    inline int32_t getAnisotropy() const {
         return _anisotropy;
     }
 
@@ -148,33 +148,33 @@ public:
      * @param minFilter Filter mode for scale down
      * @param magFilter Filter mode for scale up
      */
-    void setFilters (Filter minFilter, Filter magFilter);
+    void setFilters(Filter minFilter, Filter magFilter);
 
     /**
      * @en Sets the texture's mip filter
      * @zh 设置此贴图的缩小过滤算法。
      * @param mipFilter Filter mode for scale down
      */
-    void setMipFilter (Filter mipFilter);
+    void setMipFilter(Filter mipFilter);
 
     /**
      * @en Sets the texture's anisotropy
      * @zh 设置此贴图的各向异性。
      * @param anisotropy
      */
-    void setAnisotropy (int32_t anisotropy);
+    void setAnisotropy(int32_t anisotropy);
 
     /**
      * @en Destroy the current texture, clear up the related GPU resources.
      * @zh 销毁此贴图，并释放占用的 GPU 资源。
      */
-    virtual bool destroy () override;
+    virtual bool destroy() override;
 
     /**
      * @en Gets the texture hash.
      * @zh 获取此贴图的哈希值。
      */
-    inline uint64_t getHash () const {
+    inline uint64_t getHash() const {
         return _textureHash;
     }
 
@@ -182,7 +182,7 @@ public:
      * @en Gets the GFX Texture resource
      * @zh 获取此贴图底层的 GFX 贴图对象。
      */
-    virtual gfx::Texture* getGFXTexture () const {
+    virtual gfx::Texture *getGFXTexture() const {
         return nullptr;
     }
 
@@ -191,7 +191,7 @@ public:
      * @zh 获取此贴图内部使用的 GFX 采样器信息。
      * @private
      */
-    virtual uint64_t getSamplerHash () const {
+    virtual uint64_t getSamplerHash() const {
         return _samplerHash;
     }
 
@@ -199,32 +199,29 @@ public:
      * @en Gets the sampler resource for the texture
      * @zh 获取此贴图底层的 GFX 采样信息。
      */
-    virtual gfx::Sampler* getGFXSampler () const;
+    virtual gfx::Sampler *getGFXSampler() const;
 
     // SERIALIZATION
 
     /**
      * @return
      */
-    virtual std::any _serialize (std::any ctxForExporting) override;
+    virtual std::any _serialize(std::any ctxForExporting) override;
 
     /**
      *
      * @param data
      */
-    virtual void _deserialize (std::any serializedData, std::any handle) override;
-
+    virtual void _deserialize(std::any serializedData, std::any handle) override;
 
 protected:
-    gfx::Device* _getGFXDevice () const;
+    gfx::Device *_getGFXDevice() const;
 
-    gfx::Format _getGFXFormat () const;
+    gfx::Format _getGFXFormat() const;
 
-    void _setGFXFormat (gfx::Format format);
+    void _setGFXFormat(gfx::Format format);
 
-    gfx::Format _getGFXPixelFormat (PixelFormat format);
+    gfx::Format _getGFXPixelFormat(PixelFormat format);
 };
 
-} // namespace cc {
-
-
+} // namespace cc

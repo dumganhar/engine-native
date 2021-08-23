@@ -28,8 +28,8 @@
 #include "core/Types.h"
 #include "core/asset-manager/Cache.h"
 #include "core/asset-manager/DependUtil.h"
-#include "core/asset-manager/Shared.h"
 #include "core/asset-manager/Pipeline.h"
+#include "core/asset-manager/Shared.h"
 
 namespace cc {
 
@@ -80,7 +80,6 @@ struct IAssetManagerOptions final {
      * All remote bundles
      */
     std::vector<std::string> remoteBundles;
-
 };
 
 class Pipeline;
@@ -100,7 +99,7 @@ class CacheManager;
  */
 class AssetManager final {
 public:
-    static AssetManager* getInstance();
+    static AssetManager *getInstance();
 
     /**
      * @en
@@ -110,7 +109,7 @@ public:
      * 正常加载管线
      *
      */
-    Pipeline* pipeline{nullptr};
+    Pipeline *pipeline{nullptr};
 
     /**
      * @en
@@ -120,7 +119,7 @@ public:
      * 下载管线
      *
      */
-    Pipeline* fetchPipeline{nullptr};
+    Pipeline *fetchPipeline{nullptr};
 
     /**
      * @en
@@ -130,7 +129,7 @@ public:
      * Url 转换器
      *
      */
-    Pipeline* transformPipeline{nullptr};
+    Pipeline *transformPipeline{nullptr};
 
     /**
      * @en
@@ -140,7 +139,7 @@ public:
      * 已加载 bundle 的集合， 你能通过 {{#crossLink "AssetManager/removeBundle:method"}}{{/crossLink}} 来移除缓存
      *
      */
-    Cache<Bundle*> bundles;
+    Cache<Bundle *> bundles;
 
     /**
      * @en
@@ -161,7 +160,7 @@ public:
      * @zh
      * 管理资源依赖关系
      */
-    DependUtil* dependUtil{nullptr};
+    DependUtil *dependUtil{nullptr};
 
     /**
      * @en
@@ -171,7 +170,7 @@ public:
      * 是否强制加载资源, 如果为 true ，加载资源将会忽略报错
      *
      */
-    bool force = false;//cjh EDITOR || PREVIEW;
+    bool force = false; //cjh EDITOR || PREVIEW;
 
     /**
      * @en
@@ -181,7 +180,7 @@ public:
      * 是否优先使用 image bitmap 来加载图片，启用之后，图片加载速度会更快, 但内存占用会变高，
      *
      */
-    bool allowImageBitmap = false;//cjh !sys.isMobile;
+    bool allowImageBitmap = false; //cjh !sys.isMobile;
 
     /**
      * @en
@@ -191,7 +190,7 @@ public:
      * 一些有用的方法
      *
      */
-//cjh    public utils = helper;
+    //cjh    public utils = helper;
 
     /**
      * @en
@@ -201,7 +200,7 @@ public:
      * 管理所有下载任务
      *
      */
-    Downloader* downloader{nullptr};
+    Downloader *downloader{nullptr};
 
     /**
      * @en
@@ -211,7 +210,7 @@ public:
      * 管理所有解析任务
      *
      */
-    Downloader* parser{nullptr};
+    Downloader *parser{nullptr};
 
     /**
      * @en
@@ -221,7 +220,7 @@ public:
      * 管理所有合并后的资源
      *
      */
-    PackManager* packManager{nullptr};
+    PackManager *packManager{nullptr};
 
     /**
      * @en
@@ -241,7 +240,7 @@ public:
      * 缓存管理器是一个模块，在非 WEB 平台上，用于管理所有从服务器上下载下来的缓存
      *
      */
-    CacheManager* cacheManager{nullptr};
+    CacheManager *cacheManager{nullptr};
 
     /**
      * @en
@@ -251,9 +250,9 @@ public:
      * 可选参数的预设集
      *
      */
-//cjh    public presets = presets;
-//
-//    public factory = factory;
+    //cjh    public presets = presets;
+    //
+    //    public factory = factory;
 
     IPipe preprocessPipe;
 
@@ -261,14 +260,14 @@ public:
 
     IPipe loadPipe;
 
-//cjh    public references = references;
-//
-//    private _releaseManager = releaseManager;
+    //cjh    public references = references;
+    //
+    //    private _releaseManager = releaseManager;
 
-//    private _files = files;
+    //    private _files = files;
 
-//    private _parsed = parsed;
-//    private _parsePipeline = BUILD ? null : new Pipeline('parse existing json', [this.loadPipe]);
+    //    private _parsed = parsed;
+    //    private _parsePipeline = BUILD ? null : new Pipeline('parse existing json', [this.loadPipe]);
 
     /**
      * @en
@@ -277,7 +276,7 @@ public:
      * @zh
      * 内置 main 包
      */
-    Bundle* getMain();
+    Bundle *getMain();
 
     /**
      * @en
@@ -287,7 +286,7 @@ public:
      * 内置 resources 包
      *
      */
-    Bundle* getResources();
+    Bundle *getResources();
 
     /**
      * @en
@@ -299,7 +298,7 @@ public:
      * @param options - the configuration
      *
      */
-    void init(const IAssetManagerOptions& options);
+    void init(const IAssetManagerOptions &options);
 
     /**
      * @en
@@ -318,7 +317,7 @@ public:
      * cc.assetManager.getBundle('resources');
      *
      */
-    Bundle* getBundle(const std::string& name);
+    Bundle *getBundle(const std::string &name);
 
     /**
      * @en
@@ -333,7 +332,7 @@ public:
      * @typescript
      * removeBundle(bundle: cc.AssetManager.Bundle): void
      */
-    void removeBundle(Bundle* bundle);
+    void removeBundle(Bundle *bundle);
 
     /**
      * @en
@@ -386,17 +385,16 @@ public:
      * cc.assetManager.loadAny({ url: 'http://example.com/my.asset', skin: 'xxx', model: 'xxx', userName: 'xxx', password: 'xxx' });
      *
      */
-    void loadAny(const Request& requests, const IOptions& options, const ProgressCallback& onProgress, const CompleteCallbackWithData<std::any>& onComplete);
-    void loadAny(const Request& requests, const IOptions& options, const CompleteCallbackWithData<std::any>& onComplete);
-    void loadAny(const Request& requests, const ProgressCallback& onProgress, const CompleteCallbackWithData<std::any>& onComplete);
-    void loadAny(const Request& requests, const CompleteCallbackWithData<std::any>& onComplete);
+    void loadAny(const Request &requests, const IOptions &options, const ProgressCallback &onProgress, const CompleteCallbackWithData<std::any> &onComplete);
+    void loadAny(const Request &requests, const IOptions &options, const CompleteCallbackWithData<std::any> &onComplete);
+    void loadAny(const Request &requests, const ProgressCallback &onProgress, const CompleteCallbackWithData<std::any> &onComplete);
+    void loadAny(const Request &requests, const CompleteCallbackWithData<std::any> &onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadAny(const std::string& request, const CompleteCallbackWithData<T>& onComplete);
+    void loadAny(const std::string &request, const CompleteCallbackWithData<T> &onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadAny(const std::vector<std::string>& requests, const CompleteCallbackWithData<T>& onComplete);
-
+    void loadAny(const std::vector<std::string> &requests, const CompleteCallbackWithData<T> &onComplete);
 
     /**
      * @en
@@ -423,11 +421,11 @@ public:
      * cc.assetManager.preloadAny('0cbZa5Y71CTZAccaIFluuZ', (err) => cc.assetManager.loadAny('0cbZa5Y71CTZAccaIFluuZ'));
      *
      */
-    void preloadAny(const Request& requests, const IOptions& options, const ProgressCallback& onProgress, const CompleteCallbackWithData<std::vector<RequestItem>>& onComplete);
-    void preloadAny(const Request& requests, const ProgressCallback& onProgress, const CompleteCallbackWithData<std::vector<RequestItem>>& onComplete);
+    void preloadAny(const Request &requests, const IOptions &options, const ProgressCallback &onProgress, const CompleteCallbackWithData<std::vector<RequestItem>> &onComplete);
+    void preloadAny(const Request &requests, const ProgressCallback &onProgress, const CompleteCallbackWithData<std::vector<RequestItem>> &onComplete);
 
-    void preloadAny(const Request& requests, const IOptions& options, const CompleteCallbackWithData<std::vector<RequestItem>>& onComplete);
-    void preloadAny(const Request& requests, const CompleteCallbackWithData<std::vector<RequestItem>>& onComplete);
+    void preloadAny(const Request &requests, const IOptions &options, const CompleteCallbackWithData<std::vector<RequestItem>> &onComplete);
+    void preloadAny(const Request &requests, const CompleteCallbackWithData<std::vector<RequestItem>> &onComplete);
 
     /**
      * @en
@@ -451,10 +449,10 @@ public:
      *
      */
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadRemote(const std::string& url, const IRemoteOptions& options, const CompleteCallbackWithData<T>& onComplete);
+    void loadRemote(const std::string &url, const IRemoteOptions &options, const CompleteCallbackWithData<T> &onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadRemote(const std::string& url, const CompleteCallbackWithData<T>& onComplete);
+    void loadRemote(const std::string &url, const CompleteCallbackWithData<T> &onComplete);
 
     /**
      * @en
@@ -474,8 +472,8 @@ public:
      * loadBundle('http://localhost:8080/test', null, (err, bundle) => console.log(err));
      *
      */
-    void loadBundle(const std::string& nameOrUrl, const IBundleOptions& options, const CompleteCallbackWithData<Bundle>& onComplete);
-    void loadBundle(const std::string& nameOrUrl, const CompleteCallbackWithData<Bundle>& onComplete);
+    void loadBundle(const std::string &nameOrUrl, const IBundleOptions &options, const CompleteCallbackWithData<Bundle> &onComplete);
+    void loadBundle(const std::string &nameOrUrl, const CompleteCallbackWithData<Bundle> &onComplete);
 
     /**
      * @en
@@ -497,7 +495,7 @@ public:
      * cc.assetManager.releaseAsset(texture);
      *
      */
-    void releaseAsset(Asset* asset);
+    void releaseAsset(Asset *asset);
 
     /**
      * @en
@@ -530,23 +528,23 @@ private:
      * @private
      */
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadWithJson(const Record<std::string, std::any>& json, //cjh TODO: use Rapidjson Value?
-                      const IJsonAssetOptions& options,
-                      const ProgressCallback& onProgress,
-                      const CompleteCallbackWithData<T>& onComplete);
+    void loadWithJson(const Record<std::string, std::any> &json, //cjh TODO: use Rapidjson Value?
+                      const IJsonAssetOptions &            options,
+                      const ProgressCallback &             onProgress,
+                      const CompleteCallbackWithData<T> &  onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadWithJson(const Record<std::string, std::any>& json,
-                      const ProgressCallback& onProgress,
-                      const CompleteCallbackWithData<T>& onComplete);
+    void loadWithJson(const Record<std::string, std::any> &json,
+                      const ProgressCallback &             onProgress,
+                      const CompleteCallbackWithData<T> &  onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadWithJson(const Record<std::string, std::any>& json,
-                      const IJsonAssetOptions& options,
-                      const CompleteCallbackWithData<T>& onComplete);
+    void loadWithJson(const Record<std::string, std::any> &json,
+                      const IJsonAssetOptions &            options,
+                      const CompleteCallbackWithData<T> &  onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadWithJson(const Record<std::string, std::any>& json, const CompleteCallbackWithData<T>& onComplete);
+    void loadWithJson(const Record<std::string, std::any> &json, const CompleteCallbackWithData<T> &onComplete);
 };
 
-} // namespace cc {
+} // namespace cc

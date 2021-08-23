@@ -32,15 +32,15 @@
 
 namespace cc {
 
-using DownloadHandler = std::function<void(const std::string& url, const IDownloadParseOptions& options, const CompleteCallback& onComplete)>;
+using DownloadHandler = std::function<void(const std::string &url, const IDownloadParseOptions &options, const CompleteCallback &onComplete)>;
 
 struct IDownloadRequest {
-    std::string id;
-    int32_t priority{0};
-    std::string url;
+    std::string           id;
+    int32_t               priority{0};
+    std::string           url;
     IDownloadParseOptions options;
-    CompleteCallback done{nullptr};
-    DownloadHandler handler{nullptr};
+    CompleteCallback      done{nullptr};
+    DownloadHandler       handler{nullptr};
 };
 
 /**
@@ -63,8 +63,7 @@ struct IDownloadRequest {
  */
 class Downloader final {
 public:
-
-    static Downloader* getInstance();
+    static Downloader *getInstance();
     /**
      * @en
      * The maximum number of concurrent when downloading
@@ -92,7 +91,7 @@ public:
      * 远程服务器地址
      *
      */
-    const std::string& getRemoteServerAddress() const {
+    const std::string &getRemoteServerAddress() const {
         return _remoteServerAddress;
     }
 
@@ -106,11 +105,11 @@ public:
      * @property maxRetryCount
      * @type {Number}
      */
-    uint32_t maxRetryCount{3};//cjh = BUILD ? 3 : 0;
+    uint32_t maxRetryCount{3}; //cjh = BUILD ? 3 : 0;
 
     bool appendTimeStamp{false}; //cjh = !!EDITOR;
 
-    bool limited{true};//cjh !EDITOR;
+    bool limited{true}; //cjh !EDITOR;
 
     /**
      * @en
@@ -130,8 +129,8 @@ private:
     Record<std::string, DownloadHandler> _downloaders;
 
     Cache<std::vector<CompleteCallback>> _downloading;
-    std::vector<IDownloadRequest> _queue;
-    bool _queueDirty{false};
+    std::vector<IDownloadRequest>        _queue;
+    bool                                 _queueDirty{false};
     // the number of loading thread
     uint32_t _totalNum{0};
     // the number of request that launched in this period
@@ -139,9 +138,9 @@ private:
     // last time, if now - lastTime > period, refresh _totalNumThisPeriod.
     int64_t _lastDate{-1};
     // if _totalNumThisPeriod equals max, move request to next period using setTimeOut.
-    bool _checkNextPeriod{false};
+    bool        _checkNextPeriod{false};
     std::string _remoteServerAddress;
-    float _maxInterval{1.0f / 30.0f};
+    float       _maxInterval{1.0f / 30.0f};
 };
 
-} // namespace cc {
+} // namespace cc

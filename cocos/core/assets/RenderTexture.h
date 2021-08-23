@@ -31,18 +31,18 @@
 namespace cc {
 
 struct IRenderTextureCreateInfo {
-    std::string name;
-    uint32_t width;
-    uint32_t height;
+    std::string         name;
+    uint32_t            width;
+    uint32_t            height;
     gfx::RenderPassInfo passInfo;
 };
 
 class RenderWindow;
 
 namespace gfx {
-    class Texture;
-    class Sampler;
-}
+class Texture;
+class Sampler;
+} // namespace gfx
 
 /**
  * @en Render texture is a render target for [[Camera]] or [[Canvas]] component,
@@ -55,25 +55,24 @@ public:
      * @en The pixel width of the render texture
      * @zh 渲染贴图的像素宽度
      */
-    uint32_t getWidth () const;
+    uint32_t getWidth() const;
 
     /**
      * @en The pixel height of the render texture
      * @zh 渲染贴图的像素高度
      */
-    uint32_t height () const;
+    uint32_t height() const;
 
     /**
      * @en The render window for the render pipeline, it's created internally and cannot be modified.
      * @zh 渲染管线所使用的渲染窗口，内部逻辑创建，无法被修改。
      */
-    RenderWindow* getWindow () const;
+    RenderWindow *getWindow() const;
 
-    void initialize (const IRenderTextureCreateInfo& info);
-    void reset (const IRenderTextureCreateInfo& info); // to be consistent with other assets
+    void initialize(const IRenderTextureCreateInfo &info);
+    void reset(const IRenderTextureCreateInfo &info); // to be consistent with other assets
 
-
-    virtual bool destroy () override;
+    virtual bool destroy() override;
 
     /**
      * @en Resize the render texture
@@ -81,55 +80,53 @@ public:
      * @param width The pixel width
      * @param height The pixel height
      */
-    void resize (uint32_t width, uint32_t height);
+    void resize(uint32_t width, uint32_t height);
 
     // TODO: migration with TextureBase data
     // @ts-expect-error Hack
-//    get _serialize () { return null; }
+    //    get _serialize () { return null; }
     // @ts-expect-error Hack
-//    get _deserialize () { return null; }
+    //    get _deserialize () { return null; }
 
     // To be compatible with material property interface
     /**
      * @en Gets the related [[Texture]] resource, it's also the color attachment for the render window
      * @zh 获取渲染贴图的 GFX 资源，同时也是渲染窗口所指向的颜色缓冲贴图资源
      */
-    gfx::Texture* getGFXTexture ();
+    gfx::Texture *getGFXTexture();
 
     /**
      * @en Gets the sampler resource for the render texture
      * @zh 获取渲染贴图的采样器
      */
-    gfx::Sampler* getGFXSampler ();
+    gfx::Sampler *getGFXSampler();
 
     /**
      * @en Gets the sampler hash for the render texture
      * @zh 获取渲染贴图的采样器哈希值
      */
-    uint64_t getSamplerHash () const;
+    uint64_t getSamplerHash() const;
 
-    virtual void onLoaded () override;
+    virtual void onLoaded() override;
 
-    void _initWindow (const IRenderTextureCreateInfo& info);
+    void _initWindow(const IRenderTextureCreateInfo &info);
 
-    virtual void initDefault (const std::string& uuid);
+    virtual void initDefault(const std::string &uuid);
 
-    virtual bool validate () const override;
+    virtual bool validate() const override;
 
 private:
-/*    @serializable
+    /*    @serializable
     @rangeMin(1)
     @rangeMax(2048)*/
-    uint32_t _width {1};
+    uint32_t _width{1};
 
-/*    @serializable
+    /*    @serializable
     @rangeMin(1)
     @rangeMax(2048)*/
-    uint32_t _height {1};
+    uint32_t _height{1};
 
-    RenderWindow* _window {nullptr};
+    RenderWindow *_window{nullptr};
 };
 
-} // namespace cc {
-
-
+} // namespace cc

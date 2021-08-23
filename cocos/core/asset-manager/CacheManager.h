@@ -30,7 +30,6 @@
 
 namespace cc {
 
-
 }
 
 } // namespace cc {

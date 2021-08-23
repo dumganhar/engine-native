@@ -32,16 +32,16 @@
 
 namespace cc {
 
-using CreateHandler = std::function<void(const std::string& id, const std::any& data, const IDownloadParseOptions& options, const CompleteCallback& onComplete)>;
+using CreateHandler = std::function<void(const std::string &id, const std::any &data, const IDownloadParseOptions &options, const CompleteCallback &onComplete)>;
 
 class Factory final {
 public:
-    static Factory* getInstance();
+    static Factory *getInstance();
 
-    void registerCustomHandlerWithType(const std::string& type, const CreateHandler& handler);
-    void registerCustomHandlerWithMap(const Record<std::string, CreateHandler>& map);
+    void registerCustomHandlerWithType(const std::string &type, const CreateHandler &handler);
+    void registerCustomHandlerWithMap(const Record<std::string, CreateHandler> &map);
 
-    void create(const std::string& id, const std::any& data, const std::string& type, const IRemoteOptions& options, const CompleteCallback& onComplete);
+    void create(const std::string &id, const std::any &data, const std::string &type, const IRemoteOptions &options, const CompleteCallback &onComplete);
 
 private:
     Record<std::string, CreateHandler> _producers;
@@ -49,4 +49,4 @@ private:
     Cache<std::vector<CompleteCallback>> _creating;
 };
 
-} // namespace cc {
+} // namespace cc

@@ -31,12 +31,11 @@
 namespace cc {
 
 struct IUnpackRequest {
-    CompleteCallback onComplete {nullptr};
-    std::string id;
+    CompleteCallback onComplete{nullptr};
+    std::string      id;
 };
 
-using Unpacker = std::function<void(const std::string& packUuid, const std::any& data, const IDownloadParseOptions& options, const CompleteCallback& onComplete)>;
-
+using Unpacker = std::function<void(const std::string &packUuid, const std::any &data, const IDownloadParseOptions &options, const CompleteCallback &onComplete)>;
 
 /**
  * @en
@@ -48,7 +47,7 @@ using Unpacker = std::function<void(const std::string& packUuid, const std::any&
  */
 class PackManager {
 public:
-    static PackManager* getInstance();
+    static PackManager *getInstance();
 
     /**
      * @en
@@ -70,13 +69,12 @@ public:
      * });
      *
      */
-    void unpackJson(const std::vector<std::string>& pack,
-                    const std::any& json,
-                    const IDownloadParseOptions& options,
-                    const CompleteCallback& onComplete);
+    void unpackJson(const std::vector<std::string> &pack,
+                    const std::any &                json,
+                    const IDownloadParseOptions &   options,
+                    const CompleteCallback &        onComplete);
 
     void init();
-
 
     /**
      * @en
@@ -99,8 +97,8 @@ public:
      *  '.ab': (packUuid, file, options, onComplete) => onComplete(null, null),
      * });
      */
-    void registerCustomHandlerWithType(const std::string& type, const Unpacker& handler);
-    void registerCustomHandlerWithMap(const Record<std::string, Unpacker>& map);
+    void registerCustomHandlerWithType(const std::string &type, const Unpacker &handler);
+    void registerCustomHandlerWithMap(const Record<std::string, Unpacker> &map);
 
     /**
      * @en
@@ -124,11 +122,11 @@ public:
      * });
      *
      */
-    void unpack(const std::vector<std::string>& pack,
-                const std::any& data,
-                const std::string& type,
-                const IDownloadParseOptions& options,
-                const CompleteCallback& onComplete);
+    void unpack(const std::vector<std::string> &pack,
+                const std::any &                data,
+                const std::string &             type,
+                const IDownloadParseOptions &   options,
+                const CompleteCallback &        onComplete);
 
     /**
      * @en
@@ -151,13 +149,11 @@ public:
      * packManager.load(requestItem, null, (err, data) => console.log(err));
      *
      */
-    void load(const RequestItem& item, const IDownloadParseOptions& options, const CompleteCallback& onComplete);
+    void load(const RequestItem &item, const IDownloadParseOptions &options, const CompleteCallback &onComplete);
 
 private:
     Cache<std::vector<IUnpackRequest>> _loading;
-    Record<std::string, Unpacker> _unpackers;
+    Record<std::string, Unpacker>      _unpackers;
 };
 
-
-
-} // namespace cc {
+} // namespace cc

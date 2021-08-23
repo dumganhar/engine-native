@@ -71,7 +71,7 @@ public:
         return _file;
     }
 
-    virtual void setNativeAsset(const std::any& obj) {
+    virtual void setNativeAsset(const std::any &obj) {
         _file = obj;
     }
 
@@ -79,7 +79,7 @@ public:
      * @param error - null or the error info
      * @param node - the created node or null
      */
-    using CreateNodeCallback = std::function<void(Error, Node*)>;
+    using CreateNodeCallback = std::function<void(Error, Node *)>;
     /**
      * @en
      * Create a new node using this asset in the scene.<br/>
@@ -88,7 +88,7 @@ public:
      * 使用该资源在场景中创建一个新节点。<br/>
      * 如果这类资源没有相应的节点类型，该方法应该是空的。
      */
-    virtual void createNode(const CreateNodeCallback& cb) {}
+    virtual void createNode(const CreateNodeCallback &cb) {}
 
     void            addRef();
     void            decRef(bool autoRelease = true);
@@ -96,7 +96,7 @@ public:
 
     virtual void onLoaded() {}
 
-    virtual void initDefault(const std::string& uuid);
+    virtual void initDefault(const std::string &uuid);
     virtual bool validate() const { return true; }
 
     virtual bool destroy() override;
@@ -130,7 +130,7 @@ protected:
      * @param inLibrary
      * @private
      */
-    void _setRawAsset(const std::string& filename, bool inLibrary = true);
+    void _setRawAsset(const std::string &filename, bool inLibrary = true);
 
 private:
     std::string _native;

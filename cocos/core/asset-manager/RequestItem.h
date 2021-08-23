@@ -46,7 +46,7 @@ public:
      * @zh
      * 请求的 id, 由 uuid 和 isNative 组合而成
      */
-    std::string getId () const;
+    std::string getId() const;
 
     static const uint32_t MAX_DEAD_NUM = 500;
 
@@ -60,9 +60,9 @@ public:
      * @returns requestItem
      *
      */
-    static RequestItem* create ();
+    static RequestItem *create();
 
-    static std::vector<RequestItem*> s_deadPool;
+    static std::vector<RequestItem *> s_deadPool;
 
     /**
      * @en
@@ -92,7 +92,7 @@ public:
      * 资源的扩展名
      *
      */
-    std::string ext { ".json" };
+    std::string ext{".json"};
 
     /**
      * @en
@@ -134,7 +134,7 @@ public:
      * 资源是否是原生资源
      *
      */
-    bool isNative {false};
+    bool isNative{false};
 
     /**
      * @en
@@ -160,4 +160,4 @@ private:
     std::string _id;
 };
 
-} // namespace cc {
+} // namespace cc

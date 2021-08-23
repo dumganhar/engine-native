@@ -37,9 +37,8 @@ namespace cc {
  */
 class JsonAsset final : public Asset {
 public:
-
 private:
     rapidjson::Value _json;
 };
 
-} // namespace cc {
+} // namespace cc

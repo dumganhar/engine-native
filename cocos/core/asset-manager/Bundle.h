@@ -47,7 +47,7 @@ public:
      * for internal use
      * @private
      */
-    const Config& getConfig()  {
+    const Config &getConfig() {
         return _config;
     }
 
@@ -59,7 +59,7 @@ public:
      * 此 bundle 的名称
      *
      */
-    const std::string& getName() {
+    const std::string &getName() {
         return _config.name;
     }
 
@@ -71,7 +71,7 @@ public:
      * 此 bundle 的依赖
      *
      */
-    const std::vector<std::string>& getDeps() {
+    const std::vector<std::string> &getDeps() {
         return _config.deps;
     }
 
@@ -83,7 +83,7 @@ public:
      * 此 bundle 的根路径, 例如 'http://example.com/bundle1'
      *
      */
-    const std::string& getBase() {
+    const std::string &getBase() {
         return _config.base;
     }
 
@@ -102,7 +102,7 @@ public:
      * var info = bundle.getInfoWithPath('image/a', cc.Texture2D);
      *
      */
-    IAddressableInfo* getInfoWithPath(const std::string& path, AssetType type) {
+    IAddressableInfo *getInfoWithPath(const std::string &path, AssetType type) {
         return _config.getInfoWithPath(path, type);
     }
 
@@ -122,7 +122,7 @@ public:
      * var infos = [];
      * bundle.getDirWithPath('images', cc.Texture2D, infos);
      */
-    std::vector<IAddressableInfo*> getDirWithPath (const std::string& path, AssetType type) {
+    std::vector<IAddressableInfo *> getDirWithPath(const std::string &path, AssetType type) {
         return _config.getDirWithPath(path, type);
     }
 
@@ -141,7 +141,7 @@ public:
      * var info = bundle.getAssetInfo('fcmR3XADNLgJ1ByKhqcC5Z');
      *
      */
-    IAssetInfo* getAssetInfo (const std::string& uuid) {
+    IAssetInfo *getAssetInfo(const std::string &uuid) {
         return _config.getAssetInfo(uuid);
     }
 
@@ -160,7 +160,7 @@ public:
      * var info = bundle.getSceneInfo('first.fire');
      *
      */
-    ISceneInfo* getSceneInfo (const std::string& name) {
+    ISceneInfo *getSceneInfo(const std::string &name) {
         return _config.getSceneInfo(name);
     }
 
@@ -174,10 +174,10 @@ public:
      * @param options
      *
      */
-    void init(const IConfigOption& options);
+    void init(const IConfigOption &options);
 
 private:
     Config _config;
 };
 
-} // namespace cc {
+} // namespace cc

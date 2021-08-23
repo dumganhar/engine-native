@@ -35,20 +35,20 @@
 
 #include "math/Math.h"
 
-#include <variant>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
+#include <variant>
 
 namespace cc {
 
 namespace gfx {
-    class Pass;
+class Pass;
 }
 
 class RenderableComponent;
 
-using MaterialProperty = std::variant<float, int32_t, Vec2, Vec3, Vec4, /* Color //cjh ,*/Mat3, Mat4, Quaternion>;
-using MaterialPropertyFull = std::variant<float, int32_t, Vec2, Vec3, Vec4, /* Color //cjh ,*/Mat3, Mat4, Quaternion, TextureBase, gfx::Texture>;
+using MaterialProperty     = std::variant<float, int32_t, Vec2, Vec3, Vec4, /* Color //cjh ,*/ Mat3, Mat4, Quaternion>;
+using MaterialPropertyFull = std::variant<float, int32_t, Vec2, Vec3, Vec4, /* Color //cjh ,*/ Mat3, Mat4, Quaternion, TextureBase, gfx::Texture>;
 /**
  * @en The basic infos for material initialization.
  * @zh 用来初始化材质的基本信息。
@@ -59,7 +59,7 @@ struct IMaterialInfo {
      * @zh
      * 这个材质将使用的 EffectAsset，直接提供资源引用，和 `effectName` 至少要指定一个。
      */
-    EffectAsset* effectAsset{nullptr};
+    EffectAsset *effectAsset{nullptr};
     /**
      * @en
      * The name of the EffectAsset to use. Must provide if `effectAsset` is not specified.
@@ -98,11 +98,11 @@ public:
      * @zh 获取一个材质的哈希值
      * @param material
      */
-    static uint64_t getHash(Material* material);
+    static uint64_t getHash(Material *material);
 
 protected:
     /* @type(EffectAsset) */
-    EffectAsset* _effectAsset{nullptr};
+    EffectAsset *_effectAsset{nullptr};
 
     /* @serializable */
     uint32_t _techIdx{0};
@@ -116,7 +116,7 @@ protected:
     /* @serializable */
     std::vector<Record<std::string, std::vector<MaterialPropertyFull>>> _props;
 
-    std::vector<gfx::Pass*> _passes;
+    std::vector<gfx::Pass *> _passes;
 
     uint64_t _hash{0};
 
@@ -127,7 +127,7 @@ public:
      * @en The current [[EffectAsset]].
      * @zh 当前使用的 [[EffectAsset]] 资源。
      */
-    inline EffectAsset* effectAsset() {
+    inline EffectAsset *effectAsset() {
         return _effectAsset;
     }
 
@@ -151,7 +151,7 @@ public:
      * @en The passes defined in this material.
      * @zh 当前正在使用的 pass 数组。
      */
-    std::vector<gfx::Pass*>& getPasses() {
+    std::vector<gfx::Pass *> &getPasses() {
         return _passes;
     }
 
@@ -167,7 +167,7 @@ public:
      * @en The parent material
      * @zh 父材质
      */
-    virtual Material* getParent() const {
+    virtual Material *getParent() const {
         return nullptr;
     }
 
@@ -175,10 +175,9 @@ public:
      * @en The owner render component
      * @zh 该材质所归属的渲染组件
      */
-    virtual RenderableComponent* getOwner() const {
+    virtual RenderableComponent *getOwner() const {
         return nullptr;
     }
 };
 
-} // namespace cc {
-
+} // namespace cc

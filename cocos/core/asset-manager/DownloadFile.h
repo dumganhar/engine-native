@@ -34,6 +34,6 @@ namespace cc {
 
 using FileProgressCallback = std::function<void(uint32_t loaded, uint32_t total)>;
 
-void downloadFile(const std::string& url, const IXHROptions& options, const FileProgressCallback& onProgress, const CompleteCallback& onComplete);
+void downloadFile(const std::string &url, const IXHROptions &options, const FileProgressCallback &onProgress, const CompleteCallback &onComplete);
 
-} // namespace cc {
+} // namespace cc

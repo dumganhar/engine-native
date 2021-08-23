@@ -46,7 +46,7 @@ public:
      * @en
      * Returns the url of this asset's native object, if none it will returns an empty string.
      * @zh
-     * 返回该资源对应的目标平台资源的 URL，如果没有将返回一个空字符串。//
+     * 返回该资源对应的目标平台资源的 URL，如果没有将返回一个空字符串。
      * @readOnly
      */
     std::string getNativeUrl() const;

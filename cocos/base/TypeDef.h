@@ -38,6 +38,7 @@ using index_t  = int32_t;
     inline std::underlying_type<T>::type toNumber(const T v) { return static_cast<std::underlying_type<T>::type>(v); }
 
 #define CC_ENUM_BITWISE_OPERATORS(T)                                                                                                                                              \
+    inline bool operator!(const T v) { return !static_cast<std::underlying_type<T>::type>(v); }                                                                                   \
     inline T    operator~(const T v) { return static_cast<T>(~static_cast<std::underlying_type<T>::type>(v)); }                                                                   \
     inline bool operator||(const T lhs, const T rhs) { return (static_cast<std::underlying_type<T>::type>(lhs) || static_cast<std::underlying_type<T>::type>(rhs)); }             \
     inline bool operator&&(const T lhs, const T rhs) { return (static_cast<std::underlying_type<T>::type>(lhs) && static_cast<std::underlying_type<T>::type>(rhs)); }             \

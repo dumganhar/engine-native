@@ -24,3 +24,85 @@
 ****************************************************************************/
 
 #include "core/data/Object.h"
+
+#include <vector>
+
+namespace cc {
+
+namespace {
+std::vector<CCObject*> objectsToDestroy;
+}
+
+/* static */
+void CCObject::deferredDestroy()
+{
+    size_t deleteCount = objectsToDestroy.size();
+    for (size_t i = 0; i < deleteCount; ++i) {
+        CCObject* obj = objectsToDestroy[i];
+        if (!(obj->_objFlags & Flags::DESTROYED)) {
+            obj->destroyImmediate();
+        }
+    }
+    // if we called b.destory() in a.onDestroy(), objectsToDestroy will be resized,
+    // but we only destroy the objects which called destory in this frame.
+    if (deleteCount == objectsToDestroy.size()) {
+        objectsToDestroy.clear();
+    } else {
+        objectsToDestroy.erase(objectsToDestroy.begin(), objectsToDestroy.begin() + deleteCount);
+    }
+
+//cjh TODO:    if (EDITOR) {
+//        deferredDestroyTimer = null;
+//    }
+}
+
+CCObject::CCObject(const char* name/* = ""*/)
+: _name(name) {
+}
+
+bool CCObject::destroy() {
+    if (!!(_objFlags & Flags::DESTROYED)) {
+//cjh TODO:        warnID(5000);
+        return false;
+    }
+    if (!!(_objFlags & Flags::TO_DESTROY)) {
+        return false;
+    }
+    _objFlags |= Flags::TO_DESTROY;
+    objectsToDestroy.emplace_back(this);
+
+//cjh TODO:   if (EDITOR && deferredDestroyTimer === null && legacyCC.engine && !legacyCC.engine._isUpdating) {
+//        // auto destroy immediate in edit mode
+//        // @ts-expect-error no function
+//        deferredDestroyTimer = setImmediate(CCObject._deferredDestroy);
+//    }
+    return true;
+}
+
+void CCObject::destruct() {
+//cjh TODO: it seems that this function doesn't need to be implemented in c++
+//    const ctor: any = this.constructor;
+//    let destruct = ctor.__destruct__;
+//    if (!destruct) {
+//        destruct = compileDestruct(this, ctor);
+//        js.value(ctor, '__destruct__', destruct, true);
+//    }
+//    destruct(this);
+}
+
+void CCObject::destroyImmediate () {
+    if (!!(_objFlags & Flags::DESTROYED)) {
+//cjh TODO:        errorID(5000);
+        return;
+    }
+
+    onPreDestroy();
+
+//cjh TODO:    if (!EDITOR || legacyCC.GAME_VIEW) {
+        destruct();
+//    }
+
+    _objFlags |= Flags::DESTROYED;
+}
+
+} // namespace cc {

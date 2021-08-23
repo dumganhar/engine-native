@@ -1371,6 +1371,8 @@ cocos_source_files(
 
     cocos/core/utils/IDGenerator.cpp
     cocos/core/utils/IDGenerator.h
+    cocos/core/utils/Path.cpp
+    cocos/core/utils/Path.h
 
     cocos/core/geometry/AABB.cpp
     cocos/core/geometry/AABB.h

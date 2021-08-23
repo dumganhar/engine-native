@@ -38,12 +38,39 @@ class Node;
 
 class Asset : public CCObject {
 public:
+    using Super = CCObject;
+
     virtual ~Asset() = default;
 
-    const std::string& getNativeUrl() const;
+    /**
+     * @en
+     * Returns the url of this asset's native object, if none it will returns an empty string.
+     * @zh
+     * 返回该资源对应的目标平台资源的 URL，如果没有将返回一个空字符串。
+     * @readOnly
+     */
+    std::string getNativeUrl() const;
 
-    using NativeDep = std::unordered_map<std::string, Value>;
     NativeDep getNativeDep() const;
+
+    /**
+     * @en
+     * The underlying native asset of this asset if one is available.<br>
+     * This property can be used to access additional details or functionality related to the asset.<br>
+     * This property will be initialized by the loader if `_native` is available.
+     * @zh
+     * 此资源的基础资源（如果有）。 此属性可用于访问与资源相关的其他详细信息或功能。<br>
+     * 如果`_native`可用，则此属性将由加载器初始化。
+     * @default null
+     * @private
+     */
+    inline const std::any& getNativeAsset() const {
+        return _file;
+    }
+
+    inline void setNativeAsset(const std::any& obj) {
+        _file = obj;
+    }
 
     /**
      * @param error - null or the error info
@@ -61,13 +88,10 @@ public:
     virtual void createNode(const CreateNodeCallback& cb) {}
 
     void addRef();
-    void decRef();
+    void decRef(bool autoRelease = true);
     inline uint32_t getRefCount() const { return _ref; }
 
     virtual void onLoaded() {}
-
-    virtual std::any getNativeAsset() const;
-    virtual void setNativeAsset(const std::any& obj);
 
     virtual void initDefault(const std::string& uuid);
     virtual bool validate() const { return true; }
@@ -87,10 +111,23 @@ public:
      */
     virtual void _deserialize (std::any serializedData, std::any handle) {};
 
-protected:
-    Asset() = default;
+    virtual std::string toString() const override { return _nativeUrl; }
 
-    void _setRawAsset (const std::string& filename, bool inLibrary/* = true*/);
+protected:
+    Asset();
+
+    /**
+     * @en
+     * Set native file name for this asset.
+     * @zh
+     * 为此资源设置原始文件名。
+     * @seealso nativeUrl
+     *
+     * @param filename
+     * @param inLibrary
+     * @private
+     */
+    void _setRawAsset (const std::string& filename, bool inLibrary = true);
 
 
 private:
@@ -99,6 +136,7 @@ private:
 
     std::string _uuid;
 
+    std::any _file;
     uint32_t _ref {0};
 
     bool _loaded {true};

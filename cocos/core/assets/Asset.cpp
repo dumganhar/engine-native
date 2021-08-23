@@ -24,9 +24,85 @@
 ****************************************************************************/
 
 #include "core/assets/Asset.h"
+#include "core/utils/Path.h"
 
 namespace cc {
 
+//cjh TODO:
+std::string getAssetUrlWithUuid(const std::string& uuid, bool isNative, const std::string& nativeExt, const std::string& __nativeName__ = "");
+//
 
+Asset::Asset()
+{
 
 }
+
+std::string Asset::getNativeUrl() const {
+    if (!_nativeUrl.empty()) {
+        if (!_native.empty())
+            return "";
+        const auto name = _native;
+        if (name[0] == 47) {    // '/'
+            // remove library tag
+            // not imported in library, just created on-the-fly
+            return name.substr(1);
+        }
+
+        if (name[0] == 46) {  // '.'
+            // imported in dir where json exist
+            const_cast<Asset*>(this)->_nativeUrl = getAssetUrlWithUuid(_uuid, true, name);
+        }
+        else {
+            // imported in an independent dir
+            const_cast<Asset*>(this)->_nativeUrl = getAssetUrlWithUuid(_uuid, true, extname(name), name);
+        }
+    }
+    return _nativeUrl;
+}
+
+NativeDep Asset::getNativeDep() const {
+    if (!_native.empty()) {
+        return NativeDep(true, _uuid, _native);
+    }
+    return NativeDep();
+}
+
+void Asset::_setRawAsset (const std::string& filename, bool inLibrary/* = true*/)
+{
+    if (inLibrary) {
+        _native = filename;
+    } else {
+        _native = "/" + filename; // simply use '/' to tag location where is not in the library
+    }
+}
+
+void Asset::addRef()
+{
+    ++_ref;
+}
+
+void Asset::decRef(bool autoRelease/* = true*/)
+{
+    if (_ref > 0) {
+        --_ref;
+    }
+
+    if (autoRelease) {
+        //cjh TODO:
+    }
+}
+
+void Asset::initDefault(const std::string& uuid)
+{
+    _uuid = uuid;
+    _isDefault = true;
+}
+
+bool Asset::destroy()
+{
+//cjh TODO:    debug(getError(12101, this._uuid));
+    Super::destroy();
+}
+
+
+} // namespace cc {

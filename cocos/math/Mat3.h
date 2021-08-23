@@ -29,10 +29,10 @@
 
 #include "base/Macros.h"
 
+#include "math/Mat4.h"
 #include "math/Vec2.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
-#include "math/Mat4.h"
 
 /**
  * @addtogroup base
@@ -84,7 +84,7 @@ public:
      *
      * @param mat An array containing 16 elements in column-major order.
      */
-    Mat3(const float *mat);
+    explicit Mat3(const float *mat);
 
     /**
      * Constructs a new matrix by copying the values from the specified matrix.

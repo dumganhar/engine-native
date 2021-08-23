@@ -23,6 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "scene/Model.h"
+#include <array>
 #include "renderer/pipeline/Define.h"
 #include "scene/SubModel.h"
 

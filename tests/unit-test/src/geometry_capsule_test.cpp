@@ -21,28 +21,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#include <math.h>
-#include <vector>
+#include <cmath>
+#include "cocos/core/geometry/Capsule.h"
+#include "cocos/math/Mat3.h"
+#include "cocos/math/Mat4.h"
 #include "cocos/math/Math.h"
-#include "cocos/math/Vec2.h"
-#include "cocos/math/Vertex.h"
+#include "cocos/math/Quaternion.h"
+#include "cocos/math/Vec3.h"
+#include "cocos/math/Vec4.h"
 #include "gtest/gtest.h"
 #include "utils.h"
 
-TEST(mathVertexTest, test8) {
-    // ccVertexLineToPolygon
-    logLabel = "test the vertex ccVertexLineToPolygon function";
-    std::vector<cc::Vec2> points{4};
-    points[0] = {1, 1};
-    points[1] = {10, 10};
-    points[2] = {0, -10};
-    points[3] = {20, 70};
-    std::vector<cc::Vec2> outP{8};
-    cc::ccVertexLineToPolygon(points, 1, outP, 0, 4);
-    ExpectEq(IsEqualF(outP[5].x, -0.468942523) && IsEqualF(outP[5].y, -9.82652664), true);
-    // ccVertexLineIntersect
-    logLabel = "test the vertex ccVertexLineIntersect function";
-    float res;
-    bool  isFind = cc::ccVertexLineIntersect(5, 5, 1, 10, 12, 20, 12, 40, &res);
-    ExpectEq(isFind, true);
+TEST(geometryCapsuleTest, testTransform) {
+    cc::geometry::Capsule capsule{1.0, 2.0};
+    cc::geometry::Capsule capsuleNew{};
+    cc::Mat4              trans;
+    cc::Quaternion        quat{};
+    cc::Vec3              scale{1.0F, 2.0F, 3.0F};
+    {
+        cc::Vec3 axis  = {1.0, 0.0, 0.0};
+        float    angle = M_PI;
+        cc::Quaternion::createFromAxisAngle(axis, angle, &quat);
+        trans.translate(0, 1, 0);
+    }
+    capsule.transform(trans, {}, quat, scale, &capsuleNew);
+    EXPECT_TRUE(capsuleNew.center == cc::Vec3(0.0F, 1.0F, 0.0F));
+    EXPECT_FLOAT_EQ(capsule.ellipseCenter0.y, 2.0F);
+    EXPECT_FLOAT_EQ(capsule.ellipseCenter1.y, -2.0F);
+    EXPECT_FLOAT_EQ(capsuleNew.ellipseCenter0.y, -2.0F);
+    EXPECT_FLOAT_EQ(capsuleNew.ellipseCenter1.y, 4.0F);
 }

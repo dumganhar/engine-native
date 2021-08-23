@@ -32,6 +32,9 @@
 #include "core/Types.h"
 #include "core/data/Object.h"
 
+#include <any>
+#include <functional>
+
 namespace cc {
 
 class Node;

@@ -119,13 +119,13 @@ public:
      * @zh 通过指定不同的 Event 对象来设置想要创建的事件监听器。
      * @param argObj a json object
      */
-    EventListener static create(IEventListenerCreateInfo* argObj);
+    EventListener static create(IEventListenerCreateInfo *argObj);
 
     // hack: How to solve the problem of uncertain attribute
     // callback's this object
     std::any owner{nullptr};
 
-    std::vector<IListenerMask*> mask;
+    std::vector<IListenerMask *> mask;
 
     bool _previousIn{false};
 
@@ -213,14 +213,14 @@ public:
      * @zh 设置此侦听器的场景图优先级。
      * @param {Node} node
      */
-    void setSceneGraphPriority(scenegraph::Node* node);
+    void setSceneGraphPriority(scenegraph::Node *node);
 
     /**
      * @en Gets scene graph priority of this listener<br/>
      * @zh 获取此侦听器的场景图优先级。
      * @return 如果它是固定优先级侦听器，则为场景图优先级侦听器非 null 。
      */
-    scenegraph::Node* getSceneGraphPriority() const {
+    scenegraph::Node *getSceneGraphPriority() const {
         return _node;
     }
 
@@ -281,7 +281,7 @@ private:
 
     // scene graph based priority
     // @type {Node}
-    scenegraph::Node* _node{nullptr}; // scene graph based priority
+    scenegraph::Node *_node{nullptr}; // scene graph based priority
 
     // Whether the listener is paused
     bool _paused{true}; // Whether the listener is paused
@@ -296,13 +296,13 @@ public:
 
     ~MouseEventListener() override = default;
 
-    using MouseEventCallback         = std::function<void(const EventMouse&)>;
+    using MouseEventCallback         = std::function<void(const EventMouse &)>;
     MouseEventCallback onMouseDown   = nullptr;
     MouseEventCallback onMouseUp     = nullptr;
     MouseEventCallback onMouseMove   = nullptr;
     MouseEventCallback onMouseScroll = nullptr;
 
-    void callback(EventMouse* event) const;
+    void callback(EventMouse *event) const;
 
     EventListener clone() override;
 
@@ -318,7 +318,7 @@ public:
 
     bool swallowTouches{false};
 
-    using TouchEventCallback            = std::function<void(const EventTouch&)>;
+    using TouchEventCallback            = std::function<void(const EventTouch &)>;
     TouchEventCallback onTouchBegan     = nullptr;
     TouchEventCallback onTouchMoved     = nullptr;
     TouchEventCallback onTouchEnded     = nullptr;
@@ -339,12 +339,33 @@ public:
     bool checkAvailable() const;
 };
 
+class TouchAllAtOnceEventListener final : public EventListener {
+public:
+    TouchAllAtOnceEventListener()           = default;
+    ~TouchAllAtOnceEventListener() override = default;
+
+    using TouchEventCallback            = std::function<void(const EventTouch &)>;
+    TouchEventCallback onTouchBegan     = nullptr;
+    TouchEventCallback onTouchMoved     = nullptr;
+    TouchEventCallback onTouchEnded     = nullptr;
+    TouchEventCallback onTouchCancelled = nullptr;
+    // public onTouchesBegan: Function | null = null;
+    // public onTouchesMoved: Function | null = null;
+    // public onTouchesEnded: Function | null = null;
+    // public onTouchesCancelled: Function | null = null;
+
+    void checkAvailable() const;
+
+    EventListener clone() override;
+};
+
 class AccelerationEventListener final : public EventListener {
 public:
     // constructor (callback: Function | null)
-    // public _onAccelerationEvent: Function | null = null;
+    using AccelerationEventCallback               = std::function<void(const EventTouch &)>;
+    AccelerationEventCallback onAccelerationEvent = nullptr;
 
-    void callback(EventAcceleration* event) const;
+    void callback(EventAcceleration *event) const;
 
     void checkAvailable() const;
 
@@ -360,7 +381,7 @@ class KeyboardEventListener final : public EventListener {
 
     ~KeyboardEventListener() override = default;
 
-    void callback(EventKeyboard* event) const;
+    void callback(EventKeyboard *event) const;
 
     EventListener clone() override;
 

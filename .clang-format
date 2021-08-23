@@ -16,3 +16,7 @@ SpacesBeforeTrailingComments:         1
 
 ObjCBlockIndentWidth:                 4
 ObjCSpaceAfterProperty:               true
+
+# Force pointers to the type for C++.
+DerivePointerAlignment: false
+PointerAlignment: Right

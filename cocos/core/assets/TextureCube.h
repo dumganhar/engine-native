@@ -40,12 +40,12 @@ using ITextureCubeCreateInfo = ITexture2DCreateInfo;
  * @zh 立方体贴图的 Mipmap 接口。
  */
 struct ITextureCubeMipmap {
-    ImageAsset* front {nullptr};
-    ImageAsset* back {nullptr};
-    ImageAsset* left {nullptr};
-    ImageAsset* right {nullptr};
-    ImageAsset* top {nullptr};
-    ImageAsset* bottom {nullptr};
+    ImageAsset *front{nullptr};
+    ImageAsset *back{nullptr};
+    ImageAsset *left{nullptr};
+    ImageAsset *right{nullptr};
+    ImageAsset *top{nullptr};
+    ImageAsset *bottom{nullptr};
 };
 
 /**
@@ -61,16 +61,16 @@ public:
      * @zh 立方体每个面的约定索引。
      */
     enum class FaceIndex {
-        right = 0,
-        left = 1,
-        top = 2,
+        right  = 0,
+        left   = 1,
+        top    = 2,
         bottom = 3,
-        front = 4,
-        back = 5,
+        front  = 4,
+        back   = 5,
     };
 
     /*@serializable*/
-    bool isRGBE {false};
+    bool isRGBE{false};
 
     /**
      * @en All levels of mipmap images, be noted, automatically generated mipmaps are not included.
@@ -78,11 +78,11 @@ public:
      * @zh 所有层级 Mipmap，注意，这里不包含自动生成的 Mipmap。
      * 当设置 Mipmap 时，贴图的尺寸以及像素格式可能会改变。
      */
-    const std::vector<ITextureCubeMipmap>& getMipmaps () const {
+    const std::vector<ITextureCubeMipmap> &getMipmaps() const {
         return _mipmaps;
     }
 
-    void setMipmaps (std::vector<ITextureCubeMipmap>& value);
+    void setMipmaps(std::vector<ITextureCubeMipmap> &value);
 
     /**
      * @en Level 0 mipmap image.
@@ -92,11 +92,11 @@ public:
      * 注意，`this.image = img` 等价于 `this.mipmaps = [img]`，
      * 也就是说，通过 `this.image` 设置 0 级 Mipmap 时将隐式地清除之前的所有 Mipmap。
      */
-    const ITextureCubeMipmap* getImage () const {
+    const ITextureCubeMipmap *getImage() const {
         return _mipmaps.empty() ? nullptr : &_mipmaps[0];
     }
 
-    void setImage (const ITextureCubeMipmap* value) {
+    void setImage(const ITextureCubeMipmap *value) {
         _mipmaps.clear();
         _mipmaps.emplace_back(*value);
     }
@@ -120,12 +120,12 @@ public:
      * const textureCube = TextureCube.fromTexture2DArray(textures);
      * ```
      */
-    static TextureCube* fromTexture2DArray (const std::vector<Texture2D*>& textures);
+    static TextureCube *fromTexture2DArray(const std::vector<Texture2D *> &textures);
 
     /*@serializable*/
     std::vector<ITextureCubeMipmap> _mipmaps;
 
-    virtual void onLoaded () override;
+    virtual void onLoaded() override;
 
     /**
      * @en Reset the current texture with given size, pixel format and mipmap images.
@@ -134,32 +134,30 @@ public:
      * mipmap 图像的数据不会自动更新到贴图中，你必须显式调用 [[uploadData]] 来上传贴图数据。
      * @param info The create information
      */
-    void reset (const ITextureCubeCreateInfo& info);
+    void reset(const ITextureCubeCreateInfo &info);
 
-    virtual void updateMipmaps (uint32_t firstLevel = 0, uint32_t count = 0) override;
+    virtual void updateMipmaps(uint32_t firstLevel = 0, uint32_t count = 0) override;
 
     /**
      * 销毁此贴图，清空所有 Mipmap 并释放占用的 GPU 资源。
      */
-    virtual bool destroy () override;
+    virtual bool destroy() override;
 
     /**
      * @en Release used GPU resources.
      * @zh 释放占用的 GPU 资源。
      * @deprecated please use [[destroy]] instead
      */
-    void releaseTexture ();
+    void releaseTexture();
 
-    virtual std::any _serialize (std::any ctxForExporting) override;
-    virtual void _deserialize (std::any serializedData, std::any handle) override;
+    virtual std::any _serialize(std::any ctxForExporting) override;
+    virtual void     _deserialize(std::any serializedData, std::any handle) override;
 
-    virtual gfx::TextureInfo _getGfxTextureCreateInfo (gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
+    virtual gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 
-    virtual void initDefault (const std::string& uuid) override;
+    virtual void initDefault(const std::string &uuid) override;
 
-    virtual bool validate () const override;
+    virtual bool validate() const override;
 };
 
-} // namespace cc {
-
-
+} // namespace cc

@@ -33,9 +33,9 @@ class Scene;
 
 class SceneAsset final : public Asset {
 public:
-    virtual void initDefault (const std::string& uuid) override;
+    virtual void initDefault(const std::string &uuid) override;
 
-    virtual bool validate () const override {
+    virtual bool validate() const override {
         return _scene != nullptr;
     }
 
@@ -46,9 +46,7 @@ private:
 
     @editable
     @serializable*/
-    Scene* _scene = nullptr;
+    Scene *_scene = nullptr;
 };
 
-} // namespace cc {
-
-
+} // namespace cc

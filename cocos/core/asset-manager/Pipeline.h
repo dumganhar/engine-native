@@ -34,9 +34,9 @@
 
 namespace cc {
 
-using IAsyncPipe = std::function<void(const Task&, CompleteCallbackNoData)>;
-using ISyncPipe = std::function<const Error*(const Task& task)>;
-using IPipe = std::variant<IAsyncPipe, ISyncPipe>;
+using IAsyncPipe = std::function<void(const Task &, CompleteCallbackNoData)>;
+using ISyncPipe  = std::function<const Error *(const Task &task)>;
+using IPipe      = std::variant<IAsyncPipe, ISyncPipe>;
 
 /**
  * @en
@@ -56,7 +56,7 @@ public:
      * 管线的 id
      *
      */
-    uint32_t id {0};
+    uint32_t id{0};
 
     /**
      * @en
@@ -107,7 +107,7 @@ public:
      * ]);
      *
      */
-    Pipeline (const std::string& name, const std::vector<IPipe>& funcs);
+    Pipeline(const std::string &name, const std::vector<IPipe> &funcs);
 
     /**
      * @en
@@ -130,7 +130,7 @@ public:
      * }, 0);
      *
      */
-    Pipeline* insert (const IPipe& func, uint32_t index);
+    Pipeline *insert(const IPipe &func, uint32_t index);
 
     /**
      * @en
@@ -152,7 +152,7 @@ public:
      * });
      *
      */
-    Pipeline* append (const IPipe& func);
+    Pipeline *append(const IPipe &func);
 
     /**
      * @en
@@ -172,7 +172,7 @@ public:
      * pipeline.remove(0);
      *
      */
-    Pipeline* remove (uint32_t index);
+    Pipeline *remove(uint32_t index);
 
     /**
      * @en
@@ -194,7 +194,7 @@ public:
      * console.log(pipeline.sync(task));
      *
      */
-    std::any sync (const Task* task);
+    std::any sync(const Task *task);
 
     /**
      * @en
@@ -215,12 +215,12 @@ public:
      * pipeline.async(task);
      *
      */
-    void async (const Task* task);
+    void async(const Task *task);
 
 private:
-    void flow (uint32_t index, const Task* task);
+    void flow(uint32_t index, const Task *task);
 
     static const int _pipelineId = 0;
 };
 
-} // namespace cc {
+} // namespace cc

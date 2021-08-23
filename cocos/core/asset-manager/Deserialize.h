@@ -34,12 +34,11 @@ namespace cc {
 
 struct IDependProp {
     std::string uuid;
-    std::any owner;
+    std::any    owner;
     std::string prop;
-    AssetType type; //cjh ?: Constructor<Asset>;
+    AssetType   type; //cjh ?: Constructor<Asset>;
 };
 
-Asset* deserializeAsset(const Record<std::string, std::any>& json, const Record<std::string, std::any>& options);
+Asset *deserializeAsset(const Record<std::string, std::any> &json, const Record<std::string, std::any> &options);
 
-} // namespace cc {
-
+} // namespace cc

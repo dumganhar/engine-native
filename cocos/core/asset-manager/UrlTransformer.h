@@ -30,8 +30,7 @@
 
 namespace cc {
 
-void parseTask(const Task& task);
-void combineTask(const Task& task);
+void parseTask(const Task &task);
+void combineTask(const Task &task);
 
-
-} // namespace cc {
+} // namespace cc

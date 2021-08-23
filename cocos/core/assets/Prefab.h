@@ -31,15 +31,12 @@
 
 namespace cc {
 
-
-
 /**
  * @en Class for prefab handling.
  * @zh 预制资源类。
  */
 class Prefab final : public Asset {
 public:
-
     /**
      * @en An enumeration used with the [[Prefab.optimizationPolicy]] to specify how to optimize the instantiate operation.
      * @zh Prefab 创建实例所用的优化策略，配合 [[Prefab.optimizationPolicy]] 使用。
@@ -72,7 +69,6 @@ public:
         MULTI_INSTANCE = 2,
     };
 
-
     static constexpr uint32_t OptimizationPolicyThreshold = 3;
 
     /**
@@ -103,14 +99,12 @@ public:
 
     Prefab() = default;
 
-    virtual void createNode(const CreateNodeCallback& cb) override;
+    virtual void createNode(const CreateNodeCallback &cb) override;
 
-    Node* _instantiate();
+    Node *_instantiate();
 
-    virtual void initDefault(const std::string& uuid) override;
+    virtual void initDefault(const std::string &uuid) override;
     virtual bool validate() const override { _data.has_value(); }
-
 };
 
-} // namespace cc {
-
+} // namespace cc

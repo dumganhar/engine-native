@@ -25,25 +25,24 @@
 
 #pragma once
 
-#include "core/assets/Asset.h"
 #include "core/ArrayBuffer.h"
+#include "core/assets/Asset.h"
 
 namespace cc {
 
-class BufferAsset final : public Asset
-{
+class BufferAsset final : public Asset {
 public:
-    BufferAsset() = default;
+    BufferAsset()          = default;
     virtual ~BufferAsset() = default;
 
-    inline const ArrayBuffer& getBuffer() const { return _buffer; }
+    inline const ArrayBuffer &getBuffer() const { return _buffer; }
 
     virtual std::any getNativeAsset() const override;
-    virtual void setNativeAsset(const std::any& obj) override;
-    virtual bool validate() const override { return !_buffer.empty(); }
-    
+    virtual void     setNativeAsset(const std::any &obj) override;
+    virtual bool     validate() const override { return !_buffer.empty(); }
+
 private:
     ArrayBuffer _buffer;
 };
 
-} // namespace cc {
+} // namespace cc

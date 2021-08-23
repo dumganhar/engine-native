@@ -51,8 +51,7 @@ class CCObject;
  * var url = 'res/import/fc/fc991dd7-0033-4b80-9d41-c8a86a702e59.json';
  * var uuid = getUuidFromURL(url); // fc991dd7-0033-4b80-9d41-c8a86a702e59
  */
-std::string getUuidFromURL(const std::string& url);
-
+std::string getUuidFromURL(const std::string &url);
 
 /**
  * @en
@@ -75,7 +74,7 @@ std::string getUuidFromURL(const std::string& url);
  * var url = getUrlWithUuid('fcmR3XADNLgJ1ByKhqcC5Z', {isNative: true, nativeExt: '.png'});
  *
  */
-std::string getUrlWithUuid(const std::string& uuid, const IOptions& options);
+std::string getUrlWithUuid(const std::string &uuid, const IOptions &options);
 
 /**
  * @en
@@ -89,7 +88,7 @@ std::string getUrlWithUuid(const std::string& uuid, const IOptions& options);
  * @returns {boolean} - whether or not type is cc.SceneAsset
  *
  */
-bool isScene(CCObject* asset);
+bool isScene(CCObject *asset);
 
 /**
  * @en
@@ -101,8 +100,8 @@ bool isScene(CCObject* asset);
  * @param url - url
  * @returns - The normalized url
  */
-std::string normalize(const std::string& url);
+std::string normalize(const std::string &url);
 
-std::vector<std::string> transform(const Request& input, const IOptions& options);
+std::vector<std::string> transform(const Request &input, const IOptions &options);
 
-} // namespace cc {
+} // namespace cc

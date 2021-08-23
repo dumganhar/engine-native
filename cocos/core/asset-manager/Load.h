@@ -27,8 +27,8 @@
 
 #include <any>
 
-#include "core/asset-manager/Shared.h"
 #include "core/asset-manager/RequestItem.h"
+#include "core/asset-manager/Shared.h"
 
 namespace cc {
 
@@ -37,22 +37,21 @@ class Task;
 struct IProgress {
     uint32_t finish;
     uint32_t total;
-    bool canInvoke{false};
+    bool     canInvoke{false};
 };
 
-struct ILoadingRequestCallback
-{
-    RequestItem item;
+struct ILoadingRequestCallback {
+    RequestItem            item;
     CompleteCallbackNoData done;
 };
 
 struct ILoadingRequest {
-    Asset *content{nullptr};
-    bool finish{false};
-    Error *err{nullptr};
+    Asset *                              content{nullptr};
+    bool                                 finish{false};
+    Error *                              err{nullptr};
     std::vector<ILoadingRequestCallback> callbacks;
 };
 
-void load(const Task* task, const CompleteCallbackNoData& done);
+void load(const Task *task, const CompleteCallbackNoData &done);
 
-} // namespace cc {
+} // namespace cc

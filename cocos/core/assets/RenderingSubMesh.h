@@ -73,15 +73,15 @@ struct IGeometricInfo {
  * @zh 扁平化顶点缓冲区
  */
 struct IFlatBuffer {
-    uint32_t stride;
-    uint32_t count;
+    uint32_t   stride;
+    uint32_t   count;
     Uint8Array buffer;
 };
 
 class Mesh;
 
 namespace gfx {
-    class Buffer;
+class Buffer;
 }
 /**
  * @en Sub mesh for rendering which contains all geometry data, it can be used to create [[InputAssembler]].
@@ -89,14 +89,14 @@ namespace gfx {
  */
 class RenderingSubMesh final : public Asset {
 public:
-    Mesh* mesh {nullptr};
+    Mesh *mesh{nullptr};
 
-    uint32_t subMeshIdx {0};
+    uint32_t subMeshIdx{0};
 
 private:
     std::vector<IFlatBuffer> _flatBuffers;
 
-    std::vector<gfx::Buffer*> _jointMappedBuffers;
+    std::vector<gfx::Buffer *> _jointMappedBuffers;
 
     std::vector<uint32_t> _jointMappedBufferIndices;
 
@@ -104,19 +104,17 @@ private:
 
     IGeometricInfo _geometricInfo;
 
-    std::vector<gfx::Buffer*> _vertexBuffers;
+    std::vector<gfx::Buffer *> _vertexBuffers;
 
     gfx::AttributeList _attributes;
 
-    gfx::Buffer* _indexBuffer {nullptr};
+    gfx::Buffer *_indexBuffer{nullptr};
 
-    gfx::Buffer* _indirectBuffer {nullptr};
+    gfx::Buffer *_indirectBuffer{nullptr};
 
-    gfx::PrimitiveMode _primitiveMode {gfx::PrimitiveMode::TRIANGLE_LIST};
+    gfx::PrimitiveMode _primitiveMode{gfx::PrimitiveMode::TRIANGLE_LIST};
 
     gfx::InputAssemblerInfo _iaInfo;
 };
 
-} // namespace cc {
-
-
+} // namespace cc

@@ -35,8 +35,6 @@ namespace cc {
  */
 class TextAsset final : public Asset {
 public:
-
-
     /**
      * @en The text content.
      * @zh 此资源包含的文本。
@@ -50,6 +48,4 @@ public:
     }
 };
 
-} // namespace cc {
-
-
+} // namespace cc

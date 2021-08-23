@@ -37,15 +37,15 @@ class ICache {
 public:
     virtual ~ICache() = default;
 
-    virtual void add (const std::string& key, T val) = 0;
-    virtual bool has (const std::string& key) = 0;
-    virtual T get (const std::string& key) = 0;
-    virtual T remove (const std::string& key) = 0;
-    virtual void clear () = 0;
-    virtual void forEach (const std::function<void(T, const std::string&)>& func) = 0;
-    virtual T find (const std::function<bool(T, const std::string&)>& predicate) = 0;
-    virtual uint32_t getCount () const = 0;
-    virtual void destroy () = 0;
+    virtual void     add(const std::string &key, T val)                                 = 0;
+    virtual bool     has(const std::string &key)                                        = 0;
+    virtual T        get(const std::string &key)                                        = 0;
+    virtual T        remove(const std::string &key)                                     = 0;
+    virtual void     clear()                                                            = 0;
+    virtual void     forEach(const std::function<void(T, const std::string &)> &func)   = 0;
+    virtual T        find(const std::function<bool(T, const std::string &)> &predicate) = 0;
+    virtual uint32_t getCount() const                                                   = 0;
+    virtual void     destroy()                                                          = 0;
 };
 
-} // namespace cc {
+} // namespace cc

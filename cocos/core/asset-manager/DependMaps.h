@@ -33,8 +33,8 @@ namespace cc {
 
 class Asset;
 
-extern std::unordered_map<Asset*, std::vector<IDependProp>> dependMap;
-extern std::set<Asset*> nativeDependMap;
-extern std::set<Asset*> onLoadedInvokedMap;
+extern std::unordered_map<Asset *, std::vector<IDependProp>> dependMap;
+extern std::set<Asset *>                                     nativeDependMap;
+extern std::set<Asset *>                                     onLoadedInvokedMap;
 
-} // namespace cc {
+} // namespace cc

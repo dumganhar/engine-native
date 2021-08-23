@@ -25,15 +25,15 @@
 
 #pragma once
 
+#include "core/ArrayBuffer.h"
 #include "core/assets/Asset.h"
 #include "core/assets/TextureBase.h"
-#include "core/ArrayBuffer.h"
 
 namespace cc {
 
-uint32_t getMipLevel (uint32_t width, uint32_t height);
-bool isPOT (uint32_t n);
-bool canGenerateMipmap (uint32_t w, uint32_t h);
+uint32_t getMipLevel(uint32_t width, uint32_t height);
+bool     isPOT(uint32_t n);
+bool     canGenerateMipmap(uint32_t w, uint32_t h);
 
 class ImageAsset;
 
@@ -50,21 +50,21 @@ public:
      * @en The mipmap level of the texture
      * @zh 贴图中的 Mipmap 层级数量
      */
-    uint32_t mipmapLevel ();
+    uint32_t mipmapLevel();
 
     /**
      * @en The GFX Texture resource
      * @zh 获取此贴图底层的 GFX 贴图对象。
      */
-    gfx::Texture* getGFXTexture ();
+    gfx::Texture *getGFXTexture();
 
-    virtual bool destroy () override;
+    virtual bool destroy() override;
 
     /**
      * @en Update the level 0 mipmap image.
      * @zh 更新 0 级 Mipmap。
      */
-    void updateImage ();
+    void updateImage();
 
     /**
      * @en Update the given level mipmap image.
@@ -73,8 +73,7 @@ public:
      * @param firstLevel First level to be updated
      * @param count Mipmap level count to be updated
      */
-    virtual void updateMipmaps (uint32_t firstLevel = 0, uint32_t count = 0) = 0;
-
+    virtual void updateMipmaps(uint32_t firstLevel = 0, uint32_t count = 0) = 0;
 
     /**
      * @en Upload data to the given mipmap level.
@@ -93,46 +92,43 @@ public:
      * @param level Mipmap level to upload the image to
      * @param arrayIndex The array index
      */
-    void uploadData (const ArrayBuffer& source, uint32_t level = 0, uint32_t arrayIndex = 0);
+    void uploadData(const ArrayBuffer &source, uint32_t level = 0, uint32_t arrayIndex = 0);
 
-    void _assignImage (ImageAsset* image, uint32_t level, uint32_t arrayIndex);
+    void _assignImage(ImageAsset *image, uint32_t level, uint32_t arrayIndex);
 
-
-    void _checkTextureLoaded ();
+    void _checkTextureLoaded();
 
 protected:
-    void _textureReady ();
+    void _textureReady();
 
     /**
      * Set mipmap level of this texture.
      * The value is passes as presumed info to `this._getGfxTextureCreateInfo()`.
      * @param value The mipmap level.
      */
-    void _setMipmapLevel (uint32_t value);
+    void _setMipmapLevel(uint32_t value);
 
     /**
      * @en This method is overrided by derived classes to provide GFX texture info.
      * @zh 这个方法被派生类重写以提供 GFX 纹理信息。
      * @param presumed The presumed GFX texture info.
      */
-    virtual gfx::TextureInfo _getGfxTextureCreateInfo (gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) = 0;
+    virtual gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) = 0;
 
-    void _tryReset ();
+    void _tryReset();
 
-    void _createTexture (gfx::Device* device);
+    void _createTexture(gfx::Device *device);
 
-    void _tryDestroyTexture ();
+    void _tryDestroyTexture();
 
 protected:
-    gfx::Texture* _gfxTexture {nullptr};
-private:
+    gfx::Texture *_gfxTexture{nullptr};
 
-    uint32_t _mipmapLevel {1};
+private:
+    uint32_t _mipmapLevel{1};
     // Cache these data to reduce JSB invoking.
-    uint32_t _textureWidth {0};
-    uint32_t _textureHeight {0};
+    uint32_t _textureWidth{0};
+    uint32_t _textureHeight{0};
 };
 
-} // namespace cc {
-
-
+} // namespace cc

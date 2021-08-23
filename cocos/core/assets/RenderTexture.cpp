@@ -41,6 +41,4 @@ static IDGenerator _idGenerator("RenderTex");
 //    renderPassInfo: passInfo,
 //};
 
-
-
-} // namespace cc {
+} // namespace cc

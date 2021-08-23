@@ -37,50 +37,50 @@ struct Versions {
 };
 
 struct IConfigOption {
-    std::string importBase;
-    std::string nativeBase;
-    std::string base;
-    std::string name;
-    std::vector<std::string> deps;
-    std::vector<std::string> uuids;
-    Record<std::string, std::vector<std::any>> paths;
-    Record<std::string, std::string> scenes;
+    std::string                                   importBase;
+    std::string                                   nativeBase;
+    std::string                                   base;
+    std::string                                   name;
+    std::vector<std::string>                      deps;
+    std::vector<std::string>                      uuids;
+    Record<std::string, std::vector<std::any>>    paths;
+    Record<std::string, std::string>              scenes;
     Record<std::string, std::vector<std::string>> packs;
-    Versions versions;
-    std::vector<std::string> redirect;
-    bool debug {false};
-    std::vector<std::string> types;
+    Versions                                      versions;
+    std::vector<std::string>                      redirect;
+    bool                                          debug{false};
+    std::vector<std::string>                      types;
     Record<std::string, std::vector<std::string>> extensionMap;
 };
 
 struct IPackInfo;
 
 struct IAssetInfo {
-    std::string uuid;
+    std::string                             uuid;
     std::vector<std::shared_ptr<IPackInfo>> packs;
-    std::string redirect;
-    std::string ver;
-    std::string nativeVer;
-    std::string extension;
+    std::string                             redirect;
+    std::string                             ver;
+    std::string                             nativeVer;
+    std::string                             extension;
 };
 
 struct IPackInfo : public IAssetInfo {
     std::vector<std::string> packedUuids;
-    std::string ext;
+    std::string              ext;
 };
 
 struct IAddressableInfo : public IAssetInfo {
     std::string path;
-    AssetType ctor;
+    AssetType   ctor;
 };
 
 struct ISceneInfo : public IAssetInfo {
     std::string url;
 };
 
-bool isMatchByWord(const std::string& path, const std::string& test);
+bool isMatchByWord(const std::string &path, const std::string &test);
 
-void processOptions(const IConfigOption& options);
+void processOptions(const IConfigOption &options);
 
 class Config final {
 public:
@@ -100,34 +100,34 @@ public:
 
     Cache<std::vector<IAddressableInfo>> paths;
 
-    void init (const IConfigOption& options);
+    void init(const IConfigOption &options);
 
-    IAddressableInfo* getInfoWithPath (const std::string& path, AssetType type);
+    IAddressableInfo *getInfoWithPath(const std::string &path, AssetType type);
 
-    std::vector<IAddressableInfo*> getDirWithPath (const std::string& path, AssetType type);
+    std::vector<IAddressableInfo *> getDirWithPath(const std::string &path, AssetType type);
 
-    IAssetInfo* getAssetInfo (const std::string& uuid);
+    IAssetInfo *getAssetInfo(const std::string &uuid);
 
-    ISceneInfo* getSceneInfo (const std::string& name);
+    ISceneInfo *getSceneInfo(const std::string &name);
 
-    void destroy ();
+    void destroy();
 
-    void initUuid (const std::vector<std::string>& uuidList);
+    void initUuid(const std::vector<std::string> &uuidList);
 
 private:
-    using PathList = Record<std::string, std::vector<std::string>>;
-    using SceneList = Record<std::string, std::string>;
+    using PathList    = Record<std::string, std::vector<std::string>>;
+    using SceneList   = Record<std::string, std::string>;
     using PackageList = Record<std::string, std::vector<std::string>>;
 
-    void initPath (const PathList& pathList);
+    void initPath(const PathList &pathList);
 
-    void initScene (const SceneList& sceneList);
+    void initScene(const SceneList &sceneList);
 
-    void initPackage (const PackageList& packageList);
+    void initPackage(const PackageList &packageList);
 
-    void initVersion (const Versions& versions);
+    void initVersion(const Versions &versions);
 
-    void initRedirect (const std::vector<std::string>& redirect);
+    void initRedirect(const std::vector<std::string> &redirect);
 };
 
-} // namespace cc {
+} // namespace cc

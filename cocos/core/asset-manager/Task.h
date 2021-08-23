@@ -32,16 +32,16 @@
 
 namespace cc {
 
-using TaskCompleteCallback = std::function<void(const Error* /* err */, const std::any& /* data */)>;
-using TaskProgressCallback = std::function<void(const std::vector<std::any>&)>;
-using TaskErrorCallback = std::function<void(const std::vector<std::any>&)>;
+using TaskCompleteCallback = std::function<void(const Error * /* err */, const std::any & /* data */)>;
+using TaskProgressCallback = std::function<void(const std::vector<std::any> &)>;
+using TaskErrorCallback    = std::function<void(const std::vector<std::any> &)>;
 
 struct ITaskOption {
-    TaskCompleteCallback onComplete {nullptr};
-    TaskProgressCallback onProgress {nullptr};
-    TaskErrorCallback onError {nullptr};
-    std::any input;
-    std::any progress;
+    TaskCompleteCallback          onComplete{nullptr};
+    TaskProgressCallback          onProgress{nullptr};
+    TaskErrorCallback             onError{nullptr};
+    std::any                      input;
+    std::any                      progress;
     Record<std::string, std::any> options;
 };
 
@@ -76,8 +76,7 @@ public:
      * @returns task
      *
      */
-    static Task* create (ITaskOption options);
-
+    static Task *create(ITaskOption options);
 
     /**
      * @en
@@ -87,7 +86,7 @@ public:
      * 任务id
      *
      */
-    uint32_t id {0};
+    uint32_t id{0};
 
     /**
      * @en
@@ -97,7 +96,7 @@ public:
      * 完成回调
      *
      */
-    TaskCompleteCallback onComplete {nullptr};
+    TaskCompleteCallback onComplete{nullptr};
 
     /**
      * @en
@@ -107,7 +106,7 @@ public:
      * 进度回调
      *
      */
-    TaskProgressCallback onProgress {nullptr};
+    TaskProgressCallback onProgress{nullptr};
 
     /**
      * @en
@@ -117,7 +116,7 @@ public:
      * 错误回调
      *
      */
-    TaskErrorCallback onError {nullptr};
+    TaskErrorCallback onError{nullptr};
 
     /**
      * @en
@@ -193,7 +192,7 @@ public:
      * @param options.progress - Progress information, you may need to assign it manually when multiple pipeline share one progress
      * @param options.options - Custom parameters
      */
-    Task (const ITaskOption& options);
+    Task(const ITaskOption &options);
 
     /**
      * @en
@@ -215,7 +214,7 @@ public:
      * task.set({input: ['test'], onComplete: (err, result) => console.log(err), onProgress: (finish, total) => console.log(finish / total)});
      *
      */
-    void set (const ITaskOption& options);
+    void set(const ITaskOption &options);
 
     /**
      * @en
@@ -236,7 +235,7 @@ public:
      * Task.dispatch('complete', 'hello world');
      *
      */
-    void dispatch (const std::string& event, const std::any& param1, const std::any& param2, const std::any& param3, const std::any& param4); //cjh Use enum for event?
+    void dispatch(const std::string &event, const std::any &param1, const std::any &param2, const std::any &param3, const std::any &param4); //cjh Use enum for event?
 
     /**
      * @en
@@ -246,11 +245,11 @@ public:
      * 回收 task 用于复用
      *
      */
-    void recycle ();
+    void recycle();
 
 private:
-    static uint32_t _taskId;
+    static uint32_t          _taskId;
     static std::vector<Task> _deadPool;
 };
 
-} // namespace cc {
+} // namespace cc

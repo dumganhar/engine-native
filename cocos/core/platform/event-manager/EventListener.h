@@ -296,10 +296,11 @@ public:
 
     ~MouseEventListener() override = default;
 
-    // public onMouseDown: Function | null = null;
-    // public onMouseUp: Function | null = null;
-    // public onMouseMove: Function | null = null;
-    // public onMouseScroll: Function | null = null;
+    using MouseEventCallback         = std::function<void(const EventMouse&)>;
+    MouseEventCallback onMouseDown   = nullptr;
+    MouseEventCallback onMouseUp     = nullptr;
+    MouseEventCallback onMouseMove   = nullptr;
+    MouseEventCallback onMouseScroll = nullptr;
 
     void callback(EventMouse* event) const;
 
@@ -316,10 +317,12 @@ public:
     ~TouchOneByOneEventListener() override = default;
 
     bool swallowTouches{false};
-    // public onTouchBegan: Function | null = null;
-    // public onTouchMoved: Function | null = null;
-    // public onTouchEnded: Function | null = null;
-    // public onTouchCancelled: Function | null = null;
+
+    using TouchEventCallback            = std::function<void(const EventTouch&)>;
+    TouchEventCallback onTouchBegan     = nullptr;
+    TouchEventCallback onTouchMoved     = nullptr;
+    TouchEventCallback onTouchEnded     = nullptr;
+    TouchEventCallback onTouchCancelled = nullptr;
 
     std::vector<std::any> _claimedTouches;
 
@@ -334,21 +337,6 @@ public:
     EventListener clone() override;
 
     bool checkAvailable() const;
-};
-
-class TouchAllAtOnceEventListener final : public EventListener {
-public:
-    TouchAllAtOnceEventListener()           = default;
-    ~TouchAllAtOnceEventListener() override = default;
-
-    // public onTouchesBegan: Function | null = null;
-    // public onTouchesMoved: Function | null = null;
-    // public onTouchesEnded: Function | null = null;
-    // public onTouchesCancelled: Function | null = null;
-
-    void checkAvailable() const;
-
-    EventListener clone() override;
 };
 
 class AccelerationEventListener final : public EventListener {

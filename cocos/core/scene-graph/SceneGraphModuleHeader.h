@@ -23,8 +23,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-namespace cc {
-namespace scenegraph {
-
-} // namespace scenegraph
-} // namespace cc
+#include "core/scene-graph/BaseNode.h"
+#include "core/scene-graph/ComponentScheduler.h"
+#include "core/scene-graph/Layers.h"
+#include "core/scene-graph/Node.h"
+#include "core/scene-graph/NodeActivator.h"
+#include "core/scene-graph/NodeEnum.h"
+#include "core/scene-graph/NodeEvent.h"
+#include "core/scene-graph/NodeEventProcessor.h"
+#include "core/scene-graph/NodeUiProperties.h"
+#include "core/scene-graph/Scene.h"
+#include "core/scene-graph/SceneGlobal.h"

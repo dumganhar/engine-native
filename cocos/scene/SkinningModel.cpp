@@ -119,7 +119,7 @@ void SkinningModel::updateTransform(uint32_t stamp) {
     }
     if (_modelBounds.getValid() && _worldBounds) {
         geometry::AABB::fromPoints(v3Min, v3Max, &_modelBounds);
-        _modelBounds.transform(root->getNodeLayout()->worldMatrix, _worldBounds);
+        _modelBounds.transform(root->getWorldMatrix(), _worldBounds);
     }
 }
 } // namespace scene

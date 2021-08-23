@@ -25,9 +25,10 @@
 #include "math/Mat3.h"
 
 #include <cmath>
-#include "math/Quaternion.h"
-#include "math/MathUtil.h"
 #include "base/Macros.h"
+#include "math/Math.h"
+#include "math/MathUtil.h"
+#include "math/Quaternion.h"
 
 NS_CC_MATH_BEGIN
 
@@ -84,6 +85,29 @@ void Mat3::identity(Mat3 &mat) {
     mat.m[8] = 1;
 }
 
+void Mat3::fromViewUp(Mat3 &out, const Vec3 &view) {
+    fromViewUp(out, view, Vec3(0, 1, 0));
+}
+void Mat3::fromViewUp(Mat3 &out, const Vec3 &view, const Vec3 &up) {
+    if (view.lengthSquared() < math::EPSILON * math::EPSILON) {
+        Mat3::identity(out);
+        return;
+    }
+    Vec3 vTempA{Vec3::ZERO};
+    Vec3 vTempB{Vec3::ZERO};
+
+    Vec3::cross(up, view, &vTempA);
+    vTempA.normalize();
+    if (vTempA.lengthSquared() < math::EPSILON * math::EPSILON) {
+        Mat3::identity(out);
+        return;
+    }
+    Vec3::cross(view, vTempA, &vTempB);
+    out.set(vTempA.x, vTempA.y, vTempA.z,
+            vTempB.x, vTempB.y, vTempB.z,
+            view.x, view.y, view.z);
+}
+
 void Mat3::transpose() {
     float a01 = m[1], a02 = m[2], a12 = m[5];
     m[1] = m[3];
@@ -118,7 +142,7 @@ void Mat3::inverse() {
     // Calculate the determinant
     float det = a00 * b01 + a01 * b11 + a02 * b21;
 
-    det = 1.0f / det;
+    det  = 1.0f / det;
     m[0] = b01 * det;
     m[1] = (-a22 * a01 + a02 * a21) * det;
     m[2] = (a12 * a01 - a02 * a11) * det;

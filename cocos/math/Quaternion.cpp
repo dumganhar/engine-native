@@ -24,6 +24,8 @@
 
 #include <cmath>
 #include "base/Macros.h"
+#include "math/Mat3.h"
+#include "math/Math.h"
 
 NS_CC_MATH_BEGIN
 
@@ -87,7 +89,7 @@ void Quaternion::createFromRotationMatrix(const Mat4 &m, Quaternion *dst) {
 void Quaternion::createFromAxisAngle(const Vec3 &axis, float angle, Quaternion *dst) {
     GP_ASSERT(dst);
 
-    float halfAngle = angle * 0.5f;
+    float halfAngle    = angle * 0.5f;
     float sinHalfAngle = sinf(halfAngle);
 
     Vec3 normal(axis);
@@ -271,6 +273,111 @@ void Quaternion::squad(const Quaternion &q1, const Quaternion &q2, const Quatern
     slerpForSquad(dstQ, dstS, 2.0f * t * (1.0f - t), dst);
 }
 
+void Quaternion::fromViewUp(Quaternion &out, const Vec3 &view) {
+    fromViewUp(out, view, Vec3(0, 1, 0));
+}
+void Quaternion::fromViewUp(Quaternion &out, const Vec3 &view, const Vec3 &up) {
+    Mat3 mTemp{Mat3::IDENTITY};
+    Mat3::fromViewUp(mTemp, view, up);
+    Quaternion::fromMat3(out, mTemp);
+    out.normalize();
+}
+
+void Quaternion::fromEuler(float x, float y, float z, Quaternion *dst) {
+    float halfToRad = 0.5F * cc::math::PI / 180.0F;
+    x *= halfToRad;
+    y *= halfToRad;
+    z *= halfToRad;
+    float sx = std::sin(x);
+    float cx = std::cos(x);
+    float sy = std::sin(y);
+    float cy = std::cos(y);
+    float sz = std::sin(z);
+    float cz = std::cos(z);
+
+    dst->x = sx * cy * cz + cx * sy * sz;
+    dst->y = cx * sy * cz + sx * cy * sz;
+    dst->z = cx * cy * sz - sx * sy * cz;
+    dst->w = cx * cy * cz - sx * sy * sz;
+}
+
+void Quaternion::toEuler(Vec3 *out, const Quaternion &q, bool outerZ) {
+    float x{q.x};
+    float y{q.y};
+    float z{q.z};
+    float w{q.w};
+    float bank{0};
+    float heading{0};
+    float attitude{0};
+    float test = x * y + z * w;
+    float r2d  = 180.0F / math::PI;
+    if (test > 0.499999) {
+        bank     = 0;
+        heading  = -2 * atan2(x, w) * r2d;
+        attitude = 90;
+    } else if (test < -0.499999) {
+        bank     = 0;
+        heading  = -2 * atan2(x, w) * r2d;
+        attitude = -90;
+    } else {
+        float sqx = x * x;
+        float sqy = y * y;
+        float sqz = z * z;
+        bank      = atan2(2 * x * w - 2 * y * z, 1 - 2 * sqx - 2 * sqz) * r2d;
+        heading   = atan2(2 * y * w - 2 * x * z, 1 - 2 * sqy - 2 * sqz) * r2d;
+        attitude  = asin(2 * test) * r2d;
+        if (outerZ) {
+            bank     = static_cast<float>(-180.0F * math::Sgn(bank + 1e-6) + bank);
+            heading  = static_cast<float>(-180.0F * math::Sgn(heading + 1e-6) + heading);
+            attitude = static_cast<float>(180.0F * math::Sgn(attitude + 1e-6) - attitude);
+        }
+    }
+    out->x = bank;
+    out->y = heading;
+    out->z = attitude;
+}
+
+void Quaternion::fromMat3(Quaternion &out, const Mat3 &m) {
+    float m00   = m.m[0];
+    float m03   = m.m[1];
+    float m06   = m.m[2];
+    float m01   = m.m[3];
+    float m04   = m.m[4];
+    float m07   = m.m[5];
+    float m02   = m.m[6];
+    float m05   = m.m[7];
+    float m08   = m.m[8];
+    float trace = m00 + m04 + m08;
+    if (trace > 0) {
+        const float s = 0.5F / std::sqrtf(trace + 1.0F);
+        out.w         = 0.25F / s;
+        out.x         = (m05 - m07) * s;
+        out.y         = (m06 - m02) * s;
+        out.z         = (m01 - m03) * s;
+    } else if ((m00 > m04) && (m00 > m08)) {
+        const float s = 2.0F * std::sqrtf(1.0F + m04 - m00 - m08);
+
+        out.w = (m05 - m07) / s;
+        out.x = 0.25F * s;
+        out.y = (m03 + m01) / s;
+        out.z = (m06 + m02) / s;
+    } else if (m04 > m08) {
+        const float s = 2.0F * std::sqrtf(1.0F + m04 - m00 - m08);
+
+        out.w = (m06 - m02) / s;
+        out.x = (m03 + m01) / s;
+        out.y = 0.25F * s;
+        out.z = (m07 + m05) / s;
+    } else {
+        const float s = 2.0F * std::sqrtf(1.0F + m08 - m00 - m04);
+
+        out.w = (m01 - m03) / s;
+        out.x = (m06 + m02) / s;
+        out.y = (m07 + m05) / s;
+        out.z = 0.25F * s;
+    }
+}
+
 void Quaternion::slerp(float q1x, float q1y, float q1z, float q1w, float q2x, float q2y, float q2z, float q2w, float t, float *dstx, float *dsty, float *dstz, float *dstw) {
     // Fast slerp implementation by kwhatmough:
     // It contains no division operations, no trig, no inverse trig
@@ -315,7 +422,7 @@ void Quaternion::slerp(float q1x, float q1y, float q1z, float q1w, float q2x, fl
 
     // Here we bisect the interval, so we need to fold t as well.
     f2b = t - 0.5f;
-    u = f2b >= 0 ? f2b : -f2b;
+    u   = f2b >= 0 ? f2b : -f2b;
     f2a = u - f2b;
     f2b += u;
     u += u;
@@ -334,7 +441,7 @@ void Quaternion::slerp(float q1x, float q1y, float q1z, float q1w, float q2x, fl
     ratio1 = -0.333333333f + ratio1 * (sqNotU - 4.0f) * versHalfTheta;
     ratio1 = 1.0f + ratio1 * (sqNotU - 1.0f) * versHalfTheta;
 
-    sqU = u * u;
+    sqU    = u * u;
     ratio2 = -0.00158730159f + (sqU - 16.0f) * ratio2;
     ratio2 = 0.0333333333f + ratio2 * (sqU - 9.0f) * versHalfTheta;
     ratio2 = -0.333333333f + ratio2 * (sqU - 4.0f) * versHalfTheta;
@@ -358,7 +465,7 @@ void Quaternion::slerp(float q1x, float q1y, float q1z, float q1w, float q2x, fl
     // can see, it comes at the cost of 9 additional multiplication
     // operations. If this error-correcting feature is not required,
     // the following code may be removed.
-    f1 = 1.5f - 0.5f * (w * w + x * x + y * y + z * z);
+    f1    = 1.5f - 0.5f * (w * w + x * x + y * y + z * z);
     *dstw = w * f1;
     *dstx = x * f1;
     *dsty = y * f1;
@@ -383,7 +490,7 @@ void Quaternion::slerpForSquad(const Quaternion &q1, const Quaternion &q2, float
     }
 
     float omega = std::acos(c);
-    float s = std::sqrt(1.0f - c * c);
+    float s     = std::sqrt(1.0f - c * c);
     if (std::abs(s) <= 0.00001f) {
         dst->x = q1.x;
         dst->y = q1.y;
@@ -394,10 +501,10 @@ void Quaternion::slerpForSquad(const Quaternion &q1, const Quaternion &q2, float
 
     float r1 = std::sin((1 - t) * omega) / s;
     float r2 = std::sin(t * omega) / s;
-    dst->x = (q1.x * r1 + q2.x * r2);
-    dst->y = (q1.y * r1 + q2.y * r2);
-    dst->z = (q1.z * r1 + q2.z * r2);
-    dst->w = (q1.w * r1 + q2.w * r2);
+    dst->x   = (q1.x * r1 + q2.x * r2);
+    dst->y   = (q1.y * r1 + q2.y * r2);
+    dst->z   = (q1.z * r1 + q2.z * r2);
+    dst->w   = (q1.w * r1 + q2.w * r2);
 }
 
 NS_CC_MATH_END

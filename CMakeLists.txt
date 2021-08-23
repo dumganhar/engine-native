@@ -1350,8 +1350,6 @@ cocos_source_files(
 
     cocos/core/scene-graph/BaseNode.cpp
     cocos/core/scene-graph/BaseNode.h
-    # cocos/core/scene-graph/Find.cpp
-    # cocos/core/scene-graph/Find.h
     cocos/core/scene-graph/Layers.h
     cocos/core/scene-graph/Node.cpp
     cocos/core/scene-graph/Node.h
@@ -1369,7 +1367,7 @@ cocos_source_files(
     cocos/core/scene-graph/Scene.h
     cocos/core/scene-graph/SceneGlobal.cpp
     cocos/core/scene-graph/SceneGlobal.h
-    # cocos/core/scene-graph/SceneGraphModuleHeader.h
+    cocos/core/scene-graph/SceneGraphModuleHeader.h
 
     cocos/core/utils/IDGenerator.cpp
     cocos/core/utils/IDGenerator.h

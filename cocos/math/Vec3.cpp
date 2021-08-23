@@ -21,17 +21,17 @@
  */
 
 #include "math/Vec3.h"
+#include "base/Macros.h"
 #include "math/Mat3.h"
 #include "math/MathUtil.h"
-#include "base/Macros.h"
 #include "math/Quaternion.h"
 
 NS_CC_MATH_BEGIN
 
 Vec3::Vec3()
-: x(0.0f),
-  y(0.0f),
-  z(0.0f) {
+: x(0.0F),
+  y(0.0F),
+  z(0.0F) {
 }
 
 Vec3::Vec3(float xx, float yy, float zz)
@@ -54,19 +54,18 @@ Vec3::Vec3(const Vec3 &copy) {
 
 Vec3 Vec3::fromColor(unsigned int color) {
     float components[3];
-    int componentIndex = 0;
+    int   componentIndex = 0;
     for (int i = 2; i >= 0; --i) {
-        int component = (color >> i * 8) & 0x0000ff;
+        auto component = (color >> i * 8) & 0x0000ff;
 
-        components[componentIndex++] = static_cast<float>(component) / 255.0f;
+        components[componentIndex++] = static_cast<float>(component) / 255.0F;
     }
 
     Vec3 value(components);
     return value;
 }
 
-Vec3::~Vec3() {
-}
+Vec3::~Vec3() = default;
 
 void Vec3::transformInverseRTS(Vec3 &out, const Vec3 &v, const Quaternion &r, const Vec3 &t, const Vec3 &s) {
     const float x = v.x - t.x;
@@ -102,22 +101,28 @@ void Vec3::clamp(const Vec3 &min, const Vec3 &max) {
     GP_ASSERT(!(min.x > max.x || min.y > max.y || min.z > max.z));
 
     // Clamp the x value.
-    if (x < min.x)
+    if (x < min.x) {
         x = min.x;
-    if (x > max.x)
+    }
+    if (x > max.x) {
         x = max.x;
+    }
 
     // Clamp the y value.
-    if (y < min.y)
+    if (y < min.y) {
         y = min.y;
-    if (y > max.y)
+    }
+    if (y > max.y) {
         y = max.y;
+    }
 
     // Clamp the z value.
-    if (z < min.z)
+    if (z < min.z) {
         z = min.z;
-    if (z > max.z)
+    }
+    if (z > max.z) {
         z = max.z;
+    }
 }
 
 void Vec3::clamp(const Vec3 &v, const Vec3 &min, const Vec3 &max, Vec3 *dst) {
@@ -126,24 +131,30 @@ void Vec3::clamp(const Vec3 &v, const Vec3 &min, const Vec3 &max, Vec3 *dst) {
 
     // Clamp the x value.
     dst->x = v.x;
-    if (dst->x < min.x)
+    if (dst->x < min.x) {
         dst->x = min.x;
-    if (dst->x > max.x)
+    }
+    if (dst->x > max.x) {
         dst->x = max.x;
+    }
 
     // Clamp the y value.
     dst->y = v.y;
-    if (dst->y < min.y)
+    if (dst->y < min.y) {
         dst->y = min.y;
-    if (dst->y > max.y)
+    }
+    if (dst->y > max.y) {
         dst->y = max.y;
+    }
 
     // Clamp the z value.
     dst->z = v.z;
-    if (dst->z < min.z)
+    if (dst->z < min.z) {
         dst->z = min.z;
-    if (dst->z > max.z)
+    }
+    if (dst->z > max.z) {
         dst->z = max.z;
+    }
 }
 
 void Vec3::cross(const Vec3 &v) {
@@ -172,24 +183,35 @@ void Vec3::multiply(const Vec3 &v1, const Vec3 &v2, Vec3 *dst) {
 }
 
 void Vec3::transformMat3(const Vec3 &v, const Mat3 &m) {
-    float ix = v.x, iy = v.y, iz = v.z;
-    x = ix * m.m[0] + iy * m.m[3] + iz * m.m[6];
-    y = ix * m.m[1] + iy * m.m[4] + iz * m.m[7];
-    z = ix * m.m[2] + iy * m.m[5] + iz * m.m[8];
+    float ix = v.x;
+    float iy = v.y;
+    float iz = v.z;
+    x        = ix * m.m[0] + iy * m.m[3] + iz * m.m[6];
+    y        = ix * m.m[1] + iy * m.m[4] + iz * m.m[7];
+    z        = ix * m.m[2] + iy * m.m[5] + iz * m.m[8];
 }
 
 void Vec3::transformMat4(const Vec3 &v, const Mat4 &m) {
-    float ix = v.x, iy = v.y, iz = v.z;
+    float ix  = v.x;
+    float iy  = v.y;
+    float iz  = v.z;
     float rhw = m.m[3] * ix + m.m[7] * iy + m.m[11] * iz + m.m[15];
-    rhw = rhw ? 1 / rhw : 1;
+    rhw       = rhw != 0.0F ? 1 / rhw : 1;
 
     x = (m.m[0] * ix + m.m[4] * iy + m.m[8] * iz + m.m[12]) * rhw;
     y = (m.m[1] * ix + m.m[5] * iy + m.m[9] * iz + m.m[13]) * rhw;
     z = (m.m[2] * ix + m.m[6] * iy + m.m[10] * iz + m.m[14]) * rhw;
 }
 
+void Vec3::transformMat4(const Vec3 &v, const Mat4 &m, Vec3 *dst) {
+    dst->transformMat4(v, m);
+}
+
 void Vec3::transformQuat(const Quaternion &q) {
-    float qx = q.x, qy = q.y, qz = q.z, qw = q.w;
+    float qx = q.x;
+    float qy = q.y;
+    float qz = q.z;
+    float qw = q.w;
 
     // calculate quat * vec
     float ix = qw * x + qy * z - qz * y;
@@ -230,15 +252,17 @@ float Vec3::dot(const Vec3 &v1, const Vec3 &v2) {
 void Vec3::normalize() {
     float n = x * x + y * y + z * z;
     // Already normalized.
-    if (n == 1.0f)
+    if (n == 1.0F) {
         return;
+    }
 
     n = std::sqrt(n);
     // Too close to zero.
-    if (n < MATH_TOLERANCE)
+    if (n < MATH_TOLERANCE) {
         return;
+    }
 
-    n = 1.0f / n;
+    n = 1.0F / n;
     x *= n;
     y *= n;
     z *= n;
@@ -259,7 +283,6 @@ void Vec3::subtract(const Vec3 &v1, const Vec3 &v2, Vec3 *dst) {
 }
 
 void Vec3::max(const Vec3 &v1, const Vec3 &v2, Vec3 *dst) {
-
     GP_ASSERT(dst);
 
     dst->x = std::fmaxf(v1.x, v2.x);
@@ -268,7 +291,6 @@ void Vec3::max(const Vec3 &v1, const Vec3 &v2, Vec3 *dst) {
 }
 
 void Vec3::min(const Vec3 &v1, const Vec3 &v2, Vec3 *dst) {
-
     GP_ASSERT(dst);
 
     dst->x = std::fminf(v1.x, v2.x);
@@ -282,10 +304,10 @@ void Vec3::smooth(const Vec3 &target, float elapsedTime, float responseTime) {
     }
 }
 
-const Vec3 Vec3::ZERO(0.0f, 0.0f, 0.0f);
-const Vec3 Vec3::ONE(1.0f, 1.0f, 1.0f);
-const Vec3 Vec3::UNIT_X(1.0f, 0.0f, 0.0f);
-const Vec3 Vec3::UNIT_Y(0.0f, 1.0f, 0.0f);
-const Vec3 Vec3::UNIT_Z(0.0f, 0.0f, 1.0f);
+const Vec3 Vec3::ZERO(0.0F, 0.0F, 0.0F);
+const Vec3 Vec3::ONE(1.0F, 1.0F, 1.0F);
+const Vec3 Vec3::UNIT_X(1.0F, 0.0F, 0.0F);
+const Vec3 Vec3::UNIT_Y(0.0F, 1.0F, 0.0F);
+const Vec3 Vec3::UNIT_Z(0.0F, 0.0F, 1.0F);
 
 NS_CC_MATH_END

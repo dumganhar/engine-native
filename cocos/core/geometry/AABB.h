@@ -26,7 +26,7 @@
 #pragma once
 
 #include <algorithm>
-#include "core/geometry/Frustum.h"
+#include "core/geometry/Enums.h"
 #include "math/Mat3.h"
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
@@ -34,14 +34,85 @@
 namespace cc {
 namespace geometry {
 
+class Sphere;
+class Frustum;
+class Plane;
+
 struct AABBLayout {
     cc::Vec3 center;
     cc::Vec3 halfExtents{1, 1, 1};
 };
-class AABB final {
+class AABB final : public ShapeBase {
 public:
-    static void fromPoints(const Vec3 &minPos, const Vec3 &maxPos, AABB *dst);
-    static void transformExtentM4(Vec3 *out, const Vec3 &extent, const Mat4 &m4);
+    /**
+      * @en
+      * create a new AABB
+      * @zh
+      * 创建一个新的 AABB 实例。
+      * @param px - AABB 的原点的 X 坐标。
+      * @param py - AABB 的原点的 Y 坐标。
+      * @param pz - AABB 的原点的 Z 坐标。
+      * @param hw - AABB 宽度的一半。
+      * @param hh - AABB 高度的一半。
+      * @param hl - AABB 长度的一半。
+      * @returns 返回新创建的 AABB 实例。
+      */
+    static AABB *create(float px, float py, float pz, float hw, float hh, float hl) {
+        return new AABB(px, py, pz, hw, hh, hl);
+    }
+
+    /**
+      * @en
+      * Set the components of a AABB to the given values
+      * @zh
+      * 将 AABB 的属性设置为给定的值。
+      * @param {AABB} out 接受操作的 AABB。
+      * @param px - AABB 的原点的 X 坐标。
+      * @param py - AABB 的原点的 Y 坐标。
+      * @param pz - AABB 的原点的 Z 坐标。
+      * @param hw - AABB 宽度的一半。
+      * @param hh - AABB 高度的一半。
+      * @param hl - AABB 长度度的一半。
+      * @return {AABB} out 接受操作的 AABB。
+      */
+
+    static AABB *set(AABB *out, float px, float py,
+                     float pz,
+                     float hw,
+                     float hh,
+                     float hl) {
+        out->setCenter(px, py, pz);
+        out->setHalfExtents(hw, hh, hl);
+        return out;
+    }
+
+    /**
+      * @en
+      * Merge tow AABB.
+      * @zh
+      * 合并两个 AABB 到 out。
+      * @param out 接受操作的 AABB。
+      * @param a 输入的 AABB。
+      * @param b 输入的 AABB。
+      * @returns {AABB} out 接受操作的 AABB。
+      */
+    static AABB *merge(AABB *out, const AABB &a, const AABB &b);
+
+    /**
+      * @en
+      * AABB to sphere
+      * @zh
+      * 包围盒转包围球
+      * @param out 接受操作的 sphere。
+      * @param a 输入的 AABB。
+      */
+
+    static Sphere *toBoundingSphere(Sphere *out, const AABB &a);
+
+    static AABB *fromPoints(const Vec3 &minPos, const Vec3 &maxPos, AABB *dst);
+    static void  transformExtentM4(Vec3 *out, const Vec3 &extent, const Mat4 &m4);
+
+    AABB(float px, float py, float pz, float hw, float hh, float hl);
     AABB();
     AABB(const AABB &) = delete;
     AABB(AABB &&)      = delete;
@@ -68,7 +139,7 @@ public:
     inline AABBLayout *getLayout() { return _aabbLayout; }
 
 private:
-    AABBLayout  _embedLayout;
+    AABBLayout  _embedLayout{};
     AABBLayout *_aabbLayout{nullptr};
     bool        _isValid{true};
 };

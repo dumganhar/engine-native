@@ -25,19 +25,19 @@
 
 #pragma once
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
+
 
 #include "core/Types.h"
 #include "core/event/Event.h"
 #include "core/platform/event-manager/EventEnum.h"
 #include "core/platform/event-manager/EventListener.h"
 #include "core/platform/event-manager/Touch.h"
-#include "core/scene-graph/node.h"
-
+#include "core/scene-graph/Node.h"
 
 namespace cc {
-namespace event_listener{
+namespace event_listener {
 
 class EventListenerVector {
 public:
@@ -67,7 +67,6 @@ private:
     std::vector<EventListener*> _sceneGraphListeners;
 };
 
-
 /**
  * @en
  * This class has been deprecated, please use `systemEvent` or `EventTarget` instead.
@@ -90,11 +89,10 @@ private:
 
 class EventManager final {
 public:
-
     static EventManager& getInstance() {
-		static EventManager instance;
-		return instance;
-	}
+        static EventManager instance;
+        return instance;
+    }
 
     /**
      * @en Pauses all listeners which are associated the specified target.
@@ -165,7 +163,7 @@ public:
      * @returns 返回自定义监听器。
      */
 
-    const EventListener* &addCustomListener(std::string eventName, std::function<void()> callback) const;
+    const EventListener*& addCustomListener(std::string eventName, std::function<void()> callback) const;
 
     /**
      * @en
@@ -252,7 +250,7 @@ public:
      *
      * @returns
      */
-    inline bool isEnabled() const { 
+    inline bool isEnabled() const {
         return _isEnabled;
     }
 
@@ -265,7 +263,7 @@ public:
      *
      * @param event - 分发事件。
      */
-    
+
     void dispatchEvent(event::Event* event) const;
 
     bool onListenerCallback(EventListener* listener, event::Event* event) const;
@@ -280,17 +278,17 @@ public:
      * @param eventName - 自定义事件名。
      * @param optionalUserData
      */
-    void dispatchCustomEvent(std::string eventName,std::any) const;
+    void dispatchCustomEvent(std::string eventName, std::any) const;
 
 private:
-    EventManager() = default;
+    EventManager()  = default;
     ~EventManager() = default;
     void setDirtyForNode(scenegraph::Node* node) const;
     void addListener(EventListener* listener) const;
     void forceAddEventListener(EventListener* listener) const;
     void getListeners(std::string listenerID) const;
     void updateDirtyFlagForSceneGraph() const;
-    void removeAllListenersInVector(std::vector<EventListener *> listenerVector) const;
+    void removeAllListenersInVector(std::vector<EventListener*> listenerVector) const;
     void removeListenersForListenerID(std::string listenerID) const;
     void sortEventListeners(std::string listenerID) const;
     void sortListenersOfSceneGraphPriority(std::string listenerID) const;
@@ -307,22 +305,20 @@ private:
     void dispatchEventToListeners(EventListenerVector* listeners, std::function<bool>(std::any, std::any), std::any eventOrArgs) const;
     void setDirty(std::string listenerID, int32_t flag) const;
     void clearCurTouch() const;
-    void removeListenerInVector(std::vector<EventListener *> listeners, EventListener* listener) const;
+    void removeListenerInVector(std::vector<EventListener*> listeners, EventListener* listener) const;
 
-
-    std::unordered_map<std::string, EventListenerVector*> _listenersMap;
-    std::unordered_map<std::string, int32_t>              _priorityDirtyFlagMap;
+    std::unordered_map<std::string, EventListenerVector*>         _listenersMap;
+    std::unordered_map<std::string, int32_t>                      _priorityDirtyFlagMap;
     std::unordered_map<std::string, std::vector<EventListener*> > _nodeListenersMap;
-    std::vector<EventListener *> _toAddedListeners;
-    std::vector<EventListener *> _toRemoveListeners;
+    std::vector<EventListener*>                                   _toAddedListeners;
+    std::vector<EventListener*>                                   _toRemoveListeners;
 
     Record<std::string, bool> _dirtyListener;
-    int32_t _inDispatch {0};
-    bool _isEnabled {false};
-    std::vector<std::string> _internalCustomListenersIDs;
-    Touch* _currentTouch {nullptr};
-    std::any _currentTouchListener {nullptr};
-
+    int32_t                   _inDispatch{0};
+    bool                      _isEnabled{false};
+    std::vector<std::string>  _internalCustomListenersIDs;
+    Touch*                    _currentTouch{nullptr};
+    std::any                  _currentTouchListener{nullptr};
 };
-}  // namespace event_listener
+} // namespace event_listener
 } // namespace cc

@@ -235,6 +235,15 @@ public:
     void transformMat4(const Vec3 &v, const Mat4 &m);
 
     /**
+     * Transforms vector v by the specified Mat4 and stores the result in dst vector.
+     *
+     * @param v The Vec3 to transform.
+     * @param m The matrix.
+     * @param dst The destination vector
+     */
+    static void transformMat4(const Vec3 &v, const Mat4 &m, Vec3 *dst);
+
+    /**
      * Transforms this vector by the specified quaternion and stores the result in this vector.
      *
      * @param q The quaternion to multiply.

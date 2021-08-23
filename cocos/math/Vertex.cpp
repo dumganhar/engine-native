@@ -26,29 +26,30 @@
  ****************************************************************************/
 
 #include "math/Vertex.h"
+#include <vector>
 #include "base/Macros.h"
 
 namespace cc {
 
-void ccVertexLineToPolygon(Vec2 *points, float stroke, Vec2 *vertices, unsigned int offset, unsigned int nuPoints) {
+void ccVertexLineToPolygon(const std::vector<Vec2> &points, float stroke, std::vector<Vec2> &vertices, unsigned int offset, unsigned int nuPoints) {
     nuPoints += offset;
     if (nuPoints <= 1) return;
 
-    stroke *= 0.5f;
+    stroke *= 0.5F;
 
     unsigned int idx;
     unsigned int nuPointsMinus = nuPoints - 1;
 
     for (unsigned int i = offset; i < nuPoints; i++) {
-        idx = i * 2;
+        idx     = i * 2;
         Vec2 p1 = points[i];
         Vec2 perpVector;
 
-        if (i == 0)
+        if (i == 0) {
             perpVector = (p1 - points[i + 1]).getNormalized().getPerp();
-        else if (i == nuPointsMinus)
+        } else if (i == nuPointsMinus) {
             perpVector = (points[i - 1] - p1).getNormalized().getPerp();
-        else {
+        } else {
             Vec2 p2 = points[i + 1];
             Vec2 p0 = points[i - 1];
 
@@ -58,12 +59,13 @@ void ccVertexLineToPolygon(Vec2 *points, float stroke, Vec2 *vertices, unsigned 
             // Calculate angle between vectors
             float angle = acosf(p2p1.dot(p0p1));
 
-            if (angle < CC_DEGREES_TO_RADIANS(70))
+            if (angle < CC_DEGREES_TO_RADIANS(70)) {
                 perpVector = p2p1.getMidpoint(p0p1).getNormalized().getPerp();
-            else if (angle < CC_DEGREES_TO_RADIANS(170))
+            } else if (angle < CC_DEGREES_TO_RADIANS(170)) {
                 perpVector = p2p1.getMidpoint(p0p1).getNormalized();
-            else
+            } else {
                 perpVector = (p2 - p0).getNormalized().getPerp();
+            }
         }
         perpVector = perpVector * stroke;
 
@@ -74,7 +76,7 @@ void ccVertexLineToPolygon(Vec2 *points, float stroke, Vec2 *vertices, unsigned 
     // Validate vertexes
     offset = (offset == 0) ? 0 : offset - 1;
     for (unsigned int i = offset; i < nuPointsMinus; i++) {
-        idx = i * 2;
+        idx                     = i * 2;
         const unsigned int idx1 = idx + 2;
 
         Vec2 p1 = vertices[idx];
@@ -90,7 +92,7 @@ void ccVertexLineToPolygon(Vec2 *points, float stroke, Vec2 *vertices, unsigned 
                 fixVertex = true;
 
         if (fixVertex) {
-            vertices[idx1] = p4;
+            vertices[idx1]     = p4;
             vertices[idx1 + 1] = p3;
         }
     }
@@ -119,12 +121,12 @@ bool ccVertexLineIntersect(float Ax, float Ay,
     // Rotate the system so that point B is on the positive X axis.
     theCos = Bx / distAB;
     theSin = By / distAB;
-    newX = Cx * theCos + Cy * theSin;
-    Cy = Cy * theCos - Cx * theSin;
-    Cx = newX;
-    newX = Dx * theCos + Dy * theSin;
-    Dy = Dy * theCos - Dx * theSin;
-    Dx = newX;
+    newX   = Cx * theCos + Cy * theSin;
+    Cy     = Cy * theCos - Cx * theSin;
+    Cx     = newX;
+    newX   = Dx * theCos + Dy * theSin;
+    Dy     = Dy * theCos - Dx * theSin;
+    Dx     = newX;
 
     // FAIL: Lines are parallel.
     if (Cy == Dy) return false;

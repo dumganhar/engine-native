@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2020-2021 Huawei Technologies Co., Ltd.
+ Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
 
  http://www.cocos.com
 
@@ -25,28 +25,70 @@
 
 #pragma once
 
-#include "../RenderFlow.h"
+#include "../Config.h"
+#if USE_MEMORY_LEAK_DETECTOR
+
+    #include "../Macros.h"
+    #include "CallStack.h"
+
+    #include <mutex>
+    #include <unordered_map>
+    #include <vector>
+
+
+typedef void* (*MallocType)(size_t size);
+typedef void (*FreeType)(void* ptr);
+
+typedef void (*NewHookType)(const void* ptr, size_t size);
+typedef void (*DeleteHookType)(const void* ptr);
 
 namespace cc {
-namespace pipeline {
 
-class GbufferStage;
-
-class CC_DLL GbufferFlow : public RenderFlow {
-public:
-    static const RenderFlowInfo &getInitializeInfo();
-
-    GbufferFlow() = default;
-    ~GbufferFlow() override;
-
-    bool initialize(const RenderFlowInfo &info) override;
-    void activate(RenderPipeline *pipeline) override;
-    void destroy() override;
-    void render(scene::Camera *camera) override;
-
-private:
-    static RenderFlowInfo initInfo;
+struct CC_DLL MemoryRecord {
+    uint64_t           address{0};
+    size_t             size{0};
+    std::vector<void*> callstack;
 };
 
-} // namespace pipeline
+class CC_DLL MemoryHook {
+public:
+    MemoryHook();
+    ~MemoryHook();
+
+    /**
+     * RecordMap's key is memory address.
+     */
+    using RecordMap = std::unordered_map<uint64_t, MemoryRecord>;
+
+    void addRecord(uint64_t address, size_t size);
+    void removeRecord(uint64_t address);
+
+private:
+    /**
+     * Dump all memory leaks to output window
+     */
+    void dumpMemoryLeak();
+
+    static void log(const std::string& msg);
+
+    /**
+     * Register all malloc hooks
+     */
+    void registerAll();
+
+    /**
+     * Unregister all malloc hooks
+     */
+    void unRegisterAll();
+
+private:
+    std::recursive_mutex _mutex;
+    bool                 _hooking{false};
+    RecordMap            _records;
+};
+
+extern MemoryHook GMemoryHook;
+
 } // namespace cc
+
+#endif

@@ -23,6 +23,7 @@
  THE SOFTWARE.
 ****************************************************************************/
 #include <string>
+#include "base/Macros.h"
 namespace cc {
 
 struct ISchedulable {
@@ -34,7 +35,7 @@ enum struct Priority : uint32_t {
     LOW       = 0,
     MEDIUM    = 100,
     HIGH      = 200,
-    SCHEDULER = (1U << 31U),
+    SCHEDULER = UINT32_MAX,
 };
 
 class System : public ISchedulable {
@@ -64,7 +65,7 @@ public:
     System() = default;
     virtual ~System() = default;
 
-    inline std::string getId() const { return id; }
+    inline const std::string& getId() { return id; }
     inline void        setId(std::string& s) { id = s; }
 
     inline Priority getPriority() const { return _priority; }

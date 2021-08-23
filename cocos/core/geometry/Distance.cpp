@@ -70,17 +70,7 @@ Vec3 *ptPointLine(Vec3 *out, const Vec3 &point, const Vec3 &linePointA, const Ve
         // Calculate the projection of the point onto the line extending through the segment.
         auto ap = point - linePointA;
         auto t  = Vec3::dot(ap, dir) / dirSquared;
-
-        if (t < 0) {
-            // The point projects beyond the segment start.
-            *out = linePointA;
-        } else if (t > 1) {
-            // The point projects beyond the segment end.
-            *out = linePointB;
-        } else {
-            // The point projects between the start and end of the segment.
-            *out = linePointA + dir * t;
-        }
+        *out    = linePointA + std::clamp(t, 0.0F, 1.0F) * dir;
     }
     return out;
 }

@@ -46,8 +46,7 @@ Ray::Ray(float ox, float oy, float oz,
 }
 
 void Ray::computeHit(Vec3 *out, float distance) const {
-    *out = d.getNormalized();
-    *out = o + (*out) * distance;
+    *out = o + d.getNormalized() * distance;
 }
 } // namespace geometry
 } // namespace cc

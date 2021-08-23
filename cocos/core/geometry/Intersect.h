@@ -242,7 +242,7 @@ float linePlane(const Line& line, const Plane& plane);
  * @param {Vec3} outPt 可选，相交点
  * @return {number} 0 或 非0
  */
-float lineTriangle(const Line& line, const Triangle& triangle, Vec3* outPt = nullptr);
+int lineTriangle(const Line& line, const Triangle& triangle, Vec3* outPt = nullptr);
 
 /**
  * @en
@@ -286,15 +286,8 @@ float lineSphere(const Line& line, const Sphere& sphere);
  * @param {AABB} aabb2 轴对齐包围盒2
  * @return {number} 0 或 非0
  */
-float aabbWithAABB(const AABB& aabb1, const AABB& aabb2);
+bool aabbWithAABB(const AABB& aabb1, const AABB& aabb2);
 
-void getAABBVertices(const Vec3& min, const Vec3& max, std::array<Vec3, 8>* out);
-
-void getOBBVertices(const Vec3& c, const Vec3& e,
-                    const Vec3& a1, const Vec3& a2, const Vec3& a3,
-                    std::array<Vec3, 8>* out);
-
-std::tuple<float, float> getInterval(const std::array<Vec3, 8>& vertices, const Vec3& axis);
 /**
  * @en
  * aabb-obb intersect detect.
@@ -304,7 +297,7 @@ std::tuple<float, float> getInterval(const std::array<Vec3, 8>& vertices, const 
  * @param {OBB} obb 方向包围盒
  * @return {number} 0 或 非0
  */
-float aabbWithOBB(const AABB& aabb, const OBB& obb);
+int aabbWithOBB(const AABB& aabb, const OBB& obb);
 
 /**
  * @en

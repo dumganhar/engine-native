@@ -46,7 +46,7 @@ Sphere *Sphere::copy(Sphere *out, const Sphere &p) {
 
 Sphere *Sphere::fromPoints(Sphere *out, const Vec3 &minPos, const Vec3 &maxPos) {
     out->_center = 0.5F * (minPos + maxPos);
-    out->_radius = (0.5F * (maxPos - minPos)).length();
+    out->_radius = 0.5F * (maxPos - minPos).length();
     return out;
 }
 
@@ -72,7 +72,7 @@ Sphere *Sphere::mergePoint(Sphere *out, const Sphere &s, const Vec3 &point) {
     if (dist > s._radius) {
         auto half = (dist - s._radius) * 0.5F;
         out->_radius += half;
-        offset       = offset * (half / dist);
+        offset.scale(half / dist);
         out->_center = out->_center + offset;
     }
 

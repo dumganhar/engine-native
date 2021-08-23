@@ -53,35 +53,7 @@ public:
                             float       height,
                             float       near,
                             float       far,
-                            const Mat4 &transform) {
-        Vec3 tempV3;
-
-        auto halfWidth  = width / 2;
-        auto halfHeight = height / 2;
-        tempV3.set(halfWidth, halfHeight, near);
-        Vec3::transformMat4(tempV3, transform, &out->vertices[0]);
-        tempV3.set(-halfWidth, halfHeight, near);
-        Vec3::transformMat4(tempV3, transform, &out->vertices[1]);
-        tempV3.set(-halfWidth, -halfHeight, near);
-        Vec3::transformMat4(tempV3, transform, &out->vertices[2]);
-        tempV3.set(halfWidth, -halfHeight, near);
-        Vec3::transformMat4(tempV3, transform, &out->vertices[3]);
-        tempV3.set(halfWidth, halfHeight, far);
-        Vec3::transformMat4(tempV3, transform, &out->vertices[4]);
-        tempV3.set(-halfWidth, halfHeight, far);
-        Vec3::transformMat4(tempV3, transform, &out->vertices[5]);
-        tempV3.set(-halfWidth, -halfHeight, far);
-        Vec3::transformMat4(tempV3, transform, &out->vertices[6]);
-        tempV3.set(halfWidth, -halfHeight, far);
-        Vec3::transformMat4(tempV3, transform, &out->vertices[7]);
-
-        Plane::fromPoints(&out->planes[0], out->vertices[1], out->vertices[6], out->vertices[5]);
-        Plane::fromPoints(&out->planes[1], out->vertices[3], out->vertices[4], out->vertices[7]);
-        Plane::fromPoints(&out->planes[2], out->vertices[6], out->vertices[3], out->vertices[7]);
-        Plane::fromPoints(&out->planes[3], out->vertices[0], out->vertices[5], out->vertices[4]);
-        Plane::fromPoints(&out->planes[4], out->vertices[2], out->vertices[0], out->vertices[3]);
-        Plane::fromPoints(&out->planes[0], out->vertices[7], out->vertices[5], out->vertices[6]);
-    }
+                            const Mat4 &transform);
 
     /**
      * @en
@@ -130,6 +102,15 @@ public:
     Frustum() {
         setType(ShapeEnum::SHAPE_FRUSTUM);
     }
+
+    /**
+     * @en
+     * Transform this frustum.
+     * @zh
+     * 变换此截锥体。
+     * @param mat 变换矩阵。
+     */
+    void transform(const Mat4 &);
 
     std::array<Vec3, 8>  vertices;
     std::array<Plane, 6> planes;

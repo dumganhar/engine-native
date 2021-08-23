@@ -20,9 +20,7 @@ Plane* Plane::fromPoints(Plane*      out,
                          const Vec3& a,
                          const Vec3& b,
                          const Vec3& c) {
-    auto v1 = b - a;
-    auto v2 = c - a;
-    Vec3::cross(v1, v2, &out->n);
+    Vec3::cross(b - a, c - a, &out->n);
     out->n.normalize();
     out->d = Vec3::dot(out->n, a);
     return out;
@@ -60,7 +58,7 @@ void Plane::transform(const Mat4& mat) {
     tempMat.transpose();
     Vec4 tempVec4 = {n.x, n.y, n.z, d};
     tempMat.transformVector(&tempVec4);
-    n = {tempVec4.x, tempVec4.y, tempVec4.z};
+    n.set(tempVec4.x, tempVec4.y, tempVec4.z);
     d = tempVec4.w;
 }
 

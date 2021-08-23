@@ -4,6 +4,7 @@
 
 #include <array>
 #include <cmath>
+#include <limits>
 #include <vector>
 #include "core/assets/RenderingSubMesh.h"
 #include "core/geometry/AABB.h"
@@ -27,17 +28,12 @@ namespace cc {
 namespace geometry {
 
 float rayPlane(const Ray& ray, const Plane& plane) {
-    Vec3 pt{};
     auto denom = Vec3::dot(ray.d, plane.n);
     if (abs(denom) < math::EPSILON) {
         return 0;
     }
-    pt     = plane.n * plane.d;
-    auto t = (pt - ray.o).dot(plane.n) / denom;
-    if (t < 0) {
-        return 0;
-    }
-    return t;
+    auto t = (plane.n * plane.d - ray.o).dot(plane.n) / denom;
+    return t < 0 ? 0 : t;
 }
 
 // based on http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Moller/raytri/
@@ -52,12 +48,12 @@ float rayTriangle(const Ray& ray, const Triangle& triangle, bool doubleSided) {
         return 0;
     }
     float invDet = 1.0F / det;
-    auto  tvec   = ray.o - triangle.a;
-    auto  u      = Vec3::dot(tvec, pvec) * invDet;
+    auto  ao     = ray.o - triangle.a;
+    auto  u      = Vec3::dot(ao, pvec) * invDet;
     if (u < 0 || u > 1) {
         return 0;
     }
-    Vec3::cross(tvec, ab, &qvec);
+    Vec3::cross(ao, ab, &qvec);
     auto v = Vec3::dot(ray.d, qvec) * invDet;
     if (v < 0 || u + v > 1) {
         return 0;
@@ -68,15 +64,11 @@ float rayTriangle(const Ray& ray, const Triangle& triangle, bool doubleSided) {
 }
 
 float raySphere(const Ray& ray, const Sphere& sphere) {
-    const auto& c   = sphere.getCenter();
-    auto        r   = sphere.getRadius();
-    auto        o   = ray.o;
-    auto        d   = ray.d;
-    auto        rSq = r * r;
-    auto        e   = c - o;
-    auto        eSq = e.lengthSquared();
+    auto rSq = sphere.getRadius() * sphere.getRadius();
+    auto e   = sphere.getCenter() - ray.o;
+    auto eSq = e.lengthSquared();
 
-    auto aLength = Vec3::dot(e, d); // assume ray direction already normalized
+    auto aLength = Vec3::dot(e, ray.d); // assume ray direction already normalized
     auto fSq     = rSq - (eSq - aLength * aLength);
     if (fSq < 0) {
         return 0;
@@ -84,26 +76,23 @@ float raySphere(const Ray& ray, const Sphere& sphere) {
 
     auto f = sqrt(fSq);
     auto t = eSq < rSq ? aLength + f : aLength - f;
-    if (t < 0) {
-        return 0;
-    }
-    return t;
+    return t < 0 ? 0 : t;
 }
 
 float rayAABB2(const Ray& ray, const Vec3& min, const Vec3& max) {
-    auto o    = ray.o;
-    auto d    = ray.d;
-    auto ix   = 1 / d.x;
-    auto iy   = 1 / d.y;
-    auto iz   = 1 / d.z;
-    auto t1   = (min.x - o.x) * ix;
-    auto t2   = (max.x - o.x) * ix;
-    auto t3   = (min.y - o.y) * iy;
-    auto t4   = (max.y - o.y) * iy;
-    auto t5   = (min.z - o.z) * iz;
-    auto t6   = (max.z - o.z) * iz;
-    auto tmin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
-    auto tmax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
+    const auto& o    = ray.o;
+    auto        d    = ray.d;
+    auto        ix   = 1.0F / d.x;
+    auto        iy   = 1.0F / d.y;
+    auto        iz   = 1.0F / d.z;
+    auto        tx1  = (min.x - o.x) * ix;
+    auto        tx2  = (max.x - o.x) * ix;
+    auto        ty1  = (min.y - o.y) * iy;
+    auto        ty2  = (max.y - o.y) * iy;
+    auto        tz1  = (min.z - o.z) * iz;
+    auto        tz2  = (max.z - o.z) * iz;
+    auto        tmin = std::max(std::max(std::min(tx1, tx2), std::min(ty1, ty2)), std::min(tz1, tz2));
+    auto        tmax = std::min(std::min(std::max(tx1, tx2), std::max(ty1, ty2)), std::max(tz1, tz2));
     if (tmax < 0 || tmin > tmax) {
         return 0;
     }
@@ -111,37 +100,27 @@ float rayAABB2(const Ray& ray, const Vec3& min, const Vec3& max) {
 }
 
 float rayAABB(const Ray& ray, const AABB& aabb) {
-    auto minv = aabb.getCenter() - aabb.getHalfExtents();
-    auto maxv = aabb.getCenter() + aabb.getHalfExtents();
-    return rayAABB2(ray, minv, maxv);
+    auto minV = aabb.getCenter() - aabb.getHalfExtents();
+    auto maxV = aabb.getCenter() + aabb.getHalfExtents();
+    return rayAABB2(ray, minV, maxV);
 }
 
 float rayOBB(const Ray& ray, const OBB& obb) {
     std::array<float, 6> t;
-    std::array<float, 3> size = {
-        obb.halfExtents.x,
-        obb.halfExtents.y,
-        obb.halfExtents.z};
-    auto center = obb.center;
-    auto o      = ray.o;
-    auto d      = ray.d;
+    std::array<float, 3> size   = {obb.halfExtents.x, obb.halfExtents.y, obb.halfExtents.z};
+    const auto&          center = obb.center;
+    auto const&          d      = ray.d;
 
     Vec3 x = {obb.orientation.m[0], obb.orientation.m[1], obb.orientation.m[2]};
     Vec3 y = {obb.orientation.m[3], obb.orientation.m[4], obb.orientation.m[5]};
     Vec3 z = {obb.orientation.m[6], obb.orientation.m[7], obb.orientation.m[8]};
-    Vec3 p = center - o;
+    Vec3 p = center - ray.o;
 
     // The cos values of the ray on the X, Y, Z
-
-    std::array<float, 3> f = {Vec3::dot(x, d),
-                              Vec3::dot(y, d),
-                              Vec3::dot(z, d)};
+    std::array<float, 3> f = {Vec3::dot(x, d), Vec3::dot(y, d), Vec3::dot(z, d)};
 
     // The projection length of P on X, Y, Z
-
-    std::array<float, 3> e{Vec3::dot(x, p),
-                           Vec3::dot(y, p),
-                           Vec3::dot(z, p)};
+    std::array<float, 3> e{Vec3::dot(x, p), Vec3::dot(y, p), Vec3::dot(z, p)};
 
     for (auto i = 0; i < 3; ++i) {
         if (f[i] == 0) {
@@ -156,16 +135,8 @@ float rayOBB(const Ray& ray, const OBB& obb) {
         // max
         t[i * 2 + 1] = (e[i] - size[i]) / f[i];
     }
-    auto tmin = std::max(
-        std::max(
-            std::min(t[0], t[1]),
-            std::min(t[2], t[3])),
-        std::min(t[4], t[5]));
-    auto tmax = std::min(
-        std::min(
-            std::max(t[0], t[1]),
-            std::max(t[2], t[3])),
-        std::max(t[4], t[5]));
+    auto tmin = std::max(std::max(std::min(t[0], t[1]), std::min(t[2], t[3])), std::min(t[4], t[5]));
+    auto tmax = std::min(std::min(std::max(t[0], t[1]), std::max(t[2], t[3])), std::max(t[4], t[5]));
     if (tmax < 0 || tmin > tmax) {
         return 0;
     }
@@ -173,7 +144,7 @@ float rayOBB(const Ray& ray, const OBB& obb) {
 }
 
 float rayCapsule(const Ray& ray, const Capsule& capsule) {
-    Sphere sphere{};
+    Sphere sphere;
     auto   radiusSqr = capsule.radius * capsule.radius;
     auto   vRayNorm  = ray.d.getNormalized();
     auto   aa        = capsule.ellipseCenter0;
@@ -185,14 +156,13 @@ float rayCapsule(const Ray& ray, const Capsule& capsule) {
         return raySphere(ray, sphere);
     }
 
-    auto o  = ray.o;
-    auto oa = o - aa;
+    auto oa = ray.o - aa;
     Vec3 VxBA; //NOLINT(readability-identifier-naming)
     Vec3::cross(vRayNorm, ba, &VxBA);
     auto a = VxBA.lengthSquared();
     if (a == 0.0F) {
         sphere.setRadius(capsule.radius);
-        auto bo = bb - o;
+        auto bo = bb - ray.o;
         if (oa.lengthSquared() < bo.lengthSquared()) {
             sphere.setCenter(capsule.ellipseCenter0);
         } else {
@@ -215,7 +185,7 @@ float rayCapsule(const Ray& ray, const Capsule& capsule) {
     auto t = (-b - std::sqrt(d)) / (2.0F * a);
     if (t < 0.0F) {
         sphere.setRadius(capsule.radius);
-        auto bo = bb - o;
+        auto bo = bb - ray.o;
         if (oa.lengthSquared() < bo.lengthSquared()) {
             sphere.setCenter(capsule.ellipseCenter0);
         } else {
@@ -454,13 +424,10 @@ float raySubMesh(const Ray& /*ray*/, const RenderingSubMesh& /*submesh*/, IRaySu
 float linePlane(const Line& line, const Plane& plane) {
     auto ab = line.e - line.s;
     auto t  = (plane.d - Vec3::dot(line.s, plane.n)) / Vec3::dot(ab, plane.n);
-    if (t < 0 || t > 1) {
-        return 0;
-    }
-    return t;
+    return (t < 0 || t > 1) ? 0 : t;
 }
 
-float lineTriangle(const Line& line, const Triangle& triangle, Vec3* outPt) {
+int lineTriangle(const Line& line, const Triangle& triangle, Vec3* outPt) {
     Vec3 n;
     Vec3 e;
     auto ab = triangle.b - triangle.a;
@@ -471,24 +438,24 @@ float lineTriangle(const Line& line, const Triangle& triangle, Vec3* outPt) {
     auto det = Vec3::dot(qp, n);
 
     if (det <= 0.0F) {
-        return 0.0F;
+        return 0;
     }
 
     auto ap = line.s - triangle.a;
     auto t  = Vec3::dot(ap, n);
     if (t < 0 || t > det) {
-        return .0F;
+        return 0;
     }
 
     Vec3::cross(qp, ap, &e);
     auto v = Vec3::dot(ac, e);
     if (v < 0.0F || v > det) {
-        return 0.0F;
+        return 0;
     }
 
     auto w = -Vec3::dot(ab, e);
     if (w < 0.0F || v + w > det) {
-        return .0F;
+        return 0;
     }
 
     if (outPt) {
@@ -512,11 +479,7 @@ float lineAABB(const Line& line, const AABB& aabb) {
     ray.d = line.e - line.s;
     ray.d.normalize();
     auto min = rayAABB(ray, aabb);
-    auto len = line.length();
-    if (min <= len) {
-        return min;
-    }
-    return 0.0F;
+    return min < line.length() ? min : 0.0F;
 }
 
 float lineOBB(const Line& line, const OBB& obb) {
@@ -525,11 +488,7 @@ float lineOBB(const Line& line, const OBB& obb) {
     ray.d = line.e - line.s;
     ray.d.normalize();
     auto min = rayOBB(ray, obb);
-    auto len = line.length();
-    if (min <= len) {
-        return min;
-    }
-    return 0;
+    return min < line.length() ? min : 0.0F;
 }
 
 float lineSphere(const Line& line, const Sphere& sphere) {
@@ -538,14 +497,10 @@ float lineSphere(const Line& line, const Sphere& sphere) {
     ray.d = line.e - line.s;
     ray.d.normalize();
     auto min = raySphere(ray, sphere);
-    auto len = line.length();
-    if (min <= len) {
-        return min;
-    }
-    return 0.0F;
+    return min < line.length() ? min : 0.0F;
 }
 
-float aabbWithAABB(const AABB& aabb1, const AABB& aabb2) {
+bool aabbWithAABB(const AABB& aabb1, const AABB& aabb2) {
     auto aMin = aabb1.getCenter() - aabb1.getHalfExtents();
     auto aMax = aabb1.getCenter() + aabb1.getHalfExtents();
     auto bMin = aabb2.getCenter() - aabb2.getHalfExtents();
@@ -553,69 +508,76 @@ float aabbWithAABB(const AABB& aabb1, const AABB& aabb2) {
     return (aMin.x <= bMax.x && aMax.x >= bMin.x) && (aMin.y <= bMax.y && aMax.y >= bMin.y) && (aMin.z <= bMax.z && aMax.z >= bMin.z);
 }
 
-void getAABBVertices(const Vec3& min, const Vec3& max, std::array<Vec3, 8>* out) {
-    (*out)[0] = {min.x, max.y, max.z};
-    (*out)[1] = {min.x, max.y, min.z};
-    (*out)[2] = {min.x, min.y, max.z};
-    (*out)[3] = {min.x, min.y, min.z};
-    (*out)[4] = {max.x, max.y, max.z};
-    (*out)[5] = {max.x, max.y, min.z};
-    (*out)[6] = {max.x, min.y, max.z};
-    (*out)[7] = {max.x, min.y, min.z};
+static void getAABBVertices(const Vec3& min, const Vec3& max, std::array<Vec3, 8>* out) {
+    *out = {
+        Vec3{min.x, max.y, max.z},
+        Vec3{min.x, max.y, min.z},
+        Vec3{min.x, min.y, max.z},
+        Vec3{min.x, min.y, min.z},
+        Vec3{max.x, max.y, max.z},
+        Vec3{max.x, max.y, min.z},
+        Vec3{max.x, min.y, max.z},
+        Vec3{max.x, min.y, min.z},
+    };
 }
 
-void getOBBVertices(const Vec3& c, const Vec3& e,
-                    const Vec3& a1, const Vec3& a2, const Vec3& a3,
-                    std::array<Vec3, 8>* out) {
-    (*out)[0] = {
-        c.x + a1.x * e.x + a2.x * e.y + a3.x * e.z,
-        c.y + a1.y * e.x + a2.y * e.y + a3.y * e.z,
-        c.z + a1.z * e.x + a2.z * e.y + a3.z * e.z};
-    (*out)[1] = {
-        c.x - a1.x * e.x + a2.x * e.y + a3.x * e.z,
-        c.y - a1.y * e.x + a2.y * e.y + a3.y * e.z,
-        c.z - a1.z * e.x + a2.z * e.y + a3.z * e.z};
-    (*out)[2] = {
-        c.x + a1.x * e.x - a2.x * e.y + a3.x * e.z,
-        c.y + a1.y * e.x - a2.y * e.y + a3.y * e.z,
-        c.z + a1.z * e.x - a2.z * e.y + a3.z * e.z};
-    (*out)[3] = {
-        c.x + a1.x * e.x + a2.x * e.y - a3.x * e.z,
-        c.y + a1.y * e.x + a2.y * e.y - a3.y * e.z,
-        c.z + a1.z * e.x + a2.z * e.y - a3.z * e.z};
-    (*out)[4] = {
-        c.x - a1.x * e.x - a2.x * e.y - a3.x * e.z,
-        c.y - a1.y * e.x - a2.y * e.y - a3.y * e.z,
-        c.z - a1.z * e.x - a2.z * e.y - a3.z * e.z};
-    (*out)[5] = {
-        c.x + a1.x * e.x - a2.x * e.y - a3.x * e.z,
-        c.y + a1.y * e.x - a2.y * e.y - a3.y * e.z,
-        c.z + a1.z * e.x - a2.z * e.y - a3.z * e.z};
-    (*out)[6] = {
-        c.x - a1.x * e.x + a2.x * e.y - a3.x * e.z,
-        c.y - a1.y * e.x + a2.y * e.y - a3.y * e.z,
-        c.z - a1.z * e.x + a2.z * e.y - a3.z * e.z};
-    (*out)[7] = {
-        c.x - a1.x * e.x - a2.x * e.y + a3.x * e.z,
-        c.y - a1.y * e.x - a2.y * e.y + a3.y * e.z,
-        c.z - a1.z * e.x - a2.z * e.y + a3.z * e.z};
+static void getOBBVertices(const Vec3& c, const Vec3& e,
+                           const Vec3& a1, const Vec3& a2, const Vec3& a3,
+                           std::array<Vec3, 8>* out) {
+    *out = {Vec3{
+                c.x + a1.x * e.x + a2.x * e.y + a3.x * e.z,
+                c.y + a1.y * e.x + a2.y * e.y + a3.y * e.z,
+                c.z + a1.z * e.x + a2.z * e.y + a3.z * e.z},
+            Vec3{
+                c.x - a1.x * e.x + a2.x * e.y + a3.x * e.z,
+                c.y - a1.y * e.x + a2.y * e.y + a3.y * e.z,
+                c.z - a1.z * e.x + a2.z * e.y + a3.z * e.z},
+            Vec3{
+                c.x + a1.x * e.x - a2.x * e.y + a3.x * e.z,
+                c.y + a1.y * e.x - a2.y * e.y + a3.y * e.z,
+                c.z + a1.z * e.x - a2.z * e.y + a3.z * e.z},
+            Vec3{
+                c.x + a1.x * e.x + a2.x * e.y - a3.x * e.z,
+                c.y + a1.y * e.x + a2.y * e.y - a3.y * e.z,
+                c.z + a1.z * e.x + a2.z * e.y - a3.z * e.z},
+            Vec3{
+                c.x - a1.x * e.x - a2.x * e.y - a3.x * e.z,
+                c.y - a1.y * e.x - a2.y * e.y - a3.y * e.z,
+                c.z - a1.z * e.x - a2.z * e.y - a3.z * e.z},
+            Vec3{
+                c.x + a1.x * e.x - a2.x * e.y - a3.x * e.z,
+                c.y + a1.y * e.x - a2.y * e.y - a3.y * e.z,
+                c.z + a1.z * e.x - a2.z * e.y - a3.z * e.z},
+            Vec3{
+                c.x - a1.x * e.x + a2.x * e.y - a3.x * e.z,
+                c.y - a1.y * e.x + a2.y * e.y - a3.y * e.z,
+                c.z - a1.z * e.x + a2.z * e.y - a3.z * e.z},
+            Vec3{
+                c.x - a1.x * e.x - a2.x * e.y + a3.x * e.z,
+                c.y - a1.y * e.x - a2.y * e.y + a3.y * e.z,
+                c.z - a1.z * e.x - a2.z * e.y + a3.z * e.z}};
 }
 
-std::tuple<float, float> getInterval(const std::array<Vec3, 8>& vertices, const Vec3& axis) {
-    auto min = Vec3::dot(axis, vertices[0]);
-    auto max = min;
-    for (auto i = 1; i < 8; ++i) {
+struct Interval {
+    float min;
+    float max;
+};
+
+static Interval getInterval(const std::array<Vec3, 8>& vertices, const Vec3& axis) {
+    auto min = std::numeric_limits<float>::max();
+    auto max = std::numeric_limits<float>::min();
+    for (auto i = 0; i < 8; ++i) {
         auto projection = Vec3::dot(axis, vertices[i]);
-        min             = (projection < min) ? projection : min;
-        max             = (projection > max) ? projection : max;
+        min             = std::min(projection, min);
+        max             = std::max(projection, max);
     }
-    return {min, max};
+    return Interval{min, max};
 }
 
-float aabbWithOBB(const AABB& aabb, const OBB& obb) {
-    std::array<Vec3, 15> test{};
-    std::array<Vec3, 8>  vertices{};
-    std::array<Vec3, 8>  vertices2{};
+int aabbWithOBB(const AABB& aabb, const OBB& obb) {
+    std::array<Vec3, 15> test;
+    std::array<Vec3, 8>  vertices;
+    std::array<Vec3, 8>  vertices2;
     test[0] = {1, 0, 0};
     test[1] = {0, 1, 0};
     test[2] = {0, 0, 1};
@@ -624,9 +586,9 @@ float aabbWithOBB(const AABB& aabb, const OBB& obb) {
     test[5] = {obb.orientation.m[6], obb.orientation.m[7], obb.orientation.m[8]};
 
     for (auto i = 0; i < 3; ++i) { // Fill out rest of axis
-        Vec3::cross(test[i], test[0], &test[6 + i * 3 + 0]);
-        Vec3::cross(test[i], test[1], &test[6 + i * 3 + 1]);
-        Vec3::cross(test[i], test[2], &test[6 + i * 3 + 1]);
+        Vec3::cross(test[i], test[3], &test[6 + i * 3 + 0]);
+        Vec3::cross(test[i], test[4], &test[6 + i * 3 + 1]);
+        Vec3::cross(test[i], test[5], &test[6 + i * 3 + 2]);
     }
 
     auto min = aabb.getCenter() - aabb.getHalfExtents();
@@ -637,12 +599,12 @@ float aabbWithOBB(const AABB& aabb, const OBB& obb) {
     for (auto j = 0; j < 15; ++j) {
         auto a = getInterval(vertices, test[j]);
         auto b = getInterval(vertices2, test[j]);
-        if (std::get<0>(b) > std::get<1>(a) || std::get<0>(a) > std::get<1>(b)) {
+        if (b.min > a.max || a.min > b.max) {
             return 0; // Seperating axis found
         }
     }
 
-    return 1.0F;
+    return 1;
 }
 
 int aabbPlane(const AABB& aabb, const Plane& plane) {
@@ -669,7 +631,7 @@ int aabbFrustum(const AABB& aabb, const Frustum& frustum) {
 
 // https://cesium.com/blog/2017/02/02/tighter-frustum-culling-and-why-you-may-want-to-disregard-it/
 int aabbFrustumAccurate(const AABB& aabb, const Frustum& frustum) {
-    std::array<Vec3, 8> tmp        = {};
+    std::array<Vec3, 8> tmp;
     int                 out1       = 0;
     int                 out2       = 0;
     int                 result     = 0;
@@ -846,9 +808,9 @@ int obbFrustumAccurate(const OBB& obb, const Frustum& frustum) {
 }
 
 int obbWithOBB(const OBB& obb1, const OBB& obb2) {
-    std::array<Vec3, 8>  vertices{};
-    std::array<Vec3, 8>  vertices2{};
-    std::array<Vec3, 15> test{};
+    std::array<Vec3, 8>  vertices;
+    std::array<Vec3, 8>  vertices2;
+    std::array<Vec3, 15> test;
 
     test[0] = {obb1.orientation.m[0], obb1.orientation.m[1], obb1.orientation.m[2]};
     test[1] = {obb1.orientation.m[3], obb1.orientation.m[4], obb1.orientation.m[5]};
@@ -869,7 +831,7 @@ int obbWithOBB(const OBB& obb1, const OBB& obb2) {
     for (auto i = 0; i < 15; ++i) {
         auto a = getInterval(vertices, test[i]);
         auto b = getInterval(vertices2, test[i]);
-        if (std::get<0>(b) > std::get<1>(a) || std::get<0>(a) > std::get<1>(b)) {
+        if (b.min > a.max || a.min > b.max) {
             return 0; // Seperating axis found
         }
     }
@@ -917,11 +879,9 @@ int obbCapsule(const OBB& obb, const Capsule& capsule) {
         auto a    = getInterval(v3Verts8, axes[i]);
         auto d0   = Vec3::dot(axes[i], capsule.ellipseCenter0);
         auto d1   = Vec3::dot(axes[i], capsule.ellipseCenter1);
-        auto maxD = std::max(d0, d1);
-        auto minD = std::min(d0, d1);
-        auto dMin = minD - capsule.radius;
-        auto dMax = maxD + capsule.radius;
-        if (dMin > std::get<1>(a) || std::get<0>(a) > dMax) {
+        auto dMin = std::min(d0, d1) - capsule.radius;
+        auto dMax = std::max(d0, d1) + capsule.radius;
+        if (dMin > a.max || a.min > dMax) {
             return 0; // Seperating axis found
         }
     }

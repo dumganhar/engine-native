@@ -39,6 +39,31 @@ const std::vector<cc::Vec3> VEC_VALS{
     {-1, -1, -1},
     {1, -1, -1}};
 } // namespace
+
+void Frustum::createOrtho(Frustum *out, float width,
+                          float       height,
+                          float       near,
+                          float       far,
+                          const Mat4 &transform) {
+    auto halfWidth  = width / 2.0F;
+    auto halfHeight = height / 2.0F;
+    Vec3::transformMat4({halfWidth, halfHeight, near}, transform, &out->vertices[0]);
+    Vec3::transformMat4({-halfWidth, halfHeight, near}, transform, &out->vertices[1]);
+    Vec3::transformMat4({-halfWidth, -halfHeight, near}, transform, &out->vertices[2]);
+    Vec3::transformMat4({halfWidth, -halfHeight, near}, transform, &out->vertices[3]);
+    Vec3::transformMat4({halfWidth, halfHeight, far}, transform, &out->vertices[4]);
+    Vec3::transformMat4({-halfWidth, halfHeight, far}, transform, &out->vertices[5]);
+    Vec3::transformMat4({-halfWidth, -halfHeight, far}, transform, &out->vertices[6]);
+    Vec3::transformMat4({halfWidth, -halfHeight, far}, transform, &out->vertices[7]);
+
+    Plane::fromPoints(&out->planes[0], out->vertices[1], out->vertices[6], out->vertices[5]);
+    Plane::fromPoints(&out->planes[1], out->vertices[3], out->vertices[4], out->vertices[7]);
+    Plane::fromPoints(&out->planes[2], out->vertices[6], out->vertices[3], out->vertices[7]);
+    Plane::fromPoints(&out->planes[3], out->vertices[0], out->vertices[5], out->vertices[4]);
+    Plane::fromPoints(&out->planes[4], out->vertices[2], out->vertices[0], out->vertices[3]);
+    Plane::fromPoints(&out->planes[5], out->vertices[7], out->vertices[5], out->vertices[6]);
+}
+
 void Frustum::update(const Mat4 &m, const Mat4 &inv) {
     // left plane
     planes[0].n.set(m.m[3] + m.m[0], m.m[7] + m.m[4], m.m[11] + m.m[8]);
@@ -74,5 +99,21 @@ void Frustum::update(const Mat4 &m, const Mat4 &inv) {
         i++;
     }
 }
+
+void Frustum::transform(const Mat4 &mat) {
+    if (getType() != ShapeEnum::SHAPE_FRUSTUM_ACCURATE) {
+        return;
+    }
+    for (auto i = 0; i < 8; i++) {
+        vertices[i].transformMat4(vertices[i], mat);
+    }
+    Plane::fromPoints(&planes[0], vertices[1], vertices[5], vertices[6]);
+    Plane::fromPoints(&planes[1], vertices[3], vertices[7], vertices[4]);
+    Plane::fromPoints(&planes[2], vertices[6], vertices[7], vertices[3]);
+    Plane::fromPoints(&planes[3], vertices[0], vertices[4], vertices[5]);
+    Plane::fromPoints(&planes[4], vertices[2], vertices[3], vertices[0]);
+    Plane::fromPoints(&planes[5], vertices[7], vertices[6], vertices[5]);
+}
+
 } // namespace geometry
 } // namespace cc

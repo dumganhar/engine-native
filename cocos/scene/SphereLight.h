@@ -32,31 +32,34 @@
 namespace cc {
 namespace scene {
 
-class SphereLight : public Light {
+class SphereLight final : public Light {
 public:
-    SphereLight()                    = default;
+    SphereLight() { _type = LightType::SPHERE; }
     SphereLight(const SphereLight &) = delete;
     SphereLight(SphereLight &&)      = delete;
     ~SphereLight() override          = default;
     SphereLight &operator=(const SphereLight &) = delete;
     SphereLight &operator=(SphereLight &&) = delete;
 
+    void initialize() override;
     void update() override;
 
-    inline void setAABB(geometry::AABB *aabb) { _aabb = aabb; }
-    inline void setIlluminance(float illum) { _illuminance = illum; }
-    inline void setPosition(const Vec3 &pos) { _pos = pos; }
-    inline void setRange(float range) {
+    inline const Vec3 &getPosition() const { return _pos; }
+    inline void        setPosition(const Vec3 &pos) { _pos = pos; }
+
+    inline float getSize() const { return _size; }
+    inline void  setSize(float size) { _size = size; }
+
+    inline float getRange() const { return _range; }
+    inline void  setRange(float range) {
         _range      = range;
         _needUpdate = true;
     }
-    inline void setSize(float size) { _size = size; }
+
+    inline float getIlluminance() const { return _illuminance; }
+    inline void  setIlluminance(float illum) { _illuminance = illum; }
 
     inline geometry::AABB *getAABB() const { return _aabb; }
-    inline float           getIlluminance() const { return _illuminance; }
-    inline const Vec3 &    getPosition() const { return _pos; }
-    inline float           getRange() const { return _range; }
-    inline float           getSize() const { return _size; }
 
 private:
     bool            _needUpdate{false};

@@ -25,11 +25,14 @@
 
 #pragma once
 
+#include <string>
 #include "math/Vec3.h"
 #include "core/scene-graph/Node.h"
 
 namespace cc {
 namespace scene {
+
+class RenderScene;
 
 enum class LightType {
     DIRECTIONAL,
@@ -47,29 +50,59 @@ public:
     Light &operator=(const Light &) = delete;
     Light &operator=(const Light &&) = delete;
 
+    inline void attachToScene(RenderScene *scene) { _scene = scene; }
+    inline void detachFromScene() { _scene = nullptr; }
+
+    inline void destroy() {
+        _name.clear();
+        _node = nullptr;
+    }
+
+    virtual void initialize() {
+        _color     = Vec3(1, 1, 1);
+        _colorTemp = 6550.F;
+    }
+
     virtual void update() = 0;
 
-    inline void setColor(const Vec3 &color) { _color = color; }
-    inline void setColorTemperatureRGB(const Vec3 &value) { _colorTemperatureRGB = value; }
-    inline void setNode(scenegraph::Node *node) {
-        _node = node;
-    }
-    inline void setUseColorTemperature(bool value) { _useColorTemperature = value; }
-    inline void setType(LightType type) { _type = type; }
+    inline bool isBaked() const { return _baked; }
+    inline void setBaked(bool val) { _baked = val; }
 
     inline const Vec3 &getColor() const { return _color; }
+    inline void        setColor(const Vec3 &color) { _color = color; }
+
+    inline bool isUseColorTemperature() const { return _useColorTemperature; }
+    inline void setUseColorTemperature(bool value) { _useColorTemperature = value; }
+
+    inline float getColorTemperature() const { return _colorTemp; }
+    inline void  setColorTemperature(float val) { _colorTemp = val; }
+
+    inline scenegraph::Node *getNode() const { return _node; }
+    inline void              setNode(scenegraph::Node *node) { _node = node; }
+
+    inline LightType getType() const { return _type; }
+
+    inline const std::string &getName() const { return _name; }
+    inline void               setName(const std::string &name) { _name = name; }
+
+    inline RenderScene *getScene() const { return _scene; }
+
     inline const Vec3 &getColorTemperatureRGB() const { return _colorTemperatureRGB; }
-    inline scenegraph::Node *      getNode() const { return _node; }
-    inline LightType   getType() const { return _type; }
-    inline bool        getUseColorTemperature() const { return _useColorTemperature; }
+    inline void        setColorTemperatureRGB(const Vec3 &value) { _colorTemperatureRGB = value; }
 
 protected:
-    bool      _useColorTemperature{false};
-    scenegraph::Node *    _node{nullptr};
-    LightType _type{LightType::UNKNOWN};
-    Vec3      _color;
-    Vec3      _colorTemperatureRGB;
-    Vec3      _forward{0, 0, -1};
+    static float nt2lm(float size);
+
+    bool              _useColorTemperature{false};
+    bool              _baked{false};
+    scenegraph::Node *_node{nullptr};
+    float             _colorTemp{6550.F};
+    LightType         _type{LightType::UNKNOWN};
+    std::string       _name;
+    RenderScene *     _scene{nullptr};
+    Vec3              _color{1, 1, 1};
+    Vec3              _colorTemperatureRGB;
+    Vec3              _forward{0, 0, -1};
 };
 
 } // namespace scene

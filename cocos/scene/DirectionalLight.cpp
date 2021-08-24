@@ -24,9 +24,17 @@
  ****************************************************************************/
 
 #include "scene/DirectionalLight.h"
+#include "scene/Ambient.h"
 
 namespace cc {
 namespace scene {
+
+void DirectionalLight::initialize() {
+    Light::initialize();
+
+    _illuminance = Ambient::sunIllum;
+    _dir.set(1.0F, -1.0F, -1.0F);
+}
 
 void DirectionalLight::update() {
     if (_node && _node->getFlagsChanged()) {

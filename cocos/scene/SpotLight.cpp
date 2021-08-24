@@ -24,9 +24,22 @@
  ****************************************************************************/
 
 #include "scene/SpotLight.h"
+#include <cmath>
+#include "math/Math.h"
 
 namespace cc {
 namespace scene {
+
+void SpotLight::initialize () {
+    Light::initialize();
+    
+    _size = 0.15F;
+    _aspect = 1.0F;
+    _illuminance = 1700 / Light::nt2lm(_size);
+    _range = cos(math::PI / 6);
+    _dir.set(1.0, -1.0, -1.0);
+}
+
 void SpotLight::update() {
     if (_node && (_node->getFlagsChanged() || _needUpdate)) {
         Mat4 matView;
@@ -51,5 +64,6 @@ void SpotLight::update() {
         _needUpdate = false;
     }
 }
+
 } // namespace scene
 } // namespace cc

@@ -101,7 +101,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     if (mainLight) {
         TO_VEC3(output, mainLight->getDirection(), UBOCamera::MAIN_LIT_DIR_OFFSET);
         TO_VEC3(output, mainLight->getColor(), UBOCamera::MAIN_LIT_COLOR_OFFSET);
-        if (mainLight->getUseColorTemperature()) {
+        if (mainLight->isUseColorTemperature()) {
             const auto &colorTempRGB = mainLight->getColorTemperatureRGB();
             output[UBOCamera::MAIN_LIT_COLOR_OFFSET + 0] *= colorTempRGB.x;
             output[UBOCamera::MAIN_LIT_COLOR_OFFSET + 1] *= colorTempRGB.y;

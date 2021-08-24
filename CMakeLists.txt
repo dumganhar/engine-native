@@ -1395,6 +1395,9 @@ cocos_source_files(
     cocos/core/platform/event-manager/Touch.cpp
     cocos/core/platform/event-manager/SystemEvent.h
     cocos/core/platform/event-manager/SystemEvent.cpp
+    cocos/core/platform/native/SystemInfo.h
+    cocos/core/platform/native/SystemEvent.cpp
+
     cocos/core/platform/Macro.h
     cocos/core/platform/Macro.cpp
     cocos/core/platform/Screen.h

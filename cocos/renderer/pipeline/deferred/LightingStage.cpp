@@ -160,7 +160,7 @@ void LightingStage::gatherLights(scene::Camera *camera) {
         const auto &color = light->getColor();
         offset            = idx * elementLen + fieldLen;
         tmpArray.set(color.x, color.y, color.z, 0);
-        if (light->getUseColorTemperature()) {
+        if (light->isUseColorTemperature()) {
             const auto &colorTemperatureRGB = light->getColorTemperatureRGB();
             tmpArray.x *= colorTemperatureRGB.x;
             tmpArray.y *= colorTemperatureRGB.y;
@@ -211,7 +211,7 @@ void LightingStage::gatherLights(scene::Camera *camera) {
         offset            = idx * elementLen + fieldLen;
         const auto &color = light->getColor();
         tmpArray.set(color.x, color.y, color.z, 0);
-        if (light->getUseColorTemperature()) {
+        if (light->isUseColorTemperature()) {
             const auto &colorTemperatureRGB = light->getColorTemperatureRGB();
             tmpArray.x *= colorTemperatureRGB.x;
             tmpArray.y *= colorTemperatureRGB.y;

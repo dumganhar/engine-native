@@ -31,26 +31,27 @@
 namespace cc {
 namespace scene {
 
-class DirectionalLight : public Light {
+class DirectionalLight final : public Light {
 public:
-    DirectionalLight()                         = default;
+    DirectionalLight() { _type = LightType::DIRECTIONAL; }
     DirectionalLight(const DirectionalLight &) = delete;
     DirectionalLight(DirectionalLight &&)      = delete;
     ~DirectionalLight() override               = default;
     DirectionalLight &operator=(const DirectionalLight &) = delete;
     DirectionalLight &operator=(DirectionalLight &&) = delete;
 
+    void initialize() override;
     void update() override;
 
-    inline void setDirection(const Vec3 &dir) { _dir = dir; }
-    inline void setIlluminance(float illum) { _illuminance = illum; }
-
     inline const Vec3 &getDirection() const { return _dir; }
-    inline float       getIlluminance() const { return _illuminance; }
+    inline void        setDirection(const Vec3 &dir) { _dir = dir; }
+
+    inline float getIlluminance() const { return _illuminance; }
+    inline void  setIlluminance(float illum) { _illuminance = illum; }
 
 private:
     float _illuminance{0.F};
-    Vec3  _dir;
+    Vec3  _dir{1.0F, -1.0F, -1.0F};
 };
 
 } // namespace scene

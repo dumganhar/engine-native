@@ -25,30 +25,32 @@
 
 #pragma once
 
+#include <string>
+#include <unordered_map>
+#include <variant>
+#include <vector>
+
+#include <cstdint>
+
 #include "base/Value.h"
 #include "math/Vec3.h"
 
-#include <unordered_map>
-#include <vector>
-#include <string>
-
 namespace cc {
 
-using MacroRecord = std::unordered_map<std::string, Value>;
+using MacroRecord = std::unordered_map<std::string, std::variant<float, int32_t, bool, std::string>>;
 #define Record std::unordered_map
 
 struct Error {
-
 };
 
-using HTMLElement = void*;
+using HTMLElement = void *;
 
-using Int8Array = std::vector<int8_t>;
-using Int16Array = std::vector<int16_t>;
-using Int32Array = std::vector<int32_t>;
-using Uint8Array = std::vector<uint8_t>;
-using Uint16Array = std::vector<uint16_t>;
-using Uint32Array = std::vector<uint32_t>;
+using Int8Array    = std::vector<int8_t>;
+using Int16Array   = std::vector<int16_t>;
+using Int32Array   = std::vector<int32_t>;
+using Uint8Array   = std::vector<uint8_t>;
+using Uint16Array  = std::vector<uint16_t>;
+using Uint32Array  = std::vector<uint32_t>;
 using Float32Array = std::vector<float>;
 using Float64Array = std::vector<double>;
 
@@ -65,16 +67,12 @@ struct VertexIdChannel {
 struct NativeDep {
     std::string uuid;
     std::string ext;
-    bool __isNative__{false};
+    bool        __isNative__{false};
 
     explicit NativeDep() = default;
 
-    explicit NativeDep(bool isNative_, const std::string& uuid_, const std::string& ext_)
-    : uuid(uuid_)
-    , ext(ext_)
-    , __isNative__(isNative_)
-    , _isValid(true)
-    {}
+    explicit NativeDep(bool isNative_, const std::string &uuid_, const std::string &ext_)
+    : uuid(uuid_), ext(ext_), __isNative__(isNative_), _isValid(true) {}
 
     inline bool isValid() const { return _isValid; }
 
@@ -82,6 +80,4 @@ private:
     bool _isValid{false};
 };
 
-} // namespace cc {
-
-
+} // namespace cc

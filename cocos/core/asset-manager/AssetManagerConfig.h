@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include "core/Types.h"
+#include "base/TypeDef.h"
 #include "core/asset-manager/Cache.h"
 #include "core/asset-manager/Shared.h"
 

@@ -119,7 +119,50 @@ public:
      * @param handle The handle for the target uniform
      * @param value New value
      */
-    void setUniform (uint32_t handle, MaterialProperty value);
+    void setUniform (uint32_t handle, const MaterialProperty &value);
+    
+    /**
+     * @en Gets a uniform's value.
+     * @zh 获取指定普通向量类 uniform 的值。
+     * @param handle The handle for the target uniform
+     * @param out The output property to store the result
+     */
+    template<typename T, std::enable_if_t<std::is_base_of<MaterialProperty, T>::value>>
+    T* getUniform(uint32_t handle, T *out) const;
+    
+    /**
+     * @en Sets an array type uniform value, if a uniform requires frequent update, please use this method.
+     * @zh 设置指定数组类 uniform 的值，如果需要频繁更新请尽量使用此接口。
+     * @param handle The handle for the target uniform
+     * @param value New value
+     */
+    void setUniformArray(uint32_t handle, const std::vector<MaterialProperty> &value);
+    
+    /**
+     * @en Bind a GFX [[Texture]] the the given uniform binding
+     * @zh 绑定实际 GFX [[Texture]] 到指定 binding。
+     * @param binding The binding for target uniform of texture type
+     * @param value Target texture
+     */
+    void bindTexture(uint32_t binding, gfx::Texture *value);
+    void bindTexture(uint32_t binding, gfx::Texture *value, index_t index);
+    
+    /**
+     * @en Bind a GFX [[Sampler]] the the given uniform binding
+     * @zh 绑定实际 GFX [[Sampler]] 到指定 binding。
+     * @param binding The binding for target uniform of sampler type
+     * @param value Target sampler
+     */
+    void bindSampler (uint32_t binding, gfx::Sampler *value);
+    void bindSampler (uint32_t binding, gfx::Sampler *value, index_t index);
+    
+    /**
+     * @en Sets the dynamic pipeline state property at runtime
+     * @zh 设置运行时 pass 内可动态更新的管线状态属性。
+     * @param state Target dynamic state
+     * @param value Target value
+     */
+    void setDynamicState (gfx::DynamicStateFlagBit state, int32_t value);
 
     inline void setBatchingScheme(BatchingSchemes value) { _batchingScheme = value; }
     inline void setBlendState(gfx::BlendState *blendState) { _blendState = blendState; }

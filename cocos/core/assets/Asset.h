@@ -56,6 +56,8 @@ public:
 
     NativeDep getNativeDep() const;
 
+    inline const std::string &getUuid() const { return _uuid; }
+
     /**
      * @en
      * The underlying native asset of this asset if one is available.<br>

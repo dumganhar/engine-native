@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include "core/Types.h"
+#include "base/TypeDef.h"
 
 #include <any>
 #include <functional>
@@ -54,14 +54,13 @@ public:
      *
      */
     explicit Cache(const Record<std::string, T> &map) {
-        if (map) {
+        if (!map.empty()) {
             _map   = map;
             _count = static_cast<uint32_t>(map.size());
-        } else {
-            _map.clear();
-            _count = 0;
         }
     }
+    
+    Cache() = default;
 
     /**
      * @en

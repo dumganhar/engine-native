@@ -1373,6 +1373,34 @@ cocos_source_files(
     cocos/core/utils/IDGenerator.h
     cocos/core/utils/Path.cpp
     cocos/core/utils/Path.h    
+
+    cocos/core/platform/event-manager/Acceleration.h
+    cocos/core/platform/event-manager/Acceleration.cpp
+    cocos/core/platform/event-manager/EventEnum.h
+    cocos/core/platform/event-manager/EventEnum.cpp
+    cocos/core/platform/event-manager/EventListener.h
+    cocos/core/platform/event-manager/EventListener.cpp
+    cocos/core/platform/event-manager/EventManager.h
+    cocos/core/platform/event-manager/EventManager.cpp
+    cocos/core/platform/event-manager/Events.h
+    cocos/core/platform/event-manager/Events.cpp
+    cocos/core/platform/event-manager/InputManager.h
+    cocos/core/platform/event-manager/InputManager.cpp
+    cocos/core/platform/event-manager/KeyCode.h
+    cocos/core/platform/event-manager/KeyCode.cpp
+    cocos/core/platform/event-manager/Touch.h
+    cocos/core/platform/event-manager/Touch.cpp
+    cocos/core/platform/event-manager/SystemEvent.h
+    cocos/core/platform/event-manager/SystemEvent.cpp
+    cocos/core/platform/Macro.h
+    cocos/core/platform/Macro.cpp
+    cocos/core/platform/Screen.h
+    cocos/core/platform/Screen.cpp
+    cocos/core/platform/View.h
+    cocos/core/platform/View.cpp
+    cocos/core/platform/VisibleRect.h
+    cocos/core/platform/VisibleRect.cpp
+
 )
 
 cocos_source_files(MODULE ccgeometry
@@ -1404,21 +1432,6 @@ cocos_source_files(MODULE ccgeometry
     cocos/core/geometry/Triangle.cpp
     cocos/core/geometry/Triangle.h
 
-    cocos/core/platform/event-manager/Acceleration.h
-    cocos/core/platform/event-manager/Acceleration.cpp
-    cocos/core/platform/event-manager/EventEnum.h
-    cocos/core/platform/event-manager/EventEnum.cpp
-    cocos/core/platform/event-manager/EventListener.h
-    cocos/core/platform/event-manager/EventListener.cpp
-    cocos/core/platform/event-manager/EventManager.h
-    cocos/core/platform/event-manager/EventManager.cpp
-    cocos/core/platform/event-manager/InputManager.h
-    cocos/core/platform/event-manager/InputManager.cpp
-    cocos/core/platform/event-manager/KeyCode.h
-    cocos/core/platform/event-manager/KeyCode.cpp
-    cocos/core/platform/event-manager/Touch.h
-    cocos/core/platform/event-manager/Touch.cpp
-    
 )
 
 # Comment JSB binding code temporarily

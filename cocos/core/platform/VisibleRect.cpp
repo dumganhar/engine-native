@@ -23,8 +23,48 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "core/platform/VisbleRect.h"
+#include "core/platform/VisibleRect.h"
 
 namespace cc {
+
+float VisibleRect::width  = 0.F;
+float VisibleRect::height = 0.F;
+
+void VisibleRect::init(const Rect &visibleRect) {
+    const float w = VisibleRect::width = visibleRect.size.width;
+    const float h = VisibleRect::height = visibleRect.size.height;
+    const float l                       = visibleRect.origin.x;
+    const float b                       = visibleRect.origin.y;
+    const float t                       = b + h;
+    const float r                       = l + w;
+
+    // top
+    topLeft.x  = l;
+    topLeft.y  = t;
+    topRight.x = r;
+    topRight.y = t;
+    top.x      = l + w / 2;
+    top.y      = t;
+
+    // bottom
+    bottomLeft.x  = l;
+    bottomLeft.y  = b;
+    bottomRight.x = r;
+    bottomRight.y = b;
+    bottom.x      = l + w / 2;
+    bottom.y      = b;
+
+    // center
+    center.x = l + w / 2;
+    center.y = b + h / 2;
+
+    // left
+    left.x = l;
+    left.y = b + h / 2;
+
+    // right
+    right.x = r;
+    right.y = b + h / 2;
+}
 
 } // namespace cc

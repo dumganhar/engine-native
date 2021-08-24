@@ -38,7 +38,7 @@ public:
     /**
      * Top right coordinate of the screen related to the game scene.
      */
-    static Vec2 toRight;
+    static Vec2 topRight;
 
     /**
      * Top center coordinate of the screen related to the game scene.
@@ -78,49 +78,14 @@ public:
     /**
      * Width of the screen.
      */
-    static float width{0};
+    static float width;
 
     /**
      * Height of the screen.
      */
-    static float height{0};
+    static float height;
 
-    static void init(const Rect& visibleRect) {
-        const float w = width = visibleRect.width;
-        const float h = hight = visibleRect.height;
-        const float l         = visibleRect.x;
-        const float b         = visibleRect.y;
-        const t               = b + h;
-        const r               = l + w;
-
-        // top
-        topLeft.x  = l;
-        topLeft.y  = t;
-        topRight.x = r;
-        topRight.y = t;
-        top.x      = l + w / 2;
-        top.y      = t;
-
-        // bottom
-        bottomLeft.x  = l;
-        bottomLeft.y  = b;
-        bottomRight.x = r;
-        bottomRight.y = b;
-        bottom.x      = l + w / 2;
-        bottom.y      = b;
-
-        // center
-        center.x = l + w / 2;
-        center.y = b + h / 2;
-
-        // left
-        left.x = l;
-        left.y = b + h / 2;
-
-        // right
-        right.x = r;
-        right.y = b + h / 2;
-    }
+    static void init(const Rect& visibleRect);
 };
 
 } // namespace cc

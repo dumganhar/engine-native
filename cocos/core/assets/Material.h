@@ -37,6 +37,7 @@
 #include "core/assets/TextureBase.h"
 
 #include "renderer/gfx-base/GFXTexture.h"
+#include "renderer/core/PassUtils.h"
 
 #include "math/Math.h"
 
@@ -47,11 +48,6 @@ class Pass;
 }
 
 class RenderableComponent;
-
-using MaterialProperty = std::variant<
-    float, int32_t, Vec2, Vec3, Vec4, /* Color,*/ Mat3, Mat4, Quaternion, TextureBase *, gfx::Texture *,
-    std::vector<float>, std::vector<int32_t>, std::vector<Vec2>, std::vector<Vec3>, std::vector<Vec4>, /* std::vector<Color>, */
-    std::vector<Mat3>, std::vector<Mat4>, std::vector<Quaternion>, std::vector<TextureBase *>, std::vector<gfx::Texture *>>;
 
 /**
  * @en The basic infos for material initialization.

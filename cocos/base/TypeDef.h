@@ -26,13 +26,17 @@
 #pragma once
 
 #include <cstdint>
+#include <unordered_map>
 
 using uint     = uint32_t;
 using ushort   = uint16_t;
 using ulong    = uint32_t;
 using FlagBits = uint32_t;
+
 using index_t  = int32_t;
 #define CC_INVALID_INDEX (-1)
+
+#define Record std::unordered_map
 
 #define CC_ENUM_CONVERSION_OPERATOR(T) \
     inline std::underlying_type<T>::type toNumber(const T v) { return static_cast<std::underlying_type<T>::type>(v); }

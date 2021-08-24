@@ -22,22 +22,3 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-
-#include "scene/Pass.h"
-
-extern void jsbFlushFastMQ();
-
-namespace cc {
-namespace scene {
-
-void Pass::update() {
-    jsbFlushFastMQ();
-    if (_rootBufferDirty && _rootBuffer) {
-        _rootBuffer->update(_rootBlock, _rootBuffer->getSize());
-        _rootBufferDirty = false;
-    }
-    _descriptorSet->update();
-}
-
-} // namespace scene
-} // namespace cc

@@ -23,21 +23,40 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "scene/Pass.h"
+#pragma once
 
-extern void jsbFlushFastMQ();
+#include <variant>
+#include <string>
+#include "base/TypeDef.h"
+#include "core/Types.h"
+#include "core/assets/TextureBase.h"
 
 namespace cc {
-namespace scene {
 
-void Pass::update() {
-    jsbFlushFastMQ();
-    if (_rootBufferDirty && _rootBuffer) {
-        _rootBuffer->update(_rootBlock, _rootBuffer->getSize());
-        _rootBufferDirty = false;
-    }
-    _descriptorSet->update();
+/**
+ * @en The type enums of the property
+ * @zh Uniform 的绑定类型（UBO 或贴图等）
+ */
+enum class PropertyType {
+    /**
+     * Uniform buffer object
+     */
+    BUFFER,
+    /**
+     * Texture sampler
+     */
+    TEXTURE,
+};
+
+/**
+ * @en Combination of preprocess macros
+ * @zh 预处理宏组合
+ */
+using MacroRecord = Record<std::string, std::variant<float, bool, std::string>>;
+
+using MaterialProperty = std::variant<
+float, int32_t, Vec2, Vec3, Vec4, /* Color,*/ Mat3, Mat4, Quaternion, TextureBase *, gfx::Texture *,
+std::vector<float>, std::vector<int32_t>, std::vector<Vec2>, std::vector<Vec3>, std::vector<Vec4>, /* std::vector<Color>, */
+std::vector<Mat3>, std::vector<Mat4>, std::vector<Quaternion>, std::vector<TextureBase *>, std::vector<gfx::Texture *>>;
+
 }
-
-} // namespace scene
-} // namespace cc

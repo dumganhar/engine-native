@@ -25,15 +25,15 @@
 
 #pragma once
 
-#include "core/assets/Asset.h"
-#include "renderer/gfx-base/GFXDef.h"
-#include "scene/Define.h"
-
-#include "base/Value.h"
-#include "core/Types.h"
-
 #include <string>
 #include <unordered_map>
+#include "base/Value.h"
+#include "renderer/gfx-base/GFXDef.h"
+#include "renderer/pipeline/Define.h"
+#include "scene/Define.h"
+#include "core/Types.h"
+#include "core/assets/Asset.h"
+#include "renderer/core/PassUtils.h"
 
 namespace cc {
 
@@ -49,7 +49,7 @@ struct IPropertyInfo {
 struct IPassStates {
     std::optional<int32_t> priority;
     gfx::PrimitiveMode     primitive;
-    scene::RenderPassStage stage;
+    pipeline::RenderPassStage stage;
     gfx::RasterizerState   rasterizerState;
     gfx::DepthStencilState depthStencilState;
     gfx::BlendState        blendState;

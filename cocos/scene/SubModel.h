@@ -29,6 +29,7 @@
 #include "renderer/gfx-base/GFXDescriptorSet.h"
 #include "renderer/gfx-base/GFXInputAssembler.h"
 #include "renderer/gfx-base/GFXShader.h"
+#include "renderer/pipeline/Define.h"
 #include "scene/Define.h"
 
 namespace cc {
@@ -56,7 +57,7 @@ public:
     inline void setInputAssembler(gfx::InputAssembler *ia) { _ia = ia; }
     inline void setPlanarInstanceShader(gfx::Shader *shader) { _planarInstanceShader = shader; }
     inline void setPlanarShader(gfx::Shader *shader) { _planarShader = shader; }
-    inline void setPriority(RenderPriority priority) { _priority = priority; }
+    inline void setPriority(pipeline::RenderPriority priority) { _priority = priority; }
     inline void setSubMeshBuffers(const std::vector<cc::scene::FlatBuffer> &flatBuffers) {
         if (!_subMesh) {
             _subMesh = new RenderingSubMesh();
@@ -69,11 +70,11 @@ public:
     inline const std::vector<Pass *> &getPasses() const { return _passes; }
     inline gfx::Shader *              getPlanarInstanceShader() const { return _planarInstanceShader; }
     inline gfx::Shader *              getPlanarShader() const { return _planarShader; }
-    inline RenderPriority             getPriority() const { return _priority; }
+    inline pipeline::RenderPriority   getPriority() const { return _priority; }
     inline RenderingSubMesh *         getSubMesh() const { return _subMesh; }
 
 private:
-    RenderPriority             _priority{RenderPriority::DEFAULT};
+    pipeline::RenderPriority   _priority{pipeline::RenderPriority::DEFAULT};
     gfx::Shader *              _planarShader{nullptr};
     gfx::Shader *              _planarInstanceShader{nullptr};
     gfx::DescriptorSet *       _descriptSet{nullptr};

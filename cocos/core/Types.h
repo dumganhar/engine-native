@@ -37,9 +37,6 @@
 
 namespace cc {
 
-using MacroRecord = std::unordered_map<std::string, std::variant<float, int32_t, bool, std::string>>;
-#define Record std::unordered_map
-
 struct Error {
 };
 

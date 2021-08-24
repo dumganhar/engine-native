@@ -27,6 +27,7 @@
 
 #include "core/assets/Asset.h"
 
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <variant>
@@ -66,25 +67,25 @@ struct IMaterialInfo {
      * @zh
      * 这个材质将使用的 EffectAsset，通过 effect 名指定，和 `effectAsset` 至少要指定一个。
      */
-    std::string effectName;
+    std::optional<std::string> effectName;
     /**
      * @en
      * The index of the technique to use.
      * @zh
      * 这个材质将使用第几个 technique，默认为 0。
      */
-    uint32_t technique{0};
+    std::optional<uint32_t> technique{0};
 
-    using DefinesType = std::vector<MacroRecord>;
+    using DefinesType = std::variant<MacroRecord, std::vector<MacroRecord>>;
     /**
      * @en
      * The shader macro definitions. Default to 0 or the specified value in [[EffectAsset]].
      * @zh
      * 这个材质定义的预处理宏，默认全为 0，或 [[EffectAsset]] 中的指定值。
      */
-    DefinesType defines;
+    std::optional<DefinesType> defines;
 
-    using PassOverridesType = std::vector<PassOverrides>;
+    using PassOverridesType = std::variant<PassOverrides, std::vector<PassOverrides>>;
     /**
      * @en
      * The override values on top of the pipeline states specified in [[EffectAsset]].
@@ -92,11 +93,12 @@ struct IMaterialInfo {
      * 这个材质的自定义管线状态，将覆盖 effect 中的属性。<br>
      * 注意在可能的情况下请尽量少的自定义管线状态，以减小对渲染效率的影响。
      */
-    PassOverridesType states;
+    std::optional<PassOverridesType> states;
 };
 
 class Material final : public Asset {
 public:
+    using Super = Asset;
     /**
      * @en Get hash for a material
      * @zh 获取一个材质的哈希值
@@ -115,6 +117,7 @@ public:
     void reset(const IMaterialInfo &info);
 
     void initDefault(const std::string &uuid) override;
+    bool validate() const override;
 
     /**
      * @en
@@ -271,8 +274,8 @@ protected:
     bool uploadProperty(scene::Pass *passs, const std::string &name, const MaterialProperty &val);
     void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index);
 
-    template <typename T>
-    void prepareInfo(const T &patchArray, T &cur);
+    template <typename T1, typename T2>
+    void prepareInfo(const T1 &patchArray, std::vector<T2> &cur);
 
     void doDestroy();
 
@@ -281,9 +284,9 @@ protected:
 };
 
 template <>
-void Material::prepareInfo(const IMaterialInfo::DefinesType &patchArray, IMaterialInfo::DefinesType &cur);
+void Material::prepareInfo(const IMaterialInfo::DefinesType &patchArray, std::vector<MacroRecord> &cur);
 
 template <>
-void Material::prepareInfo(const IMaterialInfo::PassOverridesType &patchArray, IMaterialInfo::PassOverridesType &cur);
+void Material::prepareInfo(const IMaterialInfo::PassOverridesType &patchArray, std::vector<PassOverrides> &cur);
 
 } // namespace cc

@@ -202,10 +202,10 @@ public:
      * @en The loaded callback which should be invoked by the [[Loader]], will automatically register the effect.
      * @zh 通过 [[Loader]] 加载完成时的回调，将自动注册 effect 资源。
      */
-    virtual void onLoaded() override;
-    virtual bool destroy() override;
-    virtual void initDefault(const std::string &uuid) override;
-    virtual bool validate() const override;
+    void onLoaded() override;
+    bool destroy() override;
+    void initDefault(const std::string &uuid) override;
+    bool validate() const override;
 
 protected:
     void _precompile();

@@ -98,7 +98,7 @@ public:
 
     void initialize();
 
-    virtual void onLoaded() override;
+    void onLoaded() override;
 
     /**
      * @en Reset the current texture with given size, pixel format and mipmap images.
@@ -122,9 +122,9 @@ public:
      */
     void create(uint32_t width, uint32_t height, PixelFormat format = PixelFormat::RGBA8888, uint32_t mipmapLevel = 1);
 
-    virtual std::string toString() const override;
+    std::string toString() const override;
 
-    virtual void updateMipmaps(uint32_t firstLevel = 0, uint32_t count = 0) override;
+    void updateMipmaps(uint32_t firstLevel = 0, uint32_t count = 0) override;
 
     /**
      * @en If the level 0 mipmap image is a HTML element, then return it, otherwise return null.
@@ -138,7 +138,7 @@ public:
      * @en Destroy the current 2d texture, clear up all mipmap levels and the related GPU resources.
      * @zh 销毁此贴图，清空所有 Mipmap 并释放占用的 GPU 资源。
      */
-    virtual bool destroy() override;
+    bool destroy() override;
 
     /**
      * @en Gets the description of the 2d texture
@@ -159,19 +159,19 @@ public:
     /**
      * @return
      */
-    virtual std::any _serialize(std::any ctxForExporting) override;
+    std::any _serialize(std::any ctxForExporting) override;
 
     /**
      *
      * @param data
      */
-    virtual void _deserialize(std::any serializedData, std::any handle) override;
+    void _deserialize(std::any serializedData, std::any handle) override;
 
-    virtual gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
+    gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 
-    virtual void initDefault(const std::string &uuid) override;
+    void initDefault(const std::string &uuid) override;
 
-    virtual bool validate() const override;
+    bool validate() const override;
 
 private:
     std::vector<ImageAsset *> _mipmaps; //cjh how about using std::vector<std::shared_ptr<ImageAsset>>?

@@ -114,6 +114,8 @@ public:
     void initialize(const IMaterialInfo &info);
     void reset(const IMaterialInfo &info);
 
+    void initDefault(const std::string &uuid) override;
+
     /**
      * @en
      * Destroy the material definitively.<br>
@@ -123,7 +125,7 @@ public:
      * 彻底销毁材质，注意销毁后无法重新初始化。<br>
      * 如需重新初始化材质，不必先调用 destroy。
      */
-    virtual bool destroy() override;
+    bool destroy() override;
 
     /**
      * @en Recompile the shader with the specified macro overrides. Allowed only on material instances.
@@ -145,7 +147,7 @@ public:
      * @en Callback function after material is loaded in [[Loader]]. Initialize the resources automatically.
      * @zh 通过 [[Loader]] 加载完成时的回调，将自动初始化材质资源。
      */
-    virtual void onLoaded() override;
+    void onLoaded() override;
 
     /**
      * @en Reset all the uniforms to the default value specified in [[EffectAsset]].

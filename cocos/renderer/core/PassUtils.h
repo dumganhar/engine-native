@@ -23,21 +23,33 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "scene/Pass.h"
+#pragma once
 
-extern void jsbFlushFastMQ();
+#include <variant>
+#include <string>
+#include "core/Types.h"
 
 namespace cc {
-namespace scene {
 
-void Pass::update() {
-    jsbFlushFastMQ();
-    if (_rootBufferDirty && _rootBuffer) {
-        _rootBuffer->update(_rootBlock, _rootBuffer->getSize());
-        _rootBufferDirty = false;
-    }
-    _descriptorSet->update();
+/**
+ * @en The type enums of the property
+ * @zh Uniform 的绑定类型（UBO 或贴图等）
+ */
+enum class PropertyType {
+    /**
+     * Uniform buffer object
+     */
+    BUFFER,
+    /**
+     * Texture sampler
+     */
+    TEXTURE,
+};
+
+/**
+ * @en Combination of preprocess macros
+ * @zh 预处理宏组合
+ */
+using MacroRecord = Record<std::string, std::variant<float, bool, std::string>>;
+
 }
-
-} // namespace scene
-} // namespace cc

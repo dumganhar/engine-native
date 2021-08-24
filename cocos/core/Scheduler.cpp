@@ -24,8 +24,9 @@
 ****************************************************************************/
 
 #include <iostream>
-
+#include "base/Macros.h"
 #include "core/Scheduler.h"
+
 namespace {
 constexpr uint32_t CC_REPEAT_FOREVER{UINT_MAX - 1};
 constexpr uint32_t MAX_FUNC_TO_PERFORM{30};
@@ -35,8 +36,7 @@ constexpr uint32_t MAX_POOL_SIZE{ 20 };
 template <typename A, typename ... Values>
 static size_t ccGetFuncAddress(const std::function<A(Values...)>& func) {
     typedef A(fnType)(Values...);
-    return (size_t)func.target<fnType*>();
-
+    return (size_t)(func.template target<fnType*>());
 }
 template<class T>
 static void releaseVector(std::vector<T*>& v) {
@@ -224,7 +224,8 @@ namespace cc {
     }
     
     void HashUpdateEntry::release() {
-        delete  _entry, _target;
+        delete _entry;
+        delete _target;
     }
     /**** HashTimerEntry ****/
     std::vector<HashTimerEntry*> HashTimerEntry::_hashTimerEntries = std::vector<HashTimerEntry*>();
@@ -294,7 +295,7 @@ namespace cc {
     void Scheduler::resumeTarget(System* target) {
         CCASSERT(target, 1504);
         const std::string targetId{ target->uuid != "" ? target->uuid : target->id };
-        CCASSERT(targetId != "");
+        CC_ASSERT(!targetId.empty());
         HashTimerEntry* element = _hashForTimers.find(targetId)->second;
         if (element) {
             element->_paused = false;
@@ -328,7 +329,7 @@ namespace cc {
 
     
     void Scheduler::_removeUpdateFromHash(ListEntry* entry) {
-        const std::string targetId{ entry->_target->uuid != "" ? entry->_target->uuid : entry->_target->id };
+        const std::string targetId{ !entry->_target->uuid.empty() ? entry->_target->uuid : entry->_target->id };
         auto element = _hashForUpdates[targetId];
         //element is indicating the same HashUpdateEntry
         
@@ -366,9 +367,9 @@ namespace cc {
     }
     
     bool Scheduler::isTargetPaused(System* target) const {
-        CCASSERT(target);
-        const std::string targetId = target->uuid == "" ? target->uuid : target->id;
-        CCASSERT(targetId != "","error 1510");
+        CC_ASSERT(target);
+        const std::string targetId = target->uuid.empty() ? target->uuid : target->id;
+        CCASSERT(!targetId.empty(),"error 1510");
 
         HashTimerEntry* element = _hashForTimers.find(targetId)->second;
         if (element) {
@@ -383,8 +384,8 @@ namespace cc {
     bool Scheduler::isScheduled(ccSchedulerFunc& callback, System* target) {
         CCASSERT(callback, 1508);
         CCASSERT(target, 1509);
-        const std::string targetId{ target->uuid == "" ? target->uuid : target->id };
-        CCASSERT(targetId != "", 1510);
+        const std::string targetId{ target->uuid.empty() ? target->uuid : target->id };
+        CCASSERT(!targetId.empty(), 1510);
         const HashTimerEntry* element = _hashForTimers.find(targetId)->second;
         if (element && !element->_timers.empty()) {
             for (auto t : element->_timers) {
@@ -466,13 +467,14 @@ namespace cc {
     
     void Scheduler::schedule(ccSchedulerFunc& callback, System* target, uint32_t interval, uint32_t repeat, uint32_t delay ,bool paused = false) {
         CCASSERT(target, 1502);
-        const std::string targetId{ target->uuid == "" ? target->id : target->uuid };
-        CCASSERT(targetId != "", 1510);
+        const std::string targetId{ target->uuid.empty() ? target->id : target->uuid };
+        CCASSERT(!targetId.empty(), 1510);
         //TODO: Here if not found will trigger assert function
         auto element = _hashForTimers.find(targetId)->second;
 
         if (!element) {
-            element = HashTimerEntry::getFromPool(std::vector<TimerTargetCallback *>(), target, 0, nullptr, false, paused);
+            std::vector<TimerTargetCallback *> timers;
+            element = HashTimerEntry::getFromPool(timers, target, 0, nullptr, false, paused);
             _arrayForTimers.push_back(element);
             _hashForTimers[targetId] = element;
 
@@ -498,8 +500,8 @@ namespace cc {
     }
 
     void Scheduler::scheduleUpdate(System* target, Priority priority, bool paused) {
-        const std::string targetId{ target->uuid == "" ? target->uuid : target->id };
-        CCASSERT(targetId != "",1510);
+        const std::string targetId{ target->uuid.empty() ? target->uuid : target->id };
+        CCASSERT(!targetId.empty(),1510);
         auto hashElement = _hashForUpdates[targetId];
         if (hashElement && hashElement->_entry) {
             if (hashElement->_entry->_priority != priority) {
@@ -542,13 +544,13 @@ namespace cc {
         if (!target || !callback) {
             return;
         }
-        const std::string targetId = target->uuid == "" ? target->uuid : target->id;
-        if (targetId == "") {
-            CCASSERT("Error 1510");
+        const std::string targetId = target->uuid.empty() ? target->uuid : target->id;
+        if (targetId.empty()) {
+            CC_ASSERT("Error 1510");
             return;
         }
         HashTimerEntry* element;
-        CCASSERT(element = _hashForTimers[targetId]);
+        CC_ASSERT(element = _hashForTimers[targetId]);
         TimerTargetCallback* timer{ nullptr };
         for (auto i = 0; i < element->_timers.size(); i++) {
             timer = element->_timers[i];
@@ -578,8 +580,8 @@ namespace cc {
     }
     void Scheduler::unscheduleUpdate(System* target) {
         CCASSERT(target, 1509);
-        const std::string targetId{ target->uuid == "" ? target->uuid : target->id };
-        CCASSERT(targetId != "", 1510);
+        const std::string targetId{ target->uuid.empty() ? target->uuid : target->id };
+        CCASSERT(!targetId.empty(), 1510);
         
         auto element = _hashForUpdates[targetId];
         if (element) {
@@ -593,8 +595,8 @@ namespace cc {
     }
     void Scheduler::unscheduleAllForTarget(System* target) {
         CCASSERT(target, 1509);
-        const std::string targetId{ target->uuid == "" ? target->uuid : target->id };
-        CCASSERT(targetId != "", 1510);
+        const std::string targetId{ target->uuid.empty() ? target->uuid : target->id };
+        CCASSERT(!targetId.empty(), 1510);
 
         auto element = _hashForTimers[targetId];
         if (std::find(element->_timers.begin(), element->_timers.end(), element->_currentTimer) != element->_timers.end()
@@ -665,8 +667,8 @@ namespace cc {
 
     void Scheduler::pauseTarget(System* target) {
         CCASSERT(target, 1509);
-        const std::string targetId{ target->uuid == "" ? target->uuid : target->id };
-        CCASSERT(targetId != "", 1510);
+        const std::string targetId{ target->uuid.empty() ? target->uuid : target->id };
+        CCASSERT(!targetId.empty(), 1510);
         
         auto element = _hashForTimers.find(targetId)->second;
         element->_paused = true;

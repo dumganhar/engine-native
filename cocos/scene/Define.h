@@ -133,17 +133,6 @@ struct Root {
     static Root *instance;
 };
 
-enum class RenderPriority {
-    MIN     = 0,
-    MAX     = 0xff,
-    DEFAULT = 0x80,
-};
-
-enum class RenderPassStage {
-    DEFAULT = 100,
-    UI      = 200,
-};
-
 enum class BatchingSchemes {
     NONE       = 0,
     INSTANCING = 1,

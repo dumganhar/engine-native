@@ -47,7 +47,7 @@ struct IPropertyInfo {
 
 // Pass instance itself are compliant to IPassStates too
 struct IPassStates {
-    int32_t                priority;
+    std::optional<int32_t> priority;
     gfx::PrimitiveMode     primitive;
     scene::RenderPassStage stage;
     gfx::RasterizerState   rasterizerState;
@@ -142,29 +142,31 @@ using IPreCompileInfo = std::unordered_map<std::string, Value>;
 
 class EffectAsset final : public Asset {
 public:
+    using Super = Asset;
     /**
      * @en Register the effect asset to the static map
      * @zh 将指定 effect 注册到全局管理器。
      */
-    static void registerAsset(const EffectAsset &asset);
+    static void registerAsset(const EffectAsset *asset);
 
     /**
      * @en Unregister the effect asset from the static map
      * @zh 将指定 effect 从全局管理器移除。
      */
-    static void removeAsset(const std::string &name);
+    static void remove(const std::string &name);
+    static void remove(const EffectAsset *asset);
 
     /**
      * @en Get the effect asset by the given name.
      * @zh 获取指定名字的 effect 资源。
      */
-    static EffectAsset *getAsset(const std::string &name);
+    static const EffectAsset *get(const std::string &name);
 
     /**
      * @en Get all registered effect assets.
      * @zh 获取所有已注册的 effect 资源。
      */
-    static std::unordered_map<std::string, EffectAsset> &getAllAssets() { return __effects; }
+    static std::unordered_map<std::string, const EffectAsset *> &getAll() { return __effects; }
 
     /**
      * @en The techniques used by the current effect.
@@ -209,7 +211,7 @@ protected:
     void _precompile();
 
 protected:
-    static std::unordered_map<std::string, EffectAsset> __effects;
+    static std::unordered_map<std::string, const EffectAsset *> __effects; //cjh TODO: how to clear when game exits.
 };
 
 } // namespace cc

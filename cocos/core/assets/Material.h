@@ -26,29 +26,33 @@
 #pragma once
 
 #include "core/assets/Asset.h"
-#include "core/assets/EffectAsset.h"
-#include "core/assets/TextureBase.h"
+
+#include <string>
+#include <unordered_map>
+#include <variant>
+#include <vector>
 
 #include "core/Types.h"
+#include "core/assets/EffectAsset.h"
+#include "core/assets/TextureBase.h"
 
 #include "renderer/gfx-base/GFXTexture.h"
 
 #include "math/Math.h"
 
-#include <string>
-#include <unordered_map>
-#include <variant>
-
 namespace cc {
 
-namespace gfx {
+namespace scene {
 class Pass;
 }
 
 class RenderableComponent;
 
-using MaterialProperty     = std::variant<float, int32_t, Vec2, Vec3, Vec4, /* Color //cjh ,*/ Mat3, Mat4, Quaternion>;
-using MaterialPropertyFull = std::variant<float, int32_t, Vec2, Vec3, Vec4, /* Color //cjh ,*/ Mat3, Mat4, Quaternion, TextureBase, gfx::Texture>;
+using MaterialProperty = std::variant<
+    float, int32_t, Vec2, Vec3, Vec4, /* Color,*/ Mat3, Mat4, Quaternion, TextureBase *, gfx::Texture *,
+    std::vector<float>, std::vector<int32_t>, std::vector<Vec2>, std::vector<Vec3>, std::vector<Vec4>, /* std::vector<Color>, */
+    std::vector<Mat3>, std::vector<Mat4>, std::vector<Quaternion>, std::vector<TextureBase *>, std::vector<gfx::Texture *>>;
+
 /**
  * @en The basic infos for material initialization.
  * @zh 用来初始化材质的基本信息。
@@ -74,13 +78,17 @@ struct IMaterialInfo {
      * 这个材质将使用第几个 technique，默认为 0。
      */
     uint32_t technique{0};
+
+    using DefinesType = std::vector<MacroRecord>;
     /**
      * @en
      * The shader macro definitions. Default to 0 or the specified value in [[EffectAsset]].
      * @zh
      * 这个材质定义的预处理宏，默认全为 0，或 [[EffectAsset]] 中的指定值。
      */
-    std::vector<MacroRecord> defines;
+    DefinesType defines;
+
+    using PassOverridesType = std::vector<PassOverrides>;
     /**
      * @en
      * The override values on top of the pipeline states specified in [[EffectAsset]].
@@ -88,7 +96,7 @@ struct IMaterialInfo {
      * 这个材质的自定义管线状态，将覆盖 effect 中的属性。<br>
      * 注意在可能的情况下请尽量少的自定义管线状态，以减小对渲染效率的影响。
      */
-    std::vector<PassOverrides> states;
+    PassOverridesType states;
 };
 
 class Material final : public Asset {
@@ -98,11 +106,95 @@ public:
      * @zh 获取一个材质的哈希值
      * @param material
      */
-    static uint64_t getHash(Material *material);
+    static uint64_t getHashForMaterial(Material *material);
+
+    Material() = default;
+
+    /**
+     * @en Initialize this material with the given information.
+     * @zh 根据所给信息初始化这个材质，初始化正常结束后材质即可立即用于渲染。
+     * @param info Material description info.
+     */
+    void initialize(const IMaterialInfo &info);
+    void reset(const IMaterialInfo &info);
+
+    /**
+     * @en
+     * Destroy the material definitively.<br>
+     * Cannot re-initialize after destroy.<br>
+     * For re-initialize purposes, call [[Material.initialize]] directly.
+     * @zh
+     * 彻底销毁材质，注意销毁后无法重新初始化。<br>
+     * 如需重新初始化材质，不必先调用 destroy。
+     */
+    virtual bool destroy() override;
+
+    /**
+     * @en Recompile the shader with the specified macro overrides. Allowed only on material instances.
+     * @zh 使用指定预处理宏重新编译当前 pass（数组）中的 shader。只允许对材质实例执行。
+     * @param overrides The shader macro override values.
+     * @param passIdx The pass to apply to. Will apply to all passes if not specified.
+     */
+    void recompileShaders(const MacroRecord &overrides, index_t passIdx);
+
+    /**
+     * @en Override the passes with the specified pipeline states. Allowed only on material instances.
+     * @zh 使用指定管线状态重载当前的 pass（数组）。只允许对材质实例执行。
+     * @param overrides The pipeline state override values.
+     * @param passIdx The pass to apply to. Will apply to all passes if not specified.
+     */
+    void overridePipelineStates(const PassOverrides &overrides, index_t passIdx);
+
+    /**
+     * @en Callback function after material is loaded in [[Loader]]. Initialize the resources automatically.
+     * @zh 通过 [[Loader]] 加载完成时的回调，将自动初始化材质资源。
+     */
+    virtual void onLoaded() override;
+
+    /**
+     * @en Reset all the uniforms to the default value specified in [[EffectAsset]].
+     * @zh 重置材质的所有 uniform 参数数据为 [[EffectAsset]] 中的默认初始值。
+     * @param clearPasses Will the rendering data be cleared too?
+     */
+    void resetUniforms(bool clearPasses = true);
+
+    /**
+     * @en
+     * Convenient property setter provided for quick material setup.<br>
+     * [[Pass.setUniform]] should be used instead if you need to do per-frame uniform update.
+     * @zh
+     * 设置材质 uniform 参数的统一入口。<br>
+     * 注意如果需要每帧更新 uniform，建议使用 [[Pass.setUniform]] 以获得更好的性能。
+     * @param name The target uniform name.
+     * @param val The target value.
+     * @param passIdx The pass to apply to. Will apply to all passes if not specified.
+     */
+    void setProperty(const std::string &name, const MaterialProperty &val, index_t passIdx = CC_INVALID_INDEX);
+
+    /**
+     * @en
+     * Get the specified uniform value for this material.<br>
+     * Note that only uniforms set through [[Material.setProperty]] can be acquired here.<br>
+     * For the complete rendering data, use [[Pass.getUniform]] instead.
+     * @zh
+     * 获取当前材质的指定 uniform 参数的值。<br>
+     * 注意只有通过 [[Material.setProperty]] 函数设置的参数才能从此函数取出，<br>
+     * 如需取出完整的渲染数据，请使用 [[Pass.getUniform]]。
+     * @param name The property or uniform name.
+     * @param passIdx The target pass index. If not specified, return the first found value in all passes.
+     */
+    MaterialProperty *getProperty(const std::string &name, index_t passIdx = CC_INVALID_INDEX);
+
+    /**
+     * @en Copy the target material.
+     * @zh 复制目标材质到当前实例。
+     * @param mat The material to be copied.
+     */
+    void copy(const Material *mat);
 
 protected:
     /* @type(EffectAsset) */
-    EffectAsset *_effectAsset{nullptr};
+    const EffectAsset *_effectAsset{nullptr};
 
     /* @serializable */
     uint32_t _techIdx{0};
@@ -114,20 +206,18 @@ protected:
     std::vector<PassOverrides> _states;
 
     /* @serializable */
-    std::vector<Record<std::string, std::vector<MaterialPropertyFull>>> _props;
+    std::vector<Record<std::string, MaterialProperty>> _props;
 
-    std::vector<gfx::Pass *> _passes;
+    std::vector<scene::Pass *> _passes;
 
     uint64_t _hash{0};
 
 public:
-    Material() = default;
-
     /**
      * @en The current [[EffectAsset]].
      * @zh 当前使用的 [[EffectAsset]] 资源。
      */
-    inline EffectAsset *effectAsset() {
+    inline const EffectAsset *getEffectAsset() {
         return _effectAsset;
     }
 
@@ -135,7 +225,7 @@ public:
      * @en Name of the current [[EffectAsset]].
      * @zh 当前使用的 [[EffectAsset]] 资源名。
      */
-    inline std::string effectName() {
+    inline std::string getEffectName() {
         return _effectAsset ? _effectAsset->getName() : "";
     }
 
@@ -143,7 +233,7 @@ public:
      * @en The current technique index.
      * @zh 当前的 technique 索引。
      */
-    inline uint32_t technique() const {
+    inline uint32_t getTechniqueIndex() const {
         return _techIdx;
     }
 
@@ -151,7 +241,7 @@ public:
      * @en The passes defined in this material.
      * @zh 当前正在使用的 pass 数组。
      */
-    std::vector<gfx::Pass *> &getPasses() {
+    std::vector<scene::Pass *> &getPasses() {
         return _passes;
     }
 
@@ -178,6 +268,24 @@ public:
     virtual RenderableComponent *getOwner() const {
         return nullptr;
     }
+
+protected:
+    bool uploadProperty(scene::Pass *passs, const std::string &name, const MaterialProperty &val);
+    void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index);
+
+    template <typename T>
+    void prepareInfo(const T &patchArray, T &cur);
+
+    void doDestroy();
+
+    void                       update(bool keepProps = true);
+    std::vector<scene::Pass *> createPasses();
 };
+
+template <>
+void Material::prepareInfo(const IMaterialInfo::DefinesType &patchArray, IMaterialInfo::DefinesType &cur);
+
+template <>
+void Material::prepareInfo(const IMaterialInfo::PassOverridesType &patchArray, IMaterialInfo::PassOverridesType &cur);
 
 } // namespace cc

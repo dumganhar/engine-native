@@ -644,6 +644,8 @@ endif()
 cocos_source_files(
                  cocos/renderer/core/PassUtils.h
                  cocos/renderer/core/PassUtils.cpp
+                 cocos/renderer/core/MaterialInstance.h
+                 cocos/renderer/core/MaterialInstance.cpp
 
                  cocos/renderer/GFXDeviceManager.h
 

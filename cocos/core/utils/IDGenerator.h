@@ -37,7 +37,7 @@
 
 namespace cc {
 
-static const char* nonUuidMark = ".";
+static const char *NonUuidMark = ".";
 
 /**
  * ID generator for runtime.
@@ -47,12 +47,12 @@ public:
     /**
      * @param [category] You can specify a unique category to avoid id collision with other instance of IdGenerator.
      */
-    explicit IDGenerator(const std::string& category);
+    explicit IDGenerator(const std::string &category);
 
     std::string getNewId();
 
 private:
-    uint32_t _id = 0;
+    uint32_t _id{0};
 
     std::string _prefix;
 };

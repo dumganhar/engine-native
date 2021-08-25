@@ -28,12 +28,12 @@
 #include <string>
 #include <unordered_map>
 #include "base/Value.h"
-#include "renderer/gfx-base/GFXDef.h"
-#include "renderer/pipeline/Define.h"
-#include "scene/Define.h"
 #include "core/Types.h"
 #include "core/assets/Asset.h"
 #include "renderer/core/PassUtils.h"
+#include "renderer/gfx-base/GFXDef.h"
+#include "renderer/pipeline/Define.h"
+#include "scene/Define.h"
 
 namespace cc {
 
@@ -47,15 +47,14 @@ struct IPropertyInfo {
 
 // Pass instance itself are compliant to IPassStates too
 struct IPassStates {
-    std::optional<int32_t> priority;
-    gfx::PrimitiveMode     primitive;
-    pipeline::RenderPassStage stage;
-    gfx::RasterizerState   rasterizerState;
-    gfx::DepthStencilState depthStencilState;
-    gfx::BlendState        blendState;
-    gfx::DynamicStateFlags dynamicStates;
-    std::string            strPhase; //cjh? phase?: string | number;
-    int32_t                intPhase; //cjh: check logic
+    std::optional<int32_t>             priority;
+    gfx::PrimitiveMode                 primitive;
+    pipeline::RenderPassStage          stage;
+    gfx::RasterizerState               rasterizerState;
+    gfx::DepthStencilState             depthStencilState;
+    gfx::BlendState                    blendState;
+    gfx::DynamicStateFlags             dynamicStates;
+    std::variant<std::string, int32_t> phase;
 };
 
 using PassOverrides = IPassStates;

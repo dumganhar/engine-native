@@ -40,8 +40,6 @@
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXTexture.h"
 
-#include "math/Math.h"
-
 namespace cc {
 
 namespace scene {

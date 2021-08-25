@@ -21,22 +21,22 @@
 
 #pragma once
 
+#include <cmath>
 #include <string>
+#include <typeinfo>
 #include <unordered_map>
 #include <vector>
-#include <cmath>
-#include <typeinfo>
 
 #include "core/asset-manager/AssetManager.h"
 #include "core/event/EventEmitter.h"
-#include "core/scene-graph/Node.h"
 #include "core/platform/event-manager/InputManager.h"
 #include "core/platform/native/SystemInfo.h"
-#include "core/Director.h"
+#include "core/scene-graph/Node.h"
 #include "platform/Application.h"
 #include "renderer/pipeline/RenderPipeline.h"
 
 namespace cc {
+
 namespace gfx {
 class Device;
 }
@@ -111,7 +111,7 @@ struct IGameConfig {
         CANVAS = 1,
         WEB_GL = 2,
     };
-    
+
     RenderMode renderMode{0};
 
     /**
@@ -136,7 +136,7 @@ struct IGameConfig {
      * Asset Manager initialization options
      */
 
-    IAssetManagerOptions* assetOptions{nullptr};
+    IAssetManagerOptions *assetOptions{nullptr};
 
     /**
      * GPU instancing options
@@ -270,7 +270,7 @@ public:
     // public eventTargetOn = super.on;
     // public eventTargetOnce = super.once;
 
-    IGameConfig* config{nullptr};
+    IGameConfig *config{nullptr};
 
     // /**
     //  * @en Callback when the scripts of engine have been load.
@@ -351,9 +351,7 @@ public:
      * @en Run the game frame by frame with a fixed delta time correspond to frame rate.
      * @zh 以固定帧间隔执行一帧游戏循环，帧间隔与设定的帧率匹配。
      */
-    inline void step() const { 
-        Director::getInstance().tick(frameTime / 1000);
-    }
+    void step() const;
 
     /**
      * @en Pause the game main loop. This will pause:<br>
@@ -361,7 +359,7 @@ public:
      * This is different with `director.pause` which only pause the game logic execution.<br>
      * @zh 暂停游戏主循环。包含：游戏逻辑，渲染，事件处理，背景音乐和所有音效。这点和只暂停游戏逻辑的 `director.pause` 不同。
      */
-    void pause() ;
+    void pause();
 
     /**
      * @en Resume the game from pause. This will resume:<br>
@@ -531,10 +529,10 @@ private:
     void setupRenderPipeline();
 
     void showSplashScreen();
-    
-    void setRenderPipeline(pipeline::RenderPipeline* pipeline);
 
-    void safeEmit(const std::string& event);
+    void setRenderPipeline(pipeline::RenderPipeline *pipeline);
+
+    void safeEmit(const std::string &event);
 
     gfx::Device *_gfxDevice = nullptr;
 

@@ -24,6 +24,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 */
+#pragma once
 
 /* spell-checker:words COORD, Quesada, INITED, Renerer */
 
@@ -32,22 +33,22 @@
  * @module core
  */
 
+#include <any>
 #include <iostream>
 #include <variant>
 #include <vector>
-#include <any>
 
 #include "base/Macros.h"
 #include "core/Game.h"
 #include "core/Root.h"
 #include "core/Scheduler.h"
 #include "core/asset-manager/AssetManager.h"
+#include "core/assets/SceneAsset.h"
 #include "core/event/EventEmitter.h"
 #include "core/scene-graph/BaseNode.h"
 #include "core/scene-graph/ComponentScheduler.h"
 #include "core/scene-graph/NodeActivator.h"
 #include "core/scene-graph/Scene.h"
-#include "core/assets/SceneAsset.h"
 #include "math/Vec2.h"
 // ----------------------------------------------------------------------------------------------------------------------
 
@@ -80,8 +81,6 @@ namespace cc {
  * @param totalCount - The total number of the items.
  * @param item - The latest item which flow out the pipeline.
  */
-
-    
 
 class Director : EventEmitter {
 public:
@@ -186,14 +185,13 @@ public:
      */
     static std::string EVENT_END_FRAME;
 
-    static Director& getInstance() {
+    static Director &getInstance() {
         static Director instance;
         return instance;
     }
 
-    scenegraph::ComponentScheduler* _compScheduler{nullptr};
-    scenegraph::NodeActivator*      _nodeActivator{nullptr};
-
+    scenegraph::ComponentScheduler *_compScheduler{nullptr};
+    scenegraph::NodeActivator *     _nodeActivator{nullptr};
 
     /**
      * @en End the life of director in the next frame
@@ -234,7 +232,7 @@ public:
      * @param onBeforeLoadScene - The function invoked at the scene before loading.
      * @param onLaunched - The function invoked at the scene after launch.
      */
-    void runSceneImmediate(const std::variant<Scene, SceneAsset>&, const std::function<void*()>& onBeforeLoadScene, const std::function<void*()>& onLaunched);
+    void runSceneImmediate(const std::variant<Scene, SceneAsset> &, const std::function<void *()> &onBeforeLoadScene, const std::function<void *()> &onLaunched);
     /**
      * @en
      * Run a scene. Replaces the running scene with a new one or enter the first scene.<br>
@@ -245,7 +243,7 @@ public:
      * @param onLaunched - The function invoked at the scene after launch.
      * @private
      */
-    void runScene(const std::variant<Scene *, SceneAsset *>& scene, const std::function<void*()>& onBeforeLoadScene, const std::function<void*()>& onLaunched);
+    void runScene(const std::variant<Scene *, SceneAsset *> &scene, const std::function<void *()> &onBeforeLoadScene, const std::function<void *()> &onLaunched);
 
     /**
      * @en Loads the scene by its name.
@@ -255,7 +253,7 @@ public:
      * @param onLaunched - callback, will be called after scene launched.
      * @return if error, return false
      */
-    bool loadScene(const std::string& sceneName, const std::function<void*()>& onLaunched, const std::function<void*()>& onUnloaded);
+    bool loadScene(const std::string &sceneName, const std::function<void *()> &onLaunched, const std::function<void *()> &onUnloaded);
     /**
      * @en
      * Pre-loads the scene to reduces loading time. You can call this method at any time you want.<br>
@@ -268,7 +266,7 @@ public:
      * @param sceneName 场景名称。
      * @param onLoaded 加载回调。
      */
-    void preloadScene(const std::string& sceneName, const std::function<void*()>& onLoaded);
+    void preloadScene(const std::string &sceneName, const std::function<void *()> &onLoaded);
 
     /**
      * @en
@@ -284,7 +282,7 @@ public:
      * @param onLoaded 加载回调。
      */
     template <typename... A, typename... B>
-    void preloadScene(const std::string& sceneName, const std::function<void*(A...)>& onProgress, const std::function<void*(B...)>& onLoaded);
+    void preloadScene(const std::string &sceneName, const std::function<void *(A...)> &onProgress, const std::function<void *(B...)> &onLoaded);
 
     /**
      * @en Resume game logic execution after pause, if the current scene is not paused, nothing will happen.
@@ -292,13 +290,13 @@ public:
      */
     inline void resume() { _paused = false; }
 
-    Root* getRoot() const { return _root; }
+    Root *getRoot() const { return _root; }
 
     /**
      * @en Returns current logic Scene.
      * @zh 获取当前逻辑场景。
      */
-    scenegraph::Scene* getScene() const { return _scene; }
+    scenegraph::Scene *getScene() const { return _scene; }
 
     /**
      * @en Returns the delta time since last frame.
@@ -336,32 +334,32 @@ public:
      * @en Returns the scheduler associated with this director.
      * @zh 获取和 director 相关联的调度器。
      */
-    inline Scheduler* getScheduler() { return _scheduler; }
+    inline core::Scheduler *getScheduler() { return _scheduler; }
 
     /**
      * @en Sets the scheduler associated with this director.
      * @zh 设置和 director 相关联的调度器。
      */
-    void setScheduler(Scheduler* scheduler);
+    void setScheduler(core::Scheduler *scheduler);
     /**
      * @en Register a system.
      * @zh 注册一个系统。
      */
-    void registerSystem(const std::string& name, System* sys, uint32_t priority);
-    void unregisterSystem(System* sys);
+    void registerSystem(const std::string &name, core::System *sys, uint32_t priority);
+    void unregisterSystem(core::System *sys);
 
     /**
      * @en get a system.
      * @zh 获取一个 system。
      */
-    System* getSystem (const std::string& name) const ;
+    core::System *getSystem(const std::string &name) const;
 
     /**
      * @en Returns the `AnimationManager` associated with this director. Please use getSystem(AnimationManager.ID)
      * @zh 获取和 director 相关联的 `AnimationManager`（动画管理器）。请使用 getSystem(AnimationManager.ID) 来替代
      * @deprecated since 3.0.0
      */
-    std::string getAnimationManager() const ;
+    std::string getAnimationManager() const;
 
     // Loop management
     /**
@@ -392,21 +390,21 @@ public:
      * @zh 运行主循环
      */
     void tick(float dt);
-	
+
     Director();
     ~Director();
+
 private:
+    bool                        _invalid{false};
+    bool                        _paused{false};
+    Root *                      _root{nullptr};
+    std::string                 _loadingScene;
+    uint32_t                    _totalFrames{0};
+    core::Scheduler *           _scheduler{nullptr};
+    std::vector<core::System *> _systems;
 
-    bool                 _invalid{false};
-    bool                 _paused{false};
-    Root*                _root{nullptr};
-    std::string          _loadingScene;
-    uint32_t             _totalFrames{0};
-    Scheduler*           _scheduler{nullptr};
-    std::vector<System*> _systems;
-
-    scenegraph::Scene* _scene{nullptr};
-    void _initOnRendererInitialized();
+    scenegraph::Scene *_scene{nullptr};
+    void               _initOnRendererInitialized();
     //TODO: return Promise in js, c++ need adaption
     void _init();
 };

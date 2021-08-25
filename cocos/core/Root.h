@@ -22,20 +22,19 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+#pragma once
 
 #include <cstdint>
 #include <vector>
-#include "scene/RenderWindow.h"
-#include "scene/RenderScene.h"
-#include "scene/Model.h"
-#include "scene/Camera.h"
-#include "scene/Light.h"
-#include "scene/DrawBatch2D.h"
-#include "renderer/pipeline/RenderPipeline.h"
-#include "renderer/gfx-base/GFXDevice.h"
 #include "core/memop/Pool.h"
-
-#pragma once
+#include "renderer/gfx-base/GFXDevice.h"
+#include "renderer/pipeline/RenderPipeline.h"
+#include "scene/Camera.h"
+#include "scene/DrawBatch2D.h"
+#include "scene/Light.h"
+#include "scene/Model.h"
+#include "scene/RenderScene.h"
+#include "scene/RenderWindow.h"
 
 namespace cc {
 
@@ -230,7 +229,7 @@ private:
     pipeline::RenderPipeline *         _pipeline{nullptr};
     scene::DrawBatch2D *               _batcher2D{nullptr};
     std::vector<scene::RenderScene *>  _scenes;
-    Pool<scene::Camera>                *_cameraPool{nullptr};
+    Pool<scene::Camera> *              _cameraPool{nullptr};
     float                              _cumulativeTime{0.F};
     float                              _frameTime{0.F};
     float                              _fpsTime{0.F};

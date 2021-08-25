@@ -25,11 +25,17 @@
 
 #pragma once
 
-#include <variant>
 #include <string>
+#include <variant>
 #include "base/TypeDef.h"
 #include "core/Types.h"
 #include "core/assets/TextureBase.h"
+#include "math/Mat3.h"
+#include "math/Mat4.h"
+#include "math/Quaternion.h"
+#include "math/Vec2.h"
+#include "math/Vec3.h"
+#include "math/Vec4.h"
 
 namespace cc {
 
@@ -55,8 +61,8 @@ enum class PropertyType {
 using MacroRecord = Record<std::string, std::variant<float, bool, std::string>>;
 
 using MaterialProperty = std::variant<
-float, int32_t, Vec2, Vec3, Vec4, /* Color,*/ Mat3, Mat4, Quaternion, TextureBase *, gfx::Texture *,
-std::vector<float>, std::vector<int32_t>, std::vector<Vec2>, std::vector<Vec3>, std::vector<Vec4>, /* std::vector<Color>, */
-std::vector<Mat3>, std::vector<Mat4>, std::vector<Quaternion>, std::vector<TextureBase *>, std::vector<gfx::Texture *>>;
+    float, int32_t, Vec2, Vec3, Vec4, /* Color,*/ Mat3, Mat4, Quaternion, TextureBase *, gfx::Texture *,
+    std::vector<float>, std::vector<int32_t>, std::vector<Vec2>, std::vector<Vec3>, std::vector<Vec4>, /* std::vector<Color>, */
+    std::vector<Mat3>, std::vector<Mat4>, std::vector<Quaternion>, std::vector<TextureBase *>, std::vector<gfx::Texture *>>;
 
-}
+} // namespace cc

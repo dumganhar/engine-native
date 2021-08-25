@@ -642,10 +642,12 @@ endif()
 
 ##### renderer
 cocos_source_files(
-                 cocos/renderer/core/PassUtils.h
-                 cocos/renderer/core/PassUtils.cpp
                  cocos/renderer/core/MaterialInstance.h
                  cocos/renderer/core/MaterialInstance.cpp
+                 cocos/renderer/core/PassInstance.h
+                 cocos/renderer/core/PassInstance.cpp
+                 cocos/renderer/core/PassUtils.h
+                 cocos/renderer/core/PassUtils.cpp
 
                  cocos/renderer/GFXDeviceManager.h
 

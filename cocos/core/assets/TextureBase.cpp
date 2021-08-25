@@ -35,7 +35,7 @@
 namespace cc {
 
 namespace {
-const IDGenerator idGenerator("Tex");
+IDGenerator idGenerator("Tex");
 }
 
 TextureBase::TextureBase() {

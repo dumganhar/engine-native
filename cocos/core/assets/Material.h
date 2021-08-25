@@ -37,10 +37,8 @@
 #include "core/assets/EffectAsset.h"
 #include "core/assets/TextureBase.h"
 
-#include "renderer/gfx-base/GFXTexture.h"
 #include "renderer/core/PassUtils.h"
-
-#include "math/Math.h"
+#include "renderer/gfx-base/GFXTexture.h"
 
 namespace cc {
 
@@ -96,7 +94,7 @@ struct IMaterialInfo {
     std::optional<PassOverridesType> states;
 };
 
-class Material final : public Asset {
+class Material : public Asset {
 public:
     using Super = Asset;
     /**
@@ -136,7 +134,7 @@ public:
      * @param overrides The shader macro override values.
      * @param passIdx The pass to apply to. Will apply to all passes if not specified.
      */
-    void recompileShaders(const MacroRecord &overrides, index_t passIdx);
+    virtual void recompileShaders(const MacroRecord &overrides, index_t passIdx);
 
     /**
      * @en Override the passes with the specified pipeline states. Allowed only on material instances.
@@ -144,7 +142,7 @@ public:
      * @param overrides The pipeline state override values.
      * @param passIdx The pass to apply to. Will apply to all passes if not specified.
      */
-    void overridePipelineStates(const PassOverrides &overrides, index_t passIdx);
+    virtual void overridePipelineStates(const PassOverrides &overrides, index_t passIdx);
 
     /**
      * @en Callback function after material is loaded in [[Loader]]. Initialize the resources automatically.
@@ -277,10 +275,10 @@ protected:
     template <typename T1, typename T2>
     void prepareInfo(const T1 &patchArray, std::vector<T2> &cur);
 
-    void doDestroy();
+    virtual void doDestroy();
 
-    void                       update(bool keepProps = true);
-    std::vector<scene::Pass *> createPasses();
+    void                               update(bool keepProps = true);
+    virtual std::vector<scene::Pass *> createPasses();
 };
 
 template <>

@@ -644,6 +644,8 @@ endif()
 cocos_source_files(
                  cocos/renderer/core/PassUtils.h
                  cocos/renderer/core/PassUtils.cpp
+                 cocos/renderer/core/MaterialInstance.h
+                 cocos/renderer/core/MaterialInstance.cpp
 
                  cocos/renderer/GFXDeviceManager.h
 
@@ -1396,7 +1398,7 @@ cocos_source_files(
     cocos/core/platform/event-manager/SystemEvent.h
     cocos/core/platform/event-manager/SystemEvent.cpp
     cocos/core/platform/native/SystemInfo.h
-    cocos/core/platform/native/SystemEvent.cpp
+    cocos/core/platform/native/SystemInfo.cpp
 
     cocos/core/platform/Macro.h
     cocos/core/platform/Macro.cpp

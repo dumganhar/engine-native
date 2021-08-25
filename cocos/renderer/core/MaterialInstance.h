@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,44 +25,54 @@
 
 #pragma once
 
-#include <string>
-#include <variant>
-#include "base/TypeDef.h"
-#include "core/Types.h"
-#include "core/assets/TextureBase.h"
-#include "math/Mat3.h"
-#include "math/Mat4.h"
-#include "math/Quaternion.h"
-#include "math/Vec2.h"
-#include "math/Vec3.h"
-#include "math/Vec4.h"
+#include <optional>
+
+#include "core/assets/Material.h"
 
 namespace cc {
 
-/**
- * @en The type enums of the property
- * @zh Uniform 的绑定类型（UBO 或贴图等）
- */
-enum class PropertyType {
-    /**
-     * Uniform buffer object
-     */
-    BUFFER,
-    /**
-     * Texture sampler
-     */
-    TEXTURE,
+struct IMaterialInstanceInfo {
+    Material *           parent{nullptr};
+    RenderableComponent *owner{nullptr};
+    uint32_t             subModelIdx{0};
 };
 
-/**
- * @en Combination of preprocess macros
- * @zh 预处理宏组合
- */
-using MacroRecord = Record<std::string, std::variant<float, bool, std::string>>;
+class PassInstance;
 
-using MaterialProperty = std::variant<
-    float, int32_t, Vec2, Vec3, Vec4, /* Color,*/ Mat3, Mat4, Quaternion, TextureBase *, gfx::Texture *,
-    std::vector<float>, std::vector<int32_t>, std::vector<Vec2>, std::vector<Vec3>, std::vector<Vec4>, /* std::vector<Color>, */
-    std::vector<Mat3>, std::vector<Mat4>, std::vector<Quaternion>, std::vector<TextureBase *>, std::vector<gfx::Texture *>>;
+/**
+ * @zh
+ * 材质实例，当有材质修改需求时，根据材质资源创建的，可任意定制的实例。
+ */
+class MaterialInstance final : public Material {
+public:
+    using Super = Material;
+
+    MaterialInstance(const IMaterialInstanceInfo &info);
+
+    Material *getParent() const override {
+        return _parent;
+    }
+
+    RenderableComponent *getOwner() const override {
+        return _owner;
+    }
+
+    void                       recompileShaders(const MacroRecord &overrides, index_t passIdx = CC_INVALID_INDEX) override;
+    void                       overridePipelineStates(const PassOverrides &overrides, index_t passIdx = CC_INVALID_INDEX) override;
+    bool                       destroy() override;
+    std::vector<scene::Pass *> createPasses() override;
+
+    void doDestroy() override;
+
+    void onPassStateChange(bool dontNotify);
+
+protected:
+    std::vector<PassInstance *> _passes;
+
+private:
+    Material *           _parent{nullptr};
+    RenderableComponent *_owner{nullptr};
+    uint32_t             _subModelIdx{0};
+};
 
 } // namespace cc

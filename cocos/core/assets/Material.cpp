@@ -25,6 +25,7 @@
 
 #include "core/assets/Material.h"
 #include "core/assets/EffectAsset.h"
+#include "scene/Pass.h"
 
 namespace cc {
 
@@ -85,26 +86,35 @@ bool Material::destroy() {
 void Material::doDestroy() {
     if (!_passes.empty()) {
         for (auto *pass : _passes) {
-            //cjh            pass->destroy();
+            //            pass->destroy();
         }
     }
     _passes.clear();
 }
 
-void Material::recompileShaders(const MacroRecord &overrides, index_t passIdx) {
-    //cjh TODO:
+void Material::recompileShaders(const MacroRecord &overrides, index_t passIdx = CC_INVALID_INDEX) {
+    CC_LOG_WARNING("Shaders in material asset '%s' cannot be modified at runtime, please instantiate the material first.", _name.c_str());
 }
 
-void Material::overridePipelineStates(const PassOverrides &overrides, index_t passIdx) {
-    //cjh TODO:
+void Material::overridePipelineStates(const PassOverrides &overrides, index_t passIdx = CC_INVALID_INDEX) {
+    CC_LOG_WARNING("Pipeline states in material asset '%s' cannot be modified at runtime, please instantiate the material first.", _name.c_str());
 }
 
 void Material::onLoaded() {
-    //cjh TODO:
+    update();
 }
 
 void Material::resetUniforms(bool clearPasses /* = true */) {
-    //cjh TODO:
+    _props.resize(_passes.size());
+
+    if (!clearPasses) {
+        return;
+    }
+
+    for (const auto *pass : _passes) {
+        //cjh TODO:        pass.resetUBOs();
+        //        pass.resetTextures();
+    }
 }
 
 void Material::setProperty(const std::string &name, const MaterialProperty &val, index_t passIdx /* = CC_INVALID_INDEX */) {
@@ -193,7 +203,7 @@ void Material::update(bool keepProps /* = true*/) {
         if (keepProps) {
             auto cb = [this](auto *pass, size_t i) {
                 if (i >= _props.size()) {
-                    _props.resize(i);
+                    _props.resize(i + 1);
                 }
 
                 const auto &props = _props[i];
@@ -320,7 +330,7 @@ void Material::prepareInfo(const T1 &patch, std::vector<T2> &cur) {
     } else {
         const T1 &patchArray = patch;
         size_t    len        = patchArray.size();
-        cur.resize();
+        cur.resize(len);
 
         for (size_t i = 0; i < len; ++i) {
             cur[i] = patchArray[i];

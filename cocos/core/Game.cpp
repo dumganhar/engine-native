@@ -20,8 +20,10 @@
 ****************************************************************************/
 
 #include "core/Game.h"
+#include "core/Director.h"
 
 namespace cc {
+
 const std::string Game::EVENT_HIDE{"game_on_hide"};
 const std::string Game::EVENT_LOW_MEMORY{"game_on_low_memory"};
 const std::string Game::EVENT_SHOW{"game_on_show"};
@@ -29,6 +31,10 @@ const std::string Game::EVENT_ENGINE_INITED{"engine_inited"};
 const std::string Game::EVENT_RENDERER_INITED{"renderer_inited"};
 const std::string Game::EVENT_GAME_INITED{"game_inited"};
 const std::string Game::EVENT_RESTART{"game_on_restart"};
+
+void Game::step() const {
+    Director::getInstance().tick(frameTime / 1000);
+}
 
 void Game::pause() {
     if (_paused) return;
@@ -111,7 +117,6 @@ void Game::removePersistRootNode(scenegraph::Node *node) {
         // AssetManager::getInstance()->_releaseManager->_removePersistNodeRef(node);
     }
 }
-
 
 // TODO(xwx): _persistNode not implemented
 // bool Game::isPersistRootNode(scenegraph::Node *node) const {
@@ -197,7 +202,6 @@ void Game::onShow() {
     resume();
 }
 
-
 void Game::setRenderPipeline(pipeline::RenderPipeline *pipeline) {
     if (!Director::getInstance().getRoot()->setRenderPipline(pipeline)) {
         setRenderPipeline(nullptr);
@@ -206,8 +210,8 @@ void Game::setRenderPipeline(pipeline::RenderPipeline *pipeline) {
     safeEmit(Game::EVENT_RENDERER_INITED);
 }
 
-void Game::safeEmit(const std::string& event) {
-    // TODO(xwx): 
+void Game::safeEmit(const std::string &event) {
+    // TODO(xwx):
     // if (EDITOR){}
     // else
     emit(event);

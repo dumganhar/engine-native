@@ -22,9 +22,14 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 ****************************************************************************/
+#pragma once
+
 #include <string>
 #include "base/Macros.h"
+
 namespace cc {
+
+namespace core {
 
 struct ISchedulable {
     std::string id;
@@ -52,7 +57,7 @@ public:
      * @param a System a
      * @param b System b
      */
-    static int32_t sortByPriority(System* a, System* b) {
+    static int32_t sortByPriority(System *a, System *b) {
         if (a->_priority < b->_priority) {
             return 1;
         } else if (a->_priority > b->_priority) {
@@ -61,20 +66,18 @@ public:
             return 0;
         }
     }
-    
-    System() = default;
+
+    System()          = default;
     virtual ~System() = default;
 
-    inline const std::string& getId() { return id; }
-    inline void        setId(std::string& s) { id = s; }
+    inline const std::string &getId() { return id; }
+    inline void               setId(std::string &s) { id = s; }
 
     inline Priority getPriority() const { return _priority; }
     inline void     setPriority(Priority i) { _priority = i; }
 
     inline bool getExecuteInEditMode() const { return _executeInEditMode; }
     inline void setExecuteInEditMode(bool b) { _executeInEditMode = b; }
-
-    
 
     /**
      * @en Init the system, will be invoked by [[Director]] when registered, should be implemented if needed.
@@ -96,4 +99,7 @@ public:
      */
     virtual void postUpdate(float dt) = 0;
 };
+
+} // namespace core
+
 } // namespace cc

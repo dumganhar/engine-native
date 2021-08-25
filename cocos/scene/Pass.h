@@ -59,7 +59,7 @@ struct IMacroPatch {
     std::variant<bool, float, std::string> value;
 };
 
-class Pass final {
+class Pass {
 public:
     /**
      * @en Fill a pass represented by the given pass handle with the given override info

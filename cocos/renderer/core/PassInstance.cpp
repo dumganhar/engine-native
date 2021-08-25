@@ -40,7 +40,7 @@ PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) {
     //     const parentBlock = this._parent.blocks[u.binding];
     //     block.set(parentBlock);
     // }
-    setRootBufferDirty(true);
+    // setRootBufferDirty(true);
     // const paren = this._parent as PassInstance;
     // for (let i = 0; i < this._shaderInfo.samplerTextures.length; i++) {
     //     const u = this._shaderInfo.samplerTextures[i];
@@ -59,7 +59,7 @@ scene::Pass *PassInstance::getParent() const {
 }
 
 void PassInstance::overridePipelineStates(const IPassInfo &original, const PassOverrides &override) {
-    // TODO(?) not implemented reset()
+    // TODO(xwx) not implemented reset()
     // _blendState->reset();
     // _rs->reset();
     // _depthStencilState->reset();
@@ -90,11 +90,11 @@ void PassInstance::syncBatchingScheme() {
     // this._defines.USE_BATCHING = this._defines.USE_INSTANCING = false;
     _defines["USE_INSTANCING"] = false; // not sure?
     _defines["USE_BATCHING"]   = false; // not sure?
-    setBatchingScheme(scene::BatchingSchemes::NONE);
+    _batchingScheme = scene::BatchingSchemes::NONE;
 }
 
 void PassInstance::onStateChange() {
-    setHash(Pass::getPassHash(this));
+    _hash = Pass::getPassHash(this);
     _owner->onPassStateChange(_dontNotify);
 }
 

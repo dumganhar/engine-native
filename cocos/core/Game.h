@@ -21,17 +21,24 @@
 
 #pragma once
 
-#include <vector>
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include <cmath>
+#include <typeinfo>
 
+#include "core/asset-manager/AssetManager.h"
 #include "core/event/EventEmitter.h"
 #include "core/scene-graph/Node.h"
-
+#include "core/platform/event-manager/InputManager.h"
+#include "core/platform/native/SystemInfo.h"
+#include "core/Director.h"
+#include "platform/Application.h"
+#include "renderer/pipeline/RenderPipeline.h"
 
 namespace cc {
 namespace gfx {
-    class Device;
+class Device;
 }
 
 struct ISceneInfo {
@@ -41,7 +48,7 @@ struct ISceneInfo {
 
 struct LayerItem {
     std::string name;
-    int32_t value{0};
+    int32_t     value{0};
 };
 
 struct IGameConfig {
@@ -100,10 +107,12 @@ struct IGameConfig {
      */
     // renderMode?: 0 | 1 | 2;
     enum class RenderMode {
-        AUTO = 0,
+        AUTO   = 0,
         CANVAS = 1,
         WEB_GL = 2,
     };
+    
+    RenderMode renderMode{0};
 
     /**
      * @zh
@@ -127,7 +136,7 @@ struct IGameConfig {
      * Asset Manager initialization options
      */
 
-    // IAssetManagerOptions assetOptions;
+    IAssetManagerOptions* assetOptions{nullptr};
 
     /**
      * GPU instancing options
@@ -153,19 +162,17 @@ struct IGameConfig {
 };
 
 class Game final : public EventEmitter {
-
 public:
-
     /**
     * @en
     * This is a Game instance.
     * @zh
     * 这是一个 Game 类的实例，包含游戏主体信息并负责驱动游戏的游戏对象。
     */
-    static Game& getInstance() {
-		static Game instance;
-		return instance;
-	}
+    static Game &getInstance() {
+        static Game instance;
+        return instance;
+    }
 
     /**
      * @en Event triggered when game hide to background.<br>
@@ -260,19 +267,10 @@ public:
      */
     int32_t renderType{-1};
 
-
     // public eventTargetOn = super.on;
     // public eventTargetOnce = super.once;
 
-    // /**
-    //  * @en
-    //  * The current game configuration,
-    //  * please be noticed any modification directly on this object after the game initialization won't take effect.
-    //  * @zh
-    //  * 当前的游戏配置
-    //  * 注意：请不要直接修改这个对象，它不会有任何效果。
-    //  */
-    // public config: NormalizedGameConfig = {} as NormalizedGameConfig;
+    IGameConfig* config{nullptr};
 
     // /**
     //  * @en Callback when the scripts of engine have been load.
@@ -280,7 +278,6 @@ public:
     //  * @method onStart
     //  */
     using OnStart = std::function<void()>;
-
 
     /**
      * @en Indicates whether the engine and the renderer has been initialized
@@ -295,10 +292,13 @@ public:
      * @zh 设置游戏帧率。
      * @deprecated since v3.3.0 please use [[game.frameRate]]
      */
-    inline void setFrameRate (uint32_t frameRate) {
+    inline void setFrameRate(uint32_t frameRate) {
         _frameRate = frameRate;
     }
 
+    inline void setFrameRate(const std::string &frameRate) {
+        _frameRate = std::stoul(frameRate);
+    }
     /**
      * @en Expected frame rate of the game.
      * @zh 游戏的设定帧率。
@@ -311,7 +311,7 @@ public:
      * @en The delta time since last frame, unit: s.
      * @zh 获取上一帧的增量时间，以秒为单位。
      */
-    inline float getDeltaTime() const { 
+    inline float getDeltaTime() const {
         return _deltaTime;
     }
 
@@ -319,7 +319,11 @@ public:
      * @en The total passed time since game start, unit: ms
      * @zh 获取从游戏开始到现在总共经过的时间，以毫秒为单位
      */
-    float getTotalTime();
+    inline uint32_t getTotalTime() {
+        auto     nowTime      = std::chrono::high_resolution_clock::now();
+        uint32_t intervalInMS = (static_cast<uint32_t>(std::chrono::duration_cast<std::chrono::microseconds>(nowTime - _initTime).count()) / 1000);
+        return intervalInMS;
+    }
 
     /**
      * @en The start time of the current frame in milliseconds.
@@ -335,7 +339,7 @@ public:
      */
     float frameTime{1000.F / 60};
 
-    std::unordered_map<int, scenegraph::Node*> _persistRootNodes;
+    std::unordered_map<std::string, scenegraph::Node *> _persistRootNodes;
 
     // states
     bool _configLoaded{false}; // whether config loaded
@@ -347,7 +351,9 @@ public:
      * @en Run the game frame by frame with a fixed delta time correspond to frame rate.
      * @zh 以固定帧间隔执行一帧游戏循环，帧间隔与设定的帧率匹配。
      */
-    void step();
+    inline void step() const { 
+        Director::getInstance().tick(frameTime / 1000);
+    }
 
     /**
      * @en Pause the game main loop. This will pause:<br>
@@ -355,7 +361,7 @@ public:
      * This is different with `director.pause` which only pause the game logic execution.<br>
      * @zh 暂停游戏主循环。包含：游戏逻辑，渲染，事件处理，背景音乐和所有音效。这点和只暂停游戏逻辑的 `director.pause` 不同。
      */
-    void pause();
+    void pause() ;
 
     /**
      * @en Resume the game from pause. This will resume:<br>
@@ -382,7 +388,7 @@ public:
      * @en End game, it will close the game window
      * @zh 退出游戏
      */
-    void end();
+    void end() const;
 
     /**
      * @en
@@ -407,7 +413,6 @@ public:
     //     }
     //     return this.eventTargetOn(type, callback, target, once);
     // }
-
 
     /**
      * @en
@@ -436,7 +441,6 @@ public:
      */
     void init(IGameConfig *config);
 
-
     /**
      * @en Run game with configuration object and onStart function.
      * @zh 运行游戏，并且指定引擎配置和 onStart 的回调。
@@ -459,7 +463,6 @@ public:
     //     return Promise.resolve(initPromise).then(() => this._setRenderPipelineNShowSplash());
     // }
 
-
     //  @ Persist root node section
     /**
      * @en
@@ -470,21 +473,21 @@ public:
      * 目标节点必须位于为层级的根节点，否则无效。
      * @param node - The node to be made persistent
      */
-    void addPersistRootNode(scenegraph::Node* node);
+    void addPersistRootNode(scenegraph::Node *node);
 
     /**
      * @en Remove a persistent root node.
      * @zh 取消常驻根节点。
      * @param node - The node to be removed from persistent node list
      */
-    void removePersistRootNode(scenegraph::Node* node);
+    void removePersistRootNode(scenegraph::Node *node);
 
     /**
      * @en Check whether the node is a persistent root node.
      * @zh 检查节点是否是常驻根节点。
      * @param node - The node to be checked
      */
-    bool isPersistRootNode(scenegraph::Node* node) const;
+    bool isPersistRootNode(scenegraph::Node *node) const;
 
 private:
     Game() = default;
@@ -528,10 +531,12 @@ private:
     void setupRenderPipeline();
 
     void showSplashScreen();
+    
+    void setRenderPipeline(pipeline::RenderPipeline* pipeline);
 
-    void safeEmit(std::string event);
+    void safeEmit(const std::string& event);
 
-    gfx::Device* _gfxDevice = nullptr;
+    gfx::Device *_gfxDevice = nullptr;
 
     // states
     bool _inited{false};
@@ -540,14 +545,13 @@ private:
     bool _paused{true};
 
     // frame control
-    uint32_t _frameRate{60};
-    int _intervalId{0}; // interval target of main
-    float _initTime{0};
-    float _startTime{0};
-    float _deltaTime{0};
+    uint32_t                                                    _frameRate{60};
+    int                                                         _intervalId{0}; // interval target of main
+    std::chrono::time_point<std::chrono::high_resolution_clock> _initTime;
+    float                                                       _startTime{0};
+    float                                                       _deltaTime{0};
 
     using frameCB = std::function<void(uint32_t)>;
-
 };
 
-}  // namespace cc
+} // namespace cc

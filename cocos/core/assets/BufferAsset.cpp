@@ -24,3 +24,18 @@
 ****************************************************************************/
 
 #include "core/assets/BufferAsset.h"
+
+namespace cc {
+
+std::any BufferAsset::getNativeAsset() const {
+    return _buffer;
+}
+
+void BufferAsset::setNativeAsset(const std::any &obj) {
+    auto *pNativeAsset = std::any_cast<ArrayBuffer>(&obj);
+    if (pNativeAsset != nullptr) {
+        _buffer = std::move(*pNativeAsset);
+    }
+}
+
+} // namespace cc

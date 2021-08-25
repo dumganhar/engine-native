@@ -35,6 +35,7 @@ namespace cc {
  */
 class TextAsset final : public Asset {
 public:
+    TextAsset() = default;
     /**
      * @en The text content.
      * @zh 此资源包含的文本。
@@ -46,6 +47,9 @@ public:
     std::string toString() const {
         return text;
     }
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(TextAsset);
 };
 
 } // namespace cc

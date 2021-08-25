@@ -43,6 +43,8 @@ public:
 
 private:
     ArrayBuffer _buffer;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(BufferAsset);
 };
 
 } // namespace cc

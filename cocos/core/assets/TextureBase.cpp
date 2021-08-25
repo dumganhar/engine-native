@@ -28,6 +28,8 @@
 
 namespace cc {
 
-static const IDGenerator __idGenerator("Tex");
-
+namespace {
+const IDGenerator __idGenerator("Tex");
 }
+
+} // namespace cc

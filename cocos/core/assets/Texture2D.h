@@ -175,6 +175,8 @@ public:
 
 private:
     std::vector<ImageAsset *> _mipmaps; //cjh how about using std::vector<std::shared_ptr<ImageAsset>>?
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Texture2D);
 };
 
 } // namespace cc

@@ -28,7 +28,7 @@
 #include <any>
 #include <functional>
 
-#include "base/Value.h"
+#include "base/Macros.h"
 #include "core/Types.h"
 #include "core/data/Object.h"
 
@@ -147,6 +147,8 @@ private:
 
     bool _loaded{true};
     bool _isDefault{false};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Asset);
 };
 
 } // namespace cc

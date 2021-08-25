@@ -37,8 +37,12 @@ namespace cc {
  */
 class JsonAsset final : public Asset {
 public:
+    JsonAsset() = default;
+
 private:
     rapidjson::Value _json;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(JsonAsset);
 };
 
 } // namespace cc

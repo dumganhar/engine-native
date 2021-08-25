@@ -105,6 +105,9 @@ public:
 
     void         initDefault(const std::string &uuid) override;
     virtual bool validate() const override { _data.has_value(); }
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Prefab);
 };
 
 } // namespace cc

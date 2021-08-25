@@ -47,6 +47,8 @@ private:
     @editable
     @serializable*/
     Scene *_scene = nullptr;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(SceneAsset);
 };
 
 } // namespace cc

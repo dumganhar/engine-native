@@ -32,19 +32,7 @@
 
 namespace cc {
 
-/**
- * @en Image source in memory
- * @zh 内存图像源。
- */
-struct IMemoryImageSource {
-    ArrayBuffer _data;
-    bool        _compressed{false};
-    uint32_t    width{0};
-    uint32_t    height{0};
-    uint32_t    format{0};
-};
-
-using ImageSource = IMemoryImageSource;
+class Image;
 
 /**
  * @en Image Asset.
@@ -52,14 +40,17 @@ using ImageSource = IMemoryImageSource;
  */
 class ImageAsset final : public Asset {
 public:
-    virtual std::any getNativeAsset() const override { return std::any(_nativeData); }
-    void             setNativeAsset(const std::any &obj) override;
+    ImageAsset() = default;
+    ~ImageAsset() override;
+
+    std::any getNativeAsset() const override { return std::any(_nativeData); }
+    void     setNativeAsset(const std::any &obj) override;
 
     /**
      * @en Image data.
      * @zh 此图像资源的图像数据。
      */
-    const ArrayBuffer &getData() const;
+    const uint8_t *getData() const;
 
     /**
      * @en The pixel width of the image.
@@ -90,10 +81,12 @@ public:
      * @zh 此图像资源的原始图像源的 URL。当原始图像元不是 HTML 文件时可能为空。
      * @deprecated Please use [[nativeUrl]]
      */
-    const std::string &getUrl() const;
+    std::string getUrl() const;
 
 private:
-    ImageSource _nativeData;
+    Image *_nativeData{nullptr};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(ImageAsset);
 };
 
 } // namespace cc

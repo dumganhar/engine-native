@@ -211,6 +211,8 @@ protected:
 
 protected:
     static std::unordered_map<std::string, const EffectAsset *> __effects; //cjh TODO: how to clear when game exits.
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(EffectAsset);
 };
 
 } // namespace cc

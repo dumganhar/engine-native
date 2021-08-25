@@ -124,11 +124,12 @@ protected:
 protected:
     gfx::Texture *_gfxTexture{nullptr};
 
-private:
     uint32_t _mipmapLevel{1};
     // Cache these data to reduce JSB invoking.
     uint32_t _textureWidth{0};
     uint32_t _textureHeight{0};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(SimpleTexture);
 };
 
 } // namespace cc

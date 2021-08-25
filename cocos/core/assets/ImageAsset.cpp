@@ -24,3 +24,66 @@
 ****************************************************************************/
 
 #include "core/assets/ImageAsset.h"
+
+#include "platform/Image.h"
+
+namespace cc {
+
+ImageAsset::~ImageAsset() {
+    if (_nativeData != nullptr) {
+        _nativeData->release();
+    }
+}
+
+void ImageAsset::setNativeAsset(const std::any &obj) {
+    if (obj.has_value()) {
+        if (auto *pData = std::any_cast<Image *>(&obj); pData != nullptr) {
+            _nativeData = *pData;
+            _nativeData->retain();
+        }
+    }
+}
+
+const uint8_t *ImageAsset::getData() const {
+    if (_nativeData != nullptr) {
+        return _nativeData->getData();
+    }
+    return nullptr;
+}
+
+uint32_t ImageAsset::getWidth() const {
+    if (_nativeData != nullptr) {
+        return _nativeData->getWidth();
+    }
+    return 0;
+}
+
+uint32_t ImageAsset::getHeight() const {
+    if (_nativeData != nullptr) {
+        return _nativeData->getHeight();
+    }
+    return 0;
+}
+
+PixelFormat ImageAsset::getFormat() const {
+    if (_nativeData != nullptr) {
+        return static_cast<PixelFormat>(_nativeData->getRenderFormat());
+    }
+    return PixelFormat::RGBA8888; //cjh TODO: use RGBA8888 as default value?
+}
+
+bool ImageAsset::isCompressed() const {
+    if (_nativeData != nullptr) {
+        return _nativeData->isCompressed();
+    }
+    return false;
+}
+
+std::string ImageAsset::getUrl() const {
+    if (_nativeData != nullptr) {
+        return _nativeData->getFilePath();
+    }
+    return "";
+}
+
+} // namespace cc

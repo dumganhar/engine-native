@@ -64,46 +64,6 @@ public:
     uint32_t getHeight() const {
         return _height;
     }
-
-protected:
-    /*@serializable*/
-    PixelFormat _format = PixelFormat::RGBA8888;
-
-    /*@serializable*/
-    Filter _minFilter = Filter::LINEAR;
-
-    /*@serializable*/
-    Filter _magFilter = Filter::LINEAR;
-
-    /*@serializable*/
-    Filter _mipFilter = Filter::NONE;
-
-    /*@serializable*/
-    WrapMode _wrapS = WrapMode::REPEAT;
-
-    /*@serializable*/
-    WrapMode _wrapT = WrapMode::REPEAT;
-
-    /*@serializable*/
-    WrapMode _wrapR = WrapMode::REPEAT;
-
-    /*@serializable*/
-    int32_t _anisotropy = 0;
-
-    uint32_t _width  = 1;
-    uint32_t _height = 1;
-
-    std::string           _id;
-    std::vector<uint32_t> _samplerInfo;
-    uint64_t              _samplerHash = 0;
-    gfx::Sampler *        _gfxSampler  = nullptr;
-    gfx::Device *         _gfxDevice   = nullptr;
-
-    uint64_t _textureHash = 0;
-
-    TextureBase();
-
-public:
     /**
      * @en Gets the id of the texture
      * @zh 获取标识符。
@@ -215,6 +175,8 @@ public:
     void _deserialize(std::any serializedData, std::any handle) override;
 
 protected:
+    TextureBase();
+
     gfx::Device *_getGFXDevice() const;
 
     gfx::Format _getGFXFormat() const;
@@ -222,6 +184,45 @@ protected:
     void _setGFXFormat(gfx::Format format);
 
     gfx::Format _getGFXPixelFormat(PixelFormat format);
+
+protected:
+    /*@serializable*/
+    PixelFormat _format = PixelFormat::RGBA8888;
+
+    /*@serializable*/
+    Filter _minFilter = Filter::LINEAR;
+
+    /*@serializable*/
+    Filter _magFilter = Filter::LINEAR;
+
+    /*@serializable*/
+    Filter _mipFilter = Filter::NONE;
+
+    /*@serializable*/
+    WrapMode _wrapS = WrapMode::REPEAT;
+
+    /*@serializable*/
+    WrapMode _wrapT = WrapMode::REPEAT;
+
+    /*@serializable*/
+    WrapMode _wrapR = WrapMode::REPEAT;
+
+    /*@serializable*/
+    int32_t _anisotropy = 0;
+
+    uint32_t _width  = 1;
+    uint32_t _height = 1;
+
+    std::string           _id;
+    std::vector<uint32_t> _samplerInfo;
+    uint64_t              _samplerHash = 0;
+    gfx::Sampler *        _gfxSampler  = nullptr;
+    gfx::Device *         _gfxDevice   = nullptr;
+
+    uint64_t _textureHash = 0;
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(TextureBase);
 };
 
 } // namespace cc

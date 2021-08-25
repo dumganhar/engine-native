@@ -115,6 +115,8 @@ private:
     gfx::PrimitiveMode _primitiveMode{gfx::PrimitiveMode::TRIANGLE_LIST};
 
     gfx::InputAssemblerInfo _iaInfo;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(RenderingSubMesh);
 };
 
 } // namespace cc

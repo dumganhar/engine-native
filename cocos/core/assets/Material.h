@@ -279,6 +279,9 @@ protected:
 
     void                               update(bool keepProps = true);
     virtual std::vector<scene::Pass *> createPasses();
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Material);
 };
 
 template <>

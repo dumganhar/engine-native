@@ -127,6 +127,8 @@ private:
     uint32_t _height{1};
 
     RenderWindow *_window{nullptr};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(RenderTexture);
 };
 
 } // namespace cc

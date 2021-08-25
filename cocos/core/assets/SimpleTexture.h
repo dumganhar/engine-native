@@ -58,7 +58,7 @@ public:
      */
     gfx::Texture *getGFXTexture();
 
-    virtual bool destroy() override;
+    bool destroy() override;
 
     /**
      * @en Update the level 0 mipmap image.

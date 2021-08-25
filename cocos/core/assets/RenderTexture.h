@@ -72,7 +72,7 @@ public:
     void initialize(const IRenderTextureCreateInfo &info);
     void reset(const IRenderTextureCreateInfo &info); // to be consistent with other assets
 
-    virtual bool destroy() override;
+    bool destroy() override;
 
     /**
      * @en Resize the render texture
@@ -107,13 +107,13 @@ public:
      */
     uint64_t getSamplerHash() const;
 
-    virtual void onLoaded() override;
+    void onLoaded() override;
 
     void _initWindow(const IRenderTextureCreateInfo &info);
 
     virtual void initDefault(const std::string &uuid);
 
-    virtual bool validate() const override;
+    bool validate() const override;
 
 private:
     /*    @serializable

@@ -53,7 +53,7 @@ using ImageSource = IMemoryImageSource;
 class ImageAsset final : public Asset {
 public:
     virtual std::any getNativeAsset() const override { return std::any(_nativeData); }
-    virtual void     setNativeAsset(const std::any &obj) override;
+    void             setNativeAsset(const std::any &obj) override;
 
     /**
      * @en Image data.

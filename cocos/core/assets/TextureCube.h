@@ -125,7 +125,7 @@ public:
     /*@serializable*/
     std::vector<ITextureCubeMipmap> _mipmaps;
 
-    virtual void onLoaded() override;
+    void onLoaded() override;
 
     /**
      * @en Reset the current texture with given size, pixel format and mipmap images.
@@ -136,12 +136,12 @@ public:
      */
     void reset(const ITextureCubeCreateInfo &info);
 
-    virtual void updateMipmaps(uint32_t firstLevel = 0, uint32_t count = 0) override;
+    void updateMipmaps(uint32_t firstLevel = 0, uint32_t count = 0) override;
 
     /**
      * 销毁此贴图，清空所有 Mipmap 并释放占用的 GPU 资源。
      */
-    virtual bool destroy() override;
+    bool destroy() override;
 
     /**
      * @en Release used GPU resources.
@@ -150,14 +150,14 @@ public:
      */
     void releaseTexture();
 
-    virtual std::any _serialize(std::any ctxForExporting) override;
-    virtual void     _deserialize(std::any serializedData, std::any handle) override;
+    std::any _serialize(std::any ctxForExporting) override;
+    void     _deserialize(std::any serializedData, std::any handle) override;
 
-    virtual gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
+    gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 
-    virtual void initDefault(const std::string &uuid) override;
+    void initDefault(const std::string &uuid) override;
 
-    virtual bool validate() const override;
+    bool validate() const override;
 };
 
 } // namespace cc

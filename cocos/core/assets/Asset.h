@@ -101,7 +101,9 @@ public:
     virtual void initDefault(const std::string &uuid);
     virtual bool validate() const { return true; }
 
-    virtual bool destroy() override;
+    bool isDefault() const { return _isDefault; }
+
+    bool destroy() override;
 
     // SERIALIZATION
 

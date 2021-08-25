@@ -52,24 +52,43 @@ void Material::initialize(const IMaterialInfo &info) {
     if (!_props.empty()) {
         _props.clear();
     }
-    _techIdx = info.technique;
-    if (info.effectAsset) {
-        _effectAsset = info.effectAsset;
-    } else if (!info.effectName.empty()) {
-        _effectAsset = EffectAsset::get(info.effectName);
-    }
-    if (!info.defines.empty()) {
-        prepareInfo(info.defines, _defines);
+
+    if (info.technique != std::nullopt) {
+        _techIdx = info.technique.value();
     }
 
-    if (!info.states.empty()) {
-        prepareInfo(info.states, _states);
+    if (info.effectAsset != nullptr) {
+        _effectAsset = info.effectAsset; //cjh TODO:
+    } else if (info.effectName != std::nullopt) {
+        _effectAsset = EffectAsset::get(info.effectName.value());
+    }
+
+    if (info.defines != std::nullopt) {
+        prepareInfo(info.defines.value(), _defines);
+    }
+
+    if (info.states != std::nullopt) {
+        prepareInfo(info.states.value(), _states);
     }
     update();
 }
 
 void Material::reset(const IMaterialInfo &info) { // to be consistent with other assets
     initialize(info);
+}
+
+bool Material::destroy() {
+    doDestroy();
+    return Super::destroy();
+}
+
+void Material::doDestroy() {
+    if (!_passes.empty()) {
+        for (auto *pass : _passes) {
+            //cjh            pass->destroy();
+        }
+    }
+    _passes.clear();
 }
 
 void Material::recompileShaders(const MacroRecord &overrides, index_t passIdx) {
@@ -144,7 +163,25 @@ MaterialProperty *Material::getProperty(const std::string &name, index_t passIdx
 }
 
 void Material::copy(const Material *mat) {
+    if (mat == nullptr) {
+        return;
+    }
     //cjh
+    _techIdx = mat->_techIdx;
+    _props.resize(mat->_props.size());
+    for (size_t i = 0, len = mat->_props.size(); i < len; ++i) {
+        _props[i] = mat->_props[i];
+    }
+    _defines.resize(mat->_defines.size());
+    for (size_t i = 0, len = mat->_defines.size(); i < len; ++i) {
+        _defines[i] = mat->_defines[i];
+    }
+    _states.resize(mat->_states.size());
+    for (size_t i = 0, len = mat->_states.size(); i < len; ++i) {
+        _states[i] = mat->_states[i];
+    }
+    _effectAsset = mat->_effectAsset; //cjh TODO: lifecycle
+    update();
 }
 
 void Material::update(bool keepProps /* = true*/) {
@@ -250,13 +287,44 @@ bool Material::uploadProperty(scene::Pass *passs, const std::string &name, const
 void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index) {
 }
 
-template <typename T>
-void Material::prepareInfo(const T &patchArray, T &cur) {
-    size_t len = patchArray.size();
-    cur.resize(len);
+void Material::initDefault(const std::string &uuid) {
+    Super::initDefault(uuid);
+    MacroRecord   defines{{"USE_COLOR", true}};
+    IMaterialInfo info{
+        .effectName = "unlit",
+        .defines    = defines};
+    initialize(std::move(info));
+    //cjh TODO:    setProperty('mainColor', new Color('#ff00ff'));
+}
 
-    for (size_t i = 0; i < len; ++i) {
-        cur[i] = patchArray[i];
+bool Material::validate() const {
+    return _effectAsset != nullptr && !_effectAsset->isDefault() && !_passes.empty();
+}
+
+template <typename T1, typename T2>
+void Material::prepareInfo(const T1 &patch, std::vector<T2> &cur) {
+    if (auto *pOneElement = std::get_if<T2>(patch)) {
+        size_t len = _effectAsset != nullptr ? _effectAsset->_techniques[_techIdx].passes.size() : 1;
+
+        std::vector<T2> patchArray;
+        patchArray.reserve(len);
+        for (size_t i = 0; i < len; ++i) {
+            patchArray.emplace_back(patch);
+        }
+
+        cur.resize(patchArray.size());
+
+        for (size_t i = 0; i < len; ++i) {
+            cur[i] = patchArray[i];
+        }
+    } else {
+        const T1 &patchArray = patch;
+        size_t    len        = patchArray.size();
+        cur.resize();
+
+        for (size_t i = 0; i < len; ++i) {
+            cur[i] = patchArray[i];
+        }
     }
 }
 

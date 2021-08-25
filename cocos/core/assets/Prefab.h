@@ -99,11 +99,11 @@ public:
 
     Prefab() = default;
 
-    virtual void createNode(const CreateNodeCallback &cb) override;
+    void createNode(const CreateNodeCallback &cb) override;
 
     Node *_instantiate();
 
-    virtual void initDefault(const std::string &uuid) override;
+    void         initDefault(const std::string &uuid) override;
     virtual bool validate() const override { _data.has_value(); }
 };
 

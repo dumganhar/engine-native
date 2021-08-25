@@ -168,7 +168,7 @@ public:
      * @en Destroy the current texture, clear up the related GPU resources.
      * @zh 销毁此贴图，并释放占用的 GPU 资源。
      */
-    virtual bool destroy() override;
+    bool destroy() override;
 
     /**
      * @en Gets the texture hash.
@@ -206,13 +206,13 @@ public:
     /**
      * @return
      */
-    virtual std::any _serialize(std::any ctxForExporting) override;
+    std::any _serialize(std::any ctxForExporting) override;
 
     /**
      *
      * @param data
      */
-    virtual void _deserialize(std::any serializedData, std::any handle) override;
+    void _deserialize(std::any serializedData, std::any handle) override;
 
 protected:
     gfx::Device *_getGFXDevice() const;

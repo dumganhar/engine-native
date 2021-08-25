@@ -110,13 +110,13 @@ public:
     /**
      * @return
      */
-    virtual std::any _serialize(std::any ctxForExporting) { return std::any(); };
+    virtual std::any serialize(const std::any &ctxForExporting) { return std::any(); };
 
     /**
      *
      * @param data
      */
-    virtual void _deserialize(std::any serializedData, std::any handle){};
+    virtual void deserialize(const std::any &serializedData, const std::any &handle){};
 
     virtual std::string toString() const override { return _nativeUrl; }
 

@@ -159,13 +159,13 @@ public:
     /**
      * @return
      */
-    std::any _serialize(std::any ctxForExporting) override;
+    std::any serialize(const std::any &ctxForExporting) override;
 
     /**
      *
      * @param data
      */
-    void _deserialize(std::any serializedData, std::any handle) override;
+    void deserialize(const std::any &serializedData, const std::any &handle) override;
 
     gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 

@@ -70,12 +70,12 @@ constexpr uint32_t genHandle(PropertyType pt, uint32_t set, uint32_t binding, gf
            (offset & OFFSET_MASK);
 }
 
-constexpr uint32_t getPropertyTypeFromHandle(uint32_t handle) { return (handle & DT_MASK) >> 28; }
-constexpr uint32_t getTypeFromHandle(uint32_t handle) { return (handle & TYPE_MASK) >> 22; }
-constexpr uint32_t getSetIndexFromHandle(uint32_t handle) { return (handle & SET_MASK) >> 20; }
-constexpr uint32_t getBindingFromHandle(uint32_t handle) { return (handle & BINDING_MASK) >> 14; }
-constexpr uint32_t getOffsetFromHandle(uint32_t handle) { return (handle & OFFSET_MASK); }
-constexpr uint32_t customizeType(uint32_t handle, gfx::Type type) {
+constexpr PropertyType getPropertyTypeFromHandle(uint32_t handle) { return static_cast<PropertyType>((handle & DT_MASK) >> 28); }
+constexpr uint32_t     getTypeFromHandle(uint32_t handle) { return (handle & TYPE_MASK) >> 22; }
+constexpr uint32_t     getSetIndexFromHandle(uint32_t handle) { return (handle & SET_MASK) >> 20; }
+constexpr uint32_t     getBindingFromHandle(uint32_t handle) { return (handle & BINDING_MASK) >> 14; }
+constexpr uint32_t     getOffsetFromHandle(uint32_t handle) { return (handle & OFFSET_MASK); }
+constexpr uint32_t     customizeType(uint32_t handle, gfx::Type type) {
     return (handle & ~TYPE_MASK) | ((static_cast<uint32_t>(type) << 22) & TYPE_MASK);
 }
 /**

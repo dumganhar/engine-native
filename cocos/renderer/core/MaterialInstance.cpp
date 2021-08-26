@@ -1,4 +1,5 @@
 #include "renderer/core/MaterialInstance.h"
+#include "renderer/core/PassInstance.h"
 
 namespace cc {
 
@@ -15,11 +16,11 @@ void MaterialInstance::recompileShaders(const MacroRecord &overrides, index_t pa
     }
 
     if (passIdx == CC_INVALID_INDEX) {
-        for (auto *pass : _passes) {
-            //cjh            pass->tryCompile(overrides);
+        for (auto *pass : _passInstances) {
+            pass->tryCompile(overrides);
         }
     } else {
-        //cjh        _passes[passIdx]->tryCompile(overrides);
+        _passInstances[passIdx]->tryCompile(overrides);
     }
 }
 
@@ -28,16 +29,16 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
         return;
     }
 
-    const auto &passInfos = _effectAsset->_techniques[getTechniqueIndex()].passes;
+    const std::vector<IPassInfo *> &passInfos = _effectAsset->_techniques[getTechniqueIndex()].passes;
     if (passIdx == CC_INVALID_INDEX) {
-        for (size_t i = 0, len = _passes.size(); i < len; i++) {
-            const auto *pass = _passes[i];
+        for (size_t i = 0, len = _passInstances.size(); i < len; i++) {
+            auto *pass = _passInstances[i];
             if (i >= _states.size()) {
                 _states.resize(i + 1);
             }
             auto &state = _states[i];
             state       = overrides;
-            //cjh            pass->overridePipelineStates(passInfos[pass->getPassIndex()], state);
+            pass->overridePipelineStates(*passInfos[pass->getPassIndex()], state);
         }
     } else {
         if (passIdx >= _states.size()) {
@@ -45,7 +46,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
         }
         auto &state = _states[passIdx];
         state       = overrides;
-        //cjh        _passes[passIdx]->overridePipelineStates(passInfos[passIdx], state);
+        _passes[passIdx]->overridePipelineStates(*passInfos[passIdx], state);
     }
 }
 
@@ -57,7 +58,7 @@ bool MaterialInstance::destroy() {
 void MaterialInstance::doDestroy() {
     if (!_passes.empty()) {
         for (auto *pass : _passes) {
-            //cjh            pass->destroy();
+            pass->destroy();
         }
     }
     _passes.clear();
@@ -65,12 +66,11 @@ void MaterialInstance::doDestroy() {
 
 std::vector<scene::Pass *> MaterialInstance::createPasses() {
     std::vector<scene::Pass *> passes;
-    //cjh    const passes: PassInstance[] = [];
-    //    const parentPasses = this._parent.passes;
-    //    if (!parentPasses) { return passes; }
-    //    for (let k = 0; k < parentPasses.length; ++k) {
-    //        passes.push(new PassInstance(parentPasses[k], this));
-    //    }
+    auto &                     parentPasses = _parent->getPasses();
+
+    for (size_t k = 0; k < parentPasses.size(); ++k) {
+        passes.emplace_back(new PassInstance(parentPasses[k], this)); //cjh shared_ptr?
+    }
     return passes;
 }
 

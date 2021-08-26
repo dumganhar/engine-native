@@ -38,7 +38,7 @@ public:
     using Super = scene::Pass;
 
     PassInstance(Pass *parent, MaterialInstance *owner);
-    ~PassInstance() = default;
+    ~PassInstance() override = default;
     /**
      * @en The parent pass
      * @zh 相关联的原始 Pass

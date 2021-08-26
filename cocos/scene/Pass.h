@@ -29,14 +29,14 @@
 #include <string>
 #include <vector>
 #include "base/TypeDef.h"
+#include "core/assets/EffectAsset.h"
+#include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXBuffer.h"
-#include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDescriptorSet.h"
+#include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Define.h"
-#include "renderer/core/PassUtils.h"
-#include "core/assets/EffectAsset.h"
 
 namespace cc {
 namespace scene {
@@ -79,7 +79,7 @@ public:
     Pass() { _phase = pipeline::getPhaseID("default"); }
     Pass(const Pass &) = delete;
     Pass(Pass &&)      = delete;
-    ~Pass()            = default;
+    virtual ~Pass()    = default;
     Pass &operator=(const Pass &) = delete;
     Pass &operator=(Pass &&) = delete;
 

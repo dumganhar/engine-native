@@ -207,9 +207,9 @@ void BaseNode::setParent(BaseNode* parent, bool isKeepWorld) {
     }
     BaseNode* oldParent = _parent;
     BaseNode* newParent = parent;
-    if (CC_DEBUG && oldParent && !!(oldParent->_objFlags & Flags::DEACTIVATING)) {
-        // TODO: errorID not implemented
-    }
+    // if (CC_DEBUG && oldParent && !!(oldParent->_objFlags & Flags::DEACTIVATING)) {
+    //     // TODO: errorID not implemented
+    // }
     _parent       = newParent;
     _siblingIndex = 0;
     onSetParent(oldParent, isKeepWorld);
@@ -231,9 +231,9 @@ void BaseNode::setParent(BaseNode* parent, bool isKeepWorld) {
         }
     }
     if (newParent) {
-        if (CC_DEBUG && !!(newParent->_objFlags & Flags::DEACTIVATING)) {
-            // TODO:errorID(3821);
-        }
+        // if (CC_DEBUG && !!(newParent->_objFlags & Flags::DEACTIVATING)) {
+        //     // TODO:errorID(3821);
+        // }
         newParent->_children.emplace_back(this);
         _siblingIndex = newParent->_children.size() - 1;
         newParent->emit(NodeEventType::CHILD_ADDED, this);

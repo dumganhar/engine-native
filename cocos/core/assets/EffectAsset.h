@@ -25,8 +25,10 @@
 
 #pragma once
 
+#include <optional>
 #include <string>
 #include <unordered_map>
+
 #include "base/Value.h"
 #include "core/Types.h"
 #include "core/assets/Asset.h"
@@ -38,47 +40,46 @@
 namespace cc {
 
 struct IPropertyInfo {
-    int32_t             type;        // auto-extracted from shader
-    ValueVector         handleInfo;  //cjh check: ?: [string, number, number]; // auto-generated from 'target'
-    uint32_t            samplerHash; // auto-generated from 'sampler'
-    std::vector<double> numberValue; //cjh     ?: number[] | string;
-    std::string         stringValue;
+    int32_t                                                       type;        // auto-extracted from shader
+    std::optional<ValueVector>                                    handleInfo;  //cjh check: ?: [string, number, number]; // auto-generated from 'target'
+    std::optional<uint64_t>                                       samplerHash; // auto-generated from 'sampler'
+    std::optional<std::variant<std::vector<double>, std::string>> value;       //cjh use double ?
 };
 
 // Pass instance itself are compliant to IPassStates too
 struct IPassStates {
-    std::optional<int32_t>             priority;
-    gfx::PrimitiveMode                 primitive;
-    pipeline::RenderPassStage          stage;
-    gfx::RasterizerState               rasterizerState;
-    gfx::DepthStencilState             depthStencilState;
-    gfx::BlendState                    blendState;
-    gfx::DynamicStateFlags             dynamicStates;
-    std::variant<std::string, int32_t> phase;
+    std::optional<int32_t>                            priority;
+    std::optional<gfx::PrimitiveMode>                 primitive;
+    std::optional<pipeline::RenderPassStage>          stage;
+    std::optional<gfx::RasterizerState>               rasterizerState;
+    std::optional<gfx::DepthStencilState>             depthStencilState;
+    std::optional<gfx::BlendState>                    blendState;
+    std::optional<gfx::DynamicStateFlags>             dynamicStates;
+    std::optional<std::variant<std::string, int32_t>> phase;
 };
 
 using PassOverrides = IPassStates;
 
 struct IPassInfo : public IPassStates {
-    std::string                                    program; // auto-generated from 'vert' and 'frag'
-    MacroRecord                                    embeddedMacros;
-    int32_t                                        propertyIndex;
-    std::string                                    switch_;
-    std::unordered_map<std::string, IPropertyInfo> properties;
+    std::string                                                   program; // auto-generated from 'vert' and 'frag'
+    std::optional<MacroRecord>                                    embeddedMacros;
+    index_t                                                       propertyIndex;
+    std::optional<std::string>                                    switch_;
+    std::optional<std::unordered_map<std::string, IPropertyInfo>> properties;
 };
 
 struct ITechniqueInfo {
-    std::vector<IPassInfo> passes;
-    std::string            name;
+    std::vector<IPassInfo *>   passes; //cjh use shared_ptr?
+    std::optional<std::string> name;
 };
 
 struct IBlockInfo {
-    int32_t                   binding;
-    std::string               name;
-    std::vector<gfx::Uniform> members;
-    uint32_t                  count;
-    gfx::ShaderStageFlags     stageFlags;
-    gfx::DescriptorType       descriptorType;
+    int32_t                            binding;
+    std::string                        name;
+    std::vector<gfx::Uniform>          members;
+    uint32_t                           count;
+    gfx::ShaderStageFlags              stageFlags;
+    std::optional<gfx::DescriptorType> descriptorType;
 };
 
 struct ISamplerTextureInfo {
@@ -95,11 +96,11 @@ struct IAttributeInfo : public gfx::Attribute {
 };
 
 struct IDefineInfo {
-    std::string              name;
-    std::string              type;
-    std::vector<float>       range; //cjh number is float?  ?: number[];
-    std::vector<std::string> options;
-    std::string              defaultVal;
+    std::string                             name;
+    std::string                             type;
+    std::optional<std::vector<float>>       range; //cjh number is float?  ?: number[];
+    std::optional<std::vector<std::string>> options;
+    std::optional<std::string>              defaultVal;
 };
 
 struct IBuiltin {

@@ -67,7 +67,7 @@ public:
     void onPassStateChange(bool dontNotify);
 
 protected:
-    std::vector<PassInstance *> _passes;
+    std::vector<PassInstance *> _passInstances; //cjh could we use Material::_passes ?
 
 private:
     Material *           _parent{nullptr};

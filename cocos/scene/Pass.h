@@ -62,6 +62,40 @@ struct IMacroPatch {
 class Pass {
 public:
     /**
+     * @en The binding type enums of the property
+     * @zh Uniform 的绑定类型（UBO 或贴图等）
+     */
+    using PropertyType = PropertyType;
+
+    /**
+     * @en Gets the binding type of the property with handle
+     * @zh 根据 handle 获取 uniform 的绑定类型（UBO 或贴图等）。
+     */
+    static PropertyType getPropertyTypeFromHandle(uint32_t handle) {
+        return cc::getPropertyTypeFromHandle(handle);
+    }
+
+    /**
+     * @en Gets the type of member in uniform buffer object with the handle
+     * @zh 根据 handle 获取 UBO member 的具体类型。
+     */
+    static gfx::Type getTypeFromHandle(uint32_t handle) {
+        return cc::getTypeFromHandle(handle);
+    }
+
+    /**
+     * @en Gets the binding with handle
+     * @zh 根据 handle 获取 binding。
+     */
+    static uint32_t getBindingFromHandle(uint32_t handle) {
+        return cc::getBindingFromHandle(handle);
+    }
+
+    static uint32_t getOffsetFromHandle(uint32_t handle) {
+        return cc::getOffsetFromHandle(handle);
+    }
+
+    /**
      * @en Fill a pass represented by the given pass handle with the given override info
      * @param pass The pass handle point to the pass
      * @param info The pass override info
@@ -138,7 +172,7 @@ public:
      * @param handle The handle for the target uniform
      * @param value New value
      */
-    void setUniformArray(uint32_t handle, const std::vector<MaterialProperty> &value);
+    void setUniformArray(uint32_t handle, const MaterialPropertyList &value);
 
     /**
      * @en Bind a GFX [[Texture]] the the given uniform binding

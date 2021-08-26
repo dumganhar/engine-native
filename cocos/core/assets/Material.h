@@ -168,7 +168,7 @@ public:
      * @param val The target value.
      * @param passIdx The pass to apply to. Will apply to all passes if not specified.
      */
-    void setProperty(const std::string &name, const MaterialProperty &val, index_t passIdx = CC_INVALID_INDEX);
+    void setProperty(const std::string &name, const MaterialPropertyVariant &val, index_t passIdx = CC_INVALID_INDEX);
 
     /**
      * @en
@@ -182,7 +182,7 @@ public:
      * @param name The property or uniform name.
      * @param passIdx The target pass index. If not specified, return the first found value in all passes.
      */
-    MaterialProperty *getProperty(const std::string &name, index_t passIdx = CC_INVALID_INDEX);
+    MaterialPropertyVariant *getProperty(const std::string &name, index_t passIdx = CC_INVALID_INDEX);
 
     /**
      * @en Copy the target material.
@@ -205,7 +205,7 @@ protected:
     std::vector<PassOverrides> _states;
 
     /* @serializable */
-    std::vector<Record<std::string, MaterialProperty>> _props;
+    std::vector<Record<std::string, MaterialPropertyVariant>> _props;
 
     std::vector<scene::Pass *> _passes;
 
@@ -269,8 +269,8 @@ public:
     }
 
 protected:
-    bool uploadProperty(scene::Pass *passs, const std::string &name, const MaterialProperty &val);
-    void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index);
+    bool uploadProperty(scene::Pass *pass, const std::string &name, const MaterialPropertyVariant &val);
+    void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index = CC_INVALID_INDEX);
 
     template <typename T1, typename T2>
     void prepareInfo(const T1 &patchArray, std::vector<T2> &cur);

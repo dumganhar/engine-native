@@ -30,6 +30,7 @@
 #include <cerrno>
 #include <string>
 #include <vector>
+
 #include "base/Macros.h"
 #include "base/TypeDef.h"
 /** @file ccUtils.h
@@ -77,6 +78,14 @@ uint toUint(T value) {
              "value is too big to be converted to uint");
 
     return static_cast<uint>(value);
+}
+
+template <typename Map>
+Map &mergeToMap(Map &outMap, const Map &inMap) {
+    for (const auto &[k, v] : inMap) {
+        outMap.emplace(k, v);
+    }
+    return outMap;
 }
 
 } // namespace utils

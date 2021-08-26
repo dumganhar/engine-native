@@ -1,4 +1,4 @@
-#include "MaterialInstance.h"
+#include "renderer/core/MaterialInstance.h"
 
 namespace cc {
 

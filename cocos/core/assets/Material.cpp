@@ -24,6 +24,8 @@
 ****************************************************************************/
 
 #include "core/assets/Material.h"
+
+#include "base/Utils.h"
 #include "core/assets/EffectAsset.h"
 #include "scene/Pass.h"
 
@@ -31,10 +33,14 @@ namespace cc {
 
 /* static */
 uint64_t Material::getHashForMaterial(Material *material) {
+    if (material == nullptr) {
+        return 0;
+    }
+
     uint64_t hash = 0;
-    //cjh TODO:    for (const pass of material.passes) {
-    //        hash ^= pass.hash;
-    //    }
+    for (auto *pass : material->_passes) {
+        hash ^= pass->getHash();
+    }
     return hash;
 }
 
@@ -86,7 +92,7 @@ bool Material::destroy() {
 void Material::doDestroy() {
     if (!_passes.empty()) {
         for (auto *pass : _passes) {
-            //            pass->destroy();
+            pass->destroy();
         }
     }
     _passes.clear();
@@ -111,21 +117,21 @@ void Material::resetUniforms(bool clearPasses /* = true */) {
         return;
     }
 
-    for (const auto *pass : _passes) {
-        //cjh TODO:        pass.resetUBOs();
-        //        pass.resetTextures();
+    for (auto *pass : _passes) {
+        pass->resetUBOs();
+        pass->resetTextures();
     }
 }
 
-void Material::setProperty(const std::string &name, const MaterialProperty &val, index_t passIdx /* = CC_INVALID_INDEX */) {
+void Material::setProperty(const std::string &name, const MaterialPropertyVariant &val, index_t passIdx /* = CC_INVALID_INDEX */) {
     bool success = false;
     if (passIdx == CC_INVALID_INDEX) { // try set property for all applicable passes
         size_t len = _passes.size();
         for (size_t i = 0; i < len; i++) {
             auto *pass = _passes[i];
             if (uploadProperty(pass, name, val)) {
-                //cjh TODO:                _props[pass->getPropertyIndex()][name] = val;
-                success = true;
+                _props[pass->getPropertyIndex()][name] = val;
+                success                                = true;
             }
         }
     } else {
@@ -136,8 +142,8 @@ void Material::setProperty(const std::string &name, const MaterialProperty &val,
 
         auto *pass = _passes[passIdx];
         if (uploadProperty(pass, name, val)) {
-            //cjh            _props[pass->getPropertyIndex()][name] = val;
-            success = true;
+            _props[pass->getPropertyIndex()][name] = val;
+            success                                = true;
         }
     }
 
@@ -146,7 +152,7 @@ void Material::setProperty(const std::string &name, const MaterialProperty &val,
     }
 }
 
-MaterialProperty *Material::getProperty(const std::string &name, index_t passIdx) {
+MaterialPropertyVariant *Material::getProperty(const std::string &name, index_t passIdx) {
     if (passIdx == CC_INVALID_INDEX) { // try get property in all possible passes
         auto & propsArray = _props;
         size_t len        = propsArray.size();
@@ -163,11 +169,11 @@ MaterialProperty *Material::getProperty(const std::string &name, index_t passIdx
             return nullptr;
         }
 
-        //cjh        auto& props = _props[_passes[passIdx]->getPropertyIndex()];
-        //        auto iter = props.find(name);
-        //        if (iter != props.end()) {
-        //            return &iter->second;
-        //        }
+        auto &props = _props[_passes[passIdx]->getPropertyIndex()];
+        auto  iter  = props.find(name);
+        if (iter != props.end()) {
+            return &iter->second;
+        }
     }
     return nullptr;
 }
@@ -176,7 +182,7 @@ void Material::copy(const Material *mat) {
     if (mat == nullptr) {
         return;
     }
-    //cjh
+
     _techIdx = mat->_techIdx;
     _props.resize(mat->_props.size());
     for (size_t i = 0, len = mat->_props.size(); i < len; ++i) {
@@ -206,11 +212,11 @@ void Material::update(bool keepProps /* = true*/) {
                     _props.resize(i + 1);
                 }
 
-                const auto &props = _props[i];
+                auto &props = _props[i];
 
-                //cjh                if (pass->getPropertyIndex() != undefined) {
-                //                    Object.assign(props, _props[pass.propertyIndex]);
-                //                }
+                if (pass->getPropertyIndex() != CC_INVALID_INDEX) {
+                    props = _props[pass->getPropertyIndex()];
+                }
 
                 for (const auto &[key, value] : props) {
                     uploadProperty(pass, key, value);
@@ -221,7 +227,8 @@ void Material::update(bool keepProps /* = true*/) {
                 cb(_passes[i], i);
             }
         }
-        //cjh FIXME: no need?        else {
+        //cjh FIXME: no need since we resize _props?
+        //        else {
         //            for (size_t i = 0; i < _props.size(); i++) {
         //                _props[i] = {};
         //            }
@@ -241,60 +248,91 @@ std::vector<scene::Pass *> Material::createPasses() {
         return passes;
     }
 
-    //TODO:    const passNum         = tech.passes.length;
-    //    const passes : Pass[] = [];
-    //    for (let k = 0; k < passNum; ++k) {
-    //        const passInfo = tech.passes[k] as IPassInfoFull;
-    //        const propIdx = passInfo.passIndex = k;
-    //        const defines = passInfo.defines = this._defines[propIdx] || (this._defines[propIdx] = {});
-    //        const states = passInfo.stateOverrides = this._states[propIdx] || (this._states[propIdx] = {});
-    //        if (passInfo.propertyIndex != = undefined) {
-    //            Object.assign(defines, this._defines[passInfo.propertyIndex]);
-    //            Object.assign(states, this._states[passInfo.propertyIndex]);
-    //        }
-    //        if (passInfo.embeddedMacros != = undefined) {
-    //            Object.assign(defines, passInfo.embeddedMacros);
-    //        }
-    //        if (passInfo.switch && !defines[passInfo.switch]) {
-    //            continue;
-    //        }
-    //        const pass = new Pass(legacyCC.director.root);
-    //        pass.initialize(passInfo);
-    //        passes.push(pass);
-    //    }
+    size_t passNum = tech->passes.size();
+    for (size_t k = 0; k < passNum; ++k) {
+        auto *  passInfo = static_cast<scene::IPassInfoFull *>(tech->passes[k]); //cjh need to use dynamic_cast ?
+        index_t propIdx = passInfo->passIndex = static_cast<index_t>(k);
+
+        if (propIdx >= _defines.size()) {
+            _defines.resize(propIdx + 1);
+        }
+        passInfo->defines = _defines[propIdx]; //cjh JS object assignment is weak reference but c++ container assignment is strong copy operation  // const defines = passInfo.defines = this._defines[propIdx] || (this._defines[propIdx] = {});
+        auto &defines     = passInfo->defines;
+
+        if (propIdx >= _states.size()) {
+            _states.resize(propIdx + 1);
+        }
+        passInfo->stateOverrides = _states[propIdx]; //cjh same question as described above
+        auto &states             = passInfo->stateOverrides.value();
+
+        if (passInfo->propertyIndex != CC_INVALID_INDEX) {
+            utils::mergeToMap(defines, _defines[passInfo->propertyIndex]);
+            states = _states[passInfo->propertyIndex];
+        }
+
+        if (passInfo->embeddedMacros.has_value()) {
+            utils::mergeToMap(defines, passInfo->embeddedMacros.value());
+        }
+
+        if (passInfo->switch_.has_value() && defines.find(passInfo->switch_.value()) == defines.end()) {
+            continue;
+        }
+
+        auto pass = new scene::Pass(/*legacyCC.director.root*/); //cjh how to pass Root ?
+        pass->initialize(*passInfo);
+        passes.emplace_back(pass);
+    }
     return passes;
 }
 
-bool Material::uploadProperty(scene::Pass *passs, const std::string &name, const MaterialProperty &val) {
-    uint32_t handle = 0; //cjh pass->getHandle(name);
+bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const MaterialPropertyVariant &val) {
+    uint32_t handle = pass->getHandle(name);
     if (!handle) {
         return false;
     }
 
-    //cjh    const propertyType = Pass.getPropertyTypeFromHandle(handle);
-    //    if (propertyType === PropertyType.BUFFER) {
-    //        if (Array.isArray(val)) {
-    //            pass.setUniformArray(handle, val as MaterialProperty[]);
-    //        } else if (val !== null) {
-    //            pass.setUniform(handle, val as MaterialProperty);
-    //        } else {
-    //            pass.resetUniform(name);
-    //        }
-    //    } else if (propertyType === PropertyType.TEXTURE) {
-    //        if (Array.isArray(val)) {
-    //            for (let i = 0; i < val.length; i++) {
-    //                this._bindTexture(pass, handle, val[i], i);
-    //            }
-    //        } else if (val) {
-    //            this._bindTexture(pass, handle, val);
-    //        } else {
-    //            pass.resetTexture(name);
-    //        }
-    //    }
+    const auto propertyType = scene::Pass::getPropertyTypeFromHandle(handle);
+    if (propertyType == PropertyType::BUFFER) {
+        if (val.index() == MaterialPropertyIndexList) {
+            pass->setUniformArray(handle, std::get<MaterialPropertyList>(val));
+        } else if (val.index() == MaterialPropertyIndexSingle) {
+            pass->setUniform(handle, std::get<MaterialProperty>(val));
+        } else {
+            pass->resetUniform(name);
+        }
+    } else if (propertyType == PropertyType::TEXTURE) {
+        if (val.index() == MaterialPropertyIndexList) {
+            auto &textureArray = std::get<MaterialPropertyList>(val);
+            for (size_t i = 0; i < textureArray.size(); i++) {
+                bindTexture(pass, handle, textureArray[i], i);
+            }
+        } else if (val.index() == MaterialPropertyIndexSingle) {
+            bindTexture(pass, handle, std::get<MaterialProperty>(val));
+        } else {
+            pass->resetTexture(name);
+        }
+    }
     return true;
 }
 
-void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index) {
+void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index /* = CC_INVALID_INDEX*/) {
+    if (pass == nullptr) {
+        return;
+    }
+
+    const uint32_t binding = scene::Pass::getBindingFromHandle(handle);
+    if (auto pTexture = std::get_if<gfx::Texture *>(&val)) {
+        pass->bindTexture(binding, const_cast<gfx::Texture *>(*pTexture), index);
+    } else if (auto pTextureBase = std::get_if<TextureBase *>(&val)) {
+        auto *        textureBase = *pTextureBase;
+        gfx::Texture *texture     = textureBase->getGFXTexture();
+        if (texture == nullptr || texture->getWidth() == 0 || texture->getHeight() == 0) {
+            // console.warn(`material '${this._uuid}' received incomplete texture asset '${val._uuid}'`);
+            return;
+        }
+        pass->bindTexture(binding, texture, index);
+        pass->bindSampler(binding, textureBase->getGFXSampler(), index);
+    }
 }
 
 void Material::initDefault(const std::string &uuid) {

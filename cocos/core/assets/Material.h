@@ -269,8 +269,8 @@ public:
     }
 
 protected:
-    bool uploadProperty(scene::Pass *passs, const std::string &name, const MaterialProperty &val);
-    void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index);
+    bool uploadProperty(scene::Pass *pass, const std::string &name, const MaterialProperty &val);
+    void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index = CC_INVALID_INDEX);
 
     template <typename T1, typename T2>
     void prepareInfo(const T1 &patchArray, std::vector<T2> &cur);

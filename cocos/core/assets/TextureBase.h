@@ -27,6 +27,7 @@
 
 #include "core/assets/Asset.h"
 #include "core/assets/AssetEnum.h"
+#include "renderer/gfx-base/GFXDef.h"
 
 #include <any>
 
@@ -43,6 +44,7 @@ class Texture;
  */
 class TextureBase : public Asset {
 public:
+    using Super = Asset;
     /**
      * @en Whether the pixel data is compressed.
      * @zh 此贴图是否为压缩的像素格式。
@@ -100,7 +102,7 @@ public:
      * @param wrapT T(V) coordinate wrap mode
      * @param wrapR R(W) coordinate wrap mode
      */
-    void setWrapMode(WrapMode wrapS, WrapMode wrapT, WrapMode wrapR);
+    void setWrapMode(WrapMode wrapS, WrapMode wrapT, WrapMode wrapR = WrapMode::REPEAT);
 
     /**
      * @en Sets the texture's filter mode
@@ -122,7 +124,7 @@ public:
      * @zh 设置此贴图的各向异性。
      * @param anisotropy
      */
-    void setAnisotropy(int32_t anisotropy);
+    void setAnisotropy(uint32_t anisotropy);
 
     /**
      * @en Destroy the current texture, clear up the related GPU resources.
@@ -159,67 +161,66 @@ public:
      * @en Gets the sampler resource for the texture
      * @zh 获取此贴图底层的 GFX 采样信息。
      */
-    virtual gfx::Sampler *getGFXSampler() const;
+    virtual gfx::Sampler *getGFXSampler();
 
     // SERIALIZATION
-
     /**
      * @return
      */
-    std::any _serialize(std::any ctxForExporting) override;
+    std::any serialize(const std::any &ctxForExporting) override;
 
     /**
      *
      * @param data
      */
-    void _deserialize(std::any serializedData, std::any handle) override;
+    void deserialize(const std::any &serializedData, const std::any &handle) override;
 
 protected:
     TextureBase();
 
-    gfx::Device *_getGFXDevice() const;
+    gfx::Device *getGFXDevice() const;
 
-    gfx::Format _getGFXFormat() const;
+    gfx::Format getGFXFormat() const;
 
-    void _setGFXFormat(gfx::Format format);
+    void setGFXFormat(PixelFormat format);
 
-    gfx::Format _getGFXPixelFormat(PixelFormat format);
+    gfx::Format getGFXPixelFormat(PixelFormat format) const;
 
 protected:
     /*@serializable*/
-    PixelFormat _format = PixelFormat::RGBA8888;
+    PixelFormat _format{PixelFormat::RGBA8888};
 
     /*@serializable*/
-    Filter _minFilter = Filter::LINEAR;
+    Filter _minFilter{Filter::LINEAR};
 
     /*@serializable*/
-    Filter _magFilter = Filter::LINEAR;
+    Filter _magFilter{Filter::LINEAR};
 
     /*@serializable*/
-    Filter _mipFilter = Filter::NONE;
+    Filter _mipFilter{Filter::NONE};
 
     /*@serializable*/
-    WrapMode _wrapS = WrapMode::REPEAT;
+    WrapMode _wrapS{WrapMode::REPEAT};
 
     /*@serializable*/
-    WrapMode _wrapT = WrapMode::REPEAT;
+    WrapMode _wrapT{WrapMode::REPEAT};
 
     /*@serializable*/
-    WrapMode _wrapR = WrapMode::REPEAT;
+    WrapMode _wrapR{WrapMode::REPEAT};
 
     /*@serializable*/
-    int32_t _anisotropy = 0;
+    uint32_t _anisotropy{0};
 
-    uint32_t _width  = 1;
-    uint32_t _height = 1;
+    uint32_t _width{1};
+    uint32_t _height{1};
 
-    std::string           _id;
-    std::vector<uint32_t> _samplerInfo;
-    uint64_t              _samplerHash = 0;
-    gfx::Sampler *        _gfxSampler  = nullptr;
-    gfx::Device *         _gfxDevice   = nullptr;
+    std::string      _id;
+    gfx::SamplerInfo _samplerInfo;
+    uint64_t         _samplerHash{0};
+    gfx::Sampler *   _gfxSampler{nullptr};
+    gfx::Device *    _gfxDevice{nullptr};
 
-    uint64_t _textureHash = 0;
+    uint64_t _textureHash{0};
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(TextureBase);

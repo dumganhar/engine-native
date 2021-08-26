@@ -144,8 +144,8 @@ public:
      */
     bool destroy() override;
 
-    std::any _serialize(std::any ctxForExporting) override;
-    void     _deserialize(std::any serializedData, std::any handle) override;
+    std::any serialize(const std::any &ctxForExporting) override;
+    void     deserialize(const std::any &serializedData, const std::any &handle) override;
 
     gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 

@@ -30,6 +30,7 @@
 #include "base/TypeDef.h"
 #include "core/Types.h"
 #include "core/assets/TextureBase.h"
+#include "gfx-base/GFXDef-common.h"
 #include "math/Mat3.h"
 #include "math/Mat4.h"
 #include "math/Quaternion.h"
@@ -40,11 +41,11 @@
 
 namespace cc {
 
-static const uint32_t dtMask      = 0xf0000000; //  4 bits => 16 property types
-static const uint32_t typeMask    = 0x0fc00000; //  6 bits => 64 types
-static const uint32_t setMask     = 0x00300000; //  2 bits => 4 sets
-static const uint32_t bindingMask = 0x000fc000; //  6 bits => 64 bindings
-static const uint32_t offsetMask  = 0x00003fff; // 14 bits => 4096 vectors
+constexpr uint32_t DT_MASK      = 0xf0000000; //  4 bits => 16 property types
+constexpr uint32_t TYPE_MASK    = 0x0fc00000; //  6 bits => 64 types
+constexpr uint32_t SET_MASK     = 0x00300000; //  2 bits => 4 sets
+constexpr uint32_t BINDING_MASK = 0x000fc000; //  6 bits => 64 bindings
+constexpr uint32_t OFFSET_MASK  = 0x00003fff; // 14 bits => 4096 vectors
 
 /**
  * @en The type enums of the property
@@ -62,34 +63,22 @@ enum class PropertyType : uint32_t {
 };
 CC_ENUM_CONVERSION_OPERATOR(PropertyType);
 
-inline uint32_t genHandle(PropertyType pt, uint32_t set, uint32_t binding, gfx::Type type, uint32_t offset /* = 0 */) {
-    return ((static_cast<uint32_t>(pt) << 28) & dtMask) | ((static_cast<uint32_t>(type) << 22) & typeMask) | ((set << 20) & setMask) | ((binding << 14) & bindingMask) | (offset & offsetMask);
+constexpr uint32_t genHandle(PropertyType pt, uint32_t set, uint32_t binding, gfx::Type type, uint32_t offset = 0) {
+    return ((static_cast<uint32_t>(pt) << 28) & DT_MASK) |
+           ((static_cast<uint32_t>(type) << 22U) & TYPE_MASK) |
+           ((set << 20U) & SET_MASK) |
+           ((binding << 14U) & BINDING_MASK) |
+           (offset & OFFSET_MASK);
 }
 
-inline PropertyType getPropertyTypeFromHandle(uint32_t handle) {
-    return static_cast<PropertyType>((handle & dtMask) >> 28);
+constexpr PropertyType getPropertyTypeFromHandle(uint32_t handle) { return static_cast<PropertyType>((handle & DT_MASK) >> 28); }
+constexpr gfx::Type    getTypeFromHandle(uint32_t handle) { return static_cast<gfx::Type>((handle & TYPE_MASK) >> 22); }
+constexpr uint32_t     getSetIndexFromHandle(uint32_t handle) { return (handle & SET_MASK) >> 20; }
+constexpr uint32_t     getBindingFromHandle(uint32_t handle) { return (handle & BINDING_MASK) >> 14; }
+constexpr uint32_t     getOffsetFromHandle(uint32_t handle) { return (handle & OFFSET_MASK); }
+constexpr uint32_t     customizeType(uint32_t handle, gfx::Type type) {
+    return (handle & ~TYPE_MASK) | ((static_cast<uint32_t>(type) << 22) & TYPE_MASK);
 }
-
-inline gfx::Type getTypeFromHandle(uint32_t handle) {
-    return static_cast<gfx::Type>((handle & typeMask) >> 22);
-}
-
-inline uint32_t getSetIndexFromHandle(uint32_t handle) {
-    return (handle & setMask) >> 20;
-}
-
-inline uint32_t getBindingFromHandle(uint32_t handle) {
-    return (handle & bindingMask) >> 14;
-}
-
-inline uint32_t getOffsetFromHandle(uint32_t handle) {
-    return (handle & offsetMask);
-}
-
-inline uint32_t customizeType(uint32_t handle, gfx::Type type) {
-    return (handle & ~typeMask) | ((static_cast<uint32_t>(type) << 22) & typeMask);
-}
-
 /**
  * @en Combination of preprocess macros
  * @zh 预处理宏组合
@@ -110,5 +99,30 @@ using MaterialPropertyVariant = std::variant<std::monostate /*0*/, MaterialPrope
 
 #define MaterialPropertyIndexSingle (1)
 #define MaterialPropertyIndexList   (2)
+
+//NOLINTNEXTLINE
+extern const std::unordered_map<gfx::Type, std::function<void(const Float32Array &, void *, index_t id)>> type2reader;
+
+//NOLINTNEXTLINE
+extern const std::unordered_map<gfx::Type, std::function<void(Float32Array &, const void *, index_t id)>> type2writer;
+
+/**
+ * @en Gets the default values for the given type of uniform
+ * @zh 根据指定的 Uniform 类型来获取默认值
+ * @param type The type of the uniform
+ */
+std::variant<std::vector<float>, std::string> getDefaultFromType(gfx::Type type);
+
+/**
+ * @en Combination of preprocess macros
+ * @zh 预处理宏组合
+ */
+/**
+ * @en Override the preprocess macros
+ * @zh 覆写预处理宏
+ * @param target Target preprocess macros to be overridden
+ * @param source Preprocess macros used for override
+ */
+bool overrideMacros(MacroRecord &target, const MacroRecord &source);
 
 } // namespace cc

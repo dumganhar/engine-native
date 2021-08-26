@@ -123,7 +123,7 @@ void Material::resetUniforms(bool clearPasses /* = true */) {
     }
 }
 
-void Material::setProperty(const std::string &name, const MaterialProperty &val, index_t passIdx /* = CC_INVALID_INDEX */) {
+void Material::setProperty(const std::string &name, const MaterialPropertyVariant &val, index_t passIdx /* = CC_INVALID_INDEX */) {
     bool success = false;
     if (passIdx == CC_INVALID_INDEX) { // try set property for all applicable passes
         size_t len = _passes.size();
@@ -152,7 +152,7 @@ void Material::setProperty(const std::string &name, const MaterialProperty &val,
     }
 }
 
-MaterialProperty *Material::getProperty(const std::string &name, index_t passIdx) {
+MaterialPropertyVariant *Material::getProperty(const std::string &name, index_t passIdx) {
     if (passIdx == CC_INVALID_INDEX) { // try get property in all possible passes
         auto & propsArray = _props;
         size_t len        = propsArray.size();
@@ -285,7 +285,7 @@ std::vector<scene::Pass *> Material::createPasses() {
     return passes;
 }
 
-bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const MaterialProperty &val) {
+bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const MaterialPropertyVariant &val) {
     uint32_t handle = pass->getHandle(name);
     if (!handle) {
         return false;
@@ -293,24 +293,21 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
 
     const auto propertyType = scene::Pass::getPropertyTypeFromHandle(handle);
     if (propertyType == PropertyType::BUFFER) {
-        if (isArrayForMaterialProperty(val)) {
-            pass->setUniformArray(handle, val);
-        } else if (val.index() != 0) {
-            pass->setUniform(handle, val);
+        if (val.index() == MaterialPropertyIndexList) {
+            pass->setUniformArray(handle, std::get<MaterialPropertyList>(val));
+        } else if (val.index() == MaterialPropertyIndexSingle) {
+            pass->setUniform(handle, std::get<MaterialProperty>(val));
         } else {
             pass->resetUniform(name);
         }
     } else if (propertyType == PropertyType::TEXTURE) {
-        if (isArrayForMaterialProperty(val)) {
-            auto *pTextureArray = std::get_if<std::vector<gfx::Texture *>>(&val);
-            if (pTextureArray != nullptr) {
-                auto &textureArray = *pTextureArray;
-                for (size_t i = 0; i < textureArray.size(); i++) {
-                    bindTexture(pass, handle, textureArray[i], i);
-                }
+        if (val.index() == MaterialPropertyIndexList) {
+            auto &textureArray = std::get<MaterialPropertyList>(val);
+            for (size_t i = 0; i < textureArray.size(); i++) {
+                bindTexture(pass, handle, textureArray[i], i);
             }
-        } else if (val.index() != 0) {
-            bindTexture(pass, handle, val);
+        } else if (val.index() == MaterialPropertyIndexSingle) {
+            bindTexture(pass, handle, std::get<MaterialProperty>(val));
         } else {
             pass->resetTexture(name);
         }

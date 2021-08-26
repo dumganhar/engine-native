@@ -172,7 +172,7 @@ public:
      * @param handle The handle for the target uniform
      * @param value New value
      */
-    void setUniformArray(uint32_t handle, const MaterialProperty &value);
+    void setUniformArray(uint32_t handle, const MaterialPropertyList &value);
 
     /**
      * @en Bind a GFX [[Texture]] the the given uniform binding

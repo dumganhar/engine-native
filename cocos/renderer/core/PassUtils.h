@@ -102,13 +102,13 @@ public:
     uint8_t r{0}, g{0}, b{0}, a{0};
 };
 
-using MaterialProperty = std::variant<
-    std::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/,
-    std::vector<float> /*12*/, std::vector<int32_t> /*13*/, std::vector<Vec2> /*14*/, std::vector<Vec3> /*15*/, std::vector<Vec4> /*16*/, std::vector<Color> /*17*/,
-    std::vector<Mat3> /*18*/, std::vector<Mat4> /*19*/, std::vector<Quaternion> /*20*/, std::vector<TextureBase *> /*21*/, std::vector<gfx::Texture *> /*22*/>;
+using MaterialProperty = std::variant<std::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/>;
 
-bool isArrayForMaterialProperty(const MaterialProperty &property) {
-    return property.index() > 11;
-}
+using MaterialPropertyList = std::vector<MaterialProperty>;
+
+using MaterialPropertyVariant = std::variant<std::monostate /*0*/, MaterialProperty /*1*/, MaterialPropertyList /*2*/>;
+
+#define MaterialPropertyIndexSingle (1)
+#define MaterialPropertyIndexList   (2)
 
 } // namespace cc

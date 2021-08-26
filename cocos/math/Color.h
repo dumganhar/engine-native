@@ -26,6 +26,8 @@ THE SOFTWARE.
 
 #pragma once
 
+namespace cc {
+
 class Color {
 private:
     /* data */
@@ -104,3 +106,5 @@ public:
      */
     void set(const Color &p1, const Color &p2);
 };
+
+}

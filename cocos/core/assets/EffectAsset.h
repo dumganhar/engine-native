@@ -135,6 +135,13 @@ struct IShaderInfo {
     std::vector<IBlockInfo>          blocks;
     std::vector<ISamplerTextureInfo> samplerTextures;
     std::vector<IAttributeInfo>      attributes;
+
+    const IShaderSource *getSource(const std::string &version) const {
+        if (version == "glsl1") return &glsl1;
+        if (version == "glsl3") return &glsl4;
+        if (version == "glsl4") return &glsl1;
+        return nullptr;
+    }
 };
 
 //cjh    [name: string]: boolean[] | number[] | string[];

@@ -249,6 +249,7 @@ enum class CC_DLL SetIndex {
     GLOBAL,
     MATERIAL,
     LOCAL,
+    COUNT,
 };
 CC_ENUM_CONVERSION_OPERATOR(SetIndex)
 
@@ -369,9 +370,9 @@ enum class CC_DLL DeferredStagePriority {
 };
 
 enum class CC_DLL DeferredFlowPriority {
-    SHADOW   = 0,
-    MAIN     = 1,
-    UI       = 10
+    SHADOW = 0,
+    MAIN   = 1,
+    UI     = 10
 };
 
 struct CC_DLL UBOGlobal : public Object {

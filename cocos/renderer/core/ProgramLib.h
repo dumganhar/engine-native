@@ -21,8 +21,8 @@
 namespace cc {
 
 struct IDefineRecord : public IDefineInfo {
-    std::function<int32_t(std::any)> map;
-    int32_t                          offset;
+    std::function<int(std::any)> map;
+    int32_t                      offset;
 };
 struct IMacroInfo {
     std::string name;

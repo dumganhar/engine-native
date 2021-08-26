@@ -6,6 +6,7 @@
 #include <functional>
 #include <numeric>
 #include <optional>
+#include <ostream>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -22,7 +23,7 @@ namespace cc {
 
 template <typename T>
 auto getBitCount(T cnt) {
-    return std::ceil(std::log2(std::max(cnt, 2)));
+    return std::ceil(std::log2(cnt > 2 ? 2 : cnt)); // std::max checks number types
 }
 
 static bool recordAsBool(const MacroRecord::mapped_type &v) {
@@ -200,83 +201,99 @@ void ProgramLib::regist(EffectAsset &effect) {
 }
 
 IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
-    auto &curTmpl = _templates[shader.name];
-    // if (curTmpl && curTmpl.hash == shader.hash) {
-    //     return curTmpl;
-    // }
-    // const tmpl = ({... shader})as IProgramInfo;
-    // // calculate option mask offset
-    // let offset = 0;
-    // for (let i = 0; i < tmpl.defines.length; i++) {
-    //     const def = tmpl.defines[i];
-    //     let cnt   = 1;
-    //     if (def.type == = 'number') {
-    //         const range = def.range !;
-    //         cnt         = getBitCount(range[1] - range[0] + 1); // inclusive on both ends
-    //         def._map = (value
-    //                     : number) = > value - range[0];
-    //     } else if (def.type == = 'string') {
-    //         cnt      = getBitCount(def.options !.length);
-    //         def._map = (value
-    //                     : any) = > Math.max(0, def.options !.findIndex((s) = > s == = value));
-    //     } else if (def.type == = 'boolean') {
-    //         def._map = (value
-    //                     : any) = > (value ? 1 : 0);
-    //     }
-    //     def._offset = offset;
-    //     offset += cnt;
-    // }
-    // if (offset > 31) {
-    //     tmpl.uber = true;
-    // }
-    // // generate constant macros
-    // tmpl.constantMacros = '';
-    // for (const key in tmpl.builtins.statistics) {
-    //     tmpl.constantMacros += `#define ${key} $ { tmpl.builtins.statistics[key] }
-    //     \n`;
-    // }
-    // // store it
-    // this._templates[shader.name] = tmpl;
-    // if (!this._templateInfos[tmpl.hash]) {
-    //     const tmplInfo = {} as ITemplateInfo;
-    //     // cache material-specific descriptor set layout
-    //     tmplInfo.samplerStartBinding = tmpl.blocks.length;
-    //     tmplInfo.gfxBlocks           = [];
-    //     tmplInfo.gfxSamplerTextures  = [];
-    //     tmplInfo.bindings            = [];
-    //     tmplInfo.blockSizes          = [];
-    //     for (let i = 0; i < tmpl.blocks.length; i++) {
-    //         const block = tmpl.blocks[i];
-    //         tmplInfo.blockSizes.push(getSize(block));
-    //         tmplInfo.bindings.push(new DescriptorSetLayoutBinding(block.binding,
-    //                                                               block.descriptorType || DescriptorType.UNIFORM_BUFFER, 1, block.stageFlags));
-    //         tmplInfo.gfxBlocks.push(new UniformBlock(SetIndex.MATERIAL, block.binding, block.name,
-    //                                                  block.members.map((m) = > new Uniform(m.name, m.type, m.count)), 1)); // effect compiler guarantees block count = 1
-    //     }
-    //     for (let i = 0; i < tmpl.samplerTextures.length; i++) {
-    //         const samplerTexture = tmpl.samplerTextures[i];
-    //         tmplInfo.bindings.push(new DescriptorSetLayoutBinding(samplerTexture.binding,
-    //                                                               samplerTexture.descriptorType || DescriptorType.SAMPLER_TEXTURE, samplerTexture.count, samplerTexture.stageFlags));
-    //         tmplInfo.gfxSamplerTextures.push(new UniformSamplerTexture(
-    //             SetIndex.MATERIAL, samplerTexture.binding, samplerTexture.name, samplerTexture.type, samplerTexture.count, ));
-    //     }
-    //     tmplInfo.gfxAttributes = [];
-    //     for (let i = 0; i < tmpl.attributes.length; i++) {
-    //         const attr = tmpl.attributes[i];
-    //         tmplInfo.gfxAttributes.push(new Attribute(attr.name, attr.format, attr.isNormalized, 0, attr.isInstanced, attr.location));
-    //     }
-    //     insertBuiltinBindings(tmpl, tmplInfo, localDescriptorSetLayout, 'locals');
+    auto itCurrTmpl = _templates.find(shader.name);
+    if (itCurrTmpl != _templates.end() && itCurrTmpl->second.hash == shader.hash) {
+        return &itCurrTmpl->second;
+    }
+    auto &currTmpl = itCurrTmpl->second;
+    //TODO(PatriceJiang): need copy
+    IProgramInfo tmpl;
+    tmpl.effectName = shader.name;
+    // tmpl.defines = shader.defines; //TODO: can not do simple copy
+    tmpl.defines.resize(shader.defines.size());
+    for (auto i = 0; i < shader.defines.size(); i++) {
+        *reinterpret_cast<IDefineInfo *>(&tmpl.defines[i]) = shader.defines[i];
+    }
+    // tmpl.constantMacros = ?? //TODO(PatriceJiang)
+    // tmpl.uber = ??   //TODO(PatriceJiang)
 
-    //     tmplInfo.gfxStages = [];
-    //     tmplInfo.gfxStages.push(new ShaderStage(ShaderStageFlagBit.VERTEX, ''));
-    //     tmplInfo.gfxStages.push(new ShaderStage(ShaderStageFlagBit.FRAGMENT, ''));
-    //     tmplInfo.handleMap  = genHandles(tmpl);
-    //     tmplInfo.setLayouts = [];
+    // calculate option mask offset
+    auto offset = 0;
+    for (auto i = 0; i < tmpl.defines.size(); i++) {
+        auto &def = tmpl.defines[i];
+        auto  cnt = 1;
+        if (def.type == "number") {
+            auto &range = def.range;
+            cnt         = getBitCount(range[1] - range[0] + 1); // inclusive on both ends
+            def.map     = [=](std::any value) { return static_cast<int>(std::any_cast<float>(value) - range[0]); };
+        } else if (def.type == "string") {
+            cnt     = getBitCount(def.options.size());
+            def.map = [=](std::any value) {
+                int idx = std::find(def.options.begin(), def.options.end(), std::any_cast<std::string>(value)) - def.options.begin();
+                return static_cast<int>(std::max(0, idx));
+            };
+        } else if (def.type == "boolean") {
+            def.map = [=](std::any value) {
+                return std::any_cast<bool>(value) ? 1 : 0;
+            };
+        }
+        def.offset = offset;
+        offset += cnt;
+    }
+    if (offset > 31) {
+        tmpl.uber = true;
+    }
+    // generate constant macros
+    {
+        std::stringstream ss;
+        for (auto &key : tmpl.builtins.statistics) {
+            ss << "#define " << key.first << " " << key.second << std::endl;
+            tmpl.constantMacros += (std::string("#define ") + key.first + " " + key.second + "\n");
+        }
+        tmpl.constantMacros = ss.str();
+    }
+    // store it
+    _templates[shader.name] = tmpl;
+    if (_templateInfos.count(tmpl.hash > 0)) {
+        ITemplateInfo tmplInfo{};
+        // cache material-specific descriptor set layout
+        tmplInfo.samplerStartBinding = tmpl.blocks.size();
+        tmplInfo.gfxBlocks           = {};
+        tmplInfo.gfxSamplerTextures  = {};
+        tmplInfo.bindings            = {};
+        tmplInfo.blockSizes          = {};
+        for (auto i = 0; i < tmpl.blocks.size(); i++) {
+            auto &block = tmpl.blocks[i];
+            tmplInfo.blockSizes.emplace_back(getSize(block));
+            tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{block.binding,
+                                                                           block.descriptorType || gfx::DescriptorType::UNIFORM_BUFFER, 1, block.stageFlags});
+            tmplInfo.gfxBlocks.emplace_back(new UniformBlock(SetIndex.MATERIAL, block.binding, block.name,
+                                                             block.members.map((m) = > new Uniform(m.name, m.type, m.count)), 1)); // effect compiler guarantees block count = 1
+        }
+        for (let i = 0; i < tmpl.samplerTextures.length; i++) {
+            const samplerTexture = tmpl.samplerTextures[i];
+            tmplInfo.bindings.push(new DescriptorSetLayoutBinding(samplerTexture.binding,
+                                                                  samplerTexture.descriptorType || DescriptorType.SAMPLER_TEXTURE, samplerTexture.count, samplerTexture.stageFlags));
+            tmplInfo.gfxSamplerTextures.push(new UniformSamplerTexture(
+                SetIndex.MATERIAL, samplerTexture.binding, samplerTexture.name, samplerTexture.type, samplerTexture.count, ));
+        }
+        tmplInfo.gfxAttributes = [];
+        for (let i = 0; i < tmpl.attributes.length; i++) {
+            const attr = tmpl.attributes[i];
+            tmplInfo.gfxAttributes.push(new Attribute(attr.name, attr.format, attr.isNormalized, 0, attr.isInstanced, attr.location));
+        }
+        insertBuiltinBindings(tmpl, tmplInfo, localDescriptorSetLayout, 'locals');
 
-    //     this._templateInfos[tmpl.hash] = tmplInfo;
-    // }
-    // return tmpl;
-    return nullptr;
+        tmplInfo.gfxStages = [];
+        tmplInfo.gfxStages.push(new ShaderStage(ShaderStageFlagBit.VERTEX, ''));
+        tmplInfo.gfxStages.push(new ShaderStage(ShaderStageFlagBit.FRAGMENT, ''));
+        tmplInfo.handleMap  = genHandles(tmpl);
+        tmplInfo.setLayouts = [];
+
+        this._templateInfos[tmpl.hash] = tmplInfo;
+    }
+    return tmpl;
+    // return nullptr;
 }
 
 /**
@@ -425,15 +442,15 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device &device, const std::string &na
     }
     auto prefix = pipeline.getConstantMacros() + tmpl.constantMacros + ss.str();
 
-    auto        src                 = tmpl.glsl3;
-    const auto *deviceShaderVersion = getDeviceShaderVersion(device);
+    const IShaderSource *src                 = &tmpl.glsl3;
+    const auto *         deviceShaderVersion = getDeviceShaderVersion(device);
     if (deviceShaderVersion) {
-        src = tmpl.at(deviceShaderVersion);
+        src = tmpl.getSource(deviceShaderVersion);
     } else {
         CC_LOG_ERROR("Invalid GFX API!");
     }
-    tmplInfo.gfxStages[0].source = prefix + src.vert;
-    tmplInfo.gfxStages[1].source = prefix + src.frag;
+    tmplInfo.gfxStages[0].source = prefix + src->vert;
+    tmplInfo.gfxStages[1].source = prefix + src->frag;
 
     // strip out the active attributes only, instancing depend on this
     auto attributes = getActiveAttributes(tmpl, tmplInfo, defines);
@@ -442,8 +459,7 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device &device, const std::string &na
     auto shaderInfo            = gfx::ShaderInfo{instanceName, tmplInfo.gfxStages, attributes, tmplInfo.gfxBlocks};
     shaderInfo.samplerTextures = tmplInfo.gfxSamplerTextures;
     auto *shader               = device.createShader(shaderInfo);
-    ;
-    _cache[key] = shader;
+    _cache[key]                = shader;
     return shader;
 }
 

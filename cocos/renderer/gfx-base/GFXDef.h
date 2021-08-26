@@ -95,6 +95,13 @@ constexpr DescriptorType DESCRIPTOR_TEXTURE_TYPE = static_cast<DescriptorType>(
     static_cast<uint>(DescriptorType::STORAGE_IMAGE) |
     static_cast<uint>(DescriptorType::INPUT_ATTACHMENT));
 
+constexpr DescriptorType DESCRIPTOR_SAMPLER_TYPE = static_cast<DescriptorType>(
+    static_cast<uint>(DescriptorType::SAMPLER_TEXTURE) |
+    static_cast<uint>(DescriptorType::SAMPLER) |
+    static_cast<uint>(DescriptorType::TEXTURE) |
+    static_cast<uint>(DescriptorType::STORAGE_IMAGE) |
+    static_cast<uint>(DescriptorType::INPUT_ATTACHMENT));
+
 constexpr DescriptorType DESCRIPTOR_DYNAMIC_TYPE = static_cast<DescriptorType>(
     static_cast<uint>(DescriptorType::DYNAMIC_STORAGE_BUFFER) |
     static_cast<uint>(DescriptorType::DYNAMIC_UNIFORM_BUFFER));

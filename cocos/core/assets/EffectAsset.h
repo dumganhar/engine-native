@@ -83,12 +83,12 @@ struct IBlockInfo {
 };
 
 struct ISamplerTextureInfo {
-    int32_t               binding; //cjh : number;
-    std::string           name;
-    gfx::Type             type;
-    uint32_t              count;
-    gfx::ShaderStageFlags stageFlags;
-    gfx::DescriptorType   descriptorType;
+    int32_t                            binding; //cjh : number;
+    std::string                        name;
+    gfx::Type                          type;
+    uint32_t                           count;
+    gfx::ShaderStageFlags              stageFlags;
+    std::optional<gfx::DescriptorType> descriptorType;
 };
 
 struct IAttributeInfo : public gfx::Attribute {

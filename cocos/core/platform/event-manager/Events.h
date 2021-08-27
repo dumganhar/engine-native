@@ -88,48 +88,48 @@ public:
      * @zh 获取鼠标相对于左下角位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getLocation() const;
-    const Vec2 &getLocation(Vec2 &out) const;
+    Vec2 getLocation() const;
+    Vec2 getLocation(Vec2 &out) const;
 
     /**
      * @en Returns the current cursor location in ui coordinates.
      * @zh 获取当前事件在 UI 窗口内的坐标位置，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getUILocation() const;
-    const Vec2 &getUILocation(Vec2 &out) const;
+    Vec2 getUILocation() const;
+    Vec2 getUILocation(Vec2 &out) const;
 
     /**
      * @en Returns the current cursor location in game view coordinates.
      * @zh 获取当前事件在游戏窗口内的坐标位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getLocationInView() const;
-    const Vec2 &getLocationInView(Vec2 &out) const;
+    Vec2 getLocationInView() const;
+    Vec2 getLocationInView(Vec2 &out) const;
 
     /**
      * @en Returns the previous touch location.
      * @zh 获取鼠标点击在上一次事件时的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getPreviousLocation() const;
-    const Vec2 &getPreviousLocation(Vec2 &out) const;
+    Vec2 getPreviousLocation() const;
+    Vec2 getPreviousLocation(Vec2 &out) const;
 
     /**
      * @en Returns the previous touch location.
      * @zh 获取鼠标点击在上一次事件时在 UI 窗口内的坐标位置，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getUIPreviousLocation() const;
-    const Vec2 &getUIPreviousLocation(Vec2 &out) const;
+    Vec2 getUIPreviousLocation() const;
+    Vec2 getUIPreviousLocation(Vec2 &out) const;
 
     /**
      * @en Returns the delta distance from the previous location to current location.
      * @zh 获取鼠标距离上一次事件移动的距离对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getDelta() const;
-    const Vec2 &getDelta(Vec2 &out) const;
+    Vec2 getDelta() const;
+    Vec2 getDelta(Vec2 &out) const;
 
     /**
      * @en Returns the X axis delta distance from the previous location to current location.
@@ -148,8 +148,8 @@ public:
      * @zh 获取鼠标距离上一次事件移动在 UI 坐标系下的距离对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getUIDelta() const;
-    const Vec2 &getUIDelta(Vec2 &out) const;
+    Vec2 getUIDelta() const;
+    Vec2 getUIDelta(Vec2 &out) const;
 
     /**
      * @en Returns the X axis delta distance from the previous location to current location.
@@ -304,7 +304,7 @@ private:
 class EventTouch final : public event::Event {
 public:
     EventTouch() = default;
-    EventTouch(const std::vector<Touch> &changedTouches, bool bubbles, const SystemEventTypeUnion &eventType, const std::vector<Touch> &touches);
+    EventTouch(std::vector<Touch> changedTouches, bool bubbles, const SystemEventTypeUnion &eventType, std::vector<Touch> touches);
     ~EventTouch() override = default;
 
     /**
@@ -352,47 +352,47 @@ public:
      * @zh 获取触点位置。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getLocation() const;
-    const Vec2 &getLocation(Vec2 &out) const;
+    Vec2 getLocation() const;
+    Vec2 getLocation(Vec2 &out) const;
     /**
      * @en Returns the current touch location in UI coordinates.
      * @zh 获取 UI 坐标系下的触点位置。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getUILocation() const;
-    const Vec2 &getUILocation(Vec2 &out) const;
+    Vec2 getUILocation() const;
+    Vec2 getUILocation(Vec2 &out) const;
 
     /**
      * @en Returns the current touch location in game screen coordinates.
      * @zh 获取当前触点在游戏窗口中的位置。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getLocationInView() const;
-    const Vec2 &getLocationInView(Vec2 &out) const;
+    Vec2 getLocationInView() const;
+    Vec2 getLocationInView(Vec2 &out) const;
 
     /**
      * @en Returns the previous touch location.
      * @zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getPreviousLocation() const;
-    const Vec2 &getPreviousLocation(Vec2 &out) const;
+    Vec2 getPreviousLocation() const;
+    Vec2 getPreviousLocation(Vec2 &out) const;
 
     /**
      * @en Returns the start touch location.
      * @zh 获取触点落下时的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getStartLocation() const;
-    const Vec2 &getStartLocation(Vec2 &out) const;
+    Vec2 getStartLocation() const;
+    Vec2 getStartLocation(Vec2 &out) const;
 
     /**
      * @en Returns the start touch location in UI coordinates.
      * @zh 获取触点落下时的 UI 世界下位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getUIStartLocation() const;
-    const Vec2 &getUIStartLocation(Vec2 &out) const;
+    Vec2 getUIStartLocation() const;
+    Vec2 getUIStartLocation(Vec2 &out) const;
 
     /**
      * @en Returns the id of the current touch point.
@@ -405,16 +405,16 @@ public:
      * @zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2 &getDelta() const;
-    const Vec2 &getDelta(Vec2 &out) const;
+    Vec2 getDelta() const;
+    Vec2 getDelta(Vec2 &out) const;
 
     /**
      * @en Returns the delta distance from the previous location to current location.
      * @zh 获取触点距离上一次事件 UI 世界下移动的距离对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
     */
-    const Vec2 &getUIDelta() const;
-    const Vec2 &getUIDelta(Vec2 &out) const;
+    Vec2 getUIDelta() const;
+    Vec2 getUIDelta(Vec2 &out) const;
 
     /**
      * @en Returns the X axis delta distance from the previous location to current location.

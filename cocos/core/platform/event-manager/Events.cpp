@@ -27,6 +27,272 @@
 #include "core/platform/event-manager/Events.h"
 
 namespace cc {
-    uint32_t EventTouch::MAX_TOUCHES{1};
 
+// EventMouse
+
+EventMouse::EventMouse(const SystemEventTypeUnion &eventType, bool bubbles) : Event(eventType, bubbles) {
+    _eventType = eventType;
 }
+
+EventMouse::EventMouse(const SystemEventTypeUnion &eventType, bool bubbles, const Vec2 &prevLoc) : Event(eventType, bubbles) {
+    _eventType = eventType;
+    _prevX     = prevLoc.x;
+    _prevY     = prevLoc.y;
+}
+
+void EventMouse::setScrollData(float scrollX, float scrollY) {
+    _scrollX = scrollX;
+    _scrollY = scrollY;
+}
+
+float EventMouse::getScrollX() const {
+    return _scrollX;
+}
+
+float EventMouse::getScrollY() const {
+    return _scrollY;
+}
+
+void EventMouse::setLocation(float x, float y) {
+    _x = x;
+    _y = y;
+}
+
+const Vec2 &EventMouse::getLocation() const {
+    return *new Vec2(_x, _y);
+}
+
+const Vec2 &EventMouse::getLocation(Vec2 &out) const {
+    out.set(_x, _y);
+    return out;
+}
+
+const Vec2 &EventMouse::getUILocation() const {
+    Vec2 *out = new Vec2(_x, _y);
+    View::getInstance().convertPointWithScale(*out);
+    return *out;
+}
+
+const Vec2 &EventMouse::getUILocation(Vec2 &out) const {
+    out.set(_x, _y);
+    View::getInstance().convertPointWithScale(out);
+    return out;
+}
+
+const Vec2 &EventMouse::getLocationInView() const {
+    return *new Vec2(_x, _y);
+}
+
+const Vec2 &EventMouse::getLocationInView(Vec2 &out) const {
+    out.set(_x, View::getInstance()._designResolutionSize.height - _y); // from ts: not sure?
+    return out;
+}
+
+const Vec2 &EventMouse::getPreviousLocation() const {
+    return *new Vec2(_prevX, _prevY);
+}
+
+const Vec2 &EventMouse::getPreviousLocation(Vec2 &out) const {
+    out.set(_prevX, _prevY);
+    return out;
+}
+
+const Vec2 &EventMouse::getUIPreviousLocation() const {
+    Vec2 *out = new Vec2(_prevX, _prevY);
+    View::getInstance().convertPointWithScale(*out);
+    return *out;
+}
+
+const Vec2 &EventMouse::getUIPreviousLocation(Vec2 &out) const {
+    out.set(_prevX, _prevY);
+    View::getInstance().convertPointWithScale(out);
+    return out;
+}
+
+const Vec2 &EventMouse::getDelta() const {
+    Vec2 *out = new Vec2(_x - _prevX, _y - _prevY);
+    return *out;
+}
+
+const Vec2 &EventMouse::getDelta(Vec2 &out) const {
+    out.set(_x - _prevX, _y - _prevY);
+    return out;
+}
+
+float EventMouse::getDeltaX() const {
+    return _x - _prevX;
+}
+
+float EventMouse::getDeltaY() const {
+    return _y - _prevY;
+}
+
+const Vec2 &EventMouse::getUIDelta() const {
+    Vec2 *out = new Vec2((_x - _prevX) / View::getInstance().getScaleX(), (_y - _prevY) / View::getInstance().getScaleY());
+    return *out;
+}
+
+const Vec2 &EventMouse::getUIDelta(Vec2 &out) const {
+    out.set((_x - _prevX) / View::getInstance().getScaleX(), (_y - _prevY) / View::getInstance().getScaleY());
+    return out;
+}
+
+float EventMouse::getUIDeltaX() const {
+    return (_x - _prevX) / View::getInstance().getScaleX();
+}
+
+float EventMouse::getUIDeltaY() const {
+    return (_y - _prevY) / View::getInstance().getScaleY();
+}
+
+void EventMouse::setButton(int32_t button) {
+    _button = button;
+}
+
+int32_t EventMouse::getButton() const {
+    return _button;
+}
+
+float EventMouse::getLocationX() const {
+    return _x;
+}
+
+float EventMouse::getLocationY() const {
+    return _y;
+}
+
+float EventMouse::getUILocationX() const {
+    Rect viewport = View::getInstance().getViewportRect();
+    return (_x - viewport.getMinX()) / View::getInstance().getScaleX();
+}
+
+float EventMouse::getUILocationY() const {
+    Rect viewport = View::getInstance().getViewportRect();
+    return (_y - viewport.getMinY()) / View::getInstance().getScaleY();
+}
+
+// EventTouch
+
+uint32_t EventTouch::MAX_TOUCHES{5};
+
+EventTouch::EventTouch(const std::vector<Touch> &changedTouches, bool bubbles, const SystemEventTypeUnion &eventType, const std::vector<Touch> &touches) : Event(eventType, bubbles) {
+    _eventCode  = eventType;
+    _touches    = changedTouches;
+    _allTouches = touches;
+}
+
+const std::vector<Touch> &EventTouch::getTouches() const {
+    return _touches;
+}
+
+const std::vector<Touch> &EventTouch::getAllTouches() const {
+    return _allTouches;
+}
+
+void EventTouch::setLocation(float x, float y) {
+    if (touch) {
+        touch->setTouchInfo(touch->getID(), x, y);
+    }
+}
+
+const Vec2 &EventTouch::getLocation() const {
+    return touch ? touch->getLocation() : *new Vec2();
+}
+
+const Vec2 &EventTouch::getLocation(Vec2 &out) const {
+    return touch ? touch->getLocation(out) : *new Vec2();
+}
+
+const Vec2 &EventTouch::getUILocation() const {
+    return touch ? touch->getUILocation() : *new Vec2();
+}
+
+const Vec2 &EventTouch::getUILocation(Vec2 &out) const {
+    return touch ? touch->getUILocation(out) : *new Vec2();
+}
+
+const Vec2 &EventTouch::getLocationInView() const {
+    return touch ? touch->getLocationInView() : *new Vec2();
+}
+
+const Vec2 &EventTouch::getLocationInView(Vec2 &out) const {
+    return touch ? touch->getLocationInView(out) : *new Vec2();
+}
+
+const Vec2 &EventTouch::getPreviousLocation() const {
+    return touch ? touch->getPreviousLocation() : *new Vec2();
+}
+
+const Vec2 &EventTouch::getPreviousLocation(Vec2 &out) const {
+    return touch ? touch->getPreviousLocation(out) : *new Vec2();
+}
+
+const Vec2 &EventTouch::getStartLocation() const {
+    return touch ? touch->getStartLocation() : *new Vec2();
+}
+
+const Vec2 &EventTouch::getStartLocation(Vec2 &out) const {
+    return touch ? touch->getStartLocation(out) : *new Vec2();
+}
+
+const Vec2 &EventTouch::getUIStartLocation() const {
+    return touch ? touch->getUIStartLocation() : *new Vec2();
+}
+
+const Vec2 &EventTouch::getUIStartLocation(Vec2 &out) const {
+    return touch ? touch->getUIStartLocation(out) : *new Vec2();
+}
+
+int32_t EventTouch::getID() const {
+    return touch ? touch->getID() : -1; // -1 means null in ts
+}
+
+const Vec2 &EventTouch::getDelta() const {
+    return touch ? touch->getDelta() : *new Vec2();
+}
+
+const Vec2 &EventTouch::getDelta(Vec2 &out) const {
+    return touch ? touch->getDelta(out) : *new Vec2();
+}
+
+const Vec2 &EventTouch::getUIDelta() const {
+    return touch ? touch->getUIDelta() : *new Vec2();
+}
+
+const Vec2 &EventTouch::getUIDelta(Vec2 &out) const {
+    return touch ? touch->getUIDelta(out) : *new Vec2();
+}
+
+float EventTouch::getDeltaX() const {
+    return touch ? getDelta().x : 0;
+}
+
+float EventTouch::getDeltaY() const {
+    return touch ? getDelta().y : 0;
+}
+
+float EventTouch::getLocationX() const {
+    return touch ? touch->getLocationX() : 0;
+}
+
+float EventTouch::getLocationY() const {
+    return touch ? touch->getLocationY() : 0;
+}
+
+// EventAcceleration
+EventAcceleration::EventAcceleration(const Acceleration &acc, bool bubbles) : Event(SystemEventType::DEVICEMOTION, bubbles) {
+    this->acc = acc;
+}
+
+// EventKeyboard
+
+EventKeyboard::EventKeyboard(const event_manager::KeyCode &keyCode, bool isPressed, bool bubbles) : Event(isPressed ? SystemEventType::KEY_DOWN : SystemEventType::KEY_UP, bubbles) {
+    _isPressed    = isPressed;
+    this->keyCode = keyCode;
+}
+
+EventKeyboard::EventKeyboard(const event_manager::KeyCode &keyCode, const SystemEventTypeUnion &eventType, bool bubbles) : Event(eventType, bubbles) {
+    this->keyCode = keyCode;
+}
+
+} // namespace cc

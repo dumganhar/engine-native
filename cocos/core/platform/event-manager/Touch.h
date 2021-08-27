@@ -32,13 +32,13 @@ namespace cc {
  * @en The  point class
  * @zh 封装了触点相关的信息。
  */
-class Touch final{
+class Touch final {
 public:
     Touch(float x, float y) {
         setTouchInfo(0, x, y);
     }
 
-    Touch(float x, float y, uint32_t id) {
+    Touch(float x, float y, int32_t id) {
         setTouchInfo(id, x, y);
     }
 
@@ -49,7 +49,14 @@ public:
      * @zh 获取当前触点位置。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2& getLocation() const;
+    inline const Vec2 &getLocation() const {
+        return *new Vec2(_point.x, _point.y);
+    }
+
+    inline const Vec2 &getLocation(Vec2 &out) const {
+        out.set(_point.x, _point.y);
+        return out;
+    }
 
     /**
      * @en Returns X axis location value.
@@ -72,7 +79,8 @@ public:
      * @zh 获取当前触点在 UI 坐标系中的位置。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getUILocation() const;
+    const Vec2 &getUILocation() const;
+    const Vec2 &getUILocation(Vec2 &out) const;
 
     /**
      * @en Returns X axis location value in UI coordinates.
@@ -92,69 +100,78 @@ public:
      * @zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2& getPreviousLocation() const;
+    const Vec2 &getPreviousLocation() const;
+    const Vec2 &getPreviousLocation(Vec2 &out) const;
 
     /**
      * @en Returns the previous touch location in UI coordinates.
      * @zh 获取触点在上一次事件时在 UI 坐标系中的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getUIPreviousLocation() const;
+    const Vec2 &getUIPreviousLocation() const;
+    const Vec2 &getUIPreviousLocation(Vec2 &out) const;
 
     /**
      * @en Returns the start  location.
      * @zh 获取触点落下时的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2& getStartLocation() const;
+    const Vec2 &getStartLocation() const;
+    const Vec2 &getStartLocation(Vec2 &out) const;
 
     /**
      * @en Returns the start  location in UI coordinates.
      * @zh 获取触点落下时在 UI 坐标系中的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getUIStartLocation() const; 
+    const Vec2 &getUIStartLocation() const;
+    const Vec2 &getUIStartLocation(Vec2 &out) const;
 
     /**
      * @en Returns the delta distance from the previous touche to the current one.
      * @zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getDelta() const;
+    const Vec2 &getDelta() const;
+    const Vec2 &getDelta(Vec2 &out) const;
 
-        /**
+    /**
      * @en Returns the delta distance from the previous touche to the current one in UI coordinates.
      * @zh 获取触点距离上一次事件移动在 UI 坐标系中的距离对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getUIDelta() const;
+    const Vec2 &getUIDelta() const;
+    const Vec2 &getUIDelta(Vec2 &out) const;
 
     /**
      * @en Returns the current  location in screen coordinates.
      * @zh 获取当前事件在游戏窗口内的坐标位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getLocationInView() const;
+    const Vec2 &getLocationInView() const;
+    const Vec2 &getLocationInView(Vec2 &out) const;
 
     /**
      * @en Returns the previous  location in screen coordinates.
      * @zh 获取触点在上一次事件时在游戏窗口中的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getPreviousLocationInView() const;
+    const Vec2 &getPreviousLocationInView() const;
+    const Vec2 &getPreviousLocationInView(Vec2 &out) const;
 
     /**
      * @en Returns the start  location in screen coordinates.
      * @zh 获取触点落下时在游戏窗口中的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    Vec2 getStartLocationInView() const;
+    const Vec2 &getStartLocationInView() const;
+    const Vec2 &getStartLocationInView(Vec2 &out) const;
 
     /**
      * @en Returns the id of the  point.
      * @zh 触点的标识 ID，可以用来在多点触摸中跟踪触点。
      */
-    inline uint32_t getID() const { 
+    inline int32_t getID() const {
         return _id;
     }
 
@@ -165,16 +182,16 @@ public:
      * @param x - x position of the  point
      * @param y - y position of the  point
      */
-    void setTouchInfo(uint32_t id = 0);
+    void setTouchInfo(int32_t id = 0);
 
-    void setTouchInfo(uint32_t id, float x, float y);
+    void setTouchInfo(int32_t id, float x, float y);
 
     /**
      * @en Sets  point location.
      * @zh 设置触点位置。
      * @param point - The location
      */
-    void setPoint(const Vec2& point);
+    void setPoint(const Vec2 &point);
 
     void setPoint(float x, float y);
 
@@ -183,21 +200,21 @@ public:
      * @zh 设置触点在前一次触发时收集的位置。
      * @param point - The location
      */
-    void setPrevPoint(const Vec2& point);
+    void setPrevPoint(const Vec2 &point);
 
     void setPrevPoint(float x, float y);
 
-    inline uint32_t getLastModified() const { 
+    inline int32_t getLastModified() const {
         return _lastModified;
     }
 
 private:
-    Vec2 _point;
-    Vec2 _prevPoint;
-    uint32_t _lastModified{0};
-    uint32_t _id{0};
-    Vec2 _startPoint;
-    bool _startPointCaptured{false};
+    Vec2    _point;
+    Vec2    _prevPoint;
+    int32_t _lastModified{0};
+    int32_t _id{0};
+    Vec2    _startPoint;
+    bool    _startPointCaptured{false};
 };
 
 } // namespace cc

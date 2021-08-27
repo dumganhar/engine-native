@@ -25,8 +25,12 @@
 
 #pragma once
 #include <string>
+#include <variant>
+
+#include "core/scene-graph/NodeEvent.h"
 
 namespace cc {
+
 enum class SystemEventType {
     /**
      * @en
@@ -265,5 +269,7 @@ enum class SystemEventType {
      */
     SIBLING_ORDER_CHANGED,
 };
+
+using SystemEventTypeUnion = std::variant<SystemEventType, scenegraph::NodeEventType>;
 
 } // namespace cc

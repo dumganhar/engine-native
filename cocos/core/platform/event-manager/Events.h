@@ -27,237 +27,16 @@
 
 #include <vector>
 
-#include "math/Vec2.h"
 #include "core/event/Event.h"
+#include "core/platform/View.h"
+#include "math/Vec2.h"
+
 #include "core/platform/event-manager/Acceleration.h"
-#include "core/platform/event-manager/Touch.h"
+#include "core/platform/event-manager/EventEnum.h"
 #include "core/platform/event-manager/KeyCode.h"
+#include "core/platform/event-manager/Touch.h"
 
 namespace cc {
-
-/**
- * @en
- * The acceleration event.
- * @zh
- * 加速计事件。
- */
-class EventAcceleration final : public event::Event {
-public:
-    /**
-     * @param acc - The acceleration
-     * @param bubbles - Indicate whether the event bubbles up through the hierarchy or not.
-     */
-    EventAcceleration(Acceleration acc, bool bubbles);
-    ~EventAcceleration() = default;
-
-    /**
-     * @en The acceleration object
-     * @zh 加速度对象
-     */
-    Acceleration acc;
-
-};
-
-/**
- * @en
- * The touch event.
- *
- * @zh
- * 触摸事件。
- */
-class EventTouch final : public event::Event {
-public:
-
-    EventTouch() = default;
-    ~EventTouch() = default;
-
-    /**
-     * @param touches - An array of current touches
-     * @param bubbles - Indicate whether the event bubbles up through the hierarchy or not.
-     * @param eventType - The type of the event
-     */
-    // EventKeyboard (std::vector<Touch> *changedTouches, bool bubbles, SystemEventTypeUnion eventType, std::vector<Touch> *touch);
-
-    /**
-     * @en Returns touches of event.
-     * @zh 获取有变动的触摸点的列表。
-     * 注意：第一根手指按下不动，接着按第二根手指，这时候触点信息就只有变动的这根手指（第二根手指）的信息。
-     * 如果需要获取全部手指的信息，请使用 `getAllTouches`。
-     */
-    const std::vector<Touch>& getTouches() const;
-
-    /**
-     * @en Returns touches of event.
-     * @zh 获取所有触摸点的列表。
-     * 注意：如果手指行为是 touch end，这个时候列表是没有该手指信息的。如需知道该手指信息，可通过 `getTouches` 获取识别。
-     */
-    const std::vector<Touch>& getAllTouches() const;
-
-    /**
-     * @en Sets touch location.
-     * @zh 设置当前触点位置
-     * @param x - The current touch location on the x axis
-     * @param y - The current touch location on the y axis
-     */
-    void setLocation(float x, float y);
-
-    /**
-     * @en Returns the current touch location.
-     * @zh 获取触点位置。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2& getLocation() const;
-
-    /**
-     * @en Returns the current touch location in UI coordinates.
-     * @zh 获取 UI 坐标系下的触点位置。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2& getUILocation() const;
-
-    /**
-     * @en Returns the current touch location in game screen coordinates.
-     * @zh 获取当前触点在游戏窗口中的位置。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2& getLocationInView() const;
-
-    /**
-     * @en Returns the previous touch location.
-     * @zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2& getPreviousLocation() const;
-
-    /**
-     * @en Returns the start touch location.
-     * @zh 获取触点落下时的位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2& getStartLocation() const;
-
-    /**
-     * @en Returns the start touch location in UI coordinates.
-     * @zh 获取触点落下时的 UI 世界下位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2& getUIStartLocation() const;
-
-    /**
-     * @en Returns the id of the current touch point.
-     * @zh 获取触点的标识 ID，可以用来在多点触摸中跟踪触点。
-     */
-    uint32_t getID() const;
-
-    /**
-     * @en Returns the delta distance from the previous location to current location.
-     * @zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2& getDelta() const;
-
-    /**
-     * @en Returns the delta distance from the previous location to current location.
-     * @zh 获取触点距离上一次事件 UI 世界下移动的距离对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-    */
-    const Vec2& getUIDelta() const;
-
-    /**
-     * @en Returns the X axis delta distance from the previous location to current location.
-     * @zh 获取触点距离上一次事件移动的 x 轴距离。
-     */
-    float getDeltaX() const;
-
-    /**
-     * @en Returns the Y axis delta distance from the previous location to current location.
-     * @zh 获取触点距离上一次事件移动的 y 轴距离。
-     */
-    float getDeltaY() const;
-
-    /**
-     * @en Returns location X axis data.
-     * @zh 获取当前触点 X 轴位置。
-     */
-    float getLocationX() const;
-
-    /**
-     * @en Returns location Y axis data.
-     * @zh 获取当前触点 Y 轴位置。
-     */
-    float getLocationY() const;
-
-    /**
-     * @en The maximum touch point numbers simultaneously
-     * @zh 同时存在的最大触点数量。
-     */
-    static uint32_t MAX_TOUCHES;
-
-    /**
-     * @en The current touch object
-     * @zh 当前触点对象
-     */
-    Touch* touch{nullptr};
-
-    /**
-     * @en Indicate whether the touch event is simulated or real
-     * @zh 表示触摸事件是真实触点触发的还是模拟的
-     */
-    bool simulate{false};
-
-private:
-    std::vector<Touch> _touches;
-    std::vector<Touch> _allTouches;
-
-};
-
-/**
- * @en
- * The keyboard event.
- * @zh
- * 键盘事件。
- */
-class EventKeyboard final : public event::Event {
-public:
-
-    /**
-     * @param keyCode - The key code of the current key or the DOM KeyboardEvent
-     * @param isPressed - Indicates whether the current key is being pressed, this is the DEPRECATED parameter.
-     * @param bubbles - Indicates whether the event bubbles up through the hierarchy or not.
-     */
-    // constructor (keyCode: number | KeyboardEvent, isPressed: boolean, bubbles?: boolean);
-    EventKeyboard (uint32_t keyCode, bool isPressed, bool bubbles);
-
-    /**
-     * @param keyCode - The key code of the current key or the DOM KeyboardEvent
-     * @param eventType - The type of the event
-     * @param bubbles - Indicates whether the event bubbles up through the hierarchy or not.
-     */
-    // constructor (keyCode: KeyCode | KeyboardEvent, eventType: SystemEventTypeUnion, bubbles?: boolean);
-    // EventKeyboard (KeyCode keyCode, SystemEventType eventType, bool bubbles);
-
-    ~EventKeyboard() = default;
-
-    /**
-     * @en The KeyCode enum value of current keyboard event.
-     * @zh 当前键盘事件的 KeyCode 枚举值
-     */
-    event_manager::KeyCode keyCode;
-
-    /**
-     * @en Indicates whether the current key is being pressed
-     * @zh 表示当前按键是否正在被按下
-     *
-     * @deprecated since v3.3, please use Event.prototype.type !== SystemEvent.EventType.KEY_UP instead
-     */
-    inline bool isPressed() const{
-        return _isPressed;
-    }
-
-private:
-    bool _isPressed{false};
-
-};
 
 /**
  * @en The mouse event
@@ -265,9 +44,10 @@ private:
  */
 class EventMouse final : public event::Event {
 public:
-
     EventMouse() = default;
-    ~EventMouse() = default;
+    EventMouse(const SystemEventTypeUnion &eventType, bool bubbles);
+    EventMouse(const SystemEventTypeUnion &eventType, bool bubbles, const Vec2 &prevLoc);
+    ~EventMouse() override = default;
 
     /**
      * @param eventType - The type of the event
@@ -308,86 +88,117 @@ public:
      * @zh 获取鼠标相对于左下角位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2& getLocation() const;
+    const Vec2 &getLocation() const;
+    const Vec2 &getLocation(Vec2 &out) const;
 
     /**
-     * @en Returns the current touch location in UI coordinates.
-     * @zh 获取 UI 坐标系下的触点位置。
+     * @en Returns the current cursor location in ui coordinates.
+     * @zh 获取当前事件在 UI 窗口内的坐标位置，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2& getUILocation() const;
+    const Vec2 &getUILocation() const;
+    const Vec2 &getUILocation(Vec2 &out) const;
 
     /**
-     * @en Returns the current touch location in game screen coordinates.
-     * @zh 获取当前触点在游戏窗口中的位置。
+     * @en Returns the current cursor location in game view coordinates.
+     * @zh 获取当前事件在游戏窗口内的坐标位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2& getLocationInView() const;
+    const Vec2 &getLocationInView() const;
+    const Vec2 &getLocationInView(Vec2 &out) const;
 
     /**
      * @en Returns the previous touch location.
-     * @zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。
+     * @zh 获取鼠标点击在上一次事件时的位置对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2& getPreviousLocation() const;
+    const Vec2 &getPreviousLocation() const;
+    const Vec2 &getPreviousLocation(Vec2 &out) const;
 
     /**
-     * @en Returns the start touch location.
-     * @zh 获取触点落下时的位置对象，对象包含 x 和 y 属性。
+     * @en Returns the previous touch location.
+     * @zh 获取鼠标点击在上一次事件时在 UI 窗口内的坐标位置，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2& getStartLocation() const;
-
-    /**
-     * @en Returns the start touch location in UI coordinates.
-     * @zh 获取触点落下时的 UI 世界下位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2& getUIStartLocation() const;
-
-    /**
-     * @en Returns the id of the current touch point.
-     * @zh 获取触点的标识 ID，可以用来在多点触摸中跟踪触点。
-     */
-    uint32_t getID() const;
+    const Vec2 &getUIPreviousLocation() const;
+    const Vec2 &getUIPreviousLocation(Vec2 &out) const;
 
     /**
      * @en Returns the delta distance from the previous location to current location.
-     * @zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。
+     * @zh 获取鼠标距离上一次事件移动的距离对象，对象包含 x 和 y 属性。
      * @param out - Pass the out object to avoid object creation, very good practice
      */
-    const Vec2& getDelta() const;
-
-    /**
-     * @en Returns the delta distance from the previous location to current location.
-     * @zh 获取触点距离上一次事件 UI 世界下移动的距离对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-    */
-    const Vec2& getUIDelta() const;
+    const Vec2 &getDelta() const;
+    const Vec2 &getDelta(Vec2 &out) const;
 
     /**
      * @en Returns the X axis delta distance from the previous location to current location.
-     * @zh 获取触点距离上一次事件移动的 x 轴距离。
+     * @zh 获取鼠标距离上一次事件移动的 X 轴距离。
      */
     float getDeltaX() const;
 
     /**
      * @en Returns the Y axis delta distance from the previous location to current location.
-     * @zh 获取触点距离上一次事件移动的 y 轴距离。
+     * @zh 获取鼠标距离上一次事件移动的 Y 轴距离。
      */
     float getDeltaY() const;
 
     /**
-     * @en Returns location X axis data.
-     * @zh 获取当前触点 X 轴位置。
+     * @en Returns the delta distance from the previous location to current location in the UI coordinates.
+     * @zh 获取鼠标距离上一次事件移动在 UI 坐标系下的距离对象，对象包含 x 和 y 属性。
+     * @param out - Pass the out object to avoid object creation, very good practice
+     */
+    const Vec2 &getUIDelta() const;
+    const Vec2 &getUIDelta(Vec2 &out) const;
+
+    /**
+     * @en Returns the X axis delta distance from the previous location to current location.
+     * @zh 获取鼠标距离上一次事件移动的 X 轴距离。
+     */
+    float getUIDeltaX() const;
+
+    /**
+     * @en Returns the Y axis delta distance from the previous location to current location.
+     * @zh 获取鼠标距离上一次事件移动的 Y 轴距离。
+     */
+    float getUIDeltaY() const;
+
+    /**
+     * @en Sets mouse button code.
+     * @zh 设置鼠标按键。
+     * @param button - The button code
+     */
+    void setButton(int32_t button);
+
+    /**
+     * @en Returns mouse button code.
+     * @zh 获取鼠标按键。
+     */
+    int32_t getButton() const;
+
+    /**
+     * @en Returns location data on X axis.
+     * @zh 获取鼠标当前 X 轴位置。
      */
     float getLocationX() const;
 
     /**
-     * @en Returns location Y axis data.
-     * @zh 获取当前触点 Y 轴位置。
+     * @en Returns location data on Y axis.
+     * @zh 获取鼠标当前 Y 轴位置。
      */
     float getLocationY() const;
+
+    /**
+     * @en Returns location data on X axis.
+     * @zh 获取鼠标当前 X 轴位置。
+     */
+    float getUILocationX() const;
+
+    /**
+     * @en Returns location data on Y axis.
+     * @zh 获取鼠标当前 Y 轴位置。
+     */
+    float getUILocationY() const;
 
     /**
      * @en The default tag when no button is pressed
@@ -461,13 +272,13 @@ public:
      *
      * @deprecated since v3.3, please use EventMouse.prototype.type instead.
      */
-    // public get eventType () {
-    //     return this._eventType;
-    // }
+    inline const SystemEventTypeUnion &getEventType() const {
+        return _eventType;
+    }
 
 private:
-    // SystemEventTypeUnion _eventType;
-    
+    SystemEventTypeUnion _eventType;
+
     int32_t _button{EventMouse::BUTTON_MISSING};
 
     float _x{0};
@@ -481,7 +292,244 @@ private:
     float _scrollX{0};
 
     float _scrollY{0};
+};
 
+/**
+ * @en
+ * The touch event.
+ *
+ * @zh
+ * 触摸事件。
+ */
+class EventTouch final : public event::Event {
+public:
+    EventTouch() = default;
+    EventTouch(const std::vector<Touch> &changedTouches, bool bubbles, const SystemEventTypeUnion &eventType, const std::vector<Touch> &touches);
+    ~EventTouch() override = default;
+
+    /**
+     * @param touches - An array of current touches
+     * @param bubbles - Indicate whether the event bubbles up through the hierarchy or not.
+     * @param eventType - The type of the event
+     */
+    // EventKeyboard (std::vector<Touch> *changedTouches, bool bubbles, SystemEventTypeUnion eventType, std::vector<Touch> *touch);
+
+    /**
+     * @en Returns event type code.
+     * @zh 获取触摸事件类型。
+     *
+     * @deprecated since v3.3, please use EventTouch.prototype.type instead.
+     */
+    inline SystemEventTypeUnion getEventCode() const {
+        return _eventCode;
+    }
+
+    /**
+     * @en Returns touches of event.
+     * @zh 获取有变动的触摸点的列表。
+     * 注意：第一根手指按下不动，接着按第二根手指，这时候触点信息就只有变动的这根手指（第二根手指）的信息。
+     * 如果需要获取全部手指的信息，请使用 `getAllTouches`。
+     */
+    const std::vector<Touch> &getTouches() const;
+
+    /**
+     * @en Returns touches of event.
+     * @zh 获取所有触摸点的列表。
+     * 注意：如果手指行为是 touch end，这个时候列表是没有该手指信息的。如需知道该手指信息，可通过 `getTouches` 获取识别。
+     */
+    const std::vector<Touch> &getAllTouches() const;
+
+    /**
+     * @en Sets touch location.touch
+     * @zh 设置当前触点位置
+     * @param x - The current touch location on the x axis
+     * @param y - The current touch location on the y axis
+     */
+    void setLocation(float x, float y);
+
+    /**
+     * @en Returns the current touch location.
+     * @zh 获取触点位置。
+     * @param out - Pass the out object to avoid object creation, very good practice
+     */
+    const Vec2 &getLocation() const;
+    const Vec2 &getLocation(Vec2 &out) const;
+    /**
+     * @en Returns the current touch location in UI coordinates.
+     * @zh 获取 UI 坐标系下的触点位置。
+     * @param out - Pass the out object to avoid object creation, very good practice
+     */
+    const Vec2 &getUILocation() const;
+    const Vec2 &getUILocation(Vec2 &out) const;
+
+    /**
+     * @en Returns the current touch location in game screen coordinates.
+     * @zh 获取当前触点在游戏窗口中的位置。
+     * @param out - Pass the out object to avoid object creation, very good practice
+     */
+    const Vec2 &getLocationInView() const;
+    const Vec2 &getLocationInView(Vec2 &out) const;
+
+    /**
+     * @en Returns the previous touch location.
+     * @zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。
+     * @param out - Pass the out object to avoid object creation, very good practice
+     */
+    const Vec2 &getPreviousLocation() const;
+    const Vec2 &getPreviousLocation(Vec2 &out) const;
+
+    /**
+     * @en Returns the start touch location.
+     * @zh 获取触点落下时的位置对象，对象包含 x 和 y 属性。
+     * @param out - Pass the out object to avoid object creation, very good practice
+     */
+    const Vec2 &getStartLocation() const;
+    const Vec2 &getStartLocation(Vec2 &out) const;
+
+    /**
+     * @en Returns the start touch location in UI coordinates.
+     * @zh 获取触点落下时的 UI 世界下位置对象，对象包含 x 和 y 属性。
+     * @param out - Pass the out object to avoid object creation, very good practice
+     */
+    const Vec2 &getUIStartLocation() const;
+    const Vec2 &getUIStartLocation(Vec2 &out) const;
+
+    /**
+     * @en Returns the id of the current touch point.
+     * @zh 获取触点的标识 ID，可以用来在多点触摸中跟踪触点。
+     */
+    int32_t getID() const;
+
+    /**
+     * @en Returns the delta distance from the previous location to current location.
+     * @zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。
+     * @param out - Pass the out object to avoid object creation, very good practice
+     */
+    const Vec2 &getDelta() const;
+    const Vec2 &getDelta(Vec2 &out) const;
+
+    /**
+     * @en Returns the delta distance from the previous location to current location.
+     * @zh 获取触点距离上一次事件 UI 世界下移动的距离对象，对象包含 x 和 y 属性。
+     * @param out - Pass the out object to avoid object creation, very good practice
+    */
+    const Vec2 &getUIDelta() const;
+    const Vec2 &getUIDelta(Vec2 &out) const;
+
+    /**
+     * @en Returns the X axis delta distance from the previous location to current location.
+     * @zh 获取触点距离上一次事件移动的 x 轴距离。
+     */
+    float getDeltaX() const;
+
+    /**
+     * @en Returns the Y axis delta distance from the previous location to current location.
+     * @zh 获取触点距离上一次事件移动的 y 轴距离。
+     */
+    float getDeltaY() const;
+
+    /**
+     * @en Returns location X axis data.
+     * @zh 获取当前触点 X 轴位置。
+     */
+    float getLocationX() const;
+
+    /**
+     * @en Returns location Y axis data.
+     * @zh 获取当前触点 Y 轴位置。
+     */
+    float getLocationY() const;
+
+    /**
+     * @en The maximum touch point numbers simultaneously
+     * @zh 同时存在的最大触点数量。
+     */
+    static uint32_t MAX_TOUCHES;
+
+    /**
+     * @en The current touch object
+     * @zh 当前触点对象
+     */
+    Touch *touch{nullptr};
+
+    /**
+     * @en Indicate whether the touch event is simulated or real
+     * @zh 表示触摸事件是真实触点触发的还是模拟的
+     */
+    bool simulate{false};
+
+private:
+    std::vector<Touch>   _touches;
+    std::vector<Touch>   _allTouches;
+    SystemEventTypeUnion _eventCode; // deprecated since v3.3
+};
+
+/**
+ * @en
+ * The acceleration event.
+ * @zh
+ * 加速计事件。
+ */
+class EventAcceleration final : public event::Event {
+public:
+    /**
+     * @param acc - The acceleration
+     * @param bubbles - Indicate whether the event bubbles up through the hierarchy or not.
+     */
+    EventAcceleration(const Acceleration &acc, bool bubbles);
+    ~EventAcceleration() override = default;
+
+    /**
+     * @en The acceleration object
+     * @zh 加速度对象
+     */
+    Acceleration acc;
+};
+
+/**
+ * @en
+ * The keyboard event.
+ * @zh
+ * 键盘事件。
+ */
+class EventKeyboard final : public event::Event {
+public:
+    /**
+     * @param keyCode - The key code of the current key or the DOM KeyboardEvent
+     * @param isPressed - Indicates whether the current key is being pressed, this is the DEPRECATED parameter.
+     * @param bubbles - Indicates whether the event bubbles up through the hierarchy or not.
+     */
+    // constructor (keyCode: number | KeyboardEvent, isPressed: boolean, bubbles?: boolean);
+    EventKeyboard(const event_manager::KeyCode &keyCode, bool isPressed, bool bubbles);
+    EventKeyboard(const event_manager::KeyCode &keyCode, const SystemEventTypeUnion &eventType, bool bubbles);
+    /**
+     * @param keyCode - The key code of the current key or the DOM KeyboardEvent
+     * @param eventType - The type of the event
+     * @param bubbles - Indicates whether the event bubbles up through the hierarchy or not.
+     */
+    // constructor (keyCode: KeyCode | KeyboardEvent, eventType: SystemEventTypeUnion, bubbles?: boolean);
+    // EventKeyboard (KeyCode keyCode, SystemEventType eventType, bool bubbles);
+
+    ~EventKeyboard() override = default;
+
+    /**
+     * @en The KeyCode enum value of current keyboard event.
+     * @zh 当前键盘事件的 KeyCode 枚举值
+     */
+    event_manager::KeyCode keyCode;
+
+    /**
+     * @en Indicates whether the current key is being pressed
+     * @zh 表示当前按键是否正在被按下
+     *
+     * @deprecated since v3.3, please use Event.prototype.type !== SystemEvent.EventType.KEY_UP instead
+     */
+    inline bool isPressed() const {
+        return _isPressed;
+    }
+
+private:
+    bool _isPressed{false};
 };
 
 } // namespace cc

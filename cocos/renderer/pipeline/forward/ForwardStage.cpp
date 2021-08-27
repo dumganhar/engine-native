@@ -165,7 +165,7 @@ void ForwardStage::render(scene::Camera *camera) {
     _renderArea.width  = static_cast<uint>(viewPort.z * w * sharedData->shadingScale);
     _renderArea.height = static_cast<uint>(viewPort.w * h * sharedData->shadingScale);
 
-    const auto clearColor = camera->getClearColor();
+    const auto &clearColor = camera->getClearColor();
     if (hasFlag(static_cast<gfx::ClearFlags>(camera->getClearFlag()), gfx::ClearFlagBit::COLOR)) {
         if (sharedData->isHDR) {
             srgbToLinear(&_clearColors[0], clearColor);
@@ -174,9 +174,7 @@ void ForwardStage::render(scene::Camera *camera) {
             _clearColors[0].y *= scale;
             _clearColors[0].z *= scale;
         } else {
-            _clearColors[0].x = clearColor.x;
-            _clearColors[0].y = clearColor.y;
-            _clearColors[0].z = clearColor.z;
+            _clearColors[0] = clearColor;
         }
     }
 

@@ -1403,6 +1403,8 @@ cocos_source_files(
     cocos/core/platform/native/SystemInfo.h
     cocos/core/platform/native/SystemInfo.cpp
 
+    cocos/core/platform/Debug.h
+    cocos/core/platform/Debug.cpp
     cocos/core/platform/Macro.h
     cocos/core/platform/Macro.cpp
     cocos/core/platform/Screen.h

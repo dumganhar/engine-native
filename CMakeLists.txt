@@ -853,6 +853,7 @@ cocos_source_files(
                  cocos/scene/BakedSkinningModel.h
                  cocos/scene/BakedSkinningModel.cpp
                  cocos/scene/Camera.h
+                 cocos/scene/Camera.cpp
                  cocos/scene/Define.h
                  cocos/scene/Define.cpp
                  cocos/scene/DirectionalLight.h

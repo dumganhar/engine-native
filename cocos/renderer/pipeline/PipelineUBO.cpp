@@ -71,7 +71,7 @@ void PipelineUBO::updateGlobalUBOView(const RenderPipeline * /*pipeline*/, std::
 }
 
 void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *output, const scene::Camera *camera) {
-    const auto *const              scene         = camera->scene;
+    const auto *const              scene         = camera->getScene();
     const scene::DirectionalLight *mainLight     = scene->getMainLight();
     auto *                         sceneData     = pipeline->getPipelineSceneData();
     auto *const                    sharedData    = sceneData->getSharedData();
@@ -87,12 +87,12 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     const auto shadingWidth  = std::floor(device->getWidth());
     const auto shadingHeight = std::floor(device->getHeight());
 
-    output[UBOCamera::SCREEN_SCALE_OFFSET + 0] = static_cast<float>(camera->width / shadingWidth * shadingScale);
-    output[UBOCamera::SCREEN_SCALE_OFFSET + 1] = static_cast<float>(camera->height / shadingHeight * shadingScale);
+    output[UBOCamera::SCREEN_SCALE_OFFSET + 0] = static_cast<float>(camera->getWidth() / shadingWidth * shadingScale);
+    output[UBOCamera::SCREEN_SCALE_OFFSET + 1] = static_cast<float>(camera->getHeight() / shadingHeight * shadingScale);
     output[UBOCamera::SCREEN_SCALE_OFFSET + 2] = 1.0F / output[UBOCamera::SCREEN_SCALE_OFFSET];
     output[UBOCamera::SCREEN_SCALE_OFFSET + 3] = 1.0F / output[UBOCamera::SCREEN_SCALE_OFFSET + 1];
 
-    const auto exposure                    = camera->exposure;
+    const auto exposure                    = camera->getExposure();
     output[UBOCamera::EXPOSURE_OFFSET + 0] = exposure;
     output[UBOCamera::EXPOSURE_OFFSET + 1] = 1.0F / exposure;
     output[UBOCamera::EXPOSURE_OFFSET + 2] = isHDR ? 1.0F : 0.0F;
@@ -134,14 +134,14 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
         output[UBOCamera::AMBIENT_GROUND_OFFSET + 3] = static_cast<float>(envmap->getLevelCount());
     }
 
-    memcpy(output + UBOCamera::MAT_VIEW_OFFSET, camera->matView.m, sizeof(cc::Mat4));
-    memcpy(output + UBOCamera::MAT_VIEW_INV_OFFSET, camera->node->getWorldMatrix().m, sizeof(cc::Mat4));
-    TO_VEC3(output, camera->position, UBOCamera::CAMERA_POS_OFFSET);
+    memcpy(output + UBOCamera::MAT_VIEW_OFFSET, camera->getMatView().m, sizeof(cc::Mat4));
+    memcpy(output + UBOCamera::MAT_VIEW_INV_OFFSET, camera->getNode()->getWorldMatrix().m, sizeof(cc::Mat4));
+    TO_VEC3(output, camera->getPosition(), UBOCamera::CAMERA_POS_OFFSET);
 
-    memcpy(output + UBOCamera::MAT_PROJ_OFFSET, camera->matProj.m, sizeof(cc::Mat4));
-    memcpy(output + UBOCamera::MAT_PROJ_INV_OFFSET, camera->matProjInv.m, sizeof(cc::Mat4));
-    memcpy(output + UBOCamera::MAT_VIEW_PROJ_OFFSET, camera->matViewProj.m, sizeof(cc::Mat4));
-    memcpy(output + UBOCamera::MAT_VIEW_PROJ_INV_OFFSET, camera->matViewProjInv.m, sizeof(cc::Mat4));
+    memcpy(output + UBOCamera::MAT_PROJ_OFFSET, camera->getMatProj().m, sizeof(cc::Mat4));
+    memcpy(output + UBOCamera::MAT_PROJ_INV_OFFSET, camera->getMatProjInv().m, sizeof(cc::Mat4));
+    memcpy(output + UBOCamera::MAT_VIEW_PROJ_OFFSET, camera->getMatViewProj().m, sizeof(cc::Mat4));
+    memcpy(output + UBOCamera::MAT_VIEW_PROJ_INV_OFFSET, camera->getMatViewProjInv().m, sizeof(cc::Mat4));
     output[UBOCamera::CAMERA_POS_OFFSET + 3] = getCombineSignY();
 
     if (fog->enabled) {
@@ -158,7 +158,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
 }
 
 void PipelineUBO::updateShadowUBOView(const RenderPipeline *pipeline, std::array<float, UBOShadow::COUNT> *bufferView, const scene::Camera *camera) {
-    const auto *const              scene     = camera->scene;
+    const auto *const              scene     = camera->getScene();
     const scene::DirectionalLight *mainLight = scene->getMainLight();
 
     auto *      device     = gfx::Device::getInstance();
@@ -410,7 +410,7 @@ void PipelineUBO::updateShadowUBO(const scene::Camera *camera) {
     auto *const       cmdBuffer  = _pipeline->getCommandBuffers()[0];
     auto *const       sceneData  = _pipeline->getPipelineSceneData();
     auto *const       shadowInfo = sceneData->getSharedData()->shadow;
-    const auto *const scene      = camera->scene;
+    const auto *const scene      = camera->getScene();
     if (!shadowInfo->enabled) return;
 
     const auto &                   shadowFrameBufferMap = sceneData->getShadowFramebufferMap();

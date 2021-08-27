@@ -307,14 +307,14 @@ gfx::Rect DeferredPipeline::getRenderArea(scene::Camera *camera, bool onScreen) 
     uint w;
     uint h;
     if (onScreen) {
-        w = camera->window->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->height : camera->width;
-        h = camera->window->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->width : camera->height;
+        w = camera->getWindow()->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getHeight() : camera->getWidth();
+        h = camera->getWindow()->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getWidth() : camera->getHeight();
     } else {
-        w = camera->width;
-        h = camera->height;
+        w = camera->getWidth();
+        h = camera->getHeight();
     }
 
-    const auto &viewport = camera->viewPort;
+    const auto &viewport = camera->getViewport();
     renderArea.x         = static_cast<int>(viewport.x * w);
     renderArea.y         = static_cast<int>(viewport.y * h);
     renderArea.width     = static_cast<uint>(viewport.z * w * _pipelineSceneData->getSharedData()->shadingScale);
@@ -440,15 +440,15 @@ gfx::Color DeferredPipeline::getClearcolor(scene::Camera *camera) {
     auto *const sceneData     = getPipelineSceneData();
     auto *const sharedData    = sceneData->getSharedData();
     gfx::Color clearColor{0.0, 0.0, 0.0, 1.0F};
-    if (camera->clearFlag & static_cast<uint>(gfx::ClearFlagBit::COLOR)) {
+    if (!!(camera->getClearFlag() & gfx::ClearFlagBit::COLOR)) {
         if (sharedData->isHDR) {
-            srgbToLinear(&clearColor, camera->clearColor);
-            const auto scale = sharedData->fpScale / camera->exposure;
+            srgbToLinear(&clearColor, camera->getClearColor());
+            const auto scale = sharedData->fpScale / camera->getExposure();
             clearColor.x *= scale;
             clearColor.y *= scale;
             clearColor.z *= scale;
         } else {
-            clearColor = camera->clearColor;
+            clearColor = camera->getClearColor();
         }
     }
 

@@ -64,7 +64,7 @@ Vec2 EventMouse::getLocation(Vec2 &out) const {
 }
 
 Vec2 EventMouse::getUILocation() const {
-    Vec2 out = Vec2(_x, _y);
+    Vec2 out(_x, _y);
     View::getInstance().convertPointWithScale(out);
     return out;
 }
@@ -94,7 +94,7 @@ Vec2 EventMouse::getPreviousLocation(Vec2 &out) const {
 }
 
 Vec2 EventMouse::getUIPreviousLocation() const {
-    Vec2 out = Vec2(_prevX, _prevY);
+    Vec2 out(_prevX, _prevY);
     View::getInstance().convertPointWithScale(out);
     return out;
 }
@@ -106,7 +106,7 @@ Vec2 EventMouse::getUIPreviousLocation(Vec2 &out) const {
 }
 
 Vec2 EventMouse::getDelta() const {
-    Vec2 out = Vec2(_x - _prevX, _y - _prevY);
+    Vec2 out(_x - _prevX, _y - _prevY);
     return out;
 }
 
@@ -124,7 +124,7 @@ float EventMouse::getDeltaY() const {
 }
 
 Vec2 EventMouse::getUIDelta() const {
-    Vec2 out = Vec2((_x - _prevX) / View::getInstance().getScaleX(), (_y - _prevY) / View::getInstance().getScaleY());
+    Vec2 out((_x - _prevX) / View::getInstance().getScaleX(), (_y - _prevY) / View::getInstance().getScaleY());
     return out;
 }
 
@@ -158,12 +158,12 @@ float EventMouse::getLocationY() const {
 }
 
 float EventMouse::getUILocationX() const {
-    Rect viewport = View::getInstance().getViewportRect();
+    const Rect &viewport = View::getInstance().getViewportRect();
     return (_x - viewport.getMinX()) / View::getInstance().getScaleX();
 }
 
 float EventMouse::getUILocationY() const {
-    Rect viewport = View::getInstance().getViewportRect();
+    const Rect &viewport = View::getInstance().getViewportRect();
     return (_y - viewport.getMinY()) / View::getInstance().getScaleY();
 }
 

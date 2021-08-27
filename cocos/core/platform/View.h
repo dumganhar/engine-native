@@ -208,7 +208,7 @@ public:
  * ResolutionPolicy class is the root strategy class of scale strategy,
  * its main task is to maintain the compatibility with Cocos2d-x</p>
  */
-class ResolutionPolicy {
+class ResolutionPolicy final {
 public:
     /**
      * Constructor of ResolutionPolicy
@@ -300,7 +300,7 @@ private:
     ContainerStrategy *_containerStrategy{nullptr};
     ContentStrategy *  _contentStrategy{nullptr};
 };
-class View {
+class View final {
 public:
     static View &getInstance() {
         static View instance;

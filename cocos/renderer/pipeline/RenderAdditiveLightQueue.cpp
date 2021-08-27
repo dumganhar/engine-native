@@ -171,13 +171,13 @@ void RenderAdditiveLightQueue::clear() {
 }
 
 void RenderAdditiveLightQueue::gatherValidLights(const scene::Camera *camera) {
-    const auto *const scene = camera->scene;
+    const auto *const scene = camera->getScene();
     geometry::Sphere  sphere;
 
     for (auto *light : scene->getSphereLights()) {
         sphere.setCenter(light->getPosition());
         sphere.setRadius(light->getRange());
-        if (sphere.sphereFrustum(camera->frustum)) {
+        if (sphere.sphereFrustum(camera->getFrustum())) {
             _validLights.emplace_back(static_cast<scene::Light *>(light));
         }
     }
@@ -185,7 +185,7 @@ void RenderAdditiveLightQueue::gatherValidLights(const scene::Camera *camera) {
     for (auto *light : scene->getSpotLights()) {
         sphere.setCenter(light->getPosition());
         sphere.setRadius(light->getRange());
-        if (sphere.sphereFrustum(camera->frustum)) {
+        if (sphere.sphereFrustum(camera->getFrustum())) {
             _validLights.emplace_back(static_cast<scene::Light *>(light));
         }
     }
@@ -233,7 +233,7 @@ void RenderAdditiveLightQueue::addRenderQueue(const scene::Pass *pass, const sce
 }
 
 void RenderAdditiveLightQueue::updateUBOs(const scene::Camera *camera, gfx::CommandBuffer *cmdBuffer) {
-    const auto  exposure        = camera->exposure;
+    const auto  exposure        = camera->getExposure();
     const auto  validLightCount = _validLights.size();
     auto *const sceneData       = _pipeline->getPipelineSceneData();
     auto *const sharedData      = sceneData->getSharedData();
@@ -308,7 +308,7 @@ void RenderAdditiveLightQueue::updateUBOs(const scene::Camera *camera, gfx::Comm
 void RenderAdditiveLightQueue::updateLightDescriptorSet(const scene::Camera *camera, gfx::CommandBuffer *cmdBuffer) {
     auto *const         sceneData  = _pipeline->getPipelineSceneData();
     auto *              shadowInfo = sceneData->getSharedData()->shadow;
-    const auto *const   scene      = camera->scene;
+    const auto *const   scene      = camera->getScene();
     auto *              device     = gfx::Device::getInstance();
     const bool          hFTexture  = supportsHalfFloatTexture(device);
     const float         linear     = hFTexture ? 1.0F : 0.0F;

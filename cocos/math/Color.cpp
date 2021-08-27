@@ -26,6 +26,8 @@ THE SOFTWARE.
 
 #include "Color.h"
 
+namespace cc {
+
 Color::Color()
 : r(0.0F),
   g(0.0F),
@@ -78,4 +80,6 @@ void Color::set(const Color &p1, const Color &p2) {
     g = p2.g - p1.g;
     b = p2.b - p1.b;
     a = p2.a - p1.a;
+}
+
 }

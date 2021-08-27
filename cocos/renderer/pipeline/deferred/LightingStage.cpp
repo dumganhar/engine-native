@@ -127,10 +127,10 @@ void LightingStage::gatherLights(scene::Camera *camera) {
     auto *const sharedData = sceneData->getSharedData();
 
     gfx::CommandBuffer *cmdBuf = pipeline->getCommandBuffers()[0];
-    const auto *        scene  = camera->scene;
+    const auto *        scene  = camera->getScene();
 
     geometry::Sphere sphere;
-    auto             exposure   = camera->exposure;
+    auto             exposure   = camera->getExposure();
     uint             idx        = 0;
     int              elementLen = sizeof(cc::Vec4) / sizeof(float);
     uint             fieldLen   = elementLen * _maxDeferredLights;
@@ -146,7 +146,7 @@ void LightingStage::gatherLights(scene::Camera *camera) {
         const auto &position = light->getPosition();
         sphere.setCenter(position);
         sphere.setRadius(light->getRange());
-        if (!sphere.sphereFrustum(camera->frustum)) {
+        if (!sphere.sphereFrustum(camera->getFrustum())) {
             continue;
         }
         // position
@@ -197,7 +197,7 @@ void LightingStage::gatherLights(scene::Camera *camera) {
         const auto &position = light->getPosition();
         sphere.setCenter(position);
         sphere.setRadius(light->getRange());
-        if (!sphere.sphereFrustum(camera->frustum)) {
+        if (!sphere.sphereFrustum(camera->getFrustum())) {
             continue;
         }
         // position
@@ -566,7 +566,7 @@ void LightingStage::fgSsprPass(scene::Camera *camera) {
     auto *pipeline = static_cast<DeferredPipeline *>(RenderPipeline::getInstance());
 
     _denoiseIndex = 0;
-    _matViewProj = camera->matViewProj;
+    _matViewProj = camera->getMatViewProj();
     _reflectionElems.clear();
 
     // step 1 prepare clear model's reflection texture pass. if imageclear command is supported, this pass can be replaced by it

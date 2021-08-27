@@ -56,8 +56,8 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
 
     auto *const pipelineUBO = _pipeline->getPipelineUBO();
     pipelineUBO->updateShadowUBO(camera);
-    const auto *scene         = camera->scene;
-    const bool  shadowVisible = camera->visibility & static_cast<uint>(LayerList::DEFAULT);
+    const auto *scene         = camera->getScene();
+    const bool  shadowVisible = camera->getVisibility() & static_cast<uint>(LayerList::DEFAULT);
 
     if (!scene->getMainLight() || !shadowVisible) {
         return;
@@ -73,7 +73,7 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
 
         // frustum culling
         if (model->getWorldBounds()) {
-            if (!model->getWorldBounds()->aabbFrustum(camera->frustum)) {
+            if (!model->getWorldBounds()->aabbFrustum(camera->getFrustum())) {
                 continue;
             }
         }

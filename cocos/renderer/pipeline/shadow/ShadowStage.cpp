@@ -69,7 +69,7 @@ void ShadowStage::render(scene::Camera *camera) {
     _additiveShadowQueue->gatherLightPasses(_light, cmdBuffer);
 
     const auto  shadowMapSize = shadowInfo->size;
-    const auto &viewport      = camera->viewPort;
+    const auto &viewport      = camera->getViewport();
     _renderArea.x             = static_cast<int>(viewport.x * shadowMapSize.x);
     _renderArea.y             = static_cast<int>(viewport.y * shadowMapSize.y);
     _renderArea.width         = static_cast<uint>(viewport.z * shadowMapSize.x * sharedData->shadingScale);
@@ -79,7 +79,7 @@ void ShadowStage::render(scene::Camera *camera) {
     auto *renderPass = _framebuffer->getRenderPass();
 
     cmdBuffer->beginRenderPass(renderPass, _framebuffer, _renderArea,
-                               _clearColors, camera->clearDepth, camera->clearStencil);
+                               _clearColors, camera->getClearDepth(), camera->getClearStencil());
 
     uint const globalOffsets[] = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
     cmdBuffer->bindDescriptorSet(globalSet, _pipeline->getDescriptorSet(), static_cast<uint>(std::size(globalOffsets)), globalOffsets);
@@ -105,7 +105,7 @@ void ShadowStage::clearFramebuffer(scene::Camera *camera) {
     auto *renderPass = _framebuffer->getRenderPass();
 
     cmdBuffer->beginRenderPass(renderPass, _framebuffer, _renderArea,
-                               _clearColors, camera->clearDepth, camera->clearStencil);
+                               _clearColors, camera->getClearDepth(), camera->getClearStencil());
 
     cmdBuffer->endRenderPass();
 }

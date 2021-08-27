@@ -49,8 +49,8 @@ RenderObject genRenderObject(const scene::Model *model, const scene::Camera *cam
     if (model->getNode()) {
         auto *const node = model->getTransform();
         cc::Vec3    position;
-        cc::Vec3::subtract(node->getWorldPosition(), camera->position, &position);
-        depth = position.dot(camera->forward);
+        cc::Vec3::subtract(node->getWorldPosition(), camera->getPosition(), &position);
+        depth = position.dot(camera->getForward());
     }
 
     return {depth, model};
@@ -147,14 +147,14 @@ void updateDirLight(scene::Shadow *shadows, const scene::Light *light, std::arra
 void lightCollecting(scene::Camera *camera, std::vector<const scene::Light *> *validLights) {
     validLights->clear();
     auto *              sphere    = CC_NEW(geometry::Sphere);
-    const auto *        scene     = camera->scene;
+    const auto *        scene     = camera->getScene();
     const scene::Light *mainLight = scene->getMainLight();
     validLights->emplace_back(mainLight);
 
     for (auto *spotLight : scene->getSpotLights()) {
         sphere->setCenter(spotLight->getPosition());
         sphere->setRadius(spotLight->getRange());
-        if (sphere->interset(camera->frustum)) {
+        if (sphere->interset(camera->getFrustum())) {
             validLights->emplace_back(static_cast<scene::Light *>(spotLight));
         }
     }
@@ -167,7 +167,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
     auto *const       sharedData = sceneData->getSharedData();
     auto *const       shadows    = sharedData->shadow;
     auto *const       skyBox     = sharedData->skybox;
-    const auto *const scene      = camera->scene;
+    const auto *const scene      = camera->getScene();
 
     castBoundsInitialized = false;
     RenderObjectList shadowObjects;
@@ -178,14 +178,14 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
 
     RenderObjectList renderObjects;
 
-    if (skyBox->enabled && skyBox->model && (camera->clearFlag & skyboxFlag)) {
+    if (skyBox->enabled && skyBox->model && (static_cast<uint32_t>(camera->getClearFlag()) & skyboxFlag)) {
         renderObjects.emplace_back(genRenderObject(skyBox->model, camera));
     }
 
     for (auto *model : scene->getModels()) {
         // filter model by view visibility
         if (model->getEnabled()) {
-            const auto        visibility = camera->visibility;
+            const auto        visibility = camera->getVisibility();
             const auto *const node       = model->getNode();
             if ((model->getNode() && ((visibility & node->getLayer()) == node->getLayer())) ||
                 (visibility & model->getVisFlags())) {
@@ -200,7 +200,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
                     shadowObjects.emplace_back(genRenderObject(model, camera));
                 }
                 // frustum culling
-                if (modelWorldBounds && !modelWorldBounds->aabbFrustum(camera->frustum)) {
+                if (modelWorldBounds && !modelWorldBounds->aabbFrustum(camera->getFrustum())) {
                     continue;
                 }
 

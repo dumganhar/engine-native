@@ -48,14 +48,14 @@ struct IPropertyInfo {
 
 // Pass instance itself are compliant to IPassStates too
 struct IPassStates {
-    std::optional<int32_t>                            priority;
-    std::optional<gfx::PrimitiveMode>                 primitive;
-    std::optional<pipeline::RenderPassStage>          stage;
-    std::optional<gfx::RasterizerState>               rasterizerState;
-    std::optional<gfx::DepthStencilState>             depthStencilState;
-    std::optional<gfx::BlendState>                    blendState;
-    std::optional<gfx::DynamicStateFlags>             dynamicStates;
-    std::optional<std::variant<std::string, int32_t>> phase;
+    std::optional<int32_t>                   priority;
+    std::optional<gfx::PrimitiveMode>        primitive;
+    std::optional<pipeline::RenderPassStage> stage;
+    std::optional<gfx::RasterizerState *>    rasterizerState;
+    std::optional<gfx::DepthStencilState *>  depthStencilState;
+    std::optional<gfx::BlendState *>         blendState;
+    std::optional<gfx::DynamicStateFlags>    dynamicStates;
+    std::optional<std::string>               phase;
 };
 
 using PassOverrides = IPassStates;
@@ -83,12 +83,12 @@ struct IBlockInfo {
 };
 
 struct ISamplerTextureInfo {
-    int32_t               binding; //cjh : number;
-    std::string           name;
-    gfx::Type             type;
-    uint32_t              count;
-    gfx::ShaderStageFlags stageFlags;
-    gfx::DescriptorType   descriptorType;
+    int32_t                            binding; //cjh : number;
+    std::string                        name;
+    gfx::Type                          type;
+    uint32_t                           count;
+    gfx::ShaderStageFlags              stageFlags;
+    std::optional<gfx::DescriptorType> descriptorType;
 };
 
 struct IAttributeInfo : public gfx::Attribute {

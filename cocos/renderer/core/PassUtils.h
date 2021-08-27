@@ -100,18 +100,22 @@ using MaterialPropertyVariant = std::variant<std::monostate /*0*/, MaterialPrope
 #define MaterialPropertyIndexSingle (1)
 #define MaterialPropertyIndexList   (2)
 
-//NOLINTNEXTLINE
-extern const std::unordered_map<gfx::Type, std::function<void(const Float32Array &, void *, index_t id)>> type2reader;
+using GFXTypeReaderCallback = void (*)(const float *, MaterialProperty &, index_t);
+using GFXTypeWriterCallback = void (*)(float *, const MaterialProperty &, index_t);
 
 //NOLINTNEXTLINE
-extern const std::unordered_map<gfx::Type, std::function<void(Float32Array &, const void *, index_t id)>> type2writer;
+extern const std::unordered_map<gfx::Type, GFXTypeReaderCallback> type2reader;
+
+//NOLINTNEXTLINE
+extern const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer;
 
 /**
  * @en Gets the default values for the given type of uniform
  * @zh 根据指定的 Uniform 类型来获取默认值
  * @param type The type of the uniform
  */
-std::variant<std::vector<float>, std::string> getDefaultFromType(gfx::Type type);
+const std::vector<float> &getDefaultFloatArrayFromType(gfx::Type type);
+const std::string &       getDefaultStringFromType(gfx::Type type);
 
 /**
  * @en Combination of preprocess macros

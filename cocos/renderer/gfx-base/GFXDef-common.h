@@ -1144,9 +1144,9 @@ struct TextureBarrierInfo {
 using TextureBarrierInfoList = vector<TextureBarrierInfo>;
 
 struct FramebufferInfo {
-    RenderPass *      renderPass = nullptr;
-    TextureList       colorTextures;                 // @ts-overrides { type: '(Texture | null)[]' }
-    Texture *         depthStencilTexture = nullptr; // @ts-nullable
+    RenderPass *renderPass = nullptr;
+    TextureList colorTextures;                 // @ts-overrides { type: '(Texture | null)[]' }
+    Texture *   depthStencilTexture = nullptr; // @ts-nullable
 };
 
 struct DescriptorSetLayoutBinding {
@@ -1233,6 +1233,26 @@ struct BlendState {
     uint            isIndepend = 0;
     Color           blendColor;
     BlendTargetList targets{1};
+
+    void setTarget(index_t index, const BlendTarget &target) {
+        if (index >= targets.size()) {
+            targets.resize(index + 1);
+        }
+        targets[index] = target;
+    }
+
+    void reset() {
+        isA2C        = 0;
+        isIndepend   = 0;
+        blendColor.x = 0;
+        blendColor.y = 0;
+        blendColor.z = 0;
+        blendColor.w = 0;
+        targets.clear();
+        targets.resize(1);
+    }
+
+    void destroy() {}
 };
 
 struct PipelineStateInfo {

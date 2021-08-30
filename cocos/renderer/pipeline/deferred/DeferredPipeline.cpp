@@ -436,9 +436,9 @@ void DeferredPipeline::destroyDeferredData() {
 }
 
 gfx::Color DeferredPipeline::getClearcolor(scene::Camera *camera) {
-    auto *const sceneData     = getPipelineSceneData();
-    auto *const sharedData    = sceneData->getSharedData();
-    gfx::Color clearColor{0.0, 0.0, 0.0, 1.0F};
+    auto *const sceneData  = getPipelineSceneData();
+    auto *const sharedData = sceneData->getSharedData();
+    gfx::Color  clearColor{0.0, 0.0, 0.0, 1.0F};
     if (!!(camera->getClearFlag() & gfx::ClearFlagBit::COLOR)) {
         if (sharedData->isHDR) {
             srgbToLinear(&clearColor, camera->getClearColor());

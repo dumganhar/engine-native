@@ -40,6 +40,8 @@ namespace cc {
 
 class Root final {
 public:
+    static Root *getInstance(); //cjh todo: put Root Managerment to Director class.
+
     explicit Root(gfx::Device *device);
     ~Root();
 

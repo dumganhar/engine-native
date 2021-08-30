@@ -39,6 +39,9 @@
 #include "scene/Define.h"
 
 namespace cc {
+
+class Root;
+
 namespace scene {
 
 struct PassDynamicsValue {
@@ -56,7 +59,7 @@ struct IPassInfoFull final : public IPassInfo {
 
 struct IMacroPatch {
     std::string                            name;
-    std::variant<bool, float, std::string> value;
+    std::variant<float, bool, std::string> value;
 };
 
 class Pass {
@@ -110,12 +113,8 @@ public:
      */
     static uint64_t getPassHash(Pass *pass);
 
-    Pass() { _phase = pipeline::getPhaseID("default"); }
-    Pass(const Pass &) = delete;
-    Pass(Pass &&)      = delete;
-    virtual ~Pass()    = default;
-    Pass &operator=(const Pass &) = delete;
-    Pass &operator=(Pass &&) = delete;
+    Pass();
+    virtual ~Pass();
 
     /**
      * @en Initialize the pass with given pass info, shader will be compiled in the init process
@@ -164,7 +163,7 @@ public:
      * @param handle The handle for the target uniform
      * @param out The output property to store the result
      */
-    MaterialProperty *getUniform(uint32_t handle, MaterialProperty *out) const;
+    MaterialProperty &getUniform(uint32_t handle, MaterialProperty &out) const;
 
     /**
      * @en Sets an array type uniform value, if a uniform requires frequent update, please use this method.
@@ -180,8 +179,7 @@ public:
      * @param binding The binding for target uniform of texture type
      * @param value Target texture
      */
-    void bindTexture(uint32_t binding, gfx::Texture *value);
-    void bindTexture(uint32_t binding, gfx::Texture *value, index_t index);
+    void bindTexture(uint32_t binding, gfx::Texture *value, index_t index = CC_INVALID_INDEX);
 
     /**
      * @en Bind a GFX [[Sampler]] the the given uniform binding
@@ -189,8 +187,7 @@ public:
      * @param binding The binding for target uniform of sampler type
      * @param value Target sampler
      */
-    void bindSampler(uint32_t binding, gfx::Sampler *value);
-    void bindSampler(uint32_t binding, gfx::Sampler *value, index_t index);
+    void bindSampler(uint32_t binding, gfx::Sampler *value, index_t index = CC_INVALID_INDEX);
 
     /**
      * @en Sets the dynamic pipeline state property at runtime
@@ -206,7 +203,7 @@ public:
      * @param original The original pass info
      * @param value The override pipeline state info
      */
-    void overridePipelineStates(const IPassInfo &original, const PassOverrides &overrides);
+    virtual void overridePipelineStates(const IPassInfo &original, const PassOverrides &overrides);
 
     void update();
 
@@ -227,8 +224,7 @@ public:
      * @en Resets the value of the given texture by name to the default value in [[EffectAsset]].
      * @zh 重置指定贴图为 [[EffectAsset]] 默认值。
      */
-    void resetTexture(const std::string &name);
-    void resetTexture(const std::string &name, index_t index);
+    void resetTexture(const std::string &name, index_t index = CC_INVALID_INDEX);
 
     /**
      * @en Resets all uniform buffer objects to the default values in [[EffectAsset]]
@@ -256,7 +252,7 @@ public:
     gfx::Shader *getShaderVariant(const std::vector<IMacroPatch> &patches);
 
     // infos
-    //    inline Root *                                                             getRoot() const { return _root; }
+    inline Root *       getRoot() const { return _root; }
     inline gfx::Device *getDevice() const { return _device; }
     //    inline const IProgramInfo &                                               getShaderInfo() const { return _shaderInfo; }
     //    inline gfx::DescriptorSetLayout *                                              getLocalSetLayout() const { return programLib.getDescriptorSetLayout(_device, _programName, true); }
@@ -266,9 +262,9 @@ public:
     inline index_t                                   getPassIndex() const { return _passIndex; }
     inline index_t                                   getPropertyIndex() const { return _propertyIndex; }
     // data
-    inline const std::vector<IPassDynamics> &getDynamics() const { return _dynamics; }
-    inline const std::vector<float> &        getBlocks() const { return _blocks; }
-    inline bool                              isRootBufferDirty() const { return _rootBufferDirty; }
+    inline const IPassDynamics &getDynamics() const { return _dynamics; }
+    inline const Float32Array & getBlocks() const { return _blocks; }
+    inline bool                 isRootBufferDirty() const { return _rootBufferDirty; }
     // states
     inline pipeline::RenderPriority  getPriority() const { return _priority; }
     inline gfx::PrimitiveMode        getPrimitive() const { return _primitive; }
@@ -290,6 +286,8 @@ protected:
     virtual void beginChangeStatesSilently() {}
     virtual void endChangeStatesSilently() {}
 
+    void setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::RasterizerState *rs, gfx::DescriptorSet *ds);
+
     void doInit(const IPassInfoFull &info, bool copyDefines = false);
     void syncBatchingScheme();
 
@@ -302,10 +300,10 @@ protected:
     index_t                    _passIndex{0};
     index_t                    _propertyIndex{0};
     std::string                _programName;
-    std::vector<IPassDynamics> _dynamics;
+    IPassDynamics              _dynamics;
     Record<std::string, float> _propertyHandleMap;
     uint8_t *                  _rootBlock{nullptr};
-    std::vector<float>         _blocks;
+    Float32Array               _blocks;
     //TODO
     //    protected _shaderInfo: IProgramInfo = null!;
     MacroRecord                        _defines;
@@ -326,6 +324,8 @@ protected:
     gfx::Device *_device{nullptr};
 
     bool _rootBufferDirty{false};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Pass);
 };
 
 } // namespace scene

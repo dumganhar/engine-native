@@ -30,8 +30,17 @@
 
 namespace cc {
 
+namespace {
+Root *instance = nullptr;
+}
+
+Root *Root::getInstance() {
+    return instance;
+}
+
 Root::Root(gfx::Device *device)
 : _device(device) {
+    instance = this;
     //TODO: minggo
     //    this._dataPoolMgr = legacyCC.internal.DataPoolManager && new legacyCC.internal.DataPoolManager(device) as DataPoolManager;
     _cameraPool = new Pool<scene::Camera>([]() { return new scene::Camera(); },
@@ -39,6 +48,7 @@ Root::Root(gfx::Device *device)
 }
 
 Root::~Root() {
+    instance = nullptr;
     delete _cameraPool;
 }
 

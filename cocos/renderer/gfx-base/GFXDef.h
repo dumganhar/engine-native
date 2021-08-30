@@ -119,7 +119,7 @@ extern uint formatSurfaceSize(Format format, uint width, uint height, uint depth
  * @zh 得到 GFX 数据类型的大小。
  * @param type The target type.
  */
-extern int getTypeSize(gfx::Type type);
+extern uint32_t getTypeSize(gfx::Type type);
 
 } // namespace gfx
 } // namespace cc

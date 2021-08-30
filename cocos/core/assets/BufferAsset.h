@@ -32,8 +32,8 @@ namespace cc {
 
 class BufferAsset final : public Asset {
 public:
-    BufferAsset()          = default;
-    virtual ~BufferAsset() = default;
+    BufferAsset()           = default;
+    ~BufferAsset() override = default;
 
     inline const ArrayBuffer &getBuffer() const { return _buffer; }
 

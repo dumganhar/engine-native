@@ -27,6 +27,7 @@
 
 #include "base/Utils.h"
 #include "core/assets/EffectAsset.h"
+#include "math/Color.h"
 #include "scene/Pass.h"
 
 namespace cc {
@@ -335,14 +336,14 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
     }
 }
 
-void Material::initDefault(const std::string &uuid) {
+void Material::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
     Super::initDefault(uuid);
     MacroRecord   defines{{"USE_COLOR", true}};
     IMaterialInfo info{
         .effectName = "unlit",
         .defines    = defines};
     initialize(std::move(info));
-    //cjh TODO:    setProperty('mainColor', new Color('#ff00ff'));
+    setProperty("mainColor", Color{0xFF, 0x00, 0xFF, 0xFF});
 }
 
 bool Material::validate() const {

@@ -25,25 +25,120 @@
 
 #pragma once
 
+#include <vector>
+#include "base/Macros.h"
+#include "renderer/gfx-base/GFXTexture.h"
 #include "renderer/gfx-base/GFXFramebuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 
 namespace cc {
 namespace scene {
 
+// Because Camera includes RenderWindow, so forward declare it here.
+class Camera;
+
 struct IRenderWindowInfo {
-    std::string title;
-    uint32_t width{0};
-    uint32_t height{0};
+    std::string         title;
+    uint32_t            width{0};
+    uint32_t            height{0};
     gfx::RenderPassInfo renderPassInfo;
-    int32_t swapchainBufferIndices{0};
-    bool shouldSyncSizeWithSwapchain{false};
+    int32_t             swapchainBufferIndices{0};
+    bool                shouldSyncSizeWithSwapchain{false};
 };
 
-struct RenderWindow final {
-    bool              hasOnScreenAttachments{false};
-    bool              hasOffScreenAttachments{false};
-    gfx::Framebuffer *frameBuffer{nullptr};
+/**
+ * @en The render window represents the render target, it could be an off screen frame buffer or the on screen buffer.
+ * @zh 渲染窗口代表了一个渲染目标，可以是离屏的帧缓冲，也可以是屏幕缓冲
+ */
+class RenderWindow final {
+public:
+    RenderWindow()  = default;
+    ~RenderWindow() = default;
+
+    bool initialize(gfx::Device *device, const IRenderWindowInfo &info);
+    void destroy();
+
+    /**
+     * @en Resize window.
+     * @zh 重置窗口大小。
+     * @param width The new width.
+     * @param height The new height.
+     */
+    void resize(uint32_t width, uint32_t height);
+
+    void extractRenderCameras(std::vector<Camera *> &cameras);
+
+    /**
+     * @zh
+     * 添加渲染相机
+     * @param camera 渲染相机
+     */
+    void attachCamera(Camera *camera);
+
+    /**
+     * @zh
+     * 移除渲染相机
+     * @param camera 相机
+     */
+    void detachCamera(Camera *camera);
+
+    /**
+     * @zh
+     * 销毁全部渲染相机
+     */
+    void clearCameras();
+
+    void sortCameras();
+
+    /**
+     * @en Get window width.
+     * @zh 窗口宽度。
+     */
+    inline uint32_t getWidth() const { return _width; }
+
+    /**
+     * @en Get window height.
+     * @zh 窗口高度。
+     */
+    inline uint32_t getHeight() const { return _height; }
+
+    /**
+     * @en Get window frame buffer.
+     * @zh 帧缓冲对象。
+     */
+    inline gfx::Framebuffer *getFramebuffer() const { return _frameBuffer; }
+
+    inline bool shouldSyncSizeWithSwapchain() const { return _shouldSyncSizeWithSwapchain; }
+
+    /**
+     * @en Whether it has on screen attachments
+     * @zh 这个渲染窗口是否指向在屏缓冲
+     */
+    inline bool hasOnScreenAttachments() const { return _hasOnScreenAttachments; }
+
+    /**
+     * @en Whether it has off screen attachments
+     * @zh 这个渲染窗口是否指向离屏缓冲
+     */
+    inline bool hasOffScreenAttachments() const { return _hasOffScreenAttachments; }
+
+    inline const std::vector<Camera *> getCamera() const { return _cameras; }
+
+private:
+    bool                        _hasOnScreenAttachments{false};
+    bool                        _hasOffScreenAttachments{false};
+    bool                        _shouldSyncSizeWithSwapchain{false};
+    uint32_t                    _swapchainBufferIndices{0};
+    uint32_t                    _width{1};
+    uint32_t                    _height{1};
+    std::string                 _title;
+    gfx::RenderPass *           _renderPass{nullptr};
+    gfx::Texture *              _depthStencilTexture{nullptr};
+    gfx::Framebuffer *          _frameBuffer{nullptr};
+    std::vector<Camera *>       _cameras;
+    std::vector<gfx::Texture *> _colorTextures;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(RenderWindow);
 };
 
 } // namespace scene

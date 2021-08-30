@@ -36,8 +36,8 @@ namespace scene {
 void RenderScene::update(uint32_t stamp) {
     jsbFlushFastMQ();
 
-    if (_directionalLight) {
-        _directionalLight->update();
+    if (_mainLight) {
+        _mainLight->update();
     }
     for (SphereLight *light : _sphereLights) {
         light->update();
@@ -112,32 +112,32 @@ void RenderScene::removeModels() {
 }
 
 void RenderScene::updateBatches(std::vector<DrawBatch2D *> &&batches) {
-    _drawBatch2Ds = batches;
+    _batches = batches;
 }
 
 void RenderScene::addBatch(DrawBatch2D *drawBatch2D) {
-    _drawBatch2Ds.push_back(drawBatch2D);
+    _batches.push_back(drawBatch2D);
 }
 
 void RenderScene::removeBatch(DrawBatch2D *drawBatch2D) {
-    auto iter = std::find(_drawBatch2Ds.begin(), _drawBatch2Ds.end(), drawBatch2D);
-    if (iter != _drawBatch2Ds.end()) {
-        _drawBatch2Ds.erase(iter);
+    auto iter = std::find(_batches.begin(), _batches.end(), drawBatch2D);
+    if (iter != _batches.end()) {
+        _batches.erase(iter);
     } else {
         CC_LOG_WARNING("Try to remove invalid DrawBatch2D.");
     }
 }
 
 void RenderScene::removeBatch(uint32_t index) {
-    if (index >= static_cast<uint32_t>(_drawBatch2Ds.size())) {
+    if (index >= static_cast<uint32_t>(_batches.size())) {
         return;
     }
 
-    removeBatch(_drawBatch2Ds[index]);
+    removeBatch(_batches[index]);
 }
 
 void RenderScene::removeBatches() {
-    _drawBatch2Ds.clear();
+    _batches.clear();
 }
 
 } // namespace scene

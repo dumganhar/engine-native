@@ -156,8 +156,8 @@ void ForwardStage::render(scene::Camera *camera) {
     _planarShadowQueue->gatherShadowPasses(camera, cmdBuff);
 
     // render area is not oriented
-    uint w             = camera->getWindow()->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getHeight() : camera->getWidth();
-    uint h             = camera->getWindow()->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getWidth() : camera->getHeight();
+    uint w             = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getHeight() : camera->getWidth();
+    uint h             = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getWidth() : camera->getHeight();
     
     const auto &viewPort = camera->getViewport();
     _renderArea.x      = static_cast<int>(viewPort.x * w);
@@ -180,7 +180,7 @@ void ForwardStage::render(scene::Camera *camera) {
 
     _clearColors[0].w = clearColor.w;
 
-    auto *      framebuffer   = camera->getWindow()->frameBuffer;
+    auto *      framebuffer   = camera->getWindow()->getFramebuffer();
     const auto &colorTextures = framebuffer->getColorTextures();
 
     auto *renderPass = !colorTextures.empty() && colorTextures[0] ? framebuffer->getRenderPass() : pipeline->getOrCreateRenderPass(static_cast<gfx::ClearFlagBit>(camera->getClearFlag()));

@@ -118,18 +118,18 @@ void PostprocessStage::render(scene::Camera *camera) {
     // in cocos when camera->window->frameBuffer->_colorTextures[0] == nullptr, it means that render to swapchain image, that's backbuffer
     // when camera->window->frameBuffer->_colorTextures[0] != nullptr, it means that render to a staging texture
     auto *      pipeline      = static_cast<DeferredPipeline *>(_pipeline);
-    if (camera->getWindow()->frameBuffer->getColorTextures()[0] != nullptr) {
+    if (camera->getWindow()->getFramebuffer()->getColorTextures()[0] != nullptr) {
         _fgStrHandlePostOut = framegraph::FrameGraph::stringToHandle("fgStrHandlePostoutTexture");
         gfx::TextureInfo textureInfo = {
             gfx::TextureType::TEX2D,
             gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED,
             gfx::Format::RGBA16F,
-            camera->getWindow()->frameBuffer->getColorTextures()[0]->getWidth(),
-            camera->getWindow()->frameBuffer->getColorTextures()[0]->getHeight(),
+            camera->getWindow()->getFramebuffer()->getColorTextures()[0]->getWidth(),
+            camera->getWindow()->getFramebuffer()->getColorTextures()[0]->getHeight(),
         };
 
         auto *output = new framegraph::Resource<gfx::Texture, gfx::TextureInfo>(textureInfo);
-        output->createPersistent(camera->getWindow()->frameBuffer->getColorTextures()[0]);
+        output->createPersistent(camera->getWindow()->getFramebuffer()->getColorTextures()[0]);
 
         pipeline->getFrameGraph().getBlackboard().put(_fgStrHandlePostOut, pipeline->getFrameGraph().importExternal(_fgStrHandlePostOut, *output));
     }
@@ -150,7 +150,7 @@ void PostprocessStage::render(scene::Camera *camera) {
         builder.writeToBlackboard(DeferredPipeline::fgStrHandleLightingOutTexture, data.lightingOut);
 
         // backbuffer is as an attachment
-        if (camera->getWindow()->frameBuffer->getColorTextures()[0] != nullptr) {
+        if (camera->getWindow()->getFramebuffer()->getColorTextures()[0] != nullptr) {
             data.placerholder = builder.write(framegraph::TextureHandle(builder.readFromBlackboard(DeferredPipeline::fgStrHandleBackBufferTexture)));
             builder.writeToBlackboard(DeferredPipeline::fgStrHandleBackBufferTexture, data.placerholder);
         }
@@ -185,7 +185,7 @@ void PostprocessStage::render(scene::Camera *camera) {
         data.depth = builder.write(framegraph::TextureHandle(builder.readFromBlackboard(DeferredPipeline::fgStrHandleDepthTexturePost)), depthAttachmentInfo);
         builder.writeToBlackboard(DeferredPipeline::fgStrHandleDepthTexture, data.depth);
 
-        auto renderArea = pipeline->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments);
+        auto renderArea = pipeline->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments());
         (void)pipeline->getIAByRenderArea(renderArea);
         gfx::Viewport viewport{ renderArea.x, renderArea.y, renderArea.width, renderArea.height, 0.F, 1.F};
         builder.setViewport(viewport, renderArea);
@@ -231,7 +231,7 @@ void PostprocessStage::render(scene::Camera *camera) {
 
             // get pso and draw quad
             auto *camera = pipeline->getFrameGraphCamera();
-            auto rendeArea = pipeline->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments);
+            auto rendeArea = pipeline->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments());
             gfx::InputAssembler *ia = pipeline->getIAByRenderArea(rendeArea);
             gfx::PipelineState * pso = PipelineStateManager::getOrCreatePipelineState(pv, sd, ia, renderPass);
             assert(pso != nullptr);
@@ -274,7 +274,7 @@ void PostprocessStage::render(scene::Camera *camera) {
         data.depth = builder.write(framegraph::TextureHandle(builder.readFromBlackboard(DeferredPipeline::fgStrHandleDepthTexture)), depthAttachmentInfo);
         builder.writeToBlackboard(DeferredPipeline::fgStrHandleDepthTexture, data.depth);
 
-        auto renderArea = pipeline->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments);
+        auto renderArea = pipeline->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments());
         gfx::Viewport viewport{ renderArea.x, renderArea.y, renderArea.width, renderArea.height, 0.F, 1.F};
         builder.setViewport(viewport, renderArea);
     };

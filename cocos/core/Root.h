@@ -40,6 +40,9 @@ namespace cc {
 
 class Root final {
 public:
+    //TODO
+    static Root* getInstance();
+
     explicit Root(gfx::Device *device);
     ~Root();
 

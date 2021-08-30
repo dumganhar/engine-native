@@ -37,6 +37,7 @@
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Define.h"
+#include "core/Root.h"
 
 namespace cc {
 namespace scene {
@@ -256,7 +257,7 @@ public:
     gfx::Shader *getShaderVariant(const std::vector<IMacroPatch> &patches);
 
     // infos
-    //    inline Root *                                                             getRoot() const { return _root; }
+    inline Root *                                                             getRoot() const { return _root; }
     inline gfx::Device *getDevice() const { return _device; }
     //    inline const IProgramInfo &                                               getShaderInfo() const { return _shaderInfo; }
     //    inline gfx::DescriptorSetLayout *                                              getLocalSetLayout() const { return programLib.getDescriptorSetLayout(_device, _programName, true); }

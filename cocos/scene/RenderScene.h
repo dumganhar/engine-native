@@ -27,7 +27,6 @@
 
 #include <vector>
 #include <string>
-#include "core/Root.h"
 #include "core/scene-graph/Node.h"
 #include "scene/BakedSkinningModel.h"
 #include "scene/DirectionalLight.h"
@@ -41,18 +40,18 @@
 namespace cc {
 namespace scene {
 
+struct IRaycastResult {
+    scenegraph::Node *node{nullptr};
+    float             distance{0.F};
+};
+
 struct IRenderSceneInfo {
     std::string name;
 };
 
-struct IRaycastResult {
-    Node *node{nullptr};
-    float distance{0.F};
-};
-
 class RenderScene final {
 public:
-    explicit RenderScene(Root *root);
+    RenderScene()                    = default;
     RenderScene(const RenderScene &) = delete;
     RenderScene(RenderScene &&)      = delete;
     ~RenderScene()                   = default;
@@ -97,17 +96,17 @@ public:
     inline void              setMainLight(DirectionalLight *dl) { _mainLight = dl; }
 
     inline uint64_t                          generateModelId() { return _modelId++; }
-    inline Root *                            getRoot() const { return _root; }
     inline const std::string &               getName() const { return _name; }
     inline const std::vector<Camera *> &     getCameras() const { return _cameras; }
     inline const std::vector<SphereLight *> &getSphereLights() const { return _sphereLights; }
-    inline const std::vector<SpotLight *> &  getSpotLight() const { return _spotLights; }
+    inline const std::vector<SpotLight *> &  getSpotLights() const { return _spotLights; }
     inline const std::vector<Model *> &      getModels() const { return _models; }
+    //FIXME: remove getDrawBatch2Ds
     inline const std::vector<DrawBatch2D *> &getBatches() const { return _batches; }
+    inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _batches; }
 
 private:
     std::string                _name;
-    Root *                     _root{nullptr};
     uint64_t                   _modelId{0};
     DirectionalLight *         _mainLight{nullptr};
     std::vector<Model *>       _models;

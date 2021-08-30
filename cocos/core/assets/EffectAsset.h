@@ -42,10 +42,10 @@
 namespace cc {
 
 struct IPropertyInfo {
-    int32_t                                                       type;        // auto-extracted from shader
-    std::optional<ValueVector>                                    handleInfo;  //cjh check: ?: [string, number, number]; // auto-generated from 'target'
-    std::optional<uint64_t>                                       samplerHash; // auto-generated from 'sampler'
-    std::optional<std::variant<std::vector<double>, std::string>> value;       //cjh use double ?
+    int32_t                                                      type;        // auto-extracted from shader
+    std::optional<ValueVector>                                   handleInfo;  //cjh check: ?: [string, number, number]; // auto-generated from 'target'
+    std::optional<uint64_t>                                      samplerHash; // auto-generated from 'sampler'
+    std::optional<std::variant<std::vector<float>, std::string>> value;
 };
 
 // Pass instance itself are compliant to IPassStates too

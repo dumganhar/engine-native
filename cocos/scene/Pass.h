@@ -31,6 +31,7 @@
 #include "base/TypeDef.h"
 #include "core/assets/EffectAsset.h"
 #include "renderer/core/PassUtils.h"
+#include "renderer/core/ProgramLib.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDescriptorSet.h"
@@ -113,7 +114,7 @@ public:
      */
     static uint64_t getPassHash(Pass *pass);
 
-    Pass();
+    explicit Pass();
     virtual ~Pass();
 
     /**
@@ -262,9 +263,9 @@ public:
     inline index_t                                   getPassIndex() const { return _passIndex; }
     inline index_t                                   getPropertyIndex() const { return _propertyIndex; }
     // data
-    inline const IPassDynamics &getDynamics() const { return _dynamics; }
-    inline const Float32Array & getBlocks() const { return _blocks; }
-    inline bool                 isRootBufferDirty() const { return _rootBufferDirty; }
+    inline const IPassDynamics &            getDynamics() const { return _dynamics; }
+    inline const std::vector<Float32Array> &getBlocks() const { return _blocks; }
+    inline bool                             isRootBufferDirty() const { return _rootBufferDirty; }
     // states
     inline pipeline::RenderPriority  getPriority() const { return _priority; }
     inline gfx::PrimitiveMode        getPrimitive() const { return _primitive; }
@@ -303,9 +304,9 @@ protected:
     IPassDynamics              _dynamics;
     Record<std::string, float> _propertyHandleMap;
     uint8_t *                  _rootBlock{nullptr};
-    Float32Array               _blocks;
+    std::vector<Float32Array>  _blocks;
 
-    //cjh    IProgramInfo   _shaderInfo;
+    IProgramInfo *                     _shaderInfo{nullptr};
     MacroRecord                        _defines;
     Record<std::string, IPropertyInfo> _properties;
     gfx::Shader *                      _shader{nullptr};

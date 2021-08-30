@@ -24,6 +24,9 @@
  ****************************************************************************/
 
 #include "scene/Pass.h"
+
+#include <sstream>
+
 #include "MurmurHash2/MurmurHash2.h"
 #include "core/Root.h"
 #include "core/assets/TextureBase.h"
@@ -46,28 +49,32 @@ const gfx::BufferInfo _bufferInfo{
 
 const gfx::BufferViewInfo _bufferViewInfo;
 
-const gfx::DescriptorSetInfo _dsInfo;
+gfx::DescriptorSetInfo _dsInfo;
 
 std::string serializeBlendState(const gfx::BlendState *bs) {
-    std::string res; //cjh  = `,bs,${bs.isA2C}`;
-                     //    for (const t of bs.targets) {
-                     //        res += `,bt,${t.blend},${t.blendEq},${t.blendAlphaEq},${t.blendColorMask}`;
-                     //        res += `,${t.blendSrc},${t.blendDst},${t.blendSrcAlpha},${t.blendDstAlpha}`;
-                     //    }
-    return res;
+    std::stringstream res;
+    res << ",bs," << bs->isA2C;
+    for (const auto &t : bs->targets) {
+        res << ",bt," << t.blend << "," << static_cast<uint32_t>(t.blendEq) << "," << static_cast<uint32_t>(t.blendAlphaEq) << "," << static_cast<uint32_t>(t.blendColorMask);
+        res << "," << static_cast<uint32_t>(t.blendSrc) << "," << static_cast<uint32_t>(t.blendDst) << "," << static_cast<uint32_t>(t.blendSrcAlpha) << "," << static_cast<uint32_t>(t.blendDstAlpha);
+    }
+    return res.str();
 }
 
 std::string serializeRasterizerState(const gfx::RasterizerState *rs) {
-    return ""; //cjh `,rs,${rs.cullMode},${rs.depthBias},${rs.isFrontFaceCCW}`;
+    std::stringstream res;
+    res << ",rs," << static_cast<uint32_t>(rs->cullMode) << "," << static_cast<uint32_t>(rs->depthBias) << "," << static_cast<uint32_t>(rs->isFrontFaceCCW);
+    return res.str();
 }
 
 std::string serializeDepthStencilState(const gfx::DepthStencilState *dss) {
-    std::string res; //cjh = `,dss,${dss.depthTest},${dss.depthWrite},${dss.depthFunc}`;
-                     //    res += `,${dss.stencilTestFront},${dss.stencilFuncFront},${dss.stencilRefFront},${dss.stencilReadMaskFront}`;
-                     //    res += `,${dss.stencilFailOpFront},${dss.stencilZFailOpFront},${dss.stencilPassOpFront},${dss.stencilWriteMaskFront}`;
-                     //    res += `,${dss.stencilTestBack},${dss.stencilFuncBack},${dss.stencilRefBack},${dss.stencilReadMaskBack}`;
-                     //    res += `,${dss.stencilFailOpBack},${dss.stencilZFailOpBack},${dss.stencilPassOpBack},${dss.stencilWriteMaskBack}`;
-    return res;
+    std::stringstream res;
+    res << ",dss," << static_cast<uint32_t>(dss->depthTest) << "," << static_cast<uint32_t>(dss->depthWrite) << "," << static_cast<uint32_t>(dss->depthFunc);
+    res << "," << static_cast<uint32_t>(dss->stencilTestFront) << "," << static_cast<uint32_t>(dss->stencilFuncFront) << "," << static_cast<uint32_t>(dss->stencilRefFront) << "," << static_cast<uint32_t>(dss->stencilReadMaskFront);
+    res << "," << static_cast<uint32_t>(dss->stencilFailOpFront) << "," << static_cast<uint32_t>(dss->stencilZFailOpFront) << "," << static_cast<uint32_t>(dss->stencilPassOpFront) << "," << static_cast<uint32_t>(dss->stencilWriteMaskFront);
+    res << "," << static_cast<uint32_t>(dss->stencilTestBack) << "," << static_cast<uint32_t>(dss->stencilFuncBack) << "," << static_cast<uint32_t>(dss->stencilRefBack) << "," << static_cast<uint32_t>(dss->stencilReadMaskBack);
+    res << "," << static_cast<uint32_t>(dss->stencilFailOpBack) << "," << static_cast<uint32_t>(dss->stencilZFailOpBack) << "," << static_cast<uint32_t>(dss->stencilPassOpBack) << "," << dss->stencilWriteMaskBack;
+    return res.str();
 }
 
 } // namespace
@@ -115,13 +122,15 @@ void Pass::fillPipelineInfo(Pass *pass, const PassOverrides &info) {
 
 /* static */
 uint64_t Pass::getPassHash(Pass *pass) {
-    //cjh    const shaderKey = programLib.getKey(pass.program, pass.defines);
-    std::string res = ""; //cjh `${shaderKey},${pass._primitive},${pass._dynamicStates}`;
-    res += serializeBlendState(pass->_blendState);
-    res += serializeDepthStencilState(pass->_depthStencilState);
-    res += serializeRasterizerState(pass->_rs);
+    const std::string &shaderKey = ProgramLib::getInstance()->getKey(pass->getProgram(), pass->getDefines());
+    std::stringstream  res;
+    res << shaderKey << "," << static_cast<uint32_t>(pass->_primitive) << "," << static_cast<uint32_t>(pass->_dynamicStates);
+    res << serializeBlendState(pass->_blendState);
+    res << serializeDepthStencilState(pass->_depthStencilState);
+    res << serializeRasterizerState(pass->_rs);
 
-    return murmurhash2::MurmurHash2(res.data(), res.length(), 666);
+    std::string str{res.str()};
+    return murmurhash2::MurmurHash2(str.data(), str.length(), 666);
 }
 
 Pass::Pass() {
@@ -170,21 +179,21 @@ void Pass::setUniform(uint32_t handle, const MaterialProperty &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    float *         block   = &_blocks[binding];
+    Float32Array &  block   = _blocks[binding];
     if (auto iter = type2writer.find(type); iter != type2writer.end()) {
-        iter->second(block, value, ofs);
+        iter->second(block.data(), value, ofs);
     }
 
     _rootBufferDirty = true;
 }
 
 MaterialProperty &Pass::getUniform(uint32_t handle, MaterialProperty &out) const {
-    const uint32_t  binding = Pass::getBindingFromHandle(handle);
-    const gfx::Type type    = Pass::getTypeFromHandle(handle);
-    const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    const float *   block   = &_blocks[binding];
+    const uint32_t      binding = Pass::getBindingFromHandle(handle);
+    const gfx::Type     type    = Pass::getTypeFromHandle(handle);
+    const uint32_t      ofs     = Pass::getOffsetFromHandle(handle);
+    const Float32Array &block   = _blocks[binding];
     if (auto iter = type2reader.find(type); iter != type2reader.end()) {
-        iter->second(block, out, ofs);
+        iter->second(block.data(), out, ofs);
     }
     return out;
 }
@@ -193,14 +202,14 @@ void Pass::setUniformArray(uint32_t handle, const MaterialPropertyList &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  stride  = gfx::getTypeSize(type) >> 2;
-    float *         block   = &_blocks[binding];
+    Float32Array &  block   = _blocks[binding];
     uint32_t        ofs     = Pass::getOffsetFromHandle(handle);
     for (size_t i = 0; i < value.size(); i++, ofs += stride) {
         if (value[i].index() == 0) {
             continue;
         }
         if (auto iter = type2writer.find(type); iter != type2writer.end()) {
-            iter->second(block, value[i], ofs);
+            iter->second(block.data(), value[i], ofs);
         }
     }
     _rootBufferDirty = true;
@@ -242,11 +251,11 @@ void Pass::update() {
 }
 
 void Pass::destroy() {
-    //cjh TODO:    auto& blocks = _shaderInfo.blocks;
-    //    for (size_t i = 0, len = blocks.size(); i < len; ++i) {
-    //        const u = blocks[i];
-    //        _buffers[u.binding].destroy();
-    //    }
+    auto &blocks = _shaderInfo->blocks;
+    for (size_t i = 0, len = blocks.size(); i < len; ++i) {
+        const auto &u = blocks[i];
+        _buffers[u.binding]->destroy();
+    }
 
     _buffers.clear();
 
@@ -269,7 +278,7 @@ void Pass::resetUniform(const std::string &name) {
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    float *         block   = &_blocks[binding];
+    Float32Array &  block   = _blocks[binding];
 
     //cjh todo: https://github.com/cocos-creator/3d-tasks/issues/8907
     //    const auto& info = _properties[name];
@@ -321,41 +330,46 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
 }
 
 void Pass::resetUBOs() {
-    //cjh    for (let i = 0; i < _shaderInfo.blocks.length; i++) {
-    //        const u = _shaderInfo.blocks[i];
-    //        const block = _blocks[u.binding];
-    //        let ofs = 0;
-    //        for (let j = 0; j < u.members.length; j++) {
-    //            const cur = u.members[j];
-    //            const info = _properties[cur.name];
-    //            const givenDefault = info && info.value;
-    //            const value = (givenDefault || getDefaultFromType(cur.type)) as number[];
-    //            const size = (GetTypeSize(cur.type) >> 2) * cur.count;
-    //            for (let k = 0; k + value.length <= size; k += value.length) { block.set(value, ofs + k); }
-    //            ofs += size;
-    //        }
-    //    }
+    for (size_t i = 0; i < _shaderInfo->blocks.size(); i++) {
+        const auto &u     = _shaderInfo->blocks[i];
+        auto &      block = _blocks[u.binding];
+        uint32_t    ofs   = 0;
+        for (size_t j = 0; j < u.members.size(); j++) {
+            const auto &   cur          = u.members[j];
+            const auto &   info         = _properties[cur.name];
+            const auto &   givenDefault = info.value;
+            const auto &   value        = (givenDefault.has_value() ? std::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
+            const uint32_t size         = (gfx::getTypeSize(cur.type) >> 2) * cur.count;
+            for (size_t k = 0; (k + value.size()) <= size; k += value.size()) {
+                std::copy(value.begin(), value.begin() + ofs + k, block.begin()); //cjh memory issue?
+            }
+            ofs += size;
+        }
+    }
     _rootBufferDirty = true;
 }
 
 void Pass::resetTextures() {
-    //cjh    for (let i = 0; i < _shaderInfo.samplerTextures.length; i++) {
-    //        const u = _shaderInfo.samplerTextures[i];
-    //        for (let j = 0; j < u.count; j++) {
-    //            resetTexture(u.name, j);
-    //        }
-    //    }
+    for (size_t i = 0; i < _shaderInfo->samplerTextures.size(); i++) {
+        const auto &u = _shaderInfo->samplerTextures[i];
+        for (size_t j = 0; j < u.count; j++) {
+            resetTexture(u.name, j);
+        }
+    }
 }
 
 bool Pass::tryCompile() {
     //cjh    const { pipeline } = _root;
     //    if (!pipeline) { return false; }
-    //    _syncBatchingScheme();
-    //    const shader = programLib.getGFXShader(_device, _programName, _defines, pipeline);
-    //    if (!shader) { console.warn(`create shader ${_programName} failed`); return false; }
-    //    _shader = shader;
-    //    _pipelineLayout = programLib.getTemplateInfo(_programName).pipelineLayout;
-    //    _hash = Pass.getPassHash(this);
+    syncBatchingScheme();
+    auto *shader = ProgramLib::getInstance()->getGFXShader(_device, _programName, _defines, _root->getPipeline());
+    if (!shader) {
+        CC_LOG_WARNING("create shader %s failed", _programName.c_str());
+        return false;
+    }
+    _shader         = shader; //cjh
+    _pipelineLayout = ProgramLib::getInstance()->getTemplateInfo(_programName)->pipelineLayout;
+    _hash           = Pass::getPassHash(this);
     return true;
 }
 
@@ -374,13 +388,13 @@ gfx::Shader *Pass::getShaderVariant(const std::vector<IMacroPatch> &patches) {
     //        }
     //    }
 
-    const auto *pipeline = _root->getPipeline();
+    auto *pipeline = _root->getPipeline();
     for (size_t i = 0; i < patches.size(); ++i) {
         const auto &patch    = patches[i];
         _defines[patch.name] = patch.value;
     }
 
-    //cjh    const shader = programLib.getGFXShader(_device, _programName, _defines, pipeline);
+    auto *shader = ProgramLib::getInstance()->getGFXShader(_device, _programName, _defines, pipeline);
 
     for (size_t i = 0; i < patches.size(); ++i) {
         const auto &patch = patches[i];
@@ -388,8 +402,7 @@ gfx::Shader *Pass::getShaderVariant(const std::vector<IMacroPatch> &patches) {
             _defines.erase(iter);
         }
     }
-    //cjh    return shader;
-    return nullptr;
+    return shader;
 }
 
 void Pass::setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::RasterizerState *rs, gfx::DescriptorSet *ds) {
@@ -410,7 +423,7 @@ void Pass::doInit(const IPassInfoFull &info, bool copyDefines /* = false */) {
     _propertyIndex = info.propertyIndex != CC_INVALID_INDEX ? info.propertyIndex : info.passIndex;
     _programName   = info.program;
     _defines       = info.defines; //cjh c++ always does copy by assignment.  copyDefines ? ({ ...info.defines }) : info.defines;
-                                   //cjh    _shaderInfo = programLib.getTemplate(info.program);
+    _shaderInfo    = ProgramLib::getInstance()->getTemplate(info.program);
     if (info.properties.has_value()) {
         _properties = info.properties.value();
     }
@@ -422,7 +435,7 @@ void Pass::doInit(const IPassInfoFull &info, bool copyDefines /* = false */) {
     }
 
     // init descriptor set
-    //    _dsInfo.layout = programLib.getDescriptorSetLayout(_device, info.program);
+    _dsInfo.layout = ProgramLib::getInstance()->getDescriptorSetLayout(_device, info.program);
     _descriptorSet = _device->createDescriptorSet(_dsInfo);
 
     // calculate total size required
@@ -509,8 +522,8 @@ void Pass::initPassFromTarget(Pass *target, gfx::DepthStencilState *dss, gfx::Bl
 
     _shader = target->_shader;
 
-    //cjh    _pipelineLayout = programLib.getTemplateInfo(_programName).pipelineLayout;
-    _hash = target->_hash ^ hashFactor;
+    _pipelineLayout = ProgramLib::getInstance()->getTemplateInfo(_programName)->pipelineLayout;
+    _hash           = target->_hash ^ hashFactor;
 }
 
 } // namespace scene

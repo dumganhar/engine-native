@@ -124,6 +124,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &
     }
 }
 
+// TODO:
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowShader() const {
@@ -132,6 +133,7 @@ void SubModel::initPlanarShadowShader() const {
     // _planarShader = shadowInfo->getPlanarShader(_patches); // getPlanarShader not implemented
 }
 
+// TODO:
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() const {

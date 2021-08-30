@@ -24,3 +24,212 @@
 ****************************************************************************/
 
 #include "core/assets/TextureCube.h"
+#include "core/assets/ImageAsset.h"
+
+namespace cc {
+
+namespace {
+
+using ForEachFaceCallback = std::function<void(ImageAsset *face, TextureCube::FaceIndex faceIndex)>;
+/**
+ * @param {Mipmap} mipmap
+ * @param {(face: ImageAsset) => void} callback
+ */
+void forEachFace(const ITextureCubeMipmap &mipmap, const ForEachFaceCallback &callback) {
+    callback(mipmap.front, TextureCube::FaceIndex::FRONT);
+    callback(mipmap.back, TextureCube::FaceIndex::BACK);
+    callback(mipmap.left, TextureCube::FaceIndex::LEFT);
+    callback(mipmap.right, TextureCube::FaceIndex::RIGHT);
+    callback(mipmap.top, TextureCube::FaceIndex::TOP);
+    callback(mipmap.bottom, TextureCube::FaceIndex::BOTTOM);
+}
+
+} // namespace
+
+/* static */
+TextureCube *TextureCube::fromTexture2DArray(const std::vector<Texture2D *> &textures) {
+    size_t                          nMipmaps = textures.size() / 6;
+    std::vector<ITextureCubeMipmap> mipmaps;
+    mipmaps.reserve(nMipmaps);
+    for (size_t i = 0; i < nMipmaps; i++) {
+        size_t x = i * 6;
+
+        ITextureCubeMipmap mipmap;
+        mipmap.front  = textures[x + static_cast<uint32_t>(FaceIndex::FRONT)]->getImage(),
+        mipmap.back   = textures[x + static_cast<uint32_t>(FaceIndex::BACK)]->getImage(),
+        mipmap.left   = textures[x + static_cast<uint32_t>(FaceIndex::LEFT)]->getImage(),
+        mipmap.right  = textures[x + static_cast<uint32_t>(FaceIndex::RIGHT)]->getImage(),
+        mipmap.top    = textures[x + static_cast<uint32_t>(FaceIndex::TOP)]->getImage(),
+        mipmap.bottom = textures[x + static_cast<uint32_t>(FaceIndex::BOTTOM)]->getImage(),
+
+        mipmaps.emplace_back(mipmap);
+    }
+    TextureCube *out = new TextureCube(); //cjh TODO: how to delete, shared_ptr?
+    out->setMipmaps(mipmaps);
+    return out;
+}
+
+void TextureCube::setMipmaps(const std::vector<ITextureCubeMipmap> &value) {
+    _mipmaps = value;
+    setMipmapLevel(_mipmaps.size());
+    if (!_mipmaps.empty()) {
+        ImageAsset *imageAsset = _mipmaps[0].front;
+        reset({
+            .width       = imageAsset->getWidth(),
+            .height      = imageAsset->getHeight(),
+            .format      = imageAsset->getFormat(),
+            .mipmapLevel = static_cast<uint32_t>(_mipmaps.size()),
+        });
+
+        for (size_t level = 0, len = _mipmaps.size(); level < len; ++level) {
+            forEachFace(_mipmaps[level], [this, level](ImageAsset *face, TextureCube::FaceIndex faceIndex) {
+                assignImage(face, level, static_cast<uint32_t>(faceIndex));
+            });
+            ;
+        }
+
+    } else {
+        reset({
+            .width       = 0,
+            .height      = 0,
+            .mipmapLevel = static_cast<uint32_t>(_mipmaps.size()),
+        });
+    }
+}
+
+void TextureCube::reset(const ITextureCubeCreateInfo &info) {
+    _width  = info.width;
+    _height = info.height;
+    setGFXFormat(info.format);
+    setMipmapLevel(info.mipmapLevel.has_value() ? info.mipmapLevel.value() : 1);
+    tryReset();
+}
+
+void TextureCube::releaseTexture() {
+    _mipmaps.clear();
+}
+
+void TextureCube::updateMipmaps(uint32_t firstLevel /* = 0*/, uint32_t count /* = 0*/) {
+    if (firstLevel >= _mipmaps.size()) {
+        return;
+    }
+
+    uint32_t nUpdate = std::min(
+        count == 0 ? _mipmaps.size() : count,
+        _mipmaps.size() - firstLevel);
+
+    for (uint32_t i = 0; i < nUpdate; ++i) {
+        uint32_t level = firstLevel + i;
+        forEachFace(_mipmaps[level], [this, level](auto face, auto faceIndex) {
+            assignImage(face, level, static_cast<uint32_t>(faceIndex));
+        });
+    }
+}
+
+void TextureCube::onLoaded() {
+    setMipmaps(_mipmaps);
+}
+
+bool TextureCube::destroy() {
+    _mipmaps.clear();
+    return Super::destroy();
+}
+
+std::any TextureCube::serialize(const std::any &ctxForExporting) {
+    //cjh TODO:    if (EDITOR || TEST) {
+    //        return {
+    //            base: super._serialize(ctxForExporting),
+    //            rgbe: this.isRGBE,
+    //            mipmaps: this._mipmaps.map((mipmap) => ((ctxForExporting && ctxForExporting._compressUuid) ? {
+    //                front: EditorExtends.UuidUtils.compressUuid(mipmap.front._uuid, true),
+    //                back: EditorExtends.UuidUtils.compressUuid(mipmap.back._uuid, true),
+    //                left: EditorExtends.UuidUtils.compressUuid(mipmap.left._uuid, true),
+    //                right: EditorExtends.UuidUtils.compressUuid(mipmap.right._uuid, true),
+    //                top: EditorExtends.UuidUtils.compressUuid(mipmap.top._uuid, true),
+    //                bottom: EditorExtends.UuidUtils.compressUuid(mipmap.bottom._uuid, true),
+    //            } : {
+    //                front: mipmap.front._uuid,
+    //                back: mipmap.back._uuid,
+    //                left: mipmap.left._uuid,
+    //                right: mipmap.right._uuid,
+    //                top: mipmap.top._uuid,
+    //                bottom: mipmap.bottom._uuid,
+    //            })),
+    //        };
+    //    }
+    return nullptr;
+}
+
+void TextureCube::deserialize(const std::any &serializedData, const std::any &handle) {
+    const auto *data = std::any_cast<ITextureCubeSerializeData>(&serializedData);
+    if (data == nullptr) {
+        return;
+    }
+    Super::deserialize(data->base, handle);
+    isRGBE = data->rgbe;
+
+    _mipmaps.resize(data->mipmaps.size());
+    for (size_t i = 0; i < data->mipmaps.size(); ++i) {
+        // Prevent resource load failed
+        _mipmaps[i] = {
+            .front  = new ImageAsset(), //cjh TODO: how to release?
+            .back   = new ImageAsset(),
+            .left   = new ImageAsset(),
+            .right  = new ImageAsset(),
+            .top    = new ImageAsset(),
+            .bottom = new ImageAsset(),
+        };
+        //        auto* mipmap = data->mipmaps[i];
+
+        //cjh TODO: what's handle.result??        const imageAssetClassId = js._getClassId(ImageAsset);
+        //
+        //        handle.result.push(this._mipmaps[i], `front`, mipmap.front, imageAssetClassId);
+        //        handle.result.push(this._mipmaps[i], `back`, mipmap.back, imageAssetClassId);
+        //        handle.result.push(this._mipmaps[i], `left`, mipmap.left, imageAssetClassId);
+        //        handle.result.push(this._mipmaps[i], `right`, mipmap.right, imageAssetClassId);
+        //        handle.result.push(this._mipmaps[i], `top`, mipmap.top, imageAssetClassId);
+        //        handle.result.push(this._mipmaps[i], `bottom`, mipmap.bottom, imageAssetClassId);
+    }
+}
+
+gfx::TextureInfo TextureCube::getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) {
+    gfx::TextureInfo texInfo;
+    texInfo.type       = gfx::TextureType::CUBE;
+    texInfo.width      = _width;
+    texInfo.height     = _height;
+    texInfo.layerCount = 6;
+    texInfo.usage      = usage;
+    texInfo.format     = format;
+    texInfo.levelCount = levelCount;
+    texInfo.flags      = flags;
+    return texInfo;
+}
+
+void TextureCube::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
+    Super::initDefault(uuid);
+
+    auto *imageAsset = new ImageAsset(); //cjh HOW TO DELETE?
+    imageAsset->initDefault();
+
+    ITextureCubeMipmap mipmap;
+
+    mipmap.front  = imageAsset;
+    mipmap.back   = imageAsset;
+    mipmap.top    = imageAsset;
+    mipmap.bottom = imageAsset;
+    mipmap.left   = imageAsset;
+    mipmap.right  = imageAsset;
+
+    setMipmaps({mipmap});
+}
+
+bool TextureCube::validate() const {
+    if (_mipmaps.empty()) {
+        return false;
+    }
+
+    //cjh TODO:    return !_mipmaps.empty() && !_mipmaps.find((x) => !(x.top && x.bottom && x.front && x.back && x.left && x.right));
+    return false;
+}
+
+} // namespace cc

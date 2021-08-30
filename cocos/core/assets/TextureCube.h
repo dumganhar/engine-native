@@ -48,6 +48,21 @@ struct ITextureCubeMipmap {
     ImageAsset *bottom{nullptr};
 };
 
+struct ITextureCubeSerializeMipmapData {
+    std::string front;
+    std::string back;
+    std::string left;
+    std::string right;
+    std::string top;
+    std::string bottom;
+};
+
+struct ITextureCubeSerializeData {
+    std::string                                  base;
+    bool                                         rgbe{false};
+    std::vector<ITextureCubeSerializeMipmapData> mipmaps;
+};
+
 /**
  * @en The texture cube asset.
  * Each mipmap level of a texture cube have 6 [[ImageAsset]], represents 6 faces of the cube.
@@ -56,17 +71,22 @@ struct ITextureCubeMipmap {
  */
 class TextureCube final : public SimpleTexture {
 public:
+    using Super = SimpleTexture;
+
+    explicit TextureCube()  = default;
+    ~TextureCube() override = default;
+
     /**
      * @en The index for all faces of the cube
      * @zh 立方体每个面的约定索引。
      */
     enum class FaceIndex {
-        right  = 0,
-        left   = 1,
-        top    = 2,
-        bottom = 3,
-        front  = 4,
-        back   = 5,
+        RIGHT  = 0,
+        LEFT   = 1,
+        TOP    = 2,
+        BOTTOM = 3,
+        FRONT  = 4,
+        BACK   = 5,
     };
 
     /**
@@ -100,7 +120,7 @@ public:
         return _mipmaps;
     }
 
-    void setMipmaps(std::vector<ITextureCubeMipmap> &value);
+    void setMipmaps(const std::vector<ITextureCubeMipmap> &value);
 
     /**
      * @en Level 0 mipmap image.
@@ -114,9 +134,9 @@ public:
         return _mipmaps.empty() ? nullptr : &_mipmaps[0];
     }
 
-    void setImage(const ITextureCubeMipmap *value) {
+    void setImage(const ITextureCubeMipmap &value) {
         _mipmaps.clear();
-        _mipmaps.emplace_back(*value);
+        _mipmaps.emplace_back(value);
     }
 
     /**
@@ -147,9 +167,9 @@ public:
     std::any serialize(const std::any &ctxForExporting) override;
     void     deserialize(const std::any &serializedData, const std::any &handle) override;
 
-    gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
+    gfx::TextureInfo getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 
-    void initDefault(const std::string &uuid) override;
+    void initDefault(const std::optional<std::string> &uuid = {}) override;
 
     bool validate() const override;
     //

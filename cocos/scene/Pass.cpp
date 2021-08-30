@@ -26,6 +26,8 @@
 #include "scene/Pass.h"
 #include "MurmurHash2/MurmurHash2.h"
 #include "core/Root.h"
+#include "core/assets/TextureBase.h"
+#include "core/builtin/BuiltinResMgr.h"
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "renderer/pipeline/Define.h"
@@ -269,7 +271,8 @@ void Pass::resetUniform(const std::string &name) {
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
     float *         block   = &_blocks[binding];
 
-    //cjh todo:    const auto& info = _properties[name];
+    //cjh todo: https://github.com/cocos-creator/3d-tasks/issues/8907
+    //    const auto& info = _properties[name];
     //    const value = (info && info.value) || getDefaultFromType(type);
     //    type2writer[type](block, value, ofs);
 
@@ -284,8 +287,10 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     std::string     texName;
+    IPropertyInfo * info = nullptr;
     if (auto iter = _properties.find(name); iter != _properties.end()) {
         if (iter->second.value.has_value()) {
+            info                 = &iter->second;
             std::string *pStrVal = std::get_if<std::string>(&iter->second.value.value());
             if (pStrVal != nullptr) {
                 texName = (*pStrVal) + "-texture";
@@ -297,15 +302,22 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
         texName = getDefaultStringFromType(type);
     }
 
-    //cjh todo：    const info = _properties[name];
-    //    const value = info && info.value;
-    //    const texName = value ? `${value as string}-texture` : getDefaultFromType(type) as string;
-    //    const textureBase = builtinResMgr.get<TextureBase>(texName);
-    //    const texture = textureBase && textureBase.getGFXTexture()!;
-    //    const samplerHash = info && (info.samplerHash !== undefined) ? info.samplerHash : textureBase && textureBase.getSamplerHash();
-    //    const sampler = samplerLib.getSampler(_device, samplerHash);
-    //    _descriptorSet.bindSampler(binding, sampler, index);
-    //    _descriptorSet.bindTexture(binding, texture, index);
+    TextureBase *           textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
+    gfx::Texture *          texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
+    std::optional<uint64_t> samplerHash;
+    if (info != nullptr && info->samplerHash.has_value()) {
+        samplerHash = info->samplerHash.value();
+    } else if (textureBase != nullptr) {
+        samplerHash = textureBase->getSamplerHash();
+    }
+
+    if (samplerHash.has_value()) {
+        auto *sampler = pipeline::SamplerLib::getSampler(samplerHash.value());
+        _descriptorSet->bindSampler(binding, sampler, index);
+        _descriptorSet->bindTexture(binding, texture, index);
+    } else {
+        CC_LOG_WARNING("sampler hash could not be found!");
+    }
 }
 
 void Pass::resetUBOs() {

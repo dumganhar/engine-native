@@ -263,7 +263,7 @@ uint formatSize(Format format, uint width, uint height, uint depth) {
             return 0;
     }
 }
-constexpr std::array<uint, 32> GFX_TYPE_SIZES = {
+std::array<uint, 32> GFX_TYPE_SIZES = {
     0,  // UNKNOWN
     4,  // BOOL
     8,  // BOOL2

@@ -119,17 +119,18 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
         TO_VEC4(output, Vec4::ZERO, UBOCamera::MAIN_LIT_COLOR_OFFSET);
     }
 
-    Vec4 skyColor = ambient->skyColor;
+    std::vector<float> skyColor = ambient->getColorArray();
     if (isHDR) {
-        skyColor.w = ambient->skyIllum * fpScale;
+        skyColor[3] = ambient->getSkyIllum() * fpScale;
     } else {
-        skyColor.w = ambient->skyIllum * exposure;
+        skyColor[3] = ambient->getSkyIllum() * exposure;
     }
-    TO_VEC4(output, skyColor, UBOCamera::AMBIENT_SKY_OFFSET);
+    memcpy(output + UBOCamera::AMBIENT_SKY_OFFSET, skyColor.data(), 4 * sizeof(float));
 
-    output[UBOCamera::AMBIENT_GROUND_OFFSET + 0] = ambient->groundAlbedo.x;
-    output[UBOCamera::AMBIENT_GROUND_OFFSET + 1] = ambient->groundAlbedo.y;
-    output[UBOCamera::AMBIENT_GROUND_OFFSET + 2] = ambient->groundAlbedo.z;
+    const auto &groundAlbedo = ambient->getGroundAlbedo();
+    output[UBOCamera::AMBIENT_GROUND_OFFSET + 0] = groundAlbedo.r;
+    output[UBOCamera::AMBIENT_GROUND_OFFSET + 1] = groundAlbedo.g;
+    output[UBOCamera::AMBIENT_GROUND_OFFSET + 2] = groundAlbedo.b;
     auto *const envmap                           = descriptorSet->getTexture(static_cast<uint>(PipelineGlobalBindings::SAMPLER_ENVIRONMENT));
     if (envmap) {
         output[UBOCamera::AMBIENT_GROUND_OFFSET + 3] = static_cast<float>(envmap->getLevelCount());

@@ -1342,6 +1342,11 @@ cocos_source_files(
     cocos/core/assets/TextureCube.cpp
     cocos/core/assets/TextureCube.h
 
+    # builtin
+    cocos/core/builtin/BuiltinResMgr.cpp
+    cocos/core/builtin/BuiltinResMgr.h
+    #
+
     cocos/core/data/Object.cpp
     cocos/core/data/Object.h
 

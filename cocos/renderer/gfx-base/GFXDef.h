@@ -74,7 +74,7 @@ struct ContextInfo {
     Performance performance  = Performance::LOW_POWER;
     VsyncMode   vsyncMode    = VsyncMode::RELAXED;
     uintptr_t   windowHandle = 0;
-    Context*    sharedCtx    = nullptr;
+    Context *   sharedCtx    = nullptr;
 };
 
 constexpr TextureUsage TEXTURE_USAGE_TRANSIENT = static_cast<TextureUsage>(
@@ -95,6 +95,13 @@ constexpr DescriptorType DESCRIPTOR_TEXTURE_TYPE = static_cast<DescriptorType>(
     static_cast<uint>(DescriptorType::STORAGE_IMAGE) |
     static_cast<uint>(DescriptorType::INPUT_ATTACHMENT));
 
+constexpr DescriptorType DESCRIPTOR_SAMPLER_TYPE = static_cast<DescriptorType>(
+    static_cast<uint>(DescriptorType::SAMPLER_TEXTURE) |
+    static_cast<uint>(DescriptorType::SAMPLER) |
+    static_cast<uint>(DescriptorType::TEXTURE) |
+    static_cast<uint>(DescriptorType::STORAGE_IMAGE) |
+    static_cast<uint>(DescriptorType::INPUT_ATTACHMENT));
+
 constexpr DescriptorType DESCRIPTOR_DYNAMIC_TYPE = static_cast<DescriptorType>(
     static_cast<uint>(DescriptorType::DYNAMIC_STORAGE_BUFFER) |
     static_cast<uint>(DescriptorType::DYNAMIC_UNIFORM_BUFFER));
@@ -102,11 +109,17 @@ constexpr DescriptorType DESCRIPTOR_DYNAMIC_TYPE = static_cast<DescriptorType>(
 constexpr uint DRAW_INFO_SIZE = 28U;
 
 extern const FormatInfo GFX_FORMAT_INFOS[];
-extern const uint       GFX_TYPE_SIZES[];
 
 extern uint formatSize(Format format, uint width, uint height, uint depth);
 
 extern uint formatSurfaceSize(Format format, uint width, uint height, uint depth, uint mips);
+
+/**
+ * @en Get the memory size of the specified type.
+ * @zh 得到 GFX 数据类型的大小。
+ * @param type The target type.
+ */
+extern uint32_t getTypeSize(gfx::Type type);
 
 } // namespace gfx
 } // namespace cc

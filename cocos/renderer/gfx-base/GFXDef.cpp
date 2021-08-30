@@ -23,6 +23,7 @@
  THE SOFTWARE.
 ****************************************************************************/
 
+#include <array>
 #include "base/CoreStd.h"
 
 #include "GFXDef.h"
@@ -262,8 +263,7 @@ uint formatSize(Format format, uint width, uint height, uint depth) {
             return 0;
     }
 }
-
-const uint GFX_TYPE_SIZES[] = {
+constexpr std::array<uint, 32> GFX_TYPE_SIZES = {
     0,  // UNKNOWN
     4,  // BOOL
     8,  // BOOL2
@@ -297,6 +297,20 @@ const uint GFX_TYPE_SIZES[] = {
     4,  // SAMPLER3D
     4,  // SAMPLER_CUBE
 };
+
+/**
+ * @en Get the memory size of the specified type.
+ * @zh 得到 GFX 数据类型的大小。
+ * @param type The target type.
+ */
+uint32_t getTypeSize(gfx::Type type) {
+    if (static_cast<int>(type) < GFX_TYPE_SIZES.size()) {
+        return GFX_TYPE_SIZES[static_cast<int>(type)];
+    }
+
+    CC_LOG_WARNING("getTypeSize: wrong type: %d", static_cast<int>(type));
+    return 0;
+}
 
 uint formatSurfaceSize(Format format, uint width, uint height, uint depth, uint mips) {
     uint size = 0;

@@ -23,8 +23,6 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#pragma once
-
 #include <cstdint>
 #include <variant>
 #include "base/Log.h"
@@ -43,156 +41,184 @@
 namespace cc {
 
 //NOLINTNEXTLINE
-const std::unordered_map<gfx::Type, std::function<void(const Float32Array &, void *, index_t id)>> type2reader = {
-    {gfx::Type::UNKNOWN, [](const Float32Array & /*a*/, void * /*v*/, index_t /*idx*/) {
+const std::unordered_map<gfx::Type, GFXTypeReaderCallback> type2reader = {
+    {gfx::Type::UNKNOWN, [](const float * /*a*/, MaterialProperty & /*v*/, index_t /*idx*/) {
          CC_LOG_ERROR("type2reader unknown type");
      }},
-    {gfx::Type::INT, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<int32_t *>(v);
-         p[0]    = a[idx];
+    {gfx::Type::INT, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<int32_t>(&v);
+         CC_ASSERT(p != nullptr);
+         p[0] = a[idx];
      }},
-    {gfx::Type::INT2, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<int32_t *>(v);
-         p[0]    = a[idx];
-         p[1]    = a[idx + 1];
+    {gfx::Type::INT2, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<Vec2>(&v);
+         CC_ASSERT(p != nullptr);
+         p->x = a[idx];
+         p->y = a[idx + 1];
      }},
-    {gfx::Type::INT3, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<int32_t *>(v);
-         p[0]    = a[idx];
-         p[1]    = a[idx + 1];
-         p[2]    = a[idx + 2];
+    {gfx::Type::INT3, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<Vec3>(&v);
+         CC_ASSERT(p != nullptr);
+         p->x = a[idx];
+         p->y = a[idx + 1];
+         p->z = a[idx + 2];
      }},
-    {gfx::Type::INT4, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<int32_t *>(v);
-         p[0]    = a[idx];
-         p[1]    = a[idx + 1];
-         p[2]    = a[idx + 2];
-         p[3]    = a[idx + 3];
+    {gfx::Type::INT4, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<Vec4>(&v);
+         CC_ASSERT(p != nullptr);
+         p->x = a[idx];
+         p->y = a[idx + 1];
+         p->z = a[idx + 2];
+         p->w = a[idx + 3];
      }},
-    {gfx::Type::FLOAT, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<float *>(v);
-         p[0]    = a[idx];
+    {gfx::Type::FLOAT, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<float>(&v);
+         CC_ASSERT(p != nullptr);
+         p[0] = a[idx];
      }},
-    {gfx::Type::FLOAT2, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<float *>(v);
-         p[0]    = a[idx];
-         p[1]    = a[idx + 1];
+    {gfx::Type::FLOAT2, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<Vec2>(&v);
+         CC_ASSERT(p != nullptr);
+         p->x = a[idx];
+         p->y = a[idx + 1];
      }},
-    {gfx::Type::FLOAT3, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<float *>(v);
-         p[0]    = a[idx];
-         p[1]    = a[idx + 1];
-         p[2]    = a[idx + 2];
+    {gfx::Type::FLOAT3, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<Vec3>(&v);
+         CC_ASSERT(p != nullptr);
+         p->x = a[idx];
+         p->y = a[idx + 1];
+         p->z = a[idx + 2];
      }},
-    {gfx::Type::FLOAT4, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<float *>(v);
-         p[0]    = a[idx];
-         p[1]    = a[idx + 1];
-         p[2]    = a[idx + 2];
-         p[3]    = a[idx + 3];
+    {gfx::Type::FLOAT4, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<Vec4>(&v);
+         CC_ASSERT(p != nullptr);
+         p->x = a[idx];
+         p->y = a[idx + 1];
+         p->z = a[idx + 2];
+         p->w = a[idx + 3];
      }},
-    {gfx::Type::MAT3, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<Mat3 *>(v);
-         for (int i = 0; i < 9; ++i) {
-             p->m[i] = a[i + idx];
-         }
+    {gfx::Type::MAT3, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<Mat3>(&v);
+         CC_ASSERT(p != nullptr);
+         memcpy(&p->m[0], &a[idx], sizeof(Mat3));
      }},
-    {gfx::Type::MAT4, [](const Float32Array &a, void *v, index_t idx) {
-         auto *p = reinterpret_cast<Mat4 *>(v);
-         for (int i = 0; i < 16; ++i) {
-             p->m[i] = a[i + idx];
-         }
+    {gfx::Type::MAT4, [](const float *a, MaterialProperty &v, index_t idx) {
+         auto *p = std::get_if<Mat4>(&v);
+         CC_ASSERT(p != nullptr);
+         memcpy(&p->m[0], &a[idx], sizeof(Mat4));
      }},
 };
 
 //NOLINTNEXTLINE
-const std::unordered_map<gfx::Type, std::function<void(Float32Array &, const void *, index_t id)>> type2writer = {
-    {gfx::Type::UNKNOWN, [](Float32Array & /*a*/, const void * /*v*/, index_t /*idx*/) {
+const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer = {
+    {gfx::Type::UNKNOWN, [](float * /*a*/, const MaterialProperty & /*v*/, index_t /*idx*/) {
          CC_LOG_ERROR("type2writer unknown type");
      }},
-    {gfx::Type::INT, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const int32_t *>(v);
-         a[idx]        = p[0];
+    {gfx::Type::INT, [](float *a, const MaterialProperty &v, index_t idx) {
+         const int32_t *p = std::get_if<int32_t>(&v);
+         CC_ASSERT(p != nullptr);
+         a[idx] = *p;
      }},
-    {gfx::Type::INT2, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const int32_t *>(v);
-         a[idx]        = p[0];
-         a[idx + 1]    = p[1];
+    {gfx::Type::INT2, [](float *a, const MaterialProperty &v, index_t idx) {
+         const auto *p = std::get_if<Vec2>(&v);
+         CC_ASSERT(p != nullptr);
+         a[idx]     = p->x;
+         a[idx + 1] = p->y;
      }},
-    {gfx::Type::INT3, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const int32_t *>(v);
-         a[idx]        = p[0];
-         a[idx + 1]    = p[1];
-         a[idx + 2]    = p[2];
+    {gfx::Type::INT3, [](float *a, const MaterialProperty &v, index_t idx) {
+         const auto *p = std::get_if<Vec3>(&v);
+         CC_ASSERT(p != nullptr);
+         a[idx]     = p->x;
+         a[idx + 1] = p->y;
+         a[idx + 2] = p->z;
      }},
-    {gfx::Type::INT4, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const int32_t *>(v);
-         a[idx]        = p[0];
-         a[idx + 1]    = p[1];
-         a[idx + 2]    = p[2];
-         a[idx + 3]    = p[3];
+    {gfx::Type::INT4, [](float *a, const MaterialProperty &v, index_t idx) {
+         const auto *p = std::get_if<Vec4>(&v);
+         CC_ASSERT(p != nullptr);
+         a[idx]     = p->x;
+         a[idx + 1] = p->y;
+         a[idx + 2] = p->z;
+         a[idx + 3] = p->w;
      }},
-    {gfx::Type::FLOAT, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const int32_t *>(v);
-         a[idx]        = p[0];
+    {gfx::Type::FLOAT, [](float *a, const MaterialProperty &v, index_t idx) {
+         const float *p = std::get_if<float>(&v);
+         CC_ASSERT(p != nullptr);
+         a[idx] = *p;
      }},
-    {gfx::Type::FLOAT2, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const int32_t *>(v);
-         a[idx]        = p[0];
-         a[idx + 1]    = p[1];
+    {gfx::Type::FLOAT2, [](float *a, const MaterialProperty &v, index_t idx) {
+         const auto *p = std::get_if<Vec2>(&v);
+         CC_ASSERT(p != nullptr);
+         a[idx]     = p->x;
+         a[idx + 1] = p->y;
      }},
-    {gfx::Type::FLOAT3, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const int32_t *>(v);
-         a[idx]        = p[0];
-         a[idx + 1]    = p[1];
-         a[idx + 2]    = p[2];
+    {gfx::Type::FLOAT3, [](float *a, const MaterialProperty &v, index_t idx) {
+         const auto *p = std::get_if<Vec3>(&v);
+         CC_ASSERT(p != nullptr);
+         a[idx]     = p->x;
+         a[idx + 1] = p->y;
+         a[idx + 2] = p->z;
      }},
-    {gfx::Type::FLOAT4, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const int32_t *>(v);
-         a[idx]        = p[0];
-         a[idx + 1]    = p[1];
-         a[idx + 2]    = p[2];
-         a[idx + 3]    = p[3];
+    {gfx::Type::FLOAT4, [](float *a, const MaterialProperty &v, index_t idx) {
+         const auto *p = std::get_if<Vec4>(&v);
+         CC_ASSERT(p != nullptr);
+         a[idx]     = p->x;
+         a[idx + 1] = p->y;
+         a[idx + 2] = p->z;
+         a[idx + 3] = p->w;
      }},
-    {gfx::Type::MAT3, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const Mat3 *>(v);
-         for (int i = 0; i < 9; ++i) {
-             a[idx + i] = p->m[i];
-         }
+    {gfx::Type::MAT3, [](float *a, const MaterialProperty &v, index_t idx) {
+         const auto *p = std::get_if<Mat3>(&v);
+         CC_ASSERT(p != nullptr);
+         memcpy(&a[idx], &p->m[0], sizeof(Mat3));
      }},
-    {gfx::Type::MAT4, [](Float32Array &a, const void *v, index_t idx) {
-         const auto *p = reinterpret_cast<const Mat4 *>(v);
-         for (int i = 0; i < 16; ++i) {
-             a[idx + i] = p->m[i];
-         }
+    {gfx::Type::MAT4, [](float *a, const MaterialProperty &v, index_t idx) {
+         const auto *p = std::get_if<Mat4>(&v);
+         CC_ASSERT(p != nullptr);
+         memcpy(&a[idx], &p->m[0], sizeof(Mat4));
      }},
 };
 
-std::variant<std::vector<float>, std::string> getDefaultFromType(gfx::Type type) {
+const std::vector<float> &getDefaultFloatArrayFromType(gfx::Type type) {
+    static const std::vector<float> defaultFloatValues[] = {
+        {0},
+        {0, 0},
+        {0, 0, 0, 0},
+        {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+
     switch (type) {
         case gfx::Type::BOOL:
         case gfx::Type::INT:
         case gfx::Type::UINT:
         case gfx::Type::FLOAT:
-            return std::vector<float>{0};
+            return defaultFloatValues[0];
         case gfx::Type::BOOL2:
         case gfx::Type::INT2:
         case gfx::Type::UINT2:
         case gfx::Type::FLOAT2:
-            return std::vector<float>{0, 0};
+            return defaultFloatValues[1];
         case gfx::Type::BOOL4:
         case gfx::Type::INT4:
         case gfx::Type::UINT4:
         case gfx::Type::FLOAT4:
-            return std::vector<float>{0, 0, 0, 0};
+            return defaultFloatValues[2];
         case gfx::Type::MAT4:
-            return std::vector<float>{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
-        case gfx::Type::SAMPLER2D:
-            return "default-texture";
-        case gfx::Type::SAMPLER_CUBE:
-            return "default-cube-texture";
+            return defaultFloatValues[3];
         default:
-            return std::vector<float>{0};
+            return defaultFloatValues[0];
+    }
+}
+
+const std::string &getDefaultStringFromType(gfx::Type type) {
+    static const std::string defaultTextureStr{"default-texture"};
+    static const std::string defaultCubeTextureStr{"default-cube-texture"};
+
+    switch (type) {
+        case gfx::Type::SAMPLER2D:
+            return defaultTextureStr;
+        case gfx::Type::SAMPLER_CUBE:
+            return defaultCubeTextureStr;
+        default:
+            return defaultTextureStr;
     }
 }
 

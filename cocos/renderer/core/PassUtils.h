@@ -31,6 +31,7 @@
 #include "core/Types.h"
 #include "core/assets/TextureBase.h"
 #include "gfx-base/GFXDef-common.h"
+#include "math/Color.h"
 #include "math/Mat3.h"
 #include "math/Mat4.h"
 #include "math/Quaternion.h"
@@ -85,12 +86,6 @@ constexpr uint32_t     customizeType(uint32_t handle, gfx::Type type) {
  */
 using MacroRecord = Record<std::string, std::variant<float, bool, std::string>>;
 
-//cjh TODO:
-class Color {
-public:
-    uint8_t r{0}, g{0}, b{0}, a{0};
-};
-
 using MaterialProperty = std::variant<std::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/>;
 
 using MaterialPropertyList = std::vector<MaterialProperty>;
@@ -100,18 +95,22 @@ using MaterialPropertyVariant = std::variant<std::monostate /*0*/, MaterialPrope
 #define MaterialPropertyIndexSingle (1)
 #define MaterialPropertyIndexList   (2)
 
-//NOLINTNEXTLINE
-extern const std::unordered_map<gfx::Type, std::function<void(const Float32Array &, void *, index_t id)>> type2reader;
+using GFXTypeReaderCallback = void (*)(const float *, MaterialProperty &, index_t);
+using GFXTypeWriterCallback = void (*)(float *, const MaterialProperty &, index_t);
 
 //NOLINTNEXTLINE
-extern const std::unordered_map<gfx::Type, std::function<void(Float32Array &, const void *, index_t id)>> type2writer;
+extern const std::unordered_map<gfx::Type, GFXTypeReaderCallback> type2reader;
+
+//NOLINTNEXTLINE
+extern const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer;
 
 /**
  * @en Gets the default values for the given type of uniform
  * @zh 根据指定的 Uniform 类型来获取默认值
  * @param type The type of the uniform
  */
-std::variant<std::vector<float>, std::string> getDefaultFromType(gfx::Type type);
+const std::vector<float> &getDefaultFloatArrayFromType(gfx::Type type);
+const std::string &       getDefaultStringFromType(gfx::Type type);
 
 /**
  * @en Combination of preprocess macros

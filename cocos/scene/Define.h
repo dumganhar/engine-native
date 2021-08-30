@@ -105,7 +105,7 @@ struct PipelineSharedSceneData {
     Pass *       deferredPostPass{nullptr};
     gfx::Shader *deferredPostPassShader{nullptr};
 };
-
+  
 struct Root {
     Root() {
         Root::instance = this;

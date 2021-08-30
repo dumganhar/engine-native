@@ -164,8 +164,11 @@ public:
     // TODO(Lenovo):
     template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
     inline std::vector<components::Component *> getComponents(const T & /*unused*/) const {};
-    inline std::vector<components::Component *> getComponents(const std::string & /*unused*/) const {};
-    components::Component *                     getComponentInChildren(const std::string &name) const;
+    inline std::vector<components::Component *> getComponents(const std::string & /*unused*/) const {
+        // TODO: validate return value
+        return _components;
+    };
+    components::Component *getComponentInChildren(const std::string &name) const;
     template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
     components::Component *              getComponentInChildren(const T &comp) const {}
     std::vector<components::Component *> getComponentsInChildren(const std::string &name) const;

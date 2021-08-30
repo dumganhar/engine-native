@@ -32,6 +32,8 @@
 #include "base/Value.h"
 #include "core/Types.h"
 #include "core/assets/Asset.h"
+#include "gfx-base/GFXDef-common.h"
+#include "gfx-base/GFXShader.h"
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "renderer/pipeline/Define.h"
@@ -63,7 +65,7 @@ using PassOverrides = IPassStates;
 struct IPassInfo : public IPassStates {
     std::string                                                   program; // auto-generated from 'vert' and 'frag'
     std::optional<MacroRecord>                                    embeddedMacros;
-    index_t                                                       propertyIndex;
+    index_t                                                       propertyIndex{-1};
     std::optional<std::string>                                    switch_;
     std::optional<std::unordered_map<std::string, IPropertyInfo>> properties;
 };
@@ -74,20 +76,20 @@ struct ITechniqueInfo {
 };
 
 struct IBlockInfo {
-    int32_t                            binding;
+    int32_t                            binding{-1};
     std::string                        name;
     std::vector<gfx::Uniform>          members;
-    uint32_t                           count;
-    gfx::ShaderStageFlags              stageFlags;
-    std::optional<gfx::DescriptorType> descriptorType;
+    uint32_t                           count{0};
+    gfx::ShaderStageFlags              stageFlags{gfx::ShaderStageFlags::NONE};
+    std::optional<gfx::DescriptorType> descriptorType{};
 };
 
 struct ISamplerTextureInfo {
-    int32_t                            binding; //cjh : number;
+    int32_t                            binding{-1}; //cjh : number;
     std::string                        name;
-    gfx::Type                          type;
-    uint32_t                           count;
-    gfx::ShaderStageFlags              stageFlags;
+    gfx::Type                          type{gfx::Type::UNKNOWN};
+    uint32_t                           count{0};
+    gfx::ShaderStageFlags              stageFlags{gfx::ShaderStageFlags::NONE};
     std::optional<gfx::DescriptorType> descriptorType;
 };
 
@@ -126,7 +128,7 @@ struct IShaderSource {
 
 struct IShaderInfo {
     std::string                      name;
-    uint64_t                         hash; //cjh hash is 64 bit?
+    uint64_t                         hash{-1ULL}; //cjh hash is 64 bit?
     IShaderSource                    glsl4;
     IShaderSource                    glsl3;
     IShaderSource                    glsl1;

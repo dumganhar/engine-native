@@ -228,7 +228,7 @@ public:
 
 protected:
     virtual bool onPreDestroy() {
-        // FIXME
+        // FIXME: need reture value
         return true;
     }
 };

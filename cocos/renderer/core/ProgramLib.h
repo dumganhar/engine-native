@@ -46,12 +46,12 @@ namespace cc {
 
 struct IDefineRecord : public IDefineInfo {
     std::function<int(std::any)> map;
-    int32_t                      offset;
+    int32_t                      offset{0};
 };
 struct IMacroInfo {
     std::string name;
     std::string value;
-    bool        isDefault;
+    bool        isDefault{false};
 };
 
 struct ITemplateInfo {
@@ -71,7 +71,7 @@ struct IProgramInfo : public IShaderInfo {
     std::string                effectName;
     std::vector<IDefineRecord> defines;
     std::string                constantMacros;
-    bool                       uber; // macro number exceeds default limits, will fallback to string hash
+    bool                       uber{false}; // macro number exceeds default limits, will fallback to string hash
 };
 
 const char *getDeviceShaderVersion(const gfx::Device &device);
@@ -82,9 +82,9 @@ const char *getDeviceShaderVersion(const gfx::Device &device);
  */
 class ProgramLib {
 protected:
-    Record<std::string, IProgramInfo>  _templates{}; // per shader
-    Record<std::string, gfx::Shader *> _cache         = {};
-    Record<uint64_t, ITemplateInfo>    _templateInfos = {};
+    Record<std::string, IProgramInfo>  _templates; // per shader
+    Record<std::string, gfx::Shader *> _cache;
+    Record<uint64_t, ITemplateInfo>    _templateInfos;
 
 public:
     void regist(EffectAsset &effect);

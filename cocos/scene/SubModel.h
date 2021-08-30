@@ -26,17 +26,19 @@
 #pragma once
 
 #include <vector>
+#include "core/Director.h"
+#include "core/assets/RenderingSubMesh.h"
 #include "renderer/gfx-base/GFXDescriptorSet.h"
 #include "renderer/gfx-base/GFXInputAssembler.h"
 #include "renderer/gfx-base/GFXShader.h"
 #include "renderer/pipeline/Define.h"
+#include "renderer/pipeline/forward/ForwardPipeline.h"
 #include "scene/Define.h"
+#include "scene/Pass.h"
 
 namespace cc {
 namespace scene {
-
 class Pass;
-
 class SubModel final {
 public:
     SubModel()                 = default;
@@ -51,29 +53,53 @@ public:
     gfx::Shader *getShader(uint) const;
     Pass *       getPass(uint) const;
 
-    inline void setShaders(const std::vector<gfx::Shader *> &shaders) { _shaders = shaders; }
-    inline void setPasses(const std::vector<Pass *> &passes) { _passes = passes; }
     inline void setDescriptorSet(gfx::DescriptorSet *descriptorSet) { _descriptSet = descriptorSet; }
     inline void setInputAssembler(gfx::InputAssembler *ia) { _ia = ia; }
+    inline void setShaders(const std::vector<gfx::Shader *> &shaders) { _shaders = shaders; }
+    void        setPasses(const std::vector<Pass *> &passes);
     inline void setPlanarInstanceShader(gfx::Shader *shader) { _planarInstanceShader = shader; }
     inline void setPlanarShader(gfx::Shader *shader) { _planarShader = shader; }
     inline void setPriority(pipeline::RenderPriority priority) { _priority = priority; }
-    inline void setSubMeshBuffers(const std::vector<cc::scene::FlatBuffer> &flatBuffers) {
+    void        setSubMesh(RenderingSubMesh *subMesh);
+    inline void setSubMeshBuffers(const std::vector<IFlatBuffer> &flatBuffers) {
         if (!_subMesh) {
             _subMesh = new RenderingSubMesh();
         }
-        _subMesh->flatBuffers = flatBuffers;
+        _subMesh->setFlatBuffers(flatBuffers);
     }
 
-    inline gfx::DescriptorSet *       getDescriptorSet() const { return _descriptSet; }
-    inline gfx::InputAssembler *      getInputAssembler() const { return _ia; }
-    inline const std::vector<Pass *> &getPasses() const { return _passes; }
-    inline gfx::Shader *              getPlanarInstanceShader() const { return _planarInstanceShader; }
-    inline gfx::Shader *              getPlanarShader() const { return _planarShader; }
-    inline pipeline::RenderPriority   getPriority() const { return _priority; }
-    inline RenderingSubMesh *         getSubMesh() const { return _subMesh; }
+    inline gfx::DescriptorSet *              getDescriptorSet() const { return _descriptSet; }
+    inline gfx::InputAssembler *             getInputAssembler() const { return _ia; }
+    inline const std::vector<gfx::Shader *> &getShaders() const { return _shaders; }
+    inline const std::vector<Pass *> &       getPasses() const { return _passes; }
+    inline const std::vector<IMacroPatch> &  getPatches() const { return _patches; }
+    inline gfx::Shader *                     getPlanarInstanceShader() const { return _planarInstanceShader; }
+    inline gfx::Shader *                     getPlanarShader() const { return _planarShader; }
+    inline pipeline::RenderPriority          getPriority() const { return _priority; }
+    inline RenderingSubMesh *                getSubMesh() const { return _subMesh; }
+
+    void initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &passes, const std::vector<IMacroPatch> &patches);
+    void initPlanarShadowShader() const;
+    void initPlanarShadowInstanceShader() const;
+    void destroy();
+    void onPipelineStateChanged();
+    void onMacroPatchesStateChanged(const std::vector<IMacroPatch> &patches);
+
+protected:
+    gfx::Device *            _device{nullptr};
+    std::vector<IMacroPatch> _patches;
+    gfx::InputAssembler *    _inputAssembler{nullptr};
+    gfx::DescriptorSet *     _descriptorSet{nullptr};
+    gfx::Texture *           _reflectionTex{nullptr};
+    gfx::Sampler *           _reflectionSampler{nullptr};
+
+    void flushPassInfo();
 
 private:
+    void destroyDescriptorSet() const;
+    void destroyInputAssembly() const;
+    void createDescriptorSet() const;
+
     pipeline::RenderPriority   _priority{pipeline::RenderPriority::DEFAULT};
     gfx::Shader *              _planarShader{nullptr};
     gfx::Shader *              _planarInstanceShader{nullptr};

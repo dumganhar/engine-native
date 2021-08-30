@@ -74,8 +74,8 @@ public:
     void                     destroy();
     void                     updateWorldBound();
     void                     createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos);
-    void                     initSubModel(index_t idx, const RenderingSubMesh &subMeshData, Material mat);
-    void                     setSubModelMesh(index_t idx, const RenderingSubMesh &subMesh) const;
+    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material mat);
+    void                     setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
     void                     setSubModelMaterial(int idx, Material &mat);
     void                     onGlobalPipelineStateChanged() const;
     void                     onMacroPatchesStateChanged() const;
@@ -100,7 +100,7 @@ public:
     inline void seVisFlag(uint32_t flags) { _visFlags = flags; }
     inline void setBounds(geometry::AABB *world) {
         _worldBounds = world;
-        _modelBounds.set(_worldBounds->getCenter(), _worldBounds->getHalfExtents());
+        _modelBounds->set(_worldBounds->getCenter(), _worldBounds->getHalfExtents());
     }
     inline void setInstancedAttrBlock(uint8_t *buffer, uint32_t size, InstancedAttributeBlock &&block, const std::vector<gfx::Attribute> &attributes) {
         _instancedBuffer        = {buffer, size};
@@ -119,7 +119,7 @@ public:
     inline uint32_t                           getInstancedBufferSize() const { return std::get<1>(_instancedBuffer); }
     inline gfx::Buffer *                      getLocalBuffer() const { return _localBuffer; }
     inline float *                            getLocalData() const { return _localData; }
-    inline const geometry::AABB &             getModelBounds() const { return _modelBounds; }
+    inline geometry::AABB *                   getModelBounds() const { return _modelBounds; }
     inline scenegraph::Node *                 getNode() const { return _node; }
     inline bool                               getReceiveShadow() const { return _receiveShadow; }
     inline const std::vector<SubModel *> &    getSubModels() const { return _subModels; }
@@ -136,20 +136,20 @@ public:
 protected:
     void    updateAttributesAndBinding(index_t subModelIndex);
     int32_t getInstancedAttributeIndex(const std::string &name) const;
-    void    updateInstanceAttribute(const std::vector<gfx::Attribute> &, const Pass &pass) const;
+    void    updateInstanceAttribute(const std::vector<gfx::Attribute> &, Pass *pass) const;
     void    initLocalDescriptors(index_t subModelIndex);
     void    updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet &descriptorSet) const;
 
     ModelType       _type{ModelType::DEFAULT};
     bool            _transformUpdated{false};
     geometry::AABB *_worldBounds{nullptr};
-    geometry::AABB  _modelBounds;
+    geometry::AABB *_modelBounds{nullptr};
     gfx::Device *   _device;
     bool            _inited{false};
     uint32_t        _descriptorSetCount{1};
 
 private:
-    SubModel createSubModel() const;
+    SubModel *createSubModel() const;
 
     bool _enabled{false};
     bool _castShadow{false};

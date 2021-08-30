@@ -23,10 +23,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "scene/SubModel.h"
+#include "pipeline/Define.h"
+#include "scene/Model.h"
 #include "scene/Pass.h"
-
 namespace cc {
 namespace scene {
+const static uint32_t         MAX_PASS_COUNT = 8;
+const gfx::DescriptorSetInfo &dsInfo         = gfx::DescriptorSetInfo();
 
 void SubModel::update() {
     for (Pass *pass : _passes) {
@@ -36,7 +39,22 @@ void SubModel::update() {
 }
 
 SubModel::~SubModel() {
-    delete _subMesh;
+    CC_SAFE_DELETE(_subMesh);
+}
+
+void SubModel::setPasses(const std::vector<Pass *> &passes) {
+    if (passes.size() > MAX_PASS_COUNT) {
+        // errorID(12004, MAX_PASS_COUNT); //errorID not implemented
+        return;
+    }
+    _passes = passes;
+    flushPassInfo();
+    // DS layout might change too
+    if (_descriptorSet) {
+        _descriptorSet->destroy();
+        // dsInfo.layout = passes[0]->getLocalSetLayout();
+        _descriptorSet = _device->createDescriptorSet(dsInfo);
+    }
 }
 
 gfx::Shader *SubModel::getShader(uint index) const {
@@ -55,5 +73,128 @@ Pass *SubModel::getPass(uint index) const {
     return _passes[index];
 }
 
+void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &passes, const std::vector<IMacroPatch> &patches) {
+    _device = Director::getInstance().getRoot()->getDevice();
+    // dsInfo
+    _inputAssembler = _device->createInputAssembler(subMesh->getIaInfo());
+    _descriptorSet  = _device->createDescriptorSet(dsInfo);
+    _subMesh        = subMesh;
+    _patches        = patches;
+    setPasses(passes);
+
+    flushPassInfo();
+    if (passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
+        subMesh->genFlatBuffers();
+    }
+    _priority = pipeline::RenderPriority::DEFAULT;
+
+    // initialize resources for reflection material
+    if (passes[0]->getPhase() == pipeline::getPhaseID("reflection")) {
+        uint32_t   texWidth  = _device->getWidth();
+        uint32_t   texHeight = _device->getHeight();
+        const uint minSize   = 512;
+        if (texHeight < texWidth) {
+            texWidth  = minSize * texWidth / texHeight;
+            texHeight = minSize;
+        } else {
+            texWidth  = minSize;
+            texHeight = minSize * texHeight / texWidth;
+        }
+        _reflectionTex = _device->createTexture({
+            gfx::TextureType::TEX2D,
+            gfx::TextureUsageBit::STORAGE | gfx::TextureUsageBit::TRANSFER_SRC | gfx::TextureUsageBit::SAMPLED,
+            gfx::Format::RGBA8,
+            texWidth,
+            texHeight,
+            gfx::TextureFlagBit::IMMUTABLE,
+        });
+        // _descriptorSet->bindTexture(UNIFORM_REFLECTION_TEXTURE_BINDING, _reflectionTex); //UNIFORM_REFLECTION_TEXTURE_BINDING not define
+
+        uint32_t samplerHash = pipeline::SamplerLib::genSamplerHash({
+            gfx::Filter::LINEAR,
+            gfx::Filter::LINEAR,
+            gfx::Filter::NONE,
+            gfx::Address::CLAMP,
+            gfx::Address::CLAMP,
+            gfx::Address::CLAMP,
+        });
+        _reflectionSampler   = pipeline::SamplerLib::getSampler(samplerHash);
+        // _descriptorSet->bindSampler(UNIFORM_REFLECTION_TEXTURE_BINDING, _reflectionSampler); //UNIFORM_REFLECTION_TEXTURE_BINDING not define
+        // _descriptorSet->bindTexture(UNIFORM_REFLECTION_STORAGE_BINDING, _reflectionTex); //UNIFORM_REFLECTION_STORAGE_BINDING not define
+    }
+}
+
+// This is a temporary solution
+// It should not be written in a fixed way, or modified by the user
+void SubModel::initPlanarShadowShader() const {
+    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Director::getInstance().getRoot()->getPipeline());
+    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getSharedData()->shadow;
+    // _planarShader = shadowInfo->getPlanarShader(_patches); // getPlanarShader not implemented
+}
+
+// This is a temporary solution
+// It should not be written in a fixed way, or modified by the user
+void SubModel::initPlanarShadowInstanceShader() const {
+    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Director::getInstance().getRoot()->getPipeline());
+    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getSharedData()->shadow;
+    // _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches); // getPlanarInstanceShader not implemented
+}
+
+void SubModel::destroy() {
+    CC_SAFE_DESTROY(_descriptSet);
+    CC_SAFE_DESTROY(_inputAssembler);
+    _priority = pipeline::RenderPriority::DEFAULT;
+    _patches.clear();
+
+    CC_SAFE_DELETE(_subMesh);
+
+    for (Pass *pass : _passes) {
+        CC_SAFE_DESTROY(pass);
+    }
+    _passes.clear();
+
+    for (gfx::Shader *shader : _shaders) {
+        CC_SAFE_DESTROY(shader);
+    }
+    _shaders.clear();
+
+    CC_SAFE_DESTROY(_reflectionTex);
+    CC_SAFE_DESTROY(_reflectionSampler);
+}
+
+void SubModel::onPipelineStateChanged() {
+    if (_passes.empty()) return;
+
+    for (Pass *pass : _passes) {
+        pass->beginChangeStatesSilently();
+        pass->tryCompile(); // force update shaders
+        pass->endChangeStatesSilently();
+    }
+    flushPassInfo();
+}
+
+void SubModel::onMacroPatchesStateChanged(const std::vector<IMacroPatch> &patches) {
+    _patches = patches;
+    if (_passes.empty()) return;
+    for (Pass *pass : _passes) {
+        pass->beginChangeStatesSilently();
+        pass->tryCompile(); // force update shaders
+        pass->endChangeStatesSilently();
+    }
+    flushPassInfo();
+}
+
+void SubModel::flushPassInfo() {
+    if (_passes.empty()) return;
+    if (!_shaders.empty()) {
+        for (gfx::Shader *shader : _shaders) {
+            CC_SAFE_DESTROY(shader);
+        }
+    }
+    _shaders.resize(_passes.size());
+    for (uint i = 0; i < _passes.size(); ++i) {
+        _shaders[i] = _passes[i]->getShaderVariant(_patches);
+    }
+}
 } // namespace scene
 } // namespace cc

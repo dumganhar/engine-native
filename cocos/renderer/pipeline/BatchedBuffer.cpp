@@ -70,7 +70,7 @@ void BatchedBuffer::destroy() {
 
 void BatchedBuffer::merge(const scene::SubModel *subModel, uint passIdx, const scene::Model *model) {
     const auto *subMesh          = subModel->getSubMesh();
-    const auto &flatBuffers      = subMesh->flatBuffers;
+    const auto &flatBuffers      = subMesh->getFlatBuffers();
     auto        flatBuffersCount = static_cast<uint32_t>(flatBuffers.size());
     if (0 == flatBuffersCount) {
         return;

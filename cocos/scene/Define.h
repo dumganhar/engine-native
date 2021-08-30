@@ -106,18 +106,6 @@ struct PipelineSharedSceneData {
     gfx::Shader *deferredPostPassShader{nullptr};
 };
 
-struct FlatBuffer {
-    uint32_t stride{0};
-    uint32_t count{0};
-    uint32_t size{0};
-    uint8_t *data{nullptr};
-};
-
-struct RenderingSubMesh {
-    RenderingSubMesh() = default;
-    std::vector<FlatBuffer> flatBuffers;
-};
-
 struct Root {
     Root() {
         Root::instance = this;

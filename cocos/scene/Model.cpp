@@ -22,18 +22,38 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#include "scene/Model.h"
 #include <array>
-#include "../renderer/pipeline/InstancedBuffer.h"
+
 #include "core/Director.h"
 #include "core/assets/Material.h"
+#include "gfx-base/GFXTexture.h"
 #include "renderer/pipeline/Define.h"
+#include "renderer/pipeline/InstancedBuffer.h"
+#include "scene/Model.h"
 #include "scene/Pass.h"
 #include "scene/RenderScene.h"
 #include "scene/SubModel.h"
 
 namespace cc {
 namespace scene {
+const uint32_t LIGHTMAP_SAMPLER_HASH = pipeline::SamplerLib::genSamplerHash({
+    gfx::Filter::LINEAR,
+    gfx::Filter::LINEAR,
+    gfx::Filter::NONE,
+    gfx::Address::CLAMP,
+    gfx::Address::CLAMP,
+    gfx::Address::CLAMP,
+});
+
+const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = pipeline::SamplerLib::genSamplerHash({
+    gfx::Filter::LINEAR,
+    gfx::Filter::LINEAR,
+    gfx::Filter::LINEAR,
+    gfx::Address::CLAMP,
+    gfx::Address::CLAMP,
+    gfx::Address::CLAMP,
+});
+
 Model::Model() {
     _device = Director::getInstance().getRoot()->getDevice();
 }
@@ -49,19 +69,16 @@ void Model::initialize() {
 
 void Model::destroy() {
     for (SubModel *subModel : _subModels) {
-        // subModel->destroy(); // destroy() not implemented
+        CC_SAFE_DESTROY(subModel);
     }
-    if (_localBuffer) {
-        _localBuffer->destroy();
-        _localBuffer = nullptr;
-    }
-    _worldBounds = nullptr;
-    // _modelBounds = null; // not sure how to destroy
+    CC_SAFE_DESTROY(_localBuffer);
+    CC_SAFE_DELETE(_worldBounds);
+    CC_SAFE_DELETE(_modelBounds);
     _subModels.clear();
     _inited           = false;
     _transformUpdated = true;
-    _transform        = nullptr;
-    _node             = nullptr;
+    CC_SAFE_DELETE(_transform);
+    CC_SAFE_DELETE(_node);
     isDynamicBatching = false;
 }
 
@@ -80,8 +97,8 @@ void Model::updateTransform(uint32_t /*stamp*/) {
     if (node->getFlagsChanged() || node->getDirtyFlag()) {
         node->updateWorldTransform();
         _transformUpdated = true;
-        if (_modelBounds.getValid() && _worldBounds) {
-            _modelBounds.transform(node->getWorldMatrix(), _worldBounds);
+        if (_modelBounds->isValid() && _worldBounds) {
+            _modelBounds->transform(node->getWorldMatrix(), _worldBounds);
         }
     }
 }
@@ -91,8 +108,8 @@ void Model::updateWorldBound() {
     if (node) {
         node->updateWorldTransform();
         _transformUpdated = true;
-        if (_modelBounds.getValid() && _worldBounds) {
-            _modelBounds.transform(node->getWorldMatrix(), _worldBounds);
+        if (_modelBounds->isValid() && _worldBounds) {
+            _modelBounds->transform(node->getWorldMatrix(), _worldBounds);
         }
     }
 }
@@ -130,28 +147,28 @@ void Model::createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos) {
     // _worldBounds = geometry::AABB(_modelBounds); need override operator= in AABB
 }
 
-SubModel Model::createSubModel() const {
-    return SubModel();
+SubModel *Model::createSubModel() const {
+    return new SubModel();
 }
 
-void Model::initSubModel(index_t idx, const cc::RenderingSubMesh &subMeshData, Material mat) {
+void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Material mat) {
     initialize();
     bool isNewSubModel = false;
     if (_subModels[idx] == nullptr) {
-        // _subModels[idx] = createSubModel(); // need override operator= in submodel
-        isNewSubModel = true;
+        _subModels[idx] = createSubModel();
+        isNewSubModel   = true;
     } else {
-        // _subModels[idx]->destroy(); // destroy() not implemented
+        CC_SAFE_DESTROY(_subModels[idx]);
     }
-    // _subModels[idx]->initialize(subMeshData, mat.getPasses(), getMacroPatches(idx)); //initialize() not implemented
-    // _subModels[idx]->initPlanarShadowShader();
-    // _subModels[idx]->initPlanarShadowInstanceShader();
+    _subModels[idx]->initialize(subMeshData, mat.getPasses(), getMacroPatches(idx));
+    _subModels[idx]->initPlanarShadowShader();
+    _subModels[idx]->initPlanarShadowInstanceShader();
     updateAttributesAndBinding(idx);
 }
 
-void Model::setSubModelMesh(index_t idx, const cc::RenderingSubMesh &subMesh) const {
+void Model::setSubModelMesh(index_t idx, cc::RenderingSubMesh *subMesh) const {
     if (idx < _subModels.size()) {
-        // _subModels[idx]->setSubMesh(subMesh); // setSubMesh not implemented
+        _subModels[idx]->setSubMesh(subMesh);
     }
 }
 
@@ -164,13 +181,13 @@ void Model::setSubModelMaterial(int idx, Material &mat) {
 
 void Model::onGlobalPipelineStateChanged() const {
     for (SubModel *subModel : _subModels) {
-        // subModel->onPiplineStateChanged(); // onPiplineStateChanged not implement
+        subModel->onPipelineStateChanged();
     }
 }
 
 void Model::onMacroPatchesStateChanged() const {
-    for (SubModel *subModel : _subModels) {
-        // subModel->onMacroPatchesStateChanged(); // onMacroPatchesStateChanged not implement
+    for (uint32_t i = 0; i < _subModels.size(); ++i) {
+        _subModels[i]->onMacroPatchesStateChanged(getMacroPatches(i));
     }
 }
 
@@ -182,15 +199,16 @@ void Model::updateLightingmap(Texture2D *texture, const Vec4 &uvParam) {
     if (texture == nullptr) {
         // texture = builtinResMgr.get<Texture2D>('empty-texture');
     }
-    if (texture->getGFXTexture()) {
-        // const sampler = samplerLib.getSampler(this._device, texture.mipmaps.length > 1 ? lightmapSamplerWithMipHash : lightmapSamplerHash);
+    gfx::Texture *gfxTexture = texture->getGFXTexture();
+    if (gfxTexture) {
+        // uint32_t sampler = pipeline::SamplerLib::getSampler(_device, texture.mipmaps.length > 1 ? LIGHTMAP_SAMPLER_WITH_MIP_HASH : LIGHTMAP_SAMPLER_HASH);
         for (SubModel *subModel : _subModels) {
-            // const { descriptorSet } = subModels[i];
+            gfx::DescriptorSet *descriptorSet = subModel->getDescriptorSet();
             // // TODO: should manage lightmap macro switches automatically
             // // USE_LIGHTMAP -> CC_USE_LIGHTMAP
-            // descriptorSet.bindTexture(UNIFORM_LIGHTMAP_TEXTURE_BINDING, gfxTexture);
-            // descriptorSet.bindSampler(UNIFORM_LIGHTMAP_TEXTURE_BINDING, sampler);
-            // descriptorSet.update();
+            // descriptorSet->bindTexture(UNIFORM_LIGHTMAP_TEXTURE_BINDING, gfxTexture); // UNIFORM_LIGHTMAP_TEXTURE_BINDING not define
+            // descriptorSet->bindSampler(UNIFORM_LIGHTMAP_TEXTURE_BINDING, sampler);
+            descriptorSet->update();
         }
     }
 }
@@ -211,8 +229,8 @@ void Model::updateAttributesAndBinding(index_t subModelIndex) {
     SubModel *subModel = _subModels[subModelIndex];
     initLocalDescriptors(subModelIndex);
     updateLocalDescriptors(subModelIndex, *subModel->getDescriptorSet());
-    // gfx::Shader shader = subModel->getPasses()[0]->getShaderVariant(subModel->getPatches()); // getPatches not implemented
-    // updateInstanceAttribute(shader.attributes, subModel->getPasses()[0])
+    gfx::Shader *shader = subModel->getPasses()[0]->getShaderVariant(subModel->getPatches());
+    updateInstanceAttribute(shader->getAttributes(), subModel->getPasses()[0]);
 }
 
 int32_t Model::getInstancedAttributeIndex(const std::string &name) const {
@@ -256,7 +274,8 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         // offset += info.size();
     }
     if (pass->getBatchingScheme() == BatchingSchemes::INSTANCING) {
-        pipeline::InstancedBuffer::get(pass)->destroy(); // instancing IA changed
+        pipeline::InstancedBuffer *instanceBuffer = pipeline::InstancedBuffer::get(pass);
+        CC_SAFE_DESTROY(instanceBuffer); // instancing IA changed
         // setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD)); // INST_MAT_WORLD not define
         _transformUpdated = true;
     }
@@ -264,12 +283,12 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
 
 void Model::initLocalDescriptors(index_t /*subModelIndex*/) {
     if (!_localBuffer) {
-        gfx::BufferInfo bufferInfo = gfx::BufferInfo();
-        bufferInfo.usage           = gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST; // not sure ts operator| is same in cpp
-        bufferInfo.memUsage        = gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE;
-        bufferInfo.size            = pipeline::UBOLocal::SIZE;
-        bufferInfo.stride          = pipeline::UBOLocal::SIZE;
-        _localBuffer               = _device->createBuffer(bufferInfo);
+        _localBuffer = _device->createBuffer({
+            gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST, // not sure ts operator| is same in cpp
+            gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE,
+            pipeline::UBOLocal::SIZE,
+            pipeline::UBOLocal::SIZE,
+        });
     }
 }
 

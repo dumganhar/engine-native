@@ -306,8 +306,8 @@ gfx::Rect DeferredPipeline::getRenderArea(scene::Camera *camera, bool onScreen) 
     uint      w;
     uint      h;
     if (onScreen) {
-        w = camera->getWindow()->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getHeight() : camera->getWidth();
-        h = camera->getWindow()->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getWidth() : camera->getHeight();
+        w = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getHeight() : camera->getWidth();
+        h = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getWidth() : camera->getHeight();
     } else {
         w = camera->getWidth();
         h = camera->getHeight();

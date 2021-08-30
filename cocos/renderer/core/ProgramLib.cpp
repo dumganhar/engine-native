@@ -63,18 +63,19 @@ std::string mapDefine(const IDefineInfo &info, const std::optional<MacroRecord::
     if (info.type == "number") {
         return def.has_value() ? std::to_string(std::get<float>(def.value())) : std::to_string(info.range.value()[0]);
     }
-    CC_LOG_DEBUG("unknown define type '%s'", info.type.c_str());
+    CC_LOG_WARNING("unknown define type '%s'", info.type.c_str());
     return "-1"; // should neven happen
 }
 
 std::vector<IMacroInfo> prepareDefines(const MacroRecord &records, const std::vector<IDefineRecord> &defList) {
     std::vector<IMacroInfo> macros{};
     for (const auto &tmp : defList) {
-        auto name      = tmp.name;
-        auto it        = records.find(name);
-        auto value     = mapDefine(tmp, it == records.end() ? std::nullopt : std::optional(it->second));
-        auto isDefault = !recordAsBool(it->second);
-        macros.emplace_back(IMacroInfo{name, value, isDefault});
+        const auto &name  = tmp.name;
+        auto        it    = records.find(name);
+        auto        value = mapDefine(tmp, it == records.end() ? std::nullopt : std::optional(it->second));
+        //TODO(PatriceJiang): v === '0' can be bool ?
+        auto isDefault = it == records.end() || (std::holds_alternative<float>(it->second) && std::get<float>(it->second) == 0.0F);
+        macros.emplace_back(IMacroInfo{.name = name, .value = value, .isDefault = isDefault});
     }
     return macros;
 }
@@ -92,43 +93,44 @@ std::string getShaderInstanceName(const std::string &name, const std::vector<IMa
 
 void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, const pipeline::DescriptorSetLayoutInfos &source,
                            const std::string &type, std::vector<gfx::DescriptorSetLayoutBinding> *outBindings) {
-    auto                           target = type == "globals" ? tmpl.builtins.globals : tmpl.builtins.locals;
+    auto &                         target = type == "globals" ? tmpl.builtins.globals : tmpl.builtins.locals;
     std::vector<gfx::UniformBlock> tempBlocks{};
     // TODO(PatriceJiang): dd
-    for (auto i = 0; i < target.blocks.size(); i++) {
-        const auto &b      = target.blocks[i];
-        auto        infoIt = source.layouts.find(b.name);
+    for (const auto &b : target.blocks) {
+        auto infoIt = source.layouts.find(b.name);
         if (infoIt == source.layouts.end()) {
             CC_LOG_WARNING("builtin UBO '%s' not available !", b.name.c_str());
             continue;
         }
-        const auto &info    = infoIt->second;
-        auto        binding = std::find_if(source.bindings.begin(), source.bindings.end(), [&](const auto &i) {
+        const auto &info = infoIt->second;
+        //TODO(PatriceJiang): UniformBlock|UniformSamplerTexture|UniformStorageImage should share the same super class
+        auto binding = std::find_if(source.bindings.begin(), source.bindings.end(), [&](const auto &i) {
             if (std::holds_alternative<gfx::UniformBlock>(i)) {
                 return i.binding == std::get<gfx::UniformBlock>(i).binding;
-            } else if (std::holds_alternative<gfx::UniformSamplerTexture>(i)) {
-                return i.binding == std::get<gfx::UniformSamplerTexture>(i).binding;
-            } else if (std::holds_alternative<gfx::UniformStorageImage>(i)) {
-                return i.binding = std::get<gfx::UniformStorageImage>(i).binding;
-            } else if (std::holds_alternative<std::monostate>(i)) {
-                ;
-                return false;
             }
+            if (std::holds_alternative<gfx::UniformSamplerTexture>(i)) {
+                return i.binding == std::get<gfx::UniformSamplerTexture>(i).binding;
+            }
+            if (std::holds_alternative<gfx::UniformStorageImage>(i)) {
+                return i.binding = std::get<gfx::UniformStorageImage>(i).binding;
+            }
+            return false;
         });
         if (binding == source.bindings.end() || !(binding->descriptorType & gfx::DESCRIPTOR_BUFFER_TYPE)) {
             CC_LOG_WARNING("builtin UBO '%s' not available !", b.name.c_str());
             continue;
         }
         tempBlocks.emplace_back(info);
+        //TODO(PatriceJiang): use pointer instead of structs in comparasion
+        // `outBindings.includes(binding)`
         if (outBindings && std::count_if(outBindings->begin(), outBindings->end(), [=](const auto &b) { return b.binding == binding; }) == 0) {
             outBindings->emplace_back(binding);
         }
     }
     tmplInfo.gfxBlocks.insert(tmplInfo.gfxBlocks.begin(), tempBlocks.begin(), tempBlocks.end());
     std::vector<gfx::UniformSamplerTexture> tempSamplerTextures;
-    for (auto i = 0; i < target.samplerTextures.size(); i++) {
-        const auto &s      = target.samplerTextures[i];
-        auto        infoIt = source.layouts.find(s.name);
+    for (const auto &s : target.samplerTextures) {
+        auto infoIt = source.layouts.find(s.name);
         if (infoIt == source.layouts.end()) {
             CC_LOG_WARNING("builtin samplerTexture '%s' not available !", s.name.c_str());
             continue;
@@ -151,9 +153,8 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
                 //TODO(PatriceJiang) compare object
                 return b.binding == binding->binding;
             })) {
-            outBindings->
+            outBindings->emplace_back(binding);
         }
-        if (outBindings && !outBindings.includes(binding)) outBindings.push(binding);
     }
 
     tmplInfo.gfxSamplerTextures.insert(tmplInfo.gfxSamplerTextures.begin(), tempSamplerTextures.begin(), tempSamplerTextures.end());
@@ -169,6 +170,7 @@ int getSize(const IBlockInfo &block) {
     for (const auto &m : block.members) {
         s += getTypeSize(m.type) * m.count;
     }
+    return s;
 }
 
 auto genHandles(const IProgramInfo &tmpl) {
@@ -203,6 +205,7 @@ bool dependencyCheck(const std::vector<std::string> &dependencies, const MacroRe
                 return false;
             }
         } else if (defines.count(d) == 0 ? true : recordAsBool(defines.at(d))) {
+            // TODO(PatriceJiang): !defines[d] : checked: undefine, false, 0
             return false;
         }
     }
@@ -248,9 +251,11 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
         return &itCurrTmpl->second;
     }
     auto &currTmpl = itCurrTmpl->second;
-    //TODO(PatriceJiang): need copy
 
-    // store it
+    //TODO(PatriceJiang): need copy
+    //```
+    //const tmpl = ({ ...shader }) as IProgramInfo;
+    ///```
     IProgramInfo &tmpl = _templates[shader.name];
 
     tmpl.effectName = shader.name;
@@ -264,22 +269,25 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
 
     // calculate option mask offset
     auto offset = 0;
-    for (auto i = 0; i < tmpl.defines.size(); i++) {
-        auto &def = tmpl.defines[i];
-        auto  cnt = 1;
+    for (auto &def : tmpl.defines) {
+        auto cnt = 1;
         if (def.type == "number") {
+            //TODO(PatriceJiang): check typeof value
             auto &range = def.range.value();
             cnt         = getBitCount(range[1] - range[0] + 1); // inclusive on both ends
             def.map     = [=](std::any value) { return static_cast<int>(std::any_cast<float>(value) - range[0]); };
         } else if (def.type == "string") {
             cnt     = getBitCount(def.options.value().size());
             def.map = [=](std::any value) {
+                //TODO(PatriceJiang): check typeof value
                 int idx = std::find(def.options.value().begin(), def.options.value().end(), std::any_cast<std::string>(value)) - def.options.value().begin();
                 return static_cast<int>(std::max(0, idx));
             };
         } else if (def.type == "boolean") {
             def.map = [=](std::any value) {
-                return std::any_cast<bool>(value) ? 1 : 0;
+                bool *pvalue = std::any_cast<bool>(&value);
+                if (pvalue) return *pvalue ? 1 : 0;
+                return 0;
             };
         }
         def.offset = offset;
@@ -304,8 +312,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
         tmplInfo.gfxSamplerTextures  = {};
         tmplInfo.bindings            = {};
         tmplInfo.blockSizes          = {};
-        for (auto i = 0; i < tmpl.blocks.size(); i++) {
-            auto &block = tmpl.blocks[i];
+        for (auto &block : tmpl.blocks) {
             tmplInfo.blockSizes.emplace_back(getSize(block));
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 .binding        = static_cast<uint>(block.binding),
@@ -331,8 +338,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
                 uniforms,
                 1}); // effect compiler guarantees block count = 1
         }
-        for (auto i = 0; i < tmpl.samplerTextures.size(); i++) {
-            auto &samplerTexture = tmpl.samplerTextures[i];
+        for (auto &samplerTexture : tmpl.samplerTextures) {
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 .binding        = static_cast<uint>(samplerTexture.binding),
                 .descriptorType = samplerTexture.descriptorType.value_or(gfx::DescriptorType::SAMPLER_TEXTURE),
@@ -346,8 +352,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
                 .count   = samplerTexture.count});
         }
         tmplInfo.gfxAttributes = {};
-        for (auto i = 0; i < tmpl.attributes.size(); i++) {
-            auto &attr = tmpl.attributes[i];
+        for (auto &attr : tmpl.attributes) {
             tmplInfo.gfxAttributes.emplace_back(gfx::Attribute{
                 .name         = attr.name,
                 .format       = attr.format,
@@ -427,9 +432,8 @@ std::string ProgramLib::getKey(const std::string &name, const MacroRecord &defin
     auto &tmplDefs = tmpl.defines;
     if (tmpl.uber) {
         std::stringstream key;
-        for (auto i = 0; i < tmplDefs.size(); i++) {
-            auto &tmplDef = tmplDefs[i];
-            auto  itDef   = defines.find(tmplDef.name);
+        for (auto &tmplDef : tmplDefs) {
+            auto itDef = defines.find(tmplDef.name);
             if (itDef == defines.end() || !tmplDef.map) {
                 continue;
             }
@@ -442,9 +446,8 @@ std::string ProgramLib::getKey(const std::string &name, const MacroRecord &defin
     }
     auto              key = 0;
     std::stringstream ss;
-    for (auto i = 0; i < tmplDefs.size(); i++) {
-        auto &tmplDef = tmplDefs[i];
-        auto  itDef   = defines.find(tmplDef.name);
+    for (auto &tmplDef : tmplDefs) {
+        auto itDef = defines.find(tmplDef.name);
         if (itDef == defines.end() || !tmplDef.map) {
             continue;
         }
@@ -484,13 +487,17 @@ void ProgramLib::destroyShaderByDefines(const MacroRecord &defines) {
 }
 
 gfx::Shader *ProgramLib::getGFXShader(gfx::Device &device, const std::string &name, MacroRecord &defines,
-                                      const pipeline::RenderPipeline &pipeline, std::string *key_) {
-    for (const auto it : pipeline.getMacros()) {
+                                      const pipeline::RenderPipeline &pipeline, std::string *keyOut) {
+    for (const auto &it : pipeline.getMacros()) {
         defines[it.first] = it.second;
     }
 
     std::string key;
-    if (!key_) key = getKey(name, defines);
+    if (!keyOut) {
+        key = getKey(name, defines);
+    } else {
+        key = *keyOut;
+    }
     auto itRes = _cache.find(key);
     if (itRes != _cache.end()) {
         return itRes->second;

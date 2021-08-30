@@ -126,7 +126,7 @@ public:
 protected:
     std::string _name;
 
-    explicit CCObject(const std::string& name = "");
+    explicit CCObject(const std::string &name = "");
 
 public:
     // MEMBER
@@ -140,8 +140,8 @@ public:
      * obj.name = "New Obj";
      * ```
      */
-    inline const std::string& getName() const { return _name; }
-    inline void               setName(const std::string& value) { _name = value; }
+    inline const std::string &getName() const { return _name; }
+    inline void               setName(const std::string &value) { _name = value; }
 
     /**
      * @en After inheriting CCObject objects, control whether you need to hide, lock, serialize, and other functions.
@@ -227,7 +227,10 @@ public:
     virtual std::string toString() const { return ""; };
 
 protected:
-    virtual bool onPreDestroy() {}
+    virtual bool onPreDestroy() {
+        // FIXME: need reture value
+        return true;
+    }
 };
 
 CC_ENUM_BITWISE_OPERATORS(CCObject::Flags);

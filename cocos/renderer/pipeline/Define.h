@@ -26,9 +26,11 @@
 #pragma once
 
 #include <functional>
+#include <variant>
 
 #include "base/Object.h"
 #include "base/Value.h"
+#include "gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "scene/Light.h"
 #include "scene/Model.h"
@@ -249,6 +251,7 @@ enum class CC_DLL SetIndex {
     GLOBAL,
     MATERIAL,
     LOCAL,
+    COUNT,
 };
 CC_ENUM_CONVERSION_OPERATOR(SetIndex)
 
@@ -369,9 +372,9 @@ enum class CC_DLL DeferredStagePriority {
 };
 
 enum class CC_DLL DeferredFlowPriority {
-    SHADOW   = 0,
-    MAIN     = 1,
-    UI       = 10
+    SHADOW = 0,
+    MAIN   = 1,
+    UI     = 10
 };
 
 struct CC_DLL UBOGlobal : public Object {
@@ -441,10 +444,11 @@ protected:
 };
 
 struct CC_DLL DescriptorSetLayoutInfos {
-    gfx::DescriptorSetLayoutBindingList               bindings;
-    unordered_map<String, gfx::UniformBlock>          blocks;
-    unordered_map<String, gfx::UniformSamplerTexture> samplers;
-    unordered_map<String, gfx::UniformStorageImage>   storeImages;
+    gfx::DescriptorSetLayoutBindingList                                                                                          bindings;
+    unordered_map<String, gfx::UniformBlock>                                                                                     blocks;
+    unordered_map<String, gfx::UniformSamplerTexture>                                                                            samplers;
+    unordered_map<String, gfx::UniformStorageImage>                                                                              storeImages;
+    unordered_map<String, std::variant<std::monostate, gfx::UniformBlock, gfx::UniformSamplerTexture, gfx::UniformStorageImage>> layouts;
 };
 extern CC_DLL DescriptorSetLayoutInfos globalDescriptorSetLayout;
 extern CC_DLL DescriptorSetLayoutInfos localDescriptorSetLayout;

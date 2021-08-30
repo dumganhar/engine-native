@@ -29,4 +29,4 @@ cmake -Bbuild \
     
 
     
-cp build/compile_commands.json .
+cp -u build/compile_commands.json .

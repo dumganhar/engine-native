@@ -93,7 +93,7 @@ void Asset::initDefault(const std::string &uuid) {
 
 bool Asset::destroy() {
     //cjh TODO:    debug(getError(12101, this._uuid));
-    Super::destroy();
+    return Super::destroy();
 }
 
 } // namespace cc

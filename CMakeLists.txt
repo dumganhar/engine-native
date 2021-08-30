@@ -645,7 +645,7 @@ cocos_source_files(
                  cocos/renderer/core/PassUtils.h
                  cocos/renderer/core/PassUtils.cpp
                  cocos/renderer/core/ProgramLib.h
-                 cocos/renderer/core/ProgramLib.h
+                 cocos/renderer/core/ProgramLib.cpp
                  cocos/renderer/core/MaterialInstance.h
                  cocos/renderer/core/MaterialInstance.cpp
                  cocos/renderer/core/PassInstance.h

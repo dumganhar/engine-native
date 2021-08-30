@@ -96,10 +96,6 @@ protected:
     void flushPassInfo();
 
 private:
-    void destroyDescriptorSet() const;
-    void destroyInputAssembly() const;
-    void createDescriptorSet() const;
-
     pipeline::RenderPriority   _priority{pipeline::RenderPriority::DEFAULT};
     gfx::Shader *              _planarShader{nullptr};
     gfx::Shader *              _planarInstanceShader{nullptr};

@@ -31,6 +31,7 @@ namespace scenegraph {
 class Scene final : public BaseNode {
 public:
     explicit Scene(const std::string &name) : BaseNode(name) {}
+    //Scene() = default; //TODO: Consructor removed in BaseNode
     Scene(const Scene &) = delete;
     Scene(Scene &&)      = delete;
     ~Scene() override    = default;

@@ -31,6 +31,7 @@
 #include "core/Types.h"
 #include "core/assets/TextureBase.h"
 #include "gfx-base/GFXDef-common.h"
+#include "math/Color.h"
 #include "math/Mat3.h"
 #include "math/Mat4.h"
 #include "math/Quaternion.h"
@@ -84,12 +85,6 @@ constexpr uint32_t     customizeType(uint32_t handle, gfx::Type type) {
  * @zh 预处理宏组合
  */
 using MacroRecord = Record<std::string, std::variant<float, bool, std::string>>;
-
-//cjh TODO:
-class Color {
-public:
-    uint8_t r{0}, g{0}, b{0}, a{0};
-};
 
 using MaterialProperty = std::variant<std::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/>;
 

@@ -169,8 +169,8 @@ bool ForwardPipeline::activeRenderer() {
 
     _descriptorSet->update();
     // update global defines when all states initialized.
-    _macros.setValue("CC_USE_HDR", static_cast<bool>(sharedData->isHDR));
-    _macros.setValue("CC_SUPPORT_FLOAT_TEXTURE", _device->hasFeature(gfx::Feature::TEXTURE_FLOAT));
+    _macros["CC_USE_HDR"]               = static_cast<bool>(sharedData->isHDR);
+    _macros["CC_SUPPORT_FLOAT_TEXTURE"] = _device->hasFeature(gfx::Feature::TEXTURE_FLOAT);
 
     return true;
 }

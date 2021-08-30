@@ -26,11 +26,12 @@
 #pragma once
 
 #include "Define.h"
+#include "GlobalDescriptorSetManager.h"
 #include "PipelineSceneData.h"
 #include "PipelineUBO.h"
 #include "base/CoreStd.h"
-#include "GlobalDescriptorSetManager.h"
 #include "helper/DefineMap.h"
+#include "renderer/core/PassUtils.h"
 #include "scene/Camera.h"
 
 namespace cc {
@@ -67,8 +68,8 @@ public:
     inline const RenderFlowList &                  getFlows() const { return _flows; }
     inline uint                                    getTag() const { return _tag; }
     inline const map<String, InternalBindingInst> &getGlobalBindings() const { return _globalBindings; }
-    inline const DefineMap &                       getMacros() const { return _macros; }
-    inline void                                    setValue(const String &name, bool value) { _macros.setValue(name, value); }
+    inline const MacroRecord &                     getMacros() const { return _macros; }
+    inline void                                    setValue(const String &name, bool value) { _macros[name] = value; }
     inline GlobalDSManager *                       getGlobalDSManager() const { return _globalDSManager; }
     inline gfx::DescriptorSet *                    getDescriptorSet() const { return _descriptorSet; }
     inline gfx::DescriptorSetLayout *              getDescriptorSetLayout() const { return _globalDSManager->getDescriptorSetLayout(); }
@@ -76,7 +77,7 @@ public:
     inline PipelineSceneData *                     getPipelineSceneData() const { return _pipelineSceneData; }
     inline const gfx::CommandBufferList &          getCommandBuffers() const { return _commandBuffers; }
     inline PipelineUBO *                           getPipelineUBO() const { return _pipelineUBO; }
-    inline const String &                          getConstantMacros() { return _constantMacros; }
+    inline const String &                          getConstantMacros() const { return _constantMacros; }
     inline gfx::Device *                           getDevice() { return _device; }
     RenderStage *                                  getRenderstageByName(const String &name) const;
 
@@ -88,15 +89,15 @@ protected:
     gfx::CommandBufferList           _commandBuffers;
     RenderFlowList                   _flows;
     map<String, InternalBindingInst> _globalBindings;
-    DefineMap                        _macros;
+    MacroRecord                      _macros;
     uint                             _tag = 0;
     String                           _constantMacros;
 
-    gfx::Device *             _device              = nullptr;
-    GlobalDSManager *         _globalDSManager     = nullptr;
-    gfx::DescriptorSet *      _descriptorSet       = nullptr;
-    PipelineUBO *             _pipelineUBO         = nullptr;
-    PipelineSceneData *       _pipelineSceneData   = nullptr;
+    gfx::Device *       _device            = nullptr;
+    GlobalDSManager *   _globalDSManager   = nullptr;
+    gfx::DescriptorSet *_descriptorSet     = nullptr;
+    PipelineUBO *       _pipelineUBO       = nullptr;
+    PipelineSceneData * _pipelineSceneData = nullptr;
     // has not initBuiltinRes,
     // create temporary default Texture to binding sampler2d
     gfx::Texture *_defaultTexture = nullptr;

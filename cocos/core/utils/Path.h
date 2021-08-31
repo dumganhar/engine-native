@@ -26,6 +26,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace cc {
 
@@ -34,55 +35,55 @@ namespace cc {
  * @zh 拼接字符串为路径。
  * @example {@link cocos/core/utils/CCPath/join.js}
  */
-std::string join(const std::vector<std::string>& paths);
+std::string join(const std::vector<std::string> &paths);
 
 /**
  * @en Get the ext name of a path including '.', like '.png'.
  * @zh 返回 Path 的扩展名，包括 '.'，例如 '.png'。
  * @example {@link cocos/core/utils/CCPath/extname.js}
  */
-std::string extname(const std::string& path);
+std::string extname(const std::string &path);
 
 /**
  * @en Get the main name of a file name.
  * @zh 获取文件名的主名称。
  * @deprecated
  */
-std::string mainFileName(const std::string& fileName);
+std::string mainFileName(const std::string &fileName);
 
 /**
  * @en Get the file name of a file path.
  * @zh 获取文件路径的文件名。
  * @example {@link cocos/core/utils/CCPath/basename.js}
  */
-std::string basename(const std::string& path, const std::string& extName);
+std::string basename(const std::string &path, const std::string &extName);
 
 /**
  * @en Get dirname of a file path.
  * @zh 获取文件路径的目录名。
  * @example {@link cocos/core/utils/CCPath/dirname.js}
  */
-std::string dirname(const std::string& path);
+std::string dirname(const std::string &path);
 
 /**
  * @en Change extname of a file path.
  * @zh 更改文件路径的扩展名。
  * @example {@link cocos/core/utils/CCPath/changeExtname.js}
  */
-std::string changeExtname(const std::string& path, const std::string& extName);
+std::string changeExtname(const std::string &path, const std::string &extName);
 
 /**
  * @en Change file name of a file path.
  * @zh 更改文件路径的文件名。
  * @example {@link cocos/core/utils/CCPath/changeBasename.js}
  */
-std::string changeBasename(const std::string& path, const std::string& baseName, bool isSameExt);
+std::string changeBasename(const std::string &path, const std::string &baseName, bool isSameExt);
 
 // todo make public after verification
-std::string normalize(const std::string& url);
+std::string normalize(const std::string &url);
 
-std::string stripSep(const std::string& path);
+std::string stripSep(const std::string &path);
 
 char getSeperator();
 
-} // namespace cc {
+} // namespace cc

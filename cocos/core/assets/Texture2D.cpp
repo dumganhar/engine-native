@@ -24,3 +24,166 @@
 ****************************************************************************/
 
 #include "core/assets/Texture2D.h"
+
+#include <sstream>
+
+#include "base/Log.h"
+#include "core/assets/ImageAsset.h"
+
+namespace cc {
+
+void Texture2D::setMipmaps(const std::vector<ImageAsset *> &value) {
+    _mipmaps = value;
+    setMipmapLevel(_mipmaps.size());
+    if (!_mipmaps.empty()) {
+        ImageAsset *imageAsset = _mipmaps[0];
+        reset({.width       = imageAsset->getWidth(),
+               .height      = imageAsset->getHeight(),
+               .format      = imageAsset->getFormat(),
+               .mipmapLevel = static_cast<uint32_t>(_mipmaps.size())});
+
+        for (size_t i = 0, len = _mipmaps.size(); i < len; ++i) {
+            assignImage(_mipmaps[i], i);
+        }
+
+    } else {
+        reset({.width       = 0,
+               .height      = 0,
+               .mipmapLevel = static_cast<uint32_t>(_mipmaps.size())});
+    }
+}
+
+void Texture2D::initialize() {
+    setMipmaps(_mipmaps);
+}
+
+void Texture2D::onLoaded() {
+    initialize();
+}
+
+void Texture2D::reset(const ITexture2DCreateInfo &info) {
+    _width  = info.width;
+    _height = info.height;
+    setGFXFormat(info.format);
+    setMipmapLevel(info.mipmapLevel.has_value() ? info.mipmapLevel.value() : 1);
+    tryReset();
+}
+
+void Texture2D::create(uint32_t width, uint32_t height, PixelFormat format /* = PixelFormat::RGBA8888*/, uint32_t mipmapLevel /* = 1*/) {
+    reset({
+        width,
+        height,
+        format,
+        mipmapLevel,
+    });
+}
+
+std::string Texture2D::toString() const {
+    std::string ret;
+    if (!_mipmaps.empty()) {
+        ret = _mipmaps[0]->getUrl();
+    }
+    return ret;
+}
+
+void Texture2D::updateMipmaps(uint32_t firstLevel /* = 0*/, uint32_t count /* = 0*/) {
+    if (firstLevel >= _mipmaps.size()) {
+        return;
+    }
+
+    const uint32_t nUpdate = std::min(
+        (count == 0 ? _mipmaps.size() : count),
+        (_mipmaps.size() - firstLevel));
+
+    for (uint32_t i = 0; i < nUpdate; ++i) {
+        uint32_t level = firstLevel + i;
+        assignImage(_mipmaps[level], level);
+    }
+}
+
+HTMLElement *Texture2D::getHtmlElementObj() {
+    return nullptr; //cjh TODO: remove this?
+}
+
+bool Texture2D::destroy() {
+    _mipmaps.clear();
+    return Super::destroy();
+}
+
+std::string Texture2D::description() const {
+    std::stringstream ret;
+    std::string       url;
+    if (!_mipmaps.empty()) {
+        url = _mipmaps[0]->getUrl();
+    }
+    ret << "<cc.Texture2D | Name = " << url << " | Dimension" << _width << " x " << _height << ">";
+    return ret.str();
+}
+
+void Texture2D::releaseTexture() {
+    destroy();
+}
+
+std::any Texture2D::serialize(const std::any &ctxForExporting) {
+    //    if (EDITOR || TEST) {
+    //        return {
+    //            base: super._serialize(ctxForExporting),
+    //            mipmaps: this._mipmaps.map((mipmap) => {
+    //                if (!mipmap || !mipmap._uuid) {
+    //                    return null;
+    //                }
+    //                if (ctxForExporting && ctxForExporting._compressUuid) {
+    //                    // ctxForExporting.dependsOn('_textureSource', texture); TODO
+    //                    return EditorExtends.UuidUtils.compressUuid(mipmap._uuid, true);
+    //                }
+    //                return mipmap._uuid;
+    //            }),
+    //        };
+    //    }
+    return nullptr;
+}
+
+void Texture2D::deserialize(const std::any &serializedData, const std::any &handle) {
+    const auto *data = std::any_cast<ITexture2DSerializeData>(&serializedData);
+    if (data == nullptr) {
+        CC_LOG_WARNING("serializedData is not ITexture2DSerializeData");
+        return;
+    }
+    Super::deserialize(data->base, handle);
+
+    _mipmaps.resize(data->mipmaps.size());
+    for (size_t i = 0; i < data->mipmaps.size(); ++i) {
+        // Prevent resource load failed
+        _mipmaps[i] = new ImageAsset();
+        if (data->mipmaps[i].empty()) {
+            continue;
+        }
+        std::string mipmapUUID = data->mipmaps[i];
+        //cjh TODO:        handle.result.push(this._mipmaps, `${i}`, mipmapUUID, js._getClassId(ImageAsset));
+    }
+}
+
+gfx::TextureInfo Texture2D::getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) {
+    gfx::TextureInfo texInfo;
+    texInfo.type       = gfx::TextureType::TEX2D;
+    texInfo.width      = _width;
+    texInfo.height     = _height;
+    texInfo.usage      = usage;
+    texInfo.format     = format;
+    texInfo.levelCount = levelCount;
+    texInfo.flags      = flags;
+    return texInfo;
+}
+
+void Texture2D::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
+    Super::initDefault(uuid);
+    auto *imageAsset = new ImageAsset(); //cjh HOW TO DELETE?
+    imageAsset->initDefault();
+    setImage(imageAsset);
+}
+
+bool Texture2D::validate() const {
+    return !_mipmaps.empty();
+}
+
+} // namespace cc

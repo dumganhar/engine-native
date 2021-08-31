@@ -26,6 +26,7 @@
 #include "PipelineUBO.h"
 #include "RenderPipeline.h"
 #include "SceneCulling.h"
+#include "core/Root.h"
 #include "gfx-base/GFXDevice.h"
 #include "platform/Application.h"
 #include "scene/RenderScene.h"

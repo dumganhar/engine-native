@@ -52,7 +52,7 @@ public:
      * @param original The original pass info
      * @param value The override pipeline state info
      */
-    void overridePipelineStates(const IPassInfo &original, const PassOverrides &override);
+    void overridePipelineStates(const IPassInfo &original, const PassOverrides &override) override;
 
     bool tryCompile(const MacroRecord &defineOverrides);
 
@@ -69,7 +69,7 @@ public:
     void endChangeStatesSilently() override;
 
 protected:
-    void syncBatchingScheme();
+    void syncBatchingScheme() override;
 
     void onStateChange();
 

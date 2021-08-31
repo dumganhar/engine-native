@@ -645,7 +645,7 @@ cocos_source_files(
                  cocos/renderer/core/PassUtils.h
                  cocos/renderer/core/PassUtils.cpp
                  cocos/renderer/core/ProgramLib.h
-                 cocos/renderer/core/ProgramLib.h
+                 cocos/renderer/core/ProgramLib.cpp
                  cocos/renderer/core/MaterialInstance.h
                  cocos/renderer/core/MaterialInstance.cpp
                  cocos/renderer/core/PassInstance.h
@@ -1341,6 +1341,11 @@ cocos_source_files(
     cocos/core/assets/TextureBase.h
     cocos/core/assets/TextureCube.cpp
     cocos/core/assets/TextureCube.h
+
+    # builtin
+    cocos/core/builtin/BuiltinResMgr.cpp
+    cocos/core/builtin/BuiltinResMgr.h
+    #
 
     cocos/core/data/Object.cpp
     cocos/core/data/Object.h

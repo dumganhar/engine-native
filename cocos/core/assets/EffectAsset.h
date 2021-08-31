@@ -50,14 +50,14 @@ struct IPropertyInfo {
 
 // Pass instance itself are compliant to IPassStates too
 struct IPassStates {
-    std::optional<int32_t>                            priority;
-    std::optional<gfx::PrimitiveMode>                 primitive;
-    std::optional<pipeline::RenderPassStage>          stage;
-    std::optional<gfx::RasterizerState>               rasterizerState;
-    std::optional<gfx::DepthStencilState>             depthStencilState;
-    std::optional<gfx::BlendState>                    blendState;
-    std::optional<gfx::DynamicStateFlags>             dynamicStates;
-    std::optional<std::variant<std::string, int32_t>> phase;
+    std::optional<int32_t>                   priority;
+    std::optional<gfx::PrimitiveMode>        primitive;
+    std::optional<pipeline::RenderPassStage> stage;
+    std::optional<gfx::RasterizerState *>    rasterizerState;
+    std::optional<gfx::DepthStencilState *>  depthStencilState;
+    std::optional<gfx::BlendState *>         blendState;
+    std::optional<gfx::DynamicStateFlags>    dynamicStates;
+    std::optional<std::string>               phase;
 };
 
 using PassOverrides = IPassStates;
@@ -152,6 +152,9 @@ using IPreCompileInfo = std::unordered_map<std::string, Value>;
 class EffectAsset final : public Asset {
 public:
     using Super = Asset;
+
+    EffectAsset()           = default;
+    ~EffectAsset() override = default;
     /**
      * @en Register the effect asset to the static map
      * @zh 将指定 effect 注册到全局管理器。
@@ -213,7 +216,7 @@ public:
      */
     void onLoaded() override;
     bool destroy() override;
-    void initDefault(const std::string &uuid) override;
+    void initDefault(const std::optional<std::string> &uuid = {}) override;
     bool validate() const override;
 
 protected:

@@ -24,8 +24,13 @@
 ****************************************************************************/
 
 #include "core/assets/SimpleTexture.h"
+#include "core/assets/ImageAsset.h"
+#include "core/platform/Macro.h"
+#include "renderer/gfx-base/GFXDevice.h"
 
 namespace cc {
+
+namespace {
 
 uint32_t getMipLevel(uint32_t width, uint32_t height) {
     uint32_t size  = std::max(width, height);
@@ -41,6 +46,133 @@ bool isPOT(uint32_t n) { return n && (n & (n - 1)) == 0; }
 
 bool canGenerateMipmap(uint32_t w, uint32_t h) {
     return isPOT(w) && isPOT(h);
+}
+
+} // namespace
+
+bool SimpleTexture::destroy() {
+    tryDestroyTexture();
+    return Super::destroy();
+}
+
+void SimpleTexture::updateImage() {
+    updateMipmaps(0);
+}
+
+void SimpleTexture::uploadData(const ArrayBuffer &source, uint32_t level /* = 0 */, uint32_t arrayIndex /* = 0 */) {
+    uploadData(source, level, arrayIndex);
+}
+
+void SimpleTexture::uploadData(const uint8_t *source, uint32_t level /* = 0 */, uint32_t arrayIndex /* = 0 */) {
+    if (!_gfxTexture || _mipmapLevel <= level) {
+        return;
+    }
+
+    auto *gfxDevice = getGFXDevice();
+    if (!gfxDevice) {
+        return;
+    }
+
+    gfx::BufferTextureCopy region;
+    region.texExtent.width          = _textureWidth >> level;
+    region.texExtent.height         = _textureHeight >> level;
+    region.texSubres.mipLevel       = level;
+    region.texSubres.baseArrayLayer = arrayIndex;
+
+    //cjh    if (DEV) {
+    //        if (source instanceof HTMLElement) {
+    //            if (source.height > region.texExtent.height
+    //                || source.width > region.texExtent.width) {
+    //                error(`Image source(${name}) bounds override.`);
+    //            }
+    //        }
+    //    }
+
+    //cjh    if (ArrayBuffer.isView(source)) {
+    const uint8_t *buffers[1]{source};
+    gfxDevice->copyBuffersToTexture(buffers, _gfxTexture, &region, 1);
+    //    } else {
+    //        gfxDevice.copyTexImagesToTexture([source], _gfxTexture, _regions);
+    //    }
+}
+
+void SimpleTexture::assignImage(ImageAsset *image, uint32_t level, uint32_t arrayIndex /* = 0 */) {
+    const uint8_t *data = image->getData();
+    if (!data) {
+        return;
+    }
+
+    uploadData(data, level, arrayIndex);
+    checkTextureLoaded();
+
+    if (macro::CLEANUP_IMAGE_CACHE) {
+        //cjh how to handle dependUtils which is in asset-manager module?        const deps = dependUtil.getDeps(_uuid);
+        //        const index = deps.indexOf(image._uuid);
+        //        if (index !== -1) {
+        //            fastRemoveAt(deps, index);
+        //            image.decRef();
+        //        }
+    }
+}
+
+void SimpleTexture::checkTextureLoaded() {
+    textureReady();
+}
+
+void SimpleTexture::textureReady() {
+    _loaded = true;
+    //cjh    this.emit('load');
+}
+
+void SimpleTexture::setMipmapLevel(int32_t value) {
+    _mipmapLevel = value < 1 ? 1 : value;
+}
+
+void SimpleTexture::tryReset() {
+    tryDestroyTexture();
+    if (_mipmapLevel == 0) {
+        return;
+    }
+    auto *device = getGFXDevice();
+    if (!device) {
+        return;
+    }
+    createTexture(device);
+}
+
+void SimpleTexture::createTexture(gfx::Device *device) {
+    if (_width == 0 || _height == 0) {
+        return;
+    }
+
+    auto flags = gfx::TextureFlagBit::NONE;
+    if (_mipFilter != Filter::NONE && canGenerateMipmap(_width, _height)) {
+        _mipmapLevel = getMipLevel(_width, _height);
+        flags        = gfx::TextureFlagBit::GEN_MIPMAP;
+    }
+
+    auto textureCreateInfo = getGfxTextureCreateInfo(
+        gfx::TextureUsageBit::SAMPLED | gfx::TextureUsageBit::TRANSFER_DST,
+        getGFXFormat(),
+        _mipmapLevel,
+        flags | gfx::TextureFlagBit::IMMUTABLE);
+
+    //cjh    if (!textureCreateInfo) {
+    //        return;
+    //    }
+
+    auto *texture  = device->createTexture(textureCreateInfo);
+    _textureWidth  = textureCreateInfo.width;
+    _textureHeight = textureCreateInfo.height;
+
+    _gfxTexture = texture;
+}
+
+void SimpleTexture::tryDestroyTexture() {
+    if (_gfxTexture != nullptr) {
+        _gfxTexture->destroy();
+        _gfxTexture = nullptr;
+    }
 }
 
 } // namespace cc

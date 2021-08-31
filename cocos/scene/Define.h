@@ -32,6 +32,7 @@
 #include "renderer/gfx-base/GFXShader.h"
 #include "scene/Model.h"
 #include "scene/Ambient.h"
+#include "scene/Skybox.h"
 
 namespace cc {
 namespace scene {
@@ -77,13 +78,6 @@ struct Shadow {
     Vec2 size;
     Vec3 normal;
     Mat4 matLight;
-};
-
-struct Skybox {
-    bool   enabled{false};
-    bool   isRGBE{false};
-    bool   useIBL{false};
-    Model *model{nullptr};
 };
 
 struct PipelineSharedSceneData {

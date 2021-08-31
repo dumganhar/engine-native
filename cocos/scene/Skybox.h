@@ -33,21 +33,21 @@
 namespace cc {
 namespace scene {
 
-class SkyBox final {
+class Skybox final {
 public:
-    SkyBox()  = default;
-    ~SkyBox() = default;
+    Skybox()  = default;
+    ~Skybox() = default;
 
     void initialize(const scenegraph::SkyboxInfo &skyboxInfo);
     void activate();
 
-    inline Model *getModel() const { _model; }
+    inline Model *getModel() const { return _model; }
 
     /**
      * @en Whether activate skybox in the scene
      * @zh 是否启用天空盒？
      */
-    inline bool iseEnabled() const { return _enabled; }
+    inline bool isEnabled() const { return _enabled; }
     inline void setEnabled(bool val) {
         _enabled = val;
         if (val) {
@@ -93,7 +93,7 @@ private:
     bool         _useIBL{false};
     bool         _isRGBE{false};
 
-    CC_DISALLOW_COPY_MOVE_ASSIGN(SkyBox);
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Skybox);
 };
 
 } // namespace scene

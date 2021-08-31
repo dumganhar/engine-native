@@ -23,4 +23,4 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "scene/SkyBox.h"
+#include "scene/Skybox.h"

@@ -26,6 +26,17 @@
 #include "scene/RenderScene.h"
 
 #include <utility>
+
+#include "core/scene-graph/Node.h"
+#include "scene/BakedSkinningModel.h"
+#include "scene/Camera.h"
+#include "scene/DirectionalLight.h"
+#include "scene/DrawBatch2D.h"
+#include "scene/Model.h"
+#include "scene/SkinningModel.h"
+#include "scene/SphereLight.h"
+#include "scene/SpotLight.h"
+
 #include "base/Log.h"
 
 extern void jsbFlushFastMQ();

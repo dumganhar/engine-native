@@ -26,30 +26,34 @@
 #pragma once
 
 #include "scene/Model.h"
+
 namespace cc {
+
+class Material;
+
 namespace scene {
+
 class MorphRenderingInstance;
+
 class MorphModel : public Model {
 public:
-    MorphModel()                   = default;
-    MorphModel(const MorphModel &) = delete;
-    MorphModel(MorphModel &&)      = delete;
-    ~MorphModel() override         = default;
-    MorphModel &operator=(const MorphModel &) = delete;
-    MorphModel &operator=(MorphModel &&) = delete;
+    MorphModel()           = default;
+    ~MorphModel() override = default;
 
     std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
-    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material mat) override;
+    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
     void                     destroy() override;
-    void                     setSubModelMaterial(int idx, Material &mat) override;
+    void                     setSubModelMaterial(int idx, Material *mat) override;
     void                     setMorphRendering(MorphRenderingInstance *morphRendering);
 
 protected:
     void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) const override;
 
 private:
-    Material                launderMaterial(const Material &material) const;
-    MorphRenderingInstance *_morphRenderingInstance;
+    Material *              launderMaterial(Material *material) const;
+    MorphRenderingInstance *_morphRenderingInstance{nullptr};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(MorphModel);
 };
 } // namespace scene
 } // namespace cc

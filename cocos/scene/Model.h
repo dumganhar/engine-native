@@ -64,19 +64,15 @@ struct InstancedAttributeBlock {
 class Model {
 public:
     Model();
-    Model(const Model &) = delete;
-    Model(Model &&)      = delete;
-    virtual ~Model()     = default;
-    Model &operator=(const Model &) = delete;
-    Model &operator=(Model &&) = delete;
+    virtual ~Model() = default;
 
     void                             initialize();
     virtual void                     destroy();
     void                             updateWorldBound();
     void                             createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos);
-    virtual void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material mat);
+    virtual void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat);
     void                             setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
-    virtual void                     setSubModelMaterial(int idx, Material &mat);
+    virtual void                     setSubModelMaterial(int idx, Material *mat);
     void                             onGlobalPipelineStateChanged() const;
     void                             onMacroPatchesStateChanged() const;
     void                             updateLightingmap(Texture2D *texture, const Vec4 &uvParam);
@@ -169,6 +165,8 @@ private:
     static void                     uploadMat4AsVec4x3(const Mat4 &mat, float *v1, float *v2, float *v3);
     Texture2D *                     _lightmap{nullptr};
     Vec4                            _lightmapUVParam;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Model);
 };
 
 } // namespace scene

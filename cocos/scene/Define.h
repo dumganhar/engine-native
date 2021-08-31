@@ -31,6 +31,7 @@
 #include "math/Vec4.h"
 #include "renderer/gfx-base/GFXShader.h"
 #include "scene/Model.h"
+#include "scene/Ambient.h"
 
 namespace cc {
 namespace scene {
@@ -85,13 +86,6 @@ struct Skybox {
     Model *model{nullptr};
 };
 
-struct Ambient {
-    bool  enabled{false};
-    float skyIllum{0.0F};
-    Vec4  skyColor;
-    Vec4  groundAlbedo;
-};
-
 struct PipelineSharedSceneData {
     bool         isHDR{false};
     float        shadingScale{0.0F};
@@ -104,18 +98,6 @@ struct PipelineSharedSceneData {
     gfx::Shader *deferredLightPassShader{nullptr};
     Pass *       deferredPostPass{nullptr};
     gfx::Shader *deferredPostPassShader{nullptr};
-};
-
-struct FlatBuffer {
-    uint32_t stride{0};
-    uint32_t count{0};
-    uint32_t size{0};
-    uint8_t *data{nullptr};
-};
-
-struct RenderingSubMesh {
-    RenderingSubMesh() = default;
-    std::vector<FlatBuffer> flatBuffers;
 };
 
 enum class BatchingSchemes {

@@ -38,6 +38,7 @@
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Define.h"
+#include "core/Root.h"
 
 namespace cc {
 
@@ -283,12 +284,15 @@ public:
     // Only for UI
     void initPassFromTarget(Pass *target, gfx::DepthStencilState *dss, gfx::BlendState *bs, uint64_t hashFactor);
 
-protected:
+    //  internal use
+    /**
+     * @private
+     */
     virtual void beginChangeStatesSilently() {}
     virtual void endChangeStatesSilently() {}
 
+protected:
     void setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::RasterizerState *rs, gfx::DescriptorSet *ds);
-
     void         doInit(const IPassInfoFull &info, bool copyDefines = false);
     virtual void syncBatchingScheme();
 

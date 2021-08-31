@@ -27,7 +27,10 @@
 
 #include <utility>
 
+#include "3d/assets/Skeleton.h"
+#include "gfx-base/GFXDef-common.h"
 #include "scene/Model.h"
+#include "scene/MorphModel.h"
 
 namespace cc {
 namespace scene {
@@ -45,7 +48,7 @@ struct BakedJointInfo {
     BakedAnimInfo                 animInfo;
     gfx::Buffer *                 buffer{nullptr};
 };
-class BakedSkinningModel : public Model {
+class BakedSkinningModel : public MorphModel {
 public:
     BakedSkinningModel()                           = default;
     BakedSkinningModel(const BakedSkinningModel &) = delete;
@@ -54,11 +57,19 @@ public:
     BakedSkinningModel &operator=(const BakedSkinningModel &) = delete;
     BakedSkinningModel &operator=(BakedSkinningModel &&) = delete;
 
-    void        updateTransform(uint32_t stamp) override;
-    void        updateUBOs(uint32_t stamp) override;
+    void                     destroy() override;
+    void                     bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh) const;
+    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
+    void                     initLocalDescriptors(index_t subModelIndex);
+    std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
+    void                     updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) const override;
+    void                     updateTransform(uint32_t stamp) override;
+    void                     updateUBOs(uint32_t stamp) override;
+    void                     updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass);
+    void                     updateInstancedJointTextureInfo() const;
+    // void                     uploadAnimation(AnimationClip *anim); // TODO(xwx)
     inline void updateModelBounds(geometry::AABB *modelBounds) {
         if (modelBounds == nullptr) {
-            _modelBounds->setValid(false);
             return;
         }
         _modelBounds->setValid(true);
@@ -69,15 +80,23 @@ public:
         _isUploadAnim = isUploadAnim;
         _jointMedium  = std::move(jointMedium);
     }
-    inline void setAnimInfoIdx(int32_t idx) {
+    inline void setAnimInfoIdx(index_t idx) {
         _instAnimInfoIdx = idx;
     }
+
+protected:
+    // TODO(xwx)
+    // applyJointTexture(IJointTextureHandle *texture) const;
 
 private:
     ModelType      _type{ModelType::BAKED_SKINNING};
     BakedJointInfo _jointMedium;
     bool           _isUploadAnim{false};
-    int32_t        _instAnimInfoIdx{-1};
+    index_t        _instAnimInfoIdx{CC_INVALID_INDEX};
+    // TODO(xwx)
+    // DataPoolManager _dataPoolManager;
+    Skeleton *_skeleton{nullptr};
+    // AnimationClip uploadedAnim;
 };
 
 } // namespace scene

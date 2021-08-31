@@ -29,8 +29,9 @@
 #include "core/Root.h"
 #include "gfx-base/GFXDevice.h"
 #include "platform/Application.h"
+#include "scene/DirectionalLight.h"
 #include "scene/RenderScene.h"
-#include "core/Root.h"
+#include "scene/SpotLight.h"
 
 namespace cc {
 
@@ -128,7 +129,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     }
     memcpy(output + UBOCamera::AMBIENT_SKY_OFFSET, skyColor.data(), 4 * sizeof(float));
 
-    const auto &groundAlbedo = ambient->getGroundAlbedo();
+    const auto &groundAlbedo                     = ambient->getGroundAlbedo();
     output[UBOCamera::AMBIENT_GROUND_OFFSET + 0] = groundAlbedo.r;
     output[UBOCamera::AMBIENT_GROUND_OFFSET + 1] = groundAlbedo.g;
     output[UBOCamera::AMBIENT_GROUND_OFFSET + 2] = groundAlbedo.b;

@@ -64,24 +64,20 @@ struct InstancedAttributeBlock {
 class Model {
 public:
     Model();
-    Model(const Model &) = delete;
-    Model(Model &&)      = delete;
-    virtual ~Model()     = default;
-    Model &operator=(const Model &) = delete;
-    Model &operator=(Model &&) = delete;
+    virtual ~Model() = default;
 
-    void                     initialize();
-    void                     destroy();
-    void                     updateWorldBound();
-    void                     createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos);
-    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material mat);
-    void                     setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
-    void                     setSubModelMaterial(int idx, Material &mat);
-    void                     onGlobalPipelineStateChanged() const;
-    void                     onMacroPatchesStateChanged() const;
-    void                     updateLightingmap(Texture2D *texture, const Vec4 &uvParam);
-    std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const;
-    void                     updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass);
+    void                             initialize();
+    virtual void                     destroy();
+    void                             updateWorldBound();
+    void                             createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos);
+    virtual void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat);
+    void                             setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
+    virtual void                     setSubModelMaterial(int idx, Material *mat);
+    void                             onGlobalPipelineStateChanged() const;
+    void                             onMacroPatchesStateChanged() const;
+    void                             updateLightingmap(Texture2D *texture, const Vec4 &uvParam);
+    virtual std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const;
+    void                             updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass);
 
     virtual void updateTransform(uint32_t stamp);
     virtual void updateUBOs(uint32_t stamp);
@@ -134,11 +130,11 @@ public:
     bool         isDynamicBatching{false};
 
 protected:
-    void    updateAttributesAndBinding(index_t subModelIndex);
-    int32_t getInstancedAttributeIndex(const std::string &name) const;
-    void    updateInstanceAttribute(const std::vector<gfx::Attribute> &, Pass *pass) const;
-    void    initLocalDescriptors(index_t subModelIndex);
-    void    updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet &descriptorSet) const;
+    void         updateAttributesAndBinding(index_t subModelIndex);
+    int32_t      getInstancedAttributeIndex(const std::string &name) const;
+    void         updateInstanceAttribute(const std::vector<gfx::Attribute> &, Pass *pass) const;
+    void         initLocalDescriptors(index_t subModelIndex);
+    virtual void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) const;
 
     ModelType       _type{ModelType::DEFAULT};
     bool            _transformUpdated{false};
@@ -169,6 +165,8 @@ private:
     static void                     uploadMat4AsVec4x3(const Mat4 &mat, float *v1, float *v2, float *v3);
     Texture2D *                     _lightmap{nullptr};
     Vec4                            _lightmapUVParam;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Model);
 };
 
 } // namespace scene

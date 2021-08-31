@@ -24,6 +24,7 @@
  ****************************************************************************/
 
 #include "scene/MorphModel.h"
+#include "3d/assets/Morph.h"
 
 namespace cc {
 

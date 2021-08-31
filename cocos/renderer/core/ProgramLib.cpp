@@ -46,12 +46,14 @@
 
 namespace cc {
 
+namespace {
+
 template <typename T>
 auto getBitCount(T cnt) {
     return std::ceil(std::log2(cnt > 2 ? 2 : cnt)); // std::max checks number types
 }
 
-static bool recordAsBool(const MacroRecord::mapped_type &v) {
+bool recordAsBool(const MacroRecord::mapped_type &v) {
     if (std::holds_alternative<bool>(v)) {
         return std::get<bool>(v);
     }
@@ -64,7 +66,7 @@ static bool recordAsBool(const MacroRecord::mapped_type &v) {
     return false;
 }
 
-static std::string recordAsString(const MacroRecord::mapped_type &v) {
+std::string recordAsString(const MacroRecord::mapped_type &v) {
     if (std::holds_alternative<bool>(v)) {
         return std::get<bool>(v) ? "1" : "0";
     }
@@ -193,7 +195,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
     }
 }
 
-int getSize(const IBlockInfo &block) {
+int32_t getSize(const IBlockInfo &block) {
     auto s = 0;
     for (const auto &m : block.members) {
         s += getTypeSize(m.type) * m.count;
@@ -253,8 +255,10 @@ std::vector<gfx::Attribute> getActiveAttributes(const IProgramInfo &tmpl, const 
     return out;
 }
 
-const char *getDeviceShaderVersion(const gfx::Device &device) {
-    switch (device.getGfxAPI()) {
+} // namespace
+
+const char *getDeviceShaderVersion(const gfx::Device *device) {
+    switch (device->getGfxAPI()) {
         case gfx::API::GLES2:
         case gfx::API::WEBGL:
             return "glsl1";
@@ -266,7 +270,13 @@ const char *getDeviceShaderVersion(const gfx::Device &device) {
     }
 }
 
-void ProgramLib::regist(EffectAsset &effect) {
+/*static*/
+ProgramLib *ProgramLib::getInstance() {
+    static ProgramLib instance;
+    return &instance; //cjh TODO: how to release it ?
+}
+
+void ProgramLib::registerEffect(EffectAsset &effect) {
     for (auto i = 0; i < effect._shaders.size(); i++) {
         auto tmpl        = define(effect._shaders[i]);
         tmpl->effectName = effect.getName();
@@ -436,7 +446,7 @@ ITemplateInfo *ProgramLib::getTemplateInfo(const std::string &name) {
      * @zh 通过名字获取 Shader 模板相关联的管线布局
      * @param name Target shader name
      */
-gfx::DescriptorSetLayout *ProgramLib::getDescriptorSetLayout(gfx::Device &device, const std::string &name, bool isLocal) {
+gfx::DescriptorSetLayout *ProgramLib::getDescriptorSetLayout(gfx::Device *device, const std::string &name, bool isLocal) {
     auto itTmpl = _templates.find(name);
     assert(itTmpl != _templates.end());
     const auto &tmpl      = itTmpl->second;
@@ -446,9 +456,9 @@ gfx::DescriptorSetLayout *ProgramLib::getDescriptorSetLayout(gfx::Device &device
         gfx::DescriptorSetLayoutInfo info;
         tmplInfo.setLayouts.resize(static_cast<size_t>(pipeline::SetIndex::COUNT));
         info.bindings                                                           = tmplInfo.bindings;
-        tmplInfo.setLayouts[static_cast<index_t>(pipeline::SetIndex::MATERIAL)] = device.createDescriptorSetLayout(info);
+        tmplInfo.setLayouts[static_cast<index_t>(pipeline::SetIndex::MATERIAL)] = device->createDescriptorSetLayout(info);
         info.bindings                                                           = pipeline::localDescriptorSetLayout.bindings;
-        tmplInfo.setLayouts[static_cast<index_t>(pipeline::SetIndex::LOCAL)]    = device.createDescriptorSetLayout(info);
+        tmplInfo.setLayouts[static_cast<index_t>(pipeline::SetIndex::LOCAL)]    = device->createDescriptorSetLayout(info);
     }
     return tmplInfo.setLayouts[isLocal ? static_cast<index_t>(pipeline::SetIndex::LOCAL) : static_cast<index_t>(pipeline::SetIndex::MATERIAL)];
 }
@@ -514,9 +524,9 @@ void ProgramLib::destroyShaderByDefines(const MacroRecord &defines) {
     }
 }
 
-gfx::Shader *ProgramLib::getGFXShader(gfx::Device &device, const std::string &name, MacroRecord &defines,
-                                      const pipeline::RenderPipeline &pipeline, std::string *keyOut) {
-    for (const auto &it : pipeline.getMacros()) {
+gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &name, MacroRecord &defines,
+                                      pipeline::RenderPipeline *pipeline, std::string *keyOut) {
+    for (const auto &it : pipeline->getMacros()) {
         defines[it.first] = it.second;
     }
 
@@ -542,8 +552,8 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device &device, const std::string &na
     if (!tmplInfo.pipelineLayout) {
         getDescriptorSetLayout(device, name); // ensure set layouts have been created
         insertBuiltinBindings(tmpl, tmplInfo, pipeline::globalDescriptorSetLayout, "globals", nullptr);
-        tmplInfo.setLayouts[static_cast<index_t>(pipeline::SetIndex::GLOBAL)] = pipeline.getDescriptorSetLayout();
-        tmplInfo.pipelineLayout                                               = device.createPipelineLayout(gfx::PipelineLayoutInfo{tmplInfo.setLayouts});
+        tmplInfo.setLayouts[static_cast<index_t>(pipeline::SetIndex::GLOBAL)] = pipeline->getDescriptorSetLayout();
+        tmplInfo.pipelineLayout                                               = device->createPipelineLayout(gfx::PipelineLayoutInfo{tmplInfo.setLayouts});
     }
 
     std::vector<IMacroInfo> macroArray = prepareDefines(defines, tmpl.defines);
@@ -552,7 +562,7 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device &device, const std::string &na
     for (const auto &m : macroArray) {
         ss << "#define " << m.name << " " << m.value << std::endl;
     }
-    auto prefix = pipeline.getConstantMacros() + tmpl.constantMacros + ss.str();
+    auto prefix = pipeline->getConstantMacros() + tmpl.constantMacros + ss.str();
 
     const IShaderSource *src                 = &tmpl.glsl3;
     const auto *         deviceShaderVersion = getDeviceShaderVersion(device);
@@ -570,7 +580,7 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device &device, const std::string &na
     auto instanceName          = getShaderInstanceName(name, macroArray);
     auto shaderInfo            = gfx::ShaderInfo{instanceName, tmplInfo.gfxStages, attributes, tmplInfo.gfxBlocks};
     shaderInfo.samplerTextures = tmplInfo.gfxSamplerTextures;
-    auto *shader               = device.createShader(shaderInfo);
+    auto *shader               = device->createShader(shaderInfo);
     _cache[key]                = shader;
     return shader;
 }

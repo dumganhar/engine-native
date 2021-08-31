@@ -37,7 +37,6 @@ namespace cc {
 namespace pipeline {
 struct RenderObject;
 class RenderPipeline;
-class DefineMap;
 class RenderInstancedQueue;
 class RenderBatchedQueue;
 class ForwardPipeline;

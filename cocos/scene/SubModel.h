@@ -41,12 +41,8 @@ namespace scene {
 class Pass;
 class SubModel final {
 public:
-    SubModel()                 = default;
-    SubModel(const SubModel &) = delete;
-    SubModel(SubModel &&)      = delete;
+    SubModel() = default;
     ~SubModel();
-    SubModel &operator=(const SubModel &) = delete;
-    SubModel &operator=(SubModel &&) = delete;
 
     void update();
 
@@ -61,12 +57,6 @@ public:
     inline void setPlanarShader(gfx::Shader *shader) { _planarShader = shader; }
     inline void setPriority(pipeline::RenderPriority priority) { _priority = priority; }
     void        setSubMesh(RenderingSubMesh *subMesh);
-    inline void setSubMeshBuffers(const std::vector<IFlatBuffer> &flatBuffers) {
-        if (!_subMesh) {
-            _subMesh = new RenderingSubMesh();
-        }
-        _subMesh->setFlatBuffers(flatBuffers);
-    }
 
     inline gfx::DescriptorSet *              getDescriptorSet() const { return _descriptSet; }
     inline gfx::InputAssembler *             getInputAssembler() const { return _ia; }
@@ -104,6 +94,8 @@ private:
     RenderingSubMesh *         _subMesh{nullptr};
     std::vector<Pass *>        _passes;
     std::vector<gfx::Shader *> _shaders;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(SubModel);
 };
 
 } // namespace scene

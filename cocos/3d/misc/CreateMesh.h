@@ -22,9 +22,20 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 ****************************************************************************/
-
 #pragma once
+
+#include <optional>
+
+#include "primitive/PrimitiveDefine.h"
 
 namespace cc {
 
-}
+class Mesh;
+
+struct ICreateMeshOptions {
+    std::optional<bool> calculateBounds;
+};
+
+Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions &options = {});
+
+} // namespace cc

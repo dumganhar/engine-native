@@ -37,6 +37,7 @@
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Define.h"
+#include "core/Root.h"
 
 namespace cc {
 

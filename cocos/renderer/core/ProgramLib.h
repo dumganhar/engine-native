@@ -58,7 +58,7 @@ struct ITemplateInfo {
     std::vector<gfx::UniformBlock>               gfxBlocks;
     std::vector<gfx::UniformSamplerTexture>      gfxSamplerTextures;
     std::vector<gfx::Attribute>                  gfxAttributes;
-    std::vector<float>                           blockSizes;
+    std::vector<int32_t>                         blockSizes;
     std::vector<gfx::ShaderStage>                gfxStages;
     std::vector<gfx::DescriptorSetLayout *>      setLayouts; // TODO(PatriceJiang): pointer / rc
     gfx::PipelineLayout *                        pipelineLayout{nullptr};

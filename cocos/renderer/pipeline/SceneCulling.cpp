@@ -41,7 +41,7 @@
 
 namespace cc {
 namespace pipeline {
-bool        castBoundsInitialized = false;
+bool           castBoundsInitialized = false;
 geometry::AABB castWorldBounds;
 
 RenderObject genRenderObject(const scene::Model *model, const scene::Camera *camera) {
@@ -184,7 +184,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
 
     for (auto *model : scene->getModels()) {
         // filter model by view visibility
-        if (model->getEnabled()) {
+        if (model->isEnabled()) {
             const auto        visibility = camera->getVisibility();
             const auto *const node       = model->getNode();
             if ((model->getNode() && ((visibility & node->getLayer()) == node->getLayer())) ||

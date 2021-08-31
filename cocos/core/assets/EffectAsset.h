@@ -27,6 +27,7 @@
 
 #include <optional>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 
 #include "base/Value.h"
@@ -41,9 +42,11 @@
 
 namespace cc {
 
+using IPropertyHandleInfo = std::tuple<std::string, uint32_t, gfx::Type>;
+
 struct IPropertyInfo {
     int32_t                                                      type;        // auto-extracted from shader
-    std::optional<ValueVector>                                   handleInfo;  //cjh check: ?: [string, number, number]; // auto-generated from 'target'
+    std::optional<IPropertyHandleInfo>                           handleInfo;  // auto-generated from 'target'
     std::optional<uint64_t>                                      samplerHash; // auto-generated from 'sampler'
     std::optional<std::variant<std::vector<float>, std::string>> value;
 };
@@ -146,8 +149,8 @@ struct IShaderInfo {
     }
 };
 
-//cjh    [name: string]: boolean[] | number[] | string[];
-using IPreCompileInfo = std::unordered_map<std::string, Value>;
+using IPreCompileInfoValueType = std::variant<std::monostate, std::vector<bool>, std::vector<float>, std::vector<std::string>>; //cjh number is float?
+using IPreCompileInfo          = std::unordered_map<std::string, IPreCompileInfoValueType>;
 
 class EffectAsset final : public Asset {
 public:

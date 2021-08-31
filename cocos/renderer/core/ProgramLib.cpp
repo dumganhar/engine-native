@@ -195,7 +195,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
     }
 }
 
-int getSize(const IBlockInfo &block) {
+int32_t getSize(const IBlockInfo &block) {
     auto s = 0;
     for (const auto &m : block.members) {
         s += getTypeSize(m.type) * m.count;

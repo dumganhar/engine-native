@@ -46,7 +46,7 @@ void RenderScene::update(uint32_t stamp) {
         spotLight->update();
     }
     for (auto *model : _models) {
-        if (model->getEnabled()) {
+        if (model->isEnabled()) {
             model->updateTransform(stamp);
             model->updateUBOs(stamp);
         }

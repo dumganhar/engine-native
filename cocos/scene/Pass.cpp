@@ -40,14 +40,14 @@ namespace scene {
 
 namespace {
 
-const gfx::BufferInfo _bufferInfo{
+gfx::BufferInfo _bufferInfo{
     (gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST),
     (gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE),
     0U,
     0U,
     gfx::BufferFlagBit::NONE};
 
-const gfx::BufferViewInfo _bufferViewInfo;
+gfx::BufferViewInfo _bufferViewInfo;
 
 gfx::DescriptorSetInfo _dsInfo;
 
@@ -179,21 +179,21 @@ void Pass::setUniform(uint32_t handle, const MaterialProperty &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    Float32Array &  block   = _blocks[binding];
+    auto &          block   = _blocks[binding];
     if (auto iter = type2writer.find(type); iter != type2writer.end()) {
-        iter->second(block.data(), value, ofs);
+        iter->second(block.data, value, ofs);
     }
 
     _rootBufferDirty = true;
 }
 
 MaterialProperty &Pass::getUniform(uint32_t handle, MaterialProperty &out) const {
-    const uint32_t      binding = Pass::getBindingFromHandle(handle);
-    const gfx::Type     type    = Pass::getTypeFromHandle(handle);
-    const uint32_t      ofs     = Pass::getOffsetFromHandle(handle);
-    const Float32Array &block   = _blocks[binding];
+    const uint32_t  binding = Pass::getBindingFromHandle(handle);
+    const gfx::Type type    = Pass::getTypeFromHandle(handle);
+    const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
+    const auto &    block   = _blocks[binding];
     if (auto iter = type2reader.find(type); iter != type2reader.end()) {
-        iter->second(block.data(), out, ofs);
+        iter->second(block.data, out, ofs);
     }
     return out;
 }
@@ -202,14 +202,14 @@ void Pass::setUniformArray(uint32_t handle, const MaterialPropertyList &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  stride  = gfx::getTypeSize(type) >> 2;
-    Float32Array &  block   = _blocks[binding];
+    auto &          block   = _blocks[binding];
     uint32_t        ofs     = Pass::getOffsetFromHandle(handle);
     for (size_t i = 0; i < value.size(); i++, ofs += stride) {
         if (value[i].index() == 0) {
             continue;
         }
         if (auto iter = type2writer.find(type); iter != type2writer.end()) {
-            iter->second(block.data(), value[i], ofs);
+            iter->second(block.data, value[i], ofs);
         }
     }
     _rootBufferDirty = true;
@@ -244,7 +244,7 @@ void Pass::update() {
     }
 
     if (_rootBufferDirty && _rootBuffer) {
-        _rootBuffer->update(_rootBlock, _rootBuffer->getSize());
+        _rootBuffer->update(_rootBlock.data(), _rootBuffer->getSize());
         _rootBufferDirty = false;
     }
     _descriptorSet->update();
@@ -278,7 +278,7 @@ void Pass::resetUniform(const std::string &name) {
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    Float32Array &  block   = _blocks[binding];
+    auto &          block   = _blocks[binding];
 
     //cjh todo: https://github.com/cocos-creator/3d-tasks/issues/8907
     //    const auto& info = _properties[name];
@@ -341,7 +341,7 @@ void Pass::resetUBOs() {
             const auto &   value        = (givenDefault.has_value() ? std::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
             const uint32_t size         = (gfx::getTypeSize(cur.type) >> 2) * cur.count;
             for (size_t k = 0; (k + value.size()) <= size; k += value.size()) {
-                std::copy(value.begin(), value.begin() + ofs + k, block.begin()); //cjh memory issue?
+                std::copy(value.begin(), value.begin() + ofs + k, block.data); //cjh memory issue?
             }
             ofs += size;
         }
@@ -414,74 +414,83 @@ void Pass::setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::Raste
 }
 
 void Pass::doInit(const IPassInfoFull &info, bool copyDefines /* = false */) {
-    _priority  = pipeline::RenderPriority::DEFAULT;
-    _stage     = pipeline::RenderPassStage::DEFAULT;
-    _phase     = pipeline::getPhaseID("default");
-    _primitive = gfx::PrimitiveMode::TRIANGLE_LIST;
+    auto programLib = ProgramLib::getInstance();
+    _priority       = pipeline::RenderPriority::DEFAULT;
+    _stage          = pipeline::RenderPassStage::DEFAULT;
+    _phase          = pipeline::getPhaseID("default");
+    _primitive      = gfx::PrimitiveMode::TRIANGLE_LIST;
 
     _passIndex     = info.passIndex;
     _propertyIndex = info.propertyIndex != CC_INVALID_INDEX ? info.propertyIndex : info.passIndex;
     _programName   = info.program;
     _defines       = info.defines; //cjh c++ always does copy by assignment.  copyDefines ? ({ ...info.defines }) : info.defines;
-    _shaderInfo    = ProgramLib::getInstance()->getTemplate(info.program);
+    _shaderInfo    = programLib->getTemplate(info.program);
     if (info.properties.has_value()) {
         _properties = info.properties.value();
     }
     //
-    //    const device = _device;
+    gfx::Device *device = _device;
     Pass::fillPipelineInfo(this, info);
     if (info.stateOverrides.has_value()) {
         Pass::fillPipelineInfo(this, info.stateOverrides.value());
     }
 
     // init descriptor set
-    _dsInfo.layout = ProgramLib::getInstance()->getDescriptorSetLayout(_device, info.program);
+    _dsInfo.layout = programLib->getDescriptorSetLayout(_device, info.program);
     _descriptorSet = _device->createDescriptorSet(_dsInfo);
 
     // calculate total size required
-    //    const blocks = _shaderInfo.blocks;
-    //    const tmplInfo = programLib.getTemplateInfo(info.program);
-    //    const { blockSizes, handleMap } = tmplInfo;
-    //    const alignment = device.capabilities.uboOffsetAlignment;
-    //    const startOffsets: number[] = [];
-    //    let lastSize = 0; let lastOffset = 0;
-    //    for (let i = 0; i < blocks.length; i++) {
-    //        const size = blockSizes[i];
-    //        startOffsets.push(lastOffset);
-    //        lastOffset += Math.ceil(size / alignment) * alignment;
-    //        lastSize = size;
-    //    }
-    //    // create gfx buffer resource
-    //    const totalSize = startOffsets[startOffsets.length - 1] + lastSize;
-    //    if (totalSize) {
-    //        // https://bugs.chromium.org/p/chromium/issues/detail?id=988988
-    //        _bufferInfo.size = Math.ceil(totalSize / 16) * 16;
-    //        _rootBuffer = device.createBuffer(_bufferInfo);
-    //        _rootBlock = new ArrayBuffer(totalSize);
-    //    }
-    //    // create buffer views
-    //    for (let i = 0, count = 0; i < blocks.length; i++) {
-    //        const { binding } = blocks[i];
-    //        const size = blockSizes[i];
-    //        _bufferViewInfo.buffer = _rootBuffer!;
-    //        _bufferViewInfo.offset = startOffsets[count++];
-    //        _bufferViewInfo.range = Math.ceil(size / 16) * 16;
-    //        const bufferView = _buffers[binding] = device.createBuffer(_bufferViewInfo);
-    //        // non-builtin UBO data pools, note that the effect compiler
-    //        // guarantees these bindings to be consecutive, starting from 0 and non-array-typed
-    //        _blocks[binding] = new Float32Array(_rootBlock!, _bufferViewInfo.offset,
-    //            size / Float32Array.BYTES_PER_ELEMENT);
-    //        _descriptorSet.bindBuffer(binding, bufferView);
-    //    }
-    //    // store handles
-    //    const directHandleMap = _propertyHandleMap = handleMap;
-    //    const indirectHandleMap: Record<string, number> = {};
-    //    for (const name in _properties) {
-    //        const prop = _properties[name];
-    //        if (!prop.handleInfo) { continue; }
-    //        indirectHandleMap[name] = getHandle.apply(this, prop.handleInfo)!;
-    //    }
-    //    Object.assign(directHandleMap, indirectHandleMap);
+    const auto &                blocks     = _shaderInfo->blocks;
+    const auto *                tmplInfo   = programLib->getTemplateInfo(info.program);
+    const std::vector<int32_t> &blockSizes = tmplInfo->blockSizes;
+    const auto &                handleMap  = tmplInfo->handleMap;
+
+    const auto            alignment = device->getCapabilities().uboOffsetAlignment;
+    std::vector<uint32_t> startOffsets;
+    uint32_t              lastSize   = 0;
+    uint32_t              lastOffset = 0;
+    for (size_t i = 0; i < blocks.size(); i++) {
+        const auto &size = blockSizes[i];
+        startOffsets.emplace_back(lastOffset);
+        lastOffset += std::ceil(size / alignment) * alignment;
+        lastSize = size;
+    }
+    // create gfx buffer resource
+    uint32_t totalSize = startOffsets[startOffsets.size() - 1] + lastSize;
+    if (totalSize) {
+        // https://bugs.chromium.org/p/chromium/issues/detail?id=988988
+        _bufferInfo.size = std::ceil(totalSize / 16) * 16;
+        _rootBuffer      = device->createBuffer(_bufferInfo);
+        _rootBlock.resize(totalSize);
+    }
+    // create buffer views
+    for (size_t i = 0, count = 0; i < blocks.size(); i++) {
+        int32_t binding        = blocks[i].binding;
+        int32_t size           = blockSizes[i];
+        _bufferViewInfo.buffer = _rootBuffer;
+        _bufferViewInfo.offset = startOffsets[count++];
+        _bufferViewInfo.range  = std::ceil(size / 16) * 16;
+        auto *bufferView = _buffers[binding] = device->createBuffer(_bufferViewInfo);
+        // non-builtin UBO data pools, note that the effect compiler
+        // guarantees these bindings to be consecutive, starting from 0 and non-array-typed
+        _blocks[binding].data = reinterpret_cast<float *>(_rootBlock.data() + _bufferViewInfo.offset);
+        _blocks[binding].size = size / 4;
+        _descriptorSet->bindBuffer(binding, bufferView);
+    }
+    // store handles
+    _propertyHandleMap                            = handleMap;
+    auto &                        directHandleMap = _propertyHandleMap;
+    Record<std::string, uint32_t> indirectHandleMap;
+    for (const auto &[name, prop] : _properties) {
+        if (!prop.handleInfo.has_value()) {
+            continue;
+        }
+
+        const auto &propVal     = prop.handleInfo.value();
+        indirectHandleMap[name] = getHandle(std::get<0>(propVal), std::get<1>(propVal), std::get<2>(propVal));
+    }
+
+    utils::mergeToMap(directHandleMap, indirectHandleMap);
 }
 
 void Pass::syncBatchingScheme() {
@@ -514,8 +523,8 @@ void Pass::initPassFromTarget(Pass *target, gfx::DepthStencilState *dss, gfx::Bl
     _propertyIndex     = target->_propertyIndex;
     _programName       = target->getProgram();
     _defines           = target->_defines;
-    //cjh    _shaderInfo = target->_shaderInfo;
-    _properties = target->_properties;
+    _shaderInfo        = target->_shaderInfo; //cjh how to release?
+    _properties        = target->_properties;
 
     _blocks   = target->_blocks;
     _dynamics = target->_dynamics;

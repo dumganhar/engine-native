@@ -72,8 +72,8 @@ public:
     inline void              setNeedUpdate(bool needUpdate) { _needUpdate = needUpdate; }
     void                     setBuffers(std::vector<gfx::Buffer *> buffers);
     void                     updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) override;
-    void                     updateTransform(uint32_t stamp) override;
-    void                     updateUBOs(uint32_t stamp) override;
+    void                     updateTransform(float stamp) override;
+    void                     updateUBOs(float stamp) override;
     void                     destroy() override;
     void                     bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningRoot, Mesh *mesh);
     void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;

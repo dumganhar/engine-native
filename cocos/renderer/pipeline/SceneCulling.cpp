@@ -179,8 +179,8 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
 
     RenderObjectList renderObjects;
 
-    if (skyBox->enabled && skyBox->model && (static_cast<uint32_t>(camera->getClearFlag()) & skyboxFlag)) {
-        renderObjects.emplace_back(genRenderObject(skyBox->model, camera));
+    if (skyBox->isEnabled() && skyBox->getModel() && (static_cast<uint32_t>(camera->getClearFlag()) & skyboxFlag)) {
+        renderObjects.emplace_back(genRenderObject(skyBox->getModel(), camera));
     }
 
     for (auto *model : scene->getModels()) {

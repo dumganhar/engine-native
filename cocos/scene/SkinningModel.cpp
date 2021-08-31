@@ -73,15 +73,15 @@ void SkinningModel::bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningR
 
     if (!skeleton || !skinningRoot || !mesh) return;
     setTransform(skinningRoot);
-    std::vector<geometry::AABB> boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton);
-    auto                        jointMaps       = mesh->getStruct().jointMaps;
+    // std::vector<geometry::AABB> boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton); // 'AABB' has been explicitly marked deleted here
+    auto jointMaps = mesh->getStruct().jointMaps;
     ensureEnoughBuffers(jointMaps != std::nullopt && !jointMaps->empty() || 1);
     _bufferIndices = mesh->getJointBufferIndices();
 
     for (index_t index = 0; index < skeleton->getJoints().size(); ++index) {
-        geometry::AABB *bound  = &boneSpaceBounds[index];
-        auto *          target = skinningRoot->getChildByPath(skeleton->getJoints()[index]);
-        if (!bound || !target) continue;
+        // geometry::AABB bound  = boneSpaceBounds[index]; // 'AABB' has been explicitly marked deleted here
+        auto *target = skinningRoot->getChildByPath(skeleton->getJoints()[index]);
+        // if (!bound || !target) continue;
         // auto transform = getTransform(target, skiinningRoot); // getTransform not implementation
         Mat4                 bindPose = skeleton->getBindposes()[index];
         std::vector<index_t> indices;
@@ -125,7 +125,7 @@ void SkinningModel::updateWorldMatrix(JointInfo *info, uint32_t stamp) {
     }
 }
 
-void SkinningModel::updateUBOs(uint32_t stamp) {
+void SkinningModel::updateUBOs(float stamp) {
     Super::updateUBOs(stamp);
     uint32_t bIdx = 0;
     Mat4     mat4;
@@ -189,7 +189,7 @@ void SkinningModel::updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorS
     }
 }
 
-void SkinningModel::updateTransform(uint32_t stamp) {
+void SkinningModel::updateTransform(float stamp) {
     auto *root = getTransform();
     if (root->getFlagsChanged() || root->getDirtyFlag()) {
         root->updateWorldTransform();

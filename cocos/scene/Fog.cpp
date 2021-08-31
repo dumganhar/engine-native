@@ -22,35 +22,5 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#include "scene/BakedSkinningModel.h"
 
-namespace cc {
-namespace scene {
-void BakedSkinningModel::updateTransform(float stamp) {
-    Model::updateTransform(stamp);
-    if (!_isUploadAnim) {
-        return;
-    }
-    BakedAnimInfo&  animInfo  = _jointMedium.animInfo;
-    geometry::AABB* skelBound = !_jointMedium.boundsInfo.empty() ? _jointMedium.boundsInfo[*animInfo.data] : nullptr;
-    if (_worldBounds && skelBound) {
-        scenegraph::Node* node = getTransform();
-        skelBound->transform(node->getWorldMatrix(), _worldBounds);
-    }
-}
-
-void BakedSkinningModel::updateUBOs(float stamp) {
-    Model::updateUBOs(stamp);
-    BakedAnimInfo& info = _jointMedium.animInfo;
-    int            idx  = _instAnimInfoIdx;
-    if (idx >= 0) {
-        std::vector<uint8_t*>& views        = getInstancedAttributeBlock()->views;
-        *reinterpret_cast<float*>(views[0]) = *reinterpret_cast<float*>(info.data);
-    } else if (info.getDirty()) {
-        info.buffer->update(info.data, info.buffer->getSize());
-        *info.dirty = 0;
-    }
-}
-
-} // namespace scene
-} // namespace cc
+#include "scene/Fog.h"

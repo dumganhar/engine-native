@@ -79,8 +79,8 @@ public:
     virtual std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const;
     void                             updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass);
 
-    virtual void updateTransform(uint32_t stamp);
-    virtual void updateUBOs(uint32_t stamp);
+    virtual void updateTransform(float stamp);
+    virtual void updateUBOs(float stamp);
 
     void setSubModel(uint32_t idx, SubModel *subModel);
 
@@ -121,7 +121,7 @@ public:
     inline const std::vector<SubModel *> &    getSubModels() const { return _subModels; }
     inline scenegraph::Node *                 getTransform() const { return _transform; }
     inline bool                               getTransformUpdated() const { return _transformUpdated; }
-    inline int32_t                            getUpdatStamp() const { return _updateStamp; }
+    inline float                              getUpdatStamp() const { return _updateStamp; }
     inline uint32_t                           getVisFlags() const { return _visFlags; }
     inline geometry::AABB *                   getWorldBounds() const { return _worldBounds; }
     inline ModelType                          getType() const { return _type; };
@@ -153,7 +153,7 @@ private:
 
     int32_t                         _instMatWorldIdx{-1};
     uint32_t                        _visFlags{static_cast<uint32_t>(scenegraph::LayerList::NONE)};
-    int32_t                         _updateStamp{-1};
+    float                           _updateStamp{-1};
     scenegraph::Node *              _transform{nullptr};
     scenegraph::Node *              _node{nullptr};
     float *                         _localData{nullptr};

@@ -97,7 +97,7 @@ void Model::uploadMat4AsVec4x3(const Mat4 &mat, float *v1, float *v2, float *v3)
     v3[3] = mat.m[14];
 }
 
-void Model::updateTransform(uint32_t /*stamp*/) {
+void Model::updateTransform(float /*stamp*/) {
     scenegraph::Node *node = _transform;
     if (node->getFlagsChanged() || node->getDirtyFlag()) {
         node->updateWorldTransform();
@@ -119,7 +119,7 @@ void Model::updateWorldBound() {
     }
 }
 
-void Model::updateUBOs(uint32_t stamp) {
+void Model::updateUBOs(float stamp) {
     for (SubModel *subModel : _subModels) {
         subModel->update();
     }

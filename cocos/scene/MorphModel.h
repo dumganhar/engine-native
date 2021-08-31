@@ -25,12 +25,17 @@
 
 #pragma once
 
+#include "core/assets/Material.h"
 #include "scene/Model.h"
+// #include "3d/assets/Morph.h"
+
 namespace cc {
 namespace scene {
 class MorphRenderingInstance;
 class MorphModel : public Model {
 public:
+    using Super = Model;
+
     MorphModel()                   = default;
     MorphModel(const MorphModel &) = delete;
     MorphModel(MorphModel &&)      = delete;
@@ -48,7 +53,7 @@ protected:
     void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) const override;
 
 private:
-    Material                launderMaterial(const Material &material) const;
+    Material        launderMaterial(Material material) const;
     MorphRenderingInstance *_morphRenderingInstance;
 };
 } // namespace scene

@@ -25,7 +25,57 @@
 
 #include "scene/MorphModel.h"
 #include "3d/assets/Morph.h"
-
 namespace cc {
+namespace scene {
+std::vector<IMacroPatch> MorphModel::getMacroPatches(index_t subModelIndex) const {
+    if (_morphRenderingInstance) {
+        return _morphRenderingInstance->requiredPatches(subModelIndex);
+    }
+    return std::vector<IMacroPatch>();
+}
 
+void MorphModel::initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material mat) {
+    Super::initSubModel(idx, subMeshData, launderMaterial(mat));
+}
+
+void MorphModel::destroy() {
+    Super::destroy();
+    CC_SAFE_DELETE(_morphRenderingInstance);
+}
+
+void MorphModel::setSubModelMaterial(int idx, Material &mat) {
+    Super::setSubModelMaterial(idx, mat);
+}
+
+void MorphModel::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) const {
+    Super::updateLocalDescriptors(subModelIndex, descriptorSet);
+    if (_morphRenderingInstance) {
+        _morphRenderingInstance->adaptPipelineState(subModelIndex, descriptorSet);
+    }
+}
+
+Material MorphModel::launderMaterial(Material material) const {
+
+
+
+    
+    return material;
+    // // Commented in ts
+    // if (this._usedMaterials.has(material)) {
+    //     return new MaterialInstance({
+    //         parent: material,
+    //     });
+    // } else {
+    //     this._usedMaterials.add(material);
+    //     return material;
+    // }
+}
+
+void MorphModel::setMorphRendering(MorphRenderingInstance *morphRendering) {
+    _morphRenderingInstance = morphRendering;
+}
+
+
+
+} // namespace scene
 } // namespace cc

@@ -57,6 +57,7 @@ struct JointInfo {
 
 class SkinningModel final : public MorphModel {
 public:
+    using Super                          = MorphModel;
     SkinningModel()                      = default;
     SkinningModel(const SkinningModel &) = delete;
     SkinningModel(SkinningModel &&)      = delete;
@@ -92,7 +93,6 @@ private:
     static void                                                    uploadJointData(uint32_t base, const Mat4 &mat, float *dst);
     void                                                           updateWorldMatrix(JointInfo *info, uint32_t stamp);
     void                                                           ensureEnoughBuffers(uint32_t count) const;
-    void                                                           getRelevantBuffers(std::vector<index_t> outIndices, std::vector<int32_t> outBuffers, std::vector<std::vector<int32_t>> jointMaps, int32_t targetJoint) const;
     bool                                                           _needUpdate{false};
     Mat4                                                           _worldMatrix;
     std::vector<index_t>                                           _bufferIndices;

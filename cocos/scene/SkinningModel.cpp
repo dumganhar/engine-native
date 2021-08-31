@@ -28,8 +28,42 @@
 #include <array>
 #include <utility>
 
+namespace {
+void getRelevantBuffers(std::vector<index_t> outIndices, std::vector<int32_t> outBuffers, std::vector<std::vector<int32_t>> jointMaps, int32_t targetJoint) {
+    for (int32_t i = 0; i < jointMaps.size(); i++) {
+        index_t index = CC_INVALID_INDEX;
+        for (int32_t j = 0; j < jointMaps[i].size(); j++) {
+            if (jointMaps[i][j] == targetJoint) {
+                index = j;
+                break;
+            }
+        }
+        if (index >= 0) {
+            outBuffers.emplace_back(i);
+            outIndices.emplace_back(index);
+        }
+    }
+}
+
+const std::vector<cc::scene::IMacroPatch> myPatches {{"CC_USE_SKINNING", true}};
+
+} // namespace
 namespace cc {
 namespace scene {
+
+void SkinningModel::destroy() {
+    bindSkeleton(nullptr, nullptr, nullptr);
+    if(!_buffers.empty()) {
+        for (gfx::Buffer* buffer : _buffers) {
+            CC_SAFE_DESTROY(buffer);
+        }
+        _buffers.clear();
+    }
+    Super::destroy();
+}
+
+void 
+
 void SkinningModel::updateWorldMatrix(JointInfo *info, uint32_t stamp) {
     int i = -1;
     _worldMatrix.setIdentity();

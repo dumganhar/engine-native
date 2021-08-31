@@ -37,7 +37,8 @@ namespace cc {
  */
 class JsonAsset final : public Asset {
 public:
-    JsonAsset() = default;
+    JsonAsset()           = default;
+    ~JsonAsset() override = default;
 
 private:
     rapidjson::Value _json;

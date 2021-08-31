@@ -114,6 +114,8 @@ extern uint formatSize(Format format, uint width, uint height, uint depth);
 
 extern uint formatSurfaceSize(Format format, uint width, uint height, uint depth, uint mips);
 
+extern std::array<uint, 32> GFX_TYPE_SIZES;
+
 /**
  * @en Get the memory size of the specified type.
  * @zh 得到 GFX 数据类型的大小。

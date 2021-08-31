@@ -45,6 +45,26 @@ class Texture;
 class TextureBase : public Asset {
 public:
     using Super = Asset;
+
+    /**
+     * @en The pixel format enum.
+     * @zh 像素格式枚举类型
+     */
+    using PixelFormat = PixelFormat;
+
+    /**
+     * @en The wrap mode enum.
+     * @zh 环绕模式枚举类型
+     */
+    using WrapMode = WrapMode;
+
+    /**
+     * @en The texture filter mode enum
+     * @zh 纹理过滤模式枚举类型
+     */
+    using Filter = Filter;
+
+    ~TextureBase() override = default;
     /**
      * @en Whether the pixel data is compressed.
      * @zh 此贴图是否为压缩的像素格式。
@@ -176,13 +196,13 @@ public:
     void deserialize(const std::any &serializedData, const std::any &handle) override;
 
 protected:
-    TextureBase();
+    explicit TextureBase();
 
     gfx::Device *getGFXDevice() const;
 
     gfx::Format getGFXFormat() const;
 
-    void setGFXFormat(PixelFormat format);
+    void setGFXFormat(const std::optional<PixelFormat> &format);
 
     gfx::Format getGFXPixelFormat(PixelFormat format) const;
 

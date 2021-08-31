@@ -31,6 +31,7 @@
 #include "math/Vec4.h"
 #include "renderer/gfx-base/GFXShader.h"
 #include "scene/Model.h"
+#include "scene/Ambient.h"
 
 namespace cc {
 namespace scene {
@@ -83,13 +84,6 @@ struct Skybox {
     bool   isRGBE{false};
     bool   useIBL{false};
     Model *model{nullptr};
-};
-
-struct Ambient {
-    bool  enabled{false};
-    float skyIllum{0.0F};
-    Vec4  skyColor;
-    Vec4  groundAlbedo;
 };
 
 struct PipelineSharedSceneData {

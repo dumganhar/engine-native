@@ -128,15 +128,15 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
         }
         const auto &info = infoIt->second;
         //TODO(PatriceJiang): UniformBlock|UniformSamplerTexture|UniformStorageImage should share the same super class
-        auto binding = std::find_if(source.bindings.begin(), source.bindings.end(), [&](const auto &i) {
-            if (std::holds_alternative<gfx::UniformBlock>(i)) {
-                return i.binding == std::get<gfx::UniformBlock>(i).binding;
+        auto binding = std::find_if(source.bindings.begin(), source.bindings.end(), [&](const gfx::DescriptorSetLayoutBinding &i) {
+            if (std::holds_alternative<gfx::UniformBlock>(info)) {
+                return i.binding == std::get<gfx::UniformBlock>(info).binding;
             }
-            if (std::holds_alternative<gfx::UniformSamplerTexture>(i)) {
-                return i.binding == std::get<gfx::UniformSamplerTexture>(i).binding;
+            if (std::holds_alternative<gfx::UniformSamplerTexture>(info)) {
+                return i.binding == std::get<gfx::UniformSamplerTexture>(info).binding;
             }
-            if (std::holds_alternative<gfx::UniformStorageImage>(i)) {
-                return i.binding = std::get<gfx::UniformStorageImage>(i).binding;
+            if (std::holds_alternative<gfx::UniformStorageImage>(info)) {
+                return i.binding == std::get<gfx::UniformStorageImage>(info).binding;
             }
             return false;
         });
@@ -144,11 +144,15 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
             CC_LOG_WARNING("builtin UBO '%s' not available !", b.name.c_str());
             continue;
         }
-        tempBlocks.emplace_back(info);
+        //TODO(PatriceJIang): insert uniform block
+        auto *block = std::get_if<gfx::UniformBlock>(&info);
+        if (block) {
+            tempBlocks.emplace_back(*block);
+        }
         //TODO(PatriceJiang): use pointer instead of structs in comparasion
         // `outBindings.includes(binding)`
-        if (outBindings && std::count_if(outBindings->begin(), outBindings->end(), [=](const auto &b) { return b.binding == binding; }) == 0) {
-            outBindings->emplace_back(binding);
+        if (outBindings && std::count_if(outBindings->begin(), outBindings->end(), [=](const gfx::DescriptorSetLayoutBinding &b) { return b.binding == binding->binding; }) == 0) {
+            outBindings->emplace_back(*binding);
         }
     }
     tmplInfo.gfxBlocks.insert(tmplInfo.gfxBlocks.begin(), tempBlocks.begin(), tempBlocks.end());
@@ -177,7 +181,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
                 //TODO(PatriceJiang) compare object
                 return b.binding == binding->binding;
             })) {
-            outBindings->emplace_back(binding);
+            outBindings->emplace_back(*binding);
         }
     }
 
@@ -337,7 +341,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
         tmplInfo.bindings            = {};
         tmplInfo.blockSizes          = {};
         for (auto &block : tmpl.blocks) {
-            tmplInfo.blockSizes.emplace_back(getSize(block));
+            tmplInfo.blockSizes.emplace_back(static_cast<float>(getSize(block)));
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 .binding        = static_cast<uint>(block.binding),
                 .descriptorType = block.descriptorType.value_or(gfx::DescriptorType::UNIFORM_BUFFER),
@@ -358,9 +362,9 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             tmplInfo.gfxBlocks.emplace_back(gfx::UniformBlock{
                 .set     = static_cast<uint>(pipeline::SetIndex::MATERIAL),
                 .binding = static_cast<uint>(block.binding),
-                block.name,
-                uniforms,
-                1}); // effect compiler guarantees block count = 1
+                .name    = block.name,
+                .members = uniforms,
+                .count   = 1}); // effect compiler guarantees block count = 1
         }
         for (auto &samplerTexture : tmpl.samplerTextures) {
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{

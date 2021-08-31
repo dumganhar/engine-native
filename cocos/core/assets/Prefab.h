@@ -97,13 +97,14 @@ public:
     @editable*/
     OptimizationPolicy optimizationPolicy = OptimizationPolicy::AUTO;
 
-    Prefab() = default;
+    explicit Prefab()  = default;
+    ~Prefab() override = default;
 
     void createNode(const CreateNodeCallback &cb) override;
 
     Node *_instantiate();
 
-    void         initDefault(const std::string &uuid) override;
+    void         initDefault(const std::optional<std::string> &uuid = {}) override;
     virtual bool validate() const override { _data.has_value(); }
 
 private:

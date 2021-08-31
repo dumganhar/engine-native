@@ -97,7 +97,7 @@ bool EffectAsset::destroy() {
     return Super::destroy();
 }
 
-void EffectAsset::initDefault(const std::string &uuid) {
+void EffectAsset::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
     Super::initDefault(uuid);
     const auto *effect = EffectAsset::get("unlit");
     _name              = "unlit";

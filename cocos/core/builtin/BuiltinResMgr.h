@@ -25,32 +25,44 @@
 
 #pragma once
 
+#include "base/Macros.h"
+#include "base/TypeDef.h"
 #include "core/assets/Asset.h"
 
 namespace cc {
 
-/**
- * @en Class for text file.
- * @zh 文本资源。
- */
-class TextAsset final : public Asset {
+namespace gfx {
+class Device;
+}
+
+class BuiltinResMgr final {
 public:
-    explicit TextAsset()  = default;
-    ~TextAsset() override = default;
-    /**
-     * @en The text content.
-     * @zh 此资源包含的文本。
+    static BuiltinResMgr *getInstance();
 
-    @serializable
-    @editable*/
-    std::string text;
+    explicit BuiltinResMgr() = default;
+    ~BuiltinResMgr()         = default;
 
-    std::string toString() const override {
-        return text;
+    void initBuiltinRes(gfx::Device *device);
+
+    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<Asset, T>::value>>
+    T *get(const std::string &uuid) {
+        if (auto iter = _resources.find(uuid); iter != _resources.end()) {
+            return static_cast<T *>(iter->second);
+        }
+
+        return nullptr;
     }
 
 private:
-    CC_DISALLOW_COPY_MOVE_ASSIGN(TextAsset);
+    void initMaterials();
+    void initTexture2DWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel);
+    void initTextureCubeWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel);
+
+private:
+    gfx::Device *                _device{nullptr};
+    Record<std::string, Asset *> _resources;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(BuiltinResMgr);
 };
 
 } // namespace cc

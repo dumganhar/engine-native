@@ -32,7 +32,7 @@ PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) {
     // parent->getRoot();
     _parent = parent;
     _owner  = owner;
-    // this._doInit(this._parent, true); // defines may change now
+    //cjh    doInit(_parent, true); // defines may change now
     // TODO(xwx) _shaderInfo not implement
     //     for (let i = 0; i < this._shaderInfo.blocks.length; i++) {
     //     const u = this._shaderInfo.blocks[i];
@@ -90,7 +90,7 @@ void PassInstance::syncBatchingScheme() {
     // this._defines.USE_BATCHING = this._defines.USE_INSTANCING = false;
     _defines["USE_INSTANCING"] = false; // not sure?
     _defines["USE_BATCHING"]   = false; // not sure?
-    _batchingScheme = scene::BatchingSchemes::NONE;
+    _batchingScheme            = scene::BatchingSchemes::NONE;
 }
 
 void PassInstance::onStateChange() {

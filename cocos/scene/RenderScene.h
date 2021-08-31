@@ -26,6 +26,8 @@
 #pragma once
 
 #include <vector>
+#include <string>
+#include "core/scene-graph/Node.h"
 #include "scene/BakedSkinningModel.h"
 #include "scene/DirectionalLight.h"
 #include "scene/DrawBatch2D.h"
@@ -33,9 +35,15 @@
 #include "scene/SkinningModel.h"
 #include "scene/SphereLight.h"
 #include "scene/SpotLight.h"
+#include "scene/Camera.h"
 
 namespace cc {
 namespace scene {
+
+struct IRaycastResult {
+    scenegraph::Node *node{nullptr};
+    float             distance{0.F};
+};
 
 struct IRenderSceneInfo {
     std::string name;
@@ -50,7 +58,17 @@ public:
     RenderScene &operator=(const RenderScene &) = delete;
     RenderScene &operator=(RenderScene &&) = delete;
 
+    bool initialize(const IRenderSceneInfo &info);
     void update(uint32_t stamp);
+    void destroy();
+
+    void addCamera(Camera *camera);
+    void removeCamera(Camera *camera);
+    void removeCameras();
+
+    void unsetMainLight(DirectionalLight *dl);
+    void addDirectionalLight(DirectionalLight *dl);
+    void removeDirectionalLight(DirectionalLight *dl);
 
     void addSphereLight(SphereLight *);
     void removeSphereLight(SphereLight *);
@@ -72,20 +90,30 @@ public:
     void removeBatch(uint32_t index);
     void removeBatches();
 
-    inline void setMainLight(DirectionalLight *light) { _directionalLight = light; }
+    void onGlobalPipelineStateChanged();
 
-    inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _drawBatch2Ds; }
-    inline DirectionalLight *                getMainLight() const { return _directionalLight; }
-    inline const std::vector<Model *> &      getModels() const { return _models; }
+    inline DirectionalLight *getMainLight() const { return _mainLight; }
+    inline void              setMainLight(DirectionalLight *dl) { _mainLight = dl; }
+
+    inline uint64_t                          generateModelId() { return _modelId++; }
+    inline const std::string &               getName() const { return _name; }
+    inline const std::vector<Camera *> &     getCameras() const { return _cameras; }
     inline const std::vector<SphereLight *> &getSphereLights() const { return _sphereLights; }
     inline const std::vector<SpotLight *> &  getSpotLights() const { return _spotLights; }
+    inline const std::vector<Model *> &      getModels() const { return _models; }
+    //FIXME: remove getDrawBatch2Ds
+    inline const std::vector<DrawBatch2D *> &getBatches() const { return _batches; }
+    inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _batches; }
 
 private:
-    DirectionalLight *         _directionalLight{nullptr};
+    std::string                _name;
+    uint64_t                   _modelId{0};
+    DirectionalLight *         _mainLight{nullptr};
     std::vector<Model *>       _models;
+    std::vector<Camera *>      _cameras;
     std::vector<SphereLight *> _sphereLights;
     std::vector<SpotLight *>   _spotLights;
-    std::vector<DrawBatch2D *> _drawBatch2Ds;
+    std::vector<DrawBatch2D *> _batches;
 };
 
 } // namespace scene

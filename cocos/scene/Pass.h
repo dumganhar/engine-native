@@ -37,6 +37,7 @@
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Define.h"
+#include "core/Root.h"
 
 namespace cc {
 
@@ -291,8 +292,8 @@ public:
 
 protected:
     void setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::RasterizerState *rs, gfx::DescriptorSet *ds);
-    void doInit(const IPassInfoFull &info, bool copyDefines = false);
-    void syncBatchingScheme();
+    void         doInit(const IPassInfoFull &info, bool copyDefines = false);
+    virtual void syncBatchingScheme();
 
     // internal resources
     gfx::Buffer *              _rootBuffer{nullptr};
@@ -307,8 +308,8 @@ protected:
     Record<std::string, float> _propertyHandleMap;
     uint8_t *                  _rootBlock{nullptr};
     Float32Array               _blocks;
-    //TODO
-    //    protected _shaderInfo: IProgramInfo = null!;
+
+    //cjh    IProgramInfo   _shaderInfo;
     MacroRecord                        _defines;
     Record<std::string, IPropertyInfo> _properties;
     gfx::Shader *                      _shader{nullptr};

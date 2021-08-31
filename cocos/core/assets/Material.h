@@ -104,7 +104,8 @@ public:
      */
     static uint64_t getHashForMaterial(Material *material);
 
-    Material() = default;
+    Material()           = default;
+    ~Material() override = default;
 
     /**
      * @en Initialize this material with the given information.
@@ -114,7 +115,7 @@ public:
     void initialize(const IMaterialInfo &info);
     void reset(const IMaterialInfo &info);
 
-    void initDefault(const std::string &uuid) override;
+    void initDefault(const std::optional<std::string> &uuid = {}) override;
     bool validate() const override;
 
     /**

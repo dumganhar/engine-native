@@ -48,7 +48,7 @@ struct BakedJointInfo {
     BakedAnimInfo                 animInfo;
     gfx::Buffer *                 buffer{nullptr};
 };
-class BakedSkinningModel : public MorphModel {
+class BakedSkinningModel final : public MorphModel {
 public:
     BakedSkinningModel()                           = default;
     BakedSkinningModel(const BakedSkinningModel &) = delete;
@@ -59,7 +59,7 @@ public:
 
     void                     destroy() override;
     void                     bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh) const;
-    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material mat) override;
+    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
     void                     initLocalDescriptors(index_t subModelIndex);
     std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
     void                     updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) const override;

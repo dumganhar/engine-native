@@ -138,7 +138,7 @@ public:
          * @zh 此网格使用的关节索引映射关系列表，数组长度应为子模型中实际使用到的所有关节，
          * 每个元素都对应一个原骨骼资源里的索引，按子模型 VB 内的实际索引排列。
          */
-        std::optional<std::vector<std::vector<uint32_t>>> jointMaps;
+        std::optional<std::vector<std::vector<index_t>>> jointMaps;
 
         /**
          * @en The morph information of the mesh
@@ -212,7 +212,7 @@ public:
      */
     uint64_t getHash() const;
 
-    using JointBufferIndicesType = std::vector<uint32_t>;
+    using JointBufferIndicesType = std::vector<index_t>;
     /**
      * The index of the joint buffer of all sub meshes in the joint map buffers
      */

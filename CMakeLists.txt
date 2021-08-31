@@ -866,6 +866,7 @@ cocos_source_files(
                  cocos/scene/Model.h
                  cocos/scene/Model.cpp
                  cocos/scene/MorphModel.h
+                 cocos/scene/MorphModel.cpp
                  cocos/scene/Pass.h
                  cocos/scene/Pass.cpp
                  cocos/scene/RenderScene.h

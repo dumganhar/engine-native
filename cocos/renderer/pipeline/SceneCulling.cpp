@@ -35,6 +35,7 @@
 #include "gfx-base/GFXDescriptorSet.h"
 #include "math/Quaternion.h"
 #include "platform/Application.h"
+#include "scene/DirectionalLight.h"
 #include "scene/Light.h"
 #include "scene/RenderScene.h"
 #include "scene/SpotLight.h"

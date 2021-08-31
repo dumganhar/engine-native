@@ -108,7 +108,7 @@ public:
      */
     virtual void adaptPipelineState(index_t subMeshIndex, gfx::DescriptorSet *descriptorSet) = 0;
 
-    virtual scene::IMacroPatch requiredPatches(index_t subMeshIndex) = 0;
+    virtual std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) = 0;
 
     /**
      * Destroy the rendering instance.

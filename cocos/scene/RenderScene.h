@@ -25,20 +25,25 @@
 
 #pragma once
 
-#include <vector>
 #include <string>
-#include "core/scene-graph/Node.h"
-#include "scene/BakedSkinningModel.h"
-#include "scene/DirectionalLight.h"
-#include "scene/DrawBatch2D.h"
-#include "scene/Model.h"
-#include "scene/SkinningModel.h"
-#include "scene/SphereLight.h"
-#include "scene/SpotLight.h"
-#include "scene/Camera.h"
+#include <vector>
 
 namespace cc {
+
+namespace scenegraph {
+class Node;
+}
+
 namespace scene {
+
+class DirectionalLight;
+class SphereLight;
+class SpotLight;
+class SkinningModel;
+class Model;
+class BakedSkinningModel;
+class DrawBatch2D;
+class Camera;
 
 struct IRaycastResult {
     scenegraph::Node *node{nullptr};

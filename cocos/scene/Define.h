@@ -33,24 +33,13 @@
 #include "scene/Model.h"
 #include "scene/Ambient.h"
 #include "scene/Skybox.h"
+#include "scene/Fog.h"
 
 namespace cc {
 namespace scene {
 
 // As Pass.h will include Define.h, so use forward declaration.
 class Pass;
-
-struct Fog {
-    bool     enabled{false};
-    uint32_t type{0};
-    float    density{0.0F};
-    float    start{0.0F};
-    float    end{0.0F};
-    float    atten{0.0F};
-    float    top{0.0F};
-    float    range{0.0F};
-    Vec4     color;
-};
 
 enum class ShadowType {
     PLANAR    = 0,

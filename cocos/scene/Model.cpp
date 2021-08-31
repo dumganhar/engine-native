@@ -290,9 +290,9 @@ void Model::initLocalDescriptors(index_t /*subModelIndex*/) {
     }
 }
 
-void Model::updateLocalDescriptors(index_t /*subModelIndex*/, gfx::DescriptorSet &descriptorSet) const {
+void Model::updateLocalDescriptors(index_t /*subModelIndex*/, gfx::DescriptorSet *descriptorSet) const {
     if (_localBuffer) {
-        descriptorSet.bindBuffer(pipeline::UBOLocal::BINDING, _localBuffer);
+        descriptorSet->bindBuffer(pipeline::UBOLocal::BINDING, _localBuffer);
     }
 }
 

@@ -23,32 +23,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#pragma once
+#include "scene/MorphModel.h"
 
-#include "scene/Model.h"
 namespace cc {
-namespace scene {
-class MorphModel : public Model {
-public:
-    MorphModel()                   = default;
-    MorphModel(const MorphModel &) = delete;
-    MorphModel(MorphModel &&)      = delete;
-    ~MorphModel() override         = default;
-    MorphModel &operator=(const MorphModel &) = delete;
-    MorphModel &operator=(MorphModel &&) = delete;
 
-    std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
-    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material mat) override;
-    void                     destroy() override;
-    void                     setSubModelMaterial(int idx, Material &mat) override;
-    // void setMorphRendering(MorphRenderingInstance* morphRendering);
-
-protected:
-    void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) const override;
-
-private:
-    Material launderMaterial(const Material &material) const;
-    // MorphRenderingInstance *_morphRenderingInstance;
-};
-} // namespace scene
 } // namespace cc

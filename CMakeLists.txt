@@ -883,6 +883,8 @@ cocos_source_files(
                  cocos/scene/SpotLight.cpp
                  cocos/scene/SubModel.h
                  cocos/scene/SubModel.cpp
+                 cocos/scene/Shadow.h
+                 cocos/scene/Shadow.cpp
 )
 
 ##### components

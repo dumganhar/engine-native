@@ -23,32 +23,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#pragma once
-
-#include <vector>
-#include <string>
-#include <variant>
+#include "scene/Shadow.h"
+#include <cmath>
 
 namespace cc {
 namespace scene {
 
-struct IMacroPatch {
-    std::string                            name;
-    std::variant<float, bool, std::string> value;
-};
+const float Shadow::COEFFICIENT_OF_EXPANSION{2.0f * std::sqrt(3.0F)};
 
-struct FlatBuffer {
-    uint32_t stride{0};
-    uint32_t count{0};
-    uint32_t size{0};
-    uint8_t *data{nullptr};
-};
-
-struct RenderingSubMesh {
-    RenderingSubMesh() = default;
-    std::vector<FlatBuffer> flatBuffers;
-};
-
-
-} // namespace scene
-} // namespace cc
+}
+}

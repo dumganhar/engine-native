@@ -63,9 +63,9 @@ void ShadowFlow::activate(RenderPipeline *pipeline) {
 }
 
 void ShadowFlow::render(scene::Camera *camera) {
-    const auto *sceneData  = _pipeline->getPipelineSceneData();
-    auto *      shadowInfo = sceneData->getSharedData()->shadow;
-    if (!shadowInfo->enabled || shadowInfo->shadowType != scene::ShadowType::SHADOWMAP) return;
+    const auto *sceneData = _pipeline->getPipelineSceneData();
+    auto *      shadow    = sceneData->getShadow();
+    if (!shadow->isEnabled() || shadow->getType() != scene::ShadowType::SHADOW_MAP) return;
 
     lightCollecting(camera, &_validLights);
 
@@ -74,8 +74,8 @@ void ShadowFlow::render(scene::Camera *camera) {
         return;
     }
 
-    if (shadowInfo->shadowMapDirty) {
-        resizeShadowMap(&shadowInfo);
+    if (shadow->isShadowMapDirty()) {
+        resizeShadowMap();
     }
 
     const auto &shadowFramebufferMap = sceneData->getShadowFramebufferMap();
@@ -115,11 +115,12 @@ void ShadowFlow::clearShadowMap(scene::Camera *camera) {
     }
 }
 
-void ShadowFlow::resizeShadowMap(scene::Shadow **shadowInfo) {
+void ShadowFlow::resizeShadowMap() {
     auto *     sceneData = _pipeline->getPipelineSceneData();
+    auto *     shadow    = sceneData->getShadow();
     auto *     device    = gfx::Device::getInstance();
-    const auto width     = static_cast<uint>((*shadowInfo)->size.x);
-    const auto height    = static_cast<uint>((*shadowInfo)->size.y);
+    const auto width     = static_cast<uint>(shadow->getSize().x);
+    const auto height    = static_cast<uint>(shadow->getSize().y);
     const auto format    = supportsHalfFloatTexture(device) ? gfx::Format::R16F : gfx::Format::RGBA8;
 
     for (const auto &pair : sceneData->getShadowFramebufferMap()) {
@@ -164,18 +165,17 @@ void ShadowFlow::resizeShadowMap(scene::Shadow **shadowInfo) {
         });
     }
 
-    (*shadowInfo)->shadowMapDirty = false;
+    shadow->setShadowMapDirty(false);
 }
 
 void ShadowFlow::initShadowFrameBuffer(RenderPipeline *pipeline, const scene::Light *light) {
     auto *      device        = gfx::Device::getInstance();
     const auto *sceneData     = _pipeline->getPipelineSceneData();
-    const auto *shadowInfo    = sceneData->getSharedData()->shadow;
-    const auto  shadowMapSize = shadowInfo->size;
-    const auto  width         = static_cast<uint>(shadowMapSize.x);
-    const auto  height        = static_cast<uint>(shadowMapSize.y);
+    const auto *shadow        = sceneData->getShadow();
+    const auto  width         = static_cast<uint>(shadow->getSize().x);
+    const auto  height        = static_cast<uint>(shadow->getSize().y);
     const auto  format        = supportsHalfFloatTexture(device) ? gfx::Format::R16F : gfx::Format::RGBA8;
-    
+
     const gfx::ColorAttachment colorAttachment = {
         format,
         gfx::SampleCount::X1,

@@ -27,8 +27,11 @@
 
 #include "Define.h"
 #include "core/geometry/Sphere.h"
-#include "scene/Define.h"
 #include "scene/Light.h"
+#include "scene/Fog.h"
+#include "scene/Ambient.h"
+#include "scene/Skybox.h"
+#include "scene/Shadow.h"
 
 namespace cc {
 
@@ -45,26 +48,59 @@ public:
     PipelineSceneData()           = default;
     ~PipelineSceneData() override = default;
     void activate(gfx::Device *device, RenderPipeline *pipeline);
-    void setPipelineSharedSceneData(scene::PipelineSharedSceneData *data);
     void destroy();
 
-    inline void                                                                setShadowFramebuffer(const scene::Light *light, gfx::Framebuffer *framebuffer) { _shadowFrameBufferMap.emplace(light, framebuffer); }
-    inline const std::unordered_map<const scene::Light *, gfx::Framebuffer *> &getShadowFramebufferMap() const { return _shadowFrameBufferMap; }
-    inline scene::PipelineSharedSceneData *                                    getSharedData() const { return _sharedSceneData; }
-    inline const RenderObjectList &                                            getRenderObjects() const { return _renderObjects; }
-    inline const RenderObjectList &                                            getShadowObjects() const { return _shadowObjects; }
-    inline void                                                                setRenderObjects(RenderObjectList &&ro) { _renderObjects = std::forward<RenderObjectList>(ro); }
-    inline void                                                                setShadowObjects(RenderObjectList &&ro) { _shadowObjects = std::forward<RenderObjectList>(ro); }
-    inline geometry::Sphere *                                                  getSphere() const { return _sphere; }
+    inline void onGlobalPipelineStateChanged() {}
+
+    inline bool isHDR() const { return _isHDR; }
+    inline void setHDR(bool val) { _isHDR = val; }
+
+    inline float getShadingScale() const { return _shadingScale; }
+    inline void  setShadingScale(float val) { _shadingScale = val; }
+
+    inline float getFpScale() const { return _fpScale; }
+    inline void  setFpScale(float val) { _fpScale = val; }
+
+    inline scene::Fog *getFog() const { return _fog; }
+    inline void        setFog(scene::Fog *fog) { _fog = fog; }
+
+    inline scene::Ambient *getAmbient() const { return _ambient; }
+    inline void            setAmbient(scene::Ambient *ambient) { _ambient = ambient; }
+
+    inline scene::Skybox *getSkybox() const { return _skybox; }
+    inline void           setSkybox(scene::Skybox *skybox) { _skybox = skybox; }
+
+    inline scene::Shadow *getShadow() const { return _shadow; }
+    inline void           setShadow(scene::Shadow *shadow) { _shadow = shadow; }
+
+    inline void setShadowFramebuffer(const scene::Light *light, gfx::Framebuffer *framebuffer) {
+        _shadowFrameBufferMap.emplace(light, framebuffer);
+    }
+
+    inline const RenderObjectList &getRenderObjects() const { return _renderObjects; }
+    inline const RenderObjectList &getShadowObjects() const { return _shadowObjects; }
+    inline void                    setRenderObjects(RenderObjectList &&ro) { _renderObjects = std::forward<RenderObjectList>(ro); }
+    inline void                    setShadowObjects(RenderObjectList &&ro) { _shadowObjects = std::forward<RenderObjectList>(ro); }
+    inline geometry::Sphere *      getSphere() const { return _sphere; }
+
+    inline const std::unordered_map<const scene::Light *, gfx::Framebuffer *> &getShadowFramebufferMap() const {
+        return _shadowFrameBufferMap;
+    }
 
 private:
     RenderObjectList _renderObjects;
     RenderObjectList _shadowObjects;
 
-    scene::PipelineSharedSceneData *_sharedSceneData = nullptr;
-    RenderPipeline *                _pipeline        = nullptr;
-    gfx::Device *                   _device          = nullptr;
-    geometry::Sphere *              _sphere          = nullptr;
+    RenderPipeline *  _pipeline{nullptr};
+    gfx::Device *     _device{nullptr};
+    geometry::Sphere *_sphere{nullptr};
+    scene::Fog *      _fog{nullptr};
+    scene::Ambient *  _ambient{nullptr};
+    scene::Skybox *   _skybox{nullptr};
+    scene::Shadow *   _shadow{nullptr};
+    bool              _isHDR{false};
+    float             _shadingScale{1.0F};
+    float             _fpScale{1.0F / 1024.F};
 
     std::unordered_map<const scene::Light *, gfx::Framebuffer *> _shadowFrameBufferMap;
 };

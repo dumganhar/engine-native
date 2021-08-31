@@ -37,7 +37,7 @@
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "renderer/pipeline/Define.h"
-#include "scene/Define.h"
+//#include "scene/Define.h"
 
 namespace cc {
 

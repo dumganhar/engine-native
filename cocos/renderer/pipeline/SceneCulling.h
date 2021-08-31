@@ -29,6 +29,7 @@
 #include "scene/Camera.h"
 #include "scene/Define.h"
 #include "scene/Light.h"
+#include "scene/Shadow.h"
 
 namespace cc {
 class Mat4;
@@ -43,7 +44,6 @@ RenderObject genRenderObject(const scene::Model *, const scene::Camera *);
 
 void lightCollecting(scene::Camera *, std::vector<const scene::Light *> *);
 void sceneCulling(RenderPipeline *, scene::Camera *);
-void updateSphereLight(scene::Shadow *shadows, const scene::Light *light, std::array<float, UBOShadow::COUNT> *);
 void updateDirLight(scene::Shadow *shadows, const scene::Light *light, std::array<float, UBOShadow::COUNT> *);
 void getShadowWorldMatrix(const geometry::Sphere *sphere, const cc::Quaternion &rotation, const cc::Vec3 &dir, cc::Mat4 *shadowWorldMat, cc::Vec3 *out);
 } // namespace pipeline

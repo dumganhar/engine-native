@@ -236,7 +236,6 @@ void RenderAdditiveLightQueue::updateUBOs(const scene::Camera *camera, gfx::Comm
     const auto  exposure        = camera->getExposure();
     const auto  validLightCount = _validLights.size();
     auto *const sceneData       = _pipeline->getPipelineSceneData();
-    auto *const sharedData      = sceneData->getSharedData();
     if (validLightCount > _lightBufferCount) {
         _firstLightBufferView->destroy();
 
@@ -276,8 +275,8 @@ void RenderAdditiveLightQueue::updateUBOs(const scene::Camera *camera, gfx::Comm
         }
 
         float illuminance = isSpotLight ? spotLight->getIlluminance() : sphereLight->getIlluminance();
-        if (sharedData->isHDR) {
-            _lightBufferData[index] = illuminance * sharedData->fpScale * _lightMeterScale;
+        if (sceneData->isHDR()) {
+            _lightBufferData[index] = illuminance * sceneData->getFpScale() * _lightMeterScale;
         } else {
             _lightBufferData[index] = illuminance * exposure * _lightMeterScale;
         }
@@ -306,14 +305,14 @@ void RenderAdditiveLightQueue::updateUBOs(const scene::Camera *camera, gfx::Comm
 }
 
 void RenderAdditiveLightQueue::updateLightDescriptorSet(const scene::Camera *camera, gfx::CommandBuffer *cmdBuffer) {
-    auto *const         sceneData  = _pipeline->getPipelineSceneData();
-    auto *              shadowInfo = sceneData->getSharedData()->shadow;
-    const auto *const   scene      = camera->getScene();
-    auto *              device     = gfx::Device::getInstance();
-    const bool          hFTexture  = supportsHalfFloatTexture(device);
-    const float         linear     = hFTexture ? 1.0F : 0.0F;
-    const float         packing    = hFTexture ? 0.0F : 1.0F;
-    const scene::Light *mainLight  = scene->getMainLight();
+    auto *const         sceneData = _pipeline->getPipelineSceneData();
+    auto *              shadow    = sceneData->getShadow();
+    const auto *const   scene     = camera->getScene();
+    auto *              device    = gfx::Device::getInstance();
+    const bool          hFTexture = supportsHalfFloatTexture(device);
+    const float         linear    = hFTexture ? 1.0F : 0.0F;
+    const float         packing   = hFTexture ? 0.0F : 1.0F;
+    const scene::Light *mainLight = scene->getMainLight();
 
     for (uint i = 0; i < _validLights.size(); ++i) {
         const auto *light         = _validLights[i];
@@ -328,21 +327,22 @@ void RenderAdditiveLightQueue::updateLightDescriptorSet(const scene::Camera *cam
             case scene::LightType::SPHERE: {
                 // update planar PROJ
                 if (mainLight) {
-                    updateDirLight(shadowInfo, mainLight, &_shadowUBO);
+                    updateDirLight(shadow, mainLight, &_shadowUBO);
                 }
 
                 // Reserve sphere light shadow interface
-                float shadowWHPBInfos[4] = {shadowInfo->size.x, shadowInfo->size.y, static_cast<float>(shadowInfo->pcfType), shadowInfo->bias};
+                const auto &shadowSize         = shadow->getSize();
+                float       shadowWHPBInfos[4] = {shadowSize.x, shadowSize.y, static_cast<float>(shadow->getPcf()), shadow->getBias()};
                 memcpy(_shadowUBO.data() + UBOShadow::SHADOW_WIDTH_HEIGHT_PCF_BIAS_INFO_OFFSET, &shadowWHPBInfos, sizeof(float) * 4);
 
-                float shadowLPNNInfos[4] = {2.0F, packing, shadowInfo->normalBias, 0.0F};
+                float shadowLPNNInfos[4] = {2.0F, packing, shadow->getNormalBias(), 0.0F};
                 memcpy(_shadowUBO.data() + UBOShadow::SHADOW_LIGHT_PACKING_NBIAS_NULL_INFO_OFFSET, &shadowLPNNInfos, sizeof(float) * 4);
             } break;
             case scene::LightType::SPOT: {
                 const auto *spotLight = static_cast<const scene::SpotLight *>(light);
                 // update planar PROJ
                 if (mainLight) {
-                    updateDirLight(shadowInfo, mainLight, &_shadowUBO);
+                    updateDirLight(shadow, mainLight, &_shadowUBO);
                 }
 
                 const auto &matShadowCamera = light->getNode()->getWorldMatrix();
@@ -358,13 +358,14 @@ void RenderAdditiveLightQueue::updateLightDescriptorSet(const scene::Camera *cam
                 memcpy(_shadowUBO.data() + UBOShadow::MAT_LIGHT_VIEW_PROJ_OFFSET, matShadowViewProj.m, sizeof(matShadowViewProj));
 
                 // shadow info
-                float shadowNFLSInfos[4] = {0.1F, spotLight->getRange(), linear, 1.0F - shadowInfo->saturation};
+                float shadowNFLSInfos[4] = {0.1F, spotLight->getRange(), linear, 1.0F - shadow->getSaturation()};
                 memcpy(_shadowUBO.data() + UBOShadow::SHADOW_NEAR_FAR_LINEAR_SATURATION_INFO_OFFSET, &shadowNFLSInfos, sizeof(shadowNFLSInfos));
 
-                float shadowWHPBInfos[4] = {shadowInfo->size.x, shadowInfo->size.y, static_cast<float>(shadowInfo->pcfType), shadowInfo->bias};
+                const auto &shadowSize         = shadow->getSize();
+                float       shadowWHPBInfos[4] = {shadowSize.x, shadowSize.y, static_cast<float>(shadow->getPcf()), shadow->getBias()};
                 memcpy(_shadowUBO.data() + UBOShadow::SHADOW_WIDTH_HEIGHT_PCF_BIAS_INFO_OFFSET, &shadowWHPBInfos, sizeof(shadowWHPBInfos));
 
-                float shadowLPNNInfos[4] = {1.0F, packing, shadowInfo->normalBias, 0.0F};
+                float shadowLPNNInfos[4] = {1.0F, packing, shadow->getNormalBias(), 0.0F};
                 memcpy(_shadowUBO.data() + UBOShadow::SHADOW_LIGHT_PACKING_NBIAS_NULL_INFO_OFFSET, &shadowLPNNInfos, sizeof(float) * 4);
 
                 // Spot light sampler binding
@@ -380,8 +381,7 @@ void RenderAdditiveLightQueue::updateLightDescriptorSet(const scene::Camera *cam
                 break;
         }
 
-        const float color[4] = {shadowInfo->color.x, shadowInfo->color.y, shadowInfo->color.z, shadowInfo->color.w};
-        memcpy(_shadowUBO.data() + UBOShadow::SHADOW_COLOR_OFFSET, &color, sizeof(float) * 4);
+        memcpy(_shadowUBO.data() + UBOShadow::SHADOW_COLOR_OFFSET, shadow->getShadowColor4f().data(), sizeof(float) * 4);
 
         descriptorSet->update();
 

@@ -226,8 +226,11 @@ void PostprocessStage::render(scene::Camera *camera) {
         if (!pipeline->getPipelineSceneData()->getRenderObjects().empty()) {
             // post process
             auto *const  sceneData = pipeline->getPipelineSceneData();
-            scene::Pass *pv        = sceneData->getSharedData()->deferredPostPass;
-            gfx::Shader *sd        = sceneData->getSharedData()->deferredPostPassShader;
+             //TODO:(minggo) how to get these data?
+//            scene::Pass *pv        = sceneData->getDeferredPostPass();
+//            gfx::Shader *sd        = sceneData->getDeferredPostPassShader();
+            scene::Pass *pv;
+            gfx::Shader *sd;
 
             // get pso and draw quad
             auto *camera = pipeline->getFrameGraphCamera();

@@ -124,7 +124,6 @@ void LightingStage::gatherLights(scene::Camera *camera) {
     }
 
     auto *const sceneData  = _pipeline->getPipelineSceneData();
-    auto *const sharedData = sceneData->getSharedData();
 
     gfx::CommandBuffer *cmdBuf = pipeline->getCommandBuffers()[0];
     const auto *        scene  = camera->getScene();
@@ -167,8 +166,8 @@ void LightingStage::gatherLights(scene::Camera *camera) {
             tmpArray.z *= colorTemperatureRGB.z;
         }
 
-        if (sharedData->isHDR) {
-            tmpArray.w = light->getIlluminance() * sharedData->fpScale * _lightMeterScale;
+        if (sceneData->isHDR()) {
+            tmpArray.w = light->getIlluminance() * sceneData->getFpScale() * _lightMeterScale;
         } else {
             tmpArray.w = light->getIlluminance() * exposure * _lightMeterScale;
         }
@@ -218,8 +217,8 @@ void LightingStage::gatherLights(scene::Camera *camera) {
             tmpArray.z *= colorTemperatureRGB.z;
         }
 
-        if (sharedData->isHDR) {
-            tmpArray.w = light->getIlluminance() * sharedData->fpScale * _lightMeterScale;
+        if (sceneData->isHDR()) {
+            tmpArray.w = light->getIlluminance() * sceneData->getFpScale() * _lightMeterScale;
         } else {
             tmpArray.w = light->getIlluminance() * exposure * _lightMeterScale;
         }
@@ -343,8 +342,11 @@ void LightingStage::recordCommandsLit(DeferredPipeline *pipeline, gfx::RenderPas
     // get pso and draw quad
     auto rendeArea = pipeline->getRenderArea(pipeline->getFrameGraphCamera(), false);
 
-    scene::Pass *pass   = sceneData->getSharedData()->deferredLightPass;
-    gfx::Shader *shader = sceneData->getSharedData()->deferredLightPassShader;
+    //TODO:(minggo) how to get these data?
+//    scene::Pass *pass   = sceneData->deferredLightPass;
+//    gfx::Shader *shader = sceneData->deferredLightPassShader;
+    scene::Pass *pass;
+    gfx::Shader *shader;
     gfx::InputAssembler *inputAssembler = pipeline->getIAByRenderArea(rendeArea);
     gfx::PipelineState *pState         = PipelineStateManager::getOrCreatePipelineState(
         pass, shader, inputAssembler, renderPass);

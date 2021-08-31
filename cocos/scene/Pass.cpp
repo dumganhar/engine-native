@@ -251,9 +251,7 @@ void Pass::update() {
 }
 
 void Pass::destroy() {
-    auto &blocks = _shaderInfo->blocks;
-    for (size_t i = 0, len = blocks.size(); i < len; ++i) {
-        const auto &u = blocks[i];
+    for (const auto &u : _shaderInfo->blocks) {
         _buffers[u.binding]->destroy();
     }
 

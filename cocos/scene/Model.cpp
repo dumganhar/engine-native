@@ -156,7 +156,7 @@ SubModel *Model::createSubModel() const {
     return new SubModel();
 }
 
-void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Material mat) {
+void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Material *mat) {
     initialize();
     bool isNewSubModel = false;
     if (_subModels[idx] == nullptr) {
@@ -165,7 +165,7 @@ void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Materia
     } else {
         CC_SAFE_DESTROY(_subModels[idx]);
     }
-    _subModels[idx]->initialize(subMeshData, mat.getPasses(), getMacroPatches(idx));
+    _subModels[idx]->initialize(subMeshData, mat->getPasses(), getMacroPatches(idx));
     _subModels[idx]->initPlanarShadowShader();
     _subModels[idx]->initPlanarShadowInstanceShader();
     updateAttributesAndBinding(idx);
@@ -177,9 +177,9 @@ void Model::setSubModelMesh(index_t idx, cc::RenderingSubMesh *subMesh) const {
     }
 }
 
-void Model::setSubModelMaterial(int idx, Material &mat) {
+void Model::setSubModelMaterial(int idx, Material *mat) {
     if (idx < _subModels.size()) {
-        _subModels[idx]->setPasses(mat.getPasses());
+        _subModels[idx]->setPasses(mat->getPasses());
         updateAttributesAndBinding(idx);
     }
 }
@@ -226,7 +226,7 @@ void Model::updateAttributesAndBinding(index_t subModelIndex) {
     if (subModelIndex >= _subModels.size()) return;
     SubModel *subModel = _subModels[subModelIndex];
     initLocalDescriptors(subModelIndex);
-    updateLocalDescriptors(subModelIndex, *subModel->getDescriptorSet());
+    updateLocalDescriptors(subModelIndex, subModel->getDescriptorSet());
     gfx::Shader *shader = subModel->getPasses()[0]->getShaderVariant(subModel->getPatches());
     updateInstanceAttribute(shader->getAttributes(), subModel->getPasses()[0]);
 }

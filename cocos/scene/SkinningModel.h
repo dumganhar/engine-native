@@ -82,7 +82,7 @@ public:
     void                     updateUBOs(uint32_t stamp) override;
     void                     destroy() override;
     void                     bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh) const;
-    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material mat) override;
+    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
     std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
 
 protected:

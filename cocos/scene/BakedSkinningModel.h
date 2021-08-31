@@ -92,7 +92,7 @@ private:
     ModelType      _type{ModelType::BAKED_SKINNING};
     BakedJointInfo _jointMedium;
     bool           _isUploadAnim{false};
-    index_t        _instAnimInfoIdx{-1};
+    index_t        _instAnimInfoIdx{CC_INVALID_INDEX};
     // TODO(xwx)
     // DataPoolManager _dataPoolManager;
     Skeleton *_skeleton{nullptr};

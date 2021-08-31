@@ -34,25 +34,30 @@
 #include "scene/RenderScene.h"
 #include "scene/SubModel.h"
 
-namespace cc {
-namespace scene {
-const uint32_t LIGHTMAP_SAMPLER_HASH = pipeline::SamplerLib::genSamplerHash({
-    gfx::Filter::LINEAR,
-    gfx::Filter::LINEAR,
-    gfx::Filter::NONE,
-    gfx::Address::CLAMP,
-    gfx::Address::CLAMP,
-    gfx::Address::CLAMP,
+namespace {
+const uint32_t LIGHTMAP_SAMPLER_HASH = cc::pipeline::SamplerLib::genSamplerHash({
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Filter::NONE,
+    cc::gfx::Address::CLAMP,
+    cc::gfx::Address::CLAMP,
+    cc::gfx::Address::CLAMP,
 });
 
-const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = pipeline::SamplerLib::genSamplerHash({
-    gfx::Filter::LINEAR,
-    gfx::Filter::LINEAR,
-    gfx::Filter::LINEAR,
-    gfx::Address::CLAMP,
-    gfx::Address::CLAMP,
-    gfx::Address::CLAMP,
+const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = cc::pipeline::SamplerLib::genSamplerHash({
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Address::CLAMP,
+    cc::gfx::Address::CLAMP,
+    cc::gfx::Address::CLAMP,
 });
+
+const std::vector<cc::scene::IMacroPatch> SHADOW_MAP_PATCHES{{"CC_RECEIVE_SHADOW", true}};
+} // namespace
+
+namespace cc {
+namespace scene {
 
 Model::Model() {
     _device = Director::getInstance().getRoot()->getDevice();
@@ -214,14 +219,7 @@ void Model::updateLightingmap(Texture2D *texture, const Vec4 &uvParam) {
 }
 
 std::vector<IMacroPatch> Model::getMacroPatches(index_t /*subModelIndex*/) const {
-    if (_receiveShadow) {
-        IMacroPatch patch = IMacroPatch();
-        patch.name        = "CC_RECEIVE_SHADOW";
-        patch.value       = true;
-        std::vector<IMacroPatch> shadowMapPatches{patch};
-        return shadowMapPatches;
-    }
-    return std::vector<IMacroPatch>();
+    return _receiveShadow ? SHADOW_MAP_PATCHES : std::vector<IMacroPatch>();
 }
 
 void Model::updateAttributesAndBinding(index_t subModelIndex) {
@@ -233,9 +231,9 @@ void Model::updateAttributesAndBinding(index_t subModelIndex) {
     updateInstanceAttribute(shader->getAttributes(), subModel->getPasses()[0]);
 }
 
-int32_t Model::getInstancedAttributeIndex(const std::string &name) const {
+index_t Model::getInstancedAttributeIndex(const std::string &name) const {
     auto attributes = _instanceAttributeBlock.attributes;
-    for (int32_t i = 0; i < attributes.size(); ++i) {
+    for (index_t i = 0; i < attributes.size(); ++i) {
         if (attributes[i].name == name) {
             return i;
         }
@@ -267,7 +265,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         attr.isNormalized   = attribute.isNormalized;
         attr.location       = attribute.location;
         attrs.attributes.emplace_back(attr);
-
+        // TODO(xwx)
         // auto info = FormatInfos[attribute.format];
         // const typeViewArray = new (getTypedArrayConstructor(info))(attrs.buffer.buffer, offset, info.count);
         attrs.views.emplace_back(/*typeViewArray*/);
@@ -276,7 +274,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
     if (pass->getBatchingScheme() == BatchingSchemes::INSTANCING) {
         pipeline::InstancedBuffer *instanceBuffer = pipeline::InstancedBuffer::get(pass);
         CC_SAFE_DESTROY(instanceBuffer); // instancing IA changed
-        // setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD)); // INST_MAT_WORLD not define
+        // setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD)); // TODO(xwx): INST_MAT_WORLD not define
         _transformUpdated = true;
     }
 }

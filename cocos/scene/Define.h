@@ -105,21 +105,6 @@ struct PipelineSharedSceneData {
     Pass *       deferredPostPass{nullptr};
     gfx::Shader *deferredPostPassShader{nullptr};
 };
-  
-struct Root {
-    Root() {
-        Root::instance = this;
-    }
-
-    ~Root() {
-        Root::instance = nullptr;
-    }
-
-    float cumulativeTime{0};
-    float frameTime{0};
-
-    static Root *instance;
-};
 
 enum class BatchingSchemes {
     NONE       = 0,

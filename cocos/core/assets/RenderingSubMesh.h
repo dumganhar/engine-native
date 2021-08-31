@@ -76,8 +76,6 @@ struct IFlatBuffer {
     uint32_t   stride{0};
     uint32_t   count{0};
     Uint8Array buffer;
-    uint32_t   size{0};
-    uint8_t *  data{nullptr};
 };
 
 class Mesh;

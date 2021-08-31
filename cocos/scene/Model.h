@@ -108,9 +108,9 @@ public:
         _instanceAttributes     = attributes;
     }
 
-    inline bool                               getInited() const { return _inited; };
+    inline bool                               isInited() const { return _inited; };
     inline bool                               getCastShadow() const { return _castShadow; }
-    inline bool                               getEnabled() const { return _enabled; }
+    inline bool                               isEnabled() const { return _enabled; }
     inline bool                               isInstancingEnabled() const { return _instMatWorldIdx >= 0; };
     inline int32_t                            getInstMatWorldIdx() const { return _instMatWorldIdx; }
     inline const std::vector<gfx::Attribute> &getInstanceAttributes() const { return _instanceAttributes; }
@@ -144,7 +144,7 @@ protected:
     bool            _transformUpdated{false};
     geometry::AABB *_worldBounds{nullptr};
     geometry::AABB *_modelBounds{nullptr};
-    gfx::Device *   _device;
+    gfx::Device *   _device{nullptr};
     bool            _inited{false};
     uint32_t        _descriptorSetCount{1};
 

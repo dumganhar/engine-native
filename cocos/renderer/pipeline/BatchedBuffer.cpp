@@ -70,7 +70,7 @@ void BatchedBuffer::destroy() {
 
 void BatchedBuffer::merge(const scene::SubModel *subModel, uint passIdx, const scene::Model *model) {
     const auto *subMesh          = subModel->getSubMesh();
-    const auto &flatBuffers      = subMesh->flatBuffers;
+    const auto &flatBuffers      = subMesh->getFlatBuffers();
     auto        flatBuffersCount = static_cast<uint32_t>(flatBuffers.size());
     if (0 == flatBuffersCount) {
         return;
@@ -113,7 +113,7 @@ void BatchedBuffer::merge(const scene::SubModel *subModel, uint passIdx, const s
                     }
 
                     auto offset = batch.vbCount * flatBuffer.stride;
-                    memcpy(vbData + offset, flatBuffer.data, flatBuffer.size);
+                    memcpy(vbData + offset, flatBuffer.buffer.data(), flatBuffer.buffer.size());
                 }
 
                 auto *indexData = batch.indexData;
@@ -172,7 +172,7 @@ void BatchedBuffer::merge(const scene::SubModel *subModel, uint passIdx, const s
             flatBuffer.stride,
         });
         auto        size       = 0U;
-        newVB->update(flatBuffer.data, flatBuffer.size);
+        newVB->update(flatBuffer.buffer.data(), flatBuffer.buffer.size());
 
         vbs[i]     = newVB;
         vbDatas[i] = static_cast<uint8_t *>(CC_MALLOC(newVB->getSize()));

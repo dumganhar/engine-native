@@ -27,12 +27,17 @@
 
 #include <tuple>
 #include <vector>
+#include "core/assets/RenderingSubMesh.h"
+#include "core/assets/Texture2D.h"
+
 #include "core/geometry/AABB.h"
+#include "core/scene-graph/Layers.h"
+#include "core/scene-graph/Node.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
-#include "core/scene-graph/Node.h"
 
 namespace cc {
+class Material;
 namespace scene {
 
 enum class ModelType {
@@ -46,25 +51,45 @@ enum class ModelType {
 
 // SubModel.h -> Define.h -> Model.h, so do not include SubModel.h here.
 class SubModel;
-
+// RenderScene.h <-> Model.h, so do not include RenderScene.h here.
+class RenderScene;
+class Pass;
+struct IMacroPatch;
 struct InstancedAttributeBlock {
-    std::vector<uint8_t *> views{};
+    std::vector<uint8_t>        buffer;
+    std::vector<uint8_t *>      views{};
+    std::vector<gfx::Attribute> attributes;
 };
 
 class Model {
 public:
-    Model()              = default;
+    Model();
     Model(const Model &) = delete;
     Model(Model &&)      = delete;
     virtual ~Model()     = default;
     Model &operator=(const Model &) = delete;
     Model &operator=(Model &&) = delete;
 
+    void                     initialize();
+    void                     destroy();
+    void                     updateWorldBound();
+    void                     createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos);
+    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material mat);
+    void                     setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
+    void                     setSubModelMaterial(int idx, Material &mat);
+    void                     onGlobalPipelineStateChanged() const;
+    void                     onMacroPatchesStateChanged() const;
+    void                     updateLightingmap(Texture2D *texture, const Vec4 &uvParam);
+    std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const;
+    void                     updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass);
+
     virtual void updateTransform(uint32_t stamp);
     virtual void updateUBOs(uint32_t stamp);
 
     void setSubModel(uint32_t idx, SubModel *subModel);
 
+    inline void attachToScene(RenderScene *scene) { this->scene = scene; };
+    inline void detachFromScene() { this->scene = nullptr; };
     inline void setCastShadow(bool value) { _castShadow = value; }
     inline void setEnabled(bool value) { _enabled = value; }
     inline void setInstMatWorldIdx(int32_t idx) { _instMatWorldIdx = idx; }
@@ -75,7 +100,7 @@ public:
     inline void seVisFlag(uint32_t flags) { _visFlags = flags; }
     inline void setBounds(geometry::AABB *world) {
         _worldBounds = world;
-        _modelBounds.set(_worldBounds->getCenter(), _worldBounds->getHalfExtents());
+        _modelBounds->set(_worldBounds->getCenter(), _worldBounds->getHalfExtents());
     }
     inline void setInstancedAttrBlock(uint8_t *buffer, uint32_t size, InstancedAttributeBlock &&block, const std::vector<gfx::Attribute> &attributes) {
         _instancedBuffer        = {buffer, size};
@@ -83,8 +108,10 @@ public:
         _instanceAttributes     = attributes;
     }
 
+    inline bool                               isInited() const { return _inited; };
     inline bool                               getCastShadow() const { return _castShadow; }
-    inline bool                               getEnabled() const { return _enabled; }
+    inline bool                               isEnabled() const { return _enabled; }
+    inline bool                               isInstancingEnabled() const { return _instMatWorldIdx >= 0; };
     inline int32_t                            getInstMatWorldIdx() const { return _instMatWorldIdx; }
     inline const std::vector<gfx::Attribute> &getInstanceAttributes() const { return _instanceAttributes; }
     inline InstancedAttributeBlock *          getInstancedAttributeBlock() { return &_instanceAttributeBlock; }
@@ -92,7 +119,7 @@ public:
     inline uint32_t                           getInstancedBufferSize() const { return std::get<1>(_instancedBuffer); }
     inline gfx::Buffer *                      getLocalBuffer() const { return _localBuffer; }
     inline float *                            getLocalData() const { return _localData; }
-    inline const geometry::AABB &             getModelBounds() const { return _modelBounds; }
+    inline geometry::AABB *                   getModelBounds() const { return _modelBounds; }
     inline scenegraph::Node *                 getNode() const { return _node; }
     inline bool                               getReceiveShadow() const { return _receiveShadow; }
     inline const std::vector<SubModel *> &    getSubModels() const { return _subModels; }
@@ -103,19 +130,33 @@ public:
     inline geometry::AABB *                   getWorldBounds() const { return _worldBounds; }
     inline ModelType                          getType() const { return _type; };
 
+    RenderScene *scene{nullptr};
+    bool         isDynamicBatching{false};
+
 protected:
+    void    updateAttributesAndBinding(index_t subModelIndex);
+    int32_t getInstancedAttributeIndex(const std::string &name) const;
+    void    updateInstanceAttribute(const std::vector<gfx::Attribute> &, Pass *pass) const;
+    void    initLocalDescriptors(index_t subModelIndex);
+    void    updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet &descriptorSet) const;
+
     ModelType       _type{ModelType::DEFAULT};
     bool            _transformUpdated{false};
     geometry::AABB *_worldBounds{nullptr};
-    geometry::AABB  _modelBounds;
+    geometry::AABB *_modelBounds{nullptr};
+    gfx::Device *   _device{nullptr};
+    bool            _inited{false};
+    uint32_t        _descriptorSetCount{1};
 
 private:
+    SubModel *createSubModel() const;
+
     bool _enabled{false};
     bool _castShadow{false};
     bool _receiveShadow{false};
 
     int32_t                         _instMatWorldIdx{-1};
-    uint32_t                        _visFlags;
+    uint32_t                        _visFlags{static_cast<uint32_t>(scenegraph::LayerList::NONE)};
     int32_t                         _updateStamp{-1};
     scenegraph::Node *              _transform{nullptr};
     scenegraph::Node *              _node{nullptr};
@@ -126,6 +167,8 @@ private:
     std::vector<SubModel *>         _subModels;
     std::vector<gfx::Attribute>     _instanceAttributes;
     static void                     uploadMat4AsVec4x3(const Mat4 &mat, float *v1, float *v2, float *v3);
+    Texture2D *                     _lightmap{nullptr};
+    Vec4                            _lightmapUVParam;
 };
 
 } // namespace scene

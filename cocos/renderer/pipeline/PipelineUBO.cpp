@@ -147,16 +147,17 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     memcpy(output + UBOCamera::MAT_VIEW_PROJ_INV_OFFSET, camera->getMatViewProjInv().m, sizeof(cc::Mat4));
     output[UBOCamera::CAMERA_POS_OFFSET + 3] = getCombineSignY();
 
-    if (fog->enabled) {
-        TO_VEC4(output, fog->color, UBOCamera::GLOBAL_FOG_COLOR_OFFSET);
+    if (fog->isEnabled()) {
+        const auto &colorArray = fog->getColorArray();
+        memcpy(output + UBOCamera::GLOBAL_FOG_COLOR_OFFSET, colorArray.data(), sizeof(float) * colorArray.size());
 
-        output[UBOCamera::GLOBAL_FOG_BASE_OFFSET + 0] = fog->start;
-        output[UBOCamera::GLOBAL_FOG_BASE_OFFSET + 1] = fog->end;
-        output[UBOCamera::GLOBAL_FOG_BASE_OFFSET + 2] = fog->density;
+        output[UBOCamera::GLOBAL_FOG_BASE_OFFSET + 0] = fog->getFogStart();
+        output[UBOCamera::GLOBAL_FOG_BASE_OFFSET + 1] = fog->getFogEnd();
+        output[UBOCamera::GLOBAL_FOG_BASE_OFFSET + 2] = fog->getFogDensity();
 
-        output[UBOCamera::GLOBAL_FOG_ADD_OFFSET + 0] = fog->top;
-        output[UBOCamera::GLOBAL_FOG_ADD_OFFSET + 1] = fog->range;
-        output[UBOCamera::GLOBAL_FOG_ADD_OFFSET + 2] = fog->atten;
+        output[UBOCamera::GLOBAL_FOG_ADD_OFFSET + 0] = fog->getFogTop();
+        output[UBOCamera::GLOBAL_FOG_ADD_OFFSET + 1] = fog->getFogRange();
+        output[UBOCamera::GLOBAL_FOG_ADD_OFFSET + 2] = fog->getFogAtten();
     }
 }
 

@@ -58,11 +58,11 @@ public:
     void        updateUBOs(uint32_t stamp) override;
     inline void updateModelBounds(geometry::AABB *modelBounds) {
         if (modelBounds == nullptr) {
-            _modelBounds.setValid(false);
+            _modelBounds->setValid(false);
             return;
         }
-        _modelBounds.setValid(true);
-        _modelBounds.set(modelBounds->getCenter(), modelBounds->getHalfExtents());
+        _modelBounds->setValid(true);
+        _modelBounds->set(modelBounds->getCenter(), modelBounds->getHalfExtents());
     }
 
     inline void setJointMedium(bool isUploadAnim, BakedJointInfo &&jointMedium) {

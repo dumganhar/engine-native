@@ -73,8 +73,8 @@ struct IGeometricInfo {
  * @zh 扁平化顶点缓冲区
  */
 struct IFlatBuffer {
-    uint32_t   stride;
-    uint32_t   count;
+    uint32_t   stride{0};
+    uint32_t   count{0};
     Uint8Array buffer;
 };
 
@@ -89,9 +89,17 @@ class Buffer;
  */
 class RenderingSubMesh final : public Asset {
 public:
-    Mesh *mesh{nullptr};
-
+    RenderingSubMesh()           = default;
+    ~RenderingSubMesh() override = default;
+    Mesh *   mesh{nullptr};
     uint32_t subMeshIdx{0};
+
+    void genFlatBuffers() const;
+
+    inline void setFlatBuffers(const std::vector<IFlatBuffer> &flatBuffers) { _flatBuffers = flatBuffers; }
+
+    inline const gfx::InputAssemblerInfo & getIaInfo() const { return _iaInfo; }
+    inline const std::vector<IFlatBuffer> &getFlatBuffers() const { return _flatBuffers; }
 
 private:
     std::vector<IFlatBuffer> _flatBuffers;

@@ -30,7 +30,7 @@
 #include "PipelineSceneData.h"
 #include "PipelineUBO.h"
 #include "base/CoreStd.h"
-#include "helper/DefineMap.h"
+
 #include "renderer/core/PassUtils.h"
 #include "scene/Camera.h"
 
@@ -41,7 +41,7 @@ class DescriptorSet;
 class DescriptorSetLayout;
 } // namespace gfx
 namespace pipeline {
-class DefineMap;
+
 class GlobalDSManager;
 class RenderStage;
 

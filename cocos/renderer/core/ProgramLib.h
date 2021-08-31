@@ -58,7 +58,7 @@ struct ITemplateInfo {
     std::vector<gfx::UniformBlock>               gfxBlocks;
     std::vector<gfx::UniformSamplerTexture>      gfxSamplerTextures;
     std::vector<gfx::Attribute>                  gfxAttributes;
-    std::vector<float>                           blockSizes;
+    std::vector<int32_t>                         blockSizes;
     std::vector<gfx::ShaderStage>                gfxStages;
     std::vector<gfx::DescriptorSetLayout *>      setLayouts; // TODO(PatriceJiang): pointer / rc
     gfx::PipelineLayout *                        pipelineLayout{nullptr};
@@ -74,20 +74,20 @@ struct IProgramInfo : public IShaderInfo {
     bool                       uber{false}; // macro number exceeds default limits, will fallback to string hash
 };
 
-const char *getDeviceShaderVersion(const gfx::Device &device);
+const char *getDeviceShaderVersion(const gfx::Device *device);
 
 /**
  * @en The global maintainer of all shader resources.
  * @zh 维护 shader 资源实例的全局管理器。
  */
-class ProgramLib {
-protected:
-    Record<std::string, IProgramInfo>  _templates; // per shader
-    Record<std::string, gfx::Shader *> _cache;
-    Record<uint64_t, ITemplateInfo>    _templateInfos;
-
+class ProgramLib final {
 public:
-    void regist(EffectAsset &effect);
+    static ProgramLib *getInstance();
+
+    ProgramLib()  = default;
+    ~ProgramLib() = default;
+
+    void registerEffect(EffectAsset &effect);
 
     /**
      * @en Register the shader template with the given info
@@ -116,7 +116,7 @@ public:
      * @zh 通过名字获取 Shader 模板相关联的管线布局
      * @param name Target shader name
      */
-    gfx::DescriptorSetLayout *getDescriptorSetLayout(gfx::Device &device, const std::string &name, bool isLocal = false);
+    gfx::DescriptorSetLayout *getDescriptorSetLayout(gfx::Device *device, const std::string &name, bool isLocal = false);
 
     /**
      * @en
@@ -153,8 +153,16 @@ public:
      * @param pipeline The [[RenderPipeline]] which owns the render command
      * @param key The shader cache key, if already known
      */
-    gfx::Shader *getGFXShader(gfx::Device &device, const std::string &name, MacroRecord &defines,
-                              const pipeline::RenderPipeline &pipeline, std::string *key = nullptr);
+    gfx::Shader *getGFXShader(gfx::Device *device, const std::string &name, MacroRecord &defines,
+                              pipeline::RenderPipeline *pipeline, std::string *key = nullptr);
+
+protected:
+    Record<std::string, IProgramInfo>  _templates; // per shader
+    Record<std::string, gfx::Shader *> _cache;
+    Record<uint64_t, ITemplateInfo>    _templateInfos;
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(ProgramLib);
 };
 
 } // namespace cc

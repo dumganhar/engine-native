@@ -142,13 +142,13 @@ static bool js_scene_SubModel_setSubMeshBuffers(se::State& s) // NOLINT(readabil
             }
             uint32_t length = 0;
             dataObj->getArrayLength(&length);
-            std::vector<cc::scene::FlatBuffer> flatBuffers;
+            std::vector<cc::IFlatBuffer> flatBuffers;
             flatBuffers.resize(length);
             se::Value value;
             for (uint32_t i = 0; i < length; ++i) {
                 if (dataObj->getArrayElement(i, &value)) {
                     if (value.isObject()) {
-                        cc::scene::FlatBuffer currBuffer;
+                        cc::IFlatBuffer currBuffer;
                         se::Value             bufferVal;
                         se::Object*           valObj = value.toObject();
                         valObj->getProperty("buffer", &bufferVal);

@@ -1225,6 +1225,18 @@ cocos_source_files(
     cocos/2d/framework/UITransform.h
 )
 
+##### 3d
+cocos_source_files(
+    cocos/3d/assets/Mesh.h
+    cocos/3d/assets/Mesh.cpp
+    cocos/3d/assets/Morph.h
+    cocos/3d/assets/Morph.cpp
+    cocos/3d/assets/MorphRendering.h
+    cocos/3d/assets/MorphRendering.cpp
+    cocos/3d/assets/Skeleton.h
+    cocos/3d/assets/Skeleton.cpp
+)
+
 ##### core
 
 cocos_source_files(

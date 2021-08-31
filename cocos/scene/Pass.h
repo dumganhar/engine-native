@@ -28,9 +28,13 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+
 #include "base/TypeDef.h"
+#include "core/ArrayBuffer.h"
+#include "core/Root.h"
 #include "core/assets/EffectAsset.h"
 #include "renderer/core/PassUtils.h"
+#include "renderer/core/ProgramLib.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDescriptorSet.h"
@@ -61,6 +65,11 @@ enum class BatchingSchemes {
     NONE       = 0,
     INSTANCING = 1,
     VB_MERGING = 2,
+};
+
+struct IBlockRef {
+    float *data{nullptr};
+    size_t size{0};
 };
 
 class Pass {
@@ -114,7 +123,7 @@ public:
      */
     static uint64_t getPassHash(Pass *pass);
 
-    Pass();
+    explicit Pass();
     virtual ~Pass();
 
     /**
@@ -263,9 +272,9 @@ public:
     inline index_t                                   getPassIndex() const { return _passIndex; }
     inline index_t                                   getPropertyIndex() const { return _propertyIndex; }
     // data
-    inline const IPassDynamics &getDynamics() const { return _dynamics; }
-    inline const Float32Array & getBlocks() const { return _blocks; }
-    inline bool                 isRootBufferDirty() const { return _rootBufferDirty; }
+    inline const IPassDynamics &         getDynamics() const { return _dynamics; }
+    inline const std::vector<IBlockRef> &getBlocks() const { return _blocks; }
+    inline bool                          isRootBufferDirty() const { return _rootBufferDirty; }
     // states
     inline pipeline::RenderPriority  getPriority() const { return _priority; }
     inline gfx::PrimitiveMode        getPrimitive() const { return _primitive; }
@@ -283,12 +292,15 @@ public:
     // Only for UI
     void initPassFromTarget(Pass *target, gfx::DepthStencilState *dss, gfx::BlendState *bs, uint64_t hashFactor);
 
-protected:
+    //  internal use
+    /**
+     * @private
+     */
     virtual void beginChangeStatesSilently() {}
     virtual void endChangeStatesSilently() {}
 
-    void setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::RasterizerState *rs, gfx::DescriptorSet *ds);
-
+protected:
+    void         setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::RasterizerState *rs, gfx::DescriptorSet *ds);
     void         doInit(const IPassInfoFull &info, bool copyDefines = false);
     virtual void syncBatchingScheme();
 
@@ -298,15 +310,15 @@ protected:
     gfx::DescriptorSet *       _descriptorSet{nullptr};
     gfx::PipelineLayout *      _pipelineLayout{nullptr};
     // internal data
-    index_t                    _passIndex{0};
-    index_t                    _propertyIndex{0};
-    std::string                _programName;
-    IPassDynamics              _dynamics;
-    Record<std::string, float> _propertyHandleMap;
-    uint8_t *                  _rootBlock{nullptr};
-    Float32Array               _blocks;
+    index_t                       _passIndex{0};
+    index_t                       _propertyIndex{0};
+    std::string                   _programName;
+    IPassDynamics                 _dynamics;
+    Record<std::string, uint32_t> _propertyHandleMap;
+    ArrayBuffer                   _rootBlock;
+    std::vector<IBlockRef>        _blocks; // Point to position in _rootBlock
 
-    //cjh    IProgramInfo   _shaderInfo;
+    IProgramInfo *                     _shaderInfo{nullptr};
     MacroRecord                        _defines;
     Record<std::string, IPropertyInfo> _properties;
     gfx::Shader *                      _shader{nullptr};

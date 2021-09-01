@@ -48,7 +48,7 @@ void MorphModel::setSubModelMaterial(index_t idx, Material *mat) {
 
 void MorphModel::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) {
     Super::updateLocalDescriptors(subModelIndex, descriptorSet);
-    if (_morphRenderingInstance) {
+    if (_morphRenderingInstance != nullptr) {
         _morphRenderingInstance->adaptPipelineState(subModelIndex, descriptorSet);
     }
 }

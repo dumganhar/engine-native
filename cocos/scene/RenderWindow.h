@@ -27,6 +27,7 @@
 
 #include <vector>
 #include "base/Macros.h"
+#include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/gfx-base/GFXTexture.h"
 #include "renderer/gfx-base/GFXFramebuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"

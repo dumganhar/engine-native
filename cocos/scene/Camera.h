@@ -106,20 +106,17 @@ enum class CameraShutter {
 };
 
 struct ICameraInfo {
-    std::string                   name;
-    scenegraph::Node *            node{nullptr};
-    CameraProjection              projection;
-    std::optional<uint32_t>       targetDisplay;
-    std::optional<RenderWindow *> window;
-    uint32_t                      priority{0};
-    std::optional<std::string>    pipeline;
+    std::string                name;
+    scenegraph::Node *         node{nullptr};
+    CameraProjection           projection;
+    std::optional<uint32_t>    targetDisplay;
+    RenderWindow *             window{nullptr};
+    uint32_t                   priority{0};
+    std::optional<std::string> pipeline;
 };
 
 class Camera final {
 public:
-    bool  isWindowSize{true};
-    float screenScale{0.F};
-
     explicit Camera(gfx::Device *device);
     Camera() = default;
 
@@ -135,7 +132,7 @@ public:
     /**
      * transform a screen position (in oriented space) to a world space ray
      */
-    const geometry::Ray &screenPointToRa(geometry::Ray &out, float x, float y);
+    geometry::Ray *screenPointToRay(geometry::Ray *out, float x, float y);
 
     /**
      * transform a screen position (in oriented space) to world space
@@ -199,7 +196,7 @@ public:
     }
     inline float getFarClip() const { return _farClip; }
 
-    inline void setClearColor(const gfx::Color &val) { _clearColor = val; }
+    inline void              setClearColor(const gfx::Color &val) { _clearColor = val; }
     inline const gfx::Color &getClearColor() const { return _clearColor; }
 
     inline const Vec4 &getViewport() const { return _viewport; }
@@ -275,12 +272,17 @@ public:
     inline float getClearStencil() const { return _clearStencil; }
     inline void  setClearStencil(float stencil) { _clearStencil = stencil; }
 
-    //TODO minggo
-    //    inline void detachCamera() {
-    //        if (_window) {
-    //            _window->detachCamera(this);
-    //        }
-    //    }
+    inline bool isWindowSize() const { return _isWindowSize; }
+    inline void setWindowSize(bool val) { _isWindowSize = val; }
+
+    inline float getScreenScale() const { _screenScale; }
+    inline void  setScreenScale(float val) { _screenScale = val; }
+
+    inline void detachCamera() {
+        if (_window) {
+            _window->detachCamera(this);
+        }
+    }
 
 protected:
     void setExposure(float ev100);
@@ -288,6 +290,8 @@ protected:
 private:
     void updateExposure();
 
+    bool              _isWindowSize{true};
+    float             _screenScale{0.F};
     gfx::Device *     _device{nullptr};
     RenderScene *     _scene{nullptr};
     scenegraph::Node *_node{nullptr};

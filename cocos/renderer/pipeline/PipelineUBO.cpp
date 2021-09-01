@@ -120,7 +120,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
         TO_VEC4(output, Vec4::ZERO, UBOCamera::MAIN_LIT_COLOR_OFFSET);
     }
 
-    std::vector<float> skyColor = ambient->getColorArray();
+    std::array<float, 4> skyColor = ambient->getColorArray();
     if (isHDR) {
         skyColor[3] = ambient->getSkyIllum() * fpScale;
     } else {

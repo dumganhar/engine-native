@@ -28,7 +28,6 @@
 #include <array>
 #include "base/Macros.h"
 #include "math/Color.h"
-#include "core/scene-graph/SceneGlobal.h"
 
 namespace cc {
 namespace scene {
@@ -69,12 +68,24 @@ enum class FogType {
     NONE    = 4
 };
 
+struct FogInfo {
+    FogType fogType{FogType::LINEAR};
+    Color   fogColor{200.F, 200.F, 200.F, 1.F};
+    bool    enabled{false};
+    float   fogDensity{0.3F};
+    float   fogStart{0.5F};
+    float   fogEnd{0.5F};
+    float   fogAtten{5.F};
+    float   fogTop{1.5F};
+    float   fogRange{1.2F};
+};
+
 class Fog final {
 public:
     Fog()  = default;
     ~Fog() = default;
 
-    void initialize(const scenegraph::FogInfo &fogInfo);
+    void initialize(const FogInfo &fogInfo);
 
     inline void activate() { updatePipeline(); }
 

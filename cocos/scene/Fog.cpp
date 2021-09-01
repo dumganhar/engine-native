@@ -24,3 +24,36 @@
  ****************************************************************************/
 
 #include "scene/Fog.h"
+#include "core/Root.h"
+
+namespace cc {
+namespace scene {
+
+void Fog::initialize(const FogInfo &fogInfo) {
+    _fogColor.set(fogInfo.fogColor);
+    _enabled    = fogInfo.enabled;
+    _type       = _enabled ? fogInfo.fogType : FogType::NONE;
+    _fogDensity = fogInfo.fogDensity;
+    _fogStart   = fogInfo.fogStart;
+    _fogEnd     = fogInfo.fogEnd;
+    _fogAtten   = fogInfo.fogAtten;
+    _fogTop     = fogInfo.fogTop;
+    _fogRange   = fogInfo.fogRange;
+}
+
+void Fog::updatePipeline() {
+    auto *root = Root::getInstance();
+    const FogType value = _enabled ? _type : FogType::NONE;
+    auto *pipeline = root->getPipeline();
+    const std::variant<float, bool, std::string> &macro = pipeline->getMacros().at("CC_USE_FOG");
+    const float *macroPtr = std::get_if<float>(&macro);
+    if (macroPtr && static_cast<int>(*macroPtr) == static_cast<int>(value)) {
+        return;
+    }
+    
+    pipeline->setValue("CC_USE_FOG", static_cast<float>(value));
+    root->onGlobalPipelineStateChanged();
+}
+
+} // namespace scene
+} // namespace cc

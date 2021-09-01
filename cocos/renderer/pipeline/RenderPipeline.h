@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <string>
 #include "Define.h"
 #include "GlobalDescriptorSetManager.h"
 #include "PipelineSceneData.h"
@@ -68,6 +69,8 @@ public:
     inline const map<String, InternalBindingInst> &getGlobalBindings() const { return _globalBindings; }
     inline const MacroRecord &                     getMacros() const { return _macros; }
     inline void                                    setValue(const String &name, bool value) { _macros[name] = value; }
+    inline void                                    setValue(const String &name, const std::string &value) { _macros[name] = value; }
+    inline void                                    setValue(const String &name, float value) { _macros[name] = value; }
     inline GlobalDSManager *                       getGlobalDSManager() const { return _globalDSManager; }
     inline gfx::DescriptorSet *                    getDescriptorSet() const { return _descriptorSet; }
     inline gfx::DescriptorSetLayout *              getDescriptorSetLayout() const { return _globalDSManager->getDescriptorSetLayout(); }

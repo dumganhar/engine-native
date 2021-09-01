@@ -22,3 +22,17 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+#include "scene/Ambient.h"
+
+namespace cc {
+namespace scene {
+
+void Ambient::initialize(scenegraph::AmbientInfo *info) {
+    setSkyColor(info->getSkyColor());
+    _groundAlbedo.set(info->getGroundAlbedo());
+    _skyIllum = info->getSkyIllum();
+}
+
+} // namespace scene
+} // namespace cc

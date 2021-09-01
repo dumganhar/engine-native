@@ -343,16 +343,11 @@ void LightingStage::recordCommandsLit(DeferredPipeline *pipeline, gfx::RenderPas
     // get pso and draw quad
     auto rendeArea = pipeline->getRenderArea(pipeline->getFrameGraphCamera(), false);
 
-<<<<<<< HEAD
     //TODO:(minggo) how to get these data?
 //    scene::Pass *pass   = sceneData->deferredLightPass;
 //    gfx::Shader *shader = sceneData->deferredLightPassShader;
     scene::Pass *pass;
     gfx::Shader *shader;
-=======
-    scene::Pass *        pass           = sceneData->getSharedData()->deferredLightPass;
-    gfx::Shader *        shader         = sceneData->getSharedData()->deferredLightPassShader;
->>>>>>> c7e81ad7909347346c3ee85be402e8df32d592c6
     gfx::InputAssembler *inputAssembler = pipeline->getIAByRenderArea(rendeArea);
     gfx::PipelineState * pState         = PipelineStateManager::getOrCreatePipelineState(
         pass, shader, inputAssembler, renderPass);

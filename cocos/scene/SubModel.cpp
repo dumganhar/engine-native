@@ -129,7 +129,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowShader() const {
     auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Director::getInstance().getRoot()->getPipeline());
-    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getSharedData()->shadow;
+    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     // _planarShader = shadowInfo->getPlanarShader(_patches); // getPlanarShader not implemented
 }
 
@@ -138,7 +138,7 @@ void SubModel::initPlanarShadowShader() const {
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() const {
     auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Director::getInstance().getRoot()->getPipeline());
-    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getSharedData()->shadow;
+    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     // _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches); // getPlanarInstanceShader not implemented
 }
 

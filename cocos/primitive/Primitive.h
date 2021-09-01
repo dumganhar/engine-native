@@ -25,64 +25,59 @@
 
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <variant>
-#include <vector>
-
-#include <cstdint>
-
-#include "base/Value.h"
-#include "math/Vec3.h"
+#include "3d/assets/Mesh.h"
 
 namespace cc {
 
-struct Error {
+enum class PrimitiveType {
+    BOX      = 0,
+    SPHERE   = 1,
+    CYLINDER = 2,
+    CONE     = 3,
+    CAPSULE  = 4,
+    TORUS    = 5,
+    PLANE    = 6,
+    QUAD     = 7,
 };
 
-using HTMLElement = void *;
-
-using Int8Array    = std::vector<int8_t>;
-using Int16Array   = std::vector<int16_t>;
-using Int32Array   = std::vector<int32_t>;
-using Uint8Array   = std::vector<uint8_t>;
-using Uint16Array  = std::vector<uint16_t>;
-using Uint32Array  = std::vector<uint32_t>;
-using Float32Array = std::vector<float>;
-using Float64Array = std::vector<double>;
-
-using TypedArray = std::variant<Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
-using IndexArray = std::variant<Uint8Array, Uint16Array, Uint32Array>;
-
-class DataView {
+/**
+ * @en
+ * Basic primitive mesh, this can be generate some primitive mesh at runtime.
+ * @zh
+ * 基础图形网格，可以在运行时构建一些基础的网格。
+ */
+class Primitive : public Mesh {
 public:
-    explicit DataView();
-};
+    using PrimitiveType = PrimitiveType;
 
-struct BoundingBox {
-    Vec3 min;
-    Vec3 max;
-};
+    /**
+     * @en
+     * The type of the primitive mesh, set it before you call onLoaded.
+     * @zh
+     * 此基础图形网格的类型，请在 onLoaded 调用之前设置。
+     */
+    //    @type(PrimitiveType)
+    PrimitiveType type{PrimitiveType::BOX};
 
-struct VertexIdChannel {
-    uint32_t stream;
-    uint32_t index;
-};
+    /**
+     * @en
+     * The option for build the primitive mesh, set it before you call onLoaded.
+     * @zh
+     * 创建此基础图形网格的可选参数，请在 onLoaded 调用之前设置。
+     */
+    //    @serializable
+    //    @editable
+    Record<std::string, float> info; //cjh float?
 
-struct NativeDep {
-    std::string uuid;
-    std::string ext;
-    bool        __isNative__{false};
+    explicit Primitive(PrimitiveType type /* = PrimitiveType.BOX*/);
 
-    explicit NativeDep() = default;
-
-    explicit NativeDep(bool isNative_, const std::string &uuid_, const std::string &ext_)
-    : uuid(uuid_), ext(ext_), __isNative__(isNative_), _isValid(true) {}
-
-    inline bool isValid() const { return _isValid; }
-
-private:
-    bool _isValid{false};
+    /**
+     * @en
+     * Construct the primitive mesh with `type` and `info`.
+     * @zh
+     * 根据`type`和`info`构建相应的网格。
+     */
+    void onLoaded() override;
 };
 
 } // namespace cc

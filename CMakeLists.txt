@@ -886,6 +886,35 @@ cocos_source_files(
                  cocos/scene/SubModel.cpp
 )
 
+##### primitive
+cocos_source_files(
+    cocos/primitive/Box.cpp
+    cocos/primitive/Box.h
+    cocos/primitive/Capsule.cpp
+    cocos/primitive/Capsule.h
+    cocos/primitive/Circle.cpp
+    cocos/primitive/Circle.h
+    cocos/primitive/Cone.cpp
+    cocos/primitive/Cone.h
+    cocos/primitive/Cylinder.cpp
+    cocos/primitive/Cylinder.h
+    cocos/primitive/Plane.cpp
+    cocos/primitive/Plane.h
+    cocos/primitive/Primitive.cpp
+    cocos/primitive/Primitive.h
+    cocos/primitive/PrimitiveDefine.h
+    cocos/primitive/PrimitiveUtils.cpp
+    cocos/primitive/PrimitiveUtils.h
+    cocos/primitive/Quad.cpp
+    cocos/primitive/Quad.h
+    cocos/primitive/Sphere.cpp
+    cocos/primitive/Sphere.h
+    cocos/primitive/Torus.cpp
+    cocos/primitive/Torus.h
+    cocos/primitive/Transform.cpp
+    cocos/primitive/Transform.h
+)
+
 ##### components
 cocos_source_files(
                  cocos/core/components/Component.h
@@ -1234,6 +1263,9 @@ cocos_source_files(
     cocos/3d/assets/MorphRendering.cpp
     cocos/3d/assets/Skeleton.h
     cocos/3d/assets/Skeleton.cpp
+
+    cocos/3d/misc/CreateMesh.h
+    cocos/3d/misc/CreateMesh.cpp
 )
 
 ##### core

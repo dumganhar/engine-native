@@ -42,7 +42,7 @@ class Skeleton;
  * @en Mesh asset
  * @zh 网格资源。
  */
-class Mesh final : public Asset {
+class Mesh : public Asset {
 public:
     struct IBufferView {
         uint32_t offset{0};
@@ -312,7 +312,7 @@ public:
      * @returns Return null if not found or can't read, otherwise, will create a large enough typed array to contain all data of the attribute,
      * the array type will match the data type of the attribute.
      */
-    Uint8Array readAttribute(index_t primitiveIndex, const char *attributeName);
+    TypedArray readAttribute(index_t primitiveIndex, const char *attributeName);
 
     /**
      * @en Read the requested attribute of the given sub mesh and fill into the given buffer.
@@ -333,7 +333,7 @@ public:
      * @returns Return null if not found or can't read, otherwise, will create a large enough typed array to contain all indices data,
      * the array type will use the corresponding stride size.
      */
-    Uint8Array readIndices(index_t primitiveIndex);
+    IndexArray readIndices(index_t primitiveIndex);
 
     /**
      * @en Read the indices data of the given sub mesh and fill into the given array

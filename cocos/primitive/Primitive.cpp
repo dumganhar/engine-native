@@ -22,67 +22,18 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 ****************************************************************************/
-
-#pragma once
-
-#include <string>
-#include <unordered_map>
-#include <variant>
-#include <vector>
-
-#include <cstdint>
-
-#include "base/Value.h"
-#include "math/Vec3.h"
+#include "primitive/Primitive.h"
+#include "3d/misc/CreateMesh.h"
+#include "primitive/PrimitiveDefine.h"
 
 namespace cc {
 
-struct Error {
-};
+Primitive::Primitive(PrimitiveType t /* = PrimitiveType.BOX*/)
+: type(t) {
+}
 
-using HTMLElement = void *;
-
-using Int8Array    = std::vector<int8_t>;
-using Int16Array   = std::vector<int16_t>;
-using Int32Array   = std::vector<int32_t>;
-using Uint8Array   = std::vector<uint8_t>;
-using Uint16Array  = std::vector<uint16_t>;
-using Uint32Array  = std::vector<uint32_t>;
-using Float32Array = std::vector<float>;
-using Float64Array = std::vector<double>;
-
-using TypedArray = std::variant<Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
-using IndexArray = std::variant<Uint8Array, Uint16Array, Uint32Array>;
-
-class DataView {
-public:
-    explicit DataView();
-};
-
-struct BoundingBox {
-    Vec3 min;
-    Vec3 max;
-};
-
-struct VertexIdChannel {
-    uint32_t stream;
-    uint32_t index;
-};
-
-struct NativeDep {
-    std::string uuid;
-    std::string ext;
-    bool        __isNative__{false};
-
-    explicit NativeDep() = default;
-
-    explicit NativeDep(bool isNative_, const std::string &uuid_, const std::string &ext_)
-    : uuid(uuid_), ext(ext_), __isNative__(isNative_), _isValid(true) {}
-
-    inline bool isValid() const { return _isValid; }
-
-private:
-    bool _isValid{false};
-};
+void Primitive::onLoaded() {
+    //    createMesh(primitives[PrimitiveType[this->type].toLowerCase()](this.info), this);
+}
 
 } // namespace cc

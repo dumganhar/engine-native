@@ -29,23 +29,25 @@ namespace cc {
 
 namespace {
 
-//uint32_t getOffset (const gfx::AttributeList& attributes, index_t attributeIndex) {
-//    let result = 0;
-//    for (let i = 0; i < attributeIndex; ++i) {
-//        const attribute = attributes[i];
-//        result += FormatInfos[attribute.format].size;
-//    }
-//    return result;
-//}
+uint32_t getOffset(const gfx::AttributeList &attributes, index_t attributeIndex) {
+    uint32_t result = 0;
+    for (index_t i = 0; i < attributeIndex; ++i) {
+        const auto &attribute = attributes[i];
+        result += gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)].size;
+    }
+    return result;
+}
 //
 //const { isLittleEndian } = sys;
 //
-//function getComponentByteLength (format: Format) {
-//    const info = FormatInfos[format];
-//    return info.size / info.count;
-//}
+uint32_t getComponentByteLength(gfx::Format format) {
+    const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(format)];
+    return info.size / info.count;
+}
+
+//using DataReaderCallback = std::function<TypedArray(uint32_t)>;
 //
-//function getReader (dataView: DataView, format: Format) {
+//DataReaderCallback getReader(dataView: DataView, gfx::Format format) {
 //    const info = FormatInfos[format];
 //    const stride = info.size / info.count;
 //
@@ -92,7 +94,7 @@ namespace {
 //    default:
 //    }
 //
-//    return null;
+//    return DataReaderCallback{};
 //}
 //
 //function getWriter (dataView: DataView, format: Format) {

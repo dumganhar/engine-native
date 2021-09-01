@@ -130,7 +130,8 @@ void Model::updateUBOs(uint32_t stamp) {
     _transformUpdated = false;
     getTransform()->updateWorldTransform();
     const auto &                                 worldMatrix = getTransform()->getWorldMatrix();
-    int                                          idx         = _instMatWorldIdx;
+    Mat4                                         mat4;
+    int                                          idx = _instMatWorldIdx;
     std::array<float, pipeline::UBOLocal::COUNT> bufferView;
     if (idx >= 0) {
         const std::vector<uint8_t *> &attrs = getInstancedAttributeBlock()->views;

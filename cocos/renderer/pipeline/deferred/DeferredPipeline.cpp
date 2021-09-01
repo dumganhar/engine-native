@@ -316,8 +316,8 @@ gfx::Rect DeferredPipeline::getRenderArea(scene::Camera *camera, bool onScreen) 
     const auto &viewport = camera->getViewport();
     renderArea.x         = static_cast<int>(viewport.x * w);
     renderArea.y         = static_cast<int>(viewport.y * h);
-    renderArea.width     = static_cast<uint>(viewport.z * w * _pipelineSceneData->getSharedData()->shadingScale);
-    renderArea.height    = static_cast<uint>(viewport.w * h * _pipelineSceneData->getSharedData()->shadingScale);
+    renderArea.width     = static_cast<uint>(viewport.z * w * _pipelineSceneData->getShadingScale());
+    renderArea.height    = static_cast<uint>(viewport.w * h * _pipelineSceneData->getShadingScale());
     return renderArea;
 }
 
@@ -337,7 +337,6 @@ void DeferredPipeline::destroyQuadInputAssembler() {
 
 bool DeferredPipeline::activeRenderer() {
     _commandBuffers.push_back(_device->getCommandBuffer());
-    auto *const sharedData = _pipelineSceneData->getSharedData();
 
     gfx::SamplerInfo info{
         gfx::Filter::POINT,
@@ -365,7 +364,7 @@ bool DeferredPipeline::activeRenderer() {
     _descriptorSet->update();
 
     // update global defines when all states initialized.
-    _macros["CC_USE_HDR"]               = static_cast<bool>(sharedData->isHDR);
+    _macros["CC_USE_HDR"]               = _pipelineSceneData->isHDR();
     _macros["CC_SUPPORT_FLOAT_TEXTURE"] = _device->hasFeature(gfx::Feature::TEXTURE_FLOAT);
 
     // step 2 create index buffer
@@ -437,12 +436,11 @@ void DeferredPipeline::destroyDeferredData() {
 
 gfx::Color DeferredPipeline::getClearcolor(scene::Camera *camera) {
     auto *const sceneData  = getPipelineSceneData();
-    auto *const sharedData = sceneData->getSharedData();
     gfx::Color  clearColor{0.0, 0.0, 0.0, 1.0F};
     if (!!(camera->getClearFlag() & gfx::ClearFlagBit::COLOR)) {
-        if (sharedData->isHDR) {
+        if (sceneData->isHDR()) {
             srgbToLinear(&clearColor, camera->getClearColor());
-            const auto scale = sharedData->fpScale / camera->getExposure();
+            const auto scale = sceneData->getFpScale() / camera->getExposure();
             clearColor.x *= scale;
             clearColor.y *= scale;
             clearColor.z *= scale;

@@ -106,7 +106,6 @@ void ForwardStage::render(scene::Camera *camera) {
     _batchedQueue->clear();
     auto *      pipeline      = static_cast<ForwardPipeline *>(_pipeline);
     auto *const sceneData     = _pipeline->getPipelineSceneData();
-    auto *const sharedData    = sceneData->getSharedData();
     const auto &renderObjects = sceneData->getRenderObjects();
 
     for (auto *queue : _renderQueues) {
@@ -162,14 +161,14 @@ void ForwardStage::render(scene::Camera *camera) {
     const auto &viewPort = camera->getViewport();
     _renderArea.x      = static_cast<int>(viewPort.x * w);
     _renderArea.y      = static_cast<int>(viewPort.y * h);
-    _renderArea.width  = static_cast<uint>(viewPort.z * w * sharedData->shadingScale);
-    _renderArea.height = static_cast<uint>(viewPort.w * h * sharedData->shadingScale);
+    _renderArea.width  = static_cast<uint>(viewPort.z * w * sceneData->getShadingScale());
+    _renderArea.height = static_cast<uint>(viewPort.w * h * sceneData->getShadingScale());
 
     const auto &clearColor = camera->getClearColor();
     if (hasFlag(static_cast<gfx::ClearFlags>(camera->getClearFlag()), gfx::ClearFlagBit::COLOR)) {
-        if (sharedData->isHDR) {
+        if (sceneData->isHDR()) {
             srgbToLinear(&_clearColors[0], clearColor);
-            auto scale = sharedData->fpScale / camera->getExposure();
+            auto scale = sceneData->getFpScale() / camera->getExposure();
             _clearColors[0].x *= scale;
             _clearColors[0].y *= scale;
             _clearColors[0].z *= scale;

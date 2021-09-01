@@ -26,6 +26,7 @@
 #pragma once
 #include "core/scene-graph/SceneGlobal.h"
 #include "math/Color.h"
+
 namespace cc {
 namespace scene {
 
@@ -37,8 +38,8 @@ public:
     Ambient(/* args */) = default;
     ~Ambient()          = default;
 
-    inline const std::vector<float> &getColorArray() const { return _colorArray; }
-    inline const std::vector<float> &getAlbedoArray() const { return _albedoArray; }
+    inline const std::array<float, 4> &getColorArray() const { return _colorArray; }
+    inline const std::array<float, 4> &getAlbedoArray() const { return _albedoArray; }
 
     /**
      * @en Enable ambient
@@ -76,12 +77,12 @@ public:
     inline void destroy() {}
 
 protected:
-    Color              _skyColor{51, 128, 204, 1.0};
-    Color              _groundAlbedo{51, 51, 51, 255};
-    bool               _enabled{false};
-    float              _skyIllum{0.F};
-    std::vector<float> _colorArray;
-    std::vector<float> _albedoArray;
+    Color                _skyColor{51, 128, 204, 1.0};
+    Color                _groundAlbedo{51, 51, 51, 255};
+    bool                 _enabled{false};
+    float                _skyIllum{0.F};
+    std::array<float, 4> _colorArray;
+    std::array<float, 4> _albedoArray;
 };
 
 } // namespace scene

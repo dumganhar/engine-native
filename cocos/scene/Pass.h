@@ -40,7 +40,7 @@
 #include "renderer/gfx-base/GFXDescriptorSet.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
-#include "scene/Define.h"
+#include "core/Root.h"
 
 namespace cc {
 
@@ -61,9 +61,10 @@ struct IPassInfoFull final : public IPassInfo {
     std::optional<PassOverrides> stateOverrides;
 };
 
-struct IMacroPatch {
-    std::string                            name;
-    std::variant<float, bool, std::string> value;
+enum class BatchingSchemes {
+    NONE       = 0,
+    INSTANCING = 1,
+    VB_MERGING = 2,
 };
 
 struct IBlockRef {

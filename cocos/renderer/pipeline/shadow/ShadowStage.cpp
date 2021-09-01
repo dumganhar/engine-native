@@ -57,8 +57,7 @@ void ShadowStage::activate(RenderPipeline *pipeline, RenderFlow *flow) {
 
 void ShadowStage::render(scene::Camera *camera) {
     const auto *sceneData  = _pipeline->getPipelineSceneData();
-    const auto *sharedData = sceneData->getSharedData();
-    const auto *shadowInfo = sceneData->getSharedData()->shadow;
+    const auto *shadowInfo = sceneData->getShadow();
 
     if (!_light || !_framebuffer) {
         return;
@@ -68,12 +67,12 @@ void ShadowStage::render(scene::Camera *camera) {
 
     _additiveShadowQueue->gatherLightPasses(_light, cmdBuffer);
 
-    const auto  shadowMapSize = shadowInfo->size;
+    const auto &shadowMapSize = shadowInfo->getSize();
     const auto &viewport      = camera->getViewport();
     _renderArea.x             = static_cast<int>(viewport.x * shadowMapSize.x);
     _renderArea.y             = static_cast<int>(viewport.y * shadowMapSize.y);
-    _renderArea.width         = static_cast<uint>(viewport.z * shadowMapSize.x * sharedData->shadingScale);
-    _renderArea.height        = static_cast<int>(viewport.w * shadowMapSize.y * sharedData->shadingScale);
+    _renderArea.width         = static_cast<uint>(viewport.z * shadowMapSize.x * sceneData->getShadingScale());
+    _renderArea.height        = static_cast<int>(viewport.w * shadowMapSize.y * sceneData->getShadingScale());
 
     _clearColors[0]  = {1.0F, 1.0F, 1.0F, 1.0F};
     auto *renderPass = _framebuffer->getRenderPass();

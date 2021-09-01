@@ -25,68 +25,16 @@
 
 #pragma once
 
-#include "math/Mat4.h"
-#include "math/Vec2.h"
-#include "math/Vec3.h"
-#include "math/Vec4.h"
-#include "renderer/gfx-base/GFXShader.h"
-#include "scene/Model.h"
-#include "scene/Ambient.h"
-#include "scene/Skybox.h"
-#include "scene/Fog.h"
+#include <vector>
+#include <string>
+#include <variant>
 
 namespace cc {
 namespace scene {
 
-// As Pass.h will include Define.h, so use forward declaration.
-class Pass;
-
-enum class ShadowType {
-    PLANAR    = 0,
-    SHADOWMAP = 1
-};
-
-struct Shadow {
-    bool       enabled{false};
-    bool       dirty{false};
-    bool       shadowMapDirty{false};
-    bool       autoAdapt{false};
-    ShadowType shadowType{ShadowType::PLANAR};
-    float      distance{0.0F};
-    Pass *     instancePass{nullptr};
-    Pass *     planarPass{nullptr};
-    float      nearValue{0.0F};
-    float      farValue{0.0F};
-    uint32_t   pcfType{0};
-    float      bias{0.0F};
-    float      normalBias{0.0F};
-    float      saturation{0.0F};
-    float      orthoSize{0.0F};
-
-    Vec4 color;
-    Vec2 size;
-    Vec3 normal;
-    Mat4 matLight;
-};
-
-struct PipelineSharedSceneData {
-    bool         isHDR{false};
-    float        shadingScale{0.0F};
-    float        fpScale{0.0F};
-    Ambient *    ambient{nullptr};
-    Shadow *     shadow{nullptr};
-    Skybox *     skybox{nullptr};
-    Fog *        fog{nullptr};
-    Pass *       deferredLightPass{nullptr};
-    gfx::Shader *deferredLightPassShader{nullptr};
-    Pass *       deferredPostPass{nullptr};
-    gfx::Shader *deferredPostPassShader{nullptr};
-};
-
-enum class BatchingSchemes {
-    NONE       = 0,
-    INSTANCING = 1,
-    VB_MERGING = 2,
+struct IMacroPatch {
+    std::string                            name;
+    std::variant<float, bool, std::string> value;
 };
 
 } // namespace scene

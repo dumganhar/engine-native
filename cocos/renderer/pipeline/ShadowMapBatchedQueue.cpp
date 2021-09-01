@@ -52,9 +52,9 @@ void ShadowMapBatchedQueue::gatherLightPasses(const scene::Light *light, gfx::Co
     clear();
 
     const auto *sceneData     = _pipeline->getPipelineSceneData();
-    const auto *shadowInfo    = sceneData->getSharedData()->shadow;
+    const auto *shadow        = sceneData->getShadow();
     const auto &shadowObjects = sceneData->getShadowObjects();
-    if (light && shadowInfo->enabled && shadowInfo->shadowType == scene::ShadowType::SHADOWMAP) {
+    if (light && shadow->isEnabled() && shadow->getType() == scene::ShadowType::SHADOW_MAP) {
         _pipeline->getPipelineUBO()->updateShadowUBOLight(light);
 
         for (const auto ro : shadowObjects) {

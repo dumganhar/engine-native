@@ -63,8 +63,8 @@ public:
     void                     initLocalDescriptors(index_t subModelIndex);
     std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
     void                     updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) override;
-    void                     updateTransform(float stamp) override;
-    void                     updateUBOs(float stamp) override;
+    void                     updateTransform(uint32_t stamp) override;
+    void                     updateUBOs(uint32_t stamp) override;
     void                     updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass);
     void                     updateInstancedJointTextureInfo() const;
     // void                     uploadAnimation(AnimationClip *anim); // TODO(xwx)

@@ -23,15 +23,15 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "scene/SkinningModel.h"
-
 #include <array>
 #include <utility>
+
 #include "scene/RenderScene.h"
+#include "scene/SkinningModel.h"
 
 namespace {
 
-void getRelevantBuffers(std::vector<index_t> outIndices, std::vector<int32_t> outBuffers, std::vector<std::vector<int32_t>> jointMaps, int32_t targetJoint) {
+void getRelevantBuffers(std::vector<index_t> &outIndices, std::vector<int32_t> &outBuffers, const std::vector<std::vector<int32_t>> &jointMaps, int32_t targetJoint) {
     for (int32_t i = 0; i < jointMaps.size(); i++) {
         index_t index = CC_INVALID_INDEX;
         for (int32_t j = 0; j < jointMaps[i].size(); j++) {
@@ -125,7 +125,7 @@ void SkinningModel::updateWorldMatrix(JointInfo *info, uint32_t stamp) {
     }
 }
 
-void SkinningModel::updateUBOs(float stamp) {
+void SkinningModel::updateUBOs(uint32_t stamp) {
     Super::updateUBOs(stamp);
     uint32_t bIdx = 0;
     Mat4     mat4;
@@ -145,15 +145,15 @@ void SkinningModel::updateUBOs(float stamp) {
 }
 
 void SkinningModel::initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) {
-    // auto original = subMeshData->getVertexBuffers();
+    // auto original = subMeshData->getVertexBuffers(); //TODO(xwx): getVertexBuffers not implement
     auto iaInfo = subMeshData->getIaInfo();
     // inInfo.vertexBuffers = subMeshData->getjointMappedBuffers();
     Super::initSubModel(idx, subMeshData, mat);
     // iaInfo.vertexBuffers = original;
 }
 
-std::vector<IMacroPatch> SkinningModel::getMacroPatches(index_t submodelIdx) const {
-    auto superMacroPatches = Super::getMacroPatches(submodelIdx);
+std::vector<IMacroPatch> SkinningModel::getMacroPatches(index_t subModelIndex) const {
+    auto superMacroPatches = Super::getMacroPatches(subModelIndex);
     if (!superMacroPatches.empty()) {
         myPatches.reserve(myPatches.size() + superMacroPatches.size());
         myPatches.insert(std::end(myPatches), std::begin(superMacroPatches), std::end(superMacroPatches));
@@ -173,8 +173,8 @@ SkinningModel::~SkinningModel() {
     }
 }
 
-void SkinningModel::setBuffers(std::vector<gfx::Buffer *> buffers) {
-    _buffers = std::move(buffers);
+void SkinningModel::setBuffers(const std::vector<gfx::Buffer *> &buffers) {
+    _buffers = buffers;
     for (auto *buffer : _buffers) {
         auto *data = new std::array<float, pipeline::UBOSkinning::COUNT>();
         _dataArray.push_back(data);
@@ -189,7 +189,7 @@ void SkinningModel::updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorS
     }
 }
 
-void SkinningModel::updateTransform(float stamp) {
+void SkinningModel::updateTransform(uint32_t stamp) {
     auto *root = getTransform();
     if (root->getFlagsChanged() || root->getDirtyFlag()) {
         root->updateWorldTransform();

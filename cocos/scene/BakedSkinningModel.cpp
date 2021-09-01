@@ -26,7 +26,7 @@
 
 namespace cc {
 namespace scene {
-void BakedSkinningModel::updateTransform(float stamp) {
+void BakedSkinningModel::updateTransform(uint32_t stamp) {
     Model::updateTransform(stamp);
     if (!_isUploadAnim) {
         return;
@@ -39,7 +39,7 @@ void BakedSkinningModel::updateTransform(float stamp) {
     }
 }
 
-void BakedSkinningModel::updateUBOs(float stamp) {
+void BakedSkinningModel::updateUBOs(uint32_t stamp) {
     Model::updateUBOs(stamp);
     BakedAnimInfo& info = _jointMedium.animInfo;
     int            idx  = _instAnimInfoIdx;

@@ -27,7 +27,7 @@
 namespace cc {
 namespace scene {
 std::vector<IMacroPatch> MorphModel::getMacroPatches(index_t subModelIndex) const {
-    if (_morphRenderingInstance) {
+    if (_morphRenderingInstance != nullptr) {
         return _morphRenderingInstance->requiredPatches(subModelIndex);
     }
     return std::vector<IMacroPatch>();

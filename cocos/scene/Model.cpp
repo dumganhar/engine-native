@@ -97,7 +97,7 @@ void Model::uploadMat4AsVec4x3(const Mat4 &mat, float *v1, float *v2, float *v3)
     v3[3] = mat.m[14];
 }
 
-void Model::updateTransform(float /*stamp*/) {
+void Model::updateTransform(uint32_t /*stamp*/) {
     scenegraph::Node *node = _transform;
     if (node->getFlagsChanged() || node->getDirtyFlag()) {
         node->updateWorldTransform();
@@ -119,7 +119,7 @@ void Model::updateWorldBound() {
     }
 }
 
-void Model::updateUBOs(float stamp) {
+void Model::updateUBOs(uint32_t stamp) {
     for (SubModel *subModel : _subModels) {
         subModel->update();
     }
@@ -131,7 +131,6 @@ void Model::updateUBOs(float stamp) {
     getTransform()->updateWorldTransform();
     const auto &                                 worldMatrix = getTransform()->getWorldMatrix();
     int                                          idx         = _instMatWorldIdx;
-    Mat4                                         mat4;
     std::array<float, pipeline::UBOLocal::COUNT> bufferView;
     if (idx >= 0) {
         const std::vector<uint8_t *> &attrs = getInstancedAttributeBlock()->views;

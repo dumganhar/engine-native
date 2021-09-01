@@ -59,21 +59,17 @@ class SkinningModel final : public MorphModel {
 public:
     using Super                          = MorphModel;
     SkinningModel()                      = default;
-    SkinningModel(const SkinningModel &) = delete;
-    SkinningModel(SkinningModel &&)      = delete;
     ~SkinningModel() override;
-    SkinningModel &operator=(const SkinningModel &) = delete;
-    SkinningModel &operator=(SkinningModel &&) = delete;
 
     inline void setIndicesAndJoints(const std::vector<index_t> &bufferIndices, const std::vector<JointInfo> &joints) {
         _bufferIndices = bufferIndices;
         _joints        = joints;
     }
     inline void              setNeedUpdate(bool needUpdate) { _needUpdate = needUpdate; }
-    void                     setBuffers(std::vector<gfx::Buffer *> buffers);
+    void                     setBuffers(const std::vector<gfx::Buffer *>& buffers);
     void                     updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) override;
-    void                     updateTransform(float stamp) override;
-    void                     updateUBOs(float stamp) override;
+    void                     updateTransform(uint32_t stamp) override;
+    void                     updateUBOs(uint32_t stamp) override;
     void                     destroy() override;
     void                     bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningRoot, Mesh *mesh);
     void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
@@ -92,6 +88,7 @@ private:
     std::vector<gfx::Buffer *>                                     _buffers;
     std::vector<JointInfo>                                         _joints;
     std::vector<std::array<float, pipeline::UBOSkinning::COUNT> *> _dataArray;
+    CC_DISALLOW_COPY_MOVE_ASSIGN(SkinningModel);
 };
 
 } // namespace scene

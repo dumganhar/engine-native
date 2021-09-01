@@ -72,7 +72,7 @@ public:
     void                             createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos);
     virtual void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat);
     void                             setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
-    virtual void                     setSubModelMaterial(int idx, Material *mat);
+    virtual void                     setSubModelMaterial(index_t idx, Material *mat);
     void                             onGlobalPipelineStateChanged() const;
     void                             onMacroPatchesStateChanged() const;
     void                             updateLightingmap(Texture2D *texture, const Vec4 &uvParam);
@@ -121,7 +121,7 @@ public:
     inline const std::vector<SubModel *> &    getSubModels() const { return _subModels; }
     inline scenegraph::Node *                 getTransform() const { return _transform; }
     inline bool                               getTransformUpdated() const { return _transformUpdated; }
-    inline int32_t                            getUpdatStamp() const { return _updateStamp; }
+    inline uint32_t                           getUpdatStamp() const { return _updateStamp; }
     inline uint32_t                           getVisFlags() const { return _visFlags; }
     inline geometry::AABB *                   getWorldBounds() const { return _worldBounds; }
     inline ModelType                          getType() const { return _type; };
@@ -134,7 +134,7 @@ protected:
     int32_t      getInstancedAttributeIndex(const std::string &name) const;
     void         updateInstanceAttribute(const std::vector<gfx::Attribute> &, Pass *pass) const;
     void         initLocalDescriptors(index_t subModelIndex);
-    virtual void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) const;
+    virtual void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet);
 
     ModelType       _type{ModelType::DEFAULT};
     bool            _transformUpdated{false};
@@ -153,7 +153,7 @@ private:
 
     int32_t                         _instMatWorldIdx{-1};
     uint32_t                        _visFlags{static_cast<uint32_t>(scenegraph::LayerList::NONE)};
-    int32_t                         _updateStamp{-1};
+    uint32_t                        _updateStamp{0};
     scenegraph::Node *              _transform{nullptr};
     scenegraph::Node *              _node{nullptr};
     float *                         _localData{nullptr};

@@ -25,29 +25,27 @@
 
 #pragma once
 
+#include "3d/assets/Morph.h"
+#include "core/assets/Material.h"
 #include "scene/Model.h"
 
 namespace cc {
-
-class Material;
-
 namespace scene {
-
-class MorphRenderingInstance;
-
 class MorphModel : public Model {
 public:
+    using Super            = Model;
     MorphModel()           = default;
     ~MorphModel() override = default;
 
     std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
     void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
     void                     destroy() override;
-    void                     setSubModelMaterial(int idx, Material *mat) override;
-    void                     setMorphRendering(MorphRenderingInstance *morphRendering);
+    void                     setSubModelMaterial(index_t idx, Material *mat) override;
+
+    inline void setMorphRendering(MorphRenderingInstance *morphRendering) { _morphRenderingInstance = morphRendering; }
 
 protected:
-    void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) const override;
+    void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) override;
 
 private:
     Material *              launderMaterial(Material *material) const;

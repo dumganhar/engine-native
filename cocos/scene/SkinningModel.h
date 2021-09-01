@@ -57,31 +57,21 @@ struct JointInfo {
 
 class SkinningModel final : public MorphModel {
 public:
+    using Super                          = MorphModel;
     SkinningModel()                      = default;
-    SkinningModel(const SkinningModel &) = delete;
-    SkinningModel(SkinningModel &&)      = delete;
     ~SkinningModel() override;
-    SkinningModel &operator=(const SkinningModel &) = delete;
-    SkinningModel &operator=(SkinningModel &&) = delete;
 
-    void        setBuffers(std::vector<gfx::Buffer *> buffers);
     inline void setIndicesAndJoints(const std::vector<index_t> &bufferIndices, const std::vector<JointInfo> &joints) {
         _bufferIndices = bufferIndices;
         _joints        = joints;
     }
-    inline void updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) const override {
-        gfx::Buffer *buffer = _buffers[_bufferIndices[submodelIdx]];
-        if (buffer) {
-            descriptorset->bindBuffer(pipeline::UBOSkinning::BINDING, buffer);
-        }
-    }
-    inline void setNeedUpdate(bool needUpdate) {
-        _needUpdate = needUpdate;
-    }
+    inline void              setNeedUpdate(bool needUpdate) { _needUpdate = needUpdate; }
+    void                     setBuffers(const std::vector<gfx::Buffer *>& buffers);
+    void                     updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) override;
     void                     updateTransform(uint32_t stamp) override;
     void                     updateUBOs(uint32_t stamp) override;
     void                     destroy() override;
-    void                     bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh) const;
+    void                     bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningRoot, Mesh *mesh);
     void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
     std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
 
@@ -91,14 +81,14 @@ protected:
 private:
     static void                                                    uploadJointData(uint32_t base, const Mat4 &mat, float *dst);
     void                                                           updateWorldMatrix(JointInfo *info, uint32_t stamp);
-    void                                                           ensureEnoughBuffers(uint32_t count) const;
-    void                                                           getRelevantBuffers(std::vector<index_t> outIndices, std::vector<int32_t> outBuffers, std::vector<std::vector<int32_t>> jointMaps, int32_t targetJoint) const;
+    void                                                           ensureEnoughBuffers(index_t count);
     bool                                                           _needUpdate{false};
     Mat4                                                           _worldMatrix;
     std::vector<index_t>                                           _bufferIndices;
     std::vector<gfx::Buffer *>                                     _buffers;
     std::vector<JointInfo>                                         _joints;
     std::vector<std::array<float, pipeline::UBOSkinning::COUNT> *> _dataArray;
+    CC_DISALLOW_COPY_MOVE_ASSIGN(SkinningModel);
 };
 
 } // namespace scene

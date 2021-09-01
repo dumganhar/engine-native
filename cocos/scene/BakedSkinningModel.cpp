@@ -23,7 +23,6 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "scene/BakedSkinningModel.h"
-#include "pipeline/Define.h"
 
 namespace {
 const uint32_t JOINT_TEXTURE_SAMPLER_HASH = cc::pipeline::SamplerLib::genSamplerHash({

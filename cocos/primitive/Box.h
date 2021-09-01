@@ -22,67 +22,76 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 ****************************************************************************/
-
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <variant>
-#include <vector>
-
-#include <cstdint>
-
-#include "base/Value.h"
-#include "math/Vec3.h"
+#include "primitive/PrimitiveDefine.h"
 
 namespace cc {
 
-struct Error {
+/**
+ * @en
+ * The definition of the parameter for building a box.
+ * @zh
+ * 立方体参数选项。
+ */
+struct IBoxOptions : public IGeometryOptions {
+    /**
+     * @en
+     * Box extent on X-axis.
+     * @zh
+     * 立方体宽度。
+     */
+    std::optional<float> width;
+
+    /**
+     * @en
+     * Box extent on Y-axis.
+     * @zh
+     * 立方体高度。
+     */
+    std::optional<float> height;
+
+    /**
+     * @en
+     * Box extent on Z-axis.
+     * @zh
+     * 立方体长度。
+     */
+    std::optional<float> length;
+
+    /**
+     * @en
+     * Segment count on X-axis.
+     * @zh
+     * 宽度线段数。
+     */
+    std::optional<uint32_t> widthSegments;
+
+    /**
+     * @en
+     * Segment count on Y-axis.
+     * @zh
+     * 高度线段数。
+     */
+    std::optional<uint32_t> heightSegments;
+
+    /**
+     * @en
+     * Segment count on Z-axis.
+     * @zh
+     * 长度线段数。
+     */
+    std::optional<uint32_t> lengthSegments;
 };
 
-using HTMLElement = void *;
-
-using Int8Array    = std::vector<int8_t>;
-using Int16Array   = std::vector<int16_t>;
-using Int32Array   = std::vector<int32_t>;
-using Uint8Array   = std::vector<uint8_t>;
-using Uint16Array  = std::vector<uint16_t>;
-using Uint32Array  = std::vector<uint32_t>;
-using Float32Array = std::vector<float>;
-using Float64Array = std::vector<double>;
-
-using TypedArray = std::variant<Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
-using IndexArray = std::variant<Uint8Array, Uint16Array, Uint32Array>;
-
-class DataView {
-public:
-    explicit DataView();
-};
-
-struct BoundingBox {
-    Vec3 min;
-    Vec3 max;
-};
-
-struct VertexIdChannel {
-    uint32_t stream;
-    uint32_t index;
-};
-
-struct NativeDep {
-    std::string uuid;
-    std::string ext;
-    bool        __isNative__{false};
-
-    explicit NativeDep() = default;
-
-    explicit NativeDep(bool isNative_, const std::string &uuid_, const std::string &ext_)
-    : uuid(uuid_), ext(ext_), __isNative__(isNative_), _isValid(true) {}
-
-    inline bool isValid() const { return _isValid; }
-
-private:
-    bool _isValid{false};
-};
+/**
+ * @en
+ * This function generates a box with specified extents and centered at origin,
+ * but may be repositioned through the `center` option.
+ * @zh
+ * 生成一个立方体，其大小是定义的范围且中心在原点。
+ * @param options 参数选项。
+ */
+IGeometry box(const IGeometryOptions *options);
 
 } // namespace cc

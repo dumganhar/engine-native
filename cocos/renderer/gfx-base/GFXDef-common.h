@@ -1052,6 +1052,27 @@ struct Attribute {
 
 using AttributeList = vector<Attribute>;
 
+constexpr const char *ATTR_NAME_POSITION   = "a_position";
+constexpr const char *ATTR_NAME_NORMAL     = "a_normal";
+constexpr const char *ATTR_NAME_TANGENT    = "a_tangent";
+constexpr const char *ATTR_NAME_BITANGENT  = "a_bitangent";
+constexpr const char *ATTR_NAME_WEIGHTS    = "a_weights";
+constexpr const char *ATTR_NAME_JOINTS     = "a_joints";
+constexpr const char *ATTR_NAME_COLOR      = "a_color";
+constexpr const char *ATTR_NAME_COLOR1     = "a_color1";
+constexpr const char *ATTR_NAME_COLOR2     = "a_color2";
+constexpr const char *ATTR_NAME_TEX_COORD  = "a_texCoord";
+constexpr const char *ATTR_NAME_TEX_COORD1 = "a_texCoord1";
+constexpr const char *ATTR_NAME_TEX_COORD2 = "a_texCoord2";
+constexpr const char *ATTR_NAME_TEX_COORD3 = "a_texCoord3";
+constexpr const char *ATTR_NAME_TEX_COORD4 = "a_texCoord4";
+constexpr const char *ATTR_NAME_TEX_COORD5 = "a_texCoord5";
+constexpr const char *ATTR_NAME_TEX_COORD6 = "a_texCoord6";
+constexpr const char *ATTR_NAME_TEX_COORD7 = "a_texCoord7";
+constexpr const char *ATTR_NAME_TEX_COORD8 = "a_texCoord8";
+constexpr const char *ATTR_NAME_BATCH_ID   = "a_batch_id";
+constexpr const char *ATTR_NAME_BATCH_UV   = "a_batch_uv";
+
 struct ShaderInfo {
     String                     name;
     ShaderStageList            stages;

@@ -44,6 +44,7 @@
 #include "gfx-base/GFXFramebuffer.h"
 #include "gfx-base/GFXSampler.h"
 #include "gfx-base/GFXTexture.h"
+#include "scene/DirectionalLight.h"
 #include "scene/RenderScene.h"
 
 namespace cc {

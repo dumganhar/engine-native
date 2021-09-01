@@ -29,8 +29,9 @@
 #include "core/Root.h"
 #include "gfx-base/GFXDevice.h"
 #include "platform/Application.h"
+#include "scene/DirectionalLight.h"
 #include "scene/RenderScene.h"
-#include "core/Root.h"
+#include "scene/SpotLight.h"
 
 namespace cc {
 

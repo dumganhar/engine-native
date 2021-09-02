@@ -105,10 +105,11 @@ void AABB::set(const cc::Vec3 &centerVal, const cc::Vec3 &halfExtentVal) {
 }
 
 void AABB::transform(const Mat4 &m, AABB *out) {
-    center.transformMat4(getCenter(), m);
-    transformExtentM4(&halfExtents, getHalfExtents(), m);
+    Vec3::transformMat4(center, m, &out->center);
+    transformExtentM4(&out->halfExtents, getHalfExtents(), m);
 }
 
+// https://zeuxcg.org/2010/10/17/aabb-from-obb-with-component-wise-abs/
 void AABB::transformExtentM4(Vec3 *out, const Vec3 &extent, const Mat4 &m4) {
     Mat3 m3Tmp;
     m3Tmp.m[0] = std::abs(m4.m[0]);

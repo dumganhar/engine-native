@@ -168,10 +168,13 @@ DataWritterCallback getWriter(DataView &dataView, gfx::Format format) {
 } // namespace
 
 std::any Mesh::getNativeAsset() const {
-    //cjh TODO: return nullptr;
+    return _data; //cjh FIXME: need copy? could be _data pointer?
 }
 
 void Mesh::setNativeAsset(const std::any &obj) {
+    if (auto *p = std::any_cast<ArrayBuffer>(&obj); p != nullptr) {
+        _data = std::move(*p);
+    }
 }
 
 uint32_t Mesh::getSubMeshCount() const {
@@ -195,8 +198,16 @@ uint64_t Mesh::getHash() {
 }
 
 const Mesh::JointBufferIndicesType &Mesh::getJointBufferIndices() {
-    static JointBufferIndicesType ret;
-    return ret;
+    if (!_jointBufferIndices.empty()) {
+        return _jointBufferIndices;
+    }
+
+    _jointBufferIndices.reserve(_struct.primitives.size());
+    for (auto &p : _struct.primitives) {
+        _jointBufferIndices.emplace_back(p.jointMapIndex.has_value() ? p.jointMapIndex.value() : 0);
+    }
+
+    return _jointBufferIndices;
 }
 
 void Mesh::initialize() {

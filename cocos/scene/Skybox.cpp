@@ -41,7 +41,36 @@ cc::Material *skyboxMaterial{nullptr};
 } // namespace
 namespace cc {
 namespace scene {
-void Skybox::initialize(const scenegraph::SkyboxInfo &skyboxInfo) {
+
+void SkyboxInfo::setEnvmap(TextureCube *val) {
+    _envmap = val;
+    if (_resource) {
+        _resource->setEnvmap(_envmap);
+    }
+}
+
+void Skybox::setIsRGBE(bool val) {
+    if (val) {
+        if (skyboxMaterial != nullptr) {
+            skyboxMaterial->recompileShaders({{"USE_RGBE_CUBEMAP", val}}, CC_INVALID_INDEX);
+        }
+        if (_model != nullptr) {
+            _model->setSubModelMaterial(0, skyboxMaterial);
+        }
+    }
+    _isRGBE = val;
+    updatePipeline();
+}
+
+void Skybox::setEnvmap(TextureCube *val) {
+    _envmap = val != nullptr ? val : _default;
+    if (_envmap != nullptr) {
+        // Root::getInstance()->getPipeline()->getPipelineSceneData()->getAmbient()->getAlbedoArray()[3] = _envmap->getMipmaps().size(); // TODO(xwx): const cannot assignment
+        updateGlobalBinding();
+    }
+}
+
+void Skybox::initialize(const SkyboxInfo &skyboxInfo) {
     _enabled = skyboxInfo.getEnabled();
     _useIBL  = skyboxInfo.getIBL();
     _isRGBE  = skyboxInfo.getRGBE();
@@ -49,13 +78,13 @@ void Skybox::initialize(const scenegraph::SkyboxInfo &skyboxInfo) {
 }
 
 void Skybox::activate() {
-    auto *pipeline   = Director::getInstance().getRoot()->getPipeline();
+    auto *pipeline   = Root::getInstance()->getPipeline();
     auto *ambient    = pipeline->getPipelineSceneData()->getAmbient();
     _globalDSManager = pipeline->getGlobalDSManager();
     _default         = BuiltinResMgr::getInstance()->get<TextureCube>(std::string("default-cube-texture"));
 
     if (_model == nullptr) {
-        // _model = Director::getInstance().getRoot()->createModel(); // TODO(xwx): need to figure out usage
+        // _model = Root::getInstance()->createModel(); // TODO(xwx): need to figure out usage
         // this._model._initLocalDescriptors = () => {}; // TODO(xwx): need to figure out usage
     }
     if (_envmap == nullptr) {
@@ -92,7 +121,7 @@ void Skybox::activate() {
 
 void Skybox::updatePipeline() const {
     uint32_t                  value    = _useIBL ? (_isRGBE ? 2 : 1) : 0;
-    Root *                    root     = Director::getInstance().getRoot();
+    Root *                    root     = Root::getInstance();
     pipeline::RenderPipeline *pipeline = root->getPipeline();
 
     const std::variant<float, bool, std::string> &macro    = pipeline->getMacros().at("CC_USE_IBL");

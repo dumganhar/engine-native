@@ -74,7 +74,7 @@ Pass *SubModel::getPass(uint index) const {
 }
 
 void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &passes, const std::vector<IMacroPatch> &patches) {
-    _device = Director::getInstance().getRoot()->getDevice();
+    _device = Root::getInstance()->getDevice();
     // dsInfo
     _inputAssembler = _device->createInputAssembler(subMesh->getIaInfo());
     _descriptorSet  = _device->createDescriptorSet(dsInfo);
@@ -128,7 +128,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowShader() {
-    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Director::getInstance().getRoot()->getPipeline());
+    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
     Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     _planarShader      = shadowInfo->getPlanarShader(_patches);
 }
@@ -137,7 +137,7 @@ void SubModel::initPlanarShadowShader() {
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() {
-    auto *  pipeline      = dynamic_cast<pipeline::ForwardPipeline *>(Director::getInstance().getRoot()->getPipeline());
+    auto *  pipeline      = dynamic_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
     Shadow *shadowInfo    = pipeline->getPipelineSceneData()->getShadow();
     _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches);
 }

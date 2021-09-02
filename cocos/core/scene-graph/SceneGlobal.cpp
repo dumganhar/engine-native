@@ -24,15 +24,7 @@
  ****************************************************************************/
 
 #include "core/scene-graph/SceneGlobal.h"
-#include "scene/Skybox.h"
 
 namespace cc {
-
-void scenegraph::SkyboxInfo::setEnvmap(TextureCube *val) {
-    _envmap = val;
-    if (_resource) {
-        _resource->setEnvmap(_envmap);
-    }
-}
 
 } // namespace cc

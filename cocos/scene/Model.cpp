@@ -61,7 +61,7 @@ namespace cc {
 namespace scene {
 
 Model::Model() {
-    _device = Director::getInstance().getRoot()->getDevice();
+    _device = Root::getInstance()->getDevice();
 }
 
 void Model::initialize() {

@@ -29,12 +29,18 @@
 namespace cc {
 namespace scene {
 bool RenderWindow::initialize(gfx::Device *device, const IRenderWindowInfo &info) {
-    if (!info.title.empty()) {
-        _title = info.title;
+    if (info.title.has_value() && !info.title.value().empty()) {
+        _title = info.title.value();
     }
-    _swapchainBufferIndices = info.swapchainBufferIndices;
-    _width                  = info.width;
-    _height                 = info.height;
+    if (info.swapchainBufferIndices.has_value()) {
+        _swapchainBufferIndices = info.swapchainBufferIndices.value();
+    }
+
+    if (info.shouldSyncSizeWithSwapchain.has_value()) {
+        _swapchainBufferIndices = info.swapchainBufferIndices.value();
+    }
+    _width  = info.width;
+    _height = info.height;
 
     gfx::ColorAttachmentList    colorAttachments       = info.renderPassInfo.colorAttachments;
     gfx::DepthStencilAttachment depthStencilAttachment = info.renderPassInfo.depthStencilAttachment;
@@ -59,22 +65,25 @@ bool RenderWindow::initialize(gfx::Device *device, const IRenderWindowInfo &info
                                               _height});
             _hasOffScreenAttachments = true;
         } else {
-            _hasOnScreenAttachments = false;
+            _hasOnScreenAttachments = true;
         }
         _colorTextures.emplace_back(colorTex);
     }
 
     // Use the sign bit to indicate depth attachment
-    if (_swapchainBufferIndices >= 0) {
-        _depthStencilTexture     = device->createTexture({gfx::TextureType::TEX2D,
-                                                      gfx::TextureUsageBit::DEPTH_STENCIL_ATTACHMENT | gfx::TextureUsageBit::SAMPLED,
-                                                      depthStencilAttachment.format,
-                                                      _width,
-                                                      _height});
-        _hasOffScreenAttachments = true;
-    } else {
-        _hasOnScreenAttachments = true;
+    if (depthStencilAttachment.format != gfx::Format::UNKNOWN) {
+        if (_swapchainBufferIndices >= 0) {
+            _depthStencilTexture     = device->createTexture({gfx::TextureType::TEX2D,
+                                                          gfx::TextureUsageBit::DEPTH_STENCIL_ATTACHMENT | gfx::TextureUsageBit::SAMPLED,
+                                                          depthStencilAttachment.format,
+                                                          _width,
+                                                          _height});
+            _hasOffScreenAttachments = true;
+        } else {
+            _hasOnScreenAttachments = true;
+        }
     }
+
     _frameBuffer = device->createFramebuffer({_renderPass, _colorTextures, _depthStencilTexture});
     return true;
 }
@@ -100,6 +109,13 @@ void RenderWindow::resize(uint32_t width, uint32_t height) {
     if (_depthStencilTexture != nullptr) {
         _depthStencilTexture->resize(width, height);
         needRebuild = true;
+    }
+
+    for (gfx::Texture *colorTexture : _colorTextures) {
+        if (colorTexture != nullptr) {
+            colorTexture->resize(width, height);
+            needRebuild = true;
+        }
     }
 
     if (needRebuild && _frameBuffer != nullptr) {
@@ -138,7 +154,6 @@ void RenderWindow::attachCamera(Camera *camera) {
 void RenderWindow::detachCamera(Camera *camera) {
     for (auto it = _cameras.begin(); it != _cameras.end(); ++it) {
         if (*it == camera) {
-            CC_SAFE_DESTROY(camera);
             _cameras.erase(it);
             return;
         }

@@ -108,12 +108,11 @@ void RenderScene::addDirectionalLight(DirectionalLight *dl) {
 }
 
 void RenderScene::removeDirectionalLight(DirectionalLight *dl) {
-    for (auto it = _directionalLights.begin(); it != _directionalLights.end(); ++it) {
-        if (*it == dl) {
-            dl->detachFromScene();
-            _directionalLights.erase(it);
-            return;
-        }
+    auto iter = std::find(_directionalLights.begin(), _directionalLights.end(), dl);
+    if (iter != _directionalLights.end()) {
+        (*iter)->detachFromScene();
+        _directionalLights.erase(iter);
+        return;
     }
 }
 

@@ -88,7 +88,7 @@ void Shadow::activate() {
     } else {
         auto *root     = Root::getInstance();
         auto *pipeline = root->getPipeline();
-        pipeline->setValue("CC_RECEIVE_SHADOW", 0);
+        pipeline->setValue("CC_RECEIVE_SHADOW", 0.F);
         root->onGlobalPipelineStateChanged();
     }
 }
@@ -103,14 +103,14 @@ void Shadow::updatePlanarInfo() {
 
     auto *root     = Root::getInstance();
     auto *pipeline = root->getPipeline();
-    pipeline->setValue("CC_RECEIVE_SHADOW", 0);
+    pipeline->setValue("CC_RECEIVE_SHADOW", 0.F);
     root->onGlobalPipelineStateChanged();
 }
 
 void Shadow::updatePipeline() {
     auto *root     = Root::getInstance();
     auto *pipeline = root->getPipeline();
-    pipeline->setValue("CC_RECEIVE_SHADOW", 1);
+    pipeline->setValue("CC_RECEIVE_SHADOW", 1.F);
     root->onGlobalPipelineStateChanged();
 }
 
@@ -121,7 +121,7 @@ void Shadow::createInstanceMaterial() {
     materialInfo.effectName = "planar-shadow";
     MacroRecord microRecord{{"USE_INSTANCING", true}};
     materialInfo.defines = microRecord;
-    _instancingMaterial.initialize(materialInfo);
+    _instancingMaterial->initialize(materialInfo);
 }
 
 void Shadow::createMaterial() {
@@ -129,7 +129,7 @@ void Shadow::createMaterial() {
 
     IMaterialInfo materialInfo;
     materialInfo.effectName = "planar-shadow";
-    this._material.initialize(materialInfo);
+    _material->initialize(materialInfo);
 }
 
 } // namespace scene

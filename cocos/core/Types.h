@@ -95,11 +95,11 @@ public:
         return *(reinterpret_cast<T *>(_ab.data() + _byteOffset) + index);
     }
 
-    inline uint32_t getCount() const {
+    inline int32_t getCount() const {
         return _count;
     }
 
-    inline uint32_t getBytesPerElement() const { return _bytesPerElement; }
+    inline int32_t getBytesPerElement() const { return _bytesPerElement; }
 
     void *getElement(index_t index) const {
         if (index >= _count) {

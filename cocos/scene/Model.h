@@ -29,7 +29,7 @@
 #include <vector>
 #include "core/assets/RenderingSubMesh.h"
 #include "core/assets/Texture2D.h"
-
+#include "core/builtin/BuiltinResMgr.h"
 #include "core/geometry/AABB.h"
 #include "core/scene-graph/Layers.h"
 #include "core/scene-graph/Node.h"

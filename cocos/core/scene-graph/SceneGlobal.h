@@ -25,18 +25,18 @@
 
 #pragma once
 
+#include "core/assets/TextureCube.h"
 #include "math/Color.h"
 #include "math/Vec2.h"
 #include "math/Vec3.h"
 #include "scene/Fog.h"
 #include "scene/Shadow.h"
+#include "scene/Skybox.h"
 
 namespace cc {
-
 namespace scene {
 enum class FogType;
-}
-
+} // namespace scene
 namespace scenegraph {
 
 class Ambient;
@@ -59,33 +59,13 @@ public:
     inline void         activate(Ambient *resource) {}
 };
 
-class Skybox;
-class SkyboxInfo {
-protected:
-    bool    _isRGBE{false};
-    bool    _enabled{false};
-    bool    _useIBL{false};
-    Skybox *_resource;
-
-public:
-    SkyboxInfo(/* args */) = default;
-    ~SkyboxInfo()          = default;
-    inline void setEnabled(bool val) { _enabled = val; }
-    inline bool getEnabled() const { return _enabled; }
-    inline void setIBL(bool val) { _useIBL = val; }
-    inline bool getIBL() const { return _useIBL; }
-    inline void setRGBE(bool val) { _isRGBE = val; }
-    inline bool getRGBE() const { return _isRGBE; }
-    inline void activate(Skybox *resource) {}
-};
-
 class SceneGlobal {
 public:
     SceneGlobal(/* args */) = default;
     ~SceneGlobal()          = default;
     AmbientInfo       ambient;
     scene::ShadowInfo shadows;
-    SkyboxInfo        skybox;
+    scene::SkyboxInfo skybox;
     scene::FogInfo    fog;
     inline void       activate() {}
 };

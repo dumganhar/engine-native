@@ -148,7 +148,7 @@ public:
      * @en The vertex buffer for joint after mapping
      * @zh 骨骼索引按映射表处理后的顶点缓冲。
      */
-    const std::vector<uint32_t> &getJointMappedBuffers();
+    const gfx::BufferList &getJointMappedBuffers();
 
     bool destroy() override;
 

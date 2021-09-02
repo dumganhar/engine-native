@@ -28,29 +28,26 @@
 namespace cc {
 
 PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) {
-    // super(parent.root);
+    // super(parent.root); // no such constructor
     // parent->getRoot();
     _parent = parent;
     _owner  = owner;
     //cjh    doInit(_parent, true); // defines may change now
-    // TODO(xwx) _shaderInfo not implement
-    //     for (let i = 0; i < this._shaderInfo.blocks.length; i++) {
-    //     const u = this._shaderInfo.blocks[i];
-    //     const block = this._blocks[u.binding];
-    //     const parentBlock = this._parent.blocks[u.binding];
-    //     block.set(parentBlock);
-    // }
-    // setRootBufferDirty(true);
-    // const paren = this._parent as PassInstance;
-    // for (let i = 0; i < this._shaderInfo.samplerTextures.length; i++) {
-    //     const u = this._shaderInfo.samplerTextures[i];
-    //     for (let j = 0; j < u.count; j++) {
-    //         const sampler = paren._descriptorSet.getSampler(u.binding, j);
-    //         const texture = paren._descriptorSet.getTexture(u.binding, j);
-    //         this._descriptorSet.bindSampler(u.binding, sampler, j);
-    //         this._descriptorSet.bindTexture(u.binding, texture, j);
-    //     }
-    // }
+    for (const auto &b : _shaderInfo->blocks) { // seem logically useless in ts?
+        scene::IBlockRef block       = _blocks[b.binding];
+        scene::IBlockRef parentBlock = _parent->getBlocks()[b.binding];
+        block                        = parentBlock;
+    }
+    // setRootBufferDirty(true); // error in ts
+    auto *paren = dynamic_cast<PassInstance *>(_parent);
+    for (const auto &samplerTexture : _shaderInfo->samplerTextures) {
+        for (uint32_t i = 0; i < samplerTexture.count; ++i) {
+            auto *sampler = paren->_descriptorSet->getSampler(samplerTexture.binding, i);
+            auto *texture = paren->_descriptorSet->getTexture(samplerTexture.binding, i);
+            _descriptorSet->bindSampler(samplerTexture.binding, sampler, i);
+            _descriptorSet->bindTexture(samplerTexture.binding, texture, i);
+        }
+    }
     Super::tryCompile();
 }
 
@@ -59,19 +56,18 @@ scene::Pass *PassInstance::getParent() const {
 }
 
 void PassInstance::overridePipelineStates(const IPassInfo &original, const PassOverrides &override) {
-    // TODO(xwx) not implemented reset()
-    // _blendState->reset();
-    // _rs->reset();
-    // _depthStencilState->reset();
+    _blendState->reset();
+    _rs->reset();
+    _depthStencilState->reset();
 
     Pass::fillPipelineInfo(this, original);
     Pass::fillPipelineInfo(this, override);
     onStateChange();
 }
 
-bool PassInstance::tryCompile(const MacroRecord &defineOverrides) {
-    if (!defineOverrides.empty()) {
-        // if (!overrideMacros(_defines, defineOverrides)) return false; //overrideMacros not implement
+bool PassInstance::tryCompile(const std::optional<MacroRecord> &defineOverrides) {
+    if (!defineOverrides.has_value()) {
+        if (!overrideMacros(_defines, defineOverrides.value())) return false;
     }
     bool ret = Super::tryCompile();
     onStateChange();
@@ -87,9 +83,8 @@ void PassInstance::endChangeStatesSilently() {
 }
 
 void PassInstance::syncBatchingScheme() {
-    // this._defines.USE_BATCHING = this._defines.USE_INSTANCING = false;
-    _defines["USE_INSTANCING"] = false; // not sure?
-    _defines["USE_BATCHING"]   = false; // not sure?
+    _defines["USE_INSTANCING"] = false;
+    _defines["USE_BATCHING"]   = false;
     _batchingScheme            = scene::BatchingSchemes::NONE;
 }
 

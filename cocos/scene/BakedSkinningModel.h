@@ -43,10 +43,11 @@ struct BakedAnimInfo {
     }
 };
 struct BakedJointInfo {
-    std::vector<geometry::AABB *> boundsInfo;
-    uint8_t *                     jointTextureInfo{nullptr};
-    BakedAnimInfo                 animInfo;
     gfx::Buffer *                 buffer{nullptr};
+    uint8_t *                     jointTextureInfo{nullptr};
+    // IJointTextureHandle *         texture{nullptr};
+    BakedAnimInfo                 animInfo;
+    std::vector<geometry::AABB *> boundsInfo;
 };
 class BakedSkinningModel final : public MorphModel {
 public:

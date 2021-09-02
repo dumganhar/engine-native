@@ -69,8 +69,8 @@ public:
     inline RenderingSubMesh *                getSubMesh() const { return _subMesh; }
 
     void initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &passes, const std::vector<IMacroPatch> &patches);
-    void initPlanarShadowShader() const;
-    void initPlanarShadowInstanceShader() const;
+    void initPlanarShadowShader();
+    void initPlanarShadowInstanceShader();
     void destroy();
     void onPipelineStateChanged();
     void onMacroPatchesStateChanged(const std::vector<IMacroPatch> &patches);

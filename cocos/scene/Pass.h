@@ -40,7 +40,6 @@
 #include "renderer/gfx-base/GFXDescriptorSet.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
-#include "core/Root.h"
 
 namespace cc {
 
@@ -262,10 +261,10 @@ public:
     gfx::Shader *getShaderVariant(const std::vector<IMacroPatch> &patches);
 
     // infos
-    inline Root *       getRoot() const { return _root; }
-    inline gfx::Device *getDevice() const { return _device; }
-    //    inline const IProgramInfo &                                               getShaderInfo() const { return _shaderInfo; }
-    //    inline gfx::DescriptorSetLayout *                                              getLocalSetLayout() const { return programLib.getDescriptorSetLayout(_device, _programName, true); }
+    inline Root *                                    getRoot() const { return _root; }
+    inline gfx::Device *                             getDevice() const { return _device; }
+    inline IProgramInfo *                            getShaderInfo() const { return _shaderInfo; }
+    inline gfx::DescriptorSetLayout *                getLocalSetLayout() const { return ProgramLib::getInstance()->getDescriptorSetLayout(_device, _programName, true); }
     inline const std::string &                       getProgram() const { return _programName; }
     inline const Record<std::string, IPropertyInfo> &getProperties() const { return _properties; }
     inline const MacroRecord &                       getDefines() const { return _defines; }

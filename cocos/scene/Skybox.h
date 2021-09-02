@@ -27,18 +27,42 @@
 
 #include "base/Macros.h"
 #include "core/assets/TextureCube.h"
-#include "core/scene-graph/SceneGlobal.h"
+#include "pipeline/GlobalDescriptorSetManager.h"
 #include "scene/Model.h"
 
 namespace cc {
 namespace scene {
+
+class Skybox;
+
+struct SkyboxInfo {
+public:
+    SkyboxInfo(/* args */) = default;
+    ~SkyboxInfo()          = default;
+    inline TextureCube *getEnvamp() const { return _envmap; }
+    inline void         setEnabled(bool val) { _enabled = val; }
+    inline bool         getEnabled() const { return _enabled; }
+    inline void         setIBL(bool val) { _useIBL = val; }
+    inline bool         getIBL() const { return _useIBL; }
+    inline void         setRGBE(bool val) { _isRGBE = val; }
+    inline bool         getRGBE() const { return _isRGBE; }
+    inline void         activate(Skybox *resource) {}
+    void                setEnvmap(TextureCube *val);
+
+protected:
+    TextureCube *_envmap{nullptr};
+    bool         _isRGBE{false};
+    bool         _enabled{false};
+    bool         _useIBL{false};
+    Skybox *     _resource;
+};
 
 class Skybox final {
 public:
     Skybox()  = default;
     ~Skybox() = default;
 
-    void initialize(const scenegraph::SkyboxInfo &skyboxInfo);
+    void initialize(const SkyboxInfo &skyboxInfo);
     void activate();
 
     inline Model *getModel() const { return _model; }
@@ -81,17 +105,16 @@ public:
     void                setEnvmap(TextureCube *val);
 
 private:
-    void updatePipeline();
+    void updatePipeline() const;
     void updateGlobalBinding();
 
-    TextureCube *_envmap{nullptr};
-    //TODO:
-    //    protected _globalDSManager: GlobalDSManager | null = null;
-    Model *      _model{nullptr};
-    TextureCube *_default{nullptr};
-    bool         _enabled{false};
-    bool         _useIBL{false};
-    bool         _isRGBE{false};
+    TextureCube *              _envmap{nullptr};
+    pipeline::GlobalDSManager *_globalDSManager{nullptr};
+    Model *                    _model{nullptr};
+    TextureCube *              _default{nullptr};
+    bool                       _enabled{false};
+    bool                       _useIBL{false};
+    bool                       _isRGBE{false};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(Skybox);
 };

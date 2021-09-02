@@ -1209,6 +1209,21 @@ struct RasterizerState {
     uint        isDepthClip      = 1;
     uint        isMultisample    = 0;
     float       lineWidth        = 1.0F;
+
+    void reset() {
+        isDiscard        = 0;
+        polygonMode      = PolygonMode::FILL;
+        shadeModel       = ShadeModel::GOURAND;
+        cullMode         = CullMode::BACK;
+        isFrontFaceCCW   = 1;
+        depthBiasEnabled = 0;
+        depthBias        = 0.0F;
+        depthBiasClamp   = 0.0F;
+        depthBiasSlop    = 0.0F;
+        isDepthClip      = 1;
+        isMultisample    = 0;
+        lineWidth        = 1.0F;
+    }
 };
 
 // Use uint for all boolean values to convert memory to DepthStencilState* in shared memory.
@@ -1232,6 +1247,28 @@ struct DepthStencilState {
     StencilOp      stencilZFailOpBack    = StencilOp::KEEP;
     StencilOp      stencilPassOpBack     = StencilOp::KEEP;
     uint           stencilRefBack        = 1;
+
+    void reset() {
+        depthTest             = 1;
+        depthWrite            = 1;
+        depthFunc             = ComparisonFunc::LESS;
+        stencilTestFront      = 0;
+        stencilFuncFront      = ComparisonFunc::ALWAYS;
+        stencilReadMaskFront  = 0xffffffff;
+        stencilWriteMaskFront = 0xffffffff;
+        stencilFailOpFront    = StencilOp::KEEP;
+        stencilZFailOpFront   = StencilOp::KEEP;
+        stencilPassOpFront    = StencilOp::KEEP;
+        stencilRefFront       = 1;
+        stencilTestBack       = 0;
+        stencilFuncBack       = ComparisonFunc::ALWAYS;
+        stencilReadMaskBack   = 0xffffffff;
+        stencilWriteMaskBack  = 0xffffffff;
+        stencilFailOpBack     = StencilOp::KEEP;
+        stencilZFailOpBack    = StencilOp::KEEP;
+        stencilPassOpBack     = StencilOp::KEEP;
+        stencilRefBack        = 1;
+    }
 };
 
 // Use uint for all boolean values to do convert memory to BlendTarget* in shared memory.

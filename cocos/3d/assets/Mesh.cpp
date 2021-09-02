@@ -578,7 +578,7 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
             TypedArray dstIBView;
 
             if (idxStride == 2) {
-                ibView = Uint16Array(ib);
+                //cjh TODO:                ibView = Uint16Array(ib);
             } else if (idxStride == 1) {
                 //                ibView = new Uint8Array(ib);
             } else { // Uint32

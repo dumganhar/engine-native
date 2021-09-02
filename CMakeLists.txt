@@ -1268,6 +1268,8 @@ cocos_source_files(
 
     cocos/3d/misc/CreateMesh.h
     cocos/3d/misc/CreateMesh.cpp
+    cocos/3d/misc/BufferBlob.h
+    cocos/3d/misc/BufferBlob.cpp
 )
 
 ##### core
@@ -1291,6 +1293,7 @@ cocos_source_files(
     cocos/core/SplashScreen.cpp
     cocos/core/SplashScreen.h
     cocos/core/Types.h
+    cocos/core/Types.cpp
 
     # memop
     cocos/core/memop/CachedArray.h

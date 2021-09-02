@@ -44,6 +44,8 @@ class Skeleton;
  */
 class Mesh : public Asset {
 public:
+    using Super = Asset;
+
     struct IBufferView {
         uint32_t offset{0};
         uint32_t length{0};
@@ -161,8 +163,6 @@ public:
         Uint8Array data;
     };
 
-    using Super = Asset;
-
     Mesh()           = default;
     ~Mesh() override = default;
 
@@ -210,7 +210,7 @@ public:
      * @en The hash of the mesh
      * @zh 此网格的哈希值。
      */
-    uint64_t getHash() const;
+    uint64_t getHash();
 
     using JointBufferIndicesType = std::vector<index_t>;
     /**
@@ -267,7 +267,7 @@ public:
      * @zh 获取骨骼变换空间内下的 [[AABB]] 包围盒
      * @param skeleton
      */
-    const BoneSpaceBounds &getBoneSpaceBounds(Skeleton *skeleton);
+    BoneSpaceBounds getBoneSpaceBounds(Skeleton *skeleton);
 
     /**
      * @en Merge the given mesh into the current mesh
@@ -277,7 +277,7 @@ public:
      * @param [validate=false] Whether to validate the mesh
      * @returns Check the mesh state and return the validation result.
      */
-    bool merge(Mesh *mesh, const Mat4 &worldMatrix, bool validate = false);
+    bool merge(Mesh *mesh, const Mat4 *worldMatrix = nullptr, bool validate = false);
 
     /**
      * @en Validation for whether the given mesh can be merged into the current mesh.
@@ -324,7 +324,7 @@ public:
      * @param offset The offset of the first attribute in the target buffer
      * @returns Return false if failed to access attribute, return true otherwise.
      */
-    bool copyAttribute(index_t primitiveIndex, const char *attributeName, const ArrayBuffer &buffer, uint32_t stride, uint32_t offset);
+    bool copyAttribute(index_t primitiveIndex, const char *attributeName, ArrayBuffer &buffer, uint32_t stride, uint32_t offset);
 
     /**
      * @en Read the indices data of the given sub mesh
@@ -333,7 +333,7 @@ public:
      * @returns Return null if not found or can't read, otherwise, will create a large enough typed array to contain all indices data,
      * the array type will use the corresponding stride size.
      */
-    IndexArray readIndices(index_t primitiveIndex);
+    TypedArray readIndices(index_t primitiveIndex);
 
     /**
      * @en Read the indices data of the given sub mesh and fill into the given array
@@ -342,10 +342,10 @@ public:
      * @param outputArray The target output array
      * @returns Return false if failed to access the indices data, return true otherwise.
      */
-    bool copyIndices(index_t primitiveIndex, ArrayBuffer &outputArray);
+    bool copyIndices(index_t primitiveIndex, TypedArray &outputArray);
 
 private:
-    using AccessorType = std::function<void(IVertexBundle *vertexBundle, int32_t iAttribute)>;
+    using AccessorType = std::function<void(const IVertexBundle &vertexBundle, int32_t iAttribute)>;
 
     void accessAttribute(index_t primitiveIndex, const char *attributeName, const AccessorType &accessor);
 
@@ -354,14 +354,16 @@ private:
     void initDefault(const std::optional<std::string> &uuid = {}) override;
     bool validate() const override;
 
+    TypedArray createTypedArrayWithGFXFormat(gfx::Format format, uint32_t count);
+
 public:
     MorphRendering *morphRendering{nullptr};
 
 private:
-    //@serializable
+    //cjh howto ? @serializable
     IStruct _struct;
 
-    //@serializable
+    //cjh howto ? @serializable
     uint64_t _hash{0};
 
     Uint8Array _data;

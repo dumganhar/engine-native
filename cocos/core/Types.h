@@ -32,6 +32,9 @@
 
 #include <cstdint>
 
+#include "base/TypeDef.h"
+#include "core/ArrayBuffer.h"
+
 #include "base/Value.h"
 #include "math/Vec3.h"
 
@@ -51,13 +54,79 @@ using Uint32Array  = std::vector<uint32_t>;
 using Float32Array = std::vector<float>;
 using Float64Array = std::vector<double>;
 
-using TypedArray = std::variant<Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
+using TypedArray            = std::variant<std::monostate, Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
+using TypedArrayElementType = std::variant<std::monostate, int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, float, double>;
+
 using IndexArray = std::variant<Uint8Array, Uint16Array, Uint32Array>;
 
-class DataView {
+namespace typedarray {
+
+int32_t getSize(const TypedArray &arr);
+int32_t getBytesPerElement(const TypedArray &arr);
+
+TypedArrayElementType get(const TypedArray &arr, index_t index);
+bool                  set(TypedArray &arr, index_t index, const TypedArrayElementType &value);
+
+float   castToFloat(const TypedArrayElementType &element);
+int32_t castToInt32(const TypedArrayElementType &element);
+
+class TypedArrayRange {
 public:
-    explicit DataView();
+    explicit TypedArrayRange(ArrayBuffer &ab)
+    : _ab(ab) {}
+
+    template <typename T>
+    void updateRange(index_t byteOffset = CC_INVALID_INDEX, index_t count = CC_INVALID_INDEX) {
+        _byteOffset = byteOffset == CC_INVALID_INDEX ? 0 : byteOffset;
+        _count      = count == CC_INVALID_INDEX ? (_ab.size() - _byteOffset) / sizeof(T) : count;
+        CC_ASSERT(_byteOffset + _count * sizeof(T) <= _ab.size());
+        _bytesPerElement = sizeof(T);
+    }
+
+    template <typename T>
+    T &operator[](index_t index) {
+        CC_ASSERT(index < _count && index >= 0);
+        return *(reinterpret_cast<T *>(_ab.data() + _byteOffset) + index);
+    }
+
+    template <typename T>
+    const T &operator[](index_t index) const {
+        CC_ASSERT(index < _count && index >= 0);
+        return *(reinterpret_cast<T *>(_ab.data() + _byteOffset) + index);
+    }
+
+    inline uint32_t getCount() const {
+        return _count;
+    }
+
+    inline uint32_t getBytesPerElement() const { return _bytesPerElement; }
+
+    void *getElement(index_t index) const {
+        if (index >= _count) {
+            return nullptr;
+        }
+        return (_ab.data() + _byteOffset) + index * _bytesPerElement;
+    }
+
+    bool copy(const TypedArrayRange &other) {
+        if (_bytesPerElement == other._bytesPerElement) {
+            if (_count >= other._count) {
+                std::copy(other._ab.begin() + _byteOffset, other._ab.begin() + _byteOffset + _bytesPerElement * _count, _ab.begin() + _byteOffset);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+private:
+    ArrayBuffer &_ab;
+    int32_t      _byteOffset{0};
+    int32_t      _count{0};
+    int32_t      _bytesPerElement{0};
 };
+
+} // namespace typedarray
 
 struct BoundingBox {
     Vec3 min;

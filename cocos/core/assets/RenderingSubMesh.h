@@ -161,6 +161,12 @@ public:
      */
     void enableVertexIdChannel(gfx::Device *device);
 
+    inline void  setMesh(Mesh *mesh) { _mesh = mesh; } //cjh shared_ptr
+    inline Mesh *getMesh() const { return _mesh; }
+
+    inline void                           setSubMeshIdx(uint32_t idx) { _subMeshIdx = idx; }
+    inline const std::optional<uint32_t> &getSubMeshIdx() const { return _subMeshIdx; }
+
 private:
     void init();
     void allocVertexIdBuffer(gfx::Device *device);

@@ -573,46 +573,50 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
             ArrayBuffer ib;
             ib.resize(idxCount * idxStride);
 
-            TypedArray ibView;
-            TypedArray srcIBView;
-            TypedArray dstIBView;
+            typedarray::TypedArrayRange ibView(ib);
+            typedarray::TypedArrayRange srcIBView(_data);
+            typedarray::TypedArrayRange dstIBView(mesh->_data);
 
             if (idxStride == 2) {
-                //cjh TODO:                ibView = Uint16Array(ib);
+                ibView.updateRange<uint16_t>();
             } else if (idxStride == 1) {
-                //                ibView = new Uint8Array(ib);
+                ibView.updateRange<uint8_t>();
             } else { // Uint32
-                     //                ibView = new Uint32Array(ib);
+                ibView.updateRange<uint32_t>();
             }
 
             // merge src indices
             if (prim.indexView.value().stride == 2) {
-                //                srcIBView = new Uint16Array(_data.buffer, srcOffset, prim.indexView.count);
+                srcIBView.updateRange<uint16_t>(srcOffset, prim.indexView.value().count);
             } else if (prim.indexView.value().stride == 1) {
-                //                srcIBView = new Uint8Array(_data.buffer, srcOffset, prim.indexView.count);
+                srcIBView.updateRange<uint8_t>(srcOffset, prim.indexView.value().count);
             } else { // Uint32
-                     //                srcIBView = new Uint32Array(_data.buffer, srcOffset, prim.indexView.count);
+                srcIBView.updateRange<uint32_t>(srcOffset, prim.indexView.value().count);
             }
             //
             if (idxStride == prim.indexView.value().stride) {
-                //                ibView.set(srcIBView);
+                ibView.copy(srcIBView);
             } else {
                 for (uint32_t n = 0; n < prim.indexView.value().count; ++n) {
-                    //                    ibView[n] = srcIBView[n];
+                    //cjh Is implementation correct by memcpy? ibView[n] = srcIBView[n]; ?
+                    memcpy(ibView.getElement(n), srcIBView.getElement(n), std::min(ibView.getBytesPerElement(), srcIBView.getBytesPerElement()));
                 }
             }
             srcOffset += prim.indexView.value().length;
 
             // merge dst indices
             if (dstPrim.indexView.value().stride == 2) {
-                //cjh TODO:                dstIBView = new Uint16Array(mesh._data.buffer, dstOffset, dstPrim.indexView.count);
+                dstIBView.updateRange<uint16_t>(dstOffset, dstPrim.indexView.value().count);
             } else if (dstPrim.indexView.value().stride == 1) {
-                //cjh TODO:                dstIBView = new Uint8Array(mesh._data.buffer, dstOffset, dstPrim.indexView.count);
+                dstIBView.updateRange<uint8_t>(dstOffset, dstPrim.indexView.value().count);
             } else { // Uint32
-                     //cjh TODO:                dstIBView = new Uint32Array(mesh._data.buffer, dstOffset, dstPrim.indexView.count);
+                dstIBView.updateRange<uint32_t>(dstOffset, dstPrim.indexView.value().count);
             }
             for (uint32_t n = 0; n < dstPrim.indexView.value().count; ++n) {
-                //                ibView[prim.indexView.count + n] = vertBatchCount + dstIBView[n];
+                //cjh Is implementation correct by memcpy?   ibView[prim.indexView.count + n] = vertBatchCount + dstIBView[n];
+                memcpy(ibView.getElement(prim.indexView.value().count + n),
+                       vertBatchCount * dstIBView.getBytesPerElement() + static_cast<uint8_t *>(dstIBView.getElement(n)),
+                       std::min(ibView.getBytesPerElement(), dstIBView.getBytesPerElement()));
             }
             dstOffset += dstPrim.indexView.value().length;
 

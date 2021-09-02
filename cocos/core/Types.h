@@ -70,21 +70,26 @@ bool                  set(TypedArray &arr, index_t index, const TypedArrayElemen
 float   castToFloat(const TypedArrayElementType &element);
 int32_t castToInt32(const TypedArrayElementType &element);
 
-template <typename T>
 class TypedArrayRange {
 public:
-    explicit TypedArrayRange(ArrayBuffer &ab, index_t byteOffset = CC_INVALID_INDEX, index_t count = CC_INVALID_INDEX)
-    : _ab(ab) {
+    explicit TypedArrayRange(ArrayBuffer &ab)
+    : _ab(ab) {}
+
+    template <typename T>
+    void updateRange(index_t byteOffset = CC_INVALID_INDEX, index_t count = CC_INVALID_INDEX) {
         _byteOffset = byteOffset == CC_INVALID_INDEX ? 0 : byteOffset;
-        _count      = (count == CC_INVALID_INDEX ? (ab.size() - _byteOffset) : count) / sizeof(T);
-        CC_ASSERT(_byteOffset + _count * sizeof(T) <= ab.size());
+        _count      = count == CC_INVALID_INDEX ? (_ab.size() - _byteOffset) / sizeof(T) : count;
+        CC_ASSERT(_byteOffset + _count * sizeof(T) <= _ab.size());
+        _bytesPerElement = sizeof(T);
     }
 
+    template <typename T>
     T &operator[](index_t index) {
         CC_ASSERT(index < _count && index >= 0);
         return *(reinterpret_cast<T *>(_ab.data() + _byteOffset) + index);
     }
 
+    template <typename T>
     const T &operator[](index_t index) const {
         CC_ASSERT(index < _count && index >= 0);
         return *(reinterpret_cast<T *>(_ab.data() + _byteOffset) + index);
@@ -94,10 +99,31 @@ public:
         return _count;
     }
 
+    inline uint32_t getBytesPerElement() const { return _bytesPerElement; }
+
+    void *getElement(index_t index) const {
+        if (index >= _count) {
+            return nullptr;
+        }
+        return (_ab.data() + _byteOffset) + index * _bytesPerElement;
+    }
+
+    bool copy(const TypedArrayRange &other) {
+        if (_bytesPerElement == other._bytesPerElement) {
+            if (_count >= other._count) {
+                std::copy(other._ab.begin() + _byteOffset, other._ab.begin() + _byteOffset + _bytesPerElement * _count, _ab.begin() + _byteOffset);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 private:
     ArrayBuffer &_ab;
-    uint32_t     _byteOffset;
-    uint32_t     _count;
+    uint32_t     _byteOffset{0};
+    uint32_t     _count{0};
+    uint32_t     _bytesPerElement{0};
 };
 
 } // namespace typedarray

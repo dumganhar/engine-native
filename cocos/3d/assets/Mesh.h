@@ -304,16 +304,6 @@ public:
      */
     bool validateMergingMesh(Mesh *mesh);
 
-    enum class AttributeType {
-        UINT8 = 0,
-        UINT16,
-        UINT32,
-        INT8,
-        INT16,
-        INT32,
-        FLOAT
-    };
-
     /**
      * @en Read the requested attribute of the given sub mesh
      * @zh 读取子网格的指定属性。

@@ -108,9 +108,9 @@ std::vector<IMacroPatch> BakedSkinningModel::getMacroPatches(index_t subModelInd
 
 void BakedSkinningModel::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) {
     Super::updateLocalDescriptors(subModelIndex, descriptorSet);
-    gfx::Buffer * buffer   = _jointMedium.buffer;
-    auto *        texture  = _jointMedium.jointTextureInfo;
-    BakedAnimInfo animInfo = _jointMedium.animInfo;
+    gfx::Buffer *        buffer   = _jointMedium.buffer;
+    auto *               texture  = _jointMedium.jointTextureInfo;
+    const BakedAnimInfo &animInfo = _jointMedium.animInfo;
     descriptorSet->bindBuffer(pipeline::UBOSkinningTexture::BINDING, buffer);
     descriptorSet->bindBuffer(pipeline::UBOSkinningAnimation::BINDING, animInfo.buffer);
     if (texture != nullptr) {
@@ -127,9 +127,9 @@ void BakedSkinningModel::updateInstancedAttributes(const std::vector<gfx::Attrib
 }
 
 void BakedSkinningModel::updateInstancedJointTextureInfo() {
-    auto *        jointTextureInfo = _jointMedium.jointTextureInfo;
-    BakedAnimInfo animInfo         = _jointMedium.animInfo;
-    index_t       idx              = _instAnimInfoIdx;
+    auto *               jointTextureInfo = _jointMedium.jointTextureInfo;
+    const BakedAnimInfo &animInfo         = _jointMedium.animInfo;
+    index_t              idx              = _instAnimInfoIdx;
     if (idx >= 0) {
         auto *view = getInstancedAttributeBlock()->views[idx];
         view[0]    = animInfo.data[0];

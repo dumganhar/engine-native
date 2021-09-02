@@ -27,9 +27,10 @@
 
 #include <vector>
 #include "base/Macros.h"
-#include "renderer/gfx-base/GFXTexture.h"
-#include "renderer/gfx-base/GFXFramebuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
+#include "renderer/gfx-base/GFXDevice.h"
+#include "renderer/gfx-base/GFXFramebuffer.h"
+#include "renderer/gfx-base/GFXTexture.h"
 
 namespace cc {
 namespace scene {
@@ -38,12 +39,12 @@ namespace scene {
 class Camera;
 
 struct IRenderWindowInfo {
-    std::string         title;
-    uint32_t            width{0};
-    uint32_t            height{0};
-    gfx::RenderPassInfo renderPassInfo;
-    int32_t             swapchainBufferIndices{0};
-    bool                shouldSyncSizeWithSwapchain{false};
+    std::optional<std::string> title;
+    uint32_t                   width{0};
+    uint32_t                   height{0};
+    gfx::RenderPassInfo        renderPassInfo;
+    std::optional<int32_t>     swapchainBufferIndices;
+    std::optional<bool>        shouldSyncSizeWithSwapchain;
 };
 
 /**

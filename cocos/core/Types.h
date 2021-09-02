@@ -95,7 +95,7 @@ public:
         return *(reinterpret_cast<T *>(_ab.data() + _byteOffset) + index);
     }
 
-    inline index_t getCount() const {
+    inline uint32_t getCount() const {
         return _count;
     }
 
@@ -121,9 +121,9 @@ public:
 
 private:
     ArrayBuffer &_ab;
-    uint32_t     _byteOffset{0};
-    uint32_t     _count{0};
-    uint32_t     _bytesPerElement{0};
+    int32_t      _byteOffset{0};
+    int32_t      _count{0};
+    int32_t      _bytesPerElement{0};
 };
 
 } // namespace typedarray

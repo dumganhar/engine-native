@@ -30,7 +30,6 @@
 #include "scene/SkinningModel.h"
 
 namespace {
-
 void getRelevantBuffers(std::vector<index_t> &outIndices, std::vector<int32_t> &outBuffers, const std::vector<std::vector<int32_t>> &jointMaps, int32_t targetJoint) {
     for (int32_t i = 0; i < jointMaps.size(); i++) {
         index_t index = CC_INVALID_INDEX;
@@ -145,11 +144,11 @@ void SkinningModel::updateUBOs(uint32_t stamp) {
 }
 
 void SkinningModel::initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) {
-    // auto original = subMeshData->getVertexBuffers(); //TODO(xwx): getVertexBuffers not implement
+    auto original = subMeshData->getVertexBuffers();
     auto iaInfo = subMeshData->getIaInfo();
-    // inInfo.vertexBuffers = subMeshData->getjointMappedBuffers();
+    iaInfo.vertexBuffers = subMeshData->getJointMappedBuffers();
     Super::initSubModel(idx, subMeshData, mat);
-    // iaInfo.vertexBuffers = original;
+    iaInfo.vertexBuffers = original;
 }
 
 std::vector<IMacroPatch> SkinningModel::getMacroPatches(index_t subModelIndex) const {

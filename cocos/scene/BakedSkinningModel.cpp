@@ -109,15 +109,15 @@ std::vector<IMacroPatch> BakedSkinningModel::getMacroPatches(index_t subModelInd
 void BakedSkinningModel::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) {
     Super::updateLocalDescriptors(subModelIndex, descriptorSet);
     gfx::Buffer *        buffer   = _jointMedium.buffer;
-    auto *               texture  = _jointMedium.jointTextureInfo;
+    // auto *               texture  = _jointMedium.texture;  // not define texture in struct
     const BakedAnimInfo &animInfo = _jointMedium.animInfo;
     descriptorSet->bindBuffer(pipeline::UBOSkinningTexture::BINDING, buffer);
     descriptorSet->bindBuffer(pipeline::UBOSkinningAnimation::BINDING, animInfo.buffer);
-    if (texture != nullptr) {
+    // if (texture != nullptr) {
         auto *sampler = pipeline::SamplerLib::getSampler(JOINT_TEXTURE_SAMPLER_HASH);
-        // descriptorSet->bindTexture(UNIFORM_JOINT_TEXTURE_BINDING, texture.handle.texure); //TODO(xwx):UNIFORM_JOINT_TEXTURE_BINDING not define
-        // descriptorSet->bindSampler(UNIFORM_JOINT_TEXTURE_BINDING, sampler); //TODO(xwx):UNIFORM_JOINT_TEXTURE_BINDING not define
-    }
+        // descriptorSet->bindTexture(pipeline::JOINTTEXTURE::BINDING, texture.handle.texture); //TODO(xwx):texture.handle.texture not define
+        descriptorSet->bindSampler(pipeline::JOINTTEXTURE::BINDING, sampler);
+    // }
 }
 
 void BakedSkinningModel::updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass) {

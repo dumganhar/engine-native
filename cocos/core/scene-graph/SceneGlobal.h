@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "core/assets/TextureCube.h"
 #include "math/Color.h"
 #include "math/Vec2.h"
 #include "math/Vec3.h"
@@ -32,11 +33,10 @@
 #include "scene/Shadow.h"
 
 namespace cc {
-
 namespace scene {
 enum class FogType;
-}
-
+class Skybox;
+} // namespace scene
 namespace scenegraph {
 
 class Ambient;
@@ -59,24 +59,26 @@ public:
     inline void         activate(Ambient *resource) {}
 };
 
-class Skybox;
 class SkyboxInfo {
 protected:
-    bool    _isRGBE{false};
-    bool    _enabled{false};
-    bool    _useIBL{false};
-    Skybox *_resource;
+    TextureCube *  _envmap{nullptr};
+    bool           _isRGBE{false};
+    bool           _enabled{false};
+    bool           _useIBL{false};
+    scene::Skybox *_resource;
 
 public:
     SkyboxInfo(/* args */) = default;
     ~SkyboxInfo()          = default;
-    inline void setEnabled(bool val) { _enabled = val; }
-    inline bool getEnabled() const { return _enabled; }
-    inline void setIBL(bool val) { _useIBL = val; }
-    inline bool getIBL() const { return _useIBL; }
-    inline void setRGBE(bool val) { _isRGBE = val; }
-    inline bool getRGBE() const { return _isRGBE; }
-    inline void activate(Skybox *resource) {}
+    void                setEnvmap(TextureCube *val);
+    inline TextureCube *getEnvamp() const { return _envmap; }
+    inline void         setEnabled(bool val) { _enabled = val; }
+    inline bool         getEnabled() const { return _enabled; }
+    inline void         setIBL(bool val) { _useIBL = val; }
+    inline bool         getIBL() const { return _useIBL; }
+    inline void         setRGBE(bool val) { _isRGBE = val; }
+    inline bool         getRGBE() const { return _isRGBE; }
+    inline void         activate(scene::Skybox *resource) {}
 };
 
 class SceneGlobal {

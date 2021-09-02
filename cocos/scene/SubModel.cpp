@@ -28,8 +28,8 @@
 #include "scene/Pass.h"
 namespace cc {
 namespace scene {
-const static uint32_t         MAX_PASS_COUNT = 8;
-const gfx::DescriptorSetInfo &dsInfo         = gfx::DescriptorSetInfo();
+const static uint32_t  MAX_PASS_COUNT = 8;
+gfx::DescriptorSetInfo dsInfo         = gfx::DescriptorSetInfo();
 
 void SubModel::update() {
     for (Pass *pass : _passes) {
@@ -52,7 +52,7 @@ void SubModel::setPasses(const std::vector<Pass *> &passes) {
     // DS layout might change too
     if (_descriptorSet) {
         _descriptorSet->destroy();
-        // dsInfo.layout = passes[0]->getLocalSetLayout();
+        dsInfo.layout  = passes[0]->getLocalSetLayout();
         _descriptorSet = _device->createDescriptorSet(dsInfo);
     }
 }
@@ -108,7 +108,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &
             texHeight,
             gfx::TextureFlagBit::IMMUTABLE,
         });
-        // _descriptorSet->bindTexture(UNIFORM_REFLECTION_TEXTURE_BINDING, _reflectionTex); //UNIFORM_REFLECTION_TEXTURE_BINDING not define
+        _descriptorSet->bindTexture(pipeline::REFLECTIONTEXTURE::BINDING, _reflectionTex);
 
         uint32_t samplerHash = pipeline::SamplerLib::genSamplerHash({
             gfx::Filter::LINEAR,
@@ -119,27 +119,27 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &
             gfx::Address::CLAMP,
         });
         _reflectionSampler   = pipeline::SamplerLib::getSampler(samplerHash);
-        // _descriptorSet->bindSampler(UNIFORM_REFLECTION_TEXTURE_BINDING, _reflectionSampler); //UNIFORM_REFLECTION_TEXTURE_BINDING not define
-        // _descriptorSet->bindTexture(UNIFORM_REFLECTION_STORAGE_BINDING, _reflectionTex); //UNIFORM_REFLECTION_STORAGE_BINDING not define
+        _descriptorSet->bindSampler(pipeline::REFLECTIONTEXTURE::BINDING, _reflectionSampler);
+        _descriptorSet->bindTexture(pipeline::REFLECTIONTEXTURE::BINDING, _reflectionTex);
     }
 }
 
 // TODO:
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
-void SubModel::initPlanarShadowShader() const {
+void SubModel::initPlanarShadowShader() {
     auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Director::getInstance().getRoot()->getPipeline());
     Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
-    // _planarShader = shadowInfo->getPlanarShader(_patches); // getPlanarShader not implemented
+    _planarShader      = shadowInfo->getPlanarShader(_patches);
 }
 
 // TODO:
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
-void SubModel::initPlanarShadowInstanceShader() const {
-    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Director::getInstance().getRoot()->getPipeline());
-    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
-    // _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches); // getPlanarInstanceShader not implemented
+void SubModel::initPlanarShadowInstanceShader() {
+    auto *  pipeline      = dynamic_cast<pipeline::ForwardPipeline *>(Director::getInstance().getRoot()->getPipeline());
+    Shadow *shadowInfo    = pipeline->getPipelineSceneData()->getShadow();
+    _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches);
 }
 
 void SubModel::destroy() {

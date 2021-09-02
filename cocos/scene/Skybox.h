@@ -28,6 +28,7 @@
 #include "base/Macros.h"
 #include "core/assets/TextureCube.h"
 #include "core/scene-graph/SceneGlobal.h"
+#include "pipeline/GlobalDescriptorSetManager.h"
 #include "scene/Model.h"
 
 namespace cc {
@@ -81,17 +82,16 @@ public:
     void                setEnvmap(TextureCube *val);
 
 private:
-    void updatePipeline();
+    void updatePipeline() const;
     void updateGlobalBinding();
 
-    TextureCube *_envmap{nullptr};
-    //TODO:
-    //    protected _globalDSManager: GlobalDSManager | null = null;
-    Model *      _model{nullptr};
-    TextureCube *_default{nullptr};
-    bool         _enabled{false};
-    bool         _useIBL{false};
-    bool         _isRGBE{false};
+    TextureCube *              _envmap{nullptr};
+    pipeline::GlobalDSManager *_globalDSManager{nullptr};
+    Model *                    _model{nullptr};
+    TextureCube *              _default{nullptr};
+    bool                       _enabled{false};
+    bool                       _useIBL{false};
+    bool                       _isRGBE{false};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(Skybox);
 };

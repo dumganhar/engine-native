@@ -54,6 +54,7 @@ const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = cc::pipeline::SamplerLib::genSam
 });
 
 const std::vector<cc::scene::IMacroPatch> SHADOW_MAP_PATCHES{{"CC_RECEIVE_SHADOW", true}};
+const std::string INST_MAT_WORLD = "a_matWorld0";
 } // namespace
 
 namespace cc {
@@ -148,8 +149,8 @@ void Model::updateUBOs(uint32_t stamp) {
 }
 
 void Model::createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos) {
-    // _modelBounds = geometry::AABB::fromPoints(minPos, maxPos, new geometry::AABB()); // not sure use new
-    // _worldBounds = geometry::AABB(_modelBounds); need override operator= in AABB
+    _modelBounds = geometry::AABB::fromPoints(minPos, maxPos, new geometry::AABB()); 
+    _worldBounds = geometry::AABB::fromPoints(minPos, maxPos, new geometry::AABB()); // AABB.clone(this._modelBounds) in ts
 }
 
 SubModel *Model::createSubModel() const {
@@ -202,17 +203,17 @@ void Model::updateLightingmap(Texture2D *texture, const Vec4 &uvParam) {
     _lightmapUVParam = uvParam;
 
     if (texture == nullptr) {
-        // texture = builtinResMgr.get<Texture2D>('empty-texture');
+        texture = BuiltinResMgr::getInstance()->get<Texture2D>(std::string("empty-texture"));
     }
     gfx::Texture *gfxTexture = texture->getGFXTexture();
     if (gfxTexture) {
-        // uint32_t sampler = pipeline::SamplerLib::getSampler(_device, texture.mipmaps.length > 1 ? LIGHTMAP_SAMPLER_WITH_MIP_HASH : LIGHTMAP_SAMPLER_HASH);
+        auto *sampler = pipeline::SamplerLib::getSampler(texture->getMipmaps().size() > 1 ? LIGHTMAP_SAMPLER_WITH_MIP_HASH : LIGHTMAP_SAMPLER_HASH);
         for (SubModel *subModel : _subModels) {
             gfx::DescriptorSet *descriptorSet = subModel->getDescriptorSet();
-            // // TODO: should manage lightmap macro switches automatically
+            // // TODO(Yun Hsiao Wu): should manage lightmap macro switches automatically
             // // USE_LIGHTMAP -> CC_USE_LIGHTMAP
-            // descriptorSet->bindTexture(UNIFORM_LIGHTMAP_TEXTURE_BINDING, gfxTexture); // UNIFORM_LIGHTMAP_TEXTURE_BINDING not define
-            // descriptorSet->bindSampler(UNIFORM_LIGHTMAP_TEXTURE_BINDING, sampler);
+            descriptorSet->bindTexture(pipeline::LIGHTMAPTEXTURE::BINDING, gfxTexture);
+            descriptorSet->bindSampler(pipeline::LIGHTMAPTEXTURE::BINDING, sampler);
             descriptorSet->update();
         }
     }
@@ -274,7 +275,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
     if (pass->getBatchingScheme() == BatchingSchemes::INSTANCING) {
         pipeline::InstancedBuffer *instanceBuffer = pipeline::InstancedBuffer::get(pass);
         CC_SAFE_DESTROY(instanceBuffer); // instancing IA changed
-        // setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD)); // TODO(xwx): INST_MAT_WORLD not define
+        setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD));
         _transformUpdated = true;
     }
 }
@@ -282,7 +283,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
 void Model::initLocalDescriptors(index_t /*subModelIndex*/) {
     if (!_localBuffer) {
         _localBuffer = _device->createBuffer({
-            gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST, // not sure ts operator| is same in cpp
+            gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST,
             gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE,
             pipeline::UBOLocal::SIZE,
             pipeline::UBOLocal::SIZE,

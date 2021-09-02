@@ -27,6 +27,8 @@
 
 #include <string>
 #include <vector>
+#include "base/Macros.h"
+#include "base/TypeDef.h"
 
 namespace cc {
 
@@ -56,12 +58,8 @@ struct IRenderSceneInfo {
 
 class RenderScene final {
 public:
-    RenderScene()                    = default;
-    RenderScene(const RenderScene &) = delete;
-    RenderScene(RenderScene &&)      = delete;
-    ~RenderScene()                   = default;
-    RenderScene &operator=(const RenderScene &) = delete;
-    RenderScene &operator=(RenderScene &&) = delete;
+    RenderScene()  = default;
+    ~RenderScene() = default;
 
     bool initialize(const IRenderSceneInfo &info);
     void update(uint32_t stamp);
@@ -86,13 +84,14 @@ public:
     void addModel(Model *);
     void addSkinningModel(SkinningModel *);
     void addBakedSkinningModel(BakedSkinningModel *);
-    void removeModel(uint32_t);
+    void removeModel(index_t idx);
+    void removeModel(Model *model);
     void removeModels();
 
     void updateBatches(std::vector<DrawBatch2D *> &&);
     void addBatch(DrawBatch2D *);
+    void removeBatch(index_t index);
     void removeBatch(DrawBatch2D *);
-    void removeBatch(uint32_t index);
     void removeBatches();
 
     void onGlobalPipelineStateChanged();
@@ -111,14 +110,17 @@ public:
     inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _batches; }
 
 private:
-    std::string                _name;
-    uint64_t                   _modelId{0};
-    DirectionalLight *         _mainLight{nullptr};
-    std::vector<Model *>       _models;
-    std::vector<Camera *>      _cameras;
-    std::vector<SphereLight *> _sphereLights;
-    std::vector<SpotLight *>   _spotLights;
-    std::vector<DrawBatch2D *> _batches;
+    std::string                     _name;
+    uint64_t                        _modelId{0};
+    DirectionalLight *              _mainLight{nullptr};
+    std::vector<Model *>            _models;
+    std::vector<Camera *>           _cameras;
+    std::vector<DirectionalLight *> _directionalLights;
+    std::vector<SphereLight *>      _sphereLights;
+    std::vector<SpotLight *>        _spotLights;
+    std::vector<DrawBatch2D *>      _batches;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(RenderScene);
 };
 
 } // namespace scene

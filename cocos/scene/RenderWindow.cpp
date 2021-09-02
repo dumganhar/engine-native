@@ -79,9 +79,9 @@ bool RenderWindow::initialize(gfx::Device *device, const IRenderWindowInfo &info
                                                           _width,
                                                           _height});
             _hasOffScreenAttachments = true;
-        } else {
-            _hasOnScreenAttachments = true;
         }
+    } else {
+        _hasOnScreenAttachments = true;
     }
 
     _frameBuffer = device->createFramebuffer({_renderPass, _colorTextures, _depthStencilTexture});

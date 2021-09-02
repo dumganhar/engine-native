@@ -29,6 +29,7 @@
 #include "math/Vec2.h"
 #include "math/Vec3.h"
 #include "scene/Fog.h"
+#include "scene/Shadow.h"
 
 namespace cc {
 
@@ -78,40 +79,15 @@ public:
     inline void activate(Skybox *resource) {}
 };
 
-class Shadows;
-class ShadowInfo {
-protected:
-    Color _shadowColor{0, 0, 0, 76};
-    bool  _enabled{false};
-    Vec3  _normal{0, 1, 0};
-    float _distance{0};
-    float _autoAdapt{true};
-    float _bias{0.00001F};
-    float _normalBias{0};
-    float _near{1};
-    float _far{30};
-    float _orthoSize{5};
-    float _maxReceived{4};
-    float _saturation{0.75};
-    Vec2  _size{512, 512};
-
-    Shadows *_resource{nullptr};
-
-public:
-    ShadowInfo(/* args */) = default;
-    ~ShadowInfo()          = default;
-    inline void activate(Shadows *resources) {}
-};
-
 class SceneGlobal {
 public:
     SceneGlobal(/* args */) = default;
     ~SceneGlobal()          = default;
-    AmbientInfo    ambient;
-    ShadowInfo     shadows;
-    SkyboxInfo     skybox;
-    scene::FogInfo fog;
-    inline void    activate() {}
+    AmbientInfo       ambient;
+    scene::ShadowInfo shadows;
+    SkyboxInfo        skybox;
+    scene::FogInfo    fog;
+    inline void       activate() {}
 };
 
 } // namespace scenegraph

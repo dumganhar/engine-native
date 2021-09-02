@@ -33,7 +33,6 @@
 #include "math/Color.h"
 #include "renderer/gfx-base/GFXShader.h"
 #include "core/assets/Material.h"
-#include "core/scene-graph/SceneGlobal.h"
 #include "scene/Define.h"
 #include "core/geometry/Sphere.h"
 
@@ -129,6 +128,24 @@ enum class PCFType {
     SOFT_2X = 2
 };
 
+struct ShadowInfo {
+    Color      shadowColor{0.F, 0.F, 0.F, 76.F};
+    bool       enabled{false};
+    Vec3       normal{0.F, 1.F, 0.F};
+    float      distance{0.F};
+    float      autoAdapt{true};
+    float      bias{0.00001F};
+    float      normalBias{0.F};
+    float      near{1.F};
+    float      far{30.F};
+    float      orthoSize{5.F};
+    float      maxReceived{4.F};
+    float      saturation{0.75};
+    Vec2       size{512.F, 512.F};
+    PCFType    pcf{PCFType::HARD};
+    ShadowType type{ShadowType::PLANAR};
+};
+
 class Shadow final {
 public:
     /**
@@ -146,7 +163,7 @@ public:
     Shadow()  = default;
     ~Shadow() = default;
 
-    void         initialize(const scenegraph::ShadowInfo &shadowsInfo);
+    void         initialize(const ShadowInfo &shadowsInfo);
     void         destroy();
     gfx::Shader *getPlanarShader(const std::vector<IMacroPatch> &patches);
     gfx::Shader *getPlanarInstanceShader(const std::vector<IMacroPatch> &patches);
@@ -277,38 +294,40 @@ public:
 private:
     void updatePlanarInfo();
     void updatePipeline();
+    void createInstanceMaterial();
+    void createMaterial();
 
     /**
      * @en The bounding sphere of the shadow map.
      * @zh 用于计算阴影 Shadow map 的场景包围球.
      */
-    geometry::Sphere sphere{0.0F, 0.0F, 0.0F, 0.01F};
+    geometry::Sphere _sphere{0.0F, 0.0F, 0.0F, 0.01F};
 
     /**
      * @en get or set shadow max received.
      * @zh 阴影接收的最大灯光数量。
      */
-    uint32_t maxReceived{4};
+    uint32_t _maxReceived{4};
 
-    Vec3                _normal{0.F, 1.F, 0.F};
-    Color               _shadowColor{0.F, 0.F, 0.F, 76.F};
+    Vec3                 _normal{0.F, 1.F, 0.F};
+    Color                _shadowColor{0.F, 0.F, 0.F, 76.F};
     std::array<float, 4> _shadowColor4f;
-    Mat4                _matLight;
-    Material *          _material{nullptr};
-    Material *          _instancingMaterial{nullptr};
-    Vec2                _size{512.F, 512.F};
-    bool                _enabled{false};
-    float               _distance{0.F};
-    ShadowType          _type{ShadowType::NONE};
-    float               _near{0.F};
-    float               _far{0.F};
-    float               _orthoSize{1.F};
-    PCFType             _pcf{PCFType::HARD};
-    bool                _shadowMapDirty{false};
-    float               _bias{0.F};
-    float               _normalBias{0.F};
-    bool                _autoAdapt{true};
-    float               _saturation{0.75F};
+    Mat4                 _matLight;
+    Material *           _material{nullptr};
+    Material *           _instancingMaterial{nullptr};
+    Vec2                 _size{512.F, 512.F};
+    bool                 _enabled{false};
+    float                _distance{0.F};
+    ShadowType           _type{ShadowType::NONE};
+    float                _near{0.F};
+    float                _far{0.F};
+    float                _orthoSize{1.F};
+    PCFType              _pcf{PCFType::HARD};
+    bool                 _shadowMapDirty{false};
+    float                _bias{0.F};
+    float                _normalBias{0.F};
+    bool                 _autoAdapt{true};
+    float                _saturation{0.75F};
 };
 
 } // namespace scene

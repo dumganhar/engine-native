@@ -25,11 +25,112 @@
 
 #include "scene/Shadow.h"
 #include <cmath>
+#include "scene/Pass.h"
 
 namespace cc {
 namespace scene {
 
 const float Shadow::COEFFICIENT_OF_EXPANSION{2.0f * std::sqrt(3.0F)};
 
+void Shadow::initialize(const ShadowInfo &shadowsInfo) {
+    _near        = shadowsInfo.near;
+    _far         = shadowsInfo.far;
+    _orthoSize   = shadowsInfo.orthoSize;
+    _size        = shadowsInfo.size;
+    _pcf         = shadowsInfo.pcf;
+    _normal      = shadowsInfo.normal;
+    _distance    = shadowsInfo.distance;
+    _shadowColor = shadowsInfo.shadowColor;
+    _bias        = shadowsInfo.bias;
+    _normalBias  = shadowsInfo.normalBias;
+    _maxReceived = shadowsInfo.maxReceived;
+    _autoAdapt   = shadowsInfo.autoAdapt;
+    setEnabled(shadowsInfo.enabled);
+    _type       = shadowsInfo.type;
+    _saturation = shadowsInfo.saturation;
 }
+
+void Shadow::destroy() {
+    if (_material) {
+        _material->destroy();
+        _material = nullptr;
+    }
+
+    if (_instancingMaterial) {
+        _instancingMaterial->destroy();
+        _instancingMaterial = nullptr;
+    }
 }
+
+gfx::Shader *Shadow::getPlanarShader(const std::vector<IMacroPatch> &patches) {
+    if (!_material) {
+        createMaterial();
+    }
+
+    return _material->getPasses()[0]->getShaderVariant(patches);
+}
+
+gfx::Shader *Shadow::getPlanarInstanceShader(const std::vector<IMacroPatch> &patches) {
+    if (!_instancingMaterial) {
+        createInstanceMaterial();
+    }
+
+    return _instancingMaterial->getPasses()[0]->getShaderVariant(patches);
+}
+
+void Shadow::activate() {
+    if (_enabled) {
+        if (_type == ShadowType::SHADOW_MAP) {
+            updatePipeline();
+        } else {
+            updatePlanarInfo();
+        }
+    } else {
+        auto *root     = Root::getInstance();
+        auto *pipeline = root->getPipeline();
+        pipeline->setValue("CC_RECEIVE_SHADOW", 0);
+        root->onGlobalPipelineStateChanged();
+    }
+}
+
+void Shadow::updatePlanarInfo() {
+    if (!_material) {
+        createMaterial();
+    }
+    if (!_instancingMaterial) {
+        createInstanceMaterial();
+    }
+
+    auto *root     = Root::getInstance();
+    auto *pipeline = root->getPipeline();
+    pipeline->setValue("CC_RECEIVE_SHADOW", 0);
+    root->onGlobalPipelineStateChanged();
+}
+
+void Shadow::updatePipeline() {
+    auto *root     = Root::getInstance();
+    auto *pipeline = root->getPipeline();
+    pipeline->setValue("CC_RECEIVE_SHADOW", 1);
+    root->onGlobalPipelineStateChanged();
+}
+
+void Shadow::createInstanceMaterial() {
+    _instancingMaterial = new Material();
+
+    IMaterialInfo materialInfo;
+    materialInfo.effectName = "planar-shadow";
+    MacroRecord microRecord{{"USE_INSTANCING", true}};
+    materialInfo.defines = microRecord;
+    _instancingMaterial.initialize(materialInfo);
+}
+
+void Shadow::createMaterial() {
+    _material = new Material();
+
+    IMaterialInfo materialInfo;
+    materialInfo.effectName = "planar-shadow";
+    this._material.initialize(materialInfo);
+}
+
+} // namespace scene
+} // namespace cc

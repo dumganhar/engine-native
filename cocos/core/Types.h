@@ -54,11 +54,6 @@ using Float64Array = std::vector<double>;
 using TypedArray = std::variant<Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
 using IndexArray = std::variant<Uint8Array, Uint16Array, Uint32Array>;
 
-class DataView {
-public:
-    explicit DataView();
-};
-
 struct BoundingBox {
     Vec3 min;
     Vec3 max;

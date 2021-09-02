@@ -81,10 +81,6 @@ int AABB::aabbPlane(const Plane &plane) const {
     return 1;
 }
 
-void AABB::initWithData(uint8_t *data) {
-    _aabbLayout = reinterpret_cast<AABBLayout *>(data);
-}
-
 bool AABB::aabbFrustum(const Frustum &frustum) const {
     const auto &planes = frustum.planes;
     const auto *self   = this;
@@ -108,10 +104,9 @@ void AABB::set(const cc::Vec3 &centerVal, const cc::Vec3 &halfExtentVal) {
     setHalfExtents(halfExtentVal);
 }
 
-void AABB::transform(const Mat4 &m, AABB *out) const {
-    AABBLayout *layout = out->_aabbLayout;
-    layout->center.transformMat4(getCenter(), m);
-    transformExtentM4(&layout->halfExtents, getHalfExtents(), m);
+void AABB::transform(const Mat4 &m, AABB *out) {
+    center.transformMat4(getCenter(), m);
+    transformExtentM4(&halfExtents, getHalfExtents(), m);
 }
 
 void AABB::transformExtentM4(Vec3 *out, const Vec3 &extent, const Mat4 &m4) {
@@ -130,12 +125,10 @@ void AABB::transformExtentM4(Vec3 *out, const Vec3 &extent, const Mat4 &m4) {
 
 AABB::AABB() {
     setType(ShapeEnum::SHAPE_AABB);
-    _aabbLayout = &_embedLayout;
 }
 
 AABB::AABB(float px, float py, float pz, float hw, float hh, float hl) {
     setType(ShapeEnum::SHAPE_AABB);
-    _aabbLayout = &_embedLayout;
     setCenter(px, py, pz);
     setHalfExtents(hw, hh, hl);
 }

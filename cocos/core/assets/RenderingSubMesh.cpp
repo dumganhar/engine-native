@@ -133,7 +133,7 @@ void RenderingSubMesh::genFlatBuffers() {
         //cjh  no need to deal with length?      Uint8Array view{_mesh->getData(), vertexBundle.view.offset, vertexBundle.view.length};
         const uint8_t *view = _mesh->getData().data() + vertexBundle.view.offset;
         Uint8Array     sharedView;
-        sharedView.resize(prim.indexView ? vbSize : vertexBundle.view.length);
+        sharedView.resize(prim.indexView.has_value() ? vbSize : vertexBundle.view.length);
         //
         if (!prim.indexView.has_value()) {
             std::copy(_mesh->getData().begin() + vertexBundle.view.offset, _mesh->getData().begin() + vertexBundle.view.offset + vertexBundle.view.length, sharedView.begin());
@@ -141,17 +141,17 @@ void RenderingSubMesh::genFlatBuffers() {
             continue;
         }
 
-        const IndexArray ibView = _mesh->readIndices(_subMeshIdx.value());
+        TypedArray ibView = _mesh->readIndices(_subMeshIdx.value());
         // transform to flat buffer
-        //cjh        for (uint32_t n = 0; n < idxCount; ++n) {
-        //            const idx = ibView[n];
-        //            const offset = n * vbStride;
-        //            const srcOffset = idx * vbStride;
-        //            for (let m = 0; m < vbStride; ++m) {
-        //                sharedView[offset + m] = view[srcOffset + m];
-        //            }
-        //        }
-        //        this._flatBuffers.push({ stride: vbStride, count: vbCount, buffer: sharedView });
+        for (uint32_t n = 0; n < idxCount; ++n) {
+            int32_t  idx       = typedarray::castToInt32(typedarray::get(ibView, n));
+            uint32_t offset    = n * vbStride;
+            uint32_t srcOffset = idx * vbStride;
+            for (uint32_t m = 0; m < vbStride; ++m) {
+                sharedView[offset + m] = view[srcOffset + m];
+            }
+        }
+        _flatBuffers.emplace_back(IFlatBuffer{vbStride, vbCount, std::move(sharedView)});
     }
 }
 

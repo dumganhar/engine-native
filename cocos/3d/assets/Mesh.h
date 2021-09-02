@@ -44,6 +44,8 @@ class Skeleton;
  */
 class Mesh : public Asset {
 public:
+    using Super = Asset;
+
     struct IBufferView {
         uint32_t offset{0};
         uint32_t length{0};
@@ -161,8 +163,6 @@ public:
         Uint8Array data;
     };
 
-    using Super = Asset;
-
     Mesh()           = default;
     ~Mesh() override = default;
 
@@ -210,7 +210,7 @@ public:
      * @en The hash of the mesh
      * @zh 此网格的哈希值。
      */
-    uint64_t getHash() const;
+    uint64_t getHash();
 
     using JointBufferIndicesType = std::vector<index_t>;
     /**
@@ -277,7 +277,7 @@ public:
      * @param [validate=false] Whether to validate the mesh
      * @returns Check the mesh state and return the validation result.
      */
-    bool merge(Mesh *mesh, const Mat4 &worldMatrix, bool validate = false);
+    bool merge(Mesh *mesh, const Mat4 *worldMatrix = nullptr, bool validate = false);
 
     /**
      * @en Validation for whether the given mesh can be merged into the current mesh.
@@ -322,7 +322,7 @@ public:
      * @returns Return null if not found or can't read, otherwise, will create a large enough typed array to contain all data of the attribute,
      * the array type will match the data type of the attribute.
      */
-    ArrayBuffer readAttribute(index_t primitiveIndex, const char *attributeName, AttributeType *outType);
+    TypedArray readAttribute(index_t primitiveIndex, const char *attributeName);
 
     /**
      * @en Read the requested attribute of the given sub mesh and fill into the given buffer.
@@ -343,7 +343,7 @@ public:
      * @returns Return null if not found or can't read, otherwise, will create a large enough typed array to contain all indices data,
      * the array type will use the corresponding stride size.
      */
-    ArrayBuffer readIndices(index_t primitiveIndex);
+    TypedArray readIndices(index_t primitiveIndex);
 
     /**
      * @en Read the indices data of the given sub mesh and fill into the given array
@@ -352,7 +352,7 @@ public:
      * @param outputArray The target output array
      * @returns Return false if failed to access the indices data, return true otherwise.
      */
-    bool copyIndices(index_t primitiveIndex, ArrayBuffer &outputArray);
+    bool copyIndices(index_t primitiveIndex, TypedArray &outputArray);
 
 private:
     using AccessorType = std::function<void(const IVertexBundle &vertexBundle, int32_t iAttribute)>;
@@ -363,6 +363,8 @@ private:
 
     void initDefault(const std::optional<std::string> &uuid = {}) override;
     bool validate() const override;
+
+    TypedArray createTypedArrayWithGFXFormat(gfx::Format format, uint32_t count);
 
 public:
     MorphRendering *morphRendering{nullptr};

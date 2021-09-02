@@ -24,29 +24,39 @@
  ****************************************************************************/
 
 #pragma once
+
 #include "math/Color.h"
 #include "math/Vec2.h"
 #include "math/Vec3.h"
+#include "scene/Fog.h"
+#include "scene/Shadow.h"
+
 namespace cc {
+
+namespace scene {
+enum class FogType;
+}
+
 namespace scenegraph {
+
 class Ambient;
 class AmbientInfo {
 protected:
     Color    _skyColor{51, 128, 204, 1.0F};
     float    _skyIllum{2000.0F};
     Color    _groundAlbedo{51, 51, 51, 255};
-    Ambient* _resource;
+    Ambient *_resource;
 
 public:
     AmbientInfo(/* args */) = default;
     ~AmbientInfo()          = default;
-    inline void         setSkyColor(const Color& val){};
-    inline const Color& getSkyColor() { return _skyColor; }
+    inline void         setSkyColor(const Color &val){};
+    inline const Color &getSkyColor() { return _skyColor; }
     inline void         setSkyIllum(float val) {}
     inline float        getSkyIllum() const { return _skyIllum; }
-    inline void         setGroundAlbedo(const Color& val) {}
-    inline const Color& getGroundAlbedo() { return _groundAlbedo; }
-    inline void         activate(Ambient* resource) {}
+    inline void         setGroundAlbedo(const Color &val) {}
+    inline const Color &getGroundAlbedo() { return _groundAlbedo; }
+    inline void         activate(Ambient *resource) {}
 };
 
 class Skybox;
@@ -55,7 +65,7 @@ protected:
     bool    _isRGBE{false};
     bool    _enabled{false};
     bool    _useIBL{false};
-    Skybox* _resource;
+    Skybox *_resource;
 
 public:
     SkyboxInfo(/* args */) = default;
@@ -66,76 +76,18 @@ public:
     inline bool getIBL() const { return _useIBL; }
     inline void setRGBE(bool val) { _isRGBE = val; }
     inline bool getRGBE() const { return _isRGBE; }
-    inline void activate(Skybox* resource) {}
-};
-class Fog;
-class FogInfo {
-protected:
-    Color _fogColor{200, 200, 200, 1};
-    bool  _enabled{false};
-    float _fogDensity{0.3};
-    float _fogStart{0.5};
-    float _fogEnd{0.5};
-    float _fogAtten{5};
-    float _fogTop{1.5};
-    float _fogRange{1.2};
-    Fog*  _resource{nullptr};
-
-public:
-    FogInfo(/* args */) = default;
-    ~FogInfo()          = default;
-    inline void         setEnabled(bool val) { _enabled = val; }
-    inline bool         getEnabled() const { return _enabled; }
-    inline void         setFogColor(const Color& val) { _fogColor = val; }
-    inline const Color& getFogColor() const { return _fogColor; }
-    inline void         setFogDensity(float val) {}
-    inline float        getFogDensity() const { return _fogDensity; }
-    inline void         setFogStart(float val) {}
-    inline float        getFogStart() const { return _fogStart; }
-    inline void         setFogEnd(float val) {}
-    inline float        getFogEnd() const { return _fogEnd; }
-    inline void         setFogAtten(float val) {}
-    inline float        getFogAtten() const { return _fogAtten; }
-    inline void         setFogTop(float val) {}
-    inline float        getFogTop() const { return _fogTop; }
-    inline void         setFogRange(float val) {}
-    inline float        getFogRange() const { return _fogRange; }
-    inline void         activate(Fog* resource) {}
-};
-class Shadows;
-class ShadowInfo {
-protected:
-    Color _shadowColor{0, 0, 0, 76};
-    bool  _enabled{false};
-    Vec3  _normal{0, 1, 0};
-    float _distance{0};
-    float _autoAdapt{true};
-    float _bias{0.00001F};
-    float _normalBias{0};
-    float _near{1};
-    float _far{30};
-    float _orthoSize{5};
-    float _maxReceived{4};
-    float _saturation{0.75};
-    Vec2  _size{512, 512};
-
-    Shadows* _resource{nullptr};
-
-public:
-    ShadowInfo(/* args */) = default;
-    ~ShadowInfo()          = default;
-    inline void activate(Shadows* resources) {}
+    inline void activate(Skybox *resource) {}
 };
 
 class SceneGlobal {
 public:
     SceneGlobal(/* args */) = default;
     ~SceneGlobal()          = default;
-    AmbientInfo ambient;
-    ShadowInfo  shadows;
-    SkyboxInfo  skybox;
-    FogInfo     fog;
-    inline void activate() {}
+    AmbientInfo       ambient;
+    scene::ShadowInfo shadows;
+    SkyboxInfo        skybox;
+    scene::FogInfo    fog;
+    inline void       activate() {}
 };
 
 } // namespace scenegraph

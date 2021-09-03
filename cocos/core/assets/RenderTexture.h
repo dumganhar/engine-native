@@ -99,19 +99,19 @@ public:
      * @en Gets the sampler resource for the render texture
      * @zh 获取渲染贴图的采样器
      */
-    gfx::Sampler *getGFXSampler();
+    gfx::Sampler *getGFXSampler() override;
 
     /**
      * @en Gets the sampler hash for the render texture
      * @zh 获取渲染贴图的采样器哈希值
      */
-    uint64_t getSamplerHash() const;
+    uint64_t getSamplerHash() const override;
 
     void onLoaded() override;
 
     void _initWindow(const IRenderTextureCreateInfo &info);
 
-    virtual void initDefault(const std::string &uuid);
+    virtual void initDefault(const std::string &uuid) override;
 
     bool validate() const override;
 

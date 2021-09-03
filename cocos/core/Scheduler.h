@@ -220,6 +220,9 @@ public:
     Scheduler() = default;
     ~Scheduler();
     void release();
+    
+    void init() override {}
+    void postUpdate(float dt) override {}
 
     bool inline isCurrentTimerSalvaged() const { return _currentTimerSalvaged; }
 

@@ -84,7 +84,7 @@ void RenderScene::removeCameras() {
     for (auto *camera : _cameras) {
         camera->detachFromScene();
     }
-    _cameras.erase(_cameras.begin());
+    _cameras.clear();
 }
 
 void RenderScene::unsetMainLight(DirectionalLight *dl) {
@@ -153,7 +153,7 @@ void RenderScene::removeSpotLights() {
     for (auto *spotLight : _spotLights) {
         spotLight->detachFromScene();
     }
-    _sphereLights.clear();
+    _spotLights.clear();
 }
 
 void RenderScene::addModel(Model *model) {

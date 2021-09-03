@@ -64,17 +64,16 @@ framegraph::StringHandle DeferredPipeline::fgStrHandleGbufferTexture[GBUFFER_COU
     framegraph::FrameGraph::stringToHandle("gbufferAlbedoTexture"),
     framegraph::FrameGraph::stringToHandle("gbufferPositionTexture"),
     framegraph::FrameGraph::stringToHandle("gbufferNormalTexture"),
-    framegraph::FrameGraph::stringToHandle("gbufferEmissiveTexture")
-};
-framegraph::StringHandle DeferredPipeline::fgStrHandleDepthTexture = framegraph::FrameGraph::stringToHandle("depthTexture");
-framegraph::StringHandle DeferredPipeline::fgStrHandleDepthTexturePost = framegraph::FrameGraph::stringToHandle("depthTexturePost");
+    framegraph::FrameGraph::stringToHandle("gbufferEmissiveTexture")};
+framegraph::StringHandle DeferredPipeline::fgStrHandleDepthTexture       = framegraph::FrameGraph::stringToHandle("depthTexture");
+framegraph::StringHandle DeferredPipeline::fgStrHandleDepthTexturePost   = framegraph::FrameGraph::stringToHandle("depthTexturePost");
 framegraph::StringHandle DeferredPipeline::fgStrHandleLightingOutTexture = framegraph::FrameGraph::stringToHandle("lightingOutputTexture");
-framegraph::StringHandle DeferredPipeline::fgStrHandleBackBufferTexture = framegraph::FrameGraph::stringToHandle("backBufferTexture");
+framegraph::StringHandle DeferredPipeline::fgStrHandleBackBufferTexture  = framegraph::FrameGraph::stringToHandle("backBufferTexture");
 
-framegraph::StringHandle DeferredPipeline::fgStrHandleGbufferPass = framegraph::FrameGraph::stringToHandle("deferredGbufferPass");
-framegraph::StringHandle DeferredPipeline::fgStrHandleLightingPass = framegraph::FrameGraph::stringToHandle("deferredLightingPass");
+framegraph::StringHandle DeferredPipeline::fgStrHandleGbufferPass     = framegraph::FrameGraph::stringToHandle("deferredGbufferPass");
+framegraph::StringHandle DeferredPipeline::fgStrHandleLightingPass    = framegraph::FrameGraph::stringToHandle("deferredLightingPass");
 framegraph::StringHandle DeferredPipeline::fgStrHandleTransparentPass = framegraph::FrameGraph::stringToHandle("deferredTransparentPass");
-framegraph::StringHandle DeferredPipeline::fgStrHandleSsprPass = framegraph::FrameGraph::stringToHandle("deferredSSPRPass");
+framegraph::StringHandle DeferredPipeline::fgStrHandleSsprPass        = framegraph::FrameGraph::stringToHandle("deferredSSPRPass");
 framegraph::StringHandle DeferredPipeline::fgStrHandlePostprocessPass = framegraph::FrameGraph::stringToHandle("deferredPostPass");
 
 bool DeferredPipeline::initialize(const RenderPipelineInfo &info) {
@@ -94,7 +93,7 @@ bool DeferredPipeline::initialize(const RenderPipelineInfo &info) {
 }
 
 bool DeferredPipeline::activate() {
-    _macros.setValue("CC_PIPELINE_TYPE", static_cast<float>(1.0));
+    _macros["CC_PIPELINE_TYPE"] = 1.0F;
 
     if (!RenderPipeline::activate()) {
         CC_LOG_ERROR("RenderPipeline active failed.");
@@ -134,7 +133,7 @@ void DeferredPipeline::initFrameGraphExternalTexture() {
     gfx::TextureInfo infoPos = {
         gfx::TextureType::TEX2D,
         gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED,
-        gfx::Format::RGBA16F,       // POSITON cannot use RGBA8
+        gfx::Format::RGBA16F, // POSITON cannot use RGBA8
         _width,
         _height,
     };
@@ -238,7 +237,7 @@ gfx::InputAssembler *DeferredPipeline::getIAByRenderArea(const gfx::Rect &rect) 
         return _quadIA[value];
     }
 
-    gfx::Buffer *vb = nullptr;
+    gfx::Buffer *        vb = nullptr;
     gfx::InputAssembler *ia = nullptr;
     createQuadInputAssembler(_quadIB, &vb, &ia);
     _quadVB.push_back(vb);
@@ -250,12 +249,12 @@ gfx::InputAssembler *DeferredPipeline::getIAByRenderArea(const gfx::Rect &rect) 
 }
 
 void DeferredPipeline::genQuadVertexData(gfx::SurfaceTransform /*surfaceTransform*/, const gfx::Rect &renderArea, float *vbData) {
-    auto width = float(_width);
+    auto width  = float(_width);
     auto height = float(_height);
-    auto minX = float(renderArea.x) / width;
-    auto maxX = float(renderArea.x + renderArea.width) / width;
-    auto minY = float(renderArea.y) / height;
-    auto maxY = float(renderArea.y + renderArea.height) / height;
+    auto minX   = float(renderArea.x) / width;
+    auto maxX   = float(renderArea.x + renderArea.width) / width;
+    auto minY   = float(renderArea.y) / height;
+    auto maxY   = float(renderArea.y + renderArea.height) / height;
     if (_device->getCapabilities().screenSpaceSignY > 0) {
         std::swap(minY, maxY);
     }
@@ -304,21 +303,21 @@ bool DeferredPipeline::createQuadInputAssembler(gfx::Buffer *quadIB, gfx::Buffer
 
 gfx::Rect DeferredPipeline::getRenderArea(scene::Camera *camera, bool onScreen) {
     gfx::Rect renderArea;
-    uint w;
-    uint h;
+    uint      w;
+    uint      h;
     if (onScreen) {
-        w = camera->window->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->height : camera->width;
-        h = camera->window->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->width : camera->height;
+        w = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getHeight() : camera->getWidth();
+        h = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getWidth() : camera->getHeight();
     } else {
-        w = camera->width;
-        h = camera->height;
+        w = camera->getWidth();
+        h = camera->getHeight();
     }
 
-    const auto &viewport = camera->viewPort;
+    const auto &viewport = camera->getViewport();
     renderArea.x         = static_cast<int>(viewport.x * w);
     renderArea.y         = static_cast<int>(viewport.y * h);
-    renderArea.width     = static_cast<uint>(viewport.z * w * _pipelineSceneData->getSharedData()->shadingScale);
-    renderArea.height    = static_cast<uint>(viewport.w * h * _pipelineSceneData->getSharedData()->shadingScale);
+    renderArea.width     = static_cast<uint>(viewport.z * w * _pipelineSceneData->getShadingScale());
+    renderArea.height    = static_cast<uint>(viewport.w * h * _pipelineSceneData->getShadingScale());
     return renderArea;
 }
 
@@ -338,7 +337,6 @@ void DeferredPipeline::destroyQuadInputAssembler() {
 
 bool DeferredPipeline::activeRenderer() {
     _commandBuffers.push_back(_device->getCommandBuffer());
-    auto *const sharedData = _pipelineSceneData->getSharedData();
 
     gfx::SamplerInfo info{
         gfx::Filter::POINT,
@@ -366,8 +364,8 @@ bool DeferredPipeline::activeRenderer() {
     _descriptorSet->update();
 
     // update global defines when all states initialized.
-    _macros.setValue("CC_USE_HDR", static_cast<bool>(sharedData->isHDR));
-    _macros.setValue("CC_SUPPORT_FLOAT_TEXTURE", _device->hasFeature(gfx::Feature::TEXTURE_FLOAT));
+    _macros["CC_USE_HDR"]               = _pipelineSceneData->isHDR();
+    _macros["CC_SUPPORT_FLOAT_TEXTURE"] = _device->hasFeature(gfx::Feature::TEXTURE_FLOAT);
 
     // step 2 create index buffer
     uint ibStride = 4;
@@ -437,18 +435,17 @@ void DeferredPipeline::destroyDeferredData() {
 }
 
 gfx::Color DeferredPipeline::getClearcolor(scene::Camera *camera) {
-    auto *const sceneData     = getPipelineSceneData();
-    auto *const sharedData    = sceneData->getSharedData();
-    gfx::Color clearColor{0.0, 0.0, 0.0, 1.0F};
-    if (camera->clearFlag & static_cast<uint>(gfx::ClearFlagBit::COLOR)) {
-        if (sharedData->isHDR) {
-            srgbToLinear(&clearColor, camera->clearColor);
-            const auto scale = sharedData->fpScale / camera->exposure;
+    auto *const sceneData  = getPipelineSceneData();
+    gfx::Color  clearColor{0.0, 0.0, 0.0, 1.0F};
+    if (!!(camera->getClearFlag() & gfx::ClearFlagBit::COLOR)) {
+        if (sceneData->isHDR()) {
+            srgbToLinear(&clearColor, camera->getClearColor());
+            const auto scale = sceneData->getFpScale() / camera->getExposure();
             clearColor.x *= scale;
             clearColor.y *= scale;
             clearColor.z *= scale;
         } else {
-            clearColor = camera->clearColor;
+            clearColor = camera->getClearColor();
         }
     }
 

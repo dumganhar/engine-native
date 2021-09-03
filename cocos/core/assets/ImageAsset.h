@@ -40,6 +40,8 @@ class Image;
  */
 class ImageAsset final : public Asset {
 public:
+    using Super = Asset;
+
     ImageAsset() = default;
     ~ImageAsset() override;
 

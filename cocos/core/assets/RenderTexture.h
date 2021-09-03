@@ -51,6 +51,8 @@ class Sampler;
  */
 class RenderTexture final : public TextureBase {
 public:
+    explicit RenderTexture()  = default;
+    ~RenderTexture() override = default;
     /**
      * @en The pixel width of the render texture
      * @zh 渲染贴图的像素宽度
@@ -111,7 +113,7 @@ public:
 
     void _initWindow(const IRenderTextureCreateInfo &info);
 
-    virtual void initDefault(const std::string &uuid) override;
+    void initDefault(const std::optional<std::string> &uuid = {}) override;
 
     bool validate() const override;
 

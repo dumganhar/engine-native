@@ -39,11 +39,11 @@ void UIPhase::activate(RenderPipeline *pipeline) {
 void UIPhase::render(scene::Camera *camera, gfx::RenderPass *renderPass) {
     auto *cmdBuff = _pipeline->getCommandBuffers()[0];
 
-    const auto &batches = camera->scene->getDrawBatch2Ds();
+    const auto &batches = camera->getScene()->getDrawBatch2Ds();
     // Notice: The batches[0] is batchCount
     for (auto *batch : batches) {
         bool visible = false;
-        if (camera->visibility & batch->visFlags) {
+        if (camera->getVisibility() & batch->visFlags) {
             visible = true;
         }
 

@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <optional>
 #include "MaterialInstance.h"
 #include "scene/Pass.h"
 
@@ -52,9 +53,9 @@ public:
      * @param original The original pass info
      * @param value The override pipeline state info
      */
-    void overridePipelineStates(const IPassInfo &original, const PassOverrides &override);
+    void overridePipelineStates(const IPassInfo &original, const PassOverrides &override) override;
 
-    bool tryCompile(const MacroRecord &defineOverrides);
+    bool tryCompile(const std::optional<MacroRecord> &defineOverrides);
 
     /**
      * @en Prepare to change states of the pass and do not notify the material to rebuild the pipeline state object
@@ -69,7 +70,7 @@ public:
     void endChangeStatesSilently() override;
 
 protected:
-    void syncBatchingScheme();
+    void syncBatchingScheme() override;
 
     void onStateChange();
 

@@ -25,14 +25,19 @@
 
 #pragma once
 
-#include "core/assets/SimpleTexture.h"
+#include <optional>
 
 #include "core/assets/Asset.h"
-
 #include "core/assets/AssetEnum.h"
 #include "core/assets/ImageAsset.h"
+#include "core/assets/SimpleTexture.h"
 
 namespace cc {
+
+struct ITexture2DSerializeData {
+    std::string              base;
+    std::vector<std::string> mipmaps;
+};
 
 /**
  * @en The create information for [[Texture2D]]
@@ -56,14 +61,14 @@ struct ITexture2DCreateInfo {
      * @zh 像素格式。
      * @default PixelFormat.RGBA8888
      */
-    PixelFormat format{PixelFormat::RGBA8888};
+    std::optional<PixelFormat> format;
 
     /**
      * @en The mipmap level count
      * @zh mipmap 层级。
      * @default 1
      */
-    uint32_t mipmapLevel{1};
+    std::optional<uint32_t> mipmapLevel;
 };
 
 /**
@@ -72,6 +77,11 @@ struct ITexture2DCreateInfo {
  */
 class Texture2D final : public SimpleTexture {
 public:
+    using Super = SimpleTexture;
+
+    explicit Texture2D()  = default;
+    ~Texture2D() override = default;
+
     /**
      * @en All levels of mipmap images, be noted, automatically generated mipmaps are not included.
      * When setup mipmap, the size of the texture and pixel format could be modified.
@@ -92,9 +102,17 @@ public:
      * 注意，`this.image = img` 等价于 `this.mipmaps = [img]`，
      * 也就是说，通过 `this.image` 设置 0 级 Mipmap 时将隐式地清除之前的所有 Mipmap。
      */
-    ImageAsset *getImage() const;
+    inline ImageAsset *getImage() const {
+        return _mipmaps.empty() ? nullptr : _mipmaps[0];
+    }
 
-    void setImage(ImageAsset *value);
+    void setImage(ImageAsset *value) {
+        if (value != nullptr) {
+            _mipmaps.emplace_back(value);
+        } else {
+            _mipmaps.clear();
+        }
+    }
 
     void initialize();
 
@@ -167,9 +185,9 @@ public:
      */
     void deserialize(const std::any &serializedData, const std::any &handle) override;
 
-    gfx::TextureInfo _getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
+    gfx::TextureInfo getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 
-    void initDefault(const std::string &uuid) override;
+    void initDefault(const std::optional<std::string> &uuid = {}) override;
 
     bool validate() const override;
 

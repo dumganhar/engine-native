@@ -53,13 +53,13 @@ struct IGeometricInfo {
      * @en Indices data
      * @zh 索引数据。
      */
-    IBArray indices;
+    std::optional<IBArray> indices;
 
     /**
      * @en Whether the geometry is treated as double sided
      * @zh 是否将图元按双面对待。
      */
-    bool doubleSided;
+    std::optional<bool> doubleSided;
 
     /**
      * @en The bounding box
@@ -73,8 +73,8 @@ struct IGeometricInfo {
  * @zh 扁平化顶点缓冲区
  */
 struct IFlatBuffer {
-    uint32_t   stride;
-    uint32_t   count;
+    uint32_t   stride{0};
+    uint32_t   count{0};
     Uint8Array buffer;
 };
 
@@ -89,22 +89,103 @@ class Buffer;
  */
 class RenderingSubMesh final : public Asset {
 public:
-    Mesh *mesh{nullptr};
+    RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
+                     const gfx::AttributeList &attributes,
+                     gfx::PrimitiveMode        primitiveMode,
+                     gfx::Buffer *             indexBuffer    = nullptr,
+                     gfx::Buffer *             indirectBuffer = nullptr);
 
-    uint32_t subMeshIdx{0};
+    ~RenderingSubMesh() override;
+
+    /**
+      * @en All vertex attributes used by the sub mesh
+      * @zh 所有顶点属性。
+      */
+    inline const gfx::AttributeList &getAttributes() const { return _attributes; }
+
+    /**
+     * @en All vertex buffers used by the sub mesh
+     * @zh 使用的所有顶点缓冲区。
+     */
+    inline const gfx::BufferList &getVertexBuffers() const { return _vertexBuffers; }
+
+    /**
+     * @en Index buffer used by the sub mesh
+     * @zh 使用的索引缓冲区，若未使用则无需指定。
+     */
+    inline gfx::Buffer *getIndexBuffer() const { return _indexBuffer; }
+
+    /**
+     * @en Indirect buffer used by the sub mesh
+     * @zh 间接绘制缓冲区。
+     */
+    inline gfx::Buffer *indirectBuffer() const { return _indirectBuffer; }
+
+    /**
+     * @en The geometric info of the sub mesh, used for raycast.
+     * @zh （用于射线检测的）几何信息。
+     */
+    const IGeometricInfo &geometricInfo();
+
+    /**
+     * @en Primitive mode used by the sub mesh
+     * @zh 图元类型。
+     */
+    inline gfx::PrimitiveMode getPrimitiveMode() const { return _primitiveMode; }
+
+    /**
+     * @en Flatted vertex buffers
+     * @zh 扁平化的顶点缓冲区。
+     */
+    inline const std::vector<IFlatBuffer> &getFlatBuffers() const { return _flatBuffers; }
+    inline void                            setFlatBuffers(const std::vector<IFlatBuffer> &flatBuffers) { _flatBuffers = flatBuffers; }
+
+    void genFlatBuffers();
+
+    inline const gfx::InputAssemblerInfo &getIaInfo() const { return _iaInfo; }
+
+    /**
+     * @en The vertex buffer for joint after mapping
+     * @zh 骨骼索引按映射表处理后的顶点缓冲。
+     */
+    const gfx::BufferList &getJointMappedBuffers();
+
+    bool destroy() override;
+
+    /**
+     * @en Adds a vertex attribute input called 'a_vertexId' into this sub-mesh.
+     * This is useful if you want to simulate `gl_VertexId` in WebGL context prior to 2.0.
+     * Once you call this function, the vertex attribute is permanently added.
+     * Subsequent calls to this function take no effect.
+     * @param device Device used to create related rendering resources.
+     */
+    void enableVertexIdChannel(gfx::Device *device);
+
+    inline void  setMesh(Mesh *mesh) { _mesh = mesh; } //cjh shared_ptr
+    inline Mesh *getMesh() const { return _mesh; }
+
+    inline void                           setSubMeshIdx(uint32_t idx) { _subMeshIdx = idx; }
+    inline const std::optional<uint32_t> &getSubMeshIdx() const { return _subMeshIdx; }
 
 private:
+    void init();
+    void allocVertexIdBuffer(gfx::Device *device);
+
+private:
+    Mesh *                  _mesh{nullptr};
+    std::optional<uint32_t> _subMeshIdx;
+
     std::vector<IFlatBuffer> _flatBuffers;
 
-    std::vector<gfx::Buffer *> _jointMappedBuffers;
+    std::optional<gfx::BufferList> _jointMappedBuffers;
 
-    std::vector<uint32_t> _jointMappedBufferIndices;
+    std::optional<std::vector<uint32_t>> _jointMappedBufferIndices;
 
-    VertexIdChannel _vertexIdChannel;
+    std::optional<VertexIdChannel> _vertexIdChannel;
 
-    IGeometricInfo _geometricInfo;
+    std::optional<IGeometricInfo> _geometricInfo;
 
-    std::vector<gfx::Buffer *> _vertexBuffers;
+    gfx::BufferList _vertexBuffers;
 
     gfx::AttributeList _attributes;
 

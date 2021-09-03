@@ -261,6 +261,22 @@ public:
      */
     static const uint32_t DEBUG_DT_THRESHOLD{1};
 
+    // /**
+    //  * @en The outer frame of the game canvas; parent of game container.
+    //  * @zh 游戏画布的外框，container 的父容器。
+    //  */
+    // HTMLDivElement *frame{nullptr};
+    // /**
+    //  * @en The container of game canvas.
+    //  * @zh 游戏画布的容器。
+    //  */
+    // HTMLDivElement *container{nullptr};
+    // /**
+    //  * @en The canvas of the game.
+    //  * @zh 游戏的画布。
+    //  */
+    // HTMLDivElement *canvas{nullptr};
+
     /**
      * @en The renderer backend of the game.
      * @zh 游戏的渲染器类型。

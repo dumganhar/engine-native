@@ -35,13 +35,14 @@
 #include "gfx-base/GFXDescriptorSet.h"
 #include "math/Quaternion.h"
 #include "platform/Application.h"
+#include "scene/DirectionalLight.h"
 #include "scene/Light.h"
 #include "scene/RenderScene.h"
 #include "scene/SpotLight.h"
 
 namespace cc {
 namespace pipeline {
-bool        castBoundsInitialized = false;
+bool           castBoundsInitialized = false;
 geometry::AABB castWorldBounds;
 
 RenderObject genRenderObject(const scene::Model *model, const scene::Camera *camera) {
@@ -49,8 +50,8 @@ RenderObject genRenderObject(const scene::Model *model, const scene::Camera *cam
     if (model->getNode()) {
         auto *const node = model->getTransform();
         cc::Vec3    position;
-        cc::Vec3::subtract(node->getWorldPosition(), camera->position, &position);
-        depth = position.dot(camera->forward);
+        cc::Vec3::subtract(node->getWorldPosition(), camera->getPosition(), &position);
+        depth = position.dot(camera->getForward());
     }
 
     return {depth, model};
@@ -67,52 +68,14 @@ void getShadowWorldMatrix(const geometry::Sphere *sphere, const cc::Quaternion &
     Mat4::fromRT(rotation, translation, shadowWorldMat);
 }
 
-void updateSphereLight(scene::Shadow *shadows, const scene::Light *light, std::array<float, UBOShadow::COUNT> *shadowUBO) {
-    auto *const node = light->getNode();
-    if (!node->getFlagsChanged() && !shadows->dirty) {
-        return;
-    }
-
-    shadows->dirty       = false;
-    const auto &position = node->getWorldPosition();
-    const auto &normal   = shadows->normal;
-    const auto  distance = shadows->distance + 0.001F; // avoid z-fighting
-    const auto  ndL      = normal.dot(position);
-    const auto  lx       = position.x;
-    const auto  ly       = position.y;
-    const auto  lz       = position.z;
-    const auto  nx       = normal.x;
-    const auto  ny       = normal.y;
-    const auto  nz       = normal.z;
-    auto &      matLight = shadows->matLight;
-    matLight.m[0]        = ndL - distance - lx * nx;
-    matLight.m[1]        = -ly * nx;
-    matLight.m[2]        = -lz * nx;
-    matLight.m[3]        = -nx;
-    matLight.m[4]        = -lx * ny;
-    matLight.m[5]        = ndL - distance - ly * ny;
-    matLight.m[6]        = -lz * ny;
-    matLight.m[7]        = -ny;
-    matLight.m[8]        = -lx * nz;
-    matLight.m[9]        = -ly * nz;
-    matLight.m[10]       = ndL - distance - lz * nz;
-    matLight.m[11]       = -nz;
-    matLight.m[12]       = lx * distance;
-    matLight.m[13]       = ly * distance;
-    matLight.m[14]       = lz * distance;
-    matLight.m[15]       = ndL;
-
-    memcpy(shadowUBO->data() + UBOShadow::MAT_LIGHT_PLANE_PROJ_OFFSET, matLight.m, sizeof(matLight));
-}
-
-void updateDirLight(scene::Shadow *shadows, const scene::Light *light, std::array<float, UBOShadow::COUNT> *shadowUBO) {
+void updateDirLight(scene::Shadow *shadow, const scene::Light *light, std::array<float, UBOShadow::COUNT> *shadowUBO) {
     auto *const node     = light->getNode();
     const auto &rotation = node->getWorldRotation();
     Quaternion  qt(rotation.x, rotation.y, rotation.z, rotation.w);
     Vec3        forward(0, 0, -1.0F);
     forward.transformQuat(qt);
-    const auto &normal   = shadows->normal;
-    const auto  distance = shadows->distance + 0.001F; // avoid z-fighting
+    const auto &normal   = shadow->getNormal();
+    const auto  distance = shadow->getDistance() + 0.001F; // avoid z-fighting
     const auto  ndL      = normal.dot(forward);
     const auto  scale    = 1.0F / ndL;
     const auto  lx       = forward.x * scale;
@@ -121,7 +84,8 @@ void updateDirLight(scene::Shadow *shadows, const scene::Light *light, std::arra
     const auto  nx       = normal.x;
     const auto  ny       = normal.y;
     const auto  nz       = normal.z;
-    auto &      matLight = shadows->matLight;
+    //TODO: how to avoid create Mat4 every time?
+    auto        matLight = shadow->getMatLight();
     matLight.m[0]        = 1 - nx * lx;
     matLight.m[1]        = -nx * ly;
     matLight.m[2]        = -nx * lz;
@@ -140,21 +104,20 @@ void updateDirLight(scene::Shadow *shadows, const scene::Light *light, std::arra
     matLight.m[15]       = 1;
 
     memcpy(shadowUBO->data() + UBOShadow::MAT_LIGHT_PLANE_PROJ_OFFSET, matLight.m, sizeof(matLight));
-    float color[4] = {shadows->color.x, shadows->color.y, shadows->color.z, shadows->color.w};
-    memcpy(shadowUBO->data() + UBOShadow::SHADOW_COLOR_OFFSET, &color, sizeof(float) * 4);
+    memcpy(shadowUBO->data() + UBOShadow::SHADOW_COLOR_OFFSET, shadow->getShadowColor4f().data(), sizeof(float) * 4);
 }
 
 void lightCollecting(scene::Camera *camera, std::vector<const scene::Light *> *validLights) {
     validLights->clear();
     auto *              sphere    = CC_NEW(geometry::Sphere);
-    const auto *        scene     = camera->scene;
+    const auto *        scene     = camera->getScene();
     const scene::Light *mainLight = scene->getMainLight();
     validLights->emplace_back(mainLight);
 
     for (auto *spotLight : scene->getSpotLights()) {
         sphere->setCenter(spotLight->getPosition());
         sphere->setRadius(spotLight->getRange());
-        if (sphere->interset(camera->frustum)) {
+        if (sphere->interset(camera->getFrustum())) {
             validLights->emplace_back(static_cast<scene::Light *>(spotLight));
         }
     }
@@ -164,28 +127,27 @@ void lightCollecting(scene::Camera *camera, std::vector<const scene::Light *> *v
 
 void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
     auto *const       sceneData  = pipeline->getPipelineSceneData();
-    auto *const       sharedData = sceneData->getSharedData();
-    auto *const       shadows    = sharedData->shadow;
-    auto *const       skyBox     = sharedData->skybox;
-    const auto *const scene      = camera->scene;
+    auto *const       shadow     = sceneData->getShadow();
+    auto *const       skyBox     = sceneData->getSkybox();
+    const auto *const scene      = camera->getScene();
 
     castBoundsInitialized = false;
     RenderObjectList shadowObjects;
     bool             isShadowMap = false;
-    if (shadows->enabled && shadows->shadowType == scene::ShadowType::SHADOWMAP) {
+    if (shadow->isEnabled() && shadow->getType() == scene::ShadowType::SHADOW_MAP) {
         isShadowMap = true;
     }
 
     RenderObjectList renderObjects;
 
-    if (skyBox->enabled && skyBox->model && (camera->clearFlag & skyboxFlag)) {
-        renderObjects.emplace_back(genRenderObject(skyBox->model, camera));
+    if (skyBox->isEnabled() && skyBox->getModel() && (static_cast<uint32_t>(camera->getClearFlag()) & skyboxFlag)) {
+        renderObjects.emplace_back(genRenderObject(skyBox->getModel(), camera));
     }
 
     for (auto *model : scene->getModels()) {
         // filter model by view visibility
-        if (model->getEnabled()) {
-            const auto        visibility = camera->visibility;
+        if (model->isEnabled()) {
+            const auto        visibility = camera->getVisibility();
             const auto *const node       = model->getNode();
             if ((model->getNode() && ((visibility & node->getLayer()) == node->getLayer())) ||
                 (visibility & model->getVisFlags())) {
@@ -200,7 +162,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
                     shadowObjects.emplace_back(genRenderObject(model, camera));
                 }
                 // frustum culling
-                if (modelWorldBounds && !modelWorldBounds->aabbFrustum(camera->frustum)) {
+                if (modelWorldBounds && !modelWorldBounds->aabbFrustum(camera->getFrustum())) {
                     continue;
                 }
 

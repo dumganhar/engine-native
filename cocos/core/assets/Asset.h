@@ -27,13 +27,11 @@
 
 #include <any>
 #include <functional>
+#include <optional>
 
 #include "base/Macros.h"
 #include "core/Types.h"
 #include "core/data/Object.h"
-
-#include <any>
-#include <functional>
 
 namespace cc {
 
@@ -57,6 +55,7 @@ public:
     NativeDep getNativeDep() const;
 
     inline const std::string &getUuid() const { return _uuid; }
+    inline void               setUuid(const std::string &uuid) { _uuid = uuid; }
 
     /**
      * @en
@@ -98,7 +97,7 @@ public:
 
     virtual void onLoaded() {}
 
-    virtual void initDefault(const std::string &uuid);
+    virtual void initDefault(const std::optional<std::string> &uuid = {});
     virtual bool validate() const { return true; }
 
     bool isDefault() const { return _isDefault; }
@@ -118,7 +117,7 @@ public:
      */
     virtual void deserialize(const std::any &serializedData, const std::any &handle){};
 
-    virtual std::string toString() const override { return _nativeUrl; }
+    std::string toString() const override { return _nativeUrl; }
 
 protected:
     Asset();
@@ -136,7 +135,7 @@ protected:
      */
     void _setRawAsset(const std::string &filename, bool inLibrary = true);
 
-private:
+protected:
     std::string _native;
     std::string _nativeUrl;
 

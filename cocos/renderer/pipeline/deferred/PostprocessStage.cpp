@@ -109,29 +109,27 @@ void PostprocessStage::render(scene::Camera *camera) {
         framegraph::TextureHandle placerholder;
     };
 
-    if (hasFlag(static_cast<gfx::ClearFlags>(camera->clearFlag), gfx::ClearFlagBit::COLOR)) {
-        _clearColors[0].x = camera->clearColor.x;
-        _clearColors[0].y = camera->clearColor.y;
-        _clearColors[0].z = camera->clearColor.z;
+    if (hasFlag(camera->getClearFlag(), gfx::ClearFlagBit::COLOR)) {
+        _clearColors[0] = camera->getClearColor();
     }
-    _clearColors[0].w = camera->clearColor.w;
+    _clearColors[0].w = camera->getClearColor().w;
 
     // in post-process, the output is not always backbuffer, its frame buffer should be camera->window->frameBuffer
     // in cocos when camera->window->frameBuffer->_colorTextures[0] == nullptr, it means that render to swapchain image, that's backbuffer
     // when camera->window->frameBuffer->_colorTextures[0] != nullptr, it means that render to a staging texture
     auto *      pipeline      = static_cast<DeferredPipeline *>(_pipeline);
-    if (camera->window->frameBuffer->getColorTextures()[0] != nullptr) {
+    if (camera->getWindow()->getFramebuffer()->getColorTextures()[0] != nullptr) {
         _fgStrHandlePostOut = framegraph::FrameGraph::stringToHandle("fgStrHandlePostoutTexture");
         gfx::TextureInfo textureInfo = {
             gfx::TextureType::TEX2D,
             gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED,
             gfx::Format::RGBA16F,
-            camera->window->frameBuffer->getColorTextures()[0]->getWidth(),
-            camera->window->frameBuffer->getColorTextures()[0]->getHeight(),
+            camera->getWindow()->getFramebuffer()->getColorTextures()[0]->getWidth(),
+            camera->getWindow()->getFramebuffer()->getColorTextures()[0]->getHeight(),
         };
 
         auto *output = new framegraph::Resource<gfx::Texture, gfx::TextureInfo>(textureInfo);
-        output->createPersistent(camera->window->frameBuffer->getColorTextures()[0]);
+        output->createPersistent(camera->getWindow()->getFramebuffer()->getColorTextures()[0]);
 
         pipeline->getFrameGraph().getBlackboard().put(_fgStrHandlePostOut, pipeline->getFrameGraph().importExternal(_fgStrHandlePostOut, *output));
     }
@@ -152,7 +150,7 @@ void PostprocessStage::render(scene::Camera *camera) {
         builder.writeToBlackboard(DeferredPipeline::fgStrHandleLightingOutTexture, data.lightingOut);
 
         // backbuffer is as an attachment
-        if (camera->window->frameBuffer->getColorTextures()[0] != nullptr) {
+        if (camera->getWindow()->getFramebuffer()->getColorTextures()[0] != nullptr) {
             data.placerholder = builder.write(framegraph::TextureHandle(builder.readFromBlackboard(DeferredPipeline::fgStrHandleBackBufferTexture)));
             builder.writeToBlackboard(DeferredPipeline::fgStrHandleBackBufferTexture, data.placerholder);
         }
@@ -162,7 +160,7 @@ void PostprocessStage::render(scene::Camera *camera) {
         colorAttachmentInfo.clearColor  =  _clearColors[0];
         colorAttachmentInfo.loadOp      = gfx::LoadOp::CLEAR;
 
-        auto clearFlags = static_cast<gfx::ClearFlagBit>(camera->clearFlag);
+        gfx::ClearFlagBit clearFlags = camera->getClearFlag();
         if (!hasFlag(clearFlags, gfx::ClearFlagBit::COLOR)) {
             if (hasFlag(clearFlags, static_cast<gfx::ClearFlagBit>(skyboxFlag))) {
                 colorAttachmentInfo.loadOp = gfx::LoadOp::DISCARD;
@@ -187,7 +185,7 @@ void PostprocessStage::render(scene::Camera *camera) {
         data.depth = builder.write(framegraph::TextureHandle(builder.readFromBlackboard(DeferredPipeline::fgStrHandleDepthTexturePost)), depthAttachmentInfo);
         builder.writeToBlackboard(DeferredPipeline::fgStrHandleDepthTexture, data.depth);
 
-        auto renderArea = pipeline->getRenderArea(camera, !camera->window->hasOffScreenAttachments);
+        auto renderArea = pipeline->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments());
         (void)pipeline->getIAByRenderArea(renderArea);
         gfx::Viewport viewport{ renderArea.x, renderArea.y, renderArea.width, renderArea.height, 0.F, 1.F};
         builder.setViewport(viewport, renderArea);
@@ -228,12 +226,15 @@ void PostprocessStage::render(scene::Camera *camera) {
         if (!pipeline->getPipelineSceneData()->getRenderObjects().empty()) {
             // post process
             auto *const  sceneData = pipeline->getPipelineSceneData();
-            scene::Pass *pv        = sceneData->getSharedData()->deferredPostPass;
-            gfx::Shader *sd        = sceneData->getSharedData()->deferredPostPassShader;
+             //TODO:(minggo) how to get these data?
+//            scene::Pass *pv        = sceneData->getDeferredPostPass();
+//            gfx::Shader *sd        = sceneData->getDeferredPostPassShader();
+            scene::Pass *pv;
+            gfx::Shader *sd;
 
             // get pso and draw quad
             auto *camera = pipeline->getFrameGraphCamera();
-            auto rendeArea = pipeline->getRenderArea(camera, !camera->window->hasOffScreenAttachments);
+            auto rendeArea = pipeline->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments());
             gfx::InputAssembler *ia = pipeline->getIAByRenderArea(rendeArea);
             gfx::PipelineState * pso = PipelineStateManager::getOrCreatePipelineState(pv, sd, ia, renderPass);
             assert(pso != nullptr);
@@ -252,7 +253,7 @@ void PostprocessStage::render(scene::Camera *camera) {
         colorAttachmentInfo.clearColor = _clearColors[0];
         colorAttachmentInfo.loadOp      = gfx::LoadOp::CLEAR;
 
-        auto clearFlags = static_cast<gfx::ClearFlagBit>(camera->clearFlag);
+        auto clearFlags = static_cast<gfx::ClearFlagBit>(camera->getClearFlag());
         if (!hasFlag(clearFlags, gfx::ClearFlagBit::COLOR)) {
             if (hasFlag(clearFlags, static_cast<gfx::ClearFlagBit>(skyboxFlag))) {
                 colorAttachmentInfo.loadOp = gfx::LoadOp::DISCARD;
@@ -276,7 +277,7 @@ void PostprocessStage::render(scene::Camera *camera) {
         data.depth = builder.write(framegraph::TextureHandle(builder.readFromBlackboard(DeferredPipeline::fgStrHandleDepthTexture)), depthAttachmentInfo);
         builder.writeToBlackboard(DeferredPipeline::fgStrHandleDepthTexture, data.depth);
 
-        auto renderArea = pipeline->getRenderArea(camera, !camera->window->hasOffScreenAttachments);
+        auto renderArea = pipeline->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments());
         gfx::Viewport viewport{ renderArea.x, renderArea.y, renderArea.width, renderArea.height, 0.F, 1.F};
         builder.setViewport(viewport, renderArea);
     };

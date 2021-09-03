@@ -28,17 +28,23 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+
 #include "base/TypeDef.h"
+#include "core/ArrayBuffer.h"
+#include "core/Root.h"
 #include "core/assets/EffectAsset.h"
 #include "renderer/core/PassUtils.h"
+#include "renderer/core/ProgramLib.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDescriptorSet.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
-#include "scene/Define.h"
 
 namespace cc {
+
+class Root;
+
 namespace scene {
 
 struct PassDynamicsValue {
@@ -54,13 +60,53 @@ struct IPassInfoFull final : public IPassInfo {
     std::optional<PassOverrides> stateOverrides;
 };
 
-struct IMacroPatch {
-    std::string                            name;
-    std::variant<bool, float, std::string> value;
+enum class BatchingSchemes {
+    NONE       = 0,
+    INSTANCING = 1,
+    VB_MERGING = 2,
+};
+
+struct IBlockRef {
+    float *data{nullptr};
+    size_t size{0};
 };
 
 class Pass {
 public:
+    /**
+     * @en The binding type enums of the property
+     * @zh Uniform 的绑定类型（UBO 或贴图等）
+     */
+    using PropertyType = PropertyType;
+
+    /**
+     * @en Gets the binding type of the property with handle
+     * @zh 根据 handle 获取 uniform 的绑定类型（UBO 或贴图等）。
+     */
+    static PropertyType getPropertyTypeFromHandle(uint32_t handle) {
+        return cc::getPropertyTypeFromHandle(handle);
+    }
+
+    /**
+     * @en Gets the type of member in uniform buffer object with the handle
+     * @zh 根据 handle 获取 UBO member 的具体类型。
+     */
+    static gfx::Type getTypeFromHandle(uint32_t handle) {
+        return cc::getTypeFromHandle(handle);
+    }
+
+    /**
+     * @en Gets the binding with handle
+     * @zh 根据 handle 获取 binding。
+     */
+    static uint32_t getBindingFromHandle(uint32_t handle) {
+        return cc::getBindingFromHandle(handle);
+    }
+
+    static uint32_t getOffsetFromHandle(uint32_t handle) {
+        return cc::getOffsetFromHandle(handle);
+    }
+
     /**
      * @en Fill a pass represented by the given pass handle with the given override info
      * @param pass The pass handle point to the pass
@@ -76,12 +122,8 @@ public:
      */
     static uint64_t getPassHash(Pass *pass);
 
-    Pass() { _phase = pipeline::getPhaseID("default"); }
-    Pass(const Pass &) = delete;
-    Pass(Pass &&)      = delete;
-    virtual ~Pass()    = default;
-    Pass &operator=(const Pass &) = delete;
-    Pass &operator=(Pass &&) = delete;
+    explicit Pass();
+    virtual ~Pass();
 
     /**
      * @en Initialize the pass with given pass info, shader will be compiled in the init process
@@ -130,7 +172,7 @@ public:
      * @param handle The handle for the target uniform
      * @param out The output property to store the result
      */
-    MaterialProperty *getUniform(uint32_t handle, MaterialProperty *out) const;
+    MaterialProperty &getUniform(uint32_t handle, MaterialProperty &out) const;
 
     /**
      * @en Sets an array type uniform value, if a uniform requires frequent update, please use this method.
@@ -138,7 +180,7 @@ public:
      * @param handle The handle for the target uniform
      * @param value New value
      */
-    void setUniformArray(uint32_t handle, const std::vector<MaterialProperty> &value);
+    void setUniformArray(uint32_t handle, const MaterialPropertyList &value);
 
     /**
      * @en Bind a GFX [[Texture]] the the given uniform binding
@@ -146,8 +188,7 @@ public:
      * @param binding The binding for target uniform of texture type
      * @param value Target texture
      */
-    void bindTexture(uint32_t binding, gfx::Texture *value);
-    void bindTexture(uint32_t binding, gfx::Texture *value, index_t index);
+    void bindTexture(uint32_t binding, gfx::Texture *value, index_t index = CC_INVALID_INDEX);
 
     /**
      * @en Bind a GFX [[Sampler]] the the given uniform binding
@@ -155,8 +196,7 @@ public:
      * @param binding The binding for target uniform of sampler type
      * @param value Target sampler
      */
-    void bindSampler(uint32_t binding, gfx::Sampler *value);
-    void bindSampler(uint32_t binding, gfx::Sampler *value, index_t index);
+    void bindSampler(uint32_t binding, gfx::Sampler *value, index_t index = CC_INVALID_INDEX);
 
     /**
      * @en Sets the dynamic pipeline state property at runtime
@@ -172,7 +212,7 @@ public:
      * @param original The original pass info
      * @param value The override pipeline state info
      */
-    void overridePipelineStates(const IPassInfo &original, const PassOverrides &overrides);
+    virtual void overridePipelineStates(const IPassInfo &original, const PassOverrides &overrides);
 
     void update();
 
@@ -193,8 +233,7 @@ public:
      * @en Resets the value of the given texture by name to the default value in [[EffectAsset]].
      * @zh 重置指定贴图为 [[EffectAsset]] 默认值。
      */
-    void resetTexture(const std::string &name);
-    void resetTexture(const std::string &name, index_t index);
+    void resetTexture(const std::string &name, index_t index = CC_INVALID_INDEX);
 
     /**
      * @en Resets all uniform buffer objects to the default values in [[EffectAsset]]
@@ -222,19 +261,19 @@ public:
     gfx::Shader *getShaderVariant(const std::vector<IMacroPatch> &patches);
 
     // infos
-    //    inline Root *                                                             getRoot() const { return _root; }
-    inline gfx::Device *getDevice() const { return _device; }
-    //    inline const IProgramInfo &                                               getShaderInfo() const { return _shaderInfo; }
-    //    inline gfx::DescriptorSetLayout *                                              getLocalSetLayout() const { return programLib.getDescriptorSetLayout(_device, _programName, true); }
+    inline Root *                                    getRoot() const { return _root; }
+    inline gfx::Device *                             getDevice() const { return _device; }
+    inline IProgramInfo *                            getShaderInfo() const { return _shaderInfo; }
+    inline gfx::DescriptorSetLayout *                getLocalSetLayout() const { return ProgramLib::getInstance()->getDescriptorSetLayout(_device, _programName, true); }
     inline const std::string &                       getProgram() const { return _programName; }
     inline const Record<std::string, IPropertyInfo> &getProperties() const { return _properties; }
     inline const MacroRecord &                       getDefines() const { return _defines; }
     inline index_t                                   getPassIndex() const { return _passIndex; }
     inline index_t                                   getPropertyIndex() const { return _propertyIndex; }
     // data
-    inline const std::vector<IPassDynamics> &getDynamics() const { return _dynamics; }
-    inline const std::vector<float> &        getBlocks() const { return _blocks; }
-    inline bool                              isRootBufferDirty() const { return _rootBufferDirty; }
+    inline const IPassDynamics &         getDynamics() const { return _dynamics; }
+    inline const std::vector<IBlockRef> &getBlocks() const { return _blocks; }
+    inline bool                          isRootBufferDirty() const { return _rootBufferDirty; }
     // states
     inline pipeline::RenderPriority  getPriority() const { return _priority; }
     inline gfx::PrimitiveMode        getPrimitive() const { return _primitive; }
@@ -252,12 +291,17 @@ public:
     // Only for UI
     void initPassFromTarget(Pass *target, gfx::DepthStencilState *dss, gfx::BlendState *bs, uint64_t hashFactor);
 
-protected:
+    //  internal use
+    /**
+     * @private
+     */
     virtual void beginChangeStatesSilently() {}
     virtual void endChangeStatesSilently() {}
 
-    void doInit(const IPassInfoFull &info, bool copyDefines = false);
-    void syncBatchingScheme();
+protected:
+    void         setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::RasterizerState *rs, gfx::DescriptorSet *ds);
+    void         doInit(const IPassInfoFull &info, bool copyDefines = false);
+    virtual void syncBatchingScheme();
 
     // internal resources
     gfx::Buffer *              _rootBuffer{nullptr};
@@ -265,15 +309,15 @@ protected:
     gfx::DescriptorSet *       _descriptorSet{nullptr};
     gfx::PipelineLayout *      _pipelineLayout{nullptr};
     // internal data
-    index_t                    _passIndex{0};
-    index_t                    _propertyIndex{0};
-    std::string                _programName;
-    std::vector<IPassDynamics> _dynamics;
-    Record<std::string, float> _propertyHandleMap;
-    uint8_t *                  _rootBlock{nullptr};
-    std::vector<float>         _blocks;
-    //TODO
-    //    protected _shaderInfo: IProgramInfo = null!;
+    index_t                       _passIndex{0};
+    index_t                       _propertyIndex{0};
+    std::string                   _programName;
+    IPassDynamics                 _dynamics;
+    Record<std::string, uint32_t> _propertyHandleMap;
+    ArrayBuffer                   _rootBlock;
+    std::vector<IBlockRef>        _blocks; // Point to position in _rootBlock
+
+    IProgramInfo *                     _shaderInfo{nullptr};
     MacroRecord                        _defines;
     Record<std::string, IPropertyInfo> _properties;
     gfx::Shader *                      _shader{nullptr};
@@ -292,6 +336,8 @@ protected:
     gfx::Device *_device{nullptr};
 
     bool _rootBufferDirty{false};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Pass);
 };
 
 } // namespace scene

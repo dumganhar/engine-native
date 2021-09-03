@@ -26,18 +26,33 @@
 #include "scene/RenderScene.h"
 
 #include <utility>
+
 #include "base/Log.h"
+#include "core/scene-graph/Node.h"
+#include "scene/BakedSkinningModel.h"
+#include "scene/Camera.h"
+#include "scene/DirectionalLight.h"
+#include "scene/DrawBatch2D.h"
+#include "scene/Model.h"
+#include "scene/SkinningModel.h"
+#include "scene/SphereLight.h"
+#include "scene/SpotLight.h"
 
 extern void jsbFlushFastMQ();
 
 namespace cc {
 namespace scene {
 
+bool RenderScene::initialize(const IRenderSceneInfo &info) {
+    _name = info.name;
+    return true;
+}
+
 void RenderScene::update(uint32_t stamp) {
     jsbFlushFastMQ();
 
-    if (_directionalLight) {
-        _directionalLight->update();
+    if (_mainLight) {
+        _mainLight->update();
     }
     for (SphereLight *light : _sphereLights) {
         light->update();
@@ -46,10 +61,58 @@ void RenderScene::update(uint32_t stamp) {
         spotLight->update();
     }
     for (auto *model : _models) {
-        if (model->getEnabled()) {
+        if (model->isEnabled()) {
             model->updateTransform(stamp);
             model->updateUBOs(stamp);
         }
+    }
+}
+
+void RenderScene::destroy() {
+    removeCameras();
+    removeSphereLights();
+    removeSpotLights();
+    removeModels();
+}
+
+void RenderScene::addCamera(Camera *camera) {
+    camera->attachToScene(this);
+    _cameras.emplace_back(camera);
+}
+
+void RenderScene::removeCameras() {
+    for (auto *camera : _cameras) {
+        camera->detachFromScene();
+    }
+    _cameras.clear();
+}
+
+void RenderScene::unsetMainLight(DirectionalLight *dl) {
+    if (_mainLight == dl) {
+        const auto &dlList = _directionalLights;
+        if (!dlList.empty()) {
+            setMainLight(dlList[dlList.size() - 1]);
+            if (_mainLight->getNode() != nullptr) {
+                uint32_t flag = _mainLight->getNode()->getFlagsChanged();
+                _mainLight->getNode()->setFlagsChanged(flag | static_cast<uint32_t>(scenegraph::TransformBit::ROTATION));
+            }
+            return;
+        }
+        setMainLight(nullptr);
+    }
+}
+
+void RenderScene::addDirectionalLight(DirectionalLight *dl) {
+    dl->attachToScene(this);
+    _directionalLights.emplace_back(dl);
+}
+
+void RenderScene::removeDirectionalLight(DirectionalLight *dl) {
+    auto iter = std::find(_directionalLights.begin(), _directionalLights.end(), dl);
+    if (iter != _directionalLights.end()) {
+        (*iter)->detachFromScene();
+        _directionalLights.erase(iter);
+        return;
     }
 }
 
@@ -66,10 +129,6 @@ void RenderScene::removeSphereLight(SphereLight *sphereLight) {
     }
 }
 
-void RenderScene::removeSphereLights() {
-    _sphereLights.clear();
-}
-
 void RenderScene::addSpotLight(SpotLight *spotLight) {
     _spotLights.push_back(spotLight);
 }
@@ -83,61 +142,82 @@ void RenderScene::removeSpotLight(SpotLight *spotLight) {
     }
 }
 
-void RenderScene::removeSpotLights() {
+void RenderScene::removeSphereLights() {
+    for (auto *sphereLight : _sphereLights) {
+        sphereLight->detachFromScene();
+    }
     _sphereLights.clear();
 }
 
+void RenderScene::removeSpotLights() {
+    for (auto *spotLight : _spotLights) {
+        spotLight->detachFromScene();
+    }
+    _spotLights.clear();
+}
+
 void RenderScene::addModel(Model *model) {
+    model->attachToScene(this);
     _models.push_back(model);
 }
 
-void RenderScene::addBakedSkinningModel(BakedSkinningModel *bakedSkinModel) {
-    _models.push_back(bakedSkinModel);
-}
-
-void RenderScene::addSkinningModel(SkinningModel *skinModel) {
-    _models.push_back(skinModel);
-}
-
-void RenderScene::removeModel(uint32_t idx) {
-    if (idx >= static_cast<uint32_t>(_models.size())) {
+void RenderScene::removeModel(index_t idx) {
+    if (idx >= static_cast<index_t>(_models.size())) {
         CC_LOG_WARNING("Try to remove invalid model.");
         return;
     }
     _models.erase(_models.begin() + idx);
 }
 
+void RenderScene::removeModel(Model *model) {
+    auto iter = std::find(_models.begin(), _models.end(), model);
+    if (iter != _models.end()) {
+        model->detachFromScene();
+        _models.erase(iter);
+    } else {
+        CC_LOG_WARNING("Try to remove invalid model.");
+    }
+}
+
 void RenderScene::removeModels() {
+    for (auto *model : _models) {
+        model->detachFromScene();
+        CC_SAFE_DESTROY(model);
+    }
     _models.clear();
 }
-
-void RenderScene::updateBatches(std::vector<DrawBatch2D *> &&batches) {
-    _drawBatch2Ds = batches;
-}
-
 void RenderScene::addBatch(DrawBatch2D *drawBatch2D) {
-    _drawBatch2Ds.push_back(drawBatch2D);
+    _batches.emplace_back(drawBatch2D);
 }
 
 void RenderScene::removeBatch(DrawBatch2D *drawBatch2D) {
-    auto iter = std::find(_drawBatch2Ds.begin(), _drawBatch2Ds.end(), drawBatch2D);
-    if (iter != _drawBatch2Ds.end()) {
-        _drawBatch2Ds.erase(iter);
+    auto iter = std::find(_batches.begin(), _batches.end(), drawBatch2D);
+    if (iter != _batches.end()) {
+        _batches.erase(iter);
     } else {
         CC_LOG_WARNING("Try to remove invalid DrawBatch2D.");
     }
 }
 
-void RenderScene::removeBatch(uint32_t index) {
-    if (index >= static_cast<uint32_t>(_drawBatch2Ds.size())) {
+void RenderScene::removeBatch(index_t index) {
+    if (index >= static_cast<index_t>(_batches.size())) {
         return;
     }
-
-    removeBatch(_drawBatch2Ds[index]);
+    removeBatch(_batches[index]);
 }
 
 void RenderScene::removeBatches() {
-    _drawBatch2Ds.clear();
+    _batches.clear();
+}
+
+void RenderScene::updateBatches(std::vector<DrawBatch2D *> &&batches) {
+    _batches = batches;
+}
+
+void RenderScene::onGlobalPipelineStateChanged() {
+    for (auto *model : _models) {
+        model->onGlobalPipelineStateChanged();
+    }
 }
 
 } // namespace scene

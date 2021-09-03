@@ -30,8 +30,17 @@
 
 namespace cc {
 
+namespace {
+Root *instance = nullptr;
+}
+
+Root *Root::getInstance() {
+    return instance;
+}
+
 Root::Root(gfx::Device *device)
 : _device(device) {
+    instance = this;
     //TODO: minggo
     //    this._dataPoolMgr = legacyCC.internal.DataPoolManager && new legacyCC.internal.DataPoolManager(device) as DataPoolManager;
     _cameraPool = new Pool<scene::Camera>([]() { return new scene::Camera(); },
@@ -39,6 +48,7 @@ Root::Root(gfx::Device *device)
 }
 
 Root::~Root() {
+    instance = nullptr;
     delete _cameraPool;
 }
 
@@ -87,22 +97,18 @@ void Root::destroy() {
 
 void Root::resize(uint32_t width, uint32_t height) {
     _device->resize(width, height);
-
-    //TODO: minggo: RenderWindow is not implemented.
-    //    this._mainWindow!.resize(width, height);
-    //
-    //    for (const window of this._windows) {
-    //        if (window.shouldSyncSizeWithSwapchain) {
-    //            window.resize(width, height);
-    //        }
-    //    }
-
+    _mainWindow->resize(width, height);
+    for (auto *window : _windows) {
+        if (window->shouldSyncSizeWithSwapchain()) {
+            window->resize(width, height);
+        }
+    }
     if (_pipeline) {
         _pipeline->resize(width, height);
     }
 }
 
-bool Root::setRenderPipline(pipeline::RenderPipeline *rppl) {
+bool Root::setRenderPipeline(pipeline::RenderPipeline *rppl) {
     if (dynamic_cast<pipeline::DeferredPipeline *>(rppl) != nullptr) {
         _useDeferredPipeline = true;
     }
@@ -139,12 +145,11 @@ bool Root::setRenderPipline(pipeline::RenderPipeline *rppl) {
 }
 
 void Root::onGlobalPipelineStateChanged() {
-    //TODO: minggo
-    //    for (auto *scene : _scenes) {
-    //        scene->onGlobalPipelineStateChanged();
-    //    }
-    //
-    //    _pipeline->getPipelineSceneData()->onGlobalPipelineStateChanged();
+    for (auto *scene : _scenes) {
+        scene->onGlobalPipelineStateChanged();
+    }
+
+    _pipeline->getPipelineSceneData()->onGlobalPipelineStateChanged();
 }
 
 void Root::activeWindow(scene::RenderWindow *window) {
@@ -204,50 +209,45 @@ void Root::frameMove(float deltaTime) {
 
 scene::RenderWindow *Root::createWindow(const scene::IRenderWindowInfo &info) {
     auto *window = new scene::RenderWindow();
-    //TODO: minggo
-    //    window.initialize(this.device, info);
-    _windows.push_back(window);
+
+    window->initialize(_device, info);
+    _windows.emplace_back(window);
     return window;
 }
 
 void Root::destroyWindow(scene::RenderWindow *window) {
     auto it = std::find(_windows.begin(), _windows.end(), window);
     if (it != _windows.end()) {
-        //TODO: minggo
-        //        it->destroy();
+        CC_SAFE_DESTROY(*it);
         _windows.erase(it);
     }
 }
 
 void Root::destroyWindows() {
     for (auto *window : _windows) {
-        //TODO: minggo
-        //        window->destroy();
+        CC_SAFE_DESTROY(window);
     }
     _windows.clear();
 }
 
 scene::RenderScene *Root::createScene(const scene::IRenderSceneInfo &info) {
     auto *scene = new scene::RenderScene();
-    //TODO: minggo
-    //    scene->initialize();
-    _scenes.push_back(scene);
+    scene->initialize(info);
+    _scenes.emplace_back(scene);
     return scene;
 }
 
 void Root::destroyScene(scene::RenderScene *scene) {
     auto it = std::find(_scenes.begin(), _scenes.end(), scene);
     if (it != _scenes.end()) {
-        //TODO: minggo
-        //        it->destroy();
+        CC_SAFE_DESTROY(*it);
         _scenes.erase(it);
     }
 }
 
 void Root::destroyScenes() {
     for (auto *scene : _scenes) {
-        // TODO:minggo
-        //        scene->destroy();
+        CC_SAFE_DESTROY(scene);
     }
     _scenes.clear();
 }

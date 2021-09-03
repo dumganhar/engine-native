@@ -27,7 +27,7 @@
 namespace cc {
 namespace geometry {
 
-float rayPlane(const Ray& ray, const Plane& plane) {
+float rayPlane(const Ray &ray, const Plane &plane) {
     auto denom = Vec3::dot(ray.d, plane.n);
     if (abs(denom) < math::EPSILON) {
         return 0;
@@ -37,7 +37,7 @@ float rayPlane(const Ray& ray, const Plane& plane) {
 }
 
 // based on http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Moller/raytri/
-float rayTriangle(const Ray& ray, const Triangle& triangle, bool doubleSided) {
+float rayTriangle(const Ray &ray, const Triangle &triangle, bool doubleSided) {
     Vec3 pvec{};
     Vec3 qvec{};
     auto ab = triangle.b - triangle.a;
@@ -63,7 +63,7 @@ float rayTriangle(const Ray& ray, const Triangle& triangle, bool doubleSided) {
     return t < 0 ? 0 : t;
 }
 
-float raySphere(const Ray& ray, const Sphere& sphere) {
+float raySphere(const Ray &ray, const Sphere &sphere) {
     auto rSq = sphere.getRadius() * sphere.getRadius();
     auto e   = sphere.getCenter() - ray.o;
     auto eSq = e.lengthSquared();
@@ -79,8 +79,8 @@ float raySphere(const Ray& ray, const Sphere& sphere) {
     return t < 0 ? 0 : t;
 }
 
-float rayAABB2(const Ray& ray, const Vec3& min, const Vec3& max) {
-    const auto& o    = ray.o;
+float rayAABB2(const Ray &ray, const Vec3 &min, const Vec3 &max) {
+    const auto &o    = ray.o;
     auto        d    = ray.d;
     auto        ix   = 1.0F / d.x;
     auto        iy   = 1.0F / d.y;
@@ -99,17 +99,17 @@ float rayAABB2(const Ray& ray, const Vec3& min, const Vec3& max) {
     return tmin > 0 ? tmin : tmax; // ray origin inside aabb
 }
 
-float rayAABB(const Ray& ray, const AABB& aabb) {
+float rayAABB(const Ray &ray, const AABB &aabb) {
     auto minV = aabb.getCenter() - aabb.getHalfExtents();
     auto maxV = aabb.getCenter() + aabb.getHalfExtents();
     return rayAABB2(ray, minV, maxV);
 }
 
-float rayOBB(const Ray& ray, const OBB& obb) {
+float rayOBB(const Ray &ray, const OBB &obb) {
     std::array<float, 6> t;
     std::array<float, 3> size   = {obb.halfExtents.x, obb.halfExtents.y, obb.halfExtents.z};
-    const auto&          center = obb.center;
-    auto const&          d      = ray.d;
+    const auto &         center = obb.center;
+    auto const &         d      = ray.d;
 
     Vec3 x = {obb.orientation.m[0], obb.orientation.m[1], obb.orientation.m[2]};
     Vec3 y = {obb.orientation.m[3], obb.orientation.m[4], obb.orientation.m[5]};
@@ -143,7 +143,7 @@ float rayOBB(const Ray& ray, const OBB& obb) {
     return tmin > 0 ? tmin : tmax; // ray origin inside aabb
 }
 
-float rayCapsule(const Ray& ray, const Capsule& capsule) {
+float rayCapsule(const Ray &ray, const Capsule &capsule) {
     Sphere sphere;
     auto   radiusSqr = capsule.radius * capsule.radius;
     auto   vRayNorm  = ray.d.getNormalized();
@@ -215,7 +215,7 @@ float rayCapsule(const Ray& ray, const Capsule& capsule) {
 }
 
 namespace {
-void fillResult(float* minDis, ERaycastMode m, float d, float i0, float i1, float i2, std::vector<IRaySubMeshResult>* r) {
+void fillResult(float *minDis, ERaycastMode m, float d, float i0, float i1, float i2, std::vector<IRaySubMeshResult> *r) {
     if (m == ERaycastMode::CLOSEST) {
         if (*minDis > d || *minDis == 0.0F) {
             *minDis = d;
@@ -237,7 +237,7 @@ void fillResult(float* minDis, ERaycastMode m, float d, float i0, float i1, floa
 }
 
 // TODO(PatriceJiang): index buffer type
-float narrowphase(float* minDis, const std::vector<float>& vb, const std::vector<uint16_t>& ib, gfx::PrimitiveMode pm, const Ray& ray, IRaySubMeshOptions& opt) {
+float narrowphase(float *minDis, const std::vector<float> &vb, const std::vector<uint16_t> &ib, gfx::PrimitiveMode pm, const Ray &ray, IRaySubMeshOptions &opt) {
     Triangle tri;
     if (pm == gfx::PrimitiveMode::TRIANGLE_LIST) {
         auto cnt = ib.size();
@@ -289,9 +289,9 @@ float narrowphase(float* minDis, const std::vector<float>& vb, const std::vector
 } // namespace
 
 //TODO(PatriceJiang)
-float raySubMesh(const Ray& /*ray*/, const RenderingSubMesh& /*submesh*/, IRaySubMeshOptions* /*options*/) {
+float raySubMesh(const Ray & /*ray*/, const RenderingSubMesh & /*submesh*/, IRaySubMeshOptions * /*options*/) {
     Triangle           tri;
-    IRaySubMeshOptions deOpt  = {.distance = FLT_MAX, .doubleSided = false, .mode = ERaycastMode::ANY};
+    IRaySubMeshOptions deOpt  = {.mode = ERaycastMode::ANY, .distance = FLT_MAX, .doubleSided = false};
     auto               minDis = 0;
 
     minDis = 0;
@@ -421,13 +421,13 @@ float raySubMesh(const Ray& /*ray*/, const RenderingSubMesh& /*submesh*/, IRaySu
 //     };
 // }());
 
-float linePlane(const Line& line, const Plane& plane) {
+float linePlane(const Line &line, const Plane &plane) {
     auto ab = line.e - line.s;
     auto t  = (plane.d - Vec3::dot(line.s, plane.n)) / Vec3::dot(ab, plane.n);
     return (t < 0 || t > 1) ? 0 : t;
 }
 
-int lineTriangle(const Line& line, const Triangle& triangle, Vec3* outPt) {
+int lineTriangle(const Line &line, const Triangle &triangle, Vec3 *outPt) {
     Vec3 n;
     Vec3 e;
     auto ab = triangle.b - triangle.a;
@@ -473,7 +473,7 @@ int lineTriangle(const Line& line, const Triangle& triangle, Vec3* outPt) {
     return 1;
 }
 
-float lineAABB(const Line& line, const AABB& aabb) {
+float lineAABB(const Line &line, const AABB &aabb) {
     Ray ray;
     ray.o.set(line.s);
     ray.d = line.e - line.s;
@@ -482,7 +482,7 @@ float lineAABB(const Line& line, const AABB& aabb) {
     return min < line.length() ? min : 0.0F;
 }
 
-float lineOBB(const Line& line, const OBB& obb) {
+float lineOBB(const Line &line, const OBB &obb) {
     Ray ray;
     ray.o.set(line.s);
     ray.d = line.e - line.s;
@@ -491,7 +491,7 @@ float lineOBB(const Line& line, const OBB& obb) {
     return min < line.length() ? min : 0.0F;
 }
 
-float lineSphere(const Line& line, const Sphere& sphere) {
+float lineSphere(const Line &line, const Sphere &sphere) {
     Ray ray;
     ray.o.set(line.s);
     ray.d = line.e - line.s;
@@ -500,7 +500,7 @@ float lineSphere(const Line& line, const Sphere& sphere) {
     return min < line.length() ? min : 0.0F;
 }
 
-bool aabbWithAABB(const AABB& aabb1, const AABB& aabb2) {
+bool aabbWithAABB(const AABB &aabb1, const AABB &aabb2) {
     auto aMin = aabb1.getCenter() - aabb1.getHalfExtents();
     auto aMax = aabb1.getCenter() + aabb1.getHalfExtents();
     auto bMin = aabb2.getCenter() - aabb2.getHalfExtents();
@@ -508,7 +508,7 @@ bool aabbWithAABB(const AABB& aabb1, const AABB& aabb2) {
     return (aMin.x <= bMax.x && aMax.x >= bMin.x) && (aMin.y <= bMax.y && aMax.y >= bMin.y) && (aMin.z <= bMax.z && aMax.z >= bMin.z);
 }
 
-static void getAABBVertices(const Vec3& min, const Vec3& max, std::array<Vec3, 8>* out) {
+static void getAABBVertices(const Vec3 &min, const Vec3 &max, std::array<Vec3, 8> *out) {
     *out = {
         Vec3{min.x, max.y, max.z},
         Vec3{min.x, max.y, min.z},
@@ -521,9 +521,9 @@ static void getAABBVertices(const Vec3& min, const Vec3& max, std::array<Vec3, 8
     };
 }
 
-static void getOBBVertices(const Vec3& c, const Vec3& e,
-                           const Vec3& a1, const Vec3& a2, const Vec3& a3,
-                           std::array<Vec3, 8>* out) {
+static void getOBBVertices(const Vec3 &c, const Vec3 &e,
+                           const Vec3 &a1, const Vec3 &a2, const Vec3 &a3,
+                           std::array<Vec3, 8> *out) {
     *out = {Vec3{
                 c.x + a1.x * e.x + a2.x * e.y + a3.x * e.z,
                 c.y + a1.y * e.x + a2.y * e.y + a3.y * e.z,
@@ -563,7 +563,7 @@ struct Interval {
     float max;
 };
 
-static Interval getInterval(const std::array<Vec3, 8>& vertices, const Vec3& axis) {
+static Interval getInterval(const std::array<Vec3, 8> &vertices, const Vec3 &axis) {
     auto min = std::numeric_limits<float>::max();
     auto max = std::numeric_limits<float>::min();
     for (auto i = 0; i < 8; ++i) {
@@ -574,7 +574,7 @@ static Interval getInterval(const std::array<Vec3, 8>& vertices, const Vec3& axi
     return Interval{min, max};
 }
 
-int aabbWithOBB(const AABB& aabb, const OBB& obb) {
+int aabbWithOBB(const AABB &aabb, const OBB &obb) {
     std::array<Vec3, 15> test;
     std::array<Vec3, 8>  vertices;
     std::array<Vec3, 8>  vertices2;
@@ -607,7 +607,7 @@ int aabbWithOBB(const AABB& aabb, const OBB& obb) {
     return 1;
 }
 
-int aabbPlane(const AABB& aabb, const Plane& plane) {
+int aabbPlane(const AABB &aabb, const Plane &plane) {
     auto r   = aabb.getHalfExtents().x * std::abs(plane.n.x) + aabb.getHalfExtents().y * std::abs(plane.n.y) + aabb.getHalfExtents().z * std::abs(plane.n.z);
     auto dot = Vec3::dot(plane.n, aabb.getCenter());
     if (dot + r < plane.d) {
@@ -619,8 +619,8 @@ int aabbPlane(const AABB& aabb, const Plane& plane) {
     return 1;
 }
 
-int aabbFrustum(const AABB& aabb, const Frustum& frustum) {
-    for (const auto& plane : frustum.planes) {
+int aabbFrustum(const AABB &aabb, const Frustum &frustum) {
+    for (const auto &plane : frustum.planes) {
         // frustum plane normal points to the inside
         if (aabbPlane(aabb, plane) == -1) {
             return 0;
@@ -630,14 +630,14 @@ int aabbFrustum(const AABB& aabb, const Frustum& frustum) {
 }
 
 // https://cesium.com/blog/2017/02/02/tighter-frustum-culling-and-why-you-may-want-to-disregard-it/
-int aabbFrustumAccurate(const AABB& aabb, const Frustum& frustum) {
+int aabbFrustumAccurate(const AABB &aabb, const Frustum &frustum) {
     std::array<Vec3, 8> tmp;
     int                 out1       = 0;
     int                 out2       = 0;
     int                 result     = 0;
     bool                intersects = false;
     // 1. aabb inside/outside frustum test
-    for (const auto& plane : frustum.planes) {
+    for (const auto &plane : frustum.planes) {
         result = aabbPlane(aabb, plane);
         // frustum plane normal points to the inside
         if (result == -1) {
@@ -694,9 +694,9 @@ int aabbFrustumAccurate(const AABB& aabb, const Frustum& frustum) {
     return 1;
 }
 
-bool obbPoint(const OBB& obb, const Vec3& point) {
+bool obbPoint(const OBB &obb, const Vec3 &point) {
     Mat3 m3;
-    auto lessThan = [](const Vec3& a, const Vec3& b) -> bool {
+    auto lessThan = [](const Vec3 &a, const Vec3 &b) -> bool {
         return std::abs(a.x) < b.x && std::abs(a.y) < b.y && std::abs(a.z) < b.z;
     };
     auto tmp = point - obb.center;
@@ -705,8 +705,8 @@ bool obbPoint(const OBB& obb, const Vec3& point) {
     return lessThan(tmp, obb.halfExtents);
 };
 
-int obbPlane(const OBB& obb, const Plane& plane) {
-    auto absDot = [](const Vec3& n, float x, float y, float z) -> float {
+int obbPlane(const OBB &obb, const Plane &plane) {
+    auto absDot = [](const Vec3 &n, float x, float y, float z) -> float {
         return std::abs(n.x * x + n.y * y + n.z * z);
     };
 
@@ -725,8 +725,8 @@ int obbPlane(const OBB& obb, const Plane& plane) {
     return 1;
 }
 
-int obbFrustum(const OBB& obb, const Frustum& frustum) {
-    for (const auto& plane : frustum.planes) {
+int obbFrustum(const OBB &obb, const Frustum &frustum) {
+    for (const auto &plane : frustum.planes) {
         // frustum plane normal points to the inside
         if (obbPlane(obb, plane) == -1) {
             return 0;
@@ -736,18 +736,18 @@ int obbFrustum(const OBB& obb, const Frustum& frustum) {
 };
 
 // https://cesium.com/blog/2017/02/02/tighter-frustum-culling-and-why-you-may-want-to-disregard-it/
-int obbFrustumAccurate(const OBB& obb, const Frustum& frustum) {
+int obbFrustumAccurate(const OBB &obb, const Frustum &frustum) {
     std::array<Vec3, 8> tmp  = {};
     float               dist = 0.0F;
     size_t              out1 = 0;
     size_t              out2 = 0;
-    auto                dot  = [](const Vec3& n, float x, float y, float z) -> float {
+    auto                dot  = [](const Vec3 &n, float x, float y, float z) -> float {
         return n.x * x + n.y * y + n.z * z;
     };
     int  result     = 0;
     auto intersects = false;
     // 1. obb inside/outside frustum test
-    for (const auto& plane : frustum.planes) {
+    for (const auto &plane : frustum.planes) {
         result = obbPlane(obb, plane);
         // frustum plane normal points to the inside
         if (result == -1) {
@@ -807,7 +807,7 @@ int obbFrustumAccurate(const OBB& obb, const Frustum& frustum) {
     return 1;
 }
 
-int obbWithOBB(const OBB& obb1, const OBB& obb2) {
+int obbWithOBB(const OBB &obb1, const OBB &obb2) {
     std::array<Vec3, 8>  vertices;
     std::array<Vec3, 8>  vertices2;
     std::array<Vec3, 15> test;
@@ -839,7 +839,7 @@ int obbWithOBB(const OBB& obb1, const OBB& obb2) {
 }
 
 // https://github.com/diku-dk/bvh-tvcg18/blob/1fd3348c17bc8cf3da0b4ae60fdb8f2aa90a6ff0/FOUNDATION/GEOMETRY/GEOMETRY/include/overlap/geometry_overlap_obb_capsule.h
-int obbCapsule(const OBB& obb, const Capsule& capsule) {
+int obbCapsule(const OBB &obb, const Capsule &capsule) {
     Sphere              sphere{};
     std::array<Vec3, 8> v3Verts8{};
     std::array<Vec3, 8> v3Axis8{};
@@ -888,7 +888,7 @@ int obbCapsule(const OBB& obb, const Capsule& capsule) {
     return 1;
 }
 
-int spherePlane(const Sphere& sphere, const Plane& plane) {
+int spherePlane(const Sphere &sphere, const Plane &plane) {
     auto dot = Vec3::dot(plane.n, sphere.getCenter());
     auto r   = sphere.getRadius() * plane.n.length();
     if (dot + r < plane.d) {
@@ -900,8 +900,8 @@ int spherePlane(const Sphere& sphere, const Plane& plane) {
     return 1;
 }
 
-int sphereFrustum(const Sphere& sphere, const Frustum& frustum) {
-    for (const auto& plane : frustum.planes) {
+int sphereFrustum(const Sphere &sphere, const Frustum &frustum) {
+    for (const auto &plane : frustum.planes) {
         // frustum plane normal points to the inside
         if (spherePlane(sphere, plane) == -1) {
             return 0;
@@ -910,14 +910,14 @@ int sphereFrustum(const Sphere& sphere, const Frustum& frustum) {
     return 1;
 }
 
-int sphereFrustumAccurate(const Sphere& sphere, const Frustum& frustum) {
+int sphereFrustumAccurate(const Sphere &sphere, const Frustum &frustum) {
     const static std::array<int, 6> MAP = {1, -1, 1, -1, 1, -1};
     for (auto i = 0; i < 6; i++) {
-        const auto& plane = frustum.planes[i];
-        const auto& n     = plane.n;
-        const auto& d     = plane.d;
+        const auto &plane = frustum.planes[i];
+        const auto &n     = plane.n;
+        const auto &d     = plane.d;
         auto        r     = sphere.getRadius();
-        const auto& c     = sphere.getCenter();
+        const auto &c     = sphere.getCenter();
         auto        dot   = Vec3::dot(n, c);
         // frustum plane normal points to the inside
         if (dot + r < d) {
@@ -933,7 +933,7 @@ int sphereFrustumAccurate(const Sphere& sphere, const Frustum& frustum) {
             if (j == i || j == i + MAP[i]) {
                 continue;
             }
-            const auto& test = frustum.planes[j];
+            const auto &test = frustum.planes[j];
             if (Vec3::dot(test.n, pt) < test.d) {
                 return 0;
             }
@@ -942,24 +942,24 @@ int sphereFrustumAccurate(const Sphere& sphere, const Frustum& frustum) {
     return 1;
 }
 
-bool sphereWithSphere(const Sphere& sphere0, const Sphere& sphere1) {
+bool sphereWithSphere(const Sphere &sphere0, const Sphere &sphere1) {
     auto r = sphere0.getRadius() + sphere1.getRadius();
     return sphere0.getCenter().distanceSquared(sphere1.getCenter()) < r * r;
 }
 
-bool sphereAABB(const Sphere& sphere, const AABB& aabb) {
+bool sphereAABB(const Sphere &sphere, const AABB &aabb) {
     Vec3 pt;
     ptPointAabb(&pt, sphere.getCenter(), aabb);
     return sphere.getCenter().distanceSquared(pt) < sphere.getRadius() * sphere.getRadius();
 }
 
-bool sphereOBB(const Sphere& sphere, const OBB& obb) {
+bool sphereOBB(const Sphere &sphere, const OBB &obb) {
     Vec3 pt;
     ptPointObb(&pt, sphere.getCenter(), obb);
     return sphere.getCenter().distanceSquared(pt) < sphere.getRadius() * sphere.getRadius();
 }
 
-bool sphereCapsule(const Sphere& sphere, const Capsule& capsule) {
+bool sphereCapsule(const Sphere &sphere, const Capsule &capsule) {
     auto r        = sphere.getRadius() + capsule.radius;
     auto squaredR = r * r;
     auto h        = capsule.ellipseCenter0.distanceSquared(capsule.ellipseCenter1);
@@ -979,7 +979,7 @@ bool sphereCapsule(const Sphere& sphere, const Capsule& capsule) {
     return sphere.getCenter().distanceSquared(v3Tmp0) < squaredR;
 }
 
-bool capsuleWithCapsule(const Capsule& capsuleA, const Capsule& capsuleB) {
+bool capsuleWithCapsule(const Capsule &capsuleA, const Capsule &capsuleB) {
     auto  u  = capsuleA.ellipseCenter1 - capsuleA.ellipseCenter0;
     auto  v  = capsuleB.ellipseCenter1 - capsuleB.ellipseCenter0;
     auto  w  = capsuleA.ellipseCenter0 - capsuleB.ellipseCenter0;
@@ -1049,21 +1049,21 @@ bool capsuleWithCapsule(const Capsule& capsuleA, const Capsule& capsuleB) {
     return dP.lengthSquared() < radius * radius;
 }
 
-int dynObbFrustum(const OBB& obb, const Frustum& frustum) {
+int dynObbFrustum(const OBB &obb, const Frustum &frustum) {
     if (frustum.getType() == ShapeEnum::SHAPE_FRUSTUM_ACCURATE) {
         return obbFrustumAccurate(obb, frustum);
     }
     return obbFrustum(obb, frustum);
 }
 
-int dynSphereFrustum(const Sphere& sphere, const Frustum& frustum) {
+int dynSphereFrustum(const Sphere &sphere, const Frustum &frustum) {
     if (frustum.getType() == ShapeEnum::SHAPE_FRUSTUM_ACCURATE) {
         return sphereFrustumAccurate(sphere, frustum);
     }
     return sphereFrustum(sphere, frustum);
 }
 
-int dynAabbFrustum(const AABB& aabb, const Frustum& frustum) {
+int dynAabbFrustum(const AABB &aabb, const Frustum &frustum) {
     if (frustum.getType() == ShapeEnum::SHAPE_FRUSTUM_ACCURATE) {
         return aabbFrustumAccurate(aabb, frustum);
     }

@@ -27,8 +27,11 @@
 
 #include <utility>
 
+#include "3d/assets/Skeleton.h"
+#include "core/scene-graph/Node.h"
+#include "gfx-base/GFXDef-common.h"
 #include "scene/Model.h"
-
+#include "scene/MorphModel.h"
 namespace cc {
 namespace scene {
 struct BakedAnimInfo {
@@ -40,44 +43,61 @@ struct BakedAnimInfo {
     }
 };
 struct BakedJointInfo {
-    std::vector<geometry::AABB *> boundsInfo;
-    uint8_t *                     jointTextureInfo{nullptr};
-    BakedAnimInfo                 animInfo;
     gfx::Buffer *                 buffer{nullptr};
+    uint8_t *                     jointTextureInfo{nullptr};
+    // IJointTextureHandle *         texture{nullptr};
+    BakedAnimInfo                 animInfo;
+    std::vector<geometry::AABB *> boundsInfo;
 };
-class BakedSkinningModel : public Model {
+class BakedSkinningModel final : public MorphModel {
 public:
-    BakedSkinningModel()                           = default;
-    BakedSkinningModel(const BakedSkinningModel &) = delete;
-    BakedSkinningModel(BakedSkinningModel &&)      = delete;
-    ~BakedSkinningModel() override                 = default;
-    BakedSkinningModel &operator=(const BakedSkinningModel &) = delete;
-    BakedSkinningModel &operator=(BakedSkinningModel &&) = delete;
+    using Super                    = MorphModel;
+    BakedSkinningModel()           = default;
+    ~BakedSkinningModel() override = default;
 
-    void        updateTransform(uint32_t stamp) override;
-    void        updateUBOs(uint32_t stamp) override;
+    void                     destroy() override;
+    void                     bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningRoot, Mesh *mesh);
+    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
+    void                     initLocalDescriptors(index_t subModelIndex);
+    std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
+    void                     updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) override;
+    void                     updateTransform(uint32_t stamp) override;
+    void                     updateUBOs(uint32_t stamp) override;
+    void                     updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass);
+    void                     updateInstancedJointTextureInfo();
+    // void                     uploadAnimation(AnimationClip *anim); // TODO(xwx): AnimationClip not define
     inline void updateModelBounds(geometry::AABB *modelBounds) {
         if (modelBounds == nullptr) {
-            _modelBounds.setValid(false);
             return;
         }
-        _modelBounds.setValid(true);
-        _modelBounds.set(modelBounds->getCenter(), modelBounds->getHalfExtents());
+        _modelBounds->setValid(true);
+        _modelBounds->set(modelBounds->getCenter(), modelBounds->getHalfExtents());
     }
 
     inline void setJointMedium(bool isUploadAnim, BakedJointInfo &&jointMedium) {
         _isUploadAnim = isUploadAnim;
         _jointMedium  = std::move(jointMedium);
     }
-    inline void setAnimInfoIdx(int32_t idx) {
+    inline void setAnimInfoIdx(index_t idx) {
         _instAnimInfoIdx = idx;
     }
+
+protected:
+    // TODO(xwx)
+    // applyJointTexture(IJointTextureHandle *texture) const; // TODO(xwx): IJointTextureHandle not define
 
 private:
     ModelType      _type{ModelType::BAKED_SKINNING};
     BakedJointInfo _jointMedium;
     bool           _isUploadAnim{false};
-    int32_t        _instAnimInfoIdx{-1};
+    index_t        _instAnimInfoIdx{CC_INVALID_INDEX};
+    // TODO(xwx)
+    // DataPoolManager _dataPoolManager;
+    Skeleton *_skeleton{nullptr};
+    Mesh *    _mesh{nullptr};
+    // AnimationClip* uploadedAnim;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(BakedSkinningModel);
 };
 
 } // namespace scene

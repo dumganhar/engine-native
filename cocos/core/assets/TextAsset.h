@@ -35,7 +35,8 @@ namespace cc {
  */
 class TextAsset final : public Asset {
 public:
-    TextAsset() = default;
+    explicit TextAsset()  = default;
+    ~TextAsset() override = default;
     /**
      * @en The text content.
      * @zh 此资源包含的文本。
@@ -44,7 +45,7 @@ public:
     @editable*/
     std::string text;
 
-    std::string toString() const {
+    std::string toString() const override {
         return text;
     }
 

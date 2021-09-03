@@ -642,12 +642,14 @@ endif()
 
 ##### renderer
 cocos_source_files(
+                 cocos/renderer/core/PassUtils.h
+                 cocos/renderer/core/PassUtils.cpp
+                 cocos/renderer/core/ProgramLib.h
+                 cocos/renderer/core/ProgramLib.cpp
                  cocos/renderer/core/MaterialInstance.h
                  cocos/renderer/core/MaterialInstance.cpp
                  cocos/renderer/core/PassInstance.h
                  cocos/renderer/core/PassInstance.cpp
-                 cocos/renderer/core/PassUtils.h
-                 cocos/renderer/core/PassUtils.cpp
 
                  cocos/renderer/GFXDeviceManager.h
 
@@ -853,16 +855,20 @@ cocos_source_files(
                  cocos/scene/BakedSkinningModel.h
                  cocos/scene/BakedSkinningModel.cpp
                  cocos/scene/Camera.h
+                 cocos/scene/Camera.cpp
                  cocos/scene/Define.h
                  cocos/scene/Define.cpp
                  cocos/scene/DirectionalLight.h
                  cocos/scene/DirectionalLight.cpp
                  cocos/scene/DrawBatch2D.h
+                 cocos/scene/Fog.h
+                 cocos/scene/Fog.cpp
                  cocos/scene/Light.h
                  cocos/scene/Light.cpp
                  cocos/scene/Model.h
                  cocos/scene/Model.cpp
                  cocos/scene/MorphModel.h
+                 cocos/scene/MorphModel.cpp
                  cocos/scene/Pass.h
                  cocos/scene/Pass.cpp
                  cocos/scene/RenderScene.h
@@ -870,12 +876,45 @@ cocos_source_files(
                  cocos/scene/RenderWindow.h
                  cocos/scene/SkinningModel.h
                  cocos/scene/SkinningModel.cpp
+                 cocos/scene/Skybox.h
+                 cocos/scene/Skybox.cpp
                  cocos/scene/SphereLight.h
                  cocos/scene/SphereLight.cpp
                  cocos/scene/SpotLight.h
                  cocos/scene/SpotLight.cpp
                  cocos/scene/SubModel.h
                  cocos/scene/SubModel.cpp
+                 cocos/scene/Shadow.h
+                 cocos/scene/Shadow.cpp
+)
+
+##### primitive
+cocos_source_files(
+    cocos/primitive/Box.cpp
+    cocos/primitive/Box.h
+    cocos/primitive/Capsule.cpp
+    cocos/primitive/Capsule.h
+    cocos/primitive/Circle.cpp
+    cocos/primitive/Circle.h
+    cocos/primitive/Cone.cpp
+    cocos/primitive/Cone.h
+    cocos/primitive/Cylinder.cpp
+    cocos/primitive/Cylinder.h
+    cocos/primitive/Plane.cpp
+    cocos/primitive/Plane.h
+    cocos/primitive/Primitive.cpp
+    cocos/primitive/Primitive.h
+    cocos/primitive/PrimitiveDefine.h
+    cocos/primitive/PrimitiveUtils.cpp
+    cocos/primitive/PrimitiveUtils.h
+    cocos/primitive/Quad.cpp
+    cocos/primitive/Quad.h
+    cocos/primitive/Sphere.cpp
+    cocos/primitive/Sphere.h
+    cocos/primitive/Torus.cpp
+    cocos/primitive/Torus.h
+    cocos/primitive/Transform.cpp
+    cocos/primitive/Transform.h
 )
 
 ##### components
@@ -1216,6 +1255,23 @@ cocos_source_files(
     cocos/2d/framework/UITransform.h
 )
 
+##### 3d
+cocos_source_files(
+    cocos/3d/assets/Mesh.h
+    cocos/3d/assets/Mesh.cpp
+    cocos/3d/assets/Morph.h
+    cocos/3d/assets/Morph.cpp
+    cocos/3d/assets/MorphRendering.h
+    cocos/3d/assets/MorphRendering.cpp
+    cocos/3d/assets/Skeleton.h
+    cocos/3d/assets/Skeleton.cpp
+
+    cocos/3d/misc/CreateMesh.h
+    cocos/3d/misc/CreateMesh.cpp
+    cocos/3d/misc/BufferBlob.h
+    cocos/3d/misc/BufferBlob.cpp
+)
+
 ##### core
 
 cocos_source_files(
@@ -1237,6 +1293,7 @@ cocos_source_files(
     cocos/core/SplashScreen.cpp
     cocos/core/SplashScreen.h
     cocos/core/Types.h
+    cocos/core/Types.cpp
 
     # memop
     cocos/core/memop/CachedArray.h
@@ -1339,6 +1396,11 @@ cocos_source_files(
     cocos/core/assets/TextureCube.cpp
     cocos/core/assets/TextureCube.h
 
+    # builtin
+    cocos/core/builtin/BuiltinResMgr.cpp
+    cocos/core/builtin/BuiltinResMgr.h
+    #
+
     cocos/core/data/Object.cpp
     cocos/core/data/Object.h
 
@@ -1402,6 +1464,8 @@ cocos_source_files(
     cocos/core/platform/native/SystemInfo.h
     cocos/core/platform/native/SystemInfo.cpp
 
+    cocos/core/platform/Debug.h
+    cocos/core/platform/Debug.cpp
     cocos/core/platform/Macro.h
     cocos/core/platform/Macro.cpp
     cocos/core/platform/Screen.h

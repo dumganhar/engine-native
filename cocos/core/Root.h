@@ -40,6 +40,7 @@ namespace cc {
 
 class Root final {
 public:
+    static Root *getInstance(); //cjh todo: put Root Managerment to Director class.
     explicit Root(gfx::Device *device);
     ~Root();
 
@@ -55,7 +56,7 @@ public:
      */
     void resize(uint32_t width, uint32_t height);
 
-    bool setRenderPipline(pipeline::RenderPipeline *);
+    bool setRenderPipeline(pipeline::RenderPipeline *);
     void onGlobalPipelineStateChanged();
 
     /**

@@ -25,69 +25,75 @@
 
 #pragma once
 
+#include <optional>
 #include <string>
+#include <tuple>
 #include <unordered_map>
+
 #include "base/Value.h"
 #include "core/Types.h"
 #include "core/assets/Asset.h"
+#include "gfx-base/GFXDef-common.h"
+#include "gfx-base/GFXShader.h"
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "renderer/pipeline/Define.h"
-#include "scene/Define.h"
+//#include "scene/Define.h"
 
 namespace cc {
 
+using IPropertyHandleInfo = std::tuple<std::string, uint32_t, gfx::Type>;
+
 struct IPropertyInfo {
-    int32_t             type;        // auto-extracted from shader
-    ValueVector         handleInfo;  //cjh check: ?: [string, number, number]; // auto-generated from 'target'
-    uint32_t            samplerHash; // auto-generated from 'sampler'
-    std::vector<double> numberValue; //cjh     ?: number[] | string;
-    std::string         stringValue;
+    int32_t                                                      type;        // auto-extracted from shader
+    std::optional<IPropertyHandleInfo>                           handleInfo;  // auto-generated from 'target'
+    std::optional<uint64_t>                                      samplerHash; // auto-generated from 'sampler'
+    std::optional<std::variant<std::vector<float>, std::string>> value;
 };
 
 // Pass instance itself are compliant to IPassStates too
 struct IPassStates {
-    std::optional<int32_t>             priority;
-    gfx::PrimitiveMode                 primitive;
-    pipeline::RenderPassStage          stage;
-    gfx::RasterizerState               rasterizerState;
-    gfx::DepthStencilState             depthStencilState;
-    gfx::BlendState                    blendState;
-    gfx::DynamicStateFlags             dynamicStates;
-    std::variant<std::string, int32_t> phase;
+    std::optional<int32_t>                   priority;
+    std::optional<gfx::PrimitiveMode>        primitive;
+    std::optional<pipeline::RenderPassStage> stage;
+    std::optional<gfx::RasterizerState *>    rasterizerState;
+    std::optional<gfx::DepthStencilState *>  depthStencilState;
+    std::optional<gfx::BlendState *>         blendState;
+    std::optional<gfx::DynamicStateFlags>    dynamicStates;
+    std::optional<std::string>               phase;
 };
 
 using PassOverrides = IPassStates;
 
 struct IPassInfo : public IPassStates {
-    std::string                                    program; // auto-generated from 'vert' and 'frag'
-    MacroRecord                                    embeddedMacros;
-    int32_t                                        propertyIndex;
-    std::string                                    switch_;
-    std::unordered_map<std::string, IPropertyInfo> properties;
+    std::string                                                   program; // auto-generated from 'vert' and 'frag'
+    std::optional<MacroRecord>                                    embeddedMacros;
+    index_t                                                       propertyIndex{-1};
+    std::optional<std::string>                                    switch_;
+    std::optional<std::unordered_map<std::string, IPropertyInfo>> properties;
 };
 
 struct ITechniqueInfo {
-    std::vector<IPassInfo> passes;
-    std::string            name;
+    std::vector<IPassInfo *>   passes; //cjh use shared_ptr?
+    std::optional<std::string> name;
 };
 
 struct IBlockInfo {
-    int32_t                   binding;
-    std::string               name;
-    std::vector<gfx::Uniform> members;
-    uint32_t                  count;
-    gfx::ShaderStageFlags     stageFlags;
-    gfx::DescriptorType       descriptorType;
+    int32_t                            binding{-1};
+    std::string                        name;
+    std::vector<gfx::Uniform>          members;
+    uint32_t                           count{0};
+    gfx::ShaderStageFlags              stageFlags{gfx::ShaderStageFlags::NONE};
+    std::optional<gfx::DescriptorType> descriptorType{};
 };
 
 struct ISamplerTextureInfo {
-    int32_t               binding; //cjh : number;
-    std::string           name;
-    gfx::Type             type;
-    uint32_t              count;
-    gfx::ShaderStageFlags stageFlags;
-    gfx::DescriptorType   descriptorType;
+    int32_t                            binding{-1}; //cjh : number;
+    std::string                        name;
+    gfx::Type                          type{gfx::Type::UNKNOWN};
+    uint32_t                           count{0};
+    gfx::ShaderStageFlags              stageFlags{gfx::ShaderStageFlags::NONE};
+    std::optional<gfx::DescriptorType> descriptorType;
 };
 
 struct IAttributeInfo : public gfx::Attribute {
@@ -95,11 +101,11 @@ struct IAttributeInfo : public gfx::Attribute {
 };
 
 struct IDefineInfo {
-    std::string              name;
-    std::string              type;
-    std::vector<float>       range; //cjh number is float?  ?: number[];
-    std::vector<std::string> options;
-    std::string              defaultVal;
+    std::string                             name;
+    std::string                             type;
+    std::optional<std::vector<float>>       range; //cjh number is float?  ?: number[];
+    std::optional<std::vector<std::string>> options;
+    std::optional<std::string>              defaultVal;
 };
 
 struct IBuiltin {
@@ -125,7 +131,7 @@ struct IShaderSource {
 
 struct IShaderInfo {
     std::string                      name;
-    uint64_t                         hash; //cjh hash is 64 bit?
+    uint64_t                         hash{-1ULL}; //cjh hash is 64 bit?
     IShaderSource                    glsl4;
     IShaderSource                    glsl3;
     IShaderSource                    glsl1;
@@ -134,14 +140,24 @@ struct IShaderInfo {
     std::vector<IBlockInfo>          blocks;
     std::vector<ISamplerTextureInfo> samplerTextures;
     std::vector<IAttributeInfo>      attributes;
+
+    const IShaderSource *getSource(const std::string &version) const {
+        if (version == "glsl1") return &glsl1;
+        if (version == "glsl3") return &glsl4;
+        if (version == "glsl4") return &glsl1;
+        return nullptr;
+    }
 };
 
-//cjh    [name: string]: boolean[] | number[] | string[];
-using IPreCompileInfo = std::unordered_map<std::string, Value>;
+using IPreCompileInfoValueType = std::variant<std::monostate, std::vector<bool>, std::vector<float>, std::vector<std::string>>; //cjh number is float?
+using IPreCompileInfo          = std::unordered_map<std::string, IPreCompileInfoValueType>;
 
 class EffectAsset final : public Asset {
 public:
     using Super = Asset;
+
+    EffectAsset()           = default;
+    ~EffectAsset() override = default;
     /**
      * @en Register the effect asset to the static map
      * @zh 将指定 effect 注册到全局管理器。
@@ -203,7 +219,7 @@ public:
      */
     void onLoaded() override;
     bool destroy() override;
-    void initDefault(const std::string &uuid) override;
+    void initDefault(const std::optional<std::string> &uuid = {}) override;
     bool validate() const override;
 
 protected:

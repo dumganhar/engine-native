@@ -121,10 +121,6 @@ void RenderPipeline::destroy() {
     InstancedBuffer::destroyInstancedBuffer();
 }
 
-void RenderPipeline::setPipelineSharedSceneData(scene::PipelineSharedSceneData *data) {
-    _pipelineSceneData->setPipelineSharedSceneData(data);
-}
-
 void RenderPipeline::generateConstantMacros() {
     _constantMacros = StringUtil::format(
         R"(

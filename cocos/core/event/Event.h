@@ -25,9 +25,16 @@
 */
 
 #pragma once
+
+#include "core/platform/event-manager/EventEnum.h"
+
 namespace cc {
 namespace event {
 class Event {
+public:
+    Event() = default;
+    Event(const SystemEventTypeUnion &eventType, bool bubbles);
+    virtual ~Event() = default;
 };
 } // namespace event
 } // namespace cc

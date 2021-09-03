@@ -32,7 +32,7 @@ namespace scene {
 void DirectionalLight::initialize() {
     Light::initialize();
 
-    _illuminance = Ambient::sunIllum;
+    _illuminance = Ambient::SUN_ILLUM;
     _dir.set(1.0F, -1.0F, -1.0F);
 }
 

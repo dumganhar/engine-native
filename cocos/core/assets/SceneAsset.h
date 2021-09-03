@@ -33,7 +33,10 @@ class Scene;
 
 class SceneAsset final : public Asset {
 public:
-    void initDefault(const std::string &uuid) override;
+    explicit SceneAsset()  = default;
+    ~SceneAsset() override = default;
+
+    void initDefault(const std::optional<std::string> &uuid = {}) override;
 
     virtual bool validate() const override {
         return _scene != nullptr;

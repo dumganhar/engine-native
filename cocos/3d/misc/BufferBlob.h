@@ -34,7 +34,7 @@ class BufferBlob {
 public:
     void setNextAlignment(uint32_t align);
 
-    void addBuffer(const ArrayBuffer &arrayBuffer);
+    uint32_t addBuffer(const ArrayBuffer &arrayBuffer);
 
     inline uint32_t getLength() const {
         return _length;

@@ -37,7 +37,7 @@ void BufferBlob::setNextAlignment(uint32_t align) {
     }
 }
 
-void BufferBlob::addBuffer(const ArrayBuffer &arrayBuffer) {
+uint32_t BufferBlob::addBuffer(const ArrayBuffer &arrayBuffer) {
     const uint32_t result = _length;
     _arrayBufferOrPaddings.emplace_back(arrayBuffer);
     _length += arrayBuffer.size();

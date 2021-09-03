@@ -214,13 +214,6 @@ void RenderScene::updateBatches(std::vector<DrawBatch2D *> &&batches) {
     _batches = batches;
 }
 
-void RenderScene::addBakedSkinningModel(BakedSkinningModel *bakedSkinModel) {
-    _models.emplace_back(bakedSkinModel);
-}
-
-void RenderScene::addSkinningModel(SkinningModel *skinModel) {
-    _models.emplace_back(skinModel);
-}
 void RenderScene::onGlobalPipelineStateChanged() {
     for (auto *model : _models) {
         model->onGlobalPipelineStateChanged();

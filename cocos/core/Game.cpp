@@ -203,7 +203,7 @@ void Game::onShow() {
 }
 
 void Game::setRenderPipeline(pipeline::RenderPipeline *pipeline) {
-    if (!Director::getInstance().getRoot()->setRenderPipline(pipeline)) {
+    if (!Director::getInstance().getRoot()->setRenderPipeline(pipeline)) {
         setRenderPipeline(nullptr);
     }
     _rendererInitialized = true;

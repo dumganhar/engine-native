@@ -56,7 +56,7 @@ public:
      */
     void resize(uint32_t width, uint32_t height);
 
-    bool setRenderPipline(pipeline::RenderPipeline *);
+    bool setRenderPipeline(pipeline::RenderPipeline *);
     void onGlobalPipelineStateChanged();
 
     /**

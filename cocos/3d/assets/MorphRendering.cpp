@@ -25,6 +25,688 @@
 
 #include "3d/assets/MorphRendering.h"
 
+#include <memory>
+
+#include "core/assets/Texture2D.h"
+#include "platform/Image.h"
+#include "renderer/pipeline/Define.h"
+#include "scene/Pass.h"
+
 namespace cc {
 
+/**
+ * The instance of once sub-mesh morph rendering.
+ */
+class SubMeshMorphRenderingInstance {
+public:
+    virtual ~SubMeshMorphRenderingInstance() = default;
+    /**
+     * Set weights of each morph target.
+     * @param weights The weights.
+     */
+    virtual void setWeights(const std::vector<float> &weights) = 0;
+
+    /**
+     * Asks the define overrides needed to do the rendering.
+     */
+    virtual std::vector<scene::IMacroPatch> requiredPatches() = 0;
+
+    /**
+     * Adapts the pipelineState to apply the rendering.
+     * @param pipelineState
+     */
+    virtual void adaptPipelineState(gfx::DescriptorSet *descriptorSet) = 0;
+
+    /**
+     * Destroy this instance.
+     */
+    virtual void destroy() = 0;
+};
+
+/**
+ * Describes how to render a sub-mesh morph.
+ */
+class SubMeshMorphRendering {
+public:
+    virtual ~SubMeshMorphRendering() = default;
+    /**
+     * Creates a rendering instance.
+     */
+    virtual SubMeshMorphRenderingInstance *createInstance() = 0;
+};
+
+namespace {
+/**
+ * True if force to use cpu computing based sub-mesh rendering.
+ */
+const bool preferCpuComputing = false;
+
+class MorphTexture final {
+public:
+    MorphTexture() = default;
+    ~MorphTexture() {
+        delete _textureAsset;
+    }
+    /**
+     * Gets the GFX texture.
+     */
+    gfx::Texture *getTexture() {
+        return _textureAsset->getGFXTexture();
+    }
+
+    /**
+     * Gets the GFX sampler.
+     */
+    gfx::Sampler *getSampler() {
+        return _sampler;
+    }
+
+    /**
+     * Value view.
+     */
+    typedarray::Float32ArrayRef getFloat32ValueView() {
+        return typedarray::Float32ArrayRef(_ab->data(), _ab->size());
+    }
+
+    /**
+     * Destroy the texture. Release its GPU resources.
+     */
+    void destroy() {
+        _textureAsset->destroy();
+        // Samplers allocated from `samplerLib` are not required and
+        // should not be destroyed.
+        // _sampler.destroy();
+    }
+
+    /**
+     * Update the pixels content to `valueView`.
+     */
+    void updatePixels() {
+        _textureAsset->uploadData(reinterpret_cast<uint8_t *>(_ab->data()));
+    }
+
+    void initialize(uint32_t width, uint32_t height, uint32_t pixelBytes, bool useFloat32Array, PixelFormat pixelFormat) {
+        _ab = std::make_shared<ArrayBuffer>();
+        _ab->resize(width * height * pixelBytes);
+        ImageAsset *       imageAsset = new ImageAsset();
+        IMemoryImageSource source{_ab, false, width, height, pixelFormat};
+        imageAsset->setNativeAsset(source);
+
+        _textureAsset = new Texture2D();
+        _textureAsset->setFilters(Texture2D::Filter::NEAREST, Texture2D::Filter::NEAREST);
+        _textureAsset->setMipFilter(Texture2D::Filter::NONE);
+        _textureAsset->setWrapMode(Texture2D::WrapMode::CLAMP_TO_EDGE, Texture2D::WrapMode::CLAMP_TO_EDGE, Texture2D::WrapMode::CLAMP_TO_EDGE);
+        _textureAsset->setImage(imageAsset);
+
+        if (nullptr == _textureAsset->getGFXTexture()) {
+            CC_LOG_WARNING("Unexpected: failed to create morph texture?");
+        }
+        _sampler = pipeline::SamplerLib::getSampler(_textureAsset->getSamplerHash());
+    }
+
+private:
+    Texture2D *                  _textureAsset{nullptr};
+    gfx::Sampler *               _sampler{nullptr};
+    std::shared_ptr<ArrayBuffer> _ab;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(MorphTexture);
+};
+
+struct GpuMorphAttribute {
+    std::string   attributeName;
+    MorphTexture *morphTexture{nullptr};
+};
+
+struct CpuMorphAttributeTarget {
+    std::optional<typedarray::Float32ArrayRef> displacements;
+};
+
+using CpuMorphAttributeTargetList = std::vector<CpuMorphAttributeTarget>;
+
+struct CpuMorphAttribute { //cjh TODO: implement move operation
+    std::string                 name;
+    CpuMorphAttributeTargetList targets;
+};
+
+struct Vec4TextureFactory {
+    uint32_t                        width{0};
+    uint32_t                        height{0};
+    std::function<MorphTexture *()> create{nullptr};
+};
+
+/**
+ * Decides a best texture size to have the specified pixel capacity at least.
+ * The decided width and height has the following characteristics:
+ * - the width and height are both power of 2;
+ * - if the width and height are different, the width would be set to the larger once;
+ * - the width is ensured to be multiple of 4.
+ * @param nPixels Least pixel capacity.
+ */
+bool bestSizeToHavePixels(uint32_t nPixels, uint32_t *pWidth, uint32_t *pHeight) {
+    if (pWidth == nullptr || pHeight == nullptr) {
+        if (pWidth != nullptr) {
+            *pWidth = 0;
+        }
+
+        if (pHeight != nullptr) {
+            *pHeight = 0;
+        }
+        return false;
+    }
+
+    if (nPixels < 5) {
+        nPixels = 5;
+    }
+    const uint32_t aligned = pipeline::nextPow2(nPixels);
+    const uint32_t epxSum  = std::log2(aligned);
+    const uint32_t h       = epxSum >> 1;
+    const uint32_t w       = (epxSum & 1) ? (h + 1) : h;
+
+    *pWidth  = 1 << w;
+    *pHeight = 1 << h;
+
+    return true;
 }
+
+/**
+ * When use vertex-texture-fetch technique, we do need
+ * `gl_vertexId` when we sample per-vertex data.
+ * WebGL 1.0 does not have `gl_vertexId`; WebGL 2.0, however, does.
+ * @param mesh
+ * @param subMeshIndex
+ * @param gfxDevice
+ */
+void enableVertexId(Mesh *mesh, uint32_t subMeshIndex, gfx::Device *gfxDevice) {
+    mesh->getRenderingSubMeshes()[subMeshIndex]->enableVertexIdChannel(gfxDevice);
+}
+
+/**
+ *
+ * @param gfxDevice
+ * @param vec4Capacity Capacity of vec4.
+ */
+Vec4TextureFactory createVec4TextureFactory(gfx::Device *gfxDevice, uint32_t vec4Capacity) {
+    bool hasFeatureFloatTexture = gfxDevice->hasFeature(gfx::Feature::TEXTURE_FLOAT);
+
+    uint32_t    pixelRequired   = 0;
+    PixelFormat pixelFormat     = PixelFormat::RGBA8888;
+    uint32_t    pixelBytes      = 4;
+    bool        useFloat32Array = false;
+    if (hasFeatureFloatTexture) {
+        pixelRequired   = vec4Capacity;
+        pixelBytes      = 16;
+        pixelFormat     = Texture2D::PixelFormat::RGBA32F;
+        useFloat32Array = true;
+    } else {
+        pixelRequired   = 4 * vec4Capacity;
+        pixelBytes      = 4;
+        pixelFormat     = Texture2D::PixelFormat::RGBA8888;
+        useFloat32Array = false;
+    }
+
+    uint32_t width  = 0;
+    uint32_t height = 0;
+    bestSizeToHavePixels(pixelRequired, &width, &height);
+    CC_ASSERT(width * height >= pixelRequired);
+
+    Vec4TextureFactory ret;
+    ret.width  = width;
+    ret.height = height;
+    ret.create = [=]() -> MorphTexture * {
+        MorphTexture *texture = new MorphTexture(); //cjh how to release?
+        texture->initialize(width, height, pixelBytes, useFloat32Array, pixelFormat);
+        return texture;
+    };
+
+    return ret;
+}
+
+/**
+ * Provides the access to morph related uniforms.
+ */
+class MorphUniforms final {
+public:
+    MorphUniforms(gfx::Device *gfxDevice, uint32_t targetCount) {
+        _targetCount = targetCount;
+        _ab.resize(pipeline::UBOMorph::SIZE);
+        _localBuffer  = std::make_unique<DataView>(_ab);
+        _remoteBuffer = gfxDevice->createBuffer(gfx::BufferInfo{
+            gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST,
+            gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE,
+            pipeline::UBOMorph::SIZE,
+            pipeline::UBOMorph::SIZE,
+        });
+    }
+
+    void destroy() {
+        _remoteBuffer->destroy();
+    }
+
+    gfx::Buffer *getBuffer() const {
+        return _remoteBuffer;
+    }
+
+    void setWeights(const std::vector<float> &weights) {
+        CC_ASSERT(weights.size() == _targetCount);
+        for (size_t iWeight = 0; iWeight < weights.size(); ++iWeight) {
+            _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_WEIGHTS + 4 * iWeight, weights[iWeight]); //cjh legacyCC.sys.isLittleEndian);
+        }
+    }
+
+    void setMorphTextureInfo(float width, float height) {
+        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_DISPLACEMENT_TEXTURE_WIDTH, width);   //cjh, legacyCC.sys.isLittleEndian);
+        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_DISPLACEMENT_TEXTURE_HEIGHT, height); //cjh, legacyCC.sys.isLittleEndian);
+    }
+
+    void setVerticesCount(uint32_t count) {
+        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_VERTICES_COUNT, count); //cjh , legacyCC.sys.isLittleEndian);
+    }
+
+    void commit() {
+        _remoteBuffer->update(_ab.data(), _ab.size());
+    }
+
+private:
+    uint32_t                  _targetCount{0};
+    std::unique_ptr<DataView> _localBuffer;
+    ArrayBuffer               _ab;
+    gfx::Buffer *             _remoteBuffer{nullptr};
+};
+
+class CpuComputing final : public SubMeshMorphRendering {
+public:
+    CpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx::Device *gfxDevice);
+
+    SubMeshMorphRenderingInstance *       createInstance() override;
+    const std::vector<CpuMorphAttribute> &getData() const;
+
+private:
+    std::vector<CpuMorphAttribute> _attributes;
+    gfx::Device *                  _gfxDevice{nullptr};
+};
+
+class GpuComputing final : public SubMeshMorphRendering {
+public:
+    GpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx::Device *gfxDevice);
+    SubMeshMorphRenderingInstance *createInstance() override;
+
+    void destroy();
+
+private:
+    gfx::Device *                  _gfxDevice{nullptr};
+    SubMeshMorph *                 _subMeshMorph{nullptr};
+    uint32_t                       _textureWidth{0};
+    uint32_t                       _textureHeight{0};
+    std::vector<GpuMorphAttribute> _attributes;
+    uint32_t                       _verticesCount{0};
+
+    friend class GpuComputingRenderingInstance;
+};
+
+class CpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance {
+public:
+    CpuComputingRenderingInstance(CpuComputing *owner, uint32_t nVertices, gfx::Device *gfxDevice) {
+        _owner         = owner;                                       //cjh TODO: lifecycle, dangerous?
+        _morphUniforms = new MorphUniforms(gfxDevice, 0 /* TODO? */); //cjh TODO: how to release?
+
+        auto vec4TextureFactory = createVec4TextureFactory(gfxDevice, nVertices);
+        _morphUniforms->setMorphTextureInfo(vec4TextureFactory.width, vec4TextureFactory.height);
+        _morphUniforms->commit();
+
+        for (size_t attributeIndex = 0, len = _owner->getData().size(); attributeIndex < len; ++attributeIndex) {
+            const auto &attributeMorph = _owner->getData()[attributeIndex];
+            auto *      morphTexture   = vec4TextureFactory.create(); //cjh how to release?
+            _attributes.emplace_back(GpuMorphAttribute{attributeMorph.name, morphTexture});
+        }
+    }
+
+    void setWeights(const std::vector<float> &weights) override {
+        for (size_t iAttribute = 0; iAttribute < _attributes.size(); ++iAttribute) {
+            const auto &                myAttribute    = _attributes[iAttribute];
+            typedarray::Float32ArrayRef valueView      = myAttribute.morphTexture->getFloat32ValueView();
+            const auto &                attributeMorph = _owner->getData()[iAttribute];
+            CC_ASSERT(weights.size() == attributeMorph.targets.size());
+            for (size_t iTarget = 0; iTarget < attributeMorph.targets.size(); ++iTarget) {
+                const auto &   targetDisplacements = attributeMorph.targets[iTarget].displacements;
+                const float    weight              = weights[iTarget];
+                const uint32_t nVertices           = targetDisplacements.value().length() / 3;
+                if (iTarget == 0) {
+                    for (uint32_t iVertex = 0; iVertex < nVertices; ++iVertex) {
+                        valueView[4 * iVertex + 0] = targetDisplacements.value()[3 * iVertex + 0] * weight;
+                        valueView[4 * iVertex + 1] = targetDisplacements.value()[3 * iVertex + 1] * weight;
+                        valueView[4 * iVertex + 2] = targetDisplacements.value()[3 * iVertex + 2] * weight;
+                    }
+                } else if (std::abs(weight) < std::numeric_limits<float>::epsilon()) {
+                    for (uint32_t iVertex = 0; iVertex < nVertices; ++iVertex) {
+                        valueView[4 * iVertex + 0] += targetDisplacements.value()[3 * iVertex + 0] * weight;
+                        valueView[4 * iVertex + 1] += targetDisplacements.value()[3 * iVertex + 1] * weight;
+                        valueView[4 * iVertex + 2] += targetDisplacements.value()[3 * iVertex + 2] * weight;
+                    }
+                }
+            }
+
+            myAttribute.morphTexture->updatePixels();
+        }
+    }
+
+    std::vector<scene::IMacroPatch> requiredPatches() override {
+        return {
+            {"CC_MORPH_TARGET_USE_TEXTURE", true},
+            {"CC_MORPH_PRECOMPUTED", true},
+        };
+    }
+
+    void adaptPipelineState(gfx::DescriptorSet *descriptorSet) override {
+        for (const auto &attribute : _attributes) {
+            const auto &            attributeName = attribute.attributeName;
+            std::optional<uint32_t> binding;
+            if (attributeName == gfx::ATTR_NAME_POSITION) {
+                binding = pipeline::POSITIONMORPH::BINDING;
+            } else if (attributeName == gfx::ATTR_NAME_NORMAL) {
+                binding = pipeline::NORMALMORPH::BINDING;
+            } else if (attributeName == gfx::ATTR_NAME_TANGENT) {
+                binding = pipeline::TANGENTMORPH::BINDING;
+            } else {
+                CC_LOG_WARNING("Unexpected attribute!");
+            }
+
+            if (binding.has_value()) {
+                descriptorSet->bindSampler(binding.value(), attribute.morphTexture->getSampler());
+                descriptorSet->bindTexture(binding.value(), attribute.morphTexture->getTexture());
+            }
+        }
+        descriptorSet->bindBuffer(pipeline::UBOMorph::BINDING, _morphUniforms->getBuffer());
+        descriptorSet->update();
+    }
+
+    void destroy() override {
+        _morphUniforms->destroy();
+        for (size_t iAttribute = 0; iAttribute < _attributes.size(); ++iAttribute) {
+            auto &myAttribute = _attributes[iAttribute];
+            myAttribute.morphTexture->destroy();
+        }
+    }
+
+private:
+    std::vector<GpuMorphAttribute> _attributes;
+    CpuComputing *                 _owner{nullptr};
+    MorphUniforms *                _morphUniforms{nullptr};
+};
+
+class GpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance {
+public:
+    GpuComputingRenderingInstance(GpuComputing *owner, gfx::Device *gfxDevice) {
+        _owner         = owner;
+        _morphUniforms = new MorphUniforms(gfxDevice, _owner->_subMeshMorph->targets.size());
+        _morphUniforms->setMorphTextureInfo(_owner->_textureWidth, _owner->_textureHeight);
+        _morphUniforms->setVerticesCount(_owner->_verticesCount);
+        _morphUniforms->commit();
+    }
+
+    void setWeights(const std::vector<float> &weights) override {
+        _morphUniforms->setWeights(weights);
+        _morphUniforms->commit();
+    }
+
+    std::vector<scene::IMacroPatch> requiredPatches() override {
+        return {
+            {"CC_MORPH_TARGET_USE_TEXTURE", true},
+        };
+    }
+
+    void adaptPipelineState(gfx::DescriptorSet *descriptorSet) override {
+        for (const auto &attribute : _attributes) {
+            const auto &            attributeName = attribute.attributeName;
+            std::optional<uint32_t> binding;
+            if (attributeName == gfx::ATTR_NAME_POSITION) {
+                binding = pipeline::POSITIONMORPH::BINDING;
+            } else if (attributeName == gfx::ATTR_NAME_NORMAL) {
+                binding = pipeline::NORMALMORPH::BINDING;
+            } else if (attributeName == gfx::ATTR_NAME_TANGENT) {
+                binding = pipeline::TANGENTMORPH::BINDING;
+            } else {
+                CC_LOG_WARNING("Unexpected attribute!");
+            }
+
+            if (binding.has_value()) {
+                descriptorSet->bindSampler(binding.value(), attribute.morphTexture->getSampler());
+                descriptorSet->bindTexture(binding.value(), attribute.morphTexture->getTexture());
+            }
+        }
+        descriptorSet->bindBuffer(pipeline::UBOMorph::BINDING, _morphUniforms->getBuffer());
+        descriptorSet->update();
+    }
+
+    void destroy() override {
+    }
+
+private:
+    std::vector<GpuMorphAttribute> _attributes;
+    GpuComputing *                 _owner{nullptr};
+    MorphUniforms *                _morphUniforms{nullptr};
+};
+
+//
+CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx::Device *gfxDevice) {
+    _gfxDevice               = gfxDevice;
+    const auto *subMeshMorph = morph->subMeshMorphs[subMeshIndex];
+    CC_ASSERT(subMeshMorph != nullptr);
+    enableVertexId(mesh, subMeshIndex, gfxDevice);
+
+    for (size_t attributeIndex = 0, len = subMeshMorph->attributes.size(); attributeIndex < len; ++attributeIndex) {
+        const auto &attributeName = subMeshMorph->attributes[attributeIndex];
+
+        CpuMorphAttribute attr;
+        attr.name = attributeName;
+        attr.targets.resize(subMeshMorph->targets.size());
+
+        uint32_t i = 0;
+        for (const auto &attributeDisplacement : subMeshMorph->targets) {
+            attr.targets[i].displacements = typedarray::Float32ArrayRef(
+                mesh->getData().data(), mesh->getData().size(),
+                //cjh should mesh data use Uint8ArrayRef instead of Uint8Array?
+                /* mesh->getData().byteOffset + */ attributeDisplacement.displacements[attributeIndex].offset,
+                attributeDisplacement.displacements[attributeIndex].count);
+
+            ++i;
+        }
+
+        _attributes.emplace_back(attr);
+    }
+}
+
+SubMeshMorphRenderingInstance *CpuComputing::createInstance() {
+    return new CpuComputingRenderingInstance(
+        this,
+        _attributes[0].targets[0].displacements.value().length() / 3,
+        _gfxDevice);
+}
+
+const std::vector<CpuMorphAttribute> &CpuComputing::getData() const {
+    return _attributes;
+}
+
+//
+GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx::Device *gfxDevice) {
+    _gfxDevice         = gfxDevice;
+    auto *subMeshMorph = morph->subMeshMorphs[subMeshIndex];
+    CC_ASSERT(subMeshMorph != nullptr);
+    _subMeshMorph = subMeshMorph;
+
+    enableVertexId(mesh, subMeshIndex, gfxDevice);
+
+    uint32_t nVertices    = mesh->getStruct().vertexBundles[mesh->getStruct().primitives[subMeshIndex].vertexBundelIndices[0]].view.count;
+    _verticesCount        = nVertices;
+    uint32_t nTargets     = subMeshMorph->targets.size();
+    uint32_t vec4Required = nVertices * nTargets;
+
+    auto vec4TextureFactory = createVec4TextureFactory(gfxDevice, vec4Required);
+    _textureWidth           = vec4TextureFactory.width;
+    _textureHeight          = vec4TextureFactory.height;
+
+    // Creates texture for each attribute.
+    uint32_t attributeIndex = 0;
+    _attributes.reserve(subMeshMorph->attributes.size());
+    for (auto &attributeName : subMeshMorph->attributes) {
+        auto                        vec4Tex   = vec4TextureFactory.create();
+        typedarray::Float32ArrayRef valueView = vec4Tex->getFloat32ValueView();
+        // if (DEV) { // Make it easy to view texture in profilers...
+        //     for (let i = 0; i < valueView.length / 4; ++i) {
+        //         valueView[i * 4 + 3] = 1.0;
+        //     }
+        // }
+
+        uint32_t morphTargetIndex = 0;
+        for (auto &morphTarget : subMeshMorph->targets) {
+            const auto &                displacementsView = morphTarget.displacements[attributeIndex];
+            typedarray::Float32ArrayRef displacements(mesh->getData().data(), mesh->getData().size(), /*cjh alway 0, how to fix? mesh.data.byteOffset + */ displacementsView.offset, displacementsView.count);
+            const uint32_t              displacementsOffset = (nVertices * morphTargetIndex) * 4;
+            for (uint32_t iVertex = 0; iVertex < nVertices; ++iVertex) {
+                valueView[displacementsOffset + 4 * iVertex + 0] = displacements[3 * iVertex + 0];
+                valueView[displacementsOffset + 4 * iVertex + 1] = displacements[3 * iVertex + 1];
+                valueView[displacementsOffset + 4 * iVertex + 2] = displacements[3 * iVertex + 2];
+            }
+
+            ++morphTargetIndex;
+        }
+
+        vec4Tex->updatePixels();
+
+        _attributes.emplace_back(GpuMorphAttribute{attributeName, vec4Tex});
+
+        ++attributeIndex;
+    }
+}
+
+SubMeshMorphRenderingInstance *GpuComputing::createInstance() {
+    return new GpuComputingRenderingInstance(this, _gfxDevice); //cjh how to release?
+}
+
+void GpuComputing::destroy() {
+    for (auto &attribute : _attributes) {
+        attribute.morphTexture->destroy();
+    }
+}
+
+} // namespace
+
+class StdMorphRenderingInstance : public MorphRenderingInstance {
+public:
+    StdMorphRenderingInstance(StdMorphRendering *owner) {
+        _owner            = owner;
+        size_t nSubMeshes = _owner->_mesh->getStruct().primitives.size();
+        _subMeshInstances.resize(nSubMeshes, nullptr);
+
+        for (size_t iSubMesh = 0; iSubMesh < nSubMeshes; ++iSubMesh) {
+            if (_owner->_subMeshRenderings[iSubMesh] != nullptr) {
+                _subMeshInstances[iSubMesh] = _owner->_subMeshRenderings[iSubMesh]->createInstance();
+            }
+        }
+    }
+
+    ~StdMorphRenderingInstance() override = default;
+
+    void setWeights(index_t subMeshIndex, const SubMeshWeightsType &weights) override {
+        _subMeshInstances[subMeshIndex]->setWeights(weights);
+    }
+
+    void adaptPipelineState(index_t subMeshIndex, gfx::DescriptorSet *descriptorSet) override {
+        _subMeshInstances[subMeshIndex]->adaptPipelineState(descriptorSet);
+    }
+
+    std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) override {
+        CC_ASSERT(_owner->_mesh->getStruct().morph.has_value());
+        auto *subMeshMorph             = _owner->_mesh->getStruct().morph.value()->subMeshMorphs[subMeshIndex];
+        auto *subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
+        if (subMeshRenderingInstance == nullptr) {
+            return {};
+        }
+        CC_ASSERT(subMeshMorph != nullptr);
+
+        std::vector<scene::IMacroPatch> patches{
+            {"CC_USE_MORPH", true},
+            {"CC_MORPH_TARGET_COUNT", static_cast<int32_t>(subMeshMorph->targets.size())}};
+
+        if (auto iter = std::find(subMeshMorph->attributes.begin(), subMeshMorph->attributes.end(), gfx::ATTR_NAME_POSITION); iter != subMeshMorph->attributes.end()) {
+            patches.emplace_back(scene::IMacroPatch{
+                "CC_MORPH_TARGET_HAS_POSITION",
+                true,
+            });
+        }
+
+        if (auto iter = std::find(subMeshMorph->attributes.begin(), subMeshMorph->attributes.end(), gfx::ATTR_NAME_NORMAL); iter != subMeshMorph->attributes.end()) {
+            patches.emplace_back(scene::IMacroPatch{
+                "CC_MORPH_TARGET_HAS_NORMAL",
+                true,
+            });
+        }
+
+        if (auto iter = std::find(subMeshMorph->attributes.begin(), subMeshMorph->attributes.end(), gfx::ATTR_NAME_TANGENT); iter != subMeshMorph->attributes.end()) {
+            patches.emplace_back(scene::IMacroPatch{
+                "CC_MORPH_TARGET_HAS_TANGENT",
+                true,
+            });
+        }
+
+        auto renderingInstancePatches = subMeshRenderingInstance->requiredPatches();
+        for (auto &renderingInstancePatch : renderingInstancePatches) {
+            patches.emplace_back(renderingInstancePatch);
+        }
+
+        return patches;
+    }
+
+    void destroy() override {
+        for (auto &subMeshInstance : _subMeshInstances) {
+            if (subMeshInstance != nullptr) {
+                subMeshInstance->destroy();
+            }
+        }
+    }
+
+private:
+    StdMorphRendering *                          _owner{nullptr};
+    std::vector<SubMeshMorphRenderingInstance *> _subMeshInstances;
+};
+
+//
+StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
+    _mesh            = mesh;
+    auto &structInfo = _mesh->getStruct();
+    if (!structInfo.morph.has_value()) {
+        return;
+    }
+
+    const size_t nSubMeshes = structInfo.primitives.size();
+    _subMeshRenderings.resize(nSubMeshes, nullptr);
+    auto &morph = structInfo.morph.value();
+    for (size_t iSubMesh = 0; iSubMesh < nSubMeshes; ++iSubMesh) {
+        const auto &subMeshMorph = morph->subMeshMorphs[iSubMesh];
+        if (nullptr == subMeshMorph) {
+            continue;
+        }
+
+        if (preferCpuComputing || subMeshMorph->targets.size() > pipeline::UBOMorph::MAX_MORPH_TARGET_COUNT) {
+            _subMeshRenderings[iSubMesh] = new CpuComputing(
+                _mesh,
+                iSubMesh,
+                morph,
+                gfxDevice);
+        } else {
+            _subMeshRenderings[iSubMesh] = new GpuComputing(
+                _mesh,
+                iSubMesh,
+                morph,
+                gfxDevice);
+        }
+    }
+}
+
+StdMorphRendering::~StdMorphRendering() = default;
+
+MorphRenderingInstance *StdMorphRendering::createInstance() {
+    auto ret = new StdMorphRenderingInstance(this); //cjh how to release?
+    return ret;
+}
+
+} // namespace cc

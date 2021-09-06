@@ -25,6 +25,47 @@
 
 #include "3d/assets/Skeleton.h"
 
+#include <iomanip>
+#include <sstream>
+
+#include "MurmurHash2/MurmurHash2.h"
+
 namespace cc {
 
+const std::vector<Mat4> &Skeleton::getInverseBindposes() {
+    if (!_invBindposes.has_value()) {
+        _invBindposes = std::vector<Mat4>{};
+        for (const auto &bindpose : _bindposes) {
+            _invBindposes.value().emplace_back(bindpose.getInversed());
+        }
+    }
+    return *_invBindposes;
 }
+
+uint64_t Skeleton::getHash() {
+    // hashes should already be computed offline, but if not, make one
+    if (!_hash) {
+        std::stringstream sstr;
+        for (const auto &ibm : _bindposes) {
+            sstr << std::fixed << std::setprecision(2)
+                 << ibm.m[0] << " " << ibm.m[1] << " " << ibm.m[2] << " " << ibm.m[3] << " "
+                 << ibm.m[4] << " " << ibm.m[5] << " " << ibm.m[6] << " " << ibm.m[7] << " "
+                 << ibm.m[8] << " " << ibm.m[9] << " " << ibm.m[10] << " " << ibm.m[11] << " "
+                 << ibm.m[12] << " " << ibm.m[13] << " " << ibm.m[14] << " " << ibm.m[15] << "\n";
+        }
+        std::string str{sstr.str()};
+        _hash = murmurhash2::MurmurHash2(str.c_str(), str.length(), 666);
+    }
+    return _hash;
+}
+
+bool Skeleton::destroy() {
+    //cjh TODO:    (legacyCC.director.root?.dataPoolManager as DataPoolManager)?.releaseSkeleton(this);
+    return Super::destroy();
+}
+
+bool Skeleton::validate() const {
+    return !_joints.empty() && !_bindposes.empty();
+}
+
+} // namespace cc

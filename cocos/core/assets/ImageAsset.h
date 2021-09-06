@@ -35,6 +35,18 @@ namespace cc {
 class Image;
 
 /**
+ * @en Image source in memory
+ * @zh 内存图像源。
+ */
+struct IMemoryImageSource {
+    std::shared_ptr<ArrayBuffer> _data;
+    bool                         _compressed{false};
+    uint32_t                     width{0};
+    uint32_t                     height{0};
+    PixelFormat                  format{PixelFormat::RGBA8888};
+};
+
+/**
  * @en Image Asset.
  * @zh 图像资源。
  */
@@ -86,7 +98,8 @@ public:
     std::string getUrl() const;
 
 private:
-    Image *_nativeData{nullptr};
+    Image *                           _nativeData{nullptr};
+    std::optional<IMemoryImageSource> _imageSource; //cjh TODO: how about using std::variant<Image*, IMemoryImageSource> ?
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(ImageAsset);
 };

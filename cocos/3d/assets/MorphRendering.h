@@ -39,14 +39,16 @@ class SubMeshMorphRendering;
 class StdMorphRendering final : public MorphRendering {
 public:
     StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice);
-    ~StdMorphRendering() override = default;
+    ~StdMorphRendering() override;
     MorphRenderingInstance *createInstance() override;
 
 private:
-    Mesh *                               _mesh;
+    Mesh *                               _mesh{nullptr};
     std::vector<SubMeshMorphRendering *> _subMeshRenderings;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(StdMorphRendering);
+
+    friend class StdMorphRenderingInstance;
 };
 
 } // namespace cc

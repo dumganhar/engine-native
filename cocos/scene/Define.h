@@ -25,16 +25,16 @@
 
 #pragma once
 
-#include <vector>
 #include <string>
 #include <variant>
+#include <vector>
 
 namespace cc {
 namespace scene {
 
 struct IMacroPatch {
-    std::string                            name;
-    std::variant<float, bool, std::string> value;
+    std::string                                     name;
+    std::variant<int32_t, float, bool, std::string> value;
 };
 
 } // namespace scene

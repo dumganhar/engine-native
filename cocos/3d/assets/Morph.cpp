@@ -24,7 +24,12 @@
 ****************************************************************************/
 
 #include "3d/assets/Morph.h"
+#include "3d/assets/MorphRendering.h"
 
 namespace cc {
 
+MorphRendering *createMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
+    return new StdMorphRendering(mesh, gfxDevice);
 }
+
+} // namespace cc

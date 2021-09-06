@@ -84,7 +84,7 @@ constexpr uint32_t     customizeType(uint32_t handle, gfx::Type type) {
  * @en Combination of preprocess macros
  * @zh 预处理宏组合
  */
-using MacroRecord = Record<std::string, std::variant<float, bool, std::string>>;
+using MacroRecord = Record<std::string, std::variant<int32_t, float, bool, std::string>>;
 
 using MaterialProperty = std::variant<std::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/>;
 

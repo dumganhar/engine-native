@@ -27,6 +27,8 @@
 
 #include "platform/Image.h"
 
+#include "base/Log.h"
+
 namespace cc {
 
 ImageAsset::~ImageAsset() {
@@ -41,7 +43,9 @@ void ImageAsset::setNativeAsset(const std::any &obj) {
             _nativeData = *pData;
             _nativeData->retain();
         } else if (auto *pData = std::any_cast<IMemoryImageSource>(&obj); pData != nullptr) {
-            _imageSource = std::move(*pData);
+            _imageSource = *pData;
+        } else {
+            CC_LOG_WARNING("ImageAsset::setNativeAsset, unknown type!");
         }
     }
 }
@@ -49,7 +53,9 @@ void ImageAsset::setNativeAsset(const std::any &obj) {
 const uint8_t *ImageAsset::getData() const {
     if (_nativeData != nullptr) {
         return _nativeData->getData();
-    } else if (_imageSource.has_value()) {
+    }
+
+    if (_imageSource.has_value()) {
         return _imageSource.value()._data->data();
     }
     return nullptr;
@@ -58,7 +64,9 @@ const uint8_t *ImageAsset::getData() const {
 uint32_t ImageAsset::getWidth() const {
     if (_nativeData != nullptr) {
         return _nativeData->getWidth();
-    } else if (_imageSource.has_value()) {
+    }
+
+    if (_imageSource.has_value()) {
         return _imageSource.value().width;
     }
     return 0;
@@ -67,7 +75,9 @@ uint32_t ImageAsset::getWidth() const {
 uint32_t ImageAsset::getHeight() const {
     if (_nativeData != nullptr) {
         return _nativeData->getHeight();
-    } else if (_imageSource.has_value()) {
+    }
+
+    if (_imageSource.has_value()) {
         return _imageSource.value().height;
     }
     return 0;
@@ -76,7 +86,9 @@ uint32_t ImageAsset::getHeight() const {
 PixelFormat ImageAsset::getFormat() const {
     if (_nativeData != nullptr) {
         return static_cast<PixelFormat>(_nativeData->getRenderFormat());
-    } else if (_imageSource.has_value()) {
+    }
+
+    if (_imageSource.has_value()) {
         return _imageSource.value().format;
     }
     return PixelFormat::RGBA8888; //cjh TODO: use RGBA8888 as default value?
@@ -85,7 +97,9 @@ PixelFormat ImageAsset::getFormat() const {
 bool ImageAsset::isCompressed() const {
     if (_nativeData != nullptr) {
         return _nativeData->isCompressed();
-    } else if (_imageSource.has_value()) {
+    }
+
+    if (_imageSource.has_value()) {
         return _imageSource.value()._compressed;
     }
     return false;

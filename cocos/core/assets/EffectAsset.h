@@ -73,8 +73,15 @@ struct IPassInfo : public IPassStates {
     std::optional<std::unordered_map<std::string, IPropertyInfo>> properties;
 };
 
+struct IPassInfoFull final : public IPassInfo {
+    // generated part
+    index_t                      passIndex{0};
+    MacroRecord                  defines;
+    std::optional<PassOverrides> stateOverrides;
+};
+
 struct ITechniqueInfo {
-    std::vector<IPassInfo *>   passes; //cjh use shared_ptr?
+    std::vector<IPassInfoFull> passes;
     std::optional<std::string> name;
 };
 
@@ -162,26 +169,27 @@ public:
      * @en Register the effect asset to the static map
      * @zh 将指定 effect 注册到全局管理器。
      */
-    static void registerAsset(const EffectAsset *asset);
+    static void registerAsset(EffectAsset *asset);
 
     /**
      * @en Unregister the effect asset from the static map
      * @zh 将指定 effect 从全局管理器移除。
      */
     static void remove(const std::string &name);
-    static void remove(const EffectAsset *asset);
+    static void remove(EffectAsset *asset);
 
     /**
      * @en Get the effect asset by the given name.
      * @zh 获取指定名字的 effect 资源。
      */
-    static const EffectAsset *get(const std::string &name);
+    static EffectAsset *get(const std::string &name);
 
+    using RegisteredEffectAssetMap = std::unordered_map<std::string, EffectAsset *>;
     /**
      * @en Get all registered effect assets.
      * @zh 获取所有已注册的 effect 资源。
      */
-    static std::unordered_map<std::string, const EffectAsset *> &getAll() { return __effects; }
+    static RegisteredEffectAssetMap &getAll() { return __effects; }
 
     /**
      * @en The techniques used by the current effect.
@@ -226,7 +234,7 @@ protected:
     void _precompile();
 
 protected:
-    static std::unordered_map<std::string, const EffectAsset *> __effects; //cjh TODO: how to clear when game exits.
+    static RegisteredEffectAssetMap __effects; //cjh TODO: how to clear when game exits.
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(EffectAsset);
 };

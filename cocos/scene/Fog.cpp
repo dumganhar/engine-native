@@ -42,11 +42,11 @@ void Fog::initialize(const FogInfo &fogInfo) {
 }
 
 void Fog::updatePipeline() {
-    auto *                                                 root     = Root::getInstance();
-    const FogType                                          value    = _enabled ? _type : FogType::NONE;
-    auto *                                                 pipeline = root->getPipeline();
-    const std::variant<int32_t, float, bool, std::string> &macro    = pipeline->getMacros().at("CC_USE_FOG"); //cjh todo:
-    const float *                                          macroPtr = std::get_if<float>(&macro);
+    auto *            root     = Root::getInstance();
+    const FogType     value    = _enabled ? _type : FogType::NONE;
+    auto *            pipeline = root->getPipeline();
+    const MacroValue &macro    = pipeline->getMacros().at("CC_USE_FOG"); //cjh todo:
+    const float *     macroPtr = std::get_if<float>(&macro);
     if (macroPtr && static_cast<int>(*macroPtr) == static_cast<int>(value)) {
         return;
     }

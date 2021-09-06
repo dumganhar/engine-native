@@ -29,12 +29,14 @@
 #include <variant>
 #include <vector>
 
+#include "renderer/core/PassUtils.h"
+
 namespace cc {
 namespace scene {
 
 struct IMacroPatch {
-    std::string                                     name;
-    std::variant<int32_t, float, bool, std::string> value;
+    std::string name;
+    MacroValue  value;
 };
 
 } // namespace scene

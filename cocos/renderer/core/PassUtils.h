@@ -30,7 +30,7 @@
 #include "base/TypeDef.h"
 #include "core/Types.h"
 #include "core/assets/TextureBase.h"
-#include "gfx-base/GFXDef-common.h"
+
 #include "math/Color.h"
 #include "math/Mat3.h"
 #include "math/Mat4.h"
@@ -38,6 +38,8 @@
 #include "math/Vec2.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
+
+#include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDef.h"
 
 namespace cc {
@@ -80,11 +82,14 @@ constexpr uint32_t     getOffsetFromHandle(uint32_t handle) { return (handle & O
 constexpr uint32_t     customizeType(uint32_t handle, gfx::Type type) {
     return (handle & ~TYPE_MASK) | ((static_cast<uint32_t>(type) << 22) & TYPE_MASK);
 }
+
+using MacroValue = std::variant<int32_t, float, bool, std::string>;
+
 /**
  * @en Combination of preprocess macros
  * @zh 预处理宏组合
  */
-using MacroRecord = Record<std::string, std::variant<int32_t, float, bool, std::string>>;
+using MacroRecord = Record<std::string, MacroValue>;
 
 using MaterialProperty = std::variant<std::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/>;
 

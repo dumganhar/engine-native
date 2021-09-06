@@ -1,4 +1,5 @@
 #include "renderer/core/MaterialInstance.h"
+#include "core/components/RenderableComponent.h"
 #include "renderer/core/PassInstance.h"
 
 namespace cc {
@@ -29,7 +30,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
         return;
     }
 
-    const std::vector<IPassInfo *> &passInfos = _effectAsset->_techniques[getTechniqueIndex()].passes;
+    std::vector<IPassInfoFull> &passInfos = _effectAsset->_techniques[getTechniqueIndex()].passes;
     if (passIdx == CC_INVALID_INDEX) {
         for (size_t i = 0, len = _passInstances.size(); i < len; i++) {
             auto *pass = _passInstances[i];
@@ -38,7 +39,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
             }
             auto &state = _states[i];
             state       = overrides;
-            pass->overridePipelineStates(*passInfos[pass->getPassIndex()], state);
+            pass->overridePipelineStates(passInfos[pass->getPassIndex()], state);
         }
     } else {
         if (passIdx >= _states.size()) {
@@ -46,7 +47,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
         }
         auto &state = _states[passIdx];
         state       = overrides;
-        _passes[passIdx]->overridePipelineStates(*passInfos[passIdx], state);
+        _passes[passIdx]->overridePipelineStates(passInfos[passIdx], state);
     }
 }
 
@@ -77,7 +78,7 @@ std::vector<scene::Pass *> MaterialInstance::createPasses() {
 void MaterialInstance::onPassStateChange(bool dontNotify) {
     _hash = Material::getHashForMaterial(this);
     if (!dontNotify && _owner != nullptr) {
-        //cjh TODO:        _owner->_onRebuildPSO(_subModelIdx, this);
+        _owner->onRebuildPSO(_subModelIdx, this);
     }
 }
 

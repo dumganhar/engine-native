@@ -57,8 +57,8 @@ struct JointInfo {
 
 class SkinningModel final : public MorphModel {
 public:
-    using Super                          = MorphModel;
-    SkinningModel()                      = default;
+    using Super = MorphModel;
+    SkinningModel();
     ~SkinningModel() override;
 
     inline void setIndicesAndJoints(const std::vector<index_t> &bufferIndices, const std::vector<JointInfo> &joints) {
@@ -66,7 +66,7 @@ public:
         _joints        = joints;
     }
     inline void              setNeedUpdate(bool needUpdate) { _needUpdate = needUpdate; }
-    void                     setBuffers(const std::vector<gfx::Buffer *>& buffers);
+    void                     setBuffers(const std::vector<gfx::Buffer *> &buffers);
     void                     updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) override;
     void                     updateTransform(uint32_t stamp) override;
     void                     updateUBOs(uint32_t stamp) override;
@@ -74,9 +74,6 @@ public:
     void                     bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningRoot, Mesh *mesh);
     void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
     std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
-
-protected:
-    ModelType _type{ModelType::SKINNING};
 
 private:
     static void                                                    uploadJointData(uint32_t base, const Mat4 &mat, float *dst);

@@ -40,15 +40,6 @@ namespace cc {
 class Material;
 namespace scene {
 
-enum class ModelType {
-    DEFAULT,
-    SKINNING,
-    BAKED_SKINNING,
-    BATCH_2D,
-    PARTICLE_BATCH,
-    LINE,
-};
-
 // SubModel.h -> Define.h -> Model.h, so do not include SubModel.h here.
 class SubModel;
 // RenderScene.h <-> Model.h, so do not include RenderScene.h here.
@@ -63,13 +54,22 @@ struct InstancedAttributeBlock {
 
 class Model {
 public:
+    enum class Type {
+        DEFAULT,
+        SKINNING,
+        BAKED_SKINNING,
+        BATCH_2D,
+        PARTICLE_BATCH,
+        LINE,
+    };
+
     Model();
     virtual ~Model() = default;
 
     void                             initialize();
     virtual void                     destroy();
     void                             updateWorldBound();
-    void                             createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos);
+    void                             createBoundingShape(const std::optional<Vec3> &minPos, const std::optional<Vec3> &maxPos);
     virtual void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat);
     void                             setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
     virtual void                     setSubModelMaterial(index_t idx, Material *mat);
@@ -84,8 +84,8 @@ public:
 
     void setSubModel(uint32_t idx, SubModel *subModel);
 
-    inline void attachToScene(RenderScene *scene) { this->scene = scene; };
-    inline void detachFromScene() { this->scene = nullptr; };
+    inline void attachToScene(RenderScene *scene) { _scene = scene; };
+    inline void detachFromScene() { _scene = nullptr; };
     inline void setCastShadow(bool value) { _castShadow = value; }
     inline void setEnabled(bool value) { _enabled = value; }
     inline void setInstMatWorldIdx(int32_t idx) { _instMatWorldIdx = idx; }
@@ -93,7 +93,7 @@ public:
     inline void setNode(scenegraph::Node *node) { _node = node; }
     inline void setReceiveShadow(bool value) { _receiveShadow = value; }
     inline void setTransform(scenegraph::Node *node) { _transform = node; }
-    inline void seVisFlag(uint32_t flags) { _visFlags = flags; }
+    inline void setVisFlags(uint32_t flags) { _visFlags = flags; }
     inline void setBounds(geometry::AABB *world) {
         _worldBounds = world;
         _modelBounds->set(_worldBounds->getCenter(), _worldBounds->getHalfExtents());
@@ -124,10 +124,11 @@ public:
     inline uint32_t                           getUpdatStamp() const { return _updateStamp; }
     inline uint32_t                           getVisFlags() const { return _visFlags; }
     inline geometry::AABB *                   getWorldBounds() const { return _worldBounds; }
-    inline ModelType                          getType() const { return _type; };
+    inline Type                               getType() const { return _type; };
 
-    RenderScene *scene{nullptr};
-    bool         isDynamicBatching{false};
+    inline RenderScene *getScene() const { return _scene; }
+    inline void         setDynamicBatching(bool val) { _isDynamicBatching = val; }
+    inline bool         isDynamicBatching() const { return _isDynamicBatching; }
 
 protected:
     void         updateAttributesAndBinding(index_t subModelIndex);
@@ -135,8 +136,10 @@ protected:
     void         updateInstanceAttribute(const std::vector<gfx::Attribute> &, Pass *pass) const;
     void         initLocalDescriptors(index_t subModelIndex);
     virtual void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet);
+    SubModel *   createSubModel() const;
 
-    ModelType       _type{ModelType::DEFAULT};
+protected:
+    Type            _type{Type::DEFAULT};
     bool            _transformUpdated{false};
     geometry::AABB *_worldBounds{nullptr};
     geometry::AABB *_modelBounds{nullptr};
@@ -144,15 +147,13 @@ protected:
     bool            _inited{false};
     uint32_t        _descriptorSetCount{1};
 
-private:
-    SubModel *createSubModel() const;
-
     bool _enabled{false};
     bool _castShadow{false};
     bool _receiveShadow{false};
+    bool _isDynamicBatching{false};
 
     int32_t                         _instMatWorldIdx{-1};
-    uint32_t                        _visFlags{static_cast<uint32_t>(scenegraph::LayerList::NONE)};
+    uint32_t                        _visFlags{static_cast<uint32_t>(scenegraph::Layers::Enum::NONE)};
     uint32_t                        _updateStamp{0};
     scenegraph::Node *              _transform{nullptr};
     scenegraph::Node *              _node{nullptr};
@@ -166,6 +167,9 @@ private:
     Texture2D *                     _lightmap{nullptr};
     Vec4                            _lightmapUVParam;
 
+    RenderScene *_scene{nullptr};
+
+private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(Model);
 };
 

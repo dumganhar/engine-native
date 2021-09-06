@@ -28,8 +28,11 @@
 #include "3d/assets/MorphRendering.h"
 #include "core/Root.h"
 #include "core/builtin/BuiltinResMgr.h"
+#include "scene/BakedSkinningModel.h"
+#include "scene/MorphModel.h"
 #include "scene/Pass.h"
 #include "scene/RenderScene.h"
+#include "scene/SkinningModel.h"
 
 namespace cc {
 
@@ -99,7 +102,7 @@ void MeshRenderer::updateModels() {
     }
 
     scene::Model *model = _model;
-    if (model) {
+    if (model != nullptr) {
         model->destroy();
         model->initialize();
         model->setTransform(_node);
@@ -124,17 +127,43 @@ void MeshRenderer::createModel() {
     // Please notice that we do not enforce that
     // derived classes should use a morph-able model type(i.e. model type derived from `MorphModel`).
     // So we should take care of the edge case.
-    //cjh    const modelType = (preferMorphOverPlain && _modelType == scene.Model) ? MorphModel : _modelType;
-    //    scene::Model* model = _model = nullptr;
-    //
-    //    Root::getInstance()->createModel<>(modelType);
-    //    model.visFlags = visibility;
-    //    model.node = model.transform = node;
-    //    _models.clear();
-    //    _models.emplace_back(_model);
-    //    if (_morphInstance != nullptr && dynamic_cast<MorphModel*>(model) != nullptr) {
-    //        model->setMorphRendering(_morphInstance);
-    //    }
+    if (preferMorphOverPlain && _modelType == scene::Model::Type::DEFAULT) {
+        _model = Root::getInstance()->createModel<scene::MorphModel>();
+    } else {
+        switch (_modelType) {
+            case scene::Model::Type::DEFAULT:
+                _model = Root::getInstance()->createModel<scene::Model>();
+                break;
+            case scene::Model::Type::SKINNING:
+                _model = Root::getInstance()->createModel<scene::SkinningModel>();
+                break;
+            case scene::Model::Type::BAKED_SKINNING:
+                _model = Root::getInstance()->createModel<scene::BakedSkinningModel>();
+                break;
+            case scene::Model::Type::PARTICLE_BATCH:
+                //cjh todo:
+                break;
+            case scene::Model::Type::LINE:
+                //cjh todo:
+                break;
+            default:
+                _model = Root::getInstance()->createModel<scene::Model>();
+                break;
+        }
+    }
+
+    _model->setVisFlags(static_cast<uint32_t>(getVisibility())); //cjh TODO: remove static_cast
+    _model->setNode(_node);
+    _model->setTransform(_node);
+
+    _models.clear();
+    _models.emplace_back(_model);
+    if (_morphInstance != nullptr) {
+        auto *morphModel = dynamic_cast<scene::MorphModel *>(_model);
+        if (morphModel != nullptr) {
+            morphModel->setMorphRendering(_morphInstance);
+        }
+    }
 }
 
 void MeshRenderer::attachToScene() {

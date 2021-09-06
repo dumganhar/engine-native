@@ -134,7 +134,7 @@ public:
     }
     void         setActive(bool isActive);
     void         setSiblingIndex(index_t idx);
-    virtual void setFlagsChanged(uint value) {}
+    virtual void setChangedFlags(uint value) {}
     virtual void setDirtyFlag(uint value) {}
     virtual void setLayer(uint layer) {}
     virtual void setWorldMatrix(const Mat4 &matrix) {}

@@ -42,6 +42,11 @@ const std::string INST_JOINT_ANIM_INFO = "a_jointAnimInfo";
 } // namespace
 namespace cc {
 namespace scene {
+
+BakedSkinningModel::BakedSkinningModel() {
+    _type = Model::Type::BAKED_SKINNING;
+}
+
 void BakedSkinningModel::destroy() {
     // CC_SAFE_DELETE(uploadedAnim);
     for (geometry::AABB *boundInfo : _jointMedium.boundsInfo) {
@@ -108,15 +113,15 @@ std::vector<IMacroPatch> BakedSkinningModel::getMacroPatches(index_t subModelInd
 
 void BakedSkinningModel::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) {
     Super::updateLocalDescriptors(subModelIndex, descriptorSet);
-    gfx::Buffer *        buffer   = _jointMedium.buffer;
+    gfx::Buffer *buffer = _jointMedium.buffer;
     // auto *               texture  = _jointMedium.texture;  // not define texture in struct
     const BakedAnimInfo &animInfo = _jointMedium.animInfo;
     descriptorSet->bindBuffer(pipeline::UBOSkinningTexture::BINDING, buffer);
     descriptorSet->bindBuffer(pipeline::UBOSkinningAnimation::BINDING, animInfo.buffer);
     // if (texture != nullptr) {
-        auto *sampler = pipeline::SamplerLib::getSampler(JOINT_TEXTURE_SAMPLER_HASH);
-        // descriptorSet->bindTexture(pipeline::JOINTTEXTURE::BINDING, texture.handle.texture); //TODO(xwx):texture.handle.texture not define
-        descriptorSet->bindSampler(pipeline::JOINTTEXTURE::BINDING, sampler);
+    auto *sampler = pipeline::SamplerLib::getSampler(JOINT_TEXTURE_SAMPLER_HASH);
+    // descriptorSet->bindTexture(pipeline::JOINTTEXTURE::BINDING, texture.handle.texture); //TODO(xwx):texture.handle.texture not define
+    descriptorSet->bindSampler(pipeline::JOINTTEXTURE::BINDING, sampler);
     // }
 }
 

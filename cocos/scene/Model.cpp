@@ -54,7 +54,7 @@ const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = cc::pipeline::SamplerLib::genSam
 });
 
 const std::vector<cc::scene::IMacroPatch> SHADOW_MAP_PATCHES{{"CC_RECEIVE_SHADOW", true}};
-const std::string INST_MAT_WORLD = "a_matWorld0";
+const std::string                         INST_MAT_WORLD = "a_matWorld0";
 } // namespace
 
 namespace cc {
@@ -69,7 +69,7 @@ void Model::initialize() {
     _receiveShadow = true;
     _castShadow    = false;
     _enabled       = true;
-    _visFlags      = static_cast<uint32_t>(scenegraph::LayerList::NONE);
+    _visFlags      = static_cast<uint32_t>(scenegraph::Layers::Enum::NONE);
     _inited        = true;
 }
 
@@ -83,9 +83,9 @@ void Model::destroy() {
     _subModels.clear();
     _inited           = false;
     _transformUpdated = true;
-    CC_SAFE_DELETE(_transform);
-    CC_SAFE_DELETE(_node);
-    isDynamicBatching = false;
+    CC_SAFE_DELETE(_transform); //cjh TODO: should not delete
+    CC_SAFE_DELETE(_node);      //cjh TODO: should not delete
+    _isDynamicBatching = false;
 }
 
 void Model::uploadMat4AsVec4x3(const Mat4 &mat, float *v1, float *v2, float *v3) {
@@ -148,13 +148,16 @@ void Model::updateUBOs(uint32_t stamp) {
     }
 }
 
-void Model::createBoundingShape(const Vec3 &minPos, const Vec3 &maxPos) {
-    _modelBounds = geometry::AABB::fromPoints(minPos, maxPos, new geometry::AABB()); 
-    _worldBounds = geometry::AABB::fromPoints(minPos, maxPos, new geometry::AABB()); // AABB.clone(this._modelBounds) in ts
+void Model::createBoundingShape(const std::optional<Vec3> &minPos, const std::optional<Vec3> &maxPos) {
+    if (!minPos.has_value() || !maxPos.has_value()) {
+        return;
+    }
+    _modelBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB());
+    _worldBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB()); // AABB.clone(this._modelBounds) in ts
 }
 
 SubModel *Model::createSubModel() const {
-    return new SubModel();
+    return new SubModel(); //cjh how to delete?
 }
 
 void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Material *mat) {

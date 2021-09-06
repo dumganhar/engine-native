@@ -29,6 +29,7 @@
 #include "renderer/gfx-base/GFXDef-common.h"
 
 namespace {
+// TODO(xwx): ts is to define a global value in sampler-lib.ts
 uint64_t getDefaultSamlerHash() {
     auto defaultInfo            = cc::gfx::SamplerInfo();
     defaultInfo.cmpFunc         = cc::gfx::ComparisonFunc::NEVER; //defaultInfo.cmpFunc seems diffent between ts and cpp
@@ -78,7 +79,7 @@ void RenderTexture::resize(uint32_t width, uint32_t height) {
     if (_window != nullptr) {
         _window->resize(_width, _height);
     }
-    // emit(std::string("resize"), _window); //cjh TODO: not inherit form Eventify
+    // emit(std::string("resize"), _window); //TODO(xwx): not inherit form Eventify in Asset base class
 }
 
 gfx::Texture *RenderTexture::getGFXTexture() {

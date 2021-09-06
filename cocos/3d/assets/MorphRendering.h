@@ -38,7 +38,7 @@ class SubMeshMorphRendering;
  */
 class StdMorphRendering final : public MorphRendering {
 public:
-    StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice);
+    explicit StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice);
     ~StdMorphRendering() override;
     MorphRenderingInstance *createInstance() override;
 

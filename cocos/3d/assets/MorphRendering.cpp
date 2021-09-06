@@ -83,7 +83,7 @@ const bool preferCpuComputing = false;
 
 class MorphTexture final {
 public:
-    MorphTexture() = default;
+    explicit MorphTexture() = default;
     ~MorphTexture() {
         delete _textureAsset;
     }
@@ -266,7 +266,7 @@ Vec4TextureFactory createVec4TextureFactory(gfx::Device *gfxDevice, uint32_t vec
  */
 class MorphUniforms final {
 public:
-    MorphUniforms(gfx::Device *gfxDevice, uint32_t targetCount) {
+    explicit MorphUniforms(gfx::Device *gfxDevice, uint32_t targetCount) {
         _targetCount = targetCount;
         _ab.resize(pipeline::UBOMorph::SIZE);
         _localBuffer  = std::make_unique<DataView>(_ab);
@@ -315,7 +315,7 @@ private:
 
 class CpuComputing final : public SubMeshMorphRendering {
 public:
-    CpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx::Device *gfxDevice);
+    explicit CpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx::Device *gfxDevice);
 
     SubMeshMorphRenderingInstance *       createInstance() override;
     const std::vector<CpuMorphAttribute> &getData() const;
@@ -327,7 +327,7 @@ private:
 
 class GpuComputing final : public SubMeshMorphRendering {
 public:
-    GpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx::Device *gfxDevice);
+    explicit GpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx::Device *gfxDevice);
     SubMeshMorphRenderingInstance *createInstance() override;
 
     void destroy();
@@ -345,7 +345,7 @@ private:
 
 class CpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance {
 public:
-    CpuComputingRenderingInstance(CpuComputing *owner, uint32_t nVertices, gfx::Device *gfxDevice) {
+    explicit CpuComputingRenderingInstance(CpuComputing *owner, uint32_t nVertices, gfx::Device *gfxDevice) {
         _owner         = owner;                                       //cjh TODO: lifecycle, dangerous?
         _morphUniforms = new MorphUniforms(gfxDevice, 0 /* TODO? */); //cjh TODO: how to release?
 
@@ -435,7 +435,7 @@ private:
 
 class GpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance {
 public:
-    GpuComputingRenderingInstance(GpuComputing *owner, gfx::Device *gfxDevice) {
+    explicit GpuComputingRenderingInstance(GpuComputing *owner, gfx::Device *gfxDevice) {
         _owner         = owner;
         _morphUniforms = new MorphUniforms(gfxDevice, _owner->_subMeshMorph->targets.size());
         _morphUniforms->setMorphTextureInfo(_owner->_textureWidth, _owner->_textureHeight);
@@ -592,7 +592,7 @@ void GpuComputing::destroy() {
 
 class StdMorphRenderingInstance : public MorphRenderingInstance {
 public:
-    StdMorphRenderingInstance(StdMorphRendering *owner) {
+    explicit StdMorphRenderingInstance(StdMorphRendering *owner) {
         _owner            = owner;
         size_t nSubMeshes = _owner->_mesh->getStruct().primitives.size();
         _subMeshInstances.resize(nSubMeshes, nullptr);
@@ -671,15 +671,15 @@ private:
 
 //
 StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
-    _mesh            = mesh;
-    auto &structInfo = _mesh->getStruct();
+    _mesh                  = mesh;
+    const auto &structInfo = _mesh->getStruct();
     if (!structInfo.morph.has_value()) {
         return;
     }
 
     const size_t nSubMeshes = structInfo.primitives.size();
     _subMeshRenderings.resize(nSubMeshes, nullptr);
-    auto &morph = structInfo.morph.value();
+    const auto &morph = structInfo.morph.value();
     for (size_t iSubMesh = 0; iSubMesh < nSubMeshes; ++iSubMesh) {
         const auto &subMeshMorph = morph->subMeshMorphs[iSubMesh];
         if (nullptr == subMeshMorph) {
@@ -705,7 +705,7 @@ StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
 StdMorphRendering::~StdMorphRendering() = default;
 
 MorphRenderingInstance *StdMorphRendering::createInstance() {
-    auto ret = new StdMorphRenderingInstance(this); //cjh how to release?
+    auto *ret = new StdMorphRenderingInstance(this); //cjh how to release?
     return ret;
 }
 

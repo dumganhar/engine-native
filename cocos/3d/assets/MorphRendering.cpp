@@ -420,10 +420,9 @@ public:
     }
 
     void destroy() override {
-        _morphUniforms->destroy();
-        for (size_t iAttribute = 0; iAttribute < _attributes.size(); ++iAttribute) {
-            auto &myAttribute = _attributes[iAttribute];
-            myAttribute.morphTexture->destroy();
+        CC_SAFE_DESTROY(_morphUniforms);
+        for (auto &myAttribute : _attributes) {
+            CC_SAFE_DESTROY(myAttribute.morphTexture);
         }
     }
 

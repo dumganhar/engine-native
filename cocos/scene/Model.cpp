@@ -232,7 +232,7 @@ void Model::updateAttributesAndBinding(index_t subModelIndex) {
     initLocalDescriptors(subModelIndex);
     updateLocalDescriptors(subModelIndex, subModel->getDescriptorSet());
     gfx::Shader *shader = subModel->getPasses()[0]->getShaderVariant(subModel->getPatches());
-    updateInstanceAttribute(shader->getAttributes(), subModel->getPasses()[0]);
+    updateInstancedAttributes(shader->getAttributes(), subModel->getPasses()[0]);
 }
 
 index_t Model::getInstancedAttributeIndex(const std::string &name) const {

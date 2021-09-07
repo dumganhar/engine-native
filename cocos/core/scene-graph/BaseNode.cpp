@@ -31,12 +31,14 @@
 
 namespace cc {
 namespace scenegraph {
+
 using components::Component;
 const uint BaseNode::TRANSFORM_ON{1 << 0};
 const uint BaseNode::DESTROYING{static_cast<uint>(CCObject::Flags::DESTROYING)};
 const uint BaseNode::DEACTIVATING{static_cast<uint>(CCObject::Flags::DEACTIVATING)};
 const uint BaseNode::DONT_DESTROY{static_cast<uint>(CCObject::Flags::DONT_DESTROY)};
 index_t    BaseNode::stackId{0};
+std::vector<std::vector<BaseNode *>> BaseNode::stacks;
 
 BaseNode::BaseNode(const std::string& name) : CCObject(name) {
     if (name.empty()) {
@@ -252,7 +254,7 @@ void BaseNode::walkInternal(std::function<void(BaseNode*)> preFunc, std::functio
     index_t                i{0};
     std::vector<BaseNode*> children;
     BaseNode*              curr{nullptr};
-    auto                   stacksCount = static_cast<uint>(stacks.size());
+    auto                   stacksCount = static_cast<uint>(BaseNode::stacks.size());
     if (stackId >= stacksCount) {
         stacks.resize(stackId + 1);
     }

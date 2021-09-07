@@ -274,7 +274,41 @@ protected:
     void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index = CC_INVALID_INDEX);
 
     template <typename T1, typename T2>
-    void prepareInfo(const T1 &patchArray, std::vector<T2> &cur);
+    void prepareInfo(const T1 &patch, std::vector<T2> &cur) {
+        if (auto *pOneElement = std::get_if<T2>(patch)) {
+            size_t len = _effectAsset != nullptr ? _effectAsset->_techniques[_techIdx].passes.size() : 1;
+
+            std::vector<T2> patchArray;
+            patchArray.reserve(len);
+            for (size_t i = 0; i < len; ++i) {
+                patchArray.emplace_back(patch);
+            }
+
+            cur.resize(patchArray.size());
+
+            for (size_t i = 0; i < len; ++i) {
+                cur[i] = patchArray[i];
+            }
+        } else {
+            const T1 &patchArray = patch;
+            size_t    len        = patchArray.size();
+            cur.resize(len);
+
+            for (size_t i = 0; i < len; ++i) {
+                cur[i] = patchArray[i];
+            }
+        }
+    }
+
+     template <>
+    void prepareInfo(const IMaterialInfo::DefinesType &patchArray, std::vector<MacroRecord> &cur) {
+        
+    }
+
+     template <>
+    void prepareInfo(const IMaterialInfo::PassOverridesType &patchArray, std::vector<PassOverrides> &cur) {
+        
+    }
 
     virtual void doDestroy();
 
@@ -284,11 +318,5 @@ protected:
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(Material);
 };
-
-template <>
-void Material::prepareInfo(const IMaterialInfo::DefinesType &patchArray, std::vector<MacroRecord> &cur);
-
-template <>
-void Material::prepareInfo(const IMaterialInfo::PassOverridesType &patchArray, std::vector<PassOverrides> &cur);
 
 } // namespace cc

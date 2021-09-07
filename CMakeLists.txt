@@ -873,6 +873,7 @@ cocos_source_files(
                  cocos/scene/Pass.cpp
                  cocos/scene/RenderScene.h
                  cocos/scene/RenderScene.cpp
+                 cocos/scene/RenderWindow.cpp
                  cocos/scene/RenderWindow.h
                  cocos/scene/SkinningModel.h
                  cocos/scene/SkinningModel.cpp
@@ -1431,6 +1432,7 @@ cocos_source_files(
     cocos/core/scene-graph/NodeActivator.cpp
     cocos/core/scene-graph/NodeActivator.h
     cocos/core/scene-graph/NodeEnum.h
+    cocos/core/scene-graph/NodeEvent.cpp
     cocos/core/scene-graph/NodeEvent.h
     cocos/core/scene-graph/NodeEventProcessor.cpp
     cocos/core/scene-graph/NodeEventProcessor.h

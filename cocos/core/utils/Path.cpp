@@ -27,5 +27,45 @@
 
 namespace cc {
 
+//TODO: minggo
+std::string join(const std::vector<std::string> &paths) {
+	return "";
+}
+
+std::string extname(const std::string &path) {
+	return "";
+}
+
+std::string mainFileName(const std::string &fileName) {
+	return "";
+}
+
+std::string basename(const std::string &path, const std::string &extName) {
+	return "";
+}
+
+std::string dirname(const std::string &path) {
+	return "";
+}
+
+std::string changeExtname(const std::string &path, const std::string &extName) {
+	return "";
+}
+
+std::string changeBasename(const std::string &path, const std::string &baseName, bool isSameExt) {
+	return "";
+}
+
+std::string normalize(const std::string &url) {
+	return "";
+}
+
+std::string stripSep(const std::string &path) {
+	return "";
+}
+
+char getSeperator() {
+	return 'a';
+}
 
 } // namespace cc {

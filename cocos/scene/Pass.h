@@ -53,13 +53,6 @@ struct PassDynamicsValue {
 };
 using IPassDynamics = std::unordered_map<uint32_t, PassDynamicsValue>;
 
-struct IPassInfoFull final : public IPassInfo {
-    // generated part
-    index_t                      passIndex{0};
-    MacroRecord                  defines;
-    std::optional<PassOverrides> stateOverrides;
-};
-
 enum class BatchingSchemes {
     NONE       = 0,
     INSTANCING = 1,

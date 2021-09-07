@@ -194,7 +194,7 @@ public:
 
 protected:
     /* @type(EffectAsset) */
-    const EffectAsset *_effectAsset{nullptr};
+    EffectAsset *_effectAsset{nullptr};
 
     /* @serializable */
     uint32_t _techIdx{0};

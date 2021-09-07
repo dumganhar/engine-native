@@ -25,16 +25,18 @@
 
 #pragma once
 
-#include <vector>
 #include <string>
 #include <variant>
+#include <vector>
+
+#include "renderer/core/PassUtils.h"
 
 namespace cc {
 namespace scene {
 
 struct IMacroPatch {
-    std::string                            name;
-    std::variant<float, bool, std::string> value;
+    std::string name;
+    MacroValue  value;
 };
 
 } // namespace scene

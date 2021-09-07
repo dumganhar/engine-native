@@ -120,17 +120,17 @@ void Skybox::activate() {
 }
 
 void Skybox::updatePipeline() const {
-    uint32_t                  value    = _useIBL ? (_isRGBE ? 2 : 1) : 0;
+    int32_t                   value    = _useIBL ? (_isRGBE ? 2 : 1) : 0;
     Root *                    root     = Root::getInstance();
     pipeline::RenderPipeline *pipeline = root->getPipeline();
 
-    const std::variant<float, bool, std::string> &macro    = pipeline->getMacros().at("CC_USE_IBL");
-    const float *                                 macroPtr = std::get_if<float>(&macro);
-    if (macroPtr && static_cast<int>(*macroPtr) == static_cast<int>(value)) {
+    const MacroValue &macro    = pipeline->getMacros().at("CC_USE_IBL");
+    const int32_t *   macroPtr = std::get_if<int32_t>(&macro);
+    if (macroPtr && (*macroPtr == value)) {
         return;
     }
 
-    pipeline->setValue("CC_USE_IBL", static_cast<float>(value));
+    pipeline->setValue("CC_USE_IBL", value);
     root->onGlobalPipelineStateChanged();
 }
 

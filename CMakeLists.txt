@@ -919,8 +919,12 @@ cocos_source_files(
 
 ##### components
 cocos_source_files(
-                 cocos/core/components/Component.h
-                 cocos/core/components/Component.cpp
+    cocos/core/components/Component.h
+    cocos/core/components/Component.cpp
+    cocos/core/components/RenderableComponent.h
+    cocos/core/components/RenderableComponent.cpp
+    cocos/3d/framework/MeshRenderer.h
+    cocos/3d/framework/MeshRenderer.cpp
 )
 
 if(CC_USE_GLES2 OR CC_USE_GLES3)

@@ -28,10 +28,10 @@
 
 namespace cc {
 
-std::unordered_map<std::string, const EffectAsset *> EffectAsset::__effects;
+EffectAsset::RegisteredEffectAssetMap EffectAsset::__effects;
 
 /* static */
-void EffectAsset::registerAsset(const EffectAsset *asset) {
+void EffectAsset::registerAsset(EffectAsset *asset) {
     if (asset == nullptr)
         return;
 
@@ -59,7 +59,7 @@ void EffectAsset::remove(const std::string &name) {
 }
 
 /* static */
-void EffectAsset::remove(const EffectAsset *asset) {
+void EffectAsset::remove(EffectAsset *asset) {
     if (asset == nullptr)
         return;
 
@@ -70,7 +70,7 @@ void EffectAsset::remove(const EffectAsset *asset) {
 }
 
 /* static */
-const EffectAsset *EffectAsset::get(const std::string &name) {
+EffectAsset *EffectAsset::get(const std::string &name) {
     auto iter = __effects.find(name);
     if (iter != __effects.end()) {
         return iter->second;

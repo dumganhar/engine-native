@@ -27,6 +27,8 @@
 
 #include "platform/Image.h"
 
+#include "base/Log.h"
+
 namespace cc {
 
 ImageAsset::~ImageAsset() {
@@ -40,6 +42,10 @@ void ImageAsset::setNativeAsset(const std::any &obj) {
         if (auto *pData = std::any_cast<Image *>(&obj); pData != nullptr) {
             _nativeData = *pData;
             _nativeData->retain();
+        } else if (auto *pData = std::any_cast<IMemoryImageSource>(&obj); pData != nullptr) {
+            _imageSource = *pData;
+        } else {
+            CC_LOG_WARNING("ImageAsset::setNativeAsset, unknown type!");
         }
     }
 }
@@ -48,12 +54,20 @@ const uint8_t *ImageAsset::getData() const {
     if (_nativeData != nullptr) {
         return _nativeData->getData();
     }
+
+    if (_imageSource.has_value()) {
+        return _imageSource.value()._data->data();
+    }
     return nullptr;
 }
 
 uint32_t ImageAsset::getWidth() const {
     if (_nativeData != nullptr) {
         return _nativeData->getWidth();
+    }
+
+    if (_imageSource.has_value()) {
+        return _imageSource.value().width;
     }
     return 0;
 }
@@ -62,6 +76,10 @@ uint32_t ImageAsset::getHeight() const {
     if (_nativeData != nullptr) {
         return _nativeData->getHeight();
     }
+
+    if (_imageSource.has_value()) {
+        return _imageSource.value().height;
+    }
     return 0;
 }
 
@@ -69,12 +87,20 @@ PixelFormat ImageAsset::getFormat() const {
     if (_nativeData != nullptr) {
         return static_cast<PixelFormat>(_nativeData->getRenderFormat());
     }
+
+    if (_imageSource.has_value()) {
+        return _imageSource.value().format;
+    }
     return PixelFormat::RGBA8888; //cjh TODO: use RGBA8888 as default value?
 }
 
 bool ImageAsset::isCompressed() const {
     if (_nativeData != nullptr) {
         return _nativeData->isCompressed();
+    }
+
+    if (_imageSource.has_value()) {
+        return _imageSource.value()._compressed;
     }
     return false;
 }

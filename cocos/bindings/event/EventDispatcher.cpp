@@ -145,6 +145,9 @@ void EventDispatcher::dispatchTouchEvent(const struct TouchEvent &touchEvent) {
 }
 
 void EventDispatcher::dispatchMouseEvent(const struct MouseEvent &mouseEvent) {
+    //TODO: minggo
+    return;
+
     se::AutoHandleScope scope;
     if (!jsMouseEventObj) {
         jsMouseEventObj = se::Object::createPlainObject();

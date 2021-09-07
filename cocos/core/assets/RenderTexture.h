@@ -27,17 +27,19 @@
 
 #include "core/assets/TextureBase.h"
 #include "renderer/gfx-base/GFXDef.h"
+#include "scene/RenderWindow.h"
 
 namespace cc {
 
 struct IRenderTextureCreateInfo {
-    std::string         name;
-    uint32_t            width;
-    uint32_t            height;
-    gfx::RenderPassInfo passInfo;
+    std::optional<std::string>         name;
+    uint32_t                           width;
+    uint32_t                           height;
+    std::optional<gfx::RenderPassInfo> passInfo;
 };
-
+namespace scene {
 class RenderWindow;
+}
 
 namespace gfx {
 class Texture;
@@ -51,25 +53,27 @@ class Sampler;
  */
 class RenderTexture final : public TextureBase {
 public:
+    using Super = TextureBase;
+
     explicit RenderTexture()  = default;
     ~RenderTexture() override = default;
     /**
      * @en The pixel width of the render texture
      * @zh 渲染贴图的像素宽度
      */
-    uint32_t getWidth() const;
+    inline uint32_t getWidth() const { return _width; }
 
     /**
      * @en The pixel height of the render texture
      * @zh 渲染贴图的像素高度
      */
-    uint32_t height() const;
+    inline uint32_t getHeight() const { return _height; }
 
     /**
      * @en The render window for the render pipeline, it's created internally and cannot be modified.
      * @zh 渲染管线所使用的渲染窗口，内部逻辑创建，无法被修改。
      */
-    RenderWindow *getWindow() const;
+    inline scene::RenderWindow *getWindow() const { return _window; }
 
     void initialize(const IRenderTextureCreateInfo &info);
     void reset(const IRenderTextureCreateInfo &info); // to be consistent with other assets
@@ -111,9 +115,10 @@ public:
 
     void onLoaded() override;
 
-    void _initWindow(const IRenderTextureCreateInfo &info);
+    void initWindow();
+    void initWindow(const IRenderTextureCreateInfo &info);
 
-    void initDefault(const std::optional<std::string> &uuid = {}) override;
+    void initDefault(const std::optional<std::string> &uuid) override;
 
     bool validate() const override;
 
@@ -128,7 +133,7 @@ private:
     @rangeMax(2048)*/
     uint32_t _height{1};
 
-    RenderWindow *_window{nullptr};
+    scene::RenderWindow *_window{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderTexture);
 };

@@ -25,6 +25,7 @@
 
 #include "core/assets/EffectAsset.h"
 #include "core/Root.h"
+#include "renderer/core/ProgramLib.h"
 
 namespace cc {
 
@@ -85,7 +86,7 @@ EffectAsset *EffectAsset::get(const std::string &name) {
 }
 
 void EffectAsset::onLoaded() {
-    //cjh TODO:    programLib.register(this);
+    ProgramLib::getInstance()->registerEffect(*this);
     EffectAsset::registerAsset(this);
     //cjh TODO:    if (!EDITOR){
     //cjh    legacyCC.game.once(legacyCC.Game.EVENT_ENGINE_INITED, this._precompile, this);
@@ -111,24 +112,26 @@ bool EffectAsset::validate() const {
 }
 
 void EffectAsset::_precompile() {
-    //cjh TODO:    const root = legacyCC.director.root as Root;
-    //    for (let i = 0; i < this.shaders.length; i++) {
-    //        const shader = this.shaders[i];
-    //        const combination = this.combinations[i];
-    //        if (!combination) { continue; }
-    //        const defines = Object.keys(combination).reduce((out, name) => out.reduce((acc, cur) => {
-    //            const choices = combination[name];
-    //            for (let i = 0; i < choices.length; ++i) {
-    //                const defines = { ...cur };
-    //                defines[name] = choices[i];
-    //                acc.push(defines);
-    //            }
-    //            return acc;
-    //        }, [] as MacroRecord[]), [{}] as MacroRecord[]);
-    //        defines.forEach(
-    //            (defines) => programLib.getGFXShader(root.device, shader.name, defines, root.pipeline),
-    //        );
-    //    }
+    //cjh TODO: figure out how to handle
+    Root *root = Root::getInstance();
+    for (index_t i = 0; i < _shaders.size(); ++i) {
+        auto shader      = _shaders[i];
+        auto combination = _combinations[i];
+        if (combination.empty()) continue;
+        //        const defines = Object.keys(combination).reduce((out, name) => out.reduce((acc, cur) => {
+        //            const choices = combination[name];
+        //            for (let i = 0; i < choices.length; ++i) {
+        //                const defines = { ...cur };
+        //                defines[name] = choices[i];
+        //                acc.push(defines);
+        //            }
+        //            return acc;
+        //        }, [] as MacroRecord[]), [{}] as MacroRecord[]);
+        //        defines.forEach(
+        //            (defines) => programLib.getGFXShader(root.device, shader.name, defines, root.pipeline),
+        //        );
+        //    }
+    }
 }
 
 } // namespace cc

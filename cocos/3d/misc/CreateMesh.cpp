@@ -5,7 +5,7 @@
 #include "renderer/gfx-base/GFXDef-common.h"
 
 namespace cc {
-
+namespace {
 gfx::AttributeList defAttrs = {
     gfx::Attribute{.name = gfx::ATTR_NAME_POSITION, .format = gfx::Format::RGB32F},
     gfx::Attribute{.name = gfx::ATTR_NAME_NORMAL, .format = gfx::Format::RGB32F},
@@ -13,6 +13,7 @@ gfx::AttributeList defAttrs = {
     gfx::Attribute{.name = gfx::ATTR_NAME_TANGENT, .format = gfx::Format::RGB32F},
     gfx::Attribute{.name = gfx::ATTR_NAME_COLOR, .format = gfx::Format::RGB32F},
 };
+}
 
 Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions &options /* = {}*/) {
     // Collect attributes and calculate length of result vertex buffer.

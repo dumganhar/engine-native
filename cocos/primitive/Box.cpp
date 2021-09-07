@@ -27,6 +27,34 @@
 #include <optional>
 
 namespace cc {
+namespace {
+const std::vector<std::vector<float>> FACE_AXES{
+    {2, 3, 1}, // FRONT
+    {4, 5, 7}, // BACK
+    {7, 6, 2}, // TOP
+    {1, 0, 4}, // BOTTOM
+    {1, 4, 2}, // RIGHT
+    {5, 0, 6}  // LEFT
+};
+
+const std::vector<std::vector<float>> FACE_NORMALS{
+    {0, 0, 1},  // FRONT
+    {0, 0, -1}, // BACK
+    {0, 1, 0},  // TOP
+    {0, -1, 0}, // BOTTOM
+    {1, 0, 0},  // RIGHT
+    {-1, 0, 0}  // LEFT
+};
+
+const std::vector<std::vector<float>> FACE_TANGENTS{
+    {-1, 0, 0, 1}, // FRONT
+    {-1, 0, 0, 1}, // BACK
+    {-1, 0, 0, 1}, // TOP
+    {-1, 0, 0, 1}, // BOTTOM
+    {0, 0, -1, 1}, // RIGHT
+    {0, 0, 1, 1}   // LEFT
+};
+} // namespace
 
 IGeometry box(const std::optional<IBoxOptions> &options) {
     const uint32_t ws = options->widthSegments.has_value() ? options->widthSegments.value() : 1;
@@ -38,33 +66,6 @@ IGeometry box(const std::optional<IBoxOptions> &options) {
     const float hl = options->length.has_value() ? options->length.value() / 2 : 1.0F / 2;
 
     std::vector<Vec3> corners{Vec3{-hw, -hh, hl}, Vec3{hw, -hh, hl}, Vec3{hw, hh, hl}, Vec3{-hw, hh, hl}, Vec3{hw, -hh, -hl}, Vec3{-hw, -hh, -hl}, Vec3{-hw, hh, -hl}, Vec3{hw, hh, -hl}};
-
-    std::vector<std::vector<float>> faceAxes{
-        {2, 3, 1}, // FRONT
-        {4, 5, 7}, // BACK
-        {7, 6, 2}, // TOP
-        {1, 0, 4}, // BOTTOM
-        {1, 4, 2}, // RIGHT
-        {5, 0, 6}  // LEFT
-    };
-
-    std::vector<std::vector<float>> faceNormals{
-        {0, 0, 1},  // FRONT
-        {0, 0, -1}, // BACK
-        {0, 1, 0},  // TOP
-        {0, -1, 0}, // BOTTOM
-        {1, 0, 0},  // RIGHT
-        {-1, 0, 0}  // LEFT
-    };
-
-    std::vector<std::vector<float>> faceTangents{
-        {-1, 0, 0, 1}, // FRONT
-        {-1, 0, 0, 1}, // BACK
-        {-1, 0, 0, 1}, // TOP
-        {-1, 0, 0, 1}, // BOTTOM
-        {0, 0, -1, 1}, // RIGHT
-        {0, 0, 1, 1}   // LEFT
-    };
 
     std::vector<float>    positions;
     std::vector<float>    normals;
@@ -79,9 +80,9 @@ IGeometry box(const std::optional<IBoxOptions> &options) {
         float               u           = 0;
         float               v           = 0;
         const uint32_t      offset      = positions.size() / 3;
-        const vector<float> faceAxe     = faceAxes[side];
-        const vector<float> faceNormal  = faceNormals[side];
-        const vector<float> faceTangent = faceTangents[side];
+        const vector<float> faceAxe     = FACE_AXES[side];
+        const vector<float> faceNormal  = FACE_NORMALS[side];
+        const vector<float> faceTangent = FACE_TANGENTS[side];
 
         for (index_t iy = 0; iy <= vSegments; ++iy) {
             for (index_t ix = 0; ix <= uSegments; ++ix) {
@@ -106,7 +107,6 @@ IGeometry box(const std::optional<IBoxOptions> &options) {
                 tangents.emplace_back(faceTangent[2]);
                 tangents.emplace_back(faceTangent[3]);
 
-
                 if ((ix < uSegments) && (iy < vSegments)) {
                     auto       uSeg1 = uSegments + 1;
                     const auto a     = ix + iy * uSeg1;
@@ -121,7 +121,6 @@ IGeometry box(const std::optional<IBoxOptions> &options) {
                     indices.emplace_back(offset + b);
                     indices.emplace_back(offset + d);
                     indices.emplace_back(offset + c);
-
                 }
             }
         }

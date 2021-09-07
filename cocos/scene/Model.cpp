@@ -249,17 +249,17 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
     if (!pass->getDevice()->hasFeature(gfx::Feature::INSTANCED_ARRAYS)) return;
     // free old data
 
-    int32_t size = 0;
+    uint32_t size = 0;
     for (const gfx::Attribute &attribute : attributes) {
         if (!attribute.isInstanced) continue;
-        // size += FormatInfos[attribute.format].size(); FormatInfos not define
+        size += gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)].size;
     }
     auto attrs = _instanceAttributeBlock;
     attrs.buffer.clear();
     attrs.buffer.resize(size);
     attrs.views.clear();
     attrs.attributes.clear();
-    int32_t offset = 0;
+    uint32_t offset = 0;
 
     for (const gfx::Attribute &attribute : attributes) {
         if (!attribute.isInstanced) continue;
@@ -270,10 +270,10 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         attr.location       = attribute.location;
         attrs.attributes.emplace_back(attr);
         // TODO(xwx)
-        // auto info = FormatInfos[attribute.format];
+        const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)];
         // const typeViewArray = new (getTypedArrayConstructor(info))(attrs.buffer.buffer, offset, info.count);
         attrs.views.emplace_back(/*typeViewArray*/);
-        // offset += info.size();
+        offset += info.size;
     }
     if (pass->getBatchingScheme() == BatchingSchemes::INSTANCING) {
         pipeline::InstancedBuffer *instanceBuffer = pipeline::InstancedBuffer::get(pass);

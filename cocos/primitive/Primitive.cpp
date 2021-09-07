@@ -24,16 +24,51 @@
 ****************************************************************************/
 #include "primitive/Primitive.h"
 #include "3d/misc/CreateMesh.h"
-#include "primitive/PrimitiveDefine.h"
 
 namespace cc {
 
 Primitive::Primitive(PrimitiveType t /* = PrimitiveType.BOX*/)
-: type(t) {
+: Mesh(), type(t) {
 }
 
 void Primitive::onLoaded() {
-    //    createMesh(primitives[PrimitiveType[this->type].toLowerCase()](this.info), this);
+    createMesh(create(type), this);
+}
+
+IGeometry create(PrimitiveType type, const std::optional<std::variant<IBoxOptions /*, ICapsuleOptions, ..., ...*/>> &options) {
+    switch (type) {
+        case PrimitiveType::BOX: {
+            return options.has_value() ? cc::box(std::get<IBoxOptions>(options.value())) : cc::box();
+            break;
+        }
+        case PrimitiveType::SPHERE: {
+            //return cc::sphere();
+            break;
+        }
+        case PrimitiveType::CYLINDER: {
+            //return cc::cylinder();
+            break;
+        }
+        case PrimitiveType::CONE: {
+            //return cc::cone();
+            break;
+        }
+        case PrimitiveType::CAPSULE: {
+            //return cc::capsule();
+            break;
+        }
+        case PrimitiveType::TORUS: {
+            //return cc::torus();
+            break;
+        }
+        case PrimitiveType::QUAD: {
+            //return cc::quad();
+            break;
+        }
+        default:
+            break;
+    }
+    return cc::box();
 }
 
 } // namespace cc

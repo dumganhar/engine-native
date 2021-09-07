@@ -48,6 +48,7 @@ class NodeEventProcessor;
 class BaseNode : public CCObject {
 public:
     using CCObject::CCObject;
+    BaseNode() = default;
     explicit BaseNode(const std::string &name);
     BaseNode(const BaseNode &) = delete;
     BaseNode(BaseNode &&)      = delete;

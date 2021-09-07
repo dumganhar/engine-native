@@ -24,3 +24,19 @@
 ****************************************************************************/
 
 #include "core/asset-manager/Shared.h"
+
+namespace cc {
+namespace shared {
+
+const std::string RequestType_UUID{"uuid"};
+
+const std::string RequestType_PATH{"path"};
+
+const std::string RequestType_DIR{"dir"};
+
+const std::string RequestType_URL{"url"};
+
+const std::string RequestType_SCENE{"scene"};
+
+} // namespace shared
+} // namespace cc

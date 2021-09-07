@@ -29,7 +29,9 @@
 namespace cc {
 
 //cjh TODO:
-std::string getAssetUrlWithUuid(const std::string &uuid, bool isNative, const std::string &nativeExt, const std::string &__nativeName__ = "");
+std::string getAssetUrlWithUuid(const std::string &uuid, bool isNative, const std::string &nativeExt, const std::string &__nativeName__ = "") {
+    return "";
+}
 //
 
 Asset::Asset() {

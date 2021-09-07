@@ -105,26 +105,26 @@ using AssetType = std::function<void()>;
 
 namespace shared {
 
-Cache<Asset *>               assets; //cjh EDITOR ? new WeakCache<Asset>() : new Cache<Asset>();
-Cache<std::any>              files;
-Cache<std::any>              parsed;
-Cache<Bundle *>              bundles;
-Pipeline *                   pipeline;          //cjh implement in cpp = new ('normal load', []);
-Pipeline *                   fetchPipeline;     //cjh = new Pipeline('fetch', []);
-Pipeline *                   transformPipeline; //cjh = new Pipeline('transform url', []);
-Cache<std::vector<std::any>> references;        //cjh = EDITOR ? new Cache<any[]>() : null;
+extern Cache<Asset *>               assets; //cjh EDITOR ? new WeakCache<Asset>() : new Cache<Asset>();
+extern Cache<std::any>              files;
+extern Cache<std::any>              parsed;
+extern Cache<Bundle *>              bundles;
+extern Pipeline *                   pipeline;          //cjh implement in cpp = new ('normal load', []);
+extern Pipeline *                   fetchPipeline;     //cjh = new Pipeline('fetch', []);
+extern Pipeline *                   transformPipeline; //cjh = new Pipeline('transform url', []);
+extern Cache<std::vector<std::any>> references;        //cjh = EDITOR ? new Cache<any[]>() : null;
 
-const std::string RequestType_UUID{"uuid"};
+extern const std::string RequestType_UUID;
 
-const std::string RequestType_PATH{"path"};
+extern const std::string RequestType_PATH;
 
-const std::string RequestType_DIR{"dir"};
+extern const std::string RequestType_DIR;
 
-const std::string RequestType_URL{"url"};
+extern const std::string RequestType_URL;
 
-const std::string RequestType_SCENE{"scene"};
+extern const std::string RequestType_SCENE;
 
-Record<std::string, Record<std::string, std::any>> presets;
+extern Record<std::string, Record<std::string, std::any>> presets;
 
 /**
  * @en

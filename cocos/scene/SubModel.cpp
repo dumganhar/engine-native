@@ -198,5 +198,10 @@ void SubModel::flushPassInfo() {
         _shaders[i] = _passes[i]->getShaderVariant(_patches);
     }
 }
+
+void SubModel::setSubMesh(RenderingSubMesh *subMesh) {
+    //TODO: minggo
+}
+
 } // namespace scene
 } // namespace cc

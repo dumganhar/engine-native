@@ -128,7 +128,7 @@ void RenderWindow::resize(uint32_t width, uint32_t height) {
     }
 
     for (Camera *camera : _cameras) {
-        if (camera->isWindowSize) {
+        if (camera->isWindowSize()) {
             camera->resize(width, height);
         }
     }

@@ -240,10 +240,10 @@ void Mesh::initialize() {
                 if (vertexCount >= 65536) {
                     //cjh                    warnID(10001, vertexCount, 65536);
                     continue; // Ignore this primitive
-                } else {
-                    dstStride >>= 1; // Reduce to short.
-                    dstSize >>= 1;
                 }
+
+                dstStride >>= 1; // Reduce to short.
+                dstSize >>= 1;
             }
 
             indexBuffer = gfxDevice->createBuffer(gfx::BufferInfo{
@@ -323,7 +323,7 @@ Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
     BoneSpaceBounds bounds;
     _boneSpaceBounds.emplace(skeleton->getHash(), bounds);
     std::vector<bool> valid;
-    auto &            bindposes = skeleton->getBindposes();
+    const auto &      bindposes = skeleton->getBindposes();
     valid.reserve(bindposes.size());
     for (size_t i = 0; i < bindposes.size(); i++) {
         bounds.emplace_back(geometry::AABB{
@@ -342,7 +342,7 @@ Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
 
         uint32_t vertCount = std::min({typedarray::getSize(joints) / 4, typedarray::getSize(weights) / 4, typedarray::getSize(positions) / 3});
         for (uint32_t i = 0; i < vertCount; i++) {
-            Vec3 v3_1{
+            Vec3 v31{
                 typedarray::castToFloat(typedarray::get(positions, 3 * i + 0)),
                 typedarray::castToFloat(typedarray::get(positions, 3 * i + 1)),
                 typedarray::castToFloat(typedarray::get(positions, 3 * i + 2))};
@@ -354,12 +354,12 @@ Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
                     continue;
                 }
 
-                Vec3 v3_2;
-                Vec3::transformMat4(v3_1, bindposes[joint], &v3_2);
+                Vec3 v32;
+                Vec3::transformMat4(v31, bindposes[joint], &v32);
                 valid[joint] = true;
                 auto &b      = bounds[joint];
-                Vec3::min(b.center, v3_2, &b.center);
-                Vec3::max(b.halfExtents, v3_2, &b.halfExtents);
+                Vec3::min(b.center, v32, &b.center);
+                Vec3::max(b.halfExtents, v32, &b.halfExtents);
             }
         }
     }
@@ -401,8 +401,7 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
                 Vec3::add(boundingBox.center, boundingBox.halfExtents, &_struct.maxPosition.value());
                 Vec3::subtract(boundingBox.center, boundingBox.halfExtents, &_struct.minPosition.value());
             }
-            for (size_t i = 0; i < _struct.vertexBundles.size(); i++) {
-                const auto &vtxBdl = _struct.vertexBundles[i];
+            for (auto &vtxBdl : _struct.vertexBundles) {
                 for (size_t j = 0; j < vtxBdl.attributes.size(); j++) {
                     if (vtxBdl.attributes[j].name == gfx::ATTR_NAME_POSITION || vtxBdl.attributes[j].name == gfx::ATTR_NAME_NORMAL) {
                         const gfx::Format format = vtxBdl.attributes[j].format;
@@ -871,20 +870,21 @@ void Mesh::accessAttribute(index_t primitiveIndex, const char *attributeName, co
     }
 }
 
+/* static */
 gfx::BufferList Mesh::createVertexBuffers(gfx::Device *gfxDevice, const ArrayBuffer &data) {
     gfx::BufferList buffers;
     for (const auto &vertexBundle : _struct.vertexBundles) {
-        auto vertexBuffer = gfxDevice->createBuffer({gfx::BufferUsageBit::VERTEX,
-                                                     gfx::MemoryUsageBit::DEVICE,
-                                                     vertexBundle.view.length,
-                                                     vertexBundle.view.stride});
+        auto *vertexBuffer = gfxDevice->createBuffer({gfx::BufferUsageBit::VERTEX,
+                                                      gfx::MemoryUsageBit::DEVICE,
+                                                      vertexBundle.view.length,
+                                                      vertexBundle.view.stride});
 
         vertexBuffer->update(data.data() + vertexBundle.view.offset, vertexBundle.view.length);
         buffers.emplace_back(vertexBuffer);
     }
 }
 
-void Mesh::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
+void Mesh::initDefault(const std::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     ICreateInfo info;
     reset(info);

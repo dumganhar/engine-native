@@ -30,7 +30,7 @@
 namespace cc {
 namespace scene {
 
-const float Shadow::COEFFICIENT_OF_EXPANSION{2.0f * std::sqrt(3.0F)};
+const float Shadow::COEFFICIENT_OF_EXPANSION{2.0F * std::sqrt(3.0F)};
 
 void Shadow::initialize(const ShadowInfo &shadowsInfo) {
     _near        = shadowsInfo.near;

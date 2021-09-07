@@ -29,16 +29,16 @@
 namespace cc {
 
 //cjh TODO:
-std::string getAssetUrlWithUuid(const std::string &uuid, bool isNative, const std::string &nativeExt, const std::string &__nativeName__ = "");
+std::string getAssetUrlWithUuid(const std::string &uuid, bool isNative, const std::string &nativeExt, const std::string &nativeName = "");
 //
 
-Asset::Asset() {
-}
+Asset::Asset() = default;
 
 std::string Asset::getNativeUrl() const {
     if (!_nativeUrl.empty()) {
-        if (!_native.empty())
+        if (!_native.empty()) {
             return "";
+        }
         const auto name = _native;
         if (name[0] == 47) { // '/'
             // remove library tag
@@ -64,7 +64,7 @@ NativeDep Asset::getNativeDep() const {
     return NativeDep();
 }
 
-void Asset::_setRawAsset(const std::string &filename, bool inLibrary /* = true*/) {
+void Asset::setRawAsset(const std::string &filename, bool inLibrary /* = true*/) {
     if (inLibrary) {
         _native = filename;
     } else {
@@ -86,7 +86,7 @@ void Asset::decRef(bool autoRelease /* = true*/) {
     }
 }
 
-void Asset::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
+void Asset::initDefault(const std::optional<std::string> &uuid) {
     if (uuid.has_value()) {
         _uuid = uuid.value();
     }

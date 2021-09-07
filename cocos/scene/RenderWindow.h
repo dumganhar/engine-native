@@ -67,7 +67,7 @@ public:
      */
     void resize(uint32_t width, uint32_t height);
 
-    void extractRenderCameras(std::vector<Camera *> &cameras);
+    static void extractRenderCameras(std::vector<Camera *> &cameras);
 
     /**
      * @zh
@@ -123,7 +123,7 @@ public:
      */
     inline bool hasOffScreenAttachments() const { return _hasOffScreenAttachments; }
 
-    inline const std::vector<Camera *> getCamera() const { return _cameras; }
+    inline const std::vector<Camera *> &getCamera() const { return _cameras; }
 
 private:
     bool                        _hasOnScreenAttachments{false};

@@ -40,16 +40,16 @@ namespace scene {
 
 namespace {
 
-gfx::BufferInfo _bufferInfo{
+gfx::BufferInfo bufferInfo{
     (gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST),
     (gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE),
     0U,
     0U,
     gfx::BufferFlagBit::NONE};
 
-gfx::BufferViewInfo _bufferViewInfo;
+gfx::BufferViewInfo bufferViewInfo;
 
-gfx::DescriptorSetInfo _dsInfo;
+gfx::DescriptorSetInfo dsInfo;
 
 std::string serializeBlendState(const gfx::BlendState *bs) {
     std::stringstream res;
@@ -140,8 +140,7 @@ Pass::Pass() {
     _rs                = new gfx::RasterizerState();
 }
 
-Pass::~Pass() {
-}
+Pass::~Pass() = default;
 
 void Pass::initialize(const IPassInfoFull &info) {
     doInit(info);
@@ -155,9 +154,9 @@ uint32_t Pass::getHandle(const std::string &name, uint32_t offset /* = 0 */, gfx
     auto     iter   = _propertyHandleMap.find(name); // handle = _propertyHandleMap[name];
     if (iter == _propertyHandleMap.end()) {
         return 0;
-    } else {
-        handle = iter->second;
     }
+
+    handle = iter->second;
 
     if (targetType != gfx::Type::UNKNOWN) {
         handle = customizeType(handle, targetType);
@@ -233,7 +232,7 @@ void Pass::setDynamicState(gfx::DynamicStateFlagBit state, int32_t value) {
     ds.dirty = true;
 }
 
-void Pass::overridePipelineStates(const IPassInfo &original, const PassOverrides &overrides) {
+void Pass::overridePipelineStates(const IPassInfo & /*original*/, const PassOverrides & /*overrides*/) {
     CC_LOG_WARNING("base pass cannot override states, please use pass instance instead.");
 }
 
@@ -328,12 +327,10 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
 }
 
 void Pass::resetUBOs() {
-    for (size_t i = 0; i < _shaderInfo->blocks.size(); i++) {
-        const auto &u     = _shaderInfo->blocks[i];
-        auto &      block = _blocks[u.binding];
-        uint32_t    ofs   = 0;
-        for (size_t j = 0; j < u.members.size(); j++) {
-            const auto &   cur          = u.members[j];
+    for (auto &u : _shaderInfo->blocks) {
+        auto &   block = _blocks[u.binding];
+        uint32_t ofs   = 0;
+        for (auto &cur : u.members) {
             const auto &   info         = _properties[cur.name];
             const auto &   givenDefault = info.value;
             const auto &   value        = (givenDefault.has_value() ? std::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
@@ -348,8 +345,7 @@ void Pass::resetUBOs() {
 }
 
 void Pass::resetTextures() {
-    for (size_t i = 0; i < _shaderInfo->samplerTextures.size(); i++) {
-        const auto &u = _shaderInfo->samplerTextures[i];
+    for (auto &u : _shaderInfo->samplerTextures) {
         for (size_t j = 0; j < u.count; j++) {
             resetTexture(u.name, j);
         }
@@ -387,15 +383,13 @@ gfx::Shader *Pass::getShaderVariant(const std::vector<IMacroPatch> &patches) {
     //    }
 
     auto *pipeline = _root->getPipeline();
-    for (size_t i = 0; i < patches.size(); ++i) {
-        const auto &patch    = patches[i];
+    for (const auto &patch : patches) {
         _defines[patch.name] = patch.value;
     }
 
     auto *shader = ProgramLib::getInstance()->getGFXShader(_device, _programName, _defines, pipeline);
 
-    for (size_t i = 0; i < patches.size(); ++i) {
-        const auto &patch = patches[i];
+    for (const auto &patch : patches) {
         if (auto iter = _defines.find(patch.name); iter != _defines.end()) {
             _defines.erase(iter);
         }
@@ -411,12 +405,12 @@ void Pass::setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::Raste
     _descriptorSet     = ds;
 }
 
-void Pass::doInit(const IPassInfoFull &info, bool copyDefines /* = false */) {
-    auto programLib = ProgramLib::getInstance();
-    _priority       = pipeline::RenderPriority::DEFAULT;
-    _stage          = pipeline::RenderPassStage::DEFAULT;
-    _phase          = pipeline::getPhaseID("default");
-    _primitive      = gfx::PrimitiveMode::TRIANGLE_LIST;
+void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */) {
+    auto *programLib = ProgramLib::getInstance();
+    _priority        = pipeline::RenderPriority::DEFAULT;
+    _stage           = pipeline::RenderPassStage::DEFAULT;
+    _phase           = pipeline::getPhaseID("default");
+    _primitive       = gfx::PrimitiveMode::TRIANGLE_LIST;
 
     _passIndex     = info.passIndex;
     _propertyIndex = info.propertyIndex != CC_INVALID_INDEX ? info.propertyIndex : info.passIndex;
@@ -434,8 +428,8 @@ void Pass::doInit(const IPassInfoFull &info, bool copyDefines /* = false */) {
     }
 
     // init descriptor set
-    _dsInfo.layout = programLib->getDescriptorSetLayout(_device, info.program);
-    _descriptorSet = _device->createDescriptorSet(_dsInfo);
+    dsInfo.layout  = programLib->getDescriptorSetLayout(_device, info.program);
+    _descriptorSet = _device->createDescriptorSet(dsInfo);
 
     // calculate total size required
     const auto &                blocks     = _shaderInfo->blocks;
@@ -457,21 +451,21 @@ void Pass::doInit(const IPassInfoFull &info, bool copyDefines /* = false */) {
     uint32_t totalSize = startOffsets[startOffsets.size() - 1] + lastSize;
     if (totalSize) {
         // https://bugs.chromium.org/p/chromium/issues/detail?id=988988
-        _bufferInfo.size = std::ceil(totalSize / 16) * 16;
-        _rootBuffer      = device->createBuffer(_bufferInfo);
+        bufferInfo.size = std::ceil(totalSize / 16) * 16;
+        _rootBuffer     = device->createBuffer(bufferInfo);
         _rootBlock.resize(totalSize);
     }
     // create buffer views
     for (size_t i = 0, count = 0; i < blocks.size(); i++) {
-        int32_t binding        = blocks[i].binding;
-        int32_t size           = blockSizes[i];
-        _bufferViewInfo.buffer = _rootBuffer;
-        _bufferViewInfo.offset = startOffsets[count++];
-        _bufferViewInfo.range  = std::ceil(size / 16) * 16;
-        auto *bufferView = _buffers[binding] = device->createBuffer(_bufferViewInfo);
+        int32_t binding       = blocks[i].binding;
+        int32_t size          = blockSizes[i];
+        bufferViewInfo.buffer = _rootBuffer;
+        bufferViewInfo.offset = startOffsets[count++];
+        bufferViewInfo.range  = std::ceil(size / 16) * 16;
+        auto *bufferView = _buffers[binding] = device->createBuffer(bufferViewInfo);
         // non-builtin UBO data pools, note that the effect compiler
         // guarantees these bindings to be consecutive, starting from 0 and non-array-typed
-        _blocks[binding].data = reinterpret_cast<float *>(_rootBlock.data() + _bufferViewInfo.offset);
+        _blocks[binding].data = reinterpret_cast<float *>(_rootBlock.data() + bufferViewInfo.offset);
         _blocks[binding].size = size / 4;
         _descriptorSet->bindBuffer(binding, bufferView);
     }

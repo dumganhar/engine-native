@@ -86,7 +86,7 @@ std::string Texture2D::toString() const {
     return ret;
 }
 
-void Texture2D::updateMipmaps(uint32_t firstLevel /* = 0*/, uint32_t count /* = 0*/) {
+void Texture2D::updateMipmaps(uint32_t firstLevel, uint32_t count) {
     if (firstLevel >= _mipmaps.size()) {
         return;
     }
@@ -124,7 +124,7 @@ void Texture2D::releaseTexture() {
     destroy();
 }
 
-std::any Texture2D::serialize(const std::any &ctxForExporting) {
+std::any Texture2D::serialize(const std::any & /*ctxForExporting*/) {
     //    if (EDITOR || TEST) {
     //        return {
     //            base: super._serialize(ctxForExporting),
@@ -175,10 +175,10 @@ gfx::TextureInfo Texture2D::getGfxTextureCreateInfo(gfx::TextureUsageBit usage, 
     return texInfo;
 }
 
-void Texture2D::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
+void Texture2D::initDefault(const std::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     auto *imageAsset = new ImageAsset(); //cjh HOW TO DELETE?
-    imageAsset->initDefault();
+    imageAsset->initDefault(std::nullopt);
     setImage(imageAsset);
 }
 

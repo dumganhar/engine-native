@@ -33,8 +33,9 @@ EffectAsset::RegisteredEffectAssetMap EffectAsset::__effects;
 
 /* static */
 void EffectAsset::registerAsset(EffectAsset *asset) {
-    if (asset == nullptr)
+    if (asset == nullptr) {
         return;
+    }
 
     __effects.emplace(asset->getName(), asset);
 }
@@ -61,8 +62,9 @@ void EffectAsset::remove(const std::string &name) {
 
 /* static */
 void EffectAsset::remove(EffectAsset *asset) {
-    if (asset == nullptr)
+    if (asset == nullptr) {
         return;
+    }
 
     auto iter = __effects.find(asset->getName());
     if (iter != __effects.end() && iter->second == asset) {
@@ -83,6 +85,7 @@ EffectAsset *EffectAsset::get(const std::string &name) {
             return iter->second;
         }
     }
+    return nullptr;
 }
 
 void EffectAsset::onLoaded() {
@@ -98,7 +101,7 @@ bool EffectAsset::destroy() {
     return Super::destroy();
 }
 
-void EffectAsset::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
+void EffectAsset::initDefault(const std::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     const auto *effect = EffectAsset::get("unlit");
     _name              = "unlit";

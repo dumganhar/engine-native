@@ -115,7 +115,7 @@ public:
     void initialize(const IMaterialInfo &info);
     void reset(const IMaterialInfo &info);
 
-    void initDefault(const std::optional<std::string> &uuid = {}) override;
+    void initDefault(const std::optional<std::string> &uuid) override;
     bool validate() const override;
 
     /**
@@ -270,8 +270,8 @@ public:
     }
 
 protected:
-    bool uploadProperty(scene::Pass *pass, const std::string &name, const MaterialPropertyVariant &val);
-    void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index = CC_INVALID_INDEX);
+    static bool uploadProperty(scene::Pass *pass, const std::string &name, const MaterialPropertyVariant &val);
+    static void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index = CC_INVALID_INDEX);
 
     template <typename T1, typename T2>
     void prepareInfo(const T1 &patchArray, std::vector<T2> &cur);

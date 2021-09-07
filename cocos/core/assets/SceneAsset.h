@@ -36,7 +36,7 @@ public:
     explicit SceneAsset()  = default;
     ~SceneAsset() override = default;
 
-    void initDefault(const std::optional<std::string> &uuid = {}) override;
+    void initDefault(const std::optional<std::string> &uuid) override;
 
     virtual bool validate() const override {
         return _scene != nullptr;

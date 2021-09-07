@@ -52,22 +52,21 @@ public:
     }
 
     const_reference at(index_t i) const {
-        CC_ASSERT(index < size());
+        CC_ASSERT(i < size());
         return *(static_cast<T *>(_ab.data()) + i);
     }
 
     reference at(index_t i) {
-        CC_ASSERT(index < size());
+        CC_ASSERT(i < size());
         return *(static_cast<T *>(_ab.data()) + i);
     }
 
     void set(index_t i, const_reference value) {
-        CC_ASSERT(index < size());
+        CC_ASSERT(i < size());
         *(static_cast<T *>(_ab.data()) + i) = value;
     }
 
     int32_t size() const {
-        CC_ASSERT(_ab != nullptr);
         return static_cast<int32_t>(_ab.size() / sizeof(T));
     }
 

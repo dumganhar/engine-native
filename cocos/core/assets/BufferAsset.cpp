@@ -32,7 +32,7 @@ std::any BufferAsset::getNativeAsset() const {
 }
 
 void BufferAsset::setNativeAsset(const std::any &obj) {
-    auto *pNativeAsset = std::any_cast<ArrayBuffer>(&obj);
+    ArrayBuffer *pNativeAsset = std::any_cast<ArrayBuffer>(const_cast<std::any *>(&obj));
     if (pNativeAsset != nullptr) {
         _buffer = std::move(*pNativeAsset);
     }

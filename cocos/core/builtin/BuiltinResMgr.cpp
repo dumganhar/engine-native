@@ -10,38 +10,38 @@ namespace cc {
 namespace {
 BuiltinResMgr *instance = nullptr;
 
-constexpr uint8_t BLACK_IMAGE_RGBA_DATA_2x2[2 * 2 * 4] = {
+constexpr uint8_t BLACK_IMAGE_RGBA_DATA_2X2[2 * 2 * 4] = {
     // r, g, b, a
     0x00, 0x00, 0x00, 0xFF,
     0x00, 0x00, 0x00, 0xFF,
     0x00, 0x00, 0x00, 0xFF,
     0x00, 0x00, 0x00, 0xFF};
 
-constexpr uint8_t GREY_IMAGE_RGBA_DATA_2x2[2 * 2 * 4] = {
+constexpr uint8_t GREY_IMAGE_RGBA_DATA_2X2[2 * 2 * 4] = {
     0x07, 0x07, 0x07, 0xFF,
     0x07, 0x07, 0x07, 0xFF,
     0x07, 0x07, 0x07, 0xFF,
     0x07, 0x07, 0x07, 0xFF};
 
-constexpr uint8_t WHITE_IMAGE_RGBA_DATA_2x2[2 * 2 * 4] = {
+constexpr uint8_t WHITE_IMAGE_RGBA_DATA_2X2[2 * 2 * 4] = {
     0xFF, 0xFF, 0xFF, 0xFF,
     0xFF, 0xFF, 0xFF, 0xFF,
     0xFF, 0xFF, 0xFF, 0xFF,
     0xFF, 0xFF, 0xFF, 0xFF};
 
-constexpr uint8_t NORMAL_IMAGE_RGBA_DATA_2x2[2 * 2 * 4] = {
+constexpr uint8_t NORMAL_IMAGE_RGBA_DATA_2X2[2 * 2 * 4] = {
     0x7F, 0xFF, 0x7F, 0xFF,
     0x7F, 0xFF, 0x7F, 0xFF,
     0x7F, 0xFF, 0x7F, 0xFF,
     0x7F, 0xFF, 0x7F, 0xFF};
 
-constexpr uint8_t EMPTY_IMAGE_RGBA_DATA_2x2[2 * 2 * 4] = {
+constexpr uint8_t EMPTY_IMAGE_RGBA_DATA_2X2[2 * 2 * 4] = {
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00};
 
-const uint8_t DEFAULT_IMAGE_RGBA_DATA_16x16[16 * 16 * 4] = {
+const uint8_t DEFAULT_IMAGE_RGBA_DATA_16X16[16 * 16 * 4] = {
     0x55, 0x55, 0x55, 0xFF, 0x55, 0x55, 0x55, 0xFF, 0x55, 0x55, 0x55, 0xFF, 0x55, 0x55, 0x55, 0xFF,
     0x55, 0x55, 0x55, 0xFF, 0x55, 0x55, 0x55, 0xFF, 0x55, 0x55, 0x55, 0xFF, 0x55, 0x55, 0x55, 0xFF,
     0xDD, 0xDD, 0xDD, 0xFF, 0xDD, 0xDD, 0xDD, 0xFF, 0xDD, 0xDD, 0xDD, 0xFF, 0xDD, 0xDD, 0xDD, 0xFF,
@@ -117,30 +117,30 @@ BuiltinResMgr *BuiltinResMgr::getInstance() {
     return instance;
 }
 
-void BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
+void BuiltinResMgr::initBuiltinRes(gfx::Device * /*device*/) {
     // black texture
-    initTexture2DWithUuid("black-texture", BLACK_IMAGE_RGBA_DATA_2x2, sizeof(BLACK_IMAGE_RGBA_DATA_2x2), 2, 2, 4);
+    initTexture2DWithUuid("black-texture", BLACK_IMAGE_RGBA_DATA_2X2, sizeof(BLACK_IMAGE_RGBA_DATA_2X2), 2, 2, 4);
 
     // empty texture
-    initTexture2DWithUuid("empty-texture", EMPTY_IMAGE_RGBA_DATA_2x2, sizeof(EMPTY_IMAGE_RGBA_DATA_2x2), 2, 2, 4);
+    initTexture2DWithUuid("empty-texture", EMPTY_IMAGE_RGBA_DATA_2X2, sizeof(EMPTY_IMAGE_RGBA_DATA_2X2), 2, 2, 4);
 
     // grey texture
-    initTexture2DWithUuid("grey-texture", GREY_IMAGE_RGBA_DATA_2x2, sizeof(GREY_IMAGE_RGBA_DATA_2x2), 2, 2, 4);
+    initTexture2DWithUuid("grey-texture", GREY_IMAGE_RGBA_DATA_2X2, sizeof(GREY_IMAGE_RGBA_DATA_2X2), 2, 2, 4);
 
     // white texture
-    initTexture2DWithUuid("white-texture", WHITE_IMAGE_RGBA_DATA_2x2, sizeof(WHITE_IMAGE_RGBA_DATA_2x2), 2, 2, 4);
+    initTexture2DWithUuid("white-texture", WHITE_IMAGE_RGBA_DATA_2X2, sizeof(WHITE_IMAGE_RGBA_DATA_2X2), 2, 2, 4);
 
     // normal texture
-    initTexture2DWithUuid("normal-texture", NORMAL_IMAGE_RGBA_DATA_2x2, sizeof(NORMAL_IMAGE_RGBA_DATA_2x2), 2, 2, 4);
+    initTexture2DWithUuid("normal-texture", NORMAL_IMAGE_RGBA_DATA_2X2, sizeof(NORMAL_IMAGE_RGBA_DATA_2X2), 2, 2, 4);
 
     // default texture
-    initTexture2DWithUuid("default-texture", DEFAULT_IMAGE_RGBA_DATA_16x16, sizeof(DEFAULT_IMAGE_RGBA_DATA_16x16), 16, 16, 4);
+    initTexture2DWithUuid("default-texture", DEFAULT_IMAGE_RGBA_DATA_16X16, sizeof(DEFAULT_IMAGE_RGBA_DATA_16X16), 16, 16, 4);
 
     // white cube texture
-    initTextureCubeWithUuid("white-cube-texture", WHITE_IMAGE_RGBA_DATA_2x2, sizeof(WHITE_IMAGE_RGBA_DATA_2x2), 2, 2, 4);
+    initTextureCubeWithUuid("white-cube-texture", WHITE_IMAGE_RGBA_DATA_2X2, sizeof(WHITE_IMAGE_RGBA_DATA_2X2), 2, 2, 4);
 
     // default cube texture
-    initTextureCubeWithUuid("default-cube-texture", DEFAULT_IMAGE_RGBA_DATA_16x16, sizeof(DEFAULT_IMAGE_RGBA_DATA_16x16), 16, 16, 4);
+    initTextureCubeWithUuid("default-cube-texture", DEFAULT_IMAGE_RGBA_DATA_16X16, sizeof(DEFAULT_IMAGE_RGBA_DATA_16X16), 16, 16, 4);
 
     //cjh TODO:    if (SpriteFrame) {
     //        const spriteFrame = new SpriteFrame() as SpriteFrame;
@@ -186,7 +186,7 @@ void BuiltinResMgr::initMaterials() {
     std::vector<Material *> materialsToBeCompiled;
 
     // standard material
-    auto standardMtl = new Material(); //cjh TODO: how to release?
+    auto *standardMtl = new Material(); //cjh TODO: how to release?
     standardMtl->setUuid("standard-material");
     standardMtl->initialize({
         .effectName = "standard",
@@ -195,7 +195,7 @@ void BuiltinResMgr::initMaterials() {
     materialsToBeCompiled.emplace_back(standardMtl);
 
     // material indicating missing effect (yellow)
-    auto missingEfxMtl = new Material();
+    auto *missingEfxMtl = new Material();
     missingEfxMtl->setUuid("missing-effect-material");
     missingEfxMtl->initialize({.effectName = "unlit",
                                .defines    = MacroRecord{{"USE_COLOR", true}}});
@@ -204,7 +204,7 @@ void BuiltinResMgr::initMaterials() {
     materialsToBeCompiled.emplace_back(missingEfxMtl);
 
     // material indicating missing material (purple)
-    auto missingMtl = new Material();
+    auto *missingMtl = new Material();
     missingMtl->setUuid("missing-material");
     missingMtl->initialize({.effectName = "unlit",
                             .defines    = MacroRecord{{"USE_COLOR", true}}});
@@ -212,109 +212,105 @@ void BuiltinResMgr::initMaterials() {
     resources[missingMtl->getUuid()] = missingMtl;
     materialsToBeCompiled.emplace_back(missingMtl);
 
-    auto clearStencilMtl = new Material();
+    auto *clearStencilMtl = new Material();
     clearStencilMtl->setUuid("default-clear-stencil");
-    clearStencilMtl->initialize({.defines    = MacroRecord{{"USE_TEXTURE", false}},
-                                 .effectName = "clear-stencil"});
+    clearStencilMtl->initialize({.effectName = "clear-stencil",
+                                 .defines    = MacroRecord{{"USE_TEXTURE", false}}});
     resources[clearStencilMtl->getUuid()] = clearStencilMtl;
     materialsToBeCompiled.emplace_back(clearStencilMtl);
 
     // sprite material
-    auto spriteMtl = new Material();
+    auto *spriteMtl = new Material();
     spriteMtl->setUuid("ui-base-material");
-    spriteMtl->initialize({.defines    = MacroRecord{{"USE_TEXTURE", false}},
-                           .effectName = "sprite"});
+    spriteMtl->initialize({.effectName = "sprite",
+                           .defines    = MacroRecord{{"USE_TEXTURE", false}}});
     resources[spriteMtl->getUuid()] = spriteMtl;
     materialsToBeCompiled.emplace_back(spriteMtl);
 
     // sprite material
-    auto spriteColorMtl = new Material();
+    auto *spriteColorMtl = new Material();
     spriteColorMtl->setUuid("ui-sprite-material");
-    spriteColorMtl->initialize({.defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}},
-                                .effectName = "sprite"});
+    spriteColorMtl->initialize({.effectName = "sprite",
+                                .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}});
     resources[spriteColorMtl->getUuid()] = spriteColorMtl;
     materialsToBeCompiled.emplace_back(spriteColorMtl);
 
     // sprite alpha test material
-    auto alphaTestMaskMtl = new Material();
+    auto *alphaTestMaskMtl = new Material();
     alphaTestMaskMtl->setUuid("ui-alpha-test-material");
-    alphaTestMaskMtl->initialize({
-        .defines    = MacroRecord{{"USE_TEXTURE", true}, {"USE_ALPHA_TEST", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}},
-        .effectName = "sprite",
-    });
+    alphaTestMaskMtl->initialize({.effectName = "sprite",
+                                  .defines    = MacroRecord{{"USE_TEXTURE", true}, {"USE_ALPHA_TEST", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}});
     resources[alphaTestMaskMtl->getUuid()] = alphaTestMaskMtl;
     materialsToBeCompiled.emplace_back(alphaTestMaskMtl);
 
     // sprite gray material
-    auto spriteGrayMtl = new Material();
+    auto *spriteGrayMtl = new Material();
     spriteGrayMtl->setUuid("ui-sprite-gray-material");
-    spriteGrayMtl->initialize({.defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", true}},
-                               .effectName = "sprite"});
+    spriteGrayMtl->initialize({.effectName = "sprite",
+                               .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", true}}});
     resources[spriteGrayMtl->getUuid()] = spriteGrayMtl;
     materialsToBeCompiled.emplace_back(spriteGrayMtl);
 
     // sprite alpha material
-    auto spriteAlphaMtl = new Material();
+    auto *spriteAlphaMtl = new Material();
     spriteAlphaMtl->setUuid("ui-sprite-alpha-sep-material");
-    spriteAlphaMtl->initialize({.defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", false}},
-                                .effectName = "sprite"});
+    spriteAlphaMtl->initialize({.effectName = "sprite",
+                                .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", false}}});
     resources[spriteAlphaMtl->getUuid()] = spriteAlphaMtl;
     materialsToBeCompiled.emplace_back(spriteAlphaMtl);
 
     // sprite alpha & gray material
-    auto spriteAlphaGrayMtl = new Material();
+    auto *spriteAlphaGrayMtl = new Material();
     spriteAlphaGrayMtl->setUuid("ui-sprite-gray-alpha-sep-material");
-    spriteAlphaGrayMtl->initialize({.defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", true}},
-                                    .effectName = "sprite"});
+    spriteAlphaGrayMtl->initialize({.effectName = "sprite",
+                                    .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", true}}});
     resources[spriteAlphaGrayMtl->getUuid()] = spriteAlphaGrayMtl;
     materialsToBeCompiled.emplace_back(spriteAlphaGrayMtl);
 
     // ui graphics material
-    auto defaultGraphicsMtl = new Material();
+    auto *defaultGraphicsMtl = new Material();
     defaultGraphicsMtl->setUuid("ui-graphics-material");
     defaultGraphicsMtl->initialize({.effectName = "graphics"});
     resources[defaultGraphicsMtl->getUuid()] = defaultGraphicsMtl;
     materialsToBeCompiled.emplace_back(defaultGraphicsMtl);
 
     // default particle material
-    auto defaultParticleMtl = new Material();
+    auto *defaultParticleMtl = new Material();
     defaultParticleMtl->setUuid("default-particle-material");
     defaultParticleMtl->initialize({.effectName = "particle"});
     resources[defaultParticleMtl->getUuid()] = defaultParticleMtl;
     materialsToBeCompiled.emplace_back(defaultParticleMtl);
 
     // default particle gpu material
-    auto defaultParticleGPUMtl = new Material();
+    auto *defaultParticleGPUMtl = new Material();
     defaultParticleGPUMtl->setUuid("default-particle-gpu-material");
     defaultParticleGPUMtl->initialize({.effectName = "particle-gpu"});
     resources[defaultParticleGPUMtl->getUuid()] = defaultParticleGPUMtl;
     materialsToBeCompiled.emplace_back(defaultParticleGPUMtl);
 
     // default particle material
-    auto defaultTrailMtl = new Material();
+    auto *defaultTrailMtl = new Material();
     defaultTrailMtl->setUuid("default-trail-material");
     defaultTrailMtl->initialize({.effectName = "particle-trail"});
     resources[defaultTrailMtl->getUuid()] = defaultTrailMtl;
     materialsToBeCompiled.emplace_back(defaultTrailMtl);
 
     // default particle material
-    auto defaultBillboardMtl = new Material();
+    auto *defaultBillboardMtl = new Material();
     defaultBillboardMtl->setUuid("default-billboard-material");
     defaultBillboardMtl->initialize({.effectName = "billboard"});
     resources[defaultBillboardMtl->getUuid()] = defaultBillboardMtl;
     materialsToBeCompiled.emplace_back(defaultBillboardMtl);
 
     // ui spine two color material
-    auto spineTwoColorMtl = new Material();
+    auto *spineTwoColorMtl = new Material();
     spineTwoColorMtl->setUuid("default-spine-material");
-    spineTwoColorMtl->initialize({
-        .defines = MacroRecord{
-            {"USE_TEXTURE", true},
-            {"CC_USE_EMBEDDED_ALPHA", false},
-            {"IS_GRAY", false},
-        },
-        .effectName = "spine",
-    });
+    spineTwoColorMtl->initialize({.effectName = "spine",
+                                  .defines    = MacroRecord{
+                                      {"USE_TEXTURE", true},
+                                      {"CC_USE_EMBEDDED_ALPHA", false},
+                                      {"IS_GRAY", false},
+                                  }});
     resources[spineTwoColorMtl->getUuid()] = spineTwoColorMtl;
     materialsToBeCompiled.emplace_back(spineTwoColorMtl);
     //
@@ -329,10 +325,10 @@ void BuiltinResMgr::initMaterials() {
 }
 
 void BuiltinResMgr::initTexture2DWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel) {
-    Image *image = new (std::nothrow) Image();
+    auto *image = new (std::nothrow) Image();
     if (image != nullptr) {
         image->initWithRawData(data, dataBytes, width, height, bytesPerPixel);
-        auto texture = new (std::nothrow) Texture2D();
+        auto *texture = new (std::nothrow) Texture2D();
         texture->setUuid(uuid);
 
         auto *imgAsset = new (std::nothrow) ImageAsset();
@@ -346,10 +342,10 @@ void BuiltinResMgr::initTexture2DWithUuid(const std::string &uuid, const uint8_t
 }
 
 void BuiltinResMgr::initTextureCubeWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel) {
-    Image *image = new (std::nothrow) Image();
+    auto *image = new (std::nothrow) Image();
     if (image != nullptr) {
         image->initWithRawData(data, dataBytes, width, height, bytesPerPixel);
-        auto texture = new (std::nothrow) TextureCube();
+        auto *texture = new (std::nothrow) TextureCube();
         texture->setUuid(uuid);
         texture->setMipFilter(TextureCube::Filter::NEAREST);
 

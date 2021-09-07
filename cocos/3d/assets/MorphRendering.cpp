@@ -79,7 +79,7 @@ namespace {
 /**
  * True if force to use cpu computing based sub-mesh rendering.
  */
-const bool preferCpuComputing = false;
+const bool PREFER_CPU_COMPUTING = false;
 
 class MorphTexture final {
 public:
@@ -128,7 +128,7 @@ public:
     void initialize(uint32_t width, uint32_t height, uint32_t pixelBytes, bool useFloat32Array, PixelFormat pixelFormat) {
         _ab = std::make_shared<ArrayBuffer>();
         _ab->resize(width * height * pixelBytes);
-        ImageAsset *       imageAsset = new ImageAsset();
+        auto *             imageAsset = new ImageAsset();
         IMemoryImageSource source{_ab, false, width, height, pixelFormat};
         imageAsset->setNativeAsset(source);
 
@@ -685,7 +685,7 @@ StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
             continue;
         }
 
-        if (preferCpuComputing || subMeshMorph->targets.size() > pipeline::UBOMorph::MAX_MORPH_TARGET_COUNT) {
+        if (PREFER_CPU_COMPUTING || subMeshMorph->targets.size() > pipeline::UBOMorph::MAX_MORPH_TARGET_COUNT) {
             _subMeshRenderings[iSubMesh] = new CpuComputing(
                 _mesh,
                 iSubMesh,

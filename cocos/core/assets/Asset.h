@@ -97,7 +97,7 @@ public:
 
     virtual void onLoaded() {}
 
-    virtual void initDefault(const std::optional<std::string> &uuid = {});
+    virtual void initDefault(const std::optional<std::string> &uuid);
     virtual bool validate() const { return true; }
 
     bool isDefault() const { return _isDefault; }
@@ -109,7 +109,7 @@ public:
     /**
      * @return
      */
-    virtual std::any serialize(const std::any &ctxForExporting) { return std::any(); };
+    virtual std::any serialize(const std::any & /*ctxForExporting*/) { return std::any(); };
 
     /**
      *
@@ -133,9 +133,8 @@ protected:
      * @param inLibrary
      * @private
      */
-    void _setRawAsset(const std::string &filename, bool inLibrary = true);
+    void setRawAsset(const std::string &filename, bool inLibrary = true);
 
-protected:
     std::string _native;
     std::string _nativeUrl;
 

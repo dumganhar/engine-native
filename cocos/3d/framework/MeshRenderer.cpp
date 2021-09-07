@@ -250,14 +250,12 @@ Material *MeshRenderer::getBuiltinMaterial() {
 }
 
 bool MeshRenderer::isBatchingEnabled() {
-    for (size_t i = 0; i < _materials.size(); ++i) {
-        Material *mat = _materials[i];
+    for (auto *mat : _materials) {
         if (!mat) {
             continue;
         }
 
-        for (size_t p = 0; p < mat->getPasses().size(); ++p) {
-            scene::Pass *pass = mat->getPasses()[p];
+        for (auto *pass : mat->getPasses()) {
             if (pass->getBatchingScheme() != scene::BatchingSchemes::NONE) {
                 return true;
             }

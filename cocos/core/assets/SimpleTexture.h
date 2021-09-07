@@ -49,7 +49,7 @@ public:
      * @en The mipmap level of the texture
      * @zh 贴图中的 Mipmap 层级数量
      */
-    inline uint32_t mipmapLevel() {
+    inline uint32_t mipmapLevel() const {
         return _mipmapLevel;
     }
 
@@ -76,7 +76,7 @@ public:
      * @param firstLevel First level to be updated
      * @param count Mipmap level count to be updated
      */
-    virtual void updateMipmaps(uint32_t firstLevel = 0, uint32_t count = 0) {}
+    virtual void updateMipmaps(uint32_t firstLevel, uint32_t count) {}
 
     /**
      * @en Upload data to the given mipmap level.
@@ -112,7 +112,7 @@ protected:
      * The value is passes as presumed info to `this._getGfxTextureCreateInfo()`.
      * @param value The mipmap level.
      */
-    void setMipmapLevel(int32_t value);
+    void setMipmapLevel(uint32_t value);
 
     /**
      * @en This method is overrided by derived classes to provide GFX texture info.
@@ -127,10 +127,9 @@ protected:
 
     void tryDestroyTexture();
 
-protected:
     gfx::Texture *_gfxTexture{nullptr};
 
-    int32_t _mipmapLevel{1};
+    uint32_t _mipmapLevel{1};
     // Cache these data to reduce JSB invoking.
     uint32_t _textureWidth{0};
     uint32_t _textureHeight{0};

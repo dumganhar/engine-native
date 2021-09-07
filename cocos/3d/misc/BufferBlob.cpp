@@ -49,9 +49,9 @@ ArrayBuffer BufferBlob::getCombined() {
     uint32_t    counter = 0;
 
     for (const auto &arrayBufferOrPadding : _arrayBufferOrPaddings) {
-        if (auto *p = std::get_if<uint32_t>(&arrayBufferOrPadding)) {
+        if (const auto *p = std::get_if<uint32_t>(&arrayBufferOrPadding)) {
             counter += *p;
-        } else if (auto *p = std::get_if<ArrayBuffer>(&arrayBufferOrPadding)) {
+        } else if (const auto *p = std::get_if<ArrayBuffer>(&arrayBufferOrPadding)) {
             std::copy(p->begin(), p->end(), result.begin() + counter);
             counter += p->size();
         }

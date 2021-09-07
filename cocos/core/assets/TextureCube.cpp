@@ -64,7 +64,7 @@ TextureCube *TextureCube::fromTexture2DArray(const std::vector<Texture2D *> &tex
 
         mipmaps.emplace_back(mipmap);
     }
-    TextureCube *out = new TextureCube(); //cjh TODO: how to delete, shared_ptr?
+    auto *out = new TextureCube(); //cjh TODO: how to delete, shared_ptr?
     out->setMipmaps(mipmaps);
     return out;
 }
@@ -109,7 +109,7 @@ void TextureCube::releaseTexture() {
     _mipmaps.clear();
 }
 
-void TextureCube::updateMipmaps(uint32_t firstLevel /* = 0*/, uint32_t count /* = 0*/) {
+void TextureCube::updateMipmaps(uint32_t firstLevel, uint32_t count) {
     if (firstLevel >= _mipmaps.size()) {
         return;
     }
@@ -135,7 +135,7 @@ bool TextureCube::destroy() {
     return Super::destroy();
 }
 
-std::any TextureCube::serialize(const std::any &ctxForExporting) {
+std::any TextureCube::serialize(const std::any & /*ctxForExporting*/) {
     //cjh TODO:    if (EDITOR || TEST) {
     //        return {
     //            base: super._serialize(ctxForExporting),
@@ -205,11 +205,11 @@ gfx::TextureInfo TextureCube::getGfxTextureCreateInfo(gfx::TextureUsageBit usage
     return texInfo;
 }
 
-void TextureCube::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
+void TextureCube::initDefault(const std::optional<std::string> &uuid) {
     Super::initDefault(uuid);
 
     auto *imageAsset = new ImageAsset(); //cjh HOW TO DELETE?
-    imageAsset->initDefault();
+    imageAsset->initDefault(std::nullopt);
 
     ITextureCubeMipmap mipmap;
 

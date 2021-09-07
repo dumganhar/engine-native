@@ -355,10 +355,10 @@ private:
 
     gfx::BufferList createVertexBuffers(gfx::Device *gfxDevice, const ArrayBuffer &data);
 
-    void initDefault(const std::optional<std::string> &uuid = {}) override;
+    void initDefault(const std::optional<std::string> &uuid) override;
     bool validate() const override;
 
-    TypedArray createTypedArrayWithGFXFormat(gfx::Format format, uint32_t count);
+    static TypedArray createTypedArrayWithGFXFormat(gfx::Format format, uint32_t count);
 
 public:
     MorphRendering *morphRendering{nullptr};

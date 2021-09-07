@@ -227,7 +227,7 @@ public:
      */
     void onLoaded() override;
     bool destroy() override;
-    void initDefault(const std::optional<std::string> &uuid = {}) override;
+    void initDefault(const std::optional<std::string> &uuid) override;
     bool validate() const override;
 
 protected:

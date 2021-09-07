@@ -113,10 +113,9 @@ protected:
     virtual void updateModelParams();
     virtual void onMeshChanged(Mesh *old) {}
 
-    Material *getBuiltinMaterial();
-    bool      isBatchingEnabled();
+    static Material *getBuiltinMaterial();
+    bool             isBatchingEnabled();
 
-protected:
     //    @serializable
     Mesh *_mesh{nullptr};
 

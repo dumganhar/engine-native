@@ -49,7 +49,7 @@ bool RenderScene::initialize(const IRenderSceneInfo &info) {
 }
 
 void RenderScene::update(uint32_t stamp) {
-//    jsbFlushFastMQ();
+    //    jsbFlushFastMQ();
 
     if (_mainLight) {
         _mainLight->update();

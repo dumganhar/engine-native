@@ -99,11 +99,11 @@ void Material::doDestroy() {
     _passes.clear();
 }
 
-void Material::recompileShaders(const MacroRecord &overrides, index_t passIdx = CC_INVALID_INDEX) {
+void Material::recompileShaders(const MacroRecord & /*overrides*/, index_t /*passIdx*/) {
     CC_LOG_WARNING("Shaders in material asset '%s' cannot be modified at runtime, please instantiate the material first.", _name.c_str());
 }
 
-void Material::overridePipelineStates(const PassOverrides &overrides, index_t passIdx = CC_INVALID_INDEX) {
+void Material::overridePipelineStates(const PassOverrides & /*overrides*/, index_t /*passIdx*/) {
     CC_LOG_WARNING("Pipeline states in material asset '%s' cannot be modified at runtime, please instantiate the material first.", _name.c_str());
 }
 
@@ -279,7 +279,7 @@ std::vector<scene::Pass *> Material::createPasses() {
             continue;
         }
 
-        auto pass = new scene::Pass(/*legacyCC.director.root*/); //cjh how to pass Root ?
+        auto *pass = new scene::Pass(/*legacyCC.director.root*/); //cjh how to pass Root ?
         pass->initialize(passInfo);
         passes.emplace_back(pass);
     }
@@ -303,9 +303,9 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
         }
     } else if (propertyType == PropertyType::TEXTURE) {
         if (val.index() == MaterialPropertyIndexList) {
-            auto &textureArray = std::get<MaterialPropertyList>(val);
+            const auto &textureArray = std::get<MaterialPropertyList>(val);
             for (size_t i = 0; i < textureArray.size(); i++) {
-                bindTexture(pass, handle, textureArray[i], i);
+                bindTexture(pass, handle, textureArray[i], static_cast<index_t>(i));
             }
         } else if (val.index() == MaterialPropertyIndexSingle) {
             bindTexture(pass, handle, std::get<MaterialProperty>(val));
@@ -322,9 +322,9 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
     }
 
     const uint32_t binding = scene::Pass::getBindingFromHandle(handle);
-    if (auto pTexture = std::get_if<gfx::Texture *>(&val)) {
+    if (const auto *pTexture = std::get_if<gfx::Texture *>(&val)) {
         pass->bindTexture(binding, const_cast<gfx::Texture *>(*pTexture), index);
-    } else if (auto pTextureBase = std::get_if<TextureBase *>(&val)) {
+    } else if (const auto *pTextureBase = std::get_if<TextureBase *>(&val)) {
         auto *        textureBase = *pTextureBase;
         gfx::Texture *texture     = textureBase->getGFXTexture();
         if (texture == nullptr || texture->getWidth() == 0 || texture->getHeight() == 0) {
@@ -336,13 +336,13 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
     }
 }
 
-void Material::initDefault(const std::optional<std::string> &uuid /* = {}*/) {
+void Material::initDefault(const std::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     MacroRecord   defines{{"USE_COLOR", true}};
     IMaterialInfo info{
         .effectName = "unlit",
         .defines    = defines};
-    initialize(std::move(info));
+    initialize(info);
     setProperty("mainColor", Color{0xFF, 0x00, 0xFF, 0xFF});
 }
 

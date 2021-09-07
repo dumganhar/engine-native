@@ -142,7 +142,7 @@ public:
 
     std::string toString() const override;
 
-    void updateMipmaps(uint32_t firstLevel = 0, uint32_t count = 0) override;
+    void updateMipmaps(uint32_t firstLevel, uint32_t count) override;
 
     /**
      * @en If the level 0 mipmap image is a HTML element, then return it, otherwise return null.
@@ -187,7 +187,7 @@ public:
 
     gfx::TextureInfo getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 
-    void initDefault(const std::optional<std::string> &uuid = {}) override;
+    void initDefault(const std::optional<std::string> &uuid) override;
 
     bool validate() const override;
 

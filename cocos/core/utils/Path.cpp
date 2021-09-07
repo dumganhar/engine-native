@@ -29,43 +29,43 @@ namespace cc {
 
 //TODO: minggo
 std::string join(const std::vector<std::string> &paths) {
-	return "";
+    return "";
 }
 
 std::string extname(const std::string &path) {
-	return "";
+    return "";
 }
 
 std::string mainFileName(const std::string &fileName) {
-	return "";
+    return "";
 }
 
 std::string basename(const std::string &path, const std::string &extName) {
-	return "";
+    return "";
 }
 
 std::string dirname(const std::string &path) {
-	return "";
+    return "";
 }
 
 std::string changeExtname(const std::string &path, const std::string &extName) {
-	return "";
+    return "";
 }
 
 std::string changeBasename(const std::string &path, const std::string &baseName, bool isSameExt) {
-	return "";
+    return "";
 }
 
 std::string normalize(const std::string &url) {
-	return "";
+    return "";
 }
 
 std::string stripSep(const std::string &path) {
-	return "";
+    return "";
 }
 
 char getSeperator() {
-	return 'a';
+    return 'a';
 }
 
-} // namespace cc {
+} // namespace cc

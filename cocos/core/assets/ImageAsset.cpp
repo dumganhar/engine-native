@@ -39,10 +39,10 @@ ImageAsset::~ImageAsset() {
 
 void ImageAsset::setNativeAsset(const std::any &obj) {
     if (obj.has_value()) {
-        if (auto *pData = std::any_cast<Image *>(&obj); pData != nullptr) {
+        if (const auto *pData = std::any_cast<Image *>(&obj); pData != nullptr) {
             _nativeData = *pData;
             _nativeData->retain();
-        } else if (auto *pData = std::any_cast<IMemoryImageSource>(&obj); pData != nullptr) {
+        } else if (const auto *pData = std::any_cast<IMemoryImageSource>(&obj); pData != nullptr) {
             _imageSource = *pData;
         } else {
             CC_LOG_WARNING("ImageAsset::setNativeAsset, unknown type!");

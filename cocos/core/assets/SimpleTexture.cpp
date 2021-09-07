@@ -56,7 +56,7 @@ bool SimpleTexture::destroy() {
 }
 
 void SimpleTexture::updateImage() {
-    updateMipmaps(0);
+    updateMipmaps(0, 0);
 }
 
 void SimpleTexture::uploadData(const ArrayBuffer &source, uint32_t level /* = 0 */, uint32_t arrayIndex /* = 0 */) {
@@ -124,7 +124,7 @@ void SimpleTexture::textureReady() {
     //cjh    this.emit('load');
 }
 
-void SimpleTexture::setMipmapLevel(int32_t value) {
+void SimpleTexture::setMipmapLevel(uint32_t value) {
     _mipmapLevel = value < 1 ? 1 : value;
 }
 

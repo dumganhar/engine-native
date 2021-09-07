@@ -48,16 +48,16 @@ const IGeometricInfo &RenderingSubMesh::geometricInfo() {
         return _geometricInfo.value();
     }
 
-    static const IGeometricInfo emptyGeometricInfo;
+    static const IGeometricInfo EMPTY_GEOMETRIC_INFO;
     if (_mesh == nullptr) {
-        return emptyGeometricInfo;
+        return EMPTY_GEOMETRIC_INFO;
     }
 
     if (!_subMeshIdx.has_value()) {
-        return emptyGeometricInfo;
+        return EMPTY_GEOMETRIC_INFO;
     }
 
-    uint32_t index = _subMeshIdx.value();
+    auto index = static_cast<index_t>(_subMeshIdx.value());
 
     const auto &positionsVar = _mesh->readAttribute(index, gfx::ATTR_NAME_POSITION);
     if (const auto *pPositions = std::get_if<Float32Array>(&positionsVar); pPositions != nullptr) {
@@ -111,7 +111,7 @@ const IGeometricInfo &RenderingSubMesh::geometricInfo() {
         }
     }
 
-    return emptyGeometricInfo;
+    return EMPTY_GEOMETRIC_INFO;
 }
 
 void RenderingSubMesh::genFlatBuffers() {

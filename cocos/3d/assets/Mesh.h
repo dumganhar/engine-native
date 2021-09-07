@@ -194,7 +194,7 @@ public:
      * @en The struct of the mesh
      * @zh 此网格的结构。
      */
-    const IStruct &getStruct() const {
+    inline const IStruct &getStruct() const {
         return _struct;
     }
 
@@ -202,7 +202,11 @@ public:
      * @en The actual data of the mesh
      * @zh 此网格的数据。
      */
-    const Uint8Array &getData() const {
+    inline const Uint8Array &getData() const {
+        return _data;
+    }
+
+    inline Uint8Array &getData() {
         return _data;
     }
 

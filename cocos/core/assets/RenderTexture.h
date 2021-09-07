@@ -118,7 +118,7 @@ public:
     void initWindow();
     void initWindow(const IRenderTextureCreateInfo &info);
 
-    void initDefault(const std::optional<std::string> &uuid /* = {}*/) override;
+    void initDefault(const std::optional<std::string> &uuid) override;
 
     bool validate() const override;
 

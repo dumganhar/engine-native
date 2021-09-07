@@ -35,6 +35,7 @@ namespace cc {
  */
 class Skeleton final : public Asset {
 public:
+    using Super = Asset;
     /**
      * @en The path of all bones, the length always equals the length of [[bindposes]]
      * @zh 所有关节的路径。该数组的长度始终与 [[bindposes]] 的长度相同。
@@ -63,7 +64,7 @@ public:
      * @en Gets the inverse bind poses matrix
      * @zh 获取反向绑定姿势矩阵
      */
-    const std::vector<Mat4> &getInverseBindposes() const;
+    const std::vector<Mat4> &getInverseBindposes();
 
     /**
      * @en Gets the hash of the skeleton asset
@@ -75,10 +76,10 @@ public:
     bool validate() const override;
 
 private:
-    std::vector<std::string> _joints;
-    std::vector<Mat4>        _bindposes;
-    std::vector<Mat4>        _invBindposes;
-    uint64_t                 _hash{0};
+    std::vector<std::string>         _joints;
+    std::vector<Mat4>                _bindposes;
+    std::optional<std::vector<Mat4>> _invBindposes;
+    uint64_t                         _hash{0};
 };
 
 } // namespace cc

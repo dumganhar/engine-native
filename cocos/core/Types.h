@@ -61,6 +61,49 @@ using IndexArray = std::variant<Uint8Array, Uint16Array, Uint32Array>;
 
 namespace typedarray {
 
+template <typename T>
+class TypedArrayRef {
+public:
+    TypedArrayRef(void *data, int32_t dataBytes, index_t byteOffset = CC_INVALID_INDEX, int32_t count = CC_INVALID_INDEX)
+    : _data(static_cast<uint8_t *>(data)) //NOTE: weak reference
+      ,
+      _dataBytes(dataBytes) {
+        _byteOffset = byteOffset == CC_INVALID_INDEX ? 0 : byteOffset;
+        _count      = count == CC_INVALID_INDEX ? (dataBytes - _byteOffset) / sizeof(T) : count;
+        CC_ASSERT(_byteOffset + _count * sizeof(T) <= dataBytes);
+    }
+
+    int32_t length() const {
+        return _count;
+    }
+
+    T &operator[](index_t index) {
+        CC_ASSERT(index < _count && index >= 0);
+        return *(reinterpret_cast<T *>(_data + _byteOffset) + index);
+    }
+
+    const T &operator[](index_t index) const {
+        CC_ASSERT(index < _count && index >= 0);
+        return *(reinterpret_cast<T *>(_data + _byteOffset) + index);
+    }
+
+private:
+    uint8_t *_data{nullptr};
+    int32_t  _dataBytes{0};
+
+    int32_t _byteOffset{0};
+    int32_t _count{0};
+};
+
+using Int8ArrayRef    = TypedArrayRef<int8_t>;
+using Int16ArrayRef   = TypedArrayRef<int16_t>;
+using Int32ArrayRef   = TypedArrayRef<int32_t>;
+using Uint8ArrayRef   = TypedArrayRef<uint8_t>;
+using Uint16ArrayRef  = TypedArrayRef<uint16_t>;
+using Uint32ArrayRef  = TypedArrayRef<uint32_t>;
+using Float32ArrayRef = TypedArrayRef<float>;
+using Float64ArrayRef = TypedArrayRef<double>;
+
 int32_t getSize(const TypedArray &arr);
 int32_t getBytesPerElement(const TypedArray &arr);
 
@@ -76,7 +119,7 @@ public:
     : _ab(ab) {}
 
     template <typename T>
-    void updateRange(index_t byteOffset = CC_INVALID_INDEX, index_t count = CC_INVALID_INDEX) {
+    void updateRange(index_t byteOffset = CC_INVALID_INDEX, int32_t count = CC_INVALID_INDEX) {
         _byteOffset = byteOffset == CC_INVALID_INDEX ? 0 : byteOffset;
         _count      = count == CC_INVALID_INDEX ? (_ab.size() - _byteOffset) / sizeof(T) : count;
         CC_ASSERT(_byteOffset + _count * sizeof(T) <= _ab.size());
@@ -95,11 +138,11 @@ public:
         return *(reinterpret_cast<T *>(_ab.data() + _byteOffset) + index);
     }
 
-    inline uint32_t getCount() const {
+    inline int32_t getCount() const {
         return _count;
     }
 
-    inline uint32_t getBytesPerElement() const { return _bytesPerElement; }
+    inline int32_t getBytesPerElement() const { return _bytesPerElement; }
 
     void *getElement(index_t index) const {
         if (index >= _count) {

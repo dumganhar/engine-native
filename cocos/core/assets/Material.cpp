@@ -240,7 +240,7 @@ void Material::update(bool keepProps /* = true*/) {
 
 std::vector<scene::Pass *> Material::createPasses() {
     std::vector<scene::Pass *> passes;
-    const ITechniqueInfo *     tech = nullptr;
+    ITechniqueInfo *           tech = nullptr;
     if (_techIdx < _effectAsset->_techniques.size()) {
         tech = &_effectAsset->_techniques[_techIdx];
     }
@@ -251,36 +251,36 @@ std::vector<scene::Pass *> Material::createPasses() {
 
     size_t passNum = tech->passes.size();
     for (size_t k = 0; k < passNum; ++k) {
-        auto *  passInfo = static_cast<scene::IPassInfoFull *>(tech->passes[k]); //cjh need to use dynamic_cast ?
-        index_t propIdx = passInfo->passIndex = static_cast<index_t>(k);
+        auto &  passInfo = tech->passes[k];
+        index_t propIdx = passInfo.passIndex = static_cast<index_t>(k);
 
         if (propIdx >= _defines.size()) {
             _defines.resize(propIdx + 1);
         }
-        passInfo->defines = _defines[propIdx]; //cjh JS object assignment is weak reference but c++ container assignment is strong copy operation  // const defines = passInfo.defines = this._defines[propIdx] || (this._defines[propIdx] = {});
-        auto &defines     = passInfo->defines;
+        passInfo.defines = _defines[propIdx]; //cjh JS object assignment is weak reference but c++ container assignment is strong copy operation  // const defines = passInfo.defines = this._defines[propIdx] || (this._defines[propIdx] = {});
+        auto &defines    = passInfo.defines;
 
         if (propIdx >= _states.size()) {
             _states.resize(propIdx + 1);
         }
-        passInfo->stateOverrides = _states[propIdx]; //cjh same question as described above
-        auto &states             = passInfo->stateOverrides.value();
+        passInfo.stateOverrides = _states[propIdx]; //cjh same question as described above
+        auto &states            = passInfo.stateOverrides.value();
 
-        if (passInfo->propertyIndex != CC_INVALID_INDEX) {
-            utils::mergeToMap(defines, _defines[passInfo->propertyIndex]);
-            states = _states[passInfo->propertyIndex];
+        if (passInfo.propertyIndex != CC_INVALID_INDEX) {
+            utils::mergeToMap(defines, _defines[passInfo.propertyIndex]);
+            states = _states[passInfo.propertyIndex];
         }
 
-        if (passInfo->embeddedMacros.has_value()) {
-            utils::mergeToMap(defines, passInfo->embeddedMacros.value());
+        if (passInfo.embeddedMacros.has_value()) {
+            utils::mergeToMap(defines, passInfo.embeddedMacros.value());
         }
 
-        if (passInfo->switch_.has_value() && defines.find(passInfo->switch_.value()) == defines.end()) {
+        if (passInfo.switch_.has_value() && defines.find(passInfo.switch_.value()) == defines.end()) {
             continue;
         }
 
         auto pass = new scene::Pass(/*legacyCC.director.root*/); //cjh how to pass Root ?
-        pass->initialize(*passInfo);
+        pass->initialize(passInfo);
         passes.emplace_back(pass);
     }
     return passes;

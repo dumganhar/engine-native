@@ -49,7 +49,7 @@ std::map<scenegraph::Node *, PhysXSharedBody *> PhysXSharedBody::sharedBodesMap 
 
 static int idCounter = 0;
 PhysXSharedBody::PhysXSharedBody(
-    scenegraph::Node *         node,
+    scenegraph::Node *    node,
     PhysXWorld *const     world,
     PhysXRigidBody *const body) : _mID(idCounter++),
                                   _mRef(0),
@@ -105,7 +105,7 @@ void PhysXSharedBody::setType(ERigidBodyType v) {
     } else {
         _mImpl.ptr = reinterpret_cast<uintptr_t>(_mDynamicActor);
         _mImpl.rigidDynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, _mType == ERigidBodyType::KINEMATIC);
-	}
+    }
 }
 
 void PhysXSharedBody::reference(bool v) {
@@ -267,7 +267,7 @@ void PhysXSharedBody::syncPhysicsToScene() {
     const PxTransform &wp = getImpl().rigidActor->getGlobalPose();
     getNode()->setWorldPosition(wp.p.x, wp.p.y, wp.p.z);
     getNode()->setWorldRotation(wp.q.x, wp.q.y, wp.q.z, wp.q.w);
-    getNode()->setFlagsChanged(getNode()->getFlagsChanged() | static_cast<uint32_t>(TransformBit::POSITION) | static_cast<uint32_t>(TransformBit::ROTATION));
+    getNode()->setChangedFlags(getNode()->getFlagsChanged() | static_cast<uint32_t>(TransformBit::POSITION) | static_cast<uint32_t>(TransformBit::ROTATION));
 }
 
 void PhysXSharedBody::addShape(const PhysXShape &shape) {

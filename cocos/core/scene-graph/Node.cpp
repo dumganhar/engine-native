@@ -119,7 +119,7 @@ void Node::invalidateChildren(TransformBit dirtyBit) {
         const uint &hasChangedFlags = cur->getFlagsChanged();
         if ((cur->getDirtyFlag() & hasChangedFlags & curDirtyBit) != curDirtyBit) {
             cur->setDirtyFlag(cur->getDirtyFlag() | curDirtyBit);
-            cur->setFlagsChanged(hasChangedFlags | curDirtyBit);
+            cur->setChangedFlags(hasChangedFlags | curDirtyBit);
             int childCount{static_cast<int>(cur->getChildren().size())};
             for (BaseNode *curChild : cur->getChildren()) {
                 setDirtyNode(++i, reinterpret_cast<Node *>(curChild));

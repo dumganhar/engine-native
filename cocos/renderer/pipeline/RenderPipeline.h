@@ -68,6 +68,7 @@ public:
     inline uint                                    getTag() const { return _tag; }
     inline const map<String, InternalBindingInst> &getGlobalBindings() const { return _globalBindings; }
     inline const MacroRecord &                     getMacros() const { return _macros; }
+    inline void                                    setValue(const String &name, int32_t value) { _macros[name] = value; }
     inline void                                    setValue(const String &name, bool value) { _macros[name] = value; }
     inline void                                    setValue(const String &name, const std::string &value) { _macros[name] = value; }
     inline void                                    setValue(const String &name, float value) { _macros[name] = value; }

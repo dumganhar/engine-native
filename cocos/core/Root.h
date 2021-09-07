@@ -119,10 +119,23 @@ public:
      */
     void destroyScenes();
 
-    template <typename T, typename std::enable_if_t<std::is_base_of<scene::Model, T>::value>>
-    T *createModel();
+    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<scene::Model, T>::value>>
+    T *createModel() {
+        //cjh TODO: need use model pool?
+        T *model = new T();
+        model->initialize();
+        return model;
+    }
 
-    void destroyModel(scene::Model *);
+    void destroyModel(scene::Model *model) {
+        if (model == nullptr) {
+            return;
+        }
+        model->destroy();
+        if (model->getScene() != nullptr) {
+            model->getScene()->removeModel(model);
+        }
+    }
 
     scene::Camera *createCamera();
 

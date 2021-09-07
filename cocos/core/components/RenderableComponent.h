@@ -126,13 +126,14 @@ public:
 
     const std::vector<scene::Model *> &collectModels() { return _models; }
 
-protected:
+    // OVERRIDE FUNCTIONS
     virtual void attachToScene() {}
     virtual void detachFromScene() {}
     virtual void onMaterialModified(index_t index, Material *material) {}
     virtual void onRebuildPSO(index_t index, Material *material) {}
     virtual void clearMaterials() {}
     virtual void onVisibilityChange(scenegraph::Layers::Enum val) {}
+    //
 
 protected:
     //cjh @type([Material])

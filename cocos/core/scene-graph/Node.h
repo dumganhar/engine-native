@@ -109,7 +109,7 @@ public:
     }
 
     inline bool hasChangedFlags() const { return _flagChange; }
-    inline void setFlagsChanged(uint value) override { _flagChange = value; }
+    inline void setChangedFlags(uint value) override { _flagChange = value; }
 
     inline void setDirtyFlag(uint value) override { _dirtyFlag = value; }
     inline void setLayer(uint layer) override { _layer = layer; }

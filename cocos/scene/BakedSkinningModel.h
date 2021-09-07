@@ -43,16 +43,16 @@ struct BakedAnimInfo {
     }
 };
 struct BakedJointInfo {
-    gfx::Buffer *                 buffer{nullptr};
-    uint8_t *                     jointTextureInfo{nullptr};
+    gfx::Buffer *buffer{nullptr};
+    uint8_t *    jointTextureInfo{nullptr};
     // IJointTextureHandle *         texture{nullptr};
     BakedAnimInfo                 animInfo;
     std::vector<geometry::AABB *> boundsInfo;
 };
 class BakedSkinningModel final : public MorphModel {
 public:
-    using Super                    = MorphModel;
-    BakedSkinningModel()           = default;
+    using Super = MorphModel;
+    BakedSkinningModel();
     ~BakedSkinningModel() override = default;
 
     void                     destroy() override;
@@ -87,7 +87,6 @@ protected:
     // applyJointTexture(IJointTextureHandle *texture) const; // TODO(xwx): IJointTextureHandle not define
 
 private:
-    ModelType      _type{ModelType::BAKED_SKINNING};
     BakedJointInfo _jointMedium;
     bool           _isUploadAnim{false};
     index_t        _instAnimInfoIdx{CC_INVALID_INDEX};

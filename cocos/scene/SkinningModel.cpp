@@ -52,6 +52,10 @@ std::vector<cc::scene::IMacroPatch> myPatches{{"CC_USE_SKINNING", true}};
 namespace cc {
 namespace scene {
 
+SkinningModel::SkinningModel() {
+    _type = Model::Type::SKINNING;
+}
+
 void SkinningModel::destroy() {
     bindSkeleton(nullptr, nullptr, nullptr);
     if (!_buffers.empty()) {
@@ -74,7 +78,7 @@ void SkinningModel::bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningR
     setTransform(skinningRoot);
     // std::vector<geometry::AABB> boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton); // 'AABB' has been explicitly marked deleted here
     auto jointMaps = mesh->getStruct().jointMaps;
-    ensureEnoughBuffers(jointMaps != std::nullopt && !jointMaps->empty() || 1);
+    ensureEnoughBuffers((jointMaps != std::nullopt && !jointMaps->empty()) ? jointMaps->size() : 1);
     _bufferIndices = mesh->getJointBufferIndices();
 
     for (index_t index = 0; index < skeleton->getJoints().size(); ++index) {
@@ -144,8 +148,8 @@ void SkinningModel::updateUBOs(uint32_t stamp) {
 }
 
 void SkinningModel::initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) {
-    auto original = subMeshData->getVertexBuffers();
-    auto iaInfo = subMeshData->getIaInfo();
+    auto original        = subMeshData->getVertexBuffers();
+    auto iaInfo          = subMeshData->getIaInfo();
     iaInfo.vertexBuffers = subMeshData->getJointMappedBuffers();
     Super::initSubModel(idx, subMeshData, mat);
     iaInfo.vertexBuffers = original;

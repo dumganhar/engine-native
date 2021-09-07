@@ -26,15 +26,12 @@
 #pragma once
 
 #include "core/components/RenderableComponent.h"
+#include "scene/Model.h"
 
 namespace cc {
 
 class Mesh;
 class MorphRenderingInstance;
-
-namespace scene {
-class Model;
-}
 
 /**
  * @en Shadow projection mode.
@@ -128,6 +125,7 @@ protected:
 private:
     MorphRenderingInstance *_morphInstance{nullptr};
 
+    scene::Model::Type _modelType{scene::Model::Type::DEFAULT};
     //cjh    @serializable
     bool _enableMorph{true};
 };

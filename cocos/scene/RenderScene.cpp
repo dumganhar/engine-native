@@ -38,7 +38,7 @@
 #include "scene/SphereLight.h"
 #include "scene/SpotLight.h"
 
-extern void jsbFlushFastMQ();
+//extern void jsbFlushFastMQ();
 
 namespace cc {
 namespace scene {
@@ -49,7 +49,7 @@ bool RenderScene::initialize(const IRenderSceneInfo &info) {
 }
 
 void RenderScene::update(uint32_t stamp) {
-    jsbFlushFastMQ();
+    //    jsbFlushFastMQ();
 
     if (_mainLight) {
         _mainLight->update();

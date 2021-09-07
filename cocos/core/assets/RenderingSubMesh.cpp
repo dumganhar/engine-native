@@ -155,4 +155,16 @@ void RenderingSubMesh::genFlatBuffers() {
     }
 }
 
+void RenderingSubMesh::enableVertexIdChannel(gfx::Device *device) {
+    //TODO:minggo
+}
+
+void RenderingSubMesh::init() {
+    //TODO:minggo
+}
+
+bool RenderingSubMesh::destroy() {
+    //TODO:minggo
+}
+
 } // namespace cc

@@ -27,16 +27,24 @@
 #include "core/scene-graph/BaseNode.h"
 
 namespace cc {
+
+namespace scene {
+class RenderScene;
+}
+
 namespace scenegraph {
 class Scene final : public BaseNode {
 public:
-    explicit Scene(const std::string &name) : BaseNode(name) {}
-    //Scene() = default; //TODO: Consructor removed in BaseNode
-    Scene(const Scene &) = delete;
-    Scene(Scene &&)      = delete;
-    ~Scene() override    = default;
-    Scene &operator=(const Scene &) = delete;
-    Scene &operator=(Scene &&) = delete;
+    explicit Scene(const std::string &name);
+    ~Scene() override = default;
+
+    inline scene::RenderScene *getRenderScene() const { return _renderScene; }
+
+protected:
+    scene::RenderScene *_renderScene{nullptr};
+    bool                _inited{false};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Scene);
 };
 } // namespace scenegraph
 } // namespace cc

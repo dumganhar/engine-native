@@ -14,6 +14,8 @@ set(PROJ_SOURCES)
 set(PROJ_COMMON_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/../common/Classes/Game.h
     ${CMAKE_CURRENT_LIST_DIR}/../common/Classes/Game.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../common/Classes/SimpleDemo.h
+    ${CMAKE_CURRENT_LIST_DIR}/../common/Classes/SimpleDemo.cpp
 )
 
 

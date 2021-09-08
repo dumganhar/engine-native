@@ -34,6 +34,12 @@
     #include "platform/Device.h"
 #endif
 
+#include "SimpleDemo.h"
+#include "base/Scheduler.h"
+#include "core/platform/Macro.h"
+
+SimpleDemo simpleDemo;
+
 Game::Game(int width, int height) : cc::Application(width, height) {}
 
 bool Game::init() {
@@ -67,6 +73,14 @@ bool Game::init() {
     float    pixelRatio = cc::Device::getDevicePixelRatio();
     cc::EventDispatcher::dispatchResizeEvent(logicSize.x * pixelRatio, logicSize.y * pixelRatio);
 #endif
+
+    simpleDemo.setup(getViewLogicalSize().x, getViewLogicalSize().y);
+
+    cc::Application::getInstance()->getScheduler()->schedule([](float dt) {
+        simpleDemo.step(dt);
+    },
+                                                             &simpleDemo, 0.F, cc::macro::REPEAT_FOREVER, 0, false, "simpleDemo");
+
     return true;
 }
 
@@ -81,6 +95,8 @@ void Game::onResume() {
 }
 
 void Game::onClose() {
+    simpleDemo.finalize();
+
     cc::Application::onClose();
     cc::EventDispatcher::dispatchCloseEvent();
 }

@@ -1404,6 +1404,16 @@ cocos_source_files(
     # builtin
     cocos/core/builtin/BuiltinResMgr.cpp
     cocos/core/builtin/BuiltinResMgr.h
+    cocos/core/builtin/ShaderSourceAssembly.cpp
+    cocos/core/builtin/ShaderSourceAssembly.h
+    cocos/core/builtin/Effects.cpp
+    cocos/core/builtin/Effects.h
+    cocos/core/builtin/shader-sources/glsl1.cpp
+    cocos/core/builtin/shader-sources/glsl1.h
+    cocos/core/builtin/shader-sources/glsl3.cpp
+    cocos/core/builtin/shader-sources/glsl3.h
+    cocos/core/builtin/shader-sources/glsl4.cpp
+    cocos/core/builtin/shader-sources/glsl4.h
     #
 
     cocos/core/data/Object.cpp

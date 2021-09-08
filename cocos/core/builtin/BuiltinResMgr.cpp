@@ -4,6 +4,7 @@
 #include "core/assets/Texture2D.h"
 #include "core/assets/TextureCube.h"
 #include "platform/Image.h"
+#include "renderer/core/ProgramLib.h"
 
 namespace cc {
 
@@ -117,7 +118,7 @@ BuiltinResMgr *BuiltinResMgr::getInstance() {
     return instance;
 }
 
-void BuiltinResMgr::initBuiltinRes(gfx::Device * /*device*/) {
+bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
     // black texture
     initTexture2DWithUuid("black-texture", BLACK_IMAGE_RGBA_DATA_2X2, sizeof(BLACK_IMAGE_RGBA_DATA_2X2), 2, 2, 4);
 
@@ -152,10 +153,11 @@ void BuiltinResMgr::initBuiltinRes(gfx::Device * /*device*/) {
     //        resources[spriteFrame._uuid] = spriteFrame;
     //    }
     //
-    //    const shaderVersionKey = getDeviceShaderVersion(device);
-    //    if (!shaderVersionKey) {
-    //        return Promise.reject(Error('Failed to initialize builtin shaders: unknown device.'));
-    //    }
+    const char *shaderVersionKey = getDeviceShaderVersion(device);
+    if (nullptr == shaderVersionKey || 0 == strlen(shaderVersionKey)) {
+        CC_LOG_ERROR("Failed to initialize builtin shaders: unknown device.");
+        return false;
+    }
     //
     //    const shaderSources = shaderSourceAssembly[shaderVersionKey];
     //    if (!shaderSources) {
@@ -179,6 +181,8 @@ void BuiltinResMgr::initBuiltinRes(gfx::Device * /*device*/) {
     //        });
     //        this._initMaterials();
     //    });
+
+    return true;
 }
 
 void BuiltinResMgr::initMaterials() {

@@ -27,6 +27,8 @@
 
 #include <string>
 
+#include "core/data/Object.h"
+
 namespace cc {
 
 namespace scenegraph {
@@ -43,8 +45,8 @@ class Component {
 public:
     virtual ~Component() = default;
 
-    std::string getName();
-    void        setName(const std::string &value);
+    const std::string &getName() const { return _name; }
+    void               setName(const std::string &value) { _name = value; }
 
     /**
      * @en The uuid for editor.
@@ -96,7 +98,7 @@ public:
     inline scenegraph::Node *getNode() const { return _node; }
 
 protected:
-    Component() = default;
+    Component();
 
     // LIFECYCLE METHODS
 
@@ -259,7 +261,9 @@ protected:
     scene::RenderScene *getRenderScene() const;
 
 protected:
-    std::string _id;
+    std::string     _name;
+    std::string     _id;
+    CCObject::Flags _objFlags{CCObject::Flags::ZERO};
 
     /**
      * @en The node this component is attached to. A component is always attached to a node.

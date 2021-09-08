@@ -92,6 +92,5 @@ struct IBoxOptions : public IGeometryOptions {
  * 生成一个立方体，其大小是定义的范围且中心在原点。
  * @param options 参数选项。
  */
-IGeometry box(const IGeometryOptions *options);
-
+IGeometry box(const std::optional<IBoxOptions> &options = std::nullopt);
 } // namespace cc

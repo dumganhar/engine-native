@@ -24,9 +24,11 @@
 ****************************************************************************/
 
 #pragma once
+#include <optional>
 
 #include "3d/assets/Mesh.h"
-
+#include "primitive/Box.h"
+#include "primitive/PrimitiveDefine.h"
 namespace cc {
 
 enum class PrimitiveType {
@@ -79,5 +81,8 @@ public:
      */
     void onLoaded() override;
 };
+
+//TODO(xwx): make alias for all children struct of IGeometryOptions
+IGeometry create(PrimitiveType type, const std::optional<std::variant<IBoxOptions /*, ICapsuleOptions, ..., ...*/>> &options = std::nullopt);
 
 } // namespace cc

@@ -275,7 +275,7 @@ public:
     inline bool isWindowSize() const { return _isWindowSize; }
     inline void setWindowSize(bool val) { _isWindowSize = val; }
 
-    inline float getScreenScale() const { _screenScale; }
+    inline float getScreenScale() const { return _screenScale; }
     inline void  setScreenScale(float val) { _screenScale = val; }
 
     inline void detachCamera() {

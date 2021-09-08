@@ -119,7 +119,7 @@ struct IGeometry {
      * @zh
      * 顶点属性。
      */
-    gfx::AttributeList attributes;
+    std::optional<gfx::AttributeList> attributes;
 
     struct CustomAttribute {
         gfx::Attribute     attr;
@@ -158,7 +158,7 @@ struct IGeometry {
      * @zh
      * 几何索引，当使用索引绘制时。
      */
-    std::optional<uint32_t> indices; //cjh uint16_t ?
+    std::optional<std::vector<uint32_t>> indices; //cjh uint16_t ?
 
     /**
      * @en

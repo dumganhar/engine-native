@@ -24,6 +24,7 @@
 ****************************************************************************/
 #pragma once
 
+#include <functional>
 #include <optional>
 #include "core/ArrayBuffer.h"
 #include "gfx-base/GFXTexture.h"
@@ -31,6 +32,7 @@
 #include "renderer/gfx-base/GFXDevice.h"
 
 namespace cc {
+using roundUpType = std::function<uint32_t(uint32_t size, uint32_t formatSize)>;
 struct ITextureBuffer {
     gfx::Texture *texture{nullptr};
     uint32_t      size{0};
@@ -45,13 +47,16 @@ struct ITextureBufferHandle {
     uint32_t end{0};
 };
 struct ITextureBufferPoolInfo {
-    gfx::Format         format{gfx::Format::UNKNOWN};
-    std::optional<bool> inOrderFree;
+    gfx::Format                format{gfx::Format::UNKNOWN}; // target texture format
+    std::optional<bool>        inOrderFree;                  // will the handles be freed exactly in the order of their allocation?
+    std::optional<uint32_t>    alignment;                    // the data alignment for each handle allocated, in bytes
+    std::optional<roundUpType> roundUpFn;
 };
 
 class TextureBufferPool {
 public:
-    TextureBufferPool()  = default;
+    TextureBufferPool() = default;
+    explicit TextureBufferPool(gfx::Device *device);
     ~TextureBufferPool() = default;
 
     void initialize(const ITextureBufferPoolInfo &info);
@@ -77,7 +82,7 @@ private:
     gfx::BufferTextureCopy            _region0;
     gfx::BufferTextureCopy            _region1;
     gfx::BufferTextureCopy            _region2;
-    // private _roundUpFn: ((targetSize: number, formatSize: number) => number) | null = null; // TODO(xwx)
+    roundUpType                       _roundUnFn{nullptr};
     // private _bufferViewCtor: TypedArrayConstructor = Uint8Array; // TODO(xwx)
     uint32_t _channels{4};
     uint32_t _alignment{1};

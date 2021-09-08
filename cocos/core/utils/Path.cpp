@@ -27,45 +27,67 @@
 
 namespace cc {
 
+namespace {
+const std::string EMPTY_STRING;
+}
+
 //TODO: minggo
 std::string join(const std::vector<std::string> &paths) {
+    assert(false);
     return "";
 }
 
 std::string extname(const std::string &path) {
-    return "";
+    if (path.empty()) {
+        return EMPTY_STRING;
+    }
+    
+    auto index = path.find_last_of('.');
+    if (index == path.size() - 1) {
+        return EMPTY_STRING;
+    }
+    
+    return path.substr(index);
 }
 
 std::string mainFileName(const std::string &fileName) {
+    assert(false);
     return "";
 }
 
 std::string basename(const std::string &path, const std::string &extName) {
+    assert(false);
     return "";
 }
 
 std::string dirname(const std::string &path) {
+    assert(false);
     return "";
 }
 
 std::string changeExtname(const std::string &path, const std::string &extName) {
+    assert(false);
     return "";
 }
 
 std::string changeBasename(const std::string &path, const std::string &baseName, bool isSameExt) {
+    assert(false);
     return "";
 }
 
 std::string normalize(const std::string &url) {
+    assert(false);
     return "";
 }
 
 std::string stripSep(const std::string &path) {
+    assert(false);
     return "";
 }
 
 char getSeperator() {
-    return 'a';
+    assert(false);
+    return ' ';
 }
 
 } // namespace cc

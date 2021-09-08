@@ -168,8 +168,7 @@ public:
     inline const std::optional<uint32_t> &getSubMeshIdx() const { return _subMeshIdx; }
 
 private:
-    void init();
-    void allocVertexIdBuffer(gfx::Device *device);
+    gfx::Buffer *allocVertexIdBuffer(gfx::Device *device);
 
 private:
     Mesh *                  _mesh{nullptr};
@@ -177,9 +176,9 @@ private:
 
     std::vector<IFlatBuffer> _flatBuffers;
 
-    std::optional<gfx::BufferList> _jointMappedBuffers;
+    gfx::BufferList _jointMappedBuffers;
 
-    std::optional<std::vector<uint32_t>> _jointMappedBufferIndices;
+    std::vector<uint32_t> _jointMappedBufferIndices;
 
     std::optional<VertexIdChannel> _vertexIdChannel;
 

@@ -181,6 +181,8 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
     //        });
     //        this._initMaterials();
     //    });
+
+    return true;
 }
 
 void BuiltinResMgr::initMaterials() {

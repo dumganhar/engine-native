@@ -20,9 +20,9 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     gfx::AttributeList attributes;
     uint32_t           stride = 0;
     struct Channel {
-        uint32_t       offset{0};
-        vector<float>  data; // float?
-        gfx::Attribute attribute;
+        uint32_t           offset{0};
+        std::vector<float> data; // float?
+        gfx::Attribute     attribute;
     };
     std::vector<Channel> channels;
     uint32_t             vertCount = 0;

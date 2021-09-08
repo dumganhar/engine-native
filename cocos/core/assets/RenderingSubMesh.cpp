@@ -183,7 +183,7 @@ void RenderingSubMesh::enableVertexIdChannel(gfx::Device *device) {
 
 bool RenderingSubMesh::destroy() {
     for (auto *vertexBuffer : _vertexBuffers) {
-        vertexBuffer->destroy();
+        CC_UNSAFE_DESTROY(vertexBuffer);
     }
     _vertexBuffers.clear();
 

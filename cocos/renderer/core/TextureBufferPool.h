@@ -82,7 +82,7 @@ private:
     gfx::BufferTextureCopy            _region0;
     gfx::BufferTextureCopy            _region1;
     gfx::BufferTextureCopy            _region2;
-    roundUpType                       _roundUnFn{nullptr};
+    roundUpType                       _roundUpFn{nullptr};
     // private _bufferViewCtor: TypedArrayConstructor = Uint8Array; // TODO(xwx)
     uint32_t _channels{4};
     uint32_t _alignment{1};

@@ -46,7 +46,7 @@ struct ITextureBufferHandle {
 };
 struct ITextureBufferPoolInfo {
     gfx::Format         format{gfx::Format::UNKNOWN};
-    std::optional<bool> inOrderFree{std::nullopt};
+    std::optional<bool> inOrderFree;
 };
 
 class TextureBufferPool {

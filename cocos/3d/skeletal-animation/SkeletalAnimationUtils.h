@@ -37,8 +37,8 @@
 
 namespace cc {
 struct IChunkContent {
-    int32_t skeleton{0}; // int or uint or float?
-    int32_t clip{0};     // int or uint?
+    int32_t skeleton{0}; // TODO(xwx): int or uint or float?
+    int32_t clip{0};     // TODO(xwx): int or uint?
 };
 
 struct ICustomJointTextureLayout {
@@ -47,10 +47,10 @@ struct ICustomJointTextureLayout {
 };
 
 struct IInternalJointAnimInfo {
-    std::optional<Mat4>              downstream{std::nullopt};         // downstream default pose, if present
-    std::optional<std::vector<Mat4>> curveData{std::nullopt};          // the nearest animation curve, if present
-    index_t                          bindposeIdx{0};                   // index of the actual bindpose to use
-    std::optional<Mat4>              bindposeCorrection{std::nullopt}; // correction factor from the original bindpose
+    std::optional<Mat4>              downstream;         // downstream default pose, if present
+    std::optional<std::vector<Mat4>> curveData;          // the nearest animation curve, if present
+    index_t                          bindposeIdx{0};     // index of the actual bindpose to use
+    std::optional<Mat4>              bindposeCorrection; // correction factor from the original bindpose
 };
 
 struct IJointTextureHandle {
@@ -61,7 +61,7 @@ struct IJointTextureHandle {
     bool                                                      readyToBeDeleted{false};
     const ITextureBufferHandle &                              handle;
     std::unordered_map<uint32_t, std::vector<geometry::AABB>> bounds;
-    std::optional<std::vector<IInternalJointAnimInfo>>        animInfos{std::nullopt};
+    std::optional<std::vector<IInternalJointAnimInfo>>        animInfos;
 };
 
 class JointTexturePool {
@@ -105,7 +105,7 @@ private:
     TextureBufferPool *                               _pool{nullptr};
     std::unordered_map<uint32_t, IJointTextureHandle> _textureBuffers;
     uint32_t                                          _formatSize{0};
-    float                                             _pixelsPerJoint{0}; // int or float?
+    float                                             _pixelsPerJoint{0}; // TODO(xwx): int or float?
     TextureBufferPool *                               _customPool{nullptr};
     std::unordered_map<uint64_t, index_t>             _chunkIdxMap; // hash -> chunkIdx
 

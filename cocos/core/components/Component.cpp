@@ -23,3 +23,28 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "core/components/Component.h"
+#include "core/scene-graph/Node.h"
+#include "core/utils/IDGenerator.h"
+
+namespace cc {
+
+namespace {
+IDGenerator idGenerator("Comp");
+}
+
+namespace components {
+
+Component::Component() {
+    _id = idGenerator.getNewId();
+}
+
+scene::RenderScene *Component::getRenderScene() const {
+    //cjh TODO:    if (this._sceneGetter) {
+    //        return this._sceneGetter();
+    //    }
+    return _node->getScene()->getRenderScene();
+}
+
+} // namespace components
+
+} // namespace cc

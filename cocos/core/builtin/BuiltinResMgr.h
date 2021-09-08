@@ -42,7 +42,7 @@ public:
     explicit BuiltinResMgr() = default;
     ~BuiltinResMgr()         = default;
 
-    void initBuiltinRes(gfx::Device *device);
+    bool initBuiltinRes(gfx::Device *device);
 
     template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<Asset, T>::value>>
     T *get(const std::string &uuid) {

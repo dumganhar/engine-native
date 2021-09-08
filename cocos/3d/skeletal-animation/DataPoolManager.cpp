@@ -26,7 +26,7 @@
 #include "3d/skeletal-animation/DataPoolManager.h"
 
 namespace cc {
-DataPoolManager::DataPoolManager(gfx::Device *device) {
+DataPoolManager::DataPoolManager(gfx::Device *device) { // TODO(xwx): where to destruction?
     jointTexturePool   = new JointTexturePool(device);
     jointAnimationInfo = new JointAnimationInfo(device);
 }

@@ -59,7 +59,7 @@ struct IJointTextureHandle {
     uint64_t                                                  clipHash{0};
     uint64_t                                                  skeletonHash{0};
     bool                                                      readyToBeDeleted{false};
-    const ITextureBufferHandle &                              handle;
+    ITextureBufferHandle                                      handle;
     std::unordered_map<uint32_t, std::vector<geometry::AABB>> bounds;
     std::optional<std::vector<IInternalJointAnimInfo>>        animInfos;
 };

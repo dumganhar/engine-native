@@ -40,7 +40,7 @@ public:
 
     void releaseSkeleton(Skeleton *skeleton) const;
 
-    // void releaseAnimationClip(AnimationClip * clip) const; // AnimationClip not implemented
+    // void releaseAnimationClip(AnimationClip * clip) const; // TODO(xwx): AnimationClip not implemented
 
     void clear() const;
 

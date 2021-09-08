@@ -56,7 +56,8 @@ public:
 
     void initialize(const ITextureBufferPoolInfo &info);
     void destroy();
-    void alloc(uint32_t size, std::optional<index_t> chunkIdx);
+    void alloc(uint32_t size);
+    void alloc(uint32_t size, index_t chunkIdx);
     void free(const ITextureBufferHandle &handle);
     void createChunk(uint32_t length);
     void update(const ITextureBufferHandle &handle, const ArrayBuffer &buffer);

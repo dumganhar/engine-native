@@ -42,27 +42,27 @@ IGeometry create(PrimitiveType type, const std::optional<std::variant<IBoxOption
             break;
         }
         case PrimitiveType::SPHERE: {
-            //return cc::sphere();
+            //return cc::sphere(); //TODO(xwx): sphere() not implement
             break;
         }
         case PrimitiveType::CYLINDER: {
-            //return cc::cylinder();
+            //return cc::cylinder(); //TODO(xwx): cylinder() not implement
             break;
         }
         case PrimitiveType::CONE: {
-            //return cc::cone();
+            //return cc::cone(); //TODO(xwx): cone() not implement
             break;
         }
         case PrimitiveType::CAPSULE: {
-            //return cc::capsule();
+            //return cc::capsule(); //TODO(xwx): capsule() not implement
             break;
         }
         case PrimitiveType::TORUS: {
-            //return cc::torus();
+            //return cc::torus(); //TODO(xwx): torus() not implement
             break;
         }
         case PrimitiveType::QUAD: {
-            //return cc::quad();
+            //return cc::quad(); //TODO(xwx): quad() not implement
             break;
         }
         default:

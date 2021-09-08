@@ -177,8 +177,8 @@ struct BoundingBox {
 };
 
 struct VertexIdChannel {
-    uint32_t stream;
-    uint32_t index;
+    uint32_t stream{0};
+    uint32_t index{0};
 };
 
 struct NativeDep {

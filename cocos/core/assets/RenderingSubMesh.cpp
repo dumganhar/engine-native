@@ -25,6 +25,8 @@
 
 #include "core/assets/RenderingSubMesh.h"
 #include "3d/assets/Mesh.h"
+#include "renderer/gfx-base/GFXBuffer.h"
+#include "renderer/gfx-base/GFXDevice.h"
 
 namespace cc {
 
@@ -33,12 +35,15 @@ RenderingSubMesh::RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
                                    gfx::PrimitiveMode        primitiveMode,
                                    gfx::Buffer *             indexBuffer /* = nullptr*/,
                                    gfx::Buffer *             indirectBuffer /* = nullptr*/)
-: _vertexBuffers(vertexBuffers), _attributes(attributes), _primitiveMode(primitiveMode), _indexBuffer(indexBuffer), _indirectBuffer(indirectBuffer) {
+: _vertexBuffers(vertexBuffers),
+  _attributes(attributes),
+  _primitiveMode(primitiveMode),
+  _indexBuffer(indexBuffer),
+  _indirectBuffer(indirectBuffer) {
     _iaInfo.attributes     = attributes;
     _iaInfo.vertexBuffers  = vertexBuffers; //cjh how to release?
     _iaInfo.indexBuffer    = indexBuffer;
     _iaInfo.indirectBuffer = indirectBuffer;
-    init();
 }
 
 RenderingSubMesh::~RenderingSubMesh() = default;
@@ -156,15 +161,66 @@ void RenderingSubMesh::genFlatBuffers() {
 }
 
 void RenderingSubMesh::enableVertexIdChannel(gfx::Device *device) {
-    //TODO:minggo
-}
+    if (_vertexIdChannel.has_value()) {
+        return;
+    }
 
-void RenderingSubMesh::init() {
-    //TODO:minggo
+    const auto streamIndex    = static_cast<uint32_t>(_vertexBuffers.size());
+    const auto attributeIndex = static_cast<uint32_t>(_attributes.size());
+
+    gfx::Buffer *vertexIdBuffer = allocVertexIdBuffer(device);
+    _vertexBuffers.push_back(vertexIdBuffer);
+    _attributes.push_back({"a_vertexId", gfx::Format::R32F, false, streamIndex, false, 0});
+
+    _iaInfo.attributes    = _attributes;
+    _iaInfo.vertexBuffers = _vertexBuffers;
+
+    _vertexIdChannel = {
+        .stream = streamIndex,
+        .index  = attributeIndex,
+    };
 }
 
 bool RenderingSubMesh::destroy() {
-    //TODO:minggo
+    for (auto *vertexBuffer : _vertexBuffers) {
+        CC_UNSAFE_DESTROY(vertexBuffer);
+    }
+    _vertexBuffers.clear();
+
+    CC_SAFE_DESTROY(_indexBuffer);
+
+    for (int index : _jointMappedBufferIndices) {
+        _jointMappedBuffers[index]->destroy();
+    }
+    _jointMappedBuffers.clear();
+    _jointMappedBufferIndices.clear();
+
+    CC_SAFE_DESTROY(_indirectBuffer);
+}
+
+gfx::Buffer *RenderingSubMesh::allocVertexIdBuffer(gfx::Device *device) {
+    const uint32_t vertexCount = (_vertexBuffers.empty() || _vertexBuffers[0]->getStride() == 0)
+                                     ? 0
+                                     // TODO: This depends on how stride of a vertex buffer is defined; Consider padding problem.
+                                     : _vertexBuffers[0]->getSize() / _vertexBuffers[0]->getStride();
+
+    std::vector<float> vertexIds(vertexCount);
+    for (int iVertex = 0; iVertex < vertexCount; ++iVertex) {
+        // `+0.5` because on some platforms, the "fetched integer" may have small error.
+        // For example `26` may yield `25.99999`, which is convert to `25` instead of `26` using `int()`.
+        vertexIds[iVertex] = iVertex + 0.5F;
+    }
+
+    uint32_t     vertexIdxByteLength = sizeof(float) * vertexCount;
+    gfx::Buffer *vertexIdBuffer      = device->createBuffer({
+        gfx::BufferUsageBit::VERTEX | gfx::BufferUsageBit::TRANSFER_DST,
+        gfx::MemoryUsageBit::DEVICE,
+        vertexIdxByteLength,
+        sizeof(float),
+    });
+    vertexIdBuffer->update(vertexIds.data(), vertexIdxByteLength);
+
+    return vertexIdBuffer;
 }
 
 } // namespace cc

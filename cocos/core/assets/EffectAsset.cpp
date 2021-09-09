@@ -122,7 +122,7 @@ void EffectAsset::precompile() {
         if (combination.empty()) continue;
  
         //TODO: minggo (do unit test)
-        std::vector<MacroRecord> defines = doCombine(std::vector<MacroRecord>(), combination, combination.begin());
+        std::vector<MacroRecord> defines = EffectAsset::doCombine(std::vector<MacroRecord>(), combination, combination.begin());
         for (auto &define : defines) {
             ProgramLib::getInstance()->getGFXShader(root->getDevice(), shader.name, define, root->getPipeline());
         }
@@ -174,12 +174,12 @@ std::vector<MacroRecord> EffectAsset::doCombine(const std::vector<MacroRecord> &
 
     std::vector<MacroRecord> records;
     if (cur.empty()) {
-        records = generateRecords(key, values);
+        records = EffectAsset::generateRecords(key, values);
     } else {
-        records = insertInfoValue(cur, key, values);
+        records = EffectAsset::insertInfoValue(cur, key, values);
     }
 
-    return doCombine(records, info, ++iter);
+    return EffectAsset::doCombine(records, info, ++iter);
 }
 
 std::vector<MacroRecord> EffectAsset::generateRecords(const std::string &key, const IPreCompileInfoValueType &value) {

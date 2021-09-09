@@ -156,7 +156,7 @@ struct IShaderInfo {
     }
 };
 
-using IPreCompileInfoValueType = std::variant<std::monostate, std::vector<bool>, std::vector<float>, std::vector<std::string>>; //cjh number is float?
+using IPreCompileInfoValueType = std::variant<std::vector<bool>, std::vector<float>, std::vector<std::string>>; //cjh number is float?
 using IPreCompileInfo          = std::unordered_map<std::string, IPreCompileInfoValueType>;
 
 class EffectAsset final : public Asset {
@@ -231,7 +231,13 @@ public:
     bool validate() const override;
 
 protected:
-    void _precompile();
+    static std::vector<MacroRecord> doCombine(const std::vector<MacroRecord> &cur, const IPreCompileInfo &info, IPreCompileInfo::iterator iter);
+    static std::vector<MacroRecord> generateRecords(const std::string &key, const IPreCompileInfoValueType &value);
+    static std::vector<MacroRecord> insertInfoValue(const std::vector<MacroRecord> &records,
+                                                    const std::string &             key,
+                                                    const IPreCompileInfoValueType &value);
+
+    void precompile();
 
 protected:
     static RegisteredEffectAssetMap __effects; //cjh TODO: how to clear when game exits.

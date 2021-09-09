@@ -114,27 +114,134 @@ bool EffectAsset::validate() const {
     return !_techniques.empty() && !_shaders.empty();
 }
 
-void EffectAsset::_precompile() {
-    //cjh TODO: figure out how to handle
+void EffectAsset::precompile() {
     Root *root = Root::getInstance();
     for (index_t i = 0; i < _shaders.size(); ++i) {
         auto shader      = _shaders[i];
         auto combination = _combinations[i];
         if (combination.empty()) continue;
-        //        const defines = Object.keys(combination).reduce((out, name) => out.reduce((acc, cur) => {
-        //            const choices = combination[name];
-        //            for (let i = 0; i < choices.length; ++i) {
-        //                const defines = { ...cur };
-        //                defines[name] = choices[i];
-        //                acc.push(defines);
-        //            }
-        //            return acc;
-        //        }, [] as MacroRecord[]), [{}] as MacroRecord[]);
-        //        defines.forEach(
-        //            (defines) => programLib.getGFXShader(root.device, shader.name, defines, root.pipeline),
-        //        );
-        //    }
+ 
+        //TODO: minggo (do unit test)
+        std::vector<MacroRecord> defines = doCombine(std::vector<MacroRecord>(), combination, combination.begin());
+        for (auto &define : defines) {
+            ProgramLib::getInstance()->getGFXShader(root->getDevice(), shader.name, define, root->getPipeline());
+        }
     }
+}
+
+/*
+// input
+
+const combination = {
+USE_TEXTURE: [true, false],
+COLOR_MODE: [0, 1, 2, 3],
+ROUGHNESS_CHANNEL: ['r', 'g', 'b'],
+};
+ 
+// output
+
+const defines = [
+                 {
+                 USE_TEXTURE: true,
+                 COLOR_MODE: 0,
+                 ROUGHNESS_CHANNEL: 'r'
+                 },
+                 {
+                 USE_TEXTURE: true,
+                 COLOR_MODE: 0,
+                 ROUGHNESS_CHANNEL: 'g'
+                 },
+                 {
+                 USE_TEXTURE: true,
+                 COLOR_MODE: 0,
+                 ROUGHNESS_CHANNEL: 'b'
+                 },
+                 {
+                 USE_TEXTURE: true,
+                 COLOR_MODE: 1,
+                 ROUGHNESS_CHANNEL: 'r'
+                 },
+                 // ... all the combinations (2x4x3 in this case)
+                 ];
+ */
+std::vector<MacroRecord> EffectAsset::doCombine(const std::vector<MacroRecord> &cur, const IPreCompileInfo &info, IPreCompileInfo::iterator iter) {
+    if (iter == info.end()) {
+        return cur;
+    }
+
+    const IPreCompileInfoValueType &values = iter->second;
+    const std::string &             key    = iter->first;
+
+    std::vector<MacroRecord> records;
+    if (cur.empty()) {
+        records = generateRecords(key, values);
+    } else {
+        records = insertInfoValue(cur, key, values);
+    }
+
+    return doCombine(records, info, ++iter);
+}
+
+std::vector<MacroRecord> EffectAsset::generateRecords(const std::string &key, const IPreCompileInfoValueType &value) {
+    size_t                   index = value.index();
+    std::vector<MacroRecord> ret;
+    if (index == 0) {
+        const std::vector<bool> &boolValues = std::get<0>(value);
+        for (const bool value : boolValues) {
+            MacroRecord record;
+            record[key] = value;
+            ret.emplace_back(record);
+        }
+    } else if (index == 1) {
+        const std::vector<float> &floatValues = std::get<1>(value);
+        for (const bool value : floatValues) {
+            MacroRecord record;
+            record[key] = value;
+            ret.emplace_back(record);
+        }
+    } else {
+        const std::vector<std::string> &stringValues = std::get<2>(value);
+        for (const std::string &value : stringValues) {
+            MacroRecord record;
+            record[key] = value;
+            ret.emplace_back(record);
+        }
+    }
+
+    return ret;
+}
+
+std::vector<MacroRecord> EffectAsset::insertInfoValue(const std::vector<MacroRecord> &records,
+                                                      const std::string &             key,
+                                                      const IPreCompileInfoValueType &value) {
+    size_t                   index = value.index();
+    std::vector<MacroRecord> ret;
+    for (const auto &record : records) {
+        if (index == 0) {
+            const std::vector<bool> &boolValues = std::get<0>(value);
+            for (const bool value : boolValues) {
+                MacroRecord tmpRecord = record;
+                tmpRecord[key]        = value;
+                ret.push_back(tmpRecord);
+            }
+        } else if (index == 1) {
+            const std::vector<float> &floatValues = std::get<1>(value);
+            for (const bool value : floatValues) {
+                MacroRecord tmpRecord = record;
+                tmpRecord[key]        = value;
+                ret.push_back(tmpRecord);
+            }
+        } else {
+            const std::vector<std::string> &stringValues = std::get<2>(value);
+            for (const std::string &value : stringValues) {
+                MacroRecord tmpRecord = record;
+                tmpRecord[key]        = value;
+                ret.push_back(tmpRecord);
+            }
+        }
+    }
+
+    return ret;
 }
 
 } // namespace cc

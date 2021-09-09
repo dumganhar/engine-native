@@ -58,14 +58,17 @@ cc::Vec3       v31;
 cc::Quaternion qt1;
 cc::Vec3       v32;
 
-auto dot            = [](const cc::Quaternion &a, const cc::Quaternion &b) { return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w; };
-auto multiplyScalar = [](const cc::Quaternion &a, float b, cc::Quaternion *out) {
+float dot(const cc::Quaternion &a, const cc::Quaternion &b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+}
+
+void multiplyScalar(const cc::Quaternion &a, float b, cc::Quaternion *out) {
     out->x = a.x * b;
     out->y = a.y * b;
     out->z = a.z * b;
     out->w = a.w * b;
-    return out;
-};
+}
+
 // Dual Quaternion Skinning
 void uploadJointDataDQS(cc::Float32Array out, uint32_t base, cc::Mat4 &mat, bool firstBone) {
     // Mat4.toRTS(mat, qt_1, v3_1, v3_2); // TODO(xwx):not found toRTS function in cpp

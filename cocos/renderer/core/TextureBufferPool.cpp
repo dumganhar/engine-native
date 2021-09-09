@@ -28,16 +28,6 @@
 #include "core/ArrayBuffer.h"
 
 namespace {
-int32_t nearestPOT(int32_t num) {
-    --num;
-    num |= num >> 16;
-    num |= num >> 8;
-    num |= num >> 4;
-    num |= num >> 2;
-    num |= num >> 1;
-    ++num;
-    return num;
-}
 
 uint32_t roundUp(uint32_t n, uint32_t alignment) {
     return static_cast<uint32_t>(std::ceil(n / alignment)) * alignment;
@@ -56,8 +46,8 @@ void TextureBufferPool::initialize(const ITextureBufferPoolInfo &info) {
     _formatSize            = formatInfo.size;
     _channels              = formatInfo.count;
     // _bufferViewCtor = getTypedArrayConstructor(formatInfo); // TODO(xwx): getTypedArrayConstructor not define
-    _roundUpFn = info.roundUpFn.has_value() ? info.roundUpFn.value() : nullptr;
-    _alignment = info.alignment.has_value() ? info.alignment.value() : 1;
+    _roundUpFn        = info.roundUpFn.has_value() ? info.roundUpFn.value() : nullptr;
+    _alignment        = info.alignment.has_value() ? info.alignment.value() : 1;
     _useMcDonaldAlloc = info.alignment.has_value() && info.alignment.value() == true;
 }
 
@@ -99,7 +89,7 @@ ITextureBufferHandle TextureBufferPool::alloc(uint32_t size) {
     }
     // create a new one
     auto     targetSize = static_cast<int32_t>(std::sqrt(size / _formatSize));
-    uint32_t texLength  = _roundUpFn ? _roundUpFn(targetSize, _formatSize) : std::max(1024, nearestPOT(targetSize));
+    uint32_t texLength  = _roundUpFn ? _roundUpFn(targetSize, _formatSize) : std::max(1024, static_cast<int>(utils::nextPOT(targetSize)));
     auto     newChunk   = _chunks[createChunk(texLength)];
 
     newChunk.start += size;
@@ -139,7 +129,7 @@ ITextureBufferHandle TextureBufferPool::alloc(uint32_t size, index_t chunkIdx) {
     }
     // create a new one
     auto     targetSize = static_cast<int32_t>(std::sqrt(size / _formatSize));
-    uint32_t texLength  = _roundUpFn ? _roundUpFn(targetSize, _formatSize) : std::max(1024, nearestPOT(targetSize));
+    uint32_t texLength  = _roundUpFn ? _roundUpFn(targetSize, _formatSize) : std::max(1024, static_cast<int>(utils::nextPOT(targetSize)));
     auto     newChunk   = _chunks[createChunk(texLength)];
 
     newChunk.start += size;
@@ -305,7 +295,7 @@ ITextureBufferHandle TextureBufferPool::mcDonaldAlloc(uint32_t size) {
     }
     // create a new one
     auto     targetSize = static_cast<int32_t>(std::sqrt(size / _formatSize));
-    uint32_t texLength  = _roundUpFn ? _roundUpFn(targetSize, _formatSize) : std::max(1024, nearestPOT(targetSize));
+    uint32_t texLength  = _roundUpFn ? _roundUpFn(targetSize, _formatSize) : std::max(1024, static_cast<int>(utils::nextPOT(targetSize)));
     auto     newChunk   = _chunks[createChunk(texLength)];
 
     newChunk.start += size;

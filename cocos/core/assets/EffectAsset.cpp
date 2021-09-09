@@ -183,29 +183,27 @@ std::vector<MacroRecord> EffectAsset::doCombine(const std::vector<MacroRecord> &
 }
 
 std::vector<MacroRecord> EffectAsset::generateRecords(const std::string &key, const IPreCompileInfoValueType &value) {
-    size_t                   index = value.index();
     std::vector<MacroRecord> ret;
-    if (index == 0) {
-        const std::vector<bool> &boolValues = std::get<0>(value);
-        for (const bool value : boolValues) {
+    if (auto *boolValues = std::get_if<std::vector<bool>>(&value)) {
+        for (const bool value : *boolValues) {
             MacroRecord record;
             record[key] = value;
             ret.emplace_back(record);
         }
-    } else if (index == 1) {
-        const std::vector<float> &floatValues = std::get<1>(value);
-        for (const bool value : floatValues) {
+    } else if (auto *floatValues = std::get_if<std::vector<float>>(&value)) {
+        for (const bool value : *floatValues) {
+            MacroRecord record;
+            record[key] = value;
+            ret.emplace_back(record);
+        }
+    } else if (auto *stringValues = std::get_if<std::vector<std::string>>(&value)) {
+        for (const std::string &value : *stringValues) {
             MacroRecord record;
             record[key] = value;
             ret.emplace_back(record);
         }
     } else {
-        const std::vector<std::string> &stringValues = std::get<2>(value);
-        for (const std::string &value : stringValues) {
-            MacroRecord record;
-            record[key] = value;
-            ret.emplace_back(record);
-        }
+        CC_ASSERT(false);
     }
 
     return ret;
@@ -214,29 +212,25 @@ std::vector<MacroRecord> EffectAsset::generateRecords(const std::string &key, co
 std::vector<MacroRecord> EffectAsset::insertInfoValue(const std::vector<MacroRecord> &records,
                                                       const std::string &             key,
                                                       const IPreCompileInfoValueType &value) {
-    size_t                   index = value.index();
     std::vector<MacroRecord> ret;
     for (const auto &record : records) {
-        if (index == 0) {
-            const std::vector<bool> &boolValues = std::get<0>(value);
-            for (const bool value : boolValues) {
+        if (auto *boolValues = std::get_if<std::vector<bool>>(&value)) {
+            for (const bool value : *boolValues) {
                 MacroRecord tmpRecord = record;
                 tmpRecord[key]        = value;
-                ret.push_back(tmpRecord);
+                ret.emplace_back(tmpRecord);
             }
-        } else if (index == 1) {
-            const std::vector<float> &floatValues = std::get<1>(value);
-            for (const bool value : floatValues) {
+        } else if (auto *floatValues = std::get_if<std::vector<float>>(&value)) {
+            for (const bool value : *floatValues) {
                 MacroRecord tmpRecord = record;
                 tmpRecord[key]        = value;
-                ret.push_back(tmpRecord);
+                ret.emplace_back(tmpRecord);
             }
-        } else {
-            const std::vector<std::string> &stringValues = std::get<2>(value);
-            for (const std::string &value : stringValues) {
+        } else if (auto *stringValues = std::get_if<std::vector<std::string>>(&value)) {
+            for (const std::string &value : *stringValues) {
                 MacroRecord tmpRecord = record;
                 tmpRecord[key]        = value;
-                ret.push_back(tmpRecord);
+                ret.emplace_back(tmpRecord);
             }
         }
     }

@@ -232,6 +232,8 @@ std::vector<MacroRecord> EffectAsset::insertInfoValue(const std::vector<MacroRec
                 tmpRecord[key]        = value;
                 ret.emplace_back(tmpRecord);
             }
+        } else {
+            CC_ASSERT(false);
         }
     }
 

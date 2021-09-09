@@ -1,9 +1,12 @@
 #include "core/builtin/BuiltinResMgr.h"
+#include "core/assets/EffectAsset.h"
 #include "core/assets/ImageAsset.h"
 #include "core/assets/Material.h"
 #include "core/assets/Texture2D.h"
 #include "core/assets/TextureCube.h"
+#include "core/builtin/Effects.h"
 #include "platform/Image.h"
+#include "rapidjson/document.h"
 #include "renderer/core/ProgramLib.h"
 
 namespace cc {
@@ -168,19 +171,32 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
     //    }
     //
     //    return Promise.resolve().then(() => {
-    //        effects.forEach((e, effectIndex) => {
-    //            const effect = Object.assign(new EffectAsset(), e);
-    //            effect.shaders.forEach((shaderInfo, shaderIndex) => {
-    //                const shaderSource = shaderSources[effectIndex][shaderIndex];
-    //                if (shaderSource) {
-    //                    shaderInfo[shaderVersionKey] = shaderSource;
-    //                }
+
+    rapidjson::Document doc;
+    doc.Parse(builtinEffects);
+
+    size_t          effectIndex = 0;
+    rapidjson::Type type        = doc.GetType();
+    for (const auto &e : doc.GetArray()) {
+        auto *effect = new EffectAsset();
+        effect->deserialize(e);
+
+        ++effectIndex;
+    }
+
+    //            builtinEffects.forEach((e, effectIndex) => {
+    //                const effect = Object.assign(new EffectAsset(), e);
+    //                effect.shaders.forEach((shaderInfo, shaderIndex) => {
+    //                    const shaderSource = shaderSources[effectIndex][shaderIndex];
+    //                    if (shaderSource) {
+    //                        shaderInfo[shaderVersionKey] = shaderSource;
+    //                    }
+    //                });
+    //                effect.hideInEditor = true;
+    //                effect.onLoaded();
     //            });
-    //            effect.hideInEditor = true;
-    //            effect.onLoaded();
-    //        });
-    //        this._initMaterials();
-    //    });
+    //            this._initMaterials();
+    //    //    });
 
     return true;
 }

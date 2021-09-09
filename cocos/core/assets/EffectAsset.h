@@ -35,6 +35,7 @@
 #include "core/assets/Asset.h"
 #include "gfx-base/GFXDef-common.h"
 #include "gfx-base/GFXShader.h"
+#include "rapidjson/document.h"
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "renderer/pipeline/Define.h"
@@ -56,7 +57,7 @@ struct IPassStates {
     std::optional<int32_t>                   priority;
     std::optional<gfx::PrimitiveMode>        primitive;
     std::optional<pipeline::RenderPassStage> stage;
-    std::optional<gfx::RasterizerState *>    rasterizerState;
+    std::optional<gfx::RasterizerState *>    rasterizerState; //cjh TODO: need to change to shared_ptr?
     std::optional<gfx::DepthStencilState *>  depthStencilState;
     std::optional<gfx::BlendState *>         blendState;
     std::optional<gfx::DynamicStateFlags>    dynamicStates;
@@ -65,12 +66,14 @@ struct IPassStates {
 
 using PassOverrides = IPassStates;
 
+using PassPropertyInfoMap = std::unordered_map<std::string, IPropertyInfo>;
+
 struct IPassInfo : public IPassStates {
-    std::string                                                   program; // auto-generated from 'vert' and 'frag'
-    std::optional<MacroRecord>                                    embeddedMacros;
-    index_t                                                       propertyIndex{-1};
-    std::optional<std::string>                                    switch_;
-    std::optional<std::unordered_map<std::string, IPropertyInfo>> properties;
+    std::string                        program; // auto-generated from 'vert' and 'frag'
+    std::optional<MacroRecord>         embeddedMacros;
+    index_t                            propertyIndex{-1};
+    std::optional<std::string>         switch_;
+    std::optional<PassPropertyInfoMap> properties;
 };
 
 struct IPassInfoFull final : public IPassInfo {
@@ -229,6 +232,8 @@ public:
     bool destroy() override;
     void initDefault(const std::optional<std::string> &uuid) override;
     bool validate() const override;
+
+    void deserialize(const rapidjson::Value &serializedData);
 
 protected:
     static std::vector<MacroRecord> doCombine(const std::vector<MacroRecord> &cur, const IPreCompileInfo &info, IPreCompileInfo::iterator iter);

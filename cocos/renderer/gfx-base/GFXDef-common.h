@@ -1228,8 +1228,8 @@ struct RasterizerState {
 
 // Use uint for all boolean values to convert memory to DepthStencilState* in shared memory.
 struct DepthStencilState {
-    uint           depthTest             = 1;
-    uint           depthWrite            = 1;
+    uint           depthTest             = 1; //cjh TODO: use bool instead?
+    uint           depthWrite            = 1; //cjh TODO: use bool instead?
     ComparisonFunc depthFunc             = ComparisonFunc::LESS;
     uint           stencilTestFront      = 0;
     ComparisonFunc stencilFuncFront      = ComparisonFunc::ALWAYS;

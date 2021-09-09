@@ -138,7 +138,7 @@ const char *builtinGLSL4 = R"([
       "frag": "\nprecision mediump float;\nlayout(location = 0) in vec2 v_uv;\nlayout(location = 1) in float v_percent;\nlayout(set = 1, binding = 1) uniform sampler2D mainTexture;\nvec4 frag () {\nvec4 color = texture(mainTexture, v_uv);\nfloat precent = clamp(v_percent, 0.0, 1.0);\ncolor.xyz *= precent;\nreturn color;\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = frag(); }",
     }
   ]
-];
+]
 
 )";
 

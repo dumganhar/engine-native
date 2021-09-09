@@ -114,14 +114,14 @@
     _keyboardEvent.action = [event isARepeat] ? cc::KeyboardEvent::Action::REPEAT
                                               : cc::KeyboardEvent::Action::PRESS;
     [self setModifierFlags:event];
-    cc::EventDispatcher::dispatchKeyboardEvent(_keyboardEvent);
+//cjh TODO:    cc::EventDispatcher::dispatchKeyboardEvent(_keyboardEvent);
 }
 
 - (void)keyUp:(NSEvent *)event {
     _keyboardEvent.key    = translateKeycode(event.keyCode);
     _keyboardEvent.action = cc::KeyboardEvent::Action::RELEASE;
     [self setModifierFlags:event];
-    cc::EventDispatcher::dispatchKeyboardEvent(_keyboardEvent);
+    //cjh TODO:    cc::EventDispatcher::dispatchKeyboardEvent(_keyboardEvent);
 }
 
 - (void)flagsChanged:(NSEvent *)event {
@@ -139,7 +139,7 @@
     _keyboardEvent.key = keyCode;
     _keyboardEvent.action = action;
     [self setModifierFlags:event];
-    cc::EventDispatcher::dispatchKeyboardEvent(_keyboardEvent);
+    //cjh TODO:    cc::EventDispatcher::dispatchKeyboardEvent(_keyboardEvent);
 }
 
 - (void)setModifierFlags:(NSEvent *)event {

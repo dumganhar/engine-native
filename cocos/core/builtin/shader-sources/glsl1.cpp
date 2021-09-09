@@ -136,7 +136,7 @@ const char *builtinGLSL1 = R"([
       "frag": "\nprecision mediump float;\nvarying vec2 v_uv;\nvarying float v_percent;\nuniform sampler2D mainTexture;\nvec4 frag () {\nvec4 color = texture2D(mainTexture, v_uv);\nfloat precent = clamp(v_percent, 0.0, 1.0);\ncolor.xyz *= precent;\nreturn color;\n}\nvoid main() { gl_FragColor = frag(); }",
     }
   ]
-];
+]
 
 )";
 

@@ -88,13 +88,18 @@ void Model::destroy() {
     _isDynamicBatching = false;
 }
 
-void Model::uploadMat4AsVec4x3(const Mat4 &mat, float *v1, float *v2, float *v3) {
-    uint size = sizeof(float) * 4;
-    memcpy(v1, mat.m, size);
-    memcpy(v2, mat.m + 4, size);
-    memcpy(v3, mat.m + 8, size);
+void Model::uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &v2, Float32Array &v3) {
+    v1[0] = mat.m[0];
+    v1[1] = mat.m[1];
+    v1[2] = mat.m[2];
     v1[3] = mat.m[12];
+    v2[0] = mat.m[4];
+    v2[1] = mat.m[5];
+    v2[2] = mat.m[6];
     v2[3] = mat.m[13];
+    v3[0] = mat.m[8];
+    v3[1] = mat.m[9];
+    v3[2] = mat.m[10];
     v3[3] = mat.m[14];
 }
 
@@ -135,11 +140,8 @@ void Model::updateUBOs(uint32_t stamp) {
     int                                          idx = _instMatWorldIdx;
     std::array<float, pipeline::UBOLocal::COUNT> bufferView;
     if (idx >= 0) {
-        const std::vector<uint8_t *> &attrs = getInstancedAttributeBlock()->views;
-        uploadMat4AsVec4x3(worldMatrix,
-                           reinterpret_cast<float *>(attrs[idx]),
-                           reinterpret_cast<float *>(attrs[idx + 1]),
-                           reinterpret_cast<float *>(attrs[idx + 2]));
+        std::vector<TypedArray> &attrs = getInstancedAttributeBlock()->views;
+        uploadMat4AsVec4x3(worldMatrix, std::get<Float32Array>(attrs[idx]), std::get<Float32Array>(attrs[idx + 1]), std::get<Float32Array>(attrs[idx + 2]));
     } else if (_localBuffer) {
         memcpy(bufferView.data() + pipeline::UBOLocal::MAT_WORLD_OFFSET, worldMatrix.m, sizeof(Mat4));
         Mat4::inverseTranspose(worldMatrix, &mat4);
@@ -269,9 +271,8 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         attr.isNormalized   = attribute.isNormalized;
         attr.location       = attribute.location;
         attrs.attributes.emplace_back(attr);
-        // TODO(xwx)
         const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)];
-        // const typeViewArray = new (getTypedArrayConstructor(info))(attrs.buffer.buffer, offset, info.count);
+        // const typeViewArray = new (getTypedArrayConstructor(info))(attrs.buffer.buffer, offset, info.count); // TODO(xwx): need refactor TypedArray related function
         attrs.views.emplace_back(/*typeViewArray*/);
         offset += info.size;
     }

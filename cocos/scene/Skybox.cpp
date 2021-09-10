@@ -30,6 +30,7 @@
 #include "core/Director.h"
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/scene-graph/SceneGlobal.h"
+#include "primitive/Primitive.h"
 #include "renderer/core/MaterialInstance.h"
 #include "renderer/core/PassUtils.h"
 #include "scene/Model.h"
@@ -65,7 +66,7 @@ void Skybox::setIsRGBE(bool val) {
 void Skybox::setEnvmap(TextureCube *val) {
     _envmap = val != nullptr ? val : _default;
     if (_envmap != nullptr) {
-        // Root::getInstance()->getPipeline()->getPipelineSceneData()->getAmbient()->getAlbedoArray()[3] = _envmap->getMipmaps().size(); // TODO(xwx): const cannot assignment
+        Root::getInstance()->getPipeline()->getPipelineSceneData()->getAmbient()->_albedoArray[3] = static_cast<float>(_envmap->getMipmaps().size());
         updateGlobalBinding();
     }
 }
@@ -84,14 +85,13 @@ void Skybox::activate() {
     _default         = BuiltinResMgr::getInstance()->get<TextureCube>(std::string("default-cube-texture"));
 
     if (_model == nullptr) {
-        // _model = Root::getInstance()->createModel(); // TODO(xwx): need to figure out usage
-        // this._model._initLocalDescriptors = () => {}; // TODO(xwx): need to figure out usage
+        _model = Root::getInstance()->createModel<scene::Model>();
+        _model->initLocalDescriptors(CC_INVALID_INDEX);
     }
     if (_envmap == nullptr) {
         _envmap = _default;
     }
-    // ambient.albedoArray[3] = this._envmap.mipmapLevel;
-    // ambient->getAlbedoArray()[3] = _envmap->getMipmaps().size(); // const array cannot be assignment
+    ambient->_albedoArray[3] = static_cast<float>(_envmap->getMipmaps().size());
 
     if (skyboxMaterial == nullptr) {
         auto *        mat = new Material();
@@ -110,8 +110,7 @@ void Skybox::activate() {
 
     if (_enabled) {
         if (skyboxMesh == nullptr) {
-            // skybox_mesh = legacyCC.utils.createMesh(legacyCC.primitives.box({ width: 2, height: 2, length: 2 })) as Mesh;
-            // skyboxMesh = createMesh(primitives) // TODO(xwx): need to figure out usage above
+            skyboxMesh = createMesh(create(PrimitiveType::BOX, IBoxOptions({.width = 2, .height = 2, .length = 2})), skyboxMesh);
             _model->initSubModel(0, skyboxMesh->getRenderingSubMeshes()[0], skyboxMaterial);
         }
     }

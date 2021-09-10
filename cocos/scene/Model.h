@@ -47,13 +47,15 @@ class RenderScene;
 class Pass;
 struct IMacroPatch;
 struct InstancedAttributeBlock {
-    std::vector<uint8_t>        buffer;
-    std::vector<uint8_t *>      views{};
+    Uint8Array                  buffer;
+    std::vector<TypedArray>     views;
     std::vector<gfx::Attribute> attributes;
 };
 
 class Model {
 public:
+    friend class Skybox;
+
     enum class Type {
         DEFAULT,
         SKINNING,
@@ -138,7 +140,6 @@ protected:
     virtual void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet);
     SubModel *   createSubModel() const;
 
-protected:
     Type            _type{Type::DEFAULT};
     bool            _transformUpdated{false};
     geometry::AABB *_worldBounds{nullptr};
@@ -163,7 +164,7 @@ protected:
     InstancedAttributeBlock         _instanceAttributeBlock{};
     std::vector<SubModel *>         _subModels;
     std::vector<gfx::Attribute>     _instanceAttributes;
-    static void                     uploadMat4AsVec4x3(const Mat4 &mat, float *v1, float *v2, float *v3);
+    static void                     uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &v2, Float32Array &v3);
     Texture2D *                     _lightmap{nullptr};
     Vec4                            _lightmapUVParam;
 

@@ -35,7 +35,6 @@
 #include "core/assets/Asset.h"
 #include "gfx-base/GFXDef-common.h"
 #include "gfx-base/GFXShader.h"
-#include "rapidjson/document.h"
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "renderer/pipeline/Define.h"
@@ -128,10 +127,12 @@ struct IBuiltinInfo {
     std::vector<IBuiltin> samplerTextures;
 };
 
+using BuiltinsStatisticsType = std::unordered_map<std::string, int32_t>;
+
 struct IBuiltins {
-    IBuiltinInfo                             globals;
-    IBuiltinInfo                             locals;
-    std::unordered_map<std::string, int32_t> statistics;
+    IBuiltinInfo           globals;
+    IBuiltinInfo           locals;
+    BuiltinsStatisticsType statistics;
 };
 
 struct IShaderSource {
@@ -233,8 +234,6 @@ public:
     void initDefault(const std::optional<std::string> &uuid) override;
     bool validate() const override;
 
-    void deserialize(const rapidjson::Value &serializedData);
-
 protected:
     static std::vector<MacroRecord> doCombine(const std::vector<MacroRecord> &cur, const IPreCompileInfo &info, IPreCompileInfo::iterator iter);
     static std::vector<MacroRecord> generateRecords(const std::string &key, const IPreCompileInfoValueType &value);
@@ -248,6 +247,8 @@ protected:
     static RegisteredEffectAssetMap __effects; //cjh TODO: how to clear when game exits.
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(EffectAsset);
+
+    friend class EffectAssetDeserializer;
 };
 
 } // namespace cc

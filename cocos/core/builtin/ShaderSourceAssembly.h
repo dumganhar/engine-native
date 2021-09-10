@@ -25,6 +25,19 @@
 
 #pragma once
 
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 namespace cc {
 
-}
+using ShaderInfo      = std::unordered_map<std::string, std::string>;
+using ShaderSource    = std::vector<std::vector<ShaderInfo>>;
+using ShaderSourceMap = std::unordered_map<std::string, const ShaderSource *>;
+
+class ShaderSourceAssembly final {
+public:
+    static const ShaderSourceMap &get();
+};
+
+} // namespace cc

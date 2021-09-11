@@ -94,8 +94,8 @@ void Pass::fillPipelineInfo(Pass *pass, const PassOverrides &info) {
         pass->_dynamicStates = info.dynamicStates.value();
     }
     if (info.phase.has_value()) {
-        std::string phaseStr = std::get<std::string>(info.phase.value());
-        pass->_phase = pipeline::getPhaseID(phaseStr);
+        pass->_phaseString = info.phase.value();
+        pass->_phase = pipeline::getPhaseID(pass->_phaseString);
     }
 
     auto *bs = pass->_blendState;
@@ -415,7 +415,7 @@ IPassInfoFull Pass::getPassInfoFull() const {
     ret.depthStencilState = _depthStencilState;
     ret.blendState = _blendState;
     ret.dynamicStates = _dynamicStates;
-    ret.phase = _phase;
+    ret.phase = _phaseString;
     
     return ret;
 }

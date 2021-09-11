@@ -26,16 +26,18 @@ THE SOFTWARE.
 
 #pragma once
 
+#include <stdint.h>
+
+#include "math/Vec4.h"
+
 namespace cc {
 
 class Color {
-private:
-    /* data */
 public:
-    float r;
-    float g;
-    float b;
-    float a;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
     /**
      * Constructs a new color initialized to all zeros.
      */
@@ -49,14 +51,14 @@ public:
      * @param zz The z coordinate.
      * @param ww The w coordinate.
      */
-    Color(float r, float g, float b, float a);
+    explicit Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
     /**
      * Constructs a new color from the values in the specified array.
      *
      * @param array An array containing the elements of the color in the order r, g, b, a.
      */
-    explicit Color(const float *src);
+    explicit Color(const uint8_t *src);
 
     /**
      * Constructs a color that describes the direction between the specified points.
@@ -82,14 +84,14 @@ public:
      * @param zz The new z coordinate.
      * @param ww The new w coordinate.
      */
-    void set(float r, float g, float b, float a);
+    void set(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
     /**
      * Sets the elements of this color from the values in the specified array.
      *
      * @param array An array containing the elements of the color in the order r, g, b, a.
      */
-    void set(const float *array);
+    void set(const uint8_t *array);
 
     /**
      * Sets the elements of this color to those in the specified color.
@@ -105,6 +107,8 @@ public:
      * @param p2 The second point.
      */
     void set(const Color &p1, const Color &p2);
+
+    Vec4 toVec4() const;
 };
 
-}
+} // namespace cc

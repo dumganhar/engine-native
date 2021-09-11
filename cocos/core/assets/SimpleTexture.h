@@ -57,7 +57,7 @@ public:
      * @en The GFX Texture resource
      * @zh 获取此贴图底层的 GFX 贴图对象。
      */
-    inline gfx::Texture *getGFXTexture() {
+    gfx::Texture *getGFXTexture() const override {
         return _gfxTexture;
     }
 

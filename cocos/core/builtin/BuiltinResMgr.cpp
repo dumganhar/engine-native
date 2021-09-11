@@ -7,9 +7,11 @@
 #include "core/builtin/Effects.h"
 #include "core/builtin/ShaderSourceAssembly.h"
 #include "core/data/deserializer/AssetDeserializerFactory.h"
+#include "math/Color.h"
 #include "platform/Image.h"
 #include "rapidjson/document.h"
 #include "renderer/core/ProgramLib.h"
+#include "scene/Pass.h"
 
 namespace cc {
 
@@ -216,8 +218,7 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
 }
 
 void BuiltinResMgr::initMaterials() {
-    auto &                  resources = _resources;
-    std::vector<Material *> materialsToBeCompiled;
+    auto &resources = _resources;
 
     // standard material
     auto *standardMtl = new Material(); //cjh TODO: how to release?
@@ -226,32 +227,32 @@ void BuiltinResMgr::initMaterials() {
         .effectName = "standard",
     });
     resources[standardMtl->getUuid()] = standardMtl;
-    materialsToBeCompiled.emplace_back(standardMtl);
+    _materialsToBeCompiled.emplace_back(standardMtl);
 
     // material indicating missing effect (yellow)
     auto *missingEfxMtl = new Material();
     missingEfxMtl->setUuid("missing-effect-material");
     missingEfxMtl->initialize({.effectName = "unlit",
                                .defines    = MacroRecord{{"USE_COLOR", true}}});
-    //    missingEfxMtl->setProperty("mainColor", Color("#ffff00"));
+    missingEfxMtl->setProperty("mainColor", Color{255, 255, 0, 255}); // #ffff00;
     resources[missingEfxMtl->getUuid()] = missingEfxMtl;
-    materialsToBeCompiled.emplace_back(missingEfxMtl);
+    _materialsToBeCompiled.emplace_back(missingEfxMtl);
 
     // material indicating missing material (purple)
     auto *missingMtl = new Material();
     missingMtl->setUuid("missing-material");
     missingMtl->initialize({.effectName = "unlit",
                             .defines    = MacroRecord{{"USE_COLOR", true}}});
-    //cjh    missingMtl->setProperty("mainColor", Color('#ff00ff'));
+    missingMtl->setProperty("mainColor", Color{255, 0, 255, 255}); // #ff00ff
     resources[missingMtl->getUuid()] = missingMtl;
-    materialsToBeCompiled.emplace_back(missingMtl);
+    _materialsToBeCompiled.emplace_back(missingMtl);
 
     auto *clearStencilMtl = new Material();
     clearStencilMtl->setUuid("default-clear-stencil");
     clearStencilMtl->initialize({.effectName = "clear-stencil",
                                  .defines    = MacroRecord{{"USE_TEXTURE", false}}});
     resources[clearStencilMtl->getUuid()] = clearStencilMtl;
-    materialsToBeCompiled.emplace_back(clearStencilMtl);
+    _materialsToBeCompiled.emplace_back(clearStencilMtl);
 
     // sprite material
     auto *spriteMtl = new Material();
@@ -259,7 +260,7 @@ void BuiltinResMgr::initMaterials() {
     spriteMtl->initialize({.effectName = "sprite",
                            .defines    = MacroRecord{{"USE_TEXTURE", false}}});
     resources[spriteMtl->getUuid()] = spriteMtl;
-    materialsToBeCompiled.emplace_back(spriteMtl);
+    _materialsToBeCompiled.emplace_back(spriteMtl);
 
     // sprite material
     auto *spriteColorMtl = new Material();
@@ -267,7 +268,7 @@ void BuiltinResMgr::initMaterials() {
     spriteColorMtl->initialize({.effectName = "sprite",
                                 .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}});
     resources[spriteColorMtl->getUuid()] = spriteColorMtl;
-    materialsToBeCompiled.emplace_back(spriteColorMtl);
+    _materialsToBeCompiled.emplace_back(spriteColorMtl);
 
     // sprite alpha test material
     auto *alphaTestMaskMtl = new Material();
@@ -275,7 +276,7 @@ void BuiltinResMgr::initMaterials() {
     alphaTestMaskMtl->initialize({.effectName = "sprite",
                                   .defines    = MacroRecord{{"USE_TEXTURE", true}, {"USE_ALPHA_TEST", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}});
     resources[alphaTestMaskMtl->getUuid()] = alphaTestMaskMtl;
-    materialsToBeCompiled.emplace_back(alphaTestMaskMtl);
+    _materialsToBeCompiled.emplace_back(alphaTestMaskMtl);
 
     // sprite gray material
     auto *spriteGrayMtl = new Material();
@@ -283,7 +284,7 @@ void BuiltinResMgr::initMaterials() {
     spriteGrayMtl->initialize({.effectName = "sprite",
                                .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", true}}});
     resources[spriteGrayMtl->getUuid()] = spriteGrayMtl;
-    materialsToBeCompiled.emplace_back(spriteGrayMtl);
+    _materialsToBeCompiled.emplace_back(spriteGrayMtl);
 
     // sprite alpha material
     auto *spriteAlphaMtl = new Material();
@@ -291,7 +292,7 @@ void BuiltinResMgr::initMaterials() {
     spriteAlphaMtl->initialize({.effectName = "sprite",
                                 .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", false}}});
     resources[spriteAlphaMtl->getUuid()] = spriteAlphaMtl;
-    materialsToBeCompiled.emplace_back(spriteAlphaMtl);
+    _materialsToBeCompiled.emplace_back(spriteAlphaMtl);
 
     // sprite alpha & gray material
     auto *spriteAlphaGrayMtl = new Material();
@@ -299,42 +300,42 @@ void BuiltinResMgr::initMaterials() {
     spriteAlphaGrayMtl->initialize({.effectName = "sprite",
                                     .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", true}}});
     resources[spriteAlphaGrayMtl->getUuid()] = spriteAlphaGrayMtl;
-    materialsToBeCompiled.emplace_back(spriteAlphaGrayMtl);
+    _materialsToBeCompiled.emplace_back(spriteAlphaGrayMtl);
 
     // ui graphics material
     auto *defaultGraphicsMtl = new Material();
     defaultGraphicsMtl->setUuid("ui-graphics-material");
     defaultGraphicsMtl->initialize({.effectName = "graphics"});
     resources[defaultGraphicsMtl->getUuid()] = defaultGraphicsMtl;
-    materialsToBeCompiled.emplace_back(defaultGraphicsMtl);
+    _materialsToBeCompiled.emplace_back(defaultGraphicsMtl);
 
     // default particle material
     auto *defaultParticleMtl = new Material();
     defaultParticleMtl->setUuid("default-particle-material");
     defaultParticleMtl->initialize({.effectName = "particle"});
     resources[defaultParticleMtl->getUuid()] = defaultParticleMtl;
-    materialsToBeCompiled.emplace_back(defaultParticleMtl);
+    _materialsToBeCompiled.emplace_back(defaultParticleMtl);
 
     // default particle gpu material
     auto *defaultParticleGPUMtl = new Material();
     defaultParticleGPUMtl->setUuid("default-particle-gpu-material");
     defaultParticleGPUMtl->initialize({.effectName = "particle-gpu"});
     resources[defaultParticleGPUMtl->getUuid()] = defaultParticleGPUMtl;
-    materialsToBeCompiled.emplace_back(defaultParticleGPUMtl);
+    _materialsToBeCompiled.emplace_back(defaultParticleGPUMtl);
 
     // default particle material
     auto *defaultTrailMtl = new Material();
     defaultTrailMtl->setUuid("default-trail-material");
     defaultTrailMtl->initialize({.effectName = "particle-trail"});
     resources[defaultTrailMtl->getUuid()] = defaultTrailMtl;
-    materialsToBeCompiled.emplace_back(defaultTrailMtl);
+    _materialsToBeCompiled.emplace_back(defaultTrailMtl);
 
     // default particle material
     auto *defaultBillboardMtl = new Material();
     defaultBillboardMtl->setUuid("default-billboard-material");
     defaultBillboardMtl->initialize({.effectName = "billboard"});
     resources[defaultBillboardMtl->getUuid()] = defaultBillboardMtl;
-    materialsToBeCompiled.emplace_back(defaultBillboardMtl);
+    _materialsToBeCompiled.emplace_back(defaultBillboardMtl);
 
     // ui spine two color material
     auto *spineTwoColorMtl = new Material();
@@ -346,16 +347,19 @@ void BuiltinResMgr::initMaterials() {
                                       {"IS_GRAY", false},
                                   }});
     resources[spineTwoColorMtl->getUuid()] = spineTwoColorMtl;
-    materialsToBeCompiled.emplace_back(spineTwoColorMtl);
+    _materialsToBeCompiled.emplace_back(spineTwoColorMtl);
     //
     //cjh TODO:    game.on(Game.EVENT_GAME_INITED, () => {
-    //        for (let i = 0; i < materialsToBeCompiled.length; ++i) {
-    //            const mat = materialsToBeCompiled[i];
-    //            for (let j = 0; j < mat.passes.length; ++j) {
-    //                mat.passes[j].tryCompile();
-    //            }
-    //        }
+    // tryCompileAllPasses();
     //    });
+}
+
+void BuiltinResMgr::tryCompileAllPasses() {
+    for (auto &mat : _materialsToBeCompiled) {
+        for (auto &pass : mat->getPasses()) {
+            pass->tryCompile();
+        }
+    }
 }
 
 void BuiltinResMgr::initTexture2DWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel) {

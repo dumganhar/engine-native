@@ -99,10 +99,10 @@ bool TextureBase::destroy() {
     return destroyed;
 }
 
-gfx::Sampler *TextureBase::getGFXSampler() {
+gfx::Sampler *TextureBase::getGFXSampler() const {
     if (_gfxSampler == nullptr) {
         if (_gfxDevice != nullptr) {
-            _gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
+            const_cast<TextureBase *>(this)->_gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
         } else {
             //cjh            errorID(9302);
         }

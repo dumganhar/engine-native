@@ -25,16 +25,16 @@
 
 #pragma once
 
-#include <vector>
 #include <array>
-#include "math/Vec3.h"
-#include "math/Vec2.h"
-#include "math/Mat4.h"
-#include "math/Color.h"
-#include "renderer/gfx-base/GFXShader.h"
+#include <vector>
 #include "core/assets/Material.h"
-#include "scene/Define.h"
 #include "core/geometry/Sphere.h"
+#include "math/Color.h"
+#include "math/Mat4.h"
+#include "math/Vec2.h"
+#include "math/Vec3.h"
+#include "renderer/gfx-base/GFXShader.h"
+#include "scene/Define.h"
 
 namespace cc {
 namespace scene {
@@ -129,7 +129,7 @@ enum class PCFType {
 };
 
 struct ShadowInfo {
-    Color      shadowColor{0.F, 0.F, 0.F, 76.F};
+    Color      shadowColor{0, 0, 0, 76};
     bool       enabled{false};
     Vec3       normal{0.F, 1.F, 0.F};
     float      distance{0.F};
@@ -310,7 +310,7 @@ private:
     uint32_t _maxReceived{4};
 
     Vec3                 _normal{0.F, 1.F, 0.F};
-    Color                _shadowColor{0.F, 0.F, 0.F, 76.F};
+    Color                _shadowColor{0, 0, 0, 76};
     std::array<float, 4> _shadowColor4f;
     Mat4                 _matLight;
     Material *           _material{nullptr};

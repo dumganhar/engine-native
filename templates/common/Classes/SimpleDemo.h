@@ -24,6 +24,7 @@
  ****************************************************************************/
 #pragma once
 
+#include "core/Root.h"
 #include "renderer/gfx-base/GFXDef.h"
 
 class SimpleDemo {
@@ -36,4 +37,5 @@ public:
 
 private:
     cc::gfx::Device *_device{nullptr};
+    cc::Root *       _root{nullptr};
 };

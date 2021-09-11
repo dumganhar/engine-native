@@ -136,6 +136,7 @@ uint64_t Pass::getPassHash(Pass *pass) {
 
 Pass::Pass() {
     _device            = gfx::Device::getInstance();
+    _root              = Root::getInstance();
     _phase             = pipeline::getPhaseID("default");
     _blendState        = new gfx::BlendState(); //cjh how to delete ?
     _depthStencilState = new gfx::DepthStencilState();
@@ -355,8 +356,10 @@ void Pass::resetTextures() {
 }
 
 bool Pass::tryCompile() {
-    //cjh    const { pipeline } = _root;
-    //    if (!pipeline) { return false; }
+    if (_root->getPipeline() == nullptr) {
+        return false;
+    }
+
     syncBatchingScheme();
     auto *shader = ProgramLib::getInstance()->getGFXShader(_device, _programName, _defines, _root->getPipeline());
     if (!shader) {
@@ -470,9 +473,10 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         lastOffset += std::ceil(size / alignment) * alignment;
         lastSize = size;
     }
+
     // create gfx buffer resource
-    uint32_t totalSize = startOffsets[startOffsets.size() - 1] + lastSize;
-    if (totalSize) {
+    uint32_t totalSize = !startOffsets.empty() ? (startOffsets[startOffsets.size() - 1] + lastSize) : 0;
+    if (totalSize > 0) {
         // https://bugs.chromium.org/p/chromium/issues/detail?id=988988
         bufferInfo.size = std::ceil(totalSize / 16) * 16;
         _rootBuffer     = device->createBuffer(bufferInfo);
@@ -485,9 +489,15 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         bufferViewInfo.buffer = _rootBuffer;
         bufferViewInfo.offset = startOffsets[count++];
         bufferViewInfo.range  = std::ceil(size / 16) * 16;
+        if (binding >= _buffers.size()) {
+            _buffers.resize(binding + 1);
+        }
         auto *bufferView = _buffers[binding] = device->createBuffer(bufferViewInfo);
         // non-builtin UBO data pools, note that the effect compiler
         // guarantees these bindings to be consecutive, starting from 0 and non-array-typed
+        if (binding >= _blocks.size()) {
+            _blocks.resize(binding + 1);
+        }
         _blocks[binding].data = reinterpret_cast<float *>(_rootBlock.data() + bufferViewInfo.offset);
         _blocks[binding].size = size / 4;
         _descriptorSet->bindBuffer(binding, bufferView);

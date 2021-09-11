@@ -99,13 +99,13 @@ public:
      * @en Gets the related [[Texture]] resource, it's also the color attachment for the render window
      * @zh 获取渲染贴图的 GFX 资源，同时也是渲染窗口所指向的颜色缓冲贴图资源
      */
-    gfx::Texture *getGFXTexture();
+    gfx::Texture *getGFXTexture() const override;
 
     /**
      * @en Gets the sampler resource for the render texture
      * @zh 获取渲染贴图的采样器
      */
-    gfx::Sampler *getGFXSampler() override;
+    gfx::Sampler *getGFXSampler() const override;
 
     /**
      * @en Gets the sampler hash for the render texture

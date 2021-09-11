@@ -42,7 +42,7 @@ namespace scenegraph {
 class Ambient;
 class AmbientInfo {
 protected:
-    Color    _skyColor{51, 128, 204, 1.0F};
+    Color    _skyColor{51, 128, 204, 1};
     float    _skyIllum{2000.0F};
     Color    _groundAlbedo{51, 51, 51, 255};
     Ambient *_resource;

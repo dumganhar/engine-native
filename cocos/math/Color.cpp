@@ -35,14 +35,14 @@ Color::Color()
   a(0.0F) {
 }
 
-Color::Color(float r, float g, float b, float a)
+Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 : r(r),
   g(g),
   b(b),
   a(a) {
 }
 
-Color::Color(const float *src) {
+Color::Color(const uint8_t *src) {
     set(src);
 }
 
@@ -54,14 +54,14 @@ Color::Color(const Color &copy) {
     set(copy);
 }
 
-void Color::set(float r, float g, float b, float a) {
+void Color::set(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     this->r = r;
     this->g = g;
     this->b = b;
     this->a = a;
 }
 
-void Color::set(const float *array) {
+void Color::set(const uint8_t *array) {
     r = array[0];
     g = array[1];
     b = array[2];
@@ -82,4 +82,8 @@ void Color::set(const Color &p1, const Color &p2) {
     a = p2.a - p1.a;
 }
 
+Vec4 Color::toVec4() const {
+    return {r / 255.F, g / 255.F, b / 255.F, a / 255.F};
 }
+
+} // namespace cc

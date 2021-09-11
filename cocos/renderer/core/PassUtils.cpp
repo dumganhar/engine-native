@@ -160,11 +160,20 @@ const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer = {
      }},
     {gfx::Type::FLOAT4, [](float *a, const MaterialProperty &v, index_t idx) {
          const auto *p = std::get_if<Vec4>(&v);
-         CC_ASSERT(p != nullptr);
-         a[idx]     = p->x;
-         a[idx + 1] = p->y;
-         a[idx + 2] = p->z;
-         a[idx + 3] = p->w;
+         if (p != nullptr) {
+             a[idx]     = p->x;
+             a[idx + 1] = p->y;
+             a[idx + 2] = p->z;
+             a[idx + 3] = p->w;
+         } else {
+             const auto *pColor = std::get_if<Color>(&v);
+             CC_ASSERT(pColor != nullptr);
+             Vec4 colorFloat = pColor->toVec4();
+             a[idx]          = colorFloat.x;
+             a[idx + 1]      = colorFloat.y;
+             a[idx + 2]      = colorFloat.z;
+             a[idx + 3]      = colorFloat.w;
+         }
      }},
     {gfx::Type::MAT3, [](float *a, const MaterialProperty &v, index_t idx) {
          const auto *p = std::get_if<Mat3>(&v);

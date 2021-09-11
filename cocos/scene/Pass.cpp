@@ -135,6 +135,7 @@ uint64_t Pass::getPassHash(Pass *pass) {
 }
 
 Pass::Pass() {
+    _device            = gfx::Device::getInstance();
     _phase             = pipeline::getPhaseID("default");
     _blendState        = new gfx::BlendState(); //cjh how to delete ?
     _depthStencilState = new gfx::DepthStencilState();

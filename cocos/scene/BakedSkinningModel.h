@@ -34,20 +34,12 @@
 #include "scene/MorphModel.h"
 namespace cc {
 namespace scene {
-struct BakedAnimInfo {
-    gfx::Buffer *buffer{nullptr};
-    uint8_t *    data{nullptr};
-    uint8_t *    dirty{nullptr};
-    inline bool  getDirty() const {
-        return static_cast<bool>(*reinterpret_cast<int32_t *>(dirty));
-    }
-};
 struct BakedJointInfo {
-    gfx::Buffer *buffer{nullptr};
-    uint8_t *    jointTextureInfo{nullptr};
-    // IJointTextureHandle *         texture{nullptr};
-    BakedAnimInfo                 animInfo;
-    std::vector<geometry::AABB *> boundsInfo;
+    gfx::Buffer *                      buffer{nullptr};
+    Float32Array                       jointTextureInfo;
+    std::optional<IJointTextureHandle> texture;
+    IAnimInfo                          animInfo;
+    std::vector<geometry::AABB *>      boundsInfo;
 };
 class BakedSkinningModel final : public MorphModel {
 public:
@@ -83,17 +75,15 @@ public:
     }
 
 protected:
-    // TODO(xwx)
-    // applyJointTexture(IJointTextureHandle *texture) const; // TODO(xwx): IJointTextureHandle not define
+    void applyJointTexture(const std::optional<IJointTextureHandle> &texture);
 
 private:
-    BakedJointInfo _jointMedium;
-    bool           _isUploadAnim{false};
-    index_t        _instAnimInfoIdx{CC_INVALID_INDEX};
-    // TODO(xwx)
-    // DataPoolManager _dataPoolManager;
-    Skeleton *_skeleton{nullptr};
-    Mesh *    _mesh{nullptr};
+    BakedJointInfo   _jointMedium;
+    bool             _isUploadAnim{false};
+    index_t          _instAnimInfoIdx{CC_INVALID_INDEX};
+    DataPoolManager *_dataPoolManager{nullptr};
+    Skeleton *       _skeleton{nullptr};
+    Mesh *           _mesh{nullptr};
     // AnimationClip* uploadedAnim;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(BakedSkinningModel);

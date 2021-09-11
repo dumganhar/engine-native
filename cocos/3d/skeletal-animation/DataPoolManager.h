@@ -25,19 +25,27 @@
 
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include "3d/skeletal-animation/SkeletalAnimationUtils.h"
+#include "renderer/gfx-base/GFXDevice.h"
 
 namespace cc {
-
-using ShaderInfo      = std::unordered_map<std::string, std::string>;
-using ShaderSource    = std::vector<std::vector<ShaderInfo>>;
-using ShaderSourceMap = std::unordered_map<std::string, const ShaderSource *>;
-
-class ShaderSourceAssembly final {
+class DataPoolManager {
 public:
-    static const ShaderSourceMap &get();
+    DataPoolManager() = default;
+    explicit DataPoolManager(gfx::Device *device);
+    ~DataPoolManager() = default;
+
+    JointTexturePool *  jointTexturePool{nullptr};
+    JointAnimationInfo *jointAnimationInfo{nullptr};
+
+    void releaseSkeleton(Skeleton *skeleton) const;
+
+    // void releaseAnimationClip(AnimationClip * clip) const; // TODO(xwx): AnimationClip not implemented
+
+    void clear() const;
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(DataPoolManager);
 };
 
 } // namespace cc

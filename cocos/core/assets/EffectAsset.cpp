@@ -120,7 +120,7 @@ void EffectAsset::precompile() {
         auto shader      = _shaders[i];
         auto combination = _combinations[i];
         if (combination.empty()) continue;
- 
+
         //TODO: minggo (do unit test)
         std::vector<MacroRecord> defines = EffectAsset::doCombine(std::vector<MacroRecord>(), combination, combination.begin());
         for (auto &define : defines) {

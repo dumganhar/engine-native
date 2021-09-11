@@ -23,21 +23,25 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#pragma once
-
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include "3d/skeletal-animation/DataPoolManager.h"
 
 namespace cc {
+DataPoolManager::DataPoolManager(gfx::Device *device) { // TODO(xwx): where to destruction?
+    jointTexturePool   = new JointTexturePool(device);
+    jointAnimationInfo = new JointAnimationInfo(device);
+}
 
-using ShaderInfo      = std::unordered_map<std::string, std::string>;
-using ShaderSource    = std::vector<std::vector<ShaderInfo>>;
-using ShaderSourceMap = std::unordered_map<std::string, const ShaderSource *>;
+void DataPoolManager::releaseSkeleton(Skeleton *skeleton) const {
+    jointTexturePool->releaseSkeleton(skeleton);
+}
 
-class ShaderSourceAssembly final {
-public:
-    static const ShaderSourceMap &get();
-};
+// TODO(xwx): AnimationClip not implemented
+// void DataPoolManager::releaseAnimationClip(AnimationClip * clip) const{
+//     jointTexturePool->releaseAnimationClip(clip);
+// }
 
+void DataPoolManager::clear() const { // where to destory?
+    jointTexturePool->clear();
+    jointAnimationInfo->clear();
+}
 } // namespace cc

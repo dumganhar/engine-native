@@ -53,7 +53,7 @@ void SimpleDemo::setup(int width, int height) {
 }
 
 void SimpleDemo::step(float dt) {
-    CC_LOG_INFO("SimpleDemo::%s, dt: %.06f", __FUNCTION__, dt);
+    //    CC_LOG_INFO("SimpleDemo::%s, dt: %.06f", __FUNCTION__, dt);
 }
 
 void SimpleDemo::finalize() {

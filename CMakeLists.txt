@@ -650,6 +650,8 @@ cocos_source_files(
                  cocos/renderer/core/MaterialInstance.cpp
                  cocos/renderer/core/PassInstance.h
                  cocos/renderer/core/PassInstance.cpp
+                 cocos/renderer/core/TextureBufferPool.h
+                 cocos/renderer/core/TextureBufferPool.cpp
 
                  cocos/renderer/GFXDeviceManager.h
 
@@ -1275,6 +1277,11 @@ cocos_source_files(
     cocos/3d/misc/CreateMesh.cpp
     cocos/3d/misc/BufferBlob.h
     cocos/3d/misc/BufferBlob.cpp
+
+    cocos/3d/skeletal-animation/DataPoolManager.h
+    cocos/3d/skeletal-animation/DataPoolManager.cpp
+    cocos/3d/skeletal-animation/SkeletalAnimationUtils.h
+    cocos/3d/skeletal-animation/SkeletalAnimationUtils.cpp
 )
 
 ##### core
@@ -1418,6 +1425,11 @@ cocos_source_files(
 
     cocos/core/data/Object.cpp
     cocos/core/data/Object.h
+    cocos/core/data/deserializer/EffectAssetDeserializer.cpp
+    cocos/core/data/deserializer/EffectAssetDeserializer.h
+    cocos/core/data/deserializer/IAssetDeserializer.h
+    cocos/core/data/deserializer/AssetDeserializerFactory.cpp
+    cocos/core/data/deserializer/AssetDeserializerFactory.h
 
     cocos/core/event/CallbacksInvoker.cpp
     cocos/core/event/CallbacksInvoker.h

@@ -450,7 +450,11 @@ gfx::DescriptorSetLayout *ProgramLib::getDescriptorSetLayout(gfx::Device *device
     assert(itTmpl != _templates.end());
     const auto &tmpl      = itTmpl->second;
     auto        itTplInfo = _templateInfos.find(tmpl.hash);
-    auto &      tmplInfo  = itTplInfo->second;
+    if (itTplInfo == _templateInfos.end()) {
+        return nullptr;
+    }
+
+    auto &tmplInfo = itTplInfo->second;
     if (tmplInfo.setLayouts.empty()) {
         gfx::DescriptorSetLayoutInfo info;
         tmplInfo.setLayouts.resize(static_cast<size_t>(pipeline::SetIndex::COUNT));

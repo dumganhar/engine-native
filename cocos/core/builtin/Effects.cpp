@@ -871,7 +871,7 @@ const char *builtinEffects = R"([
       }
     ]
   }
-];
+]
 
 )";
 

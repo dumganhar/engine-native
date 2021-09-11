@@ -25,19 +25,16 @@
 
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include "rapidjson/document.h"
 
 namespace cc {
 
-using ShaderInfo      = std::unordered_map<std::string, std::string>;
-using ShaderSource    = std::vector<std::vector<ShaderInfo>>;
-using ShaderSourceMap = std::unordered_map<std::string, const ShaderSource *>;
+class Asset;
 
-class ShaderSourceAssembly final {
+class IAssetDeserializer {
 public:
-    static const ShaderSourceMap &get();
+    virtual ~IAssetDeserializer()                                                        = default;
+    virtual void deserialize(const rapidjson::Value &serializedData, Asset *effectAsset) = 0;
 };
 
 } // namespace cc

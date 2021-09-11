@@ -25,19 +25,20 @@
 
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include <memory>
+
+#include "core/data/deserializer/EffectAssetDeserializer.h"
 
 namespace cc {
 
-using ShaderInfo      = std::unordered_map<std::string, std::string>;
-using ShaderSource    = std::vector<std::vector<ShaderInfo>>;
-using ShaderSourceMap = std::unordered_map<std::string, const ShaderSource *>;
+enum class DeserializeAssetType {
+    EFFECT,
+    MATERIAL,
+};
 
-class ShaderSourceAssembly final {
+class AssetDeserializerFactory final {
 public:
-    static const ShaderSourceMap &get();
+    static std::shared_ptr<IAssetDeserializer> createAssetDeserializer(DeserializeAssetType type);
 };
 
 } // namespace cc

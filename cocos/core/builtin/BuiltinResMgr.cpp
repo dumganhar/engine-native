@@ -1,9 +1,14 @@
 #include "core/builtin/BuiltinResMgr.h"
+#include "core/assets/EffectAsset.h"
 #include "core/assets/ImageAsset.h"
 #include "core/assets/Material.h"
 #include "core/assets/Texture2D.h"
 #include "core/assets/TextureCube.h"
+#include "core/builtin/Effects.h"
+#include "core/builtin/ShaderSourceAssembly.h"
+#include "core/data/deserializer/AssetDeserializerFactory.h"
 #include "platform/Image.h"
+#include "rapidjson/document.h"
 #include "renderer/core/ProgramLib.h"
 
 namespace cc {
@@ -159,28 +164,53 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
         return false;
     }
     //
-    //    const shaderSources = shaderSourceAssembly[shaderVersionKey];
-    //    if (!shaderSources) {
-    //        return Promise.reject(Error(
-    //            `Current device is requiring builtin shaders of version ${shaderVersionKey} `
-    //            + `but shaders of that version are not assembled in this build.`,
-    //        ));
-    //    }
+    const ShaderSource *shaderSources = nullptr;
+    if (const auto iter = ShaderSourceAssembly::get().find(shaderVersionKey); iter != ShaderSourceAssembly::get().cend()) {
+        shaderSources = iter->second;
+    }
+
+    if (nullptr == shaderSources) {
+        CC_LOG_ERROR("Current device is requiring builtin shaders of version %s, but shaders of that version are not assembled in this build.", shaderVersionKey);
+        return false;
+    }
     //
     //    return Promise.resolve().then(() => {
-    //        effects.forEach((e, effectIndex) => {
-    //            const effect = Object.assign(new EffectAsset(), e);
-    //            effect.shaders.forEach((shaderInfo, shaderIndex) => {
-    //                const shaderSource = shaderSources[effectIndex][shaderIndex];
-    //                if (shaderSource) {
-    //                    shaderInfo[shaderVersionKey] = shaderSource;
-    //                }
-    //            });
-    //            effect.hideInEditor = true;
-    //            effect.onLoaded();
-    //        });
-    //        this._initMaterials();
-    //    });
+
+    rapidjson::Document doc;
+    doc.Parse(builtinEffects);
+
+    index_t         effectIndex       = 0;
+    rapidjson::Type type              = doc.GetType();
+    auto            assetDeserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::EFFECT);
+    for (const auto &e : doc.GetArray()) {
+        auto *effect = new EffectAsset();
+        assetDeserializer->deserialize(e, effect);
+
+        index_t shaderIndex = 0;
+        for (auto &shaderInfo : effect->_shaders) {
+            const ShaderInfo &shaderSource = (*shaderSources)[effectIndex][shaderIndex];
+            if (!shaderSource.empty()) {
+                if (0 == strcmp(shaderVersionKey, "glsl1")) {
+                    shaderInfo.glsl1.vert = shaderSource.at("vert");
+                    shaderInfo.glsl1.frag = shaderSource.at("frag");
+                } else if (0 == strcmp(shaderVersionKey, "glsl3")) {
+                    shaderInfo.glsl3.vert = shaderSource.at("vert");
+                    shaderInfo.glsl3.frag = shaderSource.at("frag");
+                } else if (0 == strcmp(shaderVersionKey, "glsl4")) {
+                    shaderInfo.glsl4.vert = shaderSource.at("vert");
+                    shaderInfo.glsl4.frag = shaderSource.at("frag");
+                }
+            }
+            ++shaderIndex;
+        }
+
+        effect->hideInEditor = true;
+        effect->onLoaded();
+
+        ++effectIndex;
+    }
+
+    initMaterials();
 
     return true;
 }

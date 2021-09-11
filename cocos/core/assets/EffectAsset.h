@@ -57,7 +57,7 @@ struct IPassStates {
     std::optional<int32_t>                             priority;
     std::optional<gfx::PrimitiveMode>                  primitive;
     std::optional<pipeline::RenderPassStage>           stage;
-    std::optional<gfx::RasterizerState *>              rasterizerState;
+    std::optional<gfx::RasterizerState *>              rasterizerState; //cjh TODO: need to change to shared_ptr?
     std::optional<gfx::DepthStencilState *>            depthStencilState;
     std::optional<gfx::BlendState *>                   blendState;
     std::optional<gfx::DynamicStateFlags>              dynamicStates;
@@ -66,12 +66,14 @@ struct IPassStates {
 
 using PassOverrides = IPassStates;
 
+using PassPropertyInfoMap = std::unordered_map<std::string, IPropertyInfo>;
+
 struct IPassInfo : public IPassStates {
-    std::string                                                   program; // auto-generated from 'vert' and 'frag'
-    std::optional<MacroRecord>                                    embeddedMacros;
-    index_t                                                       propertyIndex{-1};
-    std::optional<std::string>                                    switch_;
-    std::optional<std::unordered_map<std::string, IPropertyInfo>> properties;
+    std::string                        program; // auto-generated from 'vert' and 'frag'
+    std::optional<MacroRecord>         embeddedMacros;
+    index_t                            propertyIndex{-1};
+    std::optional<std::string>         switch_;
+    std::optional<PassPropertyInfoMap> properties;
 };
 
 struct IPassInfoFull final : public IPassInfo {
@@ -126,10 +128,12 @@ struct IBuiltinInfo {
     std::vector<IBuiltin> samplerTextures;
 };
 
+using BuiltinsStatisticsType = std::unordered_map<std::string, int32_t>;
+
 struct IBuiltins {
-    IBuiltinInfo                             globals;
-    IBuiltinInfo                             locals;
-    std::unordered_map<std::string, int32_t> statistics;
+    IBuiltinInfo           globals;
+    IBuiltinInfo           locals;
+    BuiltinsStatisticsType statistics;
 };
 
 struct IShaderSource {
@@ -244,6 +248,8 @@ protected:
     static RegisteredEffectAssetMap __effects; //cjh TODO: how to clear when game exits.
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(EffectAsset);
+
+    friend class EffectAssetDeserializer;
 };
 
 } // namespace cc

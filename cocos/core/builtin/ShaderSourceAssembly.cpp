@@ -24,7 +24,25 @@
 ****************************************************************************/
 
 #include "core/builtin/ShaderSourceAssembly.h"
+#include "core/builtin/shader-sources/glsl1.h"
+#include "core/builtin/shader-sources/glsl3.h"
+#include "core/builtin/shader-sources/glsl4.h"
 
 namespace cc {
 
+namespace {
+ShaderSourceMap assembly;
 }
+
+/*static*/
+const ShaderSourceMap &ShaderSourceAssembly::get() {
+    if (assembly.empty()) {
+        assembly["glsl1"] = &builtinGLSL1;
+        assembly["glsl3"] = &builtinGLSL3;
+        assembly["glsl4"] = &builtinGLSL4;
+    }
+
+    return assembly;
+}
+
+} // namespace cc

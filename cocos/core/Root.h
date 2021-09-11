@@ -26,6 +26,7 @@
 
 #include <cstdint>
 #include <vector>
+#include "3d/skeletal-animation/DataPoolManager.h"
 #include "core/memop/Pool.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/RenderPipeline.h"
@@ -229,8 +230,7 @@ public:
 
     inline uint32_t getFixedFPS() const { return _fixedFPS; }
 
-    // @TODO: minggo
-    // public get dataPoolManager ()
+    inline DataPoolManager *getDataPoolManager() { return _dataPoolMgr; }
 
     inline bool isUsingDeferredPipeline() const { return _useDeferredPipeline; }
 
@@ -242,6 +242,7 @@ private:
     std::vector<scene::RenderWindow *> _windows;
     pipeline::RenderPipeline *         _pipeline{nullptr};
     scene::DrawBatch2D *               _batcher2D{nullptr};
+    DataPoolManager *                  _dataPoolMgr{nullptr};
     std::vector<scene::RenderScene *>  _scenes;
     Pool<scene::Camera> *              _cameraPool{nullptr};
     float                              _cumulativeTime{0.F};

@@ -25,19 +25,18 @@
 
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include "core/data/deserializer/IAssetDeserializer.h"
 
 namespace cc {
 
-using ShaderInfo      = std::unordered_map<std::string, std::string>;
-using ShaderSource    = std::vector<std::vector<ShaderInfo>>;
-using ShaderSourceMap = std::unordered_map<std::string, const ShaderSource *>;
+class Asset;
 
-class ShaderSourceAssembly final {
+class EffectAssetDeserializer final : public IAssetDeserializer {
 public:
-    static const ShaderSourceMap &get();
+    EffectAssetDeserializer()           = default;
+    ~EffectAssetDeserializer() override = default;
+
+    void deserialize(const rapidjson::Value &serializedData, Asset *effectAsset) override;
 };
 
 } // namespace cc

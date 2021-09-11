@@ -23,21 +23,24 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#pragma once
-
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include "core/data/deserializer/AssetDeserializerFactory.h"
+#include "core/data/deserializer/EffectAssetDeserializer.h"
 
 namespace cc {
 
-using ShaderInfo      = std::unordered_map<std::string, std::string>;
-using ShaderSource    = std::vector<std::vector<ShaderInfo>>;
-using ShaderSourceMap = std::unordered_map<std::string, const ShaderSource *>;
+/*static*/
+std::shared_ptr<IAssetDeserializer> AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType type) {
+    std::shared_ptr<IAssetDeserializer> deserializer;
+    switch (type) {
+        case DeserializeAssetType::EFFECT:
+            deserializer = std::make_shared<EffectAssetDeserializer>();
+            break;
 
-class ShaderSourceAssembly final {
-public:
-    static const ShaderSourceMap &get();
-};
+        default:
+            break;
+    }
+
+    return deserializer;
+}
 
 } // namespace cc

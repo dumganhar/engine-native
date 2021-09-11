@@ -25,8 +25,10 @@
 
 #pragma once
 
+#include "core/builtin/ShaderSourceAssembly.h"
+
 namespace cc {
 
-extern const char *builtinGLSL1;
+extern ShaderSource builtinGLSL1;
 
 }

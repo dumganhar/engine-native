@@ -37,8 +37,8 @@
 
 namespace cc {
 struct IChunkContent {
-    int32_t skeleton{0}; // TODO(xwx): int or uint or float?
-    int32_t clip{0};     // TODO(xwx): int or uint?
+    int32_t              skeleton{0}; // TODO(xwx): int or uint or float?
+    std::vector<int32_t> clips;       // TODO(xwx): int or uint?
 };
 
 struct ICustomJointTextureLayout {
@@ -82,7 +82,7 @@ public:
      * @zh
      * 获取默认姿势的骨骼贴图。
      */
-    const IJointTextureHandle &getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, scenegraph::Node *skinningRoot) const;
+    std::optional<IJointTextureHandle> getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, scenegraph::Node *skinningRoot);
 
     /**
      * @en
@@ -90,9 +90,9 @@ public:
      * @zh
      * 获取指定动画片段的骨骼贴图。
      */
-    const IJointTextureHandle &getSequencePoseTexture(Skeleton *skeleton, Mesh *mesh, scenegraph::Node *skinningRoot) const;
+    // std::optional<IJointTextureHandle> getSequencePoseTexture(Skeleton *skeleton, AnimationClip *clip, Mesh *mesh, scenegraph::Node *skinningRoot);
 
-    void releaseHandle(const IJointTextureHandle &handle);
+    void releaseHandle(IJointTextureHandle &handle);
 
     void releaseSkeleton(Skeleton *skeleton);
 
@@ -103,7 +103,7 @@ private:
 
     gfx::Device *                                     _device{nullptr};
     TextureBufferPool *                               _pool{nullptr};
-    std::unordered_map<uint32_t, IJointTextureHandle> _textureBuffers;
+    std::unordered_map<uint64_t, IJointTextureHandle> _textureBuffers;
     uint32_t                                          _formatSize{0};
     float                                             _pixelsPerJoint{0}; // TODO(xwx): int or float?
     TextureBufferPool *                               _customPool{nullptr};
@@ -124,9 +124,9 @@ public:
     explicit JointAnimationInfo(gfx::Device *device);
     ~JointAnimationInfo() = default;
 
-    const IAnimInfo &getData(std::string nodeID = "-1") const;
-    void             destroy(std::string nodeID);
-    const IAnimInfo &switchChip(const IAnimInfo &info /*, AnimationClip *clip */);
+    IAnimInfo        getData(const std::string &nodeID = "-1");
+    void             destroy(const std::string &nodeID);
+    const IAnimInfo &switchClip(IAnimInfo &info /*, AnimationClip *clip */);
     void             clear();
 
 private:

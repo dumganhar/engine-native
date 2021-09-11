@@ -33,24 +33,30 @@
 
 namespace cc {
 using roundUpType = std::function<uint32_t(uint32_t size, uint32_t formatSize)>;
+
 struct ITextureBuffer {
     gfx::Texture *texture{nullptr};
     uint32_t      size{0};
-    uint32_t      start{0};
-    uint32_t      end{0};
+    index_t       start{0};
+    index_t       end{0};
 };
 
 struct ITextureBufferHandle {
-    index_t  chunkIndex{0};
-    uint32_t size{0};
-    uint32_t start{0};
-    uint32_t end{0};
+    index_t       chunkIdx{0};
+    index_t       start{0};
+    index_t       end{0};
+    gfx::Texture *texture{nullptr};
+
+    bool operator==(const ITextureBufferHandle &handle) const {
+        return chunkIdx == handle.chunkIdx && start == handle.start && end == handle.end && texture == handle.texture;
+    }
 };
+
 struct ITextureBufferPoolInfo {
     gfx::Format                format{gfx::Format::UNKNOWN}; // target texture format
     std::optional<bool>        inOrderFree;                  // will the handles be freed exactly in the order of their allocation?
     std::optional<uint32_t>    alignment;                    // the data alignment for each handle allocated, in bytes
-    std::optional<roundUpType> roundUpFn;
+    std::optional<roundUpType> roundUpFn;                    // given a target size, how will the actual texture size round up?
 };
 
 class TextureBufferPool {
@@ -59,16 +65,17 @@ public:
     explicit TextureBufferPool(gfx::Device *device);
     ~TextureBufferPool() = default;
 
-    void initialize(const ITextureBufferPoolInfo &info);
-    void destroy();
-    void alloc(uint32_t size);
-    void alloc(uint32_t size, index_t chunkIdx);
-    void free(const ITextureBufferHandle &handle);
-    void createChunk(uint32_t length);
-    void update(const ITextureBufferHandle &handle, const ArrayBuffer &buffer);
+    void                 initialize(const ITextureBufferPoolInfo &info);
+    void                 destroy();
+    ITextureBufferHandle alloc(uint32_t size);
+    ITextureBufferHandle alloc(uint32_t size, index_t chunkIdx);
+
+    void     free(const ITextureBufferHandle &handle);
+    uint32_t createChunk(uint32_t length);
+    void     update(const ITextureBufferHandle &handle, const ArrayBuffer &buffer);
 
 private:
-    void findAvailableSpace(uint32_t size, index_t chunkIdx) const;
+    index_t findAvailableSpace(uint32_t size, index_t chunkIdx) const;
 
     // [McDonald 12] Efficient Buffer Management
     ITextureBufferHandle mcDonaldAlloc(uint32_t size);
@@ -84,9 +91,10 @@ private:
     gfx::BufferTextureCopy            _region2;
     roundUpType                       _roundUpFn{nullptr};
     // private _bufferViewCtor: TypedArrayConstructor = Uint8Array; // TODO(xwx)
+    bool     _useMcDonaldAlloc{false};
     uint32_t _channels{4};
     uint32_t _alignment{1};
-
     CC_DISALLOW_COPY_MOVE_ASSIGN(TextureBufferPool);
 };
+
 } // namespace cc

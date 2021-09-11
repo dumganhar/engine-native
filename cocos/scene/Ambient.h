@@ -26,21 +26,23 @@
 #pragma once
 
 #include <array>
+#include "base/Macros.h"
 #include "core/scene-graph/SceneGlobal.h"
 #include "math/Color.h"
-#include "base/Macros.h"
 
 namespace cc {
 namespace scene {
 
 class Ambient final {
 public:
+    friend class Skybox;
+
     static constexpr float SUN_ILLUM{65000.0F};
     static constexpr float SKY_ILLUM{20000.0F};
 
     Ambient(/* args */) = default;
     ~Ambient()          = default;
-    
+
     void initialize(scenegraph::AmbientInfo *info);
 
     inline const std::array<float, 4> &getColorArray() const { return _colorArray; }
@@ -59,7 +61,7 @@ public:
      */
     inline const Color &getSkyColor() const { return _skyColor; }
     inline void         setSkyColor(const Color &color) {
-        _skyColor = color;
+        _skyColor      = color;
         _colorArray[0] = color.r / 255;
         _colorArray[1] = color.g / 255;
         _colorArray[2] = color.b / 255;
@@ -87,7 +89,7 @@ protected:
     float                _skyIllum{0.F};
     std::array<float, 4> _colorArray;
     std::array<float, 4> _albedoArray;
-    
+
     CC_DISALLOW_COPY_MOVE_ASSIGN(Ambient);
 };
 

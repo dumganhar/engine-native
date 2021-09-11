@@ -252,6 +252,8 @@ public:
      * @param patches The macro patches
      */
     gfx::Shader *getShaderVariant(const std::vector<IMacroPatch> &patches);
+    
+    IPassInfoFull getPassInfoFull() const;
 
     // infos
     inline Root *                                    getRoot() const { return _root; }

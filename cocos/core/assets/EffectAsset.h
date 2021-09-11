@@ -29,6 +29,7 @@
 #include <string>
 #include <tuple>
 #include <unordered_map>
+#include <variant>
 
 #include "base/Value.h"
 #include "core/Types.h"
@@ -53,14 +54,14 @@ struct IPropertyInfo {
 
 // Pass instance itself are compliant to IPassStates too
 struct IPassStates {
-    std::optional<int32_t>                   priority;
-    std::optional<gfx::PrimitiveMode>        primitive;
-    std::optional<pipeline::RenderPassStage> stage;
-    std::optional<gfx::RasterizerState *>    rasterizerState;
-    std::optional<gfx::DepthStencilState *>  depthStencilState;
-    std::optional<gfx::BlendState *>         blendState;
-    std::optional<gfx::DynamicStateFlags>    dynamicStates;
-    std::optional<std::string>               phase;
+    std::optional<int32_t>                             priority;
+    std::optional<gfx::PrimitiveMode>                  primitive;
+    std::optional<pipeline::RenderPassStage>           stage;
+    std::optional<gfx::RasterizerState *>              rasterizerState;
+    std::optional<gfx::DepthStencilState *>            depthStencilState;
+    std::optional<gfx::BlendState *>                   blendState;
+    std::optional<gfx::DynamicStateFlags>              dynamicStates;
+    std::optional<std::variant<std::string, uint32_t>> phase;
 };
 
 using PassOverrides = IPassStates;

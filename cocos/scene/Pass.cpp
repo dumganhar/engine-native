@@ -94,7 +94,8 @@ void Pass::fillPipelineInfo(Pass *pass, const PassOverrides &info) {
         pass->_dynamicStates = info.dynamicStates.value();
     }
     if (info.phase.has_value()) {
-        pass->_phase = pipeline::getPhaseID(info.phase.value());
+        std::string phaseStr = std::get<std::string>(info.phase.value());
+        pass->_phase = pipeline::getPhaseID(phaseStr);
     }
 
     auto *bs = pass->_blendState;
@@ -395,6 +396,27 @@ gfx::Shader *Pass::getShaderVariant(const std::vector<IMacroPatch> &patches) {
         }
     }
     return shader;
+}
+
+IPassInfoFull Pass::getPassInfoFull() const {
+    IPassInfoFull ret;
+    ret.passIndex = _passIndex;
+    ret.defines = _defines;
+    
+    ret.program = _programName;
+    ret.propertyIndex = _propertyIndex;
+    ret.properties = _properties;
+    ret.priority = static_cast<int32_t>(_priority);
+    
+    ret.primitive = _primitive;
+    ret.stage = _stage;
+    ret.rasterizerState = _rs;
+    ret.depthStencilState = _depthStencilState;
+    ret.blendState = _blendState;
+    ret.dynamicStates = _dynamicStates;
+    ret.phase = _phase;
+    
+    return ret;
 }
 
 void Pass::setState(gfx::BlendState *bs, gfx::DepthStencilState *dss, gfx::RasterizerState *rs, gfx::DescriptorSet *ds) {

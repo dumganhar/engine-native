@@ -32,7 +32,7 @@ PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) {
     // parent->getRoot();
     _parent = parent;
     _owner  = owner;
-    //cjh    doInit(_parent, true); // defines may change now
+    doInit(_parent->getPassInfoFull());
     for (const auto &b : _shaderInfo->blocks) { // seem logically useless in ts?
         scene::IBlockRef block       = _blocks[b.binding];
         scene::IBlockRef parentBlock = _parent->getBlocks()[b.binding];

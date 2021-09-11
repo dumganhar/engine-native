@@ -252,6 +252,8 @@ public:
      * @param patches The macro patches
      */
     gfx::Shader *getShaderVariant(const std::vector<IMacroPatch> &patches);
+    
+    IPassInfoFull getPassInfoFull() const;
 
     // infos
     inline Root *                                    getRoot() const { return _root; }
@@ -320,6 +322,7 @@ protected:
     pipeline::RenderPriority           _priority{pipeline::RenderPriority::DEFAULT};
     pipeline::RenderPassStage          _stage{pipeline::RenderPassStage::DEFAULT};
     uint32_t                           _phase{0};
+    std::string                        _phaseString;
     gfx::PrimitiveMode                 _primitive{gfx::PrimitiveMode::TRIANGLE_LIST};
     BatchingSchemes                    _batchingScheme{BatchingSchemes::NONE};
     gfx::DynamicStateFlagBit           _dynamicStates{gfx::DynamicStateFlagBit::NONE};

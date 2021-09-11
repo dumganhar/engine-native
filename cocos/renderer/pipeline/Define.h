@@ -26,7 +26,6 @@
 #pragma once
 
 #include <functional>
-#include <variant>
 
 #include "base/Object.h"
 #include "base/Value.h"
@@ -444,11 +443,10 @@ protected:
 };
 
 struct CC_DLL DescriptorSetLayoutInfos {
-    gfx::DescriptorSetLayoutBindingList                                                                                          bindings;
-    unordered_map<String, gfx::UniformBlock>                                                                                     blocks;
-    unordered_map<String, gfx::UniformSamplerTexture>                                                                            samplers;
-    unordered_map<String, gfx::UniformStorageImage>                                                                              storeImages;
-    unordered_map<String, std::variant<std::monostate, gfx::UniformBlock, gfx::UniformSamplerTexture, gfx::UniformStorageImage>> layouts;
+    gfx::DescriptorSetLayoutBindingList               bindings;
+    unordered_map<String, gfx::UniformBlock>          blocks;
+    unordered_map<String, gfx::UniformSamplerTexture> samplers;
+    unordered_map<String, gfx::UniformStorageImage>   storeImages;
 };
 extern CC_DLL DescriptorSetLayoutInfos globalDescriptorSetLayout;
 extern CC_DLL DescriptorSetLayoutInfos localDescriptorSetLayout;

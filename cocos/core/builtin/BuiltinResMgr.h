@@ -35,6 +35,8 @@ namespace gfx {
 class Device;
 }
 
+class Material;
+
 class BuiltinResMgr final {
 public:
     static BuiltinResMgr *getInstance();
@@ -53,6 +55,8 @@ public:
         return nullptr;
     }
 
+    void tryCompileAllPasses();
+
 private:
     void initMaterials();
     void initTexture2DWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel);
@@ -61,6 +65,7 @@ private:
 private:
     gfx::Device *                _device{nullptr};
     Record<std::string, Asset *> _resources;
+    std::vector<Material *>      _materialsToBeCompiled;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(BuiltinResMgr);
 };

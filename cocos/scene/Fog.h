@@ -70,7 +70,7 @@ enum class FogType {
 
 struct FogInfo {
     FogType fogType{FogType::LINEAR};
-    Color   fogColor{200.F, 200.F, 200.F, 1.F};
+    Color   fogColor{200, 200, 200, 255};
     bool    enabled{false};
     float   fogDensity{0.3F};
     float   fogStart{0.5F};
@@ -184,7 +184,7 @@ public:
 private:
     void updatePipeline();
 
-    Color                _fogColor{200.F, 200.F, 200.F, 255.F};
+    Color                _fogColor{200, 200, 200, 255};
     std::array<float, 4> _colorArray{0.2F, 0.2F, 0.2F, 1.0F};
     bool                 _enabled{false};
     FogType              _type{FogType::LINEAR};

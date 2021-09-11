@@ -37,6 +37,7 @@ using namespace cc::gfx;
 void SimpleDemo::setup(int width, int height) {
     CC_LOG_INFO("SimpleDemo::%s", __FUNCTION__);
 
+    // Initialize Device
     BindingMappingInfo bindingMappingInfo;
     bindingMappingInfo.bufferOffsets  = std::vector<int>{0, pipeline::globalUBOCount + pipeline::localUBOCount, pipeline::globalUBOCount};
     bindingMappingInfo.samplerOffsets = std::vector<int>{-pipeline::globalUBOCount, pipeline::globalSamplerCount + pipeline::localSamplerCount, pipeline::globalSamplerCount - pipeline::localUBOCount};
@@ -49,7 +50,13 @@ void SimpleDemo::setup(int width, int height) {
     info.bindingMappingInfo = bindingMappingInfo;
     _device                 = DeviceManager::create(info);
 
+    // Initialize Root
+    _root = new Root(_device);
+    _root->setRenderPipeline(nullptr);
+
     BuiltinResMgr::getInstance()->initBuiltinRes(_device);
+
+    BuiltinResMgr::getInstance()->tryCompileAllPasses();
 }
 
 void SimpleDemo::step(float dt) {
@@ -58,4 +65,7 @@ void SimpleDemo::step(float dt) {
 
 void SimpleDemo::finalize() {
     CC_LOG_INFO("SimpleDemo::%s", __FUNCTION__);
+
+    CC_SAFE_DELETE(_root);
+    DeviceManager::destroy();
 }

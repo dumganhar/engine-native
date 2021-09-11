@@ -118,77 +118,56 @@ std::string getShaderInstanceName(const std::string &name, const std::vector<IMa
 
 void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, const pipeline::DescriptorSetLayoutInfos &source,
                            const std::string &type, std::vector<gfx::DescriptorSetLayoutBinding> *outBindings) {
-    auto &                         target = type == "globals" ? tmpl.builtins.globals : tmpl.builtins.locals;
+    auto &target = type == "globals" ? tmpl.builtins.globals : tmpl.builtins.locals;
+
+    // Blocks
     std::vector<gfx::UniformBlock> tempBlocks{};
-    // TODO(PatriceJiang): dd
     for (const auto &b : target.blocks) {
-        auto infoIt = source.layouts.find(b.name);
-        if (infoIt == source.layouts.end()) {
+        auto infoIt = source.blocks.find(b.name);
+        if (infoIt == source.blocks.end()) {
             CC_LOG_WARNING("builtin UBO '%s' not available !", b.name.c_str());
             continue;
         }
-        const auto &info = infoIt->second;
-        //TODO(PatriceJiang): UniformBlock|UniformSamplerTexture|UniformStorageImage should share the same super class
-        auto binding = std::find_if(source.bindings.begin(), source.bindings.end(), [&](const gfx::DescriptorSetLayoutBinding &i) {
-            if (std::holds_alternative<gfx::UniformBlock>(info)) {
-                return i.binding == std::get<gfx::UniformBlock>(info).binding;
-            }
-            if (std::holds_alternative<gfx::UniformSamplerTexture>(info)) {
-                return i.binding == std::get<gfx::UniformSamplerTexture>(info).binding;
-            }
-            if (std::holds_alternative<gfx::UniformStorageImage>(info)) {
-                return i.binding == std::get<gfx::UniformStorageImage>(info).binding;
-            }
-            return false;
-        });
-        if (binding == source.bindings.end() || !(binding->descriptorType & gfx::DESCRIPTOR_BUFFER_TYPE)) {
+        const auto &info         = infoIt->second;
+        const auto  bindingsIter = std::find_if(source.bindings.begin(), source.bindings.end(), [&info](const auto &bd) -> bool { return bd.binding == info.binding; });
+        if (bindingsIter == source.bindings.end()) {
             CC_LOG_WARNING("builtin UBO '%s' not available !", b.name.c_str());
             continue;
         }
-        //TODO(PatriceJIang): insert uniform block
-        auto *block = std::get_if<gfx::UniformBlock>(&info);
-        if (block) {
-            tempBlocks.emplace_back(*block);
-        }
-        //TODO(PatriceJiang): use pointer instead of structs in comparasion
-        // `outBindings.includes(binding)`
-        if (outBindings && std::count_if(outBindings->begin(), outBindings->end(), [=](const gfx::DescriptorSetLayoutBinding &b) { return b.binding == binding->binding; }) == 0) {
-            outBindings->emplace_back(*binding);
+
+        tempBlocks.emplace_back(info);
+
+        if (outBindings != nullptr && std::count_if(outBindings->begin(), outBindings->end(), [&bindingsIter](const auto &b) { return b.binding == bindingsIter->binding; }) == 0) {
+            outBindings->emplace_back(*bindingsIter);
         }
     }
     tmplInfo.gfxBlocks.insert(tmplInfo.gfxBlocks.begin(), tempBlocks.begin(), tempBlocks.end());
+
+    // SamplerTextures
     std::vector<gfx::UniformSamplerTexture> tempSamplerTextures;
     for (const auto &s : target.samplerTextures) {
-        auto infoIt = source.layouts.find(s.name);
-        if (infoIt == source.layouts.end()) {
+        auto infoIt = source.samplers.find(s.name);
+        if (infoIt == source.samplers.end()) {
             CC_LOG_WARNING("builtin samplerTexture '%s' not available !", s.name.c_str());
             continue;
         }
-        auto *info = std::get_if<gfx::UniformSamplerTexture>(&(infoIt->second));
-        if (!info) {
-            CC_LOG_WARNING("builtin samplerTexture '%s' not available !", s.name.c_str());
-            continue;
-        }
-        const auto binding = std::find_if(source.bindings.begin(), source.bindings.end(), [&](const auto &bd) {
-            //TODO(PatriceJiang) compare object
-            return bd.binding == info->binding;
+        const auto &info    = infoIt->second;
+        const auto  binding = std::find_if(source.bindings.begin(), source.bindings.end(), [&info](const auto &bd) {
+            return bd.binding == info.binding;
         });
         if (binding == source.bindings.end() || !(binding->descriptorType & gfx::DESCRIPTOR_SAMPLER_TYPE)) {
             CC_LOG_WARNING("builtin samplerTexture '%s' not available !", s.name.c_str());
             continue;
         }
-        tempSamplerTextures.emplace_back(*info);
-        if (outBindings && std::count_if(outBindings->begin(), outBindings->end(), [&](const auto &b) {
-                //TODO(PatriceJiang) compare object
-                return b.binding == binding->binding;
-            })) {
+        tempSamplerTextures.emplace_back(info);
+        if (outBindings != nullptr && std::count_if(outBindings->begin(), outBindings->end(), [&binding](const auto &b) { return b.binding == binding->binding; }) == 0) {
             outBindings->emplace_back(*binding);
         }
     }
 
     tmplInfo.gfxSamplerTextures.insert(tmplInfo.gfxSamplerTextures.begin(), tempSamplerTextures.begin(), tempSamplerTextures.end());
-    if (outBindings) {
-        std::sort(outBindings->begin(), outBindings->end(), [](const auto &a, const auto &b) {
+    if (outBindings != nullptr) {
+        std::stable_sort(outBindings->begin(), outBindings->end(), [](const auto &a, const auto &b) {
             return a.binding < b.binding;
         });
     }
@@ -269,6 +248,32 @@ const char *getDeviceShaderVersion(const gfx::Device *device) {
     }
 }
 
+//
+static void copyDefines(const std::vector<IDefineInfo> &from, std::vector<IDefineRecord> &to) {
+    to.resize(from.size());
+    for (size_t i = 0, len = from.size(); i < len; ++i) {
+        to[i].name       = from[i].name;
+        to[i].type       = from[i].type;
+        to[i].range      = from[i].range;
+        to[i].options    = from[i].options;
+        to[i].defaultVal = from[i].defaultVal;
+    }
+}
+
+// IProgramInfo
+void IProgramInfo::copyFrom(const IShaderInfo &o) {
+    name     = o.name;
+    hash     = o.hash;
+    glsl4    = o.glsl4;
+    glsl3    = o.glsl3;
+    glsl1    = o.glsl1;
+    builtins = o.builtins;
+    copyDefines(o.defines, defines);
+    blocks          = o.blocks;
+    samplerTextures = o.samplerTextures;
+    attributes      = o.attributes;
+}
+//
 /*static*/
 ProgramLib *ProgramLib::getInstance() {
     static ProgramLib instance;
@@ -289,20 +294,8 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
     }
     auto &currTmpl = itCurrTmpl->second;
 
-    //TODO(PatriceJiang): need copy
-    //```
-    //const tmpl = ({ ...shader }) as IProgramInfo;
-    ///```
     IProgramInfo &tmpl = _templates[shader.name];
-
-    tmpl.effectName = shader.name;
-    // tmpl.defines = shader.defines; //TODO: can not do simple copy
-    tmpl.defines.resize(shader.defines.size());
-    for (auto i = 0; i < shader.defines.size(); i++) {
-        *reinterpret_cast<IDefineInfo *>(&tmpl.defines[i]) = shader.defines[i];
-    }
-    // tmpl.constantMacros = ?? //TODO(PatriceJiang)
-    // tmpl.uber = ??   //TODO(PatriceJiang)
+    tmpl.copyFrom(shader);
 
     // calculate option mask offset
     auto offset = 0;
@@ -335,13 +328,15 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
     }
     // generate constant macros
     {
+        tmpl.constantMacros.clear();
         std::stringstream ss;
         for (auto &key : tmpl.builtins.statistics) {
             ss << "#define " << key.first << " " << key.second << std::endl;
         }
         tmpl.constantMacros = ss.str();
     }
-    if (_templateInfos.count(tmpl.hash > 0)) {
+
+    if (_templateInfos.count(tmpl.hash) == 0) {
         ITemplateInfo tmplInfo{};
         // cache material-specific descriptor set layout
         tmplInfo.samplerStartBinding = tmpl.blocks.size();

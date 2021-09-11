@@ -108,8 +108,8 @@ void Root::resize(uint32_t width, uint32_t height) {
     }
 }
 
-bool Root::setRenderPipeline(pipeline::RenderPipeline *rppl) {
-    if (dynamic_cast<pipeline::DeferredPipeline *>(rppl) != nullptr) {
+bool Root::setRenderPipeline(pipeline::RenderPipeline *rppl /* = nullptr*/) {
+    if (rppl != nullptr && dynamic_cast<pipeline::DeferredPipeline *>(rppl) != nullptr) {
         _useDeferredPipeline = true;
     }
 
@@ -119,7 +119,7 @@ bool Root::setRenderPipeline(pipeline::RenderPipeline *rppl) {
     }
 
     _pipeline = rppl;
-    if (_pipeline->activate()) {
+    if (!_pipeline->activate()) {
         CC_SAFE_DESTROY(_pipeline);
         return false;
     }

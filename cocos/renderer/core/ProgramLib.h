@@ -72,6 +72,8 @@ struct IProgramInfo : public IShaderInfo {
     std::vector<IDefineRecord> defines;
     std::string                constantMacros;
     bool                       uber{false}; // macro number exceeds default limits, will fallback to string hash
+
+    void copyFrom(const IShaderInfo &o);
 };
 
 const char *getDeviceShaderVersion(const gfx::Device *device);

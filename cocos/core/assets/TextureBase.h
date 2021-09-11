@@ -181,7 +181,7 @@ public:
      * @en Gets the sampler resource for the texture
      * @zh 获取此贴图底层的 GFX 采样信息。
      */
-    virtual gfx::Sampler *getGFXSampler();
+    virtual gfx::Sampler *getGFXSampler() const;
 
     // SERIALIZATION
     /**

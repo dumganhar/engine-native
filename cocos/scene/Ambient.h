@@ -83,7 +83,7 @@ public:
     inline void         setGroundAlbedo(const Color &color) { _groundAlbedo.set(color); }
 
 protected:
-    Color                _skyColor{51, 128, 204, 1.0};
+    Color                _skyColor{51, 128, 204, 1};
     Color                _groundAlbedo{51, 51, 51, 255};
     bool                 _enabled{false};
     float                _skyIllum{0.F};

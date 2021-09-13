@@ -534,7 +534,7 @@ static void deserializeShaderDefine(const rapidjson::Value &defineVal, IDefineIn
         auto &      cRange   = cDefine.range;
         const auto &rangeVal = defineVal["range"];
 
-        cRange = std::vector<float>{};
+        cRange = std::vector<int32_t>{};
         deserializeArray(rangeVal, cRange.value());
     }
 

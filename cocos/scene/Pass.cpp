@@ -95,7 +95,7 @@ void Pass::fillPipelineInfo(Pass *pass, const PassOverrides &info) {
     }
     if (info.phase.has_value()) {
         pass->_phaseString = info.phase.value();
-        pass->_phase = pipeline::getPhaseID(pass->_phaseString);
+        pass->_phase       = pipeline::getPhaseID(pass->_phaseString);
     }
 
     auto *bs = pass->_blendState;
@@ -339,7 +339,7 @@ void Pass::resetUBOs() {
             const auto &   value        = (givenDefault.has_value() ? std::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
             const uint32_t size         = (gfx::getTypeSize(cur.type) >> 2) * cur.count;
             for (size_t k = 0; (k + value.size()) <= size; k += value.size()) {
-                std::copy(value.begin(), value.begin() + ofs + k, block.data); //cjh memory issue?
+                std::copy(value.begin(), value.end(), block.data + ofs + k);
             }
             ofs += size;
         }
@@ -405,21 +405,21 @@ gfx::Shader *Pass::getShaderVariant(const std::vector<IMacroPatch> &patches) {
 IPassInfoFull Pass::getPassInfoFull() const {
     IPassInfoFull ret;
     ret.passIndex = _passIndex;
-    ret.defines = _defines;
-    
-    ret.program = _programName;
+    ret.defines   = _defines;
+
+    ret.program       = _programName;
     ret.propertyIndex = _propertyIndex;
-    ret.properties = _properties;
-    ret.priority = static_cast<int32_t>(_priority);
-    
-    ret.primitive = _primitive;
-    ret.stage = _stage;
-    ret.rasterizerState = _rs;
+    ret.properties    = _properties;
+    ret.priority      = static_cast<int32_t>(_priority);
+
+    ret.primitive         = _primitive;
+    ret.stage             = _stage;
+    ret.rasterizerState   = _rs;
     ret.depthStencilState = _depthStencilState;
-    ret.blendState = _blendState;
-    ret.dynamicStates = _dynamicStates;
-    ret.phase = _phaseString;
-    
+    ret.blendState        = _blendState;
+    ret.dynamicStates     = _dynamicStates;
+    ret.phase             = _phaseString;
+
     return ret;
 }
 
@@ -470,7 +470,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     for (size_t i = 0; i < blocks.size(); i++) {
         const auto &size = blockSizes[i];
         startOffsets.emplace_back(lastOffset);
-        lastOffset += std::ceil(size / alignment) * alignment;
+        lastOffset += static_cast<int32_t>(std::ceil(1.F * size / alignment)) * alignment;
         lastSize = size;
     }
 
@@ -478,7 +478,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     uint32_t totalSize = !startOffsets.empty() ? (startOffsets[startOffsets.size() - 1] + lastSize) : 0;
     if (totalSize > 0) {
         // https://bugs.chromium.org/p/chromium/issues/detail?id=988988
-        bufferInfo.size = std::ceil(totalSize / 16) * 16;
+        bufferInfo.size = static_cast<int32_t>(std::ceil(totalSize / 16.F)) * 16;
         _rootBuffer     = device->createBuffer(bufferInfo);
         _rootBlock.resize(totalSize);
     }
@@ -488,7 +488,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         int32_t size          = blockSizes[i];
         bufferViewInfo.buffer = _rootBuffer;
         bufferViewInfo.offset = startOffsets[count++];
-        bufferViewInfo.range  = std::ceil(size / 16) * 16;
+        bufferViewInfo.range  = static_cast<int32_t>(std::ceil(size / 16.F)) * 16;
         if (binding >= _buffers.size()) {
             _buffers.resize(binding + 1);
         }

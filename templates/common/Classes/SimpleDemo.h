@@ -29,7 +29,7 @@
 
 class SimpleDemo {
 public:
-    void setup(int width, int height);
+    void setup(int width, int height, uintptr_t windowHandle);
 
     void step(float dt);
 

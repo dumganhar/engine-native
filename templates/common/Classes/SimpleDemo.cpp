@@ -34,7 +34,7 @@
 using namespace cc;
 using namespace cc::gfx;
 
-void SimpleDemo::setup(int width, int height) {
+void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     CC_LOG_INFO("SimpleDemo::%s", __FUNCTION__);
 
     // Initialize Device
@@ -44,6 +44,7 @@ void SimpleDemo::setup(int width, int height) {
     bindingMappingInfo.flexibleSet    = 1;
 
     DeviceInfo info;
+    info.windowHandle       = windowHandle;
     info.width              = width;
     info.height             = height;
     info.pixelRatio         = 1;

@@ -40,7 +40,9 @@
 
 SimpleDemo simpleDemo;
 
-Game::Game(int width, int height) : cc::Application(width, height) {}
+Game::Game(int width, int height, uintptr_t windowHandle) : cc::Application(width, height) {
+    _windowHandle = windowHandle;
+}
 
 bool Game::init() {
     cc::Application::init();
@@ -74,7 +76,7 @@ bool Game::init() {
     cc::EventDispatcher::dispatchResizeEvent(logicSize.x * pixelRatio, logicSize.y * pixelRatio);
 #endif
 
-    simpleDemo.setup(getViewLogicalSize().x, getViewLogicalSize().y);
+    simpleDemo.setup(getViewLogicalSize().x, getViewLogicalSize().y, _windowHandle);
 
     cc::Application::getInstance()->getScheduler()->schedule([](float dt) {
         simpleDemo.step(dt);

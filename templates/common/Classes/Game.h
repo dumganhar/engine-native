@@ -35,9 +35,12 @@ public:
     /**
      * width and height in logical pixel unit
      */
-    Game(int width, int height);
+    Game(int width, int height, uintptr_t windowHandle);
     bool init() override;
     void onPause() override;
     void onResume() override;
     void onClose() override;
+
+private:
+    uintptr_t _windowHandle{0};
 };

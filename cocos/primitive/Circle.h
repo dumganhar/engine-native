@@ -25,6 +25,28 @@
 
 #pragma once
 
-namespace cc {
+#include "primitive/PrimitiveDefine.h"
 
-}
+namespace cc {
+/**
+ * @en
+ * The definition of the parameter for building a circle.
+ * @zh
+ * 圆形参数选项。
+ */
+struct ICircleOptions : public IGeometryOptions {
+    // The segments. Default to 64.
+    uint32_t segments{64};
+};
+
+/**
+ * @en
+ * Generate a circle with radius 1, centered at origin,
+ * but may be repositioned through the `center` option.
+ * @zh
+ * 生成一个圆，其半径是单位1，中心点在原点。
+ * @param options 参数选项。
+ */
+IGeometry circle(std::optional<ICircleOptions> &options);
+
+} // namespace cc

@@ -25,6 +25,32 @@
 
 #pragma once
 
+#include <cmath>
+#include "3d/assets/Mesh.h"
+#include "primitive/PrimitiveDefine.h"
+
 namespace cc {
 
-}
+/**
+ * @zh
+ * 球参数选项。
+ */
+struct ICylinderOptions : public IGeometryOptions {
+    uint32_t radialSegments{32};
+    uint32_t heightSegments{1};
+    bool     capped{true};
+    float    arc{math::PI_2};
+};
+
+/**
+ * @en
+ * Generate a shpere with radius 0.5.
+ * @zh
+ * 生成一个球。
+ * @param radius 球半径。
+ * @param options 参数选项。
+ */
+
+IGeometry cylinder(float radiusTop = 0.5, float radiusBottom = 0.5, float height = 2, const std::optional<ICylinderOptions> &opts = std::nullopt);
+
+} // namespace cc

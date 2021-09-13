@@ -13,7 +13,26 @@ gfx::AttributeList defAttrs = {
     gfx::Attribute{.name = gfx::ATTR_NAME_TANGENT, .format = gfx::Format::RGB32F},
     gfx::Attribute{.name = gfx::ATTR_NAME_COLOR, .format = gfx::Format::RGB32F},
 };
+
+// TODO(xwx): temporary usage and need to adjustment future
+// default params bahaves just like on an plain, compact Float32Array
+void writeBuffer(DataView target, const std::vector<float> &data, const gfx::Format &format = gfx::Format::R32F, uint32_t offset = 0, uint32_t stride = 0) {
+    const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(format)];
+    if (stride == 0) stride = info.size;
+    // const writer = `set${_getDataViewType(info)}`; // TODO(xwx): find a way to setDifferentDataViewType
+    const uint32_t componentBytesLength = info.size / info.count;
+    const uint32_t nSeg                 = std::floor(data.size() / info.count);
+    // bool isLittleEndian = sys.isLittleEndian // TODO(xwx): sys not implement
+
+    for (uint32_t iSeg = 0; iSeg < nSeg; ++iSeg) {
+        uint32_t x = offset + stride * iSeg;
+        for (uint32_t iComponent = 0; iComponent < info.count; ++iComponent) {
+            const uint32_t y = x + componentBytesLength * iComponent;
+            // target[writer](y, data[info.count * iSeg + iComponent], isLittleEndian);
+        }
+    }
 }
+} // namespace
 
 Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions &options /* = {}*/) {
     // Collect attributes and calculate length of result vertex buffer.
@@ -158,7 +177,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     ArrayBuffer vertexBuffer(vertCount * stride);
     DataView    vertexBufferView(vertexBuffer);
     for (const auto &channel : channels) {
-        // writeBuffer(vertexBufferView, channel.data, channel.attribute.format, channel.offset, stride); //TODO(xwx): writeBuffer not implement
+        writeBuffer(vertexBufferView, channel.data, channel.attribute.format, channel.offset, stride);
     }
     bufferBlob.setNextAlignment(0);
     Mesh::IVertexBundle vertexBundle{
@@ -179,7 +198,9 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
         idxCount                      = indices.size();
         indexBuffer.resize(idxStride * idxCount);
         DataView indexBufferView(indexBuffer);
-        // writeBuffer(indexBufferView, indices, gfx::Format::R16UI);  //TODO(xwx): writeBuffer not implement
+        std::vector<float> floatIndices;
+        copy(begin(indices), end(indices), begin(floatIndices));
+        writeBuffer(indexBufferView, floatIndices, gfx::Format::R16UI);
     }
 
     // Create primitive.

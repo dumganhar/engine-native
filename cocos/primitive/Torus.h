@@ -25,6 +25,27 @@
 
 #pragma once
 
+#include "primitive/PrimitiveDefine.h"
 namespace cc {
+/**
+ * @zh
+ * 环面参数选项。
+ */
+struct ITorusOptions {
+    uint32_t radialSegments{32};
+    uint32_t tubularSegments{32};
+    float    arc{math::PI_2};
+};
 
-}
+/**
+ * @en
+ * Generate a torus with raidus 0.4, tube 0.1 and centered at origin.
+ * @zh
+ * 生成一个环面。
+ * @param radius 环面半径。
+ * @param tube 管形大小。
+ * @param opts 参数选项。
+ */
+IGeometry torus(float radius = 0.4, float tube = 0.1, const std::optional<ITorusOptions> &opts = std::nullopt);
+
+} // namespace cc

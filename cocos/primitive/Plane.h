@@ -25,6 +25,45 @@
 
 #pragma once
 
-namespace cc {
+#include "primitive/PrimitiveDefine.h"
 
-}
+namespace cc {
+/**
+ * @en
+ * The definition of the parameter for building a plane.
+ * @zh
+ * 平面参数选项。
+ */
+struct IPlaneOptions : public IGeometryOptions {
+    /**
+     * Plane extent on X-axis. Default to 10.
+     */
+    float width{10};
+
+    /**
+     * Plane extent on Z-axis. Default to 10.
+     */
+    float length{10};
+
+    /**
+     * Segment count on X-axis. Default to 10.
+     */
+    uint32_t widthSegments{10};
+
+    /**
+     * Segment count on Z-axis. Default to 10.
+     */
+    uint32_t lengthSegments{10};
+};
+
+/**
+ * @en
+ * This function generates a plane on XOZ plane with positive Y direction.
+ * @zh
+ * 生成一个平面，其位于XOZ平面，方向为Y轴正方向。
+ * @param options 平面参数选项。
+ */
+
+IGeometry plane(std::optional<IPlaneOptions> &options);
+
+} // namespace cc

@@ -25,6 +25,30 @@
 
 #pragma once
 
+#include "primitive/PrimitiveDefine.h"
 namespace cc {
+/**
+ * @en
+ * The definition of the parameter for building a capsule.
+ * @zh
+ * 胶囊体参数选项。
+ */
+struct ICapsuleOptions {
+    uint32_t sides{32};
+    uint32_t heightSegments{32};
+    bool     capped{true};
+    float    arc{math::PI_2};
+};
 
-}
+/**
+ * Generate a capsule with radiusTop radiusBottom 0.5, height 2, centered at origin,
+ * but may be repositioned through the `center` option.
+ * @zh
+ * 生成一个胶囊体。
+ * @param radiusTop 顶部半径。
+ * @param radiusBottom 底部半径。
+ * @param opts 胶囊体参数选项。
+ */
+IGeometry capsule(float radiusTop = 0.5, float radiusBottom = 0.5, float height = 2, const std::optional<ICapsuleOptions> &opts = std::nullopt);
+
+} // namespace cc

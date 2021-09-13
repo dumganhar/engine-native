@@ -133,7 +133,7 @@ IGeometry box(const std::optional<IBoxOptions> &options) {
     buildPlane(3, ws, ls); // BOTTOM
     buildPlane(2, ws, ls); // TOP
 
-    IGeometry ret{
+    return IGeometry{
         .positions{positions},
         .normals{normals},
         .uvs{uvs},
@@ -143,8 +143,6 @@ IGeometry box(const std::optional<IBoxOptions> &options) {
         .maxPos{maxPos},
         .indices{indices},
     };
-
-    return ret;
 }
 
 } // namespace cc

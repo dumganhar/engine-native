@@ -26,8 +26,8 @@
 #pragma once
 
 #include <string>
-#include "math/Vec3.h"
 #include "core/scene-graph/Node.h"
+#include "math/Vec3.h"
 
 namespace cc {
 namespace scene {
@@ -77,8 +77,8 @@ public:
     inline float getColorTemperature() const { return _colorTemp; }
     inline void  setColorTemperature(float val) { _colorTemp = val; }
 
-    inline scenegraph::Node *getNode() const { return _node; }
-    inline void              setNode(scenegraph::Node *node) { _node = node; }
+    inline Node *getNode() const { return _node; }
+    inline void  setNode(Node *node) { _node = node; }
 
     inline LightType getType() const { return _type; }
 
@@ -93,16 +93,16 @@ public:
 protected:
     static float nt2lm(float size);
 
-    bool              _useColorTemperature{false};
-    bool              _baked{false};
-    scenegraph::Node *_node{nullptr};
-    float             _colorTemp{6550.F};
-    LightType         _type{LightType::UNKNOWN};
-    std::string       _name;
-    RenderScene *     _scene{nullptr};
-    Vec3              _color{1, 1, 1};
-    Vec3              _colorTemperatureRGB;
-    Vec3              _forward{0, 0, -1};
+    bool         _useColorTemperature{false};
+    bool         _baked{false};
+    Node *       _node{nullptr};
+    float        _colorTemp{6550.F};
+    LightType    _type{LightType::UNKNOWN};
+    std::string  _name;
+    RenderScene *_scene{nullptr};
+    Vec3         _color{1, 1, 1};
+    Vec3         _colorTemperatureRGB;
+    Vec3         _forward{0, 0, -1};
 };
 
 } // namespace scene

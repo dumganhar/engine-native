@@ -31,7 +31,7 @@
 #include "math/Vec3.h"
 
 namespace cc {
-namespace scenegraph {
+
 std::vector<BaseNode *> Node::dirtyNodes;
 uint                    Node::clearFrame{0};
 uint                    Node::clearRound{1000};
@@ -183,7 +183,7 @@ void Node::setAngle(float val) {
     }
 }
 
-void Node::setParent(BaseNode *val, bool isKeepWorld) {
+void Node::setParent(BaseNode *val, bool isKeepWorld /* = false */) {
     if (isKeepWorld) updateWorldTransform();
     BaseNode::setParent(val, isKeepWorld);
 }
@@ -339,5 +339,4 @@ bool Node::onPreDestroy() {
     return result;
 }
 
-} // namespace scenegraph
 } // namespace cc

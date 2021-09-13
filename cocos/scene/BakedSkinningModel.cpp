@@ -65,7 +65,7 @@ void BakedSkinningModel::destroy() {
     Super::destroy();
 }
 
-void BakedSkinningModel::bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningRoot, Mesh *mesh) {
+void BakedSkinningModel::bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh) {
     _skeleton = skeleton;
     _mesh     = mesh;
     if (skeleton == nullptr || skinningRoot == nullptr || mesh == nullptr) return;
@@ -89,7 +89,7 @@ void BakedSkinningModel::updateTransform(uint32_t stamp) {
     IAnimInfo &     animInfo  = _jointMedium.animInfo;
     geometry::AABB *skelBound = !_jointMedium.boundsInfo.empty() ? _jointMedium.boundsInfo[animInfo.data[0]] : nullptr;
     if (_worldBounds && skelBound) {
-        scenegraph::Node *node = getTransform();
+        Node *node = getTransform();
         skelBound->transform(node->getWorldMatrix(), _worldBounds);
     }
 }

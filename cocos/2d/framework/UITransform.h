@@ -28,7 +28,7 @@
 
 namespace cc {
 namespace framework {
-class UITransform : public components::Component {
+class UITransform : public Component {
 private:
     /* data */
 public:

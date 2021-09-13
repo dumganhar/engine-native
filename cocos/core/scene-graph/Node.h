@@ -37,7 +37,7 @@
 #include "math/Vec4.h"
 
 namespace cc {
-namespace scenegraph {
+
 /**
  * Event types emitted by Node
  */
@@ -91,7 +91,7 @@ public:
     void setWorldPosition(float x, float y, float z) override;
     void setWorldRotation(float x, float y, float z, float w) override;
     void setRotationFromEuler(float x, float y, float z);
-    void setParent(BaseNode *val, bool isKeepWorld) override;
+    void setParent(BaseNode *val, bool isKeepWorld = false) override;
     void inverseTransformPoint(Vec3 &out, const Vec3 &p);
     void setWorldRotationFromEuler(float x, float y, float z);
     /**
@@ -173,5 +173,4 @@ private:
     Vec3                           _euler{0, 0, 0};
 };
 
-} // namespace scenegraph
 } // namespace cc

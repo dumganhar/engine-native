@@ -54,16 +54,16 @@ public:
 
     void clear();
 
-    const std::vector<EventListener*>& getFixedPriorityListeners() const;
+    const std::vector<EventListener *> &getFixedPriorityListeners() const;
 
-    const std::vector<EventListener*>& getSceneGraphPriorityListeners() const;
+    const std::vector<EventListener *> &getSceneGraphPriorityListeners() const;
 
-    std::string getListenerID(event::Event* event) const;
+    std::string getListenerID(event::Event *event) const;
 
 private:
-    std::vector<EventListener*> _fixedListeners;
+    std::vector<EventListener *> _fixedListeners;
 
-    std::vector<EventListener*> _sceneGraphListeners;
+    std::vector<EventListener *> _sceneGraphListeners;
 };
 
 /**
@@ -88,7 +88,7 @@ private:
 
 class EventManager final {
 public:
-    static EventManager& getInstance() {
+    static EventManager &getInstance() {
         static EventManager instance;
         return instance;
     }
@@ -99,7 +99,7 @@ public:
      * @param node - 暂停目标节点
      * @param recursive - 是否往子节点递归暂停。默认为 false。
      */
-    void pauseTarget(scenegraph::Node* node, bool recursive = false) const;
+    void pauseTarget(Node *node, bool recursive = false) const;
 
     /**
      * @en
@@ -111,7 +111,7 @@ public:
      * @param node - 监听器节点。
      * @param recursive - 是否往子节点递归。默认为 false。
      */
-    void resumeTarget(scenegraph::Node* node, bool recursive = false) const;
+    void resumeTarget(Node *node, bool recursive = false) const;
 
     void frameUpdateListeners() const;
 
@@ -146,9 +146,9 @@ public:
      * @param nodeOrPriority - 监听程序的优先级。
      * @returns
      */
-    void addListener(EventListener* listener, scenegraph::Node* node) const;
+    void addListener(EventListener *listener, Node *node) const;
 
-    void addListener(EventListener* listener, int32_t priority) const;
+    void addListener(EventListener *listener, int32_t priority) const;
 
     /**
      * @en
@@ -162,7 +162,7 @@ public:
      * @returns 返回自定义监听器。
      */
 
-    const EventListener*& addCustomListener(std::string eventName, std::function<void()> callback) const;
+    const EventListener *&addCustomListener(std::string eventName, std::function<void()> callback) const;
 
     /**
      * @en
@@ -173,7 +173,7 @@ public:
      *
      * @param listener - 需要移除的监听器。
      */
-    void removeListener(EventListener* listener) const;
+    void removeListener(EventListener *listener) const;
 
     /**
      * @en
@@ -194,7 +194,7 @@ public:
      * @param listenerType - 监听器类型。
      * @param recursive - 递归子节点的同类型监听器一并移除。默认为 false。
      */
-    void removeListener(scenegraph::Node* node, bool recursive = false) const;
+    void removeListener(Node *node, bool recursive = false) const;
 
     void removeListener(int32_t eventType, bool recursive = false) const;
 
@@ -228,7 +228,7 @@ public:
      * @param listener - 监听器。
      * @param fixedPriority - 优先级。
      */
-    void setPriority(EventListener* listener, int32_t fixedPriority) const;
+    void setPriority(EventListener *listener, int32_t fixedPriority) const;
 
     /**
      * @en
@@ -263,9 +263,9 @@ public:
      * @param event - 分发事件。
      */
 
-    void dispatchEvent(event::Event* event) const;
+    void dispatchEvent(event::Event *event) const;
 
-    bool onListenerCallback(EventListener* listener, event::Event* event) const;
+    bool onListenerCallback(EventListener *listener, event::Event *event) const;
 
     /**
      * @en
@@ -282,41 +282,41 @@ public:
 private:
     EventManager()  = default;
     ~EventManager() = default;
-    void setDirtyForNode(scenegraph::Node* node) const;
-    void addListener(EventListener* listener) const;
-    void forceAddEventListener(EventListener* listener) const;
+    void setDirtyForNode(Node *node) const;
+    void addListener(EventListener *listener) const;
+    void forceAddEventListener(EventListener *listener) const;
     void getListeners(std::string listenerID) const;
     void updateDirtyFlagForSceneGraph() const;
-    void removeAllListenersInVector(std::vector<EventListener*> listenerVector) const;
+    void removeAllListenersInVector(std::vector<EventListener *> listenerVector) const;
     void removeListenersForListenerID(std::string listenerID) const;
     void sortEventListeners(std::string listenerID) const;
     void sortListenersOfSceneGraphPriority(std::string listenerID) const;
     void sortListenersOfFixedPriority(std::string listenerID) const;
-    void sortListenersOfFixedPriorityAsc(EventListener* l1, EventListener* l2) const;
-    void onUpdateListeners(EventListenerVector* listeners) const;
+    void sortListenersOfFixedPriorityAsc(EventListener *l1, EventListener *l2) const;
+    void onUpdateListeners(EventListenerVector *listeners) const;
     void updateTouchListeners() const;
     void cleanToRemovedListeners() const;
-    void onTouchEventCallback(event_listener::TouchOneByOneEventListener* listeners, std::any argsObj) const;
-    void dispatchTouchEvent(EventTouch* event) const;
+    void onTouchEventCallback(event_listener::TouchOneByOneEventListener *listeners, std::any argsObj) const;
+    void dispatchTouchEvent(EventTouch *event) const;
     void onTouchesEventCallback(std::any listener, std::any callbackParams) const;
-    void associateNodeAndEventListener(scenegraph::Node* node, EventListener* listener) const;
-    void dissociateNodeAndEventListener(scenegraph::Node* node, EventListener* listener) const;
-    void dispatchEventToListeners(EventListenerVector* listeners, std::function<bool>(std::any, std::any), std::any eventOrArgs) const;
+    void associateNodeAndEventListener(Node *node, EventListener *listener) const;
+    void dissociateNodeAndEventListener(Node *node, EventListener *listener) const;
+    void dispatchEventToListeners(EventListenerVector *listeners, std::function<bool>(std::any, std::any), std::any eventOrArgs) const;
     void setDirty(std::string listenerID, int32_t flag) const;
     void clearCurTouch() const;
-    void removeListenerInVector(std::vector<EventListener*> listeners, EventListener* listener) const;
+    void removeListenerInVector(std::vector<EventListener *> listeners, EventListener *listener) const;
 
-    std::unordered_map<std::string, EventListenerVector*>         _listenersMap;
-    std::unordered_map<std::string, int32_t>                      _priorityDirtyFlagMap;
-    std::unordered_map<std::string, std::vector<EventListener*> > _nodeListenersMap;
-    std::vector<EventListener*>                                   _toAddedListeners;
-    std::vector<EventListener*>                                   _toRemoveListeners;
+    std::unordered_map<std::string, EventListenerVector *>         _listenersMap;
+    std::unordered_map<std::string, int32_t>                       _priorityDirtyFlagMap;
+    std::unordered_map<std::string, std::vector<EventListener *> > _nodeListenersMap;
+    std::vector<EventListener *>                                   _toAddedListeners;
+    std::vector<EventListener *>                                   _toRemoveListeners;
 
     Record<std::string, bool> _dirtyListener;
     int32_t                   _inDispatch{0};
     bool                      _isEnabled{false};
     std::vector<std::string>  _internalCustomListenersIDs;
-    Touch*                    _currentTouch{nullptr};
+    Touch *                   _currentTouch{nullptr};
     std::any                  _currentTouchListener{nullptr};
 };
 } // namespace event_listener

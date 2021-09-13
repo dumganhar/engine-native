@@ -28,23 +28,23 @@
 #include <cstdint>
 #include <memory>
 #include "base/Macros.h"
-#include "physics/spec/IJoint.h"
 #include "core/scene-graph/Node.h"
+#include "physics/spec/IJoint.h"
 
-#define CC_PHYSICS_JOINT_CLASS(CLASS)                     \
-    class CC_DLL CLASS final : virtual public I##CLASS {  \
-    protected:                                            \
-        std::unique_ptr<I##CLASS> _impl;                  \
-                                                          \
-    public:                                               \
-        CLASS();                                          \
-        ~CLASS() override;                                \
-        uintptr_t getImpl() override;                     \
-        void      initialize(scenegraph::Node* node) override; \
-        void      onEnable() override;                    \
-        void      onDisable() override;                   \
-        void      onDestroy() override;                   \
-        void      setEnableCollision(bool v) override;    \
+#define CC_PHYSICS_JOINT_CLASS(CLASS)                    \
+    class CC_DLL CLASS final : virtual public I##CLASS { \
+    protected:                                           \
+        std::unique_ptr<I##CLASS> _impl;                 \
+                                                         \
+    public:                                              \
+        CLASS();                                         \
+        ~CLASS() override;                               \
+        uintptr_t getImpl() override;                    \
+        void      initialize(Node *node) override;       \
+        void      onEnable() override;                   \
+        void      onDisable() override;                  \
+        void      onDestroy() override;                  \
+        void      setEnableCollision(bool v) override;   \
         void      setConnectedBody(uintptr_t v) override;
 
 namespace cc {

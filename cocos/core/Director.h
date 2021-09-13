@@ -190,8 +190,8 @@ public:
         return instance;
     }
 
-    scenegraph::ComponentScheduler *_compScheduler{nullptr};
-    scenegraph::NodeActivator *     _nodeActivator{nullptr};
+    ComponentScheduler *_compScheduler{nullptr};
+    NodeActivator *     _nodeActivator{nullptr};
 
     /**
      * @en End the life of director in the next frame
@@ -296,7 +296,7 @@ public:
      * @en Returns current logic Scene.
      * @zh 获取当前逻辑场景。
      */
-    scenegraph::Scene *getScene() const { return _scene; }
+    Scene *getScene() const { return _scene; }
 
     /**
      * @en Returns the delta time since last frame.
@@ -403,8 +403,8 @@ private:
     core::Scheduler *           _scheduler{nullptr};
     std::vector<core::System *> _systems;
 
-    scenegraph::Scene *_scene{nullptr};
-    void               _initOnRendererInitialized();
+    Scene *_scene{nullptr};
+    void   _initOnRendererInitialized();
     //TODO: return Promise in js, c++ need adaption
     void _init();
 };

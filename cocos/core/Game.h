@@ -355,7 +355,7 @@ public:
      */
     float frameTime{1000.F / 60};
 
-    std::unordered_map<std::string, scenegraph::Node *> _persistRootNodes;
+    std::unordered_map<std::string, Node *> _persistRootNodes;
 
     // states
     bool _configLoaded{false}; // whether config loaded
@@ -487,21 +487,21 @@ public:
      * 目标节点必须位于为层级的根节点，否则无效。
      * @param node - The node to be made persistent
      */
-    void addPersistRootNode(scenegraph::Node *node);
+    void addPersistRootNode(Node *node);
 
     /**
      * @en Remove a persistent root node.
      * @zh 取消常驻根节点。
      * @param node - The node to be removed from persistent node list
      */
-    void removePersistRootNode(scenegraph::Node *node);
+    void removePersistRootNode(Node *node);
 
     /**
      * @en Check whether the node is a persistent root node.
      * @zh 检查节点是否是常驻根节点。
      * @param node - The node to be checked
      */
-    bool isPersistRootNode(scenegraph::Node *node) const;
+    bool isPersistRootNode(Node *node) const;
 
 private:
     Game() = default;

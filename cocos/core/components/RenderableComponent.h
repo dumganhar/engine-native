@@ -41,16 +41,16 @@ namespace scene {
 class Model;
 }
 
-class RenderableComponent : public components::Component {
+class RenderableComponent : public Component {
 public:
     RenderableComponent()           = default;
     ~RenderableComponent() override = default;
 
-    inline scenegraph::Layers::Enum getVisibility() const {
+    inline Layers::Enum getVisibility() const {
         return _visFlags;
     }
 
-    inline void setVisibility(scenegraph::Layers::Enum val) {
+    inline void setVisibility(Layers::Enum val) {
         _visFlags = val;
         onVisibilityChange(val);
     }
@@ -132,7 +132,7 @@ public:
     virtual void onMaterialModified(index_t index, Material *material) {}
     virtual void onRebuildPSO(index_t index, Material *material) {}
     virtual void clearMaterials() {}
-    virtual void onVisibilityChange(scenegraph::Layers::Enum val) {}
+    virtual void onVisibilityChange(Layers::Enum val) {}
     //
 
 protected:
@@ -144,7 +144,7 @@ protected:
     std::vector<scene::Model *> _models;
 
     //cjh @serializable
-    scenegraph::Layers::Enum _visFlags{scenegraph::Layers::Enum::NONE};
+    Layers::Enum _visFlags{Layers::Enum::NONE};
 };
 
 } // namespace cc

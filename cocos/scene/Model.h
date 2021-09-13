@@ -92,9 +92,9 @@ public:
     inline void setEnabled(bool value) { _enabled = value; }
     inline void setInstMatWorldIdx(int32_t idx) { _instMatWorldIdx = idx; }
     inline void setLocalBuffer(gfx::Buffer *buffer) { _localBuffer = buffer; }
-    inline void setNode(scenegraph::Node *node) { _node = node; }
+    inline void setNode(Node *node) { _node = node; }
     inline void setReceiveShadow(bool value) { _receiveShadow = value; }
-    inline void setTransform(scenegraph::Node *node) { _transform = node; }
+    inline void setTransform(Node *node) { _transform = node; }
     inline void setVisFlags(uint32_t flags) { _visFlags = flags; }
     inline void setBounds(geometry::AABB *world) {
         _worldBounds = world;
@@ -118,10 +118,10 @@ public:
     inline gfx::Buffer *                      getLocalBuffer() const { return _localBuffer; }
     inline float *                            getLocalData() const { return _localData; }
     inline geometry::AABB *                   getModelBounds() const { return _modelBounds; }
-    inline scenegraph::Node *                 getNode() const { return _node; }
+    inline Node *                             getNode() const { return _node; }
     inline bool                               getReceiveShadow() const { return _receiveShadow; }
     inline const std::vector<SubModel *> &    getSubModels() const { return _subModels; }
-    inline scenegraph::Node *                 getTransform() const { return _transform; }
+    inline Node *                             getTransform() const { return _transform; }
     inline bool                               getTransformUpdated() const { return _transformUpdated; }
     inline uint32_t                           getUpdatStamp() const { return _updateStamp; }
     inline uint32_t                           getVisFlags() const { return _visFlags; }
@@ -154,10 +154,10 @@ protected:
     bool _isDynamicBatching{false};
 
     int32_t                         _instMatWorldIdx{-1};
-    uint32_t                        _visFlags{static_cast<uint32_t>(scenegraph::Layers::Enum::NONE)};
+    uint32_t                        _visFlags{static_cast<uint32_t>(Layers::Enum::NONE)};
     uint32_t                        _updateStamp{0};
-    scenegraph::Node *              _transform{nullptr};
-    scenegraph::Node *              _node{nullptr};
+    Node *                          _transform{nullptr};
+    Node *                          _node{nullptr};
     float *                         _localData{nullptr};
     std::tuple<uint8_t *, uint32_t> _instancedBuffer{nullptr, 0};
     gfx::Buffer *                   _localBuffer{nullptr};

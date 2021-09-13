@@ -26,7 +26,7 @@
 #include "2d/framework/UITransform.h"
 #include "BaseNode.h"
 namespace cc {
-namespace scenegraph {
+
 using framework::UITransform;
 class NodeUiProperties {
 public:
@@ -36,11 +36,11 @@ public:
 
     NodeUiProperties(/* args */) = default;
     ~NodeUiProperties()          = default;
-    static inline UITransform* getUiTransformComp() { return nullptr; }
+    static inline UITransform *getUiTransformComp() { return nullptr; }
 
 protected:
-    UITransform* _uiTransformComp{nullptr};
-    BaseNode*    _node{nullptr};
+    UITransform *_uiTransformComp{nullptr};
+    BaseNode *   _node{nullptr};
 };
-} // namespace scenegraph
+
 } // namespace cc

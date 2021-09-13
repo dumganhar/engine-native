@@ -30,12 +30,11 @@
 #include "core/components/Component.h"
 
 namespace cc {
-namespace scenegraph {
-using components::Component;
-using Invoker = std::function<void(std::vector<Component*>, float)>;
+
+using Invoker = std::function<void(std::vector<Component *>, float)>;
 class LifeCycleInvoker {
 public:
-    static void stableRemoveInactive(const std::vector<Component*>&, uint);
+    static void stableRemoveInactive(const std::vector<Component *> &, uint);
     explicit LifeCycleInvoker(Invoker);
     ~LifeCycleInvoker();
 
@@ -43,16 +42,16 @@ protected:
     Invoker _invoke;
 
 private:
-    std::vector<Component*> _zero;
-    std::vector<Component*> _neg;
-    std::vector<Component*> _pos;
+    std::vector<Component *> _zero;
+    std::vector<Component *> _neg;
+    std::vector<Component *> _pos;
 };
 
 class OneOffInvoker : LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
-    void add(Component*);
-    void remove(Component*);
+    void add(Component *);
+    void remove(Component *);
     void cancelInactive(uint);
     void invoke();
 };
@@ -60,8 +59,8 @@ public:
 class ReusableInvoker : LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
-    void add(Component*);
-    void remove(Component*);
+    void add(Component *);
+    void remove(Component *);
     void invoke(float);
 };
 
@@ -69,24 +68,24 @@ class ComponentScheduler final {
 public:
     ComponentScheduler();
     ~ComponentScheduler();
-    OneOffInvoker*   startInvoker;
-    ReusableInvoker* updateInvoker;
-    ReusableInvoker* lateUpdateInvoker;
+    OneOffInvoker *  startInvoker;
+    ReusableInvoker *updateInvoker;
+    ReusableInvoker *lateUpdateInvoker;
     void             unscheduleAll();
-    void             onEnabled(Component*);
-    void             onDisabled(Component*);
-    void             enableComp(Component*, LifeCycleInvoker*);
-    void             disableComp(Component*);
+    void             onEnabled(Component *);
+    void             onDisabled(Component *);
+    void             enableComp(Component *, LifeCycleInvoker *);
+    void             disableComp(Component *);
     void             startPhase();
     void             updatePhase(float);
     void             lateUpdatePhase(float);
 
 private:
-    std::vector<Component*> _deferredComps;
-    bool                    _updating;
-    void                    startForNewComps();
-    void                    scheduleImmediate(Component*);
-    void                    deferredSchedule();
+    std::vector<Component *> _deferredComps;
+    bool                     _updating;
+    void                     startForNewComps();
+    void                     scheduleImmediate(Component *);
+    void                     deferredSchedule();
 };
-} // namespace scenegraph
+
 } // namespace cc

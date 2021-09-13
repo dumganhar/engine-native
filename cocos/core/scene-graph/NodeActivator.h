@@ -29,12 +29,12 @@
 #include "Node.h"
 
 namespace cc {
-namespace scenegraph {
+
 class UnsortedInvoker : public LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
-    inline void add(Component* comp) {}
-    inline void remove(Component* comp) {}
+    inline void add(Component *comp) {}
+    inline void remove(Component *comp) {}
     inline void cancelInactive(bool flagToClear) {}
     inline void invoke() {}
 };
@@ -42,11 +42,11 @@ public:
 class NodeActivator final {
 public:
     NodeActivator();
-    Component*  resetComp;
+    Component * resetComp;
     inline void reset() {}
-    inline void activateNode(Node* node, bool active) {}
-    inline void activateComp(Component* comp, LifeCycleInvoker* preloadInvoker = nullptr, LifeCycleInvoker* onLoadInvoker = nullptr, LifeCycleInvoker* onEnableInvoker = nullptr) {}
-    inline void destroyComp(Component* comp) {}
+    inline void activateNode(Node *node, bool active) {}
+    inline void activateComp(Component *comp, LifeCycleInvoker *preloadInvoker = nullptr, LifeCycleInvoker *onLoadInvoker = nullptr, LifeCycleInvoker *onEnableInvoker = nullptr) {}
+    inline void destroyComp(Component *comp) {}
 };
-} // namespace scenegraph
+
 } // namespace cc

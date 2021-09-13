@@ -39,15 +39,15 @@ namespace cc {
 namespace scene {
 
 struct JointTransform {
-    scenegraph::Node *node{nullptr};
-    Mat4              local;
-    Mat4              world;
-    int               stamp{-1};
+    Node *node{nullptr};
+    Mat4  local;
+    Mat4  world;
+    int   stamp{-1};
 };
 
 struct JointInfo {
     geometry::AABB *            bound{nullptr};
-    scenegraph::Node *          target{nullptr};
+    Node *                      target{nullptr};
     Mat4                        bindpose;
     JointTransform              transform;
     std::vector<JointTransform> parents;
@@ -71,7 +71,7 @@ public:
     void                     updateTransform(uint32_t stamp) override;
     void                     updateUBOs(uint32_t stamp) override;
     void                     destroy() override;
-    void                     bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningRoot, Mesh *mesh);
+    void                     bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
     void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
     std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
 

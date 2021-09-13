@@ -43,7 +43,7 @@ public:
     Ambient(/* args */) = default;
     ~Ambient()          = default;
 
-    void initialize(scenegraph::AmbientInfo *info);
+    void initialize(AmbientInfo *info);
 
     inline const std::array<float, 4> &getColorArray() const { return _colorArray; }
     inline const std::array<float, 4> &getAlbedoArray() const { return _albedoArray; }

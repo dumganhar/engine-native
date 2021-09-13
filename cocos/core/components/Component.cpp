@@ -32,8 +32,6 @@ namespace {
 IDGenerator idGenerator("Comp");
 }
 
-namespace components {
-
 Component::Component() {
     _id = idGenerator.getNewId();
 }
@@ -44,7 +42,5 @@ scene::RenderScene *Component::getRenderScene() const {
     //    }
     return _node->getScene()->getRenderScene();
 }
-
-} // namespace components
 
 } // namespace cc

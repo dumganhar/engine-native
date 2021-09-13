@@ -26,9 +26,9 @@
 #pragma once
 
 #include "base/Macros.h"
+#include "core/scene-graph/Node.h"
 #include "physics/physx/PhysXInc.h"
 #include "physics/spec/IShape.h"
-#include "core/scene-graph/Node.h"
 
 namespace cc {
 namespace physics {
@@ -48,7 +48,7 @@ class PhysXShape : virtual public IBaseShape {
 public:
     ~PhysXShape() override = default;
     inline uintptr_t        getImpl() override { return reinterpret_cast<uintptr_t>(this); }
-    void                    initialize(scenegraph::Node *node) override;
+    void                    initialize(Node *node) override;
     void                    onEnable() override;
     void                    onDisable() override;
     void                    onDestroy() override;

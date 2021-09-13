@@ -26,7 +26,7 @@
 #include "core/scene-graph/NodeEventProcessor.h"
 #include "core/scene-graph/BaseNode.h"
 namespace cc {
-namespace scenegraph {
+
 bool NodeEventProcessor::hasEventListener(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
     bool has = false;
     return has;
@@ -75,5 +75,4 @@ void NodeEventProcessor::emit(const std::string &type, const std::any &args) {
 void NodeEventProcessor::emit(const std::string &type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
 }
 
-} // namespace scenegraph
 } // namespace cc

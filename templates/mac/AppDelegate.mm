@@ -30,7 +30,7 @@
     [_window.contentView setWantsBestResolutionOpenGLSurface:YES];
     [_window makeKeyAndOrderFront:nil];
 
-    _game = new Game(rect.size.width, rect.size.height);
+    _game = new Game(rect.size.width, rect.size.height, reinterpret_cast<uintptr_t>(_window.contentView));
     _game->init();
 
     [[NSNotificationCenter defaultCenter] addObserver:self

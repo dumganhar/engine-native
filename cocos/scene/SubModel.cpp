@@ -200,7 +200,12 @@ void SubModel::flushPassInfo() {
 }
 
 void SubModel::setSubMesh(RenderingSubMesh *subMesh) {
-    //TODO: minggo
+    _subMesh = subMesh;
+    _inputAssembler->destroy();
+    _inputAssembler->initialize(subMesh->getIaInfo());
+    if (_passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
+        subMesh->genFlatBuffers();
+    }
 }
 
 } // namespace scene

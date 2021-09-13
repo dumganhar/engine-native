@@ -46,7 +46,6 @@ const std::string INST_JOINT_ANIM_INFO = "a_jointAnimInfo";
 namespace cc {
 namespace scene {
 
-// TODO(xwx): need to be done
 BakedSkinningModel::BakedSkinningModel()
 : Super(), _jointMedium(BakedJointInfo{.jointTextureInfo = Float32Array(4), .animInfo = _dataPoolManager->jointAnimationInfo->getData()}), _dataPoolManager(Root::getInstance()->getDataPoolManager()) {
     _type = Model::Type::BAKED_SKINNING;

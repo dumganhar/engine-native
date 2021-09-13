@@ -92,7 +92,7 @@ public:
     bool isEnabledInHierarchy() const;
 
     //cjh TODO:
-    virtual bool destroy() {}
+    virtual bool destroy() { return true; }
     virtual void _onPreDestroy() {}
 
     inline scenegraph::Node *getNode() const { return _node; }

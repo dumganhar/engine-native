@@ -38,7 +38,7 @@ RigidBody::~RigidBody() {
     _impl.reset(nullptr);
 }
 
-void RigidBody::initialize(scenegraph::Node *node, const ERigidBodyType t, const uint32_t g) {
+void RigidBody::initialize(Node *node, const ERigidBodyType t, const uint32_t g) {
     _impl->initialize(node, t, g);
 }
 

@@ -82,7 +82,7 @@ public:
      * @zh
      * 获取默认姿势的骨骼贴图。
      */
-    std::optional<IJointTextureHandle> getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, scenegraph::Node *skinningRoot);
+    std::optional<IJointTextureHandle> getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, Node *skinningRoot);
 
     /**
      * @en
@@ -90,7 +90,7 @@ public:
      * @zh
      * 获取指定动画片段的骨骼贴图。
      */
-    // std::optional<IJointTextureHandle> getSequencePoseTexture(Skeleton *skeleton, AnimationClip *clip, Mesh *mesh, scenegraph::Node *skinningRoot);
+    // std::optional<IJointTextureHandle> getSequencePoseTexture(Skeleton *skeleton, AnimationClip *clip, Mesh *mesh, Node *skinningRoot);
 
     void releaseHandle(IJointTextureHandle &handle);
 
@@ -99,7 +99,7 @@ public:
     // void releaseAnimationClip (AnimationClip* clip); // TODO(xwx): AnimationClip not define
 
 private:
-    // const IInternalJointAnimInfo &createAnimInfos(Skeleton *skeleton, AnimationClip *clip, scenegraph::Node *skinningRoot); // TODO(xwx): AnimationClip not define
+    // const IInternalJointAnimInfo &createAnimInfos(Skeleton *skeleton, AnimationClip *clip, Node *skinningRoot); // TODO(xwx): AnimationClip not define
 
     gfx::Device *                                     _device{nullptr};
     TextureBufferPool *                               _pool{nullptr};

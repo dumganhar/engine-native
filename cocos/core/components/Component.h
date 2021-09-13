@@ -30,16 +30,11 @@
 #include "core/data/Object.h"
 
 namespace cc {
-
-namespace scenegraph {
 class Node;
-}
 
 namespace scene {
 class RenderScene;
 }
-
-namespace components {
 
 class Component {
 public:
@@ -95,7 +90,7 @@ public:
     virtual bool destroy() {}
     virtual void _onPreDestroy() {}
 
-    inline scenegraph::Node *getNode() const { return _node; }
+    inline Node *getNode() const { return _node; }
 
 protected:
     Component();
@@ -275,7 +270,7 @@ protected:
      * ```
      */
     //cjh    @serializable
-    scenegraph::Node *_node{nullptr};
+    Node *_node{nullptr};
 
     /**
      * @private
@@ -283,5 +278,5 @@ protected:
     //cjh    @serializable
     bool _enabled{true};
 };
-} // namespace components
+
 } // namespace cc

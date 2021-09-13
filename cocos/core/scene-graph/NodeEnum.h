@@ -27,7 +27,7 @@
 #include "base/TypeDef.h"
 
 namespace cc {
-namespace scenegraph {
+
 enum class NodeSpace {
     LOCAL,
     WORLD
@@ -44,5 +44,4 @@ enum class TransformBit {
 };
 CC_ENUM_BITWISE_OPERATORS(TransformBit);
 
-} // namespace scenegraph
 } // namespace cc

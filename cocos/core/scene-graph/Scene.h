@@ -32,7 +32,6 @@ namespace scene {
 class RenderScene;
 }
 
-namespace scenegraph {
 class Scene final : public BaseNode {
 public:
     explicit Scene(const std::string &name);
@@ -40,11 +39,14 @@ public:
 
     inline scene::RenderScene *getRenderScene() const { return _renderScene; }
 
+    void load();
+    void activate();
+
 protected:
     scene::RenderScene *_renderScene{nullptr};
     bool                _inited{false};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(Scene);
 };
-} // namespace scenegraph
+
 } // namespace cc

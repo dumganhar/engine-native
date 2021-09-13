@@ -108,7 +108,7 @@ protected:
     void onRebuildPSO(index_t index, Material *material) override;
     void clearMaterials() override;
 
-    void onVisibilityChange(scenegraph::Layers::Enum val) override;
+    void onVisibilityChange(Layers::Enum val) override;
 
     virtual void updateModelParams();
     virtual void onMeshChanged(Mesh *old) {}

@@ -40,7 +40,7 @@
         return _impl->getImpl();                                     \
     }                                                                \
                                                                      \
-    void CLASS::initialize(scenegraph::Node* node) {                      \
+    void CLASS::initialize(Node *node) {                             \
         _impl->initialize(node);                                     \
     }                                                                \
                                                                      \
@@ -89,11 +89,11 @@
         _impl->updateEventListener(v);                               \
     }                                                                \
                                                                      \
-    geometry::AABB& CLASS::getAABB() {                               \
+    geometry::AABB &CLASS::getAABB() {                               \
         return _impl->getAABB();                                     \
     }                                                                \
                                                                      \
-    geometry::Sphere& CLASS::getBoundingSphere() {                   \
+    geometry::Sphere &CLASS::getBoundingSphere() {                   \
         return _impl->getBoundingSphere();                           \
     }
 

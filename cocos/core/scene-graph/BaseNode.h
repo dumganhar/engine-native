@@ -42,7 +42,7 @@
 #include "math/Vec4.h"
 
 namespace cc {
-namespace scenegraph {
+
 class Scene;
 class NodeEventProcessor;
 class BaseNode : public CCObject {
@@ -67,15 +67,15 @@ public:
     virtual void setWorldRotation(float x, float y, float z, float w) {}
     virtual void setParent(BaseNode *parent, bool isKeepWorld = false);
 
-    Scene *                       getScene() const;
-    void                          walk();
-    void                          walk(const std::function<void(BaseNode *)> &);
-    void                          walk(const std::function<void(BaseNode *)> &, const std::function<void(BaseNode *)> &);
-    static components::Component *addComponent(const std::string &className);
-    components::Component *       addComponent(components::Component *comp);
-    void                          removeComponent(const std::string &className);
-    void                          removeComponent(components::Component *comp);
-    template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
+    Scene *           getScene() const;
+    void              walk();
+    void              walk(const std::function<void(BaseNode *)> &);
+    void              walk(const std::function<void(BaseNode *)> &, const std::function<void(BaseNode *)> &);
+    static Component *addComponent(const std::string &className);
+    Component *       addComponent(Component *comp);
+    void              removeComponent(const std::string &className);
+    void              removeComponent(Component *comp);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     void removeComponent(const T &comp){};
     void on(const std::string &, const std::function<void(BaseNode *)> &);
     void on(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
@@ -159,73 +159,73 @@ public:
     inline bool getActive() const { return _active; }
     inline bool getActiveInHierarchy() const { return _activeInHierarchy; }
 
-    components::Component *getComponent(const std::string &name) const;
-    template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
-    components::Component *getComponent(const T &type) const {}
+    Component *getComponent(const std::string &name) const;
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    Component *getComponent(const T &type) const {}
     // TODO(Lenovo):
-    template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
-    inline std::vector<components::Component *> getComponents(const T & /*unused*/) const {};
-    inline std::vector<components::Component *> getComponents(const std::string & /*unused*/) const {
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    inline std::vector<Component *> getComponents(const T & /*unused*/) const {};
+    inline std::vector<Component *> getComponents(const std::string & /*unused*/) const {
         // TODO: validate return value
         return _components;
     };
-    components::Component *getComponentInChildren(const std::string &name) const;
-    template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
-    components::Component *              getComponentInChildren(const T &comp) const {}
-    std::vector<components::Component *> getComponentsInChildren(const std::string &name) const;
-    template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
-    std::vector<components::Component *> getComponentsInChildren(const T &comp) const {}
+    Component *getComponentInChildren(const std::string &name) const;
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    Component *              getComponentInChildren(const T &comp) const {}
+    std::vector<Component *> getComponentsInChildren(const std::string &name) const;
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    std::vector<Component *> getComponentsInChildren(const T &comp) const {}
 
-    virtual void                                onPostActivated(bool active) {}
-    inline const std::vector<BaseNode *> &      getChildren() { return _children; }
-    inline BaseNode *                           getParent() const { return _parent; }
-    inline std::vector<components::Component *> getComponents() const { return _components; }
-    inline NodeEventProcessor *                 getEventProcessor() const { return _eventProcessor; }
-    virtual uint                                getFlagsChanged() const { return _flagChange; }
-    virtual uint                                getLayer() const { return _layer; }
-    virtual uint                                getDirtyFlag() const { return _dirtyFlag; }
-    virtual const Vec3 &                        getPosition() const { return _localPosition; }
-    virtual const Vec3 &                        getScale() const { return _localScale; }
-    virtual const Quaternion &                  getRotation() const { return _localRotation; }
-    virtual const Mat4 &                        getWorldMatrix() const { return _worldMatrix; }
-    virtual const Vec3 &                        getWorldPosition() const { return _worldPosition; }
-    virtual const Quaternion &                  getWorldRotation() const { return _worldRotation; }
-    virtual const Vec3 &                        getWorldScale() const { return _worldScale; }
-    virtual const Mat4 &                        getWorldRTMatrix() const { return _rtMat; }
-    BaseNode *                                  getChildByUuid(const std::string &) const;
-    BaseNode *                                  getChildByName(const std::string &) const;
-    BaseNode *                                  getChildByPath(const std::string &) const;
-    inline uint                                 getSiblingIndex() const { return _siblingIndex; }
-    inline void                                 insertChild(BaseNode *child, uint32_t siblingIndex) {
+    virtual void                          onPostActivated(bool active) {}
+    inline const std::vector<BaseNode *> &getChildren() { return _children; }
+    inline BaseNode *                     getParent() const { return _parent; }
+    inline std::vector<Component *>       getComponents() const { return _components; }
+    inline NodeEventProcessor *           getEventProcessor() const { return _eventProcessor; }
+    virtual uint                          getFlagsChanged() const { return _flagChange; }
+    virtual uint                          getLayer() const { return _layer; }
+    virtual uint                          getDirtyFlag() const { return _dirtyFlag; }
+    virtual const Vec3 &                  getPosition() const { return _localPosition; }
+    virtual const Vec3 &                  getScale() const { return _localScale; }
+    virtual const Quaternion &            getRotation() const { return _localRotation; }
+    virtual const Mat4 &                  getWorldMatrix() const { return _worldMatrix; }
+    virtual const Vec3 &                  getWorldPosition() const { return _worldPosition; }
+    virtual const Quaternion &            getWorldRotation() const { return _worldRotation; }
+    virtual const Vec3 &                  getWorldScale() const { return _worldScale; }
+    virtual const Mat4 &                  getWorldRTMatrix() const { return _rtMat; }
+    BaseNode *                            getChildByUuid(const std::string &) const;
+    BaseNode *                            getChildByName(const std::string &) const;
+    BaseNode *                            getChildByPath(const std::string &) const;
+    inline uint                           getSiblingIndex() const { return _siblingIndex; }
+    inline void                           insertChild(BaseNode *child, uint32_t siblingIndex) {
         child->_parent = this;
         child->setSiblingIndex(siblingIndex);
     }
 
 protected:
-    std::vector<BaseNode *>              _children;
-    std::vector<components::Component *> _components;
-    BaseNode *                           _parent{nullptr};
-    uint                                 _flagChange{0};
-    uint                                 _dirtyFlag{0};
-    Flags                                _objFlags{Flags::ZERO};
-    bool                                 _persistNode{false};
-    uint                                 _layer{0};
-    cc::Vec3                             _worldScale{Vec3::ONE};
-    cc::Vec3                             _worldPosition{Vec3::ZERO};
-    cc::Quaternion                       _worldRotation{Quaternion::identity()};
-    Mat4                                 _rtMat{Mat4::IDENTITY};
-    cc::Mat4                             _worldMatrix{Mat4::IDENTITY};
-    cc::Vec3                             _localScale{Vec3::ONE};
-    cc::Vec3                             _localPosition{Vec3::ZERO};
-    cc::Quaternion                       _localRotation{Quaternion::identity()};
-    std::string                          _id{IDGenerator("Node").getNewId()};
-    bool                                 _active{true};
-    bool                                 _activeInHierarchy{true};
-    Scene *                              _scene{nullptr};
-    NodeEventProcessor *                 _eventProcessor{nullptr};
-    index_t                              _siblingIndex{0};
-    uint                                 _eventMask{0};
-    inline void                          updateScene() {
+    std::vector<BaseNode *>  _children;
+    std::vector<Component *> _components;
+    BaseNode *               _parent{nullptr};
+    uint                     _flagChange{0};
+    uint                     _dirtyFlag{0};
+    Flags                    _objFlags{Flags::ZERO};
+    bool                     _persistNode{false};
+    uint                     _layer{0};
+    cc::Vec3                 _worldScale{Vec3::ONE};
+    cc::Vec3                 _worldPosition{Vec3::ZERO};
+    cc::Quaternion           _worldRotation{Quaternion::identity()};
+    Mat4                     _rtMat{Mat4::IDENTITY};
+    cc::Mat4                 _worldMatrix{Mat4::IDENTITY};
+    cc::Vec3                 _localScale{Vec3::ONE};
+    cc::Vec3                 _localPosition{Vec3::ZERO};
+    cc::Quaternion           _localRotation{Quaternion::identity()};
+    std::string              _id{IDGenerator("Node").getNewId()};
+    bool                     _active{true};
+    bool                     _activeInHierarchy{true};
+    Scene *                  _scene{nullptr};
+    NodeEventProcessor *     _eventProcessor{nullptr};
+    index_t                  _siblingIndex{0};
+    uint                     _eventMask{0};
+    inline void              updateScene() {
         if (_parent == nullptr) {
             return;
         }
@@ -241,7 +241,7 @@ protected:
     static BaseNode *instantiate(BaseNode *cloned, bool isSyncedNode);
     bool             onPreDestroyBase();
     inline void      onSiblingIndexChanged(uint siblingIndex) {}
-    inline void      checkMultipleComp(components::Component *comp) {}
+    inline void      checkMultipleComp(Component *comp) {}
     // for walk
     static std::vector<std::vector<BaseNode *>> stacks;
     static index_t                              stackId;
@@ -249,18 +249,18 @@ protected:
     static void    setScene(BaseNode *);
     static index_t getIdxOfChild(const std::vector<BaseNode *> &, BaseNode *);
     // TODO(Lenovo):
-    static components::Component *findComponent(BaseNode *, const std::string &);
-    template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
-    static components::Component *findComponent(BaseNode *, const T &);
-    static components::Component *findComponents(BaseNode *, const std::string &, const std::vector<components::Component *> &);
-    template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
-    static components::Component *findComponents(BaseNode *, const T &, const std::vector<components::Component *> &);
-    static components::Component *findChildComponent(const std::vector<BaseNode *> &, const std::string &);
-    template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
-    static components::Component *              findChildComponent(const std::vector<BaseNode *> &, const T &);
-    static std::vector<components::Component *> findChildComponents(const std::vector<BaseNode *> &, const std::string &, std::vector<components::Component *>);
-    template <typename T, typename std::enable_if_t<std::is_base_of<components::Component, T>::value>>
-    static std::vector<components::Component *> findChildComponents(const std::vector<BaseNode *> &, const T &, std::vector<components::Component *>);
+    static Component *findComponent(BaseNode *, const std::string &);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *findComponent(BaseNode *, const T &);
+    static Component *findComponents(BaseNode *, const std::string &, const std::vector<Component *> &);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *findComponents(BaseNode *, const T &, const std::vector<Component *> &);
+    static Component *findChildComponent(const std::vector<BaseNode *> &, const std::string &);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *              findChildComponent(const std::vector<BaseNode *> &, const T &);
+    static std::vector<Component *> findChildComponents(const std::vector<BaseNode *> &, const std::string &, std::vector<Component *>);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static std::vector<Component *> findChildComponents(const std::vector<BaseNode *> &, const T &, std::vector<Component *>);
 };
-} // namespace scenegraph
+
 } // namespace cc

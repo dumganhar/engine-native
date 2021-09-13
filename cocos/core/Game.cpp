@@ -80,19 +80,19 @@ void Game::init(IGameConfig *config) {
 
     // return this._initEngine().then(() => {}
 }
-void Game::addPersistRootNode(scenegraph::Node *node) {
-    if (!node || !scenegraph::Node::isNode(node) || !node->getUUid().empty()) {
+void Game::addPersistRootNode(Node *node) {
+    if (!node || !Node::isNode(node) || !node->getUUid().empty()) {
         // debug.warnID(3800);
         return;
     }
     std::string id = node->getUUid();
     if (_persistRootNodes.find(id) == _persistRootNodes.end()) {
-        scenegraph::Scene *scene = Director::getInstance().getScene();
+        Scene *scene = Director::getInstance().getScene();
         if (scene->isValid()) {
             auto *nodeParent = node->getParent();
             if (!nodeParent) {
                 // node->setParent(scene);
-            } else if (typeid(nodeParent) != typeid(scenegraph::Scene)) {
+            } else if (typeid(nodeParent) != typeid(Scene)) {
                 // debug.warnID(3801);
                 return;
             } else if (nodeParent != scene) {
@@ -108,7 +108,7 @@ void Game::addPersistRootNode(scenegraph::Node *node) {
     }
 }
 
-void Game::removePersistRootNode(scenegraph::Node *node) {
+void Game::removePersistRootNode(Node *node) {
     std::string id = node ? node->getUUid() : "";
     if (node == _persistRootNodes[id]) {
         _persistRootNodes.erase(id);
@@ -119,7 +119,7 @@ void Game::removePersistRootNode(scenegraph::Node *node) {
 }
 
 // TODO(xwx): _persistNode not implemented
-// bool Game::isPersistRootNode(scenegraph::Node *node) const {
+// bool Game::isPersistRootNode(Node *node) const {
 //     return node->_persistNode;
 // }
 

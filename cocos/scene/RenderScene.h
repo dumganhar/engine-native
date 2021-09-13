@@ -32,9 +32,7 @@
 
 namespace cc {
 
-namespace scenegraph {
 class Node;
-}
 
 namespace scene {
 
@@ -48,8 +46,8 @@ class DrawBatch2D;
 class Camera;
 
 struct IRaycastResult {
-    scenegraph::Node *node{nullptr};
-    float             distance{0.F};
+    Node *node{nullptr};
+    float distance{0.F};
 };
 
 struct IRenderSceneInfo {

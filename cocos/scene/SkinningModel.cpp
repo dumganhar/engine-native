@@ -67,7 +67,7 @@ void SkinningModel::destroy() {
     Super::destroy();
 }
 
-void SkinningModel::bindSkeleton(Skeleton *skeleton, scenegraph::Node *skinningRoot, Mesh *mesh) {
+void SkinningModel::bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh) {
     for (const JointInfo &joint : _joints) {
         // deleteTransform(joint.target); // deleteTransform not implementation
     }

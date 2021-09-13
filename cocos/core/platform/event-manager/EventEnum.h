@@ -270,6 +270,6 @@ enum class SystemEventType {
     SIBLING_ORDER_CHANGED,
 };
 
-using SystemEventTypeUnion = std::variant<SystemEventType, scenegraph::NodeEventType>;
+using SystemEventTypeUnion = std::variant<SystemEventType, NodeEventType>;
 
 } // namespace cc

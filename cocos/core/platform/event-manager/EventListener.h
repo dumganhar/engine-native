@@ -45,8 +45,8 @@ struct IEventListenerCreateInfo {
 };
 
 struct IListenerMask {
-    int32_t               index{0};
-    components::Component comp;
+    int32_t   index{0};
+    Component comp;
 };
 
 class EventListener {
@@ -213,14 +213,14 @@ public:
      * @zh 设置此侦听器的场景图优先级。
      * @param {Node} node
      */
-    void setSceneGraphPriority(scenegraph::Node *node);
+    void setSceneGraphPriority(Node *node);
 
     /**
      * @en Gets scene graph priority of this listener<br/>
      * @zh 获取此侦听器的场景图优先级。
      * @return 如果它是固定优先级侦听器，则为场景图优先级侦听器非 null 。
      */
-    scenegraph::Node *getSceneGraphPriority() const {
+    Node *getSceneGraphPriority() const {
         return _node;
     }
 
@@ -281,7 +281,7 @@ private:
 
     // scene graph based priority
     // @type {Node}
-    scenegraph::Node *_node{nullptr}; // scene graph based priority
+    Node *_node{nullptr}; // scene graph based priority
 
     // Whether the listener is paused
     bool _paused{true}; // Whether the listener is paused

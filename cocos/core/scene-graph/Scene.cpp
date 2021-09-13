@@ -27,7 +27,6 @@
 #include "core/Root.h"
 
 namespace cc {
-namespace scenegraph {
 
 Scene::Scene(const std::string &name)
 : BaseNode(name) {
@@ -35,5 +34,27 @@ Scene::Scene(const std::string &name)
     _renderScene       = Root::getInstance()->createScene({});
 }
 
-} // namespace scenegraph
+void Scene::load() {
+    //    if (!_inited) {
+    ////cjh        if (TEST) {
+    ////            assert(!_activeInHierarchy, 'Should deactivate ActionManager and EventManager by default');
+    ////        }
+    //        _onBatchCreated(EDITOR && _prefabSyncedInLiveReload);
+    //        _inited = true;
+    //    }
+    //    // static methode can't use this as parameter type
+    //    walk(BaseNode._setScene);
+}
+
+void Scene::activate() {
+    //    active = (active !== false);
+    ////cjh    if (EDITOR) {
+    ////        // register all nodes to editor
+    ////        _registerIfAttached!(active);
+    ////    }
+    //    legacyCC.director._nodeActivator.activateNode(this, active);
+    //    // The test environment does not currently support the renderer
+    //    if (!TEST) _globals.activate();
+}
+
 } // namespace cc

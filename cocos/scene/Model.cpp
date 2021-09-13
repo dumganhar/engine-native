@@ -69,7 +69,7 @@ void Model::initialize() {
     _receiveShadow = true;
     _castShadow    = false;
     _enabled       = true;
-    _visFlags      = static_cast<uint32_t>(scenegraph::Layers::Enum::NONE);
+    _visFlags      = static_cast<uint32_t>(Layers::Enum::NONE);
     _inited        = true;
 }
 
@@ -104,7 +104,7 @@ void Model::uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &
 }
 
 void Model::updateTransform(uint32_t /*stamp*/) {
-    scenegraph::Node *node = _transform;
+    Node *node = _transform;
     if (node->getFlagsChanged() || node->getDirtyFlag()) {
         node->updateWorldTransform();
         _transformUpdated = true;
@@ -115,7 +115,7 @@ void Model::updateTransform(uint32_t /*stamp*/) {
 }
 
 void Model::updateWorldBound() {
-    scenegraph::Node *node = _transform;
+    Node *node = _transform;
     if (node) {
         node->updateWorldTransform();
         _transformUpdated = true;

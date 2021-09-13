@@ -29,7 +29,6 @@
 #include "base/TypeDef.h"
 
 namespace cc {
-namespace scenegraph {
 
 /**
  * @zh 节点层管理器，层数据是以掩码数据方式存储在 [[Node.layer]] 中，用于射线检测、物理碰撞和用户自定义脚本逻辑。
@@ -121,5 +120,4 @@ private:
 
 CC_ENUM_BITWISE_OPERATORS(Layers::LayerList);
 
-} // namespace scenegraph
 } // namespace cc

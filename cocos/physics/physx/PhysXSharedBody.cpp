@@ -221,7 +221,7 @@ void PhysXSharedBody::syncScale() {
 }
 
 void PhysXSharedBody::syncSceneToPhysics() {
-    uint32_t getChangedFlags = getNode()->getFlagsChanged();
+    uint32_t getChangedFlags = getNode()->getChangedFlags();
     if (getChangedFlags) {
         if (getChangedFlags & static_cast<uint32_t>(TransformBit::SCALE)) syncScale();
         auto wp = getImpl().rigidActor->getGlobalPose();
@@ -243,7 +243,7 @@ void PhysXSharedBody::syncSceneToPhysics() {
 }
 
 void PhysXSharedBody::syncSceneWithCheck() {
-    if (getNode()->getFlagsChanged() & static_cast<uint32_t>(TransformBit::SCALE)) syncScale();
+    if (getNode()->getChangedFlags() & static_cast<uint32_t>(TransformBit::SCALE)) syncScale();
     auto wp         = getImpl().rigidActor->getGlobalPose();
     bool needUpdate = false;
     getNode()->updateWorldTransform();
@@ -267,7 +267,7 @@ void PhysXSharedBody::syncPhysicsToScene() {
     const PxTransform &wp = getImpl().rigidActor->getGlobalPose();
     getNode()->setWorldPosition(wp.p.x, wp.p.y, wp.p.z);
     getNode()->setWorldRotation(wp.q.x, wp.q.y, wp.q.z, wp.q.w);
-    getNode()->setChangedFlags(getNode()->getFlagsChanged() | static_cast<uint32_t>(TransformBit::POSITION) | static_cast<uint32_t>(TransformBit::ROTATION));
+    getNode()->setChangedFlags(getNode()->getChangedFlags() | static_cast<uint32_t>(TransformBit::POSITION) | static_cast<uint32_t>(TransformBit::ROTATION));
 }
 
 void PhysXSharedBody::addShape(const PhysXShape &shape) {

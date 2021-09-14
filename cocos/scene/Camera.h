@@ -31,7 +31,6 @@
 #include "base/Macros.h"
 #include "core/geometry/Frustum.h"
 #include "core/geometry/Ray.h"
-#include "core/scene-graph/Node.h"
 #include "math/Mat4.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
@@ -40,6 +39,9 @@
 #include "scene/RenderWindow.h"
 
 namespace cc {
+
+class Node;
+
 namespace scene {
 
 // As RenderScene includes Camera.h, so use forward declaration here.

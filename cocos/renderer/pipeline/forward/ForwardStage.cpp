@@ -115,16 +115,16 @@ void ForwardStage::render(scene::Camera *camera) {
     uint   subModelIdx = 0;
     uint   passIdx     = 0;
     size_t k           = 0;
-    for (auto ro : renderObjects) {
-        const auto *const model = ro.model;
-        const auto& subModels = model->getSubModels();
-        auto subModelCount = subModels.size();
+    for (const auto &ro : renderObjects) {
+        const auto *const model         = ro.model;
+        const auto &      subModels     = model->getSubModels();
+        auto              subModelCount = subModels.size();
         for (subModelIdx = 0; subModelIdx < subModelCount; ++subModelIdx) {
-            const auto& subModel = subModels[subModelIdx];
-            const auto& passes = subModel->getPasses();
-            auto passCount = passes.size();
+            const auto &subModel  = subModels[subModelIdx];
+            const auto &passes    = subModel->getPasses();
+            auto        passCount = passes.size();
             for (passIdx = 0; passIdx < passCount; ++passIdx) {
-                const auto& pass          = passes[passIdx];
+                const auto &pass = passes[passIdx];
                 if (pass->getPhase() != _phaseID) continue;
                 if (pass->getBatchingScheme() == scene::BatchingSchemes::INSTANCING) {
                     auto *instancedBuffer = InstancedBuffer::get(pass);
@@ -142,7 +142,7 @@ void ForwardStage::render(scene::Camera *camera) {
             }
         }
     }
-        
+
     for (auto *queue : _renderQueues) {
         queue->sort();
     }
@@ -155,14 +155,14 @@ void ForwardStage::render(scene::Camera *camera) {
     _planarShadowQueue->gatherShadowPasses(camera, cmdBuff);
 
     // render area is not oriented
-    uint w             = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getHeight() : camera->getWidth();
-    uint h             = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getWidth() : camera->getHeight();
-    
+    uint w = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getHeight() : camera->getWidth();
+    uint h = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getWidth() : camera->getHeight();
+
     const auto &viewPort = camera->getViewport();
-    _renderArea.x      = static_cast<int>(viewPort.x * w);
-    _renderArea.y      = static_cast<int>(viewPort.y * h);
-    _renderArea.width  = static_cast<uint>(viewPort.z * w * sceneData->getShadingScale());
-    _renderArea.height = static_cast<uint>(viewPort.w * h * sceneData->getShadingScale());
+    _renderArea.x        = static_cast<int>(viewPort.x * w);
+    _renderArea.y        = static_cast<int>(viewPort.y * h);
+    _renderArea.width    = static_cast<uint>(viewPort.z * w * sceneData->getShadingScale());
+    _renderArea.height   = static_cast<uint>(viewPort.w * h * sceneData->getShadingScale());
 
     const auto &clearColor = camera->getClearColor();
     if (hasFlag(static_cast<gfx::ClearFlags>(camera->getClearFlag()), gfx::ClearFlagBit::COLOR)) {

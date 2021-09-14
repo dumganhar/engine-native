@@ -83,8 +83,8 @@ void Model::destroy() {
     _subModels.clear();
     _inited           = false;
     _transformUpdated = true;
-    CC_SAFE_DELETE(_transform); //cjh TODO: should not delete
-    CC_SAFE_DELETE(_node);      //cjh TODO: should not delete
+    //    CC_SAFE_DELETE(_transform); //cjh TODO: should not delete
+    //    CC_SAFE_DELETE(_node);      //cjh TODO: should not delete
     _isDynamicBatching = false;
 }
 

@@ -100,7 +100,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     output[UBOCamera::EXPOSURE_OFFSET + 2] = isHDR ? 1.0F : 0.0F;
     output[UBOCamera::EXPOSURE_OFFSET + 3] = fpScale / exposure;
 
-    if (mainLight) {
+    if (mainLight != nullptr) {
         TO_VEC3(output, mainLight->getDirection(), UBOCamera::MAIN_LIT_DIR_OFFSET);
         TO_VEC3(output, mainLight->getColor(), UBOCamera::MAIN_LIT_COLOR_OFFSET);
         if (mainLight->isUseColorTemperature()) {
@@ -120,20 +120,23 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
         TO_VEC4(output, Vec4::ZERO, UBOCamera::MAIN_LIT_COLOR_OFFSET);
     }
 
-    std::array<float, 4> skyColor = ambient->getColorArray();
-    if (isHDR) {
-        skyColor[3] = ambient->getSkyIllum() * fpScale;
-    } else {
-        skyColor[3] = ambient->getSkyIllum() * exposure;
-    }
-    memcpy(output + UBOCamera::AMBIENT_SKY_OFFSET, skyColor.data(), 4 * sizeof(float));
+    if (ambient != nullptr) {
+        std::array<float, 4> skyColor = ambient->getColorArray();
+        if (isHDR) {
+            skyColor[3] = ambient->getSkyIllum() * fpScale;
+        } else {
+            skyColor[3] = ambient->getSkyIllum() * exposure;
+        }
+        memcpy(output + UBOCamera::AMBIENT_SKY_OFFSET, skyColor.data(), 4 * sizeof(float));
 
-    const auto &groundAlbedo                     = ambient->getGroundAlbedo();
-    output[UBOCamera::AMBIENT_GROUND_OFFSET + 0] = groundAlbedo.r;
-    output[UBOCamera::AMBIENT_GROUND_OFFSET + 1] = groundAlbedo.g;
-    output[UBOCamera::AMBIENT_GROUND_OFFSET + 2] = groundAlbedo.b;
-    auto *const envmap                           = descriptorSet->getTexture(static_cast<uint>(PipelineGlobalBindings::SAMPLER_ENVIRONMENT));
-    if (envmap) {
+        const auto &groundAlbedo                     = ambient->getGroundAlbedo();
+        output[UBOCamera::AMBIENT_GROUND_OFFSET + 0] = groundAlbedo.r;
+        output[UBOCamera::AMBIENT_GROUND_OFFSET + 1] = groundAlbedo.g;
+        output[UBOCamera::AMBIENT_GROUND_OFFSET + 2] = groundAlbedo.b;
+    }
+
+    auto *const envmap = descriptorSet->getTexture(static_cast<uint>(PipelineGlobalBindings::SAMPLER_ENVIRONMENT));
+    if (envmap != nullptr) {
         output[UBOCamera::AMBIENT_GROUND_OFFSET + 3] = static_cast<float>(envmap->getLevelCount());
     }
 
@@ -147,7 +150,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     memcpy(output + UBOCamera::MAT_VIEW_PROJ_INV_OFFSET, camera->getMatViewProjInv().m, sizeof(cc::Mat4));
     output[UBOCamera::CAMERA_POS_OFFSET + 3] = getCombineSignY();
 
-    if (fog->isEnabled()) {
+    if (fog != nullptr && fog->isEnabled()) {
         const auto &colorArray = fog->getColorArray();
         memcpy(output + UBOCamera::GLOBAL_FOG_COLOR_OFFSET, colorArray.data(), sizeof(float) * colorArray.size());
 
@@ -199,7 +202,7 @@ void PipelineUBO::updateShadowUBOView(const RenderPipeline *pipeline, std::array
             }
             memcpy(shadowUBO.data() + UBOShadow::MAT_LIGHT_VIEW_OFFSET, matShadowCamera.m, sizeof(matShadowCamera));
 
-            const auto matShadowView  = matShadowCamera.getInversed();
+            const auto  matShadowView  = matShadowCamera.getInversed();
             const float projectionSinY = device->getCapabilities().clipSpaceSignY;
             Mat4::createOrthographicOffCenter(-x, x, -y, y, shadow->getNear(), farClamp,
                                               device->getCapabilities().clipSpaceMinZ, projectionSinY, 0, &matShadowViewProj);
@@ -407,12 +410,14 @@ void PipelineUBO::updateMultiCameraUBO(const vector<scene::Camera *> &cameras) {
 }
 
 void PipelineUBO::updateShadowUBO(const scene::Camera *camera) {
-    auto *const       ds         = _pipeline->getDescriptorSet();
-    auto *const       cmdBuffer  = _pipeline->getCommandBuffers()[0];
-    auto *const       sceneData  = _pipeline->getPipelineSceneData();
-    auto *const       shadow     = sceneData->getShadow();
-    const auto *const scene      = camera->getScene();
-    if (!shadow->isEnabled()) return;
+    auto *const       ds        = _pipeline->getDescriptorSet();
+    auto *const       cmdBuffer = _pipeline->getCommandBuffers()[0];
+    auto *const       sceneData = _pipeline->getPipelineSceneData();
+    auto *const       shadow    = sceneData->getShadow();
+    const auto *const scene     = camera->getScene();
+    if (shadow == nullptr || !shadow->isEnabled()) {
+        return;
+    }
 
     const auto &                   shadowFrameBufferMap = sceneData->getShadowFramebufferMap();
     const scene::DirectionalLight *mainLight            = scene->getMainLight();

@@ -135,10 +135,10 @@ void RenderWindow::resize(uint32_t width, uint32_t height) {
 }
 
 void RenderWindow::extractRenderCameras(std::vector<Camera *> &cameras) {
-    for (Camera *camera : cameras) {
+    for (Camera *camera : _cameras) {
         if (camera->isEnabled()) {
             camera->update();
-            cameras.push_back(camera);
+            cameras.emplace_back(camera);
         }
     }
 }

@@ -43,7 +43,7 @@ Root::Root(gfx::Device *device)
     instance = this;
     //TODO: minggo
     //    this._dataPoolMgr = legacyCC.internal.DataPoolManager && new legacyCC.internal.DataPoolManager(device) as DataPoolManager;
-    _cameraPool = new Pool<scene::Camera>([]() { return new scene::Camera(); },
+    _cameraPool = new Pool<scene::Camera>([this]() { return new scene::Camera(_device); },
                                           4);
 }
 
@@ -181,30 +181,30 @@ void Root::frameMove(float deltaTime) {
     //        _batcher.update();
     //    }
 
-    //    const windows = this._windows;
-    //    const cameraList: Camera[] = [];
-    //    for (let i = 0; i < windows.length; i++) {
-    //        const window = windows[i];
-    //        window.extractRenderCameras(cameraList);
-    //    }
+    std::vector<scene::Camera *> cameraList;
+    for (auto *window : _windows) {
+        window->extractRenderCameras(cameraList);
+    }
 
-    //    if (_pipeline && cameraList.length > 0) {
-    //        this._device.acquire();
-    //        const scenes = this._scenes;
-    //        const stamp = legacyCC.director.getTotalFrames();
-    //        if (this._batcher) this._batcher.uploadBuffers();
-    //
-    //        for (let i = 0; i < scenes.length; i++) {
-    //            scenes[i].update(stamp);
-    //        }
-    //
-    //        legacyCC.director.emit(legacyCC.Director.EVENT_BEFORE_COMMIT);
-    //        cameraList.sort((a: Camera, b: Camera) => a.priority - b.priority);
-    //        this._pipeline.render(cameraList);
-    //        this._device.present();
-    //    }
-    //
-    //    if (this._batcher) this._batcher.reset();
+    if (_pipeline != nullptr && !cameraList.empty()) {
+        _device->acquire();
+        //cjh TODO:        const stamp = legacyCC.director.getTotalFrames();
+        uint32_t stamp = 60;
+        //        if (_batcher != nullptr) {
+        //            _batcher->uploadBuffers();
+        //        }
+
+        for (auto *scene : _scenes) {
+            scene->update(stamp);
+        }
+
+        //cjh TODO:        legacyCC.director.emit(legacyCC.Director.EVENT_BEFORE_COMMIT);
+        std::stable_sort(cameraList.begin(), cameraList.end(), [](const auto *a, const auto *b) { return a->getPriority() < b->getPriority(); });
+        _pipeline->render(cameraList);
+        _device->present();
+    }
+
+    //cjh TODO:    if (this._batcher) this._batcher.reset();
 }
 
 scene::RenderWindow *Root::createWindow(const scene::IRenderWindowInfo &info) {

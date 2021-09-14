@@ -73,7 +73,7 @@ public:
         CC_ASSERT(_byteOffset + _count * sizeof(T) <= dataBytes);
     }
 
-    int32_t length() const {
+    inline int32_t length() const {
         return _count;
     }
 
@@ -85,6 +85,10 @@ public:
     const T &operator[](index_t index) const {
         CC_ASSERT(index < _count && index >= 0);
         return *(reinterpret_cast<T *>(_data + _byteOffset) + index);
+    }
+
+    void copyToBuffer(T *buffer) {
+        memcpy(_data + _byteOffset, buffer, _count * sizeof(T));
     }
 
 private:

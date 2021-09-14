@@ -47,18 +47,6 @@ using EventType = NodeEventType;
  */
 using TransformDirtyBit = TransformBit;
 class NodeUiProperties;
-// This struct defines the memory layout shared between JS and C++.
-struct NodeLayout {
-    uint           dirtyFlag{0};
-    uint           layer{0};
-    cc::Vec3       worldScale;
-    cc::Vec3       worldPosition;
-    cc::Quaternion worldRotation;
-    cc::Mat4       worldMatrix;
-    cc::Vec3       localScale;
-    cc::Vec3       localPosition;
-    cc::Quaternion localRotation;
-};
 
 class Node final : public BaseNode {
 public:
@@ -74,12 +62,14 @@ public:
     static void  setDirtyNode(const index_t idx, Node *node);
     static Node *getDirtyNode(const index_t idx);
     static Node *find(const std::string &, Node *referenceNode = nullptr);
+
     template <typename T>
     static bool isNode(T *obj);
-    static void resetHasChangedFlags();
+
+    static void resetChangedFlags();
     static void clearNodeArray();
 
-    NodeUiProperties *uiProps;
+    NodeUiProperties *uiProps{nullptr};
     void              invalidateChildren(TransformBit dirtyBit);
 
     void updateWorldTransform() override;
@@ -108,7 +98,7 @@ public:
         setRotationFromEuler(val.x, val.y, val.z);
     }
 
-    inline bool hasChangedFlags() const { return _flagChange; }
+    inline uint getChangedFlags() const { return _flagChange; }
     inline void setChangedFlags(uint value) override { _flagChange = value; }
 
     inline void setDirtyFlag(uint value) override { _dirtyFlag = value; }

@@ -926,6 +926,8 @@ cocos_source_files(
     cocos/core/components/Component.cpp
     cocos/core/components/RenderableComponent.h
     cocos/core/components/RenderableComponent.cpp
+    cocos/core/components/CameraComponent.h
+    cocos/core/components/CameraComponent.cpp
     cocos/3d/framework/MeshRenderer.h
     cocos/3d/framework/MeshRenderer.cpp
 )

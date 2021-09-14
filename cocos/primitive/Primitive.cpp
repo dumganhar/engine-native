@@ -32,10 +32,10 @@ Primitive::Primitive(PrimitiveType t /* = PrimitiveType.BOX*/)
 }
 
 void Primitive::onLoaded() {
-    createMesh(create(type), this);
+    createMesh(createGeometry(type), this);
 }
 
-IGeometry create(PrimitiveType type, const std::optional<std::variant<IBoxOptions /*, ICapsuleOptions, ..., ...*/>> &options) {
+IGeometry createGeometry(PrimitiveType type, const std::optional<std::variant<IBoxOptions /*, ICapsuleOptions, ..., ...*/>> &options) {
     switch (type) {
         case PrimitiveType::BOX: {
             return options.has_value() ? cc::box(std::get<IBoxOptions>(options.value())) : cc::box();

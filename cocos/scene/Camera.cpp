@@ -25,10 +25,10 @@
 
 #include "scene/Camera.h"
 #include <vector>
-#include "renderer/gfx-base/GFXDevice.h"
-#include "renderer/pipeline/Define.h"
 #include "core/Root.h"
 #include "math/MathUtil.h"
+#include "renderer/gfx-base/GFXDevice.h"
+#include "renderer/pipeline/Define.h"
 
 namespace cc {
 namespace scene {
@@ -134,7 +134,7 @@ void Camera::update(bool forceUpdate /*false*/) {
 
     bool viewProjDirty = false;
     // view matrix
-    if (_node->hasChangedFlags() || forceUpdate) {
+    if (_node->getChangedFlags() || forceUpdate) {
         _matView = _node->getWorldMatrix().getInversed();
         _forward.set(-_matView.m[2], -_matView.m[6], -_matView.m[10]);
 

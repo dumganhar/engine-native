@@ -24,10 +24,10 @@
  ****************************************************************************/
 #pragma once
 
-#include "components/Component.h"
+#include "core/components/Component.h"
 
 namespace cc {
-namespace framework {
+
 class UITransform : public Component {
 private:
     /* data */
@@ -35,5 +35,5 @@ public:
     UITransform(/* args */) = default;
     ~UITransform()          = default;
 };
-} // namespace framework
+
 } // namespace cc

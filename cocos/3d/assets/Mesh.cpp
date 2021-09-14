@@ -274,6 +274,7 @@ void Mesh::initialize() {
             uint32_t                  idx          = prim.vertexBundelIndices[0];
             const IVertexBundle &     vertexBundle = _struct.vertexBundles[idx];
             const gfx::AttributeList &attrs        = vertexBundle.attributes;
+            gfxAttributes.resize(attrs.size());
             for (size_t j = 0; j < attrs.size(); ++j) {
                 const auto &attr = attrs[j];
                 gfxAttributes[j] = gfx::Attribute{attr.name, attr.format, attr.isInstanced, attr.stream, attr.isInstanced, attr.location};

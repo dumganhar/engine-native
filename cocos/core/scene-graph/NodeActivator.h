@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <vector>
 #include "ComponentScheduler.h"
 #include "Node.h"
 
@@ -33,20 +34,65 @@ namespace cc {
 class UnsortedInvoker : public LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
-    inline void add(Component *comp) {}
-    inline void remove(Component *comp) {}
-    inline void cancelInactive(bool flagToClear) {}
-    inline void invoke() {}
+    inline void add(Component *comp) { _zero.emplace_back(comp); }
+    inline void remove(Component *comp) {
+        auto iter = std::find(_zero.begin(), _zero.end(), comp);
+        if (iter != _zero.end()) _zero.erase(iter);
+    }
+    inline void cancelInactive() { stableRemoveInactive(_zero); }
+    inline void cancelInactive(uint32_t flagToClear) { stableRemoveInactive(_zero, flagToClear); }
+    inline void invoke() {
+        // _invoke(_zero); TODO(xwx): requires 2 arguments, but 1 was provided
+        _zero.clear();
+    }
 };
 
 class NodeActivator final {
 public:
     NodeActivator();
-    Component * resetComp;
-    inline void reset() {}
-    inline void activateNode(Node *node, bool active) {}
-    inline void activateComp(Component *comp, LifeCycleInvoker *preloadInvoker = nullptr, LifeCycleInvoker *onLoadInvoker = nullptr, LifeCycleInvoker *onEnableInvoker = nullptr) {}
-    inline void destroyComp(Component *comp) {}
+    ~NodeActivator();
+    Component *resetComp;
+
+    /**
+     * @en Reset all activation or des-activation tasks
+     * @zh 重置所有激活或非激活任务
+     */
+    inline void reset() { _activatingStack.clear(); }
+
+    /**
+     * @en Activate or des-activate a node
+     * @zh 激活或者停用某个节点
+     * @param node Target node
+     * @param active Which state to set the node to
+     */
+    void activateNode(Node *node, bool active);
+
+    /**
+     * @en Activate or des-activate a component
+     * @zh 激活或者停用某个组件
+     * @param comp Target component
+     * @param preloadInvoker The invoker for `_preload` method, normally from [[ComponentScheduler]]
+     * @param onLoadInvoker The invoker for `onLoad` method, normally from [[ComponentScheduler]]
+     * @param onEnableInvoker The invoker for `onEnable` method, normally from [[ComponentScheduler]]
+     */
+    void activateComp(Component *comp, LifeCycleInvoker *preloadInvoker = nullptr, LifeCycleInvoker *onLoadInvoker = nullptr, LifeCycleInvoker *onEnableInvoker = nullptr);
+
+    /**
+     * @en Destroy a component
+     * @zh 销毁一个组件
+     * @param comp Target component
+     */
+    void destroyComp(Component *comp);
+
+protected:
+    void activateNodeRecursively(Node *node, LifeCycleInvoker *preloadInvoker = nullptr, LifeCycleInvoker *onLoadInvoker = nullptr, LifeCycleInvoker *onEnableInvoker = nullptr);
+
+    void deactivateNodeRecursively(Node *node);
+
+    std::vector<std::any> _activatingStack;
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(NodeActivator);
 };
 
 } // namespace cc

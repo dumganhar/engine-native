@@ -47,6 +47,8 @@ class Scene;
 class NodeEventProcessor;
 class BaseNode : public CCObject {
 public:
+    friend class NodeActivator;
+
     using CCObject::CCObject;
     BaseNode() = default;
     explicit BaseNode(const std::string &name);

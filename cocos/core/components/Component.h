@@ -30,7 +30,9 @@
 #include "core/data/Object.h"
 
 namespace cc {
+
 class Node;
+class BaseNode;
 
 namespace scene {
 class RenderScene;
@@ -90,7 +92,7 @@ public:
     virtual bool destroy() { return true; }
     virtual void _onPreDestroy() {}
 
-    inline Node *getNode() const { return _node; }
+    Node *getNode() const;
 
     // LIFECYCLE METHODS
 
@@ -268,7 +270,7 @@ protected:
      * ```
      */
     //cjh    @serializable
-    Node *_node{nullptr};
+    BaseNode *_node{nullptr};
 
     /**
      * @private

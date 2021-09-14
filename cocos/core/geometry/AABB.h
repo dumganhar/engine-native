@@ -114,8 +114,28 @@ public:
     AABB();
     ~AABB() = default;
 
-    bool               aabbAabb(AABB *aabb) const;
-    bool               aabbFrustum(const Frustum &) const;
+    /**
+     * @en
+     * aabb-plane intersect detect.
+     * @zh
+     * 轴对齐包围盒和平面的相交性检测。
+     * @param {AABB} aabb 轴对齐包围盒
+     * @param {Plane} plane 平面
+     * @return {number} inside(back) = -1, outside(front) = 0, intersect = 1
+     */
+    bool aabbAabb(AABB *aabb) const;
+
+    /**
+     * @en
+     * aabb-frustum intersect detect, faster but has false positive corner cases.
+     * @zh
+     * 轴对齐包围盒和锥台相交性检测，速度快，但有错误情况。
+     * @param {AABB} aabb 轴对齐包围盒
+     * @param {Frustum} frustum 锥台
+     * @return {number} 0 或 非0
+     */
+    bool aabbFrustum(const Frustum &) const;
+
     int                aabbPlane(const Plane &) const;
     void               getBoundary(cc::Vec3 *minPos, cc::Vec3 *maxPos) const;
     void               merge(const AABB &aabb);

@@ -31,6 +31,7 @@
 #include "SceneCulling.h"
 #include "core/geometry/AABB.h"
 #include "core/geometry/Sphere.h"
+#include "core/scene-graph/Node.h"
 #include "gfx-base/GFXBuffer.h"
 #include "gfx-base/GFXDescriptorSet.h"
 #include "math/Quaternion.h"

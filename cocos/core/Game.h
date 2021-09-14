@@ -31,7 +31,6 @@
 #include "core/event/EventEmitter.h"
 #include "core/platform/event-manager/InputManager.h"
 #include "core/platform/native/SystemInfo.h"
-#include "core/scene-graph/Node.h"
 #include "platform/Application.h"
 #include "renderer/pipeline/RenderPipeline.h"
 
@@ -40,6 +39,8 @@ namespace cc {
 namespace gfx {
 class Device;
 }
+
+class Node;
 
 struct ISceneInfo {
     std::string url;

@@ -24,6 +24,7 @@
  ****************************************************************************/
 
 #include "scene/DirectionalLight.h"
+#include "core/scene-graph/Node.h"
 #include "scene/Ambient.h"
 
 namespace cc {
@@ -37,7 +38,7 @@ void DirectionalLight::initialize() {
 }
 
 void DirectionalLight::update() {
-    if (_node && _node->getFlagsChanged()) {
+    if (_node && _node->getChangedFlags()) {
         _dir = _forward;
         _node->updateWorldTransform();
         _dir.transformQuat(_node->getWorldRotation());

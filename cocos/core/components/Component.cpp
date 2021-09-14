@@ -47,4 +47,8 @@ bool Component::isEnabledInHierarchy() const {
     return _enabled && _node != nullptr && this->_node->isActiveInHierarchy();
 }
 
+Node *Component::getNode() const {
+    return static_cast<Node *>(_node);
+}
+
 } // namespace cc

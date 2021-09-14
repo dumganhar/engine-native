@@ -46,14 +46,14 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     std::vector<Channel> channels;
     uint32_t             vertCount = 0;
 
-    gfx::Attribute *attr = nullptr;
+    const gfx::Attribute *attr = nullptr;
 
     std::vector<float> positions(geometry.positions);
 
     if (!positions.empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (auto att : geometry.attributes.value()) {
+            for (const auto &att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_POSITION) {
                     attr = &att;
                     break;
@@ -61,7 +61,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
+        if (attr == nullptr) {
             attr = &defAttrs[0];
         }
 
@@ -83,7 +83,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
+        if (attr == nullptr) {
             attr = &defAttrs[1];
         }
 
@@ -105,7 +105,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
+        if (attr == nullptr) {
             attr = &defAttrs[2];
         }
 
@@ -127,7 +127,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
+        if (attr == nullptr) {
             attr = &defAttrs[3];
         }
 
@@ -149,8 +149,8 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
-            attr = &defAttrs[3];
+        if (attr == nullptr) {
+            attr = &defAttrs[4];
         }
 
         attributes.emplace_back(*attr);

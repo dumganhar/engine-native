@@ -94,7 +94,7 @@ void Camera::createCamera() {
 
         scene::ICameraInfo info;
         info.name       = _node->getName();
-        info.node       = _node;
+        info.node       = getNode();
         info.projection = _projection;
         info.window     = _inEditorMode ? Root::getInstance()->getMainWindow() : Root::getInstance()->getTempWindow();
         info.priority   = _priority,

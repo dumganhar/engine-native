@@ -28,6 +28,7 @@
 #include "3d/assets/MorphRendering.h"
 #include "core/Root.h"
 #include "core/builtin/BuiltinResMgr.h"
+#include "core/scene-graph/Node.h"
 #include "scene/BakedSkinningModel.h"
 #include "scene/MorphModel.h"
 #include "scene/Pass.h"
@@ -105,8 +106,8 @@ void MeshRenderer::updateModels() {
     if (model != nullptr) {
         model->destroy();
         model->initialize();
-        model->setTransform(_node);
-        model->setNode(_node);
+        model->setTransform(static_cast<Node *>(_node)); //cjh TODO: remove BaseNode
+        model->setNode(static_cast<Node *>(_node));      //cjh TODO: remove BaseNode
     } else {
         createModel();
     }
@@ -153,8 +154,8 @@ void MeshRenderer::createModel() {
     }
 
     _model->setVisFlags(static_cast<uint32_t>(getVisibility())); //cjh TODO: remove static_cast
-    _model->setNode(_node);
-    _model->setTransform(_node);
+    _model->setNode(static_cast<Node *>(_node));                 //cjh TODO: remove BaseNode
+    _model->setTransform(static_cast<Node *>(_node));
 
     _models.clear();
     _models.emplace_back(_model);
@@ -167,7 +168,7 @@ void MeshRenderer::createModel() {
 }
 
 void MeshRenderer::attachToScene() {
-    if (_node->getScene() != nullptr || _model != nullptr) {
+    if (_node->getScene() == nullptr || _model == nullptr) {
         return;
     }
     auto *renderScene = getRenderScene();

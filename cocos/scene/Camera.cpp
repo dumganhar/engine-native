@@ -304,5 +304,44 @@ void Camera::updateExposure() {
     setExposure(ev100);
 }
 
+void Camera::setViewport(const Vec4 &val) {
+    const float x      = val.x;
+    const float width  = val.z;
+    const float height = val.w;
+
+    const float y = _device->getCapabilities().clipSpaceSignY < 0 ? 1 - val.y - height : val.y;
+
+    switch (_device->getSurfaceTransform()) {
+        case gfx::SurfaceTransform::ROTATE_90:
+            _viewport.x = 1 - y - height;
+            _viewport.y = x;
+            _viewport.z = height;
+            _viewport.w = width;
+            break;
+        case gfx::SurfaceTransform::ROTATE_180:
+            _viewport.x = 1 - x - width;
+            _viewport.y = 1 - y - height;
+            _viewport.z = width;
+            _viewport.w = height;
+            break;
+        case gfx::SurfaceTransform::ROTATE_270:
+            _viewport.x = y;
+            _viewport.y = 1 - x - width;
+            _viewport.z = height;
+            _viewport.w = width;
+            break;
+        case gfx::SurfaceTransform::IDENTITY:
+            _viewport.x = x;
+            _viewport.y = y;
+            _viewport.z = width;
+            _viewport.w = height;
+            break;
+        default:
+            break;
+    }
+
+    resize(_width, _height);
+}
+
 } // namespace scene
 } // namespace cc

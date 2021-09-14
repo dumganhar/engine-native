@@ -138,12 +138,14 @@ public:
         }
     }
 
-    scene::Camera *createCamera();
-
     template <typename T, typename std::enable_if_t<std::is_base_of<scene::Light, T>::value>>
     T *createLight();
 
     void destroyLight(scene::Light *);
+    
+    inline scene::Camera *createCamera() const {
+        return new scene::Camera();
+    }
 
     /**
      * @zh

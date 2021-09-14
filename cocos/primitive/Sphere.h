@@ -25,6 +25,29 @@
 
 #pragma once
 
+#include <cmath>
+#include "3d/assets/Mesh.h"
+#include "primitive/PrimitiveDefine.h"
+
 namespace cc {
 
-}
+/**
+ * @zh
+ * 球参数选项。
+ */
+struct ISphereOptions : public IGeometryOptions {
+    uint32_t segments{0};
+};
+
+/**
+ * @en
+ * Generate a shpere with radius 0.5.
+ * @zh
+ * 生成一个球。
+ * @param radius 球半径。
+ * @param options 参数选项。
+ */
+
+IGeometry sphere(float radius = 0.5, const std::optional<ISphereOptions> &opts = std::nullopt);
+
+} // namespace cc

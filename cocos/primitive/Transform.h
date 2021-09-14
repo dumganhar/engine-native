@@ -25,6 +25,37 @@
 
 #pragma once
 
+#include "primitive/PrimitiveDefine.h"
+
 namespace cc {
 
-}
+/**
+ * @en
+ * Translate the geometry.
+ * @zh
+ * 平移几何体。
+ * @param geometry 几何体信息。
+ * @param offset 偏移量。
+ */
+IGeometry translate(IGeometry &geometry, const std::optional<Vec3> &offset);
+
+/**
+ * @en
+ * Scale the geometry.
+ * @zh
+ * 缩放几何体。
+ * @param geometry 几何体信息。
+ * @param value 缩放量。
+ */
+IGeometry scale(IGeometry &geometry, const std::optional<Vec3> &value);
+
+/**
+ * @en
+ * Converts geometry to wireframe mode. Only geometry with triangle topology is supported.
+ * @zh
+ * 将几何体转换为线框模式，仅支持三角形拓扑的几何体。
+ * @param geometry 几何体信息。
+ */
+IGeometry wireframed(IGeometry &geometry);
+
+} // namespace cc

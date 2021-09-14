@@ -48,7 +48,7 @@ void TextureBufferPool::initialize(const ITextureBufferPoolInfo &info) {
     // _bufferViewCtor = getTypedArrayConstructor(formatInfo); // TODO(xwx): getTypedArrayConstructor not define
     _roundUpFn        = info.roundUpFn.has_value() ? info.roundUpFn.value() : nullptr;
     _alignment        = info.alignment.has_value() ? info.alignment.value() : 1;
-    _useMcDonaldAlloc = info.alignment.has_value() && info.alignment.value() == true;
+    _useMcDonaldAlloc = info.alignment.has_value() && info.alignment.value();
 }
 
 void TextureBufferPool::destroy() {

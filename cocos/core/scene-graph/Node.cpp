@@ -116,10 +116,10 @@ void Node::invalidateChildren(TransformBit dirtyBit) {
     int i{0};
     while (i >= 0) {
         BaseNode *  cur             = getDirtyNode(i--);
-        const uint &hasChangedFlags = cur->getFlagsChanged();
-        if ((cur->getDirtyFlag() & hasChangedFlags & curDirtyBit) != curDirtyBit) {
+        const uint &getChangedFlags = cur->getFlagsChanged();
+        if ((cur->getDirtyFlag() & getChangedFlags & curDirtyBit) != curDirtyBit) {
             cur->setDirtyFlag(cur->getDirtyFlag() | curDirtyBit);
-            cur->setChangedFlags(hasChangedFlags | curDirtyBit);
+            cur->setChangedFlags(getChangedFlags | curDirtyBit);
             int childCount{static_cast<int>(cur->getChildren().size())};
             for (BaseNode *curChild : cur->getChildren()) {
                 setDirtyNode(++i, reinterpret_cast<Node *>(curChild));
@@ -155,8 +155,15 @@ void Node::setWorldRotation(float x, float y, float z, float w) {
 }
 
 void Node::setDirtyNode(const index_t idx, Node *node) {
+    if (idx >= dirtyNodes.size()) {
+        if (dirtyNodes.empty()) {
+            dirtyNodes.reserve(16); // Make a pre-allocated size for dirtyNode vector for better grow performance.
+        }
+        dirtyNodes.resize(idx + 1, nullptr);
+    }
     dirtyNodes[idx] = node;
 }
+
 Node *Node::getDirtyNode(const index_t idx) {
     return dynamic_cast<Node *>(dirtyNodes[idx]);
 }
@@ -291,7 +298,7 @@ void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
     }
 }
 
-void Node::resetHasChangedFlags() {
+void Node::resetgetChangedFlags() {
 }
 
 void Node::clearNodeArray() {
@@ -299,7 +306,7 @@ void Node::clearNodeArray() {
         clearFrame++;
     } else {
         clearFrame = 0;
-        dirtyNodes.resize(0);
+        dirtyNodes.clear();
     }
 }
 

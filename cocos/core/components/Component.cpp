@@ -43,4 +43,8 @@ scene::RenderScene *Component::getRenderScene() const {
     return _node->getScene()->getRenderScene();
 }
 
+bool Component::isEnabledInHierarchy() const {
+    return _enabled && _node != nullptr && this->_node->isActiveInHierarchy();
+}
+
 } // namespace cc

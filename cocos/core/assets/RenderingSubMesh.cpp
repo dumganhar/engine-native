@@ -198,6 +198,64 @@ bool RenderingSubMesh::destroy() {
     CC_SAFE_DESTROY(_indirectBuffer);
 }
 
+const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
+    if (!_jointMappedBuffers.empty()) {
+        return _jointMappedBuffers;
+    }
+
+    auto &buffers = _jointMappedBuffers;
+    auto &indices = _jointMappedBufferIndices;
+
+    if (!_mesh || !_subMeshIdx.has_value()) {
+        _jointMappedBuffers = _vertexBuffers;
+        return _jointMappedBuffers;
+    }
+
+    auto &      structInfo = _mesh->getStruct();
+    const auto &prim       = structInfo.primitives[_subMeshIdx.value()];
+    if (structInfo.jointMaps.has_value() || !prim.jointMapIndex.has_value() || structInfo.jointMaps.value()[prim.jointMapIndex.value()].empty()) {
+        _jointMappedBuffers = _vertexBuffers;
+        return _jointMappedBuffers;
+    }
+    gfx::Format  jointFormat = gfx::Format::UNKNOWN;
+    int32_t      jointOffset = 0;
+    gfx::Device *device      = gfx::Device::getInstance();
+    for (size_t i = 0; i < prim.vertexBundelIndices.size(); i++) {
+        const auto &bundle = structInfo.vertexBundles[prim.vertexBundelIndices[i]];
+        jointOffset        = 0;
+        jointFormat        = gfx::Format::UNKNOWN;
+        for (size_t j = 0; j < bundle.attributes.size(); j++) {
+            const auto &attr = bundle.attributes[j];
+            if (attr.name == gfx::ATTR_NAME_JOINTS) {
+                jointFormat = attr.format;
+                break;
+            }
+            jointOffset += gfx::GFX_FORMAT_INFOS[static_cast<int32_t>(attr.format)].size;
+        }
+        if (jointFormat != gfx::Format::UNKNOWN) {
+            //cjh TODO:            const data = new Uint8Array(mesh.data.buffer, bundle.view.offset, bundle.view.length);
+            //            const dataView = new DataView(data.slice().buffer);
+            //            const idxMap = structInfo.jointMaps[prim.jointMapIndex];
+            //            mapBuffer(dataView, (cur) => idxMap.indexOf(cur), jointFormat, jointOffset,
+            //                bundle.view.length, bundle.view.stride, dataView);
+            //            const buffer = device.createBuffer(new BufferInfo(
+            //                BufferUsageBit.VERTEX | BufferUsageBit.TRANSFER_DST,
+            //                MemoryUsageBit.DEVICE,
+            //                bundle.view.length,
+            //                bundle.view.stride,
+            //            ));
+            //            buffer.update(dataView.buffer); buffers.push(buffer); indices.push(i);
+        } else {
+            buffers.emplace_back(_vertexBuffers[prim.vertexBundelIndices[i]]);
+        }
+    }
+
+    if (_vertexIdChannel) {
+        buffers.emplace_back(allocVertexIdBuffer(device));
+    }
+    return buffers;
+}
+
 gfx::Buffer *RenderingSubMesh::allocVertexIdBuffer(gfx::Device *device) {
     const uint32_t vertexCount = (_vertexBuffers.empty() || _vertexBuffers[0]->getStride() == 0)
                                      ? 0

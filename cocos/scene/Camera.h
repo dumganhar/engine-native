@@ -117,8 +117,9 @@ struct ICameraInfo {
 
 class Camera final {
 public:
+    static const int32_t SKYBOX_FLAG = static_cast<int32_t>(gfx::ClearFlagBit::STENCIL) << 1;
+
     explicit Camera(gfx::Device *device);
-    Camera() = default;
 
     bool initialize(const ICameraInfo &info);
     void destroy();

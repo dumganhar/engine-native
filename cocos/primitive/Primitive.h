@@ -83,6 +83,6 @@ public:
 };
 
 //TODO(xwx): make alias for all children struct of IGeometryOptions
-IGeometry create(PrimitiveType type, const std::optional<std::variant<IBoxOptions /*, ICapsuleOptions, ..., ...*/>> &options = std::nullopt);
+IGeometry createGeometry(PrimitiveType type, const std::optional<std::variant<IBoxOptions /*, ICapsuleOptions, ..., ...*/>> &options = std::nullopt);
 
 } // namespace cc

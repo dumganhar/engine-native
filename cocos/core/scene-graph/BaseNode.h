@@ -67,16 +67,11 @@ public:
     virtual void setWorldRotation(float x, float y, float z, float w) {}
     virtual void setParent(BaseNode *parent, bool isKeepWorld = false);
 
-    Scene *           getScene() const;
-    void              walk();
-    void              walk(const std::function<void(BaseNode *)> &);
-    void              walk(const std::function<void(BaseNode *)> &, const std::function<void(BaseNode *)> &);
-    static Component *addComponent(const std::string &className);
-    Component *       addComponent(Component *comp);
-    void              removeComponent(const std::string &className);
-    void              removeComponent(Component *comp);
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    void removeComponent(const T &comp){};
+    Scene *getScene() const;
+    void   walk();
+    void   walk(const std::function<void(BaseNode *)> &);
+    void   walk(const std::function<void(BaseNode *)> &, const std::function<void(BaseNode *)> &);
+
     void on(const std::string &, const std::function<void(BaseNode *)> &);
     void on(const std::string &, const std::function<void(BaseNode *)> &, const std::any &, bool useCapture = false);
     void off(const std::string &, const std::function<void(BaseNode *)> &);
@@ -156,12 +151,42 @@ public:
     inline std::string getUUid() const {
         return _id;
     }
-    inline bool getActive() const { return _active; }
-    inline bool getActiveInHierarchy() const { return _activeInHierarchy; }
+    inline bool isActive() const { return _active; }
+    inline bool isActiveInHierarchy() const { return _activeInHierarchy; }
+
+    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of_v<Component, T>, T>>
+    T *addComponent() {
+        T *comp = new T();
+        return static_cast<T *>(addComponent(comp));
+    }
+
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    void removeComponent() {
+        for (auto iter = _components.begin(); iter != _components.end(); ++iter) {
+            if (dynamic_cast<T *>(*iter) != nullptr) {
+                _components.erase(iter);
+            }
+        }
+    }
+
+    Component *addComponent(Component *comp);
+    void       removeComponent(Component *comp);
+
+    Component *addComponent(const std::string &className);
+    void       removeComponent(const std::string &className);
 
     Component *getComponent(const std::string &name) const;
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    Component *getComponent(const T &type) const {}
+
+    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<Component, T>::value>>
+    Component *getComponent() const {
+        for (auto iter = _components.begin(); iter != _components.end(); ++iter) {
+            if (dynamic_cast<T *>(*iter) != nullptr) {
+                return *iter;
+            }
+        }
+        return nullptr;
+    }
+
     // TODO(Lenovo):
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     inline std::vector<Component *> getComponents(const T & /*unused*/) const {};
@@ -176,10 +201,11 @@ public:
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     std::vector<Component *> getComponentsInChildren(const T &comp) const {}
 
+    inline std::vector<Component *> getComponents() const { return _components; }
+
     virtual void                          onPostActivated(bool active) {}
     inline const std::vector<BaseNode *> &getChildren() { return _children; }
     inline BaseNode *                     getParent() const { return _parent; }
-    inline std::vector<Component *>       getComponents() const { return _components; }
     inline NodeEventProcessor *           getEventProcessor() const { return _eventProcessor; }
     virtual uint                          getFlagsChanged() const { return _flagChange; }
     virtual uint                          getLayer() const { return _layer; }
@@ -261,6 +287,8 @@ protected:
     static std::vector<Component *> findChildComponents(const std::vector<BaseNode *> &, const std::string &, std::vector<Component *>);
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     static std::vector<Component *> findChildComponents(const std::vector<BaseNode *> &, const T &, std::vector<Component *>);
+
+    friend class Scene;
 };
 
 } // namespace cc

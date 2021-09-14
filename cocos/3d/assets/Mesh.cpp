@@ -882,6 +882,7 @@ gfx::BufferList Mesh::createVertexBuffers(gfx::Device *gfxDevice, const ArrayBuf
         vertexBuffer->update(data.data() + vertexBundle.view.offset, vertexBundle.view.length);
         buffers.emplace_back(vertexBuffer);
     }
+    return buffers;
 }
 
 void Mesh::initDefault(const std::optional<std::string> &uuid) {

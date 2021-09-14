@@ -34,13 +34,17 @@ class RenderScene;
 
 class Scene final : public BaseNode {
 public:
+    using Super = BaseNode;
     explicit Scene(const std::string &name);
     ~Scene() override = default;
 
     inline scene::RenderScene *getRenderScene() const { return _renderScene; }
 
     void load();
-    void activate();
+    void activate(bool active = true);
+
+    void onBatchCreated(bool dontChildPrefab) override;
+    bool destroy() override;
 
 protected:
     scene::RenderScene *_renderScene{nullptr};

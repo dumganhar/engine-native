@@ -92,9 +92,6 @@ public:
 
     inline Node *getNode() const { return _node; }
 
-protected:
-    Component();
-
     // LIFECYCLE METHODS
 
     // Cocos Creator provides lifecycle methods that you can specify to hook into this process.
@@ -184,7 +181,6 @@ protected:
      */
     virtual void onDestroy() {}
 
-public:
     virtual void onFocusInEditor() {}
 
     virtual void onLostFocusInEditor() {}
@@ -197,6 +193,8 @@ public:
     virtual void resetInEditor() {}
 
 protected:
+    Component();
+
     // VIRTUAL
 
     /**
@@ -277,6 +275,8 @@ protected:
      */
     //cjh    @serializable
     bool _enabled{true};
+
+    friend class BaseNode;
 };
 
 } // namespace cc

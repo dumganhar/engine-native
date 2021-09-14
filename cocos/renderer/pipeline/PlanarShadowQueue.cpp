@@ -49,7 +49,7 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
     clear();
     auto *const sceneData = _pipeline->getPipelineSceneData();
     const auto *shadow    = sceneData->getShadow();
-    if (!shadow->isEnabled() || shadow->getType() != scene::ShadowType::PLANAR) {
+    if (shadow == nullptr || !shadow->isEnabled() || shadow->getType() != scene::ShadowType::PLANAR) {
         return;
     }
 
@@ -100,7 +100,7 @@ void PlanarShadowQueue::clear() {
 void PlanarShadowQueue::recordCommandBuffer(gfx::Device *device, gfx::RenderPass *renderPass, gfx::CommandBuffer *cmdBuffer) {
     auto *const sceneData = _pipeline->getPipelineSceneData();
     const auto *shadow    = sceneData->getShadow();
-    if (!shadow->isEnabled() || shadow->getType() != scene::ShadowType::PLANAR) {
+    if (shadow == nullptr || !shadow->isEnabled() || shadow->getType() != scene::ShadowType::PLANAR) {
         return;
     }
 

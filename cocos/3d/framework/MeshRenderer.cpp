@@ -224,8 +224,8 @@ void MeshRenderer::updateModelParams() {
     if (!_mesh || !_model) {
         return;
     }
-    _node->setChangedFlags(_node->hasChangedFlags() | static_cast<uint32_t>(TransformBit::POSITION));
-    _model->getTransform()->setChangedFlags(_model->getTransform()->hasChangedFlags() | static_cast<uint32_t>(TransformBit::POSITION));
+    _node->setChangedFlags(_node->getChangedFlags() | static_cast<uint32_t>(TransformBit::POSITION));
+    _model->getTransform()->setChangedFlags(_model->getTransform()->getChangedFlags() | static_cast<uint32_t>(TransformBit::POSITION));
     _model->setDynamicBatching(isBatchingEnabled());
     const size_t meshCount     = _mesh ? _mesh->getRenderingSubMeshes().size() : 0;
     const auto & renderingMesh = _mesh->getRenderingSubMeshes();

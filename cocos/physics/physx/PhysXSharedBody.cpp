@@ -221,15 +221,15 @@ void PhysXSharedBody::syncScale() {
 }
 
 void PhysXSharedBody::syncSceneToPhysics() {
-    uint32_t hasChangedFlags = getNode()->getFlagsChanged();
-    if (hasChangedFlags) {
-        if (hasChangedFlags & static_cast<uint32_t>(TransformBit::SCALE)) syncScale();
+    uint32_t getChangedFlags = getNode()->getFlagsChanged();
+    if (getChangedFlags) {
+        if (getChangedFlags & static_cast<uint32_t>(TransformBit::SCALE)) syncScale();
         auto wp = getImpl().rigidActor->getGlobalPose();
-        if (hasChangedFlags & static_cast<uint32_t>(TransformBit::POSITION)) {
+        if (getChangedFlags & static_cast<uint32_t>(TransformBit::POSITION)) {
             getNode()->updateWorldTransform();
             pxSetVec3Ext(wp.p, getNode()->getWorldPosition());
         }
-        if (hasChangedFlags & static_cast<uint32_t>(TransformBit::ROTATION)) {
+        if (getChangedFlags & static_cast<uint32_t>(TransformBit::ROTATION)) {
             getNode()->updateWorldTransform();
             pxSetQuatExt(wp.q, getNode()->getWorldRotation());
         }

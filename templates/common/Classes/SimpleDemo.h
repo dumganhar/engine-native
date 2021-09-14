@@ -24,7 +24,9 @@
  ****************************************************************************/
 #pragma once
 
+#include "3d/framework/MeshRenderer.h"
 #include "core/Root.h"
+#include "core/scene-graph/Scene.h"
 #include "renderer/gfx-base/GFXDef.h"
 
 class SimpleDemo {
@@ -36,6 +38,8 @@ public:
     void finalize();
 
 private:
-    cc::gfx::Device *_device{nullptr};
-    cc::Root *       _root{nullptr};
+    cc::gfx::Device * _device{nullptr};
+    cc::Root *        _root{nullptr};
+    cc::MeshRenderer *_cubeMeshRenderer{nullptr};
+    cc::Scene *       _scene{nullptr};
 };

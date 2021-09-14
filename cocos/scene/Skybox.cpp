@@ -110,7 +110,7 @@ void Skybox::activate() {
 
     if (_enabled) {
         if (skyboxMesh == nullptr) {
-            skyboxMesh = createMesh(create(PrimitiveType::BOX, IBoxOptions({.width = 2, .height = 2, .length = 2})), skyboxMesh);
+            skyboxMesh = createMesh(createGeometry(PrimitiveType::BOX, IBoxOptions({.width = 2, .height = 2, .length = 2})), skyboxMesh);
             _model->initSubModel(0, skyboxMesh->getRenderingSubMeshes()[0], skyboxMaterial);
         }
     }

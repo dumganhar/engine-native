@@ -67,7 +67,7 @@ public:
      */
     void resize(uint32_t width, uint32_t height);
 
-    static void extractRenderCameras(std::vector<Camera *> &cameras);
+    void extractRenderCameras(std::vector<Camera *> &cameras);
 
     /**
      * @zh

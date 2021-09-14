@@ -545,7 +545,7 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     const auto &tmpl      = itTpl->second;
     const auto  itTplInfo = _templateInfos.find(tmpl.hash);
     assert(itTplInfo != _templateInfos.end());
-    auto tmplInfo = itTplInfo->second;
+    auto &tmplInfo = itTplInfo->second;
 
     if (!tmplInfo.pipelineLayout) {
         getDescriptorSetLayout(device, name); // ensure set layouts have been created

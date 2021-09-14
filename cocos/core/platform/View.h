@@ -465,7 +465,9 @@ public:
      * @en Returns the visible area size of the view port.
      * @zh 返回视图窗口可见区域尺寸。
      */
-    Size getVisibleSize() const;
+    inline Size getVisibleSize() const {
+        return Size(_visibleRect.size.width, _visibleRect.size.height);
+    }
 
     /**
      * @en Returns the visible area size of the view port.

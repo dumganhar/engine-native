@@ -34,14 +34,14 @@ IGeometry quad(const std::optional<IGeometryOptions> &options) {
         .indices        = std::vector<uint32_t>{0, 3, 1, 3, 2, 1},
     };
 
-    if (options.has_value() && options->includeNormal == true) {
+    if (options.has_value() && options->includeNormal) {
         result.normals = std::vector<float>{
             0, 0, 1,
             0, 0, 1,
             0, 0, 1,
             0, 0, 1};
     }
-    if (options.has_value() && options->includeUV == true) {
+    if (options.has_value() && options->includeUV) {
         result.uvs = std::vector<float>{
             0, 0,
             0, 1,

@@ -63,7 +63,7 @@ IGeometry plane(std::optional<IPlaneOptions> &options) {
             positions.emplace_back(temp1.x);
             positions.emplace_back(temp1.y);
             positions.emplace_back(temp1.z);
-            if (options->includeUV == true) {
+            if (options->includeUV) {
                 uvs.emplace_back(u);
                 uvs.emplace_back(v);
             }
@@ -93,7 +93,7 @@ IGeometry plane(std::optional<IPlaneOptions> &options) {
         .indices        = indices,
     };
 
-    if (options->includeNormal == true) {
+    if (options->includeNormal) {
         const uint32_t     nVertex = (vSegments + 1) * (uSegments + 1);
         std::vector<float> normals(3 * nVertex);
         for (uint32_t i = 0; i < nVertex; ++i) {
@@ -103,7 +103,7 @@ IGeometry plane(std::optional<IPlaneOptions> &options) {
         }
         result.normals = normals;
     }
-    if (options->includeUV == true) {
+    if (options->includeUV) {
         result.uvs = uvs;
     }
     return result;

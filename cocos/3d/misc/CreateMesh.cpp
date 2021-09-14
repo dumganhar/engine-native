@@ -15,7 +15,7 @@ gfx::AttributeList defAttrs = {
 };
 
 // TODO(xwx): temporary usage and need to adjustment future
-// default params bahaves just like on an plain, compact Float32Array
+// default params behaviors just like on an plain, compact Float32Array
 void writeBuffer(DataView target, const std::vector<float> &data, const gfx::Format &format = gfx::Format::R32F, uint32_t offset = 0, uint32_t stride = 0) {
     const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(format)];
     if (stride == 0) stride = info.size;
@@ -28,7 +28,7 @@ void writeBuffer(DataView target, const std::vector<float> &data, const gfx::For
         uint32_t x = offset + stride * iSeg;
         for (uint32_t iComponent = 0; iComponent < info.count; ++iComponent) {
             const uint32_t y = x + componentBytesLength * iComponent;
-            // target[writer](y, data[info.count * iSeg + iComponent], isLittleEndian);
+            // target[writer](y, data[info.count * iSeg + iComponent], isLittleEndian); //TODO(xwx): setDifferentDataViewType and sys.isLittleEndian not implement
         }
     }
 }
@@ -199,7 +199,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
         indexBuffer.resize(idxStride * idxCount);
         DataView indexBufferView(indexBuffer);
         std::vector<float> floatIndices;
-        copy(begin(indices), end(indices), begin(floatIndices));
+        copy(std::begin(indices), std::end(indices), std::begin(floatIndices));
         writeBuffer(indexBufferView, floatIndices, gfx::Format::R16UI);
     }
 
@@ -219,7 +219,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     }
 
     std::optional<Vec3> minPosition = geometry.minPos;
-    if (minPosition.has_value() && options.calculateBounds.has_value() && options.calculateBounds.value() == true) {
+    if (minPosition.has_value() && options.calculateBounds.has_value() && options.calculateBounds.value()) {
         minPosition = Vec3(std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
         for (uint32_t iVertex = 0; iVertex < vertCount; ++iVertex) {
             Vec3::min(minPosition.value(), Vec3(positions[iVertex * 3 + 0], positions[iVertex * 3 + 1], positions[iVertex * 3 + 2]), &minPosition.value());
@@ -227,7 +227,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     }
 
     std::optional<Vec3> maxPosition = geometry.maxPos;
-    if (maxPosition.has_value() && options.calculateBounds.has_value() && options.calculateBounds.value() == true) {
+    if (maxPosition.has_value() && options.calculateBounds.has_value() && options.calculateBounds.value()) {
         maxPosition = Vec3(-std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
         for (uint32_t iVertex = 0; iVertex < vertCount; ++iVertex) {
             Vec3::max(maxPosition.value(), Vec3(positions[iVertex * 3 + 0], positions[iVertex * 3 + 1], positions[iVertex * 3 + 2]), &maxPosition.value());

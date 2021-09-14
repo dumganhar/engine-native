@@ -337,7 +337,7 @@ void Camera::setViewport(const Vec4 &val) {
             _viewport.w = height;
             break;
         default:
-            break;;
+            break;
     }
 
     resize(_width, _height);

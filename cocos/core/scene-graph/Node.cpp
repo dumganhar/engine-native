@@ -298,7 +298,7 @@ void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
     }
 }
 
-void Node::resetgetChangedFlags() {
+void Node::resetChangedFlags() {
 }
 
 void Node::clearNodeArray() {

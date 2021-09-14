@@ -62,9 +62,11 @@ public:
     static void  setDirtyNode(const index_t idx, Node *node);
     static Node *getDirtyNode(const index_t idx);
     static Node *find(const std::string &, Node *referenceNode = nullptr);
+
     template <typename T>
     static bool isNode(T *obj);
-    static void resetgetChangedFlags();
+
+    static void resetChangedFlags();
     static void clearNodeArray();
 
     NodeUiProperties *uiProps{nullptr};

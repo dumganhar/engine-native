@@ -134,14 +134,14 @@ IGeometry box(const std::optional<IBoxOptions> &options) {
     buildPlane(2, ws, ls); // TOP
 
     return IGeometry{
-        .positions{positions},
-        .normals{normals},
-        .uvs{uvs},
-        .tangents{tangents},
-        .boundingRadius{boundingRadius},
-        .minPos{minPos},
-        .maxPos{maxPos},
-        .indices{indices},
+        .positions      = positions,
+        .normals        = normals,
+        .uvs            = uvs,
+        .tangents       = tangents,
+        .boundingRadius = boundingRadius,
+        .minPos         = minPos,
+        .maxPos         = maxPos,
+        .indices        = indices,
     };
 }
 

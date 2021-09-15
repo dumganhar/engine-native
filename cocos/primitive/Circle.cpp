@@ -54,11 +54,11 @@ IGeometry circle(std::optional<ICircleOptions> &options) {
     }
 
     return IGeometry{
-        .positions{positions},
-        .boundingRadius{1},
-        .minPos{Vec3(1, 1, 0)},
-        .maxPos{Vec3(-1, -1, 0)},
-        .indices{indices},
-        .primitiveMode{gfx::PrimitiveMode::TRIANGLE_FAN}};
+        .positions      = positions,
+        .boundingRadius = 1,
+        .minPos         = Vec3(1, 1, 0),
+        .maxPos         = Vec3(-1, -1, 0),
+        .indices        = indices,
+        .primitiveMode  = gfx::PrimitiveMode::TRIANGLE_FAN};
 }
 } // namespace cc

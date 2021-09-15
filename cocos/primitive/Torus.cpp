@@ -86,13 +86,13 @@ IGeometry torus(float radius, float tube, const std::optional<ITorusOptions> &op
     }
 
     return IGeometry{
-        .positions{positions},
-        .normals{normals},
-        .uvs{uvs},
-        .boundingRadius{boundingRadius},
-        .minPos{minPos},
-        .maxPos{maxPos},
-        .indices{indices},
+        .positions      = positions,
+        .normals        = normals,
+        .uvs            = uvs,
+        .boundingRadius = boundingRadius,
+        .minPos         = minPos,
+        .maxPos         = maxPos,
+        .indices        = indices,
     };
 }
 

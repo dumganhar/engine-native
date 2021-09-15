@@ -89,6 +89,7 @@ bool Camera::initialize(const ICameraInfo &info) {
     _aspect = _screenScale = 1.F;
     updateExposure();
     changeTargetWindow(info.window);
+    return true;
 }
 
 void Camera::destroy() {

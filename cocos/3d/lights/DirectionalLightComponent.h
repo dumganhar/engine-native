@@ -26,11 +26,39 @@
 #pragma once
 
 #include "3d/lights/LightComponent.h"
+#include "scene/DirectionalLight.h"
 
 namespace cc {
 
 class DirectionalLight : public Light {
 public:
+    using Super     = Light;
+    using LightType = scene::DirectionalLight;
+    DirectionalLight();
+    ~DirectionalLight() override;
+
+    /**
+     * @en
+     * The light source intensity.
+     * @zh
+     * 光源强度。
+     */
+    inline float getIlluminance() const { return _illuminance; }
+    inline void  setIlluminance(float val) {
+        _illuminance = val;
+        if (_light != nullptr) _light->setIlluminance(val);
+    };
+
+protected:
+    void createLight();
+
+    //TODO(xwx): _illuminance @serializable
+    float                    _illuminance{65000};
+    scene::LightType         _type{scene::LightType::DIRECTIONAL};
+    scene::DirectionalLight *_light{nullptr};
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(DirectionalLight);
 };
 
 } // namespace cc

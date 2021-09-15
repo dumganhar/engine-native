@@ -138,7 +138,7 @@ public:
         }
     }
 
-    template <typename T, typename std::enable_if_t<std::is_base_of<scene::Light, T>::value>>
+    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<scene::Light, T>::value>>
     T *createLight();
 
     void destroyLight(scene::Light *);

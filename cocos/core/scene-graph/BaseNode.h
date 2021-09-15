@@ -47,6 +47,8 @@ class Scene;
 class NodeEventProcessor;
 class BaseNode : public CCObject {
 public:
+    friend class NodeActivator;
+
     static const uint TRANSFORM_ON;
     static const uint DESTROYING;
     static const uint DEACTIVATING;

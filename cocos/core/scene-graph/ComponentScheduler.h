@@ -34,6 +34,7 @@ namespace cc {
 using Invoker = std::function<void(std::vector<Component *>, float)>;
 class LifeCycleInvoker {
 public:
+    static void stableRemoveInactive(const std::vector<Component *> &);
     static void stableRemoveInactive(const std::vector<Component *> &, uint);
     explicit LifeCycleInvoker(Invoker);
     ~LifeCycleInvoker();
@@ -41,10 +42,11 @@ public:
 protected:
     Invoker _invoke;
 
-private:
     std::vector<Component *> _zero;
     std::vector<Component *> _neg;
     std::vector<Component *> _pos;
+
+private:
 };
 
 class OneOffInvoker : LifeCycleInvoker {
@@ -74,7 +76,7 @@ public:
     void             unscheduleAll();
     void             onEnabled(Component *);
     void             onDisabled(Component *);
-    void             enableComp(Component *, LifeCycleInvoker *);
+    void             enableComp(Component *, std::optional<LifeCycleInvoker *> = std::nullopt);
     void             disableComp(Component *);
     void             startPhase();
     void             updatePhase(float);

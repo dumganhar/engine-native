@@ -49,7 +49,6 @@ public:
 
     void                     destroy() override;
     void                     bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
-    void                     initLocalDescriptors(index_t subModelIndex);
     std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) const override;
     void                     updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) override;
     void                     updateTransform(uint32_t stamp) override;

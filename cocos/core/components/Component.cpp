@@ -44,7 +44,58 @@ scene::RenderScene *Component::getRenderScene() const {
 }
 
 bool Component::isEnabledInHierarchy() const {
-    return _enabled && _node != nullptr && this->_node->isActiveInHierarchy();
+    return _enabled && _node != nullptr && _node->isActiveInHierarchy();
+}
+
+void Component::setEnabled(bool value) {
+    if (_enabled != value) {
+        _enabled = value;
+        if (_node->isActiveInHierarchy()) {
+            // ComponentScheduler *compScheduler = Director::getInstance()._compScheduler; // TODO(xwx): not sure use Director
+            if (value) {
+                // compScheduler->enableComp(this);
+            } else {
+                // compScheduler->disableComp(this);
+            }
+        }
+    }
+}
+
+bool Component::destroy() {
+    // TODO(xwx): EDITOR & js related logic not define
+    // if (EDITOR) {
+    //     // @ts-expect-error private function access
+        // const depend = _node->_getDependComponent(this);
+    //     if (depend) {
+    //         errorID(3626,
+    //                 getClassName(this), getClassName(depend));
+    //         return false;
+    //     }
+    // }
+    if (Super::destroy()) {
+        if (_enabled && _node->isActiveInHierarchy()) {
+            // Director::getInstance()._compScheduler->disableComp(this); // TODO(xwx): not sure Director will be used
+        }
+        return true;
+    }
+    return false;
+}
+
+void Component::_onPreDestroy() {
+    // Schedules
+    unscheduleAllCallbacks();
+
+    // TODO(xwx): EDITOR not define
+    // if (EDITOR && !TEST) {
+    //     // @ts-expect-error expected
+    //     _Scene.AssetsWatcher.stop(this);
+    // }
+
+    // onDestroy
+    // Director::getInstance()._nodeActivator->destroyComp(this); // TODO(xwx): not sure Director will be used
+
+    // do remove component
+    _node->removeComponent(this);
 }
 
 Node *Component::getNode() const {

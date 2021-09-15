@@ -25,12 +25,16 @@
 
 #include "ComponentScheduler.h"
 
+#include <utility>
+
 namespace cc {
 
 // LifeCycleInvoker
 LifeCycleInvoker::LifeCycleInvoker(std::function<void(std::vector<Component *>, float)> invokeFunc) : _invoke(std::move(invokeFunc)) {}
 
-void LifeCycleInvoker::stableRemoveInactive(const std::vector<Component *> &components, uint flagToClear) {
+void LifeCycleInvoker::stableRemoveInactive(const std::vector<Component *> &components) {}
+
+void LifeCycleInvoker::stableRemoveInactive(const std::vector<Component *> &components, uint32_t flagToClear) {
 }
 
 LifeCycleInvoker::~LifeCycleInvoker() = default;
@@ -61,7 +65,7 @@ ComponentScheduler::~ComponentScheduler() = default;
 void ComponentScheduler::unscheduleAll(){};
 void ComponentScheduler::onEnabled(Component *comp){};
 void ComponentScheduler::onDisabled(Component *comp){};
-void ComponentScheduler::enableComp(Component *comp, LifeCycleInvoker *invoke){};
+void ComponentScheduler::enableComp(Component *comp, std::optional<LifeCycleInvoker *> invoke){};
 void ComponentScheduler::disableComp(Component *comp){};
 void ComponentScheduler::startPhase(){};
 void ComponentScheduler::updatePhase(float dt){};

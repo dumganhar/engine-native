@@ -28,6 +28,7 @@
 #include <string>
 
 #include "core/data/Object.h"
+#include "math/Geometry.h"
 
 namespace cc {
 
@@ -38,8 +39,11 @@ namespace scene {
 class RenderScene;
 }
 
-class Component {
+class Component : public CCObject {
 public:
+    friend class NodeActivator;
+
+    using Super          = CCObject;
     virtual ~Component() = default;
 
     const std::string &getName() const { return _name; }
@@ -88,11 +92,37 @@ public:
     */
     bool isEnabledInHierarchy() const;
 
+    /**
+     * @en Returns a value which used to indicate the onLoad get called or not.
+     * @zh 返回一个值用来判断 onLoad 是否被调用过，不等于 0 时调用过，等于 0 时未调用。
+     * @readOnly
+     * @example
+     * ```ts
+     * import { log } from 'cc';
+     * log(this._isOnLoadCalled > 0);
+     * ```
+     */
+    inline bool isOnLoadCalled() {
+        return hasFlag(_objFlags, CCObject::Flags::IS_ON_LOAD_CALLED);
+    }
+
     //cjh TODO:
-    virtual bool destroy() { return true; }
-    virtual void _onPreDestroy() {}
+    bool         destroy() override;
+    virtual void _onPreDestroy();
 
     Node *getNode() const;
+
+    /**
+     * @en unschedule all scheduled tasks.
+     * @zh 取消调度所有已调度的回调函数。
+     * @example
+     * ```ts
+     * this.unscheduleAllCallbacks();
+     * ```
+     */
+    inline void unscheduleAllCallbacks() {
+        // Director::getInstance()->getScheduler().unscheduleAllForTarget(this); //TODO(xwx): not sure Director will be used
+    }
 
     // LIFECYCLE METHODS
 
@@ -206,10 +236,10 @@ protected:
      * @zh
      * 如果组件的包围盒与节点不同，您可以实现该方法以提供自定义的轴向对齐的包围盒（AABB），
      * 以便编辑器的场景视图可以正确地执行点选测试。
-     * @param out_rect - The rect to store the result bounding rect
+     * @param outRect - The rect to store the result bounding rect
      * @private
      */
-    //cjh    virtual Rect _getLocalBounds() {}
+    virtual Rect _getLocalBounds() {}
 
     /**
      * @en
@@ -255,7 +285,6 @@ protected:
 
     scene::RenderScene *getRenderScene() const;
 
-protected:
     std::string     _name;
     std::string     _id;
     CCObject::Flags _objFlags{CCObject::Flags::ZERO};

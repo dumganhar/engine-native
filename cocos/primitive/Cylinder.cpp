@@ -67,10 +67,10 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
     std::vector<float>    normals;
     std::vector<float>    uvs;
     std::vector<float>    tangents;
-    const float                 maxRadius = std::max(radiusTop, radiusBottom);
-    const Vec3                  minPos(-maxRadius, -halfHeight, -maxRadius);
-    const Vec3                  maxPos(maxRadius, halfHeight, maxRadius);
-    const float                 boundingRadius = sqrt(maxRadius * maxRadius + halfHeight * halfHeight);
+    const float           maxRadius = std::max(radiusTop, radiusBottom);
+    const Vec3            minPos(-maxRadius, -halfHeight, -maxRadius);
+    const Vec3            maxPos(maxRadius, halfHeight, maxRadius);
+    const float           boundingRadius = sqrt(maxRadius * maxRadius + halfHeight * halfHeight);
 
     uint32_t index       = 0;
     uint32_t indexOffset = 0;
@@ -256,13 +256,13 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
     }
 
     return IGeometry{
-        .positions{positions},
-        .normals{normals},
-        .uvs{uvs},
-        .boundingRadius{boundingRadius},
-        .minPos{minPos},
-        .maxPos{maxPos},
-        .indices{indices},
+        .positions      = positions,
+        .normals        = normals,
+        .uvs            = uvs,
+        .boundingRadius = boundingRadius,
+        .minPos         = minPos,
+        .maxPos         = maxPos,
+        .indices        = indices,
     };
 }
 

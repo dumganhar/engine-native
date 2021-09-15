@@ -77,23 +77,22 @@ IGeometry sphere(float radius, const std::optional<ISphereOptions> &opts) {
                 indices.emplace_back(a);
                 indices.emplace_back(d);
                 indices.emplace_back(b);
-                
+
                 indices.emplace_back(d);
                 indices.emplace_back(c);
                 indices.emplace_back(b);
-
             }
         }
     }
 
     return IGeometry{
-        .positions{positions},
-        .normals{normals},
-        .uvs{uvs},
-        .boundingRadius{boundingRadius},
-        .minPos{minPos},
-        .maxPos{maxPos},
-        .indices{indices},
+        .positions      = positions,
+        .normals        = normals,
+        .uvs            = uvs,
+        .boundingRadius = boundingRadius,
+        .minPos         = minPos,
+        .maxPos         = maxPos,
+        .indices        = indices,
     };
 }
 

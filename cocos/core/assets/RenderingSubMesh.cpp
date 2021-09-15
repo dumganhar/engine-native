@@ -196,6 +196,7 @@ bool RenderingSubMesh::destroy() {
     _jointMappedBufferIndices.clear();
 
     CC_SAFE_DESTROY(_indirectBuffer);
+    return true;
 }
 
 const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {

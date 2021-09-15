@@ -105,7 +105,7 @@ public:
     Node *_instantiate();
 
     void         initDefault(const std::optional<std::string> &uuid = {}) override;
-    virtual bool validate() const override { _data.has_value(); }
+    virtual bool validate() const override { return _data.has_value(); }
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(Prefab);

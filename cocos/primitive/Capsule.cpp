@@ -226,13 +226,13 @@ IGeometry capsule(float radiusTop, float radiusBottom, float height, const std::
     generateTop();
 
     return IGeometry{
-        .positions{positions},
-        .normals{normals},
-        .uvs{uvs},
-        .boundingRadius{boundingRadius},
-        .minPos{minPos},
-        .maxPos{maxPos},
-        .indices{indices},
+        .positions      = positions,
+        .normals        = normals,
+        .uvs            = uvs,
+        .boundingRadius = boundingRadius,
+        .minPos         = minPos,
+        .maxPos         = maxPos,
+        .indices        = indices,
     };
 }
 

@@ -47,8 +47,9 @@ namespace cc {
 namespace scene {
 
 BakedSkinningModel::BakedSkinningModel()
-: Super(), _jointMedium(BakedJointInfo{.jointTextureInfo = Float32Array(4), .animInfo = _dataPoolManager->jointAnimationInfo->getData()}), _dataPoolManager(Root::getInstance()->getDataPoolManager()) {
-    _type = Model::Type::BAKED_SKINNING;
+: Super(), _dataPoolManager(Root::getInstance()->getDataPoolManager()) {
+    _type        = Model::Type::BAKED_SKINNING;
+    _jointMedium = {BakedJointInfo{.jointTextureInfo = Float32Array(4), .animInfo = _dataPoolManager->jointAnimationInfo->getData()}};
 }
 
 void BakedSkinningModel::destroy() {

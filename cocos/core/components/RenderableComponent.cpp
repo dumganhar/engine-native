@@ -24,6 +24,7 @@
  ****************************************************************************/
 
 #include "core/components/RenderableComponent.h"
+#include "base/Log.h"
 #include "renderer/core/MaterialInstance.h"
 #include "scene/Model.h"
 

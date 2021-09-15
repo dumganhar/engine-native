@@ -98,4 +98,8 @@ void Component::_onPreDestroy() {
     _node->removeComponent(this);
 }
 
+Node *Component::getNode() const {
+    return static_cast<Node *>(_node);
+}
+
 } // namespace cc

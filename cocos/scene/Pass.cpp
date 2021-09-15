@@ -143,7 +143,9 @@ Pass::Pass() {
     _rs                = new gfx::RasterizerState();
 }
 
-Pass::~Pass() = default;
+Pass::~Pass() {
+    CC_LOG_DEBUG("Pass::~Pass");
+}
 
 void Pass::initialize(const IPassInfoFull &info) {
     doInit(info);

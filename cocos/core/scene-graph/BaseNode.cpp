@@ -373,7 +373,7 @@ Component *BaseNode::addComponent(const std::string & /*className*/) {
 Component *BaseNode::addComponent(Component *comp) {
     auto iteComp = std::find(_components.begin(), _components.end(), comp);
     if (iteComp == _components.end()) {
-        comp->_node = static_cast<Node *>(this); //cjh why must use static_cast?
+        comp->_node = this; //cjh TODO: shared_ptr
         _components.emplace_back(comp);
         return comp;
     }

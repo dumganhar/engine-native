@@ -26,10 +26,13 @@
 #pragma once
 
 #include <string>
-#include "core/scene-graph/Node.h"
+
 #include "math/Vec3.h"
 
 namespace cc {
+
+class Node;
+
 namespace scene {
 
 class RenderScene;

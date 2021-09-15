@@ -70,18 +70,24 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // Scene
     _scene = new Scene("myscene");
     // add a node to scene
-    auto *node = new Node("mynode");
-    node->setParent(_scene);
+    auto *cubeNode = new Node("cube");
+    cubeNode->setParent(_scene);
 
     // create mesh asset
     auto *cube = new Primitive(PrimitiveType::BOX);
+    cube->onLoaded();
 
     // create mesh renderer
-    _cubeMeshRenderer = node->addComponent<MeshRenderer>();
+    _cubeMeshRenderer = cubeNode->addComponent<MeshRenderer>();
     _cubeMeshRenderer->setMesh(cube);
 
     // create camera
-    auto *cameraComp = node->addComponent<Camera>();
+    auto *cameraNode = new Node("camera");
+    cameraNode->setParent(_scene);
+    cameraNode->setPosition(-10, 10, 10);
+    cameraNode->setEulerAngles(Vec3{-35, -45, 0});
+
+    auto *cameraComp = cameraNode->addComponent<Camera>();
     cameraComp->setProjection(Camera::ProjectionType::PERSPECTIVE);
     cameraComp->setPriority(0);
     cameraComp->setFov(45);

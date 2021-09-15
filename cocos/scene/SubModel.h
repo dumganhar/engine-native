@@ -49,8 +49,8 @@ public:
     gfx::Shader *getShader(uint) const;
     Pass *       getPass(uint) const;
 
-    inline void setDescriptorSet(gfx::DescriptorSet *descriptorSet) { _descriptSet = descriptorSet; }
-    inline void setInputAssembler(gfx::InputAssembler *ia) { _ia = ia; }
+    inline void setDescriptorSet(gfx::DescriptorSet *descriptorSet) { _descriptorSet = descriptorSet; }
+    inline void setInputAssembler(gfx::InputAssembler *ia) { _inputAssembler = ia; }
     inline void setShaders(const std::vector<gfx::Shader *> &shaders) { _shaders = shaders; }
     void        setPasses(const std::vector<Pass *> &passes);
     inline void setPlanarInstanceShader(gfx::Shader *shader) { _planarInstanceShader = shader; }
@@ -58,8 +58,8 @@ public:
     inline void setPriority(pipeline::RenderPriority priority) { _priority = priority; }
     void        setSubMesh(RenderingSubMesh *subMesh);
 
-    inline gfx::DescriptorSet *              getDescriptorSet() const { return _descriptSet; }
-    inline gfx::InputAssembler *             getInputAssembler() const { return _ia; }
+    inline gfx::DescriptorSet *              getDescriptorSet() const { return _descriptorSet; }
+    inline gfx::InputAssembler *             getInputAssembler() const { return _inputAssembler; }
     inline const std::vector<gfx::Shader *> &getShaders() const { return _shaders; }
     inline const std::vector<Pass *> &       getPasses() const { return _passes; }
     inline const std::vector<IMacroPatch> &  getPatches() const { return _patches; }
@@ -76,21 +76,17 @@ public:
     void onMacroPatchesStateChanged(const std::vector<IMacroPatch> &patches);
 
 protected:
-    gfx::Device *            _device{nullptr};
-    std::vector<IMacroPatch> _patches;
-    gfx::InputAssembler *    _inputAssembler{nullptr};
-    gfx::DescriptorSet *     _descriptorSet{nullptr};
-    gfx::Texture *           _reflectionTex{nullptr};
-    gfx::Sampler *           _reflectionSampler{nullptr};
-
     void flushPassInfo();
 
-private:
+    gfx::Device *              _device{nullptr};
+    std::vector<IMacroPatch>   _patches;
+    gfx::InputAssembler *      _inputAssembler{nullptr};
+    gfx::DescriptorSet *       _descriptorSet{nullptr};
+    gfx::Texture *             _reflectionTex{nullptr};
+    gfx::Sampler *             _reflectionSampler{nullptr};
     pipeline::RenderPriority   _priority{pipeline::RenderPriority::DEFAULT};
     gfx::Shader *              _planarShader{nullptr};
     gfx::Shader *              _planarInstanceShader{nullptr};
-    gfx::DescriptorSet *       _descriptSet{nullptr};
-    gfx::InputAssembler *      _ia{nullptr};
     RenderingSubMesh *         _subMesh{nullptr};
     std::vector<Pass *>        _passes;
     std::vector<gfx::Shader *> _shaders;

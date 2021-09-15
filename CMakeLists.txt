@@ -932,6 +932,14 @@ cocos_source_files(
     cocos/3d/framework/MeshRenderer.cpp
 )
 
+##### lights
+cocos_source_files(
+    cocos/3d/lights/LightComponent.h
+    cocos/3d/lights/LightComponent.cpp
+    cocos/3d/lights/DirectionalLightComponent.h
+    cocos/3d/lights/DirectionalLightComponent.cpp
+)
+
 if(CC_USE_GLES2 OR CC_USE_GLES3)
     cocos_source_files(
         cocos/renderer/gfx-gles-common/GLESCommandPool.h

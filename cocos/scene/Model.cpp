@@ -105,10 +105,10 @@ void Model::uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &
 
 void Model::updateTransform(uint32_t /*stamp*/) {
     Node *node = _transform;
-    if (node->getFlagsChanged() || node->getDirtyFlag()) {
+    if (node->getChangedFlags() || node->getDirtyFlag()) {
         node->updateWorldTransform();
         _transformUpdated = true;
-        if (_modelBounds->isValid() && _worldBounds) {
+        if (_modelBounds != nullptr && _modelBounds->isValid() && _worldBounds != nullptr) {
             _modelBounds->transform(node->getWorldMatrix(), _worldBounds);
         }
     }
@@ -119,7 +119,7 @@ void Model::updateWorldBound() {
     if (node) {
         node->updateWorldTransform();
         _transformUpdated = true;
-        if (_modelBounds->isValid() && _worldBounds) {
+        if (_modelBounds != nullptr && _modelBounds->isValid() && _worldBounds != nullptr) {
             _modelBounds->transform(node->getWorldMatrix(), _worldBounds);
         }
     }
@@ -165,6 +165,10 @@ SubModel *Model::createSubModel() const {
 void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Material *mat) {
     initialize();
     bool isNewSubModel = false;
+    if (idx >= _subModels.size()) {
+        _subModels.resize(idx + 1, nullptr);
+    }
+
     if (_subModels[idx] == nullptr) {
         _subModels[idx] = createSubModel();
         isNewSubModel   = true;

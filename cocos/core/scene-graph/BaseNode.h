@@ -49,24 +49,16 @@ class BaseNode : public CCObject {
 public:
     friend class NodeActivator;
 
-    using CCObject::CCObject;
-    BaseNode() = default;
-    explicit BaseNode(const std::string &name);
-    BaseNode(const BaseNode &) = delete;
-    BaseNode(BaseNode &&)      = delete;
-    virtual ~BaseNode()        = default;
-    BaseNode &operator=(const BaseNode &) = delete;
-    BaseNode &operator=(const BaseNode &&) = delete;
-
     static const uint TRANSFORM_ON;
     static const uint DESTROYING;
     static const uint DEACTIVATING;
     static const uint DONT_DESTROY;
-    virtual void      updateWorldTransform() {}
-    virtual void      updateWorldRTMatrix() {}
 
-    virtual void setWorldPosition(float x, float y, float z) {}
-    virtual void setWorldRotation(float x, float y, float z, float w) {}
+    using CCObject::CCObject;
+    BaseNode() = default;
+    explicit BaseNode(const std::string &name);
+    virtual ~BaseNode() = default;
+
     virtual void setParent(BaseNode *parent, bool isKeepWorld = false);
 
     Scene *getScene() const;
@@ -129,20 +121,8 @@ public:
     inline void setName(const std::string &name) {
         _name = name;
     }
-    void         setActive(bool isActive);
-    void         setSiblingIndex(index_t idx);
-    virtual void setChangedFlags(uint value) {}
-    virtual void setDirtyFlag(uint value) {}
-    virtual void setLayer(uint layer) {}
-    virtual void setWorldMatrix(const Mat4 &matrix) {}
-    virtual void setWorldPosition(const Vec3 &pos) {}
-    virtual void setWorldRotation(const Quaternion &rotation) {}
-    virtual void setWorldScale(const Vec3 &scale) {}
-    virtual void setLocalPosition(const Vec3 &pos) {}
-    virtual void setLocalPosition(float x, float y, float z) {}
-    virtual void setLocalRotation(const Quaternion &rotation) {}
-    virtual void setLocalRotation(float x, float y, float z, float w) {}
-    virtual void setLocalScale(const Vec3 &scale) {}
+    void setActive(bool isActive);
+    void setSiblingIndex(index_t idx);
 
     inline bool getPersistNode() const {
         return static_cast<FlagBits>(_objFlags & Flags::DONT_DESTROY) > 0;
@@ -209,51 +189,41 @@ public:
     inline const std::vector<BaseNode *> &getChildren() { return _children; }
     inline BaseNode *                     getParent() const { return _parent; }
     inline NodeEventProcessor *           getEventProcessor() const { return _eventProcessor; }
-    virtual uint                          getFlagsChanged() const { return _flagChange; }
-    virtual uint                          getLayer() const { return _layer; }
-    virtual uint                          getDirtyFlag() const { return _dirtyFlag; }
-    virtual const Vec3 &                  getPosition() const { return _localPosition; }
-    virtual const Vec3 &                  getScale() const { return _localScale; }
-    virtual const Quaternion &            getRotation() const { return _localRotation; }
-    virtual const Mat4 &                  getWorldMatrix() const { return _worldMatrix; }
-    virtual const Vec3 &                  getWorldPosition() const { return _worldPosition; }
-    virtual const Quaternion &            getWorldRotation() const { return _worldRotation; }
-    virtual const Vec3 &                  getWorldScale() const { return _worldScale; }
-    virtual const Mat4 &                  getWorldRTMatrix() const { return _rtMat; }
-    BaseNode *                            getChildByUuid(const std::string &) const;
-    BaseNode *                            getChildByName(const std::string &) const;
-    BaseNode *                            getChildByPath(const std::string &) const;
-    inline uint                           getSiblingIndex() const { return _siblingIndex; }
-    inline void                           insertChild(BaseNode *child, uint32_t siblingIndex) {
+
+    BaseNode *  getChildByUuid(const std::string &) const;
+    BaseNode *  getChildByName(const std::string &) const;
+    BaseNode *  getChildByPath(const std::string &) const;
+    inline uint getSiblingIndex() const { return _siblingIndex; }
+    inline void insertChild(BaseNode *child, uint32_t siblingIndex) {
         child->_parent = this;
         child->setSiblingIndex(siblingIndex);
     }
+
+    // For SubClass Node compilation
+    virtual void              updateWorldTransform() {}
+    virtual const Mat4 &      getWorldMatrix() { return Mat4::IDENTITY; }
+    virtual const Quaternion &getWorldRotation() { return Quaternion::identity(); }
+    virtual uint              getChangedFlags() const { return 0; } //cjh TODO: return 0?
+    virtual void              setChangedFlags(uint value) {}
+    virtual void              setDirtyFlag(uint value) {}
+    virtual void              setLayer(uint layer) {}
+    //
 
 protected:
     std::vector<BaseNode *>  _children;
     std::vector<Component *> _components;
     BaseNode *               _parent{nullptr};
-    uint                     _flagChange{0};
-    uint                     _dirtyFlag{0};
-    Flags                    _objFlags{Flags::ZERO};
-    bool                     _persistNode{false};
-    uint                     _layer{0};
-    cc::Vec3                 _worldScale{Vec3::ONE};
-    cc::Vec3                 _worldPosition{Vec3::ZERO};
-    cc::Quaternion           _worldRotation{Quaternion::identity()};
-    Mat4                     _rtMat{Mat4::IDENTITY};
-    cc::Mat4                 _worldMatrix{Mat4::IDENTITY};
-    cc::Vec3                 _localScale{Vec3::ONE};
-    cc::Vec3                 _localPosition{Vec3::ZERO};
-    cc::Quaternion           _localRotation{Quaternion::identity()};
-    std::string              _id{IDGenerator("Node").getNewId()};
-    bool                     _active{true};
-    bool                     _activeInHierarchy{true};
-    Scene *                  _scene{nullptr};
-    NodeEventProcessor *     _eventProcessor{nullptr};
-    index_t                  _siblingIndex{0};
-    uint                     _eventMask{0};
-    inline void              updateScene() {
+
+    bool _persistNode{false};
+
+    std::string         _id{IDGenerator("Node").getNewId()};
+    bool                _active{true};
+    bool                _activeInHierarchy{true};
+    Scene *             _scene{nullptr};
+    NodeEventProcessor *_eventProcessor{nullptr};
+    index_t             _siblingIndex{0};
+    uint                _eventMask{0};
+    inline void         updateScene() {
         if (_parent == nullptr) {
             return;
         }
@@ -291,6 +261,7 @@ protected:
     static std::vector<Component *> findChildComponents(const std::vector<BaseNode *> &, const T &, std::vector<Component *>);
 
     friend class Scene;
+    CC_DISALLOW_COPY_MOVE_ASSIGN(BaseNode);
 };
 
 } // namespace cc

@@ -106,7 +106,7 @@ void SkinningModel::updateWorldMatrix(JointInfo *info, uint32_t stamp) {
     auto                          parentSize    = static_cast<int>(info->parents.size());
     std::vector<JointTransform *> transStacks;
     while (currTransform->node) {
-        if ((currTransform->stamp == stamp || currTransform->stamp + 1 == stamp) && !currTransform->node->getFlagsChanged()) {
+        if ((currTransform->stamp == stamp || currTransform->stamp + 1 == stamp) && !currTransform->node->getChangedFlags()) {
             _worldMatrix.set(currTransform->world);
             currTransform->stamp = stamp;
             break;
@@ -194,7 +194,7 @@ void SkinningModel::updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorS
 
 void SkinningModel::updateTransform(uint32_t stamp) {
     auto *root = getTransform();
-    if (root->getFlagsChanged() || root->getDirtyFlag()) {
+    if (root->getChangedFlags() || root->getDirtyFlag()) {
         root->updateWorldTransform();
         _transformUpdated = true;
     }

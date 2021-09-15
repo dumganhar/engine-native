@@ -31,7 +31,9 @@
 #include "math/Geometry.h"
 
 namespace cc {
+
 class Node;
+class BaseNode;
 
 namespace scene {
 class RenderScene;
@@ -108,7 +110,7 @@ public:
     bool         destroy() override;
     virtual void _onPreDestroy();
 
-    inline Node *getNode() const { return _node; }
+    Node *getNode() const;
 
     /**
      * @en unschedule all scheduled tasks.
@@ -297,7 +299,7 @@ protected:
      * ```
      */
     //cjh    @serializable
-    Node *_node{nullptr};
+    BaseNode *_node{nullptr};
 
     /**
      * @private

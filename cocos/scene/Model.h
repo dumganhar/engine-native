@@ -32,12 +32,14 @@
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/geometry/AABB.h"
 #include "core/scene-graph/Layers.h"
-#include "core/scene-graph/Node.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 
 namespace cc {
+
 class Material;
+class Node;
+
 namespace scene {
 
 // SubModel.h -> Define.h -> Model.h, so do not include SubModel.h here.

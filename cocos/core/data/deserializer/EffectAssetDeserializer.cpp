@@ -23,6 +23,7 @@
  THE SOFTWARE.
 ****************************************************************************/
 #include "core/data/deserializer/EffectAssetDeserializer.h"
+#include "base/Log.h"
 #include "core/assets/EffectAsset.h"
 
 namespace cc {

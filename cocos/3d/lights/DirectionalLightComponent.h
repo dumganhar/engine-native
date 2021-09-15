@@ -50,10 +50,10 @@ public:
     };
 
 protected:
-    void createLight();
+    void createLight() override;
 
     //TODO(xwx): _illuminance @serializable
-    float                    _illuminance{65000};
+    float                    _illuminance{65000.F};
     scene::LightType         _type{scene::LightType::DIRECTIONAL};
     scene::DirectionalLight *_light{nullptr};
 

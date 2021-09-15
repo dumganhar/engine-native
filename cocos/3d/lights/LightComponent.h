@@ -192,11 +192,11 @@ protected:
 
     scene::Light *_light{nullptr};
 
-    void initializeLight();
-    void createLight();
-    void destroyLight();
-    void attachToScene();
-    void detachFromScene();
+    void         initializeLight();
+    virtual void createLight();
+    void         destroyLight();
+    void         attachToScene();
+    void         detachFromScene();
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(Light);

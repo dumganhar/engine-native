@@ -28,13 +28,17 @@
 #include "3d/misc/CreateMesh.h"
 #include "base/Log.h"
 #include "core/assets/AssetsModuleHeader.h"
+#include "core/assets/Texture2D.h"
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/components/CameraComponent.h"
 #include "core/scene-graph/Node.h"
 #include "renderer/GFXDeviceManager.h"
+#include "scene/Pass.h"
 
 #include "core/scene-graph/Layers.h"
+#include "platform/Image.h"
 #include "primitive/Primitive.h"
+//#include "platform/View.h"
 
 using namespace cc;
 using namespace cc::gfx;
@@ -48,18 +52,21 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     bindingMappingInfo.samplerOffsets = std::vector<int>{-pipeline::globalUBOCount, pipeline::globalSamplerCount + pipeline::localSamplerCount, pipeline::globalSamplerCount - pipeline::localUBOCount};
     bindingMappingInfo.flexibleSet    = 1;
 
+    int pixelWidth  = width * 2;
+    int pixelHeight = height * 2;
+
     DeviceInfo info;
     info.windowHandle       = windowHandle;
-    info.width              = width;
-    info.height             = height;
-    info.pixelRatio         = 1;
+    info.width              = pixelWidth;
+    info.height             = pixelHeight;
+    info.pixelRatio         = 2;
     info.bindingMappingInfo = bindingMappingInfo;
     _device                 = DeviceManager::create(info);
 
     // Initialize Root
     _root = new Root(_device);
     _root->initialize();
-    _root->resize(width, height);
+    _root->resize(pixelWidth, pixelHeight);
     _root->setRenderPipeline(nullptr);
 
     BuiltinResMgr::getInstance()->initBuiltinRes(_device);
@@ -70,15 +77,15 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // Scene
     _scene = new Scene("myscene");
     // add a node to scene
-    auto *cubeNode = new Node("cube");
-    cubeNode->setParent(_scene);
+    _cubeNode = new Node("cube");
+    _cubeNode->setParent(_scene);
 
     // create mesh asset
     auto *cube = new Primitive(PrimitiveType::BOX);
     cube->onLoaded();
 
     // create mesh renderer
-    _cubeMeshRenderer = cubeNode->addComponent<MeshRenderer>();
+    _cubeMeshRenderer = _cubeNode->addComponent<MeshRenderer>();
     _cubeMeshRenderer->setMesh(cube);
 
     // create camera
@@ -109,8 +116,26 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // set material
     auto *material = new Material();
     material->initialize({.effectName = "unlit",
-                          .defines    = MacroRecord{{"USE_COLOR", true}}});
-    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
+                          .defines    = MacroRecord{
+                              //            {"USE_COLOR", true},
+                              {"USE_TEXTURE", true},
+                          }});
+
+    //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
+
+    Image *image = new Image();
+    bool   ret   = image->initWithImageFile("assets/pixil-frame-2.png");
+    if (ret) {
+        auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
+        imgAsset->setNativeAsset(image);   //cjh HOW TO RELEASE?
+        auto *texture = new Texture2D();   //cjh shared_ptr ?
+
+        texture->setImage(imgAsset);
+        texture->onLoaded();
+        material->setProperty("mainTexture", texture);
+    }
+    image->release();
+
     _cubeMeshRenderer->setMaterial(material);
 
     // simulate logic in director.ts
@@ -125,10 +150,16 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 }
 
 void SimpleDemo::step(float dt) {
-    //    CC_LOG_INFO("SimpleDemo::%s, dt: %.06f", __FUNCTION__, dt);
+    //    dt = 1.F / 60.F;
+    //     CC_LOG_INFO("SimpleDemo::%s, dt: %.06f", __FUNCTION__, dt);
+    _cubeNode->setAngle(_cubeNode->getAngle() + 10 * dt);
+
     _cubeMeshRenderer->update(dt);
 
     _root->frameMove(dt);
+
+    Node::resetChangedFlags();
+    Node::clearNodeArray();
 }
 
 void SimpleDemo::finalize() {

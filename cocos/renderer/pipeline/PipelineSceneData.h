@@ -27,11 +27,11 @@
 
 #include "Define.h"
 #include "core/geometry/Sphere.h"
-#include "scene/Light.h"
-#include "scene/Fog.h"
 #include "scene/Ambient.h"
-#include "scene/Skybox.h"
+#include "scene/Fog.h"
+#include "scene/Light.h"
 #include "scene/Shadow.h"
+#include "scene/Skybox.h"
 
 namespace cc {
 
@@ -45,8 +45,8 @@ class RenderPipeline;
 
 class CC_DLL PipelineSceneData : public Object {
 public:
-    PipelineSceneData()           = default;
-    ~PipelineSceneData() override = default;
+    PipelineSceneData();
+    ~PipelineSceneData();
     void activate(gfx::Device *device, RenderPipeline *pipeline);
     void destroy();
 

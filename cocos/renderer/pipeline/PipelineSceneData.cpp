@@ -31,6 +31,20 @@
 namespace cc {
 namespace pipeline {
 
+PipelineSceneData::PipelineSceneData() {
+    _fog     = new scene::Fog(); //cjh how to delete?
+    _ambient = new scene::Ambient();
+    _skybox  = new scene::Skybox();
+    _shadow  = new scene::Shadow();
+}
+
+PipelineSceneData::~PipelineSceneData() {
+    CC_SAFE_DELETE(_fog); //cjh correct ?
+    CC_SAFE_DELETE(_ambient);
+    CC_SAFE_DELETE(_skybox);
+    CC_SAFE_DELETE(_shadow);
+}
+
 void PipelineSceneData::activate(gfx::Device *device, RenderPipeline *pipeline) {
     _device   = device;
     _pipeline = pipeline;

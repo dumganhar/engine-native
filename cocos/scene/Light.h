@@ -93,9 +93,9 @@ public:
     inline const Vec3 &getColorTemperatureRGB() const { return _colorTemperatureRGB; }
     inline void        setColorTemperatureRGB(const Vec3 &value) { _colorTemperatureRGB = value; }
 
-protected:
     static float nt2lm(float size);
 
+protected:
     bool         _useColorTemperature{false};
     bool         _baked{false};
     Node *       _node{nullptr};

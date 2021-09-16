@@ -30,10 +30,9 @@
 
 namespace cc {
 
-class DirectionalLight : public Light {
+class DirectionalLight final : public Light {
 public:
     using Super     = Light;
-    using LightType = scene::DirectionalLight;
     DirectionalLight();
     ~DirectionalLight() override;
 
@@ -46,7 +45,7 @@ public:
     inline float getIlluminance() const { return _illuminance; }
     inline void  setIlluminance(float val) {
         _illuminance = val;
-        if (_light != nullptr) dynamic_cast<scene::DirectionalLight *>(_light)->setIlluminance(val);
+        if (_light != nullptr) static_cast<scene::DirectionalLight *>(_light)->setIlluminance(val);
     };
 
 protected:

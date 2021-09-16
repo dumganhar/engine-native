@@ -275,7 +275,7 @@ void RenderAdditiveLightQueue::updateUBOs(const scene::Camera *camera, gfx::Comm
             _lightBufferData[index++] = color.z;
         }
 
-        float illuminance = isSpotLight ? spotLight->getIlluminance() : sphereLight->getIlluminance();
+        float illuminance = isSpotLight ? spotLight->getLuminance() : sphereLight->getLuminance();
         if (sceneData->isHDR()) {
             _lightBufferData[index] = illuminance * sceneData->getFpScale() * _lightMeterScale;
         } else {

@@ -55,8 +55,8 @@ public:
         _needUpdate = true;
     }
 
-    inline float getIlluminance() const { return _illuminance; }
-    inline void  setIlluminance(float illu) { _illuminance = illu; }
+    inline float getLuminance() const { return _luminance; }
+    inline void  setLuminance(float illu) { _luminance = illu; }
 
     inline const Vec3 &getDirection() const { return _dir; }
 
@@ -79,7 +79,7 @@ public:
 
 private:
     bool              _needUpdate{false};
-    float             _illuminance{0.F};
+    float             _luminance{0.F};
     float             _range{0.F};
     float             _size{0.F};
     float             _angle{0.F};

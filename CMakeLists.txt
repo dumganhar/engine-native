@@ -1261,8 +1261,8 @@ if(USE_PHYSICS_PHYSX)
         cocos/physics/physx/joints/PhysXRevolute.cpp
         cocos/physics/physx/joints/PhysXDistance.h
         cocos/physics/physx/joints/PhysXDistance.cpp
-        cocos/bindings/auto/jsb_physics_auto.cpp
-        cocos/bindings/auto/jsb_physics_auto.h
+        # cocos/bindings/auto/jsb_physics_auto.cpp
+        # cocos/bindings/auto/jsb_physics_auto.h
     )
 endif()
 

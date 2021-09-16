@@ -26,7 +26,8 @@ if [ ${machine} = "Mac" ]; then
 
      RES_DIR=$COCOS_ROOT/templates/mac/build-mac
      cd build-mac
-     cmake ../ -GXcode -DCC_USE_GLES3=ON -DCMAKE_OSX_ARCHITECTURES=x86_64 -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS_ROOT
+     COCOS_ENGINE_DEV=0 \     
+         cmake ../ -GXcode -DCC_USE_GLES3=ON -DCMAKE_OSX_ARCHITECTURES=x86_64 -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS_ROOT
 else
      cd $COCOS_ROOT/templates/windows
      mkdir -p build-win32/proj

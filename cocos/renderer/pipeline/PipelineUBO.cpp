@@ -150,7 +150,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     memcpy(output + UBOCamera::MAT_VIEW_PROJ_INV_OFFSET, camera->getMatViewProjInv().m, sizeof(cc::Mat4));
     output[UBOCamera::CAMERA_POS_OFFSET + 3] = getCombineSignY();
 
-    if (fog != nullptr && fog->isEnabled()) {
+    if (fog != nullptr) {
         const auto &colorArray = fog->getColorArray();
         memcpy(output + UBOCamera::GLOBAL_FOG_COLOR_OFFSET, colorArray.data(), sizeof(float) * colorArray.size());
 

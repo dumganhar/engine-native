@@ -125,7 +125,7 @@ public:
     inline const std::vector<SubModel *> &    getSubModels() const { return _subModels; }
     inline Node *                             getTransform() const { return _transform; }
     inline bool                               getTransformUpdated() const { return _transformUpdated; }
-    inline uint32_t                           getUpdatStamp() const { return _updateStamp; }
+    inline uint32_t                           getUpdateStamp() const { return _updateStamp; }
     inline uint32_t                           getVisFlags() const { return _visFlags; }
     inline geometry::AABB *                   getWorldBounds() const { return _worldBounds; }
     inline Type                               getType() const { return _type; };

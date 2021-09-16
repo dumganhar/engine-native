@@ -45,6 +45,12 @@ void Light::initializeLight() {
     _light->setBaked(isBaked());
 }
 
+void Light::setColor(const Color &val) {
+    _color = val;
+    if (_light != nullptr) {
+        _light->setColor(Vec3(val.r / 255.F, val.g / 255.F, val.b / 255.F));
+    }
+}
 void Light::destroyLight() {
     if (_light != nullptr) {
         Root::getInstance()->destroyLight(_light);

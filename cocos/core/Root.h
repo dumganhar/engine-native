@@ -31,11 +31,14 @@
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/RenderPipeline.h"
 #include "scene/Camera.h"
+#include "scene/DirectionalLight.h"
 #include "scene/DrawBatch2D.h"
 #include "scene/Light.h"
 #include "scene/Model.h"
 #include "scene/RenderScene.h"
 #include "scene/RenderWindow.h"
+#include "scene/SphereLight.h"
+#include "scene/SpotLight.h"
 
 namespace cc {
 
@@ -139,9 +142,35 @@ public:
     }
 
     template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<scene::Light, T>::value>>
-    T *createLight();
+    T *createLight() {
+        //TODO(xwx): need use model pool?
+        T *light = new T();
+        light->initialize();
+        return light;
+    }
 
-    void destroyLight(scene::Light *);
+    void destroyLight(scene::Light *light) {
+        if (light == nullptr) {
+            return;
+        }
+        light->destroy();
+        if (light->getScene() != nullptr) {
+            auto *directionalLightPtr = dynamic_cast<scene::DirectionalLight *>(light);
+            if (directionalLightPtr != nullptr) {
+                light->getScene()->removeDirectionalLight(directionalLightPtr);
+                return;
+            }
+            auto *sphereLightPtr = dynamic_cast<scene::SphereLight *>(light);
+            if (sphereLightPtr != nullptr) {
+                light->getScene()->removeSphereLight(sphereLightPtr);
+                return;
+            }
+            auto *spotLightPtr = dynamic_cast<scene::SpotLight *>(light);
+            if (spotLightPtr != nullptr) {
+                light->getScene()->removeSpotLight(spotLightPtr);
+            }
+        }
+    }
 
     inline scene::Camera *createCamera() const {
         return new scene::Camera(_device);

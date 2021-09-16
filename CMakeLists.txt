@@ -938,6 +938,10 @@ cocos_source_files(
     cocos/3d/lights/LightComponent.cpp
     cocos/3d/lights/DirectionalLightComponent.h
     cocos/3d/lights/DirectionalLightComponent.cpp
+    cocos/3d/lights/SpotLightComponent.h
+    cocos/3d/lights/SpotLightComponent.cpp
+    cocos/3d/lights/SphereLightComponent.cpp
+    cocos/3d/lights/SphereLightComponent.cpp
 )
 
 if(CC_USE_GLES2 OR CC_USE_GLES3)

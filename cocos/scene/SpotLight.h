@@ -56,7 +56,7 @@ public:
     }
 
     inline float getLuminance() const { return _luminance; }
-    inline void  setLuminance(float illu) { _luminance = illu; }
+    inline void  setLuminance(float lum) { _luminance = lum; }
 
     inline const Vec3 &getDirection() const { return _dir; }
 

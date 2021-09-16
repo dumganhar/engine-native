@@ -90,7 +90,7 @@ public:
     using Super = Component;
 
     Light();
-    ~Light() override;
+    ~Light() override = default;
 
     /**
      * @en

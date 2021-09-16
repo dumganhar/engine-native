@@ -46,12 +46,8 @@ enum class LightType {
 
 class Light {
 public:
-    Light()              = default;
-    Light(const Light &) = delete;
-    Light(Light &&)      = delete;
-    virtual ~Light()     = default;
-    Light &operator=(const Light &) = delete;
-    Light &operator=(const Light &&) = delete;
+    Light()          = default;
+    virtual ~Light() = default;
 
     inline void attachToScene(RenderScene *scene) { _scene = scene; }
     inline void detachFromScene() { _scene = nullptr; }
@@ -66,7 +62,7 @@ public:
         _colorTemp = 6550.F;
     }
 
-    virtual void update() = 0;
+    virtual void update(){};
 
     inline bool isBaked() const { return _baked; }
     inline void setBaked(bool val) { _baked = val; }
@@ -106,6 +102,9 @@ protected:
     Vec3         _color{1, 1, 1};
     Vec3         _colorTemperatureRGB;
     Vec3         _forward{0, 0, -1};
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Light);
 };
 
 } // namespace scene

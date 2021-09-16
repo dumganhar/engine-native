@@ -33,7 +33,7 @@ class SphereLight final : public Light {
 public:
     using Super = Light;
     SphereLight();
-    ~SphereLight() override;
+    ~SphereLight() override = default;
 
     /**
      * @en Luminous flux of the light.

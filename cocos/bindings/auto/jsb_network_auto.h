@@ -1,6 +1,6 @@
 #pragma once
-#include <type_traits>
 #include "base/Config.h"
+#include <type_traits>
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/network/Downloader.h"
@@ -19,8 +19,9 @@ extern se::Object *__jsb_cc_network_Downloader_proto; // NOLINT
 extern se::Class * __jsb_cc_network_Downloader_class; // NOLINT
 
 bool js_register_cc_network_Downloader(se::Object *obj); // NOLINT
-bool register_all_network(se::Object *obj);              // NOLINT
+bool register_all_network(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::network::Downloader);
 SE_DECLARE_FUNC(js_network_Downloader_setOnTaskProgress);
 SE_DECLARE_FUNC(js_network_Downloader_Downloader);
+

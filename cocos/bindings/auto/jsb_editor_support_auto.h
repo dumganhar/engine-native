@@ -1,17 +1,17 @@
 #pragma once
-#include <type_traits>
 #include "base/Config.h"
+#include <type_traits>
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
+#include "cocos/editor-support/middleware-adapter.h"
 #include "cocos/editor-support/MiddlewareManager.h"
 #include "cocos/editor-support/SharedBufferManager.h"
-#include "cocos/editor-support/middleware-adapter.h"
 
 extern se::Object *__jsb_cc_middleware_Texture2D_proto; // NOLINT
 extern se::Class * __jsb_cc_middleware_Texture2D_class; // NOLINT
 
 bool js_register_cc_middleware_Texture2D(se::Object *obj); // NOLINT
-bool register_all_editor_support(se::Object *obj);         // NOLINT
+bool register_all_editor_support(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::middleware::Texture2D);
 SE_DECLARE_FUNC(js_editor_support_Texture2D_getPixelsHigh);
@@ -38,7 +38,7 @@ extern se::Object *__jsb_cc_middleware_MiddlewareManager_proto; // NOLINT
 extern se::Class * __jsb_cc_middleware_MiddlewareManager_class; // NOLINT
 
 bool js_register_cc_middleware_MiddlewareManager(se::Object *obj); // NOLINT
-bool register_all_editor_support(se::Object *obj);                 // NOLINT
+bool register_all_editor_support(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::middleware::MiddlewareManager);
 SE_DECLARE_FUNC(js_editor_support_MiddlewareManager_getAttachInfoMgr);
@@ -54,3 +54,4 @@ SE_DECLARE_FUNC(js_editor_support_MiddlewareManager_getInstance);
 SE_DECLARE_FUNC(js_editor_support_MiddlewareManager_destroyInstance);
 SE_DECLARE_FUNC(js_editor_support_MiddlewareManager_generateModuleID);
 SE_DECLARE_FUNC(js_editor_support_MiddlewareManager_MiddlewareManager);
+

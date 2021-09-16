@@ -1,6 +1,6 @@
 #pragma once
-#include <type_traits>
 #include "base/Config.h"
+#include <type_traits>
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "extensions/cocos-ext.h"
@@ -9,7 +9,7 @@ extern se::Object *__jsb_cc_extension_EventAssetsManagerEx_proto; // NOLINT
 extern se::Class * __jsb_cc_extension_EventAssetsManagerEx_class; // NOLINT
 
 bool js_register_cc_extension_EventAssetsManagerEx(se::Object *obj); // NOLINT
-bool register_all_extension(se::Object *obj);                        // NOLINT
+bool register_all_extension(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::extension::EventAssetsManagerEx);
 SE_DECLARE_FUNC(js_extension_EventAssetsManagerEx_getAssetId);
@@ -31,7 +31,7 @@ extern se::Object *__jsb_cc_extension_Manifest_proto; // NOLINT
 extern se::Class * __jsb_cc_extension_Manifest_class; // NOLINT
 
 bool js_register_cc_extension_Manifest(se::Object *obj); // NOLINT
-bool register_all_extension(se::Object *obj);            // NOLINT
+bool register_all_extension(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::extension::Manifest);
 SE_DECLARE_FUNC(js_extension_Manifest_getManifestFileUrl);
@@ -77,3 +77,4 @@ SE_DECLARE_FUNC(js_extension_AssetsManagerEx_setVersionCompareHandle);
 SE_DECLARE_FUNC(js_extension_AssetsManagerEx_update);
 SE_DECLARE_FUNC(js_extension_AssetsManagerEx_create);
 SE_DECLARE_FUNC(js_extension_AssetsManagerEx_AssetsManagerEx);
+

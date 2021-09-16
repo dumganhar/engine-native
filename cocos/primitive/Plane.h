@@ -64,6 +64,6 @@ struct IPlaneOptions : public IGeometryOptions {
  * @param options 平面参数选项。
  */
 
-IGeometry plane(std::optional<IPlaneOptions> &options);
+IGeometry plane(std::optional<IPlaneOptions> options = std::nullopt);
 
 } // namespace cc

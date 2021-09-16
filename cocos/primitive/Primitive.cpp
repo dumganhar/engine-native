@@ -35,40 +35,43 @@ void Primitive::onLoaded() {
     createMesh(createGeometry(type), this);
 }
 
-IGeometry createGeometry(PrimitiveType type, const std::optional<std::variant<IBoxOptions /*, ICapsuleOptions, ..., ...*/>> &options) {
+IGeometry createGeometry(PrimitiveType type, const std::optional<PrimitiveOptions> &options) {
     switch (type) {
         case PrimitiveType::BOX: {
-            return options.has_value() ? cc::box(std::get<IBoxOptions>(options.value())) : cc::box();
+            return options.has_value() ? box(std::get<IBoxOptions>(options.value())) : box();
             break;
         }
         case PrimitiveType::SPHERE: {
-            //return cc::sphere(); //TODO(xwx): sphere() not implement
+            return sphere(); //TODO(xwx): now for test, need to add options usage
             break;
         }
         case PrimitiveType::CYLINDER: {
-            //return cc::cylinder(); //TODO(xwx): cylinder() not implement
-            break;
+            return cylinder(); //TODO(xwx): now for test, need to add options usage
         }
         case PrimitiveType::CONE: {
-            //return cc::cone(); //TODO(xwx): cone() not implement
+            return cone(); //TODO(xwx): now for test, need to add options usage
             break;
         }
         case PrimitiveType::CAPSULE: {
-            //return cc::capsule(); //TODO(xwx): capsule() not implement
+            return capsule(); //TODO(xwx): now for test, need to add options usage
             break;
         }
         case PrimitiveType::TORUS: {
-            //return cc::torus(); //TODO(xwx): torus() not implement
+            return torus(); //TODO(xwx): now for test, need to add options usage
+            break;
+        }
+        case PrimitiveType::PLANE: {
+            return options.has_value() ? quad(std::get<IGeometryOptions>(options.value())) : plane();
             break;
         }
         case PrimitiveType::QUAD: {
-            //return cc::quad(); //TODO(xwx): quad() not implement
+            return options.has_value() ? quad(std::get<IGeometryOptions>(options.value())) : quad();
             break;
         }
         default:
             break;
     }
-    return cc::box();
+    return box();
 }
 
 } // namespace cc

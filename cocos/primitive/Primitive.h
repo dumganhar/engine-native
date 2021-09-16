@@ -28,9 +28,19 @@
 
 #include "3d/assets/Mesh.h"
 #include "primitive/Box.h"
+#include "primitive/Capsule.h"
+#include "primitive/Circle.h"
+#include "primitive/Cone.h"
+#include "primitive/Cylinder.h"
+#include "primitive/Plane.h"
+#include "primitive/Quad.h"
+#include "primitive/Sphere.h"
+#include "primitive/Torus.h"
+
 #include "primitive/PrimitiveDefine.h"
 namespace cc {
 
+using PrimitiveOptions = std::variant<IGeometryOptions, IBoxOptions, ICapsuleOptions, ICircleOptions, ICylinderOptions, IPlaneOptions, ISphereOptions, ITorusOptions>;
 enum class PrimitiveType {
     BOX      = 0,
     SPHERE   = 1,
@@ -83,6 +93,6 @@ public:
 };
 
 //TODO(xwx): make alias for all children struct of IGeometryOptions
-IGeometry createGeometry(PrimitiveType type, const std::optional<std::variant<IBoxOptions /*, ICapsuleOptions, ..., ...*/>> &options = std::nullopt);
+IGeometry createGeometry(PrimitiveType type, const std::optional<PrimitiveOptions> &options = std::nullopt);
 
 } // namespace cc

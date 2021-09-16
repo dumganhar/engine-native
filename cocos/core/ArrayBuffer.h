@@ -30,8 +30,6 @@
 
 namespace cc {
 
-//class ArrayBufferView;
-
 class ArrayBuffer final {
 public:
     using Ptr = std::shared_ptr<ArrayBuffer>;
@@ -58,45 +56,5 @@ private:
     
     CC_DISALLOW_COPY_MOVE_ASSIGN(ArrayBuffer);
 };
-
-//template <typename T>
-//class ArrayBufferView final {
-//public:
-//    using value_type      = T;
-//    using reference       = value_type &;
-//    using const_reference = const value_type &;
-//
-//    explicit ArrayBufferView(ArrayBuffer &ab) : _ab(ab) {}
-//
-//    const_reference operator[](index_t index) const {
-//        return at(index);
-//    }
-//
-//    reference operator[](index_t index) {
-//        return at(index);
-//    }
-//
-//    const_reference at(index_t i) const {
-//        CC_ASSERT(i < size());
-//        return *(static_cast<T *>(_ab.data()) + i);
-//    }
-//
-//    reference at(index_t i) {
-//        CC_ASSERT(i < size());
-//        return *(static_cast<T *>(_ab.data()) + i);
-//    }
-//
-//    void set(index_t i, const_reference value) {
-//        CC_ASSERT(i < size());
-//        *(static_cast<T *>(_ab.data()) + i) = value;
-//    }
-//
-//    int32_t size() const {
-//        return static_cast<int32_t>(_ab.size() / sizeof(T));
-//    }
-//
-//private:
-//    ArrayBuffer &_ab;
-//};
 
 } // namespace cc

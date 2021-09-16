@@ -55,7 +55,11 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # set c++ standard
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+if(WINDOWS)
+    set(CMAKE_CXX_STANDARD 20)
+else()
+    set(CMAKE_CXX_STANDARD 17)
+endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -147,3 +151,7 @@ function(cc_win32_definations target)
         SE_ENABLE_INSPECTOR
     )
 endfunction()
+
+
+find_program(NODE_EXECUTABLE NAMES node REQUIRED)
+find_program(TSC_EXECUTABLE NAMES tsc REQUIRED)

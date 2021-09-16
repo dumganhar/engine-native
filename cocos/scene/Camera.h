@@ -26,20 +26,22 @@
 #pragma once
 
 #include <cstdint>
-#include <string>
 #include <optional>
+#include <string>
+#include "base/Macros.h"
+#include "core/geometry/Frustum.h"
+#include "core/geometry/Ray.h"
 #include "math/Mat4.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
-#include "base/Macros.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/pipeline/Define.h"
-#include "core/scene-graph/Node.h"
-#include "core/geometry/Frustum.h"
-#include "core/geometry/Ray.h"
 #include "scene/RenderWindow.h"
 
 namespace cc {
+
+class Node;
+
 namespace scene {
 
 // As RenderScene includes Camera.h, so use forward declaration here.
@@ -107,7 +109,7 @@ enum class CameraShutter {
 
 struct ICameraInfo {
     std::string                name;
-    scenegraph::Node *         node{nullptr};
+    Node *                     node{nullptr};
     CameraProjection           projection;
     std::optional<uint32_t>    targetDisplay;
     RenderWindow *             window{nullptr};
@@ -117,8 +119,9 @@ struct ICameraInfo {
 
 class Camera final {
 public:
+    static const int32_t SKYBOX_FLAG = static_cast<int32_t>(gfx::ClearFlagBit::STENCIL) << 1;
+
     explicit Camera(gfx::Device *device);
-    Camera() = default;
 
     bool initialize(const ICameraInfo &info);
     void destroy();
@@ -154,8 +157,8 @@ public:
      */
     const Mat4 &worldMatrixToScreen(Mat4 &out, const Mat4 &worldMatrix, uint32_t width, uint32_t height);
 
-    inline void              setNode(scenegraph::Node *val) { _node = val; }
-    inline scenegraph::Node *getNode() const { return _node; }
+    inline void  setNode(Node *val) { _node = val; }
+    inline Node *getNode() const { return _node; }
 
     inline void setEnabled(bool val) { _enabled = val; }
     inline bool isEnabled() const { return _enabled; }
@@ -290,17 +293,17 @@ protected:
 private:
     void updateExposure();
 
-    bool              _isWindowSize{true};
-    float             _screenScale{0.F};
-    gfx::Device *     _device{nullptr};
-    RenderScene *     _scene{nullptr};
-    scenegraph::Node *_node{nullptr};
-    std::string       _name;
-    bool              _enabled{false};
-    CameraProjection  _proj{CameraProjection::UNKNOWN};
-    float             _aspect{0.F};
-    float             _orthoHeight{10.0F};
-    CameraFOVAxis     _fovAxis{CameraFOVAxis::VERTICAL};
+    bool             _isWindowSize{true};
+    float            _screenScale{0.F};
+    gfx::Device *    _device{nullptr};
+    RenderScene *    _scene{nullptr};
+    Node *           _node{nullptr};
+    std::string      _name;
+    bool             _enabled{false};
+    CameraProjection _proj{CameraProjection::UNKNOWN};
+    float            _aspect{0.F};
+    float            _orthoHeight{10.0F};
+    CameraFOVAxis    _fovAxis{CameraFOVAxis::VERTICAL};
     //    float _fov = toRadian(45);
     float                 _fov{0.F};
     float                 _nearClip{1.0F};

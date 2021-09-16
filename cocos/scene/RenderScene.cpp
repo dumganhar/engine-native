@@ -100,8 +100,8 @@ void RenderScene::unsetMainLight(DirectionalLight *dl) {
         if (!dlList.empty()) {
             setMainLight(dlList[dlList.size() - 1]);
             if (_mainLight->getNode() != nullptr) {
-                uint32_t flag = _mainLight->getNode()->getFlagsChanged();
-                _mainLight->getNode()->setChangedFlags(flag | static_cast<uint32_t>(scenegraph::TransformBit::ROTATION));
+                uint32_t flag = _mainLight->getNode()->getChangedFlags();
+                _mainLight->getNode()->setChangedFlags(flag | static_cast<uint32_t>(TransformBit::ROTATION));
             }
             return;
         }

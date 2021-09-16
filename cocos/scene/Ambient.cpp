@@ -28,7 +28,7 @@
 namespace cc {
 namespace scene {
 
-void Ambient::initialize(scenegraph::AmbientInfo *info) {
+void Ambient::initialize(AmbientInfo *info) {
     setSkyColor(info->getSkyColor());
     _groundAlbedo.set(info->getGroundAlbedo());
     _skyIllum = info->getSkyIllum();

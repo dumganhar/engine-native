@@ -345,7 +345,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
         tmplInfo.bindings            = {};
         tmplInfo.blockSizes          = {};
         for (auto &block : tmpl.blocks) {
-            tmplInfo.blockSizes.emplace_back(static_cast<float>(getSize(block)));
+            tmplInfo.blockSizes.emplace_back(getSize(block));
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 .binding        = static_cast<uint>(block.binding),
                 .descriptorType = block.descriptorType.value_or(gfx::DescriptorType::UNIFORM_BUFFER),
@@ -545,7 +545,7 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     const auto &tmpl      = itTpl->second;
     const auto  itTplInfo = _templateInfos.find(tmpl.hash);
     assert(itTplInfo != _templateInfos.end());
-    auto tmplInfo = itTplInfo->second;
+    auto &tmplInfo = itTplInfo->second;
 
     if (!tmplInfo.pipelineLayout) {
         getDescriptorSetLayout(device, name); // ensure set layouts have been created

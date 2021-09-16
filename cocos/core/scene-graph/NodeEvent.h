@@ -27,7 +27,7 @@
 #include <string>
 
 namespace cc {
-namespace scenegraph {
+
 class NodeEventType {
 public:
     static const std::string TOUCH_START;
@@ -55,5 +55,5 @@ public:
     static const std::string LAYER_CHANGED;
     static const std::string SIBLING_ORDER_CHANGED;
 };
-} // namespace scenegraph
+
 } // namespace cc

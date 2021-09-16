@@ -31,6 +31,7 @@
 #include "SceneCulling.h"
 #include "core/geometry/AABB.h"
 #include "core/geometry/Sphere.h"
+#include "core/scene-graph/Node.h"
 #include "gfx-base/GFXBuffer.h"
 #include "gfx-base/GFXDescriptorSet.h"
 #include "math/Quaternion.h"
@@ -85,23 +86,23 @@ void updateDirLight(scene::Shadow *shadow, const scene::Light *light, std::array
     const auto  ny       = normal.y;
     const auto  nz       = normal.z;
     //TODO: how to avoid create Mat4 every time?
-    auto        matLight = shadow->getMatLight();
-    matLight.m[0]        = 1 - nx * lx;
-    matLight.m[1]        = -nx * ly;
-    matLight.m[2]        = -nx * lz;
-    matLight.m[3]        = 0;
-    matLight.m[4]        = -ny * lx;
-    matLight.m[5]        = 1 - ny * ly;
-    matLight.m[6]        = -ny * lz;
-    matLight.m[7]        = 0;
-    matLight.m[8]        = -nz * lx;
-    matLight.m[9]        = -nz * ly;
-    matLight.m[10]       = 1 - nz * lz;
-    matLight.m[11]       = 0;
-    matLight.m[12]       = lx * distance;
-    matLight.m[13]       = ly * distance;
-    matLight.m[14]       = lz * distance;
-    matLight.m[15]       = 1;
+    auto matLight  = shadow->getMatLight();
+    matLight.m[0]  = 1 - nx * lx;
+    matLight.m[1]  = -nx * ly;
+    matLight.m[2]  = -nx * lz;
+    matLight.m[3]  = 0;
+    matLight.m[4]  = -ny * lx;
+    matLight.m[5]  = 1 - ny * ly;
+    matLight.m[6]  = -ny * lz;
+    matLight.m[7]  = 0;
+    matLight.m[8]  = -nz * lx;
+    matLight.m[9]  = -nz * ly;
+    matLight.m[10] = 1 - nz * lz;
+    matLight.m[11] = 0;
+    matLight.m[12] = lx * distance;
+    matLight.m[13] = ly * distance;
+    matLight.m[14] = lz * distance;
+    matLight.m[15] = 1;
 
     memcpy(shadowUBO->data() + UBOShadow::MAT_LIGHT_PLANE_PROJ_OFFSET, matLight.m, sizeof(matLight));
     memcpy(shadowUBO->data() + UBOShadow::SHADOW_COLOR_OFFSET, shadow->getShadowColor4f().data(), sizeof(float) * 4);
@@ -126,21 +127,21 @@ void lightCollecting(scene::Camera *camera, std::vector<const scene::Light *> *v
 }
 
 void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
-    auto *const       sceneData  = pipeline->getPipelineSceneData();
-    auto *const       shadow     = sceneData->getShadow();
-    auto *const       skyBox     = sceneData->getSkybox();
-    const auto *const scene      = camera->getScene();
+    auto *const       sceneData = pipeline->getPipelineSceneData();
+    auto *const       shadow    = sceneData->getShadow();
+    auto *const       skyBox    = sceneData->getSkybox();
+    const auto *const scene     = camera->getScene();
 
     castBoundsInitialized = false;
     RenderObjectList shadowObjects;
     bool             isShadowMap = false;
-    if (shadow->isEnabled() && shadow->getType() == scene::ShadowType::SHADOW_MAP) {
+    if (shadow != nullptr && shadow->isEnabled() && shadow->getType() == scene::ShadowType::SHADOW_MAP) {
         isShadowMap = true;
     }
 
     RenderObjectList renderObjects;
 
-    if (skyBox->isEnabled() && skyBox->getModel() && (static_cast<uint32_t>(camera->getClearFlag()) & skyboxFlag)) {
+    if (skyBox != nullptr && skyBox->isEnabled() && skyBox->getModel() && (static_cast<uint32_t>(camera->getClearFlag()) & skyboxFlag)) {
         renderObjects.emplace_back(genRenderObject(skyBox->getModel(), camera));
     }
 

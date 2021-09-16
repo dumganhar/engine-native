@@ -24,7 +24,19 @@
 ****************************************************************************/
 
 #pragma once
+#include "primitive/Cylinder.h"
+#include "primitive/PrimitiveDefine.h"
 
 namespace cc {
 
-}
+/**
+ * @en
+ * The definition of the parameter for building a cylinder.
+ * @zh
+ * 圆锥参数选项。
+ */
+using IConeOptions = ICylinderOptions;
+
+IGeometry cone(float radius = 0.5F, float height = 1.0F, const std::optional<IConeOptions> &opts = std::nullopt);
+
+} // namespace cc

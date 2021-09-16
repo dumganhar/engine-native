@@ -35,7 +35,7 @@
 #include "core/scene-graph/NodeEvent.h"
 
 namespace cc {
-namespace scenegraph {
+
 class BaseNode;
 class NodeEventProcessor final {
 private:
@@ -65,5 +65,4 @@ public:
     void        targetOff(const std::string &);
 };
 
-} // namespace scenegraph
 } // namespace cc

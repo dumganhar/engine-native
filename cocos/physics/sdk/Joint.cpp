@@ -40,7 +40,7 @@
         return _impl->getImpl();                    \
     }                                               \
                                                     \
-    void CLASS::initialize(scenegraph::Node* node) {     \
+    void CLASS::initialize(Node *node) {            \
         _impl->initialize(node);                    \
     }                                               \
                                                     \

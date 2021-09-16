@@ -41,7 +41,7 @@
         CLASS();                                                               \
         ~CLASS() override;                                                     \
         uintptr_t         getImpl() override;                                  \
-        void              initialize(scenegraph::Node* node) override;              \
+        void              initialize(Node *node) override;                     \
         void              onEnable() override;                                 \
         void              onDisable() override;                                \
         void              onDestroy() override;                                \
@@ -50,8 +50,8 @@
         void              setAsTrigger(bool v) override;                       \
         void              setCenter(float x, float y, float z) override;       \
         void              updateEventListener(EShapeFilterFlag v) override;    \
-        geometry::AABB&   getAABB() override;                                  \
-        geometry::Sphere& getBoundingSphere() override;                        \
+        geometry::AABB &  getAABB() override;                                  \
+        geometry::Sphere &getBoundingSphere() override;                        \
         uint32_t          getGroup() override;                                 \
         void              setGroup(uint32_t g) override;                       \
         uint32_t          getMask() override;                                  \

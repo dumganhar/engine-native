@@ -34,8 +34,6 @@
 
 namespace cc {
 
-using EventType = SystemEventType;
-
 /**
 * @en
 * The System event, it currently supports keyboard events and accelerometer events.<br/>
@@ -52,18 +50,20 @@ using EventType = SystemEventType;
 */
 class SystemEvent final : public EventEmitter {
 public:
-    using EventMouseCallback        = std::function<void(const EventMouse&)>;
-    using EventTouchCallback        = std::function<void(const EventTouch&)>;
-    using TouchEventTouchCallback   = std::function<void(const Touch&, const EventTouch&)>;
-    using EventKeyboardCallback     = std::function<void(const EventKeyboard&)>;
-    using EventAccelerationCallback = std::function<void(const EventAcceleration&)>;
+    using EventType = SystemEventType;
+
+    using EventMouseCallback        = std::function<void(const EventMouse &)>;
+    using EventTouchCallback        = std::function<void(const EventTouch &)>;
+    using TouchEventTouchCallback   = std::function<void(const Touch &, const EventTouch &)>;
+    using EventKeyboardCallback     = std::function<void(const EventKeyboard &)>;
+    using EventAccelerationCallback = std::function<void(const EventAcceleration &)>;
 
     // void on(SystemEventType event, MouseEventCallback cb);
     /**
     * @en The singleton of the SystemEvent, there should only be one instance to be used globally
     * @zh 系统事件单例，方便全局使用。
     */
-    static SystemEvent& getInstance() {
+    static SystemEvent &getInstance() {
         static SystemEvent instance;
         return instance;
     }

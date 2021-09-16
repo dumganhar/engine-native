@@ -26,7 +26,9 @@ defaultSections = [
     'dragonbones',
     'physics',
     'scene',
+    'geometry',
 ]
+
 projectRoot = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 defaultOutputDir = '%s/cocos/bindings/auto' % projectRoot
 
@@ -185,9 +187,14 @@ def main():
             for path in sys.argv[2:]:
                 generate(path.replace('\\', '/'))
         else:
+            genCnt = 0
             for section in defaultSections:
                 if len(sys.argv) <= 1 or any(section in s for s in sys.argv[1:]):
                     generate('%s/%s.ini' % (tojs_root, section), defaultOutputDir)
+                    genCnt += 1
+            if genCnt == 0:
+                print ('----------------------------------------')
+                print ('Warn: no ini found, update var `defaultSections`?')
 
         # for t in tasks:
         #     t.communicate()

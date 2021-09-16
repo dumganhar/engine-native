@@ -2,7 +2,7 @@
 #include "core/scene-graph/NodeEvent.h"
 
 namespace cc {
-namespace scenegraph {
+
 const std::string NodeEventType::TOUCH_START{"touch-start"};
 const std::string NodeEventType::TOUCH_MOVE{"touch-move"};
 const std::string NodeEventType::TOUCH_END{"touch-end"};
@@ -27,5 +27,5 @@ const std::string NodeEventType::PARENT_CHANGED{"parent-changed"};
 const std::string NodeEventType::NODE_DESTROYED{"node-destroyed"};
 const std::string NodeEventType::LAYER_CHANGED{"layer-changed"};
 const std::string NodeEventType::SIBLING_ORDER_CHANGED{"sibling-order-changed"};
-} // namespace scenegraph
+
 } // namespace cc

@@ -1433,8 +1433,8 @@ class Generator(object):
         self.out_file = opts['out_file']
         self.script_type = opts['script_type']
         self.macro_judgement = opts['macro_judgement']
-        self._hpp_headers = opts['hpp_headers']
-        self.cpp_headers = opts['cpp_headers']
+        self._hpp_headers = filter(lambda x: len(x) > 0, opts['hpp_headers']) if opts['hpp_headers'] is not None else None
+        self.cpp_headers = filter(lambda x: len(x) > 0, opts['cpp_headers']) if opts['cpp_headers'] is not None else None
         self.win32_clang_flags = opts['win32_clang_flags']
         self.getter_setter = {}
         self.shadowed_methods_by_getter_setter = {}

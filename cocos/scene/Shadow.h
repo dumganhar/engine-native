@@ -128,6 +128,9 @@ enum class PCFType {
     SOFT_2X = 2
 };
 
+#undef near
+#undef far
+
 struct ShadowInfo {
     Color      shadowColor{0, 0, 0, 76};
     bool       enabled{false};
@@ -136,7 +139,7 @@ struct ShadowInfo {
     float      autoAdapt{true};
     float      bias{0.00001F};
     float      normalBias{0.F};
-    float      near{1.F};
+    float      near{1.0F};
     float      far{30.F};
     float      orthoSize{5.F};
     float      maxReceived{4.F};

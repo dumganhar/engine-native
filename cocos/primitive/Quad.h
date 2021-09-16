@@ -25,6 +25,15 @@
 
 #pragma once
 
+#include "primitive/PrimitiveDefine.h"
 namespace cc {
+/**
+ * @en
+ * Generate a quad with width and height both to 1, centered at origin.
+ * @zh
+ * 生成一个四边形，宽高都为1，中心在原点。
+ * @param options 参数选项。
+ */
 
-}
+IGeometry quad(const std::optional<IGeometryOptions> &options);
+} // namespace cc

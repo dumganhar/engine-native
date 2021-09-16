@@ -926,8 +926,18 @@ cocos_source_files(
     cocos/core/components/Component.cpp
     cocos/core/components/RenderableComponent.h
     cocos/core/components/RenderableComponent.cpp
+    cocos/core/components/CameraComponent.h
+    cocos/core/components/CameraComponent.cpp
     cocos/3d/framework/MeshRenderer.h
     cocos/3d/framework/MeshRenderer.cpp
+)
+
+##### lights
+cocos_source_files(
+    cocos/3d/lights/LightComponent.h
+    cocos/3d/lights/LightComponent.cpp
+    cocos/3d/lights/DirectionalLightComponent.h
+    cocos/3d/lights/DirectionalLightComponent.cpp
 )
 
 if(CC_USE_GLES2 OR CC_USE_GLES3)
@@ -1417,13 +1427,13 @@ cocos_source_files(
     cocos/core/builtin/BuiltinResMgr.h
     cocos/core/builtin/ShaderSourceAssembly.cpp
     cocos/core/builtin/ShaderSourceAssembly.h
-    cocos/core/builtin/Effects.cpp
+    # cocos/core/builtin/Effects.cpp # generated
     cocos/core/builtin/Effects.h
-    cocos/core/builtin/shader-sources/glsl1.cpp
+    # cocos/core/builtin/shader-sources/glsl1.cpp # generated
     cocos/core/builtin/shader-sources/glsl1.h
-    cocos/core/builtin/shader-sources/glsl3.cpp
+    # cocos/core/builtin/shader-sources/glsl3.cpp # generated
     cocos/core/builtin/shader-sources/glsl3.h
-    cocos/core/builtin/shader-sources/glsl4.cpp
+    # cocos/core/builtin/shader-sources/glsl4.cpp # generated
     cocos/core/builtin/shader-sources/glsl4.h
     #
 
@@ -1553,42 +1563,44 @@ cocos_source_files(MODULE ccgeometry
 #     NO_WERROR    cocos/bindings/dop/BufferAllocator.cpp
 # )
 
-# ######## auto
-# cocos_source_files(
-#     NO_WERROR    cocos/bindings/auto/jsb_cocos_auto.cpp
-#                  cocos/bindings/auto/jsb_cocos_auto.h
-#     NO_WERROR    cocos/bindings/auto/jsb_extension_auto.cpp
-#                  cocos/bindings/auto/jsb_extension_auto.h
-#     NO_WERROR    cocos/bindings/auto/jsb_gfx_auto.cpp
-#                  cocos/bindings/auto/jsb_gfx_auto.h
-#     NO_WERROR    cocos/bindings/auto/jsb_network_auto.cpp
-#                  cocos/bindings/auto/jsb_network_auto.h
-#     NO_WERROR    cocos/bindings/auto/jsb_pipeline_auto.cpp
-#                  cocos/bindings/auto/jsb_pipeline_auto.h
-#     NO_WERROR    cocos/bindings/auto/jsb_scene_auto.cpp
-#                  cocos/bindings/auto/jsb_scene_auto.h
-# )
+######## auto
+cocos_source_files(
+    NO_WERROR    cocos/bindings/auto/jsb_cocos_auto.cpp
+                 cocos/bindings/auto/jsb_cocos_auto.h
+    NO_WERROR    cocos/bindings/auto/jsb_extension_auto.cpp
+                 cocos/bindings/auto/jsb_extension_auto.h
+    NO_WERROR    cocos/bindings/auto/jsb_gfx_auto.cpp
+                 cocos/bindings/auto/jsb_gfx_auto.h
+    NO_WERROR    cocos/bindings/auto/jsb_network_auto.cpp
+                 cocos/bindings/auto/jsb_network_auto.h
+    NO_WERROR    cocos/bindings/auto/jsb_pipeline_auto.cpp
+                 cocos/bindings/auto/jsb_pipeline_auto.h
+    # NO_WERROR    cocos/bindings/auto/jsb_scene_auto.cpp
+    #              cocos/bindings/auto/jsb_scene_auto.h
+    NO_WERROR    cocos/bindings/auto/jsb_geometry_auto.cpp
+                 cocos/bindings/auto/jsb_geometry_auto.h
+)
 
-# if(USE_AUDIO)
-#     cocos_source_files(
-#         NO_WERROR    cocos/bindings/auto/jsb_audio_auto.cpp
-#                      cocos/bindings/auto/jsb_audio_auto.h
-#     )
-# endif()
+if(USE_AUDIO)
+    cocos_source_files(
+        NO_WERROR    cocos/bindings/auto/jsb_audio_auto.cpp
+                     cocos/bindings/auto/jsb_audio_auto.h
+    )
+endif()
 
-# if(USE_VIDEO)
-#     cocos_source_files(
-#         NO_WERROR    cocos/bindings/auto/jsb_video_auto.cpp
-#                      cocos/bindings/auto/jsb_video_auto.h
-#     )
-# endif()
+if(USE_VIDEO)
+    cocos_source_files(
+        NO_WERROR    cocos/bindings/auto/jsb_video_auto.cpp
+                     cocos/bindings/auto/jsb_video_auto.h
+    )
+endif()
 
-# if(USE_WEBVIEW)
-#     cocos_source_files(
-#         NO_WERROR    cocos/bindings/auto/jsb_webview_auto.cpp
-#                      cocos/bindings/auto/jsb_webview_auto.h
-#     )
-# endif()
+if(USE_WEBVIEW)
+    cocos_source_files(
+        NO_WERROR    cocos/bindings/auto/jsb_webview_auto.cpp
+                     cocos/bindings/auto/jsb_webview_auto.h
+    )
+endif()
 
 if(USE_MIDDLEWARE)
     cocos_source_files(
@@ -1607,8 +1619,8 @@ if(USE_MIDDLEWARE)
                      cocos/editor-support/SharedBufferManager.h
                      cocos/editor-support/TypedArrayPool.cpp
                      cocos/editor-support/TypedArrayPool.h
-        # NO_WERROR    cocos/bindings/auto/jsb_editor_support_auto.cpp
-        #              cocos/bindings/auto/jsb_editor_support_auto.h
+        NO_WERROR    cocos/bindings/auto/jsb_editor_support_auto.cpp
+                     cocos/bindings/auto/jsb_editor_support_auto.h
     )
 
     if(USE_SPINE)
@@ -1775,10 +1787,10 @@ if(USE_MIDDLEWARE)
                          cocos/editor-support/spine-creator-support/spine-cocos2dx.h
             NO_WERROR    cocos/editor-support/spine-creator-support/VertexEffectDelegate.cpp
                          cocos/editor-support/spine-creator-support/VertexEffectDelegate.h
-            # NO_WERROR    cocos/bindings/auto/jsb_spine_auto.cpp
-            #              cocos/bindings/auto/jsb_spine_auto.h
-            # NO_WERROR    cocos/bindings/manual/jsb_spine_manual.cpp
-            #              cocos/bindings/manual/jsb_spine_manual.h
+            NO_WERROR    cocos/bindings/auto/jsb_spine_auto.cpp
+                         cocos/bindings/auto/jsb_spine_auto.h
+            NO_WERROR    cocos/bindings/manual/jsb_spine_manual.cpp
+                         cocos/bindings/manual/jsb_spine_manual.h
         )
     endif()
 
@@ -1868,10 +1880,10 @@ if(USE_MIDDLEWARE)
                          cocos/editor-support/dragonbones-creator-support/CCSlot.h
             NO_WERROR    cocos/editor-support/dragonbones-creator-support/CCTextureAtlasData.cpp
                          cocos/editor-support/dragonbones-creator-support/CCTextureAtlasData.h
-            # NO_WERROR    cocos/bindings/auto/jsb_dragonbones_auto.cpp
-            #              cocos/bindings/auto/jsb_dragonbones_auto.h
-            # NO_WERROR    cocos/bindings/manual/jsb_dragonbones_manual.cpp
-            #              cocos/bindings/manual/jsb_dragonbones_manual.h
+            NO_WERROR    cocos/bindings/auto/jsb_dragonbones_auto.cpp
+                         cocos/bindings/auto/jsb_dragonbones_auto.h
+            NO_WERROR    cocos/bindings/manual/jsb_dragonbones_manual.cpp
+                         cocos/bindings/manual/jsb_dragonbones_manual.h
         )
     endif()
 endif()
@@ -2154,6 +2166,51 @@ cocos_source_files(
 )
 
 list(APPEND COCOS2D_SOURCE_LIST ${CC_EXTERNAL_SOURCES})
+
+
+### generate source files
+
+add_custom_command(
+    OUTPUT ${CWD}/cocos/core/builtin/Effects.cpp
+    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/effects_gzip.js 
+        ${CWD}/cocos/core/builtin/Effects.in.json
+        ${CWD}/cocos/core/builtin/Effects.cpp.in
+        ${CWD}/cocos/core/builtin/Effects.cpp
+    DEPENDS 
+        ${CWD}/cocos/core/builtin/Effects.cpp.in
+        ${CWD}/cocos/core/builtin/Effects.in.json
+        ${CWD}/cmake/scripts/effects_gzip.js
+    VERBATIM USES_TERMINAL)
+
+macro(generate_glsl ver)
+    add_custom_command(
+        OUTPUT ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
+        COMMAND ${TSC_EXECUTABLE} ${CWD}/cocos/core/builtin/shader-sources/${ver}.ts
+        DEPENDS ${CWD}/cocos/core/builtin/shader-sources/${ver}.ts
+        VERBATIM USES_TERMINAL
+    )
+    add_custom_command(
+        OUTPUT ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp
+        COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/glsl_gzip.js
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
+            ${ver}
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp.in
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp
+        DEPENDS 
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp.in
+            ${CWD}/cmake/scripts/glsl_gzip.js
+        VERBATIM USES_TERMINAL)
+endmacro()
+
+generate_glsl(glsl1)
+generate_glsl(glsl3)
+generate_glsl(glsl4)
+
+list(APPEND COCOS2D_SOURCE_LIST ${CWD}/cocos/core/builtin/Effects.cpp)
+list(APPEND COCOS2D_SOURCE_LIST ${CWD}/cocos/core/builtin/shader-sources/glsl1.cpp)
+list(APPEND COCOS2D_SOURCE_LIST ${CWD}/cocos/core/builtin/shader-sources/glsl3.cpp)
+list(APPEND COCOS2D_SOURCE_LIST ${CWD}/cocos/core/builtin/shader-sources/glsl4.cpp)
 
 
 if(USE_MODULES)

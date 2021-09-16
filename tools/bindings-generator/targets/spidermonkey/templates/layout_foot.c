@@ -1,4 +1,4 @@
-bool register_all_${prefix}(se::Object* obj)
+bool register_all_${prefix}(se::Object* obj)    // NOLINT
 {
 #if $target_ns
     // Get the ns

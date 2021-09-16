@@ -27,7 +27,6 @@
 #include "core/Root.h"
 
 namespace cc {
-namespace scenegraph {
 
 Scene::Scene(const std::string &name)
 : BaseNode(name) {
@@ -35,5 +34,58 @@ Scene::Scene(const std::string &name)
     _renderScene       = Root::getInstance()->createScene({});
 }
 
-} // namespace scenegraph
+void Scene::load() {
+    if (!_inited) {
+        //cjh        if (TEST) {
+        //            assert(!_activeInHierarchy, 'Should deactivate ActionManager and EventManager by default');
+        //        }
+        onBatchCreated(false); //cjh EDITOR && _prefabSyncedInLiveReload);
+        _inited = true;
+    }
+    _scene = this;
+    // static methode can't use this as parameter type
+    walk(BaseNode::setScene);
+}
+
+void Scene::activate(bool active /* = true */) {
+    //cjh    if (EDITOR) {
+    //        // register all nodes to editor
+    //        _registerIfAttached!(active);
+    //    }
+    //cjh    legacyCC.director._nodeActivator.activateNode(this, active);
+    // The test environment does not currently support the renderer
+    //    if (!TEST) {
+    //        _globals.activate();
+    //    }
+}
+
+void Scene::onBatchCreated(bool dontSyncChildPrefab) {
+    Super::onBatchCreated(dontSyncChildPrefab);
+
+    int32_t len = static_cast<int32_t>(_children.size());
+    for (int32_t i = 0; i < len; ++i) {
+        _children[i]->setSiblingIndex(i);
+        _children[i]->onBatchCreated(dontSyncChildPrefab);
+    }
+
+    //cjh    applyTargetOverrides(this);
+}
+
+bool Scene::destroy() {
+    bool success = Super::destroy();
+    if (success) {
+        for (auto &child : _children) {
+            child->setActive(false);
+        }
+    }
+
+    if (_renderScene != nullptr) {
+        //cjh TODO: legacyCC.director.root.destroyScene(this._renderScene);
+    }
+
+    _active            = false;
+    _activeInHierarchy = false;
+    return success;
+}
+
 } // namespace cc

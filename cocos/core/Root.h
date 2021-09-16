@@ -142,9 +142,9 @@ public:
     T *createLight();
 
     void destroyLight(scene::Light *);
-    
+
     inline scene::Camera *createCamera() const {
-        return new scene::Camera();
+        return new scene::Camera(_device);
     }
 
     /**

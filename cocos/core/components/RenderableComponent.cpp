@@ -24,6 +24,7 @@
  ****************************************************************************/
 
 #include "core/components/RenderableComponent.h"
+#include "base/Log.h"
 #include "renderer/core/MaterialInstance.h"
 #include "scene/Model.h"
 
@@ -122,7 +123,7 @@ void RenderableComponent::setMaterialInstance(Material *matInst, index_t index) 
 
     // Or else it's a Material proper
     // Should skip identity check if there is any MaterialInstance
-    if (matInst != _materials[index] || curInst) {
+    if ((index < _materials.size() && matInst != _materials[index]) || curInst) {
         setMaterial(matInst, index);
     }
 }

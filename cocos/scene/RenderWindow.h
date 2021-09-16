@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <optional>
 #include <vector>
 #include "base/Macros.h"
 #include "renderer/gfx-base/GFXDef-common.h"
@@ -67,7 +68,7 @@ public:
      */
     void resize(uint32_t width, uint32_t height);
 
-    static void extractRenderCameras(std::vector<Camera *> &cameras);
+    void extractRenderCameras(std::vector<Camera *> &cameras);
 
     /**
      * @zh

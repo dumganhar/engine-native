@@ -27,9 +27,12 @@
 
 #include <cassert>
 #include <cstdint>
+#include <optional>
 #include <type_traits>
+#include "Value.h"
 #include "bindings/jswrapper/SeApi.h"
 #include "bindings/manual/jsb_classtype.h"
+#include "bindings/manual/jsb_conversions.h"
 #include "cocos/base/Map.h"
 #include "cocos/base/Vector.h"
 #include "cocos/math/Geometry.h"
@@ -38,6 +41,7 @@
 #include "cocos/math/Vec3.h"
 #include "extensions/cocos-ext.h"
 #include "network/Downloader.h"
+#include "v8/Object.h"
 
 #if USE_SPINE
     #include "cocos/editor-support/spine-creator-support/spine-cocos2dx.h"
@@ -862,7 +866,7 @@ bool sevalue_to_native(const se::Value &from, std::array<uint8_t, CNT> *to, se::
         se::Value tmp;
         assert(len >= CNT);
         for (size_t i = 0; i < CNT; i++) {
-            array->getArrayElement(static_cast<uint>(i), &tmp);
+            array->getArrayElement(static_cast<uint32_t>(i), &tmp);
             sevalue_to_native(tmp, &(*to)[i], ctx);
         }
     } else {
@@ -997,6 +1001,26 @@ inline bool sevalue_to_native(const se::Value &from, std::vector<se::Value> *to,
         to->emplace_back(ele);
     }
     return true;
+}
+
+////////////////// optional
+template <typename T, typename Enable = void>
+struct is_optional : std::false_type {};
+
+template <typename T>
+struct is_optional<std::optional<T>> : std::true_type {};
+
+template <typename T>
+typename std::enable_if<!is_optional<T>::value, bool>::type
+sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx) { //NOLINT
+    if (from.isNullOrUndefined()) {
+        to->reset();
+        return true;
+    }
+    T    tmp{};
+    bool ret = sevalue_to_native(from, &tmp);
+    *to      = tmp;
+    return ret;
 }
 
 ////////////////// pointer types
@@ -1203,6 +1227,7 @@ inline bool sevalue_to_native(const se::Value &from, std::function<R(Args...)> *
 template <typename T, bool is_reference>
 inline bool sevalue_to_native(const se::Value &from, HolderType<T, is_reference> *holder, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     if CC_CONSTEXPR (is_reference && is_jsb_object_v<T>) {
+    #if 0 // TODO(PatriceJiang): allow pure js value to struct
         void *ptr = from.toObject()->getPrivateData();
         if (ptr) {
             holder->data = static_cast<T *>(ptr);
@@ -1210,6 +1235,12 @@ inline bool sevalue_to_native(const se::Value &from, HolderType<T, is_reference>
         }
         holder->ptr = new T;
         return sevalue_to_native(from, holder->ptr, ctx);
+    #else
+        void *ptr = from.toObject()->getPrivateData();
+        assert(ptr); // pure js object is not acceptable
+        holder->data = static_cast<T *>(ptr);
+        return true;
+    #endif
 
     } else if CC_CONSTEXPR (is_jsb_object_v<T>) {
         void *ptr = from.toObject()->getPrivateData();

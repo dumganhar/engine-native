@@ -60,14 +60,6 @@ struct IGeometryOptions {
 
 /**
  * @en
- * Apply the options to default.
- * @zh
- * 应用默认的几何参数选项。
- */
-IGeometryOptions applyDefaultGeometryOptions(const std::optional<IGeometryOptions> &options);
-
-/**
- * @en
  * The definition of the geometry, this struct can build a mesh.
  * @zh
  * 几何体信息。

@@ -25,8 +25,9 @@
 
 #pragma once
 
+#include "cocos/base/StringUtil.h"
 namespace cc {
 
-extern const char *builtinEffects;
+extern const GzipedString builtinEffects;
 
 }

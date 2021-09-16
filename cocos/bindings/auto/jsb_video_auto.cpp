@@ -11,8 +11,8 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_cc_VideoPlayer_proto = nullptr;
-se::Class* __jsb_cc_VideoPlayer_class = nullptr;
+se::Object* __jsb_cc_VideoPlayer_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_VideoPlayer_class = nullptr;  // NOLINT
 
 static bool js_video_VideoPlayer_addEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -362,7 +362,7 @@ bool js_register_video_VideoPlayer(se::Object* obj) // NOLINT(readability-identi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_video(se::Object* obj)
+bool register_all_video(se::Object* obj)    // NOLINT
 {
     // Get the ns
     se::Value nsVal;

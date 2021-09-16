@@ -24,6 +24,7 @@
  ****************************************************************************/
 
 #include "scene/SphereLight.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 namespace scene {
@@ -37,7 +38,7 @@ void SphereLight::initialize() {
 }
 
 void SphereLight::update() {
-    if (_node && (_node->getFlagsChanged() || _needUpdate)) {
+    if (_node && (_node->getChangedFlags() || _needUpdate)) {
         _node->updateWorldTransform();
         _pos = _node->getWorldPosition();
         _aabb->set(_pos, {_range, _range, _range});

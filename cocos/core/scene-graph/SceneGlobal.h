@@ -37,7 +37,6 @@ namespace cc {
 namespace scene {
 enum class FogType;
 } // namespace scene
-namespace scenegraph {
 
 class Ambient;
 class AmbientInfo {
@@ -70,5 +69,4 @@ public:
     inline void       activate() {}
 };
 
-} // namespace scenegraph
 } // namespace cc

@@ -10,8 +10,8 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_cc_network_DownloaderHints_proto = nullptr;
-se::Class* __jsb_cc_network_DownloaderHints_class = nullptr;
+se::Object* __jsb_cc_network_DownloaderHints_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_network_DownloaderHints_class = nullptr;  // NOLINT
 
 static bool js_network_DownloaderHints_get_countOfMaxProcessingTasks(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -211,8 +211,8 @@ bool js_register_network_DownloaderHints(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_network_Downloader_proto = nullptr;
-se::Class* __jsb_cc_network_Downloader_class = nullptr;
+se::Object* __jsb_cc_network_Downloader_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_network_Downloader_class = nullptr;  // NOLINT
 
 static bool js_network_Downloader_setOnTaskProgress(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -326,7 +326,7 @@ bool js_register_network_Downloader(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_network(se::Object* obj)
+bool register_all_network(se::Object* obj)    // NOLINT
 {
     // Get the ns
     se::Value nsVal;

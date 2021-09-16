@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "Path.h"
+#include <cassert>
 
 namespace cc {
 
@@ -41,12 +42,12 @@ std::string extname(const std::string &path) {
     if (path.empty()) {
         return EMPTY_STRING;
     }
-    
+
     auto index = path.find_last_of('.');
     if (index == path.size() - 1) {
         return EMPTY_STRING;
     }
-    
+
     return path.substr(index);
 }
 

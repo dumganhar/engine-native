@@ -27,31 +27,71 @@
 #include <string>
 #include "NodeEnum.h"
 #include "core/scene-graph/BaseNode.h"
+#include "math/Mat3.h"
 #include "math/Mat4.h"
 #include "math/Vec3.h"
 
 namespace cc {
-namespace scenegraph {
-std::vector<BaseNode *> Node::dirtyNodes;
-uint                    Node::clearFrame{0};
-uint                    Node::clearRound{1000};
-bool                    Node::isStatic{false};
+
+std::vector<Node *> Node::dirtyNodes;
+uint                Node::clearFrame{0};
+uint                Node::clearRound{1000};
+bool                Node::isStatic{false};
 
 Node::Node() : BaseNode("") {}
 Node::Node(const std::string &name) : BaseNode(name) {}
+
+void Node::setPosition(float x, float y, float z) {
+    _localPosition.set(x, y, z);
+    invalidateChildren(TransformBit::POSITION);
+
+    if (_eventMask & TRANSFORM_ON) {
+        emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::POSITION);
+    }
+}
+
+void Node::setRotation(float x, float y, float z, float w) {
+    _localRotation.set(x, y, z, w);
+    _eulerDirty = true;
+
+    invalidateChildren(TransformBit::ROTATION);
+
+    if (_eventMask & TRANSFORM_ON) {
+        emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
+    }
+}
+
+void Node::setRotationFromEuler(float x, float y, float z) {
+    _euler.set(x, y, z);
+    Quaternion::fromEuler(x, y, z, &_localRotation);
+    _eulerDirty = false;
+    invalidateChildren(TransformBit::ROTATION);
+    if (_eventMask & TRANSFORM_ON) {
+        emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
+    }
+}
+
+void Node::setScale(float x, float y, float z) {
+    _localScale.set(x, y, z);
+
+    invalidateChildren(TransformBit::SCALE);
+    if (_eventMask & TRANSFORM_ON) {
+        emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::SCALE);
+    }
+}
 
 void Node::updateWorldTransform() {
     if (!getDirtyFlag()) {
         return;
     }
     index_t    i    = 0;
-    auto *     curr = dynamic_cast<BaseNode *>(this);
+    Node *     curr = this;
     Mat3       mat3;
     Mat3       m43;
     Quaternion quat;
     while (curr && curr->getDirtyFlag()) {
-        setDirtyNode(i++, reinterpret_cast<Node *>(curr));
-        curr = curr->getParent();
+        setDirtyNode(i++, curr);
+        curr = dynamic_cast<Node *>(curr->getParent()); //cjh Remove BaseNode, then remove dynamic_cast here.
     }
     Node *child{nullptr};
     uint  dirtyBits = 0;
@@ -104,9 +144,23 @@ void Node::updateWorldTransform() {
     }
 }
 
-void Node::updateWorldRTMatrix() {
+const Mat4 &Node::getWorldMatrix() {
     updateWorldTransform();
-    Mat4::fromRT(_worldRotation, _worldPosition, &_rtMat);
+    return _worldMatrix;
+}
+
+Mat4 Node::getWorldRS() {
+    updateWorldTransform();
+    Mat4 target{_worldMatrix};
+    target.m[12] = target.m[13] = target.m[14] = 0;
+    return target;
+}
+
+Mat4 Node::getWorldRT() {
+    updateWorldTransform();
+    Mat4 target;
+    Mat4::fromRT(_worldRotation, _worldPosition, &target);
+    return target;
 }
 
 void Node::invalidateChildren(TransformBit dirtyBit) {
@@ -115,11 +169,15 @@ void Node::invalidateChildren(TransformBit dirtyBit) {
     setDirtyNode(0, this);
     int i{0};
     while (i >= 0) {
-        BaseNode *  cur             = getDirtyNode(i--);
-        const uint &hasChangedFlags = cur->getFlagsChanged();
-        if ((cur->getDirtyFlag() & hasChangedFlags & curDirtyBit) != curDirtyBit) {
+        Node *cur = getDirtyNode(i--);
+        if (cur == nullptr) {
+            continue; //cjh TODO: remove BaseNode;
+        }
+
+        const uint getChangedFlags = cur->getChangedFlags();
+        if ((cur->getDirtyFlag() & getChangedFlags & curDirtyBit) != curDirtyBit) {
             cur->setDirtyFlag(cur->getDirtyFlag() | curDirtyBit);
-            cur->setChangedFlags(hasChangedFlags | curDirtyBit);
+            cur->setChangedFlags(getChangedFlags | curDirtyBit);
             int childCount{static_cast<int>(cur->getChildren().size())};
             for (BaseNode *curChild : cur->getChildren()) {
                 setDirtyNode(++i, reinterpret_cast<Node *>(curChild));
@@ -140,6 +198,15 @@ void Node::setWorldPosition(float x, float y, float z) {
         _localPosition.set(_worldPosition);
     }
     invalidateChildren(TransformBit::POSITION);
+
+    if (_eventMask & TRANSFORM_ON) {
+        emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::POSITION);
+    }
+}
+
+const Vec3 &Node::getWorldPosition() {
+    updateWorldTransform();
+    return _worldPosition;
 }
 
 void Node::setWorldRotation(float x, float y, float z, float w) {
@@ -151,27 +218,70 @@ void Node::setWorldRotation(float x, float y, float z, float w) {
     } else {
         _localRotation.set(_worldRotation);
     }
+
+    _eulerDirty = true;
+
     invalidateChildren(TransformBit::ROTATION);
+
+    if (_eventMask & TRANSFORM_ON) {
+        emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
+    }
+}
+
+const Quaternion &Node::getWorldRotation() {
+    updateWorldTransform();
+    return _worldRotation;
+}
+
+void Node::setWorldScale(float x, float y, float z) {
+    _worldScale.set(x, y, z);
+    if (_parent != nullptr) {
+        _parent->updateWorldTransform();
+        Mat3 m3_1;
+        Mat3::fromQuat(m3_1, _parent->getWorldRotation().getConjugated());
+        Mat3 b;
+        Mat3::fromMat4(b, _parent->getWorldMatrix());
+        Mat3::multiply(m3_1, m3_1, b);
+        Mat3 m3_scaling;
+        m3_scaling.m[0] = _worldScale.x;
+        m3_scaling.m[4] = _worldScale.y;
+        m3_scaling.m[8] = _worldScale.z;
+
+        m3_1.inverse();
+        Mat3::multiply(m3_1, m3_scaling, m3_1);
+        _localScale.x = Vec3{m3_1.m[0], m3_1.m[1], m3_1.m[2]}.length();
+        _localScale.y = Vec3{m3_1.m[3], m3_1.m[4], m3_1.m[5]}.length();
+        _localScale.z = Vec3{m3_1.m[6], m3_1.m[7], m3_1.m[8]}.length();
+    } else {
+        _localScale = _worldScale;
+    }
+
+    invalidateChildren(TransformBit::SCALE);
+    if (_eventMask & TRANSFORM_ON) {
+        emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::SCALE);
+    }
+}
+
+const Vec3 &Node::getWorldScale() {
+    updateWorldTransform();
+    return _worldScale;
 }
 
 void Node::setDirtyNode(const index_t idx, Node *node) {
+    if (idx >= dirtyNodes.size()) {
+        if (dirtyNodes.empty()) {
+            dirtyNodes.reserve(16); // Make a pre-allocated size for dirtyNode vector for better grow performance.
+        }
+        dirtyNodes.resize(idx + 1, nullptr);
+    }
     dirtyNodes[idx] = node;
 }
+
 Node *Node::getDirtyNode(const index_t idx) {
     return dynamic_cast<Node *>(dirtyNodes[idx]);
 }
 
 Node *Node::find(const std::string & /*path*/, Node * /*referenceNode*/) { return nullptr; }
-
-void Node::setRotationFromEuler(float x, float y, float z) {
-    _euler.set(x, y, z);
-    Quaternion::fromEuler(x, y, z, &_localRotation);
-    _eulerDirty = false;
-    invalidateChildren(TransformBit::ROTATION);
-    if (_eventMask & TRANSFORM_ON) {
-        emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
-    }
-}
 
 void Node::setAngle(float val) {
     _euler.set(0, 0, val);
@@ -183,7 +293,7 @@ void Node::setAngle(float val) {
     }
 }
 
-void Node::setParent(BaseNode *val, bool isKeepWorld) {
+void Node::setParent(BaseNode *val, bool isKeepWorld /* = false */) {
     if (isKeepWorld) updateWorldTransform();
     BaseNode::setParent(val, isKeepWorld);
 }
@@ -239,11 +349,11 @@ void Node::lookAt(const Vec3 &pos, const Vec3 &up) {
 
 void Node::inverseTransformPoint(Vec3 &out, const Vec3 &p) {
     out.set(p.x, p.y, p.z);
-    BaseNode *cur{this};
-    index_t   i{0};
-    while (cur->getParent()) {
-        setDirtyNode(i++, dynamic_cast<Node *>(cur));
-        cur = cur->getParent();
+    Node *  cur{this};
+    index_t i{0};
+    while (cur != nullptr && cur->getParent()) {
+        setDirtyNode(i++, cur);
+        cur = dynamic_cast<Node *>(cur->getParent()); //cjh TODO: remove BaseNode
     }
     while (i >= 0) {
         Vec3::transformInverseRTS(out, out, cur->getRotation(), cur->getPosition(), cur->getScale());
@@ -291,7 +401,8 @@ void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
     }
 }
 
-void Node::resetHasChangedFlags() {
+void Node::resetChangedFlags() {
+    //cjh TODO:
 }
 
 void Node::clearNodeArray() {
@@ -299,7 +410,7 @@ void Node::clearNodeArray() {
         clearFrame++;
     } else {
         clearFrame = 0;
-        dirtyNodes.resize(0);
+        dirtyNodes.clear();
     }
 }
 
@@ -330,8 +441,6 @@ void Node::translate(const Vec3 &trans, NodeSpace ns) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::POSITION);
     }
 }
-template <typename T>
-bool Node::isNode(T *obj) {}
 
 bool Node::onPreDestroy() {
     bool result = onPreDestroyBase();
@@ -339,5 +448,4 @@ bool Node::onPreDestroy() {
     return result;
 }
 
-} // namespace scenegraph
 } // namespace cc

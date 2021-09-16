@@ -31,7 +31,6 @@
 #include "core/event/EventEmitter.h"
 #include "core/platform/event-manager/InputManager.h"
 #include "core/platform/native/SystemInfo.h"
-#include "core/scene-graph/Node.h"
 #include "platform/Application.h"
 #include "renderer/pipeline/RenderPipeline.h"
 
@@ -40,6 +39,8 @@ namespace cc {
 namespace gfx {
 class Device;
 }
+
+class Node;
 
 struct ISceneInfo {
     std::string url;
@@ -355,7 +356,7 @@ public:
      */
     float frameTime{1000.F / 60};
 
-    std::unordered_map<std::string, scenegraph::Node *> _persistRootNodes;
+    std::unordered_map<std::string, Node *> _persistRootNodes;
 
     // states
     bool _configLoaded{false}; // whether config loaded
@@ -487,21 +488,21 @@ public:
      * 目标节点必须位于为层级的根节点，否则无效。
      * @param node - The node to be made persistent
      */
-    void addPersistRootNode(scenegraph::Node *node);
+    void addPersistRootNode(Node *node);
 
     /**
      * @en Remove a persistent root node.
      * @zh 取消常驻根节点。
      * @param node - The node to be removed from persistent node list
      */
-    void removePersistRootNode(scenegraph::Node *node);
+    void removePersistRootNode(Node *node);
 
     /**
      * @en Check whether the node is a persistent root node.
      * @zh 检查节点是否是常驻根节点。
      * @param node - The node to be checked
      */
-    bool isPersistRootNode(scenegraph::Node *node) const;
+    bool isPersistRootNode(Node *node) const;
 
 private:
     Game() = default;

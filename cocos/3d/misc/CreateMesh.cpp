@@ -15,7 +15,87 @@ gfx::AttributeList defAttrs = {
     gfx::Attribute{.name = gfx::ATTR_NAME_TANGENT, .format = gfx::Format::RGB32F},
     gfx::Attribute{.name = gfx::ATTR_NAME_COLOR, .format = gfx::Format::RGB32F},
 };
+
+// TODO(xwx): temporary usage and need to adjustment future
+// default params behaviors just like on an plain, compact Float32Array
+template <typename T>
+void writeBuffer(DataView &target, const std::vector<T> &data, const gfx::Format &format = gfx::Format::R32F, uint32_t offset = 0, uint32_t stride = 0) {
+    const gfx::FormatInfo &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(format)];
+    if (stride == 0) {
+        stride = info.size;
+    }
+    // const writer = `set${_getDataViewType(info)}`; // TODO(xwx): find a way to setDifferentDataViewType
+    const uint32_t componentBytesLength = info.size / info.count;
+    const uint32_t nSeg                 = std::floor(data.size() / info.count);
+    // bool isLittleEndian = sys.isLittleEndian // TODO(xwx): sys not implement
+
+    const uint32_t bytes = info.size / info.count * 8;
+
+    for (uint32_t iSeg = 0; iSeg < nSeg; ++iSeg) {
+        uint32_t x = offset + stride * iSeg;
+        for (uint32_t iComponent = 0; iComponent < info.count; ++iComponent) {
+            const uint32_t y = x + componentBytesLength * iComponent;
+            // target[writer](y, data[info.count * iSeg + iComponent], isLittleEndian); //TODO(xwx): setDifferentDataViewType and sys.isLittleEndian not implement
+            switch (info.type) {
+                case gfx::FormatType::UINT:
+                case gfx::FormatType::UNORM:
+                    switch (bytes) {
+                        case 8:
+                            target.setUint8(y, data[info.count * iSeg + iComponent]);
+                            break;
+                        case 16:
+                            target.setUint16(y, data[info.count * iSeg + iComponent]);
+                            break;
+                        case 32:
+                            target.setUint32(y, data[info.count * iSeg + iComponent]);
+                            break;
+                        default:
+                            CC_ASSERT(false);
+                            break;
+                    }
+                    break;
+                case gfx::FormatType::INT:
+                case gfx::FormatType::SNORM:
+                    switch (bytes) {
+                        case 8:
+                            target.setInt8(y, data[info.count * iSeg + iComponent]);
+                            break;
+                        case 16:
+                            target.setInt16(y, data[info.count * iSeg + iComponent]);
+                            break;
+                        case 32:
+                            target.setInt32(y, data[info.count * iSeg + iComponent]);
+                            break;
+                        default:
+                            CC_ASSERT(false);
+                            break;
+                    }
+                    break;
+                case gfx::FormatType::UFLOAT:
+                case gfx::FormatType::FLOAT:
+                    switch (bytes) {
+                        case 8:
+                            target.setFloat32(y, data[info.count * iSeg + iComponent]);
+                            break;
+                        case 16:
+                            target.setFloat32(y, data[info.count * iSeg + iComponent]);
+                            break;
+                        case 32:
+                            target.setFloat32(y, data[info.count * iSeg + iComponent]);
+                            break;
+                        default:
+                            CC_ASSERT(false);
+                            break;
+                    }
+                    break;
+                default:
+                    CC_ASSERT(false);
+                    break;
+            }
+        }
+    }
 }
+} // namespace
 
 Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions &options /* = {}*/) {
     // Collect attributes and calculate length of result vertex buffer.
@@ -29,14 +109,14 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     std::vector<Channel> channels;
     uint32_t             vertCount = 0;
 
-    gfx::Attribute *attr = nullptr;
+    const gfx::Attribute *attr = nullptr;
 
     std::vector<float> positions(geometry.positions);
 
     if (!positions.empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (auto att : geometry.attributes.value()) {
+            for (const auto &att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_POSITION) {
                     attr = &att;
                     break;
@@ -44,7 +124,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
+        if (attr == nullptr) {
             attr = &defAttrs[0];
         }
 
@@ -66,7 +146,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
+        if (attr == nullptr) {
             attr = &defAttrs[1];
         }
 
@@ -88,7 +168,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
+        if (attr == nullptr) {
             attr = &defAttrs[2];
         }
 
@@ -110,7 +190,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
+        if (attr == nullptr) {
             attr = &defAttrs[3];
         }
 
@@ -132,8 +212,8 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
             }
         }
 
-        if (attr != nullptr) {
-            attr = &defAttrs[3];
+        if (attr == nullptr) {
+            attr = &defAttrs[4];
         }
 
         attributes.emplace_back(*attr);
@@ -160,7 +240,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     auto     vertexBuffer = std::make_shared<ArrayBuffer>(vertCount * stride);
     DataView vertexBufferView(vertexBuffer);
     for (const auto &channel : channels) {
-        // writeBuffer(vertexBufferView, channel.data, channel.attribute.format, channel.offset, stride); //TODO(xwx): writeBuffer not implement
+        writeBuffer(vertexBufferView, channel.data, channel.attribute.format, channel.offset, stride);
     }
     bufferBlob.setNextAlignment(0);
     Mesh::IVertexBundle vertexBundle{
@@ -177,10 +257,10 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     uint32_t         idxCount  = 0;
     const uint32_t   idxStride = 2;
     if (geometry.indices.has_value()) {
-        std::vector<uint32_t> indices = geometry.indices.value();
-        indexBuffer                   = std::make_shared<ArrayBuffer>(idxStride * idxCount);
+        const std::vector<uint32_t> &indices = geometry.indices.value();
+        indexBuffer                          = std::make_shared<ArrayBuffer>(idxStride * idxCount);
         DataView indexBufferView(indexBuffer);
-        // writeBuffer(indexBufferView, indices, gfx::Format::R16UI);  //TODO(xwx): writeBuffer not implement
+        writeBuffer(indexBufferView, indices, gfx::Format::R16UI);
     }
 
     // Create primitive.
@@ -199,7 +279,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     }
 
     std::optional<Vec3> minPosition = geometry.minPos;
-    if (minPosition.has_value() && options.calculateBounds.has_value() && options.calculateBounds.value() == true) {
+    if (minPosition.has_value() && options.calculateBounds.has_value() && options.calculateBounds.value()) {
         minPosition = Vec3(std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
         for (uint32_t iVertex = 0; iVertex < vertCount; ++iVertex) {
             Vec3::min(minPosition.value(), Vec3(positions[iVertex * 3 + 0], positions[iVertex * 3 + 1], positions[iVertex * 3 + 2]), &minPosition.value());
@@ -207,7 +287,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     }
 
     std::optional<Vec3> maxPosition = geometry.maxPos;
-    if (maxPosition.has_value() && options.calculateBounds.has_value() && options.calculateBounds.value() == true) {
+    if (maxPosition.has_value() && options.calculateBounds.has_value() && options.calculateBounds.value()) {
         maxPosition = Vec3(-std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
         for (uint32_t iVertex = 0; iVertex < vertCount; ++iVertex) {
             Vec3::max(maxPosition.value(), Vec3(positions[iVertex * 3 + 0], positions[iVertex * 3 + 1], positions[iVertex * 3 + 2]), &maxPosition.value());

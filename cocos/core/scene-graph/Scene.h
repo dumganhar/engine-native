@@ -32,13 +32,19 @@ namespace scene {
 class RenderScene;
 }
 
-namespace scenegraph {
 class Scene final : public BaseNode {
 public:
+    using Super = BaseNode;
     explicit Scene(const std::string &name);
     ~Scene() override = default;
 
     inline scene::RenderScene *getRenderScene() const { return _renderScene; }
+
+    void load();
+    void activate(bool active = true);
+
+    void onBatchCreated(bool dontChildPrefab) override;
+    bool destroy() override;
 
 protected:
     scene::RenderScene *_renderScene{nullptr};
@@ -46,5 +52,5 @@ protected:
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(Scene);
 };
-} // namespace scenegraph
+
 } // namespace cc

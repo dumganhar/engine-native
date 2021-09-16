@@ -133,18 +133,16 @@ IGeometry box(const std::optional<IBoxOptions> &options) {
     buildPlane(3, ws, ls); // BOTTOM
     buildPlane(2, ws, ls); // TOP
 
-    IGeometry ret{
-        .positions{positions},
-        .normals{normals},
-        .uvs{uvs},
-        .tangents{tangents},
-        .boundingRadius{boundingRadius},
-        .minPos{minPos},
-        .maxPos{maxPos},
-        .indices{indices},
+    return IGeometry{
+        .positions      = positions,
+        .normals        = normals,
+        .uvs            = uvs,
+        .tangents       = tangents,
+        .boundingRadius = boundingRadius,
+        .minPos         = minPos,
+        .maxPos         = maxPos,
+        .indices        = indices,
     };
-
-    return ret;
 }
 
 } // namespace cc

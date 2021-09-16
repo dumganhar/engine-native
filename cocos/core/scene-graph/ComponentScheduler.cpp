@@ -25,29 +25,33 @@
 
 #include "ComponentScheduler.h"
 
-namespace cc {
-namespace scenegraph {
-// LifeCycleInvoker
-LifeCycleInvoker::LifeCycleInvoker(std::function<void(std::vector<Component*>, float)> invokeFunc) : _invoke(std::move(invokeFunc)) {}
+#include <utility>
 
-void LifeCycleInvoker::stableRemoveInactive(const std::vector<Component*>& components, uint flagToClear) {
+namespace cc {
+
+// LifeCycleInvoker
+LifeCycleInvoker::LifeCycleInvoker(std::function<void(std::vector<Component *>, float)> invokeFunc) : _invoke(std::move(invokeFunc)) {}
+
+void LifeCycleInvoker::stableRemoveInactive(const std::vector<Component *> &components) {}
+
+void LifeCycleInvoker::stableRemoveInactive(const std::vector<Component *> &components, uint32_t flagToClear) {
 }
 
 LifeCycleInvoker::~LifeCycleInvoker() = default;
 
 // OneOffInvoker
-void OneOffInvoker::add(Component* comp) {}
+void OneOffInvoker::add(Component *comp) {}
 
-void OneOffInvoker::remove(Component* comp) {}
+void OneOffInvoker::remove(Component *comp) {}
 
 void OneOffInvoker::cancelInactive(uint flagToClear) {}
 
 void OneOffInvoker::invoke() {}
 
 // ReusableInvoker
-void ReusableInvoker::add(Component* comp) {}
+void ReusableInvoker::add(Component *comp) {}
 
-void ReusableInvoker::remove(Component* comp) {}
+void ReusableInvoker::remove(Component *comp) {}
 
 void ReusableInvoker::invoke(float dt) {}
 
@@ -59,16 +63,15 @@ ComponentScheduler::ComponentScheduler() {
 ComponentScheduler::~ComponentScheduler() = default;
 
 void ComponentScheduler::unscheduleAll(){};
-void ComponentScheduler::onEnabled(Component* comp){};
-void ComponentScheduler::onDisabled(Component* comp){};
-void ComponentScheduler::enableComp(Component* comp, LifeCycleInvoker* invoke){};
-void ComponentScheduler::disableComp(Component* comp){};
+void ComponentScheduler::onEnabled(Component *comp){};
+void ComponentScheduler::onDisabled(Component *comp){};
+void ComponentScheduler::enableComp(Component *comp, std::optional<LifeCycleInvoker *> invoke){};
+void ComponentScheduler::disableComp(Component *comp){};
 void ComponentScheduler::startPhase(){};
 void ComponentScheduler::updatePhase(float dt){};
 void ComponentScheduler::lateUpdatePhase(float dt){};
 void ComponentScheduler::startForNewComps(){};
-void ComponentScheduler::scheduleImmediate(Component* comp){};
+void ComponentScheduler::scheduleImmediate(Component *comp){};
 void ComponentScheduler::deferredSchedule(){};
 
-} // namespace scenegraph
 } // namespace cc

@@ -32,7 +32,7 @@
 namespace cc {
 namespace physics {
 
-void PhysXShape::initialize(scenegraph::Node *node) {
+void PhysXShape::initialize(Node *node) {
     PhysXWorld &ins = PhysXWorld::getInstance();
     _mSharedBody    = ins.getSharedBody(node);
     getSharedBody().reference(true);

@@ -35,11 +35,11 @@ void SubModel::update() {
     for (Pass *pass : _passes) {
         pass->update();
     }
-    _descriptSet->update();
+    _descriptorSet->update();
 }
 
 SubModel::~SubModel() {
-    CC_SAFE_DELETE(_subMesh);
+    //cjh TODO:    CC_SAFE_DELETE(_subMesh);
 }
 
 void SubModel::setPasses(const std::vector<Pass *> &passes) {
@@ -75,12 +75,14 @@ Pass *SubModel::getPass(uint index) const {
 
 void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &passes, const std::vector<IMacroPatch> &patches) {
     _device = Root::getInstance()->getDevice();
-    // dsInfo
+    if (!passes.empty()) {
+        dsInfo.layout = passes[0]->getLocalSetLayout();
+    }
     _inputAssembler = _device->createInputAssembler(subMesh->getIaInfo());
     _descriptorSet  = _device->createDescriptorSet(dsInfo);
     _subMesh        = subMesh;
     _patches        = patches;
-    setPasses(passes);
+    _passes         = passes;
 
     flushPassInfo();
     if (passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
@@ -130,34 +132,39 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &
 void SubModel::initPlanarShadowShader() {
     auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
     Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
-    _planarShader      = shadowInfo->getPlanarShader(_patches);
+    if (shadowInfo != nullptr) {
+        _planarShader = shadowInfo->getPlanarShader(_patches);
+    } else {
+        _planarShader = nullptr;
+    }
 }
 
 // TODO:
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() {
-    auto *  pipeline      = dynamic_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
-    Shadow *shadowInfo    = pipeline->getPipelineSceneData()->getShadow();
-    _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches);
+    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
+    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
+    if (shadowInfo != nullptr) {
+        _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches);
+    } else {
+        _planarInstanceShader = nullptr;
+    }
 }
 
 void SubModel::destroy() {
-    CC_SAFE_DESTROY(_descriptSet);
+    CC_SAFE_DESTROY(_descriptorSet);
     CC_SAFE_DESTROY(_inputAssembler);
     _priority = pipeline::RenderPriority::DEFAULT;
     _patches.clear();
 
-    CC_SAFE_DELETE(_subMesh);
-
-    for (Pass *pass : _passes) {
-        CC_SAFE_DESTROY(pass);
-    }
+    //cjh TODO: ts only assign _subMesh to null, but here we delete the subMesh, is it reasonable?
+    //    CC_SAFE_DELETE(_subMesh);
     _passes.clear();
 
-    for (gfx::Shader *shader : _shaders) {
-        CC_SAFE_DESTROY(shader);
-    }
+    //cjh    for (gfx::Shader *shader : _shaders) {
+    //        CC_SAFE_DESTROY(shader);
+    //    }
     _shaders.clear();
 
     CC_SAFE_DESTROY(_reflectionTex);
@@ -200,7 +207,12 @@ void SubModel::flushPassInfo() {
 }
 
 void SubModel::setSubMesh(RenderingSubMesh *subMesh) {
-    //TODO: minggo
+    _subMesh = subMesh;
+    _inputAssembler->destroy();
+    _inputAssembler->initialize(subMesh->getIaInfo());
+    if (_passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
+        subMesh->genFlatBuffers();
+    }
 }
 
 } // namespace scene

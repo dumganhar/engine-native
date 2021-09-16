@@ -30,9 +30,7 @@
 #include "core/scene-graph/Scene.h"
 
 namespace cc {
-namespace scenegraph {
 
-using components::Component;
 const uint                           BaseNode::TRANSFORM_ON{1 << 0};
 const uint                           BaseNode::DESTROYING{static_cast<uint>(CCObject::Flags::DESTROYING)};
 const uint                           BaseNode::DEACTIVATING{static_cast<uint>(CCObject::Flags::DEACTIVATING)};
@@ -120,19 +118,19 @@ void BaseNode::on(const std::string &type, const std::function<void(BaseNode *)>
     if (type.compare(NodeEventType::TRANSFORM_CHANGED) == 0) {
         _eventMask |= TRANSFORM_ON;
     }
-    cc::scenegraph::NodeEventProcessor::on(type, callback);
+    cc::NodeEventProcessor::on(type, callback);
 }
 
 void BaseNode::on(const std::string &type, const std::function<void(BaseNode *)> &callback, const std::any &target, bool useCapture) {
     if (type.compare(NodeEventType::TRANSFORM_CHANGED) == 0) {
         _eventMask |= TRANSFORM_ON;
     }
-    cc::scenegraph::NodeEventProcessor::on(type, callback, target, useCapture);
+    cc::NodeEventProcessor::on(type, callback, target, useCapture);
 }
 
 void BaseNode::off(const std::string &type, const std::function<void(BaseNode *)> &callback) {
-    cc::scenegraph::NodeEventProcessor::off(type, callback);
-    bool hasListeners = cc::scenegraph::NodeEventProcessor::hasEventListener(type);
+    cc::NodeEventProcessor::off(type, callback);
+    bool hasListeners = cc::NodeEventProcessor::hasEventListener(type);
     if (!hasListeners) {
         if (type.compare(NodeEventType::TRANSFORM_CHANGED)) {
             _eventMask &= ~TRANSFORM_ON;
@@ -141,8 +139,8 @@ void BaseNode::off(const std::string &type, const std::function<void(BaseNode *)
 }
 
 void BaseNode::off(const std::string &type, const std::function<void(BaseNode *)> &callback, const std::any &target, bool useCapture) {
-    cc::scenegraph::NodeEventProcessor::off(type, callback, target, useCapture);
-    bool hasListeners = cc::scenegraph::NodeEventProcessor::hasEventListener(type);
+    cc::NodeEventProcessor::off(type, callback, target, useCapture);
+    bool hasListeners = cc::NodeEventProcessor::hasEventListener(type);
     if (!hasListeners) {
         if (type.compare(NodeEventType::TRANSFORM_CHANGED)) {
             _eventMask &= ~TRANSFORM_ON;
@@ -151,11 +149,11 @@ void BaseNode::off(const std::string &type, const std::function<void(BaseNode *)
 }
 
 void BaseNode::once(const std::string &type, const std::function<void(BaseNode *)> &callback) {
-    cc::scenegraph::NodeEventProcessor::once(type, callback);
+    cc::NodeEventProcessor::once(type, callback);
 }
 
 void BaseNode::once(const std::string &type, const std::function<void(BaseNode *)> &callback, const std::any &target, bool useCapture) {
-    cc::scenegraph::NodeEventProcessor::once(type, callback, target, useCapture);
+    cc::NodeEventProcessor::once(type, callback, target, useCapture);
 }
 void BaseNode::emit(const std::string &type, const std::any &arg) {
     _eventProcessor->emit(type, arg);
@@ -168,15 +166,15 @@ void BaseNode::dispatchEvent(const event::Event &eve) {
 }
 
 bool BaseNode::hasEventListener(const std::string &type) {
-    return cc::scenegraph::NodeEventProcessor::hasEventListener(type);
+    return cc::NodeEventProcessor::hasEventListener(type);
 }
 
 bool BaseNode::hasEventListener(const std::string &type, const std::function<void(BaseNode *)> &callback) {
-    return cc::scenegraph::NodeEventProcessor::hasEventListener(type, callback);
+    return cc::NodeEventProcessor::hasEventListener(type, callback);
 }
 
 bool BaseNode::hasEventListener(const std::string &type, const std::function<void(BaseNode *)> &callback, const std::any &target) {
-    return cc::scenegraph::NodeEventProcessor::hasEventListener(type, callback, target);
+    return cc::NodeEventProcessor::hasEventListener(type, callback, target);
 }
 
 bool BaseNode::onPreDestroy() {
@@ -185,7 +183,7 @@ bool BaseNode::onPreDestroy() {
 
 void BaseNode::targetOff(const std::string &type) {
     _eventProcessor->targetOff(type);
-    if ((_eventMask & TRANSFORM_ON) && !cc::scenegraph::NodeEventProcessor::hasEventListener(NodeEventType::TRANSFORM_CHANGED)) {
+    if ((_eventMask & TRANSFORM_ON) && !cc::NodeEventProcessor::hasEventListener(NodeEventType::TRANSFORM_CHANGED)) {
         _eventMask &= ~TRANSFORM_ON;
     }
 }
@@ -203,7 +201,7 @@ void BaseNode::setActive(bool isActive) {
     }
 }
 
-void BaseNode::setParent(BaseNode *parent, bool isKeepWorld) {
+void BaseNode::setParent(BaseNode *parent, bool isKeepWorld /* = false */) {
     if (_parent == parent) {
         return;
     }
@@ -347,20 +345,20 @@ void BaseNode::walk(const std::function<void(BaseNode *)> &preFunc, const std::f
     walkInternal(preFunc, postFunc);
 }
 
-components::Component *BaseNode::getComponent(const std::string &name) const {
+Component *BaseNode::getComponent(const std::string &name) const {
     if (name.empty()) {
         return nullptr;
     }
     return findComponent(const_cast<BaseNode *>(this), name);
 }
 
-components::Component *BaseNode::getComponentInChildren(const std::string &name) const {
+Component *BaseNode::getComponentInChildren(const std::string &name) const {
     if (name.empty()) {
         return nullptr;
     }
     return findChildComponent(_children, name);
 }
-std::vector<components::Component *> BaseNode::getComponentsInChildren(const std::string &name) const {
+std::vector<Component *> BaseNode::getComponentsInChildren(const std::string &name) const {
     if (name.empty()) {
         return _components;
     }
@@ -375,6 +373,7 @@ Component *BaseNode::addComponent(const std::string & /*className*/) {
 Component *BaseNode::addComponent(Component *comp) {
     auto iteComp = std::find(_components.begin(), _components.end(), comp);
     if (iteComp == _components.end()) {
+        comp->_node = this; //cjh TODO: shared_ptr
         _components.emplace_back(comp);
         return comp;
     }
@@ -545,21 +544,20 @@ BaseNode *BaseNode::getChildByPath(const std::string &path) const {
 }
 
 // TODO(Lenovo): How to get a Component by name internally has not been determined, so there is no implementation here
-components::Component *BaseNode::findComponent(BaseNode * /*unused*/, const std::string & /*unused*/) {
+Component *BaseNode::findComponent(BaseNode * /*unused*/, const std::string & /*unused*/) {
     return nullptr;
 }
 
-components::Component *BaseNode::findComponents(BaseNode * /*unused*/, const std::string & /*unused*/, const std::vector<components::Component *> /*unused*/ &) {
+Component *BaseNode::findComponents(BaseNode * /*unused*/, const std::string & /*unused*/, const std::vector<Component *> /*unused*/ &) {
     return nullptr;
 }
 
-components::Component *BaseNode::findChildComponent(const std::vector<BaseNode *> & /*unused*/, const std::string & /*unused*/) {
+Component *BaseNode::findChildComponent(const std::vector<BaseNode *> & /*unused*/, const std::string & /*unused*/) {
     return nullptr;
 }
 
-std::vector<components::Component *> BaseNode::findChildComponents(const std::vector<BaseNode *> & /*childs*/, const std::string & /*className*/, std::vector<components::Component *> comps) {
+std::vector<Component *> BaseNode::findChildComponents(const std::vector<BaseNode *> & /*childs*/, const std::string & /*className*/, std::vector<Component *> comps) {
     return comps;
 }
 
-} // namespace scenegraph
 } // namespace cc

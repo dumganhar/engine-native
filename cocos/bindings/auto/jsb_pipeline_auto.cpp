@@ -13,9 +13,8 @@
 #include "renderer/pipeline/GlobalDescriptorSetManager.h"
 #include "renderer/pipeline/InstancedBuffer.h"
 #include "renderer/pipeline/deferred/DeferredPipeline.h"
-#include "renderer/pipeline/deferred/GbufferFlow.h"
+#include "renderer/pipeline/deferred/MainFlow.h"
 #include "renderer/pipeline/deferred/GbufferStage.h"
-#include "renderer/pipeline/deferred/LightingFlow.h"
 #include "renderer/pipeline/deferred/LightingStage.h"
 #include "renderer/pipeline/deferred/PostprocessStage.h"
 #include "cocos/renderer/gfx-base/GFXBase.h"
@@ -27,8 +26,8 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_cc_pipeline_RenderQueueDesc_proto = nullptr;
-se::Class* __jsb_cc_pipeline_RenderQueueDesc_class = nullptr;
+se::Object* __jsb_cc_pipeline_RenderQueueDesc_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_RenderQueueDesc_class = nullptr;  // NOLINT
 
 static bool js_pipeline_RenderQueueDesc_get_isTransparent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -228,8 +227,8 @@ bool js_register_pipeline_RenderQueueDesc(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_GlobalDSManager_proto = nullptr;
-se::Class* __jsb_cc_pipeline_GlobalDSManager_class = nullptr;
+se::Object* __jsb_cc_pipeline_GlobalDSManager_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_GlobalDSManager_class = nullptr;  // NOLINT
 
 static bool js_pipeline_GlobalDSManager_bindBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -476,8 +475,8 @@ bool js_register_pipeline_GlobalDSManager(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_RenderPipelineInfo_proto = nullptr;
-se::Class* __jsb_cc_pipeline_RenderPipelineInfo_class = nullptr;
+se::Object* __jsb_cc_pipeline_RenderPipelineInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_RenderPipelineInfo_class = nullptr;  // NOLINT
 
 static bool js_pipeline_RenderPipelineInfo_get_tag(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -642,8 +641,8 @@ bool js_register_pipeline_RenderPipelineInfo(se::Object* obj) // NOLINT(readabil
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_RenderPipeline_proto = nullptr;
-se::Class* __jsb_cc_pipeline_RenderPipeline_class = nullptr;
+se::Object* __jsb_cc_pipeline_RenderPipeline_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_RenderPipeline_class = nullptr;  // NOLINT
 
 static bool js_pipeline_RenderPipeline_activate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -774,6 +773,28 @@ static bool js_pipeline_RenderPipeline_getGlobalDSManager(se::State& s) // NOLIN
 }
 SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getGlobalDSManager)
 
+static bool js_pipeline_RenderPipeline_getRenderstageByName(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::RenderPipeline>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_RenderPipeline_getRenderstageByName : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::String, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_pipeline_RenderPipeline_getRenderstageByName : Error processing arguments");
+        cc::pipeline::RenderStage* result = cobj->getRenderstageByName(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_pipeline_RenderPipeline_getRenderstageByName : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_RenderPipeline_getRenderstageByName)
+
 static bool js_pipeline_RenderPipeline_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::pipeline::RenderPipeline>(s);
@@ -836,47 +857,74 @@ static bool js_pipeline_RenderPipeline_resize(se::State& s) // NOLINT(readabilit
 }
 SE_BIND_FUNC(js_pipeline_RenderPipeline_resize)
 
-static bool js_pipeline_RenderPipeline_setPipelineSharedSceneData(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::pipeline::RenderPipeline>(s);
-    SE_PRECONDITION2(cobj, false, "js_pipeline_RenderPipeline_setPipelineSharedSceneData : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::scene::PipelineSharedSceneData*, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_pipeline_RenderPipeline_setPipelineSharedSceneData : Error processing arguments");
-        cobj->setPipelineSharedSceneData(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_pipeline_RenderPipeline_setPipelineSharedSceneData)
-
 static bool js_pipeline_RenderPipeline_setValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
+    CC_UNUSED bool ok = true;
     auto* cobj = SE_THIS_OBJECT<cc::pipeline::RenderPipeline>(s);
-    SE_PRECONDITION2(cobj, false, "js_pipeline_RenderPipeline_setValue : Invalid Native Object");
+    SE_PRECONDITION2( cobj, false, "js_pipeline_RenderPipeline_setValue : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 2) {
-        HolderType<cc::String, true> arg0 = {};
-        HolderType<bool, false> arg1 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_pipeline_RenderPipeline_setValue : Error processing arguments");
-        cobj->setValue(arg0.value(), arg1.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    do {
+        if (argc == 2) {
+            HolderType<cc::String, true> arg0 = {};
+            HolderType<bool, false> arg1 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            cobj->setValue(arg0.value(), arg1.value());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 2) {
+            HolderType<cc::String, true> arg0 = {};
+            HolderType<int32_t, false> arg1 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            if (!ok) { ok = true; break; }
+            cobj->setValue(arg0.value(), arg1.value());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 2) {
+            HolderType<cc::String, true> arg0 = {};
+            HolderType<std::string, true> arg1 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            if (!ok) { ok = true; break; }
+            cobj->setValue(arg0.value(), arg1.value());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 2) {
+            HolderType<cc::String, true> arg0 = {};
+            HolderType<float, false> arg1 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            if (!ok) { ok = true; break; }
+            cobj->setValue(arg0.value(), arg1.value());
+            return true;
+        }
+    } while(false);
+
+    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
 SE_BIND_FUNC(js_pipeline_RenderPipeline_setValue)
 
-static bool js_pipeline_RenderPipeline_getInstance(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_RenderPipeline_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -884,14 +932,14 @@ static bool js_pipeline_RenderPipeline_getInstance(se::State& s) // NOLINT(reada
     if (argc == 0) {
         cc::pipeline::RenderPipeline* result = cc::pipeline::RenderPipeline::getInstance();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_RenderPipeline_getInstance : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_pipeline_RenderPipeline_getInstance_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderPipeline_getInstance)
+SE_BIND_FUNC(js_pipeline_RenderPipeline_getInstance_static)
 
 
 
@@ -906,12 +954,12 @@ bool js_register_pipeline_RenderPipeline(se::Object* obj) // NOLINT(readability-
     cls->defineFunction("activate", _SE(js_pipeline_RenderPipeline_activate));
     cls->defineFunction("destroy", _SE(js_pipeline_RenderPipeline_destroy));
     cls->defineFunction("getDevice", _SE(js_pipeline_RenderPipeline_getDevice));
+    cls->defineFunction("getRenderstageByName", _SE(js_pipeline_RenderPipeline_getRenderstageByName));
     cls->defineFunction("initialize", _SE(js_pipeline_RenderPipeline_initialize));
     cls->defineFunction("render", _SE(js_pipeline_RenderPipeline_render));
     cls->defineFunction("resize", _SE(js_pipeline_RenderPipeline_resize));
-    cls->defineFunction("setPipelineSharedSceneData", _SE(js_pipeline_RenderPipeline_setPipelineSharedSceneData));
     cls->defineFunction("setValue", _SE(js_pipeline_RenderPipeline_setValue));
-    cls->defineStaticFunction("getInstance", _SE(js_pipeline_RenderPipeline_getInstance));
+    cls->defineStaticFunction("getInstance", _SE(js_pipeline_RenderPipeline_getInstance_static));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::RenderPipeline>(cls);
 
@@ -921,8 +969,8 @@ bool js_register_pipeline_RenderPipeline(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_ForwardPipeline_proto = nullptr;
-se::Class* __jsb_cc_pipeline_ForwardPipeline_class = nullptr;
+se::Object* __jsb_cc_pipeline_ForwardPipeline_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_ForwardPipeline_class = nullptr;  // NOLINT
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_ForwardPipeline_finalize)
 
@@ -964,8 +1012,8 @@ bool js_register_pipeline_ForwardPipeline(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_RenderFlowInfo_proto = nullptr;
-se::Class* __jsb_cc_pipeline_RenderFlowInfo_class = nullptr;
+se::Object* __jsb_cc_pipeline_RenderFlowInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_RenderFlowInfo_class = nullptr;  // NOLINT
 
 static bool js_pipeline_RenderFlowInfo_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1200,8 +1248,8 @@ bool js_register_pipeline_RenderFlowInfo(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_RenderFlow_proto = nullptr;
-se::Class* __jsb_cc_pipeline_RenderFlow_class = nullptr;
+se::Object* __jsb_cc_pipeline_RenderFlow_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_RenderFlow_class = nullptr;  // NOLINT
 
 static bool js_pipeline_RenderFlow_activate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1221,6 +1269,28 @@ static bool js_pipeline_RenderFlow_activate(se::State& s) // NOLINT(readability-
     return false;
 }
 SE_BIND_FUNC(js_pipeline_RenderFlow_activate)
+
+static bool js_pipeline_RenderFlow_getRenderstageByName(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::RenderFlow>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_RenderFlow_getRenderstageByName : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::String, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_pipeline_RenderFlow_getRenderstageByName : Error processing arguments");
+        cc::pipeline::RenderStage* result = cobj->getRenderstageByName(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_pipeline_RenderFlow_getRenderstageByName : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_RenderFlow_getRenderstageByName)
 
 static bool js_pipeline_RenderFlow_getTag(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1270,6 +1340,7 @@ bool js_register_pipeline_RenderFlow(se::Object* obj) // NOLINT(readability-iden
     auto* cls = se::Class::create("RenderFlow", obj, nullptr, nullptr);
 
     cls->defineFunction("activate", _SE(js_pipeline_RenderFlow_activate));
+    cls->defineFunction("getRenderstageByName", _SE(js_pipeline_RenderFlow_getRenderstageByName));
     cls->defineFunction("getTag", _SE(js_pipeline_RenderFlow_getTag));
     cls->defineFunction("initialize", _SE(js_pipeline_RenderFlow_initialize));
     cls->install();
@@ -1281,10 +1352,10 @@ bool js_register_pipeline_RenderFlow(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_ForwardFlow_proto = nullptr;
-se::Class* __jsb_cc_pipeline_ForwardFlow_class = nullptr;
+se::Object* __jsb_cc_pipeline_ForwardFlow_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_ForwardFlow_class = nullptr;  // NOLINT
 
-static bool js_pipeline_ForwardFlow_getInitializeInfo(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_ForwardFlow_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1292,14 +1363,14 @@ static bool js_pipeline_ForwardFlow_getInitializeInfo(se::State& s) // NOLINT(re
     if (argc == 0) {
         const cc::pipeline::RenderFlowInfo& result = cc::pipeline::ForwardFlow::getInitializeInfo();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_ForwardFlow_getInitializeInfo : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_pipeline_ForwardFlow_getInitializeInfo_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_ForwardFlow_getInitializeInfo)
+SE_BIND_FUNC(js_pipeline_ForwardFlow_getInitializeInfo_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_ForwardFlow_finalize)
 
@@ -1331,7 +1402,7 @@ bool js_register_pipeline_ForwardFlow(se::Object* obj) // NOLINT(readability-ide
 {
     auto* cls = se::Class::create("ForwardFlow", obj, __jsb_cc_pipeline_RenderFlow_proto, _SE(js_pipeline_ForwardFlow_constructor));
 
-    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_ForwardFlow_getInitializeInfo));
+    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_ForwardFlow_getInitializeInfo_static));
     cls->defineFinalizeFunction(_SE(js_cc_pipeline_ForwardFlow_finalize));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::ForwardFlow>(cls);
@@ -1342,8 +1413,8 @@ bool js_register_pipeline_ForwardFlow(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_RenderStageInfo_proto = nullptr;
-se::Class* __jsb_cc_pipeline_RenderStageInfo_class = nullptr;
+se::Object* __jsb_cc_pipeline_RenderStageInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_RenderStageInfo_class = nullptr;  // NOLINT
 
 static bool js_pipeline_RenderStageInfo_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1578,8 +1649,8 @@ bool js_register_pipeline_RenderStageInfo(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_RenderStage_proto = nullptr;
-se::Class* __jsb_cc_pipeline_RenderStage_class = nullptr;
+se::Object* __jsb_cc_pipeline_RenderStage_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_RenderStage_class = nullptr;  // NOLINT
 
 static bool js_pipeline_RenderStage_activate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1681,10 +1752,10 @@ bool js_register_pipeline_RenderStage(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_ForwardStage_proto = nullptr;
-se::Class* __jsb_cc_pipeline_ForwardStage_class = nullptr;
+se::Object* __jsb_cc_pipeline_ForwardStage_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_ForwardStage_class = nullptr;  // NOLINT
 
-static bool js_pipeline_ForwardStage_getInitializeInfo(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_ForwardStage_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1692,14 +1763,14 @@ static bool js_pipeline_ForwardStage_getInitializeInfo(se::State& s) // NOLINT(r
     if (argc == 0) {
         const cc::pipeline::RenderStageInfo& result = cc::pipeline::ForwardStage::getInitializeInfo();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_ForwardStage_getInitializeInfo : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_pipeline_ForwardStage_getInitializeInfo_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_ForwardStage_getInitializeInfo)
+SE_BIND_FUNC(js_pipeline_ForwardStage_getInitializeInfo_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_ForwardStage_finalize)
 
@@ -1731,7 +1802,7 @@ bool js_register_pipeline_ForwardStage(se::Object* obj) // NOLINT(readability-id
 {
     auto* cls = se::Class::create("ForwardStage", obj, __jsb_cc_pipeline_RenderStage_proto, _SE(js_pipeline_ForwardStage_constructor));
 
-    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_ForwardStage_getInitializeInfo));
+    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_ForwardStage_getInitializeInfo_static));
     cls->defineFinalizeFunction(_SE(js_cc_pipeline_ForwardStage_finalize));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::ForwardStage>(cls);
@@ -1742,10 +1813,10 @@ bool js_register_pipeline_ForwardStage(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_ShadowFlow_proto = nullptr;
-se::Class* __jsb_cc_pipeline_ShadowFlow_class = nullptr;
+se::Object* __jsb_cc_pipeline_ShadowFlow_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_ShadowFlow_class = nullptr;  // NOLINT
 
-static bool js_pipeline_ShadowFlow_getInitializeInfo(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_ShadowFlow_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1753,14 +1824,14 @@ static bool js_pipeline_ShadowFlow_getInitializeInfo(se::State& s) // NOLINT(rea
     if (argc == 0) {
         const cc::pipeline::RenderFlowInfo& result = cc::pipeline::ShadowFlow::getInitializeInfo();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_ShadowFlow_getInitializeInfo : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_pipeline_ShadowFlow_getInitializeInfo_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_ShadowFlow_getInitializeInfo)
+SE_BIND_FUNC(js_pipeline_ShadowFlow_getInitializeInfo_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_ShadowFlow_finalize)
 
@@ -1792,7 +1863,7 @@ bool js_register_pipeline_ShadowFlow(se::Object* obj) // NOLINT(readability-iden
 {
     auto* cls = se::Class::create("ShadowFlow", obj, __jsb_cc_pipeline_RenderFlow_proto, _SE(js_pipeline_ShadowFlow_constructor));
 
-    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_ShadowFlow_getInitializeInfo));
+    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_ShadowFlow_getInitializeInfo_static));
     cls->defineFinalizeFunction(_SE(js_cc_pipeline_ShadowFlow_finalize));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::ShadowFlow>(cls);
@@ -1803,8 +1874,8 @@ bool js_register_pipeline_ShadowFlow(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_ShadowStage_proto = nullptr;
-se::Class* __jsb_cc_pipeline_ShadowStage_class = nullptr;
+se::Object* __jsb_cc_pipeline_ShadowStage_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_ShadowStage_class = nullptr;  // NOLINT
 
 static bool js_pipeline_ShadowStage_setFramebuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1846,7 +1917,7 @@ static bool js_pipeline_ShadowStage_setUseData(se::State& s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_pipeline_ShadowStage_setUseData)
 
-static bool js_pipeline_ShadowStage_getInitializeInfo(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_ShadowStage_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1854,14 +1925,14 @@ static bool js_pipeline_ShadowStage_getInitializeInfo(se::State& s) // NOLINT(re
     if (argc == 0) {
         const cc::pipeline::RenderStageInfo& result = cc::pipeline::ShadowStage::getInitializeInfo();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_ShadowStage_getInitializeInfo : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_pipeline_ShadowStage_getInitializeInfo_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_ShadowStage_getInitializeInfo)
+SE_BIND_FUNC(js_pipeline_ShadowStage_getInitializeInfo_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_ShadowStage_finalize)
 
@@ -1895,7 +1966,7 @@ bool js_register_pipeline_ShadowStage(se::Object* obj) // NOLINT(readability-ide
 
     cls->defineFunction("setFramebuffer", _SE(js_pipeline_ShadowStage_setFramebuffer));
     cls->defineFunction("setUseData", _SE(js_pipeline_ShadowStage_setUseData));
-    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_ShadowStage_getInitializeInfo));
+    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_ShadowStage_getInitializeInfo_static));
     cls->defineFinalizeFunction(_SE(js_cc_pipeline_ShadowStage_finalize));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::ShadowStage>(cls);
@@ -1906,8 +1977,8 @@ bool js_register_pipeline_ShadowStage(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_InstancedBuffer_proto = nullptr;
-se::Class* __jsb_cc_pipeline_InstancedBuffer_class = nullptr;
+se::Object* __jsb_cc_pipeline_InstancedBuffer_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_InstancedBuffer_class = nullptr;  // NOLINT
 
 static bool js_pipeline_InstancedBuffer_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1945,7 +2016,7 @@ static bool js_pipeline_InstancedBuffer_setDynamicOffset(se::State& s) // NOLINT
 }
 SE_BIND_FUNC(js_pipeline_InstancedBuffer_setDynamicOffset)
 
-static bool js_pipeline_InstancedBuffer_get(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_InstancedBuffer_get_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     CC_UNUSED bool ok = true;
     const auto& args = s.args();
@@ -1960,7 +2031,7 @@ static bool js_pipeline_InstancedBuffer_get(se::State& s) // NOLINT(readability-
             if (!ok) { ok = true; break; }
             cc::pipeline::InstancedBuffer* result = cc::pipeline::InstancedBuffer::get(arg0.value(), arg1.value());
             ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
-            SE_PRECONDITION2(ok, false, "js_pipeline_InstancedBuffer_get : Error processing arguments");
+            SE_PRECONDITION2(ok, false, "js_pipeline_InstancedBuffer_get_static : Error processing arguments");
             SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
             return true;
         }
@@ -1972,7 +2043,7 @@ static bool js_pipeline_InstancedBuffer_get(se::State& s) // NOLINT(readability-
             if (!ok) { ok = true; break; }
             cc::pipeline::InstancedBuffer* result = cc::pipeline::InstancedBuffer::get(arg0.value());
             ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
-            SE_PRECONDITION2(ok, false, "js_pipeline_InstancedBuffer_get : Error processing arguments");
+            SE_PRECONDITION2(ok, false, "js_pipeline_InstancedBuffer_get_static : Error processing arguments");
             SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
             return true;
         }
@@ -1980,9 +2051,9 @@ static bool js_pipeline_InstancedBuffer_get(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_InstancedBuffer_get)
+SE_BIND_FUNC(js_pipeline_InstancedBuffer_get_static)
 
-static bool js_pipeline_InstancedBuffer_destroyInstancedBuffer(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_InstancedBuffer_destroyInstancedBuffer_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1993,7 +2064,7 @@ static bool js_pipeline_InstancedBuffer_destroyInstancedBuffer(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_InstancedBuffer_destroyInstancedBuffer)
+SE_BIND_FUNC(js_pipeline_InstancedBuffer_destroyInstancedBuffer_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_InstancedBuffer_finalize)
 
@@ -2032,8 +2103,8 @@ bool js_register_pipeline_InstancedBuffer(se::Object* obj) // NOLINT(readability
 
     cls->defineFunction("destroy", _SE(js_pipeline_InstancedBuffer_destroy));
     cls->defineFunction("setDynamicOffset", _SE(js_pipeline_InstancedBuffer_setDynamicOffset));
-    cls->defineStaticFunction("get", _SE(js_pipeline_InstancedBuffer_get));
-    cls->defineStaticFunction("destroyInstancedBuffer", _SE(js_pipeline_InstancedBuffer_destroyInstancedBuffer));
+    cls->defineStaticFunction("get", _SE(js_pipeline_InstancedBuffer_get_static));
+    cls->defineStaticFunction("destroyInstancedBuffer", _SE(js_pipeline_InstancedBuffer_destroyInstancedBuffer_static));
     cls->defineFinalizeFunction(_SE(js_cc_pipeline_InstancedBuffer_finalize));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::InstancedBuffer>(cls);
@@ -2044,8 +2115,151 @@ bool js_register_pipeline_InstancedBuffer(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_DeferredPipeline_proto = nullptr;
-se::Class* __jsb_cc_pipeline_DeferredPipeline_class = nullptr;
+se::Object* __jsb_cc_pipeline_DeferredPipeline_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_DeferredPipeline_class = nullptr;  // NOLINT
+
+static bool js_pipeline_DeferredPipeline_destroyFrameGraphExternalTexture(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::DeferredPipeline>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_DeferredPipeline_destroyFrameGraphExternalTexture : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->destroyFrameGraphExternalTexture();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_destroyFrameGraphExternalTexture)
+
+static bool js_pipeline_DeferredPipeline_getClearcolor(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::DeferredPipeline>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_DeferredPipeline_getClearcolor : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::scene::Camera*, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_pipeline_DeferredPipeline_getClearcolor : Error processing arguments");
+        cc::gfx::Color result = cobj->getClearcolor(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_pipeline_DeferredPipeline_getClearcolor : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getClearcolor)
+
+static bool js_pipeline_DeferredPipeline_getFrameGraph(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::DeferredPipeline>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_DeferredPipeline_getFrameGraph : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        cc::framegraph::FrameGraph& result = cobj->getFrameGraph();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_pipeline_DeferredPipeline_getFrameGraph : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getFrameGraph)
+
+static bool js_pipeline_DeferredPipeline_getFrameGraphCamera(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::DeferredPipeline>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_DeferredPipeline_getFrameGraphCamera : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        cc::scene::Camera* result = cobj->getFrameGraphCamera();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_pipeline_DeferredPipeline_getFrameGraphCamera : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getFrameGraphCamera)
+
+static bool js_pipeline_DeferredPipeline_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::DeferredPipeline>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_DeferredPipeline_getHeight : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        unsigned int result = cobj->getHeight();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_pipeline_DeferredPipeline_getHeight : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getHeight)
+
+static bool js_pipeline_DeferredPipeline_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::DeferredPipeline>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_DeferredPipeline_getWidth : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        unsigned int result = cobj->getWidth();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_pipeline_DeferredPipeline_getWidth : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getWidth)
+
+static bool js_pipeline_DeferredPipeline_initFrameGraphExternalTexture(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::DeferredPipeline>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_DeferredPipeline_initFrameGraphExternalTexture : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->initFrameGraphExternalTexture();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_initFrameGraphExternalTexture)
+
+static bool js_pipeline_DeferredPipeline_prepareFrameGraph(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::DeferredPipeline>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_DeferredPipeline_prepareFrameGraph : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->prepareFrameGraph();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_prepareFrameGraph)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_DeferredPipeline_finalize)
 
@@ -2077,6 +2291,14 @@ bool js_register_pipeline_DeferredPipeline(se::Object* obj) // NOLINT(readabilit
 {
     auto* cls = se::Class::create("DeferredPipeline", obj, __jsb_cc_pipeline_RenderPipeline_proto, _SE(js_pipeline_DeferredPipeline_constructor));
 
+    cls->defineFunction("destroyFrameGraphExternalTexture", _SE(js_pipeline_DeferredPipeline_destroyFrameGraphExternalTexture));
+    cls->defineFunction("getClearcolor", _SE(js_pipeline_DeferredPipeline_getClearcolor));
+    cls->defineFunction("getFrameGraph", _SE(js_pipeline_DeferredPipeline_getFrameGraph));
+    cls->defineFunction("getFrameGraphCamera", _SE(js_pipeline_DeferredPipeline_getFrameGraphCamera));
+    cls->defineFunction("getHeight", _SE(js_pipeline_DeferredPipeline_getHeight));
+    cls->defineFunction("getWidth", _SE(js_pipeline_DeferredPipeline_getWidth));
+    cls->defineFunction("initFrameGraphExternalTexture", _SE(js_pipeline_DeferredPipeline_initFrameGraphExternalTexture));
+    cls->defineFunction("prepareFrameGraph", _SE(js_pipeline_DeferredPipeline_prepareFrameGraph));
     cls->defineFinalizeFunction(_SE(js_cc_pipeline_DeferredPipeline_finalize));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::DeferredPipeline>(cls);
@@ -2087,71 +2309,107 @@ bool js_register_pipeline_DeferredPipeline(se::Object* obj) // NOLINT(readabilit
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_GbufferFlow_proto = nullptr;
-se::Class* __jsb_cc_pipeline_GbufferFlow_class = nullptr;
+se::Object* __jsb_cc_pipeline_MainFlow_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_MainFlow_class = nullptr;  // NOLINT
 
-static bool js_pipeline_GbufferFlow_getInitializeInfo(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_MainFlow_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        const cc::pipeline::RenderFlowInfo& result = cc::pipeline::GbufferFlow::getInitializeInfo();
+        const cc::pipeline::RenderFlowInfo& result = cc::pipeline::MainFlow::getInitializeInfo();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_GbufferFlow_getInitializeInfo : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_pipeline_MainFlow_getInitializeInfo_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GbufferFlow_getInitializeInfo)
+SE_BIND_FUNC(js_pipeline_MainFlow_getInitializeInfo_static)
 
-SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_GbufferFlow_finalize)
+SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_MainFlow_finalize)
 
-static bool js_pipeline_GbufferFlow_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor.c
+static bool js_pipeline_MainFlow_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor.c
 {
-    cc::pipeline::GbufferFlow* cobj = JSB_ALLOC(cc::pipeline::GbufferFlow);
+    cc::pipeline::MainFlow* cobj = JSB_ALLOC(cc::pipeline::MainFlow);
     s.thisObject()->setPrivateData(cobj);
     se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
     return true;
 }
-SE_BIND_CTOR(js_pipeline_GbufferFlow_constructor, __jsb_cc_pipeline_GbufferFlow_class, js_cc_pipeline_GbufferFlow_finalize)
+SE_BIND_CTOR(js_pipeline_MainFlow_constructor, __jsb_cc_pipeline_MainFlow_class, js_cc_pipeline_MainFlow_finalize)
 
 
 
-static bool js_cc_pipeline_GbufferFlow_finalize(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_cc_pipeline_MainFlow_finalize(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::pipeline::GbufferFlow>(s));
+    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::pipeline::MainFlow>(s));
     if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
     {
         se::NonRefNativePtrCreatedByCtorMap::erase(iter);
-        auto* cobj = SE_THIS_OBJECT<cc::pipeline::GbufferFlow>(s);
+        auto* cobj = SE_THIS_OBJECT<cc::pipeline::MainFlow>(s);
         JSB_FREE(cobj);
     }
     return true;
 }
-SE_BIND_FINALIZE_FUNC(js_cc_pipeline_GbufferFlow_finalize)
+SE_BIND_FINALIZE_FUNC(js_cc_pipeline_MainFlow_finalize)
 
-bool js_register_pipeline_GbufferFlow(se::Object* obj) // NOLINT(readability-identifier-naming)
+bool js_register_pipeline_MainFlow(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto* cls = se::Class::create("GbufferFlow", obj, __jsb_cc_pipeline_RenderFlow_proto, _SE(js_pipeline_GbufferFlow_constructor));
+    auto* cls = se::Class::create("MainFlow", obj, __jsb_cc_pipeline_RenderFlow_proto, _SE(js_pipeline_MainFlow_constructor));
 
-    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_GbufferFlow_getInitializeInfo));
-    cls->defineFinalizeFunction(_SE(js_cc_pipeline_GbufferFlow_finalize));
+    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_MainFlow_getInitializeInfo_static));
+    cls->defineFinalizeFunction(_SE(js_cc_pipeline_MainFlow_finalize));
     cls->install();
-    JSBClassType::registerClass<cc::pipeline::GbufferFlow>(cls);
+    JSBClassType::registerClass<cc::pipeline::MainFlow>(cls);
 
-    __jsb_cc_pipeline_GbufferFlow_proto = cls->getProto();
-    __jsb_cc_pipeline_GbufferFlow_class = cls;
+    __jsb_cc_pipeline_MainFlow_proto = cls->getProto();
+    __jsb_cc_pipeline_MainFlow_class = cls;
 
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_GbufferStage_proto = nullptr;
-se::Class* __jsb_cc_pipeline_GbufferStage_class = nullptr;
+se::Object* __jsb_cc_pipeline_GbufferStage_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_GbufferStage_class = nullptr;  // NOLINT
 
-static bool js_pipeline_GbufferStage_getInitializeInfo(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_GbufferStage_dispenseRenderObject2Queues(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::GbufferStage>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_GbufferStage_dispenseRenderObject2Queues : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->dispenseRenderObject2Queues();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_GbufferStage_dispenseRenderObject2Queues)
+
+static bool js_pipeline_GbufferStage_recordCommands(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::GbufferStage>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_GbufferStage_recordCommands : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        HolderType<cc::pipeline::DeferredPipeline*, false> arg0 = {};
+        HolderType<cc::gfx::RenderPass*, false> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_pipeline_GbufferStage_recordCommands : Error processing arguments");
+        cobj->recordCommands(arg0.value(), arg1.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_GbufferStage_recordCommands)
+
+static bool js_pipeline_GbufferStage_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -2159,14 +2417,14 @@ static bool js_pipeline_GbufferStage_getInitializeInfo(se::State& s) // NOLINT(r
     if (argc == 0) {
         const cc::pipeline::RenderStageInfo& result = cc::pipeline::GbufferStage::getInitializeInfo();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_GbufferStage_getInitializeInfo : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_pipeline_GbufferStage_getInitializeInfo_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GbufferStage_getInitializeInfo)
+SE_BIND_FUNC(js_pipeline_GbufferStage_getInitializeInfo_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_GbufferStage_finalize)
 
@@ -2198,7 +2456,9 @@ bool js_register_pipeline_GbufferStage(se::Object* obj) // NOLINT(readability-id
 {
     auto* cls = se::Class::create("GbufferStage", obj, __jsb_cc_pipeline_RenderStage_proto, _SE(js_pipeline_GbufferStage_constructor));
 
-    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_GbufferStage_getInitializeInfo));
+    cls->defineFunction("dispenseRenderObject2Queues", _SE(js_pipeline_GbufferStage_dispenseRenderObject2Queues));
+    cls->defineFunction("recordCommands", _SE(js_pipeline_GbufferStage_recordCommands));
+    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_GbufferStage_getInitializeInfo_static));
     cls->defineFinalizeFunction(_SE(js_cc_pipeline_GbufferStage_finalize));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::GbufferStage>(cls);
@@ -2209,71 +2469,10 @@ bool js_register_pipeline_GbufferStage(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_LightingFlow_proto = nullptr;
-se::Class* __jsb_cc_pipeline_LightingFlow_class = nullptr;
+se::Object* __jsb_cc_pipeline_LightingStage_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_LightingStage_class = nullptr;  // NOLINT
 
-static bool js_pipeline_LightingFlow_getInitializeInfo(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const cc::pipeline::RenderFlowInfo& result = cc::pipeline::LightingFlow::getInitializeInfo();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_LightingFlow_getInitializeInfo : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_pipeline_LightingFlow_getInitializeInfo)
-
-SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_LightingFlow_finalize)
-
-static bool js_pipeline_LightingFlow_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor.c
-{
-    cc::pipeline::LightingFlow* cobj = JSB_ALLOC(cc::pipeline::LightingFlow);
-    s.thisObject()->setPrivateData(cobj);
-    se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
-    return true;
-}
-SE_BIND_CTOR(js_pipeline_LightingFlow_constructor, __jsb_cc_pipeline_LightingFlow_class, js_cc_pipeline_LightingFlow_finalize)
-
-
-
-static bool js_cc_pipeline_LightingFlow_finalize(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::pipeline::LightingFlow>(s));
-    if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
-    {
-        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
-        auto* cobj = SE_THIS_OBJECT<cc::pipeline::LightingFlow>(s);
-        JSB_FREE(cobj);
-    }
-    return true;
-}
-SE_BIND_FINALIZE_FUNC(js_cc_pipeline_LightingFlow_finalize)
-
-bool js_register_pipeline_LightingFlow(se::Object* obj) // NOLINT(readability-identifier-naming)
-{
-    auto* cls = se::Class::create("LightingFlow", obj, __jsb_cc_pipeline_RenderFlow_proto, _SE(js_pipeline_LightingFlow_constructor));
-
-    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_LightingFlow_getInitializeInfo));
-    cls->defineFinalizeFunction(_SE(js_cc_pipeline_LightingFlow_finalize));
-    cls->install();
-    JSBClassType::registerClass<cc::pipeline::LightingFlow>(cls);
-
-    __jsb_cc_pipeline_LightingFlow_proto = cls->getProto();
-    __jsb_cc_pipeline_LightingFlow_class = cls;
-
-    se::ScriptEngine::getInstance()->clearException();
-    return true;
-}
-se::Object* __jsb_cc_pipeline_LightingStage_proto = nullptr;
-se::Class* __jsb_cc_pipeline_LightingStage_class = nullptr;
-
-static bool js_pipeline_LightingStage_getInitializeInfo(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_LightingStage_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -2281,14 +2480,14 @@ static bool js_pipeline_LightingStage_getInitializeInfo(se::State& s) // NOLINT(
     if (argc == 0) {
         const cc::pipeline::RenderStageInfo& result = cc::pipeline::LightingStage::getInitializeInfo();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_LightingStage_getInitializeInfo : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_pipeline_LightingStage_getInitializeInfo_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_LightingStage_getInitializeInfo)
+SE_BIND_FUNC(js_pipeline_LightingStage_getInitializeInfo_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_LightingStage_finalize)
 
@@ -2320,7 +2519,7 @@ bool js_register_pipeline_LightingStage(se::Object* obj) // NOLINT(readability-i
 {
     auto* cls = se::Class::create("LightingStage", obj, __jsb_cc_pipeline_RenderStage_proto, _SE(js_pipeline_LightingStage_constructor));
 
-    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_LightingStage_getInitializeInfo));
+    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_LightingStage_getInitializeInfo_static));
     cls->defineFinalizeFunction(_SE(js_cc_pipeline_LightingStage_finalize));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::LightingStage>(cls);
@@ -2331,8 +2530,44 @@ bool js_register_pipeline_LightingStage(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_pipeline_PostprocessStage_proto = nullptr;
-se::Class* __jsb_cc_pipeline_PostprocessStage_class = nullptr;
+se::Object* __jsb_cc_pipeline_PostprocessStage_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_pipeline_PostprocessStage_class = nullptr;  // NOLINT
+
+static bool js_pipeline_PostprocessStage_getGlobalSet(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::pipeline::PostprocessStage>(s);
+    SE_PRECONDITION2(cobj, false, "js_pipeline_PostprocessStage_getGlobalSet : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        cc::gfx::DescriptorSet* result = cobj->getGlobalSet();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_pipeline_PostprocessStage_getGlobalSet : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_PostprocessStage_getGlobalSet)
+
+static bool js_pipeline_PostprocessStage_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        const cc::pipeline::RenderStageInfo& result = cc::pipeline::PostprocessStage::getInitializeInfo();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_pipeline_PostprocessStage_getInitializeInfo_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_pipeline_PostprocessStage_getInitializeInfo_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_PostprocessStage_finalize)
 
@@ -2364,6 +2599,8 @@ bool js_register_pipeline_PostprocessStage(se::Object* obj) // NOLINT(readabilit
 {
     auto* cls = se::Class::create("PostprocessStage", obj, __jsb_cc_pipeline_RenderStage_proto, _SE(js_pipeline_PostprocessStage_constructor));
 
+    cls->defineFunction("getGlobalSet", _SE(js_pipeline_PostprocessStage_getGlobalSet));
+    cls->defineStaticFunction("getInitializeInfo", _SE(js_pipeline_PostprocessStage_getInitializeInfo_static));
     cls->defineFinalizeFunction(_SE(js_cc_pipeline_PostprocessStage_finalize));
     cls->install();
     JSBClassType::registerClass<cc::pipeline::PostprocessStage>(cls);
@@ -2374,7 +2611,7 @@ bool js_register_pipeline_PostprocessStage(se::Object* obj) // NOLINT(readabilit
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_pipeline(se::Object* obj)
+bool register_all_pipeline(se::Object* obj)    // NOLINT
 {
     // Get the ns
     se::Value nsVal;
@@ -2401,9 +2638,8 @@ bool register_all_pipeline(se::Object* obj)
     js_register_pipeline_ShadowStage(ns);
     js_register_pipeline_InstancedBuffer(ns);
     js_register_pipeline_DeferredPipeline(ns);
-    js_register_pipeline_GbufferFlow(ns);
+    js_register_pipeline_MainFlow(ns);
     js_register_pipeline_GbufferStage(ns);
-    js_register_pipeline_LightingFlow(ns);
     js_register_pipeline_LightingStage(ns);
     js_register_pipeline_PostprocessStage(ns);
     return true;

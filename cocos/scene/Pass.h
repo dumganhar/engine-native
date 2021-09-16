@@ -309,7 +309,7 @@ protected:
     std::string                   _programName;
     IPassDynamics                 _dynamics;
     Record<std::string, uint32_t> _propertyHandleMap;
-    ArrayBuffer                   _rootBlock;
+    ArrayBuffer                   *_rootBlock{nullptr};
     std::vector<IBlockRef>        _blocks; // Point to position in _rootBlock
 
     IProgramInfo *                     _shaderInfo{nullptr};

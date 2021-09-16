@@ -143,7 +143,9 @@ Pass::Pass() {
     _rs                = new gfx::RasterizerState();
 }
 
-Pass::~Pass() = default;
+Pass::~Pass() {
+    delete _rootBlock;
+}
 
 void Pass::initialize(const IPassInfoFull &info) {
     doInit(info);
@@ -246,7 +248,7 @@ void Pass::update() {
     }
 
     if (_rootBufferDirty && _rootBuffer) {
-        _rootBuffer->update(_rootBlock.data(), _rootBuffer->getSize());
+        _rootBuffer->update(_rootBlock->getData(), _rootBuffer->getSize());
         _rootBufferDirty = false;
     }
     _descriptorSet->update();
@@ -480,7 +482,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         // https://bugs.chromium.org/p/chromium/issues/detail?id=988988
         bufferInfo.size = std::ceil(totalSize / 16) * 16;
         _rootBuffer     = device->createBuffer(bufferInfo);
-        _rootBlock.resize(totalSize);
+        _rootBlock      = new ArrayBuffer(totalSize);
     }
     // create buffer views
     for (size_t i = 0, count = 0; i < blocks.size(); i++) {
@@ -498,7 +500,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         if (binding >= _blocks.size()) {
             _blocks.resize(binding + 1);
         }
-        _blocks[binding].data = reinterpret_cast<float *>(_rootBlock.data() + bufferViewInfo.offset);
+        _blocks[binding].data = reinterpret_cast<float *>(const_cast<uint8_t*>(_rootBlock->getData()) + bufferViewInfo.offset);
         _blocks[binding].size = size / 4;
         _descriptorSet->bindBuffer(binding, bufferView);
     }

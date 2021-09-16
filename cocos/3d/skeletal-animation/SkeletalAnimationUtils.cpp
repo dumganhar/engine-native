@@ -183,7 +183,7 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
             .readyToBeDeleted = false,
             .handle           = handle,
         };
-        textureBuffer.resize(bufSize);
+        textureBuffer = Float32Array(bufSize);
         buildTexture = true;
     } else {
         texture->refCount++;

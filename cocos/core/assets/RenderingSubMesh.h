@@ -27,6 +27,7 @@
 
 #include "core/assets/Asset.h"
 #include "renderer/gfx-base/GFXDef.h"
+#include "core/TypedArray.h"
 
 #include <variant>
 

@@ -88,7 +88,7 @@ const IGeometricInfo &RenderingSubMesh::geometricInfo() {
                     min.set(positions[0], positions[1], positions[2]);
                 }
 
-                for (size_t i = 0; i < positions.size(); i += count) {
+                for (size_t i = 0; i < positions.length(); i += count) {
                     if (count == 2) {
                         max.x = positions[i] > max.x ? positions[i] : max.x;
                         max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
@@ -135,13 +135,11 @@ void RenderingSubMesh::genFlatBuffers() {
         const uint32_t             vbCount      = prim.indexView.has_value() ? prim.indexView.value().count : vertexBundle.view.count;
         const uint32_t             vbStride     = vertexBundle.view.stride;
         const uint32_t             vbSize       = vbStride * vbCount;
-        //cjh  no need to deal with length?      Uint8Array view{_mesh->getData(), vertexBundle.view.offset, vertexBundle.view.length};
-        const uint8_t *view = _mesh->getData().data() + vertexBundle.view.offset;
-        Uint8Array     sharedView;
-        sharedView.resize(prim.indexView.has_value() ? vbSize : vertexBundle.view.length);
-        //
+        Uint8Array view(_mesh->getData().buffer(), vertexBundle.view.offset, vertexBundle.view.length);
+        Uint8Array sharedView(prim.indexView.has_value() ? vbSize : vertexBundle.view.length);
+
         if (!prim.indexView.has_value()) {
-            std::copy(_mesh->getData().begin() + vertexBundle.view.offset, _mesh->getData().begin() + vertexBundle.view.offset + vertexBundle.view.length, sharedView.begin());
+            sharedView.set(_mesh->getData().subarray(vertexBundle.view.offset, vertexBundle.view.offset + vertexBundle.view.length));
             _flatBuffers.emplace_back(IFlatBuffer{vbStride, vbCount, sharedView});
             continue;
         }
@@ -149,7 +147,7 @@ void RenderingSubMesh::genFlatBuffers() {
         TypedArray ibView = _mesh->readIndices(_subMeshIdx.value());
         // transform to flat buffer
         for (uint32_t n = 0; n < idxCount; ++n) {
-            int32_t  idx       = typedarray::castToInt32(typedarray::get(ibView, n));
+            int32_t  idx       = getTypedArrayValue<int32_t>(ibView, n);
             uint32_t offset    = n * vbStride;
             uint32_t srcOffset = idx * vbStride;
             for (uint32_t m = 0; m < vbStride; ++m) {

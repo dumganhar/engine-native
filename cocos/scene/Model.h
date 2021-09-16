@@ -33,6 +33,7 @@
 #include "core/geometry/AABB.h"
 #include "core/scene-graph/Layers.h"
 #include "core/scene-graph/Node.h"
+#include "core/TypedArray.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 

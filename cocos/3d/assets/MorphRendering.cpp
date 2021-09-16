@@ -31,6 +31,8 @@
 #include "platform/Image.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Pass.h"
+#include "core/TypedArray.h"
+#include "core/DataView.h"
 
 namespace cc {
 
@@ -83,7 +85,8 @@ const bool PREFER_CPU_COMPUTING = false;
 
 class MorphTexture final {
 public:
-    explicit MorphTexture() = default;
+    MorphTexture() = default;
+
     ~MorphTexture() {
         delete _textureAsset;
     }
@@ -104,8 +107,8 @@ public:
     /**
      * Value view.
      */
-    typedarray::Float32ArrayRef getFloat32ValueView() {
-        return typedarray::Float32ArrayRef(_ab->data(), _ab->size());
+    Float32Array &getValueView() {
+        return _valueView;
     }
 
     /**
@@ -122,14 +125,15 @@ public:
      * Update the pixels content to `valueView`.
      */
     void updatePixels() {
-        _textureAsset->uploadData(reinterpret_cast<uint8_t *>(_ab->data()));
+        _textureAsset->uploadData(_arrayBuffer->getData());
     }
 
     void initialize(uint32_t width, uint32_t height, uint32_t pixelBytes, bool useFloat32Array, PixelFormat pixelFormat) {
-        _ab = std::make_shared<ArrayBuffer>();
-        _ab->resize(width * height * pixelBytes);
+        _arrayBuffer = std::make_shared<ArrayBuffer>(width * height * pixelBytes);
+        _valueView   = Float32Array(_arrayBuffer);
+
         auto *             imageAsset = new ImageAsset();
-        IMemoryImageSource source{_ab, false, width, height, pixelFormat};
+        IMemoryImageSource source{_arrayBuffer, false, width, height, pixelFormat};
         imageAsset->setNativeAsset(source);
 
         _textureAsset = new Texture2D();
@@ -145,9 +149,11 @@ public:
     }
 
 private:
-    Texture2D *                  _textureAsset{nullptr};
-    gfx::Sampler *               _sampler{nullptr};
-    std::shared_ptr<ArrayBuffer> _ab;
+    Texture2D *      _textureAsset{nullptr};
+    gfx::Sampler *   _sampler{nullptr};
+    ArrayBuffer::Ptr _arrayBuffer{nullptr};
+    Float32Array     _valueView{nullptr};
+    Uint8Array *     _updateView{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(MorphTexture);
 };
@@ -158,7 +164,7 @@ struct GpuMorphAttribute {
 };
 
 struct CpuMorphAttributeTarget {
-    std::optional<typedarray::Float32ArrayRef> displacements;
+    Float32Array displacements;
 };
 
 using CpuMorphAttributeTargetList = std::vector<CpuMorphAttributeTarget>;
@@ -266,16 +272,21 @@ Vec4TextureFactory createVec4TextureFactory(gfx::Device *gfxDevice, uint32_t vec
  */
 class MorphUniforms final {
 public:
-    explicit MorphUniforms(gfx::Device *gfxDevice, uint32_t targetCount) {
+    MorphUniforms(gfx::Device *gfxDevice, uint32_t targetCount) {
         _targetCount = targetCount;
-        _ab.resize(pipeline::UBOMorph::SIZE);
-        _localBuffer  = std::make_unique<DataView>(_ab);
+        _localBuffer = new DataView(std::make_shared<ArrayBuffer>(pipeline::UBOMorph::SIZE));
+
         _remoteBuffer = gfxDevice->createBuffer(gfx::BufferInfo{
             gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST,
             gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE,
             pipeline::UBOMorph::SIZE,
             pipeline::UBOMorph::SIZE,
         });
+    }
+
+    ~MorphUniforms() {
+        delete _remoteBuffer;
+        delete _localBuffer;
     }
 
     void destroy() {
@@ -303,14 +314,14 @@ public:
     }
 
     void commit() {
-        _remoteBuffer->update(_ab.data(), _ab.size());
+        const ArrayBuffer::Ptr &buffer = _localBuffer->buffer();
+        _remoteBuffer->update(buffer->getData(), buffer->byteLength());
     }
 
 private:
-    uint32_t                  _targetCount{0};
-    std::unique_ptr<DataView> _localBuffer;
-    ArrayBuffer               _ab;
-    gfx::Buffer *             _remoteBuffer{nullptr};
+    uint32_t     _targetCount{0};
+    DataView *   _localBuffer{nullptr};
+    gfx::Buffer *_remoteBuffer{nullptr};
 };
 
 class CpuComputing final : public SubMeshMorphRendering {
@@ -362,25 +373,25 @@ public:
 
     void setWeights(const std::vector<float> &weights) override {
         for (size_t iAttribute = 0; iAttribute < _attributes.size(); ++iAttribute) {
-            const auto &                myAttribute    = _attributes[iAttribute];
-            typedarray::Float32ArrayRef valueView      = myAttribute.morphTexture->getFloat32ValueView();
-            const auto &                attributeMorph = _owner->getData()[iAttribute];
+            const auto &  myAttribute    = _attributes[iAttribute];
+            Float32Array &valueView      = myAttribute.morphTexture->getValueView();
+            const auto &  attributeMorph = _owner->getData()[iAttribute];
             CC_ASSERT(weights.size() == attributeMorph.targets.size());
             for (size_t iTarget = 0; iTarget < attributeMorph.targets.size(); ++iTarget) {
-                const auto &   targetDisplacements = attributeMorph.targets[iTarget].displacements;
+                auto &         targetDisplacements = attributeMorph.targets[iTarget].displacements;
                 const float    weight              = weights[iTarget];
-                const uint32_t nVertices           = targetDisplacements.value().length() / 3;
+                const uint32_t nVertices           = targetDisplacements.length() / 3;
                 if (iTarget == 0) {
                     for (uint32_t iVertex = 0; iVertex < nVertices; ++iVertex) {
-                        valueView[4 * iVertex + 0] = targetDisplacements.value()[3 * iVertex + 0] * weight;
-                        valueView[4 * iVertex + 1] = targetDisplacements.value()[3 * iVertex + 1] * weight;
-                        valueView[4 * iVertex + 2] = targetDisplacements.value()[3 * iVertex + 2] * weight;
+                        valueView[4 * iVertex + 0] = targetDisplacements[3 * iVertex + 0] * weight;
+                        valueView[4 * iVertex + 1] = targetDisplacements[3 * iVertex + 1] * weight;
+                        valueView[4 * iVertex + 2] = targetDisplacements[3 * iVertex + 2] * weight;
                     }
                 } else if (std::abs(weight) < std::numeric_limits<float>::epsilon()) {
                     for (uint32_t iVertex = 0; iVertex < nVertices; ++iVertex) {
-                        valueView[4 * iVertex + 0] += targetDisplacements.value()[3 * iVertex + 0] * weight;
-                        valueView[4 * iVertex + 1] += targetDisplacements.value()[3 * iVertex + 1] * weight;
-                        valueView[4 * iVertex + 2] += targetDisplacements.value()[3 * iVertex + 2] * weight;
+                        valueView[4 * iVertex + 0] += targetDisplacements[3 * iVertex + 0] * weight;
+                        valueView[4 * iVertex + 1] += targetDisplacements[3 * iVertex + 1] * weight;
+                        valueView[4 * iVertex + 2] += targetDisplacements[3 * iVertex + 2] * weight;
                     }
                 }
             }
@@ -501,11 +512,10 @@ CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx:
 
         uint32_t i = 0;
         for (const auto &attributeDisplacement : subMeshMorph->targets) {
-            attr.targets[i].displacements = typedarray::Float32ArrayRef(
-                mesh->getData().data(), mesh->getData().size(),
-                //cjh should mesh data use Uint8ArrayRef instead of Uint8Array?
-                /* mesh->getData().byteOffset + */ attributeDisplacement.displacements[attributeIndex].offset,
-                attributeDisplacement.displacements[attributeIndex].count);
+            const Mesh::IBufferView &displacementsView = attributeDisplacement.displacements[attributeIndex];
+            attr.targets[i].displacements              = Float32Array(mesh->getData().buffer(),
+                                                         mesh->getData().buffer()->byteLength() + displacementsView.offset,
+                                                         attributeDisplacement.displacements[attributeIndex].count);
 
             ++i;
         }
@@ -517,7 +527,7 @@ CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx:
 SubMeshMorphRenderingInstance *CpuComputing::createInstance() {
     return new CpuComputingRenderingInstance(
         this,
-        _attributes[0].targets[0].displacements.value().length() / 3,
+        _attributes[0].targets[0].displacements.length() / 3,
         _gfxDevice);
 }
 
@@ -547,8 +557,8 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx:
     uint32_t attributeIndex = 0;
     _attributes.reserve(subMeshMorph->attributes.size());
     for (auto &attributeName : subMeshMorph->attributes) {
-        auto                        vec4Tex   = vec4TextureFactory.create();
-        typedarray::Float32ArrayRef valueView = vec4Tex->getFloat32ValueView();
+        auto          vec4Tex   = vec4TextureFactory.create();
+        Float32Array &valueView = vec4Tex->getValueView();
         // if (DEV) { // Make it easy to view texture in profilers...
         //     for (let i = 0; i < valueView.length / 4; ++i) {
         //         valueView[i * 4 + 3] = 1.0;
@@ -557,9 +567,11 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, Morph *morph, gfx:
 
         uint32_t morphTargetIndex = 0;
         for (auto &morphTarget : subMeshMorph->targets) {
-            const auto &                displacementsView = morphTarget.displacements[attributeIndex];
-            typedarray::Float32ArrayRef displacements(mesh->getData().data(), mesh->getData().size(), /*cjh alway 0, how to fix? mesh.data.byteOffset + */ displacementsView.offset, displacementsView.count);
-            const uint32_t              displacementsOffset = (nVertices * morphTargetIndex) * 4;
+            const auto &   displacementsView = morphTarget.displacements[attributeIndex];
+            Float32Array   displacements(mesh->getData().buffer(),
+                                       mesh->getData().byteOffset() + displacementsView.offset,
+                                       displacementsView.count);
+            const uint32_t displacementsOffset = (nVertices * morphTargetIndex) * 4;
             for (uint32_t iVertex = 0; iVertex < nVertices; ++iVertex) {
                 valueView[displacementsOffset + 4 * iVertex + 0] = displacements[3 * iVertex + 0];
                 valueView[displacementsOffset + 4 * iVertex + 1] = displacements[3 * iVertex + 1];

@@ -56,7 +56,7 @@ const uint8_t *ImageAsset::getData() const {
     }
 
     if (_imageSource.has_value()) {
-        return _imageSource.value()._data->data();
+        return _imageSource.value().data->getData();
     }
     return nullptr;
 }
@@ -100,7 +100,7 @@ bool ImageAsset::isCompressed() const {
     }
 
     if (_imageSource.has_value()) {
-        return _imageSource.value()._compressed;
+        return _imageSource.value().compressed;
     }
     return false;
 }

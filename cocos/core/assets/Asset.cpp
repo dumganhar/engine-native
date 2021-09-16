@@ -34,8 +34,6 @@ std::string getAssetUrlWithUuid(const std::string &uuid, bool isNative, const st
 }
 //
 
-Asset::Asset() = default;
-
 std::string Asset::getNativeUrl() const {
     if (!_nativeUrl.empty()) {
         if (!_native.empty()) {

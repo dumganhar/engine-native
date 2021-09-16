@@ -32,17 +32,17 @@ namespace cc {
 
 class BufferAsset final : public Asset {
 public:
-    BufferAsset()           = default;
+//    BufferAsset()           = default;
     ~BufferAsset() override = default;
 
-    inline const ArrayBuffer &getBuffer() const { return _buffer; }
+    inline const ArrayBuffer::Ptr &getBuffer() const { return _buffer; }
 
     std::any     getNativeAsset() const override;
     void         setNativeAsset(const std::any &obj) override;
-    virtual bool validate() const override { return !_buffer.empty(); }
+    virtual bool validate() const override { return !_buffer; }
 
 private:
-    ArrayBuffer _buffer;
+    ArrayBuffer::Ptr _buffer{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(BufferAsset);
 };

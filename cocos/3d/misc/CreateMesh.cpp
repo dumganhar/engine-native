@@ -258,6 +258,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     const uint32_t   idxStride = 2;
     if (geometry.indices.has_value()) {
         const std::vector<uint32_t> &indices = geometry.indices.value();
+        idxCount                             = indices.size();
         indexBuffer                          = std::make_shared<ArrayBuffer>(idxStride * idxCount);
         DataView indexBufferView(indexBuffer);
         writeBuffer(indexBufferView, indices, gfx::Format::R16UI);

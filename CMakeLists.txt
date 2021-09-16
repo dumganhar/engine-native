@@ -2181,7 +2181,7 @@ add_custom_command(
 macro(generate_glsl ver)
     add_custom_command(
         OUTPUT ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
-        COMMAND ${TSC_EXECUTABLE} ${CWD}/cocos/core/builtin/shader-sources/${ver}.ts
+        COMMAND ${TSC_EXECUTABLE} --module commonjs ${CWD}/cocos/core/builtin/shader-sources/${ver}.ts
         DEPENDS ${CWD}/cocos/core/builtin/shader-sources/${ver}.ts
         VERBATIM USES_TERMINAL
     )

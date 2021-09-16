@@ -124,7 +124,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
 
     Image *image = new Image();
-    bool   ret   = image->initWithImageFile("assets/pixil-frame-2.png");
+    bool   ret   = image->initWithImageFile("pixil-frame-2.png");
     if (ret) {
         auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
         imgAsset->setNativeAsset(image);   //cjh HOW TO RELEASE?

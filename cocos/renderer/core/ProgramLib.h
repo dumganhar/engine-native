@@ -45,8 +45,8 @@
 namespace cc {
 
 struct IDefineRecord : public IDefineInfo {
-    std::function<int(std::any)> map;
-    int32_t                      offset{0};
+    std::function<int32_t(const MacroValue &)> map{nullptr};
+    int32_t                                    offset{0};
 };
 struct IMacroInfo {
     std::string name;

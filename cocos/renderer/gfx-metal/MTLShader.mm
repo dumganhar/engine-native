@@ -106,7 +106,7 @@ void CCMTLShader::doDestroy() {
             [cmptLib release];
         }
     };
-    CCMTLGPUGarbageCollectionPool::getInstance()->collect(destroyFunc);
+//cjh FIXME: this line will trigger crash in the destroyFunc, don't know why, comment it. Please FIXME:  CCMTLGPUGarbageCollectionPool::getInstance()->collect(destroyFunc);
 }
 
 bool CCMTLShader::createMTLFunction(const ShaderStage &stage) {

@@ -24,8 +24,10 @@
 ****************************************************************************/
 
 #include "StringUtil.h"
-#include "memory/Memory.h"
 #include <string>
+#include "base/ZipUtils.h"
+#include "base/base64.h"
+#include "memory/Memory.h"
 
 #if (CC_PLATFORM == CC_PLATFORM_WINDOWS)
     #ifndef WIN32_LEAN_AND_MEAN
@@ -58,8 +60,8 @@ int StringUtil::vprintf(char *buf, const char *last, const char *fmt, va_list ar
         return 0;
     }
 
-    int count = (int)(last - buf);
-    int ret   = vsnprintf(buf, count, fmt, args);
+    auto count = static_cast<int>(last - buf);
+    int  ret   = vsnprintf(buf, count, fmt, args);
     if (ret >= count - 1) {
         return count - 1;
     }
@@ -122,6 +124,18 @@ StringArray StringUtil::split(const String &str, const String &delims, uint maxS
     } while (pos != String::npos);
 
     return strs;
+}
+
+std::string GzipedString::value() const { // NOLINT(readability-convert-member-functions-to-static)
+    uint8_t *   outGzip{nullptr};
+    uint8_t *   outBase64{nullptr};
+    auto *      input       = reinterpret_cast<unsigned char *>(const_cast<char *>(_str.c_str()));
+    auto        lenOfBase64 = base64Decode(input, static_cast<unsigned int>(_str.size()), &outBase64);
+    auto        lenofUnzip  = ZipUtils::inflateMemory(outBase64, static_cast<ssize_t>(lenOfBase64), &outGzip);
+    std::string ret(outGzip, outGzip + lenofUnzip);
+    free(outGzip);
+    free(outBase64);
+    return ret;
 }
 
 } // namespace cc

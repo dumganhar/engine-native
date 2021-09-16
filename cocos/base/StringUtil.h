@@ -28,10 +28,8 @@
 #include <cstddef>
 #include "Macros.h"
 #include "TypeDef.h"
-#include "base/base64.h"
 #include "memory/Memory.h"
 
-#include "base/ZipUtils.h"
 namespace cc {
 
 class CC_DLL StringUtil {
@@ -42,40 +40,32 @@ public:
     static StringArray split(const String &str, const String &delims, uint maxSplits = 0);
 };
 
+/**
+ * Store compressed text which compressed with gzip & base64
+ * fetch plain-text with `value()`.
+ */
 class CC_DLL GzipedString {
 public:
     explicit GzipedString(std::string &&dat) : _str(dat) {}
     explicit GzipedString(const char *dat) : _str(dat) {}
-
     GzipedString(const GzipedString &o) = default;
     GzipedString &operator=(const GzipedString &d) = default;
 
     GzipedString(GzipedString &&o) noexcept {
         _str = std::move(o._str);
     }
-
     GzipedString &operator=(std::string &&d) {
         _str = std::move(d);
         return *this;
     }
-
     GzipedString &operator=(GzipedString &&d) noexcept {
         _str = std::move(d._str);
         return *this;
     }
-
-    std::string value() const {
-        uint8_t *   outGzip   = nullptr;
-        uint8_t *   outBase64 = nullptr;
-        auto *      inc       = const_cast<char *>(_str.c_str());
-        auto *      inu       = reinterpret_cast<unsigned char *>(inc);
-        auto        lenB64    = base64Decode(inu, static_cast<unsigned int>(_str.size()), &outBase64);
-        auto        len       = ZipUtils::inflateMemory(outBase64, static_cast<ssize_t>(lenB64), &outGzip);
-        std::string ret(outGzip, outGzip + len);
-        free(outGzip);
-        free(outBase64);
-        return ret;
-    }
+    /**
+    * return text decompress with base64decode | un-gzip 
+    */
+    std::string value() const;
 
 private:
     std::string _str{};

@@ -179,7 +179,7 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
     //    return Promise.resolve().then(() => {
 
     rapidjson::Document doc;
-    doc.Parse(builtinEffects);
+    doc.Parse(builtinEffects.value().c_str());
 
     index_t         effectIndex       = 0;
     rapidjson::Type type              = doc.GetType();
@@ -190,17 +190,17 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
 
         index_t shaderIndex = 0;
         for (auto &shaderInfo : effect->_shaders) {
-            const ShaderInfo &shaderSource = (*shaderSources)[effectIndex][shaderIndex];
+            const auto &shaderSource = (*shaderSources)[effectIndex][shaderIndex];
             if (!shaderSource.empty()) {
                 if (0 == strcmp(shaderVersionKey, "glsl1")) {
-                    shaderInfo.glsl1.vert = shaderSource.at("vert");
-                    shaderInfo.glsl1.frag = shaderSource.at("frag");
+                    shaderInfo.glsl1.vert = shaderSource.at("vert").value();
+                    shaderInfo.glsl1.frag = shaderSource.at("frag").value();
                 } else if (0 == strcmp(shaderVersionKey, "glsl3")) {
-                    shaderInfo.glsl3.vert = shaderSource.at("vert");
-                    shaderInfo.glsl3.frag = shaderSource.at("frag");
+                    shaderInfo.glsl3.vert = shaderSource.at("vert").value();
+                    shaderInfo.glsl3.frag = shaderSource.at("frag").value();
                 } else if (0 == strcmp(shaderVersionKey, "glsl4")) {
-                    shaderInfo.glsl4.vert = shaderSource.at("vert");
-                    shaderInfo.glsl4.frag = shaderSource.at("frag");
+                    shaderInfo.glsl4.vert = shaderSource.at("vert").value();
+                    shaderInfo.glsl4.frag = shaderSource.at("frag").value();
                 }
             }
             ++shaderIndex;

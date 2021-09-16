@@ -27,6 +27,7 @@
 #include "cocos/base/AutoreleasePool.h"
 #include "cocos/bindings/auto/jsb_cocos_auto.h"
 #include "cocos/bindings/auto/jsb_extension_auto.h"
+#include "cocos/bindings/auto/jsb_geometry_auto.h"
 #include "cocos/bindings/auto/jsb_gfx_auto.h"
 #include "cocos/bindings/auto/jsb_network_auto.h"
 #include "cocos/bindings/auto/jsb_pipeline_auto.h"
@@ -125,6 +126,7 @@ bool jsb_register_all_modules() {
     se->addRegisterCallback(register_all_pipeline_manual);
     se->addRegisterCallback(register_all_scene);
     se->addRegisterCallback(register_all_scene_manual);
+    se->addRegisterCallback(register_all_geometry);
 
 #if (CC_PLATFORM == CC_PLATFORM_MAC_IOS || CC_PLATFORM == CC_PLATFORM_MAC_OSX)
     se->addRegisterCallback(register_javascript_objc_bridge);

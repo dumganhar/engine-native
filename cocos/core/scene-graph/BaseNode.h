@@ -55,6 +55,28 @@ public:
     static const uint DONT_DESTROY;
 
     using CCObject::CCObject;
+
+    static BaseNode *instantiate(BaseNode *cloned, bool isSyncedNode);
+    // for walk
+    static std::vector<std::vector<BaseNode *>> stacks;
+    static index_t                              stackId;
+
+    static void    setScene(BaseNode *);
+    static index_t getIdxOfChild(const std::vector<BaseNode *> &, BaseNode *);
+    // TODO(Lenovo):
+    static Component *findComponent(BaseNode *, const std::string &);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *findComponent(BaseNode *, const T &);
+    static Component *findComponents(BaseNode *, const std::string &, const std::vector<Component *> &);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *findComponents(BaseNode *, const T &, const std::vector<Component *> &);
+    static Component *findChildComponent(const std::vector<BaseNode *> &, const std::string &);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *              findChildComponent(const std::vector<BaseNode *> &, const T &);
+    static std::vector<Component *> findChildComponents(const std::vector<BaseNode *> &, const std::string &, std::vector<Component *>);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static std::vector<Component *> findChildComponents(const std::vector<BaseNode *> &, const T &, std::vector<Component *>);
+
     BaseNode() = default;
     explicit BaseNode(const std::string &name);
     virtual ~BaseNode() = default;
@@ -206,7 +228,11 @@ public:
     virtual uint              getChangedFlags() const { return 0; } //cjh TODO: return 0?
     virtual void              setChangedFlags(uint value) {}
     virtual void              setDirtyFlag(uint value) {}
+    virtual uint              getDirtyFlag() const { return 0; }
     virtual void              setLayer(uint layer) {}
+    virtual const Vec3 &      getPosition() const { return Vec3::ZERO; }
+    virtual const Quaternion &getRotation() const { return Quaternion::identity(); }
+    virtual const Vec3 &      getScale() const { return Vec3::ONE; }
     //
 
 protected:
@@ -223,7 +249,22 @@ protected:
     NodeEventProcessor *_eventProcessor{nullptr};
     index_t             _siblingIndex{0};
     uint                _eventMask{0};
-    inline void         updateScene() {
+
+    //cjh TODO: remove BaseNode
+    cc::Vec3       _worldPosition{Vec3::ZERO};
+    cc::Quaternion _worldRotation{Quaternion::identity()};
+    cc::Vec3       _worldScale{Vec3::ONE};
+
+    Mat4     _rtMat{Mat4::IDENTITY};
+    cc::Mat4 _worldMatrix{Mat4::IDENTITY};
+
+    // local transform
+    cc::Vec3       _localPosition{Vec3::ZERO};
+    cc::Quaternion _localRotation{Quaternion::identity()};
+    cc::Vec3       _localScale{Vec3::ONE};
+    //
+
+    inline void updateScene() {
         if (_parent == nullptr) {
             return;
         }
@@ -232,35 +273,18 @@ protected:
     void onHierarchyChanged(BaseNode *);
     void onHierarchyChangedBase(BaseNode *oldParent);
 
-    virtual void     onSetParent(BaseNode *oldParent, bool keepWorldTransform = false);
-    void             walkInternal(std::function<void(BaseNode *)>, std::function<void(BaseNode *)>);
-    virtual void     onBatchCreated(bool dontChildPrefab);
-    virtual bool     onPreDestroy() override;
-    static BaseNode *instantiate(BaseNode *cloned, bool isSyncedNode);
-    bool             onPreDestroyBase();
-    inline void      onSiblingIndexChanged(uint siblingIndex) {}
-    inline void      checkMultipleComp(Component *comp) {}
-    // for walk
-    static std::vector<std::vector<BaseNode *>> stacks;
-    static index_t                              stackId;
+    virtual void onSetParent(BaseNode *oldParent, bool keepWorldTransform = false);
+    void         walkInternal(std::function<void(BaseNode *)>, std::function<void(BaseNode *)>);
+    virtual void onBatchCreated(bool dontChildPrefab);
+    bool         onPreDestroy() override;
 
-    static void    setScene(BaseNode *);
-    static index_t getIdxOfChild(const std::vector<BaseNode *> &, BaseNode *);
-    // TODO(Lenovo):
-    static Component *findComponent(BaseNode *, const std::string &);
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static Component *findComponent(BaseNode *, const T &);
-    static Component *findComponents(BaseNode *, const std::string &, const std::vector<Component *> &);
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static Component *findComponents(BaseNode *, const T &, const std::vector<Component *> &);
-    static Component *findChildComponent(const std::vector<BaseNode *> &, const std::string &);
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static Component *              findChildComponent(const std::vector<BaseNode *> &, const T &);
-    static std::vector<Component *> findChildComponents(const std::vector<BaseNode *> &, const std::string &, std::vector<Component *>);
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static std::vector<Component *> findChildComponents(const std::vector<BaseNode *> &, const T &, std::vector<Component *>);
+    bool onPreDestroyBase();
+    void onSiblingIndexChanged(uint siblingIndex) {}
+    void checkMultipleComp(Component *comp) {}
 
     friend class Scene;
+    friend class Node;
+
     CC_DISALLOW_COPY_MOVE_ASSIGN(BaseNode);
 };
 

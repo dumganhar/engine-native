@@ -103,15 +103,15 @@ public:
 protected:
     void createLight() override;
     //TODO(xwx): need @serializable
-    float _size{0.15};
+    float _size{0.15F};
     //TODO(xwx): need @serializable
-    float _luminance{1700.F / scene::Light::nt2lm(0.15)};
+    float _luminance{1700.F / scene::Light::nt2lm(0.15F)};
     //TODO(xwx): need @serializable
     PhotometricTerm _term{PhotometricTerm::LUMINOUS_FLUX};
     //TODO(xwx): need @serializable
-    float _range{1};
+    float _range{1.F};
     //TODO(xwx):  need @serializable
-    float _spotAngle{60};
+    float _spotAngle{60.F};
 
     scene::LightType _type{scene::LightType::SPOT};
 

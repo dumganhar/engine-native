@@ -23,11 +23,12 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#pragma once
-
-#include "cocos/base/StringUtil.h"
+#include "core/builtin/Effects.h"
+#include "base/StringUtil.h"
 namespace cc {
 
-extern const GzipedString builtinEffects;
-
-}
+// absolute essential effects
+const GzipedString builtinEffects { 
+${PLACE_HOLDER}
+};
+} // namespace cc

@@ -10,8 +10,8 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_spine_Animation_proto = nullptr;
-se::Class* __jsb_spine_Animation_class = nullptr;
+se::Object* __jsb_spine_Animation_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Animation_class = nullptr;  // NOLINT
 
 static bool js_spine_Animation_getDuration(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -131,8 +131,8 @@ bool js_register_spine_Animation(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_TrackEntry_proto = nullptr;
-se::Class* __jsb_spine_TrackEntry_class = nullptr;
+se::Object* __jsb_spine_TrackEntry_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_TrackEntry_class = nullptr;  // NOLINT
 
 static bool js_spine_TrackEntry_getAlpha(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -945,8 +945,8 @@ bool js_register_spine_TrackEntry(se::Object* obj) // NOLINT(readability-identif
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_AnimationState_proto = nullptr;
-se::Class* __jsb_spine_AnimationState_class = nullptr;
+se::Object* __jsb_spine_AnimationState_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_AnimationState_class = nullptr;  // NOLINT
 
 static bool js_spine_AnimationState_addAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1334,8 +1334,8 @@ bool js_register_spine_AnimationState(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_AnimationStateData_proto = nullptr;
-se::Class* __jsb_spine_AnimationStateData_class = nullptr;
+se::Object* __jsb_spine_AnimationStateData_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_AnimationStateData_class = nullptr;  // NOLINT
 
 static bool js_spine_AnimationStateData_getDefaultMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1484,8 +1484,8 @@ bool js_register_spine_AnimationStateData(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_Attachment_proto = nullptr;
-se::Class* __jsb_spine_Attachment_class = nullptr;
+se::Object* __jsb_spine_Attachment_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Attachment_class = nullptr;  // NOLINT
 
 static bool js_spine_Attachment_copy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1594,8 +1594,8 @@ bool js_register_spine_Attachment(se::Object* obj) // NOLINT(readability-identif
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_Timeline_proto = nullptr;
-se::Class* __jsb_spine_Timeline_class = nullptr;
+se::Object* __jsb_spine_Timeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Timeline_class = nullptr;  // NOLINT
 
 static bool js_spine_Timeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1632,8 +1632,8 @@ bool js_register_spine_Timeline(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_AttachmentTimeline_proto = nullptr;
-se::Class* __jsb_spine_AttachmentTimeline_class = nullptr;
+se::Object* __jsb_spine_AttachmentTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_AttachmentTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_AttachmentTimeline_getAttachmentNames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1794,8 +1794,8 @@ bool js_register_spine_AttachmentTimeline(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_Bone_proto = nullptr;
-se::Class* __jsb_spine_Bone_class = nullptr;
+se::Object* __jsb_spine_Bone_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Bone_class = nullptr;  // NOLINT
 
 static bool js_spine_Bone_getA(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2921,7 +2921,7 @@ static bool js_spine_Bone_updateWorldTransform(se::State& s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_spine_Bone_updateWorldTransform)
 
-static bool js_spine_Bone_setYDown(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_spine_Bone_setYDown_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -2929,16 +2929,16 @@ static bool js_spine_Bone_setYDown(se::State& s) // NOLINT(readability-identifie
     if (argc == 1) {
         HolderType<bool, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_spine_Bone_setYDown : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_spine_Bone_setYDown_static : Error processing arguments");
         spine::Bone::setYDown(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setYDown)
+SE_BIND_FUNC(js_spine_Bone_setYDown_static)
 
-static bool js_spine_Bone_isYDown(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_spine_Bone_isYDown_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -2946,14 +2946,14 @@ static bool js_spine_Bone_isYDown(se::State& s) // NOLINT(readability-identifier
     if (argc == 0) {
         bool result = spine::Bone::isYDown();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_spine_Bone_isYDown : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_spine_Bone_isYDown_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_isYDown)
+SE_BIND_FUNC(js_spine_Bone_isYDown_static)
 
 
 
@@ -3019,8 +3019,8 @@ bool js_register_spine_Bone(se::Object* obj) // NOLINT(readability-identifier-na
     cls->defineFunction("setY", _SE(js_spine_Bone_setY));
     cls->defineFunction("update", _SE(js_spine_Bone_update));
     cls->defineFunction("updateWorldTransform", _SE(js_spine_Bone_updateWorldTransform));
-    cls->defineStaticFunction("setYDown", _SE(js_spine_Bone_setYDown));
-    cls->defineStaticFunction("isYDown", _SE(js_spine_Bone_isYDown));
+    cls->defineStaticFunction("setYDown", _SE(js_spine_Bone_setYDown_static));
+    cls->defineStaticFunction("isYDown", _SE(js_spine_Bone_isYDown_static));
     cls->install();
     JSBClassType::registerClass<spine::Bone>(cls);
 
@@ -3030,8 +3030,8 @@ bool js_register_spine_Bone(se::Object* obj) // NOLINT(readability-identifier-na
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_BoneData_proto = nullptr;
-se::Class* __jsb_spine_BoneData_class = nullptr;
+se::Object* __jsb_spine_BoneData_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_BoneData_class = nullptr;  // NOLINT
 
 static bool js_spine_BoneData_getIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3508,8 +3508,8 @@ bool js_register_spine_BoneData(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_VertexAttachment_proto = nullptr;
-se::Class* __jsb_spine_VertexAttachment_class = nullptr;
+se::Object* __jsb_spine_VertexAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_VertexAttachment_class = nullptr;  // NOLINT
 
 static bool js_spine_VertexAttachment_copyTo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3666,8 +3666,8 @@ bool js_register_spine_VertexAttachment(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_BoundingBoxAttachment_proto = nullptr;
-se::Class* __jsb_spine_BoundingBoxAttachment_class = nullptr;
+se::Object* __jsb_spine_BoundingBoxAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_BoundingBoxAttachment_class = nullptr;  // NOLINT
 
 static bool js_spine_BoundingBoxAttachment_copy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3704,8 +3704,8 @@ bool js_register_spine_BoundingBoxAttachment(se::Object* obj) // NOLINT(readabil
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_ClippingAttachment_proto = nullptr;
-se::Class* __jsb_spine_ClippingAttachment_class = nullptr;
+se::Object* __jsb_spine_ClippingAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_ClippingAttachment_class = nullptr;  // NOLINT
 
 static bool js_spine_ClippingAttachment_copy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3782,8 +3782,8 @@ bool js_register_spine_ClippingAttachment(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_Color_proto = nullptr;
-se::Class* __jsb_spine_Color_class = nullptr;
+se::Object* __jsb_spine_Color_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Color_class = nullptr;  // NOLINT
 
 static bool js_spine_Color_clamp(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3932,8 +3932,8 @@ bool js_register_spine_Color(se::Object* obj) // NOLINT(readability-identifier-n
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_CurveTimeline_proto = nullptr;
-se::Class* __jsb_spine_CurveTimeline_class = nullptr;
+se::Object* __jsb_spine_CurveTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_CurveTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_CurveTimeline_getCurvePercent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4106,8 +4106,8 @@ bool js_register_spine_CurveTimeline(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_ColorTimeline_proto = nullptr;
-se::Class* __jsb_spine_ColorTimeline_class = nullptr;
+se::Object* __jsb_spine_ColorTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_ColorTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_ColorTimeline_getFrames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4234,8 +4234,8 @@ bool js_register_spine_ColorTimeline(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_ConstraintData_proto = nullptr;
-se::Class* __jsb_spine_ConstraintData_class = nullptr;
+se::Object* __jsb_spine_ConstraintData_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_ConstraintData_class = nullptr;  // NOLINT
 
 static bool js_spine_ConstraintData_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4352,8 +4352,8 @@ bool js_register_spine_ConstraintData(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_DeformTimeline_proto = nullptr;
-se::Class* __jsb_spine_DeformTimeline_class = nullptr;
+se::Object* __jsb_spine_DeformTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_DeformTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_DeformTimeline_getAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4490,8 +4490,8 @@ bool js_register_spine_DeformTimeline(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_DrawOrderTimeline_proto = nullptr;
-se::Class* __jsb_spine_DrawOrderTimeline_class = nullptr;
+se::Object* __jsb_spine_DrawOrderTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_DrawOrderTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_DrawOrderTimeline_getFrameCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4568,8 +4568,8 @@ bool js_register_spine_DrawOrderTimeline(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_Event_proto = nullptr;
-se::Class* __jsb_spine_Event_class = nullptr;
+se::Object* __jsb_spine_Event_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Event_class = nullptr;  // NOLINT
 
 static bool js_spine_Event_getBalance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4826,8 +4826,8 @@ bool js_register_spine_Event(se::Object* obj) // NOLINT(readability-identifier-n
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_EventData_proto = nullptr;
-se::Class* __jsb_spine_EventData_class = nullptr;
+se::Object* __jsb_spine_EventData_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_EventData_class = nullptr;  // NOLINT
 
 static bool js_spine_EventData_getAudioPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5104,8 +5104,8 @@ bool js_register_spine_EventData(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_EventTimeline_proto = nullptr;
-se::Class* __jsb_spine_EventTimeline_class = nullptr;
+se::Object* __jsb_spine_EventTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_EventTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_EventTimeline_getEvents(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5224,8 +5224,8 @@ bool js_register_spine_EventTimeline(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_IkConstraint_proto = nullptr;
-se::Class* __jsb_spine_IkConstraint_class = nullptr;
+se::Object* __jsb_spine_IkConstraint_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_IkConstraint_class = nullptr;  // NOLINT
 
 static bool js_spine_IkConstraint_getBendDirection(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5598,8 +5598,8 @@ bool js_register_spine_IkConstraint(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_IkConstraintData_proto = nullptr;
-se::Class* __jsb_spine_IkConstraintData_class = nullptr;
+se::Object* __jsb_spine_IkConstraintData_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_IkConstraintData_class = nullptr;  // NOLINT
 
 static bool js_spine_IkConstraintData_getBendDirection(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5916,8 +5916,8 @@ bool js_register_spine_IkConstraintData(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_IkConstraintTimeline_proto = nullptr;
-se::Class* __jsb_spine_IkConstraintTimeline_class = nullptr;
+se::Object* __jsb_spine_IkConstraintTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_IkConstraintTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_IkConstraintTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5986,8 +5986,8 @@ bool js_register_spine_IkConstraintTimeline(se::Object* obj) // NOLINT(readabili
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_MeshAttachment_proto = nullptr;
-se::Class* __jsb_spine_MeshAttachment_class = nullptr;
+se::Object* __jsb_spine_MeshAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_MeshAttachment_class = nullptr;  // NOLINT
 
 static bool js_spine_MeshAttachment_copy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6840,8 +6840,8 @@ bool js_register_spine_MeshAttachment(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_PathAttachment_proto = nullptr;
-se::Class* __jsb_spine_PathAttachment_class = nullptr;
+se::Object* __jsb_spine_PathAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_PathAttachment_class = nullptr;  // NOLINT
 
 static bool js_spine_PathAttachment_copy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6978,8 +6978,8 @@ bool js_register_spine_PathAttachment(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_PathConstraint_proto = nullptr;
-se::Class* __jsb_spine_PathConstraint_class = nullptr;
+se::Object* __jsb_spine_PathConstraint_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_PathConstraint_class = nullptr;  // NOLINT
 
 static bool js_spine_PathConstraint_apply(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7328,8 +7328,8 @@ bool js_register_spine_PathConstraint(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_PathConstraintData_proto = nullptr;
-se::Class* __jsb_spine_PathConstraintData_class = nullptr;
+se::Object* __jsb_spine_PathConstraintData_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_PathConstraintData_class = nullptr;  // NOLINT
 
 static bool js_spine_PathConstraintData_getBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7726,8 +7726,8 @@ bool js_register_spine_PathConstraintData(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_PathConstraintMixTimeline_proto = nullptr;
-se::Class* __jsb_spine_PathConstraintMixTimeline_class = nullptr;
+se::Object* __jsb_spine_PathConstraintMixTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_PathConstraintMixTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_PathConstraintMixTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7764,8 +7764,8 @@ bool js_register_spine_PathConstraintMixTimeline(se::Object* obj) // NOLINT(read
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_PathConstraintPositionTimeline_proto = nullptr;
-se::Class* __jsb_spine_PathConstraintPositionTimeline_class = nullptr;
+se::Object* __jsb_spine_PathConstraintPositionTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_PathConstraintPositionTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_PathConstraintPositionTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7826,8 +7826,8 @@ bool js_register_spine_PathConstraintPositionTimeline(se::Object* obj) // NOLINT
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_PathConstraintSpacingTimeline_proto = nullptr;
-se::Class* __jsb_spine_PathConstraintSpacingTimeline_class = nullptr;
+se::Object* __jsb_spine_PathConstraintSpacingTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_PathConstraintSpacingTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_PathConstraintSpacingTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7864,8 +7864,8 @@ bool js_register_spine_PathConstraintSpacingTimeline(se::Object* obj) // NOLINT(
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_PointAttachment_proto = nullptr;
-se::Class* __jsb_spine_PointAttachment_class = nullptr;
+se::Object* __jsb_spine_PointAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_PointAttachment_class = nullptr;  // NOLINT
 
 static bool js_spine_PointAttachment_copy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8022,8 +8022,8 @@ bool js_register_spine_PointAttachment(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_RegionAttachment_proto = nullptr;
-se::Class* __jsb_spine_RegionAttachment_class = nullptr;
+se::Object* __jsb_spine_RegionAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_RegionAttachment_class = nullptr;  // NOLINT
 
 static bool js_spine_RegionAttachment_copy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8724,8 +8724,8 @@ bool js_register_spine_RegionAttachment(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_RotateTimeline_proto = nullptr;
-se::Class* __jsb_spine_RotateTimeline_class = nullptr;
+se::Object* __jsb_spine_RotateTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_RotateTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_RotateTimeline_getBoneIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8846,8 +8846,8 @@ bool js_register_spine_RotateTimeline(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_TranslateTimeline_proto = nullptr;
-se::Class* __jsb_spine_TranslateTimeline_class = nullptr;
+se::Object* __jsb_spine_TranslateTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_TranslateTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_TranslateTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8910,8 +8910,8 @@ bool js_register_spine_TranslateTimeline(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_ScaleTimeline_proto = nullptr;
-se::Class* __jsb_spine_ScaleTimeline_class = nullptr;
+se::Object* __jsb_spine_ScaleTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_ScaleTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_ScaleTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8948,8 +8948,8 @@ bool js_register_spine_ScaleTimeline(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_ShearTimeline_proto = nullptr;
-se::Class* __jsb_spine_ShearTimeline_class = nullptr;
+se::Object* __jsb_spine_ShearTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_ShearTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_ShearTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8986,8 +8986,8 @@ bool js_register_spine_ShearTimeline(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_Skeleton_proto = nullptr;
-se::Class* __jsb_spine_Skeleton_class = nullptr;
+se::Object* __jsb_spine_Skeleton_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Skeleton_class = nullptr;  // NOLINT
 
 static bool js_spine_Skeleton_findBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9827,8 +9827,8 @@ bool js_register_spine_Skeleton(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_SkeletonBounds_proto = nullptr;
-se::Class* __jsb_spine_SkeletonBounds_class = nullptr;
+se::Object* __jsb_spine_SkeletonBounds_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_SkeletonBounds_class = nullptr;  // NOLINT
 
 static bool js_spine_SkeletonBounds_aabbcontainsPoint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10074,8 +10074,8 @@ bool js_register_spine_SkeletonBounds(se::Object* obj) // NOLINT(readability-ide
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_Polygon_proto = nullptr;
-se::Class* __jsb_spine_Polygon_class = nullptr;
+se::Object* __jsb_spine_Polygon_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Polygon_class = nullptr;  // NOLINT
 
 
 
@@ -10092,8 +10092,8 @@ bool js_register_spine_Polygon(se::Object* obj) // NOLINT(readability-identifier
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_SkeletonData_proto = nullptr;
-se::Class* __jsb_spine_SkeletonData_class = nullptr;
+se::Object* __jsb_spine_SkeletonData_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_SkeletonData_class = nullptr;  // NOLINT
 
 static bool js_spine_SkeletonData_findAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10963,8 +10963,8 @@ bool js_register_spine_SkeletonData(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_Skin_proto = nullptr;
-se::Class* __jsb_spine_Skin_class = nullptr;
+se::Object* __jsb_spine_Skin_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Skin_class = nullptr;  // NOLINT
 
 static bool js_spine_Skin_addSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11152,8 +11152,8 @@ bool js_register_spine_Skin(se::Object* obj) // NOLINT(readability-identifier-na
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_Slot_proto = nullptr;
-se::Class* __jsb_spine_Slot_class = nullptr;
+se::Object* __jsb_spine_Slot_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_Slot_class = nullptr;  // NOLINT
 
 static bool js_spine_Slot_getAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11406,8 +11406,8 @@ bool js_register_spine_Slot(se::Object* obj) // NOLINT(readability-identifier-na
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_SlotData_proto = nullptr;
-se::Class* __jsb_spine_SlotData_class = nullptr;
+se::Object* __jsb_spine_SlotData_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_SlotData_class = nullptr;  // NOLINT
 
 static bool js_spine_SlotData_getAttachmentName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11644,8 +11644,8 @@ bool js_register_spine_SlotData(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_TransformConstraint_proto = nullptr;
-se::Class* __jsb_spine_TransformConstraint_class = nullptr;
+se::Object* __jsb_spine_TransformConstraint_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_TransformConstraint_class = nullptr;  // NOLINT
 
 static bool js_spine_TransformConstraint_apply(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11994,8 +11994,8 @@ bool js_register_spine_TransformConstraint(se::Object* obj) // NOLINT(readabilit
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_TransformConstraintData_proto = nullptr;
-se::Class* __jsb_spine_TransformConstraintData_class = nullptr;
+se::Object* __jsb_spine_TransformConstraintData_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_TransformConstraintData_class = nullptr;  // NOLINT
 
 static bool js_spine_TransformConstraintData_getBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12292,8 +12292,8 @@ bool js_register_spine_TransformConstraintData(se::Object* obj) // NOLINT(readab
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_TransformConstraintTimeline_proto = nullptr;
-se::Class* __jsb_spine_TransformConstraintTimeline_class = nullptr;
+se::Object* __jsb_spine_TransformConstraintTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_TransformConstraintTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_TransformConstraintTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12360,8 +12360,8 @@ bool js_register_spine_TransformConstraintTimeline(se::Object* obj) // NOLINT(re
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_TwoColorTimeline_proto = nullptr;
-se::Class* __jsb_spine_TwoColorTimeline_class = nullptr;
+se::Object* __jsb_spine_TwoColorTimeline_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_TwoColorTimeline_class = nullptr;  // NOLINT
 
 static bool js_spine_TwoColorTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12474,8 +12474,8 @@ bool js_register_spine_TwoColorTimeline(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_VertexEffect_proto = nullptr;
-se::Class* __jsb_spine_VertexEffect_class = nullptr;
+se::Object* __jsb_spine_VertexEffect_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_VertexEffect_class = nullptr;  // NOLINT
 
 
 
@@ -12492,8 +12492,8 @@ bool js_register_spine_VertexEffect(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_JitterVertexEffect_proto = nullptr;
-se::Class* __jsb_spine_JitterVertexEffect_class = nullptr;
+se::Object* __jsb_spine_JitterVertexEffect_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_JitterVertexEffect_class = nullptr;  // NOLINT
 
 static bool js_spine_JitterVertexEffect_getJitterX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12590,8 +12590,8 @@ bool js_register_spine_JitterVertexEffect(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_SwirlVertexEffect_proto = nullptr;
-se::Class* __jsb_spine_SwirlVertexEffect_class = nullptr;
+se::Object* __jsb_spine_SwirlVertexEffect_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_SwirlVertexEffect_class = nullptr;  // NOLINT
 
 static bool js_spine_SwirlVertexEffect_getAngle(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12848,8 +12848,8 @@ bool js_register_spine_SwirlVertexEffect(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_VertexEffectDelegate_proto = nullptr;
-se::Class* __jsb_spine_VertexEffectDelegate_class = nullptr;
+se::Object* __jsb_spine_VertexEffectDelegate_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_VertexEffectDelegate_class = nullptr;  // NOLINT
 
 static bool js_spine_VertexEffectDelegate_clear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13056,8 +13056,8 @@ bool js_register_spine_VertexEffectDelegate(se::Object* obj) // NOLINT(readabili
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_SkeletonRenderer_proto = nullptr;
-se::Class* __jsb_spine_SkeletonRenderer_class = nullptr;
+se::Object* __jsb_spine_SkeletonRenderer_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_SkeletonRenderer_class = nullptr;  // NOLINT
 
 static bool js_spine_SkeletonRenderer_beginSchedule(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14010,8 +14010,8 @@ bool js_register_spine_SkeletonRenderer(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_SkeletonAnimation_proto = nullptr;
-se::Class* __jsb_spine_SkeletonAnimation_class = nullptr;
+se::Object* __jsb_spine_SkeletonAnimation_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_SkeletonAnimation_class = nullptr;  // NOLINT
 
 static bool js_spine_SkeletonAnimation_addAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14902,7 +14902,7 @@ static bool js_spine_SkeletonAnimation_setTrackStartListener(se::State& s) // NO
 }
 SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackStartListener)
 
-static bool js_spine_SkeletonAnimation_create(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_spine_SkeletonAnimation_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -14918,9 +14918,9 @@ static bool js_spine_SkeletonAnimation_create(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_create)
+SE_BIND_FUNC(js_spine_SkeletonAnimation_create_static)
 
-static bool js_spine_SkeletonAnimation_createWithJsonFile(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_spine_SkeletonAnimation_createWithJsonFile_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -14930,7 +14930,7 @@ static bool js_spine_SkeletonAnimation_createWithJsonFile(se::State& s) // NOLIN
         HolderType<std::string, true> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_createWithJsonFile : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_createWithJsonFile_static : Error processing arguments");
         auto result = spine::SkeletonAnimation::createWithJsonFile(arg0.value(), arg1.value());
         result->retain();
         auto obj = se::Object::createObjectWithClass(__jsb_spine_SkeletonAnimation_class);
@@ -14945,7 +14945,7 @@ static bool js_spine_SkeletonAnimation_createWithJsonFile(se::State& s) // NOLIN
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
         ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_createWithJsonFile : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_createWithJsonFile_static : Error processing arguments");
         auto result = spine::SkeletonAnimation::createWithJsonFile(arg0.value(), arg1.value(), arg2.value());
         result->retain();
         auto obj = se::Object::createObjectWithClass(__jsb_spine_SkeletonAnimation_class);
@@ -14956,9 +14956,9 @@ static bool js_spine_SkeletonAnimation_createWithJsonFile(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_createWithJsonFile)
+SE_BIND_FUNC(js_spine_SkeletonAnimation_createWithJsonFile_static)
 
-static bool js_spine_SkeletonAnimation_createWithBinaryFile(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_spine_SkeletonAnimation_createWithBinaryFile_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -14968,7 +14968,7 @@ static bool js_spine_SkeletonAnimation_createWithBinaryFile(se::State& s) // NOL
         HolderType<std::string, true> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_createWithBinaryFile : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_createWithBinaryFile_static : Error processing arguments");
         auto result = spine::SkeletonAnimation::createWithBinaryFile(arg0.value(), arg1.value());
         result->retain();
         auto obj = se::Object::createObjectWithClass(__jsb_spine_SkeletonAnimation_class);
@@ -14983,7 +14983,7 @@ static bool js_spine_SkeletonAnimation_createWithBinaryFile(se::State& s) // NOL
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
         ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_createWithBinaryFile : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_createWithBinaryFile_static : Error processing arguments");
         auto result = spine::SkeletonAnimation::createWithBinaryFile(arg0.value(), arg1.value(), arg2.value());
         result->retain();
         auto obj = se::Object::createObjectWithClass(__jsb_spine_SkeletonAnimation_class);
@@ -14994,9 +14994,9 @@ static bool js_spine_SkeletonAnimation_createWithBinaryFile(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_createWithBinaryFile)
+SE_BIND_FUNC(js_spine_SkeletonAnimation_createWithBinaryFile_static)
 
-static bool js_spine_SkeletonAnimation_setGlobalTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_spine_SkeletonAnimation_setGlobalTimeScale_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -15004,14 +15004,14 @@ static bool js_spine_SkeletonAnimation_setGlobalTimeScale(se::State& s) // NOLIN
     if (argc == 1) {
         HolderType<float, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_setGlobalTimeScale : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_spine_SkeletonAnimation_setGlobalTimeScale_static : Error processing arguments");
         spine::SkeletonAnimation::setGlobalTimeScale(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setGlobalTimeScale)
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setGlobalTimeScale_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_spine_SkeletonAnimation_finalize)
 
@@ -15071,10 +15071,10 @@ bool js_register_spine_SkeletonAnimation(se::Object* obj) // NOLINT(readability-
     cls->defineFunction("setTrackInterruptListener", _SE(js_spine_SkeletonAnimation_setTrackInterruptListener));
     cls->defineFunction("setTrackStartListener", _SE(js_spine_SkeletonAnimation_setTrackStartListener));
     cls->defineFunction("ctor", _SE(js_spine_SkeletonAnimation_ctor));
-    cls->defineStaticFunction("create", _SE(js_spine_SkeletonAnimation_create));
-    cls->defineStaticFunction("createWithJsonFile", _SE(js_spine_SkeletonAnimation_createWithJsonFile));
-    cls->defineStaticFunction("createWithBinaryFile", _SE(js_spine_SkeletonAnimation_createWithBinaryFile));
-    cls->defineStaticFunction("setGlobalTimeScale", _SE(js_spine_SkeletonAnimation_setGlobalTimeScale));
+    cls->defineStaticFunction("create", _SE(js_spine_SkeletonAnimation_create_static));
+    cls->defineStaticFunction("createWithJsonFile", _SE(js_spine_SkeletonAnimation_createWithJsonFile_static));
+    cls->defineStaticFunction("createWithBinaryFile", _SE(js_spine_SkeletonAnimation_createWithBinaryFile_static));
+    cls->defineStaticFunction("setGlobalTimeScale", _SE(js_spine_SkeletonAnimation_setGlobalTimeScale_static));
     cls->defineFinalizeFunction(_SE(js_spine_SkeletonAnimation_finalize));
     cls->install();
     JSBClassType::registerClass<spine::SkeletonAnimation>(cls);
@@ -15086,8 +15086,8 @@ bool js_register_spine_SkeletonAnimation(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_SkeletonCacheAnimation_proto = nullptr;
-se::Class* __jsb_spine_SkeletonCacheAnimation_class = nullptr;
+se::Object* __jsb_spine_SkeletonCacheAnimation_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_SkeletonCacheAnimation_class = nullptr;  // NOLINT
 
 static bool js_spine_SkeletonCacheAnimation_addAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15922,8 +15922,8 @@ bool js_register_spine_SkeletonCacheAnimation(se::Object* obj) // NOLINT(readabi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_SkeletonCacheMgr_proto = nullptr;
-se::Class* __jsb_spine_SkeletonCacheMgr_class = nullptr;
+se::Object* __jsb_spine_SkeletonCacheMgr_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_SkeletonCacheMgr_class = nullptr;  // NOLINT
 
 static bool js_spine_SkeletonCacheMgr_buildSkeletonCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15966,7 +15966,7 @@ static bool js_spine_SkeletonCacheMgr_removeSkeletonCache(se::State& s) // NOLIN
 }
 SE_BIND_FUNC(js_spine_SkeletonCacheMgr_removeSkeletonCache)
 
-static bool js_spine_SkeletonCacheMgr_getInstance(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_spine_SkeletonCacheMgr_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -15974,16 +15974,16 @@ static bool js_spine_SkeletonCacheMgr_getInstance(se::State& s) // NOLINT(readab
     if (argc == 0) {
         spine::SkeletonCacheMgr* result = spine::SkeletonCacheMgr::getInstance();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_spine_SkeletonCacheMgr_getInstance : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_spine_SkeletonCacheMgr_getInstance_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheMgr_getInstance)
+SE_BIND_FUNC(js_spine_SkeletonCacheMgr_getInstance_static)
 
-static bool js_spine_SkeletonCacheMgr_destroyInstance(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_spine_SkeletonCacheMgr_destroyInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -15994,7 +15994,7 @@ static bool js_spine_SkeletonCacheMgr_destroyInstance(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheMgr_destroyInstance)
+SE_BIND_FUNC(js_spine_SkeletonCacheMgr_destroyInstance_static)
 
 
 static bool js_spine_SkeletonCacheMgr_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -16016,8 +16016,8 @@ bool js_register_spine_SkeletonCacheMgr(se::Object* obj) // NOLINT(readability-i
 
     cls->defineFunction("buildSkeletonCache", _SE(js_spine_SkeletonCacheMgr_buildSkeletonCache));
     cls->defineFunction("removeSkeletonCache", _SE(js_spine_SkeletonCacheMgr_removeSkeletonCache));
-    cls->defineStaticFunction("getInstance", _SE(js_spine_SkeletonCacheMgr_getInstance));
-    cls->defineStaticFunction("destroyInstance", _SE(js_spine_SkeletonCacheMgr_destroyInstance));
+    cls->defineStaticFunction("getInstance", _SE(js_spine_SkeletonCacheMgr_getInstance_static));
+    cls->defineStaticFunction("destroyInstance", _SE(js_spine_SkeletonCacheMgr_destroyInstance_static));
     cls->defineFinalizeFunction(_SE(js_spine_SkeletonCacheMgr_finalize));
     cls->install();
     JSBClassType::registerClass<spine::SkeletonCacheMgr>(cls);
@@ -16028,8 +16028,8 @@ bool js_register_spine_SkeletonCacheMgr(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_spine_SkeletonDataMgr_proto = nullptr;
-se::Class* __jsb_spine_SkeletonDataMgr_class = nullptr;
+se::Object* __jsb_spine_SkeletonDataMgr_proto = nullptr; // NOLINT
+se::Class* __jsb_spine_SkeletonDataMgr_class = nullptr;  // NOLINT
 
 static bool js_spine_SkeletonDataMgr_setDestroyCallback(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16079,7 +16079,7 @@ static bool js_spine_SkeletonDataMgr_setDestroyCallback(se::State& s) // NOLINT(
 }
 SE_BIND_FUNC(js_spine_SkeletonDataMgr_setDestroyCallback)
 
-static bool js_spine_SkeletonDataMgr_getInstance(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_spine_SkeletonDataMgr_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -16087,14 +16087,14 @@ static bool js_spine_SkeletonDataMgr_getInstance(se::State& s) // NOLINT(readabi
     if (argc == 0) {
         spine::SkeletonDataMgr* result = spine::SkeletonDataMgr::getInstance();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_spine_SkeletonDataMgr_getInstance : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_spine_SkeletonDataMgr_getInstance_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonDataMgr_getInstance)
+SE_BIND_FUNC(js_spine_SkeletonDataMgr_getInstance_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_spine_SkeletonDataMgr_finalize)
 
@@ -16127,7 +16127,7 @@ bool js_register_spine_SkeletonDataMgr(se::Object* obj) // NOLINT(readability-id
     auto* cls = se::Class::create("SkeletonDataMgr", obj, nullptr, _SE(js_spine_SkeletonDataMgr_constructor));
 
     cls->defineFunction("setDestroyCallback", _SE(js_spine_SkeletonDataMgr_setDestroyCallback));
-    cls->defineStaticFunction("getInstance", _SE(js_spine_SkeletonDataMgr_getInstance));
+    cls->defineStaticFunction("getInstance", _SE(js_spine_SkeletonDataMgr_getInstance_static));
     cls->defineFinalizeFunction(_SE(js_spine_SkeletonDataMgr_finalize));
     cls->install();
     JSBClassType::registerClass<spine::SkeletonDataMgr>(cls);
@@ -16138,7 +16138,7 @@ bool js_register_spine_SkeletonDataMgr(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_spine(se::Object* obj)
+bool register_all_spine(se::Object* obj)    // NOLINT
 {
     // Get the ns
     se::Value nsVal;

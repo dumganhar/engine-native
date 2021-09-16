@@ -11,8 +11,8 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_cc_gfx_Size_proto = nullptr;
-se::Class* __jsb_cc_gfx_Size_class = nullptr;
+se::Object* __jsb_cc_gfx_Size_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Size_class = nullptr;  // NOLINT
 
 static bool js_gfx_Size_get_x(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -212,8 +212,8 @@ bool js_register_gfx_Size(se::Object* obj) // NOLINT(readability-identifier-nami
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DeviceCaps_proto = nullptr;
-se::Class* __jsb_cc_gfx_DeviceCaps_class = nullptr;
+se::Object* __jsb_cc_gfx_DeviceCaps_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DeviceCaps_class = nullptr;  // NOLINT
 
 static bool js_gfx_DeviceCaps_get_maxVertexAttributes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1113,8 +1113,8 @@ bool js_register_gfx_DeviceCaps(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Offset_proto = nullptr;
-se::Class* __jsb_cc_gfx_Offset_class = nullptr;
+se::Object* __jsb_cc_gfx_Offset_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Offset_class = nullptr;  // NOLINT
 
 static bool js_gfx_Offset_get_x(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1314,8 +1314,8 @@ bool js_register_gfx_Offset(se::Object* obj) // NOLINT(readability-identifier-na
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Rect_proto = nullptr;
-se::Class* __jsb_cc_gfx_Rect_class = nullptr;
+se::Object* __jsb_cc_gfx_Rect_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Rect_class = nullptr;  // NOLINT
 
 static bool js_gfx_Rect_get_x(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1550,8 +1550,8 @@ bool js_register_gfx_Rect(se::Object* obj) // NOLINT(readability-identifier-nami
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Extent_proto = nullptr;
-se::Class* __jsb_cc_gfx_Extent_class = nullptr;
+se::Object* __jsb_cc_gfx_Extent_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Extent_class = nullptr;  // NOLINT
 
 static bool js_gfx_Extent_get_width(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1751,8 +1751,8 @@ bool js_register_gfx_Extent(se::Object* obj) // NOLINT(readability-identifier-na
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_TextureSubresLayers_proto = nullptr;
-se::Class* __jsb_cc_gfx_TextureSubresLayers_class = nullptr;
+se::Object* __jsb_cc_gfx_TextureSubresLayers_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_TextureSubresLayers_class = nullptr;  // NOLINT
 
 static bool js_gfx_TextureSubresLayers_get_mipLevel(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1952,8 +1952,8 @@ bool js_register_gfx_TextureSubresLayers(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_TextureSubresRange_proto = nullptr;
-se::Class* __jsb_cc_gfx_TextureSubresRange_class = nullptr;
+se::Object* __jsb_cc_gfx_TextureSubresRange_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_TextureSubresRange_class = nullptr;  // NOLINT
 
 static bool js_gfx_TextureSubresRange_get_baseMipLevel(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2188,8 +2188,8 @@ bool js_register_gfx_TextureSubresRange(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_TextureCopy_proto = nullptr;
-se::Class* __jsb_cc_gfx_TextureCopy_class = nullptr;
+se::Object* __jsb_cc_gfx_TextureCopy_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_TextureCopy_class = nullptr;  // NOLINT
 
 static bool js_gfx_TextureCopy_get_srcSubres(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2459,8 +2459,8 @@ bool js_register_gfx_TextureCopy(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_TextureBlit_proto = nullptr;
-se::Class* __jsb_cc_gfx_TextureBlit_class = nullptr;
+se::Object* __jsb_cc_gfx_TextureBlit_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_TextureBlit_class = nullptr;  // NOLINT
 
 static bool js_gfx_TextureBlit_get_srcSubres(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2765,8 +2765,8 @@ bool js_register_gfx_TextureBlit(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_BufferTextureCopy_proto = nullptr;
-se::Class* __jsb_cc_gfx_BufferTextureCopy_class = nullptr;
+se::Object* __jsb_cc_gfx_BufferTextureCopy_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_BufferTextureCopy_class = nullptr;  // NOLINT
 
 static bool js_gfx_BufferTextureCopy_get_buffStride(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3036,8 +3036,8 @@ bool js_register_gfx_BufferTextureCopy(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Viewport_proto = nullptr;
-se::Class* __jsb_cc_gfx_Viewport_class = nullptr;
+se::Object* __jsb_cc_gfx_Viewport_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Viewport_class = nullptr;  // NOLINT
 
 static bool js_gfx_Viewport_get_left(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3342,8 +3342,8 @@ bool js_register_gfx_Viewport(se::Object* obj) // NOLINT(readability-identifier-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Color_proto = nullptr;
-se::Class* __jsb_cc_gfx_Color_class = nullptr;
+se::Object* __jsb_cc_gfx_Color_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Color_class = nullptr;  // NOLINT
 
 static bool js_gfx_Color_get_x(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3578,8 +3578,8 @@ bool js_register_gfx_Color(se::Object* obj) // NOLINT(readability-identifier-nam
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_BindingMappingInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_BindingMappingInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_BindingMappingInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_BindingMappingInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_BindingMappingInfo_get_bufferOffsets(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3779,8 +3779,8 @@ bool js_register_gfx_BindingMappingInfo(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_BufferInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_BufferInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_BufferInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_BufferInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_BufferInfo_get_usage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4050,8 +4050,8 @@ bool js_register_gfx_BufferInfo(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_BufferViewInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_BufferViewInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_BufferViewInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_BufferViewInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_BufferViewInfo_get_buffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4251,8 +4251,8 @@ bool js_register_gfx_BufferViewInfo(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DrawInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_DrawInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_DrawInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DrawInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_DrawInfo_get_vertexCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4592,8 +4592,8 @@ bool js_register_gfx_DrawInfo(se::Object* obj) // NOLINT(readability-identifier-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DispatchInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_DispatchInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_DispatchInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DispatchInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_DispatchInfo_get_groupCountX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4863,8 +4863,8 @@ bool js_register_gfx_DispatchInfo(se::Object* obj) // NOLINT(readability-identif
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_IndirectBuffer_proto = nullptr;
-se::Class* __jsb_cc_gfx_IndirectBuffer_class = nullptr;
+se::Object* __jsb_cc_gfx_IndirectBuffer_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_IndirectBuffer_class = nullptr;  // NOLINT
 
 static bool js_gfx_IndirectBuffer_get_drawInfos(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4976,8 +4976,8 @@ bool js_register_gfx_IndirectBuffer(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_TextureInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_TextureInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_TextureInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_TextureInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_TextureInfo_get_type(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5422,8 +5422,8 @@ bool js_register_gfx_TextureInfo(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_TextureViewInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_TextureViewInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_TextureViewInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_TextureViewInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_TextureViewInfo_get_texture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5763,8 +5763,8 @@ bool js_register_gfx_TextureViewInfo(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_SamplerInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_SamplerInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_SamplerInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_SamplerInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_SamplerInfo_get_minFilter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6209,8 +6209,8 @@ bool js_register_gfx_SamplerInfo(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Uniform_proto = nullptr;
-se::Class* __jsb_cc_gfx_Uniform_class = nullptr;
+se::Object* __jsb_cc_gfx_Uniform_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Uniform_class = nullptr;  // NOLINT
 
 static bool js_gfx_Uniform_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6410,8 +6410,8 @@ bool js_register_gfx_Uniform(se::Object* obj) // NOLINT(readability-identifier-n
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_UniformBlock_proto = nullptr;
-se::Class* __jsb_cc_gfx_UniformBlock_class = nullptr;
+se::Object* __jsb_cc_gfx_UniformBlock_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_UniformBlock_class = nullptr;  // NOLINT
 
 static bool js_gfx_UniformBlock_get_set(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6681,8 +6681,8 @@ bool js_register_gfx_UniformBlock(se::Object* obj) // NOLINT(readability-identif
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_UniformSamplerTexture_proto = nullptr;
-se::Class* __jsb_cc_gfx_UniformSamplerTexture_class = nullptr;
+se::Object* __jsb_cc_gfx_UniformSamplerTexture_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_UniformSamplerTexture_class = nullptr;  // NOLINT
 
 static bool js_gfx_UniformSamplerTexture_get_set(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6952,8 +6952,8 @@ bool js_register_gfx_UniformSamplerTexture(se::Object* obj) // NOLINT(readabilit
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_UniformSampler_proto = nullptr;
-se::Class* __jsb_cc_gfx_UniformSampler_class = nullptr;
+se::Object* __jsb_cc_gfx_UniformSampler_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_UniformSampler_class = nullptr;  // NOLINT
 
 static bool js_gfx_UniformSampler_get_set(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7188,8 +7188,8 @@ bool js_register_gfx_UniformSampler(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_UniformTexture_proto = nullptr;
-se::Class* __jsb_cc_gfx_UniformTexture_class = nullptr;
+se::Object* __jsb_cc_gfx_UniformTexture_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_UniformTexture_class = nullptr;  // NOLINT
 
 static bool js_gfx_UniformTexture_get_set(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7459,8 +7459,8 @@ bool js_register_gfx_UniformTexture(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_UniformStorageImage_proto = nullptr;
-se::Class* __jsb_cc_gfx_UniformStorageImage_class = nullptr;
+se::Object* __jsb_cc_gfx_UniformStorageImage_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_UniformStorageImage_class = nullptr;  // NOLINT
 
 static bool js_gfx_UniformStorageImage_get_set(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7765,8 +7765,8 @@ bool js_register_gfx_UniformStorageImage(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_UniformStorageBuffer_proto = nullptr;
-se::Class* __jsb_cc_gfx_UniformStorageBuffer_class = nullptr;
+se::Object* __jsb_cc_gfx_UniformStorageBuffer_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_UniformStorageBuffer_class = nullptr;  // NOLINT
 
 static bool js_gfx_UniformStorageBuffer_get_set(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8036,8 +8036,8 @@ bool js_register_gfx_UniformStorageBuffer(se::Object* obj) // NOLINT(readability
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_UniformInputAttachment_proto = nullptr;
-se::Class* __jsb_cc_gfx_UniformInputAttachment_class = nullptr;
+se::Object* __jsb_cc_gfx_UniformInputAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_UniformInputAttachment_class = nullptr;  // NOLINT
 
 static bool js_gfx_UniformInputAttachment_get_set(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8272,8 +8272,8 @@ bool js_register_gfx_UniformInputAttachment(se::Object* obj) // NOLINT(readabili
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_ShaderStage_proto = nullptr;
-se::Class* __jsb_cc_gfx_ShaderStage_class = nullptr;
+se::Object* __jsb_cc_gfx_ShaderStage_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_ShaderStage_class = nullptr;  // NOLINT
 
 static bool js_gfx_ShaderStage_get_stage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8438,8 +8438,8 @@ bool js_register_gfx_ShaderStage(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Attribute_proto = nullptr;
-se::Class* __jsb_cc_gfx_Attribute_class = nullptr;
+se::Object* __jsb_cc_gfx_Attribute_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Attribute_class = nullptr;  // NOLINT
 
 static bool js_gfx_Attribute_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8744,8 +8744,8 @@ bool js_register_gfx_Attribute(se::Object* obj) // NOLINT(readability-identifier
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_ShaderInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_ShaderInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_ShaderInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_ShaderInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_ShaderInfo_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9190,8 +9190,8 @@ bool js_register_gfx_ShaderInfo(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_InputAssemblerInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_InputAssemblerInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_InputAssemblerInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_InputAssemblerInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_InputAssemblerInfo_get_attributes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9426,8 +9426,8 @@ bool js_register_gfx_InputAssemblerInfo(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_ColorAttachment_proto = nullptr;
-se::Class* __jsb_cc_gfx_ColorAttachment_class = nullptr;
+se::Object* __jsb_cc_gfx_ColorAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_ColorAttachment_class = nullptr;  // NOLINT
 
 static bool js_gfx_ColorAttachment_get_format(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9767,8 +9767,8 @@ bool js_register_gfx_ColorAttachment(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DepthStencilAttachment_proto = nullptr;
-se::Class* __jsb_cc_gfx_DepthStencilAttachment_class = nullptr;
+se::Object* __jsb_cc_gfx_DepthStencilAttachment_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DepthStencilAttachment_class = nullptr;  // NOLINT
 
 static bool js_gfx_DepthStencilAttachment_get_format(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10178,8 +10178,8 @@ bool js_register_gfx_DepthStencilAttachment(se::Object* obj) // NOLINT(readabili
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_SubpassInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_SubpassInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_SubpassInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_SubpassInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_SubpassInfo_get_inputs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10554,8 +10554,8 @@ bool js_register_gfx_SubpassInfo(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_SubpassDependency_proto = nullptr;
-se::Class* __jsb_cc_gfx_SubpassDependency_class = nullptr;
+se::Object* __jsb_cc_gfx_SubpassDependency_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_SubpassDependency_class = nullptr;  // NOLINT
 
 static bool js_gfx_SubpassDependency_get_srcSubpass(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10790,8 +10790,8 @@ bool js_register_gfx_SubpassDependency(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_RenderPassInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_RenderPassInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_RenderPassInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_RenderPassInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_RenderPassInfo_get_colorAttachments(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11026,8 +11026,8 @@ bool js_register_gfx_RenderPassInfo(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_GlobalBarrierInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_GlobalBarrierInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_GlobalBarrierInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_GlobalBarrierInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_GlobalBarrierInfo_get_prevAccesses(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11192,8 +11192,8 @@ bool js_register_gfx_GlobalBarrierInfo(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_TextureBarrierInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_TextureBarrierInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_TextureBarrierInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_TextureBarrierInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_TextureBarrierInfo_get_prevAccesses(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11463,8 +11463,8 @@ bool js_register_gfx_TextureBarrierInfo(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_FramebufferInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_FramebufferInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_FramebufferInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_FramebufferInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_FramebufferInfo_get_renderPass(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11664,8 +11664,8 @@ bool js_register_gfx_FramebufferInfo(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DescriptorSetLayoutBinding_proto = nullptr;
-se::Class* __jsb_cc_gfx_DescriptorSetLayoutBinding_class = nullptr;
+se::Object* __jsb_cc_gfx_DescriptorSetLayoutBinding_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DescriptorSetLayoutBinding_class = nullptr;  // NOLINT
 
 static bool js_gfx_DescriptorSetLayoutBinding_get_binding(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11935,8 +11935,8 @@ bool js_register_gfx_DescriptorSetLayoutBinding(se::Object* obj) // NOLINT(reada
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DescriptorSetLayoutInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_DescriptorSetLayoutInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_DescriptorSetLayoutInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DescriptorSetLayoutInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_DescriptorSetLayoutInfo_get_bindings(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12048,8 +12048,8 @@ bool js_register_gfx_DescriptorSetLayoutInfo(se::Object* obj) // NOLINT(readabil
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DescriptorSetInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_DescriptorSetInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_DescriptorSetInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DescriptorSetInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_DescriptorSetInfo_get_layout(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12161,8 +12161,8 @@ bool js_register_gfx_DescriptorSetInfo(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_PipelineLayoutInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_PipelineLayoutInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_PipelineLayoutInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_PipelineLayoutInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_PipelineLayoutInfo_get_setLayouts(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12274,8 +12274,8 @@ bool js_register_gfx_PipelineLayoutInfo(se::Object* obj) // NOLINT(readability-i
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_InputState_proto = nullptr;
-se::Class* __jsb_cc_gfx_InputState_class = nullptr;
+se::Object* __jsb_cc_gfx_InputState_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_InputState_class = nullptr;  // NOLINT
 
 static bool js_gfx_InputState_get_attributes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12387,8 +12387,23 @@ bool js_register_gfx_InputState(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_RasterizerState_proto = nullptr;
-se::Class* __jsb_cc_gfx_RasterizerState_class = nullptr;
+se::Object* __jsb_cc_gfx_RasterizerState_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_RasterizerState_class = nullptr;  // NOLINT
+
+static bool js_gfx_RasterizerState_reset(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::gfx::RasterizerState>(s);
+    SE_PRECONDITION2(cobj, false, "js_gfx_RasterizerState_reset : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->reset();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_gfx_RasterizerState_reset)
 
 static bool js_gfx_RasterizerState_get_isDiscard(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12893,6 +12908,7 @@ bool js_register_gfx_RasterizerState(se::Object* obj) // NOLINT(readability-iden
     cls->defineProperty("isDepthClip", _SE(js_gfx_RasterizerState_get_isDepthClip), _SE(js_gfx_RasterizerState_set_isDepthClip));
     cls->defineProperty("isMultisample", _SE(js_gfx_RasterizerState_get_isMultisample), _SE(js_gfx_RasterizerState_set_isMultisample));
     cls->defineProperty("lineWidth", _SE(js_gfx_RasterizerState_get_lineWidth), _SE(js_gfx_RasterizerState_set_lineWidth));
+    cls->defineFunction("reset", _SE(js_gfx_RasterizerState_reset));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_RasterizerState_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::RasterizerState>(cls);
@@ -12903,8 +12919,23 @@ bool js_register_gfx_RasterizerState(se::Object* obj) // NOLINT(readability-iden
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DepthStencilState_proto = nullptr;
-se::Class* __jsb_cc_gfx_DepthStencilState_class = nullptr;
+se::Object* __jsb_cc_gfx_DepthStencilState_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DepthStencilState_class = nullptr;  // NOLINT
+
+static bool js_gfx_DepthStencilState_reset(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::gfx::DepthStencilState>(s);
+    SE_PRECONDITION2(cobj, false, "js_gfx_DepthStencilState_reset : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->reset();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_gfx_DepthStencilState_reset)
 
 static bool js_gfx_DepthStencilState_get_depthTest(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13654,6 +13685,7 @@ bool js_register_gfx_DepthStencilState(se::Object* obj) // NOLINT(readability-id
     cls->defineProperty("stencilZFailOpBack", _SE(js_gfx_DepthStencilState_get_stencilZFailOpBack), _SE(js_gfx_DepthStencilState_set_stencilZFailOpBack));
     cls->defineProperty("stencilPassOpBack", _SE(js_gfx_DepthStencilState_get_stencilPassOpBack), _SE(js_gfx_DepthStencilState_set_stencilPassOpBack));
     cls->defineProperty("stencilRefBack", _SE(js_gfx_DepthStencilState_get_stencilRefBack), _SE(js_gfx_DepthStencilState_set_stencilRefBack));
+    cls->defineFunction("reset", _SE(js_gfx_DepthStencilState_reset));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_DepthStencilState_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::DepthStencilState>(cls);
@@ -13664,8 +13696,8 @@ bool js_register_gfx_DepthStencilState(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_BlendTarget_proto = nullptr;
-se::Class* __jsb_cc_gfx_BlendTarget_class = nullptr;
+se::Object* __jsb_cc_gfx_BlendTarget_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_BlendTarget_class = nullptr;  // NOLINT
 
 static bool js_gfx_BlendTarget_get_blend(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14040,8 +14072,59 @@ bool js_register_gfx_BlendTarget(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_BlendState_proto = nullptr;
-se::Class* __jsb_cc_gfx_BlendState_class = nullptr;
+se::Object* __jsb_cc_gfx_BlendState_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_BlendState_class = nullptr;  // NOLINT
+
+static bool js_gfx_BlendState_destroy(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::gfx::BlendState>(s);
+    SE_PRECONDITION2(cobj, false, "js_gfx_BlendState_destroy : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->destroy();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_gfx_BlendState_destroy)
+
+static bool js_gfx_BlendState_reset(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::gfx::BlendState>(s);
+    SE_PRECONDITION2(cobj, false, "js_gfx_BlendState_reset : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->reset();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_gfx_BlendState_reset)
+
+static bool js_gfx_BlendState_setTarget(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::gfx::BlendState>(s);
+    SE_PRECONDITION2(cobj, false, "js_gfx_BlendState_setTarget : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        HolderType<int, false> arg0 = {};
+        HolderType<cc::gfx::BlendTarget, true> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_gfx_BlendState_setTarget : Error processing arguments");
+        cobj->setTarget(arg0.value(), arg1.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_gfx_BlendState_setTarget)
 
 static bool js_gfx_BlendState_get_isA2C(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14266,6 +14349,9 @@ bool js_register_gfx_BlendState(se::Object* obj) // NOLINT(readability-identifie
     cls->defineProperty("isIndepend", _SE(js_gfx_BlendState_get_isIndepend), _SE(js_gfx_BlendState_set_isIndepend));
     cls->defineProperty("blendColor", _SE(js_gfx_BlendState_get_blendColor), _SE(js_gfx_BlendState_set_blendColor));
     cls->defineProperty("targets", _SE(js_gfx_BlendState_get_targets), _SE(js_gfx_BlendState_set_targets));
+    cls->defineFunction("destroy", _SE(js_gfx_BlendState_destroy));
+    cls->defineFunction("reset", _SE(js_gfx_BlendState_reset));
+    cls->defineFunction("setTarget", _SE(js_gfx_BlendState_setTarget));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_BlendState_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::BlendState>(cls);
@@ -14276,8 +14362,8 @@ bool js_register_gfx_BlendState(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_PipelineStateInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_PipelineStateInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_PipelineStateInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_PipelineStateInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_PipelineStateInfo_get_shader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14757,8 +14843,8 @@ bool js_register_gfx_PipelineStateInfo(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_CommandBufferInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_CommandBufferInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_CommandBufferInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_CommandBufferInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_CommandBufferInfo_get_queue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14923,8 +15009,8 @@ bool js_register_gfx_CommandBufferInfo(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_QueueInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_QueueInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_QueueInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_QueueInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_QueueInfo_get_type(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15036,8 +15122,8 @@ bool js_register_gfx_QueueInfo(se::Object* obj) // NOLINT(readability-identifier
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_MemoryStatus_proto = nullptr;
-se::Class* __jsb_cc_gfx_MemoryStatus_class = nullptr;
+se::Object* __jsb_cc_gfx_MemoryStatus_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_MemoryStatus_class = nullptr;  // NOLINT
 
 static bool js_gfx_MemoryStatus_get_bufferSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15202,8 +15288,8 @@ bool js_register_gfx_MemoryStatus(se::Object* obj) // NOLINT(readability-identif
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DeviceInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_DeviceInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_DeviceInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DeviceInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_DeviceInfo_get_isAntiAlias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15508,8 +15594,8 @@ bool js_register_gfx_DeviceInfo(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_ContextInfo_proto = nullptr;
-se::Class* __jsb_cc_gfx_ContextInfo_class = nullptr;
+se::Object* __jsb_cc_gfx_ContextInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_ContextInfo_class = nullptr;  // NOLINT
 
 static bool js_gfx_ContextInfo_get_msaaEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15779,8 +15865,8 @@ bool js_register_gfx_ContextInfo(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_GFXObject_proto = nullptr;
-se::Class* __jsb_cc_gfx_GFXObject_class = nullptr;
+se::Object* __jsb_cc_gfx_GFXObject_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_GFXObject_class = nullptr;  // NOLINT
 
 static bool js_gfx_GFXObject_getObjectID(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15839,6 +15925,21 @@ static bool js_gfx_GFXObject_getTypedID(se::State& s) // NOLINT(readability-iden
 }
 SE_BIND_PROP_GET(js_gfx_GFXObject_getTypedID)
 
+static bool js_gfx_GFXObject_resizeObjectID(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::gfx::GFXObject>(s);
+    SE_PRECONDITION2(cobj, false, "js_gfx_GFXObject_resizeObjectID : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->resizeObjectID();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_gfx_GFXObject_resizeObjectID)
+
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_GFXObject_finalize)
 
 static bool js_gfx_GFXObject_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor.c
@@ -15877,6 +15978,7 @@ bool js_register_gfx_GFXObject(se::Object* obj) // NOLINT(readability-identifier
     cls->defineProperty("objectType", _SE(js_gfx_GFXObject_getObjectType), nullptr);
     cls->defineProperty("objectID", _SE(js_gfx_GFXObject_getObjectID), nullptr);
     cls->defineProperty("typedID", _SE(js_gfx_GFXObject_getTypedID), nullptr);
+    cls->defineFunction("resizeObjectID", _SE(js_gfx_GFXObject_resizeObjectID));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_GFXObject_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::GFXObject>(cls);
@@ -15887,8 +15989,8 @@ bool js_register_gfx_GFXObject(se::Object* obj) // NOLINT(readability-identifier
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Buffer_proto = nullptr;
-se::Class* __jsb_cc_gfx_Buffer_class = nullptr;
+se::Object* __jsb_cc_gfx_Buffer_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Buffer_class = nullptr;  // NOLINT
 
 static bool js_gfx_Buffer_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16057,7 +16159,7 @@ static bool js_gfx_Buffer_resize(se::State& s) // NOLINT(readability-identifier-
 }
 SE_BIND_FUNC(js_gfx_Buffer_resize)
 
-static bool js_gfx_Buffer_computeHash(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_gfx_Buffer_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -16065,17 +16167,17 @@ static bool js_gfx_Buffer_computeHash(se::State& s) // NOLINT(readability-identi
     if (argc == 1) {
         HolderType<cc::gfx::BufferInfo, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_gfx_Buffer_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_Buffer_computeHash_static : Error processing arguments");
         unsigned int result = cc::gfx::Buffer::computeHash(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_gfx_Buffer_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_Buffer_computeHash_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Buffer_computeHash)
+SE_BIND_FUNC(js_gfx_Buffer_computeHash_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_Buffer_finalize)
 
@@ -16115,7 +16217,7 @@ bool js_register_gfx_Buffer(se::Object* obj) // NOLINT(readability-identifier-na
     cls->defineFunction("destroy", _SE(js_gfx_Buffer_destroy));
     cls->defineFunction("isBufferView", _SE(js_gfx_Buffer_isBufferView));
     cls->defineFunction("resize", _SE(js_gfx_Buffer_resize));
-    cls->defineStaticFunction("computeHash", _SE(js_gfx_Buffer_computeHash));
+    cls->defineStaticFunction("computeHash", _SE(js_gfx_Buffer_computeHash_static));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_Buffer_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::Buffer>(cls);
@@ -16126,8 +16228,8 @@ bool js_register_gfx_Buffer(se::Object* obj) // NOLINT(readability-identifier-na
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_InputAssembler_proto = nullptr;
-se::Class* __jsb_cc_gfx_InputAssembler_class = nullptr;
+se::Object* __jsb_cc_gfx_InputAssembler_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_InputAssembler_class = nullptr;  // NOLINT
 
 static bool js_gfx_InputAssembler_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16577,8 +16679,8 @@ bool js_register_gfx_InputAssembler(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_CommandBuffer_proto = nullptr;
-se::Class* __jsb_cc_gfx_CommandBuffer_class = nullptr;
+se::Object* __jsb_cc_gfx_CommandBuffer_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_CommandBuffer_class = nullptr;  // NOLINT
 
 static bool js_gfx_CommandBuffer_begin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17362,8 +17464,8 @@ bool js_register_gfx_CommandBuffer(se::Object* obj) // NOLINT(readability-identi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Context_proto = nullptr;
-se::Class* __jsb_cc_gfx_Context_class = nullptr;
+se::Object* __jsb_cc_gfx_Context_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Context_class = nullptr;  // NOLINT
 
 static bool js_gfx_Context_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17539,8 +17641,8 @@ bool js_register_gfx_Context(se::Object* obj) // NOLINT(readability-identifier-n
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DescriptorSet_proto = nullptr;
-se::Class* __jsb_cc_gfx_DescriptorSet_class = nullptr;
+se::Object* __jsb_cc_gfx_DescriptorSet_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DescriptorSet_class = nullptr;  // NOLINT
 
 static bool js_gfx_DescriptorSet_bindBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17998,8 +18100,8 @@ bool js_register_gfx_DescriptorSet(se::Object* obj) // NOLINT(readability-identi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DescriptorSetLayout_proto = nullptr;
-se::Class* __jsb_cc_gfx_DescriptorSetLayout_class = nullptr;
+se::Object* __jsb_cc_gfx_DescriptorSetLayout_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DescriptorSetLayout_class = nullptr;  // NOLINT
 
 static bool js_gfx_DescriptorSetLayout_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18136,8 +18238,8 @@ bool js_register_gfx_DescriptorSetLayout(se::Object* obj) // NOLINT(readability-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Framebuffer_proto = nullptr;
-se::Class* __jsb_cc_gfx_Framebuffer_class = nullptr;
+se::Object* __jsb_cc_gfx_Framebuffer_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Framebuffer_class = nullptr;  // NOLINT
 
 static bool js_gfx_Framebuffer_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18230,7 +18332,7 @@ static bool js_gfx_Framebuffer_initialize(se::State& s) // NOLINT(readability-id
 }
 SE_BIND_FUNC(js_gfx_Framebuffer_initialize)
 
-static bool js_gfx_Framebuffer_computeHash(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_gfx_Framebuffer_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -18238,17 +18340,17 @@ static bool js_gfx_Framebuffer_computeHash(se::State& s) // NOLINT(readability-i
     if (argc == 1) {
         HolderType<cc::gfx::FramebufferInfo, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_gfx_Framebuffer_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_Framebuffer_computeHash_static : Error processing arguments");
         unsigned int result = cc::gfx::Framebuffer::computeHash(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_gfx_Framebuffer_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_Framebuffer_computeHash_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Framebuffer_computeHash)
+SE_BIND_FUNC(js_gfx_Framebuffer_computeHash_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_Framebuffer_finalize)
 
@@ -18284,7 +18386,7 @@ bool js_register_gfx_Framebuffer(se::Object* obj) // NOLINT(readability-identifi
     cls->defineProperty("depthStencilTexture", _SE(js_gfx_Framebuffer_getDepthStencilTexture), nullptr);
     cls->defineFunction("destroy", _SE(js_gfx_Framebuffer_destroy));
     cls->defineFunction("initialize", _SE(js_gfx_Framebuffer_initialize));
-    cls->defineStaticFunction("computeHash", _SE(js_gfx_Framebuffer_computeHash));
+    cls->defineStaticFunction("computeHash", _SE(js_gfx_Framebuffer_computeHash_static));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_Framebuffer_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::Framebuffer>(cls);
@@ -18295,8 +18397,8 @@ bool js_register_gfx_Framebuffer(se::Object* obj) // NOLINT(readability-identifi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_GlobalBarrier_proto = nullptr;
-se::Class* __jsb_cc_gfx_GlobalBarrier_class = nullptr;
+se::Object* __jsb_cc_gfx_GlobalBarrier_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_GlobalBarrier_class = nullptr;  // NOLINT
 
 static bool js_gfx_GlobalBarrier_info(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18317,7 +18419,7 @@ static bool js_gfx_GlobalBarrier_info(se::State& s) // NOLINT(readability-identi
 }
 SE_BIND_FUNC(js_gfx_GlobalBarrier_info)
 
-static bool js_gfx_GlobalBarrier_computeHash(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_gfx_GlobalBarrier_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -18325,17 +18427,17 @@ static bool js_gfx_GlobalBarrier_computeHash(se::State& s) // NOLINT(readability
     if (argc == 1) {
         HolderType<cc::gfx::GlobalBarrierInfo, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_gfx_GlobalBarrier_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_GlobalBarrier_computeHash_static : Error processing arguments");
         unsigned int result = cc::gfx::GlobalBarrier::computeHash(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_gfx_GlobalBarrier_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_GlobalBarrier_computeHash_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_GlobalBarrier_computeHash)
+SE_BIND_FUNC(js_gfx_GlobalBarrier_computeHash_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_GlobalBarrier_finalize)
 
@@ -18368,7 +18470,7 @@ bool js_register_gfx_GlobalBarrier(se::Object* obj) // NOLINT(readability-identi
     auto* cls = se::Class::create("GlobalBarrier", obj, __jsb_cc_gfx_GFXObject_proto, _SE(js_gfx_GlobalBarrier_constructor));
 
     cls->defineFunction("info", _SE(js_gfx_GlobalBarrier_info));
-    cls->defineStaticFunction("computeHash", _SE(js_gfx_GlobalBarrier_computeHash));
+    cls->defineStaticFunction("computeHash", _SE(js_gfx_GlobalBarrier_computeHash_static));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_GlobalBarrier_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::GlobalBarrier>(cls);
@@ -18379,8 +18481,8 @@ bool js_register_gfx_GlobalBarrier(se::Object* obj) // NOLINT(readability-identi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_PipelineLayout_proto = nullptr;
-se::Class* __jsb_cc_gfx_PipelineLayout_class = nullptr;
+se::Object* __jsb_cc_gfx_PipelineLayout_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_PipelineLayout_class = nullptr;  // NOLINT
 
 static bool js_gfx_PipelineLayout_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18477,8 +18579,8 @@ bool js_register_gfx_PipelineLayout(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_PipelineState_proto = nullptr;
-se::Class* __jsb_cc_gfx_PipelineState_class = nullptr;
+se::Object* __jsb_cc_gfx_PipelineState_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_PipelineState_class = nullptr;  // NOLINT
 
 static bool js_gfx_PipelineState_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18755,8 +18857,8 @@ bool js_register_gfx_PipelineState(se::Object* obj) // NOLINT(readability-identi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Queue_proto = nullptr;
-se::Class* __jsb_cc_gfx_Queue_class = nullptr;
+se::Object* __jsb_cc_gfx_Queue_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Queue_class = nullptr;  // NOLINT
 
 static bool js_gfx_Queue_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18873,8 +18975,8 @@ bool js_register_gfx_Queue(se::Object* obj) // NOLINT(readability-identifier-nam
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_RenderPass_proto = nullptr;
-se::Class* __jsb_cc_gfx_RenderPass_class = nullptr;
+se::Object* __jsb_cc_gfx_RenderPass_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_RenderPass_class = nullptr;  // NOLINT
 
 static bool js_gfx_RenderPass_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18986,7 +19088,7 @@ static bool js_gfx_RenderPass_initialize(se::State& s) // NOLINT(readability-ide
 }
 SE_BIND_FUNC(js_gfx_RenderPass_initialize)
 
-static bool js_gfx_RenderPass_computeHash(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_gfx_RenderPass_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -18994,17 +19096,17 @@ static bool js_gfx_RenderPass_computeHash(se::State& s) // NOLINT(readability-id
     if (argc == 1) {
         HolderType<cc::gfx::RenderPassInfo, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_gfx_RenderPass_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_RenderPass_computeHash_static : Error processing arguments");
         unsigned int result = cc::gfx::RenderPass::computeHash(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_gfx_RenderPass_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_RenderPass_computeHash_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_RenderPass_computeHash)
+SE_BIND_FUNC(js_gfx_RenderPass_computeHash_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_RenderPass_finalize)
 
@@ -19041,7 +19143,7 @@ bool js_register_gfx_RenderPass(se::Object* obj) // NOLINT(readability-identifie
     cls->defineFunction("getDepthStencilAttachment", _SE(js_gfx_RenderPass_getDepthStencilAttachment));
     cls->defineFunction("getSubpasses", _SE(js_gfx_RenderPass_getSubpasses));
     cls->defineFunction("initialize", _SE(js_gfx_RenderPass_initialize));
-    cls->defineStaticFunction("computeHash", _SE(js_gfx_RenderPass_computeHash));
+    cls->defineStaticFunction("computeHash", _SE(js_gfx_RenderPass_computeHash_static));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_RenderPass_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::RenderPass>(cls);
@@ -19052,8 +19154,8 @@ bool js_register_gfx_RenderPass(se::Object* obj) // NOLINT(readability-identifie
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Sampler_proto = nullptr;
-se::Class* __jsb_cc_gfx_Sampler_class = nullptr;
+se::Object* __jsb_cc_gfx_Sampler_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Sampler_class = nullptr;  // NOLINT
 
 static bool js_gfx_Sampler_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19330,8 +19432,8 @@ bool js_register_gfx_Sampler(se::Object* obj) // NOLINT(readability-identifier-n
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Shader_proto = nullptr;
-se::Class* __jsb_cc_gfx_Shader_class = nullptr;
+se::Object* __jsb_cc_gfx_Shader_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Shader_class = nullptr;  // NOLINT
 
 static bool js_gfx_Shader_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19608,8 +19710,8 @@ bool js_register_gfx_Shader(se::Object* obj) // NOLINT(readability-identifier-na
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Texture_proto = nullptr;
-se::Class* __jsb_cc_gfx_Texture_class = nullptr;
+se::Object* __jsb_cc_gfx_Texture_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Texture_class = nullptr;  // NOLINT
 
 static bool js_gfx_Texture_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19875,7 +19977,7 @@ static bool js_gfx_Texture_resize(se::State& s) // NOLINT(readability-identifier
 }
 SE_BIND_FUNC(js_gfx_Texture_resize)
 
-static bool js_gfx_Texture_computeHash(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_gfx_Texture_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -19883,17 +19985,17 @@ static bool js_gfx_Texture_computeHash(se::State& s) // NOLINT(readability-ident
     if (argc == 1) {
         HolderType<cc::gfx::TextureInfo, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_gfx_Texture_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_Texture_computeHash_static : Error processing arguments");
         unsigned int result = cc::gfx::Texture::computeHash(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_gfx_Texture_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_Texture_computeHash_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Texture_computeHash)
+SE_BIND_FUNC(js_gfx_Texture_computeHash_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_Texture_finalize)
 
@@ -19938,7 +20040,7 @@ bool js_register_gfx_Texture(se::Object* obj) // NOLINT(readability-identifier-n
     cls->defineFunction("destroy", _SE(js_gfx_Texture_destroy));
     cls->defineFunction("isTextureView", _SE(js_gfx_Texture_isTextureView));
     cls->defineFunction("resize", _SE(js_gfx_Texture_resize));
-    cls->defineStaticFunction("computeHash", _SE(js_gfx_Texture_computeHash));
+    cls->defineStaticFunction("computeHash", _SE(js_gfx_Texture_computeHash_static));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_Texture_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::Texture>(cls);
@@ -19949,8 +20051,8 @@ bool js_register_gfx_Texture(se::Object* obj) // NOLINT(readability-identifier-n
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_TextureBarrier_proto = nullptr;
-se::Class* __jsb_cc_gfx_TextureBarrier_class = nullptr;
+se::Object* __jsb_cc_gfx_TextureBarrier_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_TextureBarrier_class = nullptr;  // NOLINT
 
 static bool js_gfx_TextureBarrier_info(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19971,7 +20073,7 @@ static bool js_gfx_TextureBarrier_info(se::State& s) // NOLINT(readability-ident
 }
 SE_BIND_FUNC(js_gfx_TextureBarrier_info)
 
-static bool js_gfx_TextureBarrier_computeHash(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_gfx_TextureBarrier_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -19979,17 +20081,17 @@ static bool js_gfx_TextureBarrier_computeHash(se::State& s) // NOLINT(readabilit
     if (argc == 1) {
         HolderType<cc::gfx::TextureBarrierInfo, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_gfx_TextureBarrier_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_TextureBarrier_computeHash_static : Error processing arguments");
         unsigned int result = cc::gfx::TextureBarrier::computeHash(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_gfx_TextureBarrier_computeHash : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_TextureBarrier_computeHash_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_TextureBarrier_computeHash)
+SE_BIND_FUNC(js_gfx_TextureBarrier_computeHash_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_TextureBarrier_finalize)
 
@@ -20022,7 +20124,7 @@ bool js_register_gfx_TextureBarrier(se::Object* obj) // NOLINT(readability-ident
     auto* cls = se::Class::create("TextureBarrier", obj, __jsb_cc_gfx_GFXObject_proto, _SE(js_gfx_TextureBarrier_constructor));
 
     cls->defineFunction("info", _SE(js_gfx_TextureBarrier_info));
-    cls->defineStaticFunction("computeHash", _SE(js_gfx_TextureBarrier_computeHash));
+    cls->defineStaticFunction("computeHash", _SE(js_gfx_TextureBarrier_computeHash_static));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_TextureBarrier_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::TextureBarrier>(cls);
@@ -20033,8 +20135,8 @@ bool js_register_gfx_TextureBarrier(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_Device_proto = nullptr;
-se::Class* __jsb_cc_gfx_Device_class = nullptr;
+se::Object* __jsb_cc_gfx_Device_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_Device_class = nullptr;  // NOLINT
 
 static bool js_gfx_Device_acquire(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20835,10 +20937,10 @@ bool js_register_gfx_Device(se::Object* obj) // NOLINT(readability-identifier-na
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_gfx_DeviceManager_proto = nullptr;
-se::Class* __jsb_cc_gfx_DeviceManager_class = nullptr;
+se::Object* __jsb_cc_gfx_DeviceManager_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_gfx_DeviceManager_class = nullptr;  // NOLINT
 
-static bool js_gfx_DeviceManager_create(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_gfx_DeviceManager_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -20846,19 +20948,19 @@ static bool js_gfx_DeviceManager_create(se::State& s) // NOLINT(readability-iden
     if (argc == 1) {
         HolderType<cc::gfx::DeviceInfo, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_gfx_DeviceManager_create : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_DeviceManager_create_static : Error processing arguments");
         cc::gfx::Device* result = cc::gfx::DeviceManager::create(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_gfx_DeviceManager_create : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_gfx_DeviceManager_create_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DeviceManager_create)
+SE_BIND_FUNC(js_gfx_DeviceManager_create_static)
 
-static bool js_gfx_DeviceManager_destroy(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_gfx_DeviceManager_destroy_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -20869,9 +20971,9 @@ static bool js_gfx_DeviceManager_destroy(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DeviceManager_destroy)
+SE_BIND_FUNC(js_gfx_DeviceManager_destroy_static)
 
-static bool js_gfx_DeviceManager_addCustomEvent(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_gfx_DeviceManager_addCustomEvent_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -20882,7 +20984,7 @@ static bool js_gfx_DeviceManager_addCustomEvent(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DeviceManager_addCustomEvent)
+SE_BIND_FUNC(js_gfx_DeviceManager_addCustomEvent_static)
 
 
 static bool js_cc_gfx_DeviceManager_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -20902,9 +21004,9 @@ bool js_register_gfx_DeviceManager(se::Object* obj) // NOLINT(readability-identi
 {
     auto* cls = se::Class::create("DeviceManager", obj, nullptr, nullptr);
 
-    cls->defineStaticFunction("create", _SE(js_gfx_DeviceManager_create));
-    cls->defineStaticFunction("destroy", _SE(js_gfx_DeviceManager_destroy));
-    cls->defineStaticFunction("addCustomEvent", _SE(js_gfx_DeviceManager_addCustomEvent));
+    cls->defineStaticFunction("create", _SE(js_gfx_DeviceManager_create_static));
+    cls->defineStaticFunction("destroy", _SE(js_gfx_DeviceManager_destroy_static));
+    cls->defineStaticFunction("addCustomEvent", _SE(js_gfx_DeviceManager_addCustomEvent_static));
     cls->defineFinalizeFunction(_SE(js_cc_gfx_DeviceManager_finalize));
     cls->install();
     JSBClassType::registerClass<cc::gfx::DeviceManager>(cls);
@@ -20915,7 +21017,7 @@ bool js_register_gfx_DeviceManager(se::Object* obj) // NOLINT(readability-identi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_gfx(se::Object* obj)
+bool register_all_gfx(se::Object* obj)    // NOLINT
 {
     // Get the ns
     se::Value nsVal;

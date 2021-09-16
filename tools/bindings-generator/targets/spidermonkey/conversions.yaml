@@ -2,7 +2,7 @@ definitions:
   # the names of the functions - we use this to generate the code and to register the functions in
   # the javascript class
   ifunction: "js_${generator.prefix}_${class_name}_${func_name}"
-  sfunction: "js_${generator.prefix}_${class_name}_${func_name}"
+  sfunction: "js_${generator.prefix}_${class_name}_${func_name}_static"
   constructor: "js_${generator.prefix}_${class_name}_constructor"
   ctor: "js_${generator.prefix}_${class_name}_ctor"
   public_field: "js_${generator.prefix}_${class_name}"

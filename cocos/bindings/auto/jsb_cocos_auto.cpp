@@ -13,8 +13,8 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_cc_FileUtils_proto = nullptr;
-se::Class* __jsb_cc_FileUtils_class = nullptr;
+se::Object* __jsb_cc_FileUtils_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_FileUtils_class = nullptr;  // NOLINT
 
 static bool js_engine_FileUtils_addSearchPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -739,7 +739,7 @@ static bool js_engine_FileUtils_writeValueVectorToFile(se::State& s) // NOLINT(r
 }
 SE_BIND_FUNC(js_engine_FileUtils_writeValueVectorToFile)
 
-static bool js_engine_FileUtils_getInstance(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_FileUtils_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -747,16 +747,16 @@ static bool js_engine_FileUtils_getInstance(se::State& s) // NOLINT(readability-
     if (argc == 0) {
         cc::FileUtils* result = cc::FileUtils::getInstance();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_getInstance : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_getInstance_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_engine_FileUtils_getInstance)
+SE_BIND_FUNC(js_engine_FileUtils_getInstance_static)
 
-static bool js_engine_FileUtils_setDelegate(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_FileUtils_setDelegate_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -764,16 +764,16 @@ static bool js_engine_FileUtils_setDelegate(se::State& s) // NOLINT(readability-
     if (argc == 1) {
         HolderType<cc::FileUtils*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_setDelegate : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_setDelegate_static : Error processing arguments");
         cc::FileUtils::setDelegate(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_engine_FileUtils_setDelegate)
+SE_BIND_FUNC(js_engine_FileUtils_setDelegate_static)
 
-static bool js_engine_FileUtils_normalizePath(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_FileUtils_normalizePath_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -781,19 +781,19 @@ static bool js_engine_FileUtils_normalizePath(se::State& s) // NOLINT(readabilit
     if (argc == 1) {
         HolderType<std::string, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_normalizePath : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_normalizePath_static : Error processing arguments");
         std::string result = cc::FileUtils::normalizePath(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_normalizePath : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_normalizePath_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_engine_FileUtils_normalizePath)
+SE_BIND_FUNC(js_engine_FileUtils_normalizePath_static)
 
-static bool js_engine_FileUtils_getFileDir(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_FileUtils_getFileDir_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -801,17 +801,17 @@ static bool js_engine_FileUtils_getFileDir(se::State& s) // NOLINT(readability-i
     if (argc == 1) {
         HolderType<std::string, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_getFileDir : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_getFileDir_static : Error processing arguments");
         std::string result = cc::FileUtils::getFileDir(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_getFileDir : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_FileUtils_getFileDir_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_engine_FileUtils_getFileDir)
+SE_BIND_FUNC(js_engine_FileUtils_getFileDir_static)
 
 
 static bool js_cc_FileUtils_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -863,10 +863,10 @@ bool js_register_engine_FileUtils(se::Object* obj) // NOLINT(readability-identif
     cls->defineFunction("writeToFile", _SE(js_engine_FileUtils_writeToFile));
     cls->defineFunction("writeValueMapToFile", _SE(js_engine_FileUtils_writeValueMapToFile));
     cls->defineFunction("writeValueVectorToFile", _SE(js_engine_FileUtils_writeValueVectorToFile));
-    cls->defineStaticFunction("getInstance", _SE(js_engine_FileUtils_getInstance));
-    cls->defineStaticFunction("setDelegate", _SE(js_engine_FileUtils_setDelegate));
-    cls->defineStaticFunction("normalizePath", _SE(js_engine_FileUtils_normalizePath));
-    cls->defineStaticFunction("getFileDir", _SE(js_engine_FileUtils_getFileDir));
+    cls->defineStaticFunction("getInstance", _SE(js_engine_FileUtils_getInstance_static));
+    cls->defineStaticFunction("setDelegate", _SE(js_engine_FileUtils_setDelegate_static));
+    cls->defineStaticFunction("normalizePath", _SE(js_engine_FileUtils_normalizePath_static));
+    cls->defineStaticFunction("getFileDir", _SE(js_engine_FileUtils_getFileDir_static));
     cls->defineFinalizeFunction(_SE(js_cc_FileUtils_finalize));
     cls->install();
     JSBClassType::registerClass<cc::FileUtils>(cls);
@@ -877,8 +877,8 @@ bool js_register_engine_FileUtils(se::Object* obj) // NOLINT(readability-identif
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_CanvasGradient_proto = nullptr;
-se::Class* __jsb_cc_CanvasGradient_class = nullptr;
+se::Object* __jsb_cc_CanvasGradient_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_CanvasGradient_class = nullptr;  // NOLINT
 
 static bool js_engine_CanvasGradient_addColorStop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -942,8 +942,8 @@ bool js_register_engine_CanvasGradient(se::Object* obj) // NOLINT(readability-id
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_CanvasRenderingContext2D_proto = nullptr;
-se::Class* __jsb_cc_CanvasRenderingContext2D_class = nullptr;
+se::Object* __jsb_cc_CanvasRenderingContext2D_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_CanvasRenderingContext2D_class = nullptr;  // NOLINT
 
 static bool js_engine_CanvasRenderingContext2D_beginPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1585,10 +1585,10 @@ bool js_register_engine_CanvasRenderingContext2D(se::Object* obj) // NOLINT(read
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_Device_proto = nullptr;
-se::Class* __jsb_cc_Device_class = nullptr;
+se::Object* __jsb_cc_Device_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_Device_class = nullptr;  // NOLINT
 
-static bool js_engine_Device_getDPI(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_getDPI_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1596,16 +1596,16 @@ static bool js_engine_Device_getDPI(se::State& s) // NOLINT(readability-identifi
     if (argc == 0) {
         int result = cc::Device::getDPI();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_getDPI : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_getDPI_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_getDPI)
+SE_BIND_FUNC(js_engine_Device_getDPI_static)
 
-static bool js_engine_Device_getDevicePixelRatio(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_getDevicePixelRatio_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1613,16 +1613,16 @@ static bool js_engine_Device_getDevicePixelRatio(se::State& s) // NOLINT(readabi
     if (argc == 0) {
         float result = cc::Device::getDevicePixelRatio();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_getDevicePixelRatio : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_getDevicePixelRatio_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_getDevicePixelRatio)
+SE_BIND_FUNC(js_engine_Device_getDevicePixelRatio_static)
 
-static bool js_engine_Device_setAccelerometerEnabled(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_setAccelerometerEnabled_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1630,16 +1630,16 @@ static bool js_engine_Device_setAccelerometerEnabled(se::State& s) // NOLINT(rea
     if (argc == 1) {
         HolderType<bool, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_setAccelerometerEnabled : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_setAccelerometerEnabled_static : Error processing arguments");
         cc::Device::setAccelerometerEnabled(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_setAccelerometerEnabled)
+SE_BIND_FUNC(js_engine_Device_setAccelerometerEnabled_static)
 
-static bool js_engine_Device_setAccelerometerInterval(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_setAccelerometerInterval_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1647,16 +1647,16 @@ static bool js_engine_Device_setAccelerometerInterval(se::State& s) // NOLINT(re
     if (argc == 1) {
         HolderType<float, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_setAccelerometerInterval : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_setAccelerometerInterval_static : Error processing arguments");
         cc::Device::setAccelerometerInterval(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_setAccelerometerInterval)
+SE_BIND_FUNC(js_engine_Device_setAccelerometerInterval_static)
 
-static bool js_engine_Device_getDeviceOrientation(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_getDeviceOrientation_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1664,16 +1664,16 @@ static bool js_engine_Device_getDeviceOrientation(se::State& s) // NOLINT(readab
     if (argc == 0) {
         auto result = static_cast<int>(cc::Device::getDeviceOrientation());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_getDeviceOrientation : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_getDeviceOrientation_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_getDeviceOrientation)
+SE_BIND_FUNC(js_engine_Device_getDeviceOrientation_static)
 
-static bool js_engine_Device_getDeviceModel(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_getDeviceModel_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1681,16 +1681,16 @@ static bool js_engine_Device_getDeviceModel(se::State& s) // NOLINT(readability-
     if (argc == 0) {
         std::string result = cc::Device::getDeviceModel();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_getDeviceModel : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_getDeviceModel_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_getDeviceModel)
+SE_BIND_FUNC(js_engine_Device_getDeviceModel_static)
 
-static bool js_engine_Device_setKeepScreenOn(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_setKeepScreenOn_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1698,16 +1698,16 @@ static bool js_engine_Device_setKeepScreenOn(se::State& s) // NOLINT(readability
     if (argc == 1) {
         HolderType<bool, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_setKeepScreenOn : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_setKeepScreenOn_static : Error processing arguments");
         cc::Device::setKeepScreenOn(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_setKeepScreenOn)
+SE_BIND_FUNC(js_engine_Device_setKeepScreenOn_static)
 
-static bool js_engine_Device_vibrate(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_vibrate_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1715,16 +1715,16 @@ static bool js_engine_Device_vibrate(se::State& s) // NOLINT(readability-identif
     if (argc == 1) {
         HolderType<float, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_vibrate : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_vibrate_static : Error processing arguments");
         cc::Device::vibrate(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_vibrate)
+SE_BIND_FUNC(js_engine_Device_vibrate_static)
 
-static bool js_engine_Device_getBatteryLevel(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_getBatteryLevel_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1732,16 +1732,16 @@ static bool js_engine_Device_getBatteryLevel(se::State& s) // NOLINT(readability
     if (argc == 0) {
         float result = cc::Device::getBatteryLevel();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_getBatteryLevel : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_getBatteryLevel_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_getBatteryLevel)
+SE_BIND_FUNC(js_engine_Device_getBatteryLevel_static)
 
-static bool js_engine_Device_getNetworkType(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_getNetworkType_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1749,16 +1749,16 @@ static bool js_engine_Device_getNetworkType(se::State& s) // NOLINT(readability-
     if (argc == 0) {
         auto result = static_cast<int>(cc::Device::getNetworkType());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_getNetworkType : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_getNetworkType_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_getNetworkType)
+SE_BIND_FUNC(js_engine_Device_getNetworkType_static)
 
-static bool js_engine_Device_getSafeAreaEdge(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_engine_Device_getSafeAreaEdge_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -1766,14 +1766,14 @@ static bool js_engine_Device_getSafeAreaEdge(se::State& s) // NOLINT(readability
     if (argc == 0) {
         cc::Vec4 result = cc::Device::getSafeAreaEdge();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_engine_Device_getSafeAreaEdge : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_engine_Device_getSafeAreaEdge_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_engine_Device_getSafeAreaEdge)
+SE_BIND_FUNC(js_engine_Device_getSafeAreaEdge_static)
 
 
 
@@ -1781,17 +1781,17 @@ bool js_register_engine_Device(se::Object* obj) // NOLINT(readability-identifier
 {
     auto* cls = se::Class::create("Device", obj, nullptr, nullptr);
 
-    cls->defineStaticFunction("getDPI", _SE(js_engine_Device_getDPI));
-    cls->defineStaticFunction("getDevicePixelRatio", _SE(js_engine_Device_getDevicePixelRatio));
-    cls->defineStaticFunction("setAccelerometerEnabled", _SE(js_engine_Device_setAccelerometerEnabled));
-    cls->defineStaticFunction("setAccelerometerInterval", _SE(js_engine_Device_setAccelerometerInterval));
-    cls->defineStaticFunction("getDeviceOrientation", _SE(js_engine_Device_getDeviceOrientation));
-    cls->defineStaticFunction("getDeviceModel", _SE(js_engine_Device_getDeviceModel));
-    cls->defineStaticFunction("setKeepScreenOn", _SE(js_engine_Device_setKeepScreenOn));
-    cls->defineStaticFunction("vibrate", _SE(js_engine_Device_vibrate));
-    cls->defineStaticFunction("getBatteryLevel", _SE(js_engine_Device_getBatteryLevel));
-    cls->defineStaticFunction("getNetworkType", _SE(js_engine_Device_getNetworkType));
-    cls->defineStaticFunction("getSafeAreaEdge", _SE(js_engine_Device_getSafeAreaEdge));
+    cls->defineStaticFunction("getDPI", _SE(js_engine_Device_getDPI_static));
+    cls->defineStaticFunction("getDevicePixelRatio", _SE(js_engine_Device_getDevicePixelRatio_static));
+    cls->defineStaticFunction("setAccelerometerEnabled", _SE(js_engine_Device_setAccelerometerEnabled_static));
+    cls->defineStaticFunction("setAccelerometerInterval", _SE(js_engine_Device_setAccelerometerInterval_static));
+    cls->defineStaticFunction("getDeviceOrientation", _SE(js_engine_Device_getDeviceOrientation_static));
+    cls->defineStaticFunction("getDeviceModel", _SE(js_engine_Device_getDeviceModel_static));
+    cls->defineStaticFunction("setKeepScreenOn", _SE(js_engine_Device_setKeepScreenOn_static));
+    cls->defineStaticFunction("vibrate", _SE(js_engine_Device_vibrate_static));
+    cls->defineStaticFunction("getBatteryLevel", _SE(js_engine_Device_getBatteryLevel_static));
+    cls->defineStaticFunction("getNetworkType", _SE(js_engine_Device_getNetworkType_static));
+    cls->defineStaticFunction("getSafeAreaEdge", _SE(js_engine_Device_getSafeAreaEdge_static));
     cls->install();
     JSBClassType::registerClass<cc::Device>(cls);
 
@@ -1801,8 +1801,8 @@ bool js_register_engine_Device(se::Object* obj) // NOLINT(readability-identifier
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_cc_SAXParser_proto = nullptr;
-se::Class* __jsb_cc_SAXParser_class = nullptr;
+se::Object* __jsb_cc_SAXParser_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_SAXParser_class = nullptr;  // NOLINT
 
 static bool js_engine_SAXParser_init(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1842,7 +1842,7 @@ bool js_register_engine_SAXParser(se::Object* obj) // NOLINT(readability-identif
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_engine(se::Object* obj)
+bool register_all_engine(se::Object* obj)    // NOLINT
 {
     // Get the ns
     se::Value nsVal;

@@ -5,21 +5,21 @@
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/network/Downloader.h"
 
-extern se::Object* __jsb_cc_network_DownloaderHints_proto;
-extern se::Class* __jsb_cc_network_DownloaderHints_class;
+extern se::Object *__jsb_cc_network_DownloaderHints_proto; // NOLINT
+extern se::Class * __jsb_cc_network_DownloaderHints_class; // NOLINT
 
-bool js_register_cc_network_DownloaderHints(se::Object* obj);
-bool register_all_network(se::Object* obj);
+bool js_register_cc_network_DownloaderHints(se::Object *obj); // NOLINT
+bool register_all_network(se::Object *obj);                   // NOLINT
 
-template<>
+template <>
 bool sevalue_to_native(const se::Value &, cc::network::DownloaderHints *, se::Object *ctx);
 JSB_REGISTER_OBJECT_TYPE(cc::network::DownloaderHints);
 
-extern se::Object* __jsb_cc_network_Downloader_proto;
-extern se::Class* __jsb_cc_network_Downloader_class;
+extern se::Object *__jsb_cc_network_Downloader_proto; // NOLINT
+extern se::Class * __jsb_cc_network_Downloader_class; // NOLINT
 
-bool js_register_cc_network_Downloader(se::Object* obj);
-bool register_all_network(se::Object* obj);
+bool js_register_cc_network_Downloader(se::Object *obj); // NOLINT
+bool register_all_network(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::network::Downloader);
 SE_DECLARE_FUNC(js_network_Downloader_setOnTaskProgress);

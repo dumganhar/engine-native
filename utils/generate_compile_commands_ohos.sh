@@ -8,6 +8,7 @@ else
 fi
 mkdir -p build
 cp utils/CMakeLists.header.txt build/CMakeLists.txt
+COCOS_ENGINE_DEV=0 \
 cmake -Bbuild \
     -S build\
     -D USE_VIDEO=ON \

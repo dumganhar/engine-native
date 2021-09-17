@@ -106,6 +106,7 @@ void CCMTLShader::doDestroy() {
             [cmptLib release];
         }
     };
+
     CCMTLGPUGarbageCollectionPool::getInstance()->collect(destroyFunc);
 }
 

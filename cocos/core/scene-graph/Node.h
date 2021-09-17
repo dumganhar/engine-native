@@ -52,12 +52,12 @@ class Node final : public BaseNode {
 public:
     Node();
     explicit Node(const std::string &name);
-    ~Node() override = default;
+    ~Node() override;
 
-    static bool  isStatic;
-    static void  setDirtyNode(const index_t idx, Node *node);
-    static Node *getDirtyNode(const index_t idx);
-    static Node *find(const std::string &, Node *referenceNode = nullptr);
+    static bool      isStatic;
+    static void      setDirtyNode(const index_t idx, BaseNode *node);
+    static BaseNode *getDirtyNode(const index_t idx);
+    static BaseNode *find(const std::string &, BaseNode *referenceNode = nullptr);
 
     /**
      * @en Determine whether the given object is a normal Node. Will return false if [[Scene]] given.
@@ -98,7 +98,7 @@ public:
      * @param out Set the result to out vector
      * @return If `out` given, the return value equals to `out`, otherwise a new vector will be generated and return
      */
-    inline const Vec3 &getPosition() const { return _localPosition; }
+    const Vec3 &getPosition() const override { return _localPosition; }
 
     /**
      * @en Set rotation in local coordinate system with a quaternion representing the rotation
@@ -117,7 +117,7 @@ public:
      * @param out Set the result to out quaternion
      * @return If `out` given, the return value equals to `out`, otherwise a new quaternion will be generated and return
      */
-    inline const Quaternion &getRotation() const { return _localRotation; }
+    const Quaternion &getRotation() const override { return _localRotation; }
 
     /**
      * @en Set scale in local coordinate system
@@ -132,7 +132,7 @@ public:
      * @param out Set the result to out vector
      * @return If `out` given, the return value equals to `out`, otherwise a new vector will be generated and return
      */
-    inline const Vec3 &getScale() const { return _localScale; }
+    const Vec3 &getScale() const override { return _localScale; }
 
     /**
      * @en Inversely transform a point from world coordinate system to local coordinate system.
@@ -241,7 +241,7 @@ public:
     }
     void setAngle(float);
 
-    inline Vec3 getEulerAngles() {
+    inline const Vec3 &getEulerAngles() {
         if (_eulerDirty) {
             Quaternion::toEuler(&_euler, _localRotation);
             _eulerDirty = false;
@@ -271,10 +271,15 @@ public:
         return right;
     }
 
+    /**
+     * @en Whether the node's transformation have changed during the current frame.
+     * @zh 这个节点的空间变换信息在当前帧内是否有变过？
+     */
     uint getChangedFlags() const override { return _flagChange; }
     void setChangedFlags(uint value) override { _flagChange = value; }
+
     void setDirtyFlag(uint value) override { _dirtyFlag = value; }
-    uint getDirtyFlag() const { return _dirtyFlag; }
+    uint getDirtyFlag() const override { return _dirtyFlag; }
     void setLayer(uint layer) override { _layer = layer; }
     uint getLayer() const { return _layer; }
 
@@ -283,28 +288,15 @@ protected:
 
     void onSetParent(BaseNode *oldParent, bool keepWorldTransform) override;
 
-    static std::vector<Node *> dirtyNodes;
-    static uint                clearFrame;
-    static uint                clearRound;
+    static std::vector<BaseNode *> dirtyNodes;
+    static uint                    clearFrame;
+    static uint                    clearRound;
 
-    TransformBit _dirtyFlagsPri{TransformBit::NONE};
-    Vec3         _euler{0, 0, 0};
+    Vec3 _euler{0, 0, 0};
 
     uint _flagChange{0};
     uint _dirtyFlag{0};
     uint _layer{0};
-
-    cc::Vec3       _worldPosition{Vec3::ZERO};
-    cc::Quaternion _worldRotation{Quaternion::identity()};
-    cc::Vec3       _worldScale{Vec3::ONE};
-
-    Mat4     _rtMat{Mat4::IDENTITY};
-    cc::Mat4 _worldMatrix{Mat4::IDENTITY};
-
-    // local transform
-    cc::Vec3       _localPosition{Vec3::ZERO};
-    cc::Quaternion _localRotation{Quaternion::identity()};
-    cc::Vec3       _localScale{Vec3::ONE};
 
     bool _eulerDirty{false};
 

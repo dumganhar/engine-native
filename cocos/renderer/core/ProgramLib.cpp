@@ -47,9 +47,8 @@ namespace cc {
 
 namespace {
 
-template <typename T>
-auto getBitCount(T cnt) {
-    return std::ceil(std::log2(cnt > 2 ? 2 : cnt)); // std::max checks number types
+int32_t getBitCount(int32_t cnt) {
+    return std::ceil(std::log2(std::max(cnt, 2))); // std::max checks number types
 }
 
 bool recordAsBool(const MacroRecord::mapped_type &v) {
@@ -298,25 +297,35 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
     tmpl.copyFrom(shader);
 
     // calculate option mask offset
-    auto offset = 0;
+    int32_t offset = 0;
     for (auto &def : tmpl.defines) {
-        auto cnt = 1;
+        int32_t cnt = 1;
         if (def.type == "number") {
-            //TODO(PatriceJiang): check typeof value
             auto &range = def.range.value();
             cnt         = getBitCount(range[1] - range[0] + 1); // inclusive on both ends
-            def.map     = [=](std::any value) { return static_cast<int>(std::any_cast<float>(value) - range[0]); };
+            def.map     = [=](const MacroValue &value) -> int32_t {
+                const auto *pValue = std::get_if<int32_t>(&value);
+                if (pValue != nullptr) {
+                    return *pValue - range[0];
+                }
+                return 0;
+            };
         } else if (def.type == "string") {
             cnt     = getBitCount(def.options.value().size());
-            def.map = [=](std::any value) {
-                //TODO(PatriceJiang): check typeof value
-                int idx = std::find(def.options.value().begin(), def.options.value().end(), std::any_cast<std::string>(value)) - def.options.value().begin();
-                return static_cast<int>(std::max(0, idx));
+            def.map = [=](const MacroValue &value) -> int32_t {
+                const auto *pValue = std::get_if<std::string>(&value);
+                if (pValue != nullptr) {
+                    int32_t idx = std::find(def.options.value().begin(), def.options.value().end(), *pValue) - def.options.value().begin();
+                    return std::max(0, idx);
+                }
+                return 0;
             };
         } else if (def.type == "boolean") {
-            def.map = [=](std::any value) {
-                bool *pvalue = std::any_cast<bool>(&value);
-                if (pvalue) return *pvalue ? 1 : 0;
+            def.map = [](const MacroValue &value) -> int32_t {
+                const auto *pValue = std::get_if<bool>(&value);
+                if (pValue != nullptr) {
+                    return *pValue ? 1 : 0;
+                }
                 return 0;
             };
         }
@@ -478,9 +487,10 @@ std::string ProgramLib::getKey(const std::string &name, const MacroRecord &defin
             auto  offset = tmplDef.offset;
             key << offset << mapped << "|";
         }
-        return key.str() + std::to_string(tmpl.hash);
+        std::string ret{key.str() + std::to_string(tmpl.hash)};
+        return ret;
     }
-    auto              key = 0;
+    uint32_t          key = 0;
     std::stringstream ss;
     for (auto &tmplDef : tmplDefs) {
         auto itDef = defines.find(tmplDef.name);
@@ -492,8 +502,9 @@ std::string ProgramLib::getKey(const std::string &name, const MacroRecord &defin
         auto  offset = tmplDef.offset;
         key |= (mapped << offset);
     }
-    ss << std::hex << key;
-    return ss.str() + std::to_string(tmpl.hash);
+    ss << std::hex << key << "|" << std::to_string(tmpl.hash);
+    std::string ret{ss.str()};
+    return ret;
 }
 
 void ProgramLib::destroyShaderByDefines(const MacroRecord &defines) {
@@ -536,6 +547,7 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     }
     auto itRes = _cache.find(key);
     if (itRes != _cache.end()) {
+        CC_LOG_DEBUG("Found ProgramLib::_cache[%s]=%p, defines: %d", key.c_str(), itRes->second, defines.size());
         return itRes->second;
     }
 
@@ -580,6 +592,10 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     shaderInfo.samplerTextures = tmplInfo.gfxSamplerTextures;
     auto *shader               = device->createShader(shaderInfo);
     _cache[key]                = shader;
+    CC_LOG_DEBUG("ProgramLib::_cache[%s]=%p, defines: %d", key.c_str(), shader, defines.size());
+    if (key.substr(0, 5) == "40000") {
+        CC_LOG_DEBUG("found");
+    }
     return shader;
 }
 

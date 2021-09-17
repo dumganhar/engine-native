@@ -77,11 +77,14 @@ void RenderableComponent::setMaterial(Material *material, index_t index) {
         //cjh Do we need return directly?
     }
 
+    _materials.resize(index + 1, nullptr);
     _materials[index] = material;
-    auto *inst        = _materialInstances[index];
-    if (inst != nullptr) {
-        inst->destroy();
-        _materialInstances[index] = nullptr;
+
+    if (index < _materialInstances.size()) {
+        if (auto *inst = _materialInstances[index]; inst != nullptr) {
+            inst->destroy();
+            _materialInstances[index] = nullptr;
+        }
     }
 
     onMaterialModified(index, _materials[index]);
@@ -92,7 +95,8 @@ MaterialInstance *RenderableComponent::getMaterialInstance(index_t idx) {
     if (!mat) {
         return nullptr;
     }
-    if (idx < _materialInstances.size() && !_materialInstances[idx]) {
+
+    if (idx >= _materialInstances.size() || !_materialInstances[idx]) {
         IMaterialInstanceInfo matInsInfo;
         matInsInfo.parent              = _materials[idx];
         matInsInfo.owner               = this;
@@ -115,6 +119,7 @@ void RenderableComponent::setMaterialInstance(Material *matInst, index_t index) 
     // If the new material is an MaterialInstance
     if (matInst && matInst->getParent()) {
         if (matInst != curInst) {
+            _materialInstances.resize(index + 1, nullptr);
             _materialInstances[index] = static_cast<MaterialInstance *>(matInst);
             onMaterialModified(index, matInst);
         }
@@ -123,7 +128,7 @@ void RenderableComponent::setMaterialInstance(Material *matInst, index_t index) 
 
     // Or else it's a Material proper
     // Should skip identity check if there is any MaterialInstance
-    if ((index < _materials.size() && matInst != _materials[index]) || curInst) {
+    if (index >= _materials.size() || matInst != _materials[index] || curInst) {
         setMaterial(matInst, index);
     }
 }

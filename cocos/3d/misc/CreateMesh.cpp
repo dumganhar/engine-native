@@ -11,9 +11,9 @@ namespace {
 gfx::AttributeList defAttrs = {
     gfx::Attribute{.name = gfx::ATTR_NAME_POSITION, .format = gfx::Format::RGB32F},
     gfx::Attribute{.name = gfx::ATTR_NAME_NORMAL, .format = gfx::Format::RGB32F},
-    gfx::Attribute{.name = gfx::ATTR_NAME_TEX_COORD, .format = gfx::Format::RGB32F},
-    gfx::Attribute{.name = gfx::ATTR_NAME_TANGENT, .format = gfx::Format::RGB32F},
-    gfx::Attribute{.name = gfx::ATTR_NAME_COLOR, .format = gfx::Format::RGB32F},
+    gfx::Attribute{.name = gfx::ATTR_NAME_TEX_COORD, .format = gfx::Format::RG32F},
+    gfx::Attribute{.name = gfx::ATTR_NAME_TANGENT, .format = gfx::Format::RGBA32F},
+    gfx::Attribute{.name = gfx::ATTR_NAME_COLOR, .format = gfx::Format::RGBA32F},
 };
 
 // TODO(xwx): temporary usage and need to adjustment future

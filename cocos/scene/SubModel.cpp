@@ -197,7 +197,7 @@ void SubModel::flushPassInfo() {
     if (_passes.empty()) return;
     if (!_shaders.empty()) {
         for (gfx::Shader *shader : _shaders) {
-            CC_SAFE_DESTROY(shader);
+            shader->destroy();
         }
     }
     _shaders.resize(_passes.size());

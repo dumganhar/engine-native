@@ -42,4 +42,5 @@ private:
     cc::Root *        _root{nullptr};
     cc::MeshRenderer *_cubeMeshRenderer{nullptr};
     cc::Scene *       _scene{nullptr};
+    cc::Node *        _cubeNode{nullptr};
 };

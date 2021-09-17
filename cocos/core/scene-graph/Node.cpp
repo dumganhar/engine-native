@@ -33,13 +33,29 @@
 
 namespace cc {
 
-std::vector<Node *> Node::dirtyNodes;
-uint                Node::clearFrame{0};
-uint                Node::clearRound{1000};
-bool                Node::isStatic{false};
+std::vector<BaseNode *> Node::dirtyNodes;
+uint                    Node::clearFrame{0};
+uint                    Node::clearRound{1000};
+bool                    Node::isStatic{false};
 
-Node::Node() : BaseNode("") {}
-Node::Node(const std::string &name) : BaseNode(name) {}
+namespace {
+std::unordered_map<Node *, int32_t /* place_holder */> allNodes; //cjh how to clear ?
+}
+
+Node::Node() : BaseNode("") {
+    allNodes.emplace(this, 0);
+}
+
+Node::Node(const std::string &name) : BaseNode(name) {
+    allNodes.emplace(this, 0);
+}
+
+Node::~Node() {
+    auto iter = allNodes.find(this);
+    if (iter != allNodes.end()) {
+        allNodes.erase(iter);
+    }
+}
 
 void Node::setPosition(float x, float y, float z) {
     _localPosition.set(x, y, z);
@@ -85,16 +101,16 @@ void Node::updateWorldTransform() {
         return;
     }
     index_t    i    = 0;
-    Node *     curr = this;
+    BaseNode * curr = this;
     Mat3       mat3;
     Mat3       m43;
     Quaternion quat;
     while (curr && curr->getDirtyFlag()) {
         setDirtyNode(i++, curr);
-        curr = dynamic_cast<Node *>(curr->getParent()); //cjh Remove BaseNode, then remove dynamic_cast here.
+        curr = curr->getParent();
     }
-    Node *child{nullptr};
-    uint  dirtyBits = 0;
+    BaseNode *child{nullptr};
+    uint      dirtyBits = 0;
     while (i) {
         child = getDirtyNode(--i);
         if (!child) {
@@ -169,15 +185,15 @@ void Node::invalidateChildren(TransformBit dirtyBit) {
     setDirtyNode(0, this);
     int i{0};
     while (i >= 0) {
-        Node *cur = getDirtyNode(i--);
+        BaseNode *cur = getDirtyNode(i--);
         if (cur == nullptr) {
             continue; //cjh TODO: remove BaseNode;
         }
 
-        const uint getChangedFlags = cur->getChangedFlags();
-        if ((cur->getDirtyFlag() & getChangedFlags & curDirtyBit) != curDirtyBit) {
+        const uint hasChangedFlags = cur->getChangedFlags();
+        if (cur->isValid() && (cur->getDirtyFlag() & hasChangedFlags & curDirtyBit) != curDirtyBit) {
             cur->setDirtyFlag(cur->getDirtyFlag() | curDirtyBit);
-            cur->setChangedFlags(getChangedFlags | curDirtyBit);
+            cur->setChangedFlags(hasChangedFlags | curDirtyBit);
             int childCount{static_cast<int>(cur->getChildren().size())};
             for (BaseNode *curChild : cur->getChildren()) {
                 setDirtyNode(++i, reinterpret_cast<Node *>(curChild));
@@ -267,7 +283,7 @@ const Vec3 &Node::getWorldScale() {
     return _worldScale;
 }
 
-void Node::setDirtyNode(const index_t idx, Node *node) {
+void Node::setDirtyNode(const index_t idx, BaseNode *node) {
     if (idx >= dirtyNodes.size()) {
         if (dirtyNodes.empty()) {
             dirtyNodes.reserve(16); // Make a pre-allocated size for dirtyNode vector for better grow performance.
@@ -277,11 +293,13 @@ void Node::setDirtyNode(const index_t idx, Node *node) {
     dirtyNodes[idx] = node;
 }
 
-Node *Node::getDirtyNode(const index_t idx) {
-    return dynamic_cast<Node *>(dirtyNodes[idx]);
+BaseNode *Node::getDirtyNode(const index_t idx) {
+    return dirtyNodes[idx];
 }
 
-Node *Node::find(const std::string & /*path*/, Node * /*referenceNode*/) { return nullptr; }
+BaseNode *Node::find(const std::string & /*path*/, BaseNode * /*referenceNode*/) {
+    return nullptr; //cjh TODO:
+}
 
 void Node::setAngle(float val) {
     _euler.set(0, 0, val);
@@ -349,11 +367,11 @@ void Node::lookAt(const Vec3 &pos, const Vec3 &up) {
 
 void Node::inverseTransformPoint(Vec3 &out, const Vec3 &p) {
     out.set(p.x, p.y, p.z);
-    Node *  cur{this};
-    index_t i{0};
+    BaseNode *cur{this};
+    index_t   i{0};
     while (cur != nullptr && cur->getParent()) {
         setDirtyNode(i++, cur);
-        cur = dynamic_cast<Node *>(cur->getParent()); //cjh TODO: remove BaseNode
+        cur = cur->getParent();
     }
     while (i >= 0) {
         Vec3::transformInverseRTS(out, out, cur->getRotation(), cur->getPosition(), cur->getScale());
@@ -402,7 +420,9 @@ void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
 }
 
 void Node::resetChangedFlags() {
-    //cjh TODO:
+    for (auto &e : allNodes) {
+        e.first->setChangedFlags(0);
+    }
 }
 
 void Node::clearNodeArray() {

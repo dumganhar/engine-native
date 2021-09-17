@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include "core/ArrayBuffer.h"
+#include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "core/geometry/AABB.h"
 #include "math/Mat4.h"
@@ -163,7 +163,7 @@ public:
         Uint8Array data;
     };
 
-    Mesh()           = default;
+    Mesh() {}
     ~Mesh() override = default;
 
     std::any getNativeAsset() const override;
@@ -328,7 +328,7 @@ public:
      * @param offset The offset of the first attribute in the target buffer
      * @returns Return false if failed to access attribute, return true otherwise.
      */
-    bool copyAttribute(index_t primitiveIndex, const char *attributeName, ArrayBuffer &buffer, uint32_t stride, uint32_t offset);
+    bool copyAttribute(index_t primitiveIndex, const char *attributeName, ArrayBuffer::Ptr &buffer, uint32_t stride, uint32_t offset);
 
     /**
      * @en Read the indices data of the given sub mesh
@@ -353,7 +353,7 @@ private:
 
     void accessAttribute(index_t primitiveIndex, const char *attributeName, const AccessorType &accessor);
 
-    gfx::BufferList createVertexBuffers(gfx::Device *gfxDevice, const ArrayBuffer &data);
+    gfx::BufferList createVertexBuffers(gfx::Device *gfxDevice, ArrayBuffer *data);
 
     void initDefault(const std::optional<std::string> &uuid) override;
     bool validate() const override;

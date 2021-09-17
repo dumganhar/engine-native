@@ -1301,6 +1301,8 @@ cocos_source_files(
     cocos/core/ArrayBuffer.h
 
     cocos/core/CoreModuleHeader.h
+    cocos/core/DataView.h
+    cocos/core/DataView.cpp
     cocos/core/Director.cpp
     cocos/core/Director.h
     cocos/core/Game.cpp
@@ -1316,6 +1318,8 @@ cocos_source_files(
     cocos/core/SplashScreen.h
     cocos/core/Types.h
     cocos/core/Types.cpp
+    cocos/core/TypedArray.h
+    cocos/core/TypedArray.cpp
 
     # memop
     cocos/core/memop/CachedArray.h

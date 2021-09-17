@@ -120,7 +120,7 @@ public:
     std::string toString() const override { return _nativeUrl; }
 
 protected:
-    Asset();
+    Asset() = default;
 
     /**
      * @en

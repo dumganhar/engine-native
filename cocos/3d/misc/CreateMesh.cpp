@@ -1,8 +1,10 @@
 #include "3d/misc/CreateMesh.h"
 #include <algorithm>
+#include "renderer/gfx-base/GFXDef-common.h"
 #include "3d/assets/Mesh.h"
 #include "3d/misc/BufferBlob.h"
-#include "renderer/gfx-base/GFXDef-common.h"
+#include "core/DataView.h"
+#include "core/ArrayBuffer.h"
 
 namespace cc {
 namespace {
@@ -235,8 +237,8 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     BufferBlob bufferBlob;
 
     // Fill vertex buffer.
-    ArrayBuffer vertexBuffer(vertCount * stride);
-    DataView    vertexBufferView(vertexBuffer);
+    auto     vertexBuffer = std::make_shared<ArrayBuffer>(vertCount * stride);
+    DataView vertexBufferView(vertexBuffer);
     for (const auto &channel : channels) {
         writeBuffer(vertexBufferView, channel.data, channel.attribute.format, channel.offset, stride);
     }
@@ -244,20 +246,20 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     Mesh::IVertexBundle vertexBundle{
         .view = Mesh::IBufferView{
             .offset = bufferBlob.getLength(),
-            .length = static_cast<uint32_t>(vertexBuffer.size()),
+            .length = static_cast<uint32_t>(vertexBuffer->byteLength()),
             .count  = vertCount,
             .stride = stride},
         .attributes = attributes};
     bufferBlob.addBuffer(vertexBuffer);
 
     // Fill index buffer.
-    ArrayBuffer    indexBuffer;
-    uint32_t       idxCount  = 0;
-    const uint32_t idxStride = 2;
+    ArrayBuffer::Ptr indexBuffer;
+    uint32_t         idxCount  = 0;
+    const uint32_t   idxStride = 2;
     if (geometry.indices.has_value()) {
         const std::vector<uint32_t> &indices = geometry.indices.value();
         idxCount                             = indices.size();
-        indexBuffer.resize(idxStride * idxCount);
+        indexBuffer                          = std::make_shared<ArrayBuffer>(idxStride * idxCount);
         DataView indexBufferView(indexBuffer);
         writeBuffer(indexBufferView, indices, gfx::Format::R16UI);
     }
@@ -267,11 +269,11 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
         .vertexBundelIndices = {0},
         .primitiveMode       = geometry.primitiveMode.has_value() ? geometry.primitiveMode.value() : gfx::PrimitiveMode::TRIANGLE_LIST};
 
-    if (!indexBuffer.empty()) {
+    if (indexBuffer) {
         bufferBlob.setNextAlignment(idxStride);
         primitive.indexView = Mesh::IBufferView{
             .offset = bufferBlob.getLength(),
-            .length = static_cast<uint32_t>(indexBuffer.size()),
+            .length = indexBuffer->byteLength(),
             .count  = idxCount,
             .stride = idxStride};
         bufferBlob.addBuffer(indexBuffer);
@@ -311,7 +313,9 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     }
     out->reset(
         Mesh::ICreateInfo({.structInfo = meshStruct,
-                           .data       = bufferBlob.getCombined()}));
+                           .data       = Uint8Array(bufferBlob.getCombined())
+                         })
+        );
 
     return out;
 }

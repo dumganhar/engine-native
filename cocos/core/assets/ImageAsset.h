@@ -39,8 +39,8 @@ class Image;
  * @zh 内存图像源。
  */
 struct IMemoryImageSource {
-    std::shared_ptr<ArrayBuffer> _data;
-    bool                         _compressed{false};
+    ArrayBuffer::Ptr             data;
+    bool                         compressed{false};
     uint32_t                     width{0};
     uint32_t                     height{0};
     PixelFormat                  format{PixelFormat::RGBA8888};

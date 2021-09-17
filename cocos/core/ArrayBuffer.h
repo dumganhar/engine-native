@@ -25,148 +25,36 @@
 
 #pragma once
 
-#include <vector>
-
+#include <memory>
 #include "base/Macros.h"
-#include "base/TypeDef.h"
 
 namespace cc {
 
-using ArrayBuffer = std::vector<uint8_t>;
-
-template <typename T>
-class ArrayBufferView final {
+class ArrayBuffer final {
 public:
-    using value_type      = T;
-    using reference       = value_type &;
-    using const_reference = const value_type &;
+    using Ptr = std::shared_ptr<ArrayBuffer>;
 
-    explicit ArrayBufferView(ArrayBuffer &ab) : _ab(ab) {}
-
-    const_reference operator[](index_t index) const {
-        return at(index);
+    explicit ArrayBuffer(uint32_t length) : _byteLength{length} {
+        _data = static_cast<uint8_t*>(malloc(length));
     }
-
-    reference operator[](index_t index) {
-        return at(index);
+    
+    ~ArrayBuffer() {
+        free(_data);
     }
-
-    const_reference at(index_t i) const {
-        CC_ASSERT(i < size());
-        return *(static_cast<T *>(_ab.data()) + i);
-    }
-
-    reference at(index_t i) {
-        CC_ASSERT(i < size());
-        return *(static_cast<T *>(_ab.data()) + i);
-    }
-
-    void set(index_t i, const_reference value) {
-        CC_ASSERT(i < size());
-        *(static_cast<T *>(_ab.data()) + i) = value;
-    }
-
-    int32_t size() const {
-        return static_cast<int32_t>(_ab.size() / sizeof(T));
-    }
-
+    
+    inline uint32_t byteLength() const { return _byteLength; }
+    
+    // Just use it to copy data. Use TypedArray to get/set data.
+    const uint8_t * getData() const { return _data; }
+    
 private:
-    ArrayBuffer &_ab;
-};
-
-class DataView final {
-public:
-    explicit DataView(ArrayBuffer &ab) {
-        _buffer     = ab.data();
-        _byteLength = ab.size();
-    }
-
-    explicit DataView(ArrayBuffer &ab, uint32_t byteOffset) {
-        CC_ASSERT(byteOffset < ab.size());
-        _buffer     = ab.data() + byteOffset;
-        _byteLength = ab.size() - byteOffset;
-    }
-
-    explicit DataView(ArrayBuffer &ab, uint32_t byteOffset, uint32_t byteLength) {
-        CC_ASSERT(byteOffset < ab.size());
-        CC_ASSERT((byteLength + byteOffset) < ab.size());
-        _buffer     = ab.data() + byteOffset;
-        _byteLength = byteLength;
-    }
-
-    uint8_t getUint8(index_t offset) const {
-        CC_ASSERT(offset < _byteLength);
-        return _buffer[offset];
-    }
-
-    uint16_t getUint16(index_t offset) const {
-        CC_ASSERT(offset < (_byteLength - 1));
-        return *reinterpret_cast<uint16_t *>(&_buffer[offset]);
-    }
-
-    uint32_t getUint32(index_t offset) const {
-        CC_ASSERT(offset < (_byteLength - 3));
-        return *reinterpret_cast<uint32_t *>(&_buffer[offset]);
-    }
-
-    int8_t getInt8(index_t offset) const {
-        CC_ASSERT(offset < _byteLength);
-        return static_cast<int8_t>(_buffer[offset]);
-    }
-
-    int16_t getInt16(index_t offset) const {
-        CC_ASSERT(offset < (_byteLength - 1));
-        return *reinterpret_cast<int16_t *>(&_buffer[offset]);
-    }
-
-    int32_t getInt32(index_t offset) const {
-        CC_ASSERT(offset < (_byteLength - 3));
-        return *reinterpret_cast<int32_t *>(&_buffer[offset]);
-    }
-
-    float getFloat32(index_t offset) const {
-        CC_ASSERT(offset < (_byteLength - 3));
-        return *reinterpret_cast<float *>(&_buffer[offset]);
-    }
-
-    void setUint8(index_t offset, uint8_t value) {
-        CC_ASSERT(offset < _byteLength);
-        _buffer[offset] = value;
-    }
-
-    void setUint16(index_t offset, uint16_t value) {
-        CC_ASSERT(offset < _byteLength - 1);
-        *reinterpret_cast<uint16_t *>(&_buffer[offset]) = value;
-    }
-
-    void setUint32(index_t offset, uint32_t value) {
-        CC_ASSERT(offset < _byteLength - 3);
-        *reinterpret_cast<uint32_t *>(&_buffer[offset]) = value;
-    }
-
-    void setInt8(index_t offset, int8_t value) {
-        CC_ASSERT(offset < _byteLength);
-        *reinterpret_cast<int8_t *>(&_buffer[offset]) = value;
-    }
-
-    void setInt16(index_t offset, int16_t value) {
-        CC_ASSERT(offset < _byteLength - 1);
-        *reinterpret_cast<int16_t *>(&_buffer[offset]) = value;
-    }
-
-    void setInt32(index_t offset, int32_t value) {
-        CC_ASSERT(offset < _byteLength - 3);
-        *reinterpret_cast<int32_t *>(&_buffer[offset]) = value;
-    }
-
-    void setFloat32(index_t offset, float value) {
-        CC_ASSERT(offset < _byteLength - 3);
-        *reinterpret_cast<float *>(&_buffer[offset]) = value;
-    }
-
-private:
-    uint8_t *_buffer{nullptr};
+    uint8_t *_data{nullptr};
     uint32_t _byteLength{0};
+    
+    template<class T> friend class TypedArrayTemp;
+    friend class DataView;
+    
+    CC_DISALLOW_COPY_MOVE_ASSIGN(ArrayBuffer);
 };
 
 } // namespace cc

@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
-
+ 
  http://www.cocos.com
-
+ 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
-
+ 
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
-
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,44 +21,48 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
-****************************************************************************/
-#include "3d/misc/BufferBlob.h"
+ ****************************************************************************/
+
 #include "core/TypedArray.h"
 
 namespace cc {
 
-void BufferBlob::setNextAlignment(uint32_t align) {
-    if (align != 0) {
-        const uint32_t remainder = _length % align;
-        if (remainder != 0) {
-            const uint32_t padding = align - remainder;
-            _arrayBufferOrPaddings.emplace_back(padding);
-            _length += padding;
-        }
-    }
-}
-
-uint32_t BufferBlob::addBuffer(const ArrayBuffer::Ptr &arrayBuffer) {
-    const uint32_t result = _length;
-    _arrayBufferOrPaddings.emplace_back(arrayBuffer);
-    _length += arrayBuffer->byteLength();
-    return result;
-}
-
-ArrayBuffer::Ptr BufferBlob::getCombined() {
-    Int8Array result(_length);
-    uint32_t    counter = 0;
-
-    for (const auto &arrayBufferOrPadding : _arrayBufferOrPaddings) {
-        if (const auto *p = std::get_if<uint32_t>(&arrayBufferOrPadding)) {
-            counter += *p;
-        } else if (const auto *p = std::get_if<ArrayBuffer::Ptr>(&arrayBufferOrPadding)) {
-            result.set(*p, counter);
-            counter += (*p)->byteLength();
-        }
+uint32_t getTypedArrayLength(const TypedArray &arr) {
+#define TYPEDARRAY_GET_SIZE(type)                          \
+    if (auto *p = std::get_if<type>(&arr); p != nullptr) { \
+        return p->length();                                \
     }
 
-    return result.buffer();
+    TYPEDARRAY_GET_SIZE(Float32Array)
+    TYPEDARRAY_GET_SIZE(Uint32Array)
+    TYPEDARRAY_GET_SIZE(Uint16Array)
+    TYPEDARRAY_GET_SIZE(Uint8Array)
+    TYPEDARRAY_GET_SIZE(Int32Array)
+    TYPEDARRAY_GET_SIZE(Int16Array)
+    TYPEDARRAY_GET_SIZE(Int8Array)
+    TYPEDARRAY_GET_SIZE(Float64Array)
+
+#undef TYPEDARRAY_GET_SIZE
+    return 0;
+}
+
+uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
+#define TYPEDARRAY_GET_BYPES_PER_ELEMENT(type)             \
+    if (auto *p = std::get_if<type>(&arr); p != nullptr) { \
+        return p->bytesPerElement();                       \
+    }
+
+    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Float32Array)
+    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Uint32Array)
+    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Uint16Array)
+    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Uint8Array)
+    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Int32Array)
+    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Int16Array)
+    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Int8Array)
+    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Float64Array)
+
+#undef TYPEDARRAY_GET_BYPES_PER_ELEMENT
+    return 0;
 }
 
 } // namespace cc

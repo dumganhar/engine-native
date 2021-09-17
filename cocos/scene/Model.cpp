@@ -261,8 +261,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         size += gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)].size;
     }
     auto attrs = _instanceAttributeBlock;
-    attrs.buffer.clear();
-    attrs.buffer.resize(size);
+    attrs.buffer = Uint8Array(size);
     attrs.views.clear();
     attrs.attributes.clear();
     uint32_t offset = 0;

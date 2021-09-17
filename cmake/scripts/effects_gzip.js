@@ -2,19 +2,23 @@ const zlib = require('zlib');
 const fs = require('fs');
 const process = require('process');
 
-if(process.argv.length != 5) {
+if(process.argv.length != 6) {
     console.error('bad argument');
     console.error(' - input file');
+    console.error(' - export var')
     console.error(' - template file');
     console.error(' - output file');
     process.exit(-1);
 }
 
 const inputFile = process.argv[2];
-const template = process.argv[3];
-const outputFile = process.argv[4];
+const exportVar = process.argv[3];
+const template = process.argv[4];
+const outputFile = process.argv[5];
 
-let encoded = zlib.gzipSync(fs.readFileSync(inputFile)).toString("base64");
+let data = require(inputFile)[exportVar];
+
+let encoded = zlib.gzipSync(JSON.stringify(data, null, 2)).toString("base64");
 let array = [];
 let start = 0, last = encoded.length;
 const charPerRow = 118;

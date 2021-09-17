@@ -2174,25 +2174,18 @@ list(APPEND COCOS2D_SOURCE_LIST ${CC_EXTERNAL_SOURCES})
 
 ### generate source files
 
-add_custom_command(
-    OUTPUT ${CWD}/cocos/core/builtin/Effects.cpp
-    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/effects_gzip.js 
-        ${CWD}/cocos/core/builtin/Effects.in.json
-        ${CWD}/cocos/core/builtin/Effects.cpp.in
-        ${CWD}/cocos/core/builtin/Effects.cpp
-    DEPENDS 
-        ${CWD}/cocos/core/builtin/Effects.cpp.in
-        ${CWD}/cocos/core/builtin/Effects.in.json
-        ${CWD}/cmake/scripts/effects_gzip.js
-    VERBATIM USES_TERMINAL)
 
-macro(generate_glsl ver)
+macro(compile_ts file_without_ext)
     add_custom_command(
-        OUTPUT ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
-        COMMAND ${TSC_EXECUTABLE} --module commonjs ${CWD}/cocos/core/builtin/shader-sources/${ver}.ts
-        DEPENDS ${CWD}/cocos/core/builtin/shader-sources/${ver}.ts
+        OUTPUT ${file_without_ext}.js
+        COMMAND ${TSC_EXECUTABLE} --module commonjs ${file_without_ext}.ts
+        DEPENDS ${file_without_ext}.ts
         VERBATIM USES_TERMINAL
     )
+endmacro()
+
+macro(generate_glsl ver)
+    compile_ts(${CWD}/cocos/core/builtin/shader-sources/${ver})
     add_custom_command(
         OUTPUT ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp
         COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/glsl_gzip.js
@@ -2207,15 +2200,33 @@ macro(generate_glsl ver)
         VERBATIM USES_TERMINAL)
 endmacro()
 
+compile_ts(${CWD}/cocos/core/builtin/effects)
+add_custom_command(
+    OUTPUT ${CWD}/cocos/core/builtin/Effects.cpp
+    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/effects_gzip.js 
+        ${CWD}/cocos/core/builtin/effects.js
+        effects
+        ${CWD}/cocos/core/builtin/Effects.cpp.in
+        ${CWD}/cocos/core/builtin/Effects.cpp
+    DEPENDS 
+        ${CWD}/cocos/core/builtin/Effects.cpp.in
+        ${CWD}/cocos/core/builtin/effects.js
+        ${CWD}/cmake/scripts/effects_gzip.js
+    VERBATIM USES_TERMINAL)
+
+
 generate_glsl(glsl1)
 generate_glsl(glsl3)
 generate_glsl(glsl4)
 
-list(APPEND COCOS2D_SOURCE_LIST ${CWD}/cocos/core/builtin/Effects.cpp)
-list(APPEND COCOS2D_SOURCE_LIST ${CWD}/cocos/core/builtin/shader-sources/glsl1.cpp)
-list(APPEND COCOS2D_SOURCE_LIST ${CWD}/cocos/core/builtin/shader-sources/glsl3.cpp)
-list(APPEND COCOS2D_SOURCE_LIST ${CWD}/cocos/core/builtin/shader-sources/glsl4.cpp)
+set(CC_GENERATED_FILES
+    ${CWD}/cocos/core/builtin/Effects.cpp
+    ${CWD}/cocos/core/builtin/shader-sources/glsl1.cpp
+    ${CWD}/cocos/core/builtin/shader-sources/glsl3.cpp
+    ${CWD}/cocos/core/builtin/shader-sources/glsl4.cpp
+)
 
+list(APPEND COCOS2D_SOURCE_LIST ${CC_GENERATED_FILES})
 
 if(USE_MODULES)
     add_library(ccmath ${ccmath_SOURCE_LIST})
@@ -2340,6 +2351,8 @@ if(ANDROID OR OHOS)
         )
     endif()
 endif()
+
+
 
 ################################# cc_apply_definations ###################################
 function(cc_apply_definations target)

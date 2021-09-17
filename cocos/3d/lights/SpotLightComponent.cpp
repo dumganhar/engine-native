@@ -22,17 +22,21 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#include "3d/lights/DirectionalLightComponent.h"
+#include "3d/lights/SpotLightComponent.h"
 
 namespace cc {
-DirectionalLight::DirectionalLight() : Super() {}
 
-void DirectionalLight::createLight() {
+SpotLight::SpotLight() : Super() {}
+
+void SpotLight::createLight() {
     if (_light == nullptr) {
-        _light = Root::getInstance()->createLight<scene::DirectionalLight>();
+        _light = Root::getInstance()->createLight<scene::SpotLight>();
     }
     initializeLight();
-    setIlluminance(_illuminance);
+    setLuminance(_luminance);
+    setSize(_size);
+    setRange(_range);
+    setSpotAngle(_spotAngle);
 }
 
 } // namespace cc

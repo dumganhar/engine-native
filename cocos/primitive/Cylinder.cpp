@@ -62,11 +62,10 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
         indexCount += radialSegments * cntCap * 3;
     }
 
-    std::vector<uint32_t> indices;
-    std::vector<float>    positions;
-    std::vector<float>    normals;
-    std::vector<float>    uvs;
-    std::vector<float>    tangents;
+    std::vector<uint32_t> indices(indexCount);
+    std::vector<float>    positions(vertCount * 3);
+    std::vector<float>    normals(vertCount * 3);
+    std::vector<float>    uvs(vertCount * 2);
     const float           maxRadius = std::max(radiusTop, radiusBottom);
     const Vec3            minPos(-maxRadius, -halfHeight, -maxRadius);
     const Vec3            maxPos(maxRadius, halfHeight, maxRadius);

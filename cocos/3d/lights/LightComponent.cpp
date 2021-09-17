@@ -23,7 +23,80 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "3d/lights/LightComponent.h"
+#include "scene/DirectionalLight.h"
+#include "scene/SphereLight.h"
+#include "scene/SpotLight.h"
 
 namespace cc {
-
+Light::Light() : Super() {
 }
+void Light::createLight() {
+    if (_light == nullptr) {
+        _light = Root::getInstance()->createLight<scene::Light>();
+    }
+    initializeLight();
+}
+
+void Light::initializeLight() {
+    setColor(_color);
+    setUseColorTemperature(_useColorTemperature);
+    setColorTemperature(_colorTemperature);
+    _light->setNode(dynamic_cast<Node *>(_node));
+    _light->setBaked(isBaked());
+}
+
+void Light::setColor(const Color &val) {
+    _color = val;
+    if (_light != nullptr) {
+        _light->setColor(Vec3(val.r / 255.F, val.g / 255.F, val.b / 255.F));
+    }
+}
+void Light::destroyLight() {
+    if (_light != nullptr) {
+        Root::getInstance()->destroyLight(_light);
+        _light = nullptr;
+    }
+}
+
+void Light::attachToScene() {
+    detachFromScene();
+    if (_light != nullptr && _light->getScene() == nullptr && _node->getScene() != nullptr) {
+        scene::RenderScene *renderScene = getRenderScene();
+        switch (_type) {
+            case scene::LightType::DIRECTIONAL:
+                renderScene->addDirectionalLight(dynamic_cast<scene::DirectionalLight *>(_light));
+                renderScene->setMainLight(dynamic_cast<scene::DirectionalLight *>(_light));
+                break;
+            case scene::LightType::SPHERE:
+                renderScene->addSphereLight(dynamic_cast<scene::SphereLight *>(_light));
+                break;
+            case scene::LightType::SPOT:
+                renderScene->addSpotLight(dynamic_cast<scene::SpotLight *>(_light));
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void Light::detachFromScene() {
+    if (_light != nullptr && _light->getScene() != nullptr) {
+        scene::RenderScene *renderScene = _light->getScene();
+        switch (_type) {
+            case scene::LightType::DIRECTIONAL:
+                renderScene->removeDirectionalLight(dynamic_cast<scene::DirectionalLight *>(_light));
+                renderScene->unsetMainLight(dynamic_cast<scene::DirectionalLight *>(_light));
+                break;
+            case scene::LightType::SPHERE:
+                renderScene->removeSphereLight(dynamic_cast<scene::SphereLight *>(_light));
+                break;
+            case scene::LightType::SPOT:
+                renderScene->removeSpotLight(dynamic_cast<scene::SpotLight *>(_light));
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+} // namespace cc

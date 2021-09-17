@@ -539,9 +539,11 @@ public:
      * @return bool
      */
     inline bool operator<(const Vec3 &rhs) const {
-        if (x < rhs.x && y < rhs.y && z < rhs.z)
-            return true;
-        return false;
+        return x < rhs.x && y < rhs.y && z < rhs.z;
+    }
+
+    inline bool operator<=(const Vec3 &rhs) const {
+        return x <= rhs.x && y <= rhs.y && z <= rhs.z;
     }
 
     /**
@@ -552,9 +554,11 @@ public:
      * @return bool
      */
     inline bool operator>(const Vec3 &rhs) const {
-        if (x > rhs.x && y > rhs.y && z > rhs.z)
-            return true;
-        return false;
+        return x > rhs.x && y > rhs.y && z > rhs.z;
+    }
+
+    inline bool operator>=(const Vec3 &rhs) const {
+        return x >= rhs.x && y >= rhs.y && z >= rhs.z;
     }
 
     /**

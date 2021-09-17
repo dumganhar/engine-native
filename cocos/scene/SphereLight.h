@@ -56,14 +56,14 @@ public:
         _needUpdate = true;
     }
 
-    inline float getIlluminance() const { return _illuminance; }
-    inline void  setIlluminance(float illum) { _illuminance = illum; }
+    inline float getLuminance() const { return _luminance; }
+    inline void  setLuminance(float lum) { _luminance = lum; }
 
     inline geometry::AABB *getAABB() const { return _aabb; }
 
 private:
     bool            _needUpdate{false};
-    float           _illuminance{0.F};
+    float           _luminance{0.F};
     float           _range{0.F};
     float           _size{0.F};
     Vec3            _pos;

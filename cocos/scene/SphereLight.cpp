@@ -32,9 +32,9 @@ namespace scene {
 void SphereLight::initialize() {
     Light::initialize();
 
-    _size        = 0.15F;
-    _range       = 1.0F;
-    _illuminance = 1700 / Light::nt2lm(_size);
+    _size      = 0.15F;
+    _range     = 1.0F;
+    _luminance = 1700 / Light::nt2lm(_size);
 }
 
 void SphereLight::update() {

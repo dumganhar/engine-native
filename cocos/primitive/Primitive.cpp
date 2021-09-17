@@ -27,8 +27,8 @@
 
 namespace cc {
 
-Primitive::Primitive(PrimitiveType t /* = PrimitiveType.BOX*/)
-: Mesh(), type(t) {
+Primitive::Primitive(PrimitiveType type)
+: Mesh(), type(type) {
 }
 
 void Primitive::onLoaded() {
@@ -47,6 +47,7 @@ IGeometry createGeometry(PrimitiveType type, const std::optional<PrimitiveOption
         }
         case PrimitiveType::CYLINDER: {
             return cylinder(); //TODO(xwx): now for test, need to add options usage
+            break;
         }
         case PrimitiveType::CONE: {
             return cone(); //TODO(xwx): now for test, need to add options usage

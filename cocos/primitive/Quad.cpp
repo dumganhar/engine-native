@@ -25,7 +25,10 @@
 
 #include "primitive/Quad.h"
 namespace cc {
-IGeometry quad(const std::optional<IGeometryOptions> &options) {
+IGeometry quad(std::optional<IGeometryOptions> options) {
+    if (!options.has_value()) {
+        options = IGeometryOptions();
+    }
     IGeometry result{
         .positions      = std::vector<float>{-0.5, -0.5, 0, -0.5, 0.5, 0, 0.5, 0.5, 0, 0.5, -0.5, 0},
         .boundingRadius = sqrt(0.5 * 0.5 + 0.5 * 0.5),
@@ -33,15 +36,14 @@ IGeometry quad(const std::optional<IGeometryOptions> &options) {
         .maxPos         = Vec3(0.5, 0.5, 0),
         .indices        = std::vector<uint32_t>{0, 3, 1, 3, 2, 1},
     };
-
-    if (options.has_value() && options->includeNormal) {
+    if (options->includeNormal) {
         result.normals = std::vector<float>{
             0, 0, 1,
             0, 0, 1,
             0, 0, 1,
             0, 0, 1};
     }
-    if (options.has_value() && options->includeUV) {
+    if (options->includeUV) {
         result.uvs = std::vector<float>{
             0, 0,
             0, 1,

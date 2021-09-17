@@ -41,11 +41,11 @@ IGeometry torus(float radius, float tube, const std::optional<ITorusOptions> &op
 
     for (uint32_t j = 0; j <= radialSegments; j++) {
         for (uint32_t i = 0; i <= tubularSegments; i++) {
-            const float u = i / tubularSegments;
-            const float v = j / radialSegments;
+            const float u = static_cast<float>(i) / static_cast<float>(tubularSegments);
+            const float v = static_cast<float>(j) / static_cast<float>(radialSegments);
 
             const float u1 = u * arc;
-            const float v1 = v * math::PI * 2;
+            const float v1 = v * math::PI_2;
 
             // vertex
             const float x = (radius + tube * cos(v1)) * sin(u1);

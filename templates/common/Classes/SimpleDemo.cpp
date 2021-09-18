@@ -85,10 +85,10 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // auto *cube = new Primitive(PrimitiveType::QUAD);
     // auto *cube = new Primitive(PrimitiveType::PLANE);
     // auto *cube = new Primitive(PrimitiveType::SPHERE);
-    // auto *cube = new Primitive(PrimitiveType::CONE); // TODO(xwx): crash as CYLINDER
-    // auto *cube = new Primitive(PrimitiveType::CYLINDER); // TODO(xwx): crash
-    // auto *cube = new Primitive(PrimitiveType::CAPSULE); // TODO(xwx); tex wrong in middle
-    // auto *cube = new Primitive(PrimitiveType::TORUS); // TODO(xwx): no pic
+    // auto *cube = new Primitive(PrimitiveType::CONE);
+    // auto *cube = new Primitive(PrimitiveType::CYLINDER);
+    // auto *cube = new Primitive(PrimitiveType::CAPSULE);
+    // auto *cube = new Primitive(PrimitiveType::TORUS);
 
     cube->onLoaded();
 

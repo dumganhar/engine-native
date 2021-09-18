@@ -28,7 +28,7 @@
 
 namespace cc {
 namespace {
-const std::vector<std::vector<float>> FACE_AXES{
+const std::vector<std::vector<uint32_t>> FACE_AXES{
     {2, 3, 1}, // FRONT
     {4, 5, 7}, // BACK
     {7, 6, 2}, // TOP
@@ -77,17 +77,17 @@ IGeometry box(const std::optional<IBoxOptions> &options) {
     float                 boundingRadius{sqrt(hw * hw + hh * hh + hl * hl)};
 
     auto buildPlane = [&](uint32_t side, uint32_t uSegments, uint32_t vSegments) {
-        float               u           = 0;
-        float               v           = 0;
-        const uint32_t      offset      = positions.size() / 3;
-        const vector<float> faceAxe     = FACE_AXES[side];
-        const vector<float> faceNormal  = FACE_NORMALS[side];
-        const vector<float> faceTangent = FACE_TANGENTS[side];
+        float                  u           = 0;
+        float                  v           = 0;
+        const uint32_t         offset      = positions.size() / 3;
+        const vector<uint32_t> faceAxe     = FACE_AXES[side];
+        const vector<float>    faceNormal  = FACE_NORMALS[side];
+        const vector<float>    faceTangent = FACE_TANGENTS[side];
 
         for (index_t iy = 0; iy <= vSegments; ++iy) {
             for (index_t ix = 0; ix <= uSegments; ++ix) {
-                u          = ix / uSegments;
-                v          = iy / vSegments;
+                u          = static_cast<float>(ix) / static_cast<float>(uSegments);
+                v          = static_cast<float>(iy) / static_cast<float>(vSegments);
                 Vec3 temp1 = corners[faceAxe[0]].lerp(corners[faceAxe[1]], u);
                 Vec3 temp2 = corners[faceAxe[0]].lerp(corners[faceAxe[2]], v);
                 temp2.subtract(corners[faceAxe[0]]);

@@ -28,8 +28,7 @@
 namespace cc {
 
 float sign(float v) {
-    return (v < 0 ? -1.0F : v > 0 ? 1.0F
-                                  : 0.0F);
+    return (v < 0 ? -1.0F : (v > 0 ? 1.0F : 0.0F));
 }
 
 IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std::optional<ICylinderOptions> &opts) {
@@ -40,7 +39,7 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
     const float    arc            = opts.has_value() ? opts->arc : math::PI_2;
 
     uint32_t cntCap = 0;
-    if (!capped) {
+    if (capped) {
         if (radiusTop > 0) {
             ++cntCap;
         }
@@ -81,24 +80,23 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
         std::vector<std::vector<uint32_t>> indexArray;
 
         // this will be used to calculate the normal
-        float r = radiusTop - radiusBottom;
+        const float r = radiusTop - radiusBottom;
 
-        float slope = r * r / height * sign(r);
-
+        const float slope = r * r / height * sign(r);
         // generate positions, normals and uvs
         for (uint32_t y = 0; y <= heightSegments; y++) {
             std::vector<uint32_t> indexRow;
-            float                 v = y / heightSegments;
+            const float           v = static_cast<float>(y) / static_cast<float>(heightSegments);
 
             // calculate the radius of the current row
-            float radius = v * r + radiusBottom;
+            const float radius = v * r + radiusBottom;
 
             for (uint32_t x = 0; x <= radialSegments; ++x) {
-                float u     = x / radialSegments;
-                float theta = u * arc;
+                const float u     = static_cast<float>(x) / static_cast<float>(radialSegments);
+                const float theta = u * arc;
 
-                float sinTheta = sin(theta);
-                float cosTheta = cos(theta);
+                const float sinTheta = sin(theta);
+                const float cosTheta = cos(theta);
 
                 // vertex
                 positions[3 * index]     = radius * sinTheta;
@@ -132,10 +130,10 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
         for (uint32_t y = 0; y < heightSegments; ++y) {
             for (uint32_t x = 0; x < radialSegments; ++x) {
                 // we use the index array to access the correct indices
-                uint32_t i1 = indexArray[y][x];
-                uint32_t i2 = indexArray[y + 1][x];
-                uint32_t i3 = indexArray[y + 1][x + 1];
-                uint32_t i4 = indexArray[y][x + 1];
+                const uint32_t i1 = indexArray[y][x];
+                const uint32_t i2 = indexArray[y + 1][x];
+                const uint32_t i3 = indexArray[y + 1][x + 1];
+                const uint32_t i4 = indexArray[y][x + 1];
 
                 // face one
                 indices[indexOffset] = i1;
@@ -157,11 +155,11 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
     };
 
     auto generateCap = [&](bool top) {
-        float radius = top ? radiusTop : radiusBottom;
-        float sign   = top ? 1 : -1;
+        const float radius = top ? radiusTop : radiusBottom;
+        const float sign   = top ? 1 : -1;
 
         // save the index of the first center vertex
-        uint32_t centerIndexStart = index;
+        const uint32_t centerIndexStart = index;
 
         // first we generate the center vertex data of the cap.
         // because the geometry needs one set of uvs per face,
@@ -173,7 +171,7 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
             positions[3 * index + 1] = halfHeight * sign;
             positions[3 * index + 2] = 0;
 
-            // normal
+            // // normal
             normals[3 * index]     = 0;
             normals[3 * index + 1] = sign;
             normals[3 * index + 2] = 0;
@@ -187,16 +185,16 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
         }
 
         // save the index of the last center vertex
-        uint32_t centerIndexEnd = index;
+        const uint32_t centerIndexEnd = index;
 
         // now we generate the surrounding positions, normals and uvs
 
         for (uint32_t x = 0; x <= radialSegments; ++x) {
-            float u     = x / radialSegments;
-            float theta = u * arc;
+            const float u     = static_cast<float>(x) / static_cast<float>(radialSegments);
+            const float theta = u * arc;
 
-            float cosTheta = cos(theta);
-            float sinTheta = sin(theta);
+            const float cosTheta = cos(theta);
+            const float sinTheta = sin(theta);
 
             // vertex
             positions[3 * index]     = radius * sinTheta;
@@ -219,8 +217,8 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const std:
         // generate indices
 
         for (uint32_t x = 0; x < radialSegments; ++x) {
-            uint32_t c = centerIndexStart + x;
-            uint32_t i = centerIndexEnd + x;
+            const uint32_t c = centerIndexStart + x;
+            const uint32_t i = centerIndexEnd + x;
 
             if (top) {
                 // face top

@@ -41,20 +41,20 @@ IGeometry sphere(float radius, const std::optional<ISphereOptions> &opts) {
     const float           boundingRadius = radius;
 
     for (uint32_t lat = 0; lat <= segments; lat++) {
-        const float theta    = lat * math::PI / segments;
+        const float theta    = static_cast<float>(lat) * math::PI / static_cast<float>(segments);
         const float sinTheta = sin(theta);
         const float cosTheta = -cos(theta);
 
         for (uint32_t lon = 0; lon <= segments; ++lon) {
-            const float phi    = lon * 2 * math::PI / segments - math::PI / 2.0;
+            const float phi    = static_cast<float>(lon) * 2.F * math::PI / static_cast<float>(segments) - math::PI / 2.F;
             const float sinPhi = sin(phi);
             const float cosPhi = cos(phi);
 
             const float x = sinPhi * sinTheta;
             const float y = cosTheta;
             const float z = cosPhi * sinTheta;
-            const float u = lon / segments;
-            const float v = lat / segments;
+            const float u = static_cast<float>(lon) / static_cast<float>(segments);
+            const float v = static_cast<float>(lat) / static_cast<float>(segments);
 
             positions.emplace_back(x * radius);
             positions.emplace_back(y * radius);

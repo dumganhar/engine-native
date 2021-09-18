@@ -44,7 +44,7 @@ struct ICylinderOptions : public IGeometryOptions {
 
 /**
  * @en
- * Generate a shpere with radius 0.5.
+ * Generate a sphere with radius 0.5.
  * @zh
  * 生成一个球。
  * @param radius 球半径。

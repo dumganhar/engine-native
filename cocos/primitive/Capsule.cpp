@@ -34,9 +34,9 @@ IGeometry capsule(float radiusTop, float radiusBottom, float height, const std::
     const float    bottomProp     = radiusBottom / height;
     const float    torProp        = torsoHeight / height;
     const float    topProp        = radiusTop / height;
-    const uint32_t bottomSegments = floor(heightSegments * bottomProp);
-    const uint32_t topSegments    = floor(heightSegments * topProp);
-    const uint32_t torSegments    = floor(heightSegments * torProp);
+    const uint32_t bottomSegments = floor(static_cast<float>(heightSegments) * bottomProp);
+    const uint32_t topSegments    = floor(static_cast<float>(heightSegments) * topProp);
+    const uint32_t torSegments    = floor(static_cast<float>(heightSegments) * torProp);
     const float    topOffset      = torsoHeight + radiusBottom - height / 2;
     const float    torOffset      = radiusBottom - height / 2;
     const float    bottomOffset   = radiusBottom - height / 2;
@@ -66,11 +66,11 @@ IGeometry capsule(float radiusTop, float radiusBottom, float height, const std::
         // generate positions, normals and uvs
         for (uint32_t y = 0; y <= torSegments; y++) {
             std::vector<uint32_t> indexRow;
-            const float           lat    = y / torSegments;
+            const float           lat    = static_cast<float>(y) / static_cast<float>(torSegments);
             const float           radius = lat * (radiusTop - radiusBottom) + radiusBottom;
 
             for (uint32_t x = 0; x <= sides; ++x) {
-                const float u     = x / sides;
+                const float u     = static_cast<float>(x) / static_cast<float>(sides);
                 const float v     = lat * torProp + bottomProp;
                 const float theta = u * arc - (arc / 4);
 
@@ -128,20 +128,20 @@ IGeometry capsule(float radiusTop, float radiusBottom, float height, const std::
 
     auto generateBottom = [&]() {
         for (uint32_t lat = 0; lat <= bottomSegments; ++lat) {
-            float theta    = lat * math::PI / bottomSegments / 2;
+            float theta    = static_cast<float>(lat) * math::PI / static_cast<float>(bottomSegments) / 2;
             float sinTheta = sin(theta);
             float cosTheta = -cos(theta);
 
             for (uint32_t lon = 0; lon <= sides; ++lon) {
-                const float phi    = lon * 2 * math::PI / sides - math::PI / 2.0;
+                const float phi    = static_cast<float>(lon) * math::PI_2 / static_cast<float>(sides) - math::PI / 2;
                 const float sinPhi = sin(phi);
                 const float cosPhi = cos(phi);
 
                 const float x = sinPhi * sinTheta;
                 const float y = cosTheta;
                 const float z = cosPhi * sinTheta;
-                const float u = lon / sides;
-                const float v = lat / heightSegments;
+                const float u = static_cast<float>(lon) / static_cast<float>(sides);
+                const float v = static_cast<float>(lat) / static_cast<float>(heightSegments);
 
                 positions.emplace_back(x * radiusBottom);
                 positions.emplace_back(y * radiusBottom + bottomOffset);
@@ -176,19 +176,19 @@ IGeometry capsule(float radiusTop, float radiusBottom, float height, const std::
 
     auto generateTop = [&]() {
         for (uint32_t lat = 0; lat <= topSegments; ++lat) {
-            const float theta    = lat * math::PI / topSegments / 2 + math::PI / 2;
+            const float theta    = static_cast<float>(lat) * math::PI / static_cast<float>(topSegments) / 2 + math::PI / 2;
             const float sinTheta = sin(theta);
             const float cosTheta = -cos(theta);
 
             for (uint32_t lon = 0; lon <= sides; ++lon) {
-                const float phi    = lon * 2 * math::PI / sides - math::PI / 2.0;
+                const float phi    = static_cast<float>(lon) * 2 * math::PI / static_cast<float>(sides) - math::PI / 2;
                 const float sinPhi = sin(phi);
                 const float cosPhi = cos(phi);
                 const float x      = sinPhi * sinTheta;
                 const float y      = cosTheta;
                 const float z      = cosPhi * sinTheta;
-                const float u      = lon / sides;
-                const float v      = lat / heightSegments + (1 - topProp);
+                const float u      = static_cast<float>(lon) / static_cast<float>(sides);
+                const float v      = static_cast<float>(lat) / static_cast<float>(heightSegments) + (1 - topProp);
 
                 positions.emplace_back(x * radiusTop);
                 positions.emplace_back(y * radiusTop + topOffset);

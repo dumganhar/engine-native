@@ -52,8 +52,8 @@ IGeometry plane(std::optional<IPlaneOptions> options) {
 
     for (uint32_t y = 0; y <= vSegments; ++y) {
         for (uint32_t x = 0; x <= uSegments; ++x) {
-            const float u = x / uSegments;
-            const float v = y / vSegments;
+            const float u = static_cast<float>(x) / static_cast<float>(uSegments);
+            const float v = static_cast<float>(y) / static_cast<float>(vSegments);
 
             Vec3 temp1 = c00.lerp(c10, u);
             Vec3 temp2 = c00.lerp(c01, v);

@@ -27,8 +27,8 @@
 #include "3d/assets/Morph.h"
 #include "3d/assets/Skeleton.h"
 #include "3d/misc/BufferBlob.h"
-#include "math/Quaternion.h"
 #include "core/DataView.h"
+#include "math/Quaternion.h"
 
 #include "MurmurHash2/MurmurHash2.h"
 #include "renderer/gfx-base/GFXDevice.h"
@@ -277,7 +277,7 @@ void Mesh::initialize() {
             gfxAttributes.resize(attrs.size());
             for (size_t j = 0; j < attrs.size(); ++j) {
                 const auto &attr = attrs[j];
-                gfxAttributes[j] = gfx::Attribute{attr.name, attr.format, attr.isInstanced, attr.stream, attr.isInstanced, attr.location};
+                gfxAttributes[j] = gfx::Attribute{attr.name, attr.format, attr.isNormalized, attr.stream, attr.isInstanced, attr.location};
             }
         }
 
@@ -761,7 +761,7 @@ TypedArray Mesh::readAttribute(index_t primitiveIndex, const char *attributeName
         for (uint32_t iVertex = 0; iVertex < vertexCount; ++iVertex) {
             for (uint32_t iComponent = 0; iComponent < componentCount; ++iComponent) {
                 TypedArrayElementType element = reader(inputStride * iVertex + getTypedArrayBytesPerElement(result) * iComponent);
-                uint32_t value = getTypedArrayElementValue<uint32_t>(element);
+                uint32_t              value   = getTypedArrayElementValue<uint32_t>(element);
                 setTypedArrayValue(result, componentCount * iVertex + iComponent, value);
             }
         }
@@ -849,11 +849,11 @@ bool Mesh::copyIndices(index_t primitiveIndex, TypedArray &outputArray) {
     const gfx::Format indexFormat = primitive.indexView.value().stride == 1 ? gfx::Format::R8UI
                                                                             : (primitive.indexView.value().stride == 2 ? gfx::Format::R16UI
                                                                                                                        : gfx::Format::R32UI);
-    DataView view(_data.buffer());
-    auto     reader = getReader(view, indexFormat);
+    DataView          view(_data.buffer());
+    auto              reader = getReader(view, indexFormat);
     for (uint32_t i = 0; i < indexCount; ++i) {
         TypedArrayElementType element = reader(primitive.indexView.value().offset + gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(indexFormat)].size * i);
-        uint32_t value = getTypedArrayElementValue<uint32_t>(element);
+        uint32_t              value   = getTypedArrayElementValue<uint32_t>(element);
         setTypedArrayValue<uint32_t>(outputArray, i, value);
     }
     return true;

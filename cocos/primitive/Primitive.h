@@ -40,7 +40,7 @@
 #include "primitive/PrimitiveDefine.h"
 namespace cc {
 
-using PrimitiveOptions = std::variant<IGeometryOptions, IBoxOptions, ICapsuleOptions, ICircleOptions, ICylinderOptions, IPlaneOptions, ISphereOptions, ITorusOptions>;
+using PrimitiveOptions = std::variant<IGeometryOptions, IBoxOptions, ICapsuleOptions, ICircleOptions, ICylinderOptions, IConeOptions, IPlaneOptions, ISphereOptions, ITorusOptions>;
 enum class PrimitiveType {
     BOX      = 0,
     SPHERE   = 1,
@@ -60,8 +60,6 @@ enum class PrimitiveType {
  */
 class Primitive : public Mesh {
 public:
-    using PrimitiveType = PrimitiveType;
-
     /**
      * @en
      * The type of the primitive mesh, set it before you call onLoaded.
@@ -81,8 +79,8 @@ public:
     //    @editable
     Record<std::string, float> info; //cjh float?
 
-    explicit Primitive(PrimitiveType type /* = PrimitiveType.BOX*/);
-
+    explicit Primitive(PrimitiveType type = PrimitiveType::BOX);
+    ~Primitive() override = default;
     /**
      * @en
      * Construct the primitive mesh with `type` and `info`.
@@ -90,9 +88,11 @@ public:
      * 根据`type`和`info`构建相应的网格。
      */
     void onLoaded() override;
+
+private:
+    CC_DISALLOW_COPY_MOVE_ASSIGN(Primitive);
 };
 
-//TODO(xwx): make alias for all children struct of IGeometryOptions
 IGeometry createGeometry(PrimitiveType type, const std::optional<PrimitiveOptions> &options = std::nullopt);
 
 } // namespace cc

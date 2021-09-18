@@ -40,9 +40,9 @@ public:
         if (iter != _zero.end()) _zero.erase(iter);
     }
     inline void cancelInactive() { stableRemoveInactive(_zero); }
-    inline void cancelInactive(uint32_t flagToClear) { stableRemoveInactive(_zero, flagToClear); }
+    inline void cancelInactive(CCObject::Flags flagToClear) { stableRemoveInactive(_zero, flagToClear); }
     inline void invoke() {
-        // _invoke(_zero); TODO(xwx): requires 2 arguments, but 1 was provided
+        _invoke(_zero, std::nullopt);
         _zero.clear();
     }
 };

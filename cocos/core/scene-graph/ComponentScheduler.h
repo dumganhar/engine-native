@@ -28,15 +28,21 @@
 #include <vector>
 #include "base/TypeDef.h"
 #include "core/components/Component.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 
-using Invoker = std::function<void(std::vector<Component *>, float)>;
+using Invoker = std::function<void(const std::vector<Component *> &, std::optional<float>)>;
 class LifeCycleInvoker {
 public:
-    static void stableRemoveInactive(const std::vector<Component *> &);
-    static void stableRemoveInactive(const std::vector<Component *> &, uint);
-    explicit LifeCycleInvoker(Invoker);
+    static void    stableRemoveInactive(std::vector<Component *> &components);
+    static void    stableRemoveInactive(std::vector<Component *> &components, CCObject::Flags flagToClear);
+    static Invoker invokeStart();
+    static Invoker invokeUpdate();
+    static Invoker invokeLateUpdate();
+
+    static int32_t sortedIndex(std::vector<Component *> &components, Component *comp);
+    explicit LifeCycleInvoker(Invoker invokeFunc);
     ~LifeCycleInvoker();
 
 protected:
@@ -52,17 +58,17 @@ private:
 class OneOffInvoker : LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
-    void add(Component *);
-    void remove(Component *);
-    void cancelInactive(uint);
+    void add(Component *comp);
+    void remove(Component *comp);
+    void cancelInactive(CCObject::Flags flagToClear);
     void invoke();
 };
 
 class ReusableInvoker : LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
-    void add(Component *);
-    void remove(Component *);
+    void add(Component *comp);
+    void remove(Component *comp);
     void invoke(float);
 };
 
@@ -74,19 +80,19 @@ public:
     ReusableInvoker *updateInvoker;
     ReusableInvoker *lateUpdateInvoker;
     void             unscheduleAll();
-    void             onEnabled(Component *);
-    void             onDisabled(Component *);
-    void             enableComp(Component *, std::optional<LifeCycleInvoker *> = std::nullopt);
-    void             disableComp(Component *);
+    void             onEnabled(Component *comp);
+    void             onDisabled(Component *comp);
+    void             enableComp(Component *comp, std::optional<LifeCycleInvoker *> invoker = std::nullopt);
+    void             disableComp(Component *comp);
     void             startPhase();
-    void             updatePhase(float);
+    void             updatePhase(float) const;
     void             lateUpdatePhase(float);
 
 private:
     std::vector<Component *> _deferredComps;
-    bool                     _updating;
+    bool                     _updating{true};
     void                     startForNewComps();
-    void                     scheduleImmediate(Component *);
+    void                     scheduleImmediate(Component *comp);
     void                     deferredSchedule();
 };
 

@@ -41,8 +41,6 @@ class RenderScene;
 
 class Component : public CCObject {
 public:
-    friend class NodeActivator;
-
     using Super          = CCObject;
     virtual ~Component() = default;
 
@@ -308,6 +306,9 @@ protected:
     bool _enabled{true};
 
     friend class BaseNode;
+    friend class NodeActivator;
+    friend class ComponentScheduler;
+    friend class LifeCycleInvoker;
 };
 
 } // namespace cc

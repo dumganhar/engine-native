@@ -24,10 +24,8 @@ void writeBuffer(DataView &target, const std::vector<T> &data, const gfx::Format
     if (stride == 0) {
         stride = info.size;
     }
-    // const writer = `set${_getDataViewType(info)}`; // TODO(xwx): find a way to setDifferentDataViewType
     const uint32_t componentBytesLength = info.size / info.count;
     const uint32_t nSeg                 = std::floor(data.size() / info.count);
-    // bool isLittleEndian = sys.isLittleEndian // TODO(xwx): sys not implement
 
     const uint32_t bytes = info.size / info.count * 8;
 
@@ -35,7 +33,7 @@ void writeBuffer(DataView &target, const std::vector<T> &data, const gfx::Format
         uint32_t x = offset + stride * iSeg;
         for (uint32_t iComponent = 0; iComponent < info.count; ++iComponent) {
             const uint32_t y = x + componentBytesLength * iComponent;
-            // target[writer](y, data[info.count * iSeg + iComponent], isLittleEndian); //TODO(xwx): setDifferentDataViewType and sys.isLittleEndian not implement
+            // default Little-Endian
             switch (info.type) {
                 case gfx::FormatType::UINT:
                 case gfx::FormatType::UNORM:
@@ -138,7 +136,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     if (geometry.normals.has_value() && !geometry.normals.value().empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (auto att : geometry.attributes.value()) {
+            for (const auto& att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_NORMAL) {
                     attr = &att;
                     break;
@@ -160,7 +158,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     if (geometry.uvs.has_value() && !geometry.uvs.value().empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (auto att : geometry.attributes.value()) {
+            for (const auto& att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_TEX_COORD) {
                     attr = &att;
                     break;
@@ -182,7 +180,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     if (geometry.tangents.has_value() && !geometry.tangents.value().empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (auto att : geometry.attributes.value()) {
+            for (const auto& att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_TANGENT) {
                     attr = &att;
                     break;
@@ -204,7 +202,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     if (geometry.colors.has_value() && !geometry.colors.value().empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (auto att : geometry.attributes.value()) {
+            for (const auto& att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_COLOR) {
                     attr = &att;
                     break;

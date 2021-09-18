@@ -33,6 +33,42 @@
 namespace cc {
 namespace scene {
 
+class Ambient;
+
+class AmbientInfo final {
+public:
+    AmbientInfo(/* args */) = default;
+    ~AmbientInfo()          = default;
+
+    /**
+     * @en Sky color
+     * @zh 天空颜色
+     */
+    void                setSkyColor(const Color &val);
+    inline const Color &getSkyColor() { return _skyColor; }
+
+    /**
+     * @en Sky illuminance
+     * @zh 天空亮度
+     */
+    void         setSkyIllum(float val);
+    inline float getSkyIllum() const { return _skyIllum; }
+
+    /**
+     * @en Ground color
+     * @zh 地面颜色
+     */
+    void                setGroundAlbedo(const Color &val);
+    inline const Color &getGroundAlbedo() { return _groundAlbedo; }
+    void                activate(Ambient *resource);
+
+private:
+    Color    _skyColor{51, 128, 204, 1};
+    float    _skyIllum{20000.0F};
+    Color    _groundAlbedo{51, 51, 51, 255};
+    Ambient *_resource{nullptr};
+};
+
 class Ambient final {
 public:
     friend class Skybox;

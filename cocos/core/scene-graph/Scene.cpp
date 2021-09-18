@@ -32,6 +32,11 @@ Scene::Scene(const std::string &name)
 : BaseNode(name) {
     _activeInHierarchy = false;
     _renderScene       = Root::getInstance()->createScene({});
+    _globals           = new SceneGlobal();
+}
+
+Scene::~Scene() {
+    CC_SAFE_DELETE(_globals);
 }
 
 void Scene::load() {
@@ -53,10 +58,10 @@ void Scene::activate(bool active /* = true */) {
     //        _registerIfAttached!(active);
     //    }
     //cjh    legacyCC.director._nodeActivator.activateNode(this, active);
-    // The test environment does not currently support the renderer
-    //    if (!TEST) {
-    //        _globals.activate();
-    //    }
+    //     The test environment does not currently support the renderer
+    //        if (!TEST) {
+    _globals->activate();
+    //        }
 }
 
 void Scene::onBatchCreated(bool dontSyncChildPrefab) {

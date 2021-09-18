@@ -25,7 +25,9 @@
 #include "3d/lights/SphereLightComponent.h"
 
 namespace cc {
-SphereLight::SphereLight() : Super() {}
+SphereLight::SphereLight() : Super() {
+    _type = scene::LightType::SPHERE;
+}
 
 void SphereLight::createLight() {
     if (_light == nullptr) {

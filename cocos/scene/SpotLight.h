@@ -35,11 +35,7 @@ namespace scene {
 class SpotLight final : public Light {
 public:
     SpotLight() { _type = LightType::SPOT; }
-    SpotLight(const SpotLight &) = delete;
-    SpotLight(SpotLight &&)      = delete;
-    ~SpotLight() override        = default;
-    SpotLight &operator=(const SpotLight &) = delete;
-    SpotLight &operator=(SpotLight &&) = delete;
+    ~SpotLight() override = default;
 
     void initialize() override;
     void update() override;
@@ -89,6 +85,8 @@ private:
     Vec3              _pos;
     geometry::AABB *  _aabb{nullptr};
     geometry::Frustum _frustum;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(SpotLight);
 };
 
 } // namespace scene

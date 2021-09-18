@@ -26,7 +26,9 @@
 
 namespace cc {
 
-SpotLight::SpotLight() : Super() {}
+SpotLight::SpotLight() : Super() {
+    _type = scene::LightType::SPOT;
+}
 
 void SpotLight::createLight() {
     if (_light == nullptr) {

@@ -158,6 +158,7 @@ public:
     // Override functions
     void updateMipmaps(uint32_t firstLevel, uint32_t count) override;
 
+    void initialize();
     void onLoaded() override;
     /**
      * 销毁此贴图，清空所有 Mipmap 并释放占用的 GPU 资源。

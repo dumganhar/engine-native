@@ -35,6 +35,7 @@
 #include "renderer/GFXDeviceManager.h"
 #include "scene/Pass.h"
 
+#include "3d/lights/DirectionalLightComponent.h"
 #include "core/scene-graph/Layers.h"
 #include "platform/Image.h"
 #include "primitive/Primitive.h"
@@ -82,9 +83,9 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
     // create mesh asset
     auto *cube = new Primitive(PrimitiveType::BOX);
-    // auto *cube = new Primitive(PrimitiveType::QUAD);
-    // auto *cube = new Primitive(PrimitiveType::PLANE);
-    // auto *cube = new Primitive(PrimitiveType::SPHERE);
+    //     auto *cube = new Primitive(PrimitiveType::QUAD);
+    //     auto *cube = new Primitive(PrimitiveType::PLANE);
+    //     auto *cube = new Primitive(PrimitiveType::SPHERE);
     // auto *cube = new Primitive(PrimitiveType::CONE); // TODO(xwx): crash as CYLINDER
     // auto *cube = new Primitive(PrimitiveType::CYLINDER); // TODO(xwx): crash
     // auto *cube = new Primitive(PrimitiveType::CAPSULE); // TODO(xwx); tex wrong in middle
@@ -123,10 +124,17 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
     // set material
     auto *material = new Material();
-    material->initialize({.effectName = "unlit",
+    //    material->initialize({
+    //        .effectName = "unlit",
+    //        .defines    = MacroRecord{
+    //          //            {"USE_COLOR", true},
+    //          {"USE_TEXTURE", true},
+    //        }
+    //    });
+
+    material->initialize({.effectName = "standard",
                           .defines    = MacroRecord{
-                              //            {"USE_COLOR", true},
-                              {"USE_TEXTURE", true},
+                              {"USE_ALBEDO_MAP", true},
                           }});
 
     //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
@@ -140,19 +148,31 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
         texture->setImage(imgAsset);
         texture->onLoaded();
-        material->setProperty("mainTexture", texture);
+        //        material->setProperty("mainTexture", texture);
+        material->setProperty("albedoMap", texture);
     }
     image->release();
 
     _cubeMeshRenderer->setMaterial(material);
+
+    // create light
+    auto *lightNode = new Node();
+    lightNode->setRotationFromEuler(-50, 0, 0);
+    lightNode->setParent(_scene);
+    auto *lightComp = lightNode->addComponent<DirectionalLight>();
+    lightComp->setColor(cc::Color{255, 0, 0, 255});
 
     // simulate logic in director.ts
     _scene->load();
     _scene->activate();
 
     // simulate component lifecycle
+    lightComp->onLoad();
+    lightComp->onEnable();
+
     cameraComp->onLoad();
     cameraComp->onEnable();
+
     _cubeMeshRenderer->onLoad();
     _cubeMeshRenderer->onEnable();
 }
@@ -160,7 +180,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 void SimpleDemo::step(float dt) {
     //    dt = 1.F / 60.F;
     //     CC_LOG_INFO("SimpleDemo::%s, dt: %.06f", __FUNCTION__, dt);
-    _cubeNode->setAngle(_cubeNode->getAngle() + 10 * dt);
+    //    _cubeNode->setAngle(_cubeNode->getAngle() + 10 * dt);
 
     _cubeMeshRenderer->update(dt);
 

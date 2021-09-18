@@ -35,11 +35,7 @@ namespace scene {
 class SphereLight final : public Light {
 public:
     SphereLight() { _type = LightType::SPHERE; }
-    SphereLight(const SphereLight &) = delete;
-    SphereLight(SphereLight &&)      = delete;
-    ~SphereLight() override          = default;
-    SphereLight &operator=(const SphereLight &) = delete;
-    SphereLight &operator=(SphereLight &&) = delete;
+    ~SphereLight() override = default;
 
     void initialize() override;
     void update() override;
@@ -68,6 +64,8 @@ private:
     float           _size{0.F};
     Vec3            _pos;
     geometry::AABB *_aabb{nullptr};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(SphereLight);
 };
 
 } // namespace scene

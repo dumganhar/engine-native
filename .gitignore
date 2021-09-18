@@ -188,3 +188,5 @@ cocos/platform/ohos/libcocos/build
 **/*~
 
 templates/mac/build-mac
+
+cocos/core/builtin/effects.js

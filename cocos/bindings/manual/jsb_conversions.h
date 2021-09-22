@@ -29,8 +29,9 @@
 #include <cstdint>
 #include <optional>
 #include <type_traits>
-#include "Value.h"
 #include "bindings/jswrapper/SeApi.h"
+#include "bindings/jswrapper/Value.h"
+#include "bindings/jswrapper/v8/Object.h"
 #include "bindings/manual/jsb_classtype.h"
 #include "bindings/manual/jsb_conversions.h"
 #include "cocos/base/Map.h"
@@ -41,7 +42,6 @@
 #include "cocos/math/Vec3.h"
 #include "extensions/cocos-ext.h"
 #include "network/Downloader.h"
-#include "v8/Object.h"
 
 #if USE_SPINE
     #include "cocos/editor-support/spine-creator-support/spine-cocos2dx.h"

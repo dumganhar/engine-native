@@ -27,8 +27,8 @@
 
 #include <memory>
 #include <variant>
-#include "core/ArrayBuffer.h"
 #include "base/TypeDef.h"
+#include "core/ArrayBuffer.h"
 
 namespace cc {
 
@@ -72,7 +72,7 @@ public:
     }
 
     TypedArrayTemp<T> subarray(uint32_t begin) {
-        return subarray(begin, _byteLength - begin + 1);
+        return subArray<T>(begin, _byteLength - begin + 1);
     }
 
     TypedArrayTemp<T> subarray(uint32_t begin, uint32_t end) {

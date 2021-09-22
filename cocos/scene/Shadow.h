@@ -37,6 +37,10 @@
 #include "scene/Define.h"
 
 namespace cc {
+
+class Node;
+;
+
 namespace scene {
 
 /**
@@ -128,25 +132,171 @@ enum class PCFType {
     SOFT_2X = 2
 };
 
-#undef near
-#undef far
+class Shadow;
 
-struct ShadowInfo {
-    Color      shadowColor{0, 0, 0, 76};
-    bool       enabled{false};
-    Vec3       normal{0.F, 1.F, 0.F};
-    float      distance{0.F};
-    float      autoAdapt{true};
-    float      bias{0.00001F};
-    float      normalBias{0.F};
-    float      near{1.0F};
-    float      far{30.F};
-    float      orthoSize{5.F};
-    float      maxReceived{4.F};
-    float      saturation{0.75};
-    Vec2       size{512.F, 512.F};
-    PCFType    pcf{PCFType::HARD};
-    ShadowType type{ShadowType::PLANAR};
+class ShadowInfo final {
+public:
+    /**
+     * @en Whether activate planar shadow
+     * @zh 是否启用平面阴影？
+     */
+    void        setEnabled(bool val);
+    inline bool isEnabled() const {
+        return _enabled;
+    }
+
+    void              setType(ShadowType val);
+    inline ShadowType getType() const {
+        return _type;
+    }
+
+    /**
+     * @en Shadow color
+     * @zh 阴影颜色
+     */
+    void                setshadowColor(const Color &val);
+    inline const Color &getShadowColor() const {
+        return _shadowColor;
+    }
+
+    /**
+     * @en The normal of the plane which receives shadow
+     * @zh 阴影接收平面的法线
+     */
+    void               setNormal(const Vec3 &val);
+    inline const Vec3 &getNormal() const {
+        return _normal;
+    }
+
+    /**
+     * @en The distance from coordinate origin to the receiving plane.
+     * @zh 阴影接收平面与原点的距离
+     */
+    void         setDistance(float val);
+    inline float getDistance() const {
+        return _distance;
+    }
+
+    /**
+     * @en Shadow color saturation
+     * @zh 阴影颜色饱和度
+     */
+    void         setSaturation(float val);
+    inline float getSaturation() const {
+        return _saturation;
+    }
+
+    /**
+     * @en The normal of the plane which receives shadow
+     * @zh 阴影接收平面的法线
+     */
+    void           setPcf(PCFType val);
+    inline PCFType getPcf() const {
+        return _pcf;
+    }
+
+    /**
+     * @en get or set shadow max received
+     * @zh 获取或者设置阴影接收的最大光源数量
+     */
+    void            setMaxReceived(uint32_t val);
+    inline uint32_t getMaxReceived() const {
+        return _maxReceived;
+    }
+
+    /**
+     * @en get or set shadow map sampler offset
+     * @zh 获取或者设置阴影纹理偏移值
+     */
+    void         setBias(float val);
+    inline float getBias() const {
+        return _bias;
+    }
+
+    /**
+     * @en on or off Self-shadowing.
+     * @zh 打开或者关闭自阴影。
+     */
+    void         setNormalBias(float val);
+    inline float getNormalBias() const {
+        return _normalBias;
+    }
+
+    /**
+     * @en get or set shadow map size
+     * @zh 获取或者设置阴影纹理大小
+     */
+    void         setShadowMapSize(float value);
+    inline float getShadowMapSize() const {
+        return _size.x;
+    }
+
+    inline const Vec2 &getSize() const {
+        return _size;
+    }
+
+    /**
+     * @en get or set shadow Map sampler auto adapt
+     * @zh 阴影纹理生成是否自适应
+     */
+    void        setAutoAdapt(bool val);
+    inline bool isAutoAdapt() const {
+        return _autoAdapt;
+    }
+
+    /**
+     * @en get or set shadow camera near
+     * @zh 获取或者设置阴影相机近裁剪面
+     */
+    void         setNear(float val);
+    inline float getNear() const {
+        return _near;
+    }
+
+    /**
+     * @en get or set shadow camera far
+     * @zh 获取或者设置阴影相机远裁剪面
+     */
+    void         setFar(float val);
+    inline float getFar() const {
+        return _far;
+    }
+
+    /**
+     * @en get or set shadow camera orthoSize
+     * @zh 获取或者设置阴影相机正交大小
+     */
+    void         setOrthoSize(float val);
+    inline float getOrthoSize() const {
+        return _orthoSize;
+    }
+
+    /**
+     * @en Set plane which receives shadow with the given node's world transformation
+     * @zh 根据指定节点的世界变换设置阴影接收平面的信息
+     * @param node The node for setting up the plane
+     */
+    void setPlaneFromNode(Node *node);
+
+    void activate(Shadow *resource);
+
+private:
+    Color      _shadowColor{0, 0, 0, 76};
+    bool       _enabled{false};
+    Vec3       _normal{0.F, 1.F, 0.F};
+    float      _distance{0.F};
+    float      _autoAdapt{true};
+    float      _bias{0.00001F};
+    float      _normalBias{0.F};
+    float      _near{1.0F};
+    float      _far{30.F};
+    float      _orthoSize{5.F};
+    uint32_t   _maxReceived{4};
+    float      _saturation{0.75};
+    Vec2       _size{512.F, 512.F};
+    PCFType    _pcf{PCFType::HARD};
+    ShadowType _type{ShadowType::PLANAR};
+    Shadow *   _resource{nullptr};
 };
 
 class Shadow final {
@@ -247,6 +397,12 @@ public:
      */
     inline const Vec2 &getSize() const { return _size; }
     inline void        setSize(const Vec2 &val) { _size.set(val); }
+    inline void        setShadowMapSize(float value) {
+        _size.set(value, value);
+    }
+    inline float getShadowMapSize() const {
+        return _size.x;
+    }
 
     /**
      * @en get or set shadow pcf.
@@ -293,6 +449,18 @@ public:
     inline const Mat4 &getMatLight() const { return _matLight; }
     inline Material *  getMaterial() const { return _material; }
     inline Material *  getInstancingMaterial() const { return _instancingMaterial; }
+
+    /**
+     * @en get or set shadow max received
+     * @zh 获取或者设置阴影接收的最大光源数量
+     */
+    inline void setMaxReceived(uint32_t val) {
+        _maxReceived = val;
+    }
+
+    inline uint32_t getMaxReceived() const {
+        return _maxReceived;
+    }
 
 private:
     void updatePlanarInfo();

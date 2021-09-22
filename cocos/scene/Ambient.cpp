@@ -28,6 +28,34 @@
 namespace cc {
 namespace scene {
 
+void AmbientInfo::setSkyColor(const Color &val) {
+    _skyColor.set(val);
+    if (_resource != nullptr) {
+        _resource->setSkyColor(_skyColor);
+    }
+}
+
+void AmbientInfo::setSkyIllum(float val) {
+    _skyIllum = val;
+    if (_resource != nullptr) {
+        _resource->setSkyIllum(_skyIllum);
+    }
+}
+
+void AmbientInfo::setGroundAlbedo(const Color &val) {
+    _groundAlbedo.set(val);
+    // only RGB channels are used, alpha channel are intensionally left unchanged here
+    if (_resource != nullptr) {
+        _resource->setGroundAlbedo(_groundAlbedo);
+    }
+}
+
+void AmbientInfo::activate(Ambient *resource) {
+    _resource = resource;
+    _resource->initialize(this);
+}
+
+//
 void Ambient::initialize(AmbientInfo *info) {
     setSkyColor(info->getSkyColor());
     _groundAlbedo.set(info->getGroundAlbedo());

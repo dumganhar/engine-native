@@ -32,9 +32,9 @@ namespace cc {
 
 class DirectionalLight final : public Light {
 public:
-    using Super     = Light;
+    using Super = Light;
     DirectionalLight();
-    ~DirectionalLight() override;
+    ~DirectionalLight() override = default;
 
     /**
      * @en
@@ -45,15 +45,16 @@ public:
     inline float getIlluminance() const { return _illuminance; }
     inline void  setIlluminance(float val) {
         _illuminance = val;
-        if (_light != nullptr) static_cast<scene::DirectionalLight *>(_light)->setIlluminance(val);
+        if (_light != nullptr) {
+            static_cast<scene::DirectionalLight *>(_light)->setIlluminance(val);
+        }
     };
 
 protected:
     void createLight() override;
 
     //TODO(xwx): _illuminance @serializable
-    float            _illuminance{65000.F};
-    scene::LightType _type{scene::LightType::DIRECTIONAL};
+    float _illuminance{65000.F};
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(DirectionalLight);

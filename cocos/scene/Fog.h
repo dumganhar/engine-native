@@ -68,16 +68,86 @@ enum class FogType {
     NONE    = 4
 };
 
-struct FogInfo {
-    FogType fogType{FogType::LINEAR};
-    Color   fogColor{200, 200, 200, 255};
-    bool    enabled{false};
-    float   fogDensity{0.3F};
-    float   fogStart{0.5F};
-    float   fogEnd{0.5F};
-    float   fogAtten{5.F};
-    float   fogTop{1.5F};
-    float   fogRange{1.2F};
+class Fog;
+
+class FogInfo final {
+public:
+    /**
+     * @zh 是否启用全局雾效
+     * @en Enable global fog
+     */
+    void        setEnabled(bool val);
+    inline bool isEnabled() const { return _isEnabled; }
+
+    /**
+     * @zh 全局雾颜色
+     * @en Global fog color
+     */
+    void                setFogColor(Color val);
+    inline const Color &getFogColor() const { return _fogColor; }
+
+    /**
+     * @zh 全局雾类型
+     * @en Global fog type
+     */
+    void           setType(FogType val);
+    inline FogType getType() const { return _type; }
+
+    /**
+     * @zh 全局雾浓度
+     * @en Global fog density
+     */
+    void         setFogDensity(float val);
+    inline float getFogDensity() const { return _fogDensity; }
+
+    /**
+     * @zh 雾效起始位置，只适用于线性雾
+     * @en Global fog start position, only for linear fog
+     */
+    void         setFogStart(float val);
+    inline float getFogStart() const { return _fogStart; }
+
+    /**
+     * @zh 雾效结束位置，只适用于线性雾
+     * @en Global fog end position, only for linear fog
+     */
+    void         setFogEnd(float val);
+    inline float getFogEnd() const { return _fogEnd; }
+
+    /**
+     * @zh 雾效衰减
+     * @en Global fog attenuation
+     */
+    void         setFogAtten(float val);
+    inline float getFogAtten() const { return _fogAtten; }
+
+    /**
+     * @zh 雾效顶部范围，只适用于层级雾
+     * @en Global fog top range, only for layered fog
+     */
+    void         setFogTop(float val);
+    inline float getFogTop() const { return _fogTop; }
+
+    /**
+     * @zh 雾效范围，只适用于层级雾
+     * @en Global fog range, only for layered fog
+     */
+    void         setFogRange(float val);
+    inline float getFogRange() const { return _fogRange; }
+
+    void activate(Fog *resource);
+
+private:
+    FogType _type{FogType::LINEAR};
+    Color   _fogColor{200, 200, 200, 255};
+    bool    _isEnabled{false};
+    float   _fogDensity{0.3F};
+    float   _fogStart{0.5F};
+    float   _fogEnd{0.5F};
+    float   _fogAtten{5.F};
+    float   _fogTop{1.5F};
+    float   _fogRange{1.2F};
+    Fog *   _resource{nullptr};
 };
 
 class Fog final {
@@ -110,10 +180,10 @@ public:
      */
     inline void setFogColor(const Color &val) {
         _fogColor.set(val);
-        _colorArray[0] = val.r / 255;
-        _colorArray[1] = val.g / 255;
-        _colorArray[2] = val.b / 255;
-        _colorArray[3] = val.a / 255;
+        _colorArray[0] = val.r / 255.F;
+        _colorArray[1] = val.g / 255.F;
+        _colorArray[2] = val.b / 255.F;
+        _colorArray[3] = val.a / 255.F;
     }
     inline const Color &getFogColor() const { return _fogColor; }
 

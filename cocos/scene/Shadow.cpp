@@ -25,32 +25,166 @@
 
 #include "scene/Shadow.h"
 #include <cmath>
+#include "core/scene-graph/Node.h"
 #include "scene/Pass.h"
 
 namespace cc {
 namespace scene {
 
+// ShadowInfo
+
+void ShadowInfo::setEnabled(bool val) {
+    if (_enabled == val) {
+        return;
+    }
+
+    _enabled = val;
+    if (_resource != nullptr) {
+        _resource->setEnabled(val);
+        if (val) {
+            _resource->setType(_type);
+        }
+    }
+}
+
+void ShadowInfo::setType(ShadowType val) {
+    _type = val;
+    if (_resource != nullptr) {
+        _resource->setType(val);
+    }
+}
+
+void ShadowInfo::setshadowColor(const Color &val) {
+    _shadowColor.set(val);
+    if (_resource != nullptr) {
+        _resource->setShadowColor(val);
+    }
+}
+
+void ShadowInfo::setNormal(const Vec3 &val) {
+    _normal = val;
+    if (_resource != nullptr) {
+        _resource->setNormal(val);
+    }
+}
+
+void ShadowInfo::setDistance(float val) {
+    _distance = val;
+    if (_resource != nullptr) {
+        _resource->setDistance(val);
+    }
+}
+
+void ShadowInfo::setSaturation(float val) {
+    if (val > 1.0) {
+        _saturation = val / val;
+        if (_resource != nullptr) {
+            _resource->setSaturation(val / val);
+        }
+    } else {
+        _saturation = val;
+        if (_resource != nullptr) {
+            _resource->setSaturation(val);
+        }
+    }
+}
+
+void ShadowInfo::setPcf(PCFType val) {
+    _pcf = val;
+    if (_resource != nullptr) {
+        _resource->setPcf(val);
+    }
+}
+
+void ShadowInfo::setMaxReceived(uint32_t val) {
+    _maxReceived = val;
+    if (_resource != nullptr) {
+        _resource->setMaxReceived(val);
+    }
+}
+
+void ShadowInfo::setBias(float val) {
+    _bias = val;
+    if (_resource != nullptr) {
+        _resource->setBias(val);
+    }
+}
+
+void ShadowInfo::setNormalBias(float val) {
+    _normalBias = val;
+    if (_resource != nullptr) {
+        _resource->setNormalBias(val);
+    }
+}
+
+void ShadowInfo::setShadowMapSize(float value) {
+    _size.set(value, value);
+    if (_resource != nullptr) {
+        _resource->setShadowMapSize(value);
+        _resource->setShadowMapDirty(true);
+    }
+}
+
+void ShadowInfo::setAutoAdapt(bool val) {
+    _autoAdapt = val;
+    if (_resource != nullptr) {
+        _resource->setAutoAdapt(val);
+    }
+}
+
+void ShadowInfo::setNear(float val) {
+    _near = val;
+    if (_resource != nullptr) {
+        _resource->setNear(val);
+    }
+}
+
+void ShadowInfo::setFar(float val) {
+    _far = val;
+    if (_resource != nullptr) {
+        _resource->setFar(val);
+    }
+}
+
+void ShadowInfo::setOrthoSize(float val) {
+    _orthoSize = val;
+    if (_resource != nullptr) {
+        _resource->setOrthoSize(val);
+    }
+}
+
+void ShadowInfo::setPlaneFromNode(Node *node) {
+    const auto &qt = node->getWorldRotation();
+    _normal        = Vec3::UNIT_Y;
+    _normal.transformQuat(qt);
+    _distance = _normal.dot(node->getWorldPosition());
+}
+
+void ShadowInfo::activate(Shadow *resource) {
+    _resource = resource; //cjh shared_ptr
+    _resource->initialize(*this);
+    _resource->activate();
+}
+
+//
 const float Shadow::COEFFICIENT_OF_EXPANSION{2.0F * std::sqrt(3.0F)};
 
-#undef near
-#undef far
-
 void Shadow::initialize(const ShadowInfo &shadowsInfo) {
-    _near        = shadowsInfo.near;
-    _far         = shadowsInfo.far;
-    _orthoSize   = shadowsInfo.orthoSize;
-    _size        = shadowsInfo.size;
-    _pcf         = shadowsInfo.pcf;
-    _normal      = shadowsInfo.normal;
-    _distance    = shadowsInfo.distance;
-    _shadowColor = shadowsInfo.shadowColor;
-    _bias        = shadowsInfo.bias;
-    _normalBias  = shadowsInfo.normalBias;
-    _maxReceived = shadowsInfo.maxReceived;
-    _autoAdapt   = shadowsInfo.autoAdapt;
-    setEnabled(shadowsInfo.enabled);
-    _type       = shadowsInfo.type;
-    _saturation = shadowsInfo.saturation;
+    _near        = shadowsInfo.getNear();
+    _far         = shadowsInfo.getFar();
+    _orthoSize   = shadowsInfo.getOrthoSize();
+    _size        = shadowsInfo.getSize();
+    _pcf         = shadowsInfo.getPcf();
+    _normal      = shadowsInfo.getNormal();
+    _distance    = shadowsInfo.getDistance();
+    _shadowColor = shadowsInfo.getShadowColor();
+    _bias        = shadowsInfo.getBias();
+    _normalBias  = shadowsInfo.getNormalBias();
+    _maxReceived = shadowsInfo.getMaxReceived();
+    _autoAdapt   = shadowsInfo.isAutoAdapt();
+    setEnabled(shadowsInfo.isEnabled());
+    _type       = shadowsInfo.getType();
+    _saturation = shadowsInfo.getSaturation();
 }
 
 void Shadow::destroy() {

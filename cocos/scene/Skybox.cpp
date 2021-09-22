@@ -43,6 +43,27 @@ cc::Material *skyboxMaterial{nullptr};
 namespace cc {
 namespace scene {
 
+void SkyboxInfo::setEnabled(bool val) {
+    _enabled = val;
+    if (_resource != nullptr) {
+        _resource->setEnabled(_enabled);
+    }
+}
+
+void SkyboxInfo::setUseIBL(bool val) {
+    _useIBL = val;
+    if (_resource != nullptr) {
+        _resource->setUseIBL(_useIBL);
+    }
+}
+
+void SkyboxInfo::setRGBE(bool val) {
+    _isRGBE = val;
+    if (_resource != nullptr) {
+        _resource->setIsRGBE(_isRGBE);
+    }
+}
+
 void SkyboxInfo::setEnvmap(TextureCube *val) {
     _envmap = val;
     if (_resource) {
@@ -50,6 +71,15 @@ void SkyboxInfo::setEnvmap(TextureCube *val) {
     }
 }
 
+void SkyboxInfo::activate(Skybox *resource) {
+    _resource = resource; //cjh shared_ptr?
+    if (_resource != nullptr) {
+        _resource->initialize(*this);
+        _resource->activate(); // update global DS first
+    }
+}
+
+//
 void Skybox::setIsRGBE(bool val) {
     if (val) {
         if (skyboxMaterial != nullptr) {
@@ -72,9 +102,9 @@ void Skybox::setEnvmap(TextureCube *val) {
 }
 
 void Skybox::initialize(const SkyboxInfo &skyboxInfo) {
-    _enabled = skyboxInfo.getEnabled();
-    _useIBL  = skyboxInfo.getIBL();
-    _isRGBE  = skyboxInfo.getRGBE();
+    _enabled = skyboxInfo.isEnabled();
+    _useIBL  = skyboxInfo.isUseIBL();
+    _isRGBE  = skyboxInfo.isRGBE();
     _envmap  = skyboxInfo.getEnvamp();
 }
 
@@ -82,7 +112,7 @@ void Skybox::activate() {
     auto *pipeline   = Root::getInstance()->getPipeline();
     auto *ambient    = pipeline->getPipelineSceneData()->getAmbient();
     _globalDSManager = pipeline->getGlobalDSManager();
-    _default         = BuiltinResMgr::getInstance()->get<TextureCube>(std::string("default-cube-texture"));
+    _default         = BuiltinResMgr::getInstance()->get<TextureCube>("default-cube-texture");
 
     if (_model == nullptr) {
         _model = Root::getInstance()->createModel<scene::Model>();
@@ -123,10 +153,12 @@ void Skybox::updatePipeline() const {
     Root *                    root     = Root::getInstance();
     pipeline::RenderPipeline *pipeline = root->getPipeline();
 
-    const MacroValue &macro    = pipeline->getMacros().at("CC_USE_IBL");
-    const int32_t *   macroPtr = std::get_if<int32_t>(&macro);
-    if (macroPtr && (*macroPtr == value)) {
-        return;
+    if (auto iter = pipeline->getMacros().find("CC_USE_IBL"); iter != pipeline->getMacros().end()) {
+        const MacroValue &macro    = iter->second;
+        const int32_t *   macroPtr = std::get_if<int32_t>(&macro);
+        if (macroPtr != nullptr && (*macroPtr == value)) {
+            return;
+        }
     }
 
     pipeline->setValue("CC_USE_IBL", value);

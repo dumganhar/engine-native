@@ -25,7 +25,9 @@
 #include "3d/lights/DirectionalLightComponent.h"
 
 namespace cc {
-DirectionalLight::DirectionalLight() : Super() {}
+DirectionalLight::DirectionalLight() : Super() {
+    _type = scene::LightType::DIRECTIONAL;
+}
 
 void DirectionalLight::createLight() {
     if (_light == nullptr) {

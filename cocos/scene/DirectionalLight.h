@@ -34,11 +34,7 @@ namespace scene {
 class DirectionalLight final : public Light {
 public:
     DirectionalLight() { _type = LightType::DIRECTIONAL; }
-    DirectionalLight(const DirectionalLight &) = delete;
-    DirectionalLight(DirectionalLight &&)      = delete;
-    ~DirectionalLight() override               = default;
-    DirectionalLight &operator=(const DirectionalLight &) = delete;
-    DirectionalLight &operator=(DirectionalLight &&) = delete;
+    ~DirectionalLight() override = default;
 
     void initialize() override;
     void update() override;
@@ -52,6 +48,8 @@ public:
 private:
     float _illuminance{0.F};
     Vec3  _dir{1.0F, -1.0F, -1.0F};
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(DirectionalLight);
 };
 
 } // namespace scene

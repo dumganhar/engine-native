@@ -373,6 +373,7 @@ void BuiltinResMgr::initTexture2DWithUuid(const std::string &uuid, const uint8_t
         imgAsset->setNativeAsset(image); //cjh HOW TO RELEASE?
         texture->setImage(imgAsset);
 
+        texture->initialize();
         _resources.emplace(texture->getUuid(), texture);
 
         image->release();
@@ -403,6 +404,7 @@ void BuiltinResMgr::initTextureCubeWithUuid(const std::string &uuid, const uint8
 
         texture->setImage(mipmap);
 
+        texture->initialize();
         _resources.emplace(texture->getUuid(), texture);
 
         image->release();

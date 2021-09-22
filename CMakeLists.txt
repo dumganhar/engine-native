@@ -940,7 +940,7 @@ cocos_source_files(
     cocos/3d/lights/DirectionalLightComponent.cpp
     cocos/3d/lights/SpotLightComponent.h
     cocos/3d/lights/SpotLightComponent.cpp
-    cocos/3d/lights/SphereLightComponent.cpp
+    cocos/3d/lights/SphereLightComponent.h
     cocos/3d/lights/SphereLightComponent.cpp
 )
 
@@ -1568,43 +1568,43 @@ cocos_source_files(MODULE ccgeometry
 # )
 
 ######## auto
-cocos_source_files(
-    NO_WERROR    cocos/bindings/auto/jsb_cocos_auto.cpp
-                 cocos/bindings/auto/jsb_cocos_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_extension_auto.cpp
-                 cocos/bindings/auto/jsb_extension_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_gfx_auto.cpp
-                 cocos/bindings/auto/jsb_gfx_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_network_auto.cpp
-                 cocos/bindings/auto/jsb_network_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_pipeline_auto.cpp
-                 cocos/bindings/auto/jsb_pipeline_auto.h
-    # NO_WERROR    cocos/bindings/auto/jsb_scene_auto.cpp
-    #              cocos/bindings/auto/jsb_scene_auto.h
-    NO_WERROR    cocos/bindings/auto/jsb_geometry_auto.cpp
-                 cocos/bindings/auto/jsb_geometry_auto.h
-)
+# cocos_source_files(
+#     NO_WERROR    cocos/bindings/auto/jsb_cocos_auto.cpp
+#                  cocos/bindings/auto/jsb_cocos_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_extension_auto.cpp
+#                  cocos/bindings/auto/jsb_extension_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_gfx_auto.cpp
+#                  cocos/bindings/auto/jsb_gfx_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_network_auto.cpp
+#                  cocos/bindings/auto/jsb_network_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_pipeline_auto.cpp
+#                  cocos/bindings/auto/jsb_pipeline_auto.h
+#     # NO_WERROR    cocos/bindings/auto/jsb_scene_auto.cpp
+#     #              cocos/bindings/auto/jsb_scene_auto.h
+#     NO_WERROR    cocos/bindings/auto/jsb_geometry_auto.cpp
+#                  cocos/bindings/auto/jsb_geometry_auto.h
+# )
 
-if(USE_AUDIO)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/auto/jsb_audio_auto.cpp
-                     cocos/bindings/auto/jsb_audio_auto.h
-    )
-endif()
+# if(USE_AUDIO)
+#     cocos_source_files(
+#         NO_WERROR    cocos/bindings/auto/jsb_audio_auto.cpp
+#                      cocos/bindings/auto/jsb_audio_auto.h
+#     )
+# endif()
 
-if(USE_VIDEO)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/auto/jsb_video_auto.cpp
-                     cocos/bindings/auto/jsb_video_auto.h
-    )
-endif()
+# if(USE_VIDEO)
+#     cocos_source_files(
+#         NO_WERROR    cocos/bindings/auto/jsb_video_auto.cpp
+#                      cocos/bindings/auto/jsb_video_auto.h
+#     )
+# endif()
 
-if(USE_WEBVIEW)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/auto/jsb_webview_auto.cpp
-                     cocos/bindings/auto/jsb_webview_auto.h
-    )
-endif()
+# if(USE_WEBVIEW)
+#     cocos_source_files(
+#         NO_WERROR    cocos/bindings/auto/jsb_webview_auto.cpp
+#                      cocos/bindings/auto/jsb_webview_auto.h
+#     )
+# endif()
 
 if(USE_MIDDLEWARE)
     cocos_source_files(
@@ -1623,8 +1623,8 @@ if(USE_MIDDLEWARE)
                      cocos/editor-support/SharedBufferManager.h
                      cocos/editor-support/TypedArrayPool.cpp
                      cocos/editor-support/TypedArrayPool.h
-        NO_WERROR    cocos/bindings/auto/jsb_editor_support_auto.cpp
-                     cocos/bindings/auto/jsb_editor_support_auto.h
+        # NO_WERROR    cocos/bindings/auto/jsb_editor_support_auto.cpp
+        #              cocos/bindings/auto/jsb_editor_support_auto.h
     )
 
     if(USE_SPINE)
@@ -1791,10 +1791,10 @@ if(USE_MIDDLEWARE)
                          cocos/editor-support/spine-creator-support/spine-cocos2dx.h
             NO_WERROR    cocos/editor-support/spine-creator-support/VertexEffectDelegate.cpp
                          cocos/editor-support/spine-creator-support/VertexEffectDelegate.h
-            NO_WERROR    cocos/bindings/auto/jsb_spine_auto.cpp
-                         cocos/bindings/auto/jsb_spine_auto.h
-            NO_WERROR    cocos/bindings/manual/jsb_spine_manual.cpp
-                         cocos/bindings/manual/jsb_spine_manual.h
+            # NO_WERROR    cocos/bindings/auto/jsb_spine_auto.cpp
+            #              cocos/bindings/auto/jsb_spine_auto.h
+            # NO_WERROR    cocos/bindings/manual/jsb_spine_manual.cpp
+            #              cocos/bindings/manual/jsb_spine_manual.h
         )
     endif()
 
@@ -1884,10 +1884,10 @@ if(USE_MIDDLEWARE)
                          cocos/editor-support/dragonbones-creator-support/CCSlot.h
             NO_WERROR    cocos/editor-support/dragonbones-creator-support/CCTextureAtlasData.cpp
                          cocos/editor-support/dragonbones-creator-support/CCTextureAtlasData.h
-            NO_WERROR    cocos/bindings/auto/jsb_dragonbones_auto.cpp
-                         cocos/bindings/auto/jsb_dragonbones_auto.h
-            NO_WERROR    cocos/bindings/manual/jsb_dragonbones_manual.cpp
-                         cocos/bindings/manual/jsb_dragonbones_manual.h
+            # NO_WERROR    cocos/bindings/auto/jsb_dragonbones_auto.cpp
+            #              cocos/bindings/auto/jsb_dragonbones_auto.h
+            # NO_WERROR    cocos/bindings/manual/jsb_dragonbones_manual.cpp
+            #              cocos/bindings/manual/jsb_dragonbones_manual.h
         )
     endif()
 endif()
@@ -2046,8 +2046,8 @@ cocos_source_files(MODULE ccbindings
                  cocos/bindings/jswrapper/State.h
                  cocos/bindings/jswrapper/Value.cpp
                  cocos/bindings/jswrapper/Value.h 
-    NO_WERROR    cocos/bindings/manual/jsb_global_init.cpp
-                 cocos/bindings/manual/jsb_global_init.h
+    # NO_WERROR    cocos/bindings/manual/jsb_global_init.cpp
+    #              cocos/bindings/manual/jsb_global_init.h
 )
 
 cocos_source_files(

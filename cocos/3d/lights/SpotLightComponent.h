@@ -113,8 +113,6 @@ protected:
     //TODO(xwx):  need @serializable
     float _spotAngle{60.F};
 
-    scene::LightType _type{scene::LightType::SPOT};
-
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(SpotLight);
 };

@@ -24,7 +24,34 @@
  ****************************************************************************/
 
 #include "core/scene-graph/SceneGlobal.h"
+#include "core/Root.h"
+#include "scene/Ambient.h"
+#include "scene/Fog.h"
+#include "scene/Shadow.h"
+#include "scene/Skybox.h"
 
 namespace cc {
+
+SceneGlobal::SceneGlobal() {
+    _ambientInfo = new scene::AmbientInfo();
+    _shadowInfo  = new scene::ShadowInfo();
+    _skyboxInfo  = new scene::SkyboxInfo();
+    _fogInfo     = new scene::FogInfo();
+}
+
+SceneGlobal::~SceneGlobal() {
+    CC_SAFE_DELETE(_ambientInfo);
+    CC_SAFE_DELETE(_shadowInfo);
+    CC_SAFE_DELETE(_skyboxInfo);
+    CC_SAFE_DELETE(_fogInfo);
+}
+
+void SceneGlobal::activate() {
+    auto *sceneData = Root::getInstance()->getPipeline()->getPipelineSceneData();
+    _ambientInfo->activate(sceneData->getAmbient());
+    _skyboxInfo->activate(sceneData->getSkybox());
+    _shadowInfo->activate(sceneData->getShadow());
+    _fogInfo->activate(sceneData->getFog());
+}
 
 } // namespace cc

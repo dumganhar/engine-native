@@ -3,13 +3,14 @@
 // Modified by wanxiang.xie@cocos.com
 ****************************************************************************/
 #include "core/event/EventEmitter.h"
+#include "base/Log.h"
 
 template <typename Callback>
-void EventEmitter::on(const std::string& name, Callback cb) {
-
+void EventEmitter::on(const std::string &name, Callback cb) {
     auto it = _events.find(name);
     if (it != _events.end()) {
-        throw *new std::runtime_error("duplicate listener");
+        //        throw *new std::runtime_error("duplicate listener");
+        CC_LOG_ERROR("duplicate listener on event (%s)", name.c_str());
     }
 
     if (++this->_listeners >= this->maxListeners) {
@@ -20,19 +21,17 @@ void EventEmitter::on(const std::string& name, Callback cb) {
             << std::endl;
     };
 
-    auto f = toFunction(cb);
-    auto fn = new decltype(f)(toFunction(cb));
-    _events[name] = static_cast<void*>(fn);
+    auto f        = toFunction(cb);
+    auto fn       = new decltype(f)(toFunction(cb));
+    _events[name] = static_cast<void *>(fn);
 }
 
-template <typename ...Args>
-void EventEmitter::emit(const std::string& name, Args... args) {
-
+template <typename... Args>
+void EventEmitter::emit(const std::string &name, Args... args) {
     auto it = _events.find(name);
     if (it != _events.end()) {
-
         auto *cb = _events.at(name);
-        auto fp = static_cast<std::function<void(Args...)>*>(cb);
+        auto  fp = static_cast<std::function<void(Args...)> *>(cb);
         (*fp)(args...);
     }
 
@@ -48,8 +47,7 @@ void EventEmitter::off() {
     this->_listeners = 0;
 }
 
-void EventEmitter::off(const std::string& name) {
-
+void EventEmitter::off(const std::string &name) {
     auto it = _events.find(name);
 
     if (it != _events.end()) {

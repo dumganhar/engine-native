@@ -25,48 +25,32 @@
 
 #pragma once
 
-#include "core/assets/TextureCube.h"
-#include "math/Color.h"
-#include "math/Vec2.h"
-#include "math/Vec3.h"
-#include "scene/Fog.h"
-#include "scene/Shadow.h"
-#include "scene/Skybox.h"
-
 namespace cc {
+
 namespace scene {
-enum class FogType;
+class AmbientInfo;
+class ShadowInfo;
+class SkyboxInfo;
+class FogInfo;
 } // namespace scene
 
-class Ambient;
-class AmbientInfo {
-protected:
-    Color    _skyColor{51, 128, 204, 1};
-    float    _skyIllum{2000.0F};
-    Color    _groundAlbedo{51, 51, 51, 255};
-    Ambient *_resource;
-
+class SceneGlobal final {
 public:
-    AmbientInfo(/* args */) = default;
-    ~AmbientInfo()          = default;
-    inline void         setSkyColor(const Color &val){};
-    inline const Color &getSkyColor() { return _skyColor; }
-    inline void         setSkyIllum(float val) {}
-    inline float        getSkyIllum() const { return _skyIllum; }
-    inline void         setGroundAlbedo(const Color &val) {}
-    inline const Color &getGroundAlbedo() { return _groundAlbedo; }
-    inline void         activate(Ambient *resource) {}
-};
+    SceneGlobal();
+    ~SceneGlobal();
 
-class SceneGlobal {
-public:
-    SceneGlobal(/* args */) = default;
-    ~SceneGlobal()          = default;
-    AmbientInfo       ambient;
-    scene::ShadowInfo shadows;
-    scene::SkyboxInfo skybox;
-    scene::FogInfo    fog;
-    inline void       activate() {}
+    void activate();
+
+    inline scene::AmbientInfo *getAmbientInfo() const { return _ambientInfo; }
+    inline scene::ShadowInfo * getShadowInfo() const { return _shadowInfo; }
+    inline scene::SkyboxInfo * getSkyboxInfo() const { return _skyboxInfo; }
+    inline scene::FogInfo *    getFogInfo() const { return _fogInfo; }
+
+private:
+    scene::AmbientInfo *_ambientInfo{nullptr};
+    scene::ShadowInfo * _shadowInfo{nullptr};
+    scene::SkyboxInfo * _skyboxInfo{nullptr};
+    scene::FogInfo *    _fogInfo{nullptr};
 };
 
 } // namespace cc

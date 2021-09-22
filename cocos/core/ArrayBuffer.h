@@ -37,6 +37,8 @@ public:
     explicit ArrayBuffer(uint32_t length) : _byteLength{length} {
         _data = static_cast<uint8_t*>(malloc(length));
     }
+
+    ArrayBuffer() = default;
     
     ~ArrayBuffer() {
         free(_data);
@@ -46,6 +48,12 @@ public:
     
     // Just use it to copy data. Use TypedArray to get/set data.
     const uint8_t * getData() const { return _data; }
+
+    inline void reset(uint32_t length) {
+        free(_data);
+        _data = static_cast<uint8_t*>(malloc(length));
+        _byteLength = length;
+    }
     
 private:
     uint8_t *_data{nullptr};

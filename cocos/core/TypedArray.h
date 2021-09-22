@@ -71,12 +71,12 @@ public:
         return *((reinterpret_cast<T *>(_buffer->_data + _byteOffset)) + idx);
     }
 
-    TypedArrayTemp<T> subarray(uint32_t begin) {
-        return subArray<T>(begin, _byteLength - begin + 1);
-    }
-
     TypedArrayTemp<T> subarray(uint32_t begin, uint32_t end) {
         return TypedArrayTemp<T>(_buffer, begin, end - begin + 1);
+    }
+
+    TypedArrayTemp<T> subarray(uint32_t begin) {
+        return subArray<T>(begin, _byteLength - begin + 1UL);
     }
 
     void set(const ArrayBuffer::Ptr &buffer) {
@@ -95,6 +95,13 @@ public:
 
     void set(const TypedArrayTemp<T> &array, uint32_t offset) {
         set(array._buffer, offset);
+    }
+
+    void reset(const ArrayBuffer::Ptr &buffer, uint32_t offset = 0, uint32_t byteLength = std::numeric_limits<uint32_t>::max()) {
+        _buffer = buffer;
+        _byteOffset = offset;
+        _byteEndPos = byteLength == std::numeric_limits<uint32_t>::max() ? buffer->byteLength() : byteLength;
+        _byteLength = buffer->byteLength();
     }
 
     inline const ArrayBuffer::Ptr &buffer() const { return _buffer; }

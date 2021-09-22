@@ -254,7 +254,7 @@ protected:
      * @param outRect - The rect to store the result bounding rect
      * @private
      */
-    virtual Rect _getLocalBounds() {}
+    virtual Rect _getLocalBounds() { return {};}
 
     /**
      * @en

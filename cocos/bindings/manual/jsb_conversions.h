@@ -25,10 +25,12 @@
 
 #pragma once
 
+#include <any>
 #include <cassert>
 #include <cstdint>
 #include <optional>
 #include <type_traits>
+#include <variant>
 #include "bindings/jswrapper/SeApi.h"
 #include "bindings/jswrapper/Value.h"
 #include "bindings/jswrapper/v8/Object.h"
@@ -36,6 +38,8 @@
 #include "bindings/manual/jsb_conversions.h"
 #include "cocos/base/Map.h"
 #include "cocos/base/Vector.h"
+#include "cocos/core/TypedArray.h"
+#include "cocos/core/assets/RenderingSubMesh.h"
 #include "cocos/math/Geometry.h"
 #include "cocos/math/Quaternion.h"
 #include "cocos/math/Vec2.h"
@@ -1005,10 +1009,10 @@ inline bool sevalue_to_native(const se::Value &from, std::vector<se::Value> *to,
 
 ////////////////// optional
 template <typename T, typename Enable = void>
-struct is_optional : std::false_type {};
+struct is_optional : std::false_type {}; // NOLINT
 
 template <typename T>
-struct is_optional<std::optional<T>> : std::true_type {};
+struct is_optional<std::optional<T>> : std::true_type {}; // NOLINT
 
 template <typename T>
 typename std::enable_if<!is_optional<T>::value, bool>::type
@@ -1018,9 +1022,80 @@ sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx) 
         return true;
     }
     T    tmp{};
-    bool ret = sevalue_to_native(from, &tmp);
+    bool ret = sevalue_to_native(from, &tmp, ctx);
     *to      = tmp;
     return ret;
+}
+
+//////////////////  std::any
+template <>
+bool sevalue_to_native(const se::Value &from, std::any *to, se::Object *ctx) {
+    assert(false);
+    //TODO(PatriceJiang): convert any to specific types
+    return false;
+}
+
+////////////////// TypedArray
+
+template <typename T>
+typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
+sevalue_to_native(const se::Value &from, cc::TypedArrayTemp<T> *to, se::Object * /*ctx*/) {
+    uint8_t *data    = nullptr;
+    size_t   byteLen = 0;
+    from.toObject()->getTypedArrayData(&data, &byteLen);
+    auto buffer = std::make_shared<cc::ArrayBuffer>(byteLen);
+    to->reset(buffer);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /*ctx*/) {
+    auto &   typedArray = *to;
+    uint8_t *data       = nullptr;
+    size_t   byteLen    = 0;
+    from.toObject()->getTypedArrayData(&data, &byteLen);
+    auto arrayBuffer = std::make_shared<cc::ArrayBuffer>(byteLen);
+    if (std::holds_alternative<cc::Int8Array>(typedArray)) {
+        *to = cc::Int8Array{arrayBuffer};
+    } else if (std::holds_alternative<cc::Uint8Array>(typedArray)) {
+        *to = cc::Uint8Array{arrayBuffer};
+    } else if (std::holds_alternative<cc::Int16Array>(typedArray)) {
+        *to = cc::Int16Array{arrayBuffer};
+    } else if (std::holds_alternative<cc::Uint16Array>(typedArray)) {
+        *to = cc::Uint16Array{arrayBuffer};
+    } else if (std::holds_alternative<cc::Int32Array>(typedArray)) {
+        *to = cc::Int32Array{arrayBuffer};
+    } else if (std::holds_alternative<cc::Uint32Array>(typedArray)) {
+        *to = cc::Uint32Array{arrayBuffer};
+    } else if (std::holds_alternative<cc::Float32Array>(typedArray)) {
+        *to = cc::Float32Array{arrayBuffer};
+    } else if (std::holds_alternative<cc::Float64Array>(typedArray)) {
+        *to = cc::Float64Array{arrayBuffer};
+    } else {
+        assert(false);
+    }
+
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::IBArray *to, se::Object * /*ctx*/) {
+    auto &   typedArray = *to;
+    uint8_t *data       = nullptr;
+    size_t   byteLen    = 0;
+    from.toObject()->getTypedArrayData(&data, &byteLen);
+    auto arrayBuffer = std::make_shared<cc::ArrayBuffer>(byteLen);
+    if (std::holds_alternative<cc::Uint8Array>(typedArray)) {
+        *to = cc::Uint8Array{arrayBuffer};
+    } else if (std::holds_alternative<cc::Uint16Array>(typedArray)) {
+        *to = cc::Uint16Array{arrayBuffer};
+    } else if (std::holds_alternative<cc::Uint32Array>(typedArray)) {
+        *to = cc::Uint32Array{arrayBuffer};
+    } else {
+        assert(false);
+    }
+
+    return true;
 }
 
 ////////////////// pointer types
@@ -1193,6 +1268,8 @@ inline bool sevalue_to_native(const se::Value &from, std::vector<unsigned char> 
     SE_LOGE("type error, ArrayBuffer/TypedArray/Array expected!");
     return false;
 }
+
+///////////////////// TypedArray
 
 template <typename R, typename... Args>
 inline bool sevalue_to_native(const se::Value &from, std::function<R(Args...)> *func, se::Object *self) { // NOLINT(readability-identifier-naming)

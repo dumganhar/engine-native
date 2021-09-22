@@ -98,10 +98,10 @@ public:
     inline const Color &getSkyColor() const { return _skyColor; }
     inline void         setSkyColor(const Color &color) {
         _skyColor      = color;
-        _colorArray[0] = color.r / 255;
-        _colorArray[1] = color.g / 255;
-        _colorArray[2] = color.b / 255;
-        _colorArray[3] = color.a / 255;
+        _colorArray[0] = color.r / 255.F;
+        _colorArray[1] = color.g / 255.F;
+        _colorArray[2] = color.b / 255.F;
+        _colorArray[3] = color.a / 255.F;
     }
 
     /**
@@ -116,15 +116,21 @@ public:
      * @zh 地面颜色
      */
     inline const Color &getGroundAlbedo() const { return _groundAlbedo; }
-    inline void         setGroundAlbedo(const Color &color) { _groundAlbedo.set(color); }
+    inline void         setGroundAlbedo(const Color &color) {
+        _groundAlbedo.set(color);
+        _albedoArray[0] = _groundAlbedo.r / 255.F;
+        _albedoArray[1] = _groundAlbedo.g / 255.F;
+        _albedoArray[2] = _groundAlbedo.b / 255.F;
+        _albedoArray[3] = _groundAlbedo.a / 255.F;
+    }
 
 protected:
     Color                _skyColor{51, 128, 204, 1};
     Color                _groundAlbedo{51, 51, 51, 255};
     bool                 _enabled{false};
     float                _skyIllum{0.F};
-    std::array<float, 4> _colorArray;
-    std::array<float, 4> _albedoArray;
+    std::array<float, 4> _colorArray{0.2F, 0.5F, 0.8F, 1.0F};
+    std::array<float, 4> _albedoArray{0.2F, 0.2F, 0.2F, 1.0F};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(Ambient);
 };

@@ -90,6 +90,42 @@ Map &mergeToMap(Map &outMap, const Map &inMap) {
 
 /**
  * @zh
+ * 移除首个指定的数组元素。判定元素相等时相当于于使用了 `Array.prototype.indexOf`。
+ * @en
+ * Removes the first occurrence of a specific object from the array.
+ * Decision of the equality of elements is similar to `Array.prototype.indexOf`.
+ * @param array 数组。
+ * @param value 待移除元素。
+ */
+template <typename T>
+bool remove(std::vector<T> &array, T value) {
+    auto iter = std::find(array.begin(), array.end(), value);
+    if (iter != array.end()) {
+        array.erase(iter);
+        return true;
+    }
+    return false;
+}
+
+/**
+ * @zh
+ * 移除指定索引的数组元素。
+ * @en
+ * Removes the array item at the specified index.
+ * @param array 数组。
+ * @param index 待移除元素的索引。
+ */
+template <typename T>
+bool removeAt(std::vector<T> &array, int32_t index) {
+    if (index >= 0 && index < static_cast<int32_t>(array.size())) {
+        array.erase(array.begin() + index);
+        return true;
+    }
+    return false;
+}
+
+/**
+ * @zh
  * 移除指定索引的数组元素。
  * 此函数十分高效，但会改变数组的元素次序。
  * @en

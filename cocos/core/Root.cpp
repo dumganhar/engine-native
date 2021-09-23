@@ -43,8 +43,8 @@ Root::Root(gfx::Device *device)
     instance = this;
     //TODO: minggo
     //    this._dataPoolMgr = legacyCC.internal.DataPoolManager && new legacyCC.internal.DataPoolManager(device) as DataPoolManager;
-    _cameraPool = new Pool<scene::Camera>([this]() { return new scene::Camera(_device); },
-                                          4);
+    _cameraPool = new memop::Pool<scene::Camera>([this]() { return new scene::Camera(_device); },
+                                                 4);
 }
 
 Root::~Root() {

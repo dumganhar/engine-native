@@ -34,7 +34,7 @@ namespace scene {
 
 class SphereLight final : public Light {
 public:
-    SphereLight() { _type = LightType::SPHERE; }
+    SphereLight();
     ~SphereLight() override = default;
 
     void initialize() override;

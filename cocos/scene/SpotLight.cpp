@@ -30,7 +30,10 @@
 
 namespace cc {
 namespace scene {
-
+SpotLight::SpotLight() {
+    _aabb = new geometry::AABB(); // TODO(xwx): how to destroy?
+    _type = LightType::SPOT;
+}
 void SpotLight::initialize() {
     Light::initialize();
 

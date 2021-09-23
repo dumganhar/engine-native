@@ -36,6 +36,8 @@
 #include "scene/Pass.h"
 
 #include "3d/lights/DirectionalLightComponent.h"
+#include "3d/lights/SphereLightComponent.h"
+#include "3d/lights/SpotLightComponent.h"
 #include "core/scene-graph/Layers.h"
 #include "platform/Image.h"
 #include "primitive/Primitive.h"
@@ -139,7 +141,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
     //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
 
-    Image *image = new Image();
+    auto *image = new Image();
     bool   ret   = image->initWithImageFile("pixil-frame-2.png");
     if (ret) {
         auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
@@ -157,11 +159,15 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
     // create light
     auto *lightNode = new Node();
-    lightNode->setRotationFromEuler(-50, 0, 0);
+    lightNode->setRotationFromEuler(-50, 0, 0); // DirectionalLight
     lightNode->setParent(_scene);
     auto *lightComp = lightNode->addComponent<DirectionalLight>();
+    // auto *lightComp = lightNode->addComponent<SphereLight>();
+    // auto *lightComp = lightNode->addComponent<SpotLight>();
     lightComp->setColor(cc::Color{255, 0, 0, 255});
-
+    // lightNode->setPosition(0, 0, 5); // spot & spheres
+    // lightComp->setRange(20); // spot & spheres
+    // lightComp->setSize(1); // spot & spheres
     // simulate logic in director.ts
     _scene->load();
     _scene->activate();
@@ -180,7 +186,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 void SimpleDemo::step(float dt) {
     //    dt = 1.F / 60.F;
     //     CC_LOG_INFO("SimpleDemo::%s, dt: %.06f", __FUNCTION__, dt);
-    //    _cubeNode->setAngle(_cubeNode->getAngle() + 10 * dt);
+    _cubeNode->setAngle(_cubeNode->getAngle() + 10 * dt);
 
     _cubeMeshRenderer->update(dt);
 

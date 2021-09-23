@@ -34,7 +34,7 @@ namespace scene {
 
 class SpotLight final : public Light {
 public:
-    SpotLight() { _type = LightType::SPOT; }
+    SpotLight();
     ~SpotLight() override = default;
 
     void initialize() override;
@@ -57,7 +57,11 @@ public:
     inline const Vec3 &getDirection() const { return _dir; }
 
     inline float getSpotAngle() const { return _spotAngle; }
-    inline void  setSpotAngle(float val) { _spotAngle = val; }
+    inline void  setSpotAngle(float val) {
+        _angle      = val;
+        _spotAngle  = cos(val * 0.5F);
+        _needUpdate = true;
+    }
 
     inline float getAngle() const { return _angle; }
 

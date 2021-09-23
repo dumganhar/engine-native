@@ -28,6 +28,10 @@
 
 namespace cc {
 namespace scene {
+SphereLight::SphereLight() {
+    _type = LightType::SPHERE;
+    _aabb = new geometry::AABB(); // TODO(xwx): how to destroy?
+}
 
 void SphereLight::initialize() {
     Light::initialize();

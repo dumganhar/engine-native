@@ -32,6 +32,7 @@
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/components/CameraComponent.h"
 #include "core/scene-graph/Node.h"
+
 #include "renderer/GFXDeviceManager.h"
 #include "scene/Pass.h"
 
@@ -39,10 +40,83 @@
 #include "core/scene-graph/Layers.h"
 #include "platform/Image.h"
 #include "primitive/Primitive.h"
+
 //#include "platform/View.h"
 
 using namespace cc;
 using namespace cc::gfx;
+
+class MyComponent1 : public Component {
+public:
+    COMPONENT_EXECUTION_ORDER(MyComponent1, 200)
+    void onLoad() override {
+        CC_LOG_DEBUG("MyComponent1::onLoad");
+    }
+
+    void update(float dt) override {
+        //        CC_LOG_DEBUG("MyComponent1::update(%f)", dt);
+    }
+
+    void lateUpdate(float dt) override {
+        //        CC_LOG_DEBUG("MyComponent1::lateUpdate(%f)", dt);
+    }
+
+    void __preload() override {
+        CC_LOG_DEBUG("MyComponent1::__preload");
+    }
+
+    void start() override {
+        CC_LOG_DEBUG("MyComponent1::start");
+    }
+
+    void onEnable() override {
+        CC_LOG_DEBUG("MyComponent1::onEnable");
+    }
+
+    void onDisable() override {
+        CC_LOG_DEBUG("MyComponent1::onDisable");
+    }
+
+    void onDestroy() override {
+        CC_LOG_DEBUG("MyComponent1::onDestroy");
+    }
+};
+
+class MyComponent2 : public Component {
+public:
+    COMPONENT_EXECUTION_ORDER(MyComponent2, 106)
+    void onLoad() override {
+        CC_LOG_DEBUG("MyComponent2::onLoad");
+    }
+
+    void update(float dt) override {
+        //        CC_LOG_DEBUG("MyComponent2::update(%f)", dt);
+    }
+
+    void lateUpdate(float dt) override {
+        //        CC_LOG_DEBUG("MyComponent2::lateUpdate(%f)", dt);
+    }
+
+    void __preload() override {
+        CC_LOG_DEBUG("MyComponent2::__preload");
+    }
+
+    void start() override {
+        CC_LOG_DEBUG("MyComponent2::start");
+    }
+
+    void onEnable() override {
+        CC_LOG_DEBUG("MyComponent2::onEnable");
+    }
+
+    void onDisable() override {
+        CC_LOG_DEBUG("MyComponent2::onDisable");
+    }
+
+    void onDestroy() override {
+        CC_LOG_DEBUG("MyComponent2::onDestroy");
+    }
+};
 
 void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     CC_LOG_INFO("SimpleDemo::%s, width: %d, height: %d", __FUNCTION__, width, height);
@@ -64,11 +138,11 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     info.bindingMappingInfo = bindingMappingInfo;
     _device                 = DeviceManager::create(info);
 
-    // Initialize Root
-    _root = new Root(_device);
-    _root->initialize();
-    _root->resize(pixelWidth, pixelHeight);
-    _root->setRenderPipeline(nullptr);
+    // Initialize director
+    _director = new Director();
+    _director->init();
+    _director->getRoot()->resize(pixelWidth, pixelHeight);
+    _director->getRoot()->setRenderPipeline(nullptr);
 
     BuiltinResMgr::getInstance()->initBuiltinRes(_device);
 
@@ -80,6 +154,8 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // add a node to scene
     _cubeNode = new Node("cube");
     _cubeNode->setParent(_scene);
+    _cubeNode->addComponent<MyComponent1>();
+    _cubeNode->addComponent<MyComponent2>();
 
     // create mesh asset
     auto *cube = new Primitive(PrimitiveType::BOX);
@@ -162,38 +238,21 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     auto *lightComp = lightNode->addComponent<DirectionalLight>();
     lightComp->setColor(cc::Color{255, 0, 0, 255});
 
-    // simulate logic in director.ts
-    _scene->load();
-    _scene->activate();
-
-    // simulate component lifecycle
-    lightComp->onLoad();
-    lightComp->onEnable();
-
-    cameraComp->onLoad();
-    cameraComp->onEnable();
-
-    _cubeMeshRenderer->onLoad();
-    _cubeMeshRenderer->onEnable();
+    _director->runSceneImmediate(_scene, nullptr, nullptr);
 }
 
 void SimpleDemo::step(float dt) {
     //    dt = 1.F / 60.F;
     //     CC_LOG_INFO("SimpleDemo::%s, dt: %.06f", __FUNCTION__, dt);
-    //    _cubeNode->setAngle(_cubeNode->getAngle() + 10 * dt);
+    _cubeNode->setAngle(_cubeNode->getAngle() + 10 * dt);
 
-    _cubeMeshRenderer->update(dt);
-
-    _root->frameMove(dt);
-
-    Node::resetChangedFlags();
-    Node::clearNodeArray();
+    _director->tick(dt);
 }
 
 void SimpleDemo::finalize() {
     CC_LOG_INFO("SimpleDemo::%s", __FUNCTION__);
     CC_SAFE_DELETE(_cubeMeshRenderer);
     CC_SAFE_DELETE(_scene);
-    CC_SAFE_DELETE(_root);
+    CC_SAFE_DELETE(_director);
     DeviceManager::destroy();
 }

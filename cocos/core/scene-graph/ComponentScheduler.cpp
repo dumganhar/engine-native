@@ -154,6 +154,12 @@ void OneOffInvoker::remove(Component *comp) {
     }
 }
 
+void OneOffInvoker::cancelInactive() {
+    stableRemoveInactive(_zero, std::nullopt);
+    stableRemoveInactive(_neg, std::nullopt);
+    stableRemoveInactive(_pos, std::nullopt);
+}
+
 void OneOffInvoker::cancelInactive(CCObject::Flags flagToClear) {
     stableRemoveInactive(_zero, flagToClear);
     stableRemoveInactive(_neg, flagToClear);

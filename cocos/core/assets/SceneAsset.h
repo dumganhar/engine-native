@@ -38,9 +38,11 @@ public:
 
     void initDefault(const std::optional<std::string> &uuid) override;
 
-    virtual bool validate() const override {
+    bool validate() const override {
         return _scene != nullptr;
     }
+
+    inline Scene *getScene() const { return _scene; }
 
 private:
     /**

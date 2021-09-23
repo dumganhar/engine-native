@@ -25,49 +25,30 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
-#include "ComponentScheduler.h"
-#include "Node.h"
+
+#include "core/scene-graph/ComponentScheduler.h"
+#include "core/scene-graph/Node.h"
+#include "core/utils/Pool.h"
 
 namespace cc {
 
-class UnsortedInvoker : public LifeCycleInvoker {
-public:
-    using LifeCycleInvoker::LifeCycleInvoker;
-
-    void add(Component *comp) override {
-        _zero.array.emplace_back(comp);
-    }
-
-    void remove(Component *comp) override {
-        _zero.fastRemove(comp);
-    }
-
-    inline void cancelInactive() {
-        stableRemoveInactive(_zero, std::nullopt);
-    }
-
-    inline void cancelInactive(CCObject::Flags flagToClear) {
-        stableRemoveInactive(_zero, flagToClear);
-    }
-
-    inline void invoke() {
-        _invoke(_zero, std::nullopt);
-        _zero.array.clear();
-    }
-};
+class UnsortedInvoker;
+class OneOffInvoker;
 
 class NodeActivator final {
 public:
     NodeActivator();
-    ~NodeActivator();
-    Component *resetComp;
+    ~NodeActivator() = default;
 
     /**
      * @en Reset all activation or des-activation tasks
      * @zh 重置所有激活或非激活任务
      */
-    inline void reset() { _activatingStack.clear(); }
+    inline void reset() {
+        _activatingStack.clear();
+    }
 
     /**
      * @en Activate or des-activate a node
@@ -75,7 +56,7 @@ public:
      * @param node Target node
      * @param active Which state to set the node to
      */
-    void activateNode(Node *node, bool active);
+    void activateNode(BaseNode *node, bool active);
 
     /**
      * @en Activate or des-activate a component
@@ -94,12 +75,16 @@ public:
      */
     void destroyComp(Component *comp);
 
+    Component *_resetComp{nullptr};
+
+    class Task;
+
 protected:
-    void activateNodeRecursively(Node *node, LifeCycleInvoker *preloadInvoker = nullptr, LifeCycleInvoker *onLoadInvoker = nullptr, LifeCycleInvoker *onEnableInvoker = nullptr);
+    void activateNodeRecursively(BaseNode *node, LifeCycleInvoker *preloadInvoker = nullptr, LifeCycleInvoker *onLoadInvoker = nullptr, LifeCycleInvoker *onEnableInvoker = nullptr);
 
-    void deactivateNodeRecursively(Node *node);
+    void deactivateNodeRecursively(BaseNode *node);
 
-    std::vector<std::any> _activatingStack;
+    std::vector<std::shared_ptr<Task>> _activatingStack;
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(NodeActivator);

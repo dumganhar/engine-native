@@ -24,57 +24,170 @@
  ****************************************************************************/
 #include "core/scene-graph/NodeActivator.h"
 #include "base/TypeDef.h"
+#include "base/Utils.h"
+#include "core/Director.h"
+#include "core/scene-graph/ComponentScheduler.h"
 
-namespace {
+namespace cc {
 
-const cc::CCObject::Flags IS_PRELOAD_STARTED = cc::CCObject::Flags::IS_PRELOAD_STARTED;
-const cc::CCObject::Flags IS_ON_LOAD_STARTED  = cc::CCObject::Flags::IS_ON_LOAD_STARTED;
-const cc::CCObject::Flags IS_ON_LOAD_CALLED   = cc::CCObject::Flags::IS_ON_LOAD_CALLED;
-const cc::CCObject::Flags DEACTIVATING     = cc::CCObject::Flags::DEACTIVATING;
-
-void componentCorrupted(cc::Node *node, cc::Component *comp, uint32_t index) {
+void componentCorrupted(Node *node, Component *comp, uint32_t index) {
     // TODO(xwx): DEV & array & debug not implemented
     // if (DEV) {
     //     errorID(3817, node->getName(), index);
     //     console.log('Corrupted component value:', comp);
     // }
-    // if (comp) {
-    //     node->removeComponent(comp);
-    // } else {
-    //     array.removeAt(node._components, index);
-    // }
+    if (comp) {
+        node->removeComponent(comp);
+    } else {
+        utils::removeAt(node->_components, index);
+    }
 }
 
-} // namespace
+class UnsortedInvoker final : public LifeCycleInvoker {
+public:
+    using LifeCycleInvoker::LifeCycleInvoker;
 
-namespace cc {
+    void add(Component *comp) override {
+        _zero.array.emplace_back(comp);
+    }
+
+    void remove(Component *comp) override {
+        _zero.fastRemove(comp);
+    }
+
+    inline void cancelInactive() {
+        stableRemoveInactive(_zero, std::nullopt);
+    }
+
+    inline void cancelInactive(CCObject::Flags flagToClear) {
+        stableRemoveInactive(_zero, flagToClear);
+    }
+
+    inline void invoke() {
+        _invoke(_zero, std::nullopt);
+        _zero.array.clear();
+    }
+};
+
+class NodeActivator::Task final {
+public:
+    Task() = default;
+    ~Task();
+
+    std::unique_ptr<UnsortedInvoker> preload;
+    std::unique_ptr<OneOffInvoker>   onLoad;
+    std::unique_ptr<OneOffInvoker>   onEnable;
+};
+
+NodeActivator::Task::~Task() = default;
+
+namespace {
+
+constexpr int32_t MAX_POOL_SIZE = 4;
+
+Invoker invokePreload = createInvokeImpl(
+    [](Component *c, const std::optional<float> &dt) {
+        c->__preload();
+    },
+    [](MutableForwardIterator<Component *> &iterator, const std::optional<float> &dt) {
+        auto &array = iterator.array;
+        for (iterator.i = 0; iterator.i < static_cast<int32_t>(array.size()); ++iterator.i) {
+            array[iterator.i]->__preload();
+        }
+    },
+    std::nullopt);
+
+Invoker invokeOnLoad = createInvokeImpl(
+    [](Component *c, const std::optional<float> &dt) {
+        c->onLoad();
+        c->_objFlags |= CCObject::Flags::IS_ON_LOAD_CALLED;
+    },
+    [](MutableForwardIterator<Component *> &iterator, const std::optional<float> &dt) {
+        auto &array = iterator.array;
+        for (iterator.i = 0; iterator.i < array.size(); ++iterator.i) {
+            auto *comp = array[iterator.i];
+            comp->onLoad();
+            comp->_objFlags |= CCObject::Flags::IS_ON_LOAD_CALLED;
+        }
+    },
+    CCObject::Flags::IS_ON_LOAD_CALLED);
+
+Invoker invokeOnEnable = [](MutableForwardIterator<Component *> &iterator, const std::optional<float> &dt) {
+    auto *compScheduler = Director::getInstance()->getCompScheduler();
+    auto &array         = iterator.array;
+    for (iterator.i = 0; iterator.i < static_cast<int32_t>(array.size()); ++iterator.i) {
+        auto *comp = array[iterator.i];
+        if (comp->isEnabled()) {
+            comp->onEnable();
+            bool deactivatedDuringOnEnable = !comp->getNode()->isActiveInHierarchy();
+            if (!deactivatedDuringOnEnable) {
+                compScheduler->onEnabled(comp);
+            }
+        }
+    }
+};
+
+Pool<std::shared_ptr<NodeActivator::Task>> activateTasksPool{MAX_POOL_SIZE}; //cjh how to release it?
+
+} // namespace
+//
 
 NodeActivator::NodeActivator() {
     reset();
+    if (activateTasksPool.get == nullptr) {
+        activateTasksPool.get = [&]() -> std::shared_ptr<NodeActivator::Task> {
+            auto task = activateTasksPool._get();
+            if (task == nullptr) {
+                task           = std::make_shared<NodeActivator::Task>();
+                task->preload  = std::make_unique<UnsortedInvoker>(invokePreload);
+                task->onLoad   = std::make_unique<OneOffInvoker>(invokeOnLoad);
+                task->onEnable = std::make_unique<OneOffInvoker>(invokeOnEnable);
+            }
+
+            // reset index to -1 so we can skip invoked component in cancelInactive
+            task->preload->_zero.i = -1;
+
+            {
+                auto &invoker    = task->onLoad;
+                invoker->_zero.i = -1;
+                invoker->_neg.i  = -1;
+                invoker->_pos.i  = -1;
+            }
+
+            {
+                auto &invoker    = task->onEnable;
+                invoker->_zero.i = -1;
+                invoker->_neg.i  = -1;
+                invoker->_pos.i  = -1;
+            }
+
+            return task;
+        };
+    }
 }
 
-void NodeActivator::activateNode(Node *node, bool active) {
-    // TODO(xwx): activateTasksPool not implemented
+void NodeActivator::activateNode(BaseNode *node, bool active) {
     if (active) {
-        // const task : any = activateTasksPool.get();
-        // _activatingStack.emplace_back(task);
+        auto task = activateTasksPool.get();
+        _activatingStack.emplace_back(task);
 
-        // activateNodeRecursively(node, task.preload, task.onLoad, task.onEnable);
-        // task.preload.invoke();
-        // task.onLoad.invoke();
-        // task.onEnable.invoke();
+        activateNodeRecursively(node, task->preload.get(), task->onLoad.get(), task->onEnable.get());
 
-        // _activatingStack.pop_back();
-        // activateTasksPool.put(task);
+        task->preload->invoke();
+        task->onLoad->invoke();
+        task->onEnable->invoke();
+
+        _activatingStack.pop_back();
+        activateTasksPool.put(task);
     } else {
         deactivateNodeRecursively(node);
 
         // remove children of this node from previous activating tasks to debounce
         // (this is an inefficient operation but it ensures general case could be implemented in a efficient way)
         for (const auto &lastTask : _activatingStack) {
-            // lastTask.preload.cancelInactive(IsPreloadStarted);
-            // lastTask.onLoad.cancelInactive(IsOnLoadStarted);
-            // lastTask.onEnable.cancelInactive();
+            lastTask->preload->cancelInactive(CCObject::Flags::IS_PRELOAD_STARTED);
+            lastTask->onLoad->cancelInactive(CCObject::Flags::IS_ON_LOAD_STARTED);
+            lastTask->onEnable->cancelInactive();
         }
     }
 
@@ -82,53 +195,51 @@ void NodeActivator::activateNode(Node *node, bool active) {
 }
 
 void NodeActivator::activateComp(Component *comp, LifeCycleInvoker *preloadInvoker, LifeCycleInvoker *onLoadInvoker, LifeCycleInvoker *onEnableInvoker) {
-    // if (!isValid(comp, true)) { // TODO(xwx): isValid not implemented
-    //     // destroyed before activating
-    //     return;
-    // }
-    if (!(comp->_objFlags & IS_PRELOAD_STARTED)) {
-        comp->_objFlags |= IS_PRELOAD_STARTED;
-        // if (comp.__preload) { // TODO(xwx):__preload is prototype attribute in ts
-        //     if (preloadInvoker) {
-        //         preloadInvoker->add(comp);
-        //     } else {
-        //         comp->__preload();
-        //     }
-        // }
+    if (!isObjectValid(comp, true)) { // TODO(xwx): isValid not implemented
+        // destroyed before activating
+        return;
     }
-    if (!(comp->_objFlags & IS_ON_LOAD_STARTED)) {
-        comp->_objFlags |= IS_ON_LOAD_STARTED;
-        //     if (comp.onLoad) { // TODO(xwx):onLoad is prototype attribute in ts
-        //         if (onLoadInvoker) {
-        //             onLoadInvoker->add(comp);
-        //         } else {
-        //             comp->onLoad();
-        //             comp->_objFlags |= IsOnLoadCalled;
-        //         }
-        //     } else {
-        //         comp->_objFlags |= IsOnLoadCalled;
-        //     }
-        // }
-        if (comp->_enabled) {
-            bool deactivatedOnLoading = !comp->getNode()->isActiveInHierarchy();
-            if (deactivatedOnLoading) {
-                return;
-            }
-            // Director::getInstance()._compScheduler->enableComp(comp, onEnableInvoker); //TODO(xwx): not sure Director will be used
+    if (!(comp->_objFlags & CCObject::Flags::IS_PRELOAD_STARTED)) {
+        comp->_objFlags |= CCObject::Flags::IS_PRELOAD_STARTED;
+        if (preloadInvoker != nullptr) {
+            preloadInvoker->add(comp);
+        } else {
+            comp->__preload();
         }
+    }
+    if (!(comp->_objFlags & CCObject::Flags::IS_ON_LOAD_STARTED)) {
+        comp->_objFlags |= CCObject::Flags::IS_ON_LOAD_STARTED;
+        //        if (comp.onLoad) { // TODO(xwx):onLoad is prototype attribute in ts
+        if (onLoadInvoker != nullptr) {
+            onLoadInvoker->add(comp);
+        } else {
+            comp->onLoad();
+            comp->_objFlags |= CCObject::Flags::IS_ON_LOAD_CALLED;
+        }
+        //        } else {
+        //            comp->_objFlags |= CCObject::Flags::IS_ON_LOAD_CALLED;
+        //        }
+    }
+
+    if (comp->isEnabled()) {
+        bool deactivatedOnLoading = !comp->getNode()->isActiveInHierarchy();
+        if (deactivatedOnLoading) {
+            return;
+        }
+        Director::getInstance()->getCompScheduler()->enableComp(comp, onEnableInvoker);
     }
 }
 
 void NodeActivator::destroyComp(Component *comp) {
     // ensure onDisable called
-    // Director::getInstance()._compScheduler->disableComp(comp);  //TODO(xwx): not sure Director will be used
-    // if (comp->onDestroy && (comp->_objFlags & IsOnLoadCalled)) {  //TODO(xwx): comp->onDestroy not define
-    //     comp->onDestroy();
-    // }
+    Director::getInstance()->getCompScheduler()->disableComp(comp);
+    if (!!(comp->_objFlags & CCObject::Flags::IS_ON_LOAD_CALLED)) {
+        comp->onDestroy();
+    }
 }
 
-void NodeActivator::activateNodeRecursively(Node *node, LifeCycleInvoker *preloadInvoker, LifeCycleInvoker *onLoadInvoker, LifeCycleInvoker *onEnableInvoker) {
-    if (hasFlag(node->_objFlags, DEACTIVATING)) {
+void NodeActivator::activateNodeRecursively(BaseNode *node, LifeCycleInvoker *preloadInvoker, LifeCycleInvoker *onLoadInvoker, LifeCycleInvoker *onEnableInvoker) {
+    if (hasFlag(node->_objFlags, CCObject::Flags::DEACTIVATING)) {
         // en:
         // Forbid reactive the same node during its deactivating procedure
         // to avoid endless loop and simplify the implementation.
@@ -148,43 +259,42 @@ void NodeActivator::activateNodeRecursively(Node *node, LifeCycleInvoker *preloa
     for (uint32_t i = 0; i < originCount; ++i) {
         Component *component = node->_components[i];
         // TODO(xwx): logical difference between ts and cpp, may need adjust
-        // if (component instanceof legacyCC.Component) {
-        //     activateComp(component, preloadInvoker, onLoadInvoker, onEnableInvoker);
-        // } else {
-        //     componentCorrupted(node, component, i);
-        //     --i;
-        //     --originCount;
-        // }
+        //        if (component instanceof legacyCC.Component) {
         activateComp(component, preloadInvoker, onLoadInvoker, onEnableInvoker);
+        //        } else {
+        //            componentCorrupted(node, component, i);
+        //            --i;
+        //            --originCount;
+        //        }
     }
-    // node->_childArrivalOrder = node->_children.size(); //TODO(xwx): not declare _childArrivalOrder attribute in c++, seems could remove this line
+    //    node->_childArrivalOrder = node->_children.size(); //TODO(xwx): not declare _childArrivalOrder attribute in c++, seems could remove this line
     // activate children recursively
     for (auto *child : node->_children) {
         if (child->_active) {
-            activateNodeRecursively(dynamic_cast<Node *>(child), preloadInvoker, onLoadInvoker, onEnableInvoker); // TODO(xwx): not sure child should be Node or BaseNode
+            activateNodeRecursively(child, preloadInvoker, onLoadInvoker, onEnableInvoker); // TODO(xwx): not sure child should be Node or BaseNode
         }
     }
     node->onPostActivated(true);
 }
 
-void NodeActivator::deactivateNodeRecursively(Node *node) {
+void NodeActivator::deactivateNodeRecursively(BaseNode *node) {
     // if (DEV) { // TODO(xwx): DEV is not defined
     //     CCASSERT(!(node._objFlags & Deactivating), "node should not deactivating");
     //     // ensures _activeInHierarchy is always changing when Deactivating flagged
     //     CCASSERT(node._activeInHierarchy, "node should not deactivated");
     // }
-    node->_objFlags |= DEACTIVATING;
+    node->_objFlags |= CCObject::Flags::DEACTIVATING;
     node->_activeInHierarchy = false;
 
     // component maybe added during onEnable, and the onEnable of new component is already called
     // so we should record the origin length
     for (auto *component : node->_components) {
         if (component->_enabled) {
-            // Director::getInstance()._compScheduler.disableComp(component); //TODO(xwx): not sure Director will be used
+            Director::getInstance()->getCompScheduler()->disableComp(component);
 
             if (node->_activeInHierarchy) {
                 // reactivated from root
-                node->_objFlags &= ~DEACTIVATING;
+                node->_objFlags &= ~CCObject::Flags::DEACTIVATING;
                 return;
             }
         }
@@ -195,15 +305,14 @@ void NodeActivator::deactivateNodeRecursively(Node *node) {
 
             if (node->_activeInHierarchy) {
                 // reactivated from root
-                node->_objFlags &= ~DEACTIVATING;
+                node->_objFlags &= ~CCObject::Flags::DEACTIVATING;
                 return;
             }
         }
     }
 
     node->onPostActivated(false);
-    node->_objFlags &= ~DEACTIVATING;
+    node->_objFlags &= ~CCObject::Flags::DEACTIVATING;
 }
 
 } // namespace cc
-

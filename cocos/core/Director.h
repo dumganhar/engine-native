@@ -46,8 +46,6 @@
 #include "core/assets/SceneAsset.h"
 #include "core/event/EventEmitter.h"
 #include "core/scene-graph/BaseNode.h"
-#include "core/scene-graph/ComponentScheduler.h"
-#include "core/scene-graph/NodeActivator.h"
 #include "core/scene-graph/Scene.h"
 #include "math/Vec2.h"
 // ----------------------------------------------------------------------------------------------------------------------
@@ -71,6 +69,9 @@
  */
 namespace cc {
 
+class ComponentScheduler;
+class NodeActivator;
+
 /**
  * typedef std::function<void*()> OnBeforeLoadScene;
  * typedef std::function<void*()> OnUnload;
@@ -82,7 +83,7 @@ namespace cc {
  * @param item - The latest item which flow out the pipeline.
  */
 
-class Director : EventEmitter {
+class Director final : EventEmitter {
 public:
     /**
      * @en The event which will be triggered when the singleton of Director initialized.
@@ -185,13 +186,12 @@ public:
      */
     static std::string EVENT_END_FRAME;
 
-    static Director &getInstance() {
-        static Director instance;
+    static Director *getInstance() {
         return instance;
     }
 
-    ComponentScheduler *_compScheduler{nullptr};
-    NodeActivator *     _nodeActivator{nullptr};
+    inline ComponentScheduler *getCompScheduler() const { return _compScheduler; };
+    inline NodeActivator *     getNodeActivator() const { return _nodeActivator; }
 
     /**
      * @en End the life of director in the next frame
@@ -223,6 +223,9 @@ public:
      */
     void reset();
 
+    using OnBeforeLoadScene = std::function<void()>;
+    using OnSceneLaunched   = std::function<void(Error *, Scene *)>;
+
     /**
      * @en
      * Run a scene. Replaces the running scene with a new one or enter the first scene.<br>
@@ -232,7 +235,8 @@ public:
      * @param onBeforeLoadScene - The function invoked at the scene before loading.
      * @param onLaunched - The function invoked at the scene after launch.
      */
-    void runSceneImmediate(const std::variant<Scene, SceneAsset> &, const std::function<void *()> &onBeforeLoadScene, const std::function<void *()> &onLaunched);
+    void runSceneImmediate(Scene *scene, const OnBeforeLoadScene &onBeforeLoadScene, const OnSceneLaunched &onLaunched);
+    void runSceneImmediate(SceneAsset *sceneAsset, const OnBeforeLoadScene &onBeforeLoadScene, const OnSceneLaunched &onLaunched);
     /**
      * @en
      * Run a scene. Replaces the running scene with a new one or enter the first scene.<br>
@@ -243,7 +247,8 @@ public:
      * @param onLaunched - The function invoked at the scene after launch.
      * @private
      */
-    void runScene(const std::variant<Scene *, SceneAsset *> &scene, const std::function<void *()> &onBeforeLoadScene, const std::function<void *()> &onLaunched);
+    void runScene(Scene *scene, const OnBeforeLoadScene &onBeforeLoadScene, const OnSceneLaunched &onLaunched);
+    void runScene(SceneAsset *sceneAsset, const OnBeforeLoadScene &onBeforeLoadScene, const OnSceneLaunched &onLaunched);
 
     /**
      * @en Loads the scene by its name.
@@ -253,7 +258,7 @@ public:
      * @param onLaunched - callback, will be called after scene launched.
      * @return if error, return false
      */
-    bool loadScene(const std::string &sceneName, const std::function<void *()> &onLaunched, const std::function<void *()> &onUnloaded);
+    bool loadScene(const std::string &sceneName, const OnBeforeLoadScene &onLaunched, const OnSceneLaunched &onUnloaded);
     /**
      * @en
      * Pre-loads the scene to reduces loading time. You can call this method at any time you want.<br>
@@ -266,7 +271,7 @@ public:
      * @param sceneName 场景名称。
      * @param onLoaded 加载回调。
      */
-    void preloadScene(const std::string &sceneName, const std::function<void *()> &onLoaded);
+    void preloadScene(const std::string &sceneName, const OnSceneLaunched &onLoaded);
 
     /**
      * @en
@@ -392,15 +397,23 @@ public:
     void tick(float dt);
 
     Director();
-    ~Director();
+    ~Director() override;
+
+    void init();
 
 private:
-    bool                        _invalid{false};
-    bool                        _paused{false};
-    Root *                      _root{nullptr};
-    std::string                 _loadingScene;
-    uint32_t                    _totalFrames{0};
-    core::Scheduler *           _scheduler{nullptr};
+    static Director *instance;
+
+    ComponentScheduler *_compScheduler{nullptr};
+    NodeActivator *     _nodeActivator{nullptr};
+    core::Scheduler *   _scheduler{nullptr};
+
+    bool        _invalid{false};
+    bool        _paused{false};
+    Root *      _root{nullptr};
+    std::string _loadingScene;
+    uint32_t    _totalFrames{0};
+
     std::vector<core::System *> _systems;
 
     Scene *_scene{nullptr};

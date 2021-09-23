@@ -1341,8 +1341,8 @@ class NativeClass(object):
                     m.is_constructor = True
                     self.methods['constructor'] = m
             return True
-        # else:
-            # logger.error("unknown cursor: %s - %s" % (cursor.kind, cursor.displayname))
+       # else:
+       #     logger.error("unknown cursor: %s - %s" % (cursor.kind, cursor.displayname))
         return False
 
 

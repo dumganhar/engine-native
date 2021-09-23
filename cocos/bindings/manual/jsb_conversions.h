@@ -39,11 +39,12 @@
 #include "cocos/base/Map.h"
 #include "cocos/base/Vector.h"
 #include "cocos/core/TypedArray.h"
-#include "cocos/core/assets/RenderingSubMesh.h"
+#include "cocos/core/assets/AssetsModuleHeader.h"
 #include "cocos/math/Geometry.h"
 #include "cocos/math/Quaternion.h"
 #include "cocos/math/Vec2.h"
 #include "cocos/math/Vec3.h"
+#include "core/ArrayBuffer.h"
 #include "extensions/cocos-ext.h"
 #include "network/Downloader.h"
 
@@ -1007,32 +1008,21 @@ inline bool sevalue_to_native(const se::Value &from, std::vector<se::Value> *to,
     return true;
 }
 
-////////////////// optional
-template <typename T, typename Enable = void>
-struct is_optional : std::false_type {}; // NOLINT
-
-template <typename T>
-struct is_optional<std::optional<T>> : std::true_type {}; // NOLINT
-
-template <typename T>
-typename std::enable_if<!is_optional<T>::value, bool>::type
-sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx) { //NOLINT
-    if (from.isNullOrUndefined()) {
-        to->reset();
-        return true;
-    }
-    T    tmp{};
-    bool ret = sevalue_to_native(from, &tmp, ctx);
-    *to      = tmp;
-    return ret;
-}
-
 //////////////////  std::any
 template <>
 bool sevalue_to_native(const se::Value &from, std::any *to, se::Object *ctx) {
     assert(false);
     //TODO(PatriceJiang): convert any to specific types
     return false;
+}
+////////////////// ArrayBuffer
+template <>
+bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * /*ctx*/) {
+    uint8_t *data    = nullptr;
+    size_t   byteLen = 0;
+    from.toObject()->getTypedArrayData(&data, &byteLen);
+    to->reset(byteLen, data);
+    return true;
 }
 
 ////////////////// TypedArray
@@ -1096,6 +1086,78 @@ bool sevalue_to_native(const se::Value &from, cc::IBArray *to, se::Object * /*ct
     }
 
     return true;
+}
+
+/////////////////// std::shared_ptr
+
+template <typename T>
+bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Object *ctx) {
+    T *tmp = nullptr;
+    sevalue_to_native<T>(from, &tmp, ctx);
+    out->reset(tmp);
+    //TODO(PatriceJiang): should not mix smart pointers with raw pointers.
+    return true;
+}
+
+template <typename T>
+typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
+sevalue_to_native(const se::Value &from, std::shared_ptr<cc::TypedArrayTemp<T>> *out, se::Object *ctx) {
+    *out = std::make_shared<cc::TypedArrayTemp<T>>();
+    sevalue_to_native<T>(from, out->get(), ctx);
+    //TODO(PatriceJiang): should not mix smart pointers with raw pointers.
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, std::shared_ptr<cc::ArrayBuffer> *out, se::Object *ctx) {
+    *out = std::make_shared<cc::ArrayBuffer>();
+    sevalue_to_native<cc::ArrayBuffer>(from, out->get(), ctx);
+    //TODO(PatriceJiang): should not mix smart pointers with raw pointers.
+    return true;
+}
+
+/////////////////// std::tuple && std::variant
+template <typename T, T... S, typename F>
+constexpr void se_for_each(std::integer_sequence<T, S...> index, F &&f) {
+    (static_cast<void>(f(std::integral_constant<T, S>{})), ...);
+}
+
+template <typename... Args>
+constexpr bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx) {
+    constexpr size_t ARGSIZE = std::tuple_size<std::tuple<Args...>>::value;
+    bool             result  = true;
+    se_for_each(std::make_index_sequence<ARGSIZE>{}, [&](auto i) {
+        se::Value tmp;
+        from.toObject()->getArrayElement(i, &tmp);
+        result &= sevalue_to_native(tmp, &std::get<i>(*to), ctx);
+    });
+    return result;
+}
+// variant
+template <typename... Args>
+constexpr bool sevalue_to_native(const se::Value &from, std::variant<Args...> *to, se::Object *ctx) {
+    assert(false); //TODO(PatriceJiang): should not pass variant from js -> native
+    return false;
+}
+
+////////////////// optional
+template <typename T, typename Enable = void>
+struct is_optional : std::false_type {}; // NOLINT
+
+template <typename T>
+struct is_optional<std::optional<T>> : std::true_type {}; // NOLINT
+
+template <typename T>
+typename std::enable_if<!is_optional<T>::value, bool>::type
+sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx) { //NOLINT
+    if (from.isNullOrUndefined()) {
+        to->reset();
+        return true;
+    }
+    T    tmp{};
+    bool ret = sevalue_to_native(from, &tmp, ctx);
+    *to      = tmp;
+    return ret;
 }
 
 ////////////////// pointer types

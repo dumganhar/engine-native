@@ -69,6 +69,8 @@ enum class ModelShadowReceivingMode {
 
 class MeshRenderer : public RenderableComponent {
 public:
+    COMPONENT_EXECUTION_ORDER(MeshRenderer, 100)
+
     MeshRenderer()           = default;
     ~MeshRenderer() override = default;
 

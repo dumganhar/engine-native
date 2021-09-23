@@ -29,12 +29,6 @@
 
 #include <string>
 
-#pragma once
-
-#include "base/Random.h"
-
-#include <string>
-
 namespace cc {
 
 static const char *NonUuidMark = ".";

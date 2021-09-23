@@ -59,12 +59,11 @@ void CCMTLShader::doInit(const ShaderInfo &info) {
 
 void CCMTLShader::doDestroy() {
     id<MTLLibrary> vertLib = _vertLibrary;
-    _vertFunction       = nil;
+    _vertLibrary = nil;
     id<MTLLibrary> fragLib = _fragLibrary;
-    _fragFunction     = nil;
+    _fragLibrary     = nil;
     id<MTLLibrary> cmptLib = _cmptLibrary;
-    _cmptFunction      = nil;
-    
+    _cmptLibrary      = nil;  
     id<MTLFunction> vertFunc = _vertFunction;
     _vertFunction       = nil;
     id<MTLFunction> fragFunc = _fragFunction;
@@ -73,18 +72,24 @@ void CCMTLShader::doDestroy() {
     _cmptFunction      = nil;
     
     // [_specializedFragFuncs release];
-    const auto specFragFuncs = [_specializedFragFuncs retain];
-    [_specializedFragFuncs release];
+    NSMutableDictionary<NSString*, id<MTLFunction>>* specFragFuncs = nil;
+    if (_specializedFragFuncs != nil) {
+        specFragFuncs = [_specializedFragFuncs retain];
+        [_specializedFragFuncs release];
+        _specializedFragFuncs = nil;
+    }
 
     CC_SAFE_DELETE(_gpuShader);
 
     std::function<void(void)> destroyFunc = [=]() {
-        if(specFragFuncs.count > 0) {
-            for (NSString* key in [specFragFuncs allKeys]) {
-                [[specFragFuncs valueForKey:key] release];
+        if (specFragFuncs != nil) {
+            if(specFragFuncs.count > 0) {
+                for (NSString* key in [specFragFuncs allKeys]) {
+                    [[specFragFuncs valueForKey:key] release];
+                }
             }
+            [specFragFuncs release];
         }
-        [specFragFuncs release];
         
         if (vertFunc) {
             [vertFunc release];

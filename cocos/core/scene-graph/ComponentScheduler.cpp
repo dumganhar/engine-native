@@ -235,7 +235,6 @@ ComponentScheduler::~ComponentScheduler() {
 }
 
 void ComponentScheduler::unscheduleAll() {
-    // TODO(xwx): invokers cbs not defined and why this function called unscheduleAll?
     CC_SAFE_DELETE(_startInvoker);
     CC_SAFE_DELETE(_updateInvoker);
     CC_SAFE_DELETE(_lateUpdateInvoker);
@@ -288,13 +287,13 @@ void ComponentScheduler::enableComp(Component *comp, std::optional<LifeCycleInvo
         if (invoker.has_value()) {
             invoker.value()->add(comp);
             return;
-        } else {
-            comp->onEnable();
-            bool deactivatedDuringOnEnable = !comp->getNode()->isActiveInHierarchy();
-            if (deactivatedDuringOnEnable) {
-                return;
-            }
         }
+        comp->onEnable();
+        bool deactivatedDuringOnEnable = !comp->getNode()->isActiveInHierarchy();
+        if (deactivatedDuringOnEnable) {
+            return;
+        }
+        // }
         onEnabled(comp);
     }
 }

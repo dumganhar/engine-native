@@ -38,7 +38,7 @@ using Invoker = std::function<void(MutableForwardIterator<Component *> &, const 
 using SingleInvokeCallback = std::function<void(Component *, const std::optional<float> &)>;
 using FastPathCallback     = Invoker;
 
-Invoker createInvokeImpl(SingleInvokeCallback singleInvoke, FastPathCallback fastPath, const std::optional<CCObject::Flags> &ensureFlag);
+Invoker createInvokeImpl(const SingleInvokeCallback &singleInvoke, const FastPathCallback &fastPath, std::optional<CCObject::Flags> ensureFlag);
 
 class LifeCycleInvoker {
 public:
@@ -64,25 +64,25 @@ protected:
     std::vector<Component *> _negCompArr;
     std::vector<Component *> _posCompArr;
 
+public:
     MutableForwardIterator<Component *> _zero;
     MutableForwardIterator<Component *> _neg;
     MutableForwardIterator<Component *> _pos;
-
-private:
 };
 
 // for onLoad: sort once all components registered, invoke once
-class OneOffInvoker : LifeCycleInvoker {
+class OneOffInvoker final : public LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
     void add(Component *comp) override;
     void remove(Component *comp) override;
+    void cancelInactive();
     void cancelInactive(CCObject::Flags flagToClear);
     void invoke();
 };
 
 // for update: sort every time new component registered, invoke many times
-class ReusableInvoker : LifeCycleInvoker {
+class ReusableInvoker final : public LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
     void add(Component *comp) override;

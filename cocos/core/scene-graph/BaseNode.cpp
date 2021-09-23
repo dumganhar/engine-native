@@ -24,8 +24,10 @@
  ****************************************************************************/
 
 #include "core/scene-graph/BaseNode.h"
+#include "core/Director.h"
 #include "core/Game.h"
 #include "core/data/Object.h"
+#include "core/scene-graph/NodeActivator.h"
 #include "core/scene-graph/NodeEventProcessor.h"
 #include "core/scene-graph/Scene.h"
 
@@ -110,7 +112,7 @@ void BaseNode::onHierarchyChangedBase(BaseNode *oldParent) {
     bool shouldActiveNow = _active && !!(newParent && newParent->_activeInHierarchy);
     if (_activeInHierarchy != shouldActiveNow) {
         // TODO
-        // legacyCC.director._nodeActivator.activateNode(this, shouldActiveNow);
+        Director::getInstance()->getNodeActivator()->activateNode(this, shouldActiveNow);
     }
 }
 

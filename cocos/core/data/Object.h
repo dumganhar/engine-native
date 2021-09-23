@@ -260,4 +260,35 @@ inline bool CCObject::isReplicated() const {
     return !!(_objFlags & Flags::IS_REPLICATED);
 }
 
+/*
+ * @en
+ * Checks whether the object is non-nil and not yet destroyed.<br>
+ * When an object's `destroy` is called, it is actually destroyed after the end of this frame.
+ * So `isValid` will return false from the next frame, while `isValid` in the current frame will still be true.
+ * If you want to determine whether the current frame has called `destroy`, use `isValid(obj, true)`,
+ * but this is often caused by a particular logical requirements, which is not normally required.
+ *
+ * @zh
+ * 检查该对象是否不为 null 并且尚未销毁。<br>
+ * 当一个对象的 `destroy` 调用以后，会在这一帧结束后才真正销毁。<br>
+ * 因此从下一帧开始 `isValid` 就会返回 false，而当前帧内 `isValid` 仍然会是 true。<br>
+ * 如果希望判断当前帧是否调用过 `destroy`，请使用 `isValid(obj, true)`，不过这往往是特殊的业务需求引起的，通常情况下不需要这样。
+ *
+ * @method isValid
+ * @param value
+ * @param [strictMode=false] - If true, Object called destroy() in this frame will also treated as invalid.
+ * @return whether is valid
+ * @example
+ * ```
+ * import { Node, log } from 'cc';
+ * var node = new Node();
+ * log(isValid(node));    // true
+ * node.destroy();
+ * log(isValid(node));    // true, still valid in this frame
+ * // after a frame...
+ * log(isValid(node));    // false, destroyed in the end of last frame
+ * ```
+ */
+bool isObjectValid(CCObject *value, bool strictMode = false);
+
 } // namespace cc

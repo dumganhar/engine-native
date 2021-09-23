@@ -300,6 +300,8 @@ protected:
 
     bool _eulerDirty{false};
 
+    friend void componentCorrupted(Node *node, Component *comp, uint32_t index);
+
     CC_DISALLOW_COPY_MOVE_ASSIGN(Node);
 };
 

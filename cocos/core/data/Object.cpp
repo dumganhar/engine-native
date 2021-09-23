@@ -30,14 +30,14 @@
 namespace cc {
 
 namespace {
-std::vector<CCObject*> objectsToDestroy;
+std::vector<CCObject *> objectsToDestroy;
 }
 
 /* static */
 void CCObject::deferredDestroy() {
     size_t deleteCount = objectsToDestroy.size();
     for (size_t i = 0; i < deleteCount; ++i) {
-        CCObject* obj = objectsToDestroy[i];
+        CCObject *obj = objectsToDestroy[i];
         if (!(obj->_objFlags & Flags::DESTROYED)) {
             obj->destroyImmediate();
         }
@@ -55,7 +55,7 @@ void CCObject::deferredDestroy() {
     //    }
 }
 
-CCObject::CCObject(const std::string& name /* = ""*/)
+CCObject::CCObject(const std::string &name /* = ""*/)
 : _name(name) {
 }
 
@@ -102,6 +102,14 @@ void CCObject::destroyImmediate() {
     //    }
 
     _objFlags |= Flags::DESTROYED;
+}
+
+bool isObjectValid(CCObject *value, bool strictMode /* = false*/) {
+    if (value == nullptr) {
+        return;
+    }
+
+    return !(value->_objFlags & (strictMode ? (CCObject::Flags::DESTROYED | CCObject::Flags::TO_DESTROY) : CCObject::Flags::DESTROYED));
 }
 
 } // namespace cc

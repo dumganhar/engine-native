@@ -58,8 +58,11 @@ bool recordAsBool(const MacroRecord::mapped_type &v) {
     if (std::holds_alternative<std::string>(v)) {
         return std::get<std::string>(v) == "true";
     }
+    if (std::holds_alternative<int32_t>(v)) {
+        return std::get<int32_t>(v);
+    }
     if (std::holds_alternative<float>(v)) {
-        return std::get<float>(v) != 0;
+        return std::abs(std::get<float>(v)) > FLT_EPSILON;
     }
     return false;
 }
@@ -70,6 +73,9 @@ std::string recordAsString(const MacroRecord::mapped_type &v) {
     }
     if (std::holds_alternative<std::string>(v)) {
         return std::get<std::string>(v);
+    }
+    if (std::holds_alternative<int32_t>(v)) {
+        return std::to_string(std::get<int32_t>(v));
     }
     if (std::holds_alternative<float>(v)) {
         return std::to_string(std::get<float>(v));
@@ -85,9 +91,9 @@ std::string mapDefine(const IDefineInfo &info, const std::optional<MacroRecord::
         return def.has_value() ? recordAsString(def.value()) : info.options.value()[0];
     }
     if (info.type == "number") {
-        return def.has_value() ? std::to_string(std::get<float>(def.value())) : std::to_string(info.range.value()[0]);
+        return def.has_value() ? recordAsString(def.value()) : std::to_string(info.range.value()[0]);
     }
-    CC_LOG_WARNING("unknown define type '%s'", info.type.c_str());
+    CC_LOG_WARNING("unknown define type '%s', name: %s", info.type.c_str(), info.name.c_str());
     return "-1"; // should neven happen
 }
 
@@ -98,7 +104,7 @@ std::vector<IMacroInfo> prepareDefines(const MacroRecord &records, const std::ve
         auto        it    = records.find(name);
         auto        value = mapDefine(tmp, it == records.end() ? std::nullopt : std::optional(it->second));
         //TODO(PatriceJiang): v === '0' can be bool ?
-        auto isDefault = it == records.end() || (std::holds_alternative<float>(it->second) && std::get<float>(it->second) == 0.0F);
+        bool isDefault = it == records.end() || (std::holds_alternative<std::string>(it->second) && std::get<std::string>(it->second) == "0");
         macros.emplace_back(IMacroInfo{.name = name, .value = value, .isDefault = isDefault});
     }
     return macros;

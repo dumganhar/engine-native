@@ -29,29 +29,108 @@
 namespace cc {
 namespace scene {
 
-void Fog::initialize(const FogInfo &fogInfo) {
-    _fogColor.set(fogInfo.fogColor);
-    _enabled    = fogInfo.enabled;
-    _type       = _enabled ? fogInfo.fogType : FogType::NONE;
-    _fogDensity = fogInfo.fogDensity;
-    _fogStart   = fogInfo.fogStart;
-    _fogEnd     = fogInfo.fogEnd;
-    _fogAtten   = fogInfo.fogAtten;
-    _fogTop     = fogInfo.fogTop;
-    _fogRange   = fogInfo.fogRange;
-}
-
-void Fog::updatePipeline() {
-    auto *            root     = Root::getInstance();
-    const FogType     value    = _enabled ? _type : FogType::NONE;
-    auto *            pipeline = root->getPipeline();
-    const MacroValue &macro    = pipeline->getMacros().at("CC_USE_FOG"); //cjh todo:
-    const float *     macroPtr = std::get_if<float>(&macro);
-    if (macroPtr && static_cast<int>(*macroPtr) == static_cast<int>(value)) {
+void FogInfo::setEnabled(bool val) {
+    if (_isEnabled == val) {
         return;
     }
 
-    pipeline->setValue("CC_USE_FOG", static_cast<float>(value));
+    if (_resource != nullptr) {
+        _resource->setEnabled(val);
+        if (val) {
+            _resource->setType(_type);
+        }
+    }
+}
+
+void FogInfo::setFogColor(Color val) {
+    _fogColor.set(val);
+    if (_resource != nullptr) {
+        _resource->setFogColor(_fogColor);
+    }
+}
+
+void FogInfo::setType(FogType val) {
+    _type = val;
+    if (_resource != nullptr) {
+        _resource->setType(_type);
+    }
+}
+
+void FogInfo::setFogDensity(float val) {
+    _fogDensity = val;
+    if (_resource) {
+        _resource->setFogDensity(_fogDensity);
+    }
+}
+
+void FogInfo::setFogStart(float val) {
+    _fogStart = val;
+    if (_resource != nullptr) {
+        _resource->setFogStart(_fogStart);
+    }
+}
+
+void FogInfo::setFogEnd(float val) {
+    _fogEnd = val;
+    if (_resource != nullptr) {
+        _resource->setFogEnd(_fogEnd);
+    }
+}
+
+void FogInfo::setFogAtten(float val) {
+    _fogAtten = val;
+    if (_resource != nullptr) {
+        _resource->setFogAtten(_fogAtten);
+    }
+}
+
+void FogInfo::setFogTop(float val) {
+    _fogTop = val;
+    if (_resource != nullptr) {
+        _resource->setFogTop(_fogTop);
+    }
+}
+
+void FogInfo::setFogRange(float val) {
+    _fogRange = val;
+    if (_resource != nullptr) {
+        _resource->setfogRange(_fogRange);
+    }
+}
+
+void FogInfo::activate(Fog *resource) {
+    _resource = resource; //cjh shared_ptr ?
+    _resource->initialize(*this);
+    _resource->activate();
+}
+
+//
+void Fog::initialize(const FogInfo &fogInfo) {
+    _fogColor.set(fogInfo.getFogColor());
+    _enabled    = fogInfo.isEnabled();
+    _type       = _enabled ? fogInfo.getType() : FogType::NONE;
+    _fogDensity = fogInfo.getFogDensity();
+    _fogStart   = fogInfo.getFogStart();
+    _fogEnd     = fogInfo.getFogEnd();
+    _fogAtten   = fogInfo.getFogAtten();
+    _fogTop     = fogInfo.getFogTop();
+    _fogRange   = fogInfo.getFogRange();
+}
+
+void Fog::updatePipeline() {
+    auto *        root     = Root::getInstance();
+    const FogType value    = _enabled ? _type : FogType::NONE;
+    auto *        pipeline = root->getPipeline();
+
+    if (auto iter = pipeline->getMacros().find("CC_USE_FOG"); iter != pipeline->getMacros().end()) {
+        const MacroValue &macro    = iter->second;
+        const int32_t *   macroPtr = std::get_if<int32_t>(&macro);
+        if (macroPtr != nullptr && *macroPtr == static_cast<int32_t>(value)) {
+            return;
+        }
+    }
+
+    pipeline->setValue("CC_USE_FOG", static_cast<int32_t>(value));
     root->onGlobalPipelineStateChanged();
 }
 

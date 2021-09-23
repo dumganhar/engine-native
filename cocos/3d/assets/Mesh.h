@@ -163,7 +163,7 @@ public:
         Uint8Array data;
     };
 
-    Mesh() = default;
+    Mesh()           = default;
     ~Mesh() override = default;
 
     std::any getNativeAsset() const override;

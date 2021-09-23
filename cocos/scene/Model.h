@@ -27,12 +27,12 @@
 
 #include <tuple>
 #include <vector>
+#include "core/TypedArray.h"
 #include "core/assets/RenderingSubMesh.h"
 #include "core/assets/Texture2D.h"
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/geometry/AABB.h"
 #include "core/scene-graph/Layers.h"
-#include "core/TypedArray.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 
@@ -136,6 +136,8 @@ public:
     inline bool         isDynamicBatching() const { return _isDynamicBatching; }
 
 protected:
+    static void uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &v2, Float32Array &v3);
+
     void         updateAttributesAndBinding(index_t subModelIndex);
     int32_t      getInstancedAttributeIndex(const std::string &name) const;
     void         updateInstanceAttribute(const std::vector<gfx::Attribute> &, Pass *pass) const;
@@ -167,9 +169,9 @@ protected:
     InstancedAttributeBlock         _instanceAttributeBlock{};
     std::vector<SubModel *>         _subModels;
     std::vector<gfx::Attribute>     _instanceAttributes;
-    static void                     uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &v2, Float32Array &v3);
-    Texture2D *                     _lightmap{nullptr};
-    Vec4                            _lightmapUVParam;
+
+    Texture2D *_lightmap{nullptr};
+    Vec4       _lightmapUVParam;
 
     RenderScene *_scene{nullptr};
 

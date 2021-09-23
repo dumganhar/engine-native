@@ -126,8 +126,12 @@ void TextureCube::updateMipmaps(uint32_t firstLevel, uint32_t count) {
     }
 }
 
-void TextureCube::onLoaded() {
+void TextureCube::initialize() {
     setMipmaps(_mipmaps);
+}
+
+void TextureCube::onLoaded() {
+    initialize();
 }
 
 bool TextureCube::destroy() {

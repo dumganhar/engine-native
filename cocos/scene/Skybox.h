@@ -39,22 +39,39 @@ struct SkyboxInfo {
 public:
     SkyboxInfo(/* args */) = default;
     ~SkyboxInfo()          = default;
-    inline TextureCube *getEnvamp() const { return _envmap; }
-    inline void         setEnabled(bool val) { _enabled = val; }
-    inline bool         getEnabled() const { return _enabled; }
-    inline void         setIBL(bool val) { _useIBL = val; }
-    inline bool         getIBL() const { return _useIBL; }
-    inline void         setRGBE(bool val) { _isRGBE = val; }
-    inline bool         getRGBE() const { return _isRGBE; }
-    inline void         activate(Skybox *resource) {}
+
+    /**
+     * @en Whether activate skybox in the scene
+     * @zh 是否启用天空盒？
+     */
+    void        setEnabled(bool val);
+    inline bool isEnabled() const { return _enabled; }
+
+    /**
+      * @en Whether use environment lighting
+      * @zh 是否启用环境光照？
+      */
+    void        setUseIBL(bool val);
+    inline bool isUseIBL() const { return _useIBL; }
+
     void                setEnvmap(TextureCube *val);
+    inline TextureCube *getEnvamp() const { return _envmap; }
+
+    /**
+     * @en Whether enable RGBE data support in skybox shader
+     * @zh 是否需要开启 shader 内的 RGBE 数据支持？
+     */
+    void        setRGBE(bool val);
+    inline bool isRGBE() const { return _isRGBE; }
+
+    void activate(Skybox *resource);
 
 protected:
     TextureCube *_envmap{nullptr};
     bool         _isRGBE{false};
     bool         _enabled{false};
     bool         _useIBL{false};
-    Skybox *     _resource;
+    Skybox *     _resource{nullptr};
 };
 
 class Skybox final {

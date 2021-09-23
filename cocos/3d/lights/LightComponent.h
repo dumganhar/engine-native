@@ -162,19 +162,19 @@ public:
         if (_light != nullptr) _light->setBaked(val);
     }
 
-    inline void onLoad() override {
+    void onLoad() override {
         createLight();
     }
 
-    inline void onEnable() override {
+    void onEnable() override {
         attachToScene();
     }
 
-    inline void onDisable() override {
+    void onDisable() override {
         detachFromScene();
     }
 
-    inline void onDestroy() override {
+    void onDestroy() override {
         destroyLight();
     }
 

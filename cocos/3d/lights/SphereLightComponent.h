@@ -97,8 +97,6 @@ protected:
     //TODO(xwx): need @serializable
     float _range{1.F};
 
-    scene::LightType _type{scene::LightType::SPHERE};
-
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(SphereLight);
 };

@@ -130,15 +130,18 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
         memcpy(output + UBOCamera::AMBIENT_SKY_OFFSET, skyColor.data(), 4 * sizeof(float));
 
         const auto &groundAlbedo                     = ambient->getGroundAlbedo();
-        output[UBOCamera::AMBIENT_GROUND_OFFSET + 0] = groundAlbedo.r;
-        output[UBOCamera::AMBIENT_GROUND_OFFSET + 1] = groundAlbedo.g;
-        output[UBOCamera::AMBIENT_GROUND_OFFSET + 2] = groundAlbedo.b;
+        output[UBOCamera::AMBIENT_GROUND_OFFSET + 0] = groundAlbedo.r / 255.F;
+        output[UBOCamera::AMBIENT_GROUND_OFFSET + 1] = groundAlbedo.g / 255.F;
+        output[UBOCamera::AMBIENT_GROUND_OFFSET + 2] = groundAlbedo.b / 255.F;
+        //cjh add
+        output[UBOCamera::AMBIENT_GROUND_OFFSET + 3] = groundAlbedo.a / 255.F;
+        //
     }
 
-    auto *const envmap = descriptorSet->getTexture(static_cast<uint>(PipelineGlobalBindings::SAMPLER_ENVIRONMENT));
-    if (envmap != nullptr) {
-        output[UBOCamera::AMBIENT_GROUND_OFFSET + 3] = static_cast<float>(envmap->getLevelCount());
-    }
+    //cjh TS doesn't have this logic ?    auto *const envmap = descriptorSet->getTexture(static_cast<uint>(PipelineGlobalBindings::SAMPLER_ENVIRONMENT));
+    //    if (envmap != nullptr) {
+    //        output[UBOCamera::AMBIENT_GROUND_OFFSET + 3] = static_cast<float>(envmap->getLevelCount());
+    //    }
 
     memcpy(output + UBOCamera::MAT_VIEW_OFFSET, camera->getMatView().m, sizeof(cc::Mat4));
     memcpy(output + UBOCamera::MAT_VIEW_INV_OFFSET, camera->getNode()->getWorldMatrix().m, sizeof(cc::Mat4));

@@ -32,11 +32,13 @@ namespace scene {
 class RenderScene;
 }
 
+class SceneGlobal;
+
 class Scene final : public BaseNode {
 public:
     using Super = BaseNode;
     explicit Scene(const std::string &name);
-    ~Scene() override = default;
+    ~Scene() override;
 
     inline scene::RenderScene *getRenderScene() const { return _renderScene; }
 
@@ -47,6 +49,13 @@ public:
     bool destroy() override;
 
 protected:
+    /**
+     * @en Per-scene level rendering info
+     * @zh 场景级别的渲染信息
+     */
+    //    @serializable
+    SceneGlobal *_globals{nullptr};
+
     scene::RenderScene *_renderScene{nullptr};
     bool                _inited{false};
 

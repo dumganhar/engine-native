@@ -64,14 +64,14 @@ void Light::attachToScene() {
         scene::RenderScene *renderScene = getRenderScene();
         switch (_type) {
             case scene::LightType::DIRECTIONAL:
-                renderScene->addDirectionalLight(dynamic_cast<scene::DirectionalLight *>(_light));
-                renderScene->setMainLight(dynamic_cast<scene::DirectionalLight *>(_light));
+                renderScene->addDirectionalLight(static_cast<scene::DirectionalLight *>(_light));
+                renderScene->setMainLight(static_cast<scene::DirectionalLight *>(_light));
                 break;
             case scene::LightType::SPHERE:
-                renderScene->addSphereLight(dynamic_cast<scene::SphereLight *>(_light));
+                renderScene->addSphereLight(static_cast<scene::SphereLight *>(_light));
                 break;
             case scene::LightType::SPOT:
-                renderScene->addSpotLight(dynamic_cast<scene::SpotLight *>(_light));
+                renderScene->addSpotLight(static_cast<scene::SpotLight *>(_light));
                 break;
             default:
                 break;

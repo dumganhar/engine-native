@@ -1445,6 +1445,14 @@ cocos_source_files(
     cocos/core/data/Object.h
     cocos/core/data/deserializer/EffectAssetDeserializer.cpp
     cocos/core/data/deserializer/EffectAssetDeserializer.h
+    cocos/core/data/deserializer/MeshDeserializer.cpp
+    cocos/core/data/deserializer/MeshDeserializer.h
+    cocos/core/data/deserializer/MaterialDeserializer.cpp
+    cocos/core/data/deserializer/MaterialDeserializer.h
+    cocos/core/data/deserializer/ImageAssetDeserializer.cpp
+    cocos/core/data/deserializer/ImageAssetDeserializer.h
+    cocos/core/data/deserializer/Texture2DDeserializer.cpp
+    cocos/core/data/deserializer/Texture2DDeserializer.h
     cocos/core/data/deserializer/IAssetDeserializer.h
     cocos/core/data/deserializer/AssetDeserializerFactory.cpp
     cocos/core/data/deserializer/AssetDeserializerFactory.h

@@ -53,15 +53,15 @@ AABB *AABB::merge(AABB *out, const AABB &a, const AABB &b) {
     return AABB::fromPoints(minCornor, maxCorner, out);
 }
 
-bool AABB::aabbAabb(AABB *aabb) const {
+bool AABB::aabbAabb(const AABB &aabb) const {
     Vec3 aMin;
     Vec3 aMax;
     Vec3 bMin;
     Vec3 bMax;
     Vec3::subtract(getCenter(), getHalfExtents(), &aMin);
     Vec3::add(getCenter(), getHalfExtents(), &aMax);
-    Vec3::subtract(aabb->getCenter(), aabb->getHalfExtents(), &bMin);
-    Vec3::add(aabb->getCenter(), aabb->getHalfExtents(), &bMax);
+    Vec3::subtract(aabb.getCenter(), aabb.getHalfExtents(), &bMin);
+    Vec3::add(aabb.getCenter(), aabb.getHalfExtents(), &bMax);
     return (aMin.x <= bMax.x && aMax.x >= bMin.x) &&
            (aMin.y <= bMax.y && aMax.y >= bMin.y) &&
            (aMin.z <= bMax.z && aMax.z >= bMin.z);

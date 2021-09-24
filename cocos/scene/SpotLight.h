@@ -71,7 +71,7 @@ public:
         _needUpdate = true;
     }
 
-    inline geometry::AABB *getAABB() const { return _aabb; }
+    inline const geometry::AABB &getAABB() const { return _aabb; }
 
     inline const geometry::Frustum &getFrustum() const { return _frustum; }
 
@@ -87,7 +87,7 @@ private:
     float             _aspect{0.F};
     Vec3              _dir;
     Vec3              _pos;
-    geometry::AABB *  _aabb{nullptr};
+    geometry::AABB    _aabb;
     geometry::Frustum _frustum;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(SpotLight);

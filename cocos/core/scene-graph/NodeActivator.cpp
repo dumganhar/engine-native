@@ -39,7 +39,7 @@ void componentCorrupted(Node *node, Component *comp, uint32_t index) {
     if (comp) {
         node->removeComponent(comp);
     } else {
-        utils::removeAt(node->_components, index);
+        utils::array::removeAt(node->_components, index);
     }
 }
 

@@ -88,6 +88,8 @@ Map &mergeToMap(Map &outMap, const Map &inMap) {
     return outMap;
 }
 
+namespace array {
+
 /**
  * @zh
  * 移除首个指定的数组元素。判定元素相等时相当于于使用了 `Array.prototype.indexOf`。
@@ -166,6 +168,8 @@ bool fastRemove(std::vector<T> &array, T value) {
     }
     return false;
 }
+
+} // namespace array
 
 } // namespace utils
 } // namespace cc

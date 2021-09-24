@@ -123,7 +123,7 @@ public:
      * @param {Plane} plane 平面
      * @return {number} inside(back) = -1, outside(front) = 0, intersect = 1
      */
-    bool aabbAabb(AABB *aabb) const;
+    bool aabbAabb(const AABB &aabb) const;
 
     /**
      * @en

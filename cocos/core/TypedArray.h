@@ -72,7 +72,7 @@ public:
     }
 
     TypedArrayTemp<T> subarray(uint32_t begin) {
-        return subArray(begin, _byteLength - begin + 1);
+        return subarray(begin, _byteLength - begin + 1);
     }
 
     TypedArrayTemp<T> subarray(uint32_t begin, uint32_t end) {

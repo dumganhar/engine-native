@@ -28,6 +28,9 @@
 
 namespace cc {
 namespace scene {
+SphereLight::SphereLight() {
+    _type = LightType::SPHERE;
+}
 
 void SphereLight::initialize() {
     Light::initialize();
@@ -41,7 +44,7 @@ void SphereLight::update() {
     if (_node && (_node->getChangedFlags() || _needUpdate)) {
         _node->updateWorldTransform();
         _pos = _node->getWorldPosition();
-        _aabb->set(_pos, {_range, _range, _range});
+        _aabb.set(_pos, {_range, _range, _range});
         _needUpdate = false;
     }
 }

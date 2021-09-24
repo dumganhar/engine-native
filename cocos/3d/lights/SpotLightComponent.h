@@ -35,7 +35,7 @@ class SpotLight final : public Light {
 public:
     using Super = Light;
     SpotLight();
-    ~SpotLight() override;
+    ~SpotLight() override = default;
 
     /**
      * @en Luminous flux of the light.

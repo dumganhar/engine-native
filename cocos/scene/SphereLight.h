@@ -34,7 +34,7 @@ namespace scene {
 
 class SphereLight final : public Light {
 public:
-    SphereLight() { _type = LightType::SPHERE; }
+    SphereLight();
     ~SphereLight() override = default;
 
     void initialize() override;
@@ -55,15 +55,15 @@ public:
     inline float getLuminance() const { return _luminance; }
     inline void  setLuminance(float lum) { _luminance = lum; }
 
-    inline geometry::AABB *getAABB() const { return _aabb; }
+    inline const geometry::AABB &getAABB() const { return _aabb; }
 
 private:
-    bool            _needUpdate{false};
-    float           _luminance{0.F};
-    float           _range{0.F};
-    float           _size{0.F};
-    Vec3            _pos;
-    geometry::AABB *_aabb{nullptr};
+    bool           _needUpdate{false};
+    float          _luminance{0.F};
+    float          _range{0.F};
+    float          _size{0.F};
+    Vec3           _pos;
+    geometry::AABB _aabb;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(SphereLight);
 };

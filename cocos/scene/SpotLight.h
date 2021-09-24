@@ -34,7 +34,7 @@ namespace scene {
 
 class SpotLight final : public Light {
 public:
-    SpotLight() { _type = LightType::SPOT; }
+    SpotLight();
     ~SpotLight() override = default;
 
     void initialize() override;
@@ -57,7 +57,11 @@ public:
     inline const Vec3 &getDirection() const { return _dir; }
 
     inline float getSpotAngle() const { return _spotAngle; }
-    inline void  setSpotAngle(float val) { _spotAngle = val; }
+    inline void  setSpotAngle(float val) {
+        _angle      = val;
+        _spotAngle  = cos(val * 0.5F);
+        _needUpdate = true;
+    }
 
     inline float getAngle() const { return _angle; }
 
@@ -67,7 +71,7 @@ public:
         _needUpdate = true;
     }
 
-    inline geometry::AABB *getAABB() const { return _aabb; }
+    inline const geometry::AABB &getAABB() const { return _aabb; }
 
     inline const geometry::Frustum &getFrustum() const { return _frustum; }
 
@@ -83,7 +87,7 @@ private:
     float             _aspect{0.F};
     Vec3              _dir;
     Vec3              _pos;
-    geometry::AABB *  _aabb{nullptr};
+    geometry::AABB    _aabb;
     geometry::Frustum _frustum;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(SpotLight);

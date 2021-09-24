@@ -30,7 +30,9 @@
 
 namespace cc {
 namespace scene {
-
+SpotLight::SpotLight() {
+    _type = LightType::SPOT;
+}
 void SpotLight::initialize() {
     Light::initialize();
 
@@ -53,7 +55,7 @@ void SpotLight::update() {
         _dir = _forward;
         _dir.transformQuat(_node->getWorldRotation());
         _dir.normalize();
-        _aabb->set(_pos, {_range, _range, _range});
+        _aabb.set(_pos, {_range, _range, _range});
 
         // view matrix
         matView = _node->getWorldRT();

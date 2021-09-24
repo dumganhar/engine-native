@@ -28,66 +28,145 @@
 #include <vector>
 #include "base/TypeDef.h"
 #include "core/components/Component.h"
+#include "core/scene-graph/Node.h"
+#include "core/utils/MutableForwardIterator.h"
 
 namespace cc {
 
-using Invoker = std::function<void(std::vector<Component *>, float)>;
+using Invoker = std::function<void(MutableForwardIterator<Component *> &, const std::optional<float> &)>;
+
+using SingleInvokeCallback = std::function<void(Component *, const std::optional<float> &)>;
+using FastPathCallback     = Invoker;
+
+Invoker createInvokeImpl(SingleInvokeCallback singleInvoke, FastPathCallback fastPath, const std::optional<CCObject::Flags> &ensureFlag);
+
 class LifeCycleInvoker {
 public:
-    static void stableRemoveInactive(const std::vector<Component *> &);
-    static void stableRemoveInactive(const std::vector<Component *> &, uint);
-    explicit LifeCycleInvoker(Invoker);
+    // remove disabled and not invoked component from array
+    static void stableRemoveInactive(MutableForwardIterator<Component *> &iterator, const std::optional<CCObject::Flags> &flagToClear);
+
+    static Invoker invokeStart();
+    static Invoker invokeUpdate();
+    static Invoker invokeLateUpdate();
+
+    static int32_t sortedIndex(std::vector<Component *> &components, Component *comp);
+
+    explicit LifeCycleInvoker(const Invoker &invokeFunc);
     ~LifeCycleInvoker();
 
-protected:
-    Invoker _invoke;
+    virtual void add(Component *comp)    = 0;
+    virtual void remove(Component *comp) = 0;
 
-    std::vector<Component *> _zero;
-    std::vector<Component *> _neg;
-    std::vector<Component *> _pos;
+protected:
+    Invoker _invoke{nullptr};
+
+    std::vector<Component *> _zeroCompArr;
+    std::vector<Component *> _negCompArr;
+    std::vector<Component *> _posCompArr;
+
+    MutableForwardIterator<Component *> _zero;
+    MutableForwardIterator<Component *> _neg;
+    MutableForwardIterator<Component *> _pos;
 
 private:
 };
 
+// for onLoad: sort once all components registered, invoke once
 class OneOffInvoker : LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
-    void add(Component *);
-    void remove(Component *);
-    void cancelInactive(uint);
+    void add(Component *comp) override;
+    void remove(Component *comp) override;
+    void cancelInactive(CCObject::Flags flagToClear);
     void invoke();
 };
 
+// for update: sort every time new component registered, invoke many times
 class ReusableInvoker : LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
-    void add(Component *);
-    void remove(Component *);
-    void invoke(float);
+    void add(Component *comp) override;
+    void remove(Component *comp) override;
+    void invoke(float dt);
 };
 
+/**
+ * @en The Manager for Component's life-cycle methods.
+ * It collaborates with [[NodeActivator]] to schedule and invoke life cycle methods for components
+ * @zh 组件生命周期函数的调度器。
+ * 它和 [[NodeActivator]] 一起调度并执行组件的生命周期函数。
+ */
 class ComponentScheduler final {
 public:
     ComponentScheduler();
     ~ComponentScheduler();
-    OneOffInvoker *  startInvoker;
-    ReusableInvoker *updateInvoker;
-    ReusableInvoker *lateUpdateInvoker;
-    void             unscheduleAll();
-    void             onEnabled(Component *);
-    void             onDisabled(Component *);
-    void             enableComp(Component *, std::optional<LifeCycleInvoker *> = std::nullopt);
-    void             disableComp(Component *);
-    void             startPhase();
-    void             updatePhase(float);
-    void             lateUpdatePhase(float);
+
+    void unscheduleAll();
+    void onEnabled(Component *comp);
+    void onDisabled(Component *comp);
+
+    /**
+     * @en Enable a component
+     * @zh 启用一个组件
+     * @param comp The component to be enabled
+     * @param invoker The invoker which is responsible to schedule the `onEnable` call
+     */
+    void enableComp(Component *comp, std::optional<LifeCycleInvoker *> invoker = std::nullopt);
+
+    /**
+     * @en Disable a component
+     * @zh 禁用一个组件
+     * @param comp The component to be disabled
+     */
+    void disableComp(Component *comp);
+
+    /**
+     * @en Process start phase for registered components
+     * @zh 为当前注册的组件执行 start 阶段任务
+     */
+    void startPhase();
+
+    /**
+     * @en Process update phase for registered components
+     * @zh 为当前注册的组件执行 update 阶段任务
+     * @param dt 距离上一帧的时间
+     */
+    void updatePhase(float) const;
+
+    /**
+     * @en Process late update phase for registered components
+     * @zh 为当前注册的组件执行 late update 阶段任务
+     * @param dt 距离上一帧的时间
+     */
+    void lateUpdatePhase(float);
 
 private:
+    void startForNewComps();
+    void scheduleImmediate(Component *comp);
+    void deferredSchedule();
+
+    /**
+     * @en The invoker of `start` callback
+     * @zh `start` 回调的调度器
+     */
+    OneOffInvoker *_startInvoker{nullptr};
+
+    /**
+     * @en The invoker of `update` callback
+     * @zh `update` 回调的调度器
+     */
+    ReusableInvoker *_updateInvoker{nullptr};
+
+    /**
+     * @en The invoker of `lateUpdate` callback
+     * @zh `lateUpdate` 回调的调度器
+     */
+    ReusableInvoker *_lateUpdateInvoker{nullptr};
+
+    // components deferred to schedule
     std::vector<Component *> _deferredComps;
-    bool                     _updating;
-    void                     startForNewComps();
-    void                     scheduleImmediate(Component *);
-    void                     deferredSchedule();
+
+    bool _updating{false};
 };
 
 } // namespace cc

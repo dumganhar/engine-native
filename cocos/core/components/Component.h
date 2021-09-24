@@ -39,11 +39,26 @@ namespace scene {
 class RenderScene;
 }
 
+#define COMPONENT_EXECUTION_ORDER(cls, priority)           \
+private:                                                   \
+    static constexpr int32_t _executionOrder = (priority); \
+                                                           \
+public:                                                    \
+    int32_t getExecutionOrder() const override { return cls::_executionOrder; }
+
+#define COMPONENT_BASE_EXECUTION_ORDER(cls, priority)      \
+private:                                                   \
+    static constexpr int32_t _executionOrder = (priority); \
+                                                           \
+public:                                                    \
+    virtual int32_t getExecutionOrder() const { return cls::_executionOrder; }
+
 class Component : public CCObject {
 public:
-    friend class NodeActivator;
+    COMPONENT_BASE_EXECUTION_ORDER(Component, 0)
 
-    using Super          = CCObject;
+    using Super = CCObject;
+
     virtual ~Component() = default;
 
     const std::string &getName() const { return _name; }
@@ -285,9 +300,7 @@ protected:
 
     scene::RenderScene *getRenderScene() const;
 
-    std::string     _name;
-    std::string     _id;
-    CCObject::Flags _objFlags{CCObject::Flags::ZERO};
+    std::string _id;
 
     /**
      * @en The node this component is attached to. A component is always attached to a node.
@@ -308,6 +321,9 @@ protected:
     bool _enabled{true};
 
     friend class BaseNode;
+    friend class NodeActivator;
+    friend class ComponentScheduler;
+    friend class LifeCycleInvoker;
 };
 
 } // namespace cc

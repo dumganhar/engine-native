@@ -34,16 +34,26 @@ namespace cc {
 class UnsortedInvoker : public LifeCycleInvoker {
 public:
     using LifeCycleInvoker::LifeCycleInvoker;
-    inline void add(Component *comp) { _zero.emplace_back(comp); }
-    inline void remove(Component *comp) {
-        auto iter = std::find(_zero.begin(), _zero.end(), comp);
-        if (iter != _zero.end()) _zero.erase(iter);
+
+    void add(Component *comp) override {
+        _zero.array.emplace_back(comp);
     }
-    inline void cancelInactive() { stableRemoveInactive(_zero); }
-    inline void cancelInactive(uint32_t flagToClear) { stableRemoveInactive(_zero, flagToClear); }
+
+    void remove(Component *comp) override {
+        _zero.fastRemove(comp);
+    }
+
+    inline void cancelInactive() {
+        stableRemoveInactive(_zero, std::nullopt);
+    }
+
+    inline void cancelInactive(CCObject::Flags flagToClear) {
+        stableRemoveInactive(_zero, flagToClear);
+    }
+
     inline void invoke() {
-        // _invoke(_zero); TODO(xwx): requires 2 arguments, but 1 was provided
-        _zero.clear();
+        _invoke(_zero, std::nullopt);
+        _zero.array.clear();
     }
 };
 

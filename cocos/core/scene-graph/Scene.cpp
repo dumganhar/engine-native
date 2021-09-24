@@ -24,7 +24,9 @@
  ****************************************************************************/
 
 #include "core/scene-graph/Scene.h"
+#include "core/Director.h"
 #include "core/Root.h"
+#include "core/scene-graph/NodeActivator.h"
 
 namespace cc {
 
@@ -57,7 +59,7 @@ void Scene::activate(bool active /* = true */) {
     //        // register all nodes to editor
     //        _registerIfAttached!(active);
     //    }
-    //cjh    legacyCC.director._nodeActivator.activateNode(this, active);
+    Director::getInstance()->getNodeActivator()->activateNode(this, active);
     //     The test environment does not currently support the renderer
     //        if (!TEST) {
     _globals->activate();
@@ -85,7 +87,7 @@ bool Scene::destroy() {
     }
 
     if (_renderScene != nullptr) {
-        //cjh TODO: legacyCC.director.root.destroyScene(this._renderScene);
+        Director::getInstance()->getRoot()->destroyScene(_renderScene);
     }
 
     _active            = false;

@@ -1498,6 +1498,7 @@ cocos_source_files(
     cocos/core/utils/Path.h
     cocos/core/utils/MutableForwardIterator.cpp
     cocos/core/utils/MutableForwardIterator.h
+    cocos/core/utils/Pool.h
 
     cocos/core/platform/event-manager/Acceleration.h
     cocos/core/platform/event-manager/Acceleration.cpp

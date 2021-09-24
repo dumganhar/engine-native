@@ -154,6 +154,12 @@ void OneOffInvoker::remove(Component *comp) {
     }
 }
 
+void OneOffInvoker::cancelInactive() {
+    stableRemoveInactive(_zero, std::nullopt);
+    stableRemoveInactive(_neg, std::nullopt);
+    stableRemoveInactive(_pos, std::nullopt);
+}
+
 void OneOffInvoker::cancelInactive(CCObject::Flags flagToClear) {
     stableRemoveInactive(_zero, flagToClear);
     stableRemoveInactive(_neg, flagToClear);
@@ -264,7 +270,7 @@ void ComponentScheduler::onDisabled(Component *comp) {
     comp->_objFlags &= ~CCObject::Flags::IS_ON_ENABLE_CALLED;
 
     // cancel schedule task
-    if (utils::fastRemove(_deferredComps, comp)) {
+    if (utils::array::fastRemove(_deferredComps, comp)) {
         return;
     }
 

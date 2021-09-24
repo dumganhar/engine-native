@@ -33,7 +33,7 @@ const std::string Game::EVENT_GAME_INITED{"game_inited"};
 const std::string Game::EVENT_RESTART{"game_on_restart"};
 
 void Game::step() const {
-    Director::getInstance().tick(frameTime / 1000);
+    Director::getInstance()->tick(frameTime / 1000);
 }
 
 void Game::pause() {
@@ -87,7 +87,7 @@ void Game::addPersistRootNode(Node *node) {
     }
     std::string id = node->getUUid();
     if (_persistRootNodes.find(id) == _persistRootNodes.end()) {
-        Scene *scene = Director::getInstance().getScene();
+        Scene *scene = Director::getInstance()->getScene();
         if (scene->isValid()) {
             auto *nodeParent = node->getParent();
             if (!nodeParent) {
@@ -152,7 +152,7 @@ void Game::runMainLoop() {
     }
     // auto config = config();
     // debug.setDisplayStats(!!config.showFPS);
-    Director::getInstance().startAnimation();
+    Director::getInstance()->startAnimation();
     resume();
 }
 
@@ -203,7 +203,7 @@ void Game::onShow() {
 }
 
 void Game::setRenderPipeline(pipeline::RenderPipeline *pipeline) {
-    if (!Director::getInstance().getRoot()->setRenderPipeline(pipeline)) {
+    if (!Director::getInstance()->getRoot()->setRenderPipeline(pipeline)) {
         setRenderPipeline(nullptr);
     }
     _rendererInitialized = true;

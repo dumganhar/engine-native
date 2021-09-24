@@ -23,7 +23,10 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "core/components/Component.h"
+#include "core/Director.h"
+#include "core/scene-graph/ComponentScheduler.h"
 #include "core/scene-graph/Node.h"
+#include "core/scene-graph/NodeActivator.h"
 #include "core/utils/IDGenerator.h"
 
 namespace cc {
@@ -51,11 +54,11 @@ void Component::setEnabled(bool value) {
     if (_enabled != value) {
         _enabled = value;
         if (_node->isActiveInHierarchy()) {
-            // ComponentScheduler *compScheduler = Director::getInstance()._compScheduler; // TODO(xwx): not sure use Director
+            ComponentScheduler *compScheduler = Director::getInstance()->getCompScheduler();
             if (value) {
-                // compScheduler->enableComp(this);
+                compScheduler->enableComp(this);
             } else {
-                // compScheduler->disableComp(this);
+                compScheduler->disableComp(this);
             }
         }
     }
@@ -65,7 +68,7 @@ bool Component::destroy() {
     // TODO(xwx): EDITOR & js related logic not define
     // if (EDITOR) {
     //     // @ts-expect-error private function access
-        // const depend = _node->_getDependComponent(this);
+    // const depend = _node->_getDependComponent(this);
     //     if (depend) {
     //         errorID(3626,
     //                 getClassName(this), getClassName(depend));
@@ -74,7 +77,7 @@ bool Component::destroy() {
     // }
     if (Super::destroy()) {
         if (_enabled && _node->isActiveInHierarchy()) {
-            // Director::getInstance()._compScheduler->disableComp(this); // TODO(xwx): not sure Director will be used
+            Director::getInstance()->getCompScheduler()->disableComp(this);
         }
         return true;
     }
@@ -92,7 +95,7 @@ void Component::_onPreDestroy() {
     // }
 
     // onDestroy
-    // Director::getInstance()._nodeActivator->destroyComp(this); // TODO(xwx): not sure Director will be used
+    Director::getInstance()->getNodeActivator()->destroyComp(this);
 
     // do remove component
     _node->removeComponent(this);

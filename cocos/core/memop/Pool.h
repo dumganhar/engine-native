@@ -25,13 +25,15 @@
 
 #pragma once
 
-#include <cstdint>
-#include <vector>
-#include <functional>
 #include <algorithm>
+#include <cstdint>
+#include <functional>
+#include <vector>
 #include "base/TypeDef.h"
 
 namespace cc {
+
+namespace memop {
 
 template <typename T>
 class Pool final {
@@ -119,5 +121,7 @@ private:
     index_t              _nextAvail{-1};
     std::vector<T *>     _freepool;
 };
+
+} // namespace memop
 
 } // namespace cc

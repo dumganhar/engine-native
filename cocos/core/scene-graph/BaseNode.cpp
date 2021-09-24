@@ -111,7 +111,6 @@ void BaseNode::onHierarchyChangedBase(BaseNode *oldParent) {
     //}
     bool shouldActiveNow = _active && !!(newParent && newParent->_activeInHierarchy);
     if (_activeInHierarchy != shouldActiveNow) {
-        // TODO
         Director::getInstance()->getNodeActivator()->activateNode(this, shouldActiveNow);
     }
 }

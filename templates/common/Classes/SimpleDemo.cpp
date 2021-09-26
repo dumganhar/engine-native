@@ -43,6 +43,9 @@
 #include "platform/Image.h"
 #include "primitive/Primitive.h"
 
+#include "core/data/deserializer/AssetDeserializerFactory.h"
+#include "platform/FileUtils.h"
+
 //#include "platform/View.h"
 
 using namespace cc;
@@ -171,9 +174,35 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
     cube->onLoaded();
 
+    // create mesh from deserializer
+    Mesh *      meshExportedFromEditor = new Mesh();
+    std::string meshJsonContent        = FileUtils::getInstance()->getStringFromFile("29805fb3-2189-4731-b788-b6b74617a960@d9c96.json");
+    {
+        rapidjson::Document meshDoc;
+        meshDoc.Parse(meshJsonContent.c_str());
+        auto deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::MESH);
+        deserializer->deserialize(meshDoc, meshExportedFromEditor);
+    }
+
+    {
+        Data              meshData = FileUtils::getInstance()->getDataFromFile("29805fb3-2189-4731-b788-b6b74617a960@d9c96.bin");
+        Mesh::ICreateInfo meshInfo;
+        meshInfo.structInfo = meshExportedFromEditor->getStruct();
+        auto meshBuffer     = std::make_shared<ArrayBuffer>(static_cast<uint32_t>(meshData.getSize()));
+        memcpy(const_cast<uint8_t *>(meshBuffer->getData()), meshData.getBytes(), meshData.getSize());
+        Uint8Array meshDataArray{meshBuffer, 0};
+        meshInfo.data = meshDataArray;
+        meshExportedFromEditor->reset(meshInfo);
+        meshExportedFromEditor->initialize();
+        _cubeNode->setScale(100, 100, 100);
+    }
+
+    //
+
     // create mesh renderer
     _cubeMeshRenderer = _cubeNode->addComponent<MeshRenderer>();
-    _cubeMeshRenderer->setMesh(cube);
+    //    _cubeMeshRenderer->setMesh(cube);
+    _cubeMeshRenderer->setMesh(meshExportedFromEditor);
 
     // create camera
     auto *cameraNode = new Node("camera");
@@ -212,13 +241,13 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
     material->initialize({.effectName = "standard",
                           .defines    = MacroRecord{
-                              {"USE_ALBEDO_MAP", true},
+                              //                              {"USE_ALBEDO_MAP", true},
                           }});
 
     //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
 
     auto *image = new Image();
-    bool   ret   = image->initWithImageFile("pixil-frame-2.png");
+    bool  ret   = image->initWithImageFile("pixil-frame-2.png");
     if (ret) {
         auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
         imgAsset->setNativeAsset(image);   //cjh HOW TO RELEASE?
@@ -227,7 +256,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
         texture->setImage(imgAsset);
         texture->onLoaded();
         //        material->setProperty("mainTexture", texture);
-        material->setProperty("albedoMap", texture);
+        //        material->setProperty("albedoMap", texture);
     }
     image->release();
 
@@ -240,7 +269,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     auto *lightComp = lightNode->addComponent<DirectionalLight>();
     // auto *lightComp = lightNode->addComponent<SphereLight>();
     // auto *lightComp = lightNode->addComponent<SpotLight>();
-    lightComp->setColor(cc::Color{255, 0, 0, 255});
+    //    lightComp->setColor(cc::Color{255, 0, 0, 255});
     // lightNode->setPosition(0, 0, 5); // spot & spheres
     // lightComp->setRange(20); // spot & spheres
     // lightComp->setSize(1); // spot & spheres
@@ -250,7 +279,10 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 void SimpleDemo::step(float dt) {
     //    dt = 1.F / 60.F;
     //     CC_LOG_INFO("SimpleDemo::%s, dt: %.06f", __FUNCTION__, dt);
-    _cubeNode->setAngle(_cubeNode->getAngle() + 10 * dt);
+    //    _cubeNode->setAngle(_cubeNode->getAngle() + 10 * dt);
+    auto euler = _cubeNode->getEulerAngles();
+    euler.y += dt * 1000;
+    _cubeNode->setEulerAngles(euler);
 
     _director->tick(dt);
 }

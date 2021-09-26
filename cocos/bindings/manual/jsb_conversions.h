@@ -804,6 +804,16 @@ struct HolderType<std::function<R(ARGS...)>, true> {
     inline type                value() { return data; }
 };
 
+template <typename T>
+struct HolderType<std::optional<T>, true> {
+    using NonconstT  = typename std::remove_const<T>::type;
+    using type       = std::optional<NonconstT>;
+    using local_type = NonconstT;
+    local_type                 data;
+    std::remove_const_t<type> *ptr = nullptr;
+    inline type                value() { return std::make_optional<T>(data); }
+};
+
 ///////////////////////////////////convertion//////////////////////////////////////////////////////////
 
 ////////////////// optional
@@ -1467,6 +1477,25 @@ bool sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *
     }
     return ret;
 }
+
+////////////// std::unorderd_map
+template <typename V, typename H, typename P, typename A>
+bool sevalue_to_native(const se::Value &from, std::unordered_map<std::string, V, H,P,A > *to, se::Object *ctx) { //NOLINT
+    se::Object * jsmap = from.toObject();
+    std::vector<std::string> allKeys;
+    jsmap->getAllKeys(&allKeys);
+    bool ret = true;
+    se::Value property;
+    for(auto &it : allKeys) {
+        if(jsmap->getProperty(it.c_str(), &property)) {
+            auto &output = (*to)[it];
+            ret &= sevalue_to_native(property, &output, jsmap);
+        }
+    }
+    return true;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////
 //////////////////  nativevalue_to_se   ///////////////////////////

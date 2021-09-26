@@ -420,6 +420,7 @@ bool js_register_cc_SceneAsset(se::Object *obj); // NOLINT
 bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::SceneAsset);
+SE_DECLARE_FUNC(js_assets_SceneAsset_getScene);
 SE_DECLARE_FUNC(js_assets_SceneAsset_SceneAsset);
 
 extern se::Object *__jsb_cc_TextAsset_proto; // NOLINT
@@ -471,6 +472,7 @@ JSB_REGISTER_OBJECT_TYPE(cc::TextureCube);
 SE_DECLARE_FUNC(js_assets_TextureCube_getGfxTextureCreateInfo);
 SE_DECLARE_FUNC(js_assets_TextureCube_getImage);
 SE_DECLARE_FUNC(js_assets_TextureCube_getMipmaps);
+SE_DECLARE_FUNC(js_assets_TextureCube_initialize);
 SE_DECLARE_FUNC(js_assets_TextureCube_releaseTexture);
 SE_DECLARE_FUNC(js_assets_TextureCube_reset);
 SE_DECLARE_FUNC(js_assets_TextureCube_setImage);

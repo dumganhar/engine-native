@@ -7144,6 +7144,25 @@ bool js_register_assets_RenderTexture(se::Object* obj) // NOLINT(readability-ide
 se::Object* __jsb_cc_SceneAsset_proto = nullptr; // NOLINT
 se::Class* __jsb_cc_SceneAsset_class = nullptr;  // NOLINT
 
+static bool js_assets_SceneAsset_getScene(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::SceneAsset>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_SceneAsset_getScene : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        cc::Scene* result = cobj->getScene();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_SceneAsset_getScene : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_assets_SceneAsset_getScene)
+
 SE_DECLARE_FINALIZE_FUNC(js_cc_SceneAsset_finalize)
 
 static bool js_assets_SceneAsset_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor.c
@@ -7174,6 +7193,7 @@ bool js_register_assets_SceneAsset(se::Object* obj) // NOLINT(readability-identi
 {
     auto* cls = se::Class::create("SceneAsset", obj, __jsb_cc_Asset_proto, _SE(js_assets_SceneAsset_constructor));
 
+    cls->defineFunction("getScene", _SE(js_assets_SceneAsset_getScene));
     cls->defineFinalizeFunction(_SE(js_cc_SceneAsset_finalize));
     cls->install();
     JSBClassType::registerClass<cc::SceneAsset>(cls);
@@ -8109,6 +8129,21 @@ static bool js_assets_TextureCube_getMipmaps(se::State& s) // NOLINT(readability
 }
 SE_BIND_FUNC(js_assets_TextureCube_getMipmaps)
 
+static bool js_assets_TextureCube_initialize(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::TextureCube>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_TextureCube_initialize : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->initialize();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_assets_TextureCube_initialize)
+
 static bool js_assets_TextureCube_releaseTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::TextureCube>(s);
@@ -8234,6 +8269,7 @@ bool js_register_assets_TextureCube(se::Object* obj) // NOLINT(readability-ident
     cls->defineFunction("getGfxTextureCreateInfo", _SE(js_assets_TextureCube_getGfxTextureCreateInfo));
     cls->defineFunction("getImage", _SE(js_assets_TextureCube_getImage));
     cls->defineFunction("getMipmaps", _SE(js_assets_TextureCube_getMipmaps));
+    cls->defineFunction("initialize", _SE(js_assets_TextureCube_initialize));
     cls->defineFunction("releaseTexture", _SE(js_assets_TextureCube_releaseTexture));
     cls->defineFunction("reset", _SE(js_assets_TextureCube_reset));
     cls->defineFunction("setImage", _SE(js_assets_TextureCube_setImage));

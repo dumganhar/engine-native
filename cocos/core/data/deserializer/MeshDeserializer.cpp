@@ -30,7 +30,7 @@ namespace cc {
 
 namespace {
 
-//TODO: Copied from EffectAssetDeserializer.cpp, need to make it as a common functions
+//TODO: Copied from EffectAssetDeserializer.cpp, need to make it as common functions
 template <typename T>
 using DeserializeArrayElementCallback = std::function<void(const rapidjson::Value &, T &)>;
 

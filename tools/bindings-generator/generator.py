@@ -1341,8 +1341,8 @@ class NativeClass(object):
                     m.is_constructor = True
                     self.methods['constructor'] = m
             return True
-        # else:
-            # logger.error("unknown cursor: %s - %s" % (cursor.kind, cursor.displayname))
+       # else:
+       #     logger.error("unknown cursor: %s - %s" % (cursor.kind, cursor.displayname))
         return False
 
 
@@ -1405,7 +1405,7 @@ class Generator(object):
         self.outdir = opts['outdir']
         self.search_path = opts['search_path']
         self.prefix = opts['prefix']
-        self.headers = opts['headers'].split(' ')
+        self.headers = opts['headers']
         self.classes = opts['classes']
         self.classes_need_extend = opts['classes_need_extend']
         self.classes_have_no_parents = opts['classes_have_no_parents'].split(
@@ -1789,6 +1789,8 @@ class Generator(object):
     def _parse_headers(self):
         for header in self.headers:
             logger.info(">>> parse_header: " + header)
+            if not os.path.exists(header):
+                logger.error("[error] header %s not found" % header)
             tu = self.index.parse(header, self.clang_args)
             if len(tu.diagnostics) > 0:
                 self._pretty_print(tu.diagnostics)
@@ -2048,7 +2050,7 @@ def main():
             logger.info(".... .... Processing section " + s)
             gen_opts = {
                 'prefix': config.get(s, 'prefix'),
-                'headers':    (config.get(s, 'headers', raw=False, vars=dict(userconfig.items('DEFAULT')))),
+                'headers':    re.split('[\s,]+', re.sub('[#;].*', '', (config.get(s, 'headers', raw=False, vars=dict(userconfig.items('DEFAULT')))))),
                 'replace_headers': config.get(s, 'replace_headers') if config.has_option(s, 'replace_headers') else None,
                 'classes': re.split('[\s,]+', re.sub('[#;].*', '', config.get(s, 'classes'))),
                 'classes_need_extend': config.get(s, 'classes_need_extend').split(' ') if config.has_option(s, 'classes_need_extend') else [],

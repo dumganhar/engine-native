@@ -26,7 +26,7 @@
 #include "jsb_scene_manual.h"
 #include "bindings/auto/jsb_scene_auto.h"
 #include "scene/Model.h"
-#include "scene/Node.h"
+#include "core/scene-graph/Node.h"
 
 #ifndef JSB_ALLOC
     #define JSB_ALLOC(kls, ...) new (std::nothrow) kls(__VA_ARGS__)
@@ -36,27 +36,6 @@
     #define JSB_FREE(ptr) delete ptr
 #endif
 
-extern bool register_all_scene_ext_manual(se::Object* obj); //NOLINT
-
-static bool js_scene_Pass_setRootBufferAndBlock(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::scene::Pass>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Pass_setRootBlock : Invalid Native Object");
-    const auto&    args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
-    if (argc == 2) {
-        HolderType<cc::gfx::Buffer*, false> arg0 = {};
-        uint8_t*                            rootBlock{nullptr};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        args[1].toObject()->getArrayBufferData(&rootBlock, nullptr);
-        cobj->setRootBufferAndBlock(arg0.value(), rootBlock);
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_Pass_setRootBufferAndBlock) // NOLINT(readability-identifier-naming)
 
 static bool js_scene_RenderScene_updateBatches(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -97,7 +76,7 @@ static bool js_scene_Model_setInstancedAttrBlock(se::State& s) // NOLINT(readabi
         if (!dataObj->isArray()) {
             return false;
         }
-        std::vector<uint8_t*> viewsData;
+        std::vector<cc::TypedArray> viewsData;
         uint32_t              length = 0;
         dataObj->getArrayLength(&length);
         viewsData.resize(length);
@@ -105,8 +84,11 @@ static bool js_scene_Model_setInstancedAttrBlock(se::State& s) // NOLINT(readabi
         for (uint32_t i = 0; i < length; i++) {
             dataObj->getArrayElement(i, &value);
             uint8_t* viewBuff{nullptr};
-            value.toObject()->getTypedArrayData(&viewBuff, nullptr);
-            viewsData[i] = viewBuff;
+            size_t viewBuffLen;
+            value.toObject()->getTypedArrayData(&viewBuff, &viewBuffLen);
+            cc::ArrayBuffer::Ptr tmp = std::make_shared<cc::ArrayBuffer>(viewBuffLen);
+            tmp->reset(viewBuff, static_cast<uint32_t>(viewBuffLen));
+            viewsData[i] = cc::Uint8Array();
         }
 
         cc::scene::InstancedAttributeBlock attrBlock;
@@ -127,59 +109,6 @@ static bool js_scene_Model_setInstancedAttrBlock(se::State& s) // NOLINT(readabi
 }
 SE_BIND_FUNC(js_scene_Model_setInstancedAttrBlock) // NOLINT(readability-identifier-naming)
 
-static bool js_scene_SubModel_setSubMeshBuffers(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = static_cast<cc::scene::SubModel*>(s.nativeThisObject());
-    SE_PRECONDITION2(cobj, false, "js_scene_SubModel_setSubMeshBuffers : Invalid Native Object");
-    const auto& args = s.args();
-    size_t      argc = args.size();
-
-    if (argc == 1) {
-        if (args[0].isObject()) {
-            se::Object* dataObj = args[0].toObject();
-            if (!dataObj->isArray()) {
-                return false;
-            }
-            uint32_t length = 0;
-            dataObj->getArrayLength(&length);
-            std::vector<cc::IFlatBuffer> flatBuffers;
-            flatBuffers.resize(length);
-            se::Value value;
-            for (uint32_t i = 0; i < length; ++i) {
-                if (dataObj->getArrayElement(i, &value)) {
-                    if (value.isObject()) {
-                        cc::IFlatBuffer currBuffer;
-                        se::Value             bufferVal;
-                        se::Object*           valObj = value.toObject();
-                        valObj->getProperty("buffer", &bufferVal);
-                        // data
-                        CC_UNUSED size_t bufferLength = 0;
-                        uint8_t*         address      = nullptr;
-                        bufferVal.toObject()->getTypedArrayData(&address, &bufferLength);
-                        currBuffer.data = address;
-                        currBuffer.size = bufferLength;
-                        // stride
-                        se::Value strideVal;
-                        valObj->getProperty("stride", &strideVal);
-                        currBuffer.stride = strideVal.toUint32();
-                        // count
-                        se::Value countVal;
-                        valObj->getProperty("count", &countVal);
-                        currBuffer.count = countVal.toUint32();
-                        flatBuffers[i]   = currBuffer;
-                    }
-                }
-            }
-            cobj->setSubMeshBuffers(flatBuffers);
-            return true;
-        }
-    }
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
-}
-SE_BIND_FUNC(js_scene_SubModel_setSubMeshBuffers) // NOLINT(readability-identifier-naming)
-
 bool register_all_scene_manual(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     // Get the ns
@@ -191,13 +120,7 @@ bool register_all_scene_manual(se::Object* obj) // NOLINT(readability-identifier
     }
 
     __jsb_cc_scene_Model_proto->defineFunction("setInstancedAttrBlock", _SE(js_scene_Model_setInstancedAttrBlock));
-
-    __jsb_cc_scene_SubModel_proto->defineFunction("setSubMeshBuffers", _SE(js_scene_SubModel_setSubMeshBuffers));
-    __jsb_cc_scene_Pass_proto->defineFunction("setRootBufferAndBlock", _SE(js_scene_Pass_setRootBufferAndBlock));
     __jsb_cc_scene_RenderScene_proto->defineFunction("updateBatches", _SE(js_scene_RenderScene_updateBatches));
-
-    // Impl MQ for DrawBatch2D
-    register_all_scene_ext_manual(obj);
 
     return true;
 }

@@ -4,3 +4,5 @@ shader-sources/glsl1.cpp
 shader-sources/glsl3.cpp
 shader-sources/glsl4.cpp
 shader-sources/*.js
+*.js
+Effects.cpp*

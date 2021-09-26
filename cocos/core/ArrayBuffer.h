@@ -35,25 +35,37 @@ public:
     using Ptr = std::shared_ptr<ArrayBuffer>;
 
     explicit ArrayBuffer(uint32_t length) : _byteLength{length} {
-        _data = static_cast<uint8_t*>(malloc(length));
+        _data = static_cast<uint8_t *>(malloc(length));
     }
-    
+
+    ArrayBuffer() = default;
+
     ~ArrayBuffer() {
         free(_data);
     }
-    
+
     inline uint32_t byteLength() const { return _byteLength; }
-    
+
     // Just use it to copy data. Use TypedArray to get/set data.
-    const uint8_t * getData() const { return _data; }
-    
+    const uint8_t *getData() const { return _data; }
+
+    inline void reset(const uint8_t *data, uint32_t length) {
+        free(_data);
+        _data       = static_cast<uint8_t *>(malloc(length));
+        _byteLength = length;
+        if (data) {
+            std::copy(data, data + length, _data);
+        }
+    }
+
 private:
     uint8_t *_data{nullptr};
     uint32_t _byteLength{0};
-    
-    template<class T> friend class TypedArrayTemp;
+
+    template <class T>
+    friend class TypedArrayTemp;
     friend class DataView;
-    
+
     CC_DISALLOW_COPY_MOVE_ASSIGN(ArrayBuffer);
 };
 

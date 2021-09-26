@@ -617,26 +617,6 @@ static bool js_geometry_Frustum_create_static(se::State& s) // NOLINT(readabilit
 }
 SE_BIND_FUNC(js_geometry_Frustum_create_static)
 
-static bool js_geometry_Frustum_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::geometry::Frustum, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Frustum_clone_static : Error processing arguments");
-        cc::geometry::Frustum* result = cc::geometry::Frustum::clone(arg0.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Frustum_clone_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Frustum_clone_static)
-
 static bool js_geometry_Frustum_copy_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
@@ -658,6 +638,26 @@ static bool js_geometry_Frustum_copy_static(se::State& s) // NOLINT(readability-
     return false;
 }
 SE_BIND_FUNC(js_geometry_Frustum_copy_static)
+
+static bool js_geometry_Frustum_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::geometry::Frustum, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Frustum_clone_static : Error processing arguments");
+        cc::geometry::Frustum* result = cc::geometry::Frustum::clone(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Frustum_clone_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Frustum_clone_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_geometry_Frustum_finalize)
 
@@ -693,8 +693,8 @@ bool js_register_geometry_Frustum(se::Object* obj) // NOLINT(readability-identif
     cls->defineFunction("transform", _SE(js_geometry_Frustum_transform));
     cls->defineStaticFunction("createOrtho", _SE(js_geometry_Frustum_createOrtho_static));
     cls->defineStaticFunction("create", _SE(js_geometry_Frustum_create_static));
-    cls->defineStaticFunction("clone", _SE(js_geometry_Frustum_clone_static));
     cls->defineStaticFunction("copy", _SE(js_geometry_Frustum_copy_static));
+    cls->defineStaticFunction("clone", _SE(js_geometry_Frustum_clone_static));
     cls->defineFinalizeFunction(_SE(js_cc_geometry_Frustum_finalize));
     cls->install();
     JSBClassType::registerClass<cc::geometry::Frustum>(cls);
@@ -726,102 +726,6 @@ static bool js_geometry_Line_length(se::State& s) // NOLINT(readability-identifi
     return false;
 }
 SE_BIND_FUNC(js_geometry_Line_length)
-
-static bool js_geometry_Line_create_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 6) {
-        HolderType<float, false> arg0 = {};
-        HolderType<float, false> arg1 = {};
-        HolderType<float, false> arg2 = {};
-        HolderType<float, false> arg3 = {};
-        HolderType<float, false> arg4 = {};
-        HolderType<float, false> arg5 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        ok &= sevalue_to_native(args[3], &arg3, nullptr);
-        ok &= sevalue_to_native(args[4], &arg4, nullptr);
-        ok &= sevalue_to_native(args[5], &arg5, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Line_create_static : Error processing arguments");
-        cc::geometry::Line* result = cc::geometry::Line::create(arg0.value(), arg1.value(), arg2.value(), arg3.value(), arg4.value(), arg5.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Line_create_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Line_create_static)
-
-static bool js_geometry_Line_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::geometry::Line, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Line_clone_static : Error processing arguments");
-        cc::geometry::Line* result = cc::geometry::Line::clone(arg0.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Line_clone_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Line_clone_static)
-
-static bool js_geometry_Line_copy_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 2) {
-        HolderType<cc::geometry::Line*, false> arg0 = {};
-        HolderType<cc::geometry::Line, true> arg1 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Line_copy_static : Error processing arguments");
-        cc::geometry::Line* result = cc::geometry::Line::copy(arg0.value(), arg1.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Line_copy_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Line_copy_static)
-
-static bool js_geometry_Line_fromPoints_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 3) {
-        HolderType<cc::geometry::Line*, false> arg0 = {};
-        HolderType<cc::Vec3, true> arg1 = {};
-        HolderType<cc::Vec3, true> arg2 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Line_fromPoints_static : Error processing arguments");
-        cc::geometry::Line* result = cc::geometry::Line::fromPoints(arg0.value(), arg1.value(), arg2.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Line_fromPoints_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Line_fromPoints_static)
 
 static bool js_geometry_Line_set_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -855,6 +759,36 @@ static bool js_geometry_Line_set_static(se::State& s) // NOLINT(readability-iden
 }
 SE_BIND_FUNC(js_geometry_Line_set_static)
 
+static bool js_geometry_Line_create_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 6) {
+        HolderType<float, false> arg0 = {};
+        HolderType<float, false> arg1 = {};
+        HolderType<float, false> arg2 = {};
+        HolderType<float, false> arg3 = {};
+        HolderType<float, false> arg4 = {};
+        HolderType<float, false> arg5 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        ok &= sevalue_to_native(args[2], &arg2, nullptr);
+        ok &= sevalue_to_native(args[3], &arg3, nullptr);
+        ok &= sevalue_to_native(args[4], &arg4, nullptr);
+        ok &= sevalue_to_native(args[5], &arg5, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Line_create_static : Error processing arguments");
+        cc::geometry::Line* result = cc::geometry::Line::create(arg0.value(), arg1.value(), arg2.value(), arg3.value(), arg4.value(), arg5.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Line_create_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Line_create_static)
+
 static bool js_geometry_Line_len_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
@@ -874,6 +808,72 @@ static bool js_geometry_Line_len_static(se::State& s) // NOLINT(readability-iden
     return false;
 }
 SE_BIND_FUNC(js_geometry_Line_len_static)
+
+static bool js_geometry_Line_copy_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        HolderType<cc::geometry::Line*, false> arg0 = {};
+        HolderType<cc::geometry::Line, true> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Line_copy_static : Error processing arguments");
+        cc::geometry::Line* result = cc::geometry::Line::copy(arg0.value(), arg1.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Line_copy_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Line_copy_static)
+
+static bool js_geometry_Line_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::geometry::Line, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Line_clone_static : Error processing arguments");
+        cc::geometry::Line* result = cc::geometry::Line::clone(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Line_clone_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Line_clone_static)
+
+static bool js_geometry_Line_fromPoints_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 3) {
+        HolderType<cc::geometry::Line*, false> arg0 = {};
+        HolderType<cc::Vec3, true> arg1 = {};
+        HolderType<cc::Vec3, true> arg2 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        ok &= sevalue_to_native(args[2], &arg2, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Line_fromPoints_static : Error processing arguments");
+        cc::geometry::Line* result = cc::geometry::Line::fromPoints(arg0.value(), arg1.value(), arg2.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Line_fromPoints_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Line_fromPoints_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_geometry_Line_finalize)
 
@@ -1037,12 +1037,12 @@ bool js_register_geometry_Line(se::Object* obj) // NOLINT(readability-identifier
     auto* cls = se::Class::create("Line", obj, __jsb_cc_geometry_ShapeBase_proto, _SE(js_geometry_Line_constructor));
 
     cls->defineFunction("length", _SE(js_geometry_Line_length));
-    cls->defineStaticFunction("create", _SE(js_geometry_Line_create_static));
-    cls->defineStaticFunction("clone", _SE(js_geometry_Line_clone_static));
-    cls->defineStaticFunction("copy", _SE(js_geometry_Line_copy_static));
-    cls->defineStaticFunction("fromPoints", _SE(js_geometry_Line_fromPoints_static));
     cls->defineStaticFunction("set", _SE(js_geometry_Line_set_static));
+    cls->defineStaticFunction("create", _SE(js_geometry_Line_create_static));
     cls->defineStaticFunction("len", _SE(js_geometry_Line_len_static));
+    cls->defineStaticFunction("copy", _SE(js_geometry_Line_copy_static));
+    cls->defineStaticFunction("clone", _SE(js_geometry_Line_clone_static));
+    cls->defineStaticFunction("fromPoints", _SE(js_geometry_Line_fromPoints_static));
     cls->defineFinalizeFunction(_SE(js_cc_geometry_Line_finalize));
     cls->install();
     JSBClassType::registerClass<cc::geometry::Line>(cls);
@@ -1163,26 +1163,6 @@ static bool js_geometry_Ray_create_static(se::State& s) // NOLINT(readability-id
 }
 SE_BIND_FUNC(js_geometry_Ray_create_static)
 
-static bool js_geometry_Ray_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::geometry::Ray, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Ray_clone_static : Error processing arguments");
-        cc::geometry::Ray* result = cc::geometry::Ray::clone(arg0.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Ray_clone_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Ray_clone_static)
-
 static bool js_geometry_Ray_copy_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
@@ -1204,30 +1184,6 @@ static bool js_geometry_Ray_copy_static(se::State& s) // NOLINT(readability-iden
     return false;
 }
 SE_BIND_FUNC(js_geometry_Ray_copy_static)
-
-static bool js_geometry_Ray_fromPoints_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 3) {
-        HolderType<cc::geometry::Ray*, false> arg0 = {};
-        HolderType<cc::Vec3, true> arg1 = {};
-        HolderType<cc::Vec3, true> arg2 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Ray_fromPoints_static : Error processing arguments");
-        cc::geometry::Ray* result = cc::geometry::Ray::fromPoints(arg0.value(), arg1.value(), arg2.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Ray_fromPoints_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Ray_fromPoints_static)
 
 static bool js_geometry_Ray_set_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1260,6 +1216,50 @@ static bool js_geometry_Ray_set_static(se::State& s) // NOLINT(readability-ident
     return false;
 }
 SE_BIND_FUNC(js_geometry_Ray_set_static)
+
+static bool js_geometry_Ray_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::geometry::Ray, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Ray_clone_static : Error processing arguments");
+        cc::geometry::Ray* result = cc::geometry::Ray::clone(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Ray_clone_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Ray_clone_static)
+
+static bool js_geometry_Ray_fromPoints_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 3) {
+        HolderType<cc::geometry::Ray*, false> arg0 = {};
+        HolderType<cc::Vec3, true> arg1 = {};
+        HolderType<cc::Vec3, true> arg2 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        ok &= sevalue_to_native(args[2], &arg2, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Ray_fromPoints_static : Error processing arguments");
+        cc::geometry::Ray* result = cc::geometry::Ray::fromPoints(arg0.value(), arg1.value(), arg2.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Ray_fromPoints_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Ray_fromPoints_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_geometry_Ray_finalize)
 
@@ -1423,10 +1423,10 @@ bool js_register_geometry_Ray(se::Object* obj) // NOLINT(readability-identifier-
     auto* cls = se::Class::create("Ray", obj, __jsb_cc_geometry_ShapeBase_proto, _SE(js_geometry_Ray_constructor));
 
     cls->defineStaticFunction("create", _SE(js_geometry_Ray_create_static));
-    cls->defineStaticFunction("clone", _SE(js_geometry_Ray_clone_static));
     cls->defineStaticFunction("copy", _SE(js_geometry_Ray_copy_static));
-    cls->defineStaticFunction("fromPoints", _SE(js_geometry_Ray_fromPoints_static));
     cls->defineStaticFunction("set", _SE(js_geometry_Ray_set_static));
+    cls->defineStaticFunction("clone", _SE(js_geometry_Ray_clone_static));
+    cls->defineStaticFunction("fromPoints", _SE(js_geometry_Ray_fromPoints_static));
     cls->defineFinalizeFunction(_SE(js_cc_geometry_Ray_finalize));
     cls->install();
     JSBClassType::registerClass<cc::geometry::Ray>(cls);
@@ -1769,98 +1769,6 @@ static bool js_geometry_Sphere_translateAndRotate(se::State& s) // NOLINT(readab
 }
 SE_BIND_FUNC(js_geometry_Sphere_translateAndRotate)
 
-static bool js_geometry_Sphere_create_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 4) {
-        HolderType<float, false> arg0 = {};
-        HolderType<float, false> arg1 = {};
-        HolderType<float, false> arg2 = {};
-        HolderType<float, false> arg3 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        ok &= sevalue_to_native(args[3], &arg3, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_create_static : Error processing arguments");
-        cc::geometry::Sphere* result = cc::geometry::Sphere::create(arg0.value(), arg1.value(), arg2.value(), arg3.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_create_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Sphere_create_static)
-
-static bool js_geometry_Sphere_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::geometry::Sphere, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_clone_static : Error processing arguments");
-        cc::geometry::Sphere* result = cc::geometry::Sphere::clone(arg0.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_clone_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Sphere_clone_static)
-
-static bool js_geometry_Sphere_copy_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 2) {
-        HolderType<cc::geometry::Sphere*, false> arg0 = {};
-        HolderType<cc::geometry::Sphere, true> arg1 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_copy_static : Error processing arguments");
-        cc::geometry::Sphere* result = cc::geometry::Sphere::copy(arg0.value(), arg1.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_copy_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Sphere_copy_static)
-
-static bool js_geometry_Sphere_fromPoints_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 3) {
-        HolderType<cc::geometry::Sphere*, false> arg0 = {};
-        HolderType<cc::Vec3, true> arg1 = {};
-        HolderType<cc::Vec3, true> arg2 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_fromPoints_static : Error processing arguments");
-        cc::geometry::Sphere* result = cc::geometry::Sphere::fromPoints(arg0.value(), arg1.value(), arg2.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_fromPoints_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Sphere_fromPoints_static)
-
 static bool js_geometry_Sphere_set_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
@@ -1889,29 +1797,31 @@ static bool js_geometry_Sphere_set_static(se::State& s) // NOLINT(readability-id
 }
 SE_BIND_FUNC(js_geometry_Sphere_set_static)
 
-static bool js_geometry_Sphere_mergePoint_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_geometry_Sphere_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
-    if (argc == 3) {
-        HolderType<cc::geometry::Sphere*, false> arg0 = {};
-        HolderType<cc::geometry::Sphere, true> arg1 = {};
-        HolderType<cc::Vec3, true> arg2 = {};
+    if (argc == 4) {
+        HolderType<float, false> arg0 = {};
+        HolderType<float, false> arg1 = {};
+        HolderType<float, false> arg2 = {};
+        HolderType<float, false> arg3 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
         ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_mergePoint_static : Error processing arguments");
-        cc::geometry::Sphere* result = cc::geometry::Sphere::mergePoint(arg0.value(), arg1.value(), arg2.value());
+        ok &= sevalue_to_native(args[3], &arg3, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_create_static : Error processing arguments");
+        cc::geometry::Sphere* result = cc::geometry::Sphere::create(arg0.value(), arg1.value(), arg2.value(), arg3.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_mergePoint_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_create_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_mergePoint_static)
+SE_BIND_FUNC(js_geometry_Sphere_create_static)
 
 static bool js_geometry_Sphere_mergeAABB_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1936,6 +1846,96 @@ static bool js_geometry_Sphere_mergeAABB_static(se::State& s) // NOLINT(readabil
     return false;
 }
 SE_BIND_FUNC(js_geometry_Sphere_mergeAABB_static)
+
+static bool js_geometry_Sphere_copy_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        HolderType<cc::geometry::Sphere*, false> arg0 = {};
+        HolderType<cc::geometry::Sphere, true> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_copy_static : Error processing arguments");
+        cc::geometry::Sphere* result = cc::geometry::Sphere::copy(arg0.value(), arg1.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_copy_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Sphere_copy_static)
+
+static bool js_geometry_Sphere_mergePoint_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 3) {
+        HolderType<cc::geometry::Sphere*, false> arg0 = {};
+        HolderType<cc::geometry::Sphere, true> arg1 = {};
+        HolderType<cc::Vec3, true> arg2 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        ok &= sevalue_to_native(args[2], &arg2, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_mergePoint_static : Error processing arguments");
+        cc::geometry::Sphere* result = cc::geometry::Sphere::mergePoint(arg0.value(), arg1.value(), arg2.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_mergePoint_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Sphere_mergePoint_static)
+
+static bool js_geometry_Sphere_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::geometry::Sphere, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_clone_static : Error processing arguments");
+        cc::geometry::Sphere* result = cc::geometry::Sphere::clone(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_clone_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Sphere_clone_static)
+
+static bool js_geometry_Sphere_fromPoints_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 3) {
+        HolderType<cc::geometry::Sphere*, false> arg0 = {};
+        HolderType<cc::Vec3, true> arg1 = {};
+        HolderType<cc::Vec3, true> arg2 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        ok &= sevalue_to_native(args[2], &arg2, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_fromPoints_static : Error processing arguments");
+        cc::geometry::Sphere* result = cc::geometry::Sphere::fromPoints(arg0.value(), arg1.value(), arg2.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Sphere_fromPoints_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Sphere_fromPoints_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_geometry_Sphere_finalize)
 
@@ -1982,13 +1982,13 @@ bool js_register_geometry_Sphere(se::Object* obj) // NOLINT(readability-identifi
     cls->defineFunction("spherePlane", _SE(js_geometry_Sphere_spherePlane));
     cls->defineFunction("transform", _SE(js_geometry_Sphere_transform));
     cls->defineFunction("translateAndRotate", _SE(js_geometry_Sphere_translateAndRotate));
-    cls->defineStaticFunction("create", _SE(js_geometry_Sphere_create_static));
-    cls->defineStaticFunction("clone", _SE(js_geometry_Sphere_clone_static));
-    cls->defineStaticFunction("copy", _SE(js_geometry_Sphere_copy_static));
-    cls->defineStaticFunction("fromPoints", _SE(js_geometry_Sphere_fromPoints_static));
     cls->defineStaticFunction("set", _SE(js_geometry_Sphere_set_static));
-    cls->defineStaticFunction("mergePoint", _SE(js_geometry_Sphere_mergePoint_static));
+    cls->defineStaticFunction("create", _SE(js_geometry_Sphere_create_static));
     cls->defineStaticFunction("mergeAABB", _SE(js_geometry_Sphere_mergeAABB_static));
+    cls->defineStaticFunction("copy", _SE(js_geometry_Sphere_copy_static));
+    cls->defineStaticFunction("mergePoint", _SE(js_geometry_Sphere_mergePoint_static));
+    cls->defineStaticFunction("clone", _SE(js_geometry_Sphere_clone_static));
+    cls->defineStaticFunction("fromPoints", _SE(js_geometry_Sphere_fromPoints_static));
     cls->defineFinalizeFunction(_SE(js_cc_geometry_Sphere_finalize));
     cls->install();
     JSBClassType::registerClass<cc::geometry::Sphere>(cls);
@@ -2181,26 +2181,6 @@ static bool js_geometry_Triangle_create_static(se::State& s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_geometry_Triangle_create_static)
 
-static bool js_geometry_Triangle_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::geometry::Triangle, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Triangle_clone_static : Error processing arguments");
-        cc::geometry::Triangle* result = cc::geometry::Triangle::clone(arg0.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Triangle_clone_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Triangle_clone_static)
-
 static bool js_geometry_Triangle_copy_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
@@ -2222,32 +2202,6 @@ static bool js_geometry_Triangle_copy_static(se::State& s) // NOLINT(readability
     return false;
 }
 SE_BIND_FUNC(js_geometry_Triangle_copy_static)
-
-static bool js_geometry_Triangle_fromPoints_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 4) {
-        HolderType<cc::geometry::Triangle*, false> arg0 = {};
-        HolderType<cc::Vec3, true> arg1 = {};
-        HolderType<cc::Vec3, true> arg2 = {};
-        HolderType<cc::Vec3, true> arg3 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        ok &= sevalue_to_native(args[2], &arg2, nullptr);
-        ok &= sevalue_to_native(args[3], &arg3, nullptr);
-        SE_PRECONDITION2(ok, false, "js_geometry_Triangle_fromPoints_static : Error processing arguments");
-        cc::geometry::Triangle* result = cc::geometry::Triangle::fromPoints(arg0.value(), arg1.value(), arg2.value(), arg3.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_geometry_Triangle_fromPoints_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
-    return false;
-}
-SE_BIND_FUNC(js_geometry_Triangle_fromPoints_static)
 
 static bool js_geometry_Triangle_set_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2286,6 +2240,52 @@ static bool js_geometry_Triangle_set_static(se::State& s) // NOLINT(readability-
     return false;
 }
 SE_BIND_FUNC(js_geometry_Triangle_set_static)
+
+static bool js_geometry_Triangle_clone_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::geometry::Triangle, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Triangle_clone_static : Error processing arguments");
+        cc::geometry::Triangle* result = cc::geometry::Triangle::clone(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Triangle_clone_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Triangle_clone_static)
+
+static bool js_geometry_Triangle_fromPoints_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 4) {
+        HolderType<cc::geometry::Triangle*, false> arg0 = {};
+        HolderType<cc::Vec3, true> arg1 = {};
+        HolderType<cc::Vec3, true> arg2 = {};
+        HolderType<cc::Vec3, true> arg3 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        ok &= sevalue_to_native(args[2], &arg2, nullptr);
+        ok &= sevalue_to_native(args[3], &arg3, nullptr);
+        SE_PRECONDITION2(ok, false, "js_geometry_Triangle_fromPoints_static : Error processing arguments");
+        cc::geometry::Triangle* result = cc::geometry::Triangle::fromPoints(arg0.value(), arg1.value(), arg2.value(), arg3.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_geometry_Triangle_fromPoints_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
+    return false;
+}
+SE_BIND_FUNC(js_geometry_Triangle_fromPoints_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_geometry_Triangle_finalize)
 
@@ -2545,10 +2545,10 @@ bool js_register_geometry_Triangle(se::Object* obj) // NOLINT(readability-identi
     auto* cls = se::Class::create("Triangle", obj, __jsb_cc_geometry_ShapeBase_proto, _SE(js_geometry_Triangle_constructor));
 
     cls->defineStaticFunction("create", _SE(js_geometry_Triangle_create_static));
-    cls->defineStaticFunction("clone", _SE(js_geometry_Triangle_clone_static));
     cls->defineStaticFunction("copy", _SE(js_geometry_Triangle_copy_static));
-    cls->defineStaticFunction("fromPoints", _SE(js_geometry_Triangle_fromPoints_static));
     cls->defineStaticFunction("set", _SE(js_geometry_Triangle_set_static));
+    cls->defineStaticFunction("clone", _SE(js_geometry_Triangle_clone_static));
+    cls->defineStaticFunction("fromPoints", _SE(js_geometry_Triangle_fromPoints_static));
     cls->defineFinalizeFunction(_SE(js_cc_geometry_Triangle_finalize));
     cls->install();
     JSBClassType::registerClass<cc::geometry::Triangle>(cls);
@@ -2572,14 +2572,14 @@ bool register_all_geometry(se::Object* obj)    // NOLINT
     se::Object* ns = nsVal.toObject();
 
     js_register_geometry_ShapeBase(ns);
+    js_register_geometry_Triangle(ns);
+    js_register_geometry_Frustum(ns);
     js_register_geometry_AABB(ns);
+    js_register_geometry_Sphere(ns);
     js_register_geometry_Capsule(ns);
     js_register_geometry_Plane(ns);
-    js_register_geometry_Frustum(ns);
     js_register_geometry_Line(ns);
     js_register_geometry_Ray(ns);
-    js_register_geometry_Sphere(ns);
-    js_register_geometry_Triangle(ns);
     return true;
 }
 

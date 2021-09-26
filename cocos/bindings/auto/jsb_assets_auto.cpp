@@ -6399,25 +6399,6 @@ static bool js_assets_Material_getHash(se::State& s) // NOLINT(readability-ident
 }
 SE_BIND_FUNC(js_assets_Material_getHash)
 
-static bool js_assets_Material_getOwner(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::Material>(s);
-    SE_PRECONDITION2(cobj, false, "js_assets_Material_getOwner : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        cc::RenderableComponent* result = cobj->getOwner();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_assets_Material_getOwner : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_assets_Material_getOwner)
-
 static bool js_assets_Material_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Material>(s);
@@ -6698,7 +6679,6 @@ bool js_register_assets_Material(se::Object* obj) // NOLINT(readability-identifi
     cls->defineFunction("getEffectAsset", _SE(js_assets_Material_getEffectAsset));
     cls->defineFunction("getEffectName", _SE(js_assets_Material_getEffectName));
     cls->defineFunction("getHash", _SE(js_assets_Material_getHash));
-    cls->defineFunction("getOwner", _SE(js_assets_Material_getOwner));
     cls->defineFunction("getParent", _SE(js_assets_Material_getParent));
     cls->defineFunction("getPasses", _SE(js_assets_Material_getPasses));
     cls->defineFunction("getProperty", _SE(js_assets_Material_getProperty));

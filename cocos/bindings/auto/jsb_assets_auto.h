@@ -366,7 +366,6 @@ SE_DECLARE_FUNC(js_assets_Material_copy);
 SE_DECLARE_FUNC(js_assets_Material_getEffectAsset);
 SE_DECLARE_FUNC(js_assets_Material_getEffectName);
 SE_DECLARE_FUNC(js_assets_Material_getHash);
-SE_DECLARE_FUNC(js_assets_Material_getOwner);
 SE_DECLARE_FUNC(js_assets_Material_getParent);
 SE_DECLARE_FUNC(js_assets_Material_getPasses);
 SE_DECLARE_FUNC(js_assets_Material_getProperty);

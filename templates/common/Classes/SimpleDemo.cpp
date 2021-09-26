@@ -241,7 +241,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
     material->initialize({.effectName = "standard",
                           .defines    = MacroRecord{
-                              //                              {"USE_ALBEDO_MAP", true},
+                              {"USE_ALBEDO_MAP", true},
                           }});
 
     //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
@@ -256,7 +256,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
         texture->setImage(imgAsset);
         texture->onLoaded();
         //        material->setProperty("mainTexture", texture);
-        //        material->setProperty("albedoMap", texture);
+        material->setProperty("albedoMap", texture);
     }
     image->release();
 

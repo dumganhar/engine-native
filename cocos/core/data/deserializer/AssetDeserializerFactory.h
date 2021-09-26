@@ -27,13 +27,14 @@
 
 #include <memory>
 
-#include "core/data/deserializer/EffectAssetDeserializer.h"
+#include "core/data/deserializer/IAssetDeserializer.h"
 
 namespace cc {
 
 enum class DeserializeAssetType {
     EFFECT,
     MATERIAL,
+    MESH
 };
 
 class AssetDeserializerFactory final {

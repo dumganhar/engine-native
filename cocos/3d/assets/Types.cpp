@@ -23,27 +23,8 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "core/data/deserializer/AssetDeserializerFactory.h"
-#include "core/data/deserializer/EffectAssetDeserializer.h"
-#include "core/data/deserializer/MeshDeserializer.h"
+#include "3d/assets/Types.h"
 
 namespace cc {
-
-/*static*/
-std::shared_ptr<IAssetDeserializer> AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType type) {
-    std::shared_ptr<IAssetDeserializer> deserializer;
-    switch (type) {
-        case DeserializeAssetType::EFFECT:
-            deserializer = std::make_shared<EffectAssetDeserializer>();
-            break;
-        case DeserializeAssetType::MESH:
-            deserializer = std::make_shared<MeshDeserializer>();
-            break;
-        default:
-            break;
-    }
-
-    return deserializer;
-}
 
 } // namespace cc

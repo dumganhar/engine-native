@@ -26,8 +26,9 @@
 #pragma once
 #include <optional>
 #include <unordered_map>
-#include "3d/assets/Mesh.h"
+
 #include "3d/assets/Skeleton.h"
+#include "core/TypedArray.h"
 #include "core/geometry/AABB.h"
 #include "core/scene-graph/Node.h"
 #include "gfx-base/GFXDef-common.h"
@@ -36,6 +37,9 @@
 #include "renderer/gfx-base/GFXDevice.h"
 
 namespace cc {
+
+class Mesh;
+
 struct IChunkContent {
     int32_t              skeleton{0}; // TODO(xwx): int or uint or float?
     std::vector<int32_t> clips;       // TODO(xwx): int or uint?

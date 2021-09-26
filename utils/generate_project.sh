@@ -28,7 +28,7 @@ if [ ${machine} = "Mac" ]; then
      echo "set(USE_WEBSOCKET_SERVER OFF)" >> build-mac/proj/cfg.cmake
      echo "set(MACOSX_BUNDLE_GUI_IDENTIFIER com.cocos.test)" >> build-mac/proj/cfg.cmake
      mkdir -p build-mac/assets
-     cp ../assets/pixil-frame-2.png build-mac/assets
+     cp -f ../assets/* build-mac/assets/
 
      RES_DIR=$COCOS_ROOT/templates/mac/build-mac
      cd build-mac

@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "3d/assets/Types.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "core/geometry/AABB.h"
@@ -34,7 +35,6 @@
 
 namespace cc {
 
-class Morph;
 class MorphRendering;
 class RenderingSubMesh;
 class Skeleton;
@@ -46,12 +46,7 @@ class Mesh : public Asset {
 public:
     using Super = Asset;
 
-    struct IBufferView {
-        uint32_t offset{0};
-        uint32_t length{0};
-        uint32_t count{0};
-        uint32_t stride{0};
-    };
+    using IBufferView = IMeshBufferView;
 
     /**
      * @en Vertex bundle, it describes a set of interleaved vertex attributes and their values.
@@ -146,7 +141,7 @@ public:
          * @en The morph information of the mesh
          * @zh 网格的形变数据
          */
-        std::optional<Morph *> morph;
+        std::optional<Morph> morph;
     };
 
     struct ICreateInfo {
@@ -379,6 +374,8 @@ private:
     std::unordered_map<int32_t, BoneSpaceBounds> _boneSpaceBounds;
 
     JointBufferIndicesType _jointBufferIndices;
+
+    friend class MeshDeserializer;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(Mesh);
 };

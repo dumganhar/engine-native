@@ -23,27 +23,64 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "core/data/deserializer/AssetDeserializerFactory.h"
-#include "core/data/deserializer/EffectAssetDeserializer.h"
-#include "core/data/deserializer/MeshDeserializer.h"
+#pragma once
+
+#include <stdint.h>
+#include <optional>
+#include <string>
+#include <vector>
 
 namespace cc {
 
-/*static*/
-std::shared_ptr<IAssetDeserializer> AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType type) {
-    std::shared_ptr<IAssetDeserializer> deserializer;
-    switch (type) {
-        case DeserializeAssetType::EFFECT:
-            deserializer = std::make_shared<EffectAssetDeserializer>();
-            break;
-        case DeserializeAssetType::MESH:
-            deserializer = std::make_shared<MeshDeserializer>();
-            break;
-        default:
-            break;
-    }
+struct IMeshBufferView {
+    uint32_t offset{0};
+    uint32_t length{0};
+    uint32_t count{0};
+    uint32_t stride{0};
+};
 
-    return deserializer;
-}
+using MeshWeightsType = std::vector<float>;
+
+struct MorphTarget {
+    /**
+     * Displacement of each target attribute.
+     */
+    std::vector<IMeshBufferView> displacements;
+};
+
+struct SubMeshMorph {
+    /**
+     * Attributes to morph.
+     */
+    std::vector<std::string> attributes;
+
+    /**
+     * Targets.
+     */
+    std::vector<MorphTarget> targets;
+
+    /**
+     * Initial weights of each target.
+     */
+    std::optional<MeshWeightsType> weights;
+};
+
+struct Morph {
+    /**
+     * Morph data of each sub-mesh.
+     */
+    std::vector<SubMeshMorph> subMeshMorphs;
+
+    /**
+     * Common initial weights of each sub-mesh.
+     */
+    std::optional<MeshWeightsType> weights;
+
+    /**
+     * Name of each target of each sub-mesh morph.
+     * This field is only meaningful if every sub-mesh has the same number of targets.
+     */
+    std::optional<std::vector<std::string>> targetNames;
+};
 
 } // namespace cc

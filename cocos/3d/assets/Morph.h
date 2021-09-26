@@ -25,57 +25,20 @@
 
 #pragma once
 
-#include "3d/assets/Mesh.h"
-#include "scene/Pass.h"
+#include "3d/assets/Types.h"
+#include "base/TypeDef.h"
+#include "scene/Define.h"
 
 namespace cc {
 
+class Mesh;
 class MorphRendering;
 class MorphRenderingInstance;
 
-using SubMeshWeightsType = std::vector<float>;
-
-struct MorphTarget {
-    /**
-     * Displacement of each target attribute.
-     */
-    std::vector<Mesh::IBufferView> displacements;
-};
-
-struct SubMeshMorph {
-    /**
-     * Attributes to morph.
-     */
-    std::vector<std::string> attributes;
-
-    /**
-     * Targets.
-     */
-    std::vector<MorphTarget> targets;
-
-    /**
-     * Initial weights of each target.
-     */
-    std::optional<std::vector<float>> weights;
-};
-
-struct Morph {
-    /**
-     * Morph data of each sub-mesh.
-     */
-    std::vector<SubMeshMorph *> subMeshMorphs;
-
-    /**
-     * Common initial weights of each sub-mesh.
-     */
-    std::optional<SubMeshWeightsType> weights;
-
-    /**
-     * Name of each target of each sub-mesh morph.
-     * This field is only meaningful if every sub-mesh has the same number of targets.
-     */
-    std::optional<std::vector<std::string>> targetNames;
-};
+namespace gfx {
+class Device;
+class DescriptorSet;
+} // namespace gfx
 
 MorphRendering *createMorphRendering(Mesh *mesh, gfx::Device *gfxDevice);
 
@@ -99,7 +62,7 @@ public:
      * @param subMeshIndex
      * @param weights
      */
-    virtual void setWeights(index_t subMeshIndex, const SubMeshWeightsType &weights) = 0;
+    virtual void setWeights(index_t subMeshIndex, const MeshWeightsType &weights) = 0;
 
     /**
      * Adapts pipeline state to do the rendering.

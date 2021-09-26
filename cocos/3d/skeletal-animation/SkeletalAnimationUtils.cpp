@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "3d/skeletal-animation/SkeletalAnimationUtils.h"
+#include "3d/assets/Mesh.h"
 #include "renderer/pipeline/Define.h"
 
 namespace {
@@ -184,7 +185,7 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
             .handle           = handle,
         };
         textureBuffer = Float32Array(bufSize);
-        buildTexture = true;
+        buildTexture  = true;
     } else {
         texture->refCount++;
     }

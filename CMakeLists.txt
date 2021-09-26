@@ -1278,6 +1278,8 @@ cocos_source_files(
 
 ##### 3d
 cocos_source_files(
+    cocos/3d/assets/Types.h
+    cocos/3d/assets/Types.cpp
     cocos/3d/assets/Mesh.h
     cocos/3d/assets/Mesh.cpp
     cocos/3d/assets/Morph.h

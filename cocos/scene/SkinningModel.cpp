@@ -22,12 +22,15 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+#include "scene/SkinningModel.h"
 
 #include <array>
 #include <utility>
 
+#include "3d/assets/Mesh.h"
+#include "core/scene-graph/Node.h"
+#include "renderer/gfx-base/GFXDevice.h"
 #include "scene/RenderScene.h"
-#include "scene/SkinningModel.h"
 
 namespace {
 void getRelevantBuffers(std::vector<index_t> &outIndices, std::vector<int32_t> &outBuffers, const std::vector<std::vector<int32_t>> &jointMaps, int32_t targetJoint) {

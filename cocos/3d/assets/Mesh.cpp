@@ -28,6 +28,7 @@
 #include "3d/assets/Skeleton.h"
 #include "3d/misc/BufferBlob.h"
 #include "core/DataView.h"
+#include "core/assets/RenderingSubMesh.h"
 #include "math/Quaternion.h"
 
 #include "MurmurHash2/MurmurHash2.h"

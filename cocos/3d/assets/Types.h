@@ -25,58 +25,62 @@
 
 #pragma once
 
-#include "3d/assets/Types.h"
-#include "base/TypeDef.h"
-#include "scene/Define.h"
+#include <stdint.h>
+#include <optional>
+#include <string>
+#include <vector>
 
 namespace cc {
 
-class Mesh;
-class MorphRendering;
-class MorphRenderingInstance;
-
-namespace gfx {
-class Device;
-class DescriptorSet;
-} // namespace gfx
-
-MorphRendering *createMorphRendering(Mesh *mesh, gfx::Device *gfxDevice);
-
-/**
- * Class which control rendering of a morph resource.
- */
-class MorphRendering {
-public:
-    virtual ~MorphRendering()                        = default;
-    virtual MorphRenderingInstance *createInstance() = 0;
+struct IMeshBufferView {
+    uint32_t offset{0};
+    uint32_t length{0};
+    uint32_t count{0};
+    uint32_t stride{0};
 };
 
-/**
- * This rendering instance of a morph resource.
- */
-class MorphRenderingInstance {
-public:
-    virtual ~MorphRenderingInstance() = default;
+using MeshWeightsType = std::vector<float>;
+
+struct MorphTarget {
     /**
-     * Sets weights of targets of specified sub mesh.
-     * @param subMeshIndex
-     * @param weights
+     * Displacement of each target attribute.
      */
-    virtual void setWeights(index_t subMeshIndex, const MeshWeightsType &weights) = 0;
+    std::vector<IMeshBufferView> displacements;
+};
+
+struct SubMeshMorph {
+    /**
+     * Attributes to morph.
+     */
+    std::vector<std::string> attributes;
 
     /**
-     * Adapts pipeline state to do the rendering.
-     * @param subMeshIndex
-     * @param pipelineState
+     * Targets.
      */
-    virtual void adaptPipelineState(index_t subMeshIndex, gfx::DescriptorSet *descriptorSet) = 0;
-
-    virtual std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) = 0;
+    std::vector<MorphTarget> targets;
 
     /**
-     * Destroy the rendering instance.
+     * Initial weights of each target.
      */
-    virtual void destroy() = 0;
+    std::optional<MeshWeightsType> weights;
+};
+
+struct Morph {
+    /**
+     * Morph data of each sub-mesh.
+     */
+    std::vector<SubMeshMorph> subMeshMorphs;
+
+    /**
+     * Common initial weights of each sub-mesh.
+     */
+    std::optional<MeshWeightsType> weights;
+
+    /**
+     * Name of each target of each sub-mesh morph.
+     * This field is only meaningful if every sub-mesh has the same number of targets.
+     */
+    std::optional<std::vector<std::string>> targetNames;
 };
 
 } // namespace cc

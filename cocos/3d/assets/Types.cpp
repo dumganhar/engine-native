@@ -23,60 +23,8 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#pragma once
-
 #include "3d/assets/Types.h"
-#include "base/TypeDef.h"
-#include "scene/Define.h"
 
 namespace cc {
-
-class Mesh;
-class MorphRendering;
-class MorphRenderingInstance;
-
-namespace gfx {
-class Device;
-class DescriptorSet;
-} // namespace gfx
-
-MorphRendering *createMorphRendering(Mesh *mesh, gfx::Device *gfxDevice);
-
-/**
- * Class which control rendering of a morph resource.
- */
-class MorphRendering {
-public:
-    virtual ~MorphRendering()                        = default;
-    virtual MorphRenderingInstance *createInstance() = 0;
-};
-
-/**
- * This rendering instance of a morph resource.
- */
-class MorphRenderingInstance {
-public:
-    virtual ~MorphRenderingInstance() = default;
-    /**
-     * Sets weights of targets of specified sub mesh.
-     * @param subMeshIndex
-     * @param weights
-     */
-    virtual void setWeights(index_t subMeshIndex, const MeshWeightsType &weights) = 0;
-
-    /**
-     * Adapts pipeline state to do the rendering.
-     * @param subMeshIndex
-     * @param pipelineState
-     */
-    virtual void adaptPipelineState(index_t subMeshIndex, gfx::DescriptorSet *descriptorSet) = 0;
-
-    virtual std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) = 0;
-
-    /**
-     * Destroy the rendering instance.
-     */
-    virtual void destroy() = 0;
-};
 
 } // namespace cc

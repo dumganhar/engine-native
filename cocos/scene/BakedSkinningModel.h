@@ -28,11 +28,15 @@
 #include <utility>
 
 #include "3d/assets/Skeleton.h"
+#include "3d/skeletal-animation/SkeletalAnimationUtils.h"
 #include "core/scene-graph/Node.h"
 #include "gfx-base/GFXDef-common.h"
-#include "scene/Model.h"
 #include "scene/MorphModel.h"
+
 namespace cc {
+
+class DataPoolManager;
+
 namespace scene {
 struct BakedJointInfo {
     gfx::Buffer *                      buffer{nullptr};

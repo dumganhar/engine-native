@@ -61,7 +61,7 @@ public:
          * 你必须使用 DataView 来读取数据。
          * 因为不能保证所有属性的起始偏移都按 TypedArray 要求的字节对齐。
          */
-        Mesh::IBufferView view;
+        IBufferView view;
 
         /**
          * @en All attributes included in the bundle
@@ -91,7 +91,7 @@ public:
          * @en The index data of the sub mesh
          * @zh 此子网格使用的索引数据。
          */
-        std::optional<Mesh::IBufferView> indexView;
+        std::optional<IBufferView> indexView;
 
         /**
          * @en The joint map index in [[IStruct.jointMaps]]. Could be absent

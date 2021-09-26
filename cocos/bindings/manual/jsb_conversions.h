@@ -1038,7 +1038,7 @@ bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * 
     uint8_t *data    = nullptr;
     size_t   byteLen = 0;
     from.toObject()->getTypedArrayData(&data, &byteLen);
-    to->reset(byteLen, data);
+    to->reset(data, byteLen);
     return true;
 }
 

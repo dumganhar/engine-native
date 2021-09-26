@@ -49,7 +49,7 @@ public:
     // Just use it to copy data. Use TypedArray to get/set data.
     const uint8_t *getData() const { return _data; }
 
-    inline void reset(uint32_t length, const uint8_t *data = nullptr) {
+    inline void reset(const uint8_t *data, uint32_t length) {
         free(_data);
         _data       = static_cast<uint8_t *>(malloc(length));
         _byteLength = length;

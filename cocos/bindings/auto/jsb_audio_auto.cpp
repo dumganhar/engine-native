@@ -1,26 +1,26 @@
 #include "cocos/bindings/auto/jsb_audio_auto.h"
 #if (USE_AUDIO > 0)
-    #include "audio/include/AudioEngine.h"
-    #include "cocos/bindings/manual/jsb_conversions.h"
-    #include "cocos/bindings/manual/jsb_global.h"
+#include "cocos/bindings/manual/jsb_conversions.h"
+#include "cocos/bindings/manual/jsb_global.h"
+#include "audio/include/AudioEngine.h"
 
-    #ifndef JSB_ALLOC
-        #define JSB_ALLOC(kls, ...) new (std::nothrow) kls(__VA_ARGS__)
-    #endif
+#ifndef JSB_ALLOC
+#define JSB_ALLOC(kls, ...) new (std::nothrow) kls(__VA_ARGS__)
+#endif
 
-    #ifndef JSB_FREE
-        #define JSB_FREE(ptr) delete ptr
-    #endif
-se::Object *__jsb_cc_AudioProfile_proto = nullptr; // NOLINT
-se::Class * __jsb_cc_AudioProfile_class = nullptr; // NOLINT
+#ifndef JSB_FREE
+#define JSB_FREE(ptr) delete ptr
+#endif
+se::Object* __jsb_cc_AudioProfile_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_AudioProfile_class = nullptr;  // NOLINT
 
-static bool js_audio_AudioProfile_get_name(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioProfile_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
+    auto* cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
     SE_PRECONDITION2(cobj, false, "js_audio_AudioProfile_get_name : Invalid Native Object");
 
     CC_UNUSED bool ok = true;
-    se::Value      jsret;
+    se::Value jsret;
     ok &= nativevalue_to_se(cobj->name, jsret, s.thisObject() /*ctx*/);
     s.rval() = jsret;
     SE_HOLD_RETURN_VALUE(cobj->name, s.thisObject(), s.rval());
@@ -28,10 +28,10 @@ static bool js_audio_AudioProfile_get_name(se::State &s) // NOLINT(readability-i
 }
 SE_BIND_PROP_GET(js_audio_AudioProfile_get_name)
 
-static bool js_audio_AudioProfile_set_name(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioProfile_set_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &args = s.args();
-    auto *      cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
     SE_PRECONDITION2(cobj, false, "js_audio_AudioProfile_set_name : Invalid Native Object");
 
     CC_UNUSED bool ok = true;
@@ -41,13 +41,13 @@ static bool js_audio_AudioProfile_set_name(se::State &s) // NOLINT(readability-i
 }
 SE_BIND_PROP_SET(js_audio_AudioProfile_set_name)
 
-static bool js_audio_AudioProfile_get_maxInstances(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioProfile_get_maxInstances(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
+    auto* cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
     SE_PRECONDITION2(cobj, false, "js_audio_AudioProfile_get_maxInstances : Invalid Native Object");
 
     CC_UNUSED bool ok = true;
-    se::Value      jsret;
+    se::Value jsret;
     ok &= nativevalue_to_se(cobj->maxInstances, jsret, s.thisObject() /*ctx*/);
     s.rval() = jsret;
     SE_HOLD_RETURN_VALUE(cobj->maxInstances, s.thisObject(), s.rval());
@@ -55,10 +55,10 @@ static bool js_audio_AudioProfile_get_maxInstances(se::State &s) // NOLINT(reada
 }
 SE_BIND_PROP_GET(js_audio_AudioProfile_get_maxInstances)
 
-static bool js_audio_AudioProfile_set_maxInstances(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioProfile_set_maxInstances(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &args = s.args();
-    auto *      cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
     SE_PRECONDITION2(cobj, false, "js_audio_AudioProfile_set_maxInstances : Invalid Native Object");
 
     CC_UNUSED bool ok = true;
@@ -68,13 +68,13 @@ static bool js_audio_AudioProfile_set_maxInstances(se::State &s) // NOLINT(reada
 }
 SE_BIND_PROP_SET(js_audio_AudioProfile_set_maxInstances)
 
-static bool js_audio_AudioProfile_get_minDelay(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioProfile_get_minDelay(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
+    auto* cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
     SE_PRECONDITION2(cobj, false, "js_audio_AudioProfile_get_minDelay : Invalid Native Object");
 
     CC_UNUSED bool ok = true;
-    se::Value      jsret;
+    se::Value jsret;
     ok &= nativevalue_to_se(cobj->minDelay, jsret, s.thisObject() /*ctx*/);
     s.rval() = jsret;
     SE_HOLD_RETURN_VALUE(cobj->minDelay, s.thisObject(), s.rval());
@@ -82,10 +82,10 @@ static bool js_audio_AudioProfile_get_minDelay(se::State &s) // NOLINT(readabili
 }
 SE_BIND_PROP_GET(js_audio_AudioProfile_get_minDelay)
 
-static bool js_audio_AudioProfile_set_minDelay(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioProfile_set_minDelay(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &args = s.args();
-    auto *      cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
     SE_PRECONDITION2(cobj, false, "js_audio_AudioProfile_set_minDelay : Invalid Native Object");
 
     CC_UNUSED bool ok = true;
@@ -97,30 +97,33 @@ SE_BIND_PROP_SET(js_audio_AudioProfile_set_minDelay)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_AudioProfile_finalize)
 
-static bool js_audio_AudioProfile_constructor(se::State &s) // NOLINT(readability-identifier-naming) constructor.c
+static bool js_audio_AudioProfile_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor.c
 {
-    cc::AudioProfile *cobj = JSB_ALLOC(cc::AudioProfile);
+    cc::AudioProfile* cobj = JSB_ALLOC(cc::AudioProfile);
     s.thisObject()->setPrivateData(cobj);
     se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
     return true;
 }
 SE_BIND_CTOR(js_audio_AudioProfile_constructor, __jsb_cc_AudioProfile_class, js_cc_AudioProfile_finalize)
 
-static bool js_cc_AudioProfile_finalize(se::State &s) // NOLINT(readability-identifier-naming)
+
+
+static bool js_cc_AudioProfile_finalize(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::AudioProfile>(s));
-    if (iter != se::NonRefNativePtrCreatedByCtorMap::end()) {
+    if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
+    {
         se::NonRefNativePtrCreatedByCtorMap::erase(iter);
-        auto *cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
+        auto* cobj = SE_THIS_OBJECT<cc::AudioProfile>(s);
         JSB_FREE(cobj);
     }
     return true;
 }
 SE_BIND_FINALIZE_FUNC(js_cc_AudioProfile_finalize)
 
-bool js_register_audio_AudioProfile(se::Object *obj) // NOLINT(readability-identifier-naming)
+bool js_register_audio_AudioProfile(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto *cls = se::Class::create("AudioProfile", obj, nullptr, _SE(js_audio_AudioProfile_constructor));
+    auto* cls = se::Class::create("AudioProfile", obj, nullptr, _SE(js_audio_AudioProfile_constructor));
 
     cls->defineProperty("name", _SE(js_audio_AudioProfile_get_name), _SE(js_audio_AudioProfile_set_name));
     cls->defineProperty("maxInstances", _SE(js_audio_AudioProfile_get_maxInstances), _SE(js_audio_AudioProfile_set_maxInstances));
@@ -135,14 +138,14 @@ bool js_register_audio_AudioProfile(se::Object *obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object *__jsb_cc_AudioEngine_proto = nullptr; // NOLINT
-se::Class * __jsb_cc_AudioEngine_class = nullptr; // NOLINT
+se::Object* __jsb_cc_AudioEngine_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_AudioEngine_class = nullptr;  // NOLINT
 
-static bool js_audio_AudioEngine_lazyInit_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_lazyInit_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 0) {
         bool result = cc::AudioEngine::lazyInit();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
@@ -155,13 +158,13 @@ static bool js_audio_AudioEngine_lazyInit_static(se::State &s) // NOLINT(readabi
 }
 SE_BIND_FUNC(js_audio_AudioEngine_lazyInit_static)
 
-static bool js_audio_AudioEngine_setCurrentTime_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_setCurrentTime_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 2) {
-        HolderType<int, false>   arg0 = {};
+        HolderType<int, false> arg0 = {};
         HolderType<float, false> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
@@ -177,11 +180,11 @@ static bool js_audio_AudioEngine_setCurrentTime_static(se::State &s) // NOLINT(r
 }
 SE_BIND_FUNC(js_audio_AudioEngine_setCurrentTime_static)
 
-static bool js_audio_AudioEngine_getVolume_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_getVolume_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -197,11 +200,11 @@ static bool js_audio_AudioEngine_getVolume_static(se::State &s) // NOLINT(readab
 }
 SE_BIND_FUNC(js_audio_AudioEngine_getVolume_static)
 
-static bool js_audio_AudioEngine_uncache_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_uncache_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<std::string, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -214,10 +217,10 @@ static bool js_audio_AudioEngine_uncache_static(se::State &s) // NOLINT(readabil
 }
 SE_BIND_FUNC(js_audio_AudioEngine_uncache_static)
 
-static bool js_audio_AudioEngine_resumeAll_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_resumeAll_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &args = s.args();
-    size_t      argc = args.size();
+    const auto& args = s.args();
+    size_t argc = args.size();
     if (argc == 0) {
         cc::AudioEngine::resumeAll();
         return true;
@@ -227,10 +230,10 @@ static bool js_audio_AudioEngine_resumeAll_static(se::State &s) // NOLINT(readab
 }
 SE_BIND_FUNC(js_audio_AudioEngine_resumeAll_static)
 
-static bool js_audio_AudioEngine_stopAll_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_stopAll_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &args = s.args();
-    size_t      argc = args.size();
+    const auto& args = s.args();
+    size_t argc = args.size();
     if (argc == 0) {
         cc::AudioEngine::stopAll();
         return true;
@@ -240,11 +243,11 @@ static bool js_audio_AudioEngine_stopAll_static(se::State &s) // NOLINT(readabil
 }
 SE_BIND_FUNC(js_audio_AudioEngine_stopAll_static)
 
-static bool js_audio_AudioEngine_pause_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_pause_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -257,10 +260,10 @@ static bool js_audio_AudioEngine_pause_static(se::State &s) // NOLINT(readabilit
 }
 SE_BIND_FUNC(js_audio_AudioEngine_pause_static)
 
-static bool js_audio_AudioEngine_end_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_end_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &args = s.args();
-    size_t      argc = args.size();
+    const auto& args = s.args();
+    size_t argc = args.size();
     if (argc == 0) {
         cc::AudioEngine::end();
         return true;
@@ -270,11 +273,11 @@ static bool js_audio_AudioEngine_end_static(se::State &s) // NOLINT(readability-
 }
 SE_BIND_FUNC(js_audio_AudioEngine_end_static)
 
-static bool js_audio_AudioEngine_getMaxAudioInstance_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_getMaxAudioInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 0) {
         int result = cc::AudioEngine::getMaxAudioInstance();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
@@ -287,11 +290,11 @@ static bool js_audio_AudioEngine_getMaxAudioInstance_static(se::State &s) // NOL
 }
 SE_BIND_FUNC(js_audio_AudioEngine_getMaxAudioInstance_static)
 
-static bool js_audio_AudioEngine_isEnabled_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_isEnabled_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 0) {
         bool result = cc::AudioEngine::isEnabled();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
@@ -304,11 +307,11 @@ static bool js_audio_AudioEngine_isEnabled_static(se::State &s) // NOLINT(readab
 }
 SE_BIND_FUNC(js_audio_AudioEngine_isEnabled_static)
 
-static bool js_audio_AudioEngine_getDurationFromFile_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_getDurationFromFile_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<std::string, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -324,11 +327,11 @@ static bool js_audio_AudioEngine_getDurationFromFile_static(se::State &s) // NOL
 }
 SE_BIND_FUNC(js_audio_AudioEngine_getDurationFromFile_static)
 
-static bool js_audio_AudioEngine_getCurrentTime_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_getCurrentTime_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -344,11 +347,11 @@ static bool js_audio_AudioEngine_getCurrentTime_static(se::State &s) // NOLINT(r
 }
 SE_BIND_FUNC(js_audio_AudioEngine_getCurrentTime_static)
 
-static bool js_audio_AudioEngine_setMaxAudioInstance_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_setMaxAudioInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -364,11 +367,11 @@ static bool js_audio_AudioEngine_setMaxAudioInstance_static(se::State &s) // NOL
 }
 SE_BIND_FUNC(js_audio_AudioEngine_setMaxAudioInstance_static)
 
-static bool js_audio_AudioEngine_isLoop_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_isLoop_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -384,10 +387,10 @@ static bool js_audio_AudioEngine_isLoop_static(se::State &s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_audio_AudioEngine_isLoop_static)
 
-static bool js_audio_AudioEngine_pauseAll_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_pauseAll_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &args = s.args();
-    size_t      argc = args.size();
+    const auto& args = s.args();
+    size_t argc = args.size();
     if (argc == 0) {
         cc::AudioEngine::pauseAll();
         return true;
@@ -397,10 +400,10 @@ static bool js_audio_AudioEngine_pauseAll_static(se::State &s) // NOLINT(readabi
 }
 SE_BIND_FUNC(js_audio_AudioEngine_pauseAll_static)
 
-static bool js_audio_AudioEngine_uncacheAll_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_uncacheAll_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &args = s.args();
-    size_t      argc = args.size();
+    const auto& args = s.args();
+    size_t argc = args.size();
     if (argc == 0) {
         cc::AudioEngine::uncacheAll();
         return true;
@@ -410,13 +413,13 @@ static bool js_audio_AudioEngine_uncacheAll_static(se::State &s) // NOLINT(reada
 }
 SE_BIND_FUNC(js_audio_AudioEngine_uncacheAll_static)
 
-static bool js_audio_AudioEngine_setVolume_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_setVolume_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 2) {
-        HolderType<int, false>   arg0 = {};
+        HolderType<int, false> arg0 = {};
         HolderType<float, false> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
@@ -429,50 +432,48 @@ static bool js_audio_AudioEngine_setVolume_static(se::State &s) // NOLINT(readab
 }
 SE_BIND_FUNC(js_audio_AudioEngine_setVolume_static)
 
-static bool js_audio_AudioEngine_preload_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_preload_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    CC_UNUSED bool ok   = true;
-    const auto &   args = s.args();
-    size_t         argc = args.size();
+    CC_UNUSED bool ok = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
     do {
         if (argc == 2) {
             HolderType<std::string, true> arg0 = {};
             ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) {
-                ok = true;
-                break;
-            }
-            HolderType<std::function<void(bool)>, true> arg1 = {};
+            if (!ok) { ok = true; break; }
+            HolderType<std::function<void (bool)>, true> arg1 = {};
             do {
-                if (args[1].isObject() && args[1].toObject()->isFunction()) {
+                if (args[1].isObject() && args[1].toObject()->isFunction())
+                {
                     se::Value jsThis(s.thisObject());
                     se::Value jsFunc(args[1]);
                     jsFunc.toObject()->root();
                     auto lambda = [=](bool larg0) -> void {
                         se::ScriptEngine::getInstance()->clearException();
                         se::AutoHandleScope hs;
-
+            
                         CC_UNUSED bool ok = true;
                         se::ValueArray args;
                         args.resize(1);
                         ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value   rval;
-                        se::Object *thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object *funcObj = jsFunc.toObject();
-                        bool        succeed = funcObj->call(args, thisObj, &rval);
+                        se::Value rval;
+                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
+                        se::Object* funcObj = jsFunc.toObject();
+                        bool succeed = funcObj->call(args, thisObj, &rval);
                         if (!succeed) {
                             se::ScriptEngine::getInstance()->clearException();
                         }
                     };
                     arg1.data = lambda;
-                } else {
+                }
+                else
+                {
                     arg1.data = nullptr;
                 }
-            } while (false);
-            if (!ok) {
-                ok = true;
-                break;
-            }
+            } while(false)
+            ;
+            if (!ok) { ok = true; break; }
             cc::AudioEngine::preload(arg0.value(), arg1.value());
             return true;
         }
@@ -481,10 +482,7 @@ static bool js_audio_AudioEngine_preload_static(se::State &s) // NOLINT(readabil
         if (argc == 1) {
             HolderType<std::string, true> arg0 = {};
             ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) {
-                ok = true;
-                break;
-            }
+            if (!ok) { ok = true; break; }
             cc::AudioEngine::preload(arg0.value());
             return true;
         }
@@ -494,11 +492,11 @@ static bool js_audio_AudioEngine_preload_static(se::State &s) // NOLINT(readabil
 }
 SE_BIND_FUNC(js_audio_AudioEngine_preload_static)
 
-static bool js_audio_AudioEngine_setEnabled_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_setEnabled_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<bool, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -511,11 +509,11 @@ static bool js_audio_AudioEngine_setEnabled_static(se::State &s) // NOLINT(reada
 }
 SE_BIND_FUNC(js_audio_AudioEngine_setEnabled_static)
 
-static bool js_audio_AudioEngine_play2d_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_play2d_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<std::string, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -528,7 +526,7 @@ static bool js_audio_AudioEngine_play2d_static(se::State &s) // NOLINT(readabili
     }
     if (argc == 2) {
         HolderType<std::string, true> arg0 = {};
-        HolderType<bool, false>       arg1 = {};
+        HolderType<bool, false> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
         SE_PRECONDITION2(ok, false, "js_audio_AudioEngine_play2d_static : Error processing arguments");
@@ -540,8 +538,8 @@ static bool js_audio_AudioEngine_play2d_static(se::State &s) // NOLINT(readabili
     }
     if (argc == 3) {
         HolderType<std::string, true> arg0 = {};
-        HolderType<bool, false>       arg1 = {};
-        HolderType<float, false>      arg2 = {};
+        HolderType<bool, false> arg1 = {};
+        HolderType<float, false> arg2 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
         ok &= sevalue_to_native(args[2], &arg2, nullptr);
@@ -553,10 +551,10 @@ static bool js_audio_AudioEngine_play2d_static(se::State &s) // NOLINT(readabili
         return true;
     }
     if (argc == 4) {
-        HolderType<std::string, true>               arg0 = {};
-        HolderType<bool, false>                     arg1 = {};
-        HolderType<float, false>                    arg2 = {};
-        HolderType<const cc::AudioProfile *, false> arg3 = {};
+        HolderType<std::string, true> arg0 = {};
+        HolderType<bool, false> arg1 = {};
+        HolderType<float, false> arg2 = {};
+        HolderType<const cc::AudioProfile*, false> arg3 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
         ok &= sevalue_to_native(args[2], &arg2, nullptr);
@@ -573,11 +571,11 @@ static bool js_audio_AudioEngine_play2d_static(se::State &s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_audio_AudioEngine_play2d_static)
 
-static bool js_audio_AudioEngine_getState_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_getState_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -593,11 +591,11 @@ static bool js_audio_AudioEngine_getState_static(se::State &s) // NOLINT(readabi
 }
 SE_BIND_FUNC(js_audio_AudioEngine_getState_static)
 
-static bool js_audio_AudioEngine_resume_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_resume_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -610,11 +608,11 @@ static bool js_audio_AudioEngine_resume_static(se::State &s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_audio_AudioEngine_resume_static)
 
-static bool js_audio_AudioEngine_stop_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_stop_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -627,11 +625,11 @@ static bool js_audio_AudioEngine_stop_static(se::State &s) // NOLINT(readability
 }
 SE_BIND_FUNC(js_audio_AudioEngine_stop_static)
 
-static bool js_audio_AudioEngine_getDuration_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_getDuration_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
@@ -647,13 +645,13 @@ static bool js_audio_AudioEngine_getDuration_static(se::State &s) // NOLINT(read
 }
 SE_BIND_FUNC(js_audio_AudioEngine_getDuration_static)
 
-static bool js_audio_AudioEngine_setLoop_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_setLoop_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 2) {
-        HolderType<int, false>  arg0 = {};
+        HolderType<int, false> arg0 = {};
         HolderType<bool, false> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
@@ -666,13 +664,13 @@ static bool js_audio_AudioEngine_setLoop_static(se::State &s) // NOLINT(readabil
 }
 SE_BIND_FUNC(js_audio_AudioEngine_setLoop_static)
 
-static bool js_audio_AudioEngine_getDefaultProfile_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_getDefaultProfile_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 0) {
-        cc::AudioProfile *result = cc::AudioEngine::getDefaultProfile();
+        cc::AudioProfile* result = cc::AudioEngine::getDefaultProfile();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_audio_AudioEngine_getDefaultProfile_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -683,42 +681,46 @@ static bool js_audio_AudioEngine_getDefaultProfile_static(se::State &s) // NOLIN
 }
 SE_BIND_FUNC(js_audio_AudioEngine_getDefaultProfile_static)
 
-static bool js_audio_AudioEngine_setFinishCallback_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_setFinishCallback_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 2) {
-        HolderType<int, false>                                        arg0 = {};
-        HolderType<std::function<void(int, const std::string)>, true> arg1 = {};
+        HolderType<int, false> arg0 = {};
+        HolderType<std::function<void (int, const std::string)>, true> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         do {
-            if (args[1].isObject() && args[1].toObject()->isFunction()) {
+            if (args[1].isObject() && args[1].toObject()->isFunction())
+            {
                 se::Value jsThis(s.thisObject());
                 se::Value jsFunc(args[1]);
                 jsFunc.toObject()->root();
                 auto lambda = [=](int larg0, const std::string larg1) -> void {
                     se::ScriptEngine::getInstance()->clearException();
                     se::AutoHandleScope hs;
-
+        
                     CC_UNUSED bool ok = true;
                     se::ValueArray args;
                     args.resize(2);
                     ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
                     ok &= nativevalue_to_se(larg1, args[1], nullptr /*ctx*/);
-                    se::Value   rval;
-                    se::Object *thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                    se::Object *funcObj = jsFunc.toObject();
-                    bool        succeed = funcObj->call(args, thisObj, &rval);
+                    se::Value rval;
+                    se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
+                    se::Object* funcObj = jsFunc.toObject();
+                    bool succeed = funcObj->call(args, thisObj, &rval);
                     if (!succeed) {
                         se::ScriptEngine::getInstance()->clearException();
                     }
                 };
                 arg1.data = lambda;
-            } else {
+            }
+            else
+            {
                 arg1.data = nullptr;
             }
-        } while (false);
+        } while(false)
+        ;
         SE_PRECONDITION2(ok, false, "js_audio_AudioEngine_setFinishCallback_static : Error processing arguments");
         cc::AudioEngine::setFinishCallback(arg0.value(), arg1.value());
         return true;
@@ -728,20 +730,17 @@ static bool js_audio_AudioEngine_setFinishCallback_static(se::State &s) // NOLIN
 }
 SE_BIND_FUNC(js_audio_AudioEngine_setFinishCallback_static)
 
-static bool js_audio_AudioEngine_getProfile_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_getProfile_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    CC_UNUSED bool ok   = true;
-    const auto &   args = s.args();
-    size_t         argc = args.size();
+    CC_UNUSED bool ok = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
     do {
         if (argc == 1) {
             HolderType<std::string, true> arg0 = {};
             ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) {
-                ok = true;
-                break;
-            }
-            cc::AudioProfile *result = cc::AudioEngine::getProfile(arg0.value());
+            if (!ok) { ok = true; break; }
+            cc::AudioProfile* result = cc::AudioEngine::getProfile(arg0.value());
             ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
             SE_PRECONDITION2(ok, false, "js_audio_AudioEngine_getProfile_static : Error processing arguments");
             SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -752,11 +751,8 @@ static bool js_audio_AudioEngine_getProfile_static(se::State &s) // NOLINT(reada
         if (argc == 1) {
             HolderType<int, false> arg0 = {};
             ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) {
-                ok = true;
-                break;
-            }
-            cc::AudioProfile *result = cc::AudioEngine::getProfile(arg0.value());
+            if (!ok) { ok = true; break; }
+            cc::AudioProfile* result = cc::AudioEngine::getProfile(arg0.value());
             ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
             SE_PRECONDITION2(ok, false, "js_audio_AudioEngine_getProfile_static : Error processing arguments");
             SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -768,11 +764,11 @@ static bool js_audio_AudioEngine_getProfile_static(se::State &s) // NOLINT(reada
 }
 SE_BIND_FUNC(js_audio_AudioEngine_getProfile_static)
 
-static bool js_audio_AudioEngine_getPlayingAudioCount_static(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_audio_AudioEngine_getPlayingAudioCount_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
     if (argc == 0) {
         int result = cc::AudioEngine::getPlayingAudioCount();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
@@ -785,9 +781,11 @@ static bool js_audio_AudioEngine_getPlayingAudioCount_static(se::State &s) // NO
 }
 SE_BIND_FUNC(js_audio_AudioEngine_getPlayingAudioCount_static)
 
-bool js_register_audio_AudioEngine(se::Object *obj) // NOLINT(readability-identifier-naming)
+
+
+bool js_register_audio_AudioEngine(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto *cls = se::Class::create("AudioEngine", obj, nullptr, nullptr);
+    auto* cls = se::Class::create("AudioEngine", obj, nullptr, nullptr);
 
     cls->defineStaticFunction("lazyInit", _SE(js_audio_AudioEngine_lazyInit_static));
     cls->defineStaticFunction("setCurrentTime", _SE(js_audio_AudioEngine_setCurrentTime_static));
@@ -827,16 +825,17 @@ bool js_register_audio_AudioEngine(se::Object *obj) // NOLINT(readability-identi
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_audio(se::Object *obj) // NOLINT
+bool register_all_audio(se::Object* obj)    // NOLINT
 {
     // Get the ns
     se::Value nsVal;
-    if (!obj->getProperty("jsb", &nsVal)) {
+    if (!obj->getProperty("jsb", &nsVal))
+    {
         se::HandleObject jsobj(se::Object::createPlainObject());
         nsVal.setObject(jsobj);
         obj->setProperty("jsb", nsVal);
     }
-    se::Object *ns = nsVal.toObject();
+    se::Object* ns = nsVal.toObject();
 
     js_register_audio_AudioProfile(ns);
     js_register_audio_AudioEngine(ns);

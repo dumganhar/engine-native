@@ -1,29 +1,30 @@
 #pragma once
-#include <type_traits>
 #include "base/Config.h"
-#include "cocos/bindings/auto/jsb_geometry_auto.h"
-#include "cocos/bindings/auto/jsb_gfx_auto.h"
+#include <type_traits>
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
-#include "cocos/scene/Ambient.h"
-#include "cocos/scene/Camera.h"
-#include "cocos/scene/Define.h"
-#include "cocos/scene/DirectionalLight.h"
-#include "cocos/scene/DrawBatch2D.h"
+#include "cocos/bindings/auto/jsb_gfx_auto.h"
+#include "cocos/bindings/auto/jsb_geometry_auto.h"
 #include "cocos/scene/Light.h"
+#include "cocos/scene/DirectionalLight.h"
+#include "cocos/scene/SpotLight.h"
+#include "cocos/scene/SphereLight.h"
 #include "cocos/scene/Model.h"
+#include "cocos/scene/SubModel.h"
 #include "cocos/scene/Pass.h"
 #include "cocos/scene/RenderScene.h"
+#include "cocos/scene/DrawBatch2D.h"
+#include "cocos/scene/Camera.h"
 #include "cocos/scene/RenderWindow.h"
-#include "cocos/scene/SphereLight.h"
-#include "cocos/scene/SpotLight.h"
-#include "cocos/scene/SubModel.h"
+#include "cocos/scene/Camera.h"
+#include "cocos/scene/Define.h"
+#include "cocos/scene/Ambient.h"
 
 extern se::Object *__jsb_cc_scene_Light_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_Light_class; // NOLINT
 
 bool js_register_cc_scene_Light(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);         // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::Light);
 SE_DECLARE_FUNC(js_scene_Light_attachToScene);
@@ -48,7 +49,7 @@ extern se::Object *__jsb_cc_scene_DirectionalLight_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_DirectionalLight_class; // NOLINT
 
 bool js_register_cc_scene_DirectionalLight(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);                    // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::DirectionalLight);
 SE_DECLARE_FUNC(js_scene_DirectionalLight_setDirection);
@@ -59,7 +60,7 @@ extern se::Object *__jsb_cc_scene_SpotLight_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_SpotLight_class; // NOLINT
 
 bool js_register_cc_scene_SpotLight(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);             // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::SpotLight);
 SE_DECLARE_FUNC(js_scene_SpotLight_getLuminance);
@@ -75,7 +76,7 @@ extern se::Object *__jsb_cc_scene_SphereLight_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_SphereLight_class; // NOLINT
 
 bool js_register_cc_scene_SphereLight(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);               // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::SphereLight);
 SE_DECLARE_FUNC(js_scene_SphereLight_getLuminance);
@@ -89,7 +90,7 @@ extern se::Object *__jsb_cc_scene_Model_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_Model_class; // NOLINT
 
 bool js_register_cc_scene_Model(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);         // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::Model);
 SE_DECLARE_FUNC(js_scene_Model_attachToScene);
@@ -140,11 +141,46 @@ SE_DECLARE_FUNC(js_scene_Model_updateUBOs);
 SE_DECLARE_FUNC(js_scene_Model_updateWorldBound);
 SE_DECLARE_FUNC(js_scene_Model_Model);
 
+extern se::Object *__jsb_cc_scene_AmbientInfo_proto; // NOLINT
+extern se::Class * __jsb_cc_scene_AmbientInfo_class; // NOLINT
+
+bool js_register_cc_scene_AmbientInfo(se::Object *obj); // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::scene::AmbientInfo);
+SE_DECLARE_FUNC(js_scene_AmbientInfo_getGroundAlbedo);
+SE_DECLARE_FUNC(js_scene_AmbientInfo_getSkyColor);
+SE_DECLARE_FUNC(js_scene_AmbientInfo_getSkyIllum);
+SE_DECLARE_FUNC(js_scene_AmbientInfo_setGroundAlbedo);
+SE_DECLARE_FUNC(js_scene_AmbientInfo_setSkyColor);
+SE_DECLARE_FUNC(js_scene_AmbientInfo_setSkyIllum);
+SE_DECLARE_FUNC(js_scene_AmbientInfo_AmbientInfo);
+
+extern se::Object *__jsb_cc_scene_Ambient_proto; // NOLINT
+extern se::Class * __jsb_cc_scene_Ambient_class; // NOLINT
+
+bool js_register_cc_scene_Ambient(se::Object *obj); // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::scene::Ambient);
+SE_DECLARE_FUNC(js_scene_Ambient_getAlbedoArray);
+SE_DECLARE_FUNC(js_scene_Ambient_getColorArray);
+SE_DECLARE_FUNC(js_scene_Ambient_getGroundAlbedo);
+SE_DECLARE_FUNC(js_scene_Ambient_getSkyColor);
+SE_DECLARE_FUNC(js_scene_Ambient_getSkyIllum);
+SE_DECLARE_FUNC(js_scene_Ambient_initialize);
+SE_DECLARE_FUNC(js_scene_Ambient_isEnabled);
+SE_DECLARE_FUNC(js_scene_Ambient_setEnabled);
+SE_DECLARE_FUNC(js_scene_Ambient_setGroundAlbedo);
+SE_DECLARE_FUNC(js_scene_Ambient_setSkyColor);
+SE_DECLARE_FUNC(js_scene_Ambient_setSkyIllum);
+SE_DECLARE_FUNC(js_scene_Ambient_Ambient);
+
 extern se::Object *__jsb_cc_scene_Fog_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_Fog_class; // NOLINT
 
 bool js_register_cc_scene_Fog(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);       // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::Fog);
 SE_DECLARE_FUNC(js_scene_Fog_activate);
@@ -174,7 +210,7 @@ extern se::Object *__jsb_cc_IPassStates_proto; // NOLINT
 extern se::Class * __jsb_cc_IPassStates_class; // NOLINT
 
 bool js_register_cc_IPassStates(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);         // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 template <>
 bool sevalue_to_native(const se::Value &, cc::IPassStates *, se::Object *ctx);
@@ -184,7 +220,7 @@ extern se::Object *__jsb_cc_IPassInfo_proto; // NOLINT
 extern se::Class * __jsb_cc_IPassInfo_class; // NOLINT
 
 bool js_register_cc_IPassInfo(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);       // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 template <>
 bool sevalue_to_native(const se::Value &, cc::IPassInfo *, se::Object *ctx);
@@ -194,7 +230,7 @@ extern se::Object *__jsb_cc_IPassInfoFull_proto; // NOLINT
 extern se::Class * __jsb_cc_IPassInfoFull_class; // NOLINT
 
 bool js_register_cc_IPassInfoFull(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);           // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 template <>
 bool sevalue_to_native(const se::Value &, cc::IPassInfoFull *, se::Object *ctx);
@@ -204,17 +240,48 @@ extern se::Object *__jsb_cc_scene_ShadowInfo_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_ShadowInfo_class; // NOLINT
 
 bool js_register_cc_scene_ShadowInfo(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);              // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
-template <>
-bool sevalue_to_native(const se::Value &, cc::scene::ShadowInfo *, se::Object *ctx);
 JSB_REGISTER_OBJECT_TYPE(cc::scene::ShadowInfo);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_activate);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getBias);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getDistance);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getFar);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getMaxReceived);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getNear);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getNormal);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getNormalBias);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getOrthoSize);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getPcf);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getSaturation);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getShadowColor);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getShadowMapSize);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getSize);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_getType);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_isAutoAdapt);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_isEnabled);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setAutoAdapt);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setBias);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setDistance);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setEnabled);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setFar);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setMaxReceived);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setNear);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setNormal);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setNormalBias);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setOrthoSize);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setPcf);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setPlaneFromNode);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setSaturation);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setShadowMapSize);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setType);
+SE_DECLARE_FUNC(js_scene_ShadowInfo_setshadowColor);
 
 extern se::Object *__jsb_cc_scene_Shadow_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_Shadow_class; // NOLINT
 
 bool js_register_cc_scene_Shadow(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);          // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::Shadow);
 SE_DECLARE_FUNC(js_scene_Shadow_activate);
@@ -225,6 +292,7 @@ SE_DECLARE_FUNC(js_scene_Shadow_getFar);
 SE_DECLARE_FUNC(js_scene_Shadow_getInstancingMaterial);
 SE_DECLARE_FUNC(js_scene_Shadow_getMatLight);
 SE_DECLARE_FUNC(js_scene_Shadow_getMaterial);
+SE_DECLARE_FUNC(js_scene_Shadow_getMaxReceived);
 SE_DECLARE_FUNC(js_scene_Shadow_getNear);
 SE_DECLARE_FUNC(js_scene_Shadow_getNormal);
 SE_DECLARE_FUNC(js_scene_Shadow_getNormalBias);
@@ -235,6 +303,7 @@ SE_DECLARE_FUNC(js_scene_Shadow_getPlanarShader);
 SE_DECLARE_FUNC(js_scene_Shadow_getSaturation);
 SE_DECLARE_FUNC(js_scene_Shadow_getShadowColor);
 SE_DECLARE_FUNC(js_scene_Shadow_getShadowColor4f);
+SE_DECLARE_FUNC(js_scene_Shadow_getShadowMapSize);
 SE_DECLARE_FUNC(js_scene_Shadow_getSize);
 SE_DECLARE_FUNC(js_scene_Shadow_getType);
 SE_DECLARE_FUNC(js_scene_Shadow_initialize);
@@ -246,6 +315,7 @@ SE_DECLARE_FUNC(js_scene_Shadow_setBias);
 SE_DECLARE_FUNC(js_scene_Shadow_setDistance);
 SE_DECLARE_FUNC(js_scene_Shadow_setEnabled);
 SE_DECLARE_FUNC(js_scene_Shadow_setFar);
+SE_DECLARE_FUNC(js_scene_Shadow_setMaxReceived);
 SE_DECLARE_FUNC(js_scene_Shadow_setNear);
 SE_DECLARE_FUNC(js_scene_Shadow_setNormal);
 SE_DECLARE_FUNC(js_scene_Shadow_setNormalBias);
@@ -254,6 +324,7 @@ SE_DECLARE_FUNC(js_scene_Shadow_setPcf);
 SE_DECLARE_FUNC(js_scene_Shadow_setSaturation);
 SE_DECLARE_FUNC(js_scene_Shadow_setShadowColor);
 SE_DECLARE_FUNC(js_scene_Shadow_setShadowMapDirty);
+SE_DECLARE_FUNC(js_scene_Shadow_setShadowMapSize);
 SE_DECLARE_FUNC(js_scene_Shadow_setSize);
 SE_DECLARE_FUNC(js_scene_Shadow_setType);
 SE_DECLARE_FUNC(js_scene_Shadow_Shadow);
@@ -262,7 +333,7 @@ extern se::Object *__jsb_cc_scene_Skybox_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_Skybox_class; // NOLINT
 
 bool js_register_cc_scene_Skybox(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);          // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::Skybox);
 SE_DECLARE_FUNC(js_scene_Skybox_activate);
@@ -278,46 +349,11 @@ SE_DECLARE_FUNC(js_scene_Skybox_setIsRGBE);
 SE_DECLARE_FUNC(js_scene_Skybox_setUseIBL);
 SE_DECLARE_FUNC(js_scene_Skybox_Skybox);
 
-extern se::Object *__jsb_cc_AmbientInfo_proto; // NOLINT
-extern se::Class * __jsb_cc_AmbientInfo_class; // NOLINT
-
-bool js_register_cc_AmbientInfo(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);         // NOLINT
-
-JSB_REGISTER_OBJECT_TYPE(cc::AmbientInfo);
-SE_DECLARE_FUNC(js_scene_AmbientInfo_getGroundAlbedo);
-SE_DECLARE_FUNC(js_scene_AmbientInfo_getSkyColor);
-SE_DECLARE_FUNC(js_scene_AmbientInfo_getSkyIllum);
-SE_DECLARE_FUNC(js_scene_AmbientInfo_setGroundAlbedo);
-SE_DECLARE_FUNC(js_scene_AmbientInfo_setSkyColor);
-SE_DECLARE_FUNC(js_scene_AmbientInfo_setSkyIllum);
-SE_DECLARE_FUNC(js_scene_AmbientInfo_AmbientInfo);
-
-extern se::Object *__jsb_cc_scene_Ambient_proto; // NOLINT
-extern se::Class * __jsb_cc_scene_Ambient_class; // NOLINT
-
-bool js_register_cc_scene_Ambient(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);           // NOLINT
-
-JSB_REGISTER_OBJECT_TYPE(cc::scene::Ambient);
-SE_DECLARE_FUNC(js_scene_Ambient_getAlbedoArray);
-SE_DECLARE_FUNC(js_scene_Ambient_getColorArray);
-SE_DECLARE_FUNC(js_scene_Ambient_getGroundAlbedo);
-SE_DECLARE_FUNC(js_scene_Ambient_getSkyColor);
-SE_DECLARE_FUNC(js_scene_Ambient_getSkyIllum);
-SE_DECLARE_FUNC(js_scene_Ambient_initialize);
-SE_DECLARE_FUNC(js_scene_Ambient_isEnabled);
-SE_DECLARE_FUNC(js_scene_Ambient_setEnabled);
-SE_DECLARE_FUNC(js_scene_Ambient_setGroundAlbedo);
-SE_DECLARE_FUNC(js_scene_Ambient_setSkyColor);
-SE_DECLARE_FUNC(js_scene_Ambient_setSkyIllum);
-SE_DECLARE_FUNC(js_scene_Ambient_Ambient);
-
 extern se::Object *__jsb_cc_scene_IRenderWindowInfo_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_IRenderWindowInfo_class; // NOLINT
 
 bool js_register_cc_scene_IRenderWindowInfo(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);                     // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 template <>
 bool sevalue_to_native(const se::Value &, cc::scene::IRenderWindowInfo *, se::Object *ctx);
@@ -327,7 +363,7 @@ extern se::Object *__jsb_cc_scene_RenderWindow_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_RenderWindow_class; // NOLINT
 
 bool js_register_cc_scene_RenderWindow(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);                // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::RenderWindow);
 SE_DECLARE_FUNC(js_scene_RenderWindow_attachCamera);
@@ -351,7 +387,7 @@ extern se::Object *__jsb_cc_scene_Camera_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_Camera_class; // NOLINT
 
 bool js_register_cc_scene_Camera(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);          // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::Camera);
 SE_DECLARE_FUNC(js_scene_Camera_attachToScene);
@@ -436,7 +472,7 @@ extern se::Object *__jsb_cc_scene_DrawBatch2D_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_DrawBatch2D_class; // NOLINT
 
 bool js_register_cc_scene_DrawBatch2D(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);               // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 template <>
 bool sevalue_to_native(const se::Value &, cc::scene::DrawBatch2D *, se::Object *ctx);
@@ -446,7 +482,7 @@ extern se::Object *__jsb_cc_scene_IRenderSceneInfo_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_IRenderSceneInfo_class; // NOLINT
 
 bool js_register_cc_scene_IRenderSceneInfo(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);                    // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 template <>
 bool sevalue_to_native(const se::Value &, cc::scene::IRenderSceneInfo *, se::Object *ctx);
@@ -456,7 +492,7 @@ extern se::Object *__jsb_cc_scene_RenderScene_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_RenderScene_class; // NOLINT
 
 bool js_register_cc_scene_RenderScene(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);               // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::RenderScene);
 SE_DECLARE_FUNC(js_scene_RenderScene_addBatch);
@@ -497,7 +533,7 @@ extern se::Object *__jsb_cc_Root_proto; // NOLINT
 extern se::Class * __jsb_cc_Root_class; // NOLINT
 
 bool js_register_cc_Root(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);  // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::Root);
 SE_DECLARE_FUNC(js_scene_Root_activeWindow);
@@ -542,7 +578,7 @@ extern se::Object *__jsb_cc_scene_Pass_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_Pass_class; // NOLINT
 
 bool js_register_cc_scene_Pass(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);        // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::Pass);
 SE_DECLARE_FUNC(js_scene_Pass_beginChangeStatesSilently);
@@ -602,7 +638,7 @@ extern se::Object *__jsb_cc_scene_SubModel_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_SubModel_class; // NOLINT
 
 bool js_register_cc_scene_SubModel(se::Object *obj); // NOLINT
-bool register_all_scene(se::Object *obj);            // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::scene::SubModel);
 SE_DECLARE_FUNC(js_scene_SubModel_destroy);
@@ -629,3 +665,4 @@ SE_DECLARE_FUNC(js_scene_SubModel_setShaders);
 SE_DECLARE_FUNC(js_scene_SubModel_setSubMesh);
 SE_DECLARE_FUNC(js_scene_SubModel_update);
 SE_DECLARE_FUNC(js_scene_SubModel_SubModel);
+

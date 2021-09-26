@@ -5,7 +5,12 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/predefine.cmake)
 ################################# engine source code ##################################
 set(CWD ${CMAKE_CURRENT_LIST_DIR})
 set(COCOS2D_SOURCE_LIST)
+
+### TODO(PatriceJiang): should be remove in near future
 option(ENABLE_JSB_FILES "Compile bindings files" OFF)
+if(DEFINED ENV{ENABLE_JSB})
+    set(ENABLE_JSB_FILES ON)
+endif()
 
 # Should be enable someday in the future
 # set(CMAKE_CXX_FLAGS "${WERROR_FLAGS}")
@@ -1946,7 +1951,6 @@ cocos_source_files(
                  cocos/bindings/manual/jsb_module_register.h
                  cocos/bindings/manual/jsb_platform.h
     NO_WERROR    cocos/bindings/manual/jsb_scene_manual.cpp
-    NO_WERROR    cocos/bindings/manual/jsb_scene_manual_ext.cpp
                  cocos/bindings/manual/jsb_scene_manual.h
     NO_WERROR    cocos/bindings/manual/jsb_network_manual.cpp
                  cocos/bindings/manual/jsb_network_manual.h

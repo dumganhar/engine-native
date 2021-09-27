@@ -39,8 +39,7 @@ public:
     }
 
     explicit TypedArrayTemp(uint32_t length) {
-        _buffer     = std::make_shared<ArrayBuffer>(length);
-        _byteEndPos = length;
+        set(length);
     }
 
     explicit TypedArrayTemp(ArrayBuffer::Ptr buffer)
@@ -79,6 +78,13 @@ public:
         return subArray<T>(begin, _byteLength - begin + 1UL);
     }
 
+    void set(uint32_t length) {
+        _buffer     = std::make_shared<ArrayBuffer>(length);
+        _byteLength = _buffer->byteLength();
+        _byteOffset = 0;
+        _byteEndPos = length;
+    }
+
     void set(const ArrayBuffer::Ptr &buffer) {
         set(buffer, 0);
     }
@@ -98,7 +104,7 @@ public:
     }
 
     void reset(const ArrayBuffer::Ptr &buffer, uint32_t offset = 0, uint32_t byteLength = std::numeric_limits<uint32_t>::max()) {
-        _buffer = buffer;
+        _buffer     = buffer;
         _byteOffset = offset;
         _byteEndPos = byteLength == std::numeric_limits<uint32_t>::max() ? buffer->byteLength() : byteLength;
         _byteLength = buffer->byteLength();

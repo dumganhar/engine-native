@@ -26,16 +26,21 @@
 #pragma once
 
 #include "base/Macros.h"
-#include "core/ArrayBuffer.h"
 #include "base/TypeDef.h"
+#include "core/ArrayBuffer.h"
 
 namespace cc {
 
 class DataView final {
 public:
+    DataView() = default;
     explicit DataView(ArrayBuffer::Ptr buffer);
     DataView(ArrayBuffer::Ptr buffer, uint32_t byteOffset);
     DataView(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t byteLength);
+
+    void assign(ArrayBuffer::Ptr buffer);
+    void assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset);
+    void assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t byteLength);
 
     uint8_t  getUint8(index_t offset) const;
     uint16_t getUint16(index_t offset) const;
@@ -52,7 +57,7 @@ public:
     void setInt16(index_t offset, int16_t value);
     void setInt32(index_t offset, int32_t value);
     void setFloat32(index_t offset, float value);
-    
+
     inline const ArrayBuffer::Ptr &buffer() const { return _buffer; }
 
 private:

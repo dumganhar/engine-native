@@ -54,102 +54,103 @@ public:
 
     std::string readString();
 
+    inline const Uint8Array &getBuffer() const { return _buffer; }
+    inline int32_t           getLength() const { return _length; }
+
 private:
-    int32_t    length{0};
-    Uint8Array buffer{2048};
+    int32_t    _length{0};
+    Uint8Array _buffer{2048};
     DataView   _buffView;
     int32_t    _seekPos{0};
-
-    friend class TerrainAsset;
 };
 
 TerrainBuffer::TerrainBuffer() {
-    _buffView.assign(buffer.buffer());
+    _buffView.assign(_buffer.buffer());
 }
 
 TerrainBuffer::~TerrainBuffer() {
 }
 
 void TerrainBuffer::reserve(int32_t size) {
-    if (buffer.byteLength() > size) {
+    if (_buffer.byteLength() > size) {
         return;
     }
 
-    uint32_t capacity = buffer.byteLength();
+    uint32_t capacity = _buffer.byteLength();
     while (capacity < size) {
         capacity += capacity;
     }
 
     Uint8Array temp(capacity);
-    for (int32_t i = 0; i < length; ++i) {
-        temp[i] = buffer[i];
+    for (int32_t i = 0; i < _length; ++i) {
+        temp[i] = _buffer[i];
     }
 
-    buffer = temp;
-    _buffView.assign(buffer.buffer());
+    _buffer = temp;
+    _buffView.assign(_buffer.buffer());
 }
 
 void TerrainBuffer::assign(const Uint8Array &buff) {
-    buffer   = buff;
-    length   = buff.length();
+    _buffer  = buff;
+    _length  = buff.length();
     _seekPos = buff.byteOffset();
-    _buffView.assign(buffer.buffer());
+    _buffView.assign(_buffer.buffer());
 }
 
 void TerrainBuffer::writeInt8(int8_t value) {
-    reserve(length + 1);
+    reserve(_length + 1);
 
-    _buffView.setInt8(length, value);
-    length += 1;
+    _buffView.setInt8(_length, value);
+    _length += 1;
 }
 
 void TerrainBuffer::writeInt16(int16_t value) {
-    reserve(length + 2);
+    reserve(_length + 2);
 
-    _buffView.setInt16(length, value);
-    length += 2;
+    _buffView.setInt16(_length, value);
+    _length += 2;
 }
 
 void TerrainBuffer::writeInt32(int32_t value) {
-    reserve(length + 4);
+    reserve(_length + 4);
 
-    _buffView.setInt32(length, value);
-    length += 4;
+    _buffView.setInt32(_length, value);
+    _length += 4;
 }
 
 void TerrainBuffer::writeIntArray(const int32_t *value, int32_t count) {
-    reserve(length + 4 * count);
+    reserve(_length + 4 * count);
 
     for (int32_t i = 0; i < count; ++i) {
-        _buffView.setInt32(length + i * 4, value[i]);
+        _buffView.setInt32(_length + i * 4, value[i]);
     }
-    length += 4 * count;
+    _length += 4 * count;
 }
 
 void TerrainBuffer::writeFloat(float value) {
-    reserve(length + 4);
+    reserve(_length + 4);
 
-    _buffView.setFloat32(length, value);
-    length += 4;
+    _buffView.setFloat32(_length, value);
+    _length += 4;
 }
 
 void TerrainBuffer::writeFloatArray(const float *value, int32_t count) {
-    reserve(length + 4 * count);
+    reserve(_length + 4 * count);
 
     for (int32_t i = 0; i < count; ++i) {
-        _buffView.setFloat32(length + i * 4, value[i]);
+        _buffView.setFloat32(_length + i * 4, value[i]);
     }
-    length += 4 * count;
+    _length += 4 * count;
 }
 
 void TerrainBuffer::writeString(const std::string &value) {
-    reserve(length + value.length() + 4);
+    reserve(_length + value.length() + 4);
 
-    _buffView.setInt32(length, value.length());
+    _buffView.setInt32(_length, value.length());
     for (int32_t i = 0; i < value.length(); ++i) {
-        _buffView.setInt8(length + 4 + i, value[i]);
+        _buffView.setInt8(_length + 4 + i, value[i]);
     }
-    length += value.length() + 4;
+    _length += value.length() + 4;
 }
 
 int8_t TerrainBuffer::readInt8() {
@@ -370,13 +371,13 @@ Uint8Array TerrainAsset::exportNativeData() const {
         stream.writeFloat(layerBinaryInfos[i].metallic);
     }
 
-    return stream.buffer;
+    return stream.getBuffer();
 }
 
 Uint8Array TerrainAsset::exportDefaultNativeData() const {
     TerrainBuffer stream;
     stream.writeInt32(TERRAIN_DATA_VERSION_DEFAULT);
-    return stream.buffer;
+    return stream.getBuffer();
 }
 
 } // namespace cc

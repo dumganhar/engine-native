@@ -61,42 +61,6 @@ constexpr uint32_t TERRAIN_DATA_VERSION_DEFAULT = 0x01010111;
 
 class Texture2D;
 
-class TerrainBuffer final {
-public:
-    TerrainBuffer();
-    ~TerrainBuffer();
-
-    void reserve(int32_t size);
-    void assign(const Uint8Array &buff);
-
-    void writeInt8(int8_t value);
-    void writeInt16(int16_t value);
-    void writeInt32(int32_t value);
-    void writeIntArray(const int32_t *value, int32_t count);
-
-    void writeFloat(float value);
-    void writeFloatArray(const float *value, int32_t count);
-    void writeString(const std::string &value);
-
-    int8_t  readInt8();
-    int16_t readInt16();
-    int32_t readInt();
-    void    readIntArray(int32_t *value, int32_t count);
-
-    float readFloat();
-    void  readFloatArray(float *value, int32_t count);
-
-    std::string readString();
-
-public:
-    int32_t    length{0};
-    Uint8Array buffer{2048};
-
-private:
-    DataView _buffView;
-    int32_t  _seekPos = 0;
-};
-
 /**
  * @en terrain layer info
  * @zh 地形纹理信息

@@ -109,7 +109,7 @@ public:
      * @en version
      * @zh 版本
      */
-    int32_t getVersion() const {
+    inline int32_t getVersion() const {
         return _version;
     }
 
@@ -117,11 +117,11 @@ public:
      * @en tile size
      * @zh 栅格大小
      */
-    void setTileSize(float value) {
+    inline void setTileSize(float value) {
         _tileSize = value;
     }
 
-    float getTileSize() const {
+    inline float getTileSize() const {
         return _tileSize;
     }
 
@@ -129,11 +129,11 @@ public:
      * @en block count
      * @zh 块数量
      */
-    void setBlockCount(const std::vector<int32_t> &value) {
+    inline void setBlockCount(const std::vector<int32_t> &value) {
         _blockCount = value;
     }
 
-    const std::vector<int32_t> &getBlockCount() const {
+    inline const std::vector<int32_t> &getBlockCount() const {
         return _blockCount;
     }
 
@@ -141,11 +141,11 @@ public:
      * @en light map size
      * @zh 光照图大小
      */
-    void setLightMapSize(int16_t value) {
+    inline void setLightMapSize(int16_t value) {
         _lightMapSize = value;
     }
 
-    int16_t getLightMapSize() const {
+    inline int16_t getLightMapSize() const {
         return _lightMapSize;
     }
 
@@ -153,11 +153,11 @@ public:
      * @en weight map size
      * @zh 权重图大小
      */
-    void setWeightMapSize(int16_t value) {
+    inline void setWeightMapSize(int16_t value) {
         _weightMapSize = value;
     }
 
-    int16_t getWeightMapSize() const {
+    inline int16_t getWeightMapSize() const {
         return _weightMapSize;
     }
 
@@ -165,11 +165,11 @@ public:
      * @en height buffer
      * @zh 高度缓存
      */
-    void setHeights(const Uint16Array &value) {
+    inline void setHeights(const Uint16Array &value) {
         _heights = value;
     }
 
-    const Uint16Array &getHeights() const {
+    inline const Uint16Array &getHeights() const {
         return _heights;
     }
 
@@ -177,11 +177,11 @@ public:
      * @en weight buffer
      * @zh 权重缓存
      */
-    void setWeights(const Uint8Array &value) {
+    inline void setWeights(const Uint8Array &value) {
         _weights = value;
     }
 
-    const Uint8Array &getWeights() {
+    inline const Uint8Array &getWeights() {
         return _weights;
     }
 
@@ -189,11 +189,11 @@ public:
      * @en layer buffer
      * @zh 纹理索引缓存
      */
-    void setLayerBuffer(const std::vector<int16_t> &value) {
+    inline void setLayerBuffer(const std::vector<int16_t> &value) {
         _layerBuffer = value;
     }
 
-    const std::vector<int16_t> &getLayerBuffer() const {
+    inline const std::vector<int16_t> &getLayerBuffer() const {
         return _layerBuffer;
     }
 
@@ -201,15 +201,15 @@ public:
      * @en layer info
      * @zh 纹理信息
      */
-    void setLayerInfos(const std::vector<TerrainLayerInfo> &value) {
+    inline void setLayerInfos(const std::vector<TerrainLayerInfo> &value) {
         _layerInfos = value;
     }
 
-    const std::vector<TerrainLayerInfo> &getLayerInfos() const {
+    inline const std::vector<TerrainLayerInfo> &getLayerInfos() const {
         return _layerInfos;
     }
 
-    const std::vector<TerrainLayerBinaryInfo> &getLayerBinaryInfos() const {
+    inline const std::vector<TerrainLayerBinaryInfo> &getLayerBinaryInfos() const {
         return _layerBinaryInfos;
     }
 
@@ -226,7 +226,7 @@ public:
     int32_t getVertexCountI() const;
     int32_t getVertexCountJ() const;
 
-    void setNativeData(const Uint8Array &_nativeData) {
+    inline void setNativeData(const Uint8Array &_nativeData) {
         _data = _nativeData;
     }
 

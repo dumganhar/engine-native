@@ -200,6 +200,10 @@ public:
         return _layerBuffer;
     }
 
+    inline std::vector<int16_t> &getLayerBuffer() {
+        return _layerBuffer;
+    }
+
     /**
      * @en layer info
      * @zh 纹理信息
@@ -252,6 +256,7 @@ protected:
     //    @serializable
     std::vector<TerrainLayerInfo> _layerInfos;
 
+    friend class Terrain;
     CC_DISALLOW_COPY_MOVE_ASSIGN(TerrainAsset);
 };
 

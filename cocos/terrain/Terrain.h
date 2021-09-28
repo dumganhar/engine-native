@@ -360,7 +360,7 @@ public:
      * @en get light map size
      * @zh 获得光照图大小
      */
-    inline uint32_t getLightMapSize() const {
+    inline int16_t getLightMapSize() const {
         return _lightMapSize;
     }
 
@@ -368,7 +368,7 @@ public:
      * @en get weight map size
      * @zh 获得权重图大小
      */
-    inline uint32_t getWeightMapSize() const {
+    inline int16_t getWeightMapSize() const {
         return _weightMapSize;
     }
 
@@ -623,7 +623,7 @@ private:
 
     float                                                  _tileSize{1.F};
     std::array<int32_t, 2>                                 _blockCount{1, 1};
-    uint32_t                                               _weightMapSize{128};
+    int16_t                                                _weightMapSize{128};
     int16_t                                                _lightMapSize{128};
     Uint16Array                                            _heights;
     Uint8Array                                             _weights;

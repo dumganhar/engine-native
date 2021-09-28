@@ -552,7 +552,7 @@ void TerrainBlock::updateWeightMap() {
         _weightMap->setWrapMode(WrapMode::CLAMP_TO_EDGE, WrapMode::CLAMP_TO_EDGE);
     }
 
-    Uint8Array weightData{_terrain->getWeightMapSize() * _terrain->getWeightMapSize() * 4};
+    Uint8Array weightData(_terrain->getWeightMapSize() * _terrain->getWeightMapSize() * 4);
     uint32_t   weightIndex = 0;
     for (uint32_t j = 0; j < _terrain->getWeightMapSize(); ++j) {
         for (uint32_t i = 0; i < _terrain->getWeightMapSize(); ++i) {
@@ -759,31 +759,33 @@ TerrainAsset *Terrain::exportAsset() const {
     asset->setTileSize(getTileSize());
     asset->setBlockCount(getBlockCount());
     asset->setLightMapSize(_lightMapSize);
-    asset->weightMapSize = _weightMapSize;
-    asset->heights       = _heights;
-    asset->weights       = _weights;
+    asset->setWeightMapSize(_weightMapSize);
+    asset->setHeights(_heights);
+    asset->setWeights(_weights);
 
-    asset->layerBuffer = new Array<number>(_blocks.length * 4);
-    for (let i = 0; i < _blocks.length; ++i) {
-        asset->layerBuffer[i * 4 + 0] = _blocks[i].layers[0];
-        asset->layerBuffer[i * 4 + 1] = _blocks[i].layers[1];
-        asset->layerBuffer[i * 4 + 2] = _blocks[i].layers[2];
-        asset->layerBuffer[i * 4 + 3] = _blocks[i].layers[3];
+    auto &layerBuffer = asset->getLayerBuffer();
+    layerBuffer.resize(_blocks.size() * 4);
+    for (size_t i = 0; i < _blocks.size(); ++i) {
+        layerBuffer[i * 4 + 0] = _blocks[i]->getLayers()[0];
+        layerBuffer[i * 4 + 1] = _blocks[i]->getLayers()[1];
+        layerBuffer[i * 4 + 2] = _blocks[i]->getLayers()[2];
+        layerBuffer[i * 4 + 3] = _blocks[i]->getLayers()[3];
     }
 
-    for (let i = 0; i < _layerList.length; ++i) {
-        const temp = _layerList[i];
-        if (temp && temp.detailMap && isValid(temp.detailMap)) {
-            const layer     = new TerrainLayerInfo();
+    int32_t i = 0;
+    for (auto &temp : _layerList) {
+        if (temp && temp->detailMap && isObjectValid(temp->detailMap)) {
+            TerrainLayerInfo layer;
             layer.slot      = i;
-            layer.tileSize  = temp.tileSize;
-            layer.detailMap = temp.detailMap;
-            layer.normalMap = temp.normalMap;
-            layer.metallic  = temp.metallic;
-            layer.roughness = temp.roughness;
+            layer.tileSize  = temp->tileSize;
+            layer.detailMap = temp->detailMap;
+            layer.normalMap = temp->normalMap;
+            layer.metallic  = temp->metallic;
+            layer.roughness = temp->roughness;
 
-            asset->layerInfos.push(layer);
+            asset->_layerInfos.emplace_back(layer);
         }
+        ++i;
     }
 
     return asset;

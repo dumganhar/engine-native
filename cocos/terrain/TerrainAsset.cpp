@@ -38,19 +38,19 @@ public:
     void writeInt8(int8_t value);
     void writeInt16(int16_t value);
     void writeInt32(int32_t value);
-    void writeIntArray(const int32_t *value, int32_t count);
+    void writeInt32Array(const int32_t *value, int32_t count);
 
-    void writeFloat(float value);
-    void writeFloatArray(const float *value, int32_t count);
+    void writeFloat32(float value);
+    void writeFloat32Array(const float *value, int32_t count);
     void writeString(const std::string &value);
 
     int8_t  readInt8();
     int16_t readInt16();
-    int32_t readInt();
-    void    readIntArray(int32_t *value, int32_t count);
+    int32_t readInt32();
+    void    readInt32Array(int32_t *value, int32_t count);
 
-    float readFloat();
-    void  readFloatArray(float *value, int32_t count);
+    float readFloat32();
+    void  readFloat32Array(float *value, int32_t count);
 
     std::string readString();
 
@@ -118,7 +118,7 @@ void TerrainBuffer::writeInt32(int32_t value) {
     _length += 4;
 }
 
-void TerrainBuffer::writeIntArray(const int32_t *value, int32_t count) {
+void TerrainBuffer::writeInt32Array(const int32_t *value, int32_t count) {
     reserve(_length + 4 * count);
 
     for (int32_t i = 0; i < count; ++i) {
@@ -127,14 +127,14 @@ void TerrainBuffer::writeIntArray(const int32_t *value, int32_t count) {
     _length += 4 * count;
 }
 
-void TerrainBuffer::writeFloat(float value) {
+void TerrainBuffer::writeFloat32(float value) {
     reserve(_length + 4);
 
     _buffView.setFloat32(_length, value);
     _length += 4;
 }
 
-void TerrainBuffer::writeFloatArray(const float *value, int32_t count) {
+void TerrainBuffer::writeFloat32Array(const float *value, int32_t count) {
     reserve(_length + 4 * count);
 
     for (int32_t i = 0; i < count; ++i) {
@@ -165,13 +165,13 @@ int16_t TerrainBuffer::readInt16() {
     return value;
 }
 
-int32_t TerrainBuffer::readInt() {
+int32_t TerrainBuffer::readInt32() {
     const int32_t value = _buffView.getInt32(_seekPos);
     _seekPos += 4;
     return value;
 }
 
-void TerrainBuffer::readIntArray(int32_t *value, int32_t count) {
+void TerrainBuffer::readInt32Array(int32_t *value, int32_t count) {
     for (int32_t i = 0; i < count; ++i) {
         value[i] = _buffView.getInt32(_seekPos + i * 4);
     }
@@ -179,13 +179,13 @@ void TerrainBuffer::readIntArray(int32_t *value, int32_t count) {
     return value;
 }
 
-float TerrainBuffer::readFloat() {
+float TerrainBuffer::readFloat32() {
     const float value = _buffView.getFloat32(_seekPos);
     _seekPos += 4;
     return value;
 }
 
-void TerrainBuffer::readFloatArray(float *value, int32_t count) {
+void TerrainBuffer::readFloat32Array(float *value, int32_t count) {
     for (int32_t i = 0; i < count; ++i) {
         value[i] = _buffView.getFloat32(_seekPos + i * 4);
     }
@@ -194,7 +194,7 @@ void TerrainBuffer::readFloatArray(float *value, int32_t count) {
 }
 
 std::string TerrainBuffer::readString() {
-    const int32_t length = readInt();
+    const int32_t length = readInt32();
 
     std::string value;
     for (int32_t i = 0; i < length; ++i) {
@@ -260,7 +260,7 @@ bool TerrainAsset::loadNativeData(const Uint8Array &_nativeData) {
     stream.assign(_nativeData);
 
     // version
-    _version = stream.readInt();
+    _version = stream.readInt32();
     if (_version == TERRAIN_DATA_VERSION_DEFAULT) {
         return true;
     }
@@ -269,28 +269,28 @@ bool TerrainAsset::loadNativeData(const Uint8Array &_nativeData) {
     }
 
     // geometry info
-    _tileSize = stream.readFloat();
-    stream.readIntArray(_blockCount.data(), _blockCount.size());
+    _tileSize = stream.readFloat32();
+    stream.readInt32Array(_blockCount.data(), _blockCount.size());
     _weightMapSize = stream.readInt16();
     _lightMapSize  = stream.readInt16();
 
     // heights
-    const int32_t heightBufferSize = stream.readInt();
-    _heights.set(heightBufferSize);
+    const int32_t heightBufferSize = stream.readInt32();
+    _heights.reset(heightBufferSize);
     for (uint32_t i = 0; i < _heights.length(); ++i) {
         _heights[i] = stream.readInt16();
     }
 
     // weights
-    const int32_t WeightBufferSize = stream.readInt();
-    _weights.set(WeightBufferSize);
+    const int32_t WeightBufferSize = stream.readInt32();
+    _weights.reset(WeightBufferSize);
     for (uint32_t i = 0; i < _weights.length(); ++i) {
         _weights[i] = stream.readInt8();
     }
 
     // layer buffer
     if (_version >= TERRAIN_DATA_VERSION2) {
-        const int32_t layerBufferSize = stream.readInt();
+        const int32_t layerBufferSize = stream.readInt32();
         _layerBuffer.resize(layerBufferSize);
         for (size_t i = 0; i < _layerBuffer.size(); ++i) {
             _layerBuffer[i] = stream.readInt16();
@@ -299,17 +299,17 @@ bool TerrainAsset::loadNativeData(const Uint8Array &_nativeData) {
 
     // layer infos
     if (_version >= TERRAIN_DATA_VERSION3) {
-        const int32_t layerInfoSize = stream.readInt();
+        const int32_t layerInfoSize = stream.readInt32();
         _layerBinaryInfos.resize(layerInfoSize);
         for (size_t i = 0; i < _layerBinaryInfos.size(); ++i) {
-            _layerBinaryInfos[i].slot     = stream.readInt();
-            _layerBinaryInfos[i].tileSize = stream.readFloat();
+            _layerBinaryInfos[i].slot     = stream.readInt32();
+            _layerBinaryInfos[i].tileSize = stream.readFloat32();
 
             _layerBinaryInfos[i].detailMapId = stream.readString();
             if (_version >= TERRAIN_DATA_VERSION4) {
                 _layerBinaryInfos[i].normalMapId = stream.readString();
-                _layerBinaryInfos[i].roughness   = stream.readFloat();
-                _layerBinaryInfos[i].metallic    = stream.readFloat();
+                _layerBinaryInfos[i].roughness   = stream.readFloat32();
+                _layerBinaryInfos[i].metallic    = stream.readFloat32();
             }
         }
     }
@@ -324,8 +324,8 @@ Uint8Array TerrainAsset::exportNativeData() const {
     stream.writeInt32(TERRAIN_DATA_VERSION5);
 
     // geometry info
-    stream.writeFloat(_tileSize);
-    stream.writeIntArray(_blockCount.data(), _blockCount.size());
+    stream.writeFloat32(_tileSize);
+    stream.writeInt32Array(_blockCount.data(), _blockCount.size());
     stream.writeInt16(_weightMapSize);
     stream.writeInt16(_lightMapSize);
 
@@ -364,11 +364,11 @@ Uint8Array TerrainAsset::exportNativeData() const {
     stream.writeInt32(layerBinaryInfos.size());
     for (size_t i = 0; i < layerBinaryInfos.size(); ++i) {
         stream.writeInt32(layerBinaryInfos[i].slot);
-        stream.writeFloat(layerBinaryInfos[i].tileSize);
+        stream.writeFloat32(layerBinaryInfos[i].tileSize);
         stream.writeString(layerBinaryInfos[i].detailMapId);
         stream.writeString(layerBinaryInfos[i].normalMapId);
-        stream.writeFloat(layerBinaryInfos[i].roughness);
-        stream.writeFloat(layerBinaryInfos[i].metallic);
+        stream.writeFloat32(layerBinaryInfos[i].roughness);
+        stream.writeFloat32(layerBinaryInfos[i].metallic);
     }
 
     return stream.getBuffer();

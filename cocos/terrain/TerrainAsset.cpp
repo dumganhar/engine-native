@@ -264,6 +264,7 @@ bool TerrainAsset::loadNativeData(const Uint8Array &_nativeData) {
     if (_version == TERRAIN_DATA_VERSION_DEFAULT) {
         return true;
     }
+
     if (_version != TERRAIN_DATA_VERSION && _version != TERRAIN_DATA_VERSION2 && _version != TERRAIN_DATA_VERSION3 && _version != TERRAIN_DATA_VERSION4 && _version != TERRAIN_DATA_VERSION5) {
         return false;
     }

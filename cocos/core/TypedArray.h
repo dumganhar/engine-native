@@ -114,8 +114,9 @@ public:
     inline uint32_t                byteLength() const { return _byteLength; }
     inline uint32_t                length() const { return _byteLength / sizeof(T); }
     inline uint32_t                byteOffset() const { return _byteOffset; }
-    inline uint32_t                bytesPerElement() const { return sizeof(T); }
     inline bool                    empty() const { return _byteLength == 0; }
+
+    static constexpr uint32_t BYTES_PER_ELEMENT = sizeof(T);
 
 private:
     ArrayBuffer::Ptr _buffer{nullptr};

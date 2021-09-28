@@ -855,6 +855,19 @@ cocos_source_files(
                  cocos/renderer/pipeline/helper/DefineMap.cpp
 )
 
+##### terrain
+
+cocos_source_files(
+    cocos/terrain/HeightField.cpp
+    cocos/terrain/HeightField.h
+    cocos/terrain/Terrain.cpp
+    cocos/terrain/Terrain.h
+    cocos/terrain/TerrainAsset.cpp
+    cocos/terrain/TerrainAsset.h
+    cocos/terrain/TerrainLod.cpp
+    cocos/terrain/TerrainLod.h
+)
+
 
 ##### scene
 cocos_source_files(

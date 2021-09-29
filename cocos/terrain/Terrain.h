@@ -72,13 +72,13 @@ struct TerrainInfo {
      * @en weight map size
      * @zh 权重图大小
      */
-    uint32_t weightMapSize = 128;
+    int32_t weightMapSize = 128;
 
     /**
      * @en light map size
      * @zh 光照图大小
      */
-    uint32_t lightMapSize = 128;
+    int32_t lightMapSize = 128;
 
     /**
      * @en terrain size
@@ -138,7 +138,7 @@ struct TerrainLayer {
      * @en tile size
      * @zh 平铺大小
      */
-    uint32_t tileSize{1};
+    float tileSize{1.F};
 
     /**
      * @en metallic
@@ -185,7 +185,7 @@ public:
      */
     bool isValid() const;
 
-    using LayerIndics = std::array<int32_t, 4>;
+    using LayerIndics = std::array<int16_t, 4>;
     /**
      * @en get layers
      * @zh 获得纹理层索引
@@ -261,7 +261,7 @@ public:
     void        updateMaterial(bool init);
     void        updateHeight();
     void        updateWeightMap();
-    void        updateLightmap(const TerrainBlockLightmapInfo &info);
+    void        updateLightmap(TerrainBlockLightmapInfo *info);
 
 private:
     Terrain *              _terrain{nullptr};
@@ -269,8 +269,8 @@ private:
     TerrainRenderable *    _renderable{nullptr};
     std::array<int32_t, 2> _index{1, 1};
     // private _neighbor: TerrainBlock|null[] = [null, null, null, null];
-    Texture2D *                             _weightMap{nullptr};
-    std::optional<TerrainBlockLightmapInfo> _lightmapInfo;
+    Texture2D *               _weightMap{nullptr};
+    TerrainBlockLightmapInfo *_lightmapInfo{nullptr};
 };
 
 /**
@@ -392,7 +392,7 @@ public:
      * @en check valid
      * @zh 检测是否有效
      */
-    bool isValid() const {
+    inline bool isValid() const {
         return !_blocks.empty();
     }
 
@@ -428,7 +428,7 @@ public:
 
     TerrainAsset *exportAsset() const;
 
-    const TerrainBlockLightmapInfo &getLightmapInfo(int32_t i, int32_t j) const;
+    TerrainBlockLightmapInfo *getLightmapInfo(int32_t i, int32_t j);
 
     /**
      * @en get all blocks
@@ -442,19 +442,19 @@ public:
      * @en get block layers
      * @zh 获得地形块纹理层
      */
-    std::array<int32_t, 4> getBlockLayers(int32_t i, int32_t j) const;
+    std::array<int16_t, 4> getBlockLayers(int32_t i, int32_t j) const;
 
     /**
      * @en get block layer
      * @zh 获得地形块纹理层
      */
-    int32_t getBlockLayer(int32_t i, int32_t j, int32_t index) const;
+    int16_t getBlockLayer(int32_t i, int32_t j, int32_t index) const;
 
     /**
      * @en set block layer
      * @zh 获得地形块层
      */
-    void setBlockLayer(int32_t i, int32_t j, int32_t index, int32_t layerId) {
+    void setBlockLayer(int32_t i, int32_t j, int32_t index, int16_t layerId) {
         int32_t layerIndex               = (j * _blockCount[0] + i) * TERRAIN_MAX_BLEND_LAYERS;
         _layerBuffer[layerIndex + index] = layerId;
     }
@@ -554,7 +554,7 @@ public:
      * @en get normal by point
      * @zh 根据点的坐标获得法线
      */
-    Vec3 getNormalAt(float x, float y) const;
+    std::optional<Vec3> getNormalAt(float x, float y) const;
 
     /**
      * @en set weight
@@ -572,7 +572,7 @@ public:
      * @en get normal by point
      * @zh 根据点的坐标获得权重
      */
-    Vec4 getWeightAt(float x, float y) const;
+    std::optional<Vec4> getWeightAt(float x, float y) const;
 
     /**
      * @en get max weight layer by point
@@ -588,7 +588,7 @@ public:
      * @param step ray step
      * @param worldSpace is world space
      */
-    Vec3 rayCheck(const Vec3 &start, const Vec3 &dir, float step, bool worldSpace = true);
+    std::optional<Vec3> rayCheck(const Vec3 &start, const Vec3 &dir, float step, bool worldSpace = true);
 
     inline gfx::Buffer *getSharedIndexBuffer() const { return _sharedIndexBuffer; }
 
@@ -629,7 +629,7 @@ private:
     Uint8Array                                             _weights;
     std::vector<float>                                     _normals;
     std::array<TerrainLayer::Ptr, TERRAIN_MAX_LAYER_COUNT> _layerList;
-    std::vector<int32_t>                                   _layerBuffer;
+    std::vector<int16_t>                                   _layerBuffer;
     std::vector<TerrainBlock *>                            _blocks;
     gfx::Buffer *                                          _sharedIndexBuffer{nullptr};
 

@@ -443,16 +443,16 @@ TerrainBlock::LayerIndics TerrainBlock::getLayers() const {
 }
 
 Texture2D *TerrainBlock::getLightmap() const {
-    return _lightmapInfo.has_value() ? _lightmapInfo.value().texture : nullptr;
+    return _lightmapInfo != nullptr ? _lightmapInfo->texture : nullptr;
 }
 
 Vec4 TerrainBlock::getLightmapUVParam() const {
-    if (_lightmapInfo.has_value()) {
+    if (_lightmapInfo != nullptr) {
         return {
-            _lightmapInfo.value().UOff,
-            _lightmapInfo.value().VOff,
-            _lightmapInfo.value().UScale,
-            _lightmapInfo.value().VScale};
+            _lightmapInfo->UOff,
+            _lightmapInfo->VOff,
+            _lightmapInfo->UScale,
+            _lightmapInfo->VScale};
     }
 
     return Vec4::ZERO;
@@ -571,8 +571,8 @@ void TerrainBlock::updateWeightMap() {
     _weightMap->uploadData(weightData.buffer().get()->getData());
 }
 
-void TerrainBlock::updateLightmap(const TerrainBlockLightmapInfo &info) {
-    _lightmapInfo = info;
+void TerrainBlock::updateLightmap(TerrainBlockLightmapInfo *info) {
+    _lightmapInfo = info; //cjh TODO: weak ref?
     invalidMaterial();
 }
 //
@@ -791,83 +791,745 @@ TerrainAsset *Terrain::exportAsset() const {
     return asset;
 }
 
-const TerrainBlockLightmapInfo &Terrain::getLightmapInfo(int32_t i, int32_t j) const {
+TerrainBlockLightmapInfo *Terrain::getLightmapInfo(int32_t i, int32_t j) {
+    const int32_t             index = j * getBlockCount()[0] + i;
+    TerrainBlockLightmapInfo *ret   = nullptr;
+    if (index < _lightmapInfos.size()) {
+        ret = &_lightmapInfos[index];
+    }
+    return ret;
 }
 
-std::array<int32_t, 4> Terrain::getBlockLayers(int32_t i, int32_t j) const {
+std::array<int16_t, 4> Terrain::getBlockLayers(int32_t i, int32_t j) const {
+    const int32_t layerIndex = (j * _blockCount[0] + i) * TERRAIN_MAX_BLEND_LAYERS;
+
+    return {
+        _layerBuffer[layerIndex],
+        _layerBuffer[layerIndex + 1],
+        _layerBuffer[layerIndex + 2],
+        _layerBuffer[layerIndex + 3],
+    };
 }
 
-int32_t Terrain::getBlockLayer(int32_t i, int32_t j, int32_t index) const {
+int16_t Terrain::getBlockLayer(int32_t i, int32_t j, int32_t index) const {
+    const int32_t layerIndex = (j * _blockCount[0] + i) * TERRAIN_MAX_BLEND_LAYERS;
+    return _layerBuffer[layerIndex + index];
 }
 
 Vec3 Terrain::getPosition(int32_t i, int32_t j) {
+    const float x = i * _tileSize;
+    const float z = j * _tileSize;
+    const float y = getHeight(i, j);
+
+    return {x, y, z};
 }
 
 void Terrain::setHeight(int32_t i, int32_t j, float h) {
+    h                                     = std::clamp(h, TERRAIN_HEIGHT_FMIN, TERRAIN_HEIGHT_FMAX);
+    _heights[j * getVertexCount()[0] + i] = TERRAIN_HEIGHT_BASE + h / TERRAIN_HEIGHT_FACTORY;
 }
 
 float Terrain::getHeight(int32_t i, int32_t j) const {
+    return (_heights[j * getVertexCount()[0] + i] - TERRAIN_HEIGHT_BASE) * TERRAIN_HEIGHT_FACTORY;
 }
 
 float Terrain::getHeightClamp(int32_t i, int32_t j) const {
+    auto vertexCount = getVertexCount();
+    i                = std::clamp(i, 0, vertexCount[0] - 1);
+    j                = std::clamp(j, 0, vertexCount[1] - 1);
+
+    return getHeight(i, j);
 }
 
 std::optional<float> Terrain::getHeightAt(float x, float y) const {
+    const float fx = x / getTileSize();
+    const float fy = y / getTileSize();
+
+    int32_t     ix0 = static_cast<int32_t>(std::floor(fx));
+    int32_t     iz0 = static_cast<int32_t>(std::floor(fy));
+    int32_t     ix1 = ix0 + 1;
+    int32_t     iz1 = iz0 + 1;
+    const float dx  = fx - ix0;
+    const float dz  = fy - iz0;
+
+    auto vertexCount = getVertexCount();
+
+    if (ix0 < 0 || ix0 > vertexCount[0] - 1 || iz0 < 0 || iz0 > vertexCount[1] - 1) {
+        return std::nullopt;
+    }
+
+    ix0 = std::clamp(ix0, 0, vertexCount[0] - 1);
+    iz0 = std::clamp(iz0, 0, vertexCount[1] - 1);
+    ix1 = std::clamp(ix1, 0, vertexCount[0] - 1);
+    iz1 = std::clamp(iz1, 0, vertexCount[1] - 1);
+
+    float       a = getHeight(ix0, iz0);
+    float       b = getHeight(ix1, iz0);
+    float       c = getHeight(ix0, iz1);
+    float       d = getHeight(ix1, iz1);
+    const float m = (b + c) * 0.5F;
+
+    if (dx + dz <= 1.0F) {
+        d = m + (m - a);
+    } else {
+        a = m + (m - d);
+    }
+
+    const float h1 = a * (1.0F - dx) + b * dx;
+    const float h2 = c * (1.0F - dx) + d * dx;
+
+    const float h = h1 * (1.0F - dz) + h2 * dz;
+
+    return h;
 }
 
 void Terrain::setNormal(int32_t i, int32_t j, const Vec3 &n) {
+    const int32_t index = j * getVertexCount()[0] + i;
+
+    _normals[index * 3 + 0] = n.x;
+    _normals[index * 3 + 1] = n.y;
+    _normals[index * 3 + 2] = n.z;
 }
 
 Vec3 Terrain::getNormal(int32_t i, int32_t j) const {
+    const int32_t index = j * getVertexCount()[0] + i;
+
+    Vec3 n;
+    n.x = _normals[index * 3 + 0];
+    n.y = _normals[index * 3 + 1];
+    n.z = _normals[index * 3 + 2];
+
+    return n;
 }
 
-Vec3 Terrain::getNormalAt(float x, float y) const {
+std::optional<Vec3> Terrain::getNormalAt(float x, float y) const {
+    const float fx = x / getTileSize();
+    const float fy = y / getTileSize();
+
+    int32_t     ix0 = static_cast<int32_t>(std::floor(fx));
+    int32_t     iz0 = static_cast<int32_t>(std::floor(fy));
+    int32_t     ix1 = ix0 + 1;
+    int32_t     iz1 = iz0 + 1;
+    const float dx  = fx - ix0;
+    const float dz  = fy - iz0;
+
+    auto vertexCount = getVertexCount();
+
+    if (ix0 < 0 || ix0 > vertexCount[0] - 1 || iz0 < 0 || iz0 > vertexCount[1] - 1) {
+        return std::nullopt;
+    }
+
+    ix0 = std::clamp(ix0, 0, vertexCount[0] - 1);
+    iz0 = std::clamp(iz0, 0, vertexCount[1] - 1);
+    ix1 = std::clamp(ix1, 0, vertexCount[0] - 1);
+    iz1 = std::clamp(iz1, 0, vertexCount[1] - 1);
+
+    Vec3 a = getNormal(ix0, iz0);
+    Vec3 b = getNormal(ix1, iz0);
+    Vec3 c = getNormal(ix0, iz1);
+    Vec3 d = getNormal(ix1, iz1);
+    Vec3 m;
+    Vec3::add(b, c, &m);
+    m.scale(0.5F);
+
+    if (dx + dz <= 1.0F) {
+        // d = m + (m - a);
+        d.set(m);
+        d.subtract(a);
+        d.add(m);
+    } else {
+        // a = m + (m - d);
+        a.set(m);
+        a.subtract(d);
+        a.add(m);
+    }
+
+    Vec3 n1 = a.lerp(b, dx);
+    Vec3 n2 = c.lerp(d, dx);
+    Vec3 n  = n1.lerp(n2, dz);
+
+    return n;
 }
 
 void Terrain::setWeight(int32_t i, int32_t j, const Vec4 &w) {
+    const int32_t index = j * _weightMapSize * _blockCount[0] + i;
+
+    _weights[index * 4 + 0] = w.x * 255.F;
+    _weights[index * 4 + 1] = w.y * 255.F;
+    _weights[index * 4 + 2] = w.z * 255.F;
+    _weights[index * 4 + 3] = w.w * 255.F;
 }
 
 Vec4 Terrain::getWeight(int32_t i, int32_t j) const {
+    const int32_t index = j * _weightMapSize * _blockCount[0] + i;
+
+    Vec4 w;
+    w.x = _weights[index * 4 + 0] / 255.F;
+    w.y = _weights[index * 4 + 1] / 255.F;
+    w.z = _weights[index * 4 + 2] / 255.F;
+    w.w = _weights[index * 4 + 3] / 255.F;
+
+    return w;
 }
 
-Vec4 Terrain::getWeightAt(float x, float y) const {
+std::optional<Vec4> Terrain::getWeightAt(float x, float y) const {
+    const int32_t uWeigthComplexity = getWeightMapSize() * _blockCount[0];
+    const int32_t vWeigthComplexity = getWeightMapSize() * _blockCount[1];
+    if (uWeigthComplexity == 0 || vWeigthComplexity == 0) {
+        return std::nullopt;
+    }
+
+    const float fx = x / uWeigthComplexity;
+    const float fy = y / vWeigthComplexity;
+
+    int32_t     ix0 = static_cast<int32_t>(std::floor(fx));
+    int32_t     iz0 = static_cast<int32_t>(std::floor(fy));
+    int32_t     ix1 = ix0 + 1;
+    int32_t     iz1 = iz0 + 1;
+    const float dx  = fx - ix0;
+    const float dz  = fy - iz0;
+
+    if (ix0 < 0 || ix0 > uWeigthComplexity - 1 || iz0 < 0 || iz0 > vWeigthComplexity - 1) {
+        return std::nullopt;
+    }
+
+    ix0 = std::clamp(ix0, 0, uWeigthComplexity - 1);
+    iz0 = std::clamp(iz0, 0, vWeigthComplexity - 1);
+    ix1 = std::clamp(ix1, 0, uWeigthComplexity - 1);
+    iz1 = std::clamp(iz1, 0, vWeigthComplexity - 1);
+
+    Vec4 a = getWeight(ix0, iz0);
+    Vec4 b = getWeight(ix1, iz0);
+    Vec4 c = getWeight(ix0, iz1);
+    Vec4 d = getWeight(ix1, iz1);
+    Vec4 m;
+    Vec4::add(b, c, &m);
+    m.scale(0.5F);
+
+    if (dx + dz <= 1.0F) {
+        d = Vec4{};
+        Vec4::subtract(m, a, &d);
+        d.add(m);
+    } else {
+        a = Vec4{};
+        Vec4::subtract(m, d, &a);
+        a.add(m);
+    }
+
+    Vec4 n1;
+    Vec4 n2;
+    Vec4 n;
+    Vec4::lerp(a, b, dx, &n1);
+    Vec4::lerp(c, d, dx, &n2);
+    Vec4::lerp(n1, n2, dz, &n);
+
+    return n;
 }
 
 TerrainLayer::Ptr Terrain::getMaxWeightLayerAt(float x, float y) {
+    const int32_t uWeigthComplexity = getWeightMapSize() * _blockCount[0];
+    const int32_t vWeigthComplexity = getWeightMapSize() * _blockCount[1];
+    if (uWeigthComplexity == 0 || vWeigthComplexity == 0) {
+        return nullptr;
+    }
+
+    const float   fx  = x / uWeigthComplexity;
+    const float   fy  = y / vWeigthComplexity;
+    const int32_t ix0 = static_cast<int32_t>(std::floor(fx));
+    const int32_t iz0 = static_cast<int32_t>(std::floor(fy));
+
+    if (ix0 < 0 || ix0 > uWeigthComplexity - 1 || iz0 < 0 || iz0 > vWeigthComplexity - 1) {
+        return nullptr;
+    }
+
+    const Vec4    w     = getWeight(ix0, iz0);
+    const int32_t bx    = static_cast<int32_t>(std::floor(x / getWeightMapSize()));
+    const int32_t by    = static_cast<int32_t>(std::floor(y / getWeightMapSize()));
+    TerrainBlock *block = getBlock(bx, by);
+
+    int32_t i = 0;
+    //cjh TODO: what's w[i] means?   if (w.y > w[i] && block->getLayer(1) != -1) {
+    //        i = 1;
+    //    }
+    //    if (w.y > w[i] && block->getLayer(2) != -1) {
+    //        i = 2;
+    //    }
+    //    if (w.z > w[i] && block->getLayer(3) != -1) {
+    //        i = 3;
+    //    }
+
+    i = block->getLayer(i);
+
+    return getLayer(i);
 }
 
-Vec3 Terrain::rayCheck(const Vec3 &start, const Vec3 &dir, float step, bool worldSpace /* = true*/) {
+std::optional<Vec3> Terrain::rayCheck(const Vec3 &start, const Vec3 &dir, float step, bool worldSpace /* = true*/) {
+    constexpr int32_t MAX_COUNT = 2000;
+
+    auto trace = start;
+    if (worldSpace) {
+        Vec3::subtract(start, getNode()->getWorldPosition(), &trace);
+    }
+
+    Vec3 delta;
+    delta.set(dir);
+    delta.scale(step);
+
+    std::optional<Vec3> position;
+
+    if (dir == Vec3{0, 1, 0}) {
+        std::optional<float> y = getHeightAt(trace.x, trace.z);
+        if (y.has_value() && trace.y <= y) {
+            position = Vec3{trace.x, y.value(), trace.z};
+        }
+    } else if (dir == Vec3{0, -1, 0}) {
+        std::optional<float> y = getHeightAt(trace.x, trace.z);
+        if (y.has_value() && trace.y >= y) {
+            position = Vec3{trace.x, y.value(), trace.z};
+        }
+    } else {
+        int32_t i = 0;
+
+        // 优先大步进查找
+        while (i++ < MAX_COUNT) {
+            std::optional<float> y = getHeightAt(trace.x, trace.z);
+            if (y.has_value() && trace.y <= y) {
+                break;
+            }
+
+            trace.add(dir);
+        }
+
+        // 穷举法
+        while (i++ < MAX_COUNT) {
+            std::optional<float> y = getHeightAt(trace.x, trace.z);
+            if (y.has_value() && trace.y <= y) {
+                position = Vec3{trace.x, y.value(), trace.z};
+                break;
+            }
+
+            trace.add(delta);
+        }
+    }
+
+    return position;
 }
 
 void Terrain::resetLightmap(bool enable) {
+    _lightmapInfos.clear();
+    if (enable) {
+        for (int32_t i = 0; i < _blockCount[0] * _blockCount[1]; ++i) {
+            _lightmapInfos.emplace_back(TerrainBlockLightmapInfo{});
+        }
+    }
 }
 
 void Terrain::updateLightmap(int32_t blockId, Texture2D *tex, float uOff, float vOff, float uScale, float vScale) {
+    _lightmapInfos[blockId].texture = tex;
+    _lightmapInfos[blockId].UOff    = uOff;
+    _lightmapInfos[blockId].VOff    = vOff;
+    _lightmapInfos[blockId].UScale  = uScale;
+    _lightmapInfos[blockId].VScale  = vScale;
+    _blocks[blockId]->updateLightmap(&_lightmapInfos[blockId]);
 }
 
 Vec3 Terrain::calcNormal(float x, float z) {
+    float flip = 1.F;
+    Vec3  here = getPosition(x, z);
+    Vec3  right;
+    Vec3  up;
+
+    auto vertexCount = getVertexCount();
+    if (x < vertexCount[0] - 1) {
+        right = getPosition(x + 1, z);
+    } else {
+        flip *= -1.F;
+        right = getPosition(x - 1, z);
+    }
+
+    if (z < vertexCount[1] - 1) {
+        up = getPosition(x, z + 1);
+    } else {
+        flip *= -1.F;
+        up = getPosition(x, z - 1);
+    }
+
+    right.subtract(here);
+    up.subtract(here);
+
+    Vec3 normal;
+    normal.set(up);
+    normal.cross(right);
+    normal.scale(flip);
+    normal.normalize();
+
+    return normal;
 }
 
 void Terrain::buildNormals() {
+    auto    vertexCount = getVertexCount();
+    int32_t index       = 0;
+    for (int32_t y = 0; y < vertexCount[1]; ++y) {
+        for (int32_t x = 0; x < vertexCount[0]; ++x) {
+            Vec3 n = calcNormal(x, y);
+
+            _normals[index * 3 + 0] = n.x;
+            _normals[index * 3 + 1] = n.y;
+            _normals[index * 3 + 2] = n.z;
+            index += 1;
+        }
+    }
+}
+
+void Terrain::buildImp(bool restore /* = false*/) {
+    if (isValid()) {
+        return;
+    }
+
+    TerrainAsset *terrainAsset = _asset;
+    if (!restore && terrainAsset != nullptr) {
+        _tileSize      = terrainAsset->getTileSize();
+        _blockCount    = terrainAsset->getBlockCount();
+        _weightMapSize = terrainAsset->getWeightMapSize();
+        _lightMapSize  = terrainAsset->getLightMapSize();
+        _heights       = terrainAsset->getHeights();
+        _weights       = terrainAsset->getWeights();
+        _layerBuffer   = terrainAsset->getLayerBuffer();
+
+        // build layers
+        for (size_t i = 0; i < _layerList.size(); ++i) {
+            _layerList[i] = nullptr;
+        }
+
+        if (terrainAsset->getVersion() < TERRAIN_DATA_VERSION5) {
+            for (size_t i = 0; i < terrainAsset->getLayerBinaryInfos().size(); ++i) {
+                auto        layer     = std::make_shared<TerrainLayer>();
+                const auto &layerInfo = terrainAsset->getLayerBinaryInfos()[i];
+                layer->tileSize       = layerInfo.tileSize;
+                //cjh TODO:                legacyCC.assetManager.loadAny(layerInfo.detailMapId, (err, asset) => {
+                //                    layer.detailMap = asset;
+                //                });
+                //
+                //                if (layerInfo.normalMapId !== '') {
+                //                    legacyCC.assetManager.loadAny(layerInfo.normalMapId, (err, asset) => {
+                //                        layer.normalMap = asset;
+                //                    });
+                //                }
+
+                layer->roughness = layerInfo.roughness;
+                layer->metallic  = layerInfo.metallic;
+
+                _layerList[layerInfo.slot] = layer;
+            }
+        } else {
+            for (size_t i = 0; i < terrainAsset->getLayerInfos().size(); ++i) {
+                auto        layer     = std::make_shared<TerrainLayer>();
+                const auto &layerInfo = terrainAsset->getLayerInfos()[i];
+                layer->tileSize       = layerInfo.tileSize;
+                layer->detailMap      = layerInfo.detailMap;
+                layer->normalMap      = layerInfo.normalMap;
+                layer->roughness      = layerInfo.roughness;
+                layer->metallic       = layerInfo.metallic;
+
+                _layerList[layerInfo.slot] = layer;
+            }
+        }
+    }
+
+    if (_blockCount[0] == 0 || _blockCount[1] == 0) {
+        return;
+    }
+
+    // build heights & normals
+    auto          vc          = getVertexCount();
+    const int32_t vertexCount = vc[0] * vc[1];
+    if (_heights.empty() || _heights.length() != vertexCount) {
+        _heights.reset(vertexCount);
+        _normals.resize(vertexCount * 3);
+
+        for (int32_t i = 0; i < vertexCount; ++i) {
+            _heights[i]         = TERRAIN_HEIGHT_BASE;
+            _normals[i * 3 + 0] = 0;
+            _normals[i * 3 + 1] = 1;
+            _normals[i * 3 + 2] = 0;
+        }
+    } else {
+        _normals.resize(vertexCount * 3);
+        buildNormals();
+    }
+
+    // build layer buffer
+    const int32_t layerBufferSize = _blockCount[0] * _blockCount[1] * TERRAIN_MAX_BLEND_LAYERS;
+    if (_layerBuffer.empty() || _layerBuffer.size() != layerBufferSize) {
+        _layerBuffer.resize(layerBufferSize);
+        for (int32_t i = 0; i < layerBufferSize; ++i) {
+            _layerBuffer[i] = -1;
+        }
+    }
+
+    // build weights
+    const int32_t weightMapComplexityU = _weightMapSize * _blockCount[0];
+    const int32_t weightMapComplexityV = _weightMapSize * _blockCount[1];
+    if (_weights.length() != weightMapComplexityU * weightMapComplexityV * 4) {
+        _weights.reset(weightMapComplexityU * weightMapComplexityV * 4);
+        for (int32_t i = 0; i < weightMapComplexityU * weightMapComplexityV; ++i) {
+            _weights[i * 4 + 0] = 255;
+            _weights[i * 4 + 1] = 0;
+            _weights[i * 4 + 2] = 0;
+            _weights[i * 4 + 3] = 0;
+        }
+    }
+
+    // build blocks
+    for (int32_t j = 0; j < _blockCount[1]; ++j) {
+        for (int32_t i = 0; i < _blockCount[0]; ++i) {
+            _blocks.emplace_back(new TerrainBlock(this, i, j));
+        }
+    }
+
+    for (auto *block : _blocks) {
+        block->build();
+    }
+}
+
+bool Terrain::rebuildHeights(const TerrainInfo &info) {
+    auto vertexCount     = getVertexCount();
+    auto infoVertexCount = info.getVertexCount();
+    if (vertexCount[0] == infoVertexCount[0] && vertexCount[1] == infoVertexCount[1]) {
+        return false;
+    }
+
+    Uint16Array heights{static_cast<uint32_t>(infoVertexCount[0] * infoVertexCount[1])};
+    for (uint32_t i = 0; i < heights.length(); ++i) {
+        heights[i] = TERRAIN_HEIGHT_BASE;
+    }
+
+    const int32_t w = std::min(vertexCount[0], infoVertexCount[0]);
+    const int32_t h = std::min(vertexCount[1], infoVertexCount[1]);
+
+    for (int32_t j = 0; j < h; ++j) {
+        for (int32_t i = 0; i < w; ++i) {
+            const int32_t index0 = j * infoVertexCount[0] + i;
+            const int32_t index1 = j * vertexCount[0] + i;
+
+            heights[index0] = _heights[index1];
+        }
+    }
+
+    _heights = heights;
+
+    return true;
+}
+
+bool Terrain::rebuildLayerBuffer(const TerrainInfo &info) {
+    if (_blockCount[0] == info.blockCount[0] && _blockCount[1] == info.blockCount[1]) {
+        return false;
+    }
+
+    std::vector<int16_t> layerBuffer;
+    layerBuffer.resize(info.blockCount[0] * info.blockCount[1] * TERRAIN_MAX_BLEND_LAYERS, -1);
+
+    const int32_t w = std::min(_blockCount[0], info.blockCount[0]);
+    const int32_t h = std::min(_blockCount[1], info.blockCount[1]);
+    for (int32_t j = 0; j < h; ++j) {
+        for (int32_t i = 0; i < w; ++i) {
+            const int32_t index0 = j * info.blockCount[0] + i;
+            const int32_t index1 = j * _blockCount[0] + i;
+
+            for (int32_t l = 0; l < TERRAIN_MAX_BLEND_LAYERS; ++l) {
+                layerBuffer[index0 * TERRAIN_MAX_BLEND_LAYERS + l] = _layerBuffer[index1 * TERRAIN_MAX_BLEND_LAYERS + l];
+            }
+        }
+    }
+
+    _layerBuffer = layerBuffer;
+
+    return true;
+}
+
+bool Terrain::rebuildWeights(const TerrainInfo &info) {
+    const int16_t oldWeightMapSize        = _weightMapSize;
+    const int32_t oldWeightMapComplexityU = _weightMapSize * _blockCount[0];
+    const int32_t oldWeightMapComplexityV = _weightMapSize * _blockCount[1];
+
+    const int32_t weightMapComplexityU = info.weightMapSize * info.blockCount[0];
+    const int32_t weightMapComplexityV = info.weightMapSize * info.blockCount[1];
+
+    if (weightMapComplexityU == oldWeightMapComplexityU && weightMapComplexityV == oldWeightMapComplexityV) {
+        return false;
+    }
+
+    Uint8Array weights{static_cast<uint32_t>(weightMapComplexityU * weightMapComplexityV * 4)};
+
+    for (int32_t i = 0; i < weightMapComplexityU * weightMapComplexityV; ++i) {
+        weights[i * 4 + 0] = 255;
+        weights[i * 4 + 1] = 0;
+        weights[i * 4 + 2] = 0;
+        weights[i * 4 + 3] = 0;
+    }
+
+    const int32_t w = std::min(info.blockCount[0], _blockCount[0]);
+    const int32_t h = std::min(info.blockCount[1], _blockCount[1]);
+
+    // get weight
+    auto getOldWeight = [&](int32_t _i, int32_t _j, const Uint8Array &_weights) -> Vec4 {
+        const int32_t index = _j * oldWeightMapComplexityU + _i;
+
+        Vec4 weight;
+        weight.x = _weights[index * 4 + 0] / 255.0F;
+        weight.y = _weights[index * 4 + 1] / 255.0F;
+        weight.z = _weights[index * 4 + 2] / 255.0F;
+        weight.w = _weights[index * 4 + 3] / 255.0F;
+
+        return weight;
+    };
+
+    // sample weight
+    auto sampleOldWeight = [&](float _x, float _y, float _xOff, float _yOff, const Uint8Array &_weights) {
+        const int32_t ix0 = std::floor(_x);
+        const int32_t iz0 = std::floor(_y);
+        const int32_t ix1 = ix0 + 1;
+        const int32_t iz1 = iz0 + 1;
+        const float   dx  = _x - ix0;
+        const float   dz  = _y - iz0;
+
+        Vec4 a = getOldWeight(ix0 + _xOff, iz0 + _yOff, _weights);
+        Vec4 b = getOldWeight(ix1 + _xOff, iz0 + _yOff, _weights);
+        Vec4 c = getOldWeight(ix0 + _xOff, iz1 + _yOff, _weights);
+        Vec4 d = getOldWeight(ix1 + _xOff, iz1 + _yOff, _weights);
+        Vec4 m;
+        Vec4::add(b, c, &m);
+        m.scale(0.5F);
+
+        if (dx + dz <= 1.0F) {
+            d.set(m);
+            d.subtract(a);
+            d.add(m);
+        } else {
+            a.set(m);
+            a.subtract(d);
+            a.add(m);
+        }
+
+        Vec4 n1;
+        Vec4 n2;
+        Vec4 n;
+        Vec4::lerp(a, b, dx, &n1);
+        Vec4::lerp(c, d, dx, &n2);
+        Vec4::lerp(n1, n2, dz, &n);
+
+        return n;
+    };
+
+    // fill new weights
+    for (int32_t j = 0; j < h; ++j) {
+        for (int32_t i = 0; i < w; ++i) {
+            const int32_t uOff = i * oldWeightMapSize;
+            const int32_t vOff = j * oldWeightMapSize;
+
+            for (int32_t v = 0; v < info.weightMapSize; ++v) {
+                for (int32_t u = 0; u < info.weightMapSize; ++u) {
+                    Vec4 w;
+                    if (info.weightMapSize == oldWeightMapSize) {
+                        w = getOldWeight(u + uOff, v + vOff, _weights);
+                    } else {
+                        const float x = static_cast<float>(u) / (info.weightMapSize - 1) * (oldWeightMapSize - 1);
+                        const float y = static_cast<float>(v) / (info.weightMapSize - 1) * (oldWeightMapSize - 1);
+                        w             = sampleOldWeight(x, y, uOff, vOff, _weights);
+                    }
+
+                    const int32_t du    = i * info.weightMapSize + u;
+                    const int32_t dv    = j * info.weightMapSize + v;
+                    const int32_t index = dv * weightMapComplexityU + du;
+
+                    weights[index * 4 + 0] = w.x * 255;
+                    weights[index * 4 + 1] = w.y * 255;
+                    weights[index * 4 + 2] = w.z * 255;
+                    weights[index * 4 + 3] = w.w * 255;
+                }
+            }
+        }
+    }
+
+    _weights = weights;
 }
 
 // Override functions
 void Terrain::onLoad() {
+    gfx::Device *gfxDevice = gfx::Device::getInstance();
+
+    // initialize shared index buffer
+    Uint16Array indexData(TERRAIN_BLOCK_TILE_COMPLEXITY * TERRAIN_BLOCK_TILE_COMPLEXITY * 6);
+
+    int16_t index = 0;
+    for (int16_t j = 0; j < TERRAIN_BLOCK_TILE_COMPLEXITY; ++j) {
+        for (int16_t i = 0; i < TERRAIN_BLOCK_TILE_COMPLEXITY; ++i) {
+            const int16_t a = j * TERRAIN_BLOCK_VERTEX_COMPLEXITY + i;
+            const int16_t b = j * TERRAIN_BLOCK_VERTEX_COMPLEXITY + i + 1;
+            const int16_t c = (j + 1) * TERRAIN_BLOCK_VERTEX_COMPLEXITY + i;
+            const int16_t d = (j + 1) * TERRAIN_BLOCK_VERTEX_COMPLEXITY + i + 1;
+
+            // face 1
+            indexData[index++] = a;
+            indexData[index++] = c;
+            indexData[index++] = b;
+
+            // face 2
+            indexData[index++] = b;
+            indexData[index++] = c;
+            indexData[index++] = d;
+        }
+    }
+
+    _sharedIndexBuffer = gfxDevice->createBuffer(gfx::BufferInfo{
+        gfx::BufferUsageBit::INDEX | gfx::BufferUsageBit::TRANSFER_DST,
+        gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE,
+        Uint16Array::BYTES_PER_ELEMENT * TERRAIN_BLOCK_TILE_COMPLEXITY * TERRAIN_BLOCK_TILE_COMPLEXITY * 6,
+        Uint16Array::BYTES_PER_ELEMENT,
+    });
+    _sharedIndexBuffer->update(indexData.buffer().get());
 }
 
 void Terrain::onEnable() {
+    if (_blocks.empty()) {
+        buildImp();
+    }
 }
 
 void Terrain::onDisable() {
+    for (auto *block : _blocks) {
+        block->destroy();
+        delete block;
+    }
+    _blocks.clear();
 }
 
 void Terrain::onDestroy() {
+    for (auto *block : _blocks) {
+        block->destroy();
+        delete block;
+    }
+    _blocks.clear();
+
+    for (int32_t i = 0; i < _layerList.size(); ++i) {
+        _layerList[i] = nullptr;
+    }
+
+    if (_sharedIndexBuffer != nullptr) {
+        _sharedIndexBuffer->destroy();
+    }
 }
 
 void Terrain::onRestore() {
+    onDisable();
+    onLoad();
+    buildImp(true);
 }
 
 void Terrain::update(float deltaTime) {
+    for (auto *block : _blocks) {
+        block->update();
+    }
 }
 
 } // namespace cc

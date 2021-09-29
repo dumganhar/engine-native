@@ -337,6 +337,12 @@ public:
     static void subtract(const Vec4 &v1, const Vec4 &v2, Vec4 *dst);
 
     /**
+     * @en Calculates the linear interpolation between two vectors with a given ratio
+     * @zh 逐元素向量线性插值： A + t * (B - A)
+     */
+    static void lerp(const Vec4 &a, const Vec4 &b, float t, Vec4 *dst);
+
+    /**
      * Calculates the sum of this vector with the given vector.
      *
      * Note: this does not modify this vector.

@@ -70,7 +70,7 @@ struct TerrainLayerInfo {
     //    @serializable
     int32_t slot{0};
     //    @serializable
-    int32_t tileSize{1};
+    float tileSize{1.F};
     //    @serializable
     Texture2D *detailMap{nullptr};
     //    @serializable
@@ -86,10 +86,10 @@ struct TerrainLayerInfo {
  * @zh 地形纹理二进制信息
  */
 struct TerrainLayerBinaryInfo {
-    int32_t     slot      = 0;
-    int32_t     tileSize  = 1;
-    float       roughness = 1;
-    float       metallic  = 0;
+    int32_t     slot{0};
+    float       tileSize{1.F};
+    float       roughness{1.F};
+    float       metallic{0.F};
     std::string detailMapId;
     std::string normalMapId;
 };
@@ -257,6 +257,7 @@ protected:
     std::vector<TerrainLayerInfo> _layerInfos;
 
     friend class Terrain;
+    friend class TerrainAssetDeserializer;
     CC_DISALLOW_COPY_MOVE_ASSIGN(TerrainAsset);
 };
 

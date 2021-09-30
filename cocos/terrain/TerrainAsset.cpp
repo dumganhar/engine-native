@@ -277,7 +277,7 @@ bool TerrainAsset::loadNativeData(const Uint8Array &_nativeData) {
 
     // heights
     const int32_t heightBufferSize = stream.readInt32(); //NOTE: heightBufferSize unit is how many uint16.
-    _heights.reset(heightBufferSize * 2);
+    _heights.reset(heightBufferSize);
     for (uint32_t i = 0, len = _heights.length(); i < len; ++i) {
         _heights[i] = stream.readInt16();
     }

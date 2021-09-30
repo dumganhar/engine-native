@@ -326,9 +326,18 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
         pass->bindTexture(binding, const_cast<gfx::Texture *>(*pTexture), index);
     } else if (const auto *pTextureBase = std::get_if<TextureBase *>(&val)) {
         auto *        textureBase = *pTextureBase;
-        gfx::Texture *texture     = textureBase->getGFXTexture();
-        if (texture == nullptr || texture->getWidth() == 0 || texture->getHeight() == 0) {
-            // console.warn(`material '${this._uuid}' received incomplete texture asset '${val._uuid}'`);
+        gfx::Texture *texture     = nullptr;
+        if (textureBase != nullptr) {
+            texture = textureBase->getGFXTexture();
+        }
+
+        if (texture == nullptr) {
+            CC_LOG_WARNING("Material(%p, %s)::bindTexture failed, texture is nullptr", this, _uuid.c_str());
+            return;
+        }
+
+        if (texture->getWidth() == 0 || texture->getHeight() == 0) {
+            CC_LOG_WARNING("Material(%p, %s)::bindTexture failed, texture size is 0", this, _uuid.c_str());
             return;
         }
         pass->bindTexture(binding, texture, index);

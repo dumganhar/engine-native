@@ -259,7 +259,6 @@ void pngReadCallback(png_structp pngPtr, png_bytep data, png_size_t length) {
 }
 #endif //CC_USE_PNG
 } // namespace
-
 //////////////////////////////////////////////////////////////////////////
 // Implement Image
 //////////////////////////////////////////////////////////////////////////
@@ -744,9 +743,9 @@ bool Image::initWithPVRv2Data(const unsigned char *data, ssize_t dataLen) {
     _renderFormat = it->second;
 
     //Get size of mipmap
-    _width = CC_SWAP_INT32_LITTLE_TO_HOST(header->width);
-    _height = CC_SWAP_INT32_LITTLE_TO_HOST(header->height);
-    _isCompressed    = true;
+    _width        = CC_SWAP_INT32_LITTLE_TO_HOST(header->width);
+    _height       = CC_SWAP_INT32_LITTLE_TO_HOST(header->height);
+    _isCompressed = true;
 
     //Move by size of header
     _dataLen = dataLen - sizeof(PVRv2TexHeader);

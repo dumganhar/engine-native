@@ -34,7 +34,9 @@ namespace cc {
 enum class DeserializeAssetType {
     EFFECT,
     MATERIAL,
-    MESH
+    MESH,
+    TEXTUREBASE,
+    TEXTURE2D
 };
 
 class AssetDeserializerFactory final {

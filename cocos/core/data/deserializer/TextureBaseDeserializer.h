@@ -1,3 +1,4 @@
+
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
 
@@ -23,39 +24,20 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "core/data/deserializer/AssetDeserializerFactory.h"
-#include "core/data/deserializer/EffectAssetDeserializer.h"
-#include "core/data/deserializer/MaterialDeserializer.h"
-#include "core/data/deserializer/MeshDeserializer.h"
-#include "core/data/deserializer/Texture2DDeserializer.h"
-#include "core/data/deserializer/TextureBaseDeserializer.h"
+#pragma once
+
+#include "core/data/deserializer/IAssetDeserializer.h"
 
 namespace cc {
 
-/*static*/
-std::shared_ptr<IAssetDeserializer> AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType type) {
-    std::shared_ptr<IAssetDeserializer> deserializer;
-    switch (type) {
-        case DeserializeAssetType::EFFECT:
-            deserializer = std::make_shared<EffectAssetDeserializer>();
-            break;
-        case DeserializeAssetType::MESH:
-            deserializer = std::make_shared<MeshDeserializer>();
-            break;
-        case DeserializeAssetType::MATERIAL:
-            deserializer = std::make_shared<MaterialDeserializer>();
-            break;
-        case DeserializeAssetType::TEXTUREBASE:
-            deserializer = std::make_shared<TextureBaseDeserializer>();
-            break;
-        case DeserializeAssetType::TEXTURE2D:
-            deserializer = std::make_shared<Texture2DDeserializer>();
-            break;
-        default:
-            break;
-    }
+class Asset;
 
-    return deserializer;
-}
+class TextureBaseDeserializer : public IAssetDeserializer {
+public:
+    TextureBaseDeserializer()           = default;
+    ~TextureBaseDeserializer() override = default;
+
+    void deserialize(const rapidjson::Value &serializedData, Asset *asset) override;
+};
 
 } // namespace cc

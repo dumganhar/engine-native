@@ -26,12 +26,12 @@
 #pragma once
 
 #include "core/data/deserializer/IAssetDeserializer.h"
-
+#include "core/data/deserializer/TextureBaseDeserializer.h"
 namespace cc {
 
 class Asset;
 
-class Texture2DDeserializer final : public IAssetDeserializer {
+class Texture2DDeserializer final : public TextureBaseDeserializer {
 public:
     Texture2DDeserializer()           = default;
     ~Texture2DDeserializer() override = default;

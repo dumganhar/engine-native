@@ -44,6 +44,7 @@
 #include "primitive/Primitive.h"
 
 #include "core/data/deserializer/AssetDeserializerFactory.h"
+#include "core/utils/ImageUtils.h"
 #include "platform/FileUtils.h"
 
 //#include "platform/View.h"
@@ -122,6 +123,42 @@ public:
         CC_LOG_DEBUG("MyComponent2::onDestroy");
     }
 };
+namespace {
+void setMaterialFromJsonContent(Material *material, const std::string &materialJson, const std::string &effectName = "standard") {
+    std::string materialJsonContent = FileUtils::getInstance()->getStringFromFile(materialJson);
+
+    rapidjson::Document materialDoc;
+    materialDoc.Parse(materialJsonContent.c_str());
+    auto deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::MATERIAL);
+    deserializer->deserialize(materialDoc, material);
+    material->setEffectAsset(EffectAsset::get(effectName));
+    material->update(); // need update if not using initialize
+}
+
+void createTextureForMaterial(const std::string &texJsonFile, Material *material, const std::string &propName) {
+    auto *      texture2DExportedFromEditor = new Texture2D();
+    std::string texture2DJsonContent        = FileUtils::getInstance()->getStringFromFile(texJsonFile);
+    {
+        rapidjson::Document texture2DDoc;
+        texture2DDoc.Parse(texture2DJsonContent.c_str());
+        auto deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::TEXTURE2D);
+        deserializer->deserialize(texture2DDoc, texture2DExportedFromEditor);
+    }
+    // setImageForMaterial
+    auto *image = new Image();
+    bool  ret   = image->initWithImageFile(texture2DExportedFromEditor->getMipmapsUuids()[0] + ".png"); // TODO(xwx): HACK
+    ImageUtils::convert2RGBA(image);                                                                    // TODO(xwx): HACK: image file is RGB8 and Metal do not support
+    if (ret) {
+        auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
+        imgAsset->setNativeAsset(image);   //cjh HOW TO RELEASE?
+
+        texture2DExportedFromEditor->setImage(imgAsset);
+        texture2DExportedFromEditor->onLoaded();
+        material->setProperty(propName, texture2DExportedFromEditor);
+    }
+    image->release();
+}
+} // namespace
 
 void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     CC_LOG_INFO("SimpleDemo::%s, width: %d, height: %d", __FUNCTION__, width, height);
@@ -230,7 +267,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     cameraComp->setVisibility(static_cast<uint32_t>(Layers::LayerList::IGNORE_RAYCAST | Layers::LayerList::UI_3D | Layers::LayerList::DEFAULT));
 
     // set material
-    auto *material = new Material();
+    // auto *material = new Material();
     //    material->initialize({
     //        .effectName = "unlit",
     //        .defines    = MacroRecord{
@@ -239,28 +276,40 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     //        }
     //    });
 
-    material->initialize({.effectName = "standard",
-                          .defines    = MacroRecord{
-                              {"USE_ALBEDO_MAP", true},
-                          }});
+    //     material->initialize({.effectName = "standard",
+    //                           .defines    = MacroRecord{
+    //                               {"USE_ALBEDO_MAP", true},
+    //                           }});
+    //
+    //     //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
+    //
+    //     auto *image = new Image();
+    //     bool  ret   = image->initWithImageFile("pixil-frame-2.png");
+    //     if (ret) {
+    //         auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
+    //         imgAsset->setNativeAsset(image);   //cjh HOW TO RELEASE?
+    //         auto *texture = new Texture2D();   //cjh shared_ptr ?
+    //
+    //         texture->setImage(imgAsset);
+    //         texture->onLoaded();
+    //         //        material->setProperty("mainTexture", texture);
+    //         material->setProperty("albedoMap", texture);
+    //     }
+    //     image->release();
+    //
+    //     _cubeMeshRenderer->setMaterial(material);
 
-    //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
+    // create material from deserializer
+    auto *materialExportedFromEditor = new Material();
 
-    auto *image = new Image();
-    bool  ret   = image->initWithImageFile("pixil-frame-2.png");
-    if (ret) {
-        auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
-        imgAsset->setNativeAsset(image);   //cjh HOW TO RELEASE?
-        auto *texture = new Texture2D();   //cjh shared_ptr ?
+    setMaterialFromJsonContent(materialExportedFromEditor, "f5345262-68e8-4676-b142-543e3ff75c17@ddb15.json", "standard");
 
-        texture->setImage(imgAsset);
-        texture->onLoaded();
-        //        material->setProperty("mainTexture", texture);
-        material->setProperty("albedoMap", texture);
-    }
-    image->release();
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@3effa.json", materialExportedFromEditor, "mainTexture");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", materialExportedFromEditor, "metallicRoughnessMap");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@0089c.json", materialExportedFromEditor, "normalMap");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", materialExportedFromEditor, "occlusionMap");
 
-    _cubeMeshRenderer->setMaterial(material);
+    _cubeMeshRenderer->setMaterial(materialExportedFromEditor);
 
     // create light
     auto *lightNode = new Node();

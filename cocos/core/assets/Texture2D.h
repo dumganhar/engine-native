@@ -92,6 +92,10 @@ public:
         return _mipmaps;
     }
 
+    const std::vector<std::string> &getMipmapsUuids() const {  // TODO(xwx): temporary use _mipmaps as string array
+        return _mipmapsUuids;
+    }
+
     void setMipmaps(const std::vector<ImageAsset *> &value);
 
     /**
@@ -194,6 +198,10 @@ public:
 private:
     std::vector<ImageAsset *> _mipmaps; //cjh how about using std::vector<std::shared_ptr<ImageAsset>>?
 
+    std::vector<std::string> _mipmapsUuids; // TODO(xwx): temporary use _mipmaps as UUIDs string array
+
+    friend class Texture2DDeserializer;
+    
     CC_DISALLOW_COPY_MOVE_ASSIGN(Texture2D);
 };
 

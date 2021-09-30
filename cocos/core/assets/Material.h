@@ -214,6 +214,14 @@ protected:
 
 public:
     /**
+     * @en Set current [[EffectAsset]].
+     * @zh 设置使用的 [[EffectAsset]] 资源。
+     */
+    inline void setEffectAsset(EffectAsset *val) {
+        _effectAsset = val;
+    }
+
+    /**
      * @en The current [[EffectAsset]].
      * @zh 当前使用的 [[EffectAsset]] 资源。
      */
@@ -269,6 +277,8 @@ public:
         return nullptr;
     }
 
+    void update(bool keepProps = true); // TODO(xwx): temporary use as public by demo
+
 protected:
     static bool uploadProperty(scene::Pass *pass, const std::string &name, const MaterialPropertyVariant &val);
     static void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index = CC_INVALID_INDEX);
@@ -302,10 +312,11 @@ protected:
 
     virtual void doDestroy();
 
-    void                               update(bool keepProps = true);
     virtual std::vector<scene::Pass *> createPasses();
 
 private:
+    friend class MaterialDeserializer;
+
     CC_DISALLOW_COPY_MOVE_ASSIGN(Material);
 };
 

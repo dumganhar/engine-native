@@ -22,40 +22,43 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 ****************************************************************************/
-#include "core/data/deserializer/Texture2DDeserializer.h"
+#include "core/data/deserializer/TextureBaseDeserializer.h"
+#include <sstream>
+#include <string>
 #include "base/Log.h"
-#include "core/assets/Texture2D.h"
+#include "core/assets/TextureBase.h"
 
 namespace cc {
-//TODO(xwx): Copied from EffectAssetDeserializer.cpp, need to make it as common functions
-template <typename T>
-using DeserializeArrayElementCallback = std::function<void(const rapidjson::Value &, T &)>;
 
-template <typename T>
-void deserializeArray(const rapidjson::Value &valArray, std::vector<T> &cValArray, const DeserializeArrayElementCallback<T> &deserializeArrayElement) {
-    CC_ASSERT(valArray.IsArray());
-    index_t i = 0;
-    cValArray.resize(valArray.Size());
-    for (const auto &val : valArray.GetArray()) {
-        deserializeArrayElement(val, cValArray[i]);
-        ++i;
+static std::vector<uint32_t> splitStrToUint(const std::string &s, char delim) {
+    std::vector<uint32_t> result;
+    std::stringstream     ss(s);
+    std::string           item;
+
+    while (getline(ss, item, delim)) {
+        const uint32_t i = stoi(item);
+        result.emplace_back(i);
     }
+
+    return result;
 }
 
-static void deserializeMipmapsArray(const rapidjson::Value &val, std::string &mipmapStr) {
-    CC_ASSERT(val.IsString());
-    mipmapStr = val.GetString();
-}
-
-void Texture2DDeserializer::deserialize(const rapidjson::Value &serializedData, Asset *asset) {
+void TextureBaseDeserializer::deserialize(const rapidjson::Value &serializedData, Asset *asset) {
     CC_ASSERT(serializedData.IsObject());
-    auto *texture2DAsset = static_cast<Texture2D *>(asset);
-    if (serializedData.HasMember("content")) {
-        if (serializedData["content"].HasMember("base")) {
-            TextureBaseDeserializer::deserialize(serializedData["content"], texture2DAsset);
+    auto *textureBaseAsset = static_cast<TextureBase *>(asset);
+    CC_ASSERT(textureBaseAsset != nullptr);
+    if (serializedData.HasMember("base")) {
+        std::string                 baseData = serializedData["base"].GetString();
+        const std::vector<uint32_t> fields   = splitStrToUint(baseData, ',');
+        if (fields.size() >= 4) {
+            // decode filters
+            textureBaseAsset->setFilters(static_cast<Filter>(fields[0]), static_cast<Filter>(fields[1]));
+            // decode wraps
+            textureBaseAsset->setWrapMode(static_cast<WrapMode>(fields[2]), static_cast<WrapMode>(fields[3]));
         }
-        if (serializedData["content"].HasMember("mipmaps")) {
-            deserializeArray<std::string>(serializedData["content"]["mipmaps"], texture2DAsset->_mipmapsUuids, deserializeMipmapsArray);
+        if (fields.size() >= 6) {
+            textureBaseAsset->setMipFilter(static_cast<Filter>(fields[4]));
+            textureBaseAsset->setAnisotropy(fields[5]);
         }
     }
 }

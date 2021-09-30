@@ -1476,6 +1476,8 @@ cocos_source_files(
     cocos/core/data/deserializer/MaterialDeserializer.h
     cocos/core/data/deserializer/ImageAssetDeserializer.cpp
     cocos/core/data/deserializer/ImageAssetDeserializer.h
+    cocos/core/data/deserializer/TextureBaseDeserializer.h
+    cocos/core/data/deserializer/TextureBaseDeserializer.cpp
     cocos/core/data/deserializer/Texture2DDeserializer.cpp
     cocos/core/data/deserializer/Texture2DDeserializer.h
     cocos/core/data/deserializer/IAssetDeserializer.h
@@ -1524,6 +1526,8 @@ cocos_source_files(
     cocos/core/utils/MutableForwardIterator.cpp
     cocos/core/utils/MutableForwardIterator.h
     cocos/core/utils/Pool.h
+    cocos/core/utils/ImageUtils.h
+    cocos/core/utils/ImageUtils.cpp
 
     cocos/core/platform/event-manager/Acceleration.h
     cocos/core/platform/event-manager/Acceleration.cpp

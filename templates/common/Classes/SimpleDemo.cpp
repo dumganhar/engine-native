@@ -46,6 +46,8 @@
 #include "core/data/deserializer/AssetDeserializerFactory.h"
 #include "core/utils/ImageUtils.h"
 #include "platform/FileUtils.h"
+#include "terrain/Terrain.h"
+#include "terrain/TerrainAsset.h"
 
 //#include "platform/View.h"
 
@@ -322,7 +324,32 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // lightNode->setPosition(0, 0, 5); // spot & spheres
     // lightComp->setRange(20); // spot & spheres
     // lightComp->setSize(1); // spot & spheres
+
+    testTerrain();
+
     _director->runSceneImmediate(_scene, nullptr, nullptr);
+}
+
+void SimpleDemo::testTerrain() {
+    // deserialize terrain asset
+    auto                fileUtils        = FileUtils::getInstance();
+    auto                terrainAssetJson = fileUtils->getStringFromFile("15c0dd2a-68b1-49c1-a624-66d9ef91dd3a.json");
+    rapidjson::Document doc;
+    doc.Parse(terrainAssetJson.c_str());
+    auto  deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::TERRAIN);
+    auto *asset        = new TerrainAsset();
+    deserializer->deserialize(doc, asset);
+
+    auto             terrainAssetBin   = fileUtils->getDataFromFile("15c0dd2a-68b1-49c1-a624-66d9ef91dd3a.bin");
+    ArrayBuffer::Ptr terrainBinaryData = std::make_shared<ArrayBuffer>(terrainAssetBin.getBytes(), terrainAssetBin.getSize());
+    asset->setNativeAsset(terrainBinaryData);
+    asset->onLoaded();
+
+    // Create terrain component
+    auto node    = new Node();
+    auto terrain = node->addComponent<Terrain>();
+    terrain->setAsset(asset);
+    node->setParent(_scene);
 }
 
 void SimpleDemo::step(float dt) {

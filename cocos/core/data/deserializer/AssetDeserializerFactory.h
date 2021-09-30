@@ -37,6 +37,7 @@ enum class DeserializeAssetType {
     MESH,
     TEXTUREBASE,
     TEXTURE2D
+    TERRAIN,
 };
 
 class AssetDeserializerFactory final {

@@ -29,6 +29,7 @@
 #include "core/data/deserializer/MeshDeserializer.h"
 #include "core/data/deserializer/Texture2DDeserializer.h"
 #include "core/data/deserializer/TextureBaseDeserializer.h"
+#include "core/data/deserializer/TerrainAssetDeserializer.h"
 
 namespace cc {
 
@@ -50,6 +51,9 @@ std::shared_ptr<IAssetDeserializer> AssetDeserializerFactory::createAssetDeseria
             break;
         case DeserializeAssetType::TEXTURE2D:
             deserializer = std::make_shared<Texture2DDeserializer>();
+            break;
+        case DeserializeAssetType::TERRAIN:
+            deserializer = std::make_shared<TerrainAssetDeserializer>();
             break;
         default:
             break;

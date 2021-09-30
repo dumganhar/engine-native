@@ -221,7 +221,7 @@ void TerrainBlock::build() {
         TERRAIN_BLOCK_VERTEX_SIZE * Float32Array::BYTES_PER_ELEMENT * TERRAIN_BLOCK_VERTEX_COMPLEXITY * TERRAIN_BLOCK_VERTEX_COMPLEXITY,
         TERRAIN_BLOCK_VERTEX_SIZE * Float32Array::BYTES_PER_ELEMENT,
     });
-    vertexBuffer->update(vertexData.buffer().get());
+    vertexBuffer->update(vertexData.buffer()->getData());
 
     // initialize renderable
     const gfx::AttributeList gfxAttributes{
@@ -528,7 +528,7 @@ void TerrainBlock::updateHeight() {
         }
     }
 
-    _renderable->_meshData->getVertexBuffers()[0]->update(vertexData.buffer().get());
+    _renderable->_meshData->getVertexBuffers()[0]->update(vertexData.buffer()->getData());
     _renderable->_model->createBoundingShape(bbMin, bbMax);
     _renderable->_model->updateWorldBound();
 }
@@ -568,7 +568,7 @@ void TerrainBlock::updateWeightMap() {
             weightIndex += 1;
         }
     }
-    _weightMap->uploadData(weightData.buffer().get()->getData());
+    _weightMap->uploadData(weightData.buffer()->getData());
 }
 
 void TerrainBlock::updateLightmap(TerrainBlockLightmapInfo *info) {
@@ -1487,7 +1487,7 @@ void Terrain::onLoad() {
         Uint16Array::BYTES_PER_ELEMENT * TERRAIN_BLOCK_TILE_COMPLEXITY * TERRAIN_BLOCK_TILE_COMPLEXITY * 6,
         Uint16Array::BYTES_PER_ELEMENT,
     });
-    _sharedIndexBuffer->update(indexData.buffer().get());
+    _sharedIndexBuffer->update(indexData.buffer()->getData());
 }
 
 void Terrain::onEnable() {
@@ -1517,6 +1517,7 @@ void Terrain::onDestroy() {
 
     if (_sharedIndexBuffer != nullptr) {
         _sharedIndexBuffer->destroy();
+        CC_SAFE_DELETE(_sharedIndexBuffer);
     }
 }
 

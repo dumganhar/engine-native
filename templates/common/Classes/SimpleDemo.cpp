@@ -160,6 +160,25 @@ void createTextureForMaterial(const std::string &texJsonFile, Material *material
     }
     image->release();
 }
+
+void setMeshFromJson(Mesh *mesh, const std::string &meshJson, const std::string &meshBinary) {
+    std::string         meshJsonContent = FileUtils::getInstance()->getStringFromFile(meshJson);
+    rapidjson::Document meshDoc;
+    meshDoc.Parse(meshJsonContent.c_str());
+    auto deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::MESH);
+    deserializer->deserialize(meshDoc, mesh);
+
+    Data              meshData = FileUtils::getInstance()->getDataFromFile(meshBinary);
+    Mesh::ICreateInfo meshInfo;
+    meshInfo.structInfo = mesh->getStruct();
+    auto meshBuffer     = std::make_shared<ArrayBuffer>(static_cast<uint32_t>(meshData.getSize()));
+    memcpy(const_cast<uint8_t *>(meshBuffer->getData()), meshData.getBytes(), meshData.getSize());
+    Uint8Array meshDataArray{meshBuffer, 0};
+    meshInfo.data = meshDataArray;
+    mesh->reset(meshInfo);
+    mesh->initialize();
+}
+
 } // namespace
 
 void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
@@ -195,6 +214,22 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
     // Scene
     _scene = new Scene("myscene");
+
+    // plane node
+    Node *planeNode = new Node("plane");
+    planeNode->setParent(_scene);
+
+    // create mesh renderer
+    auto *planeMeshRenderer = planeNode->addComponent<MeshRenderer>();
+    auto *plane             = new Primitive(PrimitiveType::PLANE);
+    plane->onLoaded();
+    planeMeshRenderer->setMesh(plane);
+
+    // set material
+    auto *defaultMaterial = new Material();
+    setMaterialFromJsonContent(defaultMaterial, "d3c7820c-2a98-4429-8bc7-b8453bc9ac41.json", "standard");
+    planeMeshRenderer->setMaterial(defaultMaterial);
+
     // add a node to scene
     _cubeNode = new Node("cube");
     //    _cubeNode->setPosition(Vec3(10, 0, 10));
@@ -215,33 +250,13 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     cube->onLoaded();
 
     // create mesh from deserializer
-    Mesh *      meshExportedFromEditor = new Mesh();
-    std::string meshJsonContent        = FileUtils::getInstance()->getStringFromFile("29805fb3-2189-4731-b788-b6b74617a960@d9c96.json");
-    {
-        rapidjson::Document meshDoc;
-        meshDoc.Parse(meshJsonContent.c_str());
-        auto deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::MESH);
-        deserializer->deserialize(meshDoc, meshExportedFromEditor);
-    }
-
-    {
-        Data              meshData = FileUtils::getInstance()->getDataFromFile("29805fb3-2189-4731-b788-b6b74617a960@d9c96.bin");
-        Mesh::ICreateInfo meshInfo;
-        meshInfo.structInfo = meshExportedFromEditor->getStruct();
-        auto meshBuffer     = std::make_shared<ArrayBuffer>(static_cast<uint32_t>(meshData.getSize()));
-        memcpy(const_cast<uint8_t *>(meshBuffer->getData()), meshData.getBytes(), meshData.getSize());
-        Uint8Array meshDataArray{meshBuffer, 0};
-        meshInfo.data = meshDataArray;
-        meshExportedFromEditor->reset(meshInfo);
-        meshExportedFromEditor->initialize();
-        _cubeNode->setScale(100, 100, 100);
-    }
-
-    //
+    Mesh *meshExportedFromEditor = new Mesh();
+    setMeshFromJson(meshExportedFromEditor, "29805fb3-2189-4731-b788-b6b74617a960@d9c96.json", "29805fb3-2189-4731-b788-b6b74617a960@d9c96.bin");
+    _cubeNode->setScale(100, 100, 100);
 
     // create mesh renderer
     _cubeMeshRenderer = _cubeNode->addComponent<MeshRenderer>();
-    //    _cubeMeshRenderer->setMesh(cube);
+    // _cubeMeshRenderer->setMesh(cube);
     _cubeMeshRenderer->setMesh(meshExportedFromEditor);
 
     // create camera
@@ -304,16 +319,16 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     //     _cubeMeshRenderer->setMaterial(material);
 
     // create material from deserializer
-    auto *materialExportedFromEditor = new Material();
+    auto *corsetMaterial = new Material();
 
-    setMaterialFromJsonContent(materialExportedFromEditor, "f5345262-68e8-4676-b142-543e3ff75c17@ddb15.json", "standard");
+    setMaterialFromJsonContent(corsetMaterial, "f5345262-68e8-4676-b142-543e3ff75c17@ddb15.json", "standard");
 
-    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@3effa.json", materialExportedFromEditor, "mainTexture");
-    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", materialExportedFromEditor, "metallicRoughnessMap");
-    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@0089c.json", materialExportedFromEditor, "normalMap");
-    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", materialExportedFromEditor, "occlusionMap");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@3effa.json", corsetMaterial, "mainTexture");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", corsetMaterial, "metallicRoughnessMap");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@0089c.json", corsetMaterial, "normalMap");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", corsetMaterial, "occlusionMap");
 
-    _cubeMeshRenderer->setMaterial(materialExportedFromEditor);
+    _cubeMeshRenderer->setMaterial(corsetMaterial);
 
     // create light
     auto *lightNode = new Node();
@@ -322,7 +337,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     auto *lightComp = lightNode->addComponent<DirectionalLight>();
     // auto *lightComp = lightNode->addComponent<SphereLight>();
     // auto *lightComp = lightNode->addComponent<SpotLight>();
-    //    lightComp->setColor(cc::Color{255, 0, 0, 255});
+    // lightComp->setColor(cc::Color{255, 0, 0, 255});
     // lightNode->setPosition(0, 0, 5); // spot & spheres
     // lightComp->setRange(20); // spot & spheres
     // lightComp->setSize(1); // spot & spheres

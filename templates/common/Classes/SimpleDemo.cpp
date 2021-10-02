@@ -339,6 +339,11 @@ void SimpleDemo::testShadow() {
     planeMeshRenderer->setMaterial(defaultMaterial);
     planeMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::OFF);
     planeMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
+
+    auto *shadowInfo = _scene->getSceneGlobal()->getShadowInfo();
+    shadowInfo->setEnabled(true);
+    // shadowInfo->setType(cc::scene::ShadowType::PLANAR);
+    shadowInfo->setType(cc::scene::ShadowType::SHADOW_MAP);
 }
 
 void SimpleDemo::testTerrain() {

@@ -41,6 +41,7 @@ public:
     ~Scene() override;
 
     inline scene::RenderScene *getRenderScene() const { return _renderScene; }
+    inline SceneGlobal *       getSceneGlobal() const { return _globals; };
 
     void load();
     void activate(bool active = true);

@@ -196,9 +196,7 @@ void SubModel::onMacroPatchesStateChanged(const std::vector<IMacroPatch> &patche
 void SubModel::flushPassInfo() {
     if (_passes.empty()) return;
     if (!_shaders.empty()) {
-        for (gfx::Shader *shader : _shaders) {
-            shader->destroy();
-        }
+        _shaders.clear();
     }
     _shaders.resize(_passes.size());
     for (uint i = 0; i < _passes.size(); ++i) {

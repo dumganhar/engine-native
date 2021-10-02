@@ -38,6 +38,8 @@ public:
 
     void finalize();
 
+    void createCorsetForTest();
+
 private:
     void testTerrain();
 

@@ -369,13 +369,5 @@ void Model::updateLocalDescriptors(index_t /*subModelIndex*/, gfx::DescriptorSet
     }
 }
 
-void Model::setSubModel(uint32_t idx, SubModel *subModel) {
-    if (idx >= static_cast<uint32_t>(_subModels.size())) {
-        _subModels.emplace_back(subModel);
-        return;
-    }
-    _subModels[idx] = subModel;
-}
-
 } // namespace scene
 } // namespace cc

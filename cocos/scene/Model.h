@@ -87,8 +87,6 @@ public:
     virtual void updateTransform(uint32_t stamp);
     virtual void updateUBOs(uint32_t stamp);
 
-    void setSubModel(uint32_t idx, SubModel *subModel);
-
     inline void attachToScene(RenderScene *scene) { _scene = scene; };
     inline void detachFromScene() { _scene = nullptr; };
     inline void setCastShadow(bool value) { _castShadow = value; }
@@ -96,17 +94,15 @@ public:
     inline void setInstMatWorldIdx(int32_t idx) { _instMatWorldIdx = idx; }
     inline void setLocalBuffer(gfx::Buffer *buffer) { _localBuffer = buffer; }
     inline void setNode(Node *node) { _node = node; }
-    inline void setReceiveShadow(bool value) { _receiveShadow = value; }
+    inline void setReceiveShadow(bool value) {
+        _receiveShadow = value;
+        onMacroPatchesStateChanged();
+    }
     inline void setTransform(Node *node) { _transform = node; }
     inline void setVisFlags(uint32_t flags) { _visFlags = flags; }
     inline void setBounds(geometry::AABB *world) {
         _worldBounds = world;
         _modelBounds->set(_worldBounds->getCenter(), _worldBounds->getHalfExtents());
-    }
-    inline void setInstancedAttrBlock(uint8_t *buffer, uint32_t size, InstancedAttributeBlock &&block, const std::vector<gfx::Attribute> &attributes) {
-        _instancedBuffer        = {buffer, size};
-        _instanceAttributeBlock = std::move(block);
-        _instanceAttributes     = attributes;
     }
 
     inline bool                               isInited() const { return _inited; };

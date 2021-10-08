@@ -75,7 +75,7 @@ protected:
 
 private:
     Material *getBuiltinMaterial() {
-        BuiltinResMgr::getInstance()->get<Material>("missing-material");
+        return BuiltinResMgr::getInstance()->get<Material>("missing-material");
     }
 
 private:
@@ -1452,6 +1452,7 @@ bool Terrain::rebuildWeights(const TerrainInfo &info) {
     }
 
     _weights = weights;
+    return true;
 }
 
 // Override functions

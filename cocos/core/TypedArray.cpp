@@ -47,19 +47,19 @@ uint32_t getTypedArrayLength(const TypedArray &arr) {
 }
 
 uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
-#define TYPEDARRAY_GET_BYPES_PER_ELEMENT(type)             \
+#define TYPEDARRAY_GET_BYTES_PER_ELEMENT(type)             \
     if (auto *p = std::get_if<type>(&arr); p != nullptr) { \
-        return p->bytesPerElement();                       \
+        return type::BYTES_PER_ELEMENT;                    \
     }
 
-    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Float32Array)
-    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Uint32Array)
-    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Uint16Array)
-    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Uint8Array)
-    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Int32Array)
-    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Int16Array)
-    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Int8Array)
-    TYPEDARRAY_GET_BYPES_PER_ELEMENT(Float64Array)
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Float32Array)
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint32Array)
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint16Array)
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint8Array)
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Int32Array)
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Int16Array)
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Int8Array)
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Float64Array)
 
 #undef TYPEDARRAY_GET_BYPES_PER_ELEMENT
     return 0;

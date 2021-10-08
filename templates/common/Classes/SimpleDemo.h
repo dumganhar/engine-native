@@ -39,6 +39,8 @@ public:
     void finalize();
 
 private:
+    void testTerrain();
+
     cc::gfx::Device * _device{nullptr};
     cc::Director *    _director{nullptr};
     cc::MeshRenderer *_cubeMeshRenderer{nullptr};

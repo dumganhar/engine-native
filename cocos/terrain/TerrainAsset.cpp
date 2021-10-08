@@ -274,16 +274,16 @@ bool TerrainAsset::loadNativeData(const Uint8Array &_nativeData) {
     _lightMapSize  = stream.readInt16();
 
     // heights
-    const int32_t heightBufferSize = stream.readInt32();
+    const int32_t heightBufferSize = stream.readInt32(); //NOTE: heightBufferSize unit is how many uint16.
     _heights.reset(heightBufferSize);
-    for (uint32_t i = 0; i < _heights.length(); ++i) {
+    for (uint32_t i = 0, len = _heights.length(); i < len; ++i) {
         _heights[i] = stream.readInt16();
     }
 
     // weights
-    const int32_t WeightBufferSize = stream.readInt32();
-    _weights.reset(WeightBufferSize);
-    for (uint32_t i = 0; i < _weights.length(); ++i) {
+    const int32_t weightBufferSize = stream.readInt32();
+    _weights.reset(weightBufferSize);
+    for (uint32_t i = 0, len = _weights.length(); i < len; ++i) {
         _weights[i] = stream.readInt8();
     }
 

@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <array>
 #include <string>
 
 #include <stdint.h>
@@ -35,22 +36,22 @@
 
 namespace cc {
 
-constexpr uint32_t TERRAIN_MAX_LEVELS              = 4;
-constexpr uint32_t TERRAIN_MAX_BLEND_LAYERS        = 4;
-constexpr uint32_t TERRAIN_MAX_LAYER_COUNT         = 256;
-constexpr uint32_t TERRAIN_BLOCK_TILE_COMPLEXITY   = 32;
-constexpr uint32_t TERRAIN_BLOCK_VERTEX_COMPLEXITY = 33;
-constexpr uint32_t TERRAIN_BLOCK_VERTEX_SIZE       = 8; // position + normal + uv
-constexpr uint32_t TERRAIN_HEIGHT_BASE             = 32768;
+constexpr int32_t TERRAIN_MAX_LEVELS              = 4;
+constexpr int32_t TERRAIN_MAX_BLEND_LAYERS        = 4;
+constexpr int32_t TERRAIN_MAX_LAYER_COUNT         = 256;
+constexpr int32_t TERRAIN_BLOCK_TILE_COMPLEXITY   = 32;
+constexpr int32_t TERRAIN_BLOCK_VERTEX_COMPLEXITY = 33;
+constexpr int32_t TERRAIN_BLOCK_VERTEX_SIZE       = 8; // position + normal + uv
+constexpr int32_t TERRAIN_HEIGHT_BASE             = 32768;
 
 constexpr float TERRAIN_HEIGHT_FACTORY = 1.0F / 512.0F;
 constexpr float TERRAIN_HEIGHT_FMIN    = (-TERRAIN_HEIGHT_BASE) * TERRAIN_HEIGHT_FACTORY;
 constexpr float TERRAIN_HEIGHT_FMAX    = (65535 - TERRAIN_HEIGHT_BASE) * TERRAIN_HEIGHT_FACTORY;
 
-constexpr uint32_t TERRAIN_NORTH_INDEX = 0;
-constexpr uint32_t TERRAIN_SOUTH_INDEX = 1;
-constexpr uint32_t TERRAIN_WEST_INDEX  = 2;
-constexpr uint32_t TERRAIN_EAST_INDEX  = 3;
+constexpr int32_t TERRAIN_NORTH_INDEX = 0;
+constexpr int32_t TERRAIN_SOUTH_INDEX = 1;
+constexpr int32_t TERRAIN_WEST_INDEX  = 2;
+constexpr int32_t TERRAIN_EAST_INDEX  = 3;
 
 constexpr uint32_t TERRAIN_DATA_VERSION         = 0x01010001;
 constexpr uint32_t TERRAIN_DATA_VERSION2        = 0x01010002;
@@ -69,7 +70,7 @@ struct TerrainLayerInfo {
     //    @serializable
     int32_t slot{0};
     //    @serializable
-    int32_t tileSize{1};
+    float tileSize{1.F};
     //    @serializable
     Texture2D *detailMap{nullptr};
     //    @serializable
@@ -85,10 +86,10 @@ struct TerrainLayerInfo {
  * @zh 地形纹理二进制信息
  */
 struct TerrainLayerBinaryInfo {
-    int32_t     slot      = 0;
-    int32_t     tileSize  = 1;
-    float       roughness = 1;
-    float       metallic  = 0;
+    int32_t     slot{0};
+    float       tileSize{1.F};
+    float       roughness{1.F};
+    float       metallic{0.F};
     std::string detailMapId;
     std::string normalMapId;
 };
@@ -99,6 +100,8 @@ struct TerrainLayerBinaryInfo {
  */
 class TerrainAsset final : public Asset {
 public:
+    using Super = Asset;
+
     TerrainAsset()  = default;
     ~TerrainAsset() = default;
 
@@ -129,11 +132,11 @@ public:
      * @en block count
      * @zh 块数量
      */
-    inline void setBlockCount(const std::vector<int32_t> &value) {
+    inline void setBlockCount(const std::array<int32_t, 2> &value) {
         _blockCount = value;
     }
 
-    inline const std::vector<int32_t> &getBlockCount() const {
+    inline const std::array<int32_t, 2> &getBlockCount() const {
         return _blockCount;
     }
 
@@ -197,6 +200,10 @@ public:
         return _layerBuffer;
     }
 
+    inline std::vector<int16_t> &getLayerBuffer() {
+        return _layerBuffer;
+    }
+
     /**
      * @en layer info
      * @zh 纹理信息
@@ -239,7 +246,7 @@ protected:
     int32_t                             _version{0};
     Uint8Array                          _data;
     float                               _tileSize{1.F};
-    std::vector<int32_t>                _blockCount{1, 1};
+    std::array<int32_t, 2>              _blockCount{1, 1};
     int16_t                             _weightMapSize{128};
     int16_t                             _lightMapSize{128};
     Uint16Array                         _heights;
@@ -248,6 +255,10 @@ protected:
     std::vector<TerrainLayerBinaryInfo> _layerBinaryInfos;
     //    @serializable
     std::vector<TerrainLayerInfo> _layerInfos;
+
+    friend class Terrain;
+    friend class TerrainAssetDeserializer;
+    CC_DISALLOW_COPY_MOVE_ASSIGN(TerrainAsset);
 };
 
 } // namespace cc

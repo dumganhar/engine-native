@@ -46,6 +46,8 @@
 #include "core/data/deserializer/AssetDeserializerFactory.h"
 #include "core/utils/ImageUtils.h"
 #include "platform/FileUtils.h"
+#include "terrain/Terrain.h"
+#include "terrain/TerrainAsset.h"
 
 //#include "platform/View.h"
 
@@ -195,6 +197,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     _scene = new Scene("myscene");
     // add a node to scene
     _cubeNode = new Node("cube");
+    //    _cubeNode->setPosition(Vec3(10, 0, 10));
     _cubeNode->setParent(_scene);
     _cubeNode->addComponent<MyComponent1>();
     _cubeNode->addComponent<MyComponent2>();
@@ -246,6 +249,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     cameraNode->setParent(_scene);
     cameraNode->setPosition(-10, 10, 10);
     cameraNode->setEulerAngles(Vec3{-35, -45, 0});
+    //    cameraNode->setEulerAngles(Vec3{-28, -77, 20});
 
     auto *cameraComp = cameraNode->addComponent<Camera>();
     cameraComp->setProjection(Camera::ProjectionType::PERSPECTIVE);
@@ -322,7 +326,34 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // lightNode->setPosition(0, 0, 5); // spot & spheres
     // lightComp->setRange(20); // spot & spheres
     // lightComp->setSize(1); // spot & spheres
+
+    testTerrain();
+
     _director->runSceneImmediate(_scene, nullptr, nullptr);
+}
+
+void SimpleDemo::testTerrain() {
+    // deserialize terrain asset
+    auto fileUtils        = FileUtils::getInstance();
+    auto terrainAssetJson = fileUtils->getStringFromFile("bb4eed63-fb14-4bf8-a8f3-7c9b271a9f18.json");
+    CC_ASSERT(!terrainAssetJson.empty());
+
+    rapidjson::Document doc;
+    doc.Parse(terrainAssetJson.c_str());
+    auto  deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::TERRAIN);
+    auto *asset        = new TerrainAsset();
+    deserializer->deserialize(doc, asset);
+
+    auto             terrainAssetBin   = fileUtils->getDataFromFile("bb4eed63-fb14-4bf8-a8f3-7c9b271a9f18.bin");
+    ArrayBuffer::Ptr terrainBinaryData = std::make_shared<ArrayBuffer>(terrainAssetBin.getBytes(), terrainAssetBin.getSize());
+    asset->setNativeAsset(terrainBinaryData);
+    asset->onLoaded();
+
+    // Create terrain component
+    auto *node    = new Node();
+    auto *terrain = node->addComponent<Terrain>();
+    terrain->setAsset(asset);
+    node->setParent(_scene);
 }
 
 void SimpleDemo::step(float dt) {

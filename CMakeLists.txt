@@ -1480,6 +1480,8 @@ cocos_source_files(
     cocos/core/data/deserializer/TextureBaseDeserializer.cpp
     cocos/core/data/deserializer/Texture2DDeserializer.cpp
     cocos/core/data/deserializer/Texture2DDeserializer.h
+    cocos/core/data/deserializer/TerrainAssetDeserializer.cpp
+    cocos/core/data/deserializer/TerrainAssetDeserializer.h
     cocos/core/data/deserializer/IAssetDeserializer.h
     cocos/core/data/deserializer/AssetDeserializerFactory.cpp
     cocos/core/data/deserializer/AssetDeserializerFactory.h

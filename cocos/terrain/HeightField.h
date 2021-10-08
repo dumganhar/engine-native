@@ -25,10 +25,36 @@
 
 #pragma once
 
+#include "core/TypedArray.h"
+
 namespace cc {
 
-class HeightField {
+class HeightField final {
 public:
+    HeightField(int32_t w, int32_t h);
+    ~HeightField() = default;
+
+    inline int32_t getWidth() const { return _w; }
+    inline int32_t getHeight() const { return _h; }
+
+    inline void set(int32_t i, int32_t j, uint16_t value) {
+        _data[j * _w + i] = value;
+    }
+
+    inline uint16_t get(int32_t i, int32_t j) const {
+        return _data[j * _w + i];
+    }
+
+    uint16_t getClamp(int32_t i, int32_t j) const;
+
+    uint16_t getAt(float x, float y);
+
+private:
+    Uint16Array _data;
+    int32_t     _w{0};
+    int32_t     _h{0};
+
+    friend class Terrain;
 };
 
 } // namespace cc

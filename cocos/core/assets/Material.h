@@ -280,8 +280,8 @@ public:
     void update(bool keepProps = true); // TODO(xwx): temporary use as public by demo
 
 protected:
-    static bool uploadProperty(scene::Pass *pass, const std::string &name, const MaterialPropertyVariant &val);
-    static void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index = CC_INVALID_INDEX);
+    bool uploadProperty(scene::Pass *pass, const std::string &name, const MaterialPropertyVariant &val);
+    void bindTexture(scene::Pass *pass, uint32_t handle, const MaterialProperty &val, index_t index = CC_INVALID_INDEX);
 
     template <typename T1, typename T2>
     void prepareInfo(const T1 &patch, std::vector<T2> &cur) {

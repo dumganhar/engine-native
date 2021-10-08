@@ -35,7 +35,12 @@ public:
     using Ptr = std::shared_ptr<ArrayBuffer>;
 
     explicit ArrayBuffer(uint32_t length) : _byteLength{length} {
-        _data = static_cast<uint8_t *>(malloc(length));
+        _data = static_cast<uint8_t *>(malloc(_byteLength));
+        memset(_data, 0x00, _byteLength);
+    }
+
+    ArrayBuffer(const uint8_t *data, uint32_t length) {
+        reset(data, length);
     }
 
     ArrayBuffer() = default;
@@ -54,7 +59,7 @@ public:
         _data       = static_cast<uint8_t *>(malloc(length));
         _byteLength = length;
         if (data) {
-            std::copy(data, data + length, _data);
+            memcpy(_data, data, _byteLength);
         }
     }
 

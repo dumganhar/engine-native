@@ -25,24 +25,23 @@
 
 #pragma once
 
-#include <memory>
-
 #include "core/data/deserializer/IAssetDeserializer.h"
+#include "terrain/TerrainAsset.h"
 
 namespace cc {
 
-enum class DeserializeAssetType {
-    EFFECT,
-    MATERIAL,
-    MESH,
-    TEXTUREBASE,
-    TEXTURE2D,
-    TERRAIN,
-};
+class Asset;
 
-class AssetDeserializerFactory final {
+class TerrainAssetDeserializer final : public IAssetDeserializer {
 public:
-    static std::shared_ptr<IAssetDeserializer> createAssetDeserializer(DeserializeAssetType type);
+    TerrainAssetDeserializer()           = default;
+    ~TerrainAssetDeserializer() override = default;
+
+    void deserializeTexture2D(const rapidjson::Value &mapInfo, Texture2D *&cTexture2D);
+    void deserializeTerrainAsset(const rapidjson::Value &terrainAsset, TerrainAsset *cTerrainAsset);
+    void deserializeTerrainLayerInfo(const rapidjson::Value &terrainLayerInfo, TerrainLayerInfo &cTerrainLayerInfo);
+
+    void deserialize(const rapidjson::Value &serializedData, Asset *asset) override;
 };
 
 } // namespace cc

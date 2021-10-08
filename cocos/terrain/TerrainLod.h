@@ -25,10 +25,60 @@
 
 #pragma once
 
+#include "core/TypedArray.h"
+
+//cjh TODO: TerrainLod is not used in ts?
+
 namespace cc {
 
-class TerrainLod {
+constexpr int32_t TERRAIN_LOD_VERTS       = 33;
+constexpr int32_t TERRAIN_LOD_TILES       = 32;
+constexpr int32_t TERRAIN_LOD_LEVELS      = 4;
+constexpr int32_t TERRAIN_LOD_NORTH_INDEX = 0;
+constexpr int32_t TERRAIN_LOD_SOUTH_INDEX = 1;
+constexpr int32_t TERRAIN_LOD_WEST_INDEX  = 2;
+constexpr int32_t TERRAIN_LOD_EAST_INDEX  = 3;
+
+struct TerrainIndexPool {
+    int32_t     size{0};
+    Uint16Array indices{nullptr};
+};
+
+struct TerrainIndexData {
+    int32_t     start{0};
+    int32_t     size{0};
+    Uint16Array buffer;
+    int32_t     prim_count{0};
+};
+
+struct TerrainLodKey {
+    int32_t level{0};
+    int32_t north{0};
+    int32_t south{0};
+    int32_t west{0};
+    int32_t east{0};
+
+    bool compare(const TerrainLodKey &rk) {
+        return level == rk.level && north == rk.north && south == rk.south && west == rk.west && east == rk.east;
+    }
+};
+
+class TerrainLod final {
 public:
+    TerrainLod();
+    ~TerrainLod() = default;
+
+private:
+    void genBodyIndex();
+    void genBodyIndexByLevel(int32_t level);
+    void genConnecterIndex();
+    void genConnecterIndexNorth(int32_t level, int32_t connecter);
+    void genConnecterIndexSouth(int32_t level, int32_t connecter);
+    void genConnecterIndexWest(int32_t level, int32_t connecter);
+    void genConnecterIndexEast(int32_t level, int32_t connecter);
+
+    TerrainIndexPool mBodyIndex[TERRAIN_LOD_LEVELS]{};
+    TerrainIndexPool mConnecterIndex[TERRAIN_LOD_LEVELS][TERRAIN_LOD_LEVELS][4]{};
 };
 
 } // namespace cc

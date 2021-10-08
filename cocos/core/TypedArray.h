@@ -35,6 +35,8 @@ namespace cc {
 template <typename T>
 class TypedArrayTemp {
 public:
+    static constexpr uint32_t BYTES_PER_ELEMENT{sizeof(T)};
+
     TypedArrayTemp() {
     }
 
@@ -46,12 +48,12 @@ public:
     : TypedArrayTemp(buffer, 0, buffer->byteLength()) {}
 
     TypedArrayTemp(ArrayBuffer::Ptr buffer, uint32_t byteOffset)
-    : TypedArrayTemp(buffer, byteOffset, buffer->byteLength()) {}
+    : TypedArrayTemp(buffer, byteOffset, buffer->byteLength() / BYTES_PER_ELEMENT) {}
 
     TypedArrayTemp(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t length)
     : _buffer(buffer),
       _byteOffset(byteOffset),
-      _byteLength(length),
+      _byteLength(length * BYTES_PER_ELEMENT),
       _byteEndPos(byteOffset + length) {
         CC_ASSERT(_byteEndPos <= _buffer->byteLength());
     }
@@ -70,12 +72,12 @@ public:
         return *((reinterpret_cast<T *>(_buffer->_data + _byteOffset)) + idx);
     }
 
-    TypedArrayTemp<T> subarray(uint32_t begin, uint32_t end) {
-        return TypedArrayTemp<T>(_buffer, begin, end - begin + 1);
+    TypedArrayTemp subarray(uint32_t begin, uint32_t end) {
+        return TypedArrayTemp(_buffer, begin, end - begin + 1);
     }
 
-    TypedArrayTemp<T> subarray(uint32_t begin) {
-        return subArray<T>(begin, _byteLength - begin + 1UL);
+    TypedArrayTemp subarray(uint32_t begin) {
+        return subArray(begin, _byteLength - begin + 1UL);
     }
 
     void set(const ArrayBuffer::Ptr &buffer) {
@@ -97,24 +99,24 @@ public:
     }
 
     void reset(uint32_t length) {
-        _buffer     = std::make_shared<ArrayBuffer>(length);
-        _byteLength = _buffer->byteLength();
-        _byteOffset = 0;
-        _byteEndPos = length;
+        const uint32_t byteLength = length * BYTES_PER_ELEMENT;
+        _buffer                   = std::make_shared<ArrayBuffer>(byteLength);
+        _byteLength               = _buffer->byteLength();
+        _byteOffset               = 0;
+        _byteEndPos               = byteLength;
     }
 
-    void reset(const ArrayBuffer::Ptr &buffer, uint32_t offset = 0, uint32_t byteLength = std::numeric_limits<uint32_t>::max()) {
+    void reset(const ArrayBuffer::Ptr &buffer, uint32_t offset = 0, uint32_t length = std::numeric_limits<uint32_t>::max()) {
         _buffer     = buffer;
         _byteOffset = offset;
-        _byteEndPos = byteLength == std::numeric_limits<uint32_t>::max() ? buffer->byteLength() : byteLength;
+        _byteEndPos = length == std::numeric_limits<uint32_t>::max() ? buffer->byteLength() : (length * BYTES_PER_ELEMENT);
         _byteLength = buffer->byteLength();
     }
 
     inline const ArrayBuffer::Ptr &buffer() const { return _buffer; }
     inline uint32_t                byteLength() const { return _byteLength; }
-    inline uint32_t                length() const { return _byteLength / sizeof(T); }
+    inline uint32_t                length() const { return _byteLength / BYTES_PER_ELEMENT; }
     inline uint32_t                byteOffset() const { return _byteOffset; }
-    inline uint32_t                bytesPerElement() const { return sizeof(T); }
     inline bool                    empty() const { return _byteLength == 0; }
 
 private:

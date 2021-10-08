@@ -72,24 +72,22 @@ struct TerrainInfo {
      * @en weight map size
      * @zh 权重图大小
      */
-    int32_t weightMapSize = 128;
+    int32_t weightMapSize{128};
 
     /**
      * @en light map size
      * @zh 光照图大小
      */
-    int32_t lightMapSize = 128;
+    int32_t lightMapSize{128};
 
     /**
      * @en terrain size
      * @zh 地形大小
      */
     Size getSize() const {
-        Size sz;
-        sz.width  = blockCount[0] * TERRAIN_BLOCK_TILE_COMPLEXITY * tileSize;
-        sz.height = blockCount[1] * TERRAIN_BLOCK_TILE_COMPLEXITY * tileSize;
-
-        return sz;
+        return {
+            blockCount[0] * TERRAIN_BLOCK_TILE_COMPLEXITY * tileSize,
+            blockCount[1] * TERRAIN_BLOCK_TILE_COMPLEXITY * tileSize};
     }
 
     /**
@@ -97,10 +95,9 @@ struct TerrainInfo {
      * @zh 栅格数量
      */
     std::array<int32_t, 2> getTileCount() const {
-        std::array<int32_t, 2> _tileCount{
+        return {
             blockCount[0] * TERRAIN_BLOCK_TILE_COMPLEXITY,
             blockCount[1] * TERRAIN_BLOCK_TILE_COMPLEXITY};
-        return _tileCount;
     }
 
     /**
@@ -108,11 +105,11 @@ struct TerrainInfo {
      * @zh 顶点数量
      */
     std::array<int32_t, 2> getVertexCount() const {
-        std::array<int32_t, 2> _vertexCount = getTileCount();
-        _vertexCount[0] += 1;
-        _vertexCount[1] += 1;
+        std::array<int32_t, 2> vertexCount = getTileCount();
+        vertexCount[0] += 1;
+        vertexCount[1] += 1;
 
-        return _vertexCount;
+        return vertexCount;
     }
 };
 

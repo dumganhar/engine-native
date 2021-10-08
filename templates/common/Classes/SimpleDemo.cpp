@@ -197,7 +197,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     _scene = new Scene("myscene");
     // add a node to scene
     _cubeNode = new Node("cube");
-    _cubeNode->setPosition(Vec3(10, 0, 10));
+    //    _cubeNode->setPosition(Vec3(10, 0, 10));
     _cubeNode->setParent(_scene);
     _cubeNode->addComponent<MyComponent1>();
     _cubeNode->addComponent<MyComponent2>();
@@ -248,8 +248,8 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     auto *cameraNode = new Node("camera");
     cameraNode->setParent(_scene);
     cameraNode->setPosition(-10, 10, 10);
-    //    cameraNode->setEulerAngles(Vec3{-35, -45, 0});
-    cameraNode->setEulerAngles(Vec3{-28, -77, 20});
+    cameraNode->setEulerAngles(Vec3{-35, -45, 0});
+    //    cameraNode->setEulerAngles(Vec3{-28, -77, 20});
 
     auto *cameraComp = cameraNode->addComponent<Camera>();
     cameraComp->setProjection(Camera::ProjectionType::PERSPECTIVE);
@@ -350,8 +350,8 @@ void SimpleDemo::testTerrain() {
     asset->onLoaded();
 
     // Create terrain component
-    auto node    = new Node();
-    auto terrain = node->addComponent<Terrain>();
+    auto *node    = new Node();
+    auto *terrain = node->addComponent<Terrain>();
     terrain->setAsset(asset);
     node->setParent(_scene);
 }

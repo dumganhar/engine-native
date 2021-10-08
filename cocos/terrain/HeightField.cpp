@@ -28,13 +28,12 @@
 
 namespace cc {
 
-HeightField::HeightField(int32_t w, int32_t h) {
-    _w = w;
-    _h = h;
+HeightField::HeightField(int32_t w, int32_t h)
+: _w{w}, _h{h} {
     _data.reset(w * h);
 
     for (int32_t i = 0; i < w * h; ++i) {
-        _data[i] = 0;
+        _data[i] = 0; //cjh FIXME: it seems this for loop is not needed since ArrayBuffer will set the value of all elements to zero.
     }
 }
 

@@ -106,7 +106,7 @@ void CCObject::destroyImmediate() {
 
 bool isObjectValid(CCObject *value, bool strictMode /* = false*/) {
     if (value == nullptr) {
-        return;
+        return false;
     }
 
     return !(value->_objFlags & (strictMode ? (CCObject::Flags::DESTROYED | CCObject::Flags::TO_DESTROY) : CCObject::Flags::DESTROYED));

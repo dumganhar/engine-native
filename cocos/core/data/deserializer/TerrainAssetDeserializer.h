@@ -37,6 +37,7 @@ public:
     TerrainAssetDeserializer()           = default;
     ~TerrainAssetDeserializer() override = default;
 
+    void deserializeTexture2D(const rapidjson::Value &mapInfo, Texture2D *&cTexture2D);
     void deserializeTerrainAsset(const rapidjson::Value &terrainAsset, TerrainAsset *cTerrainAsset);
     void deserializeTerrainLayerInfo(const rapidjson::Value &terrainLayerInfo, TerrainLayerInfo &cTerrainLayerInfo);
 

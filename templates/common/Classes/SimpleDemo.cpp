@@ -197,6 +197,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     _scene = new Scene("myscene");
     // add a node to scene
     _cubeNode = new Node("cube");
+    _cubeNode->setPosition(Vec3(10, 0, 10));
     _cubeNode->setParent(_scene);
     _cubeNode->addComponent<MyComponent1>();
     _cubeNode->addComponent<MyComponent2>();
@@ -247,7 +248,8 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     auto *cameraNode = new Node("camera");
     cameraNode->setParent(_scene);
     cameraNode->setPosition(-10, 10, 10);
-    cameraNode->setEulerAngles(Vec3{-35, -45, 0});
+    //    cameraNode->setEulerAngles(Vec3{-35, -45, 0});
+    cameraNode->setEulerAngles(Vec3{-28, -77, 20});
 
     auto *cameraComp = cameraNode->addComponent<Camera>();
     cameraComp->setProjection(Camera::ProjectionType::PERSPECTIVE);
@@ -332,15 +334,17 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
 
 void SimpleDemo::testTerrain() {
     // deserialize terrain asset
-    auto                fileUtils        = FileUtils::getInstance();
-    auto                terrainAssetJson = fileUtils->getStringFromFile("15c0dd2a-68b1-49c1-a624-66d9ef91dd3a.json");
+    auto fileUtils        = FileUtils::getInstance();
+    auto terrainAssetJson = fileUtils->getStringFromFile("bb4eed63-fb14-4bf8-a8f3-7c9b271a9f18.json");
+    CC_ASSERT(!terrainAssetJson.empty());
+
     rapidjson::Document doc;
     doc.Parse(terrainAssetJson.c_str());
     auto  deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::TERRAIN);
     auto *asset        = new TerrainAsset();
     deserializer->deserialize(doc, asset);
 
-    auto             terrainAssetBin   = fileUtils->getDataFromFile("15c0dd2a-68b1-49c1-a624-66d9ef91dd3a.bin");
+    auto             terrainAssetBin   = fileUtils->getDataFromFile("bb4eed63-fb14-4bf8-a8f3-7c9b271a9f18.bin");
     ArrayBuffer::Ptr terrainBinaryData = std::make_shared<ArrayBuffer>(terrainAssetBin.getBytes(), terrainAssetBin.getSize());
     asset->setNativeAsset(terrainBinaryData);
     asset->onLoaded();

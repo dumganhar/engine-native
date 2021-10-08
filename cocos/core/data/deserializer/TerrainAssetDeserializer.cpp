@@ -25,6 +25,10 @@
 #include "core/data/deserializer/TerrainAssetDeserializer.h"
 #include "base/Log.h"
 #include "core/assets/Texture2D.h"
+#include "core/data/deserializer/AssetDeserializerFactory.h"
+#include "core/utils/ImageUtils.h"
+#include "platform/FileUtils.h"
+#include "platform/Image.h"
 
 namespace cc {
 
@@ -71,6 +75,36 @@ void deserializeArray(const rapidjson::Value &valArray, std::vector<T> &cValArra
     deserializeArray<T>(valArray, cValArray, cb);
 }
 //
+
+Texture2D *createTextureFromUUID(const std::string &texJsonFile) {
+    auto *      texture2DExportedFromEditor = new Texture2D();
+    std::string texture2DJsonContent        = FileUtils::getInstance()->getStringFromFile(texJsonFile);
+    if (texture2DJsonContent.empty()) {
+        return nullptr;
+    }
+
+    {
+        rapidjson::Document texture2DDoc;
+        texture2DDoc.Parse(texture2DJsonContent.c_str());
+        auto deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::TEXTURE2D);
+        deserializer->deserialize(texture2DDoc, texture2DExportedFromEditor);
+    }
+    // setImageForMaterial
+    auto *image = new Image();
+    bool  ret   = image->initWithImageFile(texture2DExportedFromEditor->getMipmapsUuids()[0] + ".jpg"); // TODO(xwx): HACK
+    ImageUtils::convert2RGBA(image);                                                                    // TODO(xwx): HACK: image file is RGB8 and Metal do not support
+    if (ret) {
+        auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
+        imgAsset->setNativeAsset(image);   //cjh HOW TO RELEASE?
+
+        texture2DExportedFromEditor->setImage(imgAsset);
+        texture2DExportedFromEditor->onLoaded();
+    } else {
+        CC_SAFE_DELETE(texture2DExportedFromEditor);
+    }
+    image->release();
+    return texture2DExportedFromEditor; //cjh return shared_ptr
+}
 
 /*
  [
@@ -126,6 +160,19 @@ void TerrainAssetDeserializer::deserializeTerrainAsset(const rapidjson::Value &t
     }
 }
 
+void TerrainAssetDeserializer::deserializeTexture2D(const rapidjson::Value &mapInfo, Texture2D *&cTexture2D) {
+    if (mapInfo.IsNull()) {
+        cTexture2D = nullptr;
+        return;
+    }
+
+    if (mapInfo.HasMember("__uuid__")) {
+        if (mapInfo.HasMember("__expectedType__") && mapInfo["__expectedType__"] == "cc.Texture2D") {
+            cTexture2D = createTextureFromUUID(std::string(mapInfo["__uuid__"].GetString()) + ".json");
+        }
+    }
+}
+
 void TerrainAssetDeserializer::deserializeTerrainLayerInfo(const rapidjson::Value &terrainLayerInfo, TerrainLayerInfo &cTerrainLayerInfo) {
     if (terrainLayerInfo.HasMember("slot")) {
         cTerrainLayerInfo.slot = terrainLayerInfo["slot"].GetInt();
@@ -136,11 +183,11 @@ void TerrainAssetDeserializer::deserializeTerrainLayerInfo(const rapidjson::Valu
     }
 
     if (terrainLayerInfo.HasMember("detailMap")) {
-        //cjh TODO:
+        deserializeTexture2D(terrainLayerInfo["detailMap"], cTerrainLayerInfo.detailMap);
     }
 
     if (terrainLayerInfo.HasMember("normalMap")) {
-        //cjh TODO:
+        deserializeTexture2D(terrainLayerInfo["normalMap"], cTerrainLayerInfo.normalMap);
     }
 
     if (terrainLayerInfo.HasMember("roughness")) {

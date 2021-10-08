@@ -176,7 +176,6 @@ void TerrainBuffer::readInt32Array(int32_t *value, int32_t count) {
         value[i] = _buffView.getInt32(_seekPos + i * 4);
     }
     _seekPos += 4 * count;
-    return value;
 }
 
 float TerrainBuffer::readFloat32() {
@@ -190,7 +189,6 @@ void TerrainBuffer::readFloat32Array(float *value, int32_t count) {
         value[i] = _buffView.getFloat32(_seekPos + i * 4);
     }
     _seekPos += 4 * count;
-    return value;
 }
 
 std::string TerrainBuffer::readString() {

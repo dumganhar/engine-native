@@ -25,6 +25,7 @@
 #include <array>
 
 #include "core/Director.h"
+#include "core/TypedArray.h"
 #include "core/assets/Material.h"
 #include "gfx-base/GFXTexture.h"
 #include "renderer/pipeline/Define.h"
@@ -35,6 +36,68 @@
 #include "scene/SubModel.h"
 
 namespace {
+cc::TypedArray getTypedArrayConstructor(const cc::gfx::FormatInfo &info, const cc::ArrayBuffer::Ptr &buffer, uint32_t byteOffset, uint32_t length) {
+    const uint32_t stride = info.size / info.count;
+    switch (info.type) {
+        case cc::gfx::FormatType::UNORM:
+        case cc::gfx::FormatType::UINT: {
+            switch (stride) {
+                case 1: return cc::Uint8Array(buffer, byteOffset, length);
+                case 2: return cc::Uint16Array(buffer, byteOffset, length);
+                case 4: return cc::Uint32Array(buffer, byteOffset, length);
+                default:
+                    break;
+            }
+            break;
+        }
+        case cc::gfx::FormatType::SNORM:
+        case cc::gfx::FormatType::INT: {
+            switch (stride) {
+                case 1: return cc::Int8Array(buffer, byteOffset, length);
+                case 2: return cc::Int16Array(buffer, byteOffset, length);
+                case 4: return cc::Int32Array(buffer, byteOffset, length);
+                default:
+                    break;
+            }
+            break;
+        }
+        case cc::gfx::FormatType::FLOAT: {
+            return cc::Float32Array(buffer, byteOffset, length);
+        }
+        default:
+            break;
+    }
+    return cc::Float32Array(buffer, byteOffset, length);
+}
+
+cc::Float32Array vec4ToFloat32Array(const cc::Vec4 &v, cc::Float32Array &out, index_t ofs = 0) {
+    out[ofs + 0] = v.x;
+    out[ofs + 1] = v.y;
+    out[ofs + 2] = v.z;
+    out[ofs + 3] = v.w;
+    return out;
+}
+
+cc::Float32Array mat4ToFloat32Array(const cc::Mat4 &mat, cc::Float32Array &out, index_t ofs = 0) {
+    out[ofs + 0]  = mat.m[0];
+    out[ofs + 1]  = mat.m[1];
+    out[ofs + 2]  = mat.m[2];
+    out[ofs + 3]  = mat.m[3];
+    out[ofs + 4]  = mat.m[4];
+    out[ofs + 5]  = mat.m[5];
+    out[ofs + 6]  = mat.m[6];
+    out[ofs + 7]  = mat.m[7];
+    out[ofs + 8]  = mat.m[8];
+    out[ofs + 9]  = mat.m[9];
+    out[ofs + 10] = mat.m[10];
+    out[ofs + 11] = mat.m[11];
+    out[ofs + 12] = mat.m[12];
+    out[ofs + 13] = mat.m[13];
+    out[ofs + 14] = mat.m[14];
+    out[ofs + 15] = mat.m[15];
+    return out;
+}
+
 const uint32_t LIGHTMAP_SAMPLER_HASH = cc::pipeline::SamplerLib::genSamplerHash({
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
@@ -71,6 +134,7 @@ void Model::initialize() {
     _enabled       = true;
     _visFlags      = static_cast<uint32_t>(Layers::Enum::NONE);
     _inited        = true;
+    _localData.reset(pipeline::UBOLocal::COUNT);
 }
 
 void Model::destroy() {
@@ -135,18 +199,18 @@ void Model::updateUBOs(uint32_t stamp) {
     }
     _transformUpdated = false;
     getTransform()->updateWorldTransform();
-    const auto &                                 worldMatrix = getTransform()->getWorldMatrix();
-    Mat4                                         mat4;
-    int                                          idx = _instMatWorldIdx;
-    std::array<float, pipeline::UBOLocal::COUNT> bufferView;
+    const auto &worldMatrix = getTransform()->getWorldMatrix();
+    Mat4        mat4;
+    int         idx = _instMatWorldIdx;
     if (idx >= 0) {
         std::vector<TypedArray> &attrs = getInstancedAttributeBlock()->views;
         uploadMat4AsVec4x3(worldMatrix, std::get<Float32Array>(attrs[idx]), std::get<Float32Array>(attrs[idx + 1]), std::get<Float32Array>(attrs[idx + 2]));
     } else if (_localBuffer) {
-        memcpy(bufferView.data() + pipeline::UBOLocal::MAT_WORLD_OFFSET, worldMatrix.m, sizeof(Mat4));
+        mat4ToFloat32Array(worldMatrix, _localData, pipeline::UBOLocal::MAT_WORLD_OFFSET);
         Mat4::inverseTranspose(worldMatrix, &mat4);
-        memcpy(bufferView.data() + pipeline::UBOLocal::MAT_WORLD_IT_OFFSET, mat4.m, sizeof(Mat4));
-        _localBuffer->update(bufferView.data(), pipeline::UBOLocal::SIZE);
+
+        mat4ToFloat32Array(mat4, _localData, pipeline::UBOLocal::MAT_WORLD_IT_OFFSET);
+        _localBuffer->update(_localData.buffer()->getData());
     }
 }
 
@@ -201,13 +265,13 @@ void Model::onGlobalPipelineStateChanged() const {
 }
 
 void Model::onMacroPatchesStateChanged() const {
-    for (uint32_t i = 0; i < _subModels.size(); ++i) {
+    for (index_t i = 0; i < _subModels.size(); ++i) {
         _subModels[i]->onMacroPatchesStateChanged(getMacroPatches(i));
     }
 }
 
 void Model::updateLightingmap(Texture2D *texture, const Vec4 &uvParam) {
-    // uvParam.toArray(_localData, pipeline::UBOLocal::LIGHTINGMAP_UVPARAM); // toArray not implemented in Math
+    vec4ToFloat32Array(uvParam, _localData, pipeline::UBOLocal::LIGHTINGMAP_UVPARAM); //TODO(xwx): toArray not implemented in Math
     _lightmap        = texture;
     _lightmapUVParam = uvParam;
 
@@ -260,7 +324,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         if (!attribute.isInstanced) continue;
         size += gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)].size;
     }
-    auto attrs = _instanceAttributeBlock;
+    auto attrs   = _instanceAttributeBlock;
     attrs.buffer = Uint8Array(size);
     attrs.views.clear();
     attrs.attributes.clear();
@@ -274,17 +338,18 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         attr.isNormalized   = attribute.isNormalized;
         attr.location       = attribute.location;
         attrs.attributes.emplace_back(attr);
-        const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)];
-        // const typeViewArray = new (getTypedArrayConstructor(info))(attrs.buffer.buffer, offset, info.count); // TODO(xwx): need refactor TypedArray related function
-        attrs.views.emplace_back(/*typeViewArray*/);
+        const auto &info          = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)];
+        auto        buffer        = attrs.buffer.buffer();
+        auto        typeViewArray = getTypedArrayConstructor(info, attrs.buffer.buffer(), offset, info.count);
+        attrs.views.emplace_back(typeViewArray);
         offset += info.size;
     }
     if (pass->getBatchingScheme() == BatchingSchemes::INSTANCING) {
         pipeline::InstancedBuffer *instanceBuffer = pipeline::InstancedBuffer::get(pass);
         CC_SAFE_DESTROY(instanceBuffer); // instancing IA changed
-        setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD));
-        _transformUpdated = true;
     }
+    setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD));
+    _transformUpdated = true;
 }
 
 void Model::initLocalDescriptors(index_t /*subModelIndex*/) {

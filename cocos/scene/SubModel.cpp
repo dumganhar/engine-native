@@ -92,9 +92,9 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &
 
     // initialize resources for reflection material
     if (passes[0]->getPhase() == pipeline::getPhaseID("reflection")) {
-        uint32_t   texWidth  = _device->getWidth();
-        uint32_t   texHeight = _device->getHeight();
-        const uint minSize   = 512;
+        uint32_t       texWidth  = _device->getWidth();
+        uint32_t       texHeight = _device->getHeight();
+        const uint32_t minSize   = 512;
         if (texHeight < texWidth) {
             texWidth  = minSize * texWidth / texHeight;
             texHeight = minSize;

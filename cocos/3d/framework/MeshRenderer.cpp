@@ -44,34 +44,34 @@ void MeshRenderer::setMesh(Mesh *val) {
         mesh->initialize();
     }
 
-    //cjh    _initSubMeshShapesWeights();
-    //    _watchMorphInMesh();
+    initSubMeshShapesWeights();
+    watchMorphInMesh();
     onMeshChanged(old);
     updateModels();
     if (isEnabledInHierarchy()) {
         attachToScene();
     }
-    //cjh    updateCastShadow();
-    //    updateReceiveShadow();
+    updateCastShadow();
+    updateReceiveShadow();
 }
 
 void MeshRenderer::onLoad() {
     if (_mesh) {
         _mesh->initialize();
     }
-    //cjh    if (!_validateShapeWeights()) {
-    //        _initSubMeshShapesWeights();
-    //    }
-    //    _watchMorphInMesh();
+    if (!validateShapeWeights()) {
+        initSubMeshShapesWeights();
+    }
+    watchMorphInMesh();
     updateModels();
-    //cjh    _updateCastShadow();
-    //    _updateReceiveShadow();
+    updateCastShadow();
+    updateReceiveShadow();
 }
 
 void MeshRenderer::onRestore() {
     updateModels();
-    //cjh    _updateCastShadow();
-    //    _updateReceiveShadow();
+    updateCastShadow();
+    updateReceiveShadow();
 }
 
 void MeshRenderer::onEnable() {
@@ -97,6 +97,59 @@ void MeshRenderer::onDestroy() {
     CC_SAFE_DESTROY(_morphInstance);
 }
 
+float MeshRenderer::getWeight(index_t subMeshIndex, index_t shapeIndex) const {
+    CC_ASSERT(subMeshIndex < _subMeshShapesWeights.size());
+    const auto &shapeWeights = _subMeshShapesWeights[subMeshIndex];
+    CC_ASSERT(shapeIndex < shapeWeights.size());
+    return shapeWeights[shapeIndex];
+}
+
+void MeshRenderer::setWeights(const std::vector<float> &weights, index_t subMeshIndex) {
+    if (subMeshIndex >= _subMeshShapesWeights.size()) {
+        return;
+    }
+    const auto &shapeWeights = _subMeshShapesWeights[subMeshIndex];
+    if (shapeWeights.size() != weights.size()) {
+        return;
+    }
+    _subMeshShapesWeights[subMeshIndex] = weights;
+    uploadSubMeshShapesWeights(subMeshIndex);
+}
+
+void MeshRenderer::setWeight(float weight, index_t subMeshIndex, index_t shapeIndex) {
+    if (subMeshIndex >= _subMeshShapesWeights.size()) {
+        return;
+    }
+    auto &shapeWeights = _subMeshShapesWeights[subMeshIndex];
+    if (shapeIndex >= shapeWeights.size()) {
+        return;
+    }
+    shapeWeights[shapeIndex] = weight;
+    uploadSubMeshShapesWeights(subMeshIndex);
+}
+
+void MeshRenderer::setInstancedAttribute(const std::string &name, const TypedArray &value) {
+    if (_model == nullptr) return;
+    const auto &             attributes = _model->getInstanceAttributes();
+    std::vector<TypedArray> &views      = _model->getInstancedAttributeBlock()->views;
+    for (uint32_t i = 0; i < attributes.size(); ++i) {
+        if (attributes[i].name == name) {
+            views[i] = value;
+            break;
+        }
+    }
+}
+
+void MeshRenderer::updateLightmap(Texture2D *lightmap, float uOff, float vOff, float uScale, float vScale) {
+    lightmapSettings.texture   = lightmap;
+    lightmapSettings.uvParam.x = uOff;
+    lightmapSettings.uvParam.y = vOff;
+    lightmapSettings.uvParam.z = uScale;
+    lightmapSettings.uvParam.w = vScale;
+
+    onUpdateLightingmap();
+}
+
 void MeshRenderer::updateModels() {
     if (!isEnabledInHierarchy() || !_mesh) {
         return;
@@ -115,7 +168,7 @@ void MeshRenderer::updateModels() {
     if (_model) {
         _model->createBoundingShape(_mesh->getStruct().minPosition, _mesh->getStruct().maxPosition);
         updateModelParams();
-        //cjh        onUpdateLightingmap();
+        onUpdateLightingmap();
     }
 }
 
@@ -184,6 +237,20 @@ void MeshRenderer::detachFromScene() {
     }
 }
 
+void MeshRenderer::onUpdateLightingmap() {
+    if (_model != nullptr) {
+        _model->updateLightingmap(lightmapSettings.texture, lightmapSettings.uvParam);
+    }
+
+    Float32Array attr(4);
+    attr[0] = lightmapSettings.uvParam.x;
+    attr[1] = lightmapSettings.uvParam.y;
+    attr[2] = lightmapSettings.uvParam.z;
+    attr[3] = lightmapSettings.uvParam.w;
+
+    setInstancedAttribute("a_lightingMapUVParam", attr);
+}
+
 void MeshRenderer::onMaterialModified(index_t index, Material *material) {
     if (!_model || !_model->isInited()) {
         return;
@@ -199,7 +266,7 @@ void MeshRenderer::onRebuildPSO(index_t index, Material *material) {
 
     _model->setDynamicBatching(isBatchingEnabled());
     _model->setSubModelMaterial(index, material);
-    //cjh    onUpdateLightingmap();
+    onUpdateLightingmap();
 }
 
 void MeshRenderer::clearMaterials() {
@@ -208,7 +275,7 @@ void MeshRenderer::clearMaterials() {
     }
 
     const auto &subModels = _model->getSubModels();
-    for (size_t i = 0; i < subModels.size(); ++i) {
+    for (index_t i = 0; i < subModels.size(); ++i) {
         onMaterialModified(i, nullptr);
     }
 }
@@ -221,6 +288,25 @@ void MeshRenderer::onVisibilityChange(Layers::Enum val) {
     _model->setVisFlags(static_cast<uint32_t>(val)); //cjh todo: remove static_cast
 }
 
+void MeshRenderer::updateCastShadow() {
+    if (_model == nullptr) return;
+    if (_shadowCastingMode == ModelShadowCastingMode::OFF) {
+        _model->setCastShadow(false);
+    } else {
+        CC_ASSERT(_shadowCastingMode == ModelShadowCastingMode::ON);
+        _model->setCastShadow(true);
+    }
+}
+
+void MeshRenderer::updateReceiveShadow() {
+    if (_model == nullptr) return;
+    if (_shadowReceivingMode == ModelShadowReceivingMode::OFF) {
+        _model->setReceiveShadow(false);
+    } else {
+        _model->setReceiveShadow(true);
+    }
+}
+
 void MeshRenderer::updateModelParams() {
     if (!_mesh || !_model) {
         return;
@@ -228,10 +314,10 @@ void MeshRenderer::updateModelParams() {
     _node->setChangedFlags(_node->getChangedFlags() | static_cast<uint32_t>(TransformBit::POSITION));
     _model->getTransform()->setChangedFlags(_model->getTransform()->getChangedFlags() | static_cast<uint32_t>(TransformBit::POSITION));
     _model->setDynamicBatching(isBatchingEnabled());
-    const size_t meshCount     = _mesh ? _mesh->getRenderingSubMeshes().size() : 0;
-    const auto & renderingMesh = _mesh->getRenderingSubMeshes();
+    const uint32_t meshCount     = _mesh ? _mesh->getRenderingSubMeshes().size() : 0;
+    const auto &   renderingMesh = _mesh->getRenderingSubMeshes();
     if (!renderingMesh.empty()) {
-        for (size_t i = 0; i < meshCount; ++i) {
+        for (index_t i = 0; i < meshCount; ++i) {
             Material *material = getRenderMaterial(i);
             if (material && !material->isValid()) {
                 material = nullptr;
@@ -263,6 +349,74 @@ bool MeshRenderer::isBatchingEnabled() {
         }
     }
     return false;
+}
+
+void MeshRenderer::watchMorphInMesh() {
+    CC_SAFE_DESTROY(_morphInstance);
+
+    if (!_enableMorph) return;
+
+    if (_mesh == nullptr || !_mesh->getStruct().morph.has_value() || _mesh->morphRendering == nullptr) return;
+
+    _morphInstance = _mesh->morphRendering->createInstance();
+    for (index_t iSubMesh = 0; iSubMesh < _mesh->getStruct().primitives.size(); iSubMesh++) {
+        uploadSubMeshShapesWeights(iSubMesh);
+    }
+
+    if (_model != nullptr) {
+        auto *morphModel = dynamic_cast<scene::MorphModel *>(_model);
+        if (morphModel != nullptr) {
+            morphModel->setMorphRendering(_morphInstance);
+        }
+    }
+}
+
+void MeshRenderer::initSubMeshShapesWeights() {
+    _subMeshShapesWeights.clear();
+
+    if (_mesh == nullptr) return;
+
+    const auto &morph = _mesh->getStruct().morph;
+    if (!morph.has_value()) return;
+
+    const auto &                 commonWeights = morph->weights;
+    const auto &                 subMeshMorphs = morph.value().subMeshMorphs;
+    std::vector<MeshWeightsType> shapesWeights;
+
+    for (const auto &subMeshMorph : subMeshMorphs) {
+        if (subMeshMorph.weights.has_value()) {
+            shapesWeights.emplace_back(subMeshMorph.weights.value());
+        } else if (commonWeights.has_value()) {
+            CC_ASSERT(commonWeights.value().size() == subMeshMorph.targets.size());
+            shapesWeights.emplace_back(morph->weights.value());
+        } else {
+            shapesWeights.emplace_back(MeshWeightsType(subMeshMorph.targets.size()));
+        }
+    }
+    _subMeshShapesWeights = shapesWeights;
+}
+
+bool MeshRenderer::validateShapeWeights() {
+    if (_mesh == nullptr || !_mesh->getStruct().morph.has_value()) {
+        return _subMeshShapesWeights.empty();
+    }
+
+    const auto &morph = _mesh->getStruct().morph;
+    if (morph->subMeshMorphs.size() != _subMeshShapesWeights.size()) {
+        return false;
+    }
+    for (index_t subMeshIdx = 0; subMeshIdx < _subMeshShapesWeights.size(); ++subMeshIdx) {
+        uint32_t shapeCount = _subMeshShapesWeights[subMeshIdx].size();
+        if (morph->subMeshMorphs[subMeshIdx].targets.size() == shapeCount) continue;
+        return false;
+    }
+    return true;
+}
+
+void MeshRenderer::uploadSubMeshShapesWeights(index_t subMeshIndex) {
+    if (_morphInstance != nullptr) {
+        _morphInstance->setWeights(subMeshIndex, _subMeshShapesWeights[subMeshIndex]);
+    }
 }
 
 } // namespace cc

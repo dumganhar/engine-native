@@ -119,7 +119,7 @@ public:
     inline uint8_t *                          getInstancedBuffer() const { return std::get<0>(_instancedBuffer); }
     inline uint32_t                           getInstancedBufferSize() const { return std::get<1>(_instancedBuffer); }
     inline gfx::Buffer *                      getLocalBuffer() const { return _localBuffer; }
-    inline float *                            getLocalData() const { return _localData; }
+    inline Float32Array                       getLocalData() const { return _localData; }
     inline geometry::AABB *                   getModelBounds() const { return _modelBounds; }
     inline Node *                             getNode() const { return _node; }
     inline bool                               getReceiveShadow() const { return _receiveShadow; }
@@ -163,7 +163,7 @@ protected:
     uint32_t                        _updateStamp{0};
     Node *                          _transform{nullptr};
     Node *                          _node{nullptr};
-    float *                         _localData{nullptr};
+    Float32Array                    _localData;
     std::tuple<uint8_t *, uint32_t> _instancedBuffer{nullptr, 0};
     gfx::Buffer *                   _localBuffer{nullptr};
     InstancedAttributeBlock         _instanceAttributeBlock{};

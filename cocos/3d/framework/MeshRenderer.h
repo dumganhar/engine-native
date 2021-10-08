@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "3d/assets/Types.h"
 #include "core/components/RenderableComponent.h"
 #include "scene/Model.h"
 
@@ -159,7 +160,7 @@ public:
     inline ModelShadowCastingMode getshadowCastingMode() const { return _shadowCastingMode; }
     inline void                   setShadowCastingMode(ModelShadowCastingMode val) {
         _shadowCastingMode = val;
-        // updateCastShadow();
+        updateCastShadow();
     }
 
     /**
@@ -172,7 +173,7 @@ public:
     inline ModelShadowReceivingMode getReceiveShadow() const { return _shadowReceivingMode; }
     inline void                     setReceiveShadow(ModelShadowReceivingMode val) {
         _shadowReceivingMode = val;
-        // updateReceiveShadow();
+        updateReceiveShadow();
     }
 
     /**
@@ -227,7 +228,7 @@ public:
      * @param shapeIndex Index to the shape of the sub mesh.
      * @returns The weight.
      */
-    float getWeight(index_t subMeshIndex, index_t shapeIndex);
+    float getWeight(index_t subMeshIndex, index_t shapeIndex) const;
 
     /**
      * @zh
@@ -257,7 +258,7 @@ public:
      */
     void setWeight(float weight, index_t subMeshIndex, index_t shapeIndex);
 
-    void setInstancedAttribute(const std::string &name, std::vector<float> value);
+    void setInstancedAttribute(const std::string &name, const TypedArray &value);
 
     void updateLightmap(Texture2D *lightmap, float uOff, float vOff, float uScale, float vScale);
 
@@ -304,10 +305,10 @@ protected:
 private:
     void watchMorphInMesh();
     void initSubMeshShapesWeights();
-    void validateShapeWeights();
+    bool validateShapeWeights();
     void uploadSubMeshShapesWeights(index_t subMeshIndex);
 
-    std::vector<std::vector<float>> _subMeshShapesWeights;
+    std::vector<MeshWeightsType> _subMeshShapesWeights;
 
     MorphRenderingInstance *_morphInstance{nullptr};
 

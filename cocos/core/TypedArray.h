@@ -77,7 +77,7 @@ public:
     }
 
     TypedArrayTemp subarray(uint32_t begin) {
-        return subArray(begin, _byteLength - begin + 1UL);
+        return subarray(begin, _byteLength - begin + 1UL);
     }
 
     void set(const ArrayBuffer::Ptr &buffer) {

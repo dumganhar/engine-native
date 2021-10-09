@@ -40,6 +40,7 @@ public:
 
 private:
     void testTerrain();
+    void testShadow();
     void testMeshAndMaterial();
 
     cc::gfx::Device * _device{nullptr};

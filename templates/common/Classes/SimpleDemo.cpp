@@ -236,7 +236,6 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     BuiltinResMgr::getInstance()->initBuiltinRes(_device);
 
     BuiltinResMgr::getInstance()->tryCompileAllPasses();
-    //
 
     // Scene
     _scene = new Scene("myscene");
@@ -244,48 +243,10 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     //////////// Cube Node
     // add a node to scene
     _cubeNode = new Node("cube");
-    //    _cubeNode->setPosition(Vec3(10, 0, 10));
+    // _cubeNode->setPosition(Vec3(10, 0, 10));
     _cubeNode->setParent(_scene);
-    _cubeNode->setPosition(-3.6, 0.5, -2.F);
-    _cubeMeshRenderer = _cubeNode->addComponent<MeshRenderer>();
-    // create mesh asset
-    auto *cube = new Primitive(PrimitiveType::BOX);
-    cube->onLoaded();
-
-    _cubeMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::ON);
-    _cubeMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
-    _cubeMeshRenderer->setMesh(cube);
-    // set material
-    auto *defaultMaterial = new Material();
-    setMaterialFromJsonContent(defaultMaterial, "d3c7820c-2a98-4429-8bc7-b8453bc9ac41.json", "standard");
-    _cubeMeshRenderer->setMaterial(defaultMaterial);
-
-    //////////  Torus Node
-    Node *torusNode = new Node("torus");
-    torusNode->setParent(_scene);
-    torusNode->setPosition(0.75, 0.6, -3);
-    auto *torusMeshRenderer = torusNode->addComponent<MeshRenderer>();
-    auto *torus             = new Primitive(PrimitiveType::TORUS);
-    torus->onLoaded();
-    torusMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::ON);
-    torusMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
-    torusMeshRenderer->setMesh(torus);
-    torusMeshRenderer->setMaterial(defaultMaterial);
-
-    //////////// Plane Node
-    // plane node
-    Node *planeNode = new Node("plane");
-    planeNode->setParent(_scene);
-    // create mesh renderer
-    auto *planeMeshRenderer = planeNode->addComponent<MeshRenderer>();
-    auto *plane             = new Primitive(PrimitiveType::PLANE);
-    plane->onLoaded();
-    planeMeshRenderer->setMesh(plane);
-    planeMeshRenderer->setMaterial(defaultMaterial);
-    planeMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::OFF);
-    planeMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
-
-    // testMeshAndMaterial();
+    // _cubeNode->setPosition(-3.6, 0.5, -2.F);
+    // _cubeMeshRenderer = _cubeNode->addComponent<MeshRenderer>();
 
     // create camera
     auto *cameraNode = new Node("camera");
@@ -312,39 +273,6 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     cameraComp->setScreenScale(1.0f);
     cameraComp->setVisibility(static_cast<uint32_t>(Layers::LayerList::IGNORE_RAYCAST | Layers::LayerList::UI_3D | Layers::LayerList::DEFAULT));
 
-    // set material
-    // auto *material = new Material();
-    // //    material->initialize({
-    // //        .effectName = "unlit",
-    // //        .defines    = MacroRecord{
-    // //          //            {"USE_COLOR", true},
-    // //          {"USE_TEXTURE", true},
-    // //        }
-    // //    });
-
-    // material->initialize({.effectName = "standard",
-    //                       .defines    = MacroRecord{
-    //                           {"USE_ALBEDO_MAP", true},
-    //                       }});
-
-    //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
-
-    // auto *image = new Image();
-    // bool  ret   = image->initWithImageFile("pixil-frame-2.png");
-    // if (ret) {
-    //     auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
-    //     imgAsset->setNativeAsset(image);   //cjh HOW TO RELEASE?
-    //     auto *texture = new Texture2D();   //cjh shared_ptr ?
-
-    //     texture->setImage(imgAsset);
-    //     texture->onLoaded();
-    //     //        material->setProperty("mainTexture", texture);
-    //     material->setProperty("albedoMap", texture);
-    // }
-    // image->release();
-
-    // _cubeMeshRenderer->setMaterial(material);
-
     // Main Light
     auto *lightNode = new Node("MainLight");
     lightNode->setPosition(-10, 15, 17.5);
@@ -353,19 +281,64 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     auto *lightComp = lightNode->addComponent<DirectionalLight>();
 
     // Sphere Light
-    auto *sphereLightNode = new Node("SphereLight");
-    sphereLightNode->setPosition(3.3, 1.8, -2.7);
-    sphereLightNode->setParent(_scene);
-    auto *sphereLightComp = sphereLightNode->addComponent<SphereLight>();
-    sphereLightComp->setTerm(PhotometricTerm::LUMINOUS_FLUX);
-    sphereLightComp->setColor(cc::Color{0, 255, 255, 255});
-    sphereLightComp->setLuminousFlux(1700);
-    sphereLightComp->setSize(0.15);
-    sphereLightComp->setRange(2);
+    // auto *sphereLightNode = new Node("SphereLight");
+    // sphereLightNode->setPosition(3.3, 1.8, -2.7);
+    // sphereLightNode->setParent(_scene);
+    // auto *sphereLightComp = sphereLightNode->addComponent<SphereLight>();
+    // sphereLightComp->setTerm(PhotometricTerm::LUMINOUS_FLUX);
+    // sphereLightComp->setColor(cc::Color{0, 255, 255, 255});
+    // sphereLightComp->setLuminousFlux(1700);
+    // sphereLightComp->setSize(0.15);
+    // sphereLightComp->setRange(2);
 
-    // testTerrain();
+    // testMeshAndMaterial();
+    // testShadow();
+    testTerrain();
 
     _director->runSceneImmediate(_scene, nullptr, nullptr);
+}
+
+void SimpleDemo::testShadow() {
+    Node *cubeNode = new Node("cube");
+    cubeNode->setParent(_scene);
+    cubeNode->setPosition(-3.6, 0.5, -2.F);
+    auto *cubeMeshRenderer = cubeNode->addComponent<MeshRenderer>();
+    // create mesh asset
+    auto *cube = new Primitive(PrimitiveType::BOX);
+    cube->onLoaded();
+
+    cubeMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::ON);
+    cubeMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
+    cubeMeshRenderer->setMesh(cube);
+    // set material
+    auto *defaultMaterial = new Material();
+    setMaterialFromJsonContent(defaultMaterial, "d3c7820c-2a98-4429-8bc7-b8453bc9ac41.json", "standard");
+    cubeMeshRenderer->setMaterial(defaultMaterial);
+
+    // //////////  Torus Node
+    Node *torusNode = new Node("torus");
+    torusNode->setParent(_scene);
+    torusNode->setPosition(0.75, 0.6, -3);
+    auto *torusMeshRenderer = torusNode->addComponent<MeshRenderer>();
+    auto *torus             = new Primitive(PrimitiveType::TORUS);
+    torus->onLoaded();
+    torusMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::ON);
+    torusMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
+    torusMeshRenderer->setMesh(torus);
+    torusMeshRenderer->setMaterial(defaultMaterial);
+
+    // //////////// Plane Node
+    // // plane node
+    Node *planeNode = new Node("plane");
+    planeNode->setParent(_scene);
+    // create mesh renderer
+    auto *planeMeshRenderer = planeNode->addComponent<MeshRenderer>();
+    auto *plane             = new Primitive(PrimitiveType::PLANE);
+    plane->onLoaded();
+    planeMeshRenderer->setMesh(plane);
+    planeMeshRenderer->setMaterial(defaultMaterial);
+    planeMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::OFF);
+    planeMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
 }
 
 void SimpleDemo::testTerrain() {

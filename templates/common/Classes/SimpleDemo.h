@@ -38,10 +38,9 @@ public:
 
     void finalize();
 
-    void createCorsetForTest();
-
 private:
     void testTerrain();
+    void testMeshAndMaterial();
 
     cc::gfx::Device * _device{nullptr};
     cc::Director *    _director{nullptr};

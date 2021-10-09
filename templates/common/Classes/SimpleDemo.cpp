@@ -181,7 +181,7 @@ void setMeshFromJson(Mesh *mesh, const std::string &meshJson, const std::string 
 
 } // namespace
 
-void SimpleDemo::createCorsetForTest() {
+void SimpleDemo::testMeshAndMaterial() {
     Node *corsetNode = new Node("corset");
     corsetNode->setParent(_scene);
     // create mesh from deserializer
@@ -192,7 +192,6 @@ void SimpleDemo::createCorsetForTest() {
     // create mesh renderer
     auto *corsetMeshRenderer = new MeshRenderer();
     corsetMeshRenderer       = corsetNode->addComponent<MeshRenderer>();
-    // _cubeMeshRenderer->setMesh(cube);
     corsetMeshRenderer->setMesh(meshExportedFromEditor);
 
     // create material from deserializer
@@ -242,34 +241,23 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // Scene
     _scene = new Scene("myscene");
 
-    //////////// Plane Node
-    // plane node
-    Node *planeNode = new Node("plane");
-    planeNode->setParent(_scene);
-    // create mesh renderer
-    auto *planeMeshRenderer = planeNode->addComponent<MeshRenderer>();
-    auto *plane             = new Primitive(PrimitiveType::PLANE);
-    plane->onLoaded();
-    planeMeshRenderer->setMesh(plane);
-    // set material
-    auto *defaultMaterial = new Material();
-    setMaterialFromJsonContent(defaultMaterial, "d3c7820c-2a98-4429-8bc7-b8453bc9ac41.json", "standard");
-    planeMeshRenderer->setMaterial(defaultMaterial);
-
     //////////// Cube Node
     // add a node to scene
     _cubeNode = new Node("cube");
     //    _cubeNode->setPosition(Vec3(10, 0, 10));
     _cubeNode->setParent(_scene);
     _cubeNode->setPosition(-3.6, 0.5, -2.F);
-
     _cubeMeshRenderer = _cubeNode->addComponent<MeshRenderer>();
     // create mesh asset
     auto *cube = new Primitive(PrimitiveType::BOX);
     cube->onLoaded();
+
     _cubeMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::ON);
     _cubeMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
     _cubeMeshRenderer->setMesh(cube);
+    // set material
+    auto *defaultMaterial = new Material();
+    setMaterialFromJsonContent(defaultMaterial, "d3c7820c-2a98-4429-8bc7-b8453bc9ac41.json", "standard");
     _cubeMeshRenderer->setMaterial(defaultMaterial);
 
     //////////  Torus Node
@@ -279,10 +267,25 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     auto *torusMeshRenderer = torusNode->addComponent<MeshRenderer>();
     auto *torus             = new Primitive(PrimitiveType::TORUS);
     torus->onLoaded();
+    torusMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::ON);
+    torusMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
     torusMeshRenderer->setMesh(torus);
     torusMeshRenderer->setMaterial(defaultMaterial);
 
-    // createCorsetForTest();
+    //////////// Plane Node
+    // plane node
+    Node *planeNode = new Node("plane");
+    planeNode->setParent(_scene);
+    // create mesh renderer
+    auto *planeMeshRenderer = planeNode->addComponent<MeshRenderer>();
+    auto *plane             = new Primitive(PrimitiveType::PLANE);
+    plane->onLoaded();
+    planeMeshRenderer->setMesh(plane);
+    planeMeshRenderer->setMaterial(defaultMaterial);
+    planeMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::OFF);
+    planeMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
+
+    // testMeshAndMaterial();
 
     // create camera
     auto *cameraNode = new Node("camera");
@@ -360,7 +363,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     sphereLightComp->setSize(0.15);
     sphereLightComp->setRange(2);
 
-    testTerrain();
+    // testTerrain();
 
     _director->runSceneImmediate(_scene, nullptr, nullptr);
 }

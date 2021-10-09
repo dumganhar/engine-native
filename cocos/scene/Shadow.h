@@ -285,7 +285,7 @@ private:
     bool       _enabled{false};
     Vec3       _normal{0.F, 1.F, 0.F};
     float      _distance{0.F};
-    float      _autoAdapt{true};
+    bool       _autoAdapt{true};
     float      _bias{0.00001F};
     float      _normalBias{0.F};
     float      _near{1.0F};
@@ -305,7 +305,7 @@ public:
      * @en MAX_FAR. This is shadow camera max far.
      * @zh 阴影相机的最远视距。
      */
-    static constexpr float MAX_FAR{2000.0f};
+    static constexpr float MAX_FAR{2000.F};
 
     /**
      * @en EXPANSION_RATIO. This is shadow boundingBox Coefficient of expansion.
@@ -353,10 +353,10 @@ public:
     inline const Color &getShadowColor() const { return _shadowColor; }
     inline void         setShadowColor(const Color &color) {
         _shadowColor.set(color);
-        _shadowColor4f[0] = color.r / 255;
-        _shadowColor4f[1] = color.g / 255;
-        _shadowColor4f[2] = color.b / 255;
-        _shadowColor4f[3] = color.a / 255;
+        _shadowColor4f[0] = color.r / 255.F;
+        _shadowColor4f[1] = color.g / 255.F;
+        _shadowColor4f[2] = color.b / 255.F;
+        _shadowColor4f[3] = color.a / 255.F;
     }
     inline const std::array<float, 4> &getShadowColor4f() const { return _shadowColor4f; }
 
@@ -482,7 +482,7 @@ private:
 
     Vec3                 _normal{0.F, 1.F, 0.F};
     Color                _shadowColor{0, 0, 0, 76};
-    std::array<float, 4> _shadowColor4f;
+    std::array<float, 4> _shadowColor4f{0.F, 0.F, 0.F, 76.F / 255.F};
     Mat4                 _matLight;
     Material *           _material{nullptr};
     Material *           _instancingMaterial{nullptr};

@@ -21,20 +21,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#pragma once
-
-#include <string>
-
-#include "cocos/math/Math.h"
+#include "core/Director.h"
+#include "core/Root.h"
+#include "core/scene-graph/SceneGraphModuleHeader.h"
 #include "gtest/gtest.h"
+#include "renderer/GFXDeviceManager.h"
+#include "renderer/gfx-base/GFXDef.h"
+#include "utils.h"
 
-static std::string logLabel;
-static bool        IsEqualF(float l, float r) {
-    return cc::math::IsEqualF(l, r);
-};
-static void ExpectEq(bool lf, bool rt) {
-    EXPECT_EQ(lf, rt) << "ERROR in: " << logLabel;
+using namespace cc;
+using namespace cc::gfx;
+
+TEST(CoreFindTest, test0) {
+    initCocos(100, 100);
+
+    auto *director = Director::getInstance();
+    auto *scene    = director->getScene();
+
+    auto *node = new Node("");
+    scene->addChild(node);
+
+    EXPECT_EQ(find("/"), scene);
+
+    //cjh FIXME: crash if invoke
+    //    destroyCocos();
 }
-
-void initCocos(int width, int height);
-void destroyCocos();

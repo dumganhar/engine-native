@@ -27,11 +27,7 @@
 
 namespace cc {
 
-PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) {
-    // super(parent.root); // no such constructor
-    // parent->getRoot();
-    _parent = parent;
-    _owner  = owner;
+PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) : Super(parent->getRoot()), _parent(parent), _owner(owner) {
     doInit(_parent->getPassInfoFull());
     for (const auto &b : _shaderInfo->blocks) { // seem logically useless in ts?
         scene::IBlockRef block       = _blocks[b.binding];
@@ -66,7 +62,7 @@ void PassInstance::overridePipelineStates(const IPassInfo &original, const PassO
 }
 
 bool PassInstance::tryCompile(const std::optional<MacroRecord> &defineOverrides) {
-    if (!defineOverrides.has_value()) {
+    if (defineOverrides.has_value()) {
         if (!overrideMacros(_defines, defineOverrides.value())) return false;
     }
     bool ret = Super::tryCompile();

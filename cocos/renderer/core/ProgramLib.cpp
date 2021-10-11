@@ -328,9 +328,21 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             };
         } else if (def.type == "boolean") {
             def.map = [](const MacroValue &value) -> int32_t {
-                const auto *pValue = std::get_if<bool>(&value);
-                if (pValue != nullptr) {
-                    return *pValue ? 1 : 0;
+                const auto *pBool = std::get_if<bool>(&value);
+                if (pBool != nullptr) {
+                    return *pBool ? 1 : 0;
+                }
+                const auto *pFloat = std::get_if<float>(&value);
+                if (pFloat != nullptr) {
+                    return *pFloat != 0.F ? 1 : 0;
+                }
+                const auto *pInt = std::get_if<int>(&value);
+                if (pInt != nullptr) {
+                    return *pInt ? 1 : 0;
+                }
+                const auto *pString = std::get_if<std::string>(&value);
+                if (pString != nullptr) {
+                    return *pString != "0" || !(*pString).empty() ? 1 : 0;
                 }
                 return 0;
             };
@@ -551,11 +563,11 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     } else {
         key = *keyOut;
     }
-    auto itRes = _cache.find(key);
-    if (itRes != _cache.end()) {
-        CC_LOG_DEBUG("Found ProgramLib::_cache[%s]=%p, defines: %d", key.c_str(), itRes->second, defines.size());
-        return itRes->second;
-    }
+     auto itRes = _cache.find(key);
+     if (itRes != _cache.end()) {
+         CC_LOG_DEBUG("Found ProgramLib::_cache[%s]=%p, defines: %d", key.c_str(), itRes->second, defines.size());
+         return itRes->second;
+     }
 
     auto itTpl = _templates.find(name);
     assert(itTpl != _templates.end());

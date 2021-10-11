@@ -160,7 +160,52 @@ void createTextureForMaterial(const std::string &texJsonFile, Material *material
     }
     image->release();
 }
+
+void setMeshFromJson(Mesh *mesh, const std::string &meshJson, const std::string &meshBinary) {
+    std::string         meshJsonContent = FileUtils::getInstance()->getStringFromFile(meshJson);
+    rapidjson::Document meshDoc;
+    meshDoc.Parse(meshJsonContent.c_str());
+    auto deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::MESH);
+    deserializer->deserialize(meshDoc, mesh);
+
+    Data              meshData = FileUtils::getInstance()->getDataFromFile(meshBinary);
+    Mesh::ICreateInfo meshInfo;
+    meshInfo.structInfo = mesh->getStruct();
+    auto meshBuffer     = std::make_shared<ArrayBuffer>(static_cast<uint32_t>(meshData.getSize()));
+    memcpy(const_cast<uint8_t *>(meshBuffer->getData()), meshData.getBytes(), meshData.getSize());
+    Uint8Array meshDataArray{meshBuffer, 0};
+    meshInfo.data = meshDataArray;
+    mesh->reset(meshInfo);
+    mesh->initialize();
+}
+
 } // namespace
+
+void SimpleDemo::testMeshAndMaterial() {
+    Node *corsetNode = new Node("corset");
+    corsetNode->setParent(_scene);
+    // create mesh from deserializer
+    Mesh *meshExportedFromEditor = new Mesh();
+    setMeshFromJson(meshExportedFromEditor, "29805fb3-2189-4731-b788-b6b74617a960@d9c96.json", "29805fb3-2189-4731-b788-b6b74617a960@d9c96.bin");
+    corsetNode->setScale(100, 100, 100);
+
+    // create mesh renderer
+    auto *corsetMeshRenderer = new MeshRenderer();
+    corsetMeshRenderer       = corsetNode->addComponent<MeshRenderer>();
+    corsetMeshRenderer->setMesh(meshExportedFromEditor);
+
+    // create material from deserializer
+    auto *corsetMaterial = new Material();
+
+    setMaterialFromJsonContent(corsetMaterial, "f5345262-68e8-4676-b142-543e3ff75c17@ddb15.json", "standard");
+
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@3effa.json", corsetMaterial, "mainTexture");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", corsetMaterial, "metallicRoughnessMap");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@0089c.json", corsetMaterial, "normalMap");
+    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", corsetMaterial, "occlusionMap");
+
+    corsetMeshRenderer->setMaterial(corsetMaterial);
+}
 
 void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     CC_LOG_INFO("SimpleDemo::%s, width: %d, height: %d", __FUNCTION__, width, height);
@@ -191,65 +236,23 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     BuiltinResMgr::getInstance()->initBuiltinRes(_device);
 
     BuiltinResMgr::getInstance()->tryCompileAllPasses();
-    //
 
     // Scene
     _scene = new Scene("myscene");
+
+    //////////// Cube Node
     // add a node to scene
     _cubeNode = new Node("cube");
-    //    _cubeNode->setPosition(Vec3(10, 0, 10));
+    // _cubeNode->setPosition(Vec3(10, 0, 10));
     _cubeNode->setParent(_scene);
-    _cubeNode->addComponent<MyComponent1>();
-    _cubeNode->addComponent<MyComponent2>();
-
-    // create mesh asset
-    auto *cube = new Primitive(PrimitiveType::BOX);
-    // auto *cube = new Primitive(PrimitiveType::QUAD);
-    // auto *cube = new Primitive(PrimitiveType::PLANE);
-    // auto *cube = new Primitive(PrimitiveType::SPHERE);
-    // auto *cube = new Primitive(PrimitiveType::CONE);
-    // auto *cube = new Primitive(PrimitiveType::CYLINDER);
-    // auto *cube = new Primitive(PrimitiveType::CAPSULE);
-    // auto *cube = new Primitive(PrimitiveType::TORUS);
-
-    cube->onLoaded();
-
-    // create mesh from deserializer
-    Mesh *      meshExportedFromEditor = new Mesh();
-    std::string meshJsonContent        = FileUtils::getInstance()->getStringFromFile("29805fb3-2189-4731-b788-b6b74617a960@d9c96.json");
-    {
-        rapidjson::Document meshDoc;
-        meshDoc.Parse(meshJsonContent.c_str());
-        auto deserializer = AssetDeserializerFactory::createAssetDeserializer(DeserializeAssetType::MESH);
-        deserializer->deserialize(meshDoc, meshExportedFromEditor);
-    }
-
-    {
-        Data              meshData = FileUtils::getInstance()->getDataFromFile("29805fb3-2189-4731-b788-b6b74617a960@d9c96.bin");
-        Mesh::ICreateInfo meshInfo;
-        meshInfo.structInfo = meshExportedFromEditor->getStruct();
-        auto meshBuffer     = std::make_shared<ArrayBuffer>(static_cast<uint32_t>(meshData.getSize()));
-        memcpy(const_cast<uint8_t *>(meshBuffer->getData()), meshData.getBytes(), meshData.getSize());
-        Uint8Array meshDataArray{meshBuffer, 0};
-        meshInfo.data = meshDataArray;
-        meshExportedFromEditor->reset(meshInfo);
-        meshExportedFromEditor->initialize();
-        _cubeNode->setScale(100, 100, 100);
-    }
-
-    //
-
-    // create mesh renderer
-    _cubeMeshRenderer = _cubeNode->addComponent<MeshRenderer>();
-    //    _cubeMeshRenderer->setMesh(cube);
-    _cubeMeshRenderer->setMesh(meshExportedFromEditor);
+    // _cubeNode->setPosition(-3.6, 0.5, -2.F);
+    // _cubeMeshRenderer = _cubeNode->addComponent<MeshRenderer>();
 
     // create camera
     auto *cameraNode = new Node("camera");
     cameraNode->setParent(_scene);
-    cameraNode->setPosition(-10, 10, 10);
-    cameraNode->setEulerAngles(Vec3{-35, -45, 0});
-    //    cameraNode->setEulerAngles(Vec3{-28, -77, 20});
+    cameraNode->setPosition(-10, 10, -10);
+    cameraNode->setEulerAngles(Vec3{-35, -135, 0});
 
     auto *cameraComp = cameraNode->addComponent<Camera>();
     cameraComp->setProjection(Camera::ProjectionType::PERSPECTIVE);
@@ -270,72 +273,71 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     cameraComp->setScreenScale(1.0f);
     cameraComp->setVisibility(static_cast<uint32_t>(Layers::LayerList::IGNORE_RAYCAST | Layers::LayerList::UI_3D | Layers::LayerList::DEFAULT));
 
-    // set material
-    // auto *material = new Material();
-    //    material->initialize({
-    //        .effectName = "unlit",
-    //        .defines    = MacroRecord{
-    //          //            {"USE_COLOR", true},
-    //          {"USE_TEXTURE", true},
-    //        }
-    //    });
-
-    //     material->initialize({.effectName = "standard",
-    //                           .defines    = MacroRecord{
-    //                               {"USE_ALBEDO_MAP", true},
-    //                           }});
-    //
-    //     //    material->setProperty("mainColor", cc::Color{255, 0, 255, 255});
-    //
-    //     auto *image = new Image();
-    //     bool  ret   = image->initWithImageFile("pixil-frame-2.png");
-    //     if (ret) {
-    //         auto *imgAsset = new ImageAsset(); //cjh shared_ptr ?
-    //         imgAsset->setNativeAsset(image);   //cjh HOW TO RELEASE?
-    //         auto *texture = new Texture2D();   //cjh shared_ptr ?
-    //
-    //         texture->setImage(imgAsset);
-    //         texture->onLoaded();
-    //         //        material->setProperty("mainTexture", texture);
-    //         material->setProperty("albedoMap", texture);
-    //     }
-    //     image->release();
-    //
-    //     _cubeMeshRenderer->setMaterial(material);
-
-    // create material from deserializer
-    auto *materialExportedFromEditor = new Material();
-
-    setMaterialFromJsonContent(materialExportedFromEditor, "f5345262-68e8-4676-b142-543e3ff75c17@ddb15.json", "standard");
-
-    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@3effa.json", materialExportedFromEditor, "mainTexture");
-    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", materialExportedFromEditor, "metallicRoughnessMap");
-    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@0089c.json", materialExportedFromEditor, "normalMap");
-    createTextureForMaterial("f5345262-68e8-4676-b142-543e3ff75c17@221a5.json", materialExportedFromEditor, "occlusionMap");
-
-    _cubeMeshRenderer->setMaterial(materialExportedFromEditor);
-
-    // create light
-    auto *lightNode = new Node("light");
-    lightNode->setRotationFromEuler(-50, 0, 0); // DirectionalLight
+    // Main Light
+    auto *lightNode = new Node("MainLight");
+    lightNode->setPosition(-10, 15, 17.5);
+    lightNode->setRotationFromEuler(-35, -30, 0); // DirectionalLight
     lightNode->setParent(_scene);
     auto *lightComp = lightNode->addComponent<DirectionalLight>();
-    // auto *lightComp = lightNode->addComponent<SphereLight>();
-    // auto *lightComp = lightNode->addComponent<SpotLight>();
-    //    lightComp->setColor(cc::Color{255, 0, 0, 255});
-    // lightNode->setPosition(0, 0, 5); // spot & spheres
-    // lightComp->setRange(20); // spot & spheres
-    // lightComp->setSize(1); // spot & spheres
 
     auto *subNode = new Node("subnode");
     lightNode->addChild(subNode);
-
     testTerrain();
+    // testMeshAndMaterial();
+    // testShadow();
 
     _director->runSceneImmediate(_scene, nullptr, nullptr);
 
     auto *foundSubNode = find("light/subnode");
     CC_ASSERT(foundSubNode != nullptr);
+}
+
+void SimpleDemo::testShadow() {
+    Node *cubeNode = new Node("cube");
+    cubeNode->setParent(_scene);
+    cubeNode->setPosition(-3.6, 0.5, -2.F);
+    auto *cubeMeshRenderer = cubeNode->addComponent<MeshRenderer>();
+    // create mesh asset
+    auto *cube = new Primitive(PrimitiveType::BOX);
+    cube->onLoaded();
+
+    cubeMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::ON);
+    cubeMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
+    cubeMeshRenderer->setMesh(cube);
+    // set material
+    auto *defaultMaterial = new Material();
+    setMaterialFromJsonContent(defaultMaterial, "d3c7820c-2a98-4429-8bc7-b8453bc9ac41.json", "standard");
+    cubeMeshRenderer->setMaterial(defaultMaterial);
+
+    // //////////  Torus Node
+    Node *torusNode = new Node("torus");
+    torusNode->setParent(_scene);
+    torusNode->setPosition(0.75, 0.6, -3);
+    auto *torusMeshRenderer = torusNode->addComponent<MeshRenderer>();
+    auto *torus             = new Primitive(PrimitiveType::TORUS);
+    torus->onLoaded();
+    torusMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::ON);
+    torusMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
+    torusMeshRenderer->setMesh(torus);
+    torusMeshRenderer->setMaterial(defaultMaterial);
+
+    // //////////// Plane Node
+    // // plane node
+    Node *planeNode = new Node("plane");
+    planeNode->setParent(_scene);
+    // create mesh renderer
+    auto *planeMeshRenderer = planeNode->addComponent<MeshRenderer>();
+    auto *plane             = new Primitive(PrimitiveType::PLANE);
+    plane->onLoaded();
+    planeMeshRenderer->setMesh(plane);
+    planeMeshRenderer->setMaterial(defaultMaterial);
+    planeMeshRenderer->setShadowCastingMode(ModelShadowCastingMode::OFF);
+    planeMeshRenderer->setReceiveShadow(ModelShadowReceivingMode::ON);
+
+    auto *shadowInfo = _scene->getSceneGlobal()->getShadowInfo();
+    shadowInfo->setEnabled(true);
+    // shadowInfo->setType(cc::scene::ShadowType::PLANAR);
+    shadowInfo->setType(cc::scene::ShadowType::SHADOW_MAP);
 }
 
 void SimpleDemo::testTerrain() {

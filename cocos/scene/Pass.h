@@ -115,7 +115,8 @@ public:
      */
     static uint64_t getPassHash(Pass *pass);
 
-    explicit Pass();
+    Pass();
+    explicit Pass(Root *root);
     virtual ~Pass();
 
     /**
@@ -197,7 +198,7 @@ public:
      * @param state Target dynamic state
      * @param value Target value
      */
-    void setDynamicState(gfx::DynamicStateFlagBit state, int32_t value);
+    void setDynamicState(gfx::DynamicStateFlagBit state, float value);
 
     /**
      * @en Override all pipeline states with the given pass override info.
@@ -252,7 +253,7 @@ public:
      * @param patches The macro patches
      */
     gfx::Shader *getShaderVariant(const std::vector<IMacroPatch> &patches);
-    
+
     IPassInfoFull getPassInfoFull() const;
 
     // infos
@@ -309,7 +310,7 @@ protected:
     std::string                   _programName;
     IPassDynamics                 _dynamics;
     Record<std::string, uint32_t> _propertyHandleMap;
-    ArrayBuffer                   *_rootBlock{nullptr};
+    ArrayBuffer *                 _rootBlock{nullptr};
     std::vector<IBlockRef>        _blocks; // Point to position in _rootBlock
 
     IProgramInfo *                     _shaderInfo{nullptr};

@@ -143,6 +143,15 @@ Pass::Pass() {
     _rs                = new gfx::RasterizerState();
 }
 
+Pass::Pass(Root *root) {
+    _device            = root->getDevice();
+    _root              = root;
+    _phase             = pipeline::getPhaseID("default");
+    _blendState        = new gfx::BlendState(); //cjh how to delete ?
+    _depthStencilState = new gfx::DepthStencilState();
+    _rs                = new gfx::RasterizerState();
+}
+
 Pass::~Pass() {
     delete _rootBlock;
     CC_LOG_DEBUG("Pass::~Pass");
@@ -221,14 +230,14 @@ void Pass::setUniformArray(uint32_t handle, const MaterialPropertyList &value) {
 }
 
 void Pass::bindTexture(uint32_t binding, gfx::Texture *value, index_t index /* = CC_INVALID_INDEX */) {
-    _descriptorSet->bindTexture(binding, value, (index != CC_INVALID_INDEX) || 0);
+    _descriptorSet->bindTexture(binding, value, index != CC_INVALID_INDEX ? index : 0);
 }
 
 void Pass::bindSampler(uint32_t binding, gfx::Sampler *value, index_t index /* = CC_INVALID_INDEX */) {
-    _descriptorSet->bindSampler(binding, value, (index != CC_INVALID_INDEX) || 0);
+    _descriptorSet->bindSampler(binding, value, index != CC_INVALID_INDEX ? index : 0);
 }
 
-void Pass::setDynamicState(gfx::DynamicStateFlagBit state, int32_t value) {
+void Pass::setDynamicState(gfx::DynamicStateFlagBit state, float value) {
     auto &ds = _dynamics[static_cast<uint32_t>(state)];
     if (ds.value == value) {
         return;
@@ -381,6 +390,10 @@ gfx::Shader *Pass::getShaderVariant(const std::vector<IMacroPatch> &patches) {
         return nullptr;
     }
 
+    if (patches.empty()) {
+        return _shader;
+    }
+
     //cjh    if (EDITOR) {
     //        for (let i = 0; i < patches.length; i++) {
     //            if (!patches[i].name.startsWith('CC_')) {
@@ -501,7 +514,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         if (binding >= _blocks.size()) {
             _blocks.resize(binding + 1);
         }
-        _blocks[binding].data = reinterpret_cast<float *>(const_cast<uint8_t*>(_rootBlock->getData()) + bufferViewInfo.offset);
+        _blocks[binding].data = reinterpret_cast<float *>(const_cast<uint8_t *>(_rootBlock->getData()) + bufferViewInfo.offset);
         _blocks[binding].size = size / 4;
         _descriptorSet->bindBuffer(binding, bufferView);
     }

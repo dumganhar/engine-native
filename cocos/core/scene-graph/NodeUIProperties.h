@@ -23,11 +23,12 @@
  THE SOFTWARE.
  ****************************************************************************/
 #pragma once
+
 #include "2d/framework/UITransform.h"
-#include "BaseNode.h"
+#include "core/scene-graph/BaseNode.h"
+
 namespace cc {
 
-using framework::UITransform;
 class NodeUiProperties {
 public:
     bool  uiTransformDirty{true};

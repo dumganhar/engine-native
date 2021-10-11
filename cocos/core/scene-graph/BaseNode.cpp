@@ -517,13 +517,9 @@ void BaseNode::setSiblingIndex(index_t index) {
 
 BaseNode *BaseNode::getChildByPath(const std::string &path) const {
     size_t                   start;
-    size_t                   end = 0;
-    std::vector<std::string> segments;
+    size_t                   end      = 0;
+    std::vector<std::string> segments = StringUtil::split(path, "/");
     auto *                   lastNode = const_cast<BaseNode *>(this);
-    while ((start = path.find_first_not_of('/', end)) != std::string::npos) {
-        end = path.find('/', start);
-        segments.push_back(path.substr(start, end - start));
-    }
     for (const std::string &segment : segments) {
         if (segment.empty()) {
             continue;

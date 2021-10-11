@@ -297,10 +297,6 @@ BaseNode *Node::getDirtyNode(const index_t idx) {
     return dirtyNodes[idx];
 }
 
-BaseNode *Node::find(const std::string & /*path*/, BaseNode * /*referenceNode*/) {
-    return nullptr; //cjh TODO:
-}
-
 void Node::setAngle(float val) {
     _euler.set(0, 0, val);
     Quaternion::createFromAxisAngle(Vec3(0, 0, 1), val, &_localRotation);

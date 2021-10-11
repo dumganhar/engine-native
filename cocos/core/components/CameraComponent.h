@@ -108,7 +108,7 @@ public:
     inline void setClearFlags(ClearFlag val) {
         _clearFlags = val;
         if (_camera != nullptr) {
-            //cjh TODO:            _camera->setClearFlag(val);
+            _camera->setClearFlag(static_cast<gfx::ClearFlagBit>(val));
         }
     }
 

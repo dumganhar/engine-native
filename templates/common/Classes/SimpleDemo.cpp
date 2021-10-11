@@ -31,7 +31,7 @@
 #include "core/assets/Texture2D.h"
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/components/CameraComponent.h"
-#include "core/scene-graph/Node.h"
+#include "core/scene-graph/SceneGraphModuleHeader.h"
 
 #include "renderer/GFXDeviceManager.h"
 #include "scene/Pass.h"
@@ -39,7 +39,7 @@
 #include "3d/lights/DirectionalLightComponent.h"
 #include "3d/lights/SphereLightComponent.h"
 #include "3d/lights/SpotLightComponent.h"
-#include "core/scene-graph/Layers.h"
+
 #include "platform/Image.h"
 #include "primitive/Primitive.h"
 
@@ -316,7 +316,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     _cubeMeshRenderer->setMaterial(materialExportedFromEditor);
 
     // create light
-    auto *lightNode = new Node();
+    auto *lightNode = new Node("light");
     lightNode->setRotationFromEuler(-50, 0, 0); // DirectionalLight
     lightNode->setParent(_scene);
     auto *lightComp = lightNode->addComponent<DirectionalLight>();
@@ -327,9 +327,17 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // lightComp->setRange(20); // spot & spheres
     // lightComp->setSize(1); // spot & spheres
 
+    auto *subNode = new Node("subnode");
+    lightNode->addChild(subNode);
+
     testTerrain();
 
     _director->runSceneImmediate(_scene, nullptr, nullptr);
+
+    auto *foundSubNode = find("light/subnode");
+    if (foundSubNode != nullptr) {
+        CC_LOG_DEBUG("foundSubNode name: %s", foundSubNode->getName().c_str());
+    }
 }
 
 void SimpleDemo::testTerrain() {
@@ -350,7 +358,7 @@ void SimpleDemo::testTerrain() {
     asset->onLoaded();
 
     // Create terrain component
-    auto *node    = new Node();
+    auto *node    = new Node("terrain");
     auto *terrain = node->addComponent<Terrain>();
     terrain->setAsset(asset);
     node->setParent(_scene);

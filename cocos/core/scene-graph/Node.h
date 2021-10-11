@@ -57,7 +57,6 @@ public:
     static bool      isStatic;
     static void      setDirtyNode(const index_t idx, BaseNode *node);
     static BaseNode *getDirtyNode(const index_t idx);
-    static BaseNode *find(const std::string &, BaseNode *referenceNode = nullptr);
 
     /**
      * @en Determine whether the given object is a normal Node. Will return false if [[Scene]] given.

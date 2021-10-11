@@ -31,7 +31,7 @@
 #include "core/assets/Texture2D.h"
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/components/CameraComponent.h"
-#include "core/scene-graph/Node.h"
+#include "core/scene-graph/SceneGraphModuleHeader.h"
 
 #include "renderer/GFXDeviceManager.h"
 #include "scene/Pass.h"
@@ -39,7 +39,7 @@
 #include "3d/lights/DirectionalLightComponent.h"
 #include "3d/lights/SphereLightComponent.h"
 #include "3d/lights/SpotLightComponent.h"
-#include "core/scene-graph/Layers.h"
+
 #include "platform/Image.h"
 #include "primitive/Primitive.h"
 
@@ -280,22 +280,16 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     lightNode->setParent(_scene);
     auto *lightComp = lightNode->addComponent<DirectionalLight>();
 
-    // Sphere Light
-    // auto *sphereLightNode = new Node("SphereLight");
-    // sphereLightNode->setPosition(3.3, 1.8, -2.7);
-    // sphereLightNode->setParent(_scene);
-    // auto *sphereLightComp = sphereLightNode->addComponent<SphereLight>();
-    // sphereLightComp->setTerm(PhotometricTerm::LUMINOUS_FLUX);
-    // sphereLightComp->setColor(cc::Color{0, 255, 255, 255});
-    // sphereLightComp->setLuminousFlux(1700);
-    // sphereLightComp->setSize(0.15);
-    // sphereLightComp->setRange(2);
-
+    auto *subNode = new Node("subnode");
+    lightNode->addChild(subNode);
+    testTerrain();
     // testMeshAndMaterial();
     // testShadow();
-    testTerrain();
 
     _director->runSceneImmediate(_scene, nullptr, nullptr);
+
+    auto *foundSubNode = find("light/subnode");
+    CC_ASSERT(foundSubNode != nullptr);
 }
 
 void SimpleDemo::testShadow() {
@@ -364,7 +358,7 @@ void SimpleDemo::testTerrain() {
     asset->onLoaded();
 
     // Create terrain component
-    auto *node    = new Node();
+    auto *node    = new Node("terrain");
     auto *terrain = node->addComponent<Terrain>();
     terrain->setAsset(asset);
     node->setParent(_scene);

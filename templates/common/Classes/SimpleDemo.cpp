@@ -335,9 +335,7 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     _director->runSceneImmediate(_scene, nullptr, nullptr);
 
     auto *foundSubNode = find("light/subnode");
-    if (foundSubNode != nullptr) {
-        CC_LOG_DEBUG("foundSubNode name: %s", foundSubNode->getName().c_str());
-    }
+    CC_ASSERT(foundSubNode != nullptr);
 }
 
 void SimpleDemo::testTerrain() {

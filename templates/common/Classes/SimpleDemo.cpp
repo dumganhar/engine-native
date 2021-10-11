@@ -287,9 +287,6 @@ void SimpleDemo::setup(int width, int height, uintptr_t windowHandle) {
     // testShadow();
 
     _director->runSceneImmediate(_scene, nullptr, nullptr);
-
-    auto *foundSubNode = find("light/subnode");
-    CC_ASSERT(foundSubNode != nullptr);
 }
 
 void SimpleDemo::testShadow() {

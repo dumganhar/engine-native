@@ -127,20 +127,20 @@ StringArray StringUtil::split(const String &str, const String &delims, uint maxS
 }
 
 String &StringUtil::replace(String &str, const String &findStr, const String &replaceStr) {
-    size_t start_pos = str.find(findStr);
-    if (start_pos == std::string::npos)
+    size_t startPos = str.find(findStr);
+    if (startPos == std::string::npos)
         return str;
-    str.replace(start_pos, findStr.length(), replaceStr);
+    str.replace(startPos, findStr.length(), replaceStr);
     return str;
 }
 
 String &StringUtil::replaceAll(String &str, const String &findStr, const String &replaceStr) {
     if (findStr.empty())
         return str;
-    size_t start_pos = 0;
-    while ((start_pos = str.find(findStr, start_pos)) != std::string::npos) {
-        str.replace(start_pos, findStr.length(), replaceStr);
-        start_pos += replaceStr.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    size_t startPos = 0;
+    while ((startPos = str.find(findStr, startPos)) != std::string::npos) {
+        str.replace(startPos, findStr.length(), replaceStr);
+        startPos += replaceStr.length();
     }
     return str;
 }

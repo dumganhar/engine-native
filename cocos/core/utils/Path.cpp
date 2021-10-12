@@ -24,8 +24,6 @@
 ****************************************************************************/
 
 #include "core/utils/Path.h"
-#include <cassert>
-
 #include "base/StringUtil.h"
 
 namespace cc {

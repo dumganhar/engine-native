@@ -38,6 +38,10 @@ public:
     static int         printf(char *buf, const char *last, const char *fmt, ...);
     static String      format(const char *fmt, ...);
     static StringArray split(const String &str, const String &delims, uint maxSplits = 0);
+    static String &    replace(String &str, const String &findStr, const String &replaceStr);
+    static String &    replaceAll(String &str, const String &findStr, const String &replaceStr);
+    static String &    tolower(String &str);
+    static String &    toupper(String &str);
 };
 
 /**

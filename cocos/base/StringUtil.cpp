@@ -126,6 +126,37 @@ StringArray StringUtil::split(const String &str, const String &delims, uint maxS
     return strs;
 }
 
+String &StringUtil::replace(String &str, const String &findStr, const String &replaceStr) {
+    size_t start_pos = str.find(findStr);
+    if (start_pos == std::string::npos)
+        return str;
+    str.replace(start_pos, findStr.length(), replaceStr);
+    return str;
+}
+
+String &StringUtil::replaceAll(String &str, const String &findStr, const String &replaceStr) {
+    if (findStr.empty())
+        return str;
+    size_t start_pos = 0;
+    while ((start_pos = str.find(findStr, start_pos)) != std::string::npos) {
+        str.replace(start_pos, findStr.length(), replaceStr);
+        start_pos += replaceStr.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    }
+    return str;
+}
+
+String &StringUtil::tolower(String &str) {
+    std::transform(str.begin(), str.end(), str.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    return str;
+}
+
+String &StringUtil::toupper(String &str) {
+    std::transform(str.begin(), str.end(), str.begin(),
+                   [](unsigned char c) { return std::toupper(c); });
+    return str;
+}
+
 std::string GzipedString::value() const { // NOLINT(readability-convert-member-functions-to-static)
     uint8_t *   outGzip{nullptr};
     uint8_t *   outBase64{nullptr};

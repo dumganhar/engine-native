@@ -23,19 +23,41 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "Path.h"
+#include "core/utils/Path.h"
 #include <cassert>
+
+#include "base/StringUtil.h"
 
 namespace cc {
 
 namespace {
 const std::string EMPTY_STRING;
+
+std::string &removeLastSlash(std::string &path) {
+    if (!path.empty()) {
+        if (path[path.length() - 1] == '/' || path[path.length() - 1] == '\\') {
+            path = path.substr(0, path.length() - 1);
+        } else if (path.length() > 1 && path[path.length() - 1] == '\\' && path[path.length() - 2] == '\\') {
+            path = path.substr(0, path.length() - 2);
+        }
+    }
+    return path;
 }
 
-//TODO: minggo
-std::string join(const std::vector<std::string> &paths) {
-    assert(false);
-    return "";
+} // namespace
+
+std::string join(const std::vector<std::string> &segments) {
+    std::string result;
+
+    for (const auto &segment : segments) {
+        if (!result.empty()) {
+            result += "/";
+        }
+        result += segment;
+        removeLastSlash(result);
+    }
+
+    return result;
 }
 
 std::string extname(const std::string &path) {
@@ -43,52 +65,154 @@ std::string extname(const std::string &path) {
         return EMPTY_STRING;
     }
 
-    auto index = path.find_last_of('.');
-    if (index == path.size() - 1) {
+    std::string newPath = path;
+    size_t      index   = path.find_first_of('?');
+    if (index != std::string::npos && index > 0) {
+        newPath = newPath.substr(0, index);
+    }
+
+    index = newPath.find_last_of('.');
+    if (index == std::string::npos) {
         return EMPTY_STRING;
     }
 
-    return path.substr(index);
+    return newPath.substr(index);
 }
 
 std::string mainFileName(const std::string &fileName) {
-    assert(false);
-    return "";
+    if (!fileName.empty()) {
+        size_t idx = fileName.find_last_of('.');
+        if (idx != std::string::npos) {
+            return fileName.substr(0, idx);
+        }
+    }
+
+    return fileName;
 }
 
-std::string basename(const std::string &path, const std::string &extName) {
-    assert(false);
-    return "";
+std::string basename(const std::string &path, const std::string &extName /* = ""*/) {
+    std::string newPath = path;
+    size_t      index   = path.find_first_of('?');
+    if (index != std::string::npos && index > 0) {
+        newPath = newPath.substr(0, index);
+    }
+
+    removeLastSlash(newPath);
+
+    index = newPath.find_last_of("/\\");
+    if (index == std::string::npos) {
+        return newPath;
+    }
+
+    std::string baseName = newPath.substr(index + 1);
+
+    if (!extName.empty() && extName.length() < newPath.length()) {
+        std::string extInPath       = newPath.substr(newPath.length() - extName.length());
+        std::string expectedExtName = extName;
+        if (StringUtil::tolower(extInPath) == StringUtil::tolower(expectedExtName)) {
+            baseName = baseName.substr(0, baseName.length() - extName.length());
+        }
+    }
+
+    return baseName;
 }
 
 std::string dirname(const std::string &path) {
-    assert(false);
-    return "";
+    size_t index = path.find_last_of("/\\");
+    if (index == std::string::npos) {
+        return "";
+    }
+
+    std::string dir = path.substr(0, index);
+    removeLastSlash(dir);
+    return dir;
 }
 
-std::string changeExtname(const std::string &path, const std::string &extName) {
-    assert(false);
-    return "";
+std::string changeExtname(const std::string &path, const std::string &extName /* = ""*/) {
+    size_t      index   = path.find_first_of('?');
+    std::string newPath = path;
+    std::string tempStr;
+    if (index != std::string::npos && index > 0) {
+        tempStr = path.substr(index);
+        newPath = path.substr(0, index);
+    }
+
+    index = newPath.find_last_of('.');
+    if (index == std::string::npos) {
+        return newPath + extName + tempStr;
+    }
+
+    return newPath.substr(0, index) + extName + tempStr;
 }
 
-std::string changeBasename(const std::string &path, const std::string &baseName, bool isSameExt) {
-    assert(false);
-    return "";
+std::string changeBasename(const std::string &path, const std::string &baseName, bool isSameExt /* = false*/) {
+    if (baseName.find_last_of('.') == 0) {
+        return changeExtname(path, baseName);
+    }
+
+    size_t            index = path.find_last_of('?');
+    std::string       tempStr;
+    std::string       newPath = path;
+    const std::string ext     = isSameExt ? extname(path) : "";
+    if (index != std::string::npos && index > 0) {
+        tempStr = path.substr(index);
+        newPath = path.substr(0, index);
+    }
+
+    index = newPath.find_last_of("/\\");
+    if (index == std::string::npos) {
+        index = 0;
+    } else if (index > 0) {
+        ++index;
+    }
+
+    return newPath.substr(0, index) + baseName + ext + tempStr;
 }
 
 std::string normalize(const std::string &url) {
-    assert(false);
-    return "";
+    std::string oldUrl = url;
+    std::string newUrl = url;
+
+    // remove all ../
+    do {
+        oldUrl       = newUrl;
+        size_t index = newUrl.find("../");
+        if (index == std::string::npos) {
+            index = newUrl.find("..\\");
+        }
+        size_t previousSlashIndex      = std::string::npos;
+        size_t previousTwiceSlashIndex = std::string::npos;
+        if (index != std::string::npos && index > 0) {
+            previousSlashIndex = newUrl.find_last_of("/\\", index - 1);
+            if (previousSlashIndex != std::string::npos) {
+                previousTwiceSlashIndex = newUrl.find_last_of("/\\", previousSlashIndex - 1);
+            }
+        }
+
+        if (previousTwiceSlashIndex == std::string::npos) {
+            if (previousSlashIndex != std::string::npos) {
+                newUrl = newUrl.substr(index + strlen("../"));
+            }
+        } else if (previousSlashIndex != std::string::npos) {
+            newUrl = newUrl.substr(0, previousTwiceSlashIndex) + getSeperator() + newUrl.substr(index + strlen("../"));
+        }
+    } while (oldUrl.length() != newUrl.length());
+
+    return newUrl;
 }
 
 std::string stripSep(const std::string &path) {
-    assert(false);
-    return "";
+    std::string result = path;
+    removeLastSlash(result);
+    return result;
 }
 
 char getSeperator() {
-    assert(false);
-    return ' ';
+#if (CC_PLATFORM == CC_PLATFORM_WINDOWS)
+    return '\\';
+#else
+    return '/';
+#endif
 }
 
 } // namespace cc

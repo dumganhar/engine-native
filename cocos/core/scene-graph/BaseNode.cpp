@@ -242,7 +242,9 @@ void BaseNode::setParent(BaseNode *parent, bool isKeepWorld /* = false */) {
     onHierarchyChanged(oldParent);
 }
 
-void BaseNode::onHierarchyChanged(BaseNode *) {}
+void BaseNode::onHierarchyChanged(BaseNode *oldParent) {
+    onHierarchyChangedBase(oldParent);
+}
 
 Scene *BaseNode::getScene() const {
     return _scene;

@@ -464,4 +464,9 @@ bool Node::onPreDestroy() {
     return result;
 }
 
+void Node::onHierarchyChanged(BaseNode *oldParent) {
+    //cjh TODO:    this.eventProcessor.reattach();
+    onHierarchyChangedBase(oldParent);
+}
+
 } // namespace cc

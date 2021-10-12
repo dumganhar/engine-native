@@ -50,6 +50,7 @@ class NodeUiProperties;
 
 class Node final : public BaseNode {
 public:
+    using Super = BaseNode;
     Node();
     explicit Node(const std::string &name);
     ~Node() override;
@@ -286,6 +287,8 @@ protected:
     bool onPreDestroy() override;
 
     void onSetParent(BaseNode *oldParent, bool keepWorldTransform) override;
+
+    void onHierarchyChanged(BaseNode *) override;
 
     static std::vector<BaseNode *> dirtyNodes;
     static uint                    clearFrame;

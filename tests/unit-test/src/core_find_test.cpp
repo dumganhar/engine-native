@@ -38,10 +38,35 @@ TEST(CoreFindTest, test0) {
     auto *director = Director::getInstance();
     auto *scene    = director->getScene();
 
-    auto *node = new Node("");
+    auto *node = new Node("test");
     scene->addChild(node);
 
+    EXPECT_EQ(find("/test"), node);
+    EXPECT_EQ(find("test"), node);
+
+    auto *node2 = new Node(".赞");
+    scene->addChild(node2);
+
+    EXPECT_EQ(find("/.赞"), node2);
+    EXPECT_EQ(find(".赞"), node2);
+
+    auto *nodenode = new Node("");
+    scene->addChild(nodenode);
+
+    //cjh TODO: Creator 2.x return node or nullptr but 3.x return scene, which one is correct?
     EXPECT_EQ(find("/"), scene);
+    EXPECT_EQ(find(""), scene);
+
+    auto *node2node2 = new Node("Jare Guo");
+    node2->addChild(node2node2);
+
+    EXPECT_EQ(find("/.赞/Jare Guo"), node2node2);
+    EXPECT_EQ(find(".赞/Jare Guo"), node2node2);
+    EXPECT_EQ(find("Jare Guo", node2), node2node2);
+
+    auto *ent2ent2ent2 = new Node("FOO");
+    node2node2->addChild(ent2ent2ent2);
+    EXPECT_EQ(find("Jare Guo/FOO", node2), ent2ent2ent2);
 
     //cjh FIXME: crash if invoke
     //    destroyCocos();

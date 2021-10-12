@@ -47,6 +47,7 @@ class Scene;
 class NodeEventProcessor;
 class BaseNode : public CCObject {
 public:
+    using Super = CCObject;
     friend class NodeActivator;
 
     static const uint TRANSFORM_ON;
@@ -244,7 +245,7 @@ protected:
 
     std::string         _id{IDGenerator("Node").getNewId()};
     bool                _active{true};
-    bool                _activeInHierarchy{true};
+    bool                _activeInHierarchy{false};
     Scene *             _scene{nullptr};
     NodeEventProcessor *_eventProcessor{nullptr};
     index_t             _siblingIndex{0};
@@ -270,8 +271,9 @@ protected:
         }
         _scene = _parent->_scene;
     }
-    void onHierarchyChanged(BaseNode *);
-    void onHierarchyChangedBase(BaseNode *oldParent);
+
+    virtual void onHierarchyChanged(BaseNode *);
+    void         onHierarchyChangedBase(BaseNode *oldParent);
 
     virtual void onSetParent(BaseNode *oldParent, bool keepWorldTransform = false);
     void         walkInternal(std::function<void(BaseNode *)>, std::function<void(BaseNode *)>);

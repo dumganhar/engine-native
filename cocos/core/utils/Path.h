@@ -35,7 +35,7 @@ namespace cc {
  * @zh 拼接字符串为路径。
  * @example {@link cocos/core/utils/CCPath/join.js}
  */
-std::string join(const std::vector<std::string> &paths);
+std::string join(const std::vector<std::string> &segments);
 
 /**
  * @en Get the ext name of a path including '.', like '.png'.
@@ -56,7 +56,7 @@ std::string mainFileName(const std::string &fileName);
  * @zh 获取文件路径的文件名。
  * @example {@link cocos/core/utils/CCPath/basename.js}
  */
-std::string basename(const std::string &path, const std::string &extName);
+std::string basename(const std::string &path, const std::string &extName = "");
 
 /**
  * @en Get dirname of a file path.
@@ -70,14 +70,14 @@ std::string dirname(const std::string &path);
  * @zh 更改文件路径的扩展名。
  * @example {@link cocos/core/utils/CCPath/changeExtname.js}
  */
-std::string changeExtname(const std::string &path, const std::string &extName);
+std::string changeExtname(const std::string &path, const std::string &extName = "");
 
 /**
  * @en Change file name of a file path.
  * @zh 更改文件路径的文件名。
  * @example {@link cocos/core/utils/CCPath/changeBasename.js}
  */
-std::string changeBasename(const std::string &path, const std::string &baseName, bool isSameExt);
+std::string changeBasename(const std::string &path, const std::string &baseName, bool isSameExt = false);
 
 // todo make public after verification
 std::string normalize(const std::string &url);

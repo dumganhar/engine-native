@@ -69,5 +69,5 @@ TEST(CoreFindTest, test0) {
     EXPECT_EQ(find("Jare Guo/FOO", node2), ent2ent2ent2);
 
     //cjh FIXME: crash if invoke
-    //    destroyCocos();
+    destroyCocos();
 }

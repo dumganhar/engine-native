@@ -47,9 +47,8 @@ TEST(ComponentTest, isOnLoadCalled) {
     auto *director = Director::getInstance();
     auto *scene    = director->getScene();
 
-    auto *comp = new MyComponent();
     auto *node = new Node();
-    comp = node->addComponent<MyComponent>();
+    auto *comp = node->addComponent<MyComponent>();
     director->getScene()->addChild(node);
     EXPECT_TRUE(comp->isEnabledInHierarchy());
     EXPECT_TRUE(comp->isOnLoadCalled());

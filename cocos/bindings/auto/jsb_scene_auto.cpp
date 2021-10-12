@@ -3559,7 +3559,7 @@ static bool js_scene_Model_getLocalData(se::State& s) // NOLINT(readability-iden
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        float* result = cobj->getLocalData();
+        cc::TypedArrayTemp<float> result = cobj->getLocalData();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_scene_Model_getLocalData : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -4040,27 +4040,6 @@ static bool js_scene_Model_setReceiveShadow(se::State& s) // NOLINT(readability-
 }
 SE_BIND_FUNC(js_scene_Model_setReceiveShadow)
 
-static bool js_scene_Model_setSubModel(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::scene::Model>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Model_setSubModel : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 2) {
-        HolderType<unsigned int, false> arg0 = {};
-        HolderType<cc::scene::SubModel*, false> arg1 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_Model_setSubModel : Error processing arguments");
-        cobj->setSubModel(arg0.value(), arg1.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
-    return false;
-}
-SE_BIND_FUNC(js_scene_Model_setSubModel)
-
 static bool js_scene_Model_setSubModelMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::scene::Model>(s);
@@ -4302,7 +4281,6 @@ bool js_register_scene_Model(se::Object* obj) // NOLINT(readability-identifier-n
     cls->defineFunction("setLocalBuffer", _SE(js_scene_Model_setLocalBuffer));
     cls->defineFunction("setNode", _SE(js_scene_Model_setNode));
     cls->defineFunction("setReceiveShadow", _SE(js_scene_Model_setReceiveShadow));
-    cls->defineFunction("setSubModel", _SE(js_scene_Model_setSubModel));
     cls->defineFunction("setSubModelMaterial", _SE(js_scene_Model_setSubModelMaterial));
     cls->defineFunction("setSubModelMesh", _SE(js_scene_Model_setSubModelMesh));
     cls->defineFunction("setTransform", _SE(js_scene_Model_setTransform));
@@ -13746,7 +13724,7 @@ static bool js_scene_Pass_setDynamicState(se::State& s) // NOLINT(readability-id
     CC_UNUSED bool ok = true;
     if (argc == 2) {
         HolderType<cc::gfx::DynamicStateFlagBit, false> arg0 = {};
-        HolderType<int32_t, false> arg1 = {};
+        HolderType<float, false> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_scene_Pass_setDynamicState : Error processing arguments");
@@ -13955,12 +13933,32 @@ SE_BIND_FUNC(js_scene_Pass_getPassHash_static)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_Pass_finalize)
 
-static bool js_scene_Pass_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor.c
+static bool js_scene_Pass_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor_overloaded.c
 {
-    cc::scene::Pass* cobj = JSB_ALLOC(cc::scene::Pass);
-    s.thisObject()->setPrivateData(cobj);
-    se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
-    return true;
+    CC_UNUSED bool ok = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+    do {
+        if (argc == 1) {
+            HolderType<cc::Root*, false> arg0 = {};
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            cc::scene::Pass* cobj = JSB_ALLOC(cc::scene::Pass, arg0.value());
+            s.thisObject()->setPrivateData(cobj);
+            se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+            return true;
+        }
+    } while(false);
+    do {
+        if (argc == 0) {
+            cc::scene::Pass* cobj = JSB_ALLOC(cc::scene::Pass);
+            s.thisObject()->setPrivateData(cobj);
+            se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+            return true;
+        }
+    } while(false);
+    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
+    return false;
 }
 SE_BIND_CTOR(js_scene_Pass_constructor, __jsb_cc_scene_Pass_class, js_cc_scene_Pass_finalize)
 

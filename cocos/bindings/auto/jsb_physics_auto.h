@@ -1,17 +1,17 @@
 #pragma once
-#include <type_traits>
 #include "base/Config.h"
-#include "cocos/bindings/auto/jsb_gfx_auto.h"
-#include "cocos/bindings/auto/jsb_scene_auto.h"
+#include <type_traits>
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
+#include "cocos/bindings/auto/jsb_gfx_auto.h"
+#include "cocos/bindings/auto/jsb_scene_auto.h"
 #include "cocos/physics/PhysicsSDK.h"
 
 extern se::Object *__jsb_cc_physics_World_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_World_class; // NOLINT
 
 bool js_register_cc_physics_World(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);         // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::World);
 SE_DECLARE_FUNC(js_physics_World_createConvex);
@@ -38,7 +38,7 @@ extern se::Object *__jsb_cc_physics_RigidBody_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_RigidBody_class; // NOLINT
 
 bool js_register_cc_physics_RigidBody(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);             // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::RigidBody);
 SE_DECLARE_FUNC(js_physics_RigidBody_applyForce);
@@ -86,7 +86,7 @@ extern se::Object *__jsb_cc_physics_SphereShape_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_SphereShape_class; // NOLINT
 
 bool js_register_cc_physics_SphereShape(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);               // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::SphereShape);
 SE_DECLARE_FUNC(js_physics_SphereShape_getAABB);
@@ -111,7 +111,7 @@ extern se::Object *__jsb_cc_physics_BoxShape_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_BoxShape_class; // NOLINT
 
 bool js_register_cc_physics_BoxShape(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);            // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::BoxShape);
 SE_DECLARE_FUNC(js_physics_BoxShape_getAABB);
@@ -136,7 +136,7 @@ extern se::Object *__jsb_cc_physics_CapsuleShape_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_CapsuleShape_class; // NOLINT
 
 bool js_register_cc_physics_CapsuleShape(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);                // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::CapsuleShape);
 SE_DECLARE_FUNC(js_physics_CapsuleShape_getAABB);
@@ -163,7 +163,7 @@ extern se::Object *__jsb_cc_physics_PlaneShape_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_PlaneShape_class; // NOLINT
 
 bool js_register_cc_physics_PlaneShape(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);              // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::PlaneShape);
 SE_DECLARE_FUNC(js_physics_PlaneShape_getAABB);
@@ -189,7 +189,7 @@ extern se::Object *__jsb_cc_physics_TrimeshShape_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_TrimeshShape_class; // NOLINT
 
 bool js_register_cc_physics_TrimeshShape(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);                // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::TrimeshShape);
 SE_DECLARE_FUNC(js_physics_TrimeshShape_getAABB);
@@ -215,7 +215,7 @@ extern se::Object *__jsb_cc_physics_CylinderShape_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_CylinderShape_class; // NOLINT
 
 bool js_register_cc_physics_CylinderShape(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);                 // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::CylinderShape);
 SE_DECLARE_FUNC(js_physics_CylinderShape_getAABB);
@@ -241,7 +241,7 @@ extern se::Object *__jsb_cc_physics_ConeShape_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_ConeShape_class; // NOLINT
 
 bool js_register_cc_physics_ConeShape(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);             // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::ConeShape);
 SE_DECLARE_FUNC(js_physics_ConeShape_getAABB);
@@ -267,7 +267,7 @@ extern se::Object *__jsb_cc_physics_TerrainShape_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_TerrainShape_class; // NOLINT
 
 bool js_register_cc_physics_TerrainShape(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);                // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::TerrainShape);
 SE_DECLARE_FUNC(js_physics_TerrainShape_getAABB);
@@ -292,7 +292,7 @@ extern se::Object *__jsb_cc_physics_RevoluteJoint_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_RevoluteJoint_class; // NOLINT
 
 bool js_register_cc_physics_RevoluteJoint(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);                 // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::RevoluteJoint);
 SE_DECLARE_FUNC(js_physics_RevoluteJoint_getImpl);
@@ -311,7 +311,7 @@ extern se::Object *__jsb_cc_physics_DistanceJoint_proto; // NOLINT
 extern se::Class * __jsb_cc_physics_DistanceJoint_class; // NOLINT
 
 bool js_register_cc_physics_DistanceJoint(se::Object *obj); // NOLINT
-bool register_all_physics(se::Object *obj);                 // NOLINT
+bool register_all_physics(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::physics::DistanceJoint);
 SE_DECLARE_FUNC(js_physics_DistanceJoint_getImpl);
@@ -324,3 +324,4 @@ SE_DECLARE_FUNC(js_physics_DistanceJoint_setEnableCollision);
 SE_DECLARE_FUNC(js_physics_DistanceJoint_setPivotA);
 SE_DECLARE_FUNC(js_physics_DistanceJoint_setPivotB);
 SE_DECLARE_FUNC(js_physics_DistanceJoint_DistanceJoint);
+

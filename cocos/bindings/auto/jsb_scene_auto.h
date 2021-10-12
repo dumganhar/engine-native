@@ -230,7 +230,6 @@ SE_DECLARE_FUNC(js_scene_Model_setInstMatWorldIdx);
 SE_DECLARE_FUNC(js_scene_Model_setLocalBuffer);
 SE_DECLARE_FUNC(js_scene_Model_setNode);
 SE_DECLARE_FUNC(js_scene_Model_setReceiveShadow);
-SE_DECLARE_FUNC(js_scene_Model_setSubModel);
 SE_DECLARE_FUNC(js_scene_Model_setSubModelMaterial);
 SE_DECLARE_FUNC(js_scene_Model_setSubModelMesh);
 SE_DECLARE_FUNC(js_scene_Model_setTransform);

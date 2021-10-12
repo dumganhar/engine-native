@@ -1070,7 +1070,7 @@ class NativeClass(object):
                     "setter": self.find_method(field["setter"]),
                 }
                 if item["getter"] is None and item["setter"] is None:
-                    #logger.info("gettter %s, setter %s" % (field["getter"], field["setter"]))
+                    logger.info("gettter %s, setter %s" % (field["getter"], field["setter"]))
                     raise Exception("getter_setter for %s.%s both None" % (
                         self.class_name, field_name))
                 if item["getter"] is not None:
@@ -1546,7 +1546,7 @@ class Generator(object):
                     list_of_fields = match.group(1).split(" ")
                     for field in list_of_fields:
                         field_component = field.split("/")
-                        cap = capitalize(field)
+                        cap = capitalize(field_component[0])
                         default_getter = "get" + cap
                         default_setter = "set" + cap
                         if len(field_component) == 1:

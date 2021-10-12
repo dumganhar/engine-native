@@ -34,228 +34,6 @@
 
 // seval to native
 
-bool seval_to_int32(const se::Value &v, int32_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toInt32();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_uint32(const se::Value &v, uint32_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toUint32();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_int8(const se::Value &v, int8_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toInt8();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_uint8(const se::Value &v, uint8_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toUint8();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_int16(const se::Value &v, int16_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toInt16();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_uint16(const se::Value &v, uint16_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toUint16();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_boolean(const se::Value &v, bool *ret) {
-    assert(ret != nullptr);
-    if (v.isBoolean()) {
-        *ret = v.toBoolean();
-    } else if (v.isNumber()) {
-        *ret = v.toInt32() != 0;
-    } else if (v.isNullOrUndefined()) {
-        *ret = false;
-    } else if (v.isObject()) {
-        *ret = true;
-    } else if (v.isString()) {
-        *ret = !v.toString().empty();
-    } else {
-        *ret = false;
-        assert(false);
-    }
-
-    return true;
-}
-
-bool seval_to_float(const se::Value &v, float *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toFloat();
-        if (!std::isnan(*ret)) {
-            return true;
-        }
-    }
-    *ret = 0.0F;
-    return false;
-}
-
-bool seval_to_double(const se::Value &v, double *ret) {
-    if (v.isNumber()) {
-        *ret = v.toDouble();
-        if (!std::isnan(*ret)) {
-            return true;
-        }
-    }
-    *ret = 0.0;
-    return false;
-}
-
-bool seval_to_size(const se::Value &v, size_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toSize();
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_std_string(const se::Value &v, std::string *ret) {
-    assert(ret != nullptr);
-    *ret = v.toStringForce();
-    return true;
-}
-
-bool seval_to_Vec2(const se::Value &v, cc::Vec2 *pt) {
-    assert(pt != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to Vec2 failed!");
-    se::Object *obj = v.toObject();
-    se::Value   x;
-    se::Value   y;
-    bool        ok = obj->getProperty("x", &x);
-    SE_PRECONDITION3(ok && x.isNumber(), false, *pt = cc::Vec2::ZERO);
-    ok = obj->getProperty("y", &y);
-    SE_PRECONDITION3(ok && y.isNumber(), false, *pt = cc::Vec2::ZERO);
-    pt->x = x.toFloat();
-    pt->y = y.toFloat();
-    return true;
-}
-
-bool seval_to_mat(const se::Value &v, int length, float *out) {
-    assert(out != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to Matrix failed!");
-    se::Object *obj = v.toObject();
-
-    se::Value tmp;
-    char      propName[3] = {0};
-    for (int i = 0; i < length; ++i) {
-        snprintf(propName, 3, "m%2d", i);
-        obj->getProperty(propName, &tmp);
-        *(out + i) = tmp.toFloat();
-    }
-
-    return true;
-}
-
-bool seval_to_Uint8Array(const se::Value &v, uint8_t *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to Array failed!");
-    se::Object *obj = v.toObject();
-    SE_PRECONDITION2(obj->isArray(), false, "Convert parameter to Array failed!");
-
-    CC_UNUSED bool ok     = true;
-    uint32_t       length = 0;
-    obj->getArrayLength(&length);
-    se::Value value;
-    uint8_t   data = 0;
-    for (uint32_t i = 0; i < length; ++i) {
-        if (obj->getArrayElement(i, &value)) {
-            ok = seval_to_uint8(value, &data);
-            SE_PRECONDITION2(ok, false, "Convert parameter to Array failed!");
-            ret[i] = data;
-        }
-    }
-
-    return true;
-}
-
-bool seval_to_uintptr_t(const se::Value &v, uintptr_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = static_cast<uintptr_t>(v.toDouble());
-        return true;
-    }
-    *ret = 0UL;
-    return false;
-}
-
-bool seval_to_Size(const se::Value &v, cc::Size *size) {
-    assert(size != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to Size failed!");
-    se::Object *obj = v.toObject();
-    se::Value   width;
-    se::Value   height;
-
-    bool ok = obj->getProperty("width", &width);
-    SE_PRECONDITION3(ok && width.isNumber(), false, *size = cc::Size::ZERO);
-    ok = obj->getProperty("height", &height);
-    SE_PRECONDITION3(ok && height.isNumber(), false, *size = cc::Size::ZERO);
-    size->width  = width.toFloat();
-    size->height = height.toFloat();
-    return true;
-}
-
 bool seval_to_ccvalue(const se::Value &v, cc::Value *ret) {
     assert(ret != nullptr);
     bool ok = true;
@@ -405,202 +183,6 @@ bool sevals_variadic_to_ccvaluevector(const se::ValueArray &args, cc::ValueVecto
     return true;
 }
 
-bool seval_to_std_vector_string(const se::Value &v, std::vector<std::string> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of String failed!");
-    se::Object *obj = v.toObject();
-    SE_PRECONDITION2(obj->isArray(), false, "Convert parameter to vector of String failed!");
-    uint32_t len = 0;
-    if (obj->getArrayLength(&len)) {
-        se::Value value;
-        for (uint32_t i = 0; i < len; ++i) {
-            SE_PRECONDITION3(obj->getArrayElement(i, &value) && value.isString(), false, ret->clear());
-            ret->push_back(value.toString());
-        }
-        return true;
-    }
-
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_vector_int(const se::Value &v, std::vector<int> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of int failed!");
-    se::Object *obj = v.toObject();
-
-    if (obj->isArray()) {
-        uint32_t len = 0;
-        if (obj->getArrayLength(&len)) {
-            se::Value value;
-            for (uint32_t i = 0; i < len; ++i) {
-                SE_PRECONDITION3(obj->getArrayElement(i, &value) && value.isNumber(), false, ret->clear());
-                ret->push_back(value.toInt32());
-            }
-            return true;
-        }
-    } else if (obj->isTypedArray()) {
-        size_t                     bytesPerElements = 0;
-        uint8_t *                  data             = nullptr;
-        size_t                     dataBytes        = 0;
-        se::Object::TypedArrayType type             = obj->getTypedArrayType();
-
-#define SE_UINT8_PTR_TO_INT(ptr)  (*((uint8_t *)(ptr)))
-#define SE_UINT16_PTR_TO_INT(ptr) (*((uint16_t *)(ptr)))
-#define SE_UINT32_PTR_TO_INT(ptr) (*((uint32_t *)(ptr)))
-
-        if (obj->getTypedArrayData(&data, &dataBytes)) {
-            for (size_t i = 0; i < dataBytes; i += bytesPerElements) {
-                switch (type) {
-                    case se::Object::TypedArrayType::INT8:
-                    case se::Object::TypedArrayType::UINT8:
-                    case se::Object::TypedArrayType::UINT8_CLAMPED:
-                        ret->push_back(SE_UINT8_PTR_TO_INT(data + i));
-                        bytesPerElements = 1;
-                        break;
-                    case se::Object::TypedArrayType::INT16:
-                    case se::Object::TypedArrayType::UINT16:
-                        ret->push_back(SE_UINT16_PTR_TO_INT(data + i));
-                        bytesPerElements = 2;
-                        break;
-                    case se::Object::TypedArrayType::INT32:
-                    case se::Object::TypedArrayType::UINT32:
-                        ret->push_back(SE_UINT32_PTR_TO_INT(data + i));
-                        bytesPerElements = 4;
-                        break;
-                    default:
-                        SE_LOGE("Unsupported typed array: %d\n", (int)type);
-                        assert(false);
-                        break;
-                }
-            }
-        }
-
-#undef SE_UINT8_PTR_TO_INT
-#undef SE_UINT16_PTR_TO_INT
-#undef SE_UINT32_PTR_TO_INT
-
-        return true;
-    } else {
-        assert(false);
-    }
-
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_vector_uint16(const se::Value &v, std::vector<uint16_t> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of uint16 failed!");
-    se::Object *obj = v.toObject();
-
-    if (obj->isArray()) {
-        uint32_t len = 0;
-        if (obj->getArrayLength(&len)) {
-            se::Value value;
-            for (uint32_t i = 0; i < len; ++i) {
-                SE_PRECONDITION3(obj->getArrayElement(i, &value) && value.isNumber(), false, ret->clear());
-                ret->push_back(value.toUint16());
-            }
-            return true;
-        }
-    } else if (obj->isTypedArray()) {
-        size_t                     bytesPerElements = 0;
-        uint8_t *                  data             = nullptr;
-        size_t                     dataBytes        = 0;
-        se::Object::TypedArrayType type             = obj->getTypedArrayType();
-
-        if (obj->getTypedArrayData(&data, &dataBytes)) {
-            for (size_t i = 0; i < dataBytes; i += bytesPerElements) {
-                switch (type) {
-                    case se::Object::TypedArrayType::INT16:
-                    case se::Object::TypedArrayType::UINT16:
-                        ret->push_back(*(reinterpret_cast<uint16_t *>(data + i)));
-                        bytesPerElements = 2;
-                        break;
-                    default:
-                        SE_LOGE("Unsupported typed array: %d\n", (int)type);
-                        assert(false);
-                        break;
-                }
-            }
-        }
-        return true;
-    } else {
-        assert(false);
-    }
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_vector_float(const se::Value &v, std::vector<float> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of float failed!");
-    se::Object *obj = v.toObject();
-    SE_PRECONDITION2(obj->isArray(), false, "Convert parameter to vector of float failed!");
-    uint32_t len = 0;
-    if (obj->getArrayLength(&len)) {
-        se::Value value;
-        for (uint32_t i = 0; i < len; ++i) {
-            SE_PRECONDITION3(obj->getArrayElement(i, &value) && value.isNumber(), false, ret->clear());
-            ret->push_back(value.toFloat());
-        }
-        return true;
-    }
-
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_vector_Vec2(const se::Value &v, std::vector<cc::Vec2> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of Vec2 failed!");
-    se::Object *obj = v.toObject();
-    SE_PRECONDITION2(obj->isArray(), false, "Convert parameter to vector of Vec2 failed!");
-    uint32_t len = 0;
-    if (obj->getArrayLength(&len)) {
-        se::Value value;
-        cc::Vec2  pt;
-        for (uint32_t i = 0; i < len; ++i) {
-            SE_PRECONDITION3(obj->getArrayElement(i, &value) && seval_to_Vec2(value, &pt), false, ret->clear());
-            ret->push_back(pt);
-        }
-        return true;
-    }
-
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_map_string_string(const se::Value &v, std::map<std::string, std::string> *ret) {
-    assert(ret != nullptr);
-
-    if (v.isNullOrUndefined()) {
-        ret->clear();
-        return true;
-    }
-
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to map of String to String failed!");
-    SE_PRECONDITION3(!v.isNullOrUndefined(), false, ret->clear());
-
-    se::Object *obj = v.toObject();
-
-    std::vector<std::string> allKeys;
-    SE_PRECONDITION3(obj->getAllKeys(&allKeys), false, ret->clear());
-
-    bool        ok = false;
-    se::Value   value;
-    std::string strValue;
-    for (const auto &key : allKeys) {
-        SE_PRECONDITION3(obj->getProperty(key.c_str(), &value), false, ret->clear());
-        ok = seval_to_std_string(value, &strValue);
-        SE_PRECONDITION3(ok, false, ret->clear());
-        ret->emplace(key, strValue);
-    }
-
-    return true;
-}
-
 bool seval_to_Data(const se::Value &v, cc::Data *ret) {
     assert(ret != nullptr);
     SE_PRECONDITION2(v.isObject() && v.toObject()->isTypedArray(), false, "Convert parameter to Data failed!");
@@ -642,67 +224,18 @@ bool seval_to_DownloaderHints(const se::Value &v, cc::network::DownloaderHints *
 //////////////////////////////////////////////////////////////////////////////////
 // native to seval
 
-bool int32_to_seval(int32_t v, se::Value *ret) {
-    ret->setInt32(v);
-    return true;
-}
-
-bool uint32_to_seval(uint32_t v, se::Value *ret) {
-    ret->setUint32(v);
-    return true;
-}
-
-bool int16_to_seval(uint16_t v, se::Value *ret) {
-    ret->setInt16(v);
-    return true;
-}
-
-bool uint16_to_seval(uint16_t v, se::Value *ret) {
-    ret->setUint16(v);
-    return true;
-}
-
-bool int8_to_seval(int8_t v, se::Value *ret) {
-    ret->setInt8(v);
-    return true;
-}
-
-bool uint8_to_seval(uint8_t v, se::Value *ret) {
-    ret->setUint8(v);
-    return true;
-}
-
-bool boolean_to_seval(bool v, se::Value *ret) {
-    ret->setBoolean(v);
-    return true;
-}
-
-bool float_to_seval(float v, se::Value *ret) {
-    ret->setFloat(v);
-    return true;
-}
-
-bool double_to_seval(double v, se::Value *ret) {
+namespace {
+bool uintptr_t_to_seval(uintptr_t v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     ret->setDouble(v);
     return true;
 }
 
-bool uintptr_t_to_seval(uintptr_t v, se::Value *ret) {
-    ret->setDouble(v);
-    return true;
-}
-
-bool size_to_seval(size_t v, se::Value *ret) {
+bool size_to_seval(size_t v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     ret->setSize(v);
     return true;
 }
 
-bool std_string_to_seval(const std::string &v, se::Value *ret) {
-    ret->setString(v);
-    return true;
-}
-
-bool Vec2_to_seval(const cc::Vec2 &v, se::Value *ret) {
+bool Vec2_to_seval(const cc::Vec2 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("x", se::Value(v.x));
@@ -712,7 +245,7 @@ bool Vec2_to_seval(const cc::Vec2 &v, se::Value *ret) {
     return true;
 }
 
-bool Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) {
+bool Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("x", se::Value(v.x));
@@ -723,7 +256,7 @@ bool Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) {
     return true;
 }
 
-bool Vec4_to_seval(const cc::Vec4 &v, se::Value *ret) {
+bool Vec4_to_seval(const cc::Vec4 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("x", se::Value(v.x));
@@ -735,7 +268,7 @@ bool Vec4_to_seval(const cc::Vec4 &v, se::Value *ret) {
     return true;
 }
 
-bool Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) {
+bool Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createArrayObject(16));
 
@@ -747,7 +280,7 @@ bool Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) {
     return true;
 }
 
-bool Size_to_seval(const cc::Size &v, se::Value *ret) {
+bool Size_to_seval(const cc::Size &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("width", se::Value(v.width));
@@ -756,7 +289,7 @@ bool Size_to_seval(const cc::Size &v, se::Value *ret) {
     return true;
 }
 
-bool Rect_to_seval(const cc::Rect &v, se::Value *ret) {
+bool Rect_to_seval(const cc::Rect &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("x", se::Value(v.origin.x));
@@ -767,6 +300,8 @@ bool Rect_to_seval(const cc::Rect &v, se::Value *ret) {
 
     return true;
 }
+
+} // namespace
 
 bool ccvalue_to_seval(const cc::Value &v, se::Value *ret) {
     assert(ret != nullptr);
@@ -896,7 +431,7 @@ bool ccvaluevector_to_seval(const cc::ValueVector &v, se::Value *ret) {
 namespace {
 
 template <typename T>
-bool std_vector_T_to_seval(const std::vector<T> &v, se::Value *ret) {
+bool std_vector_T_to_seval(const std::vector<T> &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createArrayObject(v.size()));
     bool             ok = true;
@@ -919,52 +454,6 @@ bool std_vector_T_to_seval(const std::vector<T> &v, se::Value *ret) {
 }
 
 } // namespace
-
-bool std_vector_string_to_seval(const std::vector<std::string> &v, se::Value *ret) {
-    return std_vector_T_to_seval(v, ret);
-}
-
-bool std_vector_int_to_seval(const std::vector<int> &v, se::Value *ret) {
-    return std_vector_T_to_seval(v, ret);
-}
-
-bool std_vector_uint16_to_seval(const std::vector<uint16_t> &v, se::Value *ret) {
-    return std_vector_T_to_seval(v, ret);
-}
-
-bool std_vector_float_to_seval(const std::vector<float> &v, se::Value *ret) {
-    return std_vector_T_to_seval(v, ret);
-}
-
-bool std_map_string_string_to_seval(const std::map<std::string, std::string> &v, se::Value *ret) {
-    assert(ret != nullptr);
-
-    se::HandleObject obj(se::Object::createPlainObject());
-    bool             ok = true;
-    for (const auto &e : v) {
-        const std::string &key   = e.first;
-        const std::string &value = e.second;
-
-        if (key.empty()) {
-            continue;
-        }
-
-        se::Value tmp;
-        if (!std_string_to_seval(value, &tmp)) {
-            ok = false;
-            ret->setUndefined();
-            break;
-        }
-
-        obj->setProperty(key.c_str(), tmp);
-    }
-
-    if (ok) {
-        ret->setObject(obj);
-    }
-
-    return ok;
-}
 
 namespace {
 enum class DataType {
@@ -1215,6 +704,35 @@ bool sevalue_to_native(const se::Value &from, cc::Vec3 *to, se::Object * /*unuse
 }
 
 template <>
+bool sevalue_to_native(const se::Value &from, cc::Color *to, se::Object * /*unused*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Vec3 failed!");
+    if (!from.isObject()) {
+    }
+    se::Object *obj = from.toObject();
+    bool        ok;
+    se::Value   t;
+    uint8_t     r;
+    uint8_t     g;
+    uint8_t     b;
+    uint8_t     a;
+
+    ok = obj->getProperty("r", &t);
+    SE_PRECONDITION3(ok && t.isNumber(), false, *to = {});
+    r  = t.toUint8();
+    ok = obj->getProperty("g", &t);
+    SE_PRECONDITION3(ok && t.isNumber(), false, *to = {});
+    g  = t.toUint8();
+    ok = obj->getProperty("b", &t);
+    SE_PRECONDITION3(ok && t.isNumber(), false, *to = {});
+    g  = t.toUint8();
+    ok = obj->getProperty("a", &t);
+    SE_PRECONDITION3(ok && t.isNumber(), false, *to = {});
+    a = t.toUint8();
+    to->set(r, g, b, a);
+    return true;
+}
+
+template <>
 bool sevalue_to_native(const se::Value &from, cc::Vec2 *to, se::Object * /*unused*/) {
     SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Vec2 failed!");
     if (!from.isObject()) {
@@ -1234,8 +752,6 @@ bool sevalue_to_native(const se::Value &from, cc::Vec2 *to, se::Object * /*unuse
 template <>
 bool sevalue_to_native(const se::Value &from, cc::Quaternion *to, se::Object * /*unused*/) {
     SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Quaternion failed!");
-    if (!from.isObject()) {
-    }
     se::Object *obj = from.toObject();
     se::Value   x;
     se::Value   y;
@@ -1253,6 +769,52 @@ bool sevalue_to_native(const se::Value &from, cc::Quaternion *to, se::Object * /
     to->y = y.toFloat();
     to->z = z.toFloat();
     to->w = w.toFloat();
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Plane *to, se::Object * /*unused*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Plane failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    bool        ok;
+    ok = obj->getProperty("n", &tmp);
+    SE_PRECONDITION2(ok, false, "property n not found!");
+    ok = sevalue_to_native(tmp, &to->n, obj);
+    SE_PRECONDITION2(ok, false, "convert to vec3");
+    ok = obj->getProperty("d", &tmp);
+    SE_PRECONDITION2(ok, false, "property d not found!");
+    sevalue_to_native(tmp, &to->d, obj);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Frustum *to, se::Object * /*unused*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Frustum failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    bool        ok;
+    uint32_t    arraySize;
+    ok = obj->getProperty("planes", &tmp);
+    SE_PRECONDITION2(ok, false, "property planes not found!");
+    se::Object *planes = tmp.toObject();
+    planes->getArrayLength(&arraySize);
+    for (auto i = 0; i < arraySize; i++) {
+        se::Value ele;
+        planes->getArrayElement(i, &ele);
+        sevalue_to_native(ele, &to->planes[i], nullptr);
+    }
+
+    ok = obj->getProperty("vertices", &tmp);
+    SE_PRECONDITION2(ok, false, "property vertices not found!");
+    se::Object *vertices = tmp.toObject();
+    vertices->getArrayLength(&arraySize);
+    for (auto i = 0; i < arraySize; i++) {
+        se::Value ele;
+        vertices->getArrayElement(i, &ele);
+        sevalue_to_native(ele, &to->vertices[i], nullptr);
+    }
+
     return true;
 }
 

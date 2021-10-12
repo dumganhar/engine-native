@@ -29,6 +29,7 @@
 #include "base/TypeDef.h"
 #include "core/scene-graph/BaseNode.h"
 #include "core/scene-graph/NodeEnum.h"
+#include "core/scene-graph/NodeUIProperties.h"
 #include "core/scene-graph/Scene.h"
 #include "math/Mat3.h"
 #include "math/Mat4.h"
@@ -68,8 +69,7 @@ public:
     static void resetChangedFlags();
     static void clearNodeArray();
 
-    NodeUiProperties *uiProps{nullptr};
-    void              invalidateChildren(TransformBit dirtyBit);
+    void invalidateChildren(TransformBit dirtyBit);
 
     void translate(const Vec3 &, NodeSpace ns = NodeSpace::LOCAL);
     void rotate(const Quaternion &rot, NodeSpace ns);
@@ -282,6 +282,8 @@ public:
     void setLayer(uint layer) override { _layer = layer; }
     uint getLayer() const { return _layer; }
 
+    NodeUiProperties *getUIProps() const { return _uiProps; }
+
 protected:
     bool onPreDestroy() override;
 
@@ -297,7 +299,8 @@ protected:
     uint _dirtyFlag{0};
     uint _layer{0};
 
-    bool _eulerDirty{false};
+    bool              _eulerDirty{false};
+    NodeUiProperties *_uiProps{nullptr};
 
     friend void componentCorrupted(Node *node, Component *comp, uint32_t index);
 

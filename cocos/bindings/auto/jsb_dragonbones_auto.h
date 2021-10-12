@@ -1,27 +1,27 @@
 #pragma once
 #include "base/Config.h"
 #if USE_DRAGONBONES > 0
-#include <type_traits>
-#include "cocos/bindings/jswrapper/SeApi.h"
-#include "cocos/bindings/manual/jsb_conversions.h"
-#include "cocos/editor-support/dragonbones-creator-support/CCDragonBonesHeaders.h"
+    #include <type_traits>
+    #include "cocos/bindings/jswrapper/SeApi.h"
+    #include "cocos/bindings/manual/jsb_conversions.h"
+    #include "cocos/editor-support/dragonbones-creator-support/CCDragonBonesHeaders.h"
 
 extern se::Object *__jsb_dragonBones_BaseObject_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_BaseObject_class; // NOLINT
 
 bool js_register_dragonBones_BaseObject(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);           // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::BaseObject);
 SE_DECLARE_FUNC(js_dragonbones_BaseObject_returnToPool);
-SE_DECLARE_FUNC(js_dragonbones_BaseObject_clearPool);
 SE_DECLARE_FUNC(js_dragonbones_BaseObject_setMaxCount);
+SE_DECLARE_FUNC(js_dragonbones_BaseObject_clearPool);
 
 extern se::Object *__jsb_dragonBones_Rectangle_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_Rectangle_class; // NOLINT
 
 bool js_register_dragonBones_Rectangle(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);          // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::Rectangle);
 SE_DECLARE_FUNC(js_dragonbones_Rectangle_clear);
@@ -31,7 +31,7 @@ extern se::Object *__jsb_dragonBones_Matrix_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_Matrix_class; // NOLINT
 
 bool js_register_dragonBones_Matrix(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);       // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::Matrix);
 
@@ -39,7 +39,7 @@ extern se::Object *__jsb_dragonBones_Transform_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_Transform_class; // NOLINT
 
 bool js_register_dragonBones_Transform(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);          // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::Transform);
 SE_DECLARE_FUNC(js_dragonbones_Transform_normalizeRadian);
@@ -48,7 +48,7 @@ extern se::Object *__jsb_dragonBones_TextureAtlasData_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_TextureAtlasData_class; // NOLINT
 
 bool js_register_dragonBones_TextureAtlasData(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);                 // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::TextureAtlasData);
 SE_DECLARE_FUNC(js_dragonbones_TextureAtlasData_addTexture);
@@ -59,7 +59,7 @@ extern se::Object *__jsb_dragonBones_TextureData_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_TextureData_class; // NOLINT
 
 bool js_register_dragonBones_TextureData(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);            // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::TextureData);
 SE_DECLARE_FUNC(js_dragonbones_TextureData_getFrame);
@@ -73,7 +73,7 @@ extern se::Object *__jsb_dragonBones_ArmatureData_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_ArmatureData_class; // NOLINT
 
 bool js_register_dragonBones_ArmatureData(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);             // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::ArmatureData);
 SE_DECLARE_FUNC(js_dragonbones_ArmatureData_getAABB);
@@ -97,7 +97,7 @@ extern se::Object *__jsb_dragonBones_BoneData_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_BoneData_class; // NOLINT
 
 bool js_register_dragonBones_BoneData(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);         // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::BoneData);
 SE_DECLARE_FUNC(js_dragonbones_BoneData_getParent);
@@ -108,7 +108,7 @@ extern se::Object *__jsb_dragonBones_SlotData_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_SlotData_class; // NOLINT
 
 bool js_register_dragonBones_SlotData(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);         // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::SlotData);
 SE_DECLARE_FUNC(js_dragonbones_SlotData_getBlendMode);
@@ -120,7 +120,7 @@ extern se::Object *__jsb_dragonBones_DragonBonesData_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_DragonBonesData_class; // NOLINT
 
 bool js_register_dragonBones_DragonBonesData(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);                // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::DragonBonesData);
 SE_DECLARE_FUNC(js_dragonbones_DragonBonesData_addArmature);
@@ -132,7 +132,7 @@ extern se::Object *__jsb_dragonBones_SkinData_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_SkinData_class; // NOLINT
 
 bool js_register_dragonBones_SkinData(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);         // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::SkinData);
 
@@ -140,7 +140,7 @@ extern se::Object *__jsb_dragonBones_AnimationData_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_AnimationData_class; // NOLINT
 
 bool js_register_dragonBones_AnimationData(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);              // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::AnimationData);
 SE_DECLARE_FUNC(js_dragonbones_AnimationData_getBoneCachedFrameIndices);
@@ -153,7 +153,7 @@ extern se::Object *__jsb_dragonBones_Armature_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_Armature_class; // NOLINT
 
 bool js_register_dragonBones_Armature(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);         // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::Armature);
 SE_DECLARE_FUNC(js_dragonbones_Armature__addBone);
@@ -185,7 +185,7 @@ extern se::Object *__jsb_dragonBones_TransformObject_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_TransformObject_class; // NOLINT
 
 bool js_register_dragonBones_TransformObject(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);                // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::TransformObject);
 SE_DECLARE_FUNC(js_dragonbones_TransformObject_getArmature);
@@ -199,7 +199,7 @@ extern se::Object *__jsb_dragonBones_AnimationState_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_AnimationState_class; // NOLINT
 
 bool js_register_dragonBones_AnimationState(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);               // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::AnimationState);
 SE_DECLARE_FUNC(js_dragonbones_AnimationState_addBoneMask);
@@ -226,7 +226,7 @@ extern se::Object *__jsb_dragonBones_Bone_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_Bone_class; // NOLINT
 
 bool js_register_dragonBones_Bone(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);     // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::Bone);
 SE_DECLARE_FUNC(js_dragonbones_Bone_contains);
@@ -246,7 +246,7 @@ extern se::Object *__jsb_dragonBones_Slot_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_Slot_class; // NOLINT
 
 bool js_register_dragonBones_Slot(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);     // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::Slot);
 SE_DECLARE_FUNC(js_dragonbones_Slot__setZorder);
@@ -268,7 +268,7 @@ extern se::Object *__jsb_dragonBones_WorldClock_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_WorldClock_class; // NOLINT
 
 bool js_register_dragonBones_WorldClock(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);           // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::WorldClock);
 SE_DECLARE_FUNC(js_dragonbones_WorldClock_advanceTime);
@@ -282,7 +282,7 @@ extern se::Object *__jsb_dragonBones_Animation_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_Animation_class; // NOLINT
 
 bool js_register_dragonBones_Animation(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);          // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::Animation);
 SE_DECLARE_FUNC(js_dragonbones_Animation_advanceTime);
@@ -309,7 +309,7 @@ extern se::Object *__jsb_dragonBones_EventObject_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_EventObject_class; // NOLINT
 
 bool js_register_dragonBones_EventObject(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);            // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::EventObject);
 SE_DECLARE_FUNC(js_dragonbones_EventObject_getAnimationState);
@@ -321,7 +321,7 @@ extern se::Object *__jsb_dragonBones_BaseFactory_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_BaseFactory_class; // NOLINT
 
 bool js_register_dragonBones_BaseFactory(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);            // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::BaseFactory);
 SE_DECLARE_FUNC(js_dragonbones_BaseFactory_addDragonBonesData);
@@ -343,7 +343,7 @@ extern se::Object *__jsb_dragonBones_CCSlot_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_CCSlot_class; // NOLINT
 
 bool js_register_dragonBones_CCSlot(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);       // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::CCSlot);
 SE_DECLARE_FUNC(js_dragonbones_CCSlot_updateWorldMatrix);
@@ -352,7 +352,7 @@ extern se::Object *__jsb_dragonBones_CCArmatureDisplay_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_CCArmatureDisplay_class; // NOLINT
 
 bool js_register_dragonBones_CCArmatureDisplay(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);                  // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::CCArmatureDisplay);
 SE_DECLARE_FUNC(js_dragonbones_CCArmatureDisplay_addDBEventListener);
@@ -384,19 +384,19 @@ extern se::Object *__jsb_dragonBones_ArmatureCacheMgr_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_ArmatureCacheMgr_class; // NOLINT
 
 bool js_register_dragonBones_ArmatureCacheMgr(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);                 // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::ArmatureCacheMgr);
 SE_DECLARE_FUNC(js_dragonbones_ArmatureCacheMgr_buildArmatureCache);
 SE_DECLARE_FUNC(js_dragonbones_ArmatureCacheMgr_removeArmatureCache);
-SE_DECLARE_FUNC(js_dragonbones_ArmatureCacheMgr_destroyInstance);
 SE_DECLARE_FUNC(js_dragonbones_ArmatureCacheMgr_getInstance);
+SE_DECLARE_FUNC(js_dragonbones_ArmatureCacheMgr_destroyInstance);
 
 extern se::Object *__jsb_dragonBones_CCArmatureCacheDisplay_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_CCArmatureCacheDisplay_class; // NOLINT
 
 bool js_register_dragonBones_CCArmatureCacheDisplay(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);                       // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::CCArmatureCacheDisplay);
 SE_DECLARE_FUNC(js_dragonbones_CCArmatureCacheDisplay_addDBEventListener);
@@ -429,7 +429,7 @@ extern se::Object *__jsb_dragonBones_CCFactory_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_CCFactory_class; // NOLINT
 
 bool js_register_dragonBones_CCFactory(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);          // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::CCFactory);
 SE_DECLARE_FUNC(js_dragonbones_CCFactory_add);
@@ -447,8 +447,8 @@ SE_DECLARE_FUNC(js_dragonbones_CCFactory_setTimeScale);
 SE_DECLARE_FUNC(js_dragonbones_CCFactory_stopSchedule);
 SE_DECLARE_FUNC(js_dragonbones_CCFactory_update);
 SE_DECLARE_FUNC(js_dragonbones_CCFactory_isInit);
-SE_DECLARE_FUNC(js_dragonbones_CCFactory_destroyFactory);
 SE_DECLARE_FUNC(js_dragonbones_CCFactory_getFactory);
+SE_DECLARE_FUNC(js_dragonbones_CCFactory_destroyFactory);
 SE_DECLARE_FUNC(js_dragonbones_CCFactory_getClock);
 SE_DECLARE_FUNC(js_dragonbones_CCFactory_CCFactory);
 
@@ -464,7 +464,7 @@ extern se::Object *__jsb_dragonBones_CCTextureData_proto; // NOLINT
 extern se::Class * __jsb_dragonBones_CCTextureData_class; // NOLINT
 
 bool js_register_dragonBones_CCTextureData(se::Object *obj); // NOLINT
-bool register_all_dragonbones(se::Object *obj);                   // NOLINT
+bool register_all_dragonbones(se::Object *obj);              // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(dragonBones::CCTextureData);
 

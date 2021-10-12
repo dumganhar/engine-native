@@ -27,6 +27,7 @@ cmake -Sbuild -Bbuild -DCC_USE_GLES2=OFF -DCC_USE_VULKAN=OFF -DCC_USE_GLES3=ON \
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     -DCMAKE_TOOLCHAIN_FILE="$ndk_path/build/cmake/android.toolchain.cmake" \
     -DANDROID_PLATFORM=android-21 \
+    -DANDROID_ABI=arm64-v8a \
     -G "$GENERATER" $MAKE_BIN 
 
 cp build/compile_commands.json .

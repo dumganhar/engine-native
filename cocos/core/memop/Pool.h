@@ -94,7 +94,7 @@ public:
     void freeArray(const std::vector<T *> &objs) {
         _freepool.reserve(_nextAvail + 1 + objs.size());
         _freepool.insert(_freepool.begin() + _nextAvail + 1,
-                         objs.begin(), objs.size());
+                         objs.begin(), objs.end());
         _nextAvail += static_cast<index_t>(objs.size());
     }
 

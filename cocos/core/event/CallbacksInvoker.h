@@ -205,17 +205,17 @@ public:
 
 private:
     template <typename T>
-    struct function_traits
-    : public function_traits<decltype(&T::operator())> {};
+    struct FunctionTraits
+    : public FunctionTraits<decltype(&T::operator())> {};
 
     template <typename ClassType, typename ReturnType, typename... Args>
-    struct function_traits<ReturnType (ClassType::*)(Args...) const> {
-        typedef std::function<ReturnType(Args...)> f_type;
+    struct FunctionTraits<ReturnType (ClassType::*)(Args...) const> {
+        typedef std::function<ReturnType(Args...)> type;
     };
 
-    template <typename L>
-    typename function_traits<L>::f_type makeFunction(L l) {
-        return (typename function_traits<L>::f_type)(l);
+    template <typename T>
+    typename FunctionTraits<T>::type toFunction(T l) {
+        return static_cast<typename FunctionTraits<T>::type>(l);
     }
 
     std::unordered_map<std::string, CallbackList> _callbackTable;
@@ -240,12 +240,12 @@ CallbackInfoBase::ID CallbacksInvoker::on(const std::string &key, const std::fun
 
 template <typename LambdaType>
 CallbackInfoBase::ID CallbacksInvoker::on(const std::string &key, const LambdaType &callback, void *target, bool once) {
-    return on(key, makeFunction(callback), target, once);
+    return on(key, toFunction(callback), target, once);
 }
 
 template <typename LambdaType>
 CallbackInfoBase::ID CallbacksInvoker::on(const std::string &key, const LambdaType &callback, bool once) {
-    return on(key, makeFunction(callback), once);
+    return on(key, toFunction(callback), once);
 }
 
 template <typename... Args>

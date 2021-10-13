@@ -195,7 +195,7 @@ void NodeActivator::activateNode(BaseNode *node, bool active) {
 }
 
 void NodeActivator::activateComp(Component *comp, LifeCycleInvoker *preloadInvoker, LifeCycleInvoker *onLoadInvoker, LifeCycleInvoker *onEnableInvoker) {
-    if (!isObjectValid(comp, true)) { // TODO(xwx): isValid not implemented
+    if (!isObjectValid(comp, true)) {
         // destroyed before activating
         return;
     }

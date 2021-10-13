@@ -291,7 +291,9 @@ void ComponentScheduler::enableComp(Component *comp, std::optional<LifeCycleInvo
     if (!(comp->_objFlags & CCObject::Flags::IS_ON_ENABLE_CALLED)) {
         // if (comp.onEnable) { // TODO(xwx): no prototype attribute
         if (invoker.has_value()) {
-            invoker.value()->add(comp);
+            if (invoker.value() != nullptr) {
+                invoker.value()->add(comp);
+            }
             return;
         }
         comp->onEnable();

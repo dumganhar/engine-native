@@ -374,14 +374,16 @@ Component *BaseNode::addComponent(const std::string & /*className*/) {
 }
 
 Component *BaseNode::addComponent(Component *comp) {
-    auto iteComp = std::find(_components.begin(), _components.end(), comp);
-    if (iteComp == _components.end()) {
-        comp->_node = this; //cjh TODO: shared_ptr
-        _components.emplace_back(comp);
-        return comp;
+    comp->_node = this; //cjh TODO: shared_ptr
+    _components.emplace_back(comp);
+
+    if (_activeInHierarchy) {
+        Director::getInstance()->getNodeActivator()->activateComp(comp);
     }
-    return nullptr;
+
+    return comp;
 }
+
 // TODO: How to remove components based on the class name is not defined
 void BaseNode::removeComponent(const std::string &className) {}
 

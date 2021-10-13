@@ -442,7 +442,7 @@ class NativeType(object):
         self.kind = None
 
     def toJSON(self):
-        ret = {
+        return {
             "name": self.name,
             "script_ns": self.generator.scriptname_from_native(self.namespaced_class_name, self.namespace_name),
             "whole_name": self.whole_name,
@@ -461,8 +461,6 @@ class NativeType(object):
             "param_types": list(map(lambda x: x.toJSON(), self.param_types)),
             "ret_type" : self.ret_type.name if self.ret_type is not None else None
         }
-        json.dumps(ret) # test run
-        return ret
 
     @property
     def is_const_array(self):
@@ -1895,8 +1893,10 @@ class Generator(object):
         self.head_file.write(unicode(layout_h))
         self.impl_file.write(unicode(layout_c))
         
-        self.json_file.write(unicode(json.dumps(self.class_json_list, sort_keys=False, indent=4)))
-
+        try:
+            self.json_file.write(unicode(json.dumps(self.class_json_list, sort_keys=False, indent=4)))
+        except Exception as err:
+            logger.error("json.dumps error %s" % (err))
         self.impl_file.close()
         self.head_file.close()
         self.json_file.close()

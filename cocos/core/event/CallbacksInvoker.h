@@ -278,7 +278,7 @@ void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
                     callback(std::forward<Args>(args)...);
                 }
             } else {
-                throw std::logic_error("EventEmitter::emit: Invalid event signature.");
+                CCASSERT(false, "EventEmitter::emit: Invalid event signature.");
             }
         }
 

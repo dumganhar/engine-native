@@ -22,3 +22,142 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+#include "core/event/CallbacksInvoker.h"
+#include "base/Log.h"
+
+namespace cc {
+
+CallbackInfoBase::ID CallbacksInvoker::cbIDCounter{0};
+
+void CallbackList::removeByCallbackID(CallbackInfoBase::ID cbID) {
+    for (size_t i = 0; i < _callbackInfos.size(); ++i) {
+        auto &info = _callbackInfos[i];
+        if (info->_id == cbID) {
+            utils::array::fastRemoveAt(_callbackInfos, i);
+            --i;
+        }
+    }
+}
+
+void CallbackList::removeByTarget(void *target) {
+    for (size_t i = 0; i < _callbackInfos.size(); ++i) {
+        auto &info = _callbackInfos[i];
+        if (info->_target == target) {
+            utils::array::fastRemoveAt(_callbackInfos, i);
+            --i;
+        }
+    }
+}
+
+void CallbackList::cancel(index_t index) {
+    std::shared_ptr<CallbackInfoBase> *info = nullptr;
+    if (index >= 0 && index < _callbackInfos.size()) {
+        info = &_callbackInfos[index];
+    }
+
+    if (info) {
+        if (_isInvoking) {
+            _callbackInfos[index] = nullptr;
+        } else {
+            utils::array::fastRemoveAt(_callbackInfos, index);
+        }
+    }
+    _containCanceled = true;
+}
+
+void CallbackList::cancelAll() {
+    for (size_t i = 0; i < _callbackInfos.size(); ++i) {
+        _callbackInfos[i] = nullptr;
+    }
+    _containCanceled = true;
+}
+
+void CallbackList::purgeCanceled() {
+    for (index_t i = static_cast<index_t>(_callbackInfos.size()) - 1; i >= 0; --i) {
+        const auto &info = _callbackInfos[i];
+        if (!info) {
+            utils::array::fastRemoveAt(_callbackInfos, i);
+        }
+    }
+    _containCanceled = false;
+}
+
+void CallbackList::clear() {
+    cancelAll();
+    _callbackInfos.clear();
+    _isInvoking      = false;
+    _containCanceled = false;
+}
+
+//
+bool CallbacksInvoker::hasEventListener(const std::string &key) {
+    auto iter = _callbackTable.find(key);
+    if (iter == _callbackTable.end()) {
+        return false;
+    }
+
+    auto &list = iter->second;
+    // check any valid callback
+    const auto &infos = list._callbackInfos;
+    // Make sure no cancelled callbacks
+    if (list._isInvoking) {
+        for (const auto &info : infos) {
+            if (info != nullptr) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    return !infos.empty();
+}
+
+bool CallbacksInvoker::hasEventListener(const std::string &key, CallbackInfoBase::ID cbID) {
+    auto iter = _callbackTable.find(key);
+    if (iter == _callbackTable.end()) {
+        return false;
+    }
+
+    auto &list = iter->second;
+    // check any valid callback
+    const auto &infos = list._callbackInfos;
+
+    for (const auto &info : infos) {
+        if (info != nullptr && info->check() && info->_id == cbID) {
+            return true;
+        }
+    }
+
+    return !infos.empty();
+}
+
+void CallbacksInvoker::removeAll(const std::string &key) {
+    auto iter = _callbackTable.find(key);
+    if (iter != _callbackTable.end()) {
+        auto &list = iter->second;
+        if (list._isInvoking) {
+            list.cancelAll();
+        } else {
+            list.clear();
+            _callbackTable.erase(iter);
+        }
+    }
+}
+
+void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID) {
+    auto iter = _callbackTable.find(key);
+    if (iter != _callbackTable.end()) {
+        auto & list  = iter->second;
+        auto & infos = list._callbackInfos;
+        size_t i     = 0;
+        for (auto &info : infos) {
+            if (info != nullptr && info->_id == cbID) {
+                list.cancel(i);
+                break;
+            }
+            ++i;
+        }
+    }
+}
+
+} // namespace cc

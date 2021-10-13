@@ -49,7 +49,7 @@ public:
     inline void      destroy() {}
     inline void      dispatchEvent(event::Event eve) {}
 
-    event::CallbacksInvoker *bubblingTargets{nullptr};
+    CallbacksInvoker *bubblingTargets{nullptr};
 
     static bool hasEventListener(const std::string &);
     static bool hasEventListener(const std::string &, const std::function<void(BaseNode *)> &);

@@ -128,10 +128,10 @@ bool CallbacksInvoker::hasEventListener(const std::string &key, CallbackInfoBase
         }
     }
 
-    return !infos.empty();
+    return false;
 }
 
-void CallbacksInvoker::removeAll(const std::string &key) {
+void CallbacksInvoker::offAll(const std::string &key) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {
         auto &list = iter->second;
@@ -144,10 +144,56 @@ void CallbacksInvoker::removeAll(const std::string &key) {
     }
 }
 
+void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID, void *target) {
+    auto iter = _callbackTable.find(key);
+    if (iter != _callbackTable.end()) {
+        auto & list  = iter->second;
+        auto & infos = list._callbackInfos;
+        size_t i     = 0;
+        for (auto &info : infos) {
+            if (info != nullptr && info->_id == cbID && info->_target == target) {
+                list.cancel(i);
+                break;
+            }
+            ++i;
+        }
+    }
+}
+
 void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {
         auto & list  = iter->second;
+        auto & infos = list._callbackInfos;
+        size_t i     = 0;
+        for (auto &info : infos) {
+            if (info != nullptr && info->_id == cbID) {
+                list.cancel(i);
+                break;
+            }
+            ++i;
+        }
+    }
+}
+
+void CallbacksInvoker::off(const std::string &key, void *target) {
+    auto iter = _callbackTable.find(key);
+    if (iter != _callbackTable.end()) {
+        auto & list  = iter->second;
+        auto & infos = list._callbackInfos;
+        size_t i     = 0;
+        for (auto &info : infos) {
+            if (info != nullptr && info->_target == target) {
+                list.cancel(i);
+            }
+            ++i;
+        }
+    }
+}
+
+void CallbacksInvoker::off(CallbackInfoBase::ID cbID) {
+    for (auto &cbInfo : _callbackTable) {
+        auto & list  = cbInfo.second;
         auto & infos = list._callbackInfos;
         size_t i     = 0;
         for (auto &info : infos) {

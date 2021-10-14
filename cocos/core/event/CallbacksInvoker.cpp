@@ -96,7 +96,7 @@ bool CallbacksInvoker::hasEventListener(const std::string &key) {
         return false;
     }
 
-    auto &list = iter->second;
+    const auto &list = iter->second;
     // check any valid callback
     const auto &infos = list._callbackInfos;
     // Make sure no cancelled callbacks
@@ -118,7 +118,7 @@ bool CallbacksInvoker::hasEventListener(const std::string &key, CallbackInfoBase
         return false;
     }
 
-    auto &list = iter->second;
+    const auto &list = iter->second;
     // check any valid callback
     const auto &infos = list._callbackInfos;
 
@@ -160,10 +160,10 @@ void CallbacksInvoker::offAll() {
 void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID, void *target) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {
-        auto & list  = iter->second;
-        auto & infos = list._callbackInfos;
-        size_t i     = 0;
-        for (auto &info : infos) {
+        auto &      list  = iter->second;
+        const auto &infos = list._callbackInfos;
+        size_t      i     = 0;
+        for (const auto &info : infos) {
             if (info != nullptr && info->_id == cbID && info->_target == target) {
                 list.cancel(i);
                 break;
@@ -176,10 +176,10 @@ void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID, vo
 void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {
-        auto & list  = iter->second;
-        auto & infos = list._callbackInfos;
-        size_t i     = 0;
-        for (auto &info : infos) {
+        auto &      list  = iter->second;
+        const auto &infos = list._callbackInfos;
+        size_t      i     = 0;
+        for (const auto &info : infos) {
             if (info != nullptr && info->_id == cbID) {
                 list.cancel(i);
                 break;
@@ -192,9 +192,9 @@ void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID) {
 void CallbacksInvoker::off(const std::string &key, void *target) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {
-        auto & list  = iter->second;
-        auto & infos = list._callbackInfos;
-        size_t i     = 0;
+        auto &      list  = iter->second;
+        const auto &infos = list._callbackInfos;
+        size_t      i     = 0;
         for (auto &info : infos) {
             if (info != nullptr && info->_target == target) {
                 list.cancel(i);
@@ -206,10 +206,10 @@ void CallbacksInvoker::off(const std::string &key, void *target) {
 
 void CallbacksInvoker::off(CallbackInfoBase::ID cbID) {
     for (auto &cbInfo : _callbackTable) {
-        auto & list  = cbInfo.second;
-        auto & infos = list._callbackInfos;
-        size_t i     = 0;
-        for (auto &info : infos) {
+        auto &      list  = cbInfo.second;
+        const auto &infos = list._callbackInfos;
+        size_t      i     = 0;
+        for (const auto &info : infos) {
             if (info != nullptr && info->_id == cbID) {
                 list.cancel(i);
                 break;

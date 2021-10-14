@@ -69,10 +69,11 @@ namespace utils {
         [/nowhere/, convert_to_unknown],
         [/std::any/,'any'],
         [/std.*string/, 'string'],
-        [/cc::ArrayBuffer/, 'ArrayBuffer'],
+        [/cc.*ArrayBuffer/, 'ArrayBuffer'],
         [/std::vector<([^>\s]+).*>/, convert_vector],
         [/std::shared_ptr<([^>\s]+).*>/, convert_shared_ptr],
-        [/cc::TypedArrayTemp<([^>\s]+).*>/, convert_typed_array],
+        [/std::function<([^>\s]+).*>/, convert_shared_ptr],
+        [/cc::TypedArrayTemp<([^>\s]+).*>/, convert_to_unknown],
         [/cc.Mesh::IStruct/, "unknown /* cc.Mesh::IStruct */"], //TODO(PatriceJiang): export this
     ];
 
@@ -111,10 +112,11 @@ function processMethod(m: NativeFunction|NativeOverloadedFunction):string[] {
         }
         return ret;
     } else {
+        let args = method.arguments.map((x, i) => `arg${i}: ${UF(x)}`).join(", ");
         if(method.is_constructor) {
-            return [`constructor();`];
+            return [`constructor(${args});`];
         }
-        return [`public ${name}():${UF(method.ret_type)};`]
+        return [`public ${name}(${args}):${UF(method.ret_type)};`]
     }
 }
 

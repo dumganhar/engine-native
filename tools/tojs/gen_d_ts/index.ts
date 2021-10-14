@@ -36,13 +36,44 @@ namespace utils {
     function convert_vector(r: RegExpMatchArray): string {
         return `${fullClassNameToTS(r[1])}[]`;
     }
+    function convert_shared_ptr(r: RegExpMatchArray): string {
+        return `${fullClassNameToTS(r[1])}`;
+    }
+
+    function convert_typed_array(r: RegExpMatchArray): string {
+        let c = r[1];
+        if(/unsigned char/.test(c)) {
+            return "Uint8Array";
+        }
+        if(/char/.test(c)) {
+            return "Int8Array";
+        }
+        return "TypedArray";
+    }
+
+    function convert_to_any(r: RegExpMatchArray): string {
+        return `any /* ${r[0]} */`;
+    }
+
+    function convert_to_unknown(r: RegExpMatchArray): string {
+        return `unknown /* ${r[0]} */`;
+    }
+
 
     let convert_map: [RegExp, string|{(r: RegExpMatchArray): string}][] = [
         [/\w+ int/, 'number'],
-        [/float/, 'number'],
-        [/int/, 'number'],
+        [/\w+ char/, 'number'],
+        [/float|double/, 'number'],
+        [/int|long/, 'number'],
+        [/bool/, 'boolean'],
+        [/nowhere/, convert_to_unknown],
+        [/std::any/,'any'],
         [/std.*string/, 'string'],
+        [/cc::ArrayBuffer/, 'ArrayBuffer'],
         [/std::vector<([^>\s]+).*>/, convert_vector],
+        [/std::shared_ptr<([^>\s]+).*>/, convert_shared_ptr],
+        [/cc::TypedArrayTemp<([^>\s]+).*>/, convert_typed_array],
+        [/cc.Mesh::IStruct/, "unknown /* cc.Mesh::IStruct */"], //TODO(PatriceJiang): export this
     ];
 
     export function fix_type_name(t: NativeType) {
@@ -58,8 +89,32 @@ namespace utils {
         if (!kls && t.is_enum) {
             return 'number';
         }
+        if(!kls && t.script_ns.startsWith("sp.")){
+            return `unknown /*${t.script_ns}*/`;
+        }
 
         return t.script_ns;
+    }
+
+}
+
+const UF = utils.fix_type_name;
+
+function processMethod(m: NativeFunction|NativeOverloadedFunction):string[] {
+    let overloaded = m as NativeOverloadedFunction;
+    let method = m as NativeFunction;
+    let name = m.name;
+    if(overloaded.implementations){
+        let ret:string[] = [];
+        for(let x of overloaded.implementations) {
+            ret = ret.concat(processMethod(x));
+        }
+        return ret;
+    } else {
+        if(method.is_constructor) {
+            return [`constructor();`];
+        }
+        return [`public ${name}():${UF(method.ret_type)};`]
     }
 }
 
@@ -77,9 +132,25 @@ function processClass(klass: NativeClass): string {
             let attrBuffer: string[] = [];
             attrBuffer.push(`// attributes list`);
             for (let attr of klass.getter_setter) {
-                attrBuffer.push(`${attr.name}: ${utils.fix_type_name(attr.type)}; //${attr.type.namespaced_class_name}`);
+                attrBuffer.push(`declare ${attr.name}: ${UF(attr.type)}; //${attr.type.namespaced_class_name}`);
             }
             buffer.push(addIndent(attrBuffer.join('\n'), 4))
+        }
+    }
+
+    if(Object.keys(klass.methods).length > 0) {
+        // export methods
+        {
+            {
+                let methodBuffer: string[] = [];
+                methodBuffer.push(`// methods list`);
+                for (let attr in klass.methods) {
+                    const m = klass.methods[attr];
+                    if(attr.startsWith("operator")) continue;
+                    methodBuffer.push(`${processMethod(m).join('\n')}`);
+                }
+                buffer.push(addIndent(methodBuffer.join('\n'), 4))
+            }
         }
     }
 

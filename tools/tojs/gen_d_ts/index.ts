@@ -1,6 +1,6 @@
 
 import {kStringMaxLength} from 'buffer';
-import fs from 'fs';
+import fs, { linkSync } from 'fs';
 import path from 'path';
 
 const dir       = path.normalize(path.join(__dirname, '../../../../cocos/bindings/auto'));
@@ -25,7 +25,7 @@ let fullNameToClass: {[key: string]: NativeClass} = {};
 
 namespace utils {
 
-    function fullClassNameToTS(name: string) {
+    export function fullClassNameToTS(name: string) {
         let m = fullNameToClass[name];
         if (m) {
             return `${m.script_ns}`;
@@ -84,7 +84,7 @@ namespace utils {
         [/cc.Mesh::ICreateInfo/, "unknown /* cc.Mesh::ICreateInfo */"], //TODO(PatriceJiang): export this
     ];
 
-    export function fix_type_name(t: NativeType) {
+    export function fix_type_name(t: {script_ns:string, is_enum: boolean}) {
         for (let x of convert_map) {
             const r = t.script_ns.match(x[0]);
             if (r) {
@@ -104,9 +104,48 @@ namespace utils {
         return `: ${t.script_ns}`;
     }
 
+    
+    export function fix_type_name_clean(t: {script_ns:string, is_enum: boolean}) {
+       let ret = fix_type_name(t);
+       if(ret.startsWith("?: ")){
+           return ret.substr(3);
+       }
+       if(ret.startsWith(": ")){
+           return ret.substr(2);
+       }
+       return ret;
+    }
+
+    export function addIndent(content: string, spaces: number): string {
+        let sp: string = '';
+        while (spaces-- > 0) {
+            sp += ' ';
+        }
+        return content.split('\n').map(x => {
+                                      if (!/^\s+$/.test(x)) {
+                                          return `${sp}${x}`;
+                                      } else {
+                                          return x;
+                                      }
+                                  })
+            .join('\n');
+    }
+
+    export function align(alignment:number) {
+        return ( 3 - (alignment + 3) % 4) + alignment;
+    }
+
+    export function alignText(text:string, alignment:number){
+        while(text.length < alignment){
+            text += " ";
+        }
+        return text;
+    }
+
 }
 
 const UF = utils.fix_type_name;
+const UFC = utils.fix_type_name_clean;
 
 function processMethod(m: NativeFunction|NativeOverloadedFunction):string[] {
     let overloaded = m as NativeOverloadedFunction;
@@ -132,9 +171,14 @@ function processMethod(m: NativeFunction|NativeOverloadedFunction):string[] {
 
 function processClass(klass: NativeClass): string {
     let buffer: string[] = [];
+
+
+    const extends_field = klass.parents.length == 0 ? '' : 
+        `extends ${klass.parents.map(x=> UFC({script_ns: utils.fullClassNameToTS(x), is_enum: false}))} `;
+
     buffer.push('\n');
     buffer.push(`// ts : ${klass.script_ns}\n// cpp: ${klass.namespaced_class_name}`);
-    buffer.push(`export class ${klass.class_name} {`);
+    buffer.push(`export class ${klass.class_name} ${extends_field}{`);
 
 
     if (klass.getter_setter.length > 0) {
@@ -142,10 +186,22 @@ function processClass(klass: NativeClass): string {
         {
             let attrBuffer: string[] = [];
             attrBuffer.push(`// attributes list`);
+            let maxLeft = 0;
+            let maxMiddle = 0;
+            let lines: [string,string,string][] = [];
             for (let attr of klass.getter_setter) {
-                attrBuffer.push(`declare ${attr.name}${UF(attr.type)}; //${attr.type.namespaced_class_name}`);
+                let p:[string,string,string] = [`${attr.name}`,`${UF(attr.type)};`,`// ${attr.type.namespaced_class_name}`];
+                maxLeft = Math.max(maxLeft, p[0].length);
+                maxMiddle = Math.max(maxMiddle, p[1].length);
+                lines.push(p);
             }
-            buffer.push(addIndent(attrBuffer.join('\n'), 4))
+            let left = utils.align(maxLeft);
+            let middle = utils.align(maxMiddle);
+            for(let l of lines){
+                attrBuffer.push([utils.alignText(l[0], left), utils.alignText(l[1], middle), l[2]].join(""));
+            }
+
+            buffer.push(utils.addIndent(attrBuffer.join('\n'), 4))
         }
     }
 
@@ -160,7 +216,7 @@ function processClass(klass: NativeClass): string {
                     if(attr.startsWith("operator")) continue;
                     methodBuffer.push(`${processMethod(m).join('\n')}`);
                 }
-                buffer.push(addIndent(methodBuffer.join('\n'), 4))
+                buffer.push(utils.addIndent(methodBuffer.join('\n'), 4))
             }
         }
     }
@@ -170,20 +226,6 @@ function processClass(klass: NativeClass): string {
     return buffer.join('\n');
 }
 
-function addIndent(content: string, spaces: number): string {
-    let sp: string = '';
-    while (spaces-- > 0) {
-        sp += ' ';
-    }
-    return content.split('\n').map(x => {
-                                  if (!/^\s+$/.test(x)) {
-                                      return `${sp}${x}`;
-                                  } else {
-                                      return x;
-                                  }
-                              })
-        .join('\n');
-}
 
 all_classes.reduce((prev, curr) => {
     let ns = curr.script_ns.split('.');
@@ -208,7 +250,7 @@ const topBuffer: string[] = [];
 for (let ns in nsToClass) {
     let klist = nsToClass[ns];
     topBuffer.push(`declare namespace ${ns} {`);
-    topBuffer.push(addIndent(klist.map(processClass).join('\n'), 4));
+    topBuffer.push(utils.addIndent(klist.map(processClass).join('\n'), 4));
     topBuffer.push(`} // endof namespace ${ns}\n`);
 }
 

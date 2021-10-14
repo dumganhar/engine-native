@@ -62,8 +62,8 @@ SE_DECLARE_FUNC(js_geometry_Frustum_setAccurate);
 SE_DECLARE_FUNC(js_geometry_Frustum_transform);
 SE_DECLARE_FUNC(js_geometry_Frustum_createOrtho);
 SE_DECLARE_FUNC(js_geometry_Frustum_create);
-SE_DECLARE_FUNC(js_geometry_Frustum_copy);
 SE_DECLARE_FUNC(js_geometry_Frustum_clone);
+SE_DECLARE_FUNC(js_geometry_Frustum_copy);
 SE_DECLARE_FUNC(js_geometry_Frustum_Frustum);
 
 extern se::Object *__jsb_cc_geometry_Line_proto; // NOLINT
@@ -74,12 +74,12 @@ bool register_all_geometry(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::geometry::Line);
 SE_DECLARE_FUNC(js_geometry_Line_length);
-SE_DECLARE_FUNC(js_geometry_Line_set);
 SE_DECLARE_FUNC(js_geometry_Line_create);
-SE_DECLARE_FUNC(js_geometry_Line_len);
-SE_DECLARE_FUNC(js_geometry_Line_copy);
 SE_DECLARE_FUNC(js_geometry_Line_clone);
+SE_DECLARE_FUNC(js_geometry_Line_copy);
 SE_DECLARE_FUNC(js_geometry_Line_fromPoints);
+SE_DECLARE_FUNC(js_geometry_Line_set);
+SE_DECLARE_FUNC(js_geometry_Line_len);
 SE_DECLARE_FUNC(js_geometry_Line_Line);
 
 extern se::Object *__jsb_cc_geometry_Ray_proto; // NOLINT
@@ -90,10 +90,10 @@ bool register_all_geometry(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::geometry::Ray);
 SE_DECLARE_FUNC(js_geometry_Ray_create);
-SE_DECLARE_FUNC(js_geometry_Ray_copy);
-SE_DECLARE_FUNC(js_geometry_Ray_set);
 SE_DECLARE_FUNC(js_geometry_Ray_clone);
+SE_DECLARE_FUNC(js_geometry_Ray_copy);
 SE_DECLARE_FUNC(js_geometry_Ray_fromPoints);
+SE_DECLARE_FUNC(js_geometry_Ray_set);
 SE_DECLARE_FUNC(js_geometry_Ray_Ray);
 
 extern se::Object *__jsb_cc_geometry_Sphere_proto; // NOLINT
@@ -118,13 +118,13 @@ SE_DECLARE_FUNC(js_geometry_Sphere_sphereFrustum);
 SE_DECLARE_FUNC(js_geometry_Sphere_spherePlane);
 SE_DECLARE_FUNC(js_geometry_Sphere_transform);
 SE_DECLARE_FUNC(js_geometry_Sphere_translateAndRotate);
-SE_DECLARE_FUNC(js_geometry_Sphere_set);
 SE_DECLARE_FUNC(js_geometry_Sphere_create);
-SE_DECLARE_FUNC(js_geometry_Sphere_mergeAABB);
-SE_DECLARE_FUNC(js_geometry_Sphere_copy);
-SE_DECLARE_FUNC(js_geometry_Sphere_mergePoint);
 SE_DECLARE_FUNC(js_geometry_Sphere_clone);
+SE_DECLARE_FUNC(js_geometry_Sphere_copy);
 SE_DECLARE_FUNC(js_geometry_Sphere_fromPoints);
+SE_DECLARE_FUNC(js_geometry_Sphere_set);
+SE_DECLARE_FUNC(js_geometry_Sphere_mergePoint);
+SE_DECLARE_FUNC(js_geometry_Sphere_mergeAABB);
 SE_DECLARE_FUNC(js_geometry_Sphere_Sphere);
 
 extern se::Object *__jsb_cc_geometry_Triangle_proto; // NOLINT
@@ -135,9 +135,9 @@ bool register_all_geometry(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::geometry::Triangle);
 SE_DECLARE_FUNC(js_geometry_Triangle_create);
-SE_DECLARE_FUNC(js_geometry_Triangle_copy);
-SE_DECLARE_FUNC(js_geometry_Triangle_set);
 SE_DECLARE_FUNC(js_geometry_Triangle_clone);
+SE_DECLARE_FUNC(js_geometry_Triangle_copy);
 SE_DECLARE_FUNC(js_geometry_Triangle_fromPoints);
+SE_DECLARE_FUNC(js_geometry_Triangle_set);
 SE_DECLARE_FUNC(js_geometry_Triangle_Triangle);
 

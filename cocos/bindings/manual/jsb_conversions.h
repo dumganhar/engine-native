@@ -30,6 +30,7 @@
 #include <cstdint>
 #include <optional>
 #include <type_traits>
+#include <utility>
 #include <variant>
 #include "bindings/jswrapper/SeApi.h"
 #include "bindings/jswrapper/Value.h"
@@ -40,6 +41,8 @@
 #include "cocos/base/Vector.h"
 #include "cocos/core/TypedArray.h"
 #include "cocos/core/assets/AssetsModuleHeader.h"
+#include "cocos/core/geometry/Frustum.h"
+#include "cocos/core/geometry/Plane.h"
 #include "cocos/math/Geometry.h"
 #include "cocos/math/Quaternion.h"
 #include "cocos/math/Vec2.h"
@@ -168,38 +171,14 @@ struct InputAssemblerInfo;
 #endif
 
 // se value -> native value
-bool seval_to_int32(const se::Value &v, int32_t *ret);                                   // NOLINT(readability-identifier-naming)
-bool seval_to_uint32(const se::Value &v, uint32_t *ret);                                 // NOLINT(readability-identifier-naming)
-bool seval_to_int8(const se::Value &v, int8_t *ret);                                     // NOLINT(readability-identifier-naming)
-bool seval_to_uint8(const se::Value &v, uint8_t *ret);                                   // NOLINT(readability-identifier-naming)
-bool seval_to_int16(const se::Value &v, int16_t *ret);                                   // NOLINT(readability-identifier-naming)
-bool seval_to_uint16(const se::Value &v, uint16_t *ret);                                 // NOLINT(readability-identifier-naming)
-bool seval_to_boolean(const se::Value &v, bool *ret);                                    // NOLINT(readability-identifier-naming)
-bool seval_to_float(const se::Value &v, float *ret);                                     // NOLINT(readability-identifier-naming)
-bool seval_to_double(const se::Value &v, double *ret);                                   // NOLINT(readability-identifier-naming)
-bool seval_to_size(const se::Value &v, size_t *ret);                                     // NOLINT(readability-identifier-naming)
-bool seval_to_std_string(const se::Value &v, std::string *ret);                          // NOLINT(readability-identifier-naming)
-bool seval_to_Vec2(const se::Value &v, cc::Vec2 *pt);                                    // NOLINT(readability-identifier-naming)
-bool seval_to_Vec3(const se::Value &v, cc::Vec3 *pt);                                    // NOLINT(readability-identifier-naming)
-bool seval_to_Vec4(const se::Value &v, cc::Vec4 *pt);                                    // NOLINT(readability-identifier-naming)
-bool seval_to_Mat4(const se::Value &v, cc::Mat4 *mat);                                   // NOLINT(readability-identifier-naming)
-bool seval_to_Size(const se::Value &v, cc::Size *size);                                  // NOLINT(readability-identifier-naming)
 bool seval_to_ccvalue(const se::Value &v, cc::Value *ret);                               // NOLINT(readability-identifier-naming)
 bool seval_to_ccvaluemap(const se::Value &v, cc::ValueMap *ret);                         // NOLINT(readability-identifier-naming)
 bool seval_to_ccvaluemapintkey(const se::Value &v, cc::ValueMapIntKey *ret);             // NOLINT(readability-identifier-naming)
 bool seval_to_ccvaluevector(const se::Value &v, cc::ValueVector *ret);                   // NOLINT(readability-identifier-naming)
 bool sevals_variadic_to_ccvaluevector(const se::ValueArray &args, cc::ValueVector *ret); // NOLINT(readability-identifier-naming)
-bool seval_to_std_vector_string(const se::Value &v, std::vector<std::string> *ret);      // NOLINT(readability-identifier-naming)
-bool seval_to_std_vector_int(const se::Value &v, std::vector<int> *ret);                 // NOLINT(readability-identifier-naming)
-bool seval_to_std_vector_uint16(const se::Value &v, std::vector<uint16_t> *ret);         // NOLINT(readability-identifier-naming)
-bool seval_to_std_vector_float(const se::Value &v, std::vector<float> *ret);             // NOLINT(readability-identifier-naming)
-bool seval_to_std_vector_Vec2(const se::Value &v, std::vector<cc::Vec2> *ret);           // NOLINT(readability-identifier-naming)
-bool seval_to_Uint8Array(const se::Value &v, uint8_t *ret);                              // NOLINT(readability-identifier-naming)
-bool seval_to_uintptr_t(const se::Value &v, uintptr_t *ret);                             // NOLINT(readability-identifier-naming)
 
-bool seval_to_std_map_string_string(const se::Value &v, std::map<std::string, std::string> *ret); // NOLINT(readability-identifier-naming)
-bool seval_to_Data(const se::Value &v, cc::Data *ret);                                            // NOLINT(readability-identifier-naming)
-bool seval_to_DownloaderHints(const se::Value &v, cc::network::DownloaderHints *ret);             // NOLINT(readability-identifier-naming)
+bool seval_to_Data(const se::Value &v, cc::Data *ret);                                // NOLINT(readability-identifier-naming)
+bool seval_to_DownloaderHints(const se::Value &v, cc::network::DownloaderHints *ret); // NOLINT(readability-identifier-naming)
 
 template <typename T>
 bool seval_to_native_ptr(const se::Value &v, T *ret) { // NOLINT(readability-identifier-naming)
@@ -240,6 +219,7 @@ seval_to_type(const se::Value &v, bool &ok) { // NOLINT(readability-identifier-n
     ok           = true;
     return *nativeObj;
 }
+
 template <typename T>
 typename std::enable_if<std::is_integral<T>::value, T>::type
 seval_to_type(const se::Value &v, bool &ok) { // NOLINT(readability-identifier-naming)
@@ -387,37 +367,10 @@ bool seval_to_Map_string_key(const se::Value &v, cc::Map<std::string, T> *ret) {
 }
 
 // native value -> se value
-bool int8_to_seval(int8_t v, se::Value *ret);                   // NOLINT(readability-identifier-naming)
-bool uint8_to_seval(uint8_t v, se::Value *ret);                 // NOLINT(readability-identifier-naming)
-bool int32_to_seval(int32_t v, se::Value *ret);                 // NOLINT(readability-identifier-naming)
-bool uint32_to_seval(uint32_t v, se::Value *ret);               // NOLINT(readability-identifier-naming)
-bool int16_to_seval(uint16_t v, se::Value *ret);                // NOLINT(readability-identifier-naming)
-bool uint16_to_seval(uint16_t v, se::Value *ret);               // NOLINT(readability-identifier-naming)
-bool boolean_to_seval(bool v, se::Value *ret);                  // NOLINT(readability-identifier-naming)
-bool float_to_seval(float v, se::Value *ret);                   // NOLINT(readability-identifier-naming)
-bool double_to_seval(double v, se::Value *ret);                 // NOLINT(readability-identifier-naming)
-bool long_to_seval(long v, se::Value *ret);                     // NOLINT(readability-identifier-naming)
-bool ulong_to_seval(unsigned long v, se::Value *ret);           // NOLINT(readability-identifier-naming)
-bool longlong_to_seval(long long v, se::Value *ret);            // NOLINT(readability-identifier-naming)
-bool uintptr_t_to_seval(uintptr_t v, se::Value *ret);           // NOLINT(readability-identifier-naming)
-bool size_to_seval(size_t v, se::Value *ret);                   // NOLINT(readability-identifier-naming)
-bool std_string_to_seval(const std::string &v, se::Value *ret); // NOLINT(readability-identifier-naming)
-
-bool Vec2_to_seval(const cc::Vec2 &v, se::Value *ret);                                            // NOLINT(readability-identifier-naming)
-bool Vec3_to_seval(const cc::Vec3 &v, se::Value *ret);                                            // NOLINT(readability-identifier-naming)
-bool Vec4_to_seval(const cc::Vec4 &v, se::Value *ret);                                            // NOLINT(readability-identifier-naming)
-bool Mat4_to_seval(const cc::Mat4 &v, se::Value *ret);                                            // NOLINT(readability-identifier-naming)
-bool Size_to_seval(const cc::Size &v, se::Value *ret);                                            // NOLINT(readability-identifier-naming)
-bool Rect_to_seval(const cc::Rect &v, se::Value *ret);                                            // NOLINT(readability-identifier-naming)
-bool ccvalue_to_seval(const cc::Value &v, se::Value *ret);                                        // NOLINT(readability-identifier-naming)
-bool ccvaluemap_to_seval(const cc::ValueMap &v, se::Value *ret);                                  // NOLINT(readability-identifier-naming)
-bool ccvaluemapintkey_to_seval(const cc::ValueMapIntKey &v, se::Value *ret);                      // NOLINT(readability-identifier-naming)
-bool ccvaluevector_to_seval(const cc::ValueVector &v, se::Value *ret);                            // NOLINT(readability-identifier-naming)
-bool std_vector_string_to_seval(const std::vector<std::string> &v, se::Value *ret);               // NOLINT(readability-identifier-naming)
-bool std_vector_int_to_seval(const std::vector<int> &v, se::Value *ret);                          // NOLINT(readability-identifier-naming)
-bool std_vector_uint16_to_seval(const std::vector<uint16_t> &v, se::Value *ret);                  // NOLINT(readability-identifier-naming)
-bool std_vector_float_to_seval(const std::vector<float> &v, se::Value *ret);                      // NOLINT(readability-identifier-naming)
-bool std_map_string_string_to_seval(const std::map<std::string, std::string> &v, se::Value *ret); // NOLINT(readability-identifier-naming)
+bool ccvalue_to_seval(const cc::Value &v, se::Value *ret);                   // NOLINT(readability-identifier-naming)
+bool ccvaluemap_to_seval(const cc::ValueMap &v, se::Value *ret);             // NOLINT(readability-identifier-naming)
+bool ccvaluemapintkey_to_seval(const cc::ValueMapIntKey &v, se::Value *ret); // NOLINT(readability-identifier-naming)
+bool ccvaluevector_to_seval(const cc::ValueVector &v, se::Value *ret);       // NOLINT(readability-identifier-naming)
 
 bool ManifestAsset_to_seval(const cc::extension::ManifestAsset &v, se::Value *ret); // NOLINT(readability-identifier-naming)
 bool Data_to_seval(const cc::Data &v, se::Value *ret);                              // NOLINT(readability-identifier-naming)
@@ -795,6 +748,21 @@ struct HolderType<const char *, false> {
     inline type                value() const { return data.c_str(); }
 };
 
+#define HOLD_UNBOUND_TYPE(FromType, IsReference)                         \
+    template <>                                                          \
+    struct HolderType<FromType, IsReference> {                           \
+        using type       = FromType;                                     \
+        using local_type = typename std::remove_pointer<FromType>::type; \
+        local_type                 data;                                 \
+        std::remove_const_t<type> *ptr = nullptr;                        \
+        inline type                value() { return &data; }             \
+    }
+
+HOLD_UNBOUND_TYPE(cc::Vec3 *, false);
+HOLD_UNBOUND_TYPE(cc::Quaternion *, false);
+HOLD_UNBOUND_TYPE(cc::Color *, false);
+HOLD_UNBOUND_TYPE(cc::geometry::Frustum *, false);
+
 template <typename R, typename... ARGS>
 struct HolderType<std::function<R(ARGS...)>, true> {
     using type       = std::function<R(ARGS...)>;
@@ -824,11 +792,6 @@ template <typename T>
 struct is_optional<std::optional<T>> : std::true_type {}; // NOLINT
 
 template <typename T>
-inline bool sevalue_to_native(const se::Value &from, T &&to) { // NOLINT(readability-identifier-naming)
-    return sevalue_to_native(from, std::forward(to), nullptr);
-}
-
-template <typename T>
 inline typename std::enable_if_t<!std::is_enum<T>::value && !std::is_pointer<T>::value, bool>
 sevalue_to_native(const se::Value & /*from*/, T * /*to*/, se::Object * /*unused*/) { // NOLINT(readability-identifier-naming)
     SE_LOGE("Can not convert type ???\n - [[ %s ]]\n", typeid(T).name());
@@ -845,7 +808,30 @@ sevalue_to_native(const se::Value &from, T *to, se::Object *ctx) { // NOLINT(rea
     return ret;
 }
 
-//////////////// vector type
+//////////////////////////////// forward declaration ////////////////////////////////
+// std::variant<...>>
+template <typename T>
+bool sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+/// std::unordered_map<std::string, V>
+template <typename V>
+bool sevalue_to_native(const se::Value &from, std::unordered_map<std::string, V> *to, se::Object *ctx); //NOLINT(readability-identifier-naming)
+// std::tuple
+template <typename... Args>
+constexpr bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+// std::shared_ptr
+template <typename T>
+bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Object *ctx); // NOLINT(readability-identifier-naming)
+// std::vector
+template <typename T, typename Allocator>
+bool sevalue_to_native(const se::Value &from, std::vector<T, Allocator> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+// std::vector
+template <typename T, size_t N>
+bool sevalue_to_native(const se::Value &from, std::array<T, N> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+// std::any
+template <>
+bool sevalue_to_native(const se::Value &from, std::any *to, se::Object *ctx); //NOLINT(readability-identifier-naming)
+
+//////////////////// std::array
 
 template <typename T, size_t CNT>
 bool sevalue_to_native(const se::Value &from, std::array<T, CNT> *to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
@@ -1009,6 +995,14 @@ bool sevalue_to_native(const se::Value &from, cc::Vec2 *to, se::Object * /*unuse
 
 template <>
 bool sevalue_to_native(const se::Value &from, cc::Quaternion *to, se::Object * /*unused*/);
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Plane *to, se::Object * /*unused*/);
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Frustum *to, se::Object * /*unused*/);
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::Color *to, se::Object * /*unused*/);
 
 template <>
 inline bool sevalue_to_native(const se::Value &from, std::vector<se::Value> *to, se::Object * /*unused*/) {
@@ -1307,6 +1301,20 @@ inline bool sevalue_to_native(const se::Value &from, std::function<R(Args...)> *
     return true;
 }
 
+//////////////////////// std::variant
+template <typename... Args>
+constexpr bool sevalue_to_native(const se::Value &from, std::variant<Args...> *to, se::Object *ctx) {
+    assert(false); //TODO(PatriceJiang): should not pass variant from js -> native
+    return false;
+}
+
+///////////////////////  std::vector<std::variant>
+template <typename... Args>
+constexpr bool sevalue_to_native(const se::Value &from, std::vector<std::variant<Args...>> *to, se::Object *ctx) {
+    assert(false); //TODO(PatriceJiang): should not pass variant from js -> native
+    return false;
+}
+
 #if HAS_CONSTEXPR
 template <typename T, bool is_reference>
 inline bool sevalue_to_native(const se::Value &from, HolderType<T, is_reference> *holder, se::Object *ctx) { // NOLINT(readability-identifier-naming)
@@ -1437,7 +1445,7 @@ bool sevalue_to_native(const se::Value &from, std::shared_ptr<cc::ArrayBuffer> *
     return true;
 }
 
-/////////////////// std::tuple && std::variant
+/////////////////// std::tuple
 template <typename T, T... S, typename F>
 constexpr void se_for_each(std::integer_sequence<T, S...> index, F &&f) {
     (static_cast<void>(f(std::integral_constant<T, S>{})), ...);
@@ -1454,12 +1462,24 @@ constexpr bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to,
     });
     return result;
 }
-// variant
-template <typename... Args>
-constexpr bool sevalue_to_native(const se::Value &from, std::variant<Args...> *to, se::Object *ctx) {
-    assert(false); //TODO(PatriceJiang): should not pass variant from js -> native
-    return false;
+
+////////////// std::unorderd_map
+template <typename V>
+bool sevalue_to_native(const se::Value &from, std::unordered_map<std::string, V> *to, se::Object *ctx) { //NOLINT
+    se::Object *             jsmap = from.toObject();
+    std::vector<std::string> allKeys;
+    jsmap->getAllKeys(&allKeys);
+    bool      ret = true;
+    se::Value property;
+    for (auto &it : allKeys) {
+        if (jsmap->getProperty(it.c_str(), &property)) {
+            auto &output = (*to)[it];
+            ret &= sevalue_to_native(property, &output, jsmap);
+        }
+    }
+    return true;
 }
+
 ///////////////// std::optional
 template <typename T>
 bool sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx) { //NOLINT
@@ -1477,34 +1497,18 @@ bool sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *
     }
     return ret;
 }
-
-////////////// std::unorderd_map
-template <typename V, typename H, typename P, typename A>
-bool sevalue_to_native(const se::Value &from, std::unordered_map<std::string, V, H,P,A > *to, se::Object *ctx) { //NOLINT
-    se::Object * jsmap = from.toObject();
-    std::vector<std::string> allKeys;
-    jsmap->getAllKeys(&allKeys);
-    bool ret = true;
-    se::Value property;
-    for(auto &it : allKeys) {
-        if(jsmap->getProperty(it.c_str(), &property)) {
-            auto &output = (*to)[it];
-            ret &= sevalue_to_native(property, &output, jsmap);
-        }
-    }
-    return true;
+//////////////////////  shoter form
+template <typename T>
+inline bool sevalue_to_native(const se::Value &from, T to) { // NOLINT(readability-identifier-naming)
+    return sevalue_to_native(from, to, static_cast<se::Object *>(nullptr));
 }
-
-
 
 ///////////////////////////////////////////////////////////////////
 //////////////////  nativevalue_to_se   ///////////////////////////
 ///////////////////////////////////////////////////////////////////
 
 template <typename T>
-inline bool nativevalue_to_se(T &&from, se::Value &to) { // NOLINT(readability-identifier-naming)
-    return nativevalue_to_se(std::forward(from), to, nullptr);
-}
+inline bool nativevalue_to_se(T &&from, se::Value &to); // NOLINT(readability-identifier-naming)
 
 #if HAS_CONSTEXPR
 
@@ -1870,3 +1874,9 @@ inline bool nativevalue_to_se(const se_object_ptr &from, se::Value &to, se::Obje
     return true;
 }
 #endif //USE_MIDDLEWARE
+
+/////////////////// shorter form
+template <typename T>
+inline bool nativevalue_to_se(T &&from, se::Value &to) { // NOLINT(readability-identifier-naming)
+    return nativevalue_to_se(std::forward<typename std::add_const<T>::type>(from), to, nullptr);
+}

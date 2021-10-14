@@ -195,7 +195,7 @@ static bool js_gfx_Device_createBuffer(se::State &s) { // NOLINT(readability-ide
         cc::gfx::Buffer *buffer = nullptr;
 
         bool createBufferView = false;
-        seval_to_boolean(args[1], &createBufferView);
+        sevalue_to_native(args[1], &createBufferView);
 
         if (createBufferView) {
             cc::gfx::BufferViewInfo bufferViewInfo;
@@ -227,7 +227,7 @@ static bool js_gfx_Device_createTexture(se::State &s) { // NOLINT(readability-id
     if (argc == 2) {
         cc::gfx::Texture *texture           = nullptr;
         bool              createTextureView = false;
-        seval_to_boolean(args[1], &createTextureView);
+        sevalue_to_native(args[1], &createTextureView);
         if (createTextureView) {
             auto *textureViewInfo = static_cast<cc::gfx::TextureViewInfo *>(args[0].toObject()->getPrivateData());
             texture               = cobj->createTexture(*textureViewInfo);
@@ -257,7 +257,7 @@ static bool js_gfx_Buffer_initialize(se::State &s) { // NOLINT(readability-ident
 
     if (argc == 2) {
         bool initWithBufferViewInfo = false;
-        seval_to_boolean(args[1], &initWithBufferViewInfo);
+        sevalue_to_native(args[1], &initWithBufferViewInfo);
 
         if (initWithBufferViewInfo) {
             auto *bufferViewInfo = static_cast<cc::gfx::BufferViewInfo *>(args[0].toObject()->getPrivateData());
@@ -267,7 +267,7 @@ static bool js_gfx_Buffer_initialize(se::State &s) { // NOLINT(readability-ident
             cobj->initialize(*bufferInfo);
         }
 
-        ok &= boolean_to_seval(ok, &s.rval());
+        ok &= nativevalue_to_se(ok, s.rval());
         SE_PRECONDITION2(ok, false, "js_gfx_Buffer_initialize : Error processing arguments");
         return true;
     }
@@ -286,7 +286,7 @@ static bool js_gfx_Texture_initialize(se::State &s) { // NOLINT(readability-iden
 
     if (argc == 2) {
         bool initWithTextureViewInfo = false;
-        seval_to_boolean(args[1], &initWithTextureViewInfo);
+        sevalue_to_native(args[1], &initWithTextureViewInfo);
 
         if (initWithTextureViewInfo) {
             auto *textureViewInfo = static_cast<cc::gfx::TextureViewInfo *>(args[0].toObject()->getPrivateData());
@@ -296,7 +296,7 @@ static bool js_gfx_Texture_initialize(se::State &s) { // NOLINT(readability-iden
             cobj->initialize(*textureInfo);
         }
 
-        ok &= boolean_to_seval(ok, &s.rval());
+        ok &= nativevalue_to_se(ok, s.rval());
         SE_PRECONDITION2(ok, false, "js_gfx_Texture_initialize : Error processing arguments");
         return true;
     }
@@ -333,7 +333,7 @@ static bool js_gfx_GFXBuffer_update(se::State &s) { // NOLINT(readability-identi
     }
     if (argc == 2) {
         unsigned int arg1 = 0;
-        ok &= seval_to_uint32(args[1], &arg1);
+        ok &= sevalue_to_native(args[1], &arg1);
         SE_PRECONDITION2(ok, false, "js_gfx_GFXBuffer_update : Error processing arguments");
         cobj->update(arg0, arg1);
         return true;
@@ -352,7 +352,7 @@ static bool js_gfx_CommandBuffer_execute(se::State &s) { // NOLINT(readability-i
     if (argc == 2) {
         cc::gfx::CommandBufferList cmdBufs;
         unsigned int               count = 0;
-        ok &= seval_to_uint32(args[1], &count);
+        ok &= sevalue_to_native(args[1], &count);
 
         se::Object *jsarr = args[0].toObject();
         assert(jsarr->isArray());

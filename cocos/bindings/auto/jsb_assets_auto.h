@@ -205,6 +205,7 @@ SE_DECLARE_FUNC(js_assets_Texture2D_getGfxTextureCreateInfo);
 SE_DECLARE_FUNC(js_assets_Texture2D_getHtmlElementObj);
 SE_DECLARE_FUNC(js_assets_Texture2D_getImage);
 SE_DECLARE_FUNC(js_assets_Texture2D_getMipmaps);
+SE_DECLARE_FUNC(js_assets_Texture2D_getMipmapsUuids);
 SE_DECLARE_FUNC(js_assets_Texture2D_initialize);
 SE_DECLARE_FUNC(js_assets_Texture2D_releaseTexture);
 SE_DECLARE_FUNC(js_assets_Texture2D_reset);
@@ -331,9 +332,9 @@ bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::EffectAsset);
 SE_DECLARE_FUNC(js_assets_EffectAsset_registerAsset);
-SE_DECLARE_FUNC(js_assets_EffectAsset_getAll);
 SE_DECLARE_FUNC(js_assets_EffectAsset_remove);
 SE_DECLARE_FUNC(js_assets_EffectAsset_get);
+SE_DECLARE_FUNC(js_assets_EffectAsset_getAll);
 SE_DECLARE_FUNC(js_assets_EffectAsset_EffectAsset);
 
 extern se::Object *__jsb_cc_JsonAsset_proto; // NOLINT
@@ -374,6 +375,8 @@ SE_DECLARE_FUNC(js_assets_Material_initialize);
 SE_DECLARE_FUNC(js_assets_Material_overridePipelineStates);
 SE_DECLARE_FUNC(js_assets_Material_reset);
 SE_DECLARE_FUNC(js_assets_Material_resetUniforms);
+SE_DECLARE_FUNC(js_assets_Material_setEffectAsset);
+SE_DECLARE_FUNC(js_assets_Material_update);
 SE_DECLARE_FUNC(js_assets_Material_getHashForMaterial);
 SE_DECLARE_FUNC(js_assets_Material_Material);
 
@@ -480,44 +483,6 @@ SE_DECLARE_FUNC(js_assets_TextureCube_setMipmaps);
 SE_DECLARE_FUNC(js_assets_TextureCube_fromTexture2DArray);
 SE_DECLARE_FUNC(js_assets_TextureCube_TextureCube);
 
-extern se::Object *__jsb_cc_Mesh_proto; // NOLINT
-extern se::Class * __jsb_cc_Mesh_class; // NOLINT
-
-bool js_register_cc_Mesh(se::Object *obj); // NOLINT
-bool register_all_assets(se::Object *obj);                   // NOLINT
-
-JSB_REGISTER_OBJECT_TYPE(cc::Mesh);
-SE_DECLARE_FUNC(js_assets_Mesh_copyIndices);
-SE_DECLARE_FUNC(js_assets_Mesh_destroyRenderingMesh);
-SE_DECLARE_FUNC(js_assets_Mesh_getBoneSpaceBounds);
-SE_DECLARE_FUNC(js_assets_Mesh_getData);
-SE_DECLARE_FUNC(js_assets_Mesh_getHash);
-SE_DECLARE_FUNC(js_assets_Mesh_getJointBufferIndices);
-SE_DECLARE_FUNC(js_assets_Mesh_getMaxPosition);
-SE_DECLARE_FUNC(js_assets_Mesh_getMinPosition);
-SE_DECLARE_FUNC(js_assets_Mesh_getRenderingSubMeshes);
-SE_DECLARE_FUNC(js_assets_Mesh_getStruct);
-SE_DECLARE_FUNC(js_assets_Mesh_getSubMeshCount);
-SE_DECLARE_FUNC(js_assets_Mesh_initialize);
-SE_DECLARE_FUNC(js_assets_Mesh_readAttribute);
-SE_DECLARE_FUNC(js_assets_Mesh_readIndices);
-SE_DECLARE_FUNC(js_assets_Mesh_validateMergingMesh);
-SE_DECLARE_FUNC(js_assets_Mesh_Mesh);
-
-extern se::Object *__jsb_cc_Skeleton_proto; // NOLINT
-extern se::Class * __jsb_cc_Skeleton_class; // NOLINT
-
-bool js_register_cc_Skeleton(se::Object *obj); // NOLINT
-bool register_all_assets(se::Object *obj);                   // NOLINT
-
-JSB_REGISTER_OBJECT_TYPE(cc::Skeleton);
-SE_DECLARE_FUNC(js_assets_Skeleton_getBindposes);
-SE_DECLARE_FUNC(js_assets_Skeleton_getHash);
-SE_DECLARE_FUNC(js_assets_Skeleton_getInverseBindposes);
-SE_DECLARE_FUNC(js_assets_Skeleton_getJoints);
-SE_DECLARE_FUNC(js_assets_Skeleton_setBindposes);
-SE_DECLARE_FUNC(js_assets_Skeleton_setJoints);
-
 extern se::Object *__jsb_cc_MorphTarget_proto; // NOLINT
 extern se::Class * __jsb_cc_MorphTarget_class; // NOLINT
 
@@ -548,6 +513,30 @@ template <>
 bool sevalue_to_native(const se::Value &, cc::Morph *, se::Object *ctx);
 JSB_REGISTER_OBJECT_TYPE(cc::Morph);
 
+extern se::Object *__jsb_cc_Mesh_proto; // NOLINT
+extern se::Class * __jsb_cc_Mesh_class; // NOLINT
+
+bool js_register_cc_Mesh(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::Mesh);
+SE_DECLARE_FUNC(js_assets_Mesh_copyIndices);
+SE_DECLARE_FUNC(js_assets_Mesh_destroyRenderingMesh);
+SE_DECLARE_FUNC(js_assets_Mesh_getBoneSpaceBounds);
+SE_DECLARE_FUNC(js_assets_Mesh_getData);
+SE_DECLARE_FUNC(js_assets_Mesh_getHash);
+SE_DECLARE_FUNC(js_assets_Mesh_getJointBufferIndices);
+SE_DECLARE_FUNC(js_assets_Mesh_getMaxPosition);
+SE_DECLARE_FUNC(js_assets_Mesh_getMinPosition);
+SE_DECLARE_FUNC(js_assets_Mesh_getRenderingSubMeshes);
+SE_DECLARE_FUNC(js_assets_Mesh_getStruct);
+SE_DECLARE_FUNC(js_assets_Mesh_getSubMeshCount);
+SE_DECLARE_FUNC(js_assets_Mesh_initialize);
+SE_DECLARE_FUNC(js_assets_Mesh_readAttribute);
+SE_DECLARE_FUNC(js_assets_Mesh_readIndices);
+SE_DECLARE_FUNC(js_assets_Mesh_validateMergingMesh);
+SE_DECLARE_FUNC(js_assets_Mesh_Mesh);
+
 extern se::Object *__jsb_cc_MorphRendering_proto; // NOLINT
 extern se::Class * __jsb_cc_MorphRendering_class; // NOLINT
 
@@ -577,4 +566,18 @@ bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::StdMorphRendering);
 SE_DECLARE_FUNC(js_assets_StdMorphRendering_StdMorphRendering);
+
+extern se::Object *__jsb_cc_Skeleton_proto; // NOLINT
+extern se::Class * __jsb_cc_Skeleton_class; // NOLINT
+
+bool js_register_cc_Skeleton(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::Skeleton);
+SE_DECLARE_FUNC(js_assets_Skeleton_getBindposes);
+SE_DECLARE_FUNC(js_assets_Skeleton_getHash);
+SE_DECLARE_FUNC(js_assets_Skeleton_getInverseBindposes);
+SE_DECLARE_FUNC(js_assets_Skeleton_getJoints);
+SE_DECLARE_FUNC(js_assets_Skeleton_setBindposes);
+SE_DECLARE_FUNC(js_assets_Skeleton_setJoints);
 

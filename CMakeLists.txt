@@ -1625,8 +1625,10 @@ cocos_source_files(
                  cocos/bindings/auto/jsb_network_auto.h
     NO_WERROR    cocos/bindings/auto/jsb_pipeline_auto.cpp
                  cocos/bindings/auto/jsb_pipeline_auto.h
-    # NO_WERROR    cocos/bindings/auto/jsb_scene_auto.cpp
-    #              cocos/bindings/auto/jsb_scene_auto.h
+    NO_WERROR    cocos/bindings/auto/jsb_scene_auto.cpp
+                 cocos/bindings/auto/jsb_scene_auto.h
+    NO_WERROR    cocos/bindings/auto/jsb_assets_auto.cpp
+                 cocos/bindings/auto/jsb_assets_auto.h
     NO_WERROR    cocos/bindings/auto/jsb_geometry_auto.cpp
                  cocos/bindings/auto/jsb_geometry_auto.h
 )

@@ -35,7 +35,7 @@ namespace scene {
 
 class Skybox;
 
-struct SkyboxInfo {
+class SkyboxInfo {
 public:
     SkyboxInfo(/* args */) = default;
     ~SkyboxInfo()          = default;

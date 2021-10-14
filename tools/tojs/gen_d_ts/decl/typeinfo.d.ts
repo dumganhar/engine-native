@@ -34,6 +34,7 @@ declare interface NativeFunction {
     name: string;
     signature_name: string;
     arguments: NativeType[];
+    argumentTips: string[];
     static: boolean;
     is_overloaded: boolean;
     is_constructor: boolean;

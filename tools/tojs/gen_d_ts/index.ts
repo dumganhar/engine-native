@@ -119,7 +119,8 @@ function processMethod(m: NativeFunction|NativeOverloadedFunction):string[] {
         }
         return ret;
     } else {
-        let args = method.arguments.map((x, i) => `arg${i}${UF(x)}`).join(", ");
+        let tips = method.argumentTips|| [];
+        let args = method.arguments.map((x, i) => `${tips[i]||('arg'+i)}${UF(x)}`).join(", ");
         if(method.is_constructor) {
             return [`constructor(${args});`];
         }

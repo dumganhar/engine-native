@@ -882,6 +882,7 @@ class NativeFunction(object):
             "name": self.func_name,
             "signature_name": self.signature_name,
             "arguments": list(map(lambda x : x.toJSON(), self.arguments)),
+            "argumentTips": self.argumtntTips,
             "static": self.static,
             # "implementations": self.implementations,
             "is_overloaded": self.is_overloaded,

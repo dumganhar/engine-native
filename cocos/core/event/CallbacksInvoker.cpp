@@ -131,6 +131,44 @@ bool CallbacksInvoker::hasEventListener(const std::string &key, CallbackInfoBase
     return false;
 }
 
+bool CallbacksInvoker::hasEventListener(const std::string &key, void *target) {
+    auto iter = _callbackTable.find(key);
+    if (iter == _callbackTable.end()) {
+        return false;
+    }
+
+    const auto &list = iter->second;
+    // check any valid callback
+    const auto &infos = list._callbackInfos;
+
+    for (const auto &info : infos) {
+        if (info != nullptr && info->check() && info->_target == target) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool CallbacksInvoker::hasEventListener(const std::string &key, void *target, CallbackInfoBase::ID cbID) {
+    auto iter = _callbackTable.find(key);
+    if (iter == _callbackTable.end()) {
+        return false;
+    }
+
+    const auto &list = iter->second;
+    // check any valid callback
+    const auto &infos = list._callbackInfos;
+
+    for (const auto &info : infos) {
+        if (info != nullptr && info->check() && info->_target == target && info->_id == cbID) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void CallbacksInvoker::offAll(const std::string &key) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {

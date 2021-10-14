@@ -27,4 +27,28 @@
 
 namespace cc {
 
+const std::string SystemEventType::TOUCH_START{"touch-start"};
+const std::string SystemEventType::TOUCH_MOVE{"touch-move"};
+const std::string SystemEventType::TOUCH_END{"touch-end"};
+const std::string SystemEventType::TOUCH_CANCEL{"touch-cancel"};
+const std::string SystemEventType::MOUSE_DOWN{"mouse-down"};
+const std::string SystemEventType::MOUSE_MOVE{"mouse-move"};
+const std::string SystemEventType::MOUSE_UP{"mouse-up"};
+const std::string SystemEventType::MOUSE_WHEEL{"mouse-wheel"};
+const std::string SystemEventType::MOUSE_ENTER{"mouse-enter"};
+const std::string SystemEventType::MOUSE_LEAVE{"mouse-leave"};
+const std::string SystemEventType::KEY_DOWN{"keydown"};
+const std::string SystemEventType::KEY_UP{"keyup"};
+const std::string SystemEventType::DEVICEMOTION{"devicemotion"};
+const std::string SystemEventType::TRANSFORM_CHANGED{"transform-changed"};
+const std::string SystemEventType::SCENE_CHANGED_FOR_PERSISTS{"scene-changed-for-persists"};
+const std::string SystemEventType::SIZE_CHANGED{"size-changed"};
+const std::string SystemEventType::ANCHOR_CHANGED{"anchor-changed"};
+const std::string SystemEventType::COLOR_CHANGED{"color-changed"};
+const std::string SystemEventType::CHILD_ADDED{"child-added"};
+const std::string SystemEventType::CHILD_REMOVED{"child-removed"};
+const std::string SystemEventType::PARENT_CHANGED{"parent-changed"};
+const std::string SystemEventType::NODE_DESTROYED{"node-destroyed"};
+const std::string SystemEventType::LAYER_CHANGED{"layer-changed"};
+const std::string SystemEventType::SIBLING_ORDER_CHANGED{"sibling-order-changed"};
 } // namespace cc

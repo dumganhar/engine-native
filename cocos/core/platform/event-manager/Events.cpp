@@ -32,9 +32,9 @@ namespace cc {
 
 // EventMouse
 
-EventMouse::EventMouse(const SystemEventTypeUnion &eventType, bool bubbles) : Event(eventType, bubbles), _eventType(eventType) {}
+EventMouse::EventMouse(const std::string &eventType, bool bubbles) : Event(eventType, bubbles), _eventType(eventType) {}
 
-EventMouse::EventMouse(const SystemEventTypeUnion &eventType, bool bubbles, const Vec2 &prevLoc) : Event(eventType, bubbles), _eventType(eventType), _prevX(prevLoc.x), _prevY(prevLoc.y) {}
+EventMouse::EventMouse(const std::string &eventType, bool bubbles, const Vec2 &prevLoc) : Event(eventType, bubbles), _eventType(eventType), _prevX(prevLoc.x), _prevY(prevLoc.y) {}
 
 void EventMouse::setScrollData(float scrollX, float scrollY) {
     _scrollX = scrollX;
@@ -171,7 +171,7 @@ float EventMouse::getUILocationY() const {
 
 uint32_t EventTouch::MAX_TOUCHES{5};
 
-EventTouch::EventTouch(std::vector<Touch> changedTouches, bool bubbles, const SystemEventTypeUnion &eventType, std::vector<Touch> touches)
+EventTouch::EventTouch(std::vector<Touch> changedTouches, bool bubbles, const std::string &eventType, std::vector<Touch> touches)
 : Event(eventType, bubbles), _eventCode(eventType), _touches(std::move(changedTouches)), _allTouches(std::move(touches)) {}
 
 const std::vector<Touch> &EventTouch::getTouches() const {
@@ -277,8 +277,8 @@ EventAcceleration::EventAcceleration(const Acceleration &acc, bool bubbles) : Ev
 
 // EventKeyboard
 
-EventKeyboard::EventKeyboard(const event::KeyCode &keyCode, bool isPressed, bool bubbles) : Event(isPressed ? SystemEventType::KEY_DOWN : SystemEventType::KEY_UP, bubbles), _isPressed(isPressed), keyCode(keyCode) {}
+EventKeyboard::EventKeyboard(const event_manager::KeyCode &keyCode, bool isPressed, bool bubbles) : Event(isPressed ? SystemEventType::KEY_DOWN : SystemEventType::KEY_UP, bubbles), _isPressed(isPressed), keyCode(keyCode) {}
 
-EventKeyboard::EventKeyboard(const event::KeyCode &keyCode, const SystemEventTypeUnion &eventType, bool bubbles) : Event(eventType, bubbles), keyCode(keyCode) {}
+EventKeyboard::EventKeyboard(const event_manager::KeyCode &keyCode, const std::string &eventType, bool bubbles) : Event(eventType, bubbles), keyCode(keyCode) {}
 
 } // namespace cc

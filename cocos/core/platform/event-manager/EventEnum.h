@@ -31,15 +31,16 @@
 
 namespace cc {
 
-enum class SystemEventType {
+class SystemEventType {
+public:
     /**
      * @en
      * The event type for touch start event
      *
      * @zh
      * 手指开始触摸事件。
-     */
-    TOUCH_START,
+    */
+    static const std::string TOUCH_START;
 
     /**
      * @en
@@ -47,8 +48,8 @@ enum class SystemEventType {
      *
      * @zh
      * 当手指在屏幕上移动时。
-     */
-    TOUCH_MOVE,
+    */
+    static const std::string TOUCH_MOVE;
 
     /**
      * @en
@@ -56,8 +57,8 @@ enum class SystemEventType {
      *
      * @zh
      * 手指结束触摸事件。
-     */
-    TOUCH_END,
+    */
+    static const std::string TOUCH_END;
 
     /**
      * @en
@@ -65,8 +66,8 @@ enum class SystemEventType {
      *
      * @zh
      * 当手指在目标节点区域外离开屏幕时。
-     */
-    TOUCH_CANCEL,
+    */
+    static const std::string TOUCH_CANCEL;
 
     /**
      * @en
@@ -74,8 +75,8 @@ enum class SystemEventType {
      *
      * @zh
      * 当鼠标按下时触发一次。
-     */
-    MOUSE_DOWN,
+    */
+    static const std::string MOUSE_DOWN;
 
     /**
      * @en
@@ -83,8 +84,8 @@ enum class SystemEventType {
      *
      * @zh
      * 当鼠标在目标节点在目标节点区域中移动时，不论是否按下。
-     */
-    MOUSE_MOVE,
+    */
+    static const std::string MOUSE_MOVE;
 
     /**
      * @en
@@ -92,16 +93,16 @@ enum class SystemEventType {
      *
      * @zh
      * 当鼠标从按下状态松开时触发一次。
-     */
-    MOUSE_UP,
+    */
+    static const std::string MOUSE_UP;
 
     /**
      * @en
      * The event type for mouse wheel events
      *
      * @zh 手指开始触摸事件
-     */
-    MOUSE_WHEEL,
+    */
+    static const std::string MOUSE_WHEEL;
 
     /**
      * @en
@@ -111,8 +112,8 @@ enum class SystemEventType {
      * 当鼠标移入目标节点区域时，不论是否按下.
      *
      * @deprecated since v3.3, please use Node.EventType.MOUSE_ENTER instead.
-     */
-    MOUSE_ENTER,
+    */
+    static const std::string MOUSE_ENTER;
 
     /**
      * @en
@@ -121,21 +122,21 @@ enum class SystemEventType {
      * @zh
      * 当鼠标移出目标节点区域时，不论是否按下。
      *
-     * @deprecated since v3.3, please use Node.EventType.MOUSE_LEAVE instead.
-     */
-    MOUSE_LEAVE,
+     * @deprecated sincev3.3, please use Node.EventType.MOUSE_LEAVE instead.
+    */
+    static const std::string MOUSE_LEAVE;
 
     /**
-     * @en The event type for press the key down event, the event will be continuously dispatched in the key pressed state
-     * @zh 当按下按键时触发的事件, 该事件在按下状态会持续派发
-     */
-    KEY_DOWN,
+     * @en The event type for press the key down event; the event will be continuously dispatched in the key pressed state
+     * @zh 当按下按键时触发的事件; 该事件在按下状态会持续派发
+    */
+    static const std::string KEY_DOWN;
 
     /**
      * @en The event type for press the key up event
      * @zh 当松开按键时触发的事件
-     */
-    KEY_UP,
+    */
+    static const std::string KEY_UP;
 
     /**
      * @en
@@ -143,77 +144,77 @@ enum class SystemEventType {
      *
      * @zh
      * 重力感应
-     */
-    DEVICEMOTION,
+    */
+    static const std::string DEVICEMOTION;
 
     /**
      * @en
-     * The event type for position, rotation, scale changed.Use the type parameter as [[Node.TransformBit]] to check which part is changed
+     * The event type for position; rotation; scale changed.Use the type parameter as [[Node.TransformBit]] to check which part is changed
      *
      * @zh
      * 节点改变位置、旋转或缩放事件。如果具体需要判断是哪一个事件，可通过判断回调的第一个参数类型是 [[Node.TransformBit]] 中的哪一个来获取
      * @example
      * ```
-     * this.node.on(Node.EventType.TRANSFORM_CHANGED, (type)=>{
+     * this.node.on(Node.EventType.TRANSFORM_CHANGED; (type)=>{
      *  if (type & Node.TransformBit.POSITION) {
      *       //...
      *   }
-     * }, this);
+     * }; this);
      * ```
      *
-     * @deprecated since v3.3, please use Node.EventType.TRANSFORM_CHANGED instead
-     */
-    TRANSFORM_CHANGED,
+     * @deprecated sincev3.3, please use Node.EventType.TRANSFORM_CHANGED instead
+    */
+    static const std::string TRANSFORM_CHANGED;
 
     /**
      * @en The event type for notifying the host scene has been changed for a persist node.
      * @zh 当场景常驻节点的场景发生改变时触发的事件，一般在切换场景过程中触发。
      *
-     * @deprecated since v3.3, please use Node.EventType.SCENE_CHANGED_FOR_PERSISTS instead
-     */
-    SCENE_CHANGED_FOR_PERSISTS,
+     * @deprecated sincev3.3, please use Node.EventType.SCENE_CHANGED_FOR_PERSISTS instead
+    */
+    static const std::string SCENE_CHANGED_FOR_PERSISTS;
 
     /**
      * @en
      * The event type for size change events.
-     * Performance note, this event will be triggered every time corresponding properties being changed,
-     * if the event callback have heavy logic it may have great performance impact, try to avoid such scenario.
+     * Performance note; this event will be triggered every time corresponding properties being changed;
+     * if the event callback have heavy logic it may have great performance impact; try to avoid such scenario.
      *
      * @zh
      * 当节点尺寸改变时触发的事件。
      * 性能警告：这个事件会在每次对应的属性被修改时触发，如果事件回调损耗较高，有可能对性能有很大的负面影响，请尽量避免这种情况。
      *
-     * @deprecated since v3.3, please use Node.EventType.SIZE_CHANGED instead
-     */
-    SIZE_CHANGED,
+     * @deprecated sincev3.3, please use Node.EventType.SIZE_CHANGED instead
+    */
+    static const std::string SIZE_CHANGED;
 
     /**
      * @en
      * The event type for anchor point change events.
-     * Performance note, this event will be triggered every time corresponding properties being changed,
-     * if the event callback have heavy logic it may have great performance impact, try to avoid such scenario.
+     * Performance note; this event will be triggered every time corresponding properties being changed;
+     * if the event callback have heavy logic it may have great performance impact; try to avoid such scenario.
      *
      * @zh
      * 当节点的 UITransform 锚点改变时触发的事件。
      * 性能警告：这个事件会在每次对应的属性被修改时触发，如果事件回调损耗较高，有可能对性能有很大的负面影响，请尽量避免这种情况。
      *
-     * @deprecated since v3.3, please use Node.EventType.ANCHOR_CHANGED instead
-     */
-    ANCHOR_CHANGED,
+     * @deprecated sincev3.3, please use Node.EventType.ANCHOR_CHANGED instead
+    */
+    static const std::string ANCHOR_CHANGED;
 
     /**
      * @en
      * The event type for color change events.
-     * Performance note, this event will be triggered every time corresponding properties being changed,
-     * if the event callback have heavy logic it may have great performance impact, try to avoid such scenario.
+     * Performance note; this event will be triggered every time corresponding properties being changed;
+     * if the event callback have heavy logic it may have great performance impact; try to avoid such scenario.
      *
      * @zh
      * 当节点的 UI 渲染组件颜色属性改变时触发的事件。
      * 性能警告：这个事件会在每次对应的属性被修改时触发，如果事件回调损耗较高，有可能对性能有很大的负面影响，请尽量避免这种情况。
      *
-     * @deprecated since v3.3, please use Node.EventType.COLOR_CHANGED instead
-     */
-    COLOR_CHANGED,
+     * @deprecated sincev3.3, please use Node.EventType.COLOR_CHANGED instead
+    */
+    static const std::string COLOR_CHANGED;
 
     /**
      * @en
@@ -222,9 +223,9 @@ enum class SystemEventType {
      * @zh
      * 给目标节点添加子节点时触发的事件。
      *
-     * @deprecated since v3.3, please use Node.EventType.CHILD_ADDED instead
-     */
-    CHILD_ADDED,
+     * @deprecated sincev3.3, please use Node.EventType.CHILD_ADDED instead
+    */
+    static const std::string CHILD_ADDED;
 
     /**
      * @en
@@ -233,41 +234,41 @@ enum class SystemEventType {
      * @zh
      * 给目标节点移除子节点时触发的事件。
      *
-     * @deprecated since v3.3, please use Node.EventType.CHILD_REMOVED instead
-     */
-    CHILD_REMOVED,
+     * @deprecated sincev3.3, please use Node.EventType.CHILD_REMOVED instead
+    */
+    static const std::string CHILD_REMOVED;
 
     /**
      * @en The event type for changing the parent of the target node
      * @zh 目标节点的父节点改变时触发的事件。
      *
-     * @deprecated since v3.3, please use Node.EventType.PARENT_CHANGED instead
-     */
-    PARENT_CHANGED,
+     * @deprecated sincev3.3, please use Node.EventType.PARENT_CHANGED instead
+    */
+    static const std::string PARENT_CHANGED;
 
     /**
      * @en The event type for destroying the target node
      * @zh 目标节点被销毁时触发的事件。
      *
-     * @deprecated since v3.3, please use Node.EventType.NODE_DESTROYED instead
-     */
-    NODE_DESTROYED,
+     * @deprecated sincev3.3, please use Node.EventType.NODE_DESTROYED instead
+    */
+    static const std::string NODE_DESTROYED;
 
     /**
      * @en The event type for node layer change events.
      * @zh 节点 layer 改变时触发的事件。
      *
-     * @deprecated since v3.3, please use Node.EventType.LAYER_CHANGED instead
-     */
-    LAYER_CHANGED,
+     * @deprecated sincev3.3, please use Node.EventType.LAYER_CHANGED instead
+    */
+    static const std::string LAYER_CHANGED;
 
     /**
      * @en The event type for node's sibling order changed.
      * @zh 当节点在兄弟节点中的顺序发生变化时触发的事件。
      *
-     * @deprecated since v3.3, please use Node.EventType.SIBLING_ORDER_CHANGED instead
-     */
-    SIBLING_ORDER_CHANGED,
+     * @deprecated sincev3.3, please use Node.EventType.SIBLING_ORDER_CHANGED instead
+    */
+    static const std::string SIBLING_ORDER_CHANGED;
 };
 
 using SystemEventTypeUnion = std::variant<SystemEventType, NodeEventType>;

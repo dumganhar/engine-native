@@ -31,38 +31,97 @@
 #include <variant>
 #include "core/event/CallbacksInvoker.h"
 #include "core/event/Event.h"
-#include "core/scene-graph/Node.h"
+#include "core/platform/event-manager/EventListener.h"
+#include "core/scene-graph/BaseNode.h"
 #include "core/scene-graph/NodeEvent.h"
 
 namespace cc {
 
-class Node;
+class BaseNode;
 class NodeEventProcessor final {
-private:
-    Node *_node{nullptr};
-
 public:
-    NodeEventProcessor(/* args */) = default;
-    ~NodeEventProcessor()          = default;
-    inline Node *getNode() { return _node; }
-    inline void  reattach() {}
-    inline void  destroy() {}
-    inline void  dispatchEvent(Event eve) {}
+    NodeEventProcessor() = default;
+    explicit NodeEventProcessor(BaseNode *node);
 
+    ~NodeEventProcessor() = default;
+    inline BaseNode *getNode() { return _node; }
+    void             reattach();
+    void             destroy();
+
+    /**
+     * @zh
+     * 分发事件到事件流中。
+     *
+     * @param event - 分派到事件流中的事件对象。
+     */
+    void dispatchEvent(const event::Event &event) const;
+
+    /**
+     * @zh
+     * 节点冒泡事件监听器
+     */
     CallbacksInvoker *bubblingTargets{nullptr};
 
-    static bool hasEventListener(const std::string &);
-    static bool hasEventListener(const std::string &, const std::function<void(Node *)> &);
-    static bool hasEventListener(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
-    static bool on(const std::string &, const std::function<void(Node *)> &);
-    static bool on(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
-    static bool once(const std::string &, const std::function<void(Node *)> &);
-    static bool once(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
-    static bool off(const std::string &, const std::function<void(Node *)> &);
-    static bool off(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
-    void        emit(const std::string &, const std::any &);
-    void        emit(const std::string &, const std::any &, const std::any &, const std::any &, const std::any &);
-    void        targetOff(const std::string &);
+    /**
+     * @zh
+     * 节点捕获事件监听器
+     */
+    CallbacksInvoker *capturingTargets{nullptr};
+
+    /**
+     * @zh
+     * 触摸监听器
+     */
+    event_listener::EventListener *touchListener{nullptr};
+
+    /**
+     * @zh
+     * 鼠标监听器
+     */
+    event_listener::EventListener *mouseListener{nullptr};
+
+    bool hasEventListener(const std::string &type);
+    bool hasEventListener(const std::string &type, const std::function<void(BaseNode *)> &callback);
+    bool hasEventListener(const std::string &type, const std::function<void(BaseNode *)> &callback, void *target);
+
+    bool on(const std::string &type, const std::function<void(BaseNode *)> &callback);
+    bool on(const std::string &type, const std::function<void(BaseNode *)> &callback, void *target, bool useCapture = false);
+
+    void once(const std::string &type, const std::function<void(BaseNode *)> &callback);
+    void once(const std::string &type, const std::function<void(BaseNode *)> &callback, void *target, bool useCapture = false);
+
+    void off(const std::string &type, const std::function<void(BaseNode *)> &callback);
+    void off(const std::string &type, const std::function<void(BaseNode *)> &callback, void *target, bool useCapture = false);
+
+    /**
+     * @zh
+     * 通过事件名发送自定义事件
+     *
+     * @param type - 一个监听事件类型的字符串。
+     * @param arg0 - 回调第一个参数。
+     * @param arg1 - 回调第二个参数。
+     * @param arg2 - 回调第三个参数。
+     * @param arg3 - 回调第四个参数。
+     * @param arg4 - 回调第五个参数。
+     */
+    template <typename... Args>
+    void emit(const std::string &type, Args &&...args);
+
+    void targetOff(const std::string &);
+
+    void getCapturingTargets(const std::string &type, std::vector<BaseNode *> &targets) const;
+    void getBubblingTargets(const std::string &type, std::vector<BaseNode *> &targets) const;
+
+private:
+    BaseNode *_node{nullptr};
+
+    bool checknSetupSysEvent(const std::string &type);
+
+    const std::function<void(BaseNode *)> &onDispatch(const std::string &type, const std::function<void(BaseNode *)> &callback, bool useCapture = false);
+    const std::function<void(BaseNode *)> &onDispatch(const std::string &type, const std::function<void(BaseNode *)> &callback, void *target, bool useCapture = false);
+    void                                   offDispatch(const std::string &) const;
+    void                                   offDispatch(const std::string &, const std::function<void(BaseNode *)> &callback, bool useCapture = false) const;
+    void                                   offDispatch(const std::string &, const std::function<void(BaseNode *)> &callback, void *target, bool useCapture = false) const;
 };
 
 } // namespace cc

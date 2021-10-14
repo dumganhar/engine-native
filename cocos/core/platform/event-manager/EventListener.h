@@ -44,8 +44,8 @@ struct IEventListenerCreateInfo {
 };
 
 struct IListenerMask {
-    int32_t   index{0};
-    Component comp;
+    int32_t    index{0};
+    Component *comp{nullptr};
 };
 
 class EventListener {
@@ -53,6 +53,7 @@ public:
     // ts: constructor (type: number, listenerID: string, callback: ((...args: any[]) => any) | null)
     // EventListener(int32_t event, std::string listenerID, cb);
 
+    EventListener()          = default;
     virtual ~EventListener() = default;
 
     /**
@@ -118,13 +119,13 @@ public:
      * @zh 通过指定不同的 Event 对象来设置想要创建的事件监听器。
      * @param argObj a json object
      */
-    EventListener static create(IEventListenerCreateInfo *argObj);
+    static EventListener *create(const IEventListenerCreateInfo &argObj);
 
     // hack: How to solve the problem of uncertain attribute
     // callback's this object
     std::any owner{nullptr};
 
-    std::vector<IListenerMask *> mask;
+    std::vector<IListenerMask> mask;
 
     bool _previousIn{false};
 
@@ -372,6 +373,7 @@ public:
 };
 
 class KeyboardEventListener final : public EventListener {
+public:
     // public onKeyDown?: Function = undefined;
     // public onKeyPressed?: Function = undefined;  // deprecated
     // public onKeyReleased?: Function = undefined;

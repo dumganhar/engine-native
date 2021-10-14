@@ -42,11 +42,11 @@ namespace cc {
  * @en The mouse event
  * @zh 鼠标事件类型
  */
-class EventMouse final : public Event {
+class EventMouse final : public event::Event {
 public:
     EventMouse() = default;
-    EventMouse(const SystemEventTypeUnion &eventType, bool bubbles);
-    EventMouse(const SystemEventTypeUnion &eventType, bool bubbles, const Vec2 &prevLoc);
+    EventMouse(const std::string &eventType, bool bubbles);
+    EventMouse(const std::string &eventType, bool bubbles, const Vec2 &prevLoc);
     ~EventMouse() override = default;
 
     /**
@@ -272,12 +272,12 @@ public:
      *
      * @deprecated since v3.3, please use EventMouse.prototype.type instead.
      */
-    inline const SystemEventTypeUnion &getEventType() const {
+    inline const std::string &getEventType() const {
         return _eventType;
     }
 
 private:
-    SystemEventTypeUnion _eventType;
+    std::string _eventType;
 
     int32_t _button{EventMouse::BUTTON_MISSING};
 
@@ -301,10 +301,10 @@ private:
  * @zh
  * 触摸事件。
  */
-class EventTouch final : public Event {
+class EventTouch final : public event::Event {
 public:
     EventTouch() = default;
-    EventTouch(std::vector<Touch> changedTouches, bool bubbles, const SystemEventTypeUnion &eventType, std::vector<Touch> touches);
+    EventTouch(std::vector<Touch> changedTouches, bool bubbles, const std::string &eventType, std::vector<Touch> touches);
     ~EventTouch() override = default;
 
     /**
@@ -320,7 +320,7 @@ public:
      *
      * @deprecated since v3.3, please use EventTouch.prototype.type instead.
      */
-    inline SystemEventTypeUnion getEventCode() const {
+    inline const std::string &getEventCode() const {
         return _eventCode;
     }
 
@@ -459,9 +459,9 @@ public:
     bool simulate{false};
 
 private:
-    std::vector<Touch>   _touches;
-    std::vector<Touch>   _allTouches;
-    SystemEventTypeUnion _eventCode; // deprecated since v3.3
+    std::vector<Touch> _touches;
+    std::vector<Touch> _allTouches;
+    std::string        _eventCode; // deprecated since v3.3
 };
 
 /**
@@ -470,7 +470,7 @@ private:
  * @zh
  * 加速计事件。
  */
-class EventAcceleration final : public Event {
+class EventAcceleration final : public event::Event {
 public:
     /**
      * @param acc - The acceleration
@@ -492,7 +492,7 @@ public:
  * @zh
  * 键盘事件。
  */
-class EventKeyboard final : public Event {
+class EventKeyboard final : public event::Event {
 public:
     /**
      * @param keyCode - The key code of the current key or the DOM KeyboardEvent
@@ -500,8 +500,8 @@ public:
      * @param bubbles - Indicates whether the event bubbles up through the hierarchy or not.
      */
     // constructor (keyCode: number | KeyboardEvent, isPressed: boolean, bubbles?: boolean);
-    EventKeyboard(const event::KeyCode &keyCode, bool isPressed, bool bubbles);
-    EventKeyboard(const event::KeyCode &keyCode, const SystemEventTypeUnion &eventType, bool bubbles);
+    EventKeyboard(const event_manager::KeyCode &keyCode, bool isPressed, bool bubbles);
+    EventKeyboard(const event_manager::KeyCode &keyCode, const std::string &eventType, bool bubbles);
     /**
      * @param keyCode - The key code of the current key or the DOM KeyboardEvent
      * @param eventType - The type of the event
@@ -516,7 +516,7 @@ public:
      * @en The KeyCode enum value of current keyboard event.
      * @zh 当前键盘事件的 KeyCode 枚举值
      */
-    event::KeyCode keyCode;
+    event_manager::KeyCode keyCode;
 
     /**
      * @en Indicates whether the current key is being pressed

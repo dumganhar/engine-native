@@ -28,39 +28,44 @@ namespace utils {
     function fullClassNameToTS(name: string) {
         let m = fullNameToClass[name];
         if (m) {
-            return m.script_ns;
+            return `${m.script_ns}`;
         }
-        return 'never';
+        return 'unknown';
     }
 
     function convert_vector(r: RegExpMatchArray): string {
-        return `${fullClassNameToTS(r[1])}[]`;
+        return `: ${fullClassNameToTS(r[1])}[]`;
     }
     function convert_shared_ptr(r: RegExpMatchArray): string {
-        return `${fullClassNameToTS(r[1])}`;
+        return `: ${fullClassNameToTS(r[1])}`;
+    }
+
+    function convert_optional(r: RegExpMatchArray): string {
+        return `?: ${fullClassNameToTS(r[1])}`;
     }
 
     function convert_typed_array(r: RegExpMatchArray): string {
         let c = r[1];
         if(/unsigned char/.test(c)) {
-            return "Uint8Array";
+            return ": Uint8Array";
         }
         if(/char/.test(c)) {
-            return "Int8Array";
+            return ": Int8Array";
         }
-        return "TypedArray";
+        return ": TypedArray";
     }
 
     function convert_to_any(r: RegExpMatchArray): string {
-        return `any /* ${r[0]} */`;
+        return `: any /* ${r[0]} */`;
     }
 
     function convert_to_unknown(r: RegExpMatchArray): string {
-        return `unknown /* ${r[0]} */`;
+        return `: unknown /* ${r[0]} */`;
     }
 
 
     let convert_map: [RegExp, string|{(r: RegExpMatchArray): string}][] = [
+        [/char*/, 'string'],
         [/\w+ int/, 'number'],
         [/\w+ char/, 'number'],
         [/float|double/, 'number'],
@@ -72,29 +77,31 @@ namespace utils {
         [/cc.*ArrayBuffer/, 'ArrayBuffer'],
         [/std::vector<([^>\s]+).*>/, convert_vector],
         [/std::shared_ptr<([^>\s]+).*>/, convert_shared_ptr],
-        [/std::function<([^>\s]+).*>/, convert_shared_ptr],
+        [/std::optional<([^>\s]+).*>/, convert_shared_ptr],
+        [/std::function<([^>\s]+).*>/, convert_optional],
         [/cc::TypedArrayTemp<([^>\s]+).*>/, convert_to_unknown],
         [/cc.Mesh::IStruct/, "unknown /* cc.Mesh::IStruct */"], //TODO(PatriceJiang): export this
+        [/cc.Mesh::ICreateInfo/, "unknown /* cc.Mesh::ICreateInfo */"], //TODO(PatriceJiang): export this
     ];
 
     export function fix_type_name(t: NativeType) {
         for (let x of convert_map) {
             const r = t.script_ns.match(x[0]);
             if (r) {
-                return typeof x[1] === 'function' ? x[1](r) : x[1];
+                return typeof x[1] === 'function' ? x[1](r) : `: ${x[1]}`;
             }
         }
 
         let kls = nameToClass[t.script_ns];
         // treat enum as number
         if (!kls && t.is_enum) {
-            return 'number';
+            return ': number';
         }
         if(!kls && t.script_ns.startsWith("sp.")){
-            return `unknown /*${t.script_ns}*/`;
+            return `: unknown /*${t.script_ns}*/`;
         }
 
-        return t.script_ns;
+        return `: ${t.script_ns}`;
     }
 
 }
@@ -112,11 +119,12 @@ function processMethod(m: NativeFunction|NativeOverloadedFunction):string[] {
         }
         return ret;
     } else {
-        let args = method.arguments.map((x, i) => `arg${i}: ${UF(x)}`).join(", ");
+        let args = method.arguments.map((x, i) => `arg${i}${UF(x)}`).join(", ");
         if(method.is_constructor) {
             return [`constructor(${args});`];
         }
-        return [`public ${name}(${args}):${UF(method.ret_type)};`]
+        const prefix = args.indexOf("??") > 0 ? "// " : "";
+        return [`${prefix}${name}(${args})${UF(method.ret_type)};`]
     }
 }
 
@@ -134,7 +142,7 @@ function processClass(klass: NativeClass): string {
             let attrBuffer: string[] = [];
             attrBuffer.push(`// attributes list`);
             for (let attr of klass.getter_setter) {
-                attrBuffer.push(`declare ${attr.name}: ${UF(attr.type)}; //${attr.type.namespaced_class_name}`);
+                attrBuffer.push(`declare ${attr.name}${UF(attr.type)}; //${attr.type.namespaced_class_name}`);
             }
             buffer.push(addIndent(attrBuffer.join('\n'), 4))
         }

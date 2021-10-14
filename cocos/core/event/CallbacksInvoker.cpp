@@ -144,6 +144,19 @@ void CallbacksInvoker::offAll(const std::string &key) {
     }
 }
 
+void CallbacksInvoker::offAll() {
+    for (auto iter = _callbackTable.begin(); iter != _callbackTable.end();) {
+        auto &list = iter->second;
+        if (list._isInvoking) {
+            list.cancelAll();
+            ++iter;
+        } else {
+            list.clear();
+            iter = _callbackTable.erase(iter);
+        }
+    }
+}
+
 void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID, void *target) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {

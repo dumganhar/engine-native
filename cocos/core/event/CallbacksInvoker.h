@@ -191,6 +191,7 @@ public:
      * @param key - The event type or target with which the listeners will be removed
      */
     void offAll(const std::string &key);
+    void offAll();
 
     /**
      * @zh 删除以指定事件，回调函数，目标注册的回调。

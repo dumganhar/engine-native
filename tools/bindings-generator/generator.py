@@ -989,7 +989,7 @@ class NativeOverloadedFunction(object):
             "min_args": self.min_args,
             "comment": self.comment,
             "is_ctor": self.is_ctor,
-            "current_class": self.current_class.class_name if self.current_class is not None else None,
+            "current_class_name": self.current_class.class_name if self.current_class is not None else None,
             "implementations": list(map(lambda x: x.toJSON(), self.implementations)),
         }
 

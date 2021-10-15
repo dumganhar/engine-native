@@ -211,6 +211,97 @@ TEST(CoreEventCallbacksInvoker, output_log) {
     CC_LOG_DEBUG("--------------------------");
 }
 
+TEST(CoreEventCallbacksInvoker, member_function_target) {
+    CallbacksInvoker ci;
+
+    static int ccc;
+    class MyFoo : public CCObject {
+    public:
+        void foo(int a, float b, int *c) {
+            EXPECT_EQ(a, 1);
+            EXPECT_TRUE(IsEqualF(b, 2.3F));
+            EXPECT_EQ(c, &ccc);
+            EXPECT_EQ(magic, 1234);
+        }
+
+    private:
+        int magic = 1234;
+    };
+
+    MyFoo foo;
+    ci.on("hello", &MyFoo::foo, &foo);
+    ci.emit("hello", 1, 2.3F, &ccc);
+}
+
+TEST(CoreEventCallbacksInvoker, member_function_target_remove) {
+    static CallbacksInvoker ci;
+
+    static int fooCount = 0, fooCountA = 0, fooCountB = 0, fooCountC = 0;
+    fooCount = fooCountA = fooCountB = fooCountC = 0;
+
+    static int ccc = 0;
+    class MyFoo : public CCObject {
+    public:
+        void foo(int a, float b, int *c) {
+            EXPECT_EQ(a, 1);
+            EXPECT_TRUE(IsEqualF(b, 2.3F));
+            EXPECT_EQ(c, &ccc);
+            EXPECT_EQ(magic, 1234);
+            ++fooCount;
+        }
+
+        void fooA() {
+            ++fooCountA;
+        }
+
+        void fooB(bool cancelSelf) {
+            ++fooCountB;
+            if (cancelSelf) {
+                ci.off("hello3", &MyFoo::fooB, this);
+            }
+        }
+        void fooC() {
+            ++fooCountC;
+        }
+
+    private:
+        int magic = 1234;
+    };
+
+    MyFoo foo;
+    ci.on("hello", &MyFoo::foo, &foo);
+    ci.on("hello2", &MyFoo::fooA, &foo);
+    ci.on("hello3", &MyFoo::fooB, &foo);
+    ci.on("hello4", &MyFoo::fooC, &foo);
+    ci.emit("hello", 1, 2.3F, &ccc);
+    ci.emit("hello2");
+    ci.emit("hello3", false);
+    ci.emit("hello4");
+
+    EXPECT_EQ(fooCount, 1);
+    EXPECT_EQ(fooCountA, 1);
+    EXPECT_EQ(fooCountB, 1);
+    EXPECT_EQ(fooCountC, 1);
+
+    ci.off("hello", &MyFoo::foo, &foo);
+    ci.emit("hello", 1, 2.3F, &ccc);
+    ci.emit("hello2");
+    ci.emit("hello3", false);
+    ci.emit("hello4");
+
+    EXPECT_EQ(fooCount, 1);
+    EXPECT_EQ(fooCountA, 2);
+    EXPECT_EQ(fooCountB, 2);
+    EXPECT_EQ(fooCountC, 2);
+
+    ci.emit("hello3", true);
+    EXPECT_EQ(fooCountB, 3);
+    ci.emit("hello3", false);
+    EXPECT_EQ(fooCountB, 3);
+
+    ci.offAll();
+}
+
 TEST(CoreEventCallbacksInvoker, test) {
     CallbacksInvoker     ci;
     CallbackInfoBase::ID id1{0}, id2{0}, id3{0};

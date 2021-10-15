@@ -25,12 +25,16 @@
 
 #pragma once
 
+#include <any>
 #include <vector>
+
 #include "base/TypeDef.h"
-#include "core/scene-graph/BaseNode.h"
+#include "core/components/Component.h"
+#include "core/data/Object.h"
+#include "core/event/Event.h"
 #include "core/scene-graph/NodeEnum.h"
-#include "core/scene-graph/NodeUIProperties.h"
-#include "core/scene-graph/Scene.h"
+#include "core/scene-graph/NodeEvent.h"
+#include "core/utils/IDGenerator.h"
 #include "math/Mat3.h"
 #include "math/Mat4.h"
 #include "math/Quaternion.h"
@@ -38,6 +42,10 @@
 #include "math/Vec4.h"
 
 namespace cc {
+
+class Scene;
+class NodeEventProcessor;
+class NodeUiProperties;
 
 /**
  * Event types emitted by Node
@@ -47,18 +55,40 @@ using EventType = NodeEventType;
  * Bit masks for Node transformation parts
  */
 using TransformDirtyBit = TransformBit;
-class NodeUiProperties;
 
-class Node final : public BaseNode {
+class Node : public CCObject {
 public:
-    using Super = BaseNode;
-    Node();
-    explicit Node(const std::string &name);
-    ~Node() override;
+    using Super = CCObject;
 
-    static bool      isStatic;
-    static void      setDirtyNode(const index_t idx, BaseNode *node);
-    static BaseNode *getDirtyNode(const index_t idx);
+    static const uint TRANSFORM_ON;
+    static const uint DESTROYING;
+    static const uint DEACTIVATING;
+    static const uint DONT_DESTROY;
+
+    static Node *instantiate(Node *cloned, bool isSyncedNode);
+    // for walk
+    static std::vector<std::vector<Node *>> stacks;
+    static index_t                          stackId;
+
+    static void    setScene(Node *);
+    static index_t getIdxOfChild(const std::vector<Node *> &, Node *);
+    // TODO(Lenovo):
+    static Component *findComponent(Node *, const std::string &);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *findComponent(Node *, const T &);
+    static Component *findComponents(Node *, const std::string &, const std::vector<Component *> &);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *findComponents(Node *, const T &, const std::vector<Component *> &);
+    static Component *findChildComponent(const std::vector<Node *> &, const std::string &);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *              findChildComponent(const std::vector<Node *> &, const T &);
+    static std::vector<Component *> findChildComponents(const std::vector<Node *> &, const std::string &, std::vector<Component *>);
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static std::vector<Component *> findChildComponents(const std::vector<Node *> &, const T &, std::vector<Component *>);
+
+    static bool  isStatic;
+    static void  setDirtyNode(const index_t idx, Node *node);
+    static Node *getDirtyNode(const index_t idx);
 
     /**
      * @en Determine whether the given object is a normal Node. Will return false if [[Scene]] given.
@@ -70,13 +100,157 @@ public:
     static void resetChangedFlags();
     static void clearNodeArray();
 
+    Node();
+    explicit Node(const std::string &name);
+    ~Node() override;
+
+    void setParent(Node *parent, bool isKeepWorld = false);
+
+    Scene *getScene() const;
+    void   walk();
+    void   walk(const std::function<void(Node *)> &);
+    void   walk(const std::function<void(Node *)> &, const std::function<void(Node *)> &);
+
+    void on(const std::string &, const std::function<void(Node *)> &);
+    void on(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
+    void off(const std::string &, const std::function<void(Node *)> &);
+    void off(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
+    void once(const std::string &, const std::function<void(Node *)> &);
+    void once(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
+    void emit(const std::string &, const std::any &);
+    void emit(const std::string &, const std::any &, const std::any &, const std::any &, const std::any &);
+
+    void dispatchEvent(const Event &);
+    bool hasEventListener(const std::string &);
+    bool hasEventListener(const std::string &, const std::function<void(Node *)> &);
+    bool hasEventListener(const std::string &, const std::function<void(Node *)> &, const std::any &);
+    void targetOff(const std::string &);
+
+    bool destroy() override {
+        if (CCObject::destroy()) {
+            _active = false;
+            return true;
+        }
+        return false;
+    }
+    inline void destroyAllChildren() {
+        for (auto *child : _children) {
+            child->destroy();
+        }
+    }
+    inline void updateSiblingIndex() {
+        uint i = 0;
+        for (auto *child : _children) {
+            child->_siblingIndex = i++;
+        }
+        emit(NodeEventType::SIBLING_ORDER_CHANGED, NodeEventType::SIBLING_ORDER_CHANGED);
+    }
+
+    inline void addChild(Node *node) { node->setParent(this); }
+    inline void removeChild(Node *node) {
+        auto idx = getIdxOfChild(_children, node);
+        if (idx != -1) {
+            node->setParent(nullptr);
+        }
+    }
+    inline void removeFromParent() {
+        if (_parent) {
+            _parent->removeChild(this);
+        }
+    }
+    void removeAllChildren();
+    bool isChildOf(Node *parent);
+
+    inline void setPersistNode(bool val) {
+        val ? _objFlags |= Flags::DONT_DESTROY : _objFlags &= ~Flags::DONT_DESTROY;
+    };
+    inline void setName(const std::string &name) {
+        _name = name;
+    }
+    void setActive(bool isActive);
+    void setSiblingIndex(index_t idx);
+
+    inline bool getPersistNode() const {
+        return static_cast<FlagBits>(_objFlags & Flags::DONT_DESTROY) > 0;
+    }
+    inline std::string getName() const {
+        return _name;
+    }
+    inline std::string getUUid() const {
+        return _id;
+    }
+    inline bool isActive() const { return _active; }
+    inline bool isActiveInHierarchy() const { return _activeInHierarchy; }
+
+    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of_v<Component, T>, T>>
+    T *addComponent() {
+        T *comp = new T();
+        return static_cast<T *>(addComponent(comp));
+    }
+
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    void removeComponent() {
+        for (auto iter = _components.begin(); iter != _components.end(); ++iter) {
+            if (dynamic_cast<T *>(*iter) != nullptr) {
+                _components.erase(iter);
+            }
+        }
+    }
+
+    Component *addComponent(Component *comp);
+    void       removeComponent(Component *comp);
+
+    Component *addComponent(const std::string &className);
+    void       removeComponent(const std::string &className);
+
+    Component *getComponent(const std::string &name) const;
+
+    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<Component, T>::value>>
+    Component *getComponent() const {
+        for (auto iter = _components.begin(); iter != _components.end(); ++iter) {
+            if (dynamic_cast<T *>(*iter) != nullptr) {
+                return *iter;
+            }
+        }
+        return nullptr;
+    }
+
+    // TODO(Lenovo):
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    inline std::vector<Component *> getComponents(const T & /*unused*/) const {};
+    inline std::vector<Component *> getComponents(const std::string & /*unused*/) const {
+        // TODO: validate return value
+        CC_ASSERT(false);
+        return _components;
+    };
+    Component *getComponentInChildren(const std::string &name) const;
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    Component *              getComponentInChildren(const T &comp) const {}
+    std::vector<Component *> getComponentsInChildren(const std::string &name) const;
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    std::vector<Component *> getComponentsInChildren(const T &comp) const {}
+
+    inline std::vector<Component *> getComponents() const { return _components; }
+
+    virtual void                      onPostActivated(bool active) {}
+    inline const std::vector<Node *> &getChildren() { return _children; }
+    inline Node *                     getParent() const { return _parent; }
+    inline NodeEventProcessor *       getEventProcessor() const { return _eventProcessor; }
+
+    Node *      getChildByUuid(const std::string &) const;
+    Node *      getChildByName(const std::string &) const;
+    Node *      getChildByPath(const std::string &) const;
+    inline uint getSiblingIndex() const { return _siblingIndex; }
+    inline void insertChild(Node *child, uint32_t siblingIndex) {
+        child->_parent = this;
+        child->setSiblingIndex(siblingIndex);
+    }
+
     void invalidateChildren(TransformBit dirtyBit);
 
     void translate(const Vec3 &, NodeSpace ns = NodeSpace::LOCAL);
     void rotate(const Quaternion &rot, NodeSpace ns);
     void lookAt(const Vec3 &pos, const Vec3 &up);
-
-    void setParent(BaseNode *val, bool isKeepWorld = false) override;
 
     void pauseSystemEvents(bool recursive) {}  //cjh TODO:
     void resumeSystemEvents(bool recursive) {} //cjh TODO:
@@ -98,7 +272,7 @@ public:
      * @param out Set the result to out vector
      * @return If `out` given, the return value equals to `out`, otherwise a new vector will be generated and return
      */
-    const Vec3 &getPosition() const override { return _localPosition; }
+    const Vec3 &getPosition() const { return _localPosition; }
 
     /**
      * @en Set rotation in local coordinate system with a quaternion representing the rotation
@@ -117,7 +291,7 @@ public:
      * @param out Set the result to out quaternion
      * @return If `out` given, the return value equals to `out`, otherwise a new quaternion will be generated and return
      */
-    const Quaternion &getRotation() const override { return _localRotation; }
+    const Quaternion &getRotation() const { return _localRotation; }
 
     /**
      * @en Set scale in local coordinate system
@@ -132,7 +306,7 @@ public:
      * @param out Set the result to out vector
      * @return If `out` given, the return value equals to `out`, otherwise a new vector will be generated and return
      */
-    const Vec3 &getScale() const override { return _localScale; }
+    const Vec3 &getScale() const { return _localScale; }
 
     /**
      * @en Inversely transform a point from world coordinate system to local coordinate system.
@@ -171,7 +345,7 @@ public:
      * @param out Set the result to out quaternion
      * @return If `out` given, the return value equals to `out`, otherwise a new quaternion will be generated and return
      */
-    const Quaternion &getWorldRotation() override;
+    const Quaternion &getWorldRotation();
 
     /**
      * @en Set rotation in world coordinate system with euler angles
@@ -197,7 +371,7 @@ public:
      * @en Update the world transform information if outdated
      * @zh 更新节点的世界变换信息
      */
-    void updateWorldTransform() override;
+    void updateWorldTransform();
 
     /**
      * @en Get a world transform matrix
@@ -205,7 +379,7 @@ public:
      * @param out Set the result to out matrix
      * @return If `out` given, the return value equals to `out`, otherwise a new matrix will be generated and return
      */
-    const Mat4 &getWorldMatrix() override;
+    const Mat4 &getWorldMatrix();
 
     /**
      * @en Get a world transform matrix with only rotation and scale
@@ -275,12 +449,12 @@ public:
      * @en Whether the node's transformation have changed during the current frame.
      * @zh 这个节点的空间变换信息在当前帧内是否有变过？
      */
-    uint getChangedFlags() const override { return _flagChange; }
-    void setChangedFlags(uint value) override { _flagChange = value; }
+    uint getChangedFlags() const { return _flagChange; }
+    void setChangedFlags(uint value) { _flagChange = value; }
 
-    void setDirtyFlag(uint value) override { _dirtyFlag = value; }
-    uint getDirtyFlag() const override { return _dirtyFlag; }
-    void setLayer(uint layer) override { _layer = layer; }
+    void setDirtyFlag(uint value) { _dirtyFlag = value; }
+    uint getDirtyFlag() const { return _dirtyFlag; }
+    void setLayer(uint layer) { _layer = layer; }
     uint getLayer() const { return _layer; }
 
     NodeUiProperties *getUIProps() const { return _uiProps; }
@@ -288,13 +462,55 @@ public:
 protected:
     bool onPreDestroy() override;
 
-    void onSetParent(BaseNode *oldParent, bool keepWorldTransform) override;
+    void onSetParent(Node *oldParent, bool keepWorldTransform);
 
-    void onHierarchyChanged(BaseNode *) override;
+    inline void updateScene() {
+        if (_parent == nullptr) {
+            return;
+        }
+        _scene = _parent->_scene;
+    }
 
-    static std::vector<BaseNode *> dirtyNodes;
-    static uint                    clearFrame;
-    static uint                    clearRound;
+    void onHierarchyChanged(Node *);
+    void onHierarchyChangedBase(Node *oldParent);
+
+    void         walkInternal(std::function<void(Node *)>, std::function<void(Node *)>);
+    virtual void onBatchCreated(bool dontChildPrefab);
+
+    bool onPreDestroyBase();
+    void onSiblingIndexChanged(uint siblingIndex) {}
+    void checkMultipleComp(Component *comp) {}
+
+    std::vector<Node *>      _children;
+    std::vector<Component *> _components;
+    Node *                   _parent{nullptr};
+
+    bool _persistNode{false};
+
+    std::string         _id{IDGenerator("Node").getNewId()};
+    bool                _active{true};
+    bool                _activeInHierarchy{false};
+    Scene *             _scene{nullptr};
+    NodeEventProcessor *_eventProcessor{nullptr};
+    index_t             _siblingIndex{0};
+    uint                _eventMask{0};
+
+    cc::Vec3       _worldPosition{Vec3::ZERO};
+    cc::Quaternion _worldRotation{Quaternion::identity()};
+    cc::Vec3       _worldScale{Vec3::ONE};
+
+    Mat4     _rtMat{Mat4::IDENTITY};
+    cc::Mat4 _worldMatrix{Mat4::IDENTITY};
+
+    // local transform
+    cc::Vec3       _localPosition{Vec3::ZERO};
+    cc::Quaternion _localRotation{Quaternion::identity()};
+    cc::Vec3       _localScale{Vec3::ONE};
+    //
+
+    static std::vector<Node *> dirtyNodes;
+    static uint                clearFrame;
+    static uint                clearRound;
 
     Vec3 _euler{0, 0, 0};
 
@@ -306,6 +522,8 @@ protected:
     NodeUiProperties *_uiProps{nullptr};
 
     friend void componentCorrupted(Node *node, Component *comp, uint32_t index);
+    friend class NodeActivator;
+    friend class Scene;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(Node);
 };

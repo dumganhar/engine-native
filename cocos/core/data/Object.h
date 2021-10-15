@@ -127,6 +127,7 @@ protected:
     std::string _name;
 
     explicit CCObject(const std::string &name = "");
+    virtual ~CCObject() = default;
 
 public:
     // MEMBER

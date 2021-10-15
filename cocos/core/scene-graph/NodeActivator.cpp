@@ -166,7 +166,7 @@ NodeActivator::NodeActivator() {
     }
 }
 
-void NodeActivator::activateNode(BaseNode *node, bool active) {
+void NodeActivator::activateNode(Node *node, bool active) {
     if (active) {
         auto task = activateTasksPool.get();
         _activatingStack.emplace_back(task);
@@ -238,7 +238,7 @@ void NodeActivator::destroyComp(Component *comp) {
     }
 }
 
-void NodeActivator::activateNodeRecursively(BaseNode *node, LifeCycleInvoker *preloadInvoker, LifeCycleInvoker *onLoadInvoker, LifeCycleInvoker *onEnableInvoker) {
+void NodeActivator::activateNodeRecursively(Node *node, LifeCycleInvoker *preloadInvoker, LifeCycleInvoker *onLoadInvoker, LifeCycleInvoker *onEnableInvoker) {
     if (hasFlag(node->_objFlags, CCObject::Flags::DEACTIVATING)) {
         // en:
         // Forbid reactive the same node during its deactivating procedure
@@ -271,13 +271,13 @@ void NodeActivator::activateNodeRecursively(BaseNode *node, LifeCycleInvoker *pr
     // activate children recursively
     for (auto *child : node->_children) {
         if (child->_active) {
-            activateNodeRecursively(child, preloadInvoker, onLoadInvoker, onEnableInvoker); // TODO(xwx): not sure child should be Node or BaseNode
+            activateNodeRecursively(child, preloadInvoker, onLoadInvoker, onEnableInvoker); // TODO(xwx): not sure child should be Node or Node
         }
     }
     node->onPostActivated(true);
 }
 
-void NodeActivator::deactivateNodeRecursively(BaseNode *node) {
+void NodeActivator::deactivateNodeRecursively(Node *node) {
     // if (DEV) { // TODO(xwx): DEV is not defined
     //     CCASSERT(!(node._objFlags & Deactivating), "node should not deactivating");
     //     // ensures _activeInHierarchy is always changing when Deactivating flagged
@@ -301,7 +301,7 @@ void NodeActivator::deactivateNodeRecursively(BaseNode *node) {
     }
     for (auto *child : node->_children) {
         if (child->_activeInHierarchy) {
-            deactivateNodeRecursively(dynamic_cast<Node *>(child)); // TODO(xwx): not sure child should be Node or BaseNode
+            deactivateNodeRecursively(child);
 
             if (node->_activeInHierarchy) {
                 // reactivated from root

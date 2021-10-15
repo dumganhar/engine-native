@@ -24,15 +24,15 @@
  ****************************************************************************/
 
 #include "core/scene-graph/NodeEventProcessor.h"
-#include "core/scene-graph/BaseNode.h"
+#include "core/scene-graph/Node.h"
 namespace cc {
 
-bool NodeEventProcessor::hasEventListener(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+bool NodeEventProcessor::hasEventListener(const std::string & /*type*/, const std::function<void(Node *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
     bool has = false;
     return has;
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/) {
+bool NodeEventProcessor::hasEventListener(const std::string & /*type*/, const std::function<void(Node *)> & /*callback*/) {
     bool has = false;
     return has;
 }
@@ -45,27 +45,27 @@ bool NodeEventProcessor::hasEventListener(const std::string & /*type*/) {
 void NodeEventProcessor::targetOff(const std::string &target) {
 }
 
-bool NodeEventProcessor::on(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*unused*/) {
+bool NodeEventProcessor::on(const std::string & /*unused*/, const std::function<void(Node *)> & /*unused*/) {
     return false;
 }
 
-bool NodeEventProcessor::on(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+bool NodeEventProcessor::on(const std::string & /*unused*/, const std::function<void(Node *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
     return false;
 }
 
-bool NodeEventProcessor::once(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*unused*/) {
+bool NodeEventProcessor::once(const std::string & /*unused*/, const std::function<void(Node *)> & /*unused*/) {
     return false;
 }
 
-bool NodeEventProcessor::once(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+bool NodeEventProcessor::once(const std::string & /*type*/, const std::function<void(Node *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
     return false;
 }
 
-bool NodeEventProcessor::off(const std::string & /*unused*/, const std::function<void(BaseNode *)> & /*unused*/) {
+bool NodeEventProcessor::off(const std::string & /*unused*/, const std::function<void(Node *)> & /*unused*/) {
     return false;
 }
 
-bool NodeEventProcessor::off(const std::string & /*type*/, const std::function<void(BaseNode *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
+bool NodeEventProcessor::off(const std::string & /*type*/, const std::function<void(Node *)> & /*callback*/, const std::any & /*target*/, bool /*useCapture*/) {
     return false;
 }
 

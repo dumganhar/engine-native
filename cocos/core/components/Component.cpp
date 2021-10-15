@@ -102,7 +102,7 @@ void Component::_onPreDestroy() {
 }
 
 Node *Component::getNode() const {
-    return static_cast<Node *>(_node);
+    return _node;
 }
 
 } // namespace cc

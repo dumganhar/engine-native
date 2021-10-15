@@ -25,7 +25,7 @@
 #pragma once
 
 #include "2d/framework/UITransform.h"
-#include "core/scene-graph/BaseNode.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 
@@ -41,7 +41,7 @@ public:
 
 protected:
     UITransform *_uiTransformComp{nullptr};
-    BaseNode *   _node{nullptr};
+    Node *       _node{nullptr};
 };
 
 } // namespace cc

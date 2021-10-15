@@ -56,7 +56,7 @@ public:
      * @param node Target node
      * @param active Which state to set the node to
      */
-    void activateNode(BaseNode *node, bool active);
+    void activateNode(Node *node, bool active);
 
     /**
      * @en Activate or des-activate a component
@@ -80,9 +80,9 @@ public:
     class Task;
 
 protected:
-    void activateNodeRecursively(BaseNode *node, LifeCycleInvoker *preloadInvoker = nullptr, LifeCycleInvoker *onLoadInvoker = nullptr, LifeCycleInvoker *onEnableInvoker = nullptr);
+    void activateNodeRecursively(Node *node, LifeCycleInvoker *preloadInvoker = nullptr, LifeCycleInvoker *onLoadInvoker = nullptr, LifeCycleInvoker *onEnableInvoker = nullptr);
 
-    void deactivateNodeRecursively(BaseNode *node);
+    void deactivateNodeRecursively(Node *node);
 
     std::vector<std::shared_ptr<Task>> _activatingStack;
 

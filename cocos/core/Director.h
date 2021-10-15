@@ -45,7 +45,7 @@
 #include "core/asset-manager/AssetManager.h"
 #include "core/assets/SceneAsset.h"
 #include "core/event/EventEmitter.h"
-#include "core/scene-graph/BaseNode.h"
+#include "core/scene-graph/Node.h"
 #include "core/scene-graph/Scene.h"
 #include "math/Vec2.h"
 // ----------------------------------------------------------------------------------------------------------------------

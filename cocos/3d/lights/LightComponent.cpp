@@ -41,7 +41,7 @@ void Light::initializeLight() {
     setColor(_color);
     setUseColorTemperature(_useColorTemperature);
     setColorTemperature(_colorTemperature);
-    _light->setNode(dynamic_cast<Node *>(_node));
+    _light->setNode(_node);
     _light->setBaked(isBaked());
 }
 

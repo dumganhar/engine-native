@@ -159,8 +159,8 @@ void MeshRenderer::updateModels() {
     if (model != nullptr) {
         model->destroy();
         model->initialize();
-        model->setTransform(static_cast<Node *>(_node)); //cjh TODO: remove BaseNode
-        model->setNode(static_cast<Node *>(_node));      //cjh TODO: remove BaseNode
+        model->setTransform(_node);
+        model->setNode(_node);
     } else {
         createModel();
     }
@@ -207,8 +207,8 @@ void MeshRenderer::createModel() {
     }
 
     _model->setVisFlags(static_cast<uint32_t>(getVisibility())); //cjh TODO: remove static_cast
-    _model->setNode(static_cast<Node *>(_node));                 //cjh TODO: remove BaseNode
-    _model->setTransform(static_cast<Node *>(_node));
+    _model->setNode(_node);
+    _model->setTransform(_node);
 
     _models.clear();
     _models.emplace_back(_model);

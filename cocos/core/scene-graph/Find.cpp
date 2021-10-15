@@ -28,7 +28,7 @@
 
 namespace cc {
 
-BaseNode *find(const std::string &path, BaseNode *referenceNode /* = nullptr*/) {
+Node *find(const std::string &path, Node *referenceNode /* = nullptr*/) {
     if (nullptr == referenceNode) {
         auto *scene = Director::getInstance()->getScene();
         if (nullptr == scene) {

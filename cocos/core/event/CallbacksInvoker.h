@@ -56,7 +56,7 @@ struct CallbackInfoBase {
 };
 
 template <typename... Args>
-struct CallbackInfo : public CallbackInfoBase {
+struct CallbackInfo final : public CallbackInfoBase {
     using CallbackFn = std::function<void(Args...)>;
     CallbackFn _callback{nullptr};
 

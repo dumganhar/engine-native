@@ -434,7 +434,6 @@ TEST(CoreEventCallbacksInvoker, CallbacksInvoker_support_target) {
 
             ++myTargetFooCalledCount;
         }
-        virtual ~MyTarget() = default;
 
         void operator()() {
             foo();
@@ -610,4 +609,167 @@ TEST(CoreEventCallbacksInvoker, const_reference_args) {
     Foo myFoo;
     ci.on("world", CC_CALLBACK_INVOKE_1(Foo::foo, &myFoo, const Sender &));
     ci.emit("world", sender);
+}
+
+TEST(CoreEventCallbacksInvoker, remove_target) {
+    CallbacksInvoker     ci;
+    CallbackInfoBase::ID id1_not_target1{0}, id1_not_target2{0}, id1_target11{0}, id1_target22{0}, id1_b1{0}, id2{0}, id21{0}, id22{0}, id3{0}, id31{0}, id32{0};
+    static uint32_t      myTargetFooCalledCount = 0;
+    myTargetFooCalledCount                      = 0;
+
+    class MyTarget {
+    public:
+        MyTarget(const std::string &name_ = "")
+        : name(name_) {}
+        void foo() {
+            if (!name.empty()) {
+                ++count;
+            }
+            ++myTargetFooCalledCount;
+        }
+
+        void operator()() {
+            foo();
+        }
+
+        std::string name;
+        uint32_t    count{0};
+    };
+
+    MyTarget target1;
+    MyTarget target11{"CallbackTarget1"};
+    MyTarget target22{"CallbackTarget2"};
+
+    std::function<void()> cb1          = target1;
+    std::function<void()> cb1_target11 = std::bind(&MyTarget::foo, &target11);
+    std::function<void()> cb1_target22 = std::bind(&MyTarget::foo, &target22);
+
+    TestFunctor<> cb2{[]() {}};
+    TestFunctor<> cb3{[]() {}};
+
+    ci.on("a", cb1, id1_not_target1);
+    ci.on("a", cb1_target11, &target11, id1_target11);
+    ci.on("a", cb1, id1_not_target2);
+    ci.on("a", cb1_target22, &target22, id1_target22);
+    ci.on("a", cb2, &target22, id21);
+    ci.on("a", cb2, &target11, id22);
+    ci.on("a", cb3, id3);
+    ci.on("a", cb3, &target11, id31);
+
+    ci.emit("a");
+    EXPECT_EQ(myTargetFooCalledCount, 4);
+    EXPECT_EQ(cb2.getCalledCount(), 2);
+    EXPECT_EQ(cb3.getCalledCount(), 2);
+
+    ci.offAll(&target11);
+    myTargetFooCalledCount = 0;
+    target1.count          = 0;
+    cb2.clear();
+    cb3.clear();
+
+    ci.emit("a");
+    EXPECT_EQ(myTargetFooCalledCount, 3);
+    EXPECT_EQ(cb2.getCalledCount(), 1);
+    EXPECT_EQ(cb3.getCalledCount(), 1);
+
+    ci.offAll(&target22);
+    myTargetFooCalledCount = 0;
+    target1.count          = 0;
+    cb2.clear();
+    cb3.clear();
+
+    ci.emit("a");
+    EXPECT_EQ(myTargetFooCalledCount, 2);
+    EXPECT_EQ(cb2.getCalledCount(), 0);
+    EXPECT_EQ(cb3.getCalledCount(), 1);
+}
+
+TEST(CoreEventCallbacksInvoker, nest_invoke) {
+    CallbacksInvoker ci;
+
+    std::vector<int> actualSequence;
+    bool             isParentLoop{true};
+
+    auto cb1 = [&]() {
+        actualSequence.emplace_back(1);
+        if (isParentLoop) {
+            isParentLoop = false;
+            ci.emit("visit");
+        }
+    };
+    auto cb2 = [&]() {
+        actualSequence.emplace_back(2);
+    };
+
+    ci.on("visit", cb1);
+    ci.on("visit", cb2);
+    ci.emit("visit");
+    EXPECT_EQ(actualSequence.size(), 4);
+    EXPECT_EQ(actualSequence[0], 1);
+    EXPECT_EQ(actualSequence[1], 1);
+    EXPECT_EQ(actualSequence[2], 2);
+    EXPECT_EQ(actualSequence[3], 2);
+}
+
+TEST(CoreEventCallbacksInvoker, remove_during_nest_invoke) {
+    CallbacksInvoker ci;
+
+    std::vector<int>     actualSequence;
+    bool                 isParentLoop{true};
+    CallbackInfoBase::ID id1{0};
+
+    auto cb1 = [&]() {
+        actualSequence.emplace_back(1);
+        if (isParentLoop) {
+            isParentLoop = false;
+            ci.emit("visit");
+        } else {
+            ci.off("visit", id1);
+            EXPECT_FALSE(ci.hasEventListener("visit"));
+        }
+    };
+
+    ci.on("visit", cb1, id1);
+    ci.emit("visit");
+
+    EXPECT_EQ(actualSequence.size(), 2);
+    EXPECT_EQ(actualSequence[0], 1);
+    EXPECT_EQ(actualSequence[1], 1);
+}
+
+TEST(CoreEventCallbacksInvoker, remove_many_during_nest_invoke) {
+    CallbacksInvoker ci;
+
+    std::vector<int>     actualSequence;
+    bool                 isParentLoop{true};
+    CallbackInfoBase::ID id1{0}, id2{0};
+
+    auto cb1 = [&]() {
+        actualSequence.emplace_back(1);
+    };
+    auto cb2 = [&]() {
+        actualSequence.emplace_back(2);
+        if (isParentLoop) {
+            isParentLoop = false;
+            ci.emit("visit");
+        } else {
+            ci.off("visit", id1);
+            ci.off("visit", id2);
+        }
+    };
+    auto cb3 = [&]() {
+        actualSequence.emplace_back(3);
+    };
+
+    ci.on("visit", cb1, id1);
+    ci.on("visit", cb2, id2);
+    ci.on("visit", cb3);
+    ci.emit("visit");
+    EXPECT_EQ(actualSequence.size(), 6);
+    EXPECT_EQ(actualSequence[0], 1);
+    EXPECT_EQ(actualSequence[1], 2);
+    EXPECT_EQ(actualSequence[2], 1);
+    EXPECT_EQ(actualSequence[3], 2);
+    EXPECT_EQ(actualSequence[4], 3);
+    EXPECT_EQ(actualSequence[5], 3);
 }

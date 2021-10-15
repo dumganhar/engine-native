@@ -182,6 +182,24 @@ void CallbacksInvoker::offAll(const std::string &key) {
     }
 }
 
+void CallbacksInvoker::offAll(void *target) {
+    for (auto &e : _callbackTable) {
+        auto &      list  = e.second;
+        const auto &infos = list._callbackInfos;
+        if (list._isInvoking) {
+            size_t i = 0;
+            for (const auto &info : infos) {
+                if (info != nullptr && info->_target == target) {
+                    list.cancel(i);
+                }
+                ++i;
+            }
+        } else {
+            list.removeByTarget(target);
+        }
+    }
+}
+
 void CallbacksInvoker::offAll() {
     for (auto iter = _callbackTable.begin(); iter != _callbackTable.end();) {
         auto &list = iter->second;
@@ -233,11 +251,15 @@ void CallbacksInvoker::off(const std::string &key, void *target) {
         auto &      list  = iter->second;
         const auto &infos = list._callbackInfos;
         size_t      i     = 0;
-        for (auto &info : infos) {
-            if (info != nullptr && info->_target == target) {
-                list.cancel(i);
+        if (list._isInvoking) {
+            for (auto &info : infos) {
+                if (info != nullptr && info->_target == target) {
+                    list.cancel(i);
+                }
+                ++i;
             }
-            ++i;
+        } else {
+            list.removeByTarget(target);
         }
     }
 }

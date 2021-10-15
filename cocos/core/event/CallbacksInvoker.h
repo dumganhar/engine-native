@@ -194,6 +194,7 @@ public:
      * @param key - The event type or target with which the listeners will be removed
      */
     void offAll(const std::string &key);
+    void offAll(void *target);
     void offAll();
 
     /**
@@ -217,7 +218,7 @@ public:
     template <typename... Args>
     void emit(const std::string &key, Args &&...args);
 
-private:
+public:
     template <typename T>
     struct FunctionTraits
     : public FunctionTraits<decltype(&T::operator())> {};
@@ -233,10 +234,11 @@ private:
     };
 
     template <typename T>
-    typename FunctionTraits<std::remove_reference_t<T>>::type toFunction(T &&l) {
+    static typename FunctionTraits<std::remove_reference_t<T>>::type toFunction(T &&l) {
         return typename FunctionTraits<std::remove_reference_t<T>>::type{std::forward<T>(l)};
     }
 
+private:
     std::unordered_map<std::string, CallbackList> _callbackTable;
     static CallbackInfoBase::ID                   cbIDCounter;
 };

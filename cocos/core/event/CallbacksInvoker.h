@@ -49,9 +49,10 @@ struct CallbackInfoBase {
     virtual bool check() const = 0;
     virtual void reset()       = 0;
 
-    ID    _id{0};
     void *_target{nullptr};
+    ID    _id{0};
     bool  _once{false};
+    bool  _isCCObject{false};
 };
 
 template <typename... Args>
@@ -59,10 +60,12 @@ struct CallbackInfo final : public CallbackInfoBase {
     using CallbackFn = std::function<void(Args...)>;
     CallbackFn _callback{nullptr};
 
-    void set(CallbackFn &&callback, void *target, bool once) {
-        _callback = std::forward<CallbackFn>(callback);
-        _target   = target;
-        _once     = once;
+    template <typename Target>
+    void set(CallbackFn &&callback, Target *target, bool once) {
+        _callback   = std::forward<CallbackFn>(callback);
+        _target     = target;
+        _once       = once;
+        _isCCObject = std::is_base_of_v<CCObject, Target>;
     }
 
     void reset() override {
@@ -73,9 +76,8 @@ struct CallbackInfo final : public CallbackInfoBase {
 
     bool check() const override {
         // Validation
-        auto *target = dynamic_cast<CCObject *>(reinterpret_cast<CCObject *>(_target));
-        if (target != nullptr) {
-            if (!isObjectValid(target, true)) {
+        if (_isCCObject) {
+            if (!isObjectValid(reinterpret_cast<CCObject *>(_target), true)) {
                 return false;
             }
         }
@@ -151,27 +153,27 @@ public:
      * @param once - Whether invoke the callback only once (and remove it)
      */
 
-    template <typename... Args>
-    void on(const std::string &key, std::function<void(Args...)> &&callback, void *target, bool once = false);
+    template <typename Target, typename... Args>
+    void on(const std::string &key, std::function<void(Args...)> &&callback, Target *target, bool once = false);
 
     template <typename... Args>
     void on(const std::string &key, std::function<void(Args...)> &&callback, bool once = false);
 
-    template <typename LambdaType>
-    void on(const std::string &key, LambdaType &&callback, void *target, bool once = false);
+    template <typename Target, typename LambdaType>
+    void on(const std::string &key, LambdaType &&callback, Target *target, bool once = false);
 
     template <typename LambdaType>
     void on(const std::string &key, LambdaType &&callback, bool once = false);
 
     //
-    template <typename... Args>
-    void on(const std::string &key, std::function<void(Args...)> &&callback, void *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
+    template <typename Target, typename... Args>
+    void on(const std::string &key, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     template <typename... Args>
     void on(const std::string &key, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
-    template <typename LambdaType>
-    void on(const std::string &key, LambdaType &&callback, void *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
+    template <typename Target, typename LambdaType>
+    void on(const std::string &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     template <typename LambdaType>
     void on(const std::string &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
@@ -184,7 +186,8 @@ public:
      */
     bool hasEventListener(const std::string &key);
     bool hasEventListener(const std::string &key, CallbackInfoBase::ID cbID);
-
+    bool hasEventListener(const std::string &key, void *target);
+    bool hasEventListener(const std::string &key, void *target, CallbackInfoBase::ID cbID);
     /**
      * @zh 移除在特定事件类型中注册的所有回调或在某个目标中注册的所有回调。
      * @en Removes all callbacks registered in a certain event type or all callbacks registered with a certain target
@@ -230,16 +233,16 @@ private:
     };
 
     template <typename T>
-    typename FunctionTraits<std::decay_t<T>>::type toFunction(T &&l) {
-        return static_cast<typename FunctionTraits<std::decay_t<T>>::type>(std::forward<T>(l));
+    typename FunctionTraits<std::remove_reference_t<T>>::type toFunction(T &&l) {
+        return typename FunctionTraits<std::remove_reference_t<T>>::type{std::forward<T>(l)};
     }
 
     std::unordered_map<std::string, CallbackList> _callbackTable;
     static CallbackInfoBase::ID                   cbIDCounter;
 };
 
-template <typename... Args>
-void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, void *target, CallbackInfoBase::ID &outCallbackID, bool once) {
+template <typename Target, typename... Args>
+void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once) {
     auto &list                = _callbackTable[key];
     auto  info                = std::make_shared<CallbackInfo<Args...>>();
     info->_id                 = ++cbIDCounter;
@@ -251,11 +254,11 @@ void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &
 
 template <typename... Args>
 void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &outCallbackID, bool once) {
-    on(key, callback, nullptr, outCallbackID, once);
+    on<std::nullptr_t>(key, std::forward<std::function<void(Args...)>>(callback), nullptr, outCallbackID, once);
 }
 
-template <typename LambdaType>
-void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, void *target, CallbackInfoBase::ID &outCallbackID, bool once) {
+template <typename Target, typename LambdaType>
+void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once) {
     on(key, toFunction(std::forward<LambdaType>(callback)), target, outCallbackID, once);
 }
 
@@ -264,8 +267,8 @@ void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, Callbac
     on(key, toFunction(std::forward<LambdaType>(callback)), outCallbackID, once);
 }
 
-template <typename... Args>
-void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, void *target, bool once) {
+template <typename Target, typename... Args>
+void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, Target *target, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on(key, callback, target, unusedID, once);
 }
@@ -273,11 +276,11 @@ void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &
 template <typename... Args>
 void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, bool once) {
     CallbackInfoBase::ID unusedID{0};
-    on(key, callback, nullptr, unusedID, once);
+    on<std::nullptr_t>(key, std::forward<std::function<void(Args...)>>(callback), nullptr, unusedID, once);
 }
 
-template <typename LambdaType>
-void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, void *target, bool once) {
+template <typename Target, typename LambdaType>
+void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, Target *target, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on(key, toFunction(std::forward<LambdaType>(callback)), target, unusedID, once);
 }
@@ -302,7 +305,7 @@ void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
                 continue;
             }
 
-            auto info = std::dynamic_pointer_cast<CallbackInfo<std::decay_t<Args>...>>(infos[i]);
+            auto info = std::dynamic_pointer_cast<CallbackInfo<Args...>>(infos[i]);
             if (info != nullptr) {
                 const auto &         callback = info->_callback;
                 CallbackInfoBase::ID cbID     = info->_id;

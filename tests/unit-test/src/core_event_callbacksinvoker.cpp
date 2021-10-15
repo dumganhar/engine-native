@@ -78,6 +78,10 @@ public:
         return *_calledCount;
     }
 
+    void clear() {
+        *_calledCount = 0;
+    }
+
     //    TestFunctor(const TestFunctor&) {
     //        CC_LOG_DEBUG("copy consturctor");
     //    }
@@ -113,7 +117,7 @@ TEST(CoreEventCallbacksInvoker, output_log) {
 
     CallbacksInvoker ci;
 
-    class MyTarget : CCObject {
+    class MyTarget {
     public:
         MyTarget(CallbacksInvoker &ci)
         : _ci(ci) {}
@@ -281,4 +285,329 @@ TEST(CoreEventCallbacksInvoker, remove_self_with_target_during_invoking) {
     ci.emit("eve");
     EXPECT_EQ(cb1.getCalledCount(), 1);
     EXPECT_EQ(cb2.getCalledCount(), 2);
+}
+
+TEST(CoreEventCallbacksInvoker, remove_previous_during_invoking) {
+    CallbacksInvoker     ci;
+    CallbackInfoBase::ID id1{0}, id2{0};
+
+    TestFunctor<> cb1{[]() {}};
+    TestFunctor<> cb2{[&]() {
+        ci.off("eve", id1);
+    }};
+
+    ci.on("eve", cb1, id1);
+    ci.on("eve", cb2, id2);
+    ci.emit("eve");
+
+    EXPECT_FALSE(ci.hasEventListener("eve", id1));
+    EXPECT_TRUE(ci.hasEventListener("eve", id2));
+}
+
+TEST(CoreEventCallbacksInvoker, remove_previous_with_target_during_invoking) {
+    CallbacksInvoker     ci;
+    MyCallbackTarget     target;
+    CallbackInfoBase::ID id1{0}, id2{0};
+
+    TestFunctor<> cb1{[]() {}};
+    TestFunctor<> cb2{[&]() {
+        ci.off("eve", id1, &target);
+    }};
+
+    ci.on("eve", cb1, &target, id1);
+    ci.on("eve", cb2, &target, id2);
+    ci.emit("eve");
+
+    EXPECT_FALSE(ci.hasEventListener("eve", &target, id1));
+    EXPECT_TRUE(ci.hasEventListener("eve", &target, id2));
+}
+
+TEST(CoreEventCallbacksInvoker, remove_last_during_invoking) {
+    CallbacksInvoker     ci;
+    CallbackInfoBase::ID id1{0}, id2{0};
+
+    TestFunctor<> cb1{[]() {}};
+    TestFunctor<> cb2{[&]() {
+        ci.off("eve", id2);
+    }};
+
+    ci.on("eve", cb1, id1);
+    ci.on("eve", cb2, id2);
+    ci.emit("eve");
+
+    EXPECT_TRUE(ci.hasEventListener("eve", id1));
+    EXPECT_FALSE(ci.hasEventListener("eve", id2));
+}
+
+TEST(CoreEventCallbacksInvoker, remove_last_with_target_during_invoking) {
+    CallbacksInvoker     ci;
+    MyCallbackTarget     target;
+    CallbackInfoBase::ID id1{0}, id2{0};
+
+    TestFunctor<> cb1{[]() {}};
+    TestFunctor<> cb2{[&]() {
+        ci.off("eve", id2, &target);
+    }};
+
+    ci.on("eve", cb1, &target, id1);
+    ci.on("eve", cb2, &target, id2);
+    ci.emit("eve");
+
+    EXPECT_TRUE(ci.hasEventListener("eve", &target, id1));
+    EXPECT_FALSE(ci.hasEventListener("eve", &target, id2));
+}
+
+TEST(CoreEventCallbacksInvoker, remove_multiple_callbacks_during_invoking) {
+    CallbacksInvoker     ci;
+    MyCallbackTarget     target;
+    CallbackInfoBase::ID id1{0}, id11{0}, id2{0}, id3{0}, id31{0};
+
+    TestFunctor<> cb1{[]() {}};
+    TestFunctor<> cb2{[&]() {
+        ci.off("eve", id1);
+        ci.off("eve", id31, &target);
+    }};
+    TestFunctor<> cb3{[&]() {
+        ci.off("eve", id2, &target);
+    }};
+
+    ci.on("eve", cb1, id1);
+    ci.on("eve", cb1, &target, id11);
+    ci.on("eve", cb2, &target, id2);
+    ci.on("eve", cb3, id3);
+    ci.on("eve", cb3, &target, id31);
+    ci.emit("eve");
+
+    EXPECT_EQ(cb1.getCalledCount(), 2);
+    EXPECT_EQ(cb2.getCalledCount(), 1);
+    EXPECT_EQ(cb3.getCalledCount(), 1);
+
+    EXPECT_TRUE(ci.hasEventListener("eve", &target, id11));
+    EXPECT_FALSE(ci.hasEventListener("eve", id1));
+
+    EXPECT_FALSE(ci.hasEventListener("eve", &target, id2));
+    EXPECT_FALSE(ci.hasEventListener("eve", &target, id31));
+}
+
+TEST(CoreEventCallbacksInvoker, remove_all_callbacks_during_invoking) {
+    CallbacksInvoker     ci;
+    MyCallbackTarget     target;
+    CallbackInfoBase::ID id1{0}, id11{0}, id2{0}, id3{0}, id31{0};
+
+    TestFunctor<> cb1{[]() {}};
+    TestFunctor<> cb2{[&]() {
+        ci.offAll("eve");
+    }};
+    TestFunctor<> cb3{[&]() {
+        ci.off("eve", id2, &target);
+    }};
+
+    ci.on("eve", cb1, id1);
+    ci.on("eve", cb1, &target, id11);
+    ci.on("eve", cb2, &target, id2);
+    ci.on("eve", cb3, id3);
+    ci.on("eve", cb3, &target, id31);
+    ci.emit("eve");
+
+    EXPECT_EQ(cb1.getCalledCount(), 2);
+    EXPECT_EQ(cb2.getCalledCount(), 1);
+    EXPECT_EQ(cb3.getCalledCount(), 0);
+
+    EXPECT_FALSE(ci.hasEventListener("eve"));
+}
+
+TEST(CoreEventCallbacksInvoker, CallbacksInvoker_support_target) {
+    CallbacksInvoker     ci;
+    CallbackInfoBase::ID id1_not_target1{0}, id1_not_target2{0}, id1_target11{0}, id1_target22{0}, id1_b1{0}, id2{0}, id21{0}, id22{0}, id3{0}, id31{0}, id32{0};
+
+    static uint32_t myTargetFooCalledCount = 0;
+    myTargetFooCalledCount                 = 0;
+
+    class MyTarget {
+    public:
+        MyTarget(const std::string &name_ = "")
+        : name(name_) {}
+        void foo() {
+            if (!name.empty()) {
+                ++count;
+            }
+
+            ++myTargetFooCalledCount;
+        }
+        virtual ~MyTarget() = default;
+
+        void operator()() {
+            foo();
+        }
+
+        std::string name;
+        uint32_t    count{0};
+    };
+
+    MyTarget target11{"CallbackTarget1"};
+    MyTarget target1;
+    MyTarget target22{"CallbackTarget2"};
+
+    std::function<void()> cb1          = target1;
+    std::function<void()> cb1_target11 = std::bind(&MyTarget::foo, &target11);
+    std::function<void()> cb1_target22 = std::bind(&MyTarget::foo, &target22);
+
+    TestFunctor<> cb2{[]() {}};
+    TestFunctor<> cb3{[]() {}};
+
+    ci.on("a", cb1, id1_not_target1);
+    ci.on("a", cb1_target11, &target11, id1_target11);
+    ci.on("a", cb1, id1_not_target2);
+    ci.on("a", cb1_target22, &target22, id1_target22);
+    ci.on("a", cb2, &target22, id21);
+    ci.on("a", cb2, &target11, id22);
+    ci.on("a", cb3, id3);
+    ci.on("a", cb3, &target11, id31);
+    ci.on("b", cb1_target11, &target11, id1_b1);
+
+    EXPECT_FALSE(ci.hasEventListener("a", nullptr, id21));
+    EXPECT_FALSE(ci.hasEventListener("a", nullptr, id22));
+
+    EXPECT_TRUE(ci.hasEventListener("a", &target11, id22));
+    EXPECT_TRUE(ci.hasEventListener("a", nullptr, id3));
+
+    ci.emit("a");
+    EXPECT_EQ(myTargetFooCalledCount, 4); //cjh TODO: ts is 3
+    EXPECT_EQ(target11.count, 1);
+    EXPECT_EQ(target22.count, 1);
+
+    EXPECT_EQ(cb2.getCalledCount(), 2);
+    EXPECT_EQ(cb3.getCalledCount(), 2);
+
+    ci.off("b", id1_not_target1);
+    ci.off("b", id1_target22, &target22);
+    EXPECT_TRUE(ci.hasEventListener("b", &target11, id1_b1));
+    ci.off("b", id1_b1, &target11);
+    EXPECT_FALSE(ci.hasEventListener("b", &target11, id1_b1));
+
+    target11.count         = 0;
+    target22.count         = 0;
+    myTargetFooCalledCount = 0;
+    cb2.clear();
+    cb3.clear();
+
+    ci.off("a", id1_target22, &target22);
+    ci.off("a", id1_target11, &target11);
+    ci.off("a", id21, &target22);
+    ci.emit("a");
+
+    EXPECT_EQ(myTargetFooCalledCount, 2);
+    EXPECT_EQ(target11.count, 0);
+    EXPECT_EQ(target22.count, 0);
+
+    EXPECT_EQ(cb2.getCalledCount(), 1);
+    EXPECT_EQ(cb3.getCalledCount(), 2);
+}
+
+TEST(CoreEventCallbacksInvoker, pointer_args) {
+    CallbacksInvoker ci;
+    class Sender {};
+    static Sender sender;
+
+    ci.on("hello", [&](Sender *s) {
+        EXPECT_EQ(s, &sender);
+    });
+
+    ci.emit("hello", &sender);
+
+    //
+    class Foo {
+    public:
+        void foo(Sender *s, int arg1) {
+            EXPECT_EQ(s, &sender);
+            EXPECT_EQ(_magic, 1234);
+            EXPECT_EQ(arg1, 222333);
+        }
+
+    private:
+        int _magic{1234};
+    };
+    Foo myFoo;
+    ci.on("world", CC_CALLBACK_INVOKE_2(Foo::foo, &myFoo, Sender *, int));
+    ci.emit("world", &sender, 222333);
+}
+
+TEST(CoreEventCallbacksInvoker, reference_args) {
+    CallbacksInvoker ci;
+    class Sender {};
+    static Sender sender;
+
+    ci.on("hello", [&](Sender &s) {
+        EXPECT_EQ(&s, &sender);
+    });
+
+    ci.emit("hello", sender);
+    //
+    class Foo {
+    public:
+        void foo(Sender &s) {
+            EXPECT_EQ(&s, &sender);
+            EXPECT_EQ(_magic, 1234);
+        }
+
+    private:
+        int _magic{1234};
+    };
+    Foo myFoo;
+    ci.on("world", CC_CALLBACK_INVOKE_1(Foo::foo, &myFoo, Sender &));
+    ci.emit("world", sender);
+}
+
+TEST(CoreEventCallbacksInvoker, const_pointer_args) {
+    CallbacksInvoker ci;
+    class Sender {};
+    static const Sender sender;
+
+    ci.on("hello", [&](const Sender *s) {
+        EXPECT_EQ(s, &sender);
+    });
+
+    ci.emit("hello", &sender);
+
+    //
+    class Foo {
+    public:
+        void foo(const Sender *s, int arg1) {
+            EXPECT_EQ(s, &sender);
+            EXPECT_EQ(_magic, 1234);
+            EXPECT_EQ(arg1, 222333);
+        }
+
+    private:
+        int _magic{1234};
+    };
+    Foo myFoo;
+    ci.on("world", CC_CALLBACK_INVOKE_2(Foo::foo, &myFoo, const Sender *, int));
+    ci.emit("world", &sender, 222333);
+}
+
+TEST(CoreEventCallbacksInvoker, const_reference_args) {
+    CallbacksInvoker ci;
+    class Sender {};
+    static const Sender sender;
+
+    ci.on("hello", [&](const Sender &s) {
+        EXPECT_EQ(&s, &sender);
+    });
+
+    ci.emit("hello", sender);
+    //
+    class Foo {
+    public:
+        void foo(const Sender &s) {
+            EXPECT_EQ(&s, &sender);
+            EXPECT_EQ(_magic, 1234);
+        }
+
+    private:
+        int _magic{1234};
+    };
+    Foo myFoo;
+    ci.on("world", CC_CALLBACK_INVOKE_1(Foo::foo, &myFoo, const Sender &));
+    ci.emit("world", sender);
 }

@@ -205,7 +205,7 @@ void doDispatchEvent(cc::BaseNode *owner, cc::event::Event event) {
         if (target->getEventProcessor()->capturingTargets) {
             event.currentTarget = target;
             // fire event
-            // target->getEventProcessor()->capturingTargets->emit(event.type, event, cachedArray); //TODO(xwx): emit not implement
+            target->getEventProcessor()->capturingTargets->emit(event.type, event, cachedArray);
             // check if propagation stopped
             if (event.propagationStopped) {
                 cachedArray.clear();
@@ -220,10 +220,10 @@ void doDispatchEvent(cc::BaseNode *owner, cc::event::Event event) {
     event.eventPhase    = 2;
     event.currentTarget = owner;
     if (owner->getEventProcessor()->capturingTargets) {
-        // owner->getEventProcessor()->capturingTargets->emit(event.type, event);
+        owner->getEventProcessor()->capturingTargets->emit(event.type, event);
     }
     if (!event.propagationImmediateStopped && owner->getEventProcessor()->bubblingTargets) {
-        // owner->getEventProcessor()->bubblingTargets->emit(event.type, event);
+        owner->getEventProcessor()->bubblingTargets->emit(event.type, event);
     }
 
     if (!event.propagationStopped && event.bubbles) {
@@ -236,7 +236,7 @@ void doDispatchEvent(cc::BaseNode *owner, cc::event::Event event) {
             if (target->getEventProcessor()->bubblingTargets) {
                 event.currentTarget = target;
                 // fire event
-                // target->getEventProcessor()->bubblingTargets->emit(event.type, event);
+                target->getEventProcessor()->bubblingTargets->emit(event.type, event);
                 // check if propagation stopped
                 if (event.propagationStopped) {
                     cachedArray.clear();
@@ -365,8 +365,9 @@ void NodeEventProcessor::once(const std::string &type, const std::function<void(
     }
     listeners = bubblingTargets;
     listeners->on(type, callback, true);
-    listeners->on(
-        type, [&]() { off(type, callback); }, nullptr, true);
+    // TODO(xwx):
+    // listeners->on(
+    //     type, [&]() { off(type, callback); }, nullptr, true);
 }
 
 void NodeEventProcessor::once(const std::string &type, const std::function<void(BaseNode *)> &callback, void *target, bool useCapture) {
@@ -384,9 +385,9 @@ void NodeEventProcessor::once(const std::string &type, const std::function<void(
         listeners = bubblingTargets;
     }
     listeners->on(type, callback, target, true);
-
-    listeners->on(
-        type, [&]() { off(type, callback, target); }, nullptr, true);
+    // TODO(xwx):
+    // listeners->on(
+    //     type, [&]() { off(type, callback, target); }, nullptr, true);
 }
 
 void NodeEventProcessor::off(const std::string &type, const std::function<void(BaseNode *)> &callback) {
@@ -414,12 +415,25 @@ void NodeEventProcessor::off(const std::string &type, const std::function<void(B
     }
 }
 
-template <typename... Args>
-void NodeEventProcessor::emit(const std::string &type, Args &&...args) {
+void NodeEventProcessor::emit(const std::string &type, const std::any &arg) {
     if (bubblingTargets != nullptr) {
-        bubblingTargets->emit(type, args...);
+        bubblingTargets->emit(type, arg);
     }
 }
+
+void NodeEventProcessor::emit(const std::string &type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
+    if (bubblingTargets != nullptr) {
+        bubblingTargets->emit(type, arg1, arg2, arg3, arg4);
+    }
+}
+
+// TODO(xwx): FIXME
+// template <typename... Args>
+// void NodeEventProcessor::emit(const std::string &type, Args &&...args) {
+//     if (bubblingTargets != nullptr) {
+//         bubblingTargets->emit(type, args...);
+//     }
+// }
 void NodeEventProcessor::dispatchEvent(const event::Event &event) const {
     doDispatchEvent(_node, event);
     cachedArray.clear();
@@ -438,6 +452,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type) {
 
 bool NodeEventProcessor::hasEventListener(const std::string &type, const std::function<void(BaseNode *)> &callback, void *target) {
     bool has = false;
+    // TODO(xwx): FIXME
     // if (bubblingTargets) {
     //     has = bubblingTargets->hasEventListener(type, callback, target);
     // }
@@ -449,6 +464,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type, const std::fu
 
 bool NodeEventProcessor::hasEventListener(const std::string &type, const std::function<void(BaseNode *)> &callback) {
     bool has = false;
+    // TODO(xwx): FIXME
     // if (bubblingTargets) {
     //     has = bubblingTargets->hasEventListener(type, callback);
     // }

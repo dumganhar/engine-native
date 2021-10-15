@@ -25,7 +25,7 @@
 ****************************************************************************/
 #include "core/platform/event-manager/EventListener.h"
 namespace cc {
-namespace event_listener {
+
 EventListener *EventListener::create(const IEventListenerCreateInfo &argObj) {
     // assertID(argObj && argObj.event, 1900);
 
@@ -53,6 +53,5 @@ EventListener *EventListener::create(const IEventListenerCreateInfo &argObj) {
     // }
     return listener;
 }
-} // namespace event_listener
 
 } // namespace cc

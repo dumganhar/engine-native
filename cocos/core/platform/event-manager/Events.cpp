@@ -277,8 +277,8 @@ EventAcceleration::EventAcceleration(const Acceleration &acc, bool bubbles) : Ev
 
 // EventKeyboard
 
-EventKeyboard::EventKeyboard(const event_manager::KeyCode &keyCode, bool isPressed, bool bubbles) : Event(isPressed ? SystemEventType::KEY_DOWN : SystemEventType::KEY_UP, bubbles), _isPressed(isPressed), keyCode(keyCode) {}
+EventKeyboard::EventKeyboard(const event::KeyCode &keyCode, bool isPressed, bool bubbles) : Event(isPressed ? SystemEventType::KEY_DOWN : SystemEventType::KEY_UP, bubbles), _isPressed(isPressed), keyCode(keyCode) {}
 
-EventKeyboard::EventKeyboard(const event_manager::KeyCode &keyCode, const std::string &eventType, bool bubbles) : Event(eventType, bubbles), keyCode(keyCode) {}
+EventKeyboard::EventKeyboard(const event::KeyCode &keyCode, const std::string &eventType, bool bubbles) : Event(eventType, bubbles), keyCode(keyCode) {}
 
 } // namespace cc

@@ -53,15 +53,17 @@ std::unordered_map<Node *, int32_t /* place_holder */> allNodes; //cjh how to cl
 
 Node::Node() {
     allNodes.emplace(this, 0);
+    _eventProcessor = new NodeEventProcessor(this);
 }
 
 Node::Node(const std::string &name) {
     if (name.empty()) {
         _name.append("New Node");
-        return;
+    } else {
+        _name = name;
     }
-    _name = name;
     allNodes.emplace(this, 0);
+    _eventProcessor = new NodeEventProcessor(this);
 }
 
 Node::~Node() {
@@ -69,6 +71,8 @@ Node::~Node() {
     if (iter != allNodes.end()) {
         allNodes.erase(iter);
     }
+
+    CC_SAFE_DELETE(_eventProcessor);
 }
 
 void Node::onBatchCreated(bool /*dontChildPrefab*/) {
@@ -142,19 +146,19 @@ void Node::on(const std::string &type, const std::function<void(Node *)> &callba
     if (type.compare(NodeEventType::TRANSFORM_CHANGED) == 0) {
         _eventMask |= TRANSFORM_ON;
     }
-    cc::NodeEventProcessor::on(type, callback);
+    _eventProcessor->on(type, callback);
 }
 
-void Node::on(const std::string &type, const std::function<void(Node *)> &callback, const std::any &target, bool useCapture) {
+void Node::on(const std::string &type, const std::function<void(Node *)> &callback, void *target, bool useCapture) {
     if (type.compare(NodeEventType::TRANSFORM_CHANGED) == 0) {
         _eventMask |= TRANSFORM_ON;
     }
-    cc::NodeEventProcessor::on(type, callback, target, useCapture);
+    _eventProcessor->on(type, callback, target, useCapture);
 }
 
 void Node::off(const std::string &type, const std::function<void(Node *)> &callback) {
-    cc::NodeEventProcessor::off(type, callback);
-    bool hasListeners = cc::NodeEventProcessor::hasEventListener(type);
+    _eventProcessor->off(type, callback);
+    bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
         if (type.compare(NodeEventType::TRANSFORM_CHANGED)) {
             _eventMask &= ~TRANSFORM_ON;
@@ -162,9 +166,9 @@ void Node::off(const std::string &type, const std::function<void(Node *)> &callb
     }
 }
 
-void Node::off(const std::string &type, const std::function<void(Node *)> &callback, const std::any &target, bool useCapture) {
-    cc::NodeEventProcessor::off(type, callback, target, useCapture);
-    bool hasListeners = cc::NodeEventProcessor::hasEventListener(type);
+void Node::off(const std::string &type, const std::function<void(Node *)> &callback, void *target, bool useCapture) {
+    _eventProcessor->off(type, callback, target, useCapture);
+    bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
         if (type.compare(NodeEventType::TRANSFORM_CHANGED)) {
             _eventMask &= ~TRANSFORM_ON;
@@ -173,11 +177,11 @@ void Node::off(const std::string &type, const std::function<void(Node *)> &callb
 }
 
 void Node::once(const std::string &type, const std::function<void(Node *)> &callback) {
-    cc::NodeEventProcessor::once(type, callback);
+    _eventProcessor->once(type, callback);
 }
 
-void Node::once(const std::string &type, const std::function<void(Node *)> &callback, const std::any &target, bool useCapture) {
-    cc::NodeEventProcessor::once(type, callback, target, useCapture);
+void Node::once(const std::string &type, const std::function<void(Node *)> &callback, void *target, bool useCapture) {
+    _eventProcessor->once(type, callback, target, useCapture);
 }
 void Node::emit(const std::string &type, const std::any &arg) {
     _eventProcessor->emit(type, arg);
@@ -185,25 +189,26 @@ void Node::emit(const std::string &type, const std::any &arg) {
 void Node::emit(const std::string &type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
     _eventProcessor->emit(type, arg1, arg2, arg3, arg4);
 }
+
 void Node::dispatchEvent(const Event &eve) {
     _eventProcessor->dispatchEvent(eve);
 }
 
 bool Node::hasEventListener(const std::string &type) {
-    return cc::NodeEventProcessor::hasEventListener(type);
+    return _eventProcessor->hasEventListener(type);
 }
 
 bool Node::hasEventListener(const std::string &type, const std::function<void(Node *)> &callback) {
-    return cc::NodeEventProcessor::hasEventListener(type, callback);
+    return _eventProcessor->hasEventListener(type, callback);
 }
 
-bool Node::hasEventListener(const std::string &type, const std::function<void(Node *)> &callback, const std::any &target) {
-    return cc::NodeEventProcessor::hasEventListener(type, callback, target);
+bool Node::hasEventListener(const std::string &type, const std::function<void(Node *)> &callback, void *target) {
+    return _eventProcessor->hasEventListener(type, callback, target);
 }
 
 void Node::targetOff(const std::string &type) {
     _eventProcessor->targetOff(type);
-    if ((_eventMask & TRANSFORM_ON) && !cc::NodeEventProcessor::hasEventListener(NodeEventType::TRANSFORM_CHANGED)) {
+    if ((_eventMask & TRANSFORM_ON) && !_eventProcessor->hasEventListener(NodeEventType::TRANSFORM_CHANGED)) {
         _eventMask &= ~TRANSFORM_ON;
     }
 }

@@ -26,7 +26,7 @@
 #include "core/event/Event.h"
 
 namespace cc {
-namespace event {
+
 const std::string Event::NO_TYPE{"no_type"};
 const std::string Event::TOUCH{"touch"};
 const std::string Event::MOUSE{"mouse"};
@@ -36,5 +36,4 @@ const std::string Event::ACCELERATION{"acceleration"};
 Event::Event(std::string eventType) : type(std::move(eventType)) { bubbles = false; }
 Event::Event(std::string eventType, bool bubbles) : type(std::move(eventType)), bubbles(bubbles) {}
 
-} // namespace event
 } // namespace cc

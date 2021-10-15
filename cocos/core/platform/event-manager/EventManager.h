@@ -145,9 +145,9 @@ public:
      * @param nodeOrPriority - 监听程序的优先级。
      * @returns
      */
-    void addListener(EventListener *listener, Node *node) const;
+    inline void addListener(EventListener *listener, Node *node) const {} // TODO(xwx): need to implement
 
-    void addListener(EventListener *listener, int32_t priority) const;
+    inline void addListener(EventListener *listener, int32_t priority) const {} // TODO(xwx): need to implement
 
     /**
      * @en
@@ -172,7 +172,7 @@ public:
      *
      * @param listener - 需要移除的监听器。
      */
-    void removeListener(EventListener *listener) const;
+    inline void removeListener(EventListener *listener) const {} // TODO(xwx): need to implement
 
     /**
      * @en
@@ -193,9 +193,9 @@ public:
      * @param listenerType - 监听器类型。
      * @param recursive - 递归子节点的同类型监听器一并移除。默认为 false。
      */
-    void removeListener(Node *node, bool recursive = false) const;
+    inline void removeListeners(Node *node, bool recursive = false) const {} // TODO(xwx): need to implement
 
-    void removeListener(int32_t eventType, bool recursive = false) const;
+    inline void removeListeners(int32_t eventType, bool recursive = false) const {} // TODO(xwx): need to implement
 
     /**
      * @en

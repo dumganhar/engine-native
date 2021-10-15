@@ -33,7 +33,6 @@
 namespace cc {
 
 class Node;
-class BaseNode;
 
 namespace scene {
 class RenderScene;
@@ -254,7 +253,7 @@ protected:
      * @param outRect - The rect to store the result bounding rect
      * @private
      */
-    virtual Rect _getLocalBounds() { return {};}
+    virtual Rect _getLocalBounds() { return {}; }
 
     /**
      * @en
@@ -312,7 +311,7 @@ protected:
      * ```
      */
     //cjh    @serializable
-    BaseNode *_node{nullptr};
+    Node *_node{nullptr};
 
     /**
      * @private
@@ -320,7 +319,7 @@ protected:
     //cjh    @serializable
     bool _enabled{true};
 
-    friend class BaseNode;
+    friend class Node;
     friend class NodeActivator;
     friend class ComponentScheduler;
     friend class LifeCycleInvoker;

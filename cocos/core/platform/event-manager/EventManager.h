@@ -36,7 +36,6 @@
 #include "core/scene-graph/Node.h"
 
 namespace cc {
-namespace event_listener {
 
 class EventListenerVector {
 public:
@@ -58,7 +57,7 @@ public:
 
     const std::vector<EventListener *> &getSceneGraphPriorityListeners() const;
 
-    std::string getListenerID(event::Event *event) const;
+    std::string getListenerID(Event *event) const;
 
 private:
     std::vector<EventListener *> _fixedListeners;
@@ -263,9 +262,9 @@ public:
      * @param event - 分发事件。
      */
 
-    void dispatchEvent(event::Event *event) const;
+    void dispatchEvent(Event *event) const;
 
-    bool onListenerCallback(EventListener *listener, event::Event *event) const;
+    bool onListenerCallback(EventListener *listener, Event *event) const;
 
     /**
      * @en
@@ -296,7 +295,7 @@ private:
     void onUpdateListeners(EventListenerVector *listeners) const;
     void updateTouchListeners() const;
     void cleanToRemovedListeners() const;
-    void onTouchEventCallback(event_listener::TouchOneByOneEventListener *listeners, std::any argsObj) const;
+    void onTouchEventCallback(TouchOneByOneEventListener *listeners, std::any argsObj) const;
     void dispatchTouchEvent(EventTouch *event) const;
     void onTouchesEventCallback(std::any listener, std::any callbackParams) const;
     void associateNodeAndEventListener(Node *node, EventListener *listener) const;
@@ -319,5 +318,5 @@ private:
     Touch *                   _currentTouch{nullptr};
     std::any                  _currentTouchListener{nullptr};
 };
-} // namespace event_listener
+
 } // namespace cc

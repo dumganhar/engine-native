@@ -31,7 +31,7 @@
 namespace cc {
 
 Scene::Scene(const std::string &name)
-: BaseNode(name) {
+: Node(name) {
     _activeInHierarchy = false;
     _renderScene       = Root::getInstance()->createScene({});
     _globals           = new SceneGlobal();
@@ -51,7 +51,7 @@ void Scene::load() {
     }
     _scene = this;
     // static methode can't use this as parameter type
-    walk(BaseNode::setScene);
+    walk(Node::setScene);
 }
 
 void Scene::activate(bool active /* = true */) {

@@ -29,7 +29,7 @@
 
 namespace cc {
 
-class BaseNode;
+class Node;
 
 /**
  * @en Finds a node by hierarchy path, the path is case-sensitive.
@@ -41,6 +41,6 @@ class BaseNode;
  * @param path The path of the target node
  * @param referenceNode If given, the search will be limited in the sub node tree of the reference node
  */
-BaseNode *find(const std::string &, BaseNode *referenceNode = nullptr);
+Node *find(const std::string &, Node *referenceNode = nullptr);
 
 } // namespace cc

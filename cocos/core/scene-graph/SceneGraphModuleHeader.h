@@ -23,7 +23,6 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "core/scene-graph/BaseNode.h"
 #include "core/scene-graph/ComponentScheduler.h"
 #include "core/scene-graph/Find.h"
 #include "core/scene-graph/Layers.h"

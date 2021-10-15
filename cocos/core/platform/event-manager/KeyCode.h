@@ -27,7 +27,8 @@
 
 namespace cc {
 
-namespace event_manager {
+namespace event {
+
 /**
  * @en Enum type of keyCode for key event
  * @zh 按键事件的按键码
@@ -615,7 +616,7 @@ enum class KeyCode {
     */
     QUOTE = 222,
 
-// #region The new allocated key enum since v3.3
+    // #region The new allocated key enum since v3.3
 
     /**
     * @en The right shift key
@@ -641,10 +642,9 @@ enum class KeyCode {
     */
     NUM_ENTER = 2003,
 
-// #endregion The new allocated key enum since v3.3
+    // #endregion The new allocated key enum since v3.3
 };
 
-} // namespace event_manager
+} // namespace event
+
 } // namespace cc
-
-

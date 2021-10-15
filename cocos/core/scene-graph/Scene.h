@@ -24,7 +24,7 @@
  ****************************************************************************/
 
 #pragma once
-#include "core/scene-graph/BaseNode.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 
@@ -34,9 +34,9 @@ class RenderScene;
 
 class SceneGlobal;
 
-class Scene final : public BaseNode {
+class Scene final : public Node {
 public:
-    using Super = BaseNode;
+    using Super = Node;
     explicit Scene(const std::string &name);
     ~Scene() override;
 

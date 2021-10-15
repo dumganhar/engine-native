@@ -37,7 +37,6 @@
 #include "core/scene-graph/Node.h"
 
 namespace cc {
-namespace event_listener {
 
 struct IEventListenerCreateInfo {
     int32_t                                   event;
@@ -387,5 +386,5 @@ class KeyboardEventListener final : public EventListener {
 
     bool checkAvailable() const;
 };
-} // namespace event_listener
+
 } // namespace cc

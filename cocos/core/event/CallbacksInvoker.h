@@ -172,8 +172,7 @@ public:
      * @param once - Whether invoke the callback only once (and remove it)
      */
     template <typename Target, typename... Args>
-    std::enable_if_t<std::is_base_of_v<CCObject, Target>, void>
-    on(const std::string &key, void (Target::*memberFn)(Args...), Target *target, bool once = false);
+    void on(const std::string &key, void (Target::*memberFn)(Args...), Target *target, bool once = false);
 
     template <typename Target, typename... Args>
     void on(const std::string &key, std::function<void(Args...)> &&callback, Target *target, bool once = false);
@@ -231,8 +230,7 @@ public:
     void off(const std::string &key, void *target);
     void off(CallbackInfoBase::ID cbID);
     template <typename Target, typename... Args>
-    std::enable_if_t<std::is_base_of_v<CCObject, Target>, void>
-    off(const std::string &key, void (Target::*memberFn)(Args...), Target *target);
+    void off(const std::string &key, void (Target::*memberFn)(Args...), Target *target);
 
     /**
      * @zh 派发一个指定事件，并传递需要的参数
@@ -269,8 +267,8 @@ private:
 };
 
 template <typename Target, typename... Args>
-std::enable_if_t<std::is_base_of_v<CCObject, Target>, void>
-CallbacksInvoker::on(const std::string &key, void (Target::*memberFn)(Args...), Target *target, bool once) {
+void CallbacksInvoker::on(const std::string &key, void (Target::*memberFn)(Args...), Target *target, bool once) {
+    static_assert(std::is_base_of_v<CCObject, Target>, "Target must be the subclass of CCObject");
     using CallbackInfoType    = CallbackInfo<Args...>;
     auto &list                = _callbackTable[key];
     auto  info                = std::make_shared<CallbackInfoType>();
@@ -331,8 +329,8 @@ void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, bool on
 }
 
 template <typename Target, typename... Args>
-std::enable_if_t<std::is_base_of_v<CCObject, Target>, void>
-CallbacksInvoker::off(const std::string &key, void (Target::*memberFn)(Args...), Target *target) {
+void CallbacksInvoker::off(const std::string &key, void (Target::*memberFn)(Args...), Target *target) {
+    static_assert(std::is_base_of_v<CCObject, Target>, "Target must be the subclass of CCObject");
     using CallbackFn = void (CCObject::*)(Args...);
     auto iter        = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {

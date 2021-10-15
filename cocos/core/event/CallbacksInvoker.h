@@ -233,8 +233,8 @@ private:
     };
 
     template <typename T>
-    typename FunctionTraits<std::decay_t<T>>::type toFunction(T &&l) {
-        return static_cast<typename FunctionTraits<std::decay_t<T>>::type>(std::forward<T>(l));
+    typename FunctionTraits<std::remove_reference_t<T>>::type toFunction(T &&l) {
+        return typename FunctionTraits<std::remove_reference_t<T>>::type{std::forward<T>(l)};
     }
 
     std::unordered_map<std::string, CallbackList> _callbackTable;
@@ -305,7 +305,7 @@ void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
                 continue;
             }
 
-            auto info = std::dynamic_pointer_cast<CallbackInfo<std::decay_t<Args>...>>(infos[i]);
+            auto info = std::dynamic_pointer_cast<CallbackInfo<Args...>>(infos[i]);
             if (info != nullptr) {
                 const auto &         callback = info->_callback;
                 CallbackInfoBase::ID cbID     = info->_id;

@@ -503,3 +503,111 @@ TEST(CoreEventCallbacksInvoker, CallbacksInvoker_support_target) {
     EXPECT_EQ(cb2.getCalledCount(), 1);
     EXPECT_EQ(cb3.getCalledCount(), 2);
 }
+
+TEST(CoreEventCallbacksInvoker, pointer_args) {
+    CallbacksInvoker ci;
+    class Sender {};
+    static Sender sender;
+
+    ci.on("hello", [&](Sender *s) {
+        EXPECT_EQ(s, &sender);
+    });
+
+    ci.emit("hello", &sender);
+
+    //
+    class Foo {
+    public:
+        void foo(Sender *s, int arg1) {
+            EXPECT_EQ(s, &sender);
+            EXPECT_EQ(_magic, 1234);
+            EXPECT_EQ(arg1, 222333);
+        }
+
+    private:
+        int _magic{1234};
+    };
+    Foo myFoo;
+    ci.on("world", CC_CALLBACK_INVOKE_2(Foo::foo, &myFoo, Sender *, int));
+    ci.emit("world", &sender, 222333);
+}
+
+TEST(CoreEventCallbacksInvoker, reference_args) {
+    CallbacksInvoker ci;
+    class Sender {};
+    static Sender sender;
+
+    ci.on("hello", [&](Sender &s) {
+        EXPECT_EQ(&s, &sender);
+    });
+
+    ci.emit("hello", sender);
+    //
+    class Foo {
+    public:
+        void foo(Sender &s) {
+            EXPECT_EQ(&s, &sender);
+            EXPECT_EQ(_magic, 1234);
+        }
+
+    private:
+        int _magic{1234};
+    };
+    Foo myFoo;
+    ci.on("world", CC_CALLBACK_INVOKE_1(Foo::foo, &myFoo, Sender &));
+    ci.emit("world", sender);
+}
+
+TEST(CoreEventCallbacksInvoker, const_pointer_args) {
+    CallbacksInvoker ci;
+    class Sender {};
+    static const Sender sender;
+
+    ci.on("hello", [&](const Sender *s) {
+        EXPECT_EQ(s, &sender);
+    });
+
+    ci.emit("hello", &sender);
+
+    //
+    class Foo {
+    public:
+        void foo(const Sender *s, int arg1) {
+            EXPECT_EQ(s, &sender);
+            EXPECT_EQ(_magic, 1234);
+            EXPECT_EQ(arg1, 222333);
+        }
+
+    private:
+        int _magic{1234};
+    };
+    Foo myFoo;
+    ci.on("world", CC_CALLBACK_INVOKE_2(Foo::foo, &myFoo, const Sender *, int));
+    ci.emit("world", &sender, 222333);
+}
+
+TEST(CoreEventCallbacksInvoker, const_reference_args) {
+    CallbacksInvoker ci;
+    class Sender {};
+    static const Sender sender;
+
+    ci.on("hello", [&](const Sender &s) {
+        EXPECT_EQ(&s, &sender);
+    });
+
+    ci.emit("hello", sender);
+    //
+    class Foo {
+    public:
+        void foo(const Sender &s) {
+            EXPECT_EQ(&s, &sender);
+            EXPECT_EQ(_magic, 1234);
+        }
+
+    private:
+        int _magic{1234};
+    };
+    Foo myFoo;
+    ci.on("world", CC_CALLBACK_INVOKE_1(Foo::foo, &myFoo, const Sender &));
+    ci.emit("world", sender);
+}

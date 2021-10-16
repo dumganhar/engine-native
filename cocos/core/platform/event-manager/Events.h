@@ -45,8 +45,8 @@ namespace cc {
 class EventMouse final : public Event {
 public:
     EventMouse() = default;
-    EventMouse(const SystemEventTypeUnion &eventType, bool bubbles);
-    EventMouse(const SystemEventTypeUnion &eventType, bool bubbles, const Vec2 &prevLoc);
+    EventMouse(const std::string &eventType, bool bubbles);
+    EventMouse(const std::string &eventType, bool bubbles, const Vec2 &prevLoc);
     ~EventMouse() override = default;
 
     /**
@@ -272,12 +272,12 @@ public:
      *
      * @deprecated since v3.3, please use EventMouse.prototype.type instead.
      */
-    inline const SystemEventTypeUnion &getEventType() const {
+    inline const std::string &getEventType() const {
         return _eventType;
     }
 
 private:
-    SystemEventTypeUnion _eventType;
+    std::string _eventType;
 
     int32_t _button{EventMouse::BUTTON_MISSING};
 
@@ -304,7 +304,7 @@ private:
 class EventTouch final : public Event {
 public:
     EventTouch() = default;
-    EventTouch(std::vector<Touch> changedTouches, bool bubbles, const SystemEventTypeUnion &eventType, std::vector<Touch> touches);
+    EventTouch(std::vector<Touch> changedTouches, bool bubbles, const std::string &eventType, std::vector<Touch> touches);
     ~EventTouch() override = default;
 
     /**
@@ -320,7 +320,7 @@ public:
      *
      * @deprecated since v3.3, please use EventTouch.prototype.type instead.
      */
-    inline SystemEventTypeUnion getEventCode() const {
+    inline const std::string &getEventCode() const {
         return _eventCode;
     }
 
@@ -459,9 +459,9 @@ public:
     bool simulate{false};
 
 private:
-    std::vector<Touch>   _touches;
-    std::vector<Touch>   _allTouches;
-    SystemEventTypeUnion _eventCode; // deprecated since v3.3
+    std::vector<Touch> _touches;
+    std::vector<Touch> _allTouches;
+    std::string        _eventCode; // deprecated since v3.3
 };
 
 /**
@@ -501,7 +501,7 @@ public:
      */
     // constructor (keyCode: number | KeyboardEvent, isPressed: boolean, bubbles?: boolean);
     EventKeyboard(const event::KeyCode &keyCode, bool isPressed, bool bubbles);
-    EventKeyboard(const event::KeyCode &keyCode, const SystemEventTypeUnion &eventType, bool bubbles);
+    EventKeyboard(const event::KeyCode &keyCode, const std::string &eventType, bool bubbles);
     /**
      * @param keyCode - The key code of the current key or the DOM KeyboardEvent
      * @param eventType - The type of the event

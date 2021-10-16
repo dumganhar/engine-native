@@ -23,7 +23,34 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 ****************************************************************************/
-
+#include "core/platform/event-manager/EventListener.h"
 namespace cc {
+EventListener *EventListener::create(const IEventListenerCreateInfo &argObj) {
+    // assertID(argObj && argObj.event, 1900);
+
+    const int32_t &listenerType = argObj.event;
+    EventListener *listener     = nullptr;
+
+    // TODO(xwx): subclasses not implement yet
+    if (listenerType == EventListener::TOUCH_ONE_BY_ONE) {
+        // listener = new TouchOneByOneEventListener();
+    } else if (listenerType == EventListener::TOUCH_ALL_AT_ONCE) {
+        // listener = new TouchAllAtOnceEventListener();
+    } else if (listenerType == EventListener::MOUSE) {
+        // listener = new MouseEventListener();
+    } else if (listenerType == EventListener::KEYBOARD) {
+        // listener = new KeyboardEventListener();
+    } else if (listenerType == EventListener::ACCELERATION) {
+        // listener = new AccelerationEventListener(argObj.callback); // TODO(xwx)
+        // delete argObj.callback;
+    }
+    // TODO(xwx): how to implement in cpp?
+    // if (listener) {
+    //     for (const key of Object.keys(argObj)) {
+    //         listener[key] = argObj[key];
+    //     }
+    // }
+    return listener;
+}
 
 } // namespace cc

@@ -111,19 +111,21 @@ public:
     void   walk(const std::function<void(Node *)> &);
     void   walk(const std::function<void(Node *)> &, const std::function<void(Node *)> &);
 
-    void on(const std::string &, const std::function<void(Node *)> &);
-    void on(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
-    void off(const std::string &, const std::function<void(Node *)> &);
-    void off(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
-    void once(const std::string &, const std::function<void(Node *)> &);
-    void once(const std::string &, const std::function<void(Node *)> &, const std::any &, bool useCapture = false);
+    void on(const std::string &type, const std::function<void(Node *)> &callback);
+    void on(const std::string &type, const std::function<void(Node *)> &callback, void *target, bool useCapture = false);
+
+    void once(const std::string &type, const std::function<void(Node *)> &callback);
+    void once(const std::string &type, const std::function<void(Node *)> &callback, void *target, bool useCapture = false);
+
+    void off(const std::string &type, const std::function<void(Node *)> &callback);
+    void off(const std::string &type, const std::function<void(Node *)> &callback, void *target, bool useCapture = false);
     void emit(const std::string &, const std::any &);
     void emit(const std::string &, const std::any &, const std::any &, const std::any &, const std::any &);
 
     void dispatchEvent(const Event &);
     bool hasEventListener(const std::string &);
     bool hasEventListener(const std::string &, const std::function<void(Node *)> &);
-    bool hasEventListener(const std::string &, const std::function<void(Node *)> &, const std::any &);
+    bool hasEventListener(const std::string &type, const std::function<void(Node *)> &callback, void *target);
     void targetOff(const std::string &);
 
     bool destroy() override {

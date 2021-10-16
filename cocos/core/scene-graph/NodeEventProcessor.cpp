@@ -130,11 +130,11 @@ void mouseMoveHandler(cc::EventListener thiz, cc::EventMouse event) {
     if (true) { // TODO(xwx):hit not define
         if (!thiz._previousIn) {
             // Fix issue when hover node switched, previous hovered node won't get MOUSE_LEAVE notification
-            if (currentHovered && currentHovered->getEventProcessor()->mouseListener) {
+            if (currentHovered && currentHovered->getEventProcessor()->getMouseListener()) {
                 event.type = cc::NodeEventType::MOUSE_LEAVE;
                 currentHovered->dispatchEvent(event);
-                if (currentHovered->getEventProcessor()->mouseListener) {
-                    currentHovered->getEventProcessor()->mouseListener->_previousIn = false;
+                if (currentHovered->getEventProcessor()->getMouseListener()) {
+                    currentHovered->getEventProcessor()->getMouseListener()->_previousIn = false;
                 }
             }
             currentHovered = node;
@@ -156,7 +156,6 @@ void mouseMoveHandler(cc::EventListener thiz, cc::EventMouse event) {
     }
 
     // Event processed, cleanup
-    // event.propagationStopped = true;
     event.propagationStopped = true;
 }
 void mouseUpHandler(cc::EventListener thiz, cc::EventMouse event) {
@@ -202,10 +201,10 @@ void doDispatchEvent(cc::Node *owner, cc::Event event) {
     event.eventPhase = 1;
     for (uint32_t i = cachedArray.size() - 1; i >= 0; --i) {
         target = cachedArray[i];
-        if (target->getEventProcessor()->capturingTargets) {
+        if (target->getEventProcessor()->getCapturingTargets()) {
             event.currentTarget = target;
             // fire event
-            target->getEventProcessor()->capturingTargets->emit(event.type, event, cachedArray);
+            target->getEventProcessor()->getCapturingTargets()->emit(event.type, event, cachedArray);
             // check if propagation stopped
             if (event.propagationStopped) {
                 cachedArray.clear();
@@ -219,11 +218,11 @@ void doDispatchEvent(cc::Node *owner, cc::Event event) {
     // checks if destroyed in capturing callbacks
     event.eventPhase    = 2;
     event.currentTarget = owner;
-    if (owner->getEventProcessor()->capturingTargets) {
-        owner->getEventProcessor()->capturingTargets->emit(event.type, event);
+    if (owner->getEventProcessor()->getCapturingTargets()) {
+        owner->getEventProcessor()->getCapturingTargets()->emit(event.type, event);
     }
-    if (!event.propagationImmediateStopped && owner->getEventProcessor()->bubblingTargets) {
-        owner->getEventProcessor()->bubblingTargets->emit(event.type, event);
+    if (!event.propagationImmediateStopped && owner->getEventProcessor()->getBubblingTargets()) {
+        owner->getEventProcessor()->getBubblingTargets()->emit(event.type, event);
     }
 
     if (!event.propagationStopped && event.bubbles) {
@@ -233,10 +232,10 @@ void doDispatchEvent(cc::Node *owner, cc::Event event) {
         event.eventPhase = 3;
         for (uint32_t i = 0; i < cachedArray.size(); ++i) {
             target = cachedArray[i];
-            if (target->getEventProcessor()->bubblingTargets) {
+            if (target->getEventProcessor()->getBubblingTargets()) {
                 event.currentTarget = target;
                 // fire event
-                target->getEventProcessor()->bubblingTargets->emit(event.type, event);
+                target->getEventProcessor()->getBubblingTargets()->emit(event.type, event);
                 // check if propagation stopped
                 if (event.propagationStopped) {
                     cachedArray.clear();
@@ -268,16 +267,16 @@ std::vector<cc::IListenerMask> searchComponentsInParent(cc::Node *node) {
 
 bool checkListeners(cc::Node *node, const std::vector<std::string> &events) {
     if (!node->getPersistNode()) {
-        if (node->getEventProcessor()->bubblingTargets) {
+        if (node->getEventProcessor()->getBubblingTargets()) {
             for (const auto &event : events) {
-                if (node->getEventProcessor()->bubblingTargets->hasEventListener(event)) {
+                if (node->getEventProcessor()->getBubblingTargets()->hasEventListener(event)) {
                     return true;
                 }
             }
         }
-        if (node->getEventProcessor()->capturingTargets) {
+        if (node->getEventProcessor()->getCapturingTargets()) {
             for (const auto &event : events) {
-                if (node->getEventProcessor()->capturingTargets->hasEventListener(event)) {
+                if (node->getEventProcessor()->getCapturingTargets()->hasEventListener(event)) {
                     return true;
                 }
             }
@@ -298,11 +297,11 @@ void NodeEventProcessor::reattach() {
             if (currMask.empty()) {
                 currMask = searchComponentsInParent<Component>(dynamic_cast<Node *>(node));
             }
-            if (node->getEventProcessor()->touchListener != nullptr) {
-                node->getEventProcessor()->touchListener->mask = currMask;
+            if (node->getEventProcessor()->_touchListener != nullptr) {
+                node->getEventProcessor()->_touchListener->mask = currMask;
             }
-            if (node->getEventProcessor()->mouseListener != nullptr) {
-                node->getEventProcessor()->mouseListener->mask = currMask;
+            if (node->getEventProcessor()->_mouseListener != nullptr) {
+                node->getEventProcessor()->_mouseListener->mask = currMask;
             }
         });
 }
@@ -313,22 +312,22 @@ void NodeEventProcessor::destroy() {
     }
 
     // Remove all event listeners if necessary
-    if (touchListener || mouseListener) {
+    if (_touchListener || _mouseListener) {
         EventManager::getInstance().removeListeners(static_cast<Node *>(_node)); //TODO(xwx): remove Node
-        if (touchListener) {
-            touchListener->owner = nullptr;
-            touchListener->mask.clear();
-            touchListener = nullptr;
+        if (_touchListener) {
+            _touchListener->owner = nullptr;
+            _touchListener->mask.clear();
+            _touchListener = nullptr;
         }
-        if (mouseListener) {
-            mouseListener->owner = nullptr;
-            mouseListener->mask.clear();
-            mouseListener = nullptr;
+        if (_mouseListener) {
+            _mouseListener->owner = nullptr;
+            _mouseListener->mask.clear();
+            _mouseListener = nullptr;
         }
     }
 
-    if (capturingTargets) capturingTargets->offAll();
-    if (bubblingTargets) bubblingTargets->offAll();
+    if (_capturingTargets) _capturingTargets->offAll();
+    if (_bubblingTargets) _bubblingTargets->offAll();
 }
 
 bool NodeEventProcessor::on(const std::string &type, const std::function<void(Node *)> &callback) {
@@ -336,10 +335,10 @@ bool NodeEventProcessor::on(const std::string &type, const std::function<void(No
     if (forDispatch) {
         // return onDispatch(type, callback); // TODO(xwx): return value should be callback
     } else {
-        if (bubblingTargets == nullptr) {
-            bubblingTargets = new CallbacksInvoker();
+        if (_bubblingTargets == nullptr) {
+            _bubblingTargets = new CallbacksInvoker();
         }
-        // return bubblingTargets->on(type, callback); // // TODO(xwx): on runtern value should be callback
+        // return _bubblingTargets->on(type, callback); // // TODO(xwx): on runtern value should be callback
     }
     return false;
 }
@@ -349,10 +348,10 @@ bool NodeEventProcessor::on(const std::string &type, const std::function<void(No
     if (forDispatch) {
         // return onDispatch(type, callback, target, useCapture); // TODO(xwx): return value should be callback
     } else {
-        if (bubblingTargets == nullptr) {
-            bubblingTargets = new CallbacksInvoker();
+        if (_bubblingTargets == nullptr) {
+            _bubblingTargets = new CallbacksInvoker();
         }
-        // return bubblingTargets->on(type, callback, target, useCapture); // // TODO(xwx): on runtern value should be callback
+        // return _bubblingTargets->on(type, callback, target, useCapture); // // TODO(xwx): on runtern value should be callback
     }
     return false;
 }
@@ -360,10 +359,10 @@ bool NodeEventProcessor::on(const std::string &type, const std::function<void(No
 void NodeEventProcessor::once(const std::string &type, const std::function<void(Node *)> &callback) {
     bool              forDispatch = checknSetupSysEvent(type);
     CallbacksInvoker *listeners   = nullptr;
-    if (bubblingTargets == nullptr) {
-        bubblingTargets = new CallbacksInvoker();
+    if (_bubblingTargets == nullptr) {
+        _bubblingTargets = new CallbacksInvoker();
     }
-    listeners = bubblingTargets;
+    listeners = _bubblingTargets;
     listeners->on(type, callback, true);
     // TODO(xwx): FIXME: params not match
     // listeners->on(
@@ -374,15 +373,15 @@ void NodeEventProcessor::once(const std::string &type, const std::function<void(
     bool              forDispatch = checknSetupSysEvent(type);
     CallbacksInvoker *listeners   = nullptr;
     if (useCapture) {
-        if (capturingTargets == nullptr) {
-            capturingTargets = new CallbacksInvoker();
+        if (_capturingTargets == nullptr) {
+            _capturingTargets = new CallbacksInvoker();
         }
-        listeners = capturingTargets;
+        listeners = _capturingTargets;
     } else {
-        if (bubblingTargets == nullptr) {
-            bubblingTargets = new CallbacksInvoker();
+        if (_bubblingTargets == nullptr) {
+            _bubblingTargets = new CallbacksInvoker();
         }
-        listeners = bubblingTargets;
+        listeners = _bubblingTargets;
     }
     listeners->on(type, callback, target, true);
     // TODO(xwx): FIXME: params not match
@@ -400,37 +399,37 @@ void NodeEventProcessor::off(const std::string &type, const std::function<void(N
         offDispatch(type, callback, target, useCapture);
 
         if (touchEventExist) {
-            if (touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
-                EventManager::getInstance().removeListener(touchListener);
-                touchListener = nullptr;
+            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
+                EventManager::getInstance().removeListener(_touchListener);
+                _touchListener = nullptr;
             }
         } else if (mouseEventExist) {
-            if (mouseListener && !checkListeners(_node, MOUSE_EVENTS)) { // TODO(xwx): why !checkListeners(_node, MOUSE_EVENTS) ???
-                EventManager::getInstance().removeListener(mouseListener);
-                mouseListener = nullptr;
+            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) { // TODO(xwx): why !checkListeners(_node, MOUSE_EVENTS) ???
+                EventManager::getInstance().removeListener(_mouseListener);
+                _mouseListener = nullptr;
             }
         }
-    } else if (bubblingTargets != nullptr) {
-        // bubblingTargets->off(type, callback, target);  // TODO(xwx): 3 parameters off not implemented
+    } else if (_bubblingTargets != nullptr) {
+        // _bubblingTargets->off(type, callback, target);  // TODO(xwx): 3 parameters off not implemented
     }
 }
 void NodeEventProcessor::emit(const std::string &type, const std::any &arg) {
-    if (bubblingTargets != nullptr) {
-        bubblingTargets->emit(type, arg);
+    if (_bubblingTargets != nullptr) {
+        _bubblingTargets->emit(type, arg);
     }
 }
 
 void NodeEventProcessor::emit(const std::string &type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
-    if (bubblingTargets != nullptr) {
-        bubblingTargets->emit(type, arg1, arg2, arg3, arg4);
+    if (_bubblingTargets != nullptr) {
+        _bubblingTargets->emit(type, arg1, arg2, arg3, arg4);
     }
 }
 
 // TODO(xwx): need to finish template usage
 // template <typename... Args>
 // void NodeEventProcessor::emit(const std::string &type, Args &&...args) {
-//     if (bubblingTargets != nullptr) {
-//         bubblingTargets->emit(type, args...);
+//     if (_bubblingTargets != nullptr) {
+//         _bubblingTargets->emit(type, args...);
 //     }
 // }
 
@@ -441,11 +440,11 @@ void NodeEventProcessor::dispatchEvent(const Event &event) const {
 
 bool NodeEventProcessor::hasEventListener(const std::string &type) {
     bool has = false;
-    if (bubblingTargets) {
-        has = bubblingTargets->hasEventListener(type);
+    if (_bubblingTargets) {
+        has = _bubblingTargets->hasEventListener(type);
     }
-    if (!has && capturingTargets) {
-        has = capturingTargets->hasEventListener(type);
+    if (!has && _capturingTargets) {
+        has = _capturingTargets->hasEventListener(type);
     }
     return has;
 }
@@ -453,11 +452,11 @@ bool NodeEventProcessor::hasEventListener(const std::string &type) {
 bool NodeEventProcessor::hasEventListener(const std::string &type, const std::function<void(Node *)> &callback, void *target) {
     bool has = false;
     // TODO(xwx): need to finish template usage
-    // if (bubblingTargets) {
-    //     has = bubblingTargets->hasEventListener(type, callback, target);
+    // if (_bubblingTargets) {
+    //     has = _bubblingTargets->hasEventListener(type, callback, target);
     // }
-    // if (!has && capturingTargets) {
-    // has = capturingTargets->hasEventListener(type, callback, target);
+    // if (!has && _capturingTargets) {
+    // has = _capturingTargets->hasEventListener(type, callback, target);
     // }
     return has;
 }
@@ -465,37 +464,37 @@ bool NodeEventProcessor::hasEventListener(const std::string &type, const std::fu
 bool NodeEventProcessor::hasEventListener(const std::string &type, const std::function<void(Node *)> &callback) {
     bool has = false;
     // TODO(xwx): need to finish template usage
-    // if (bubblingTargets) {
-    //     has = bubblingTargets->hasEventListener(type, callback);
+    // if (_bubblingTargets) {
+    //     has = _bubblingTargets->hasEventListener(type, callback);
     // }
-    // if (!has && capturingTargets) {
-    //     has = capturingTargets->hasEventListener(type, callback);
+    // if (!has && _capturingTargets) {
+    //     has = _capturingTargets->hasEventListener(type, callback);
     // }
     return has;
 }
 
 void NodeEventProcessor::targetOff(const std::string &target) {
-    if (capturingTargets) {
-        capturingTargets->offAll(target);
+    if (_capturingTargets) {
+        _capturingTargets->offAll(target);
     }
-    if (bubblingTargets) {
-        bubblingTargets->offAll(target);
+    if (_bubblingTargets) {
+        _bubblingTargets->offAll(target);
     }
 
-    if (touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
-        EventManager::getInstance().removeListener(touchListener);
-        touchListener = nullptr;
+    if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
+        EventManager::getInstance().removeListener(_touchListener);
+        _touchListener = nullptr;
     }
-    if (mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
-        EventManager::getInstance().removeListener(mouseListener);
-        mouseListener = nullptr;
+    if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
+        EventManager::getInstance().removeListener(_mouseListener);
+        _mouseListener = nullptr;
     }
 }
 
 void NodeEventProcessor::getCapturingTargets(const std::string &type, std::vector<Node *> &targets) const {
     auto *parent = _node->getParent();
     while (parent != nullptr) {
-        if (parent->getEventProcessor()->capturingTargets != nullptr && parent->getEventProcessor()->capturingTargets->hasEventListener(type)) {
+        if (parent->getEventProcessor()->_capturingTargets != nullptr && parent->getEventProcessor()->_capturingTargets->hasEventListener(type)) {
             targets.emplace_back(parent);
         }
         parent = parent->getParent();
@@ -505,7 +504,7 @@ void NodeEventProcessor::getCapturingTargets(const std::string &type, std::vecto
 void NodeEventProcessor::getBubblingTargets(const std::string &type, std::vector<Node *> &targets) const {
     auto *parent = _node->getParent();
     while (parent != nullptr) {
-        if (parent->getEventProcessor()->bubblingTargets != nullptr && parent->getEventProcessor()->bubblingTargets->hasEventListener(type)) {
+        if (parent->getEventProcessor()->_bubblingTargets != nullptr && parent->getEventProcessor()->_bubblingTargets->hasEventListener(type)) {
             targets.emplace_back(parent);
         }
         parent = parent->getParent();
@@ -519,7 +518,7 @@ bool NodeEventProcessor::checknSetupSysEvent(const std::string &type) {
 
     const auto &eventManager = EventManager::getInstance();
     if (std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end()) {
-        if (touchListener != nullptr) {
+        if (_touchListener != nullptr) {
             IEventListenerCreateInfo info{
                 .event = EventListener::TOUCH_ONE_BY_ONE,
                 // TODO(xwx): how to implement?
@@ -531,13 +530,13 @@ bool NodeEventProcessor::checknSetupSysEvent(const std::string &type) {
                 // onTouchEnded : _touchEndHandler,
                 // onTouchCancelled : _touchCancelHandler,
             };
-            touchListener = EventListener::create(info);
-            eventManager.addListener(touchListener, dynamic_cast<Node *>(_node));
+            _touchListener = EventListener::create(info);
+            eventManager.addListener(_touchListener, dynamic_cast<Node *>(_node));
             newAdded = true;
         }
         forDispatch = true;
     } else if (std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end()) {
-        if (mouseListener != nullptr) {
+        if (_mouseListener != nullptr) {
             IEventListenerCreateInfo info{
                 .event = EventListener::MOUSE,
                 // TODO(xwx): how to implement?
@@ -549,8 +548,8 @@ bool NodeEventProcessor::checknSetupSysEvent(const std::string &type) {
                 // onMouseUp : _mouseUpHandler,
                 // onMouseScroll : _mouseWheelHandler,
             };
-            mouseListener = EventListener::create(info);
-            eventManager.addListener(mouseListener, dynamic_cast<Node *>(_node));
+            _mouseListener = EventListener::create(info);
+            eventManager.addListener(_mouseListener, dynamic_cast<Node *>(_node));
             newAdded = true;
         }
         forDispatch = true;
@@ -569,15 +568,15 @@ bool NodeEventProcessor::checknSetupSysEvent(const std::string &type) {
 const std::function<void(Node *)> &NodeEventProcessor::onDispatch(const std::string &type, const std::function<void(Node *)> &callback, bool useCapture) {
     CallbacksInvoker *listeners = nullptr;
     if (useCapture) {
-        if (capturingTargets == nullptr) {
-            capturingTargets = new CallbacksInvoker();
+        if (_capturingTargets == nullptr) {
+            _capturingTargets = new CallbacksInvoker();
         }
-        listeners = capturingTargets;
+        listeners = _capturingTargets;
     } else {
-        if (bubblingTargets == nullptr) {
-            bubblingTargets = new CallbacksInvoker();
+        if (_bubblingTargets == nullptr) {
+            _bubblingTargets = new CallbacksInvoker();
         }
-        listeners = bubblingTargets;
+        listeners = _bubblingTargets;
     }
     if (!listeners->hasEventListener(type)) {
         listeners->on(type, callback);
@@ -593,15 +592,15 @@ const std::function<void(Node *)> &NodeEventProcessor::onDispatch(const std::str
     }
     CallbacksInvoker *listeners = nullptr;
     if (useCapture) {
-        if (capturingTargets == nullptr) {
-            capturingTargets = new CallbacksInvoker();
+        if (_capturingTargets == nullptr) {
+            _capturingTargets = new CallbacksInvoker();
         }
-        listeners = capturingTargets;
+        listeners = _capturingTargets;
     } else {
-        if (bubblingTargets == nullptr) {
-            bubblingTargets = new CallbacksInvoker();
+        if (_bubblingTargets == nullptr) {
+            _bubblingTargets = new CallbacksInvoker();
         }
-        listeners = bubblingTargets;
+        listeners = _bubblingTargets;
     }
     if (!listeners->hasEventListener(type)) {
         listeners->on(type, callback, target);
@@ -610,11 +609,11 @@ const std::function<void(Node *)> &NodeEventProcessor::onDispatch(const std::str
     return callback;
 }
 void NodeEventProcessor::offDispatch(const std::string &type) const {
-    if (capturingTargets != nullptr) {
-        capturingTargets->offAll(type);
+    if (_capturingTargets != nullptr) {
+        _capturingTargets->offAll(type);
     }
-    if (bubblingTargets != nullptr) {
-        bubblingTargets->offAll(type);
+    if (_bubblingTargets != nullptr) {
+        _bubblingTargets->offAll(type);
     }
 }
 
@@ -623,14 +622,14 @@ void NodeEventProcessor::offDispatch(const std::string &type, const std::functio
         useCapture = std::any_cast<bool>(target);
         target     = nullptr;
     }
-    CallbacksInvoker *listeners = useCapture ? capturingTargets : bubblingTargets;
+    CallbacksInvoker *listeners = useCapture ? _capturingTargets : _bubblingTargets;
     if (listeners != nullptr) {
         // listeners->off(type, callback, target); // TODO(xwx): 3 parameters off not implemented
     }
 }
 
 void NodeEventProcessor::offDispatch(const std::string &type, const std::function<void(Node *)> &callback, bool useCapture) const {
-    CallbacksInvoker *listeners = useCapture ? capturingTargets : bubblingTargets;
+    CallbacksInvoker *listeners = useCapture ? _capturingTargets : _bubblingTargets;
     if (listeners != nullptr) {
         // listeners->off(type, callback); // TODO(xwx): 3 parameters off not implemented
     }

@@ -42,8 +42,8 @@ class NodeEventProcessor final {
 public:
     NodeEventProcessor() = default;
     explicit NodeEventProcessor(Node *node);
-
     ~NodeEventProcessor() = default;
+
     inline Node *getNode() { return _node; }
     void         reattach();
     void         destroy();
@@ -55,30 +55,6 @@ public:
      * @param event - 分派到事件流中的事件对象。
      */
     void dispatchEvent(const Event &event) const;
-
-    /**
-     * @zh
-     * 节点冒泡事件监听器
-     */
-    CallbacksInvoker *bubblingTargets{nullptr};
-
-    /**
-     * @zh
-     * 节点捕获事件监听器
-     */
-    CallbacksInvoker *capturingTargets{nullptr};
-
-    /**
-     * @zh
-     * 触摸监听器
-     */
-    EventListener *touchListener{nullptr};
-
-    /**
-     * @zh
-     * 鼠标监听器
-     */
-    EventListener *mouseListener{nullptr};
 
     bool hasEventListener(const std::string &type);
     bool hasEventListener(const std::string &type, const std::function<void(Node *)> &callback);
@@ -115,7 +91,36 @@ public:
     void getCapturingTargets(const std::string &type, std::vector<Node *> &targets) const;
     void getBubblingTargets(const std::string &type, std::vector<Node *> &targets) const;
 
+    inline CallbacksInvoker *getBubblingTargets() const { return _bubblingTargets; }
+    inline CallbacksInvoker *getCapturingTargets() const { return _capturingTargets; }
+    inline EventListener *   getTouchListener() const { return _touchListener; }
+    inline EventListener *   getMouseListener() const { return _mouseListener; }
+
 private:
+    /**
+     * @zh
+     * 节点冒泡事件监听器
+     */
+    CallbacksInvoker *_bubblingTargets{nullptr};
+
+    /**
+     * @zh
+     * 节点捕获事件监听器
+     */
+    CallbacksInvoker *_capturingTargets{nullptr};
+
+    /**
+     * @zh
+     * 触摸监听器
+     */
+    EventListener *_touchListener{nullptr};
+
+    /**
+     * @zh
+     * 鼠标监听器
+     */
+    EventListener *_mouseListener{nullptr};
+
     Node *_node{nullptr};
 
     bool checknSetupSysEvent(const std::string &type);
@@ -125,6 +130,8 @@ private:
     void                               offDispatch(const std::string &) const;
     void                               offDispatch(const std::string &, const std::function<void(Node *)> &callback, bool useCapture = false) const;
     void                               offDispatch(const std::string &, const std::function<void(Node *)> &callback, void *target, bool useCapture = false) const;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(NodeEventProcessor);
 };
 
 } // namespace cc

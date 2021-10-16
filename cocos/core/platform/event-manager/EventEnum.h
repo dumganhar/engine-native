@@ -127,8 +127,8 @@ public:
     static const std::string MOUSE_LEAVE;
 
     /**
-     * @en The event type for press the key down event; the event will be continuously dispatched in the key pressed state
-     * @zh 当按下按键时触发的事件; 该事件在按下状态会持续派发
+     * @en The event type for press the key down event, the event will be continuously dispatched in the key pressed state
+     * @zh 当按下按键时触发的事件, 该事件在按下状态会持续派发
     */
     static const std::string KEY_DOWN;
 
@@ -149,17 +149,17 @@ public:
 
     /**
      * @en
-     * The event type for position; rotation; scale changed.Use the type parameter as [[Node.TransformBit]] to check which part is changed
+     * The event type for position, rotation, scale changed.Use the type parameter as [[Node.TransformBit]] to check which part is changed
      *
      * @zh
      * 节点改变位置、旋转或缩放事件。如果具体需要判断是哪一个事件，可通过判断回调的第一个参数类型是 [[Node.TransformBit]] 中的哪一个来获取
      * @example
      * ```
-     * this.node.on(Node.EventType.TRANSFORM_CHANGED; (type)=>{
+     * this.node.on(Node.EventType.TRANSFORM_CHANGED, (type)=>{
      *  if (type & Node.TransformBit.POSITION) {
      *       //...
      *   }
-     * }; this);
+     * }, this);
      * ```
      *
      * @deprecated sincev3.3, please use Node.EventType.TRANSFORM_CHANGED instead
@@ -177,8 +177,8 @@ public:
     /**
      * @en
      * The event type for size change events.
-     * Performance note; this event will be triggered every time corresponding properties being changed;
-     * if the event callback have heavy logic it may have great performance impact; try to avoid such scenario.
+     * Performance note, this event will be triggered every time corresponding properties being changed,
+     * if the event callback have heavy logic it may have great performance impact, try to avoid such scenario.
      *
      * @zh
      * 当节点尺寸改变时触发的事件。
@@ -191,8 +191,8 @@ public:
     /**
      * @en
      * The event type for anchor point change events.
-     * Performance note; this event will be triggered every time corresponding properties being changed;
-     * if the event callback have heavy logic it may have great performance impact; try to avoid such scenario.
+     * Performance note, this event will be triggered every time corresponding properties being changed,
+     * if the event callback have heavy logic it may have great performance impact, try to avoid such scenario.
      *
      * @zh
      * 当节点的 UITransform 锚点改变时触发的事件。
@@ -205,8 +205,8 @@ public:
     /**
      * @en
      * The event type for color change events.
-     * Performance note; this event will be triggered every time corresponding properties being changed;
-     * if the event callback have heavy logic it may have great performance impact; try to avoid such scenario.
+     * Performance note, this event will be triggered every time corresponding properties being changed,
+     * if the event callback have heavy logic it may have great performance impact, try to avoid such scenario.
      *
      * @zh
      * 当节点的 UI 渲染组件颜色属性改变时触发的事件。

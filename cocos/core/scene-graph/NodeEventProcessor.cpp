@@ -426,12 +426,12 @@ void NodeEventProcessor::emit(const std::string &type, const std::any &arg1, con
 }
 
 // TODO(xwx): need to finish template usage
-// template <typename... Args>
-// void NodeEventProcessor::emit(const std::string &type, Args &&...args) {
-//     if (_bubblingTargets != nullptr) {
-//         _bubblingTargets->emit(type, args...);
-//     }
-// }
+template <typename... Args>
+void NodeEventProcessor::emit(const std::string &type, Args &&...args) {
+    if (_bubblingTargets != nullptr) {
+        this->_bubblingTargets->emit(type, std::forward<Args>(args)...);
+    }
+}
 
 void NodeEventProcessor::dispatchEvent(const Event &event) const {
     doDispatchEvent(_node, event);

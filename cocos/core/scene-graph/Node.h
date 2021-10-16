@@ -122,6 +122,9 @@ public:
     void emit(const std::string &, const std::any &);
     void emit(const std::string &, const std::any &, const std::any &, const std::any &, const std::any &);
 
+    template <typename... Args>
+    void emit(const std::string &type, Args &&...args);
+    
     void dispatchEvent(const Event &);
     bool hasEventListener(const std::string &);
     bool hasEventListener(const std::string &, const std::function<void(Node *)> &);

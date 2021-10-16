@@ -188,6 +188,12 @@ void Node::emit(const std::string &type, const std::any &arg) {
 void Node::emit(const std::string &type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
     _eventProcessor->emit(type, arg1, arg2, arg3, arg4);
 }
+
+template <typename... Args>
+void Node::emit(const std::string &type, Args &&...args) {
+    _eventProcessor->emit(type, std::forward<Args>(args)...);
+}
+
 void Node::dispatchEvent(const Event &eve) {
     _eventProcessor->dispatchEvent(eve);
 }

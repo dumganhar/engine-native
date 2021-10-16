@@ -81,8 +81,8 @@ public:
      * @param arg4 - 回调第五个参数。
      */
     // TODO(xwx): need to finish template usage
-    // template <typename... Args>
-    // void emit(const std::string &type, Args &&...args);
+    template <typename... Args>
+    void emit(const std::string &type, Args &&...args);
     void emit(const std::string &type, const std::any &arg);
     void emit(const std::string &type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4);
 

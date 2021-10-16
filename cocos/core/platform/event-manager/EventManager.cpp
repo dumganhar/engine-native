@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "core/platform/event-manager/EventManager.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
 

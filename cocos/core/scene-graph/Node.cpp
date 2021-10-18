@@ -29,7 +29,6 @@
 #include "core/data/Object.h"
 #include "core/scene-graph/NodeActivator.h"
 #include "core/scene-graph/NodeEnum.h"
-#include "core/scene-graph/NodeEventProcessor.h"
 #include "core/scene-graph/Scene.h"
 
 namespace cc {
@@ -141,53 +140,26 @@ void Node::onHierarchyChangedBase(Node *oldParent) {
     }
 }
 
-void Node::on(const std::string &type, const std::function<void(Node *)> &callback) {
-    if (type.compare(NodeEventType::TRANSFORM_CHANGED) == 0) {
-        _eventMask |= TRANSFORM_ON;
-    }
-    _eventProcessor->on(type, callback);
-}
-
-void Node::on(const std::string &type, const std::function<void(Node *)> &callback, void *target, bool useCapture) {
-    if (type.compare(NodeEventType::TRANSFORM_CHANGED) == 0) {
-        _eventMask |= TRANSFORM_ON;
-    }
-    _eventProcessor->on(type, callback, target, useCapture);
-}
-
-void Node::off(const std::string &type, const std::function<void(Node *)> &callback) {
-    _eventProcessor->off(type, callback);
+void Node::off(const std::string &type, bool useCapture) {
+    _eventProcessor->off(type, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
-        if (type.compare(NodeEventType::TRANSFORM_CHANGED)) {
+        if (type == NodeEventType::TRANSFORM_CHANGED) {
             _eventMask &= ~TRANSFORM_ON;
         }
     }
 }
 
-void Node::off(const std::string &type, const std::function<void(Node *)> &callback, void *target, bool useCapture) {
-    _eventProcessor->off(type, callback, target, useCapture);
+void Node::off(const std::string &type, void *target, bool useCapture) {
+    _eventProcessor->off(type, target, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
-        if (type.compare(NodeEventType::TRANSFORM_CHANGED)) {
+        if (type == NodeEventType::TRANSFORM_CHANGED) {
             _eventMask &= ~TRANSFORM_ON;
         }
     }
 }
 
-void Node::once(const std::string &type, const std::function<void(Node *)> &callback) {
-    _eventProcessor->once(type, callback);
-}
-
-void Node::once(const std::string &type, const std::function<void(Node *)> &callback, void *target, bool useCapture) {
-    _eventProcessor->once(type, callback, target, useCapture);
-}
-void Node::emit(const std::string &type, const std::any &arg) {
-    _eventProcessor->emit(type, arg);
-}
-void Node::emit(const std::string &type, const std::any &arg1, const std::any &arg2, const std::any &arg3, const std::any &arg4) {
-    _eventProcessor->emit(type, arg1, arg2, arg3, arg4);
-}
 void Node::dispatchEvent(event::Event *eve) {
     _eventProcessor->dispatchEvent(eve);
 }
@@ -196,12 +168,14 @@ bool Node::hasEventListener(const std::string &type) {
     return _eventProcessor->hasEventListener(type);
 }
 
-bool Node::hasEventListener(const std::string &type, const std::function<void(Node *)> &callback) {
-    return _eventProcessor->hasEventListener(type, callback);
+bool Node::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) {
+    return _eventProcessor->hasEventListener(type, cbID);
 }
-
-bool Node::hasEventListener(const std::string &type, const std::function<void(Node *)> &callback, void *target) {
-    return _eventProcessor->hasEventListener(type, callback, target);
+bool Node::hasEventListener(const std::string &type, void *target) {
+    return _eventProcessor->hasEventListener(type, target);
+}
+bool Node::hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) {
+    return _eventProcessor->hasEventListener(type, target, cbID);
 }
 
 void Node::targetOff(const std::string &type) {

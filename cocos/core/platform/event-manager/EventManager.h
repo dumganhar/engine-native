@@ -45,7 +45,7 @@ namespace cc {
 class Node;
 }
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 class Event;
 class EventTouch;
@@ -353,7 +353,7 @@ protected:
     std::set<std::string> _internalCustomListenerIDs;
 };
 
-NS_CC_END
+NS_CC_EVENT_END
 
 // end of base group
 /// @}

@@ -27,7 +27,7 @@
 #include "core/platform/event-manager/EventEnum.h"
 #include "core/platform/event-manager/Touch.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 EventTouch::EventTouch(EventCode eventCode, bool bubbles)
 : Event(Type::TOUCH, bubbles), _eventCode(eventCode) {
@@ -35,4 +35,4 @@ EventTouch::EventTouch(EventCode eventCode, bool bubbles)
     _allTouches.reserve(MAX_TOUCHES);
 }
 
-NS_CC_END
+NS_CC_EVENT_END

@@ -27,9 +27,9 @@
 #include "core/platform/event-manager/EventKeyboard.h"
 #include "core/platform/event-manager/EventEnum.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 EventKeyboard::EventKeyboard(KeyCode keyCode, bool isPressed, bool bubbles /* = false */)
 : Event(Type::KEYBOARD), _keyCode(keyCode), _isPressed(isPressed) {}
 
-NS_CC_END
+NS_CC_EVENT_END

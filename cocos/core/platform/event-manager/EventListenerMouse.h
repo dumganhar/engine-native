@@ -35,7 +35,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 class Event;
 
@@ -66,7 +66,7 @@ public:
     bool init();
 };
 
-NS_CC_END
+NS_CC_EVENT_END
 
 // end of base group
 /// @}

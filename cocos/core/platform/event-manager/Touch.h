@@ -29,7 +29,7 @@
 #include "base/Ref.h"
 #include "math/Vec2.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 /**
  * @addtogroup base
@@ -173,6 +173,6 @@ private:
 // end of base group
 /// @}
 
-NS_CC_END
+NS_CC_EVENT_END
 
 #endif // __PLATFORM_TOUCH_H__

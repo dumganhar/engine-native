@@ -25,9 +25,9 @@
 
 #include "core/event/Event.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 Event::Event(Type eventType) : Event(eventType, false) {}
 Event::Event(Type eventType, bool bubbles) : _eventType(eventType), _bubbles(bubbles) {}
 
-NS_CC_END
+NS_CC_EVENT_END

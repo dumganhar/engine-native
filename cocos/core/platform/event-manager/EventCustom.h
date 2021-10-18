@@ -34,7 +34,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 /** @class EventCustom
  * @brief Custom event.
@@ -71,7 +71,7 @@ protected:
     std::string _eventName;
 };
 
-NS_CC_END
+NS_CC_EVENT_END
 
 // end of base group
 /// @}

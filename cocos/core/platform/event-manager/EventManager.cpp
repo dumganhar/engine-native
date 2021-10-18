@@ -57,7 +57,7 @@ private:
 
 } // namespace
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 namespace {
 EventManager *eventManager = nullptr;
@@ -1356,4 +1356,4 @@ void EventManager::releaseListener(EventListener *listener) {
     CC_SAFE_RELEASE(listener);
 }
 
-NS_CC_END
+NS_CC_EVENT_END

@@ -26,7 +26,7 @@
 
 #include "core/platform/event-manager/Touch.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 // returns the current touch location in screen coordinates
 Vec2 Touch::getLocationInView() const {
@@ -77,4 +77,4 @@ float Touch::getMaxForce() const {
     return _maxForce;
 }
 
-NS_CC_END
+NS_CC_EVENT_END

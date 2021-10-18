@@ -32,7 +32,7 @@
 
 #include <algorithm>
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 const std::string EventListenerTouchOneByOne::LISTENER_ID = "__cc_touch_one_by_one";
 
@@ -153,4 +153,4 @@ EventListenerTouchAllAtOnce *EventListenerTouchAllAtOnce::clone() {
     return ret;
 }
 
-NS_CC_END
+NS_CC_EVENT_END

@@ -26,7 +26,7 @@
 
 #include "core/platform/event-manager/EventMouse.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 EventMouse::EventMouse(MouseEventType mouseEventCode, bool bubbles, const Vec2 &prevLoc)
 : Event(Type::MOUSE, bubbles), _mouseEventType(mouseEventCode), _mouseButton(MouseButton::BUTTON_MISSING), _x(0.0f), _y(0.0f), _scrollX(0.0f), _scrollY(0.0f), _startPointCaptured(false) {
@@ -70,4 +70,4 @@ Vec2 EventMouse::getStartLocation() const {
 Vec2 EventMouse::getDelta() const {
     return getLocation() - getPreviousLocation();
 }
-NS_CC_END
+NS_CC_EVENT_END

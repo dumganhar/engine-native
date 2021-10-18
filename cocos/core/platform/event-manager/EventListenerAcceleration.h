@@ -34,7 +34,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 /** @class EventListenerAcceleration
  * @brief Acceleration event listener.
@@ -67,7 +67,7 @@ private:
     std::function<void(Acceleration *, Event *)> onAccelerationEvent;
 };
 
-NS_CC_END
+NS_CC_EVENT_END
 
 // end of base group
 /// @}

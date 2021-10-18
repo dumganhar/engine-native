@@ -26,7 +26,7 @@
 #include "core/platform/event-manager/EventListener.h"
 #include "base/Log.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 EventListener::EventListener() {}
 
@@ -49,4 +49,4 @@ bool EventListener::checkAvailable() {
     return (_onEvent != nullptr);
 }
 
-NS_CC_END
+NS_CC_EVENT_END

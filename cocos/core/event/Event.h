@@ -30,7 +30,7 @@
 #include "core/data/Object.h"
 #include "core/platform/event-manager/EventEnum.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 class Event : public Ref {
 public:
@@ -212,4 +212,4 @@ protected:
     bool        _propagationImmediateStopped{false};
 };
 
-NS_CC_END
+NS_CC_EVENT_END

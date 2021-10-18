@@ -26,10 +26,10 @@
 #include "core/platform/event-manager/EventAcceleration.h"
 #include "core/platform/event-manager/EventEnum.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 EventAcceleration::EventAcceleration(const Acceleration &acc, bool bubbles)
 : Event(Type::ACCELERATION, bubbles), _acc(acc) {
 }
 
-NS_CC_END
+NS_CC_EVENT_END

@@ -28,7 +28,7 @@
 #include "base/Macros.h"
 #include "core/platform/event-manager/EventAcceleration.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 const std::string EventListenerAcceleration::LISTENER_ID = "__cc_acceleration";
 
@@ -82,4 +82,4 @@ bool EventListenerAcceleration::checkAvailable() {
     return true;
 }
 
-NS_CC_END
+NS_CC_EVENT_END

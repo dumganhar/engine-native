@@ -27,7 +27,7 @@
 #include "core/platform/event-manager/EventListenerKeyboard.h"
 #include "base/Macros.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 const std::string EventListenerKeyboard::LISTENER_ID = "__cc_keyboard";
 
@@ -85,4 +85,4 @@ bool EventListenerKeyboard::init() {
     return false;
 }
 
-NS_CC_END
+NS_CC_EVENT_END

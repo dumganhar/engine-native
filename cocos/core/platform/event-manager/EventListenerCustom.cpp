@@ -26,7 +26,7 @@
 #include "core/platform/event-manager/EventListenerCustom.h"
 #include "core/platform/event-manager/EventCustom.h"
 
-NS_CC_BEGIN
+NS_CC_EVENT_BEGIN
 
 EventListenerCustom::EventListenerCustom()
 : _onCustomEvent(nullptr) {
@@ -77,4 +77,4 @@ bool EventListenerCustom::checkAvailable() {
     return ret;
 }
 
-NS_CC_END
+NS_CC_EVENT_END

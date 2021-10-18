@@ -74,20 +74,21 @@ public:
     static void    setScene(Node *);
     static index_t getIdxOfChild(const std::vector<Node *> &, Node *);
     // TODO(Lenovo):
-    static Component *findComponent(Node *, const std::string &);
+
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     static Component *findComponent(Node *, const T &);
-    static Component *findComponents(Node *, const std::string &, const std::vector<Component *> &);
+
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     static Component *findComponents(Node *, const T &, const std::vector<Component *> &);
-    static Component *findChildComponent(const std::vector<Node *> &, const std::string &);
+
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static Component *              findChildComponent(const std::vector<Node *> &, const T &);
-    static std::vector<Component *> findChildComponents(const std::vector<Node *> &, const std::string &, std::vector<Component *>);
+    static Component *findChildComponent(const std::vector<Node *> &, const T &);
+
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     static std::vector<Component *> findChildComponents(const std::vector<Node *> &, const T &, std::vector<Component *>);
 
-    static bool  isStatic;
+    static bool isStatic; //cjh TODO: add getter / setter
+
     static void  setDirtyNode(const index_t idx, Node *node);
     static Node *getDirtyNode(const index_t idx);
 
@@ -232,11 +233,6 @@ public:
 
     Component *addComponent(Component *comp);
     void       removeComponent(Component *comp);
-
-    Component *addComponent(const std::string &className);
-    void       removeComponent(const std::string &className);
-
-    Component *getComponent(const std::string &name) const;
 
     template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<Component, T>::value>>
     Component *getComponent() const {

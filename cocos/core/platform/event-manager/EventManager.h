@@ -33,9 +33,9 @@
 #include "core/platform/event-manager/EventEnum.h"
 #include "core/platform/event-manager/EventListener.h"
 #include "core/platform/event-manager/Touch.h"
-#include "core/scene-graph/Node.h"
 
 namespace cc {
+class Node;
 
 class EventListenerVector {
 public:

@@ -420,10 +420,10 @@ template <typename Target, typename... Args>
 bool NodeEventProcessor::hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) {
     bool has = false;
     if (_bubblingTargets) {
-        // has = _bubblingTargets->hasEventListener(type,memberFn, target); // TODO(xwx): not implemented in CallbacksInvoker
+        has = _bubblingTargets->hasEventListener(type,memberFn, target);
     }
     if (!has && _capturingTargets) {
-        // has = _capturingTargets->hasEventListener(type,memberFn, target); // TODO(xwx): not implemented in CallbacksInvoker
+        has = _capturingTargets->hasEventListener(type,memberFn, target);
     }
     return has;
 }

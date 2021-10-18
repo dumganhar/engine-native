@@ -144,7 +144,7 @@ void Node::off(const std::string &type, bool useCapture) {
     _eventProcessor->off(type, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
-        if (type != NodeEventType::TRANSFORM_CHANGED) {
+        if (type == NodeEventType::TRANSFORM_CHANGED) {
             _eventMask &= ~TRANSFORM_ON;
         }
     }
@@ -154,7 +154,7 @@ void Node::off(const std::string &type, void *target, bool useCapture) {
     _eventProcessor->off(type, target, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
-        if (type != NodeEventType::TRANSFORM_CHANGED) {
+        if (type == NodeEventType::TRANSFORM_CHANGED) {
             _eventMask &= ~TRANSFORM_ON;
         }
     }

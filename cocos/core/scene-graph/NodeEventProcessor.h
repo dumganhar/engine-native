@@ -58,8 +58,11 @@ public:
     void dispatchEvent(const Event &event) const;
 
     bool hasEventListener(const std::string &type);
+
     bool hasEventListener(const std::string &type, CallbackInfoBase::ID cbID);
+
     bool hasEventListener(const std::string &type, void *target);
+
     bool hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID);
 
     template <typename Target, typename... Args>
@@ -69,32 +72,41 @@ public:
 
     template <typename... Args>
     void on(const std::string &type, std::function<void(Args...)> &&callback, bool useCapture = false);
+
     template <typename Target, typename... Args>
     void on(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
+
     template <typename Target, typename... Args>
     void on(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
 
     template <typename Target, typename LambdaType>
     void on(const std::string &type, LambdaType &&callback, Target *target, bool useCapture = false);
+
     template <typename LambdaType>
     void on(const std::string &type, LambdaType &&callback, bool useCapture = false);
 
     template <typename... Args>
     void once(const std::string &type, std::function<void(Args...)> &&callback);
+
     template <typename Target, typename... Args>
     void once(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
+
     template <typename Target, typename... Args>
     void once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
 
     template <typename Target, typename LambdaType>
     void once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture = false);
+
     template <typename LambdaType>
     void once(const std::string &type, LambdaType &&callback, bool useCapture = false);
 
     void off(const std::string &type, bool useCapture = false);
+
     void off(const std::string &type, void *target, bool useCapture = false);
+
     template <typename Target, typename... Args>
     void off(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
+
     /**
      * @zh
      * 通过事件名发送自定义事件
@@ -276,6 +288,7 @@ void NodeEventProcessor::on(const std::string &type, LambdaType &&callback, bool
         _bubblingTargets->on(type, callback, _cbID);
     }
 }
+
 template <typename Target, typename... Args>
 void NodeEventProcessor::on(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
     using CallbackInfoType = CallbackInfo<Args...>;
@@ -379,6 +392,7 @@ void NodeEventProcessor::once(const std::string &type, LambdaType &&callback, bo
     listeners->on(
         type, [&]() { off(type); }, nullptr, true);
 }
+
 template <typename Target, typename... Args>
 void NodeEventProcessor::off(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
     bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();

@@ -889,7 +889,7 @@ class NativeFunction(object):
             "is_constructor": self.is_constructor,
             "not_supported": self.not_supported,
             "ret_type": self.ret_type.toJSON(),
-            # "comment": self.comment,
+            "comment": self.comment,
             "current_class_name": self.current_class.class_name if self.current_class is not None else None
         }
 

@@ -45,15 +45,12 @@ SE_DECLARE_FUNC(js_assets_Asset_deserialize);
 SE_DECLARE_FUNC(js_assets_Asset_destroy);
 SE_DECLARE_FUNC(js_assets_Asset_getNativeAsset);
 SE_DECLARE_FUNC(js_assets_Asset_getNativeDep);
-SE_DECLARE_FUNC(js_assets_Asset_getNativeUrl);
 SE_DECLARE_FUNC(js_assets_Asset_getRefCount);
-SE_DECLARE_FUNC(js_assets_Asset_getUuid);
 SE_DECLARE_FUNC(js_assets_Asset_initDefault);
 SE_DECLARE_FUNC(js_assets_Asset_isDefault);
 SE_DECLARE_FUNC(js_assets_Asset_onLoaded);
 SE_DECLARE_FUNC(js_assets_Asset_serialize);
 SE_DECLARE_FUNC(js_assets_Asset_setNativeAsset);
-SE_DECLARE_FUNC(js_assets_Asset_setUuid);
 SE_DECLARE_FUNC(js_assets_Asset_toString);
 SE_DECLARE_FUNC(js_assets_Asset_validate);
 
@@ -150,11 +147,6 @@ bool js_register_cc_ImageAsset(se::Object *obj); // NOLINT
 bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::ImageAsset);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getData);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getFormat);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getHeight);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getUrl);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getWidth);
 SE_DECLARE_FUNC(js_assets_ImageAsset_isCompressed);
 SE_DECLARE_FUNC(js_assets_ImageAsset_ImageAsset);
 

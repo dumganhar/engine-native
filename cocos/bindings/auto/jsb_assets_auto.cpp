@@ -531,7 +531,7 @@ static bool js_assets_Asset_getNativeUrl(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_getNativeUrl)
+SE_BIND_PROP_GET(js_assets_Asset_getNativeUrl)
 
 static bool js_assets_Asset_getRefCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -569,7 +569,7 @@ static bool js_assets_Asset_getUuid(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_getUuid)
+SE_BIND_PROP_GET(js_assets_Asset_getUuid)
 
 static bool js_assets_Asset_initDefault(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -682,7 +682,7 @@ static bool js_assets_Asset_setUuid(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_setUuid)
+SE_BIND_PROP_SET(js_assets_Asset_setUuid)
 
 static bool js_assets_Asset_toString(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -740,6 +740,8 @@ bool js_register_assets_Asset(se::Object* obj) // NOLINT(readability-identifier-
 {
     auto* cls = se::Class::create("Asset", obj, nullptr, nullptr);
 
+    cls->defineProperty("_uuid", _SE(js_assets_Asset_getUuid), _SE(js_assets_Asset_setUuid));
+    cls->defineProperty("nativeUrl", _SE(js_assets_Asset_getNativeUrl), nullptr);
     cls->defineFunction("addRef", _SE(js_assets_Asset_addRef));
     cls->defineFunction("createNode", _SE(js_assets_Asset_createNode));
     cls->defineFunction("decRef", _SE(js_assets_Asset_decRef));
@@ -747,15 +749,12 @@ bool js_register_assets_Asset(se::Object* obj) // NOLINT(readability-identifier-
     cls->defineFunction("destroy", _SE(js_assets_Asset_destroy));
     cls->defineFunction("getNativeAsset", _SE(js_assets_Asset_getNativeAsset));
     cls->defineFunction("getNativeDep", _SE(js_assets_Asset_getNativeDep));
-    cls->defineFunction("getNativeUrl", _SE(js_assets_Asset_getNativeUrl));
     cls->defineFunction("getRefCount", _SE(js_assets_Asset_getRefCount));
-    cls->defineFunction("getUuid", _SE(js_assets_Asset_getUuid));
     cls->defineFunction("initDefault", _SE(js_assets_Asset_initDefault));
     cls->defineFunction("isDefault", _SE(js_assets_Asset_isDefault));
     cls->defineFunction("onLoaded", _SE(js_assets_Asset_onLoaded));
     cls->defineFunction("serialize", _SE(js_assets_Asset_serialize));
     cls->defineFunction("setNativeAsset", _SE(js_assets_Asset_setNativeAsset));
-    cls->defineFunction("setUuid", _SE(js_assets_Asset_setUuid));
     cls->defineFunction("toString", _SE(js_assets_Asset_toString));
     cls->defineFunction("validate", _SE(js_assets_Asset_validate));
     cls->defineFinalizeFunction(_SE(js_cc_Asset_finalize));
@@ -2241,7 +2240,7 @@ static bool js_assets_ImageAsset_getData(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getData)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getData)
 
 static bool js_assets_ImageAsset_getFormat(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2260,7 +2259,7 @@ static bool js_assets_ImageAsset_getFormat(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getFormat)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getFormat)
 
 static bool js_assets_ImageAsset_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2279,7 +2278,7 @@ static bool js_assets_ImageAsset_getHeight(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getHeight)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getHeight)
 
 static bool js_assets_ImageAsset_getUrl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2298,7 +2297,7 @@ static bool js_assets_ImageAsset_getUrl(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getUrl)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getUrl)
 
 static bool js_assets_ImageAsset_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2317,7 +2316,7 @@ static bool js_assets_ImageAsset_getWidth(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getWidth)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getWidth)
 
 static bool js_assets_ImageAsset_isCompressed(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2368,11 +2367,11 @@ bool js_register_assets_ImageAsset(se::Object* obj) // NOLINT(readability-identi
 {
     auto* cls = se::Class::create("ImageAsset", obj, __jsb_cc_Asset_proto, _SE(js_assets_ImageAsset_constructor));
 
-    cls->defineFunction("getData", _SE(js_assets_ImageAsset_getData));
-    cls->defineFunction("getFormat", _SE(js_assets_ImageAsset_getFormat));
-    cls->defineFunction("getHeight", _SE(js_assets_ImageAsset_getHeight));
-    cls->defineFunction("getUrl", _SE(js_assets_ImageAsset_getUrl));
-    cls->defineFunction("getWidth", _SE(js_assets_ImageAsset_getWidth));
+    cls->defineProperty("width", _SE(js_assets_ImageAsset_getWidth), nullptr);
+    cls->defineProperty("height", _SE(js_assets_ImageAsset_getHeight), nullptr);
+    cls->defineProperty("format", _SE(js_assets_ImageAsset_getFormat), nullptr);
+    cls->defineProperty("url", _SE(js_assets_ImageAsset_getUrl), nullptr);
+    cls->defineProperty("data", _SE(js_assets_ImageAsset_getData), nullptr);
     cls->defineFunction("isCompressed", _SE(js_assets_ImageAsset_isCompressed));
     cls->defineFinalizeFunction(_SE(js_cc_ImageAsset_finalize));
     cls->install();

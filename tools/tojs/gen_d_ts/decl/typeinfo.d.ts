@@ -41,6 +41,7 @@ declare interface NativeFunction {
     not_supported: boolean;
     ret_type: NativeType;
     current_class_name: string;
+    comment: string;
 }
 
 

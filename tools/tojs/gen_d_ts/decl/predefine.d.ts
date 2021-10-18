@@ -1,9 +1,12 @@
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable no-trailing-spaces */
 declare namespace cc {
     interface Node {}
     interface Mat4 {}
     interface Vec2 {}
     interface Vec3 {}
     interface Vec4 {}
+    interface Quaternion{}
     interface Data{}
     interface Rect{}
     interface Color {}
@@ -18,6 +21,8 @@ declare namespace cc {
     interface IFlatBuffer{}
     interface Mesh{}
     interface Camera{}
+    interface ResizableBuffer{};
+    type SAXDelegator = any;
 }
 
 declare namespace ns {
@@ -33,3 +38,5 @@ declare namespace nr {
     interface RenderQueue{}
     interface UIPhase{}
 }
+
+

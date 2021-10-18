@@ -62,10 +62,13 @@ public:
     bool hasEventListener(const std::string &type, void *target);
     bool hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID);
 
+    template <typename Target, typename... Args>
+    bool hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target);
+
     static bool checkListeners(Node *node, const std::vector<std::string> &events);
 
     template <typename... Args>
-    void on(const std::string &type, std::function<void(Args...)> &&callback);
+    void on(const std::string &type, std::function<void(Args...)> &&callback, bool useCapture = false);
     template <typename Target, typename... Args>
     void on(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
     template <typename Target, typename... Args>
@@ -82,7 +85,7 @@ public:
     void once(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
     template <typename Target, typename... Args>
     void once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
-    
+
     template <typename Target, typename LambdaType>
     void once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture = false);
     template <typename LambdaType>
@@ -198,7 +201,7 @@ void NodeEventProcessor::onDispatch(const std::string &type, std::function<void(
         listeners = _bubblingTargets;
     }
     if (!listeners->hasEventListener(type)) {
-        listeners->on<Target>(type, std::forward<std::function<void(Args...)>>(callback), target, _cbID);
+        listeners->on(type, std::forward<std::function<void(Args...)>>(callback), target, _cbID);
     }
 }
 
@@ -217,15 +220,15 @@ void NodeEventProcessor::onDispatch(const std::string &type, void (Target::*memb
         listeners = _bubblingTargets;
     }
     if (!listeners->hasEventListener(type)) {
-        listeners->on<Target>(type, memberFn, target, _cbID);
+        listeners->on(type, memberFn, target, _cbID);
     }
 }
 
 template <typename... Args>
-void NodeEventProcessor::on(const std::string &type, std::function<void(Args...)> &&callback) {
+void NodeEventProcessor::on(const std::string &type, std::function<void(Args...)> &&callback, bool useCapture) {
     bool forDispatch = checknSetupSysEvent(type);
     if (forDispatch) {
-        onDispatch(type, std::forward<std::function<void(Args...)>>(callback));
+        onDispatch(type, std::forward<std::function<void(Args...)>>(callback), useCapture);
     } else {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
@@ -238,12 +241,12 @@ template <typename Target, typename... Args>
 void NodeEventProcessor::on(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture) {
     bool forDispatch = checknSetupSysEvent(type);
     if (forDispatch) {
-        onDispatch<Target>(type, std::forward<std::function<void(Args...)>>(callback), target, useCapture);
+        onDispatch(type, std::forward<std::function<void(Args...)>>(callback), target, useCapture);
     } else {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
         }
-        _bubblingTargets->on<Target>(type, std::forward<std::function<void(Args...)>>(callback), _cbID);
+        _bubblingTargets->on(type, std::forward<std::function<void(Args...)>>(callback), _cbID);
     }
 }
 
@@ -252,12 +255,12 @@ template <typename Target, typename LambdaType>
 void NodeEventProcessor::on(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
     bool forDispatch = checknSetupSysEvent(type);
     if (forDispatch) {
-        onDispatch<Target>(type, toFunction(std::forward<LambdaType>(callback)), target, useCapture);
+        onDispatch(type, toFunction(std::forward<LambdaType>(callback)), target, useCapture);
     } else {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
         }
-        _bubblingTargets->on<Target>(type, callback, target, _cbID);
+        _bubblingTargets->on(type, callback, target, _cbID);
     }
 }
 
@@ -278,12 +281,12 @@ void NodeEventProcessor::on(const std::string &type, void (Target::*memberFn)(Ar
     using CallbackInfoType = CallbackInfo<Args...>;
     bool forDispatch       = checknSetupSysEvent(type);
     if (forDispatch) {
-        onDispatch<Target>(type, memberFn, target, useCapture);
+        onDispatch(type, memberFn, target, useCapture);
     } else {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
         }
-        _bubblingTargets->on<Target>(type, memberFn, target, _cbID);
+        _bubblingTargets->on(type, memberFn, target, _cbID);
     }
 }
 
@@ -312,7 +315,7 @@ void NodeEventProcessor::once(const std::string &type, void (Target::*memberFn)(
         }
         listeners = _bubblingTargets;
     }
-    listeners->on<Target>(type, memberFn, target, true);
+    listeners->on(type, memberFn, target, true);
     // TODO(xwx): FIXME: params not match
     // listeners->on(
     //     type, [&]() { off(type, callback, target); }, nullptr, true);
@@ -333,7 +336,7 @@ void NodeEventProcessor::once(const std::string &type, std::function<void(Args..
         }
         listeners = _bubblingTargets;
     }
-    listeners->on<Target>(type, std::forward<std::function<void(Args...)>>(callback), _cbID, target, true);
+    listeners->on(type, std::forward<std::function<void(Args...)>>(callback), _cbID, target, true);
     // TODO(xwx): FIXME: params not match
     listeners->on(
         type, [&]() { off(type, callback, target); }, nullptr, true);
@@ -355,7 +358,7 @@ void NodeEventProcessor::once(const std::string &type, LambdaType &&callback, Ta
         }
         listeners = _bubblingTargets;
     }
-    listeners->on<Target>(type, callback, _cbID, target, true);
+    listeners->on(type, callback, _cbID, target, true);
     // TODO(xwx): FIXME: params not match
     // listeners->on(
     //     type, [&]() { off(type, callback, target); }, nullptr, true);
@@ -400,7 +403,19 @@ void NodeEventProcessor::off(const std::string &type, void (Target::*memberFn)(A
             }
         }
     } else if (_bubblingTargets != nullptr) {
-        _bubblingTargets->off<Target>(type, memberFn, target);
+        _bubblingTargets->off(type, memberFn, target);
     }
+}
+
+template <typename Target, typename... Args>
+bool NodeEventProcessor::hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) {
+    bool has = false;
+    if (_bubblingTargets) {
+        // has = _bubblingTargets->hasEventListener(type,memberFn, target); // TODO(xwx): not implemented in CallbacksInvoker
+    }
+    if (!has && _capturingTargets) {
+        // has = _capturingTargets->hasEventListener(type,memberFn, target); // TODO(xwx): not implemented in CallbacksInvoker
+    }
+    return has;
 }
 } // namespace cc

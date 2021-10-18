@@ -574,7 +574,7 @@ void Node::on(const std::string &type, std::function<void(Args...)> &&callback, 
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
-    _eventProcessor->on<Target>(type, std::forward<std::function<void(Args...)>>(callback), target, useCapture);
+    _eventProcessor->on(type, std::forward<std::function<void(Args...)>>(callback), target, useCapture);
 }
 
 template <typename Target, typename... Args>
@@ -582,7 +582,7 @@ void Node::on(const std::string &type, void (Target::*memberFn)(Args...), Target
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
-    _eventProcessor->on<Target>(type, memberFn, target, useCapture);
+    _eventProcessor->on(type, memberFn, target, useCapture);
 }
 
 template <typename Target, typename LambdaType>
@@ -590,7 +590,7 @@ void Node::on(const std::string &type, LambdaType &&callback, Target *target, bo
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
-    _eventProcessor->on<Target>(type, callback, target, useCapture);
+    _eventProcessor->on(type, callback, target, useCapture);
 }
 template <typename LambdaType>
 void Node::on(const std::string &type, LambdaType &&callback, bool useCapture) {
@@ -606,15 +606,15 @@ void Node::once(const std::string &type, std::function<void(Args...)> &&callback
 }
 template <typename Target, typename... Args>
 void Node::once(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
-    _eventProcessor->once<Target>(type, memberFn, target, useCapture);
+    _eventProcessor->once(type, memberFn, target, useCapture);
 }
 template <typename Target, typename... Args>
 void Node::once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture) {
-    _eventProcessor->once<Target>(type, std::forward<std::function<void(Args...)>>(callback), target, useCapture);
+    _eventProcessor->once(type, std::forward<std::function<void(Args...)>>(callback), target, useCapture);
 }
 template <typename Target, typename LambdaType>
 void Node::once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
-    _eventProcessor->once<Target>(type, callback, target, useCapture);
+    _eventProcessor->once(type, callback, target, useCapture);
 }
 template <typename LambdaType>
 void Node::once(const std::string &type, LambdaType &&callback, bool useCapture) {

@@ -291,7 +291,7 @@ void NodeEventProcessor::reattach() {
     _node->walk(
         [&](Node *node) {
             if (currMask.empty()) {
-                currMask = searchComponentsInParent<Component>(dynamic_cast<Node *>(node));
+                currMask = searchComponentsInParent<Component>(node);
             }
             if (node->getEventProcessor()->_touchListener != nullptr) {
                 node->getEventProcessor()->_touchListener->mask = currMask;
@@ -309,7 +309,7 @@ void NodeEventProcessor::destroy() {
 
     // Remove all event listeners if necessary
     if (_touchListener || _mouseListener) {
-        EventManager::getInstance().removeListeners(static_cast<Node *>(_node)); //TODO(xwx): remove Node
+        EventManager::getInstance().removeListeners(_node);
         if (_touchListener) {
             _touchListener->owner = nullptr;
             _touchListener->mask.clear();
@@ -352,7 +352,7 @@ void NodeEventProcessor::off(const std::string &type, void *target, bool useCapt
     bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
     bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
     if (touchEventExist || mouseEventExist) {
-        // offDispatch(type, callback, target, useCapture);
+        offDispatch(type, target, useCapture);
 
         if (touchEventExist) {
             if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
@@ -366,7 +366,7 @@ void NodeEventProcessor::off(const std::string &type, void *target, bool useCapt
             }
         }
     } else if (_bubblingTargets != nullptr) {
-        _bubblingTargets->off(type, _cbID, target); // TODO(xwx): 3 parameters off not implemented
+        _bubblingTargets->off(type, _cbID, target);
     }
 }
 
@@ -386,27 +386,35 @@ bool NodeEventProcessor::hasEventListener(const std::string &type) {
     return has;
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string &type, const std::function<void(Node *)> &callback, void *target) {
+bool NodeEventProcessor::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) {
     bool has = false;
-    // TODO(xwx): need to finish template usage
-    // if (_bubblingTargets) {
-    //     has = _bubblingTargets->hasEventListener(type, callback, target);
-    // }
-    // if (!has && _capturingTargets) {
-    // has = _capturingTargets->hasEventListener(type, callback, target);
-    // }
+    if (_bubblingTargets) {
+        has = _bubblingTargets->hasEventListener(type, cbID);
+    }
+    if (!has && _capturingTargets) {
+        has = _capturingTargets->hasEventListener(type, cbID);
+    }
     return has;
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string &type, const std::function<void(Node *)> &callback) {
+bool NodeEventProcessor::hasEventListener(const std::string &type, void *target) {
     bool has = false;
-    // TODO(xwx): need to finish template usage
-    // if (_bubblingTargets) {
-    //     has = _bubblingTargets->hasEventListener(type, callback);
-    // }
-    // if (!has && _capturingTargets) {
-    //     has = _capturingTargets->hasEventListener(type, callback);
-    // }
+    if (_bubblingTargets) {
+        has = _bubblingTargets->hasEventListener(type, target);
+    }
+    if (!has && _capturingTargets) {
+        has = _capturingTargets->hasEventListener(type, target);
+    }
+    return has;
+}
+bool NodeEventProcessor::hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) {
+    bool has = false;
+    if (_bubblingTargets) {
+        has = _bubblingTargets->hasEventListener(type, target, cbID);
+    }
+    if (!has && _capturingTargets) {
+        has = _capturingTargets->hasEventListener(type, target, cbID);
+    }
     return has;
 }
 
@@ -502,7 +510,8 @@ bool NodeEventProcessor::checknSetupSysEvent(const std::string &type) {
     return forDispatch;
 }
 
-void NodeEventProcessor::offDispatch(const std::string &type, bool useCapture) const { // TODO(xwx): need to check with ts logic, slightly different
+void NodeEventProcessor::offDispatch(const std::string &type, bool useCapture) const {
+    // TODO(xwx): need to check with ts logic, slightly different, maybe could remove
     // if (!callback) {
     // if (_capturingTargets != nullptr) {
     //     _capturingTargets->offAll(type);

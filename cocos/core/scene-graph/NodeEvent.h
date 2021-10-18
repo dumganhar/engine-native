@@ -54,6 +54,7 @@ public:
     static const std::string NODE_DESTROYED;
     static const std::string LAYER_CHANGED;
     static const std::string SIBLING_ORDER_CHANGED;
+    static const std::string ACTIVE_IN_HIERARCHY_CHANGED;
 };
 
 } // namespace cc

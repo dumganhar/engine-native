@@ -44,7 +44,7 @@
 #include "core/Scheduler.h"
 #include "core/asset-manager/AssetManager.h"
 #include "core/assets/SceneAsset.h"
-#include "core/event/EventEmitter.h"
+#include "core/event/CallbacksInvoker.h"
 #include "core/scene-graph/Node.h"
 #include "core/scene-graph/Scene.h"
 #include "math/Vec2.h"
@@ -83,7 +83,7 @@ class NodeActivator;
  * @param item - The latest item which flow out the pipeline.
  */
 
-class Director final : EventEmitter {
+class Director final : EventTarget {
 public:
     /**
      * @en The event which will be triggered when the singleton of Director initialized.

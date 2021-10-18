@@ -25,15 +25,28 @@
 #pragma once
 
 #include "core/components/Component.h"
+#include "math/Geometry.h"
+#include "math/Vec2.h"
 
 namespace cc {
 
+namespace event {
+class EventListener;
+}
+
 class UITransform : public Component {
-private:
-    /* data */
 public:
     UITransform(/* args */) = default;
-    ~UITransform()          = default;
+    ~UITransform() override = default;
+
+    /**
+     * @zh
+     * 当前节点的点击计算。
+     *
+     * @param point - 屏幕点。
+     * @param listener - 事件监听器。
+     */
+    bool isHit(const Vec2 &point, event::EventListener *listener) const { return false; } //cjh TODO:
 };
 
 } // namespace cc

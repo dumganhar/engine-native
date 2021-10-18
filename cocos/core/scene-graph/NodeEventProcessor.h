@@ -31,7 +31,7 @@
 #include <variant>
 #include "core/event/CallbacksInvoker.h"
 #include "core/event/Event.h"
-#include "core/platform/event-manager/EventListener.h"
+#include "core/platform/event-manager/EventListeners.h"
 #include "core/scene-graph/Node.h"
 #include "core/scene-graph/NodeEvent.h"
 
@@ -54,7 +54,7 @@ public:
      *
      * @param event - 分派到事件流中的事件对象。
      */
-    void dispatchEvent(const Event &event) const;
+    void dispatchEvent(event::Event *event);
 
     bool hasEventListener(const std::string &type);
     bool hasEventListener(const std::string &type, const std::function<void(Node *)> &callback);
@@ -91,10 +91,10 @@ public:
     void getCapturingTargets(const std::string &type, std::vector<Node *> &targets) const;
     void getBubblingTargets(const std::string &type, std::vector<Node *> &targets) const;
 
-    inline CallbacksInvoker *getBubblingTargets() const { return _bubblingTargets; }
-    inline CallbacksInvoker *getCapturingTargets() const { return _capturingTargets; }
-    inline EventListener *   getTouchListener() const { return _touchListener; }
-    inline EventListener *   getMouseListener() const { return _mouseListener; }
+    inline CallbacksInvoker *    getBubblingTargets() const { return _bubblingTargets; }
+    inline CallbacksInvoker *    getCapturingTargets() const { return _capturingTargets; }
+    inline event::EventListener *getTouchListener() const { return _touchListener; }
+    inline event::EventListener *getMouseListener() const { return _mouseListener; }
 
 private:
     /**
@@ -113,13 +113,13 @@ private:
      * @zh
      * 触摸监听器
      */
-    EventListener *_touchListener{nullptr};
+    event::EventListenerTouchOneByOne *_touchListener{nullptr};
 
     /**
      * @zh
      * 鼠标监听器
      */
-    EventListener *_mouseListener{nullptr};
+    event::EventListenerMouse *_mouseListener{nullptr};
 
     Node *_node{nullptr};
 

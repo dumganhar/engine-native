@@ -27,7 +27,7 @@
 
 #include <unordered_map>
 
-#include "core/event/EventEmitter.h"
+#include "core/event/CallbacksInvoker.h"
 #include "core/platform/event-manager/EventEnum.h"
 #include "core/platform/event-manager/Events.h"
 #include "core/platform/event-manager/Touch.h"
@@ -48,15 +48,15 @@ namespace cc {
 * systemEvent.off(SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
 * ```
 */
-class SystemEvent final : public EventEmitter {
+class SystemEvent final : public EventTarget {
 public:
     using EventType = SystemEventType;
 
-    using EventMouseCallback        = std::function<void(const EventMouse &)>;
-    using EventTouchCallback        = std::function<void(const EventTouch &)>;
-    using TouchEventTouchCallback   = std::function<void(const Touch &, const EventTouch &)>;
-    using EventKeyboardCallback     = std::function<void(const EventKeyboard &)>;
-    using EventAccelerationCallback = std::function<void(const EventAcceleration &)>;
+    using EventMouseCallback        = std::function<void(const event::EventMouse &)>;
+    using EventTouchCallback        = std::function<void(const event::EventTouch &)>;
+    using TouchEventTouchCallback   = std::function<void(const event::Touch &, const event::EventTouch &)>;
+    using EventKeyboardCallback     = std::function<void(const event::EventKeyboard &)>;
+    using EventAccelerationCallback = std::function<void(const event::EventAcceleration &)>;
 
     // void on(SystemEventType event, MouseEventCallback cb);
     /**

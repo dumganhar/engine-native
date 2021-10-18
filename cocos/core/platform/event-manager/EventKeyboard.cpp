@@ -21,32 +21,15 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
+ 
  ****************************************************************************/
 
-#include "core/platform/event-manager/EventListener.h"
-#include "base/Log.h"
+#include "core/platform/event-manager/EventKeyboard.h"
+#include "core/platform/event-manager/EventEnum.h"
 
 NS_CC_BEGIN
 
-EventListener::EventListener() {}
-
-EventListener::~EventListener() {
-    CC_LOG_DEBUG("In the destructor of EventListener. %p", this);
-}
-
-bool EventListener::init(Type t, const ListenerID &listenerID, const std::function<void(Event *)> &callback) {
-    _onEvent      = callback;
-    _type         = t;
-    _listenerID   = listenerID;
-    _isRegistered = false;
-    _paused       = false;
-    _isEnabled    = true;
-
-    return true;
-}
-
-bool EventListener::checkAvailable() {
-    return (_onEvent != nullptr);
-}
+EventKeyboard::EventKeyboard(KeyCode keyCode, bool isPressed, bool bubbles /* = false */)
+: Event(Type::KEYBOARD), _keyCode(keyCode), _isPressed(isPressed) {}
 
 NS_CC_END

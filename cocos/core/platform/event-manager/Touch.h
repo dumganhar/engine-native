@@ -23,198 +23,156 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#pragma once
+#ifndef __CC_TOUCH_H__
+#define __CC_TOUCH_H__
 
+#include "base/Ref.h"
 #include "math/Vec2.h"
-namespace cc {
+
+NS_CC_BEGIN
 
 /**
- * @en The  point class
- * @zh 封装了触点相关的信息。
+ * @addtogroup base
+ * @{
  */
-class Touch final {
+
+/** @class Touch
+ * @brief Encapsulates the Touch information, such as touch point, id and so on,
+ and provides the methods that commonly used.
+ */
+class CC_DLL Touch : public Ref {
 public:
-    Touch(float x, float y) {
-        setTouchInfo(0, x, y);
+    /** 
+     * Dispatch mode, how the touches are dispatched.
+     * @js NA
+     */
+    enum class DispatchMode {
+        ALL_AT_ONCE, /** All at once. */
+        ONE_BY_ONE,  /** One by one. */
+    };
+
+    /** Constructor.
+     * @js ctor
+     */
+    Touch()
+    : _id(0),
+      _startPointCaptured(false),
+      _curForce(0.f),
+      _maxForce(0.f) {}
+
+    /** Returns the current touch location in OpenGL coordinates.
+     *
+     * @return The current touch location in OpenGL coordinates.
+     */
+    Vec2 getLocation() const;
+
+    Vec2 getUILocation() const;
+
+    /** Returns the previous touch location in OpenGL coordinates.
+     *
+     * @return The previous touch location in OpenGL coordinates.
+     */
+    Vec2 getPreviousLocation() const;
+    /** Returns the start touch location in OpenGL coordinates.
+     *
+     * @return The start touch location in OpenGL coordinates.
+     */
+    Vec2 getStartLocation() const;
+    /** Returns the delta of 2 current touches locations in screen coordinates.
+     *
+     * @return The delta of 2 current touches locations in screen coordinates.
+     */
+    Vec2 getDelta() const;
+    /** Returns the current touch location in screen coordinates.
+     *
+     * @return The current touch location in screen coordinates.
+     */
+    Vec2 getLocationInView() const;
+    /** Returns the previous touch location in screen coordinates. 
+     *
+     * @return The previous touch location in screen coordinates.
+     */
+    Vec2 getPreviousLocationInView() const;
+    /** Returns the start touch location in screen coordinates.
+     *
+     * @return The start touch location in screen coordinates.
+     */
+    Vec2 getStartLocationInView() const;
+
+    /** Set the touch information. It always used to monitor touch event.
+     *
+     * @param id A given id
+     * @param x A given x coordinate.
+     * @param y A given y coordinate.
+     */
+    void setTouchInfo(int id, float x, float y) {
+        _id        = id;
+        _prevPoint = _point;
+        _point.x   = x;
+        _point.y   = y;
+        _curForce  = 0.0f;
+        _maxForce  = 0.0f;
+        if (!_startPointCaptured) {
+            _startPoint         = _point;
+            _startPointCaptured = true;
+            _prevPoint          = _point;
+        }
     }
 
-    Touch(float x, float y, int32_t id) {
-        setTouchInfo(id, x, y);
+    /** Set the touch information. It always used to monitor touch event.
+     *
+     * @param id A given id
+     * @param x A given x coordinate.
+     * @param y A given y coordinate.
+     * @param force Current force for 3d touch.
+     * @param maxForce maximum possible force for 3d touch.
+     */
+    void setTouchInfo(int id, float x, float y, float force, float maxForce) {
+        _id        = id;
+        _prevPoint = _point;
+        _point.x   = x;
+        _point.y   = y;
+        _curForce  = force;
+        _maxForce  = maxForce;
+        if (!_startPointCaptured) {
+            _startPoint         = _point;
+            _startPointCaptured = true;
+            _prevPoint          = _point;
+        }
     }
-
-    ~Touch() = default;
-
-    /**
-     * @en Returns the current touch location in OpenGL coordinates.、
-     * @zh 获取当前触点位置。
-     * @param out - Pass the out object to avoid object creation, very good practice
+    /** Get touch id.
+     * @js getId
+     * @lua getId
+     *
+     * @return The id of touch.
      */
-    inline const Vec2 &getLocation() const {
-        return *new Vec2(_point.x, _point.y);
-    }
-
-    inline const Vec2 &getLocation(Vec2 &out) const {
-        out.set(_point.x, _point.y);
-        return out;
-    }
-
-    /**
-     * @en Returns X axis location value.
-     * @zh 获取当前触点 X 轴位置。
-     */
-    inline float getLocationX() const {
-        return _point.x;
-    }
-
-    /**
-     * @en Returns Y axis location value.
-     * @zh 获取当前触点 Y 轴位置。
-     */
-    inline float getLocationY() const {
-        return _point.y;
-    }
-
-    /**
-     * @en Returns the current touch location in UI coordinates.、
-     * @zh 获取当前触点在 UI 坐标系中的位置。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getUILocation() const;
-    const Vec2 &getUILocation(Vec2 &out) const;
-
-    /**
-     * @en Returns X axis location value in UI coordinates.
-     * @zh 获取当前触点在 UI 坐标系中 X 轴位置。
-     */
-
-    float getUILocationX() const;
-
-    /**
-     * @en Returns Y axis location value in UI coordinates.
-     * @zh 获取当前触点在 UI 坐标系中 Y 轴位置。
-     */
-    float getUILocationY() const;
-
-    /**
-     * @en Returns the previous touch location.
-     * @zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getPreviousLocation() const;
-    const Vec2 &getPreviousLocation(Vec2 &out) const;
-
-    /**
-     * @en Returns the previous touch location in UI coordinates.
-     * @zh 获取触点在上一次事件时在 UI 坐标系中的位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getUIPreviousLocation() const;
-    const Vec2 &getUIPreviousLocation(Vec2 &out) const;
-
-    /**
-     * @en Returns the start  location.
-     * @zh 获取触点落下时的位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getStartLocation() const;
-    const Vec2 &getStartLocation(Vec2 &out) const;
-
-    /**
-     * @en Returns the start  location in UI coordinates.
-     * @zh 获取触点落下时在 UI 坐标系中的位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getUIStartLocation() const;
-    const Vec2 &getUIStartLocation(Vec2 &out) const;
-
-    /**
-     * @en Returns the delta distance from the previous touche to the current one.
-     * @zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getDelta() const;
-    const Vec2 &getDelta(Vec2 &out) const;
-
-    /**
-     * @en Returns the delta distance from the previous touche to the current one in UI coordinates.
-     * @zh 获取触点距离上一次事件移动在 UI 坐标系中的距离对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getUIDelta() const;
-    const Vec2 &getUIDelta(Vec2 &out) const;
-
-    /**
-     * @en Returns the current  location in screen coordinates.
-     * @zh 获取当前事件在游戏窗口内的坐标位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getLocationInView() const;
-    const Vec2 &getLocationInView(Vec2 &out) const;
-
-    /**
-     * @en Returns the previous  location in screen coordinates.
-     * @zh 获取触点在上一次事件时在游戏窗口中的位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getPreviousLocationInView() const;
-    const Vec2 &getPreviousLocationInView(Vec2 &out) const;
-
-    /**
-     * @en Returns the start  location in screen coordinates.
-     * @zh 获取触点落下时在游戏窗口中的位置对象，对象包含 x 和 y 属性。
-     * @param out - Pass the out object to avoid object creation, very good practice
-     */
-    const Vec2 &getStartLocationInView() const;
-    const Vec2 &getStartLocationInView(Vec2 &out) const;
-
-    /**
-     * @en Returns the id of the  point.
-     * @zh 触点的标识 ID，可以用来在多点触摸中跟踪触点。
-     */
-    inline int32_t getID() const {
+    int getID() const {
         return _id;
     }
-
-    /**
-     * @en Resets  point information.
-     * @zh 重置触点相关的信息。
-     * @param id - The id of the  point
-     * @param x - x position of the  point
-     * @param y - y position of the  point
+    /** Returns the current touch force for 3d touch.
+     *
+     * @return The current touch force for 3d touch.
      */
-    void setTouchInfo(int32_t id = 0);
-
-    void setTouchInfo(int32_t id, float x, float y);
-
-    /**
-     * @en Sets  point location.
-     * @zh 设置触点位置。
-     * @param point - The location
+    float getCurrentForce() const;
+    /** Returns the maximum touch force for 3d touch.
+     *
+     * @return The maximum touch force for 3d touch.
      */
-    void setPoint(const Vec2 &point);
-
-    void setPoint(float x, float y);
-
-    /**
-     * @en Sets the location previously registered for the current .
-     * @zh 设置触点在前一次触发时收集的位置。
-     * @param point - The location
-     */
-    void setPrevPoint(const Vec2 &point);
-
-    void setPrevPoint(float x, float y);
-
-    inline int32_t getLastModified() const {
-        return _lastModified;
-    }
+    float getMaxForce() const;
 
 private:
-    Vec2    _point;
-    Vec2    _prevPoint;
-    int32_t _lastModified{0};
-    int32_t _id{0};
-    Vec2    _startPoint;
-    bool    _startPointCaptured{false};
+    int   _id;
+    bool  _startPointCaptured;
+    Vec2  _startPoint;
+    Vec2  _point;
+    Vec2  _prevPoint;
+    float _curForce;
+    float _maxForce;
 };
 
-} // namespace cc
+// end of base group
+/// @}
+
+NS_CC_END
+
+#endif // __PLATFORM_TOUCH_H__

@@ -23,30 +23,53 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+#ifndef __cocos2d_libs__CCAccelerometerListener__
+#define __cocos2d_libs__CCAccelerometerListener__
+
+#include "core/platform/event-manager/EventAcceleration.h"
 #include "core/platform/event-manager/EventListener.h"
-#include "base/Log.h"
+
+/**
+ * @addtogroup base
+ * @{
+ */
 
 NS_CC_BEGIN
 
-EventListener::EventListener() {}
+/** @class EventListenerAcceleration
+ * @brief Acceleration event listener.
+ * @js NA
+ */
+class CC_DLL EventListenerAcceleration : public EventListener {
+public:
+    static const std::string LISTENER_ID;
 
-EventListener::~EventListener() {
-    CC_LOG_DEBUG("In the destructor of EventListener. %p", this);
-}
+    /** Create a acceleration EventListener.
+     *
+     * @param callback The acceleration callback method.
+     * @return An autoreleased EventListenerAcceleration object.
+     */
+    static EventListenerAcceleration *create(const std::function<void(Acceleration *, Event *)> &callback);
 
-bool EventListener::init(Type t, const ListenerID &listenerID, const std::function<void(Event *)> &callback) {
-    _onEvent      = callback;
-    _type         = t;
-    _listenerID   = listenerID;
-    _isRegistered = false;
-    _paused       = false;
-    _isEnabled    = true;
+    /** Destructor.
+     */
+    virtual ~EventListenerAcceleration();
 
-    return true;
-}
+    /// Overrides
+    virtual EventListenerAcceleration *clone() override;
+    virtual bool                       checkAvailable() override;
 
-bool EventListener::checkAvailable() {
-    return (_onEvent != nullptr);
-}
+    EventListenerAcceleration();
+
+    bool init(const std::function<void(Acceleration *, Event *event)> &callback);
+
+private:
+    std::function<void(Acceleration *, Event *)> onAccelerationEvent;
+};
 
 NS_CC_END
+
+// end of base group
+/// @}
+
+#endif /* defined(__cocos2d_libs__CCAccelerometerListener__) */

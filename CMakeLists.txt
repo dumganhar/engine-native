@@ -1297,6 +1297,7 @@ endif()
 ##### 2d
 cocos_source_files(
     cocos/2d/framework/UITransform.h
+    cocos/2d/framework/UITransform.cpp
 )
 
 ##### 3d
@@ -1495,8 +1496,6 @@ cocos_source_files(
     cocos/core/event/EventTarget.h
     cocos/core/event/EventTargetFactory.cpp
     cocos/core/event/EventTargetFactory.h
-    cocos/core/event/EventEmitter.h
-    cocos/core/event/EventEmitter.cpp
     
     cocos/core/scene-graph/Find.cpp
     cocos/core/scene-graph/Find.h
@@ -1530,24 +1529,44 @@ cocos_source_files(
     cocos/core/utils/ImageUtils.h
     cocos/core/utils/ImageUtils.cpp
 
-    cocos/core/platform/event-manager/Acceleration.h
-    cocos/core/platform/event-manager/Acceleration.cpp
-    cocos/core/platform/event-manager/EventEnum.h
-    cocos/core/platform/event-manager/EventEnum.cpp
-    cocos/core/platform/event-manager/EventListener.h
-    cocos/core/platform/event-manager/EventListener.cpp
-    cocos/core/platform/event-manager/EventManager.h
-    cocos/core/platform/event-manager/EventManager.cpp
     cocos/core/platform/event-manager/Events.h
-    cocos/core/platform/event-manager/Events.cpp
-    cocos/core/platform/event-manager/InputManager.h
-    cocos/core/platform/event-manager/InputManager.cpp
-    cocos/core/platform/event-manager/KeyCode.h
-    cocos/core/platform/event-manager/KeyCode.cpp
-    cocos/core/platform/event-manager/Touch.h
+    cocos/core/platform/event-manager/EventListeners.h
+    cocos/core/platform/event-manager/EventAcceleration.cpp
+    cocos/core/platform/event-manager/EventAcceleration.h
+    cocos/core/platform/event-manager/EventCustom.cpp
+    cocos/core/platform/event-manager/EventCustom.h
+    cocos/core/platform/event-manager/EventManager.cpp
+    cocos/core/platform/event-manager/EventManager.h
+    cocos/core/platform/event-manager/EventKeyboard.cpp
+    cocos/core/platform/event-manager/EventKeyboard.h
+    cocos/core/platform/event-manager/EventListener.cpp
+    cocos/core/platform/event-manager/EventListener.h
+    cocos/core/platform/event-manager/EventListenerAcceleration.cpp
+    cocos/core/platform/event-manager/EventListenerAcceleration.h
+    cocos/core/platform/event-manager/EventListenerCustom.cpp
+    cocos/core/platform/event-manager/EventListenerCustom.h
+    cocos/core/platform/event-manager/EventListenerKeyboard.cpp
+    cocos/core/platform/event-manager/EventListenerKeyboard.h
+    cocos/core/platform/event-manager/EventListenerMouse.cpp
+    cocos/core/platform/event-manager/EventListenerMouse.h
+    cocos/core/platform/event-manager/EventListenerTouch.cpp
+    cocos/core/platform/event-manager/EventListenerTouch.h
+    cocos/core/platform/event-manager/EventMouse.cpp
+    cocos/core/platform/event-manager/EventMouse.h
+    cocos/core/platform/event-manager/EventTouch.cpp
+    cocos/core/platform/event-manager/EventTouch.h
+    cocos/core/platform/event-manager/EventType.h
     cocos/core/platform/event-manager/Touch.cpp
-    cocos/core/platform/event-manager/SystemEvent.h
+    cocos/core/platform/event-manager/Touch.h
+    cocos/core/platform/event-manager/EventEnum.cpp
+    cocos/core/platform/event-manager/EventEnum.h
+    cocos/core/platform/event-manager/InputManager.cpp
+    cocos/core/platform/event-manager/InputManager.h
     cocos/core/platform/event-manager/SystemEvent.cpp
+    cocos/core/platform/event-manager/SystemEvent.h
+    cocos/core/platform/event-manager/KeyCode.cpp
+    cocos/core/platform/event-manager/KeyCode.h
+
     cocos/core/platform/native/SystemInfo.h
     cocos/core/platform/native/SystemInfo.cpp
 

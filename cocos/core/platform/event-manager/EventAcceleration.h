@@ -23,30 +23,53 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "core/platform/event-manager/EventListener.h"
-#include "base/Log.h"
+#ifndef __cocos2d_libs__CCAccelerometerEvent__
+#define __cocos2d_libs__CCAccelerometerEvent__
+
+#include "core/event/Event.h"
+
+/**
+ * @addtogroup base
+ * @{
+ */
 
 NS_CC_BEGIN
 
-EventListener::EventListener() {}
+/** @struct Acceleration
+ * The device accelerometer reports values for each axis in units of g-force.
+ */
+class CC_DLL Acceleration
+: public Ref {
+public:
+    double x;
+    double y;
+    double z;
 
-EventListener::~EventListener() {
-    CC_LOG_DEBUG("In the destructor of EventListener. %p", this);
-}
+    double timestamp;
 
-bool EventListener::init(Type t, const ListenerID &listenerID, const std::function<void(Event *)> &callback) {
-    _onEvent      = callback;
-    _type         = t;
-    _listenerID   = listenerID;
-    _isRegistered = false;
-    _paused       = false;
-    _isEnabled    = true;
+    Acceleration() : x(0), y(0), z(0), timestamp(0) {}
+};
 
-    return true;
-}
+/** @class EventAcceleration
+ * @brief Accelerometer event.
+ */
+class CC_DLL EventAcceleration : public Event {
+public:
+    /** Constructor.
+     *
+     * @param acc - The acceleration
+     * @param bubbles - Indicate whether the event bubbles up through the hierarchy or not.
+     */
+    EventAcceleration(const Acceleration &acc, bool bubbles);
 
-bool EventListener::checkAvailable() {
-    return (_onEvent != nullptr);
-}
+private:
+    Acceleration _acc;
+    friend class EventListenerAcceleration;
+};
 
 NS_CC_END
+
+// end of base group
+/// @}
+
+#endif /* defined(__cocos2d_libs__CCAccelerometerEvent__) */

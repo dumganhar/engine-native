@@ -21,32 +21,52 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
+ 
  ****************************************************************************/
 
+#ifndef __cocos2d_libs__CCKeyboardEventListener__
+#define __cocos2d_libs__CCKeyboardEventListener__
+
+#include "core/platform/event-manager/EventKeyboard.h"
 #include "core/platform/event-manager/EventListener.h"
-#include "base/Log.h"
+
+/**
+ * @addtogroup base
+ * @{
+ */
 
 NS_CC_BEGIN
 
-EventListener::EventListener() {}
+class Event;
 
-EventListener::~EventListener() {
-    CC_LOG_DEBUG("In the destructor of EventListener. %p", this);
-}
+/** @class EventListenerKeyboard
+ * @brief Keyboard event listener.
+ * @js cc._EventListenerKeyboard
+ */
+class CC_DLL EventListenerKeyboard : public EventListener {
+public:
+    static const std::string LISTENER_ID;
 
-bool EventListener::init(Type t, const ListenerID &listenerID, const std::function<void(Event *)> &callback) {
-    _onEvent      = callback;
-    _type         = t;
-    _listenerID   = listenerID;
-    _isRegistered = false;
-    _paused       = false;
-    _isEnabled    = true;
+    /** Create a keyboard event listener.
+     * 
+     * @return An autoreleased EventListenerKeyboard object.
+     */
+    static EventListenerKeyboard *create();
 
-    return true;
-}
+    /// Overrides
+    virtual EventListenerKeyboard *clone() override;
+    virtual bool                   checkAvailable() override;
 
-bool EventListener::checkAvailable() {
-    return (_onEvent != nullptr);
-}
+    std::function<void(KeyCode, Event *)> onKeyPressed;
+    std::function<void(KeyCode, Event *)> onKeyReleased;
+
+    EventListenerKeyboard();
+    bool init();
+};
 
 NS_CC_END
+
+// end of base group
+/// @}
+
+#endif /* defined(__cocos2d_libs__CCKeyboardEventListener__) */

@@ -122,7 +122,7 @@ public:
     void emit(const std::string &, const std::any &);
     void emit(const std::string &, const std::any &, const std::any &, const std::any &, const std::any &);
 
-    void dispatchEvent(const Event &);
+    void dispatchEvent(event::Event *event);
     bool hasEventListener(const std::string &);
     bool hasEventListener(const std::string &, const std::function<void(Node *)> &);
     bool hasEventListener(const std::string &type, const std::function<void(Node *)> &callback, void *target);

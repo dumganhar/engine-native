@@ -25,130 +25,93 @@
 
 #pragma once
 
+#include <string>
+
 #include "core/data/Object.h"
 #include "core/platform/event-manager/EventEnum.h"
 
-namespace cc {
+NS_CC_BEGIN
 
-class Event {
+class Event : public Ref {
 public:
+    // Event types
+    enum class Type {
+        TOUCH,
+        KEYBOARD,
+        ACCELERATION,
+        MOUSE,
+        FOCUS,
+        GAME_CONTROLLER,
+        CUSTOM
+    };
+
     Event() = default;
-    explicit Event(std::string eventType);
-    Event(std::string eventType, bool bubbles);
+    explicit Event(Type eventType);
+    Event(Type eventType, bool bubbles);
     virtual ~Event() = default;
 
-    // Event types
-
-    /**
-     * @en
-     * Code for event without type.
-     *
-     * @zh
-     * 没有类型的事件。
-     */
-    static const std::string NO_TYPE;
-
-    /**
-     * @en
-     * The type code of Touch event.
-     *
-     * @zh
-     * 触摸事件类型。
-     *
-     * @deprecated since v3.3, please use SystemEvent.EventType.TOUCH_START, SystemEvent.EventType.TOUCH_MOVE, SystemEvent.EventType.TOUCH_END and SystemEvent.EventType.TOUCH_CANCEL instead
-     */
-    static const std::string TOUCH;
-    /**
-     * @en
-     * The type code of Mouse event.
-     *
-     * @zh
-     * 鼠标事件类型。
-     *
-     * @deprecated since v3.3, please use SystemEvent.EventType.MOUSE_DOWN, SystemEvent.EventType.MOUSE_MOVE, SystemEvent.EventType.MOUSE_UP, SystemEvent.EventType.MOUSE_WHEEL, Node.EventType.MOUSE_ENTER and Node.EventType.MOUSE_LEAVE instead
-     */
-    static const std::string MOUSE;
-
-    /**
-     * @en
-     * The type code of Keyboard event.
-     *
-     * @zh
-     * 键盘事件类型。
-     *
-     * @deprecated since v3.3, please use SystemEvent.EventType.KEY_DOWN and SystemEvent.EventType.KEY_UP instead
-     */
-    static const std::string KEYBOARD;
-
-    /**
-     * @en
-     * The type code of Acceleration event.
-     *
-     * @zh
-     * 加速器事件类型。
-     *
-     * @deprecated since v3.3, please use SystemEvent.EventType.DEVICEMOTION instead
-     */
-    static const std::string ACCELERATION;
-
     // Event phases
+    enum class Phase {
+        /**
+         * @en
+         * Events not currently dispatched are in this phase.
+         *
+         * @zh
+         * 尚未派发事件阶段。
+         */
+        NONE = 0,
+
+        /**
+         * @en
+         * The capturing phase comprises the journey from the root to the last node before the event target's node
+         * [markdown](http://www.w3.org/TR/DOM-Level-3-Events/#event-flow)
+         *
+         * @zh
+         * 捕获阶段，包括事件目标节点之前从根节点到最后一个节点的过程。
+         */
+        CAPTURING = 1,
+
+        /**
+         * @en
+         * The target phase comprises only the event target node
+         * [markdown] (http://www.w3.org/TR/DOM-Level-3-Events/#event-flow)
+         *
+         * @zh
+         * 目标阶段仅包括事件目标节点。
+         */
+        AT_TARGET = 2,
+
+        /**
+         * @en
+         * The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the hierarchy
+         * [markdown] (http://www.w3.org/TR/DOM-Level-3-Events/#event-flow)
+         *
+         * @zh
+         * 冒泡阶段， 包括回程遇到到层次根节点的任何后续节点。
+         */
+        BUBBLING = 3
+    };
 
     /**
      * @en
-     * Events not currently dispatched are in this phase.
+     * Checks whether the event has been stopped.
      *
      * @zh
-     * 尚未派发事件阶段。
+     * 检查该事件是否已经停止传递。
      */
-    static const int32_t NONE{0};
+    inline bool isStopped() const { return _propagationStopped || _propagationImmediateStopped; }
 
     /**
      * @en
-     * The capturing phase comprises the journey from the root to the last node before the event target's node
-     * [markdown](http://www.w3.org/TR/DOM-Level-3-Events/#event-flow)
-     *
+     * Gets current target of the event                                                            <br/>
+     * note: It only be available when the event listener is associated with node.                <br/>
+     * It returns 0 when the listener is associated with fixed priority.
      * @zh
-     * 捕获阶段，包括事件目标节点之前从根节点到最后一个节点的过程。
+     * 获取当前目标节点
+     * @returns - The target with which the event associates.
      */
-    static const int32_t CAPTURING_PHASE{1};
-
-    /**
-     * @en
-     * The target phase comprises only the event target node
-     * [markdown] (http://www.w3.org/TR/DOM-Level-3-Events/#event-flow)
-     *
-     * @zh
-     * 目标阶段仅包括事件目标节点。
-     */
-    static const int32_t AT_TARGET{2};
-
-    /**
-     * @en
-     * The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the hierarchy
-     * [markdown] (http://www.w3.org/TR/DOM-Level-3-Events/#event-flow)
-     *
-     * @zh
-     * 冒泡阶段， 包括回程遇到到层次根节点的任何后续节点。
-     */
-    static const int32_t BUBBLING_PHASE{3};
-
-    /**
-     * @en
-     * The name of the event
-     *
-     * @zh
-     * 事件类型。
-     */
-    std::string type;
-
-    /**
-     * @en
-     * Indicate whether the event bubbles up through the hierarchy or not.
-     *
-     * @zh
-     * 表示该事件是否进行冒泡。
-     */
-    bool bubbles{false};
+    inline CCObject *getCurrentTarget() const { return _currentTarget; }
+    inline void      setCurrentTarget(CCObject *target) { _currentTarget = target; }
 
     /**
      * @en
@@ -157,16 +120,29 @@ public:
      * @zh
      * 最初事件触发的目标。
      */
-    CCObject *target{nullptr};
+    inline CCObject *getTarget() const { return _target; }
+    inline void      setTarget(CCObject *target) { _target = target; } //cjh shared_ptr?
 
     /**
      * @en
-     * A reference to the currently registered target for the event.
+     * Gets the event type.
+     * @zh
+     * 获取事件类型。
+     */
+    inline Type getEventType() const { return _eventType; }
+
+    inline const std::string &getEventName() const { return _eventName; }
+    inline void               setEventName(const std::string &eventName) { _eventName = eventName; }
+
+    /**
+     * @en
+     * Indicate whether the event bubbles up through the hierarchy or not.
      *
      * @zh
-     * 当前目标。
+     * 表示该事件是否进行冒泡。
      */
-    CCObject *currentTarget{nullptr};
+    inline bool isUseBubbles() const { return _bubbles; }
+    inline void setUseBubbles(bool useBubbles) { _bubbles = useBubbles; };
 
     /**
      * @en
@@ -182,7 +158,8 @@ public:
      * @zh
      * 事件阶段。
      */
-    int32_t eventPhase{0};
+    inline Phase getEventPhase() const { return _eventPhase; }
+    inline void  setEventPhase(Phase phase) { _eventPhase = phase; }
 
     /**
      * @en
@@ -191,7 +168,8 @@ public:
      * @zh
      * 停止传递当前事件。
      */
-    bool propagationStopped{false};
+    inline bool isPropagationStopped() const { return _propagationStopped; }
+    inline void setPropagationStopped(bool stopped) { _propagationStopped = stopped; }
 
     /**
      * @en
@@ -201,7 +179,8 @@ public:
      * @zh
      * 立即停止当前事件的传递，事件甚至不会被分派到所连接的当前目标。
      */
-    bool propagationImmediateStopped{false};
+    bool isPropagationImmediateStopped() const { return _propagationImmediateStopped; }
+    void setPropagationImmediateStopped(bool stopped) { _propagationImmediateStopped = stopped; }
 
     /**
      * @en
@@ -220,35 +199,17 @@ public:
      * @param type - The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
      * @param bubbles - A boolean indicating whether the event bubbles up through the tree or not
      */
-    void reuse(const std::string& type, bool bubbles = false);
+    void reuse(const std::string &type, bool bubbles = false);
 
-    /**
-     * @en
-     * Checks whether the event has been stopped.
-     *
-     * @zh
-     * 检查该事件是否已经停止传递。
-     */
-    inline bool isStopped() const { return propagationStopped || propagationImmediateStopped; }
-
-    /**
-     * @en
-     * Gets current target of the event                                                            <br/>
-     * note: It only be available when the event listener is associated with node.                <br/>
-     * It returns 0 when the listener is associated with fixed priority.
-     * @zh
-     * 获取当前目标节点
-     * @returns - The target with which the event associates.
-     */
-    inline CCObject *getCurrentTarget() const { return currentTarget; }
-
-    /**
-     * @en
-     * Gets the event type.
-     * @zh
-     * 获取事件类型。
-     */
-    inline std::string getType() const { return type; }
+protected:
+    CCObject *  _target{nullptr};
+    CCObject *  _currentTarget{nullptr};
+    Phase       _eventPhase{Phase::NONE};
+    Type        _eventType;
+    std::string _eventName;
+    bool        _bubbles{false};
+    bool        _propagationStopped{false};
+    bool        _propagationImmediateStopped{false};
 };
 
-} // namespace cc
+NS_CC_END

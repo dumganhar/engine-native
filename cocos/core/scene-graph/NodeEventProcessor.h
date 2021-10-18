@@ -91,7 +91,7 @@ public:
     template <typename LambdaType>
     void once(const std::string &type, LambdaType &&callback, bool useCapture = false);
 
-    void off(const std::string &type);
+    void off(const std::string &type, bool useCapture = false);
     void off(const std::string &type, void *target, bool useCapture = false);
     template <typename Target, typename... Args>
     void off(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
@@ -155,6 +155,7 @@ private:
     template <typename Target, typename... Args>
     void onDispatch(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
 
+    void offDispatch(bool useCapture = false) const;
     void offDispatch(const std::string &type, bool useCapture = false) const;
     void offDispatch(const std::string &type, void *target, bool useCapture = false) const;
 
@@ -250,7 +251,6 @@ void NodeEventProcessor::on(const std::string &type, std::function<void(Args...)
     }
 }
 
-// LambdaType
 template <typename Target, typename LambdaType>
 void NodeEventProcessor::on(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
     bool forDispatch = checknSetupSysEvent(type);
@@ -316,9 +316,8 @@ void NodeEventProcessor::once(const std::string &type, void (Target::*memberFn)(
         listeners = _bubblingTargets;
     }
     listeners->on(type, memberFn, target, true);
-    // TODO(xwx): FIXME: params not match
-    // listeners->on(
-    //     type, [&]() { off(type, callback, target); }, nullptr, true);
+    listeners->on(
+        type, [&]() { off(type, memberFn, target); }, nullptr, true);
 }
 
 template <typename Target, typename... Args>
@@ -337,12 +336,10 @@ void NodeEventProcessor::once(const std::string &type, std::function<void(Args..
         listeners = _bubblingTargets;
     }
     listeners->on(type, std::forward<std::function<void(Args...)>>(callback), _cbID, target, true);
-    // TODO(xwx): FIXME: params not match
     listeners->on(
-        type, [&]() { off(type, callback, target); }, nullptr, true);
+        type, [&]() { off(type, target); }, nullptr, true);
 }
 
-//
 template <typename Target, typename LambdaType>
 void NodeEventProcessor::once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
     bool              forDispatch = checknSetupSysEvent(type);
@@ -359,9 +356,8 @@ void NodeEventProcessor::once(const std::string &type, LambdaType &&callback, Ta
         listeners = _bubblingTargets;
     }
     listeners->on(type, callback, _cbID, target, true);
-    // TODO(xwx): FIXME: params not match
-    // listeners->on(
-    //     type, [&]() { off(type, callback, target); }, nullptr, true);
+    listeners->on(
+        type, [&]() { off(type, target); }, nullptr, true);
 }
 
 template <typename LambdaType>
@@ -380,9 +376,8 @@ void NodeEventProcessor::once(const std::string &type, LambdaType &&callback, bo
         listeners = _bubblingTargets;
     }
     listeners->on(type, callback, _cbID, true);
-    // TODO(xwx): FIXME: params not match
-    // listeners->on(
-    //     type, [&]() { off(type, callback, target); }, nullptr, true);
+    listeners->on(
+        type, [&]() { off(type); }, nullptr, true);
 }
 template <typename Target, typename... Args>
 void NodeEventProcessor::off(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {

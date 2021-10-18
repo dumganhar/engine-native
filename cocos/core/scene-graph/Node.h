@@ -134,7 +134,7 @@ public:
     template <typename LambdaType>
     void once(const std::string &type, LambdaType &&callback, bool useCapture = false);
 
-    void off(const std::string &type);
+    void off(const std::string &type, bool useCapture = false);
     void off(const std::string &type, void *target, bool useCapture = false);
     template <typename Target, typename... Args>
     void off(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);

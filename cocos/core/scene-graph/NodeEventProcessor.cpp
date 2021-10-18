@@ -326,11 +326,11 @@ void NodeEventProcessor::destroy() {
     if (_bubblingTargets) _bubblingTargets->offAll();
 }
 
-void NodeEventProcessor::off(const std::string &type) {
+void NodeEventProcessor::off(const std::string &type, bool useCapture) {
     bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
     bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
     if (touchEventExist || mouseEventExist) {
-        offDispatch(type);
+        offDispatch(type, useCapture);
 
         if (touchEventExist) {
             if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???

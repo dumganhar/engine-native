@@ -140,8 +140,8 @@ void Node::onHierarchyChangedBase(Node *oldParent) {
     }
 }
 
-void Node::off(const std::string &type) {
-    _eventProcessor->off(type);
+void Node::off(const std::string &type, bool useCapture) {
+    _eventProcessor->off(type, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
         if (type != NodeEventType::TRANSFORM_CHANGED) {

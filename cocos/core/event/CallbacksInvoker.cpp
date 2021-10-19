@@ -245,7 +245,7 @@ void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID) {
     }
 }
 
-void CallbacksInvoker::off(const std::string &key, void *target) {
+void CallbacksInvoker::offAll(const std::string &key, void *target) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {
         auto &      list  = iter->second;

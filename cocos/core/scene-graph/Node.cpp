@@ -174,8 +174,8 @@ bool Node::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) 
 bool Node::hasEventListener(const std::string &type, void *target) {
     return _eventProcessor->hasEventListener(type, target);
 }
-bool Node::hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) {
-    return _eventProcessor->hasEventListener(type, target, cbID);
+bool Node::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID, void *target) {
+    return _eventProcessor->hasEventListener(type, cbID, target);
 }
 
 void Node::targetOff(const std::string &type) {

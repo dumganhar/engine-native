@@ -123,10 +123,12 @@ public:
     void on(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
 
     template <typename Target, typename LambdaType>
-    void on(const std::string &type, LambdaType &&callback, Target *target, bool useCapture = false);
+    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    on(const std::string &type, LambdaType &&callback, Target *target, bool useCapture = false);
 
     template <typename LambdaType>
-    void on(const std::string &type, LambdaType &&callback, bool useCapture = false);
+    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    on(const std::string &type, LambdaType &&callback, bool useCapture = false);
 
     template <typename... Args>
     void once(const std::string &type, std::function<void(Args...)> &&callback);
@@ -138,10 +140,12 @@ public:
     void once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
 
     template <typename Target, typename LambdaType>
-    void once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture = false);
+    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture = false);
 
     template <typename LambdaType>
-    void once(const std::string &type, LambdaType &&callback, bool useCapture = false);
+    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    once(const std::string &type, LambdaType &&callback, bool useCapture = false);
 
     void off(const std::string &type, bool useCapture = false);
 
@@ -157,7 +161,11 @@ public:
     bool hasEventListener(const std::string &type);
     bool hasEventListener(const std::string &type, CallbackInfoBase::ID cbID);
     bool hasEventListener(const std::string &type, void *target);
-    bool hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID);
+    bool hasEventListener(const std::string &type, CallbackInfoBase::ID cbID, void *target);
+
+    template <typename Target, typename... Args>
+    bool hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target);
+
     void targetOff(const std::string &);
 
     bool destroy() override {
@@ -592,7 +600,8 @@ void Node::on(const std::string &type, void (Target::*memberFn)(Args...), Target
 }
 
 template <typename Target, typename LambdaType>
-void Node::on(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
+std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+Node::on(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
@@ -600,7 +609,8 @@ void Node::on(const std::string &type, LambdaType &&callback, Target *target, bo
 }
 
 template <typename LambdaType>
-void Node::on(const std::string &type, LambdaType &&callback, bool useCapture) {
+std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+Node::on(const std::string &type, LambdaType &&callback, bool useCapture) {
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
@@ -623,12 +633,14 @@ void Node::once(const std::string &type, std::function<void(Args...)> &&callback
 }
 
 template <typename Target, typename LambdaType>
-void Node::once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
+std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+Node::once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
     _eventProcessor->once(type, callback, target, useCapture);
 }
 
 template <typename LambdaType>
-void Node::once(const std::string &type, LambdaType &&callback, bool useCapture) {
+std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+Node::once(const std::string &type, LambdaType &&callback, bool useCapture) {
     _eventProcessor->once(type, callback, useCapture);
 }
 
@@ -641,6 +653,11 @@ void Node::off(const std::string &type, void (Target::*memberFn)(Args...), Targe
             _eventMask &= ~TRANSFORM_ON;
         }
     }
+}
+
+template <typename Target, typename... Args>
+bool Node::hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) {
+    return _eventProcessor->hasEventListener(type, memberFn, target);
 }
 
 } // namespace cc

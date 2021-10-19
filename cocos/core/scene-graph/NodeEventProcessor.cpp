@@ -199,7 +199,7 @@ void doDispatchEvent(cc::Node *owner, cc::event::Event *event) {
     owner->getEventProcessor()->getCapturingTargets(event->getEventName(), cachedArray);
     // capturing
     event->setEventPhase(cc::event::Event::Phase::CAPTURING);
-    for (uint32_t i = cachedArray.size() - 1; i >= 0; --i) {
+    for (int32_t i = cachedArray.size() - 1; i >= 0; --i) {
         target = cachedArray[i];
         if (target->getEventProcessor()->getCapturingTargets()) {
             event->setCurrentTarget(target);
@@ -330,7 +330,7 @@ void NodeEventProcessor::destroy() {
     if (_bubblingTargets) _bubblingTargets->offAll();
 }
 
-void NodeEventProcessor::off(const std::string &type, bool useCapture) {
+void NodeEventProcessor::off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture) {
     bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
     bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
     if (touchEventExist || mouseEventExist) {
@@ -348,15 +348,15 @@ void NodeEventProcessor::off(const std::string &type, bool useCapture) {
             }
         }
     } else if (_bubblingTargets != nullptr) {
-        _bubblingTargets->off(type, _cbID);
+        _bubblingTargets->off(type, cbID);
     }
 }
 
-void NodeEventProcessor::off(const std::string &type, void *target, bool useCapture) {
+void NodeEventProcessor::off(const std::string &type, void *target, CallbackInfoBase::ID cbID, bool useCapture) {
     bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
     bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
     if (touchEventExist || mouseEventExist) {
-        offDispatch(type, target, useCapture);
+        offDispatch(type, cbID, target, useCapture);
 
         if (touchEventExist) {
             if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
@@ -370,7 +370,7 @@ void NodeEventProcessor::off(const std::string &type, void *target, bool useCapt
             }
         }
     } else if (_bubblingTargets != nullptr) {
-        _bubblingTargets->off(type, _cbID, target);
+        _bubblingTargets->off(type, cbID, target);
     }
 }
 
@@ -411,7 +411,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type, void *target)
     }
     return has;
 }
-bool NodeEventProcessor::hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) {
+bool NodeEventProcessor::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID, void *target) {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, target, cbID);
@@ -529,30 +529,26 @@ bool NodeEventProcessor::checknSetupSysEvent(const std::string &type) {
     return forDispatch;
 }
 
-void NodeEventProcessor::offDispatch(const std::string &type, bool useCapture) const {
-    // TODO(xwx): need to check with ts logic, slightly different, maybe could remove
-    // if (!callback) {
-    // if (_capturingTargets != nullptr) {
-    //     _capturingTargets->offAll(type);
-    // }
-    // if (_bubblingTargets != nullptr) {
-    //     _bubblingTargets->offAll(type);
-    // }
-    // }
-    CallbacksInvoker *listeners = useCapture ? _capturingTargets : _bubblingTargets;
-    if (listeners != nullptr) {
-        listeners->off(type, _cbID);
+void NodeEventProcessor::offDispatch(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture) {
+    if (cbID == 0) {
+        if (_capturingTargets != nullptr) {
+            _capturingTargets->offAll(type);
+        }
+        if (_bubblingTargets != nullptr) {
+            _bubblingTargets->offAll(type);
+        }
+    } else {
+        CallbacksInvoker *listeners = useCapture ? _capturingTargets : _bubblingTargets;
+        if (listeners != nullptr) {
+            listeners->off(type, cbID);
+        }
     }
 }
 
-void NodeEventProcessor::offDispatch(const std::string &type, void *target, bool useCapture) const {
-    if (typeid(target) == typeid(bool)) {
-        useCapture = std::any_cast<bool>(target);
-        target     = nullptr;
-    }
+void NodeEventProcessor::offDispatch(const std::string &type, CallbackInfoBase::ID cbID, void *target, bool useCapture) {
     CallbacksInvoker *listeners = useCapture ? _capturingTargets : _bubblingTargets;
     if (listeners != nullptr) {
-        listeners->off(type, _cbID, target);
+        listeners->off(type, cbID, target);
     }
 }
 

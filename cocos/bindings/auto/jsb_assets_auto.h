@@ -562,6 +562,8 @@ bool js_register_cc_Mesh(se::Object *obj); // NOLINT
 bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::Mesh);
+SE_DECLARE_FUNC(js_assets_Mesh_assign);
+SE_DECLARE_FUNC(js_assets_Mesh_copyAttribute);
 SE_DECLARE_FUNC(js_assets_Mesh_copyIndices);
 SE_DECLARE_FUNC(js_assets_Mesh_destroyRenderingMesh);
 SE_DECLARE_FUNC(js_assets_Mesh_getBoneSpaceBounds);
@@ -574,8 +576,10 @@ SE_DECLARE_FUNC(js_assets_Mesh_getRenderingSubMeshes);
 SE_DECLARE_FUNC(js_assets_Mesh_getStruct);
 SE_DECLARE_FUNC(js_assets_Mesh_getSubMeshCount);
 SE_DECLARE_FUNC(js_assets_Mesh_initialize);
+SE_DECLARE_FUNC(js_assets_Mesh_merge);
 SE_DECLARE_FUNC(js_assets_Mesh_readAttribute);
 SE_DECLARE_FUNC(js_assets_Mesh_readIndices);
+SE_DECLARE_FUNC(js_assets_Mesh_reset);
 SE_DECLARE_FUNC(js_assets_Mesh_validateMergingMesh);
 SE_DECLARE_FUNC(js_assets_Mesh_Mesh);
 

@@ -9948,6 +9948,57 @@ bool js_register_assets_Mesh_ICreateInfo(se::Object* obj) // NOLINT(readability-
 se::Object* __jsb_cc_Mesh_proto = nullptr; // NOLINT
 se::Class* __jsb_cc_Mesh_class = nullptr;  // NOLINT
 
+static bool js_assets_Mesh_assign(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_assign : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        HolderType<cc::Mesh::IStruct, true> arg0 = {};
+        HolderType<cc::TypedArrayTemp<unsigned char>, true> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_assign : Error processing arguments");
+        cobj->assign(arg0.value(), arg1.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_assets_Mesh_assign)
+
+static bool js_assets_Mesh_copyAttribute(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_copyAttribute : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 5) {
+        HolderType<int, false> arg0 = {};
+        HolderType<const char*, false> arg1 = {};
+        HolderType<std::shared_ptr<cc::ArrayBuffer>, true> arg2 = {};
+        HolderType<unsigned int, false> arg3 = {};
+        HolderType<unsigned int, false> arg4 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
+        ok &= sevalue_to_native(args[3], &arg3, s.thisObject());
+        ok &= sevalue_to_native(args[4], &arg4, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_copyAttribute : Error processing arguments");
+        bool result = cobj->copyAttribute(arg0.value(), arg1.value(), arg2.value(), arg3.value(), arg4.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_copyAttribute : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 5);
+    return false;
+}
+SE_BIND_FUNC(js_assets_Mesh_copyAttribute)
+
 static bool js_assets_Mesh_copyIndices(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
@@ -10191,6 +10242,54 @@ static bool js_assets_Mesh_initialize(se::State& s) // NOLINT(readability-identi
 }
 SE_BIND_FUNC(js_assets_Mesh_initialize)
 
+static bool js_assets_Mesh_merge(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_merge : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Mesh*, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        bool result = cobj->merge(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    if (argc == 2) {
+        HolderType<cc::Mesh*, false> arg0 = {};
+        HolderType<const cc::Mat4*, false> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        bool result = cobj->merge(arg0.value(), arg1.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    if (argc == 3) {
+        HolderType<cc::Mesh*, false> arg0 = {};
+        HolderType<const cc::Mat4*, false> arg1 = {};
+        HolderType<bool, false> arg2 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        bool result = cobj->merge(arg0.value(), arg1.value(), arg2.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
+    return false;
+}
+SE_BIND_FUNC(js_assets_Mesh_merge)
+
 static bool js_assets_Mesh_readAttribute(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
@@ -10236,6 +10335,25 @@ static bool js_assets_Mesh_readIndices(se::State& s) // NOLINT(readability-ident
     return false;
 }
 SE_BIND_FUNC(js_assets_Mesh_readIndices)
+
+static bool js_assets_Mesh_reset(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_reset : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Mesh::ICreateInfo, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_reset : Error processing arguments");
+        cobj->reset(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_assets_Mesh_reset)
 
 static bool js_assets_Mesh_validateMergingMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10289,6 +10407,8 @@ bool js_register_assets_Mesh(se::Object* obj) // NOLINT(readability-identifier-n
 {
     auto* cls = se::Class::create("Mesh", obj, __jsb_cc_Asset_proto, _SE(js_assets_Mesh_constructor));
 
+    cls->defineFunction("assign", _SE(js_assets_Mesh_assign));
+    cls->defineFunction("copyAttribute", _SE(js_assets_Mesh_copyAttribute));
     cls->defineFunction("copyIndices", _SE(js_assets_Mesh_copyIndices));
     cls->defineFunction("destroyRenderingMesh", _SE(js_assets_Mesh_destroyRenderingMesh));
     cls->defineFunction("getBoneSpaceBounds", _SE(js_assets_Mesh_getBoneSpaceBounds));
@@ -10301,8 +10421,10 @@ bool js_register_assets_Mesh(se::Object* obj) // NOLINT(readability-identifier-n
     cls->defineFunction("getStruct", _SE(js_assets_Mesh_getStruct));
     cls->defineFunction("getSubMeshCount", _SE(js_assets_Mesh_getSubMeshCount));
     cls->defineFunction("initialize", _SE(js_assets_Mesh_initialize));
+    cls->defineFunction("merge", _SE(js_assets_Mesh_merge));
     cls->defineFunction("readAttribute", _SE(js_assets_Mesh_readAttribute));
     cls->defineFunction("readIndices", _SE(js_assets_Mesh_readIndices));
+    cls->defineFunction("reset", _SE(js_assets_Mesh_reset));
     cls->defineFunction("validateMergingMesh", _SE(js_assets_Mesh_validateMergingMesh));
     cls->defineFinalizeFunction(_SE(js_cc_Mesh_finalize));
     cls->install();

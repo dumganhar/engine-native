@@ -753,13 +753,14 @@ struct HolderType<const char *, false> {
     struct HolderType<FromType, IsReference> {                           \
         using type       = FromType;                                     \
         using local_type = typename std::remove_pointer<FromType>::type; \
-        local_type                 data;                                 \
-        std::remove_const_t<type> *ptr = nullptr;                        \
-        inline type                value() { return &data; }             \
+        std::remove_const_t<local_type> data;                            \
+        std::remove_const_t<type> *     ptr = nullptr;                   \
+        inline type                     value() { return &data; }        \
     }
 
 HOLD_UNBOUND_TYPE(cc::Vec3 *, false);
 HOLD_UNBOUND_TYPE(cc::Quaternion *, false);
+HOLD_UNBOUND_TYPE(cc::Mat4 *, false);
 HOLD_UNBOUND_TYPE(cc::Color *, false);
 HOLD_UNBOUND_TYPE(cc::geometry::Frustum *, false);
 

@@ -7,6 +7,7 @@
 #include "cocos/bindings/auto/jsb_geometry_auto.h"
 #include "cocos/bindings/auto/jsb_assets_auto.h"
 #include "cocos/core/scene-graph/Node.h"
+#include "cocos/core/scene-graph/NodeUIProperties.h"
 #include "cocos/scene/Light.h"
 #include "cocos/scene/DirectionalLight.h"
 #include "cocos/scene/SpotLight.h"
@@ -21,6 +22,97 @@
 #include "cocos/scene/Camera.h"
 #include "cocos/scene/Define.h"
 #include "cocos/scene/Ambient.h"
+#include "cocos/2d/framework/UITransform.h"
+
+extern se::Object *__jsb_cc_CCObject_proto; // NOLINT
+extern se::Class * __jsb_cc_CCObject_class; // NOLINT
+
+bool js_register_cc_CCObject(se::Object *obj); // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::CCObject);
+SE_DECLARE_FUNC(js_scene_CCObject_destroy);
+SE_DECLARE_FUNC(js_scene_CCObject_destroyImmediate);
+SE_DECLARE_FUNC(js_scene_CCObject_destruct);
+SE_DECLARE_FUNC(js_scene_CCObject_getHideFlags);
+SE_DECLARE_FUNC(js_scene_CCObject_getName);
+SE_DECLARE_FUNC(js_scene_CCObject_isReplicated);
+SE_DECLARE_FUNC(js_scene_CCObject_isValid);
+SE_DECLARE_FUNC(js_scene_CCObject_setHideFlags);
+SE_DECLARE_FUNC(js_scene_CCObject_setName);
+SE_DECLARE_FUNC(js_scene_CCObject_setReplicated);
+SE_DECLARE_FUNC(js_scene_CCObject_toString);
+SE_DECLARE_FUNC(js_scene_CCObject_deferredDestroy);
+
+extern se::Object *__jsb_cc_Component_proto; // NOLINT
+extern se::Class * __jsb_cc_Component_class; // NOLINT
+
+bool js_register_cc_Component(se::Object *obj); // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::Component);
+SE_DECLARE_FUNC(js_scene_Component___preload);
+SE_DECLARE_FUNC(js_scene_Component__onPreDestroy);
+SE_DECLARE_FUNC(js_scene_Component_getExecutionOrder);
+SE_DECLARE_FUNC(js_scene_Component_getName);
+SE_DECLARE_FUNC(js_scene_Component_getNode);
+SE_DECLARE_FUNC(js_scene_Component_getUuid);
+SE_DECLARE_FUNC(js_scene_Component_isEnabled);
+SE_DECLARE_FUNC(js_scene_Component_isEnabledInHierarchy);
+SE_DECLARE_FUNC(js_scene_Component_isOnLoadCalled);
+SE_DECLARE_FUNC(js_scene_Component_lateUpdate);
+SE_DECLARE_FUNC(js_scene_Component_onDestroy);
+SE_DECLARE_FUNC(js_scene_Component_onDisable);
+SE_DECLARE_FUNC(js_scene_Component_onEnable);
+SE_DECLARE_FUNC(js_scene_Component_onFocusInEditor);
+SE_DECLARE_FUNC(js_scene_Component_onLoad);
+SE_DECLARE_FUNC(js_scene_Component_onLostFocusInEditor);
+SE_DECLARE_FUNC(js_scene_Component_resetInEditor);
+SE_DECLARE_FUNC(js_scene_Component_setEnabled);
+SE_DECLARE_FUNC(js_scene_Component_setName);
+SE_DECLARE_FUNC(js_scene_Component_start);
+SE_DECLARE_FUNC(js_scene_Component_unscheduleAllCallbacks);
+SE_DECLARE_FUNC(js_scene_Component_update);
+
+extern se::Object *__jsb_cc_event_Event_proto; // NOLINT
+extern se::Class * __jsb_cc_event_Event_class; // NOLINT
+
+bool js_register_cc_event_Event(se::Object *obj); // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::event::Event);
+SE_DECLARE_FUNC(js_scene_Event_getCurrentTarget);
+SE_DECLARE_FUNC(js_scene_Event_getEventName);
+SE_DECLARE_FUNC(js_scene_Event_getEventPhase);
+SE_DECLARE_FUNC(js_scene_Event_getEventType);
+SE_DECLARE_FUNC(js_scene_Event_getTarget);
+SE_DECLARE_FUNC(js_scene_Event_isPropagationImmediateStopped);
+SE_DECLARE_FUNC(js_scene_Event_isPropagationStopped);
+SE_DECLARE_FUNC(js_scene_Event_isStopped);
+SE_DECLARE_FUNC(js_scene_Event_isUseBubbles);
+SE_DECLARE_FUNC(js_scene_Event_reuse);
+SE_DECLARE_FUNC(js_scene_Event_setCurrentTarget);
+SE_DECLARE_FUNC(js_scene_Event_setEventName);
+SE_DECLARE_FUNC(js_scene_Event_setEventPhase);
+SE_DECLARE_FUNC(js_scene_Event_setPropagationImmediateStopped);
+SE_DECLARE_FUNC(js_scene_Event_setPropagationStopped);
+SE_DECLARE_FUNC(js_scene_Event_setTarget);
+SE_DECLARE_FUNC(js_scene_Event_setUseBubbles);
+SE_DECLARE_FUNC(js_scene_Event_unuse);
+SE_DECLARE_FUNC(js_scene_Event_Event);
+
+extern se::Object *__jsb_cc_event_EventListener_proto; // NOLINT
+extern se::Class * __jsb_cc_event_EventListener_class; // NOLINT
+
+bool js_register_cc_event_EventListener(se::Object *obj); // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::event::EventListener);
+SE_DECLARE_FUNC(js_scene_EventListener_checkAvailable);
+SE_DECLARE_FUNC(js_scene_EventListener_clone);
+SE_DECLARE_FUNC(js_scene_EventListener_init);
+SE_DECLARE_FUNC(js_scene_EventListener_isEnabled);
+SE_DECLARE_FUNC(js_scene_EventListener_setEnabled);
 
 extern se::Object *__jsb_cc_Node_proto; // NOLINT
 extern se::Class * __jsb_cc_Node_class; // NOLINT
@@ -31,7 +123,6 @@ bool register_all_scene(se::Object *obj);                   // NOLINT
 JSB_REGISTER_OBJECT_TYPE(cc::Node);
 SE_DECLARE_FUNC(js_scene_Node_addChild);
 SE_DECLARE_FUNC(js_scene_Node_addComponent);
-SE_DECLARE_FUNC(js_scene_Node_destroy);
 SE_DECLARE_FUNC(js_scene_Node_destroyAllChildren);
 SE_DECLARE_FUNC(js_scene_Node_dispatchEvent);
 SE_DECLARE_FUNC(js_scene_Node_getAngle);
@@ -115,6 +206,15 @@ SE_DECLARE_FUNC(js_scene_Node_getDirtyNode);
 SE_DECLARE_FUNC(js_scene_Node_resetChangedFlags);
 SE_DECLARE_FUNC(js_scene_Node_clearNodeArray);
 SE_DECLARE_FUNC(js_scene_Node_Node);
+
+extern se::Object *__jsb_cc_NodeUiProperties_proto; // NOLINT
+extern se::Class * __jsb_cc_NodeUiProperties_class; // NOLINT
+
+bool js_register_cc_NodeUiProperties(se::Object *obj); // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::NodeUiProperties);
+SE_DECLARE_FUNC(js_scene_NodeUiProperties_NodeUiProperties);
 
 extern se::Object *__jsb_cc_scene_Light_proto; // NOLINT
 extern se::Class * __jsb_cc_scene_Light_class; // NOLINT
@@ -825,4 +925,36 @@ SE_DECLARE_FUNC(js_scene_SubModel_setShaders);
 SE_DECLARE_FUNC(js_scene_SubModel_setSubMesh);
 SE_DECLARE_FUNC(js_scene_SubModel_update);
 SE_DECLARE_FUNC(js_scene_SubModel_SubModel);
+
+extern se::Object *__jsb_cc_UITransform_proto; // NOLINT
+extern se::Class * __jsb_cc_UITransform_class; // NOLINT
+
+bool js_register_cc_UITransform(se::Object *obj); // NOLINT
+bool register_all_scene(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::UITransform);
+SE_DECLARE_FUNC(js_scene_UITransform_convertToNodeSpaceAR);
+SE_DECLARE_FUNC(js_scene_UITransform_convertToWorldSpaceAR);
+SE_DECLARE_FUNC(js_scene_UITransform_getAnchorPoint);
+SE_DECLARE_FUNC(js_scene_UITransform_getAnchorX);
+SE_DECLARE_FUNC(js_scene_UITransform_getAnchorY);
+SE_DECLARE_FUNC(js_scene_UITransform_getBoundingBox);
+SE_DECLARE_FUNC(js_scene_UITransform_getBoundingBoxTo);
+SE_DECLARE_FUNC(js_scene_UITransform_getBoundingBoxToWorld);
+SE_DECLARE_FUNC(js_scene_UITransform_getCameraPriority);
+SE_DECLARE_FUNC(js_scene_UITransform_getComputeAABB);
+SE_DECLARE_FUNC(js_scene_UITransform_getContentSize);
+SE_DECLARE_FUNC(js_scene_UITransform_getHeight);
+SE_DECLARE_FUNC(js_scene_UITransform_getPriority);
+SE_DECLARE_FUNC(js_scene_UITransform_getVisibility);
+SE_DECLARE_FUNC(js_scene_UITransform_getWidth);
+SE_DECLARE_FUNC(js_scene_UITransform_isHit);
+SE_DECLARE_FUNC(js_scene_UITransform_setAnchorPoint);
+SE_DECLARE_FUNC(js_scene_UITransform_setAnchorX);
+SE_DECLARE_FUNC(js_scene_UITransform_setAnchorY);
+SE_DECLARE_FUNC(js_scene_UITransform_setContentSize);
+SE_DECLARE_FUNC(js_scene_UITransform_setHeight);
+SE_DECLARE_FUNC(js_scene_UITransform_setPriority);
+SE_DECLARE_FUNC(js_scene_UITransform_setWidth);
+SE_DECLARE_FUNC(js_scene_UITransform_UITransform);
 

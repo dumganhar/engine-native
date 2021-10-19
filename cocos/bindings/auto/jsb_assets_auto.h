@@ -475,6 +475,16 @@ SE_DECLARE_FUNC(js_assets_TextureCube_setMipmaps);
 SE_DECLARE_FUNC(js_assets_TextureCube_fromTexture2DArray);
 SE_DECLARE_FUNC(js_assets_TextureCube_TextureCube);
 
+extern se::Object *__jsb_cc_IMeshBufferView_proto; // NOLINT
+extern se::Class * __jsb_cc_IMeshBufferView_class; // NOLINT
+
+bool js_register_cc_IMeshBufferView(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::IMeshBufferView *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::IMeshBufferView);
+
 extern se::Object *__jsb_cc_MorphTarget_proto; // NOLINT
 extern se::Class * __jsb_cc_MorphTarget_class; // NOLINT
 

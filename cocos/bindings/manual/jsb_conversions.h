@@ -760,7 +760,7 @@ struct HolderType<const char *, false> {
 
 HOLD_UNBOUND_TYPE(cc::Vec3 *, false);
 HOLD_UNBOUND_TYPE(cc::Quaternion *, false);
-HOLD_UNBOUND_TYPE(cc::Mat4 *, false);
+HOLD_UNBOUND_TYPE(const cc::Mat4 *, false);
 HOLD_UNBOUND_TYPE(cc::Color *, false);
 HOLD_UNBOUND_TYPE(cc::geometry::Frustum *, false);
 

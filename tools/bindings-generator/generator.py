@@ -1106,6 +1106,7 @@ class NativeClass(object):
         self.getter_setter = []
         self.getter_list = []
         self.setter_list = []
+        self.nested_classes = []
 
         registration_name = generator.get_class_or_rename_class(
             self.class_name)
@@ -1135,6 +1136,21 @@ class NativeClass(object):
                 if item["setter"] is not None:
                     self.setter_list.append(item["setter"].func_name)
                 self.getter_setter.append(item)
+
+    @property
+    def nested_class_name(self):
+        classes = self.nested_classes.copy()
+        classes.append(self.class_name)
+        return "_".join(classes)
+    
+    @property
+    def nested_class_array(self):
+        classes = self.nested_classes.copy()
+        classes.append(self.class_name)
+        if len(classes) == 1:
+            return "\"%s\""%(self.class_name)
+        return "{" + ",".join(list(map(lambda x: "\"%s\"" % x, classes))) + "}"
+
 
     @property
     def is_skip_constructor(self):
@@ -1217,6 +1233,7 @@ class NativeClass(object):
             "namespace_name" : self.namespace_name,
             "script_ns": self.generator.scriptname_from_native(self.namespaced_class_name, self.namespace_name),
             "parents": list(map(lambda x: x.namespaced_class_name, self.parents)),
+            "nested_classes": self.nested_classes,
             "class_name" : self.class_name,
             "is_ref_class" : self.is_ref_class,
             "namespaced_class_name": self.namespaced_class_name,
@@ -1243,7 +1260,7 @@ class NativeClass(object):
         actually generate the code. it uses the current target templates/rules in order to
         generate the right code
         '''
-
+        
         if not self.is_ref_class:
             self.is_ref_class = self._is_ref_class()
 
@@ -1282,11 +1299,12 @@ class NativeClass(object):
                        searchList=[self])
         self.generator.impl_file.write(unicode(tpl))
 
-    def _deep_iterate(self, cursor=None, depth=0):
+    def _deep_iterate(self, cursor=None, depth=0, nested_classes = []):
+        # self.nested_classes = nested_classes.copy()
         for node in cursor.get_children():
-            # logger.info("%s%s - %s" % ("> " * depth, node.displayname, node.kind))
-            if self._process_node(node):
-                self._deep_iterate(node, depth + 1)
+            # logger.info("_deep_iterate %s%s - %s" % ("> " * depth, node.displayname, node.kind))
+            if self._process_node(node, depth, nested_classes):
+                self._deep_iterate(node, depth + 1, nested_classes)
 
     @staticmethod
     def _is_method_in_parents(current_class, method_name):
@@ -1335,13 +1353,17 @@ class NativeClass(object):
 
         return False
 
-    def _process_node(self, cursor):
+    def _process_node(self, cursor, depth= 0, nested_classes = []):
         '''
         process the node, depending on the type. If returns true, then it will perform a deep
         iteration on its children. Otherwise it will continue with its siblings (if any)
 
         @param: cursor the cursor to analyze
         '''
+
+        # if nested_classes is None:
+        # logger.error("process class %s found %s nested classes" % (cursor.displayname, len(nested_classes)))
+
         if cursor.kind == cindex.CursorKind.CXX_BASE_SPECIFIER:
             parent = cursor.get_definition()
             parent_name = parent.displayname
@@ -1425,6 +1447,11 @@ class NativeClass(object):
                     m.is_constructor = True
                     self.methods['constructor'] = m
             return True
+        elif cursor.kind == cindex.CursorKind.CLASS_DECL or cursor.kind == cindex.CursorKind.STRUCT_DECL:
+            # logging.error("find class %s in %s , nested_classes %s" % (cursor.displayname, self.class_name, nested_classes))
+            nn = nested_classes.copy()
+            nn.append(self.class_name)
+            self.generator._deep_iterate(cursor, depth + 1, nn)
        # else:
        #     logger.error("unknown cursor: %s - %s" % (cursor.kind, cursor.displayname))
         return False
@@ -1459,13 +1486,13 @@ class NativeEnum(object):
     def parse(self):
         self._deep_iterate(self.cursor, 0)
 
-    def _deep_iterate(self, cursor=None, depth=0):
+    def _deep_iterate(self, cursor=None, depth=0, nested_classes = []):
         for node in cursor.get_children():
             #logger.info("%s%s - %s" % ("> " * depth, node.displayname, node.kind))
-            if self._process_node(node):
-                self._deep_iterate(node, depth + 1)
+            if self._process_node(node, nested_classes):
+                self._deep_iterate(node, depth + 1, nested_classes.copy())
 
-    def _process_node(self, node):
+    def _process_node(self, node, nested_classes = []):
         if node.kind == cindex.CursorKind.ENUM_CONSTANT_DECL:
             field = {}
             field["name"] = node.displayname
@@ -1836,6 +1863,7 @@ class Generator(object):
         # remove dupes from the list
         no_dupes = []
         [no_dupes.append(i) for i in sorted_list if not no_dupes.count(i)]
+        no_dupes.sort(key= lambda x: x.nested_class_name)
         return no_dupes
 
     def _sorted_parents(self, nclass):
@@ -1847,7 +1875,7 @@ class Generator(object):
             if p.class_name in self.generated_classes.keys():
                 sorted_parents += self._sorted_parents(p)
         if nclass.class_name in self.generated_classes.keys():
-            sorted_parents.append(nclass.class_name)
+            sorted_parents.append(nclass)
         return sorted_parents
 
     def generate_code(self):
@@ -1931,9 +1959,12 @@ class Generator(object):
                 if is_fatal:
                     logger.error("*** Found errors - can not continue")
                     raise Exception("Fatal error in parsing headers")
-            self._deep_iterate(tu.cursor)
+            self._deep_iterate(tu.cursor, 0, [])
 
-    def _deep_iterate(self, cursor, depth=0):
+    def _deep_iterate(self, cursor, depth=0, nested_classes = []):
+
+        if nested_classes is None:     
+            logger.error(" ? depth %s, nested_classes %s" %(depth, nested_classes))
 
         def get_children_array_from_iter(iter):
             children = []
@@ -1945,6 +1976,7 @@ class Generator(object):
         if cursor.kind == cindex.CursorKind.CLASS_DECL or cursor.kind == cindex.CursorKind.STRUCT_DECL:
             is_struct = cursor.kind == cindex.CursorKind.STRUCT_DECL
             namespaced_class_name = get_namespaced_class_name(cursor)
+            # logger.error("process class %s" % (namespaced_class_name) )
             if len(namespaced_class_name) == 0 or cursor.displayname.startswith("__"):
                 return
             if cursor == cursor.type.get_declaration() and len(get_children_array_from_iter(cursor.get_children())) > 0:
@@ -1955,10 +1987,11 @@ class Generator(object):
                         if namespaced_class_name.startswith(ns):
                             is_targeted_class = True
                             break
-
                 if is_targeted_class and self.in_listed_classes(cursor.displayname):
                     if cursor.displayname not in self.generated_classes:
                         nclass = NativeClass(cursor, self, is_struct)
+                        # logger.error(" - depth %s, nested_classes %s" %(depth, nested_classes))
+                        nclass.nested_classes = nested_classes.copy()
                         nclass.generate_code()
                         self.generated_classes[cursor.displayname] = nclass
                     return
@@ -1985,7 +2018,7 @@ class Generator(object):
 
         for node in cursor.get_children():
             # print("%s %s - %s" % (">" * depth, node.displayname, node.kind))
-            self._deep_iterate(node, depth + 1)
+            self._deep_iterate(node, depth + 1, nested_classes.copy() if nested_classes is not None else [])
 
     def scriptname_from_native(self, namespace_class_name, namespace_name):
         script_ns_dict = self.config['conversions']['ns_map']

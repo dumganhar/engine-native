@@ -505,6 +505,46 @@ template <>
 bool sevalue_to_native(const se::Value &, cc::Morph *, se::Object *ctx);
 JSB_REGISTER_OBJECT_TYPE(cc::Morph);
 
+extern se::Object *__jsb_cc_Mesh_IVertexBundle_proto; // NOLINT
+extern se::Class * __jsb_cc_Mesh_IVertexBundle_class; // NOLINT
+
+bool js_register_cc_Mesh_IVertexBundle(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::Mesh::IVertexBundle *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::Mesh::IVertexBundle);
+
+extern se::Object *__jsb_cc_Mesh_ISubMesh_proto; // NOLINT
+extern se::Class * __jsb_cc_Mesh_ISubMesh_class; // NOLINT
+
+bool js_register_cc_Mesh_ISubMesh(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::Mesh::ISubMesh *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::Mesh::ISubMesh);
+
+extern se::Object *__jsb_cc_Mesh_IStruct_proto; // NOLINT
+extern se::Class * __jsb_cc_Mesh_IStruct_class; // NOLINT
+
+bool js_register_cc_Mesh_IStruct(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::Mesh::IStruct *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::Mesh::IStruct);
+
+extern se::Object *__jsb_cc_Mesh_ICreateInfo_proto; // NOLINT
+extern se::Class * __jsb_cc_Mesh_ICreateInfo_class; // NOLINT
+
+bool js_register_cc_Mesh_ICreateInfo(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::Mesh::ICreateInfo *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::Mesh::ICreateInfo);
+
 extern se::Object *__jsb_cc_Mesh_proto; // NOLINT
 extern se::Class * __jsb_cc_Mesh_class; // NOLINT
 

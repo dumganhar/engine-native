@@ -346,7 +346,8 @@ const topBuffer: string[] = [];
 for (let ns of exportNamespaces) {
     let klist = nsToClass[ns];
     if(!klist) {
-        console.error(`namespace ${ns} not found!`)
+        console.error(`[error] namespace '${ns}' not found!`);
+        continue;
     }
     topBuffer.push(`declare namespace ${ns} {`);
     topBuffer.push(utils.addIndent(klist.map(processClass).join('\n'), 4));

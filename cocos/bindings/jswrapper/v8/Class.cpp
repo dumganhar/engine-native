@@ -25,6 +25,9 @@
 ****************************************************************************/
 
 #include "Class.h"
+#include <initializer_list>
+#include "Value.h"
+#include "base/Macros.h"
 
 #if SCRIPT_ENGINE_TYPE == SCRIPT_ENGINE_V8
 
@@ -62,6 +65,18 @@ Class *Class::create(const std::string &clsName, se::Object *parent, Object *par
         cls = nullptr;
     }
     return cls;
+}
+
+Class *Class::create(const std::initializer_list<const char *> &classPath, se::Object *parent, Object *parentProto, v8::FunctionCallback ctor) {
+    se::AutoHandleScope scope;
+    se::Object *currentParent = parent;
+    for(auto i = 0;i < classPath.size() - 1; i++) {
+        se::Value tmp;
+        bool ok = currentParent->getProperty(*(classPath.begin() + i), &tmp);
+        CCASSERT(ok, "class or namespace in path is not defined");
+        currentParent = tmp.toObject();
+    }
+    return create(*(classPath.end() - 1), currentParent, parentProto, ctor);
 }
 
 bool Class::init(const std::string &clsName, Object *parent, Object *parentProto, v8::FunctionCallback ctor) {

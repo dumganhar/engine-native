@@ -1830,7 +1830,7 @@ SE_BIND_FUNC(js_engine_SAXParser_init)
 
 bool js_register_engine_SAXParser(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto* cls = se::Class::create("PlistParser", obj, nullptr, nullptr);
+    auto* cls = se::Class::create("SAXParser", obj, nullptr, nullptr);
 
     cls->defineFunction("init", _SE(js_engine_SAXParser_init));
     cls->install();
@@ -1854,10 +1854,10 @@ bool register_all_engine(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_engine_FileUtils(ns);
     js_register_engine_CanvasGradient(ns);
     js_register_engine_CanvasRenderingContext2D(ns);
     js_register_engine_Device(ns);
+    js_register_engine_FileUtils(ns);
     js_register_engine_SAXParser(ns);
     return true;
 }

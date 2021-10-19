@@ -7179,34 +7179,34 @@ bool register_all_dragonbones(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_dragonbones_BaseObject(ns);
-    js_register_dragonbones_Rectangle(ns);
-    js_register_dragonbones_Matrix(ns);
-    js_register_dragonbones_Transform(ns);
-    js_register_dragonbones_TextureAtlasData(ns);
-    js_register_dragonbones_TextureData(ns);
-    js_register_dragonbones_ArmatureData(ns);
-    js_register_dragonbones_BoneData(ns);
-    js_register_dragonbones_SlotData(ns);
-    js_register_dragonbones_DragonBonesData(ns);
-    js_register_dragonbones_SkinData(ns);
-    js_register_dragonbones_AnimationData(ns);
-    js_register_dragonbones_Armature(ns);
-    js_register_dragonbones_TransformObject(ns);
-    js_register_dragonbones_AnimationState(ns);
-    js_register_dragonbones_Bone(ns);
-    js_register_dragonbones_Slot(ns);
-    js_register_dragonbones_WorldClock(ns);
     js_register_dragonbones_Animation(ns);
-    js_register_dragonbones_EventObject(ns);
-    js_register_dragonbones_BaseFactory(ns);
-    js_register_dragonbones_CCSlot(ns);
-    js_register_dragonbones_CCArmatureDisplay(ns);
+    js_register_dragonbones_AnimationData(ns);
+    js_register_dragonbones_AnimationState(ns);
+    js_register_dragonbones_Armature(ns);
     js_register_dragonbones_ArmatureCacheMgr(ns);
+    js_register_dragonbones_ArmatureData(ns);
+    js_register_dragonbones_BaseFactory(ns);
+    js_register_dragonbones_BaseObject(ns);
+    js_register_dragonbones_Bone(ns);
+    js_register_dragonbones_BoneData(ns);
     js_register_dragonbones_CCArmatureCacheDisplay(ns);
+    js_register_dragonbones_CCArmatureDisplay(ns);
     js_register_dragonbones_CCFactory(ns);
+    js_register_dragonbones_CCSlot(ns);
     js_register_dragonbones_CCTextureAtlasData(ns);
     js_register_dragonbones_CCTextureData(ns);
+    js_register_dragonbones_DragonBonesData(ns);
+    js_register_dragonbones_EventObject(ns);
+    js_register_dragonbones_Matrix(ns);
+    js_register_dragonbones_Rectangle(ns);
+    js_register_dragonbones_SkinData(ns);
+    js_register_dragonbones_Slot(ns);
+    js_register_dragonbones_SlotData(ns);
+    js_register_dragonbones_TextureAtlasData(ns);
+    js_register_dragonbones_TextureData(ns);
+    js_register_dragonbones_Transform(ns);
+    js_register_dragonbones_TransformObject(ns);
+    js_register_dragonbones_WorldClock(ns);
     return true;
 }
 

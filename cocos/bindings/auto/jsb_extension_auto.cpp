@@ -291,7 +291,7 @@ SE_BIND_FINALIZE_FUNC(js_cc_extension_EventAssetsManagerEx_finalize)
 
 bool js_register_extension_EventAssetsManagerEx(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto* cls = se::Class::create("EventAssetsManager", obj, nullptr, _SE(js_extension_EventAssetsManagerEx_constructor));
+    auto* cls = se::Class::create("EventAssetsManagerEx", obj, nullptr, _SE(js_extension_EventAssetsManagerEx_constructor));
 
     cls->defineFunction("getAssetId", _SE(js_extension_EventAssetsManagerEx_getAssetId));
     cls->defineFunction("getAssetsManagerEx", _SE(js_extension_EventAssetsManagerEx_getAssetsManagerEx));
@@ -1228,7 +1228,7 @@ SE_BIND_FINALIZE_FUNC(js_cc_extension_AssetsManagerEx_finalize)
 
 bool js_register_extension_AssetsManagerEx(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto* cls = se::Class::create("AssetsManager", obj, nullptr, _SE(js_extension_AssetsManagerEx_constructor));
+    auto* cls = se::Class::create("AssetsManagerEx", obj, nullptr, _SE(js_extension_AssetsManagerEx_constructor));
 
     cls->defineFunction("checkUpdate", _SE(js_extension_AssetsManagerEx_checkUpdate));
     cls->defineFunction("downloadFailedAssets", _SE(js_extension_AssetsManagerEx_downloadFailedAssets));
@@ -1273,9 +1273,9 @@ bool register_all_extension(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
+    js_register_extension_AssetsManagerEx(ns);
     js_register_extension_EventAssetsManagerEx(ns);
     js_register_extension_Manifest(ns);
-    js_register_extension_AssetsManagerEx(ns);
     return true;
 }
 

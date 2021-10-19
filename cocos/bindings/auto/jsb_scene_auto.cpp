@@ -25,51 +25,73 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_cc_BaseNode_proto = nullptr; // NOLINT
-se::Class* __jsb_cc_BaseNode_class = nullptr;  // NOLINT
+se::Object* __jsb_cc_Node_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_Node_class = nullptr;  // NOLINT
 
-static bool js_scene_BaseNode_addChild(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_addChild(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_addChild : Invalid Native Object");
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_addChild : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::BaseNode*, false> arg0 = {};
+        HolderType<cc::Node*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_addChild : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_scene_Node_addChild : Error processing arguments");
         cobj->addChild(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_BaseNode_addChild)
+SE_BIND_FUNC(js_scene_Node_addChild)
 
-static bool js_scene_BaseNode_destroy(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_addComponent(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_destroy : Invalid Native Object");
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_addComponent : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Component*, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_addComponent : Error processing arguments");
+        cc::Component* result = cobj->addComponent(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_addComponent : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_addComponent)
+
+static bool js_scene_Node_destroy(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_destroy : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
         bool result = cobj->destroy();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_destroy : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_scene_Node_destroy : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_BaseNode_destroy)
+SE_BIND_FUNC(js_scene_Node_destroy)
 
-static bool js_scene_BaseNode_destroyAllChildren(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_destroyAllChildren(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_destroyAllChildren : Invalid Native Object");
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_destroyAllChildren : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
     if (argc == 0) {
@@ -79,1619 +101,26 @@ static bool js_scene_BaseNode_destroyAllChildren(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_BaseNode_destroyAllChildren)
+SE_BIND_FUNC(js_scene_Node_destroyAllChildren)
 
-static bool js_scene_BaseNode_emit(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_dispatchEvent(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    CC_UNUSED bool ok = true;
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2( cobj, false, "js_scene_BaseNode_emit : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    do {
-        if (argc == 5) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::any, true> arg1 = {};
-            HolderType<std::any, true> arg2 = {};
-            HolderType<std::any, true> arg3 = {};
-            HolderType<std::any, true> arg4 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[3], &arg3, s.thisObject());
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[4], &arg4, s.thisObject());
-            if (!ok) { ok = true; break; }
-            cobj->emit(arg0.value(), arg1.value(), arg2.value(), arg3.value(), arg4.value());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 2) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::any, true> arg1 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
-            if (!ok) { ok = true; break; }
-            cobj->emit(arg0.value(), arg1.value());
-            return true;
-        }
-    } while(false);
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_emit)
-
-static bool js_scene_BaseNode_getChangedFlags(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getChangedFlags : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        unsigned int result = cobj->getChangedFlags();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getChangedFlags : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getChangedFlags)
-
-static bool js_scene_BaseNode_getChildByName(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getChildByName : Invalid Native Object");
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_dispatchEvent : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<std::string, true> arg0 = {};
+        HolderType<cc::event::Event*, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getChildByName : Error processing arguments");
-        cc::BaseNode* result = cobj->getChildByName(arg0.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getChildByName : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_dispatchEvent : Error processing arguments");
+        cobj->dispatchEvent(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_BaseNode_getChildByName)
-
-static bool js_scene_BaseNode_getChildByPath(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getChildByPath : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<std::string, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getChildByPath : Error processing arguments");
-        cc::BaseNode* result = cobj->getChildByPath(arg0.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getChildByPath : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getChildByPath)
-
-static bool js_scene_BaseNode_getChildByUuid(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getChildByUuid : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<std::string, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getChildByUuid : Error processing arguments");
-        cc::BaseNode* result = cobj->getChildByUuid(arg0.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getChildByUuid : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getChildByUuid)
-
-static bool js_scene_BaseNode_getChildren(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getChildren : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const std::vector<cc::BaseNode *>& result = cobj->getChildren();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getChildren : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getChildren)
-
-static bool js_scene_BaseNode_getDirtyFlag(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getDirtyFlag : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        unsigned int result = cobj->getDirtyFlag();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getDirtyFlag : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getDirtyFlag)
-
-static bool js_scene_BaseNode_getName(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getName : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        std::string result = cobj->getName();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getName : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getName)
-
-static bool js_scene_BaseNode_getParent(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getParent : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        cc::BaseNode* result = cobj->getParent();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getParent : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getParent)
-
-static bool js_scene_BaseNode_getPersistNode(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getPersistNode : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        bool result = cobj->getPersistNode();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getPersistNode : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getPersistNode)
-
-static bool js_scene_BaseNode_getPosition(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getPosition : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const cc::Vec3& result = cobj->getPosition();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getPosition : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getPosition)
-
-static bool js_scene_BaseNode_getRotation(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getRotation : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const cc::Quaternion& result = cobj->getRotation();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getRotation : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getRotation)
-
-static bool js_scene_BaseNode_getScale(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getScale : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const cc::Vec3& result = cobj->getScale();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getScale : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getScale)
-
-static bool js_scene_BaseNode_getScene(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getScene : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        cc::Scene* result = cobj->getScene();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getScene : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getScene)
-
-static bool js_scene_BaseNode_getSiblingIndex(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getSiblingIndex : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        unsigned int result = cobj->getSiblingIndex();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getSiblingIndex : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getSiblingIndex)
-
-static bool js_scene_BaseNode_getUUid(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getUUid : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        std::string result = cobj->getUUid();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getUUid : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getUUid)
-
-static bool js_scene_BaseNode_getWorldMatrix(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getWorldMatrix : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const cc::Mat4& result = cobj->getWorldMatrix();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getWorldMatrix : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getWorldMatrix)
-
-static bool js_scene_BaseNode_getWorldRotation(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_getWorldRotation : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const cc::Quaternion& result = cobj->getWorldRotation();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getWorldRotation : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getWorldRotation)
-
-static bool js_scene_BaseNode_hasEventListener(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    CC_UNUSED bool ok = true;
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2( cobj, false, "js_scene_BaseNode_hasEventListener : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    do {
-        if (argc == 2) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            bool result = cobj->hasEventListener(arg0.value(), arg1.value());
-            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
-            SE_PRECONDITION2(ok, false, "js_scene_BaseNode_hasEventListener : Error processing arguments");
-            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 1) {
-            HolderType<std::string, true> arg0 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            bool result = cobj->hasEventListener(arg0.value());
-            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
-            SE_PRECONDITION2(ok, false, "js_scene_BaseNode_hasEventListener : Error processing arguments");
-            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 3) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-            HolderType<std::any, true> arg2 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-            if (!ok) { ok = true; break; }
-            bool result = cobj->hasEventListener(arg0.value(), arg1.value(), arg2.value());
-            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
-            SE_PRECONDITION2(ok, false, "js_scene_BaseNode_hasEventListener : Error processing arguments");
-            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-            return true;
-        }
-    } while(false);
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_hasEventListener)
-
-static bool js_scene_BaseNode_insertChild(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_insertChild : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 2) {
-        HolderType<cc::BaseNode*, false> arg0 = {};
-        HolderType<unsigned int, false> arg1 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_insertChild : Error processing arguments");
-        cobj->insertChild(arg0.value(), arg1.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_insertChild)
-
-static bool js_scene_BaseNode_isActive(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_isActive : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        bool result = cobj->isActive();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_isActive : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_isActive)
-
-static bool js_scene_BaseNode_isActiveInHierarchy(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_isActiveInHierarchy : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        bool result = cobj->isActiveInHierarchy();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_isActiveInHierarchy : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_isActiveInHierarchy)
-
-static bool js_scene_BaseNode_isChildOf(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_isChildOf : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::BaseNode*, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_isChildOf : Error processing arguments");
-        bool result = cobj->isChildOf(arg0.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_isChildOf : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_isChildOf)
-
-static bool js_scene_BaseNode_off(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    CC_UNUSED bool ok = true;
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2( cobj, false, "js_scene_BaseNode_off : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    do {
-        if (argc == 3) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-            HolderType<std::any, true> arg2 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-            if (!ok) { ok = true; break; }
-            cobj->off(arg0.value(), arg1.value(), arg2.value());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 4) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-            HolderType<std::any, true> arg2 = {};
-            HolderType<bool, false> arg3 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[3], &arg3, s.thisObject());
-            cobj->off(arg0.value(), arg1.value(), arg2.value(), arg3.value());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 2) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            cobj->off(arg0.value(), arg1.value());
-            return true;
-        }
-    } while(false);
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_off)
-
-static bool js_scene_BaseNode_on(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    CC_UNUSED bool ok = true;
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2( cobj, false, "js_scene_BaseNode_on : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    do {
-        if (argc == 3) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-            HolderType<std::any, true> arg2 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-            if (!ok) { ok = true; break; }
-            cobj->on(arg0.value(), arg1.value(), arg2.value());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 4) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-            HolderType<std::any, true> arg2 = {};
-            HolderType<bool, false> arg3 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[3], &arg3, s.thisObject());
-            cobj->on(arg0.value(), arg1.value(), arg2.value(), arg3.value());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 2) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            cobj->on(arg0.value(), arg1.value());
-            return true;
-        }
-    } while(false);
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_on)
-
-static bool js_scene_BaseNode_onPostActivated(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_onPostActivated : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<bool, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_onPostActivated : Error processing arguments");
-        cobj->onPostActivated(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_onPostActivated)
-
-static bool js_scene_BaseNode_once(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    CC_UNUSED bool ok = true;
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2( cobj, false, "js_scene_BaseNode_once : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    do {
-        if (argc == 3) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-            HolderType<std::any, true> arg2 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-            if (!ok) { ok = true; break; }
-            cobj->once(arg0.value(), arg1.value(), arg2.value());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 4) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-            HolderType<std::any, true> arg2 = {};
-            HolderType<bool, false> arg3 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-            if (!ok) { ok = true; break; }
-            ok &= sevalue_to_native(args[3], &arg3, s.thisObject());
-            cobj->once(arg0.value(), arg1.value(), arg2.value(), arg3.value());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 2) {
-            HolderType<std::string, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            cobj->once(arg0.value(), arg1.value());
-            return true;
-        }
-    } while(false);
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_once)
-
-static bool js_scene_BaseNode_removeAllChildren(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_removeAllChildren : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    if (argc == 0) {
-        cobj->removeAllChildren();
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_removeAllChildren)
-
-static bool js_scene_BaseNode_removeChild(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_removeChild : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::BaseNode*, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_removeChild : Error processing arguments");
-        cobj->removeChild(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_removeChild)
-
-static bool js_scene_BaseNode_removeFromParent(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_removeFromParent : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    if (argc == 0) {
-        cobj->removeFromParent();
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_removeFromParent)
-
-static bool js_scene_BaseNode_setActive(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_setActive : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<bool, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setActive : Error processing arguments");
-        cobj->setActive(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_setActive)
-
-static bool js_scene_BaseNode_setChangedFlags(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_setChangedFlags : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<unsigned int, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setChangedFlags : Error processing arguments");
-        cobj->setChangedFlags(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_setChangedFlags)
-
-static bool js_scene_BaseNode_setDirtyFlag(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_setDirtyFlag : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<unsigned int, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setDirtyFlag : Error processing arguments");
-        cobj->setDirtyFlag(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_setDirtyFlag)
-
-static bool js_scene_BaseNode_setLayer(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_setLayer : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<unsigned int, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setLayer : Error processing arguments");
-        cobj->setLayer(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_setLayer)
-
-static bool js_scene_BaseNode_setName(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_setName : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<std::string, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setName : Error processing arguments");
-        cobj->setName(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_setName)
-
-static bool js_scene_BaseNode_setParent(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_setParent : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::BaseNode*, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setParent : Error processing arguments");
-        cobj->setParent(arg0.value());
-        return true;
-    }
-    if (argc == 2) {
-        HolderType<cc::BaseNode*, false> arg0 = {};
-        HolderType<bool, false> arg1 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setParent : Error processing arguments");
-        cobj->setParent(arg0.value(), arg1.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_setParent)
-
-static bool js_scene_BaseNode_setPersistNode(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_setPersistNode : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<bool, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setPersistNode : Error processing arguments");
-        cobj->setPersistNode(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_setPersistNode)
-
-static bool js_scene_BaseNode_setSiblingIndex(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_setSiblingIndex : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<int, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setSiblingIndex : Error processing arguments");
-        cobj->setSiblingIndex(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_setSiblingIndex)
-
-static bool js_scene_BaseNode_targetOff(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_targetOff : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<std::string, true> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_targetOff : Error processing arguments");
-        cobj->targetOff(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_targetOff)
-
-static bool js_scene_BaseNode_updateSiblingIndex(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_updateSiblingIndex : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    if (argc == 0) {
-        cobj->updateSiblingIndex();
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_updateSiblingIndex)
-
-static bool js_scene_BaseNode_updateWorldTransform(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_BaseNode_updateWorldTransform : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    if (argc == 0) {
-        cobj->updateWorldTransform();
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_updateWorldTransform)
-
-static bool js_scene_BaseNode_walk(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    CC_UNUSED bool ok = true;
-    auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-    SE_PRECONDITION2( cobj, false, "js_scene_BaseNode_walk : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    do {
-        if (argc == 1) {
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg0 = {};
-
-            do {
-                if (args[0].isObject() && args[0].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[0]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg0.data = lambda;
-                }
-                else
-                {
-                    arg0.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            cobj->walk(arg0.value());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 0) {
-
-            cobj->walk();
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 2) {
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg0 = {};
-            HolderType<std::function<void (cc::BaseNode *)>, true> arg1 = {};
-
-            do {
-                if (args[0].isObject() && args[0].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[0]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg0.data = lambda;
-                }
-                else
-                {
-                    arg0.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            do {
-                if (args[1].isObject() && args[1].toObject()->isFunction())
-                {
-                    se::Value jsThis(s.thisObject());
-                    se::Value jsFunc(args[1]);
-                    jsThis.toObject()->attachObject(jsFunc.toObject());
-                    auto lambda = [=](cc::BaseNode* larg0) -> void {
-                        se::ScriptEngine::getInstance()->clearException();
-                        se::AutoHandleScope hs;
-            
-                        CC_UNUSED bool ok = true;
-                        se::ValueArray args;
-                        args.resize(1);
-                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
-                        se::Value rval;
-                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
-                        se::Object* funcObj = jsFunc.toObject();
-                        bool succeed = funcObj->call(args, thisObj, &rval);
-                        if (!succeed) {
-                            se::ScriptEngine::getInstance()->clearException();
-                        }
-                    };
-                    arg1.data = lambda;
-                }
-                else
-                {
-                    arg1.data = nullptr;
-                }
-            } while(false)
-            ;
-            if (!ok) { ok = true; break; }
-            cobj->walk(arg0.value(), arg1.value());
-            return true;
-        }
-    } while(false);
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_walk)
-
-static bool js_scene_BaseNode_instantiate_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 2) {
-        HolderType<cc::BaseNode*, false> arg0 = {};
-        HolderType<bool, false> arg1 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_instantiate_static : Error processing arguments");
-        cc::BaseNode* result = cc::BaseNode::instantiate(arg0.value(), arg1.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_instantiate_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_instantiate_static)
-
-static bool js_scene_BaseNode_setScene_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<cc::BaseNode*, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_setScene_static : Error processing arguments");
-        cc::BaseNode::setScene(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_setScene_static)
-
-static bool js_scene_BaseNode_getIdxOfChild_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 2) {
-        HolderType<std::vector<cc::BaseNode *>, true> arg0 = {};
-        HolderType<cc::BaseNode*, false> arg1 = {};
-        ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getIdxOfChild_static : Error processing arguments");
-        int result = cc::BaseNode::getIdxOfChild(arg0.value(), arg1.value());
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_scene_BaseNode_getIdxOfChild_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
-    return false;
-}
-SE_BIND_FUNC(js_scene_BaseNode_getIdxOfChild_static)
-
-SE_DECLARE_FINALIZE_FUNC(js_cc_BaseNode_finalize)
-
-static bool js_scene_BaseNode_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor_overloaded.c
-{
-    CC_UNUSED bool ok = true;
-    const auto& args = s.args();
-    size_t argc = args.size();
-    do {
-        if (argc == 1) {
-            HolderType<std::string, true> arg0 = {};
-            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-            if (!ok) { ok = true; break; }
-            cc::BaseNode* cobj = JSB_ALLOC(cc::BaseNode, arg0.value());
-            s.thisObject()->setPrivateData(cobj);
-            se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
-            return true;
-        }
-    } while(false);
-    do {
-        if (argc == 0) {
-            cc::BaseNode* cobj = JSB_ALLOC(cc::BaseNode);
-            s.thisObject()->setPrivateData(cobj);
-            se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
-            return true;
-        }
-    } while(false);
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
-}
-SE_BIND_CTOR(js_scene_BaseNode_constructor, __jsb_cc_BaseNode_class, js_cc_BaseNode_finalize)
-
-
-
-static bool js_cc_BaseNode_finalize(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::BaseNode>(s));
-    if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
-    {
-        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
-        auto* cobj = SE_THIS_OBJECT<cc::BaseNode>(s);
-        JSB_FREE(cobj);
-    }
-    return true;
-}
-SE_BIND_FINALIZE_FUNC(js_cc_BaseNode_finalize)
-
-bool js_register_scene_BaseNode(se::Object* obj) // NOLINT(readability-identifier-naming)
-{
-    auto* cls = se::Class::create("BaseNode", obj, nullptr, _SE(js_scene_BaseNode_constructor));
-
-    cls->defineFunction("addChild", _SE(js_scene_BaseNode_addChild));
-    cls->defineFunction("destroy", _SE(js_scene_BaseNode_destroy));
-    cls->defineFunction("destroyAllChildren", _SE(js_scene_BaseNode_destroyAllChildren));
-    cls->defineFunction("emit", _SE(js_scene_BaseNode_emit));
-    cls->defineFunction("getChangedFlags", _SE(js_scene_BaseNode_getChangedFlags));
-    cls->defineFunction("getChildByName", _SE(js_scene_BaseNode_getChildByName));
-    cls->defineFunction("getChildByPath", _SE(js_scene_BaseNode_getChildByPath));
-    cls->defineFunction("getChildByUuid", _SE(js_scene_BaseNode_getChildByUuid));
-    cls->defineFunction("getChildren", _SE(js_scene_BaseNode_getChildren));
-    cls->defineFunction("getDirtyFlag", _SE(js_scene_BaseNode_getDirtyFlag));
-    cls->defineFunction("getName", _SE(js_scene_BaseNode_getName));
-    cls->defineFunction("getParent", _SE(js_scene_BaseNode_getParent));
-    cls->defineFunction("getPersistNode", _SE(js_scene_BaseNode_getPersistNode));
-    cls->defineFunction("getPosition", _SE(js_scene_BaseNode_getPosition));
-    cls->defineFunction("getRotation", _SE(js_scene_BaseNode_getRotation));
-    cls->defineFunction("getScale", _SE(js_scene_BaseNode_getScale));
-    cls->defineFunction("getScene", _SE(js_scene_BaseNode_getScene));
-    cls->defineFunction("getSiblingIndex", _SE(js_scene_BaseNode_getSiblingIndex));
-    cls->defineFunction("getUUid", _SE(js_scene_BaseNode_getUUid));
-    cls->defineFunction("getWorldMatrix", _SE(js_scene_BaseNode_getWorldMatrix));
-    cls->defineFunction("getWorldRotation", _SE(js_scene_BaseNode_getWorldRotation));
-    cls->defineFunction("hasEventListener", _SE(js_scene_BaseNode_hasEventListener));
-    cls->defineFunction("insertChild", _SE(js_scene_BaseNode_insertChild));
-    cls->defineFunction("isActive", _SE(js_scene_BaseNode_isActive));
-    cls->defineFunction("isActiveInHierarchy", _SE(js_scene_BaseNode_isActiveInHierarchy));
-    cls->defineFunction("isChildOf", _SE(js_scene_BaseNode_isChildOf));
-    cls->defineFunction("off", _SE(js_scene_BaseNode_off));
-    cls->defineFunction("on", _SE(js_scene_BaseNode_on));
-    cls->defineFunction("onPostActivated", _SE(js_scene_BaseNode_onPostActivated));
-    cls->defineFunction("once", _SE(js_scene_BaseNode_once));
-    cls->defineFunction("removeAllChildren", _SE(js_scene_BaseNode_removeAllChildren));
-    cls->defineFunction("removeChild", _SE(js_scene_BaseNode_removeChild));
-    cls->defineFunction("removeFromParent", _SE(js_scene_BaseNode_removeFromParent));
-    cls->defineFunction("setActive", _SE(js_scene_BaseNode_setActive));
-    cls->defineFunction("setChangedFlags", _SE(js_scene_BaseNode_setChangedFlags));
-    cls->defineFunction("setDirtyFlag", _SE(js_scene_BaseNode_setDirtyFlag));
-    cls->defineFunction("setLayer", _SE(js_scene_BaseNode_setLayer));
-    cls->defineFunction("setName", _SE(js_scene_BaseNode_setName));
-    cls->defineFunction("setParent", _SE(js_scene_BaseNode_setParent));
-    cls->defineFunction("setPersistNode", _SE(js_scene_BaseNode_setPersistNode));
-    cls->defineFunction("setSiblingIndex", _SE(js_scene_BaseNode_setSiblingIndex));
-    cls->defineFunction("targetOff", _SE(js_scene_BaseNode_targetOff));
-    cls->defineFunction("updateSiblingIndex", _SE(js_scene_BaseNode_updateSiblingIndex));
-    cls->defineFunction("updateWorldTransform", _SE(js_scene_BaseNode_updateWorldTransform));
-    cls->defineFunction("walk", _SE(js_scene_BaseNode_walk));
-    cls->defineStaticFunction("instantiate", _SE(js_scene_BaseNode_instantiate_static));
-    cls->defineStaticFunction("setScene", _SE(js_scene_BaseNode_setScene_static));
-    cls->defineStaticFunction("getIdxOfChild", _SE(js_scene_BaseNode_getIdxOfChild_static));
-    cls->defineFinalizeFunction(_SE(js_cc_BaseNode_finalize));
-    cls->install();
-    JSBClassType::registerClass<cc::BaseNode>(cls);
-
-    __jsb_cc_BaseNode_proto = cls->getProto();
-    __jsb_cc_BaseNode_class = cls;
-
-    se::ScriptEngine::getInstance()->clearException();
-    return true;
-}
-se::Object* __jsb_cc_Node_proto = nullptr; // NOLINT
-se::Class* __jsb_cc_Node_class = nullptr;  // NOLINT
+SE_BIND_FUNC(js_scene_Node_dispatchEvent)
 
 static bool js_scene_Node_getAngle(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1712,6 +141,210 @@ static bool js_scene_Node_getAngle(se::State& s) // NOLINT(readability-identifie
 }
 SE_BIND_FUNC(js_scene_Node_getAngle)
 
+static bool js_scene_Node_getChangedFlags(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getChangedFlags : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        unsigned int result = cobj->getChangedFlags();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getChangedFlags : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getChangedFlags)
+
+static bool js_scene_Node_getChildByName(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getChildByName : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<std::string, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getChildByName : Error processing arguments");
+        cc::Node* result = cobj->getChildByName(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getChildByName : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getChildByName)
+
+static bool js_scene_Node_getChildByPath(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getChildByPath : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<std::string, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getChildByPath : Error processing arguments");
+        cc::Node* result = cobj->getChildByPath(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getChildByPath : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getChildByPath)
+
+static bool js_scene_Node_getChildByUuid(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getChildByUuid : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<std::string, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getChildByUuid : Error processing arguments");
+        cc::Node* result = cobj->getChildByUuid(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getChildByUuid : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getChildByUuid)
+
+static bool js_scene_Node_getChildren(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getChildren : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        const std::vector<cc::Node *>& result = cobj->getChildren();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getChildren : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getChildren)
+
+static bool js_scene_Node_getComponentInChildren(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getComponentInChildren : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<std::string, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getComponentInChildren : Error processing arguments");
+        cc::Component* result = cobj->getComponentInChildren(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getComponentInChildren : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getComponentInChildren)
+
+static bool js_scene_Node_getComponents(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    CC_UNUSED bool ok = true;
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2( cobj, false, "js_scene_Node_getComponents : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    do {
+        if (argc == 0) {
+
+            std::vector<cc::Component *> result = cobj->getComponents();
+            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
+            SE_PRECONDITION2(ok, false, "js_scene_Node_getComponents : Error processing arguments");
+            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 1) {
+            HolderType<std::string, true> arg0 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            std::vector<cc::Component *> result = cobj->getComponents(arg0.value());
+            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
+            SE_PRECONDITION2(ok, false, "js_scene_Node_getComponents : Error processing arguments");
+            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+            return true;
+        }
+    } while(false);
+
+    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getComponents)
+
+static bool js_scene_Node_getComponentsInChildren(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getComponentsInChildren : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<std::string, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getComponentsInChildren : Error processing arguments");
+        std::vector<cc::Component *> result = cobj->getComponentsInChildren(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getComponentsInChildren : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getComponentsInChildren)
+
+static bool js_scene_Node_getDirtyFlag(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getDirtyFlag : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        unsigned int result = cobj->getDirtyFlag();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getDirtyFlag : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getDirtyFlag)
+
 static bool js_scene_Node_getEulerAngles(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -1730,6 +363,25 @@ static bool js_scene_Node_getEulerAngles(se::State& s) // NOLINT(readability-ide
     return false;
 }
 SE_BIND_FUNC(js_scene_Node_getEulerAngles)
+
+static bool js_scene_Node_getEventProcessor(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getEventProcessor : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        cc::NodeEventProcessor* result = cobj->getEventProcessor();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getEventProcessor : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getEventProcessor)
 
 static bool js_scene_Node_getForward(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1769,6 +421,82 @@ static bool js_scene_Node_getLayer(se::State& s) // NOLINT(readability-identifie
 }
 SE_BIND_FUNC(js_scene_Node_getLayer)
 
+static bool js_scene_Node_getName(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getName : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        std::string result = cobj->getName();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getName : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getName)
+
+static bool js_scene_Node_getParent(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getParent : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        cc::Node* result = cobj->getParent();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getParent : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getParent)
+
+static bool js_scene_Node_getPersistNode(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getPersistNode : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        bool result = cobj->getPersistNode();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getPersistNode : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getPersistNode)
+
+static bool js_scene_Node_getPosition(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getPosition : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        const cc::Vec3& result = cobj->getPosition();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getPosition : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getPosition)
+
 static bool js_scene_Node_getRight(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -1787,6 +515,82 @@ static bool js_scene_Node_getRight(se::State& s) // NOLINT(readability-identifie
     return false;
 }
 SE_BIND_FUNC(js_scene_Node_getRight)
+
+static bool js_scene_Node_getRotation(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getRotation : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        const cc::Quaternion& result = cobj->getRotation();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getRotation : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getRotation)
+
+static bool js_scene_Node_getScale(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getScale : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        const cc::Vec3& result = cobj->getScale();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getScale : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getScale)
+
+static bool js_scene_Node_getScene(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getScene : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        cc::Scene* result = cobj->getScene();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getScene : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getScene)
+
+static bool js_scene_Node_getSiblingIndex(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getSiblingIndex : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        unsigned int result = cobj->getSiblingIndex();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getSiblingIndex : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getSiblingIndex)
 
 static bool js_scene_Node_getUIProps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1807,6 +611,25 @@ static bool js_scene_Node_getUIProps(se::State& s) // NOLINT(readability-identif
 }
 SE_BIND_PROP_GET(js_scene_Node_getUIProps)
 
+static bool js_scene_Node_getUUid(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getUUid : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        std::string result = cobj->getUUid();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getUUid : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getUUid)
+
 static bool js_scene_Node_getUp(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -1825,6 +648,25 @@ static bool js_scene_Node_getUp(se::State& s) // NOLINT(readability-identifier-n
     return false;
 }
 SE_BIND_FUNC(js_scene_Node_getUp)
+
+static bool js_scene_Node_getWorldMatrix(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getWorldMatrix : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        const cc::Mat4& result = cobj->getWorldMatrix();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldMatrix : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getWorldMatrix)
 
 static bool js_scene_Node_getWorldPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1883,6 +725,25 @@ static bool js_scene_Node_getWorldRT(se::State& s) // NOLINT(readability-identif
 }
 SE_BIND_FUNC(js_scene_Node_getWorldRT)
 
+static bool js_scene_Node_getWorldRotation(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getWorldRotation : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        const cc::Quaternion& result = cobj->getWorldRotation();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldRotation : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getWorldRotation)
+
 static bool js_scene_Node_getWorldScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -1901,6 +762,107 @@ static bool js_scene_Node_getWorldScale(se::State& s) // NOLINT(readability-iden
     return false;
 }
 SE_BIND_FUNC(js_scene_Node_getWorldScale)
+
+static bool js_scene_Node_hasEventListener(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    CC_UNUSED bool ok = true;
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2( cobj, false, "js_scene_Node_hasEventListener : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    do {
+        if (argc == 2) {
+            HolderType<std::string, true> arg0 = {};
+            HolderType<unsigned int, false> arg1 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            if (!ok) { ok = true; break; }
+            bool result = cobj->hasEventListener(arg0.value(), arg1.value());
+            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
+            SE_PRECONDITION2(ok, false, "js_scene_Node_hasEventListener : Error processing arguments");
+            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 1) {
+            HolderType<std::string, true> arg0 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            bool result = cobj->hasEventListener(arg0.value());
+            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
+            SE_PRECONDITION2(ok, false, "js_scene_Node_hasEventListener : Error processing arguments");
+            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 2) {
+            HolderType<std::string, true> arg0 = {};
+            HolderType<void*, false> arg1 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            if (!ok) { ok = true; break; }
+            bool result = cobj->hasEventListener(arg0.value(), arg1.value());
+            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
+            SE_PRECONDITION2(ok, false, "js_scene_Node_hasEventListener : Error processing arguments");
+            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 3) {
+            HolderType<std::string, true> arg0 = {};
+            HolderType<void*, false> arg1 = {};
+            HolderType<unsigned int, false> arg2 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
+            if (!ok) { ok = true; break; }
+            bool result = cobj->hasEventListener(arg0.value(), arg1.value(), arg2.value());
+            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
+            SE_PRECONDITION2(ok, false, "js_scene_Node_hasEventListener : Error processing arguments");
+            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+            return true;
+        }
+    } while(false);
+
+    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_hasEventListener)
+
+static bool js_scene_Node_insertChild(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_insertChild : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        HolderType<cc::Node*, false> arg0 = {};
+        HolderType<unsigned int, false> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_insertChild : Error processing arguments");
+        cobj->insertChild(arg0.value(), arg1.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_insertChild)
 
 static bool js_scene_Node_invalidateChildren(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1942,6 +904,66 @@ static bool js_scene_Node_inverseTransformPoint(se::State& s) // NOLINT(readabil
 }
 SE_BIND_FUNC(js_scene_Node_inverseTransformPoint)
 
+static bool js_scene_Node_isActive(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_isActive : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        bool result = cobj->isActive();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_isActive : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_isActive)
+
+static bool js_scene_Node_isActiveInHierarchy(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_isActiveInHierarchy : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        bool result = cobj->isActiveInHierarchy();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_isActiveInHierarchy : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_isActiveInHierarchy)
+
+static bool js_scene_Node_isChildOf(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_isChildOf : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Node*, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_isChildOf : Error processing arguments");
+        bool result = cobj->isChildOf(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_isChildOf : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_isChildOf)
+
 static bool js_scene_Node_lookAt(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -1963,6 +985,91 @@ static bool js_scene_Node_lookAt(se::State& s) // NOLINT(readability-identifier-
 }
 SE_BIND_FUNC(js_scene_Node_lookAt)
 
+static bool js_scene_Node_off(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    CC_UNUSED bool ok = true;
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2( cobj, false, "js_scene_Node_off : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    do {
+        if (argc == 2) {
+            HolderType<std::string, true> arg0 = {};
+            HolderType<void*, false> arg1 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            if (!ok) { ok = true; break; }
+            cobj->off(arg0.value(), arg1.value());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 3) {
+            HolderType<std::string, true> arg0 = {};
+            HolderType<void*, false> arg1 = {};
+            HolderType<bool, false> arg2 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
+            cobj->off(arg0.value(), arg1.value(), arg2.value());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 1) {
+            HolderType<std::string, true> arg0 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            cobj->off(arg0.value());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 2) {
+            HolderType<std::string, true> arg0 = {};
+            HolderType<bool, false> arg1 = {};
+
+            ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+            if (!ok) { ok = true; break; }
+            ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+            cobj->off(arg0.value(), arg1.value());
+            return true;
+        }
+    } while(false);
+
+    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_off)
+
+static bool js_scene_Node_onPostActivated(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_onPostActivated : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<bool, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_onPostActivated : Error processing arguments");
+        cobj->onPostActivated(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_onPostActivated)
+
 static bool js_scene_Node_pauseSystemEvents(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -1981,6 +1088,74 @@ static bool js_scene_Node_pauseSystemEvents(se::State& s) // NOLINT(readability-
     return false;
 }
 SE_BIND_FUNC(js_scene_Node_pauseSystemEvents)
+
+static bool js_scene_Node_removeAllChildren(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_removeAllChildren : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->removeAllChildren();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_removeAllChildren)
+
+static bool js_scene_Node_removeChild(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_removeChild : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Node*, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_removeChild : Error processing arguments");
+        cobj->removeChild(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_removeChild)
+
+static bool js_scene_Node_removeComponent(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_removeComponent : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Component*, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_removeComponent : Error processing arguments");
+        cobj->removeComponent(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_removeComponent)
+
+static bool js_scene_Node_removeFromParent(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_removeFromParent : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->removeFromParent();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_removeFromParent)
 
 static bool js_scene_Node_resumeSystemEvents(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2022,6 +1197,25 @@ static bool js_scene_Node_rotate(se::State& s) // NOLINT(readability-identifier-
 }
 SE_BIND_FUNC(js_scene_Node_rotate)
 
+static bool js_scene_Node_setActive(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_setActive : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<bool, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setActive : Error processing arguments");
+        cobj->setActive(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_setActive)
+
 static bool js_scene_Node_setAngle(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -2040,6 +1234,44 @@ static bool js_scene_Node_setAngle(se::State& s) // NOLINT(readability-identifie
     return false;
 }
 SE_BIND_FUNC(js_scene_Node_setAngle)
+
+static bool js_scene_Node_setChangedFlags(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_setChangedFlags : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<unsigned int, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setChangedFlags : Error processing arguments");
+        cobj->setChangedFlags(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_setChangedFlags)
+
+static bool js_scene_Node_setDirtyFlag(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_setDirtyFlag : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<unsigned int, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setDirtyFlag : Error processing arguments");
+        cobj->setDirtyFlag(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_setDirtyFlag)
 
 static bool js_scene_Node_setEulerAngles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2078,6 +1310,91 @@ static bool js_scene_Node_setForward(se::State& s) // NOLINT(readability-identif
     return false;
 }
 SE_BIND_FUNC(js_scene_Node_setForward)
+
+static bool js_scene_Node_setLayer(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_setLayer : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<unsigned int, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setLayer : Error processing arguments");
+        cobj->setLayer(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_setLayer)
+
+static bool js_scene_Node_setName(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_setName : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<std::string, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setName : Error processing arguments");
+        cobj->setName(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_setName)
+
+static bool js_scene_Node_setParent(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_setParent : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Node*, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setParent : Error processing arguments");
+        cobj->setParent(arg0.value());
+        return true;
+    }
+    if (argc == 2) {
+        HolderType<cc::Node*, false> arg0 = {};
+        HolderType<bool, false> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setParent : Error processing arguments");
+        cobj->setParent(arg0.value(), arg1.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_setParent)
+
+static bool js_scene_Node_setPersistNode(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_setPersistNode : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<bool, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setPersistNode : Error processing arguments");
+        cobj->setPersistNode(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_setPersistNode)
 
 static bool js_scene_Node_setPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2279,6 +1596,25 @@ static bool js_scene_Node_setScale(se::State& s) // NOLINT(readability-identifie
 }
 SE_BIND_FUNC(js_scene_Node_setScale)
 
+static bool js_scene_Node_setSiblingIndex(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_setSiblingIndex : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<int, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setSiblingIndex : Error processing arguments");
+        cobj->setSiblingIndex(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_setSiblingIndex)
+
 static bool js_scene_Node_setWorldPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
     CC_UNUSED bool ok = true;
@@ -2425,6 +1761,25 @@ static bool js_scene_Node_setWorldScale(se::State& s) // NOLINT(readability-iden
 }
 SE_BIND_FUNC(js_scene_Node_setWorldScale)
 
+static bool js_scene_Node_targetOff(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_targetOff : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<std::string, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_targetOff : Error processing arguments");
+        cobj->targetOff(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_targetOff)
+
 static bool js_scene_Node_translate(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -2453,6 +1808,229 @@ static bool js_scene_Node_translate(se::State& s) // NOLINT(readability-identifi
 }
 SE_BIND_FUNC(js_scene_Node_translate)
 
+static bool js_scene_Node_updateSiblingIndex(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_updateSiblingIndex : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->updateSiblingIndex();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_updateSiblingIndex)
+
+static bool js_scene_Node_updateWorldTransform(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_updateWorldTransform : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->updateWorldTransform();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_updateWorldTransform)
+
+static bool js_scene_Node_walk(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    CC_UNUSED bool ok = true;
+    auto* cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2( cobj, false, "js_scene_Node_walk : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    do {
+        if (argc == 1) {
+            HolderType<std::function<void (cc::Node *)>, true> arg0 = {};
+
+            do {
+                if (args[0].isObject() && args[0].toObject()->isFunction())
+                {
+                    se::Value jsThis(s.thisObject());
+                    se::Value jsFunc(args[0]);
+                    jsThis.toObject()->attachObject(jsFunc.toObject());
+                    auto lambda = [=](cc::Node* larg0) -> void {
+                        se::ScriptEngine::getInstance()->clearException();
+                        se::AutoHandleScope hs;
+            
+                        CC_UNUSED bool ok = true;
+                        se::ValueArray args;
+                        args.resize(1);
+                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
+                        se::Value rval;
+                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
+                        se::Object* funcObj = jsFunc.toObject();
+                        bool succeed = funcObj->call(args, thisObj, &rval);
+                        if (!succeed) {
+                            se::ScriptEngine::getInstance()->clearException();
+                        }
+                    };
+                    arg0.data = lambda;
+                }
+                else
+                {
+                    arg0.data = nullptr;
+                }
+            } while(false)
+            ;
+            if (!ok) { ok = true; break; }
+            cobj->walk(arg0.value());
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 0) {
+
+            cobj->walk();
+            return true;
+        }
+    } while(false);
+
+    do {
+        if (argc == 2) {
+            HolderType<std::function<void (cc::Node *)>, true> arg0 = {};
+            HolderType<std::function<void (cc::Node *)>, true> arg1 = {};
+
+            do {
+                if (args[0].isObject() && args[0].toObject()->isFunction())
+                {
+                    se::Value jsThis(s.thisObject());
+                    se::Value jsFunc(args[0]);
+                    jsThis.toObject()->attachObject(jsFunc.toObject());
+                    auto lambda = [=](cc::Node* larg0) -> void {
+                        se::ScriptEngine::getInstance()->clearException();
+                        se::AutoHandleScope hs;
+            
+                        CC_UNUSED bool ok = true;
+                        se::ValueArray args;
+                        args.resize(1);
+                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
+                        se::Value rval;
+                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
+                        se::Object* funcObj = jsFunc.toObject();
+                        bool succeed = funcObj->call(args, thisObj, &rval);
+                        if (!succeed) {
+                            se::ScriptEngine::getInstance()->clearException();
+                        }
+                    };
+                    arg0.data = lambda;
+                }
+                else
+                {
+                    arg0.data = nullptr;
+                }
+            } while(false)
+            ;
+            if (!ok) { ok = true; break; }
+            do {
+                if (args[1].isObject() && args[1].toObject()->isFunction())
+                {
+                    se::Value jsThis(s.thisObject());
+                    se::Value jsFunc(args[1]);
+                    jsThis.toObject()->attachObject(jsFunc.toObject());
+                    auto lambda = [=](cc::Node* larg0) -> void {
+                        se::ScriptEngine::getInstance()->clearException();
+                        se::AutoHandleScope hs;
+            
+                        CC_UNUSED bool ok = true;
+                        se::ValueArray args;
+                        args.resize(1);
+                        ok &= nativevalue_to_se(larg0, args[0], nullptr /*ctx*/);
+                        se::Value rval;
+                        se::Object* thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
+                        se::Object* funcObj = jsFunc.toObject();
+                        bool succeed = funcObj->call(args, thisObj, &rval);
+                        if (!succeed) {
+                            se::ScriptEngine::getInstance()->clearException();
+                        }
+                    };
+                    arg1.data = lambda;
+                }
+                else
+                {
+                    arg1.data = nullptr;
+                }
+            } while(false)
+            ;
+            if (!ok) { ok = true; break; }
+            cobj->walk(arg0.value(), arg1.value());
+            return true;
+        }
+    } while(false);
+
+    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_walk)
+
+static bool js_scene_Node_instantiate_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        HolderType<cc::Node*, false> arg0 = {};
+        HolderType<bool, false> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_instantiate_static : Error processing arguments");
+        cc::Node* result = cc::Node::instantiate(arg0.value(), arg1.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_instantiate_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_instantiate_static)
+
+static bool js_scene_Node_setScene_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Node*, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_setScene_static : Error processing arguments");
+        cc::Node::setScene(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_setScene_static)
+
+static bool js_scene_Node_getIdxOfChild_static(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        HolderType<std::vector<cc::Node *>, true> arg0 = {};
+        HolderType<cc::Node*, false> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, nullptr);
+        ok &= sevalue_to_native(args[1], &arg1, nullptr);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getIdxOfChild_static : Error processing arguments");
+        int result = cc::Node::getIdxOfChild(arg0.value(), arg1.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getIdxOfChild_static : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getIdxOfChild_static)
+
 static bool js_scene_Node_setDirtyNode_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
@@ -2460,7 +2038,7 @@ static bool js_scene_Node_setDirtyNode_static(se::State& s) // NOLINT(readabilit
     CC_UNUSED bool ok = true;
     if (argc == 2) {
         HolderType<int, false> arg0 = {};
-        HolderType<cc::BaseNode*, false> arg1 = {};
+        HolderType<cc::Node*, false> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
         SE_PRECONDITION2(ok, false, "js_scene_Node_setDirtyNode_static : Error processing arguments");
@@ -2481,7 +2059,7 @@ static bool js_scene_Node_getDirtyNode_static(se::State& s) // NOLINT(readabilit
         HolderType<int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         SE_PRECONDITION2(ok, false, "js_scene_Node_getDirtyNode_static : Error processing arguments");
-        cc::BaseNode* result = cc::Node::getDirtyNode(arg0.value());
+        cc::Node* result = cc::Node::getDirtyNode(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_scene_Node_getDirtyNode_static : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -2566,38 +2144,90 @@ SE_BIND_FINALIZE_FUNC(js_cc_Node_finalize)
 
 bool js_register_scene_Node(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto* cls = se::Class::create("Node", obj, __jsb_cc_BaseNode_proto, _SE(js_scene_Node_constructor));
+    auto* cls = se::Class::create("Node", obj, nullptr, _SE(js_scene_Node_constructor));
 
     cls->defineProperty("uiProps", _SE(js_scene_Node_getUIProps), nullptr);
+    cls->defineFunction("addChild", _SE(js_scene_Node_addChild));
+    cls->defineFunction("addComponent", _SE(js_scene_Node_addComponent));
+    cls->defineFunction("destroy", _SE(js_scene_Node_destroy));
+    cls->defineFunction("destroyAllChildren", _SE(js_scene_Node_destroyAllChildren));
+    cls->defineFunction("dispatchEvent", _SE(js_scene_Node_dispatchEvent));
     cls->defineFunction("getAngle", _SE(js_scene_Node_getAngle));
+    cls->defineFunction("getChangedFlags", _SE(js_scene_Node_getChangedFlags));
+    cls->defineFunction("getChildByName", _SE(js_scene_Node_getChildByName));
+    cls->defineFunction("getChildByPath", _SE(js_scene_Node_getChildByPath));
+    cls->defineFunction("getChildByUuid", _SE(js_scene_Node_getChildByUuid));
+    cls->defineFunction("getChildren", _SE(js_scene_Node_getChildren));
+    cls->defineFunction("getComponentInChildren", _SE(js_scene_Node_getComponentInChildren));
+    cls->defineFunction("getComponents", _SE(js_scene_Node_getComponents));
+    cls->defineFunction("getComponentsInChildren", _SE(js_scene_Node_getComponentsInChildren));
+    cls->defineFunction("getDirtyFlag", _SE(js_scene_Node_getDirtyFlag));
     cls->defineFunction("getEulerAngles", _SE(js_scene_Node_getEulerAngles));
+    cls->defineFunction("getEventProcessor", _SE(js_scene_Node_getEventProcessor));
     cls->defineFunction("getForward", _SE(js_scene_Node_getForward));
     cls->defineFunction("getLayer", _SE(js_scene_Node_getLayer));
+    cls->defineFunction("getName", _SE(js_scene_Node_getName));
+    cls->defineFunction("getParent", _SE(js_scene_Node_getParent));
+    cls->defineFunction("getPersistNode", _SE(js_scene_Node_getPersistNode));
+    cls->defineFunction("getPosition", _SE(js_scene_Node_getPosition));
     cls->defineFunction("getRight", _SE(js_scene_Node_getRight));
+    cls->defineFunction("getRotation", _SE(js_scene_Node_getRotation));
+    cls->defineFunction("getScale", _SE(js_scene_Node_getScale));
+    cls->defineFunction("getScene", _SE(js_scene_Node_getScene));
+    cls->defineFunction("getSiblingIndex", _SE(js_scene_Node_getSiblingIndex));
+    cls->defineFunction("getUUid", _SE(js_scene_Node_getUUid));
     cls->defineFunction("getUp", _SE(js_scene_Node_getUp));
+    cls->defineFunction("getWorldMatrix", _SE(js_scene_Node_getWorldMatrix));
     cls->defineFunction("getWorldPosition", _SE(js_scene_Node_getWorldPosition));
     cls->defineFunction("getWorldRS", _SE(js_scene_Node_getWorldRS));
     cls->defineFunction("getWorldRT", _SE(js_scene_Node_getWorldRT));
+    cls->defineFunction("getWorldRotation", _SE(js_scene_Node_getWorldRotation));
     cls->defineFunction("getWorldScale", _SE(js_scene_Node_getWorldScale));
+    cls->defineFunction("hasEventListener", _SE(js_scene_Node_hasEventListener));
+    cls->defineFunction("insertChild", _SE(js_scene_Node_insertChild));
     cls->defineFunction("invalidateChildren", _SE(js_scene_Node_invalidateChildren));
     cls->defineFunction("inverseTransformPoint", _SE(js_scene_Node_inverseTransformPoint));
+    cls->defineFunction("isActive", _SE(js_scene_Node_isActive));
+    cls->defineFunction("isActiveInHierarchy", _SE(js_scene_Node_isActiveInHierarchy));
+    cls->defineFunction("isChildOf", _SE(js_scene_Node_isChildOf));
     cls->defineFunction("lookAt", _SE(js_scene_Node_lookAt));
+    cls->defineFunction("off", _SE(js_scene_Node_off));
+    cls->defineFunction("onPostActivated", _SE(js_scene_Node_onPostActivated));
     cls->defineFunction("pauseSystemEvents", _SE(js_scene_Node_pauseSystemEvents));
+    cls->defineFunction("removeAllChildren", _SE(js_scene_Node_removeAllChildren));
+    cls->defineFunction("removeChild", _SE(js_scene_Node_removeChild));
+    cls->defineFunction("removeComponent", _SE(js_scene_Node_removeComponent));
+    cls->defineFunction("removeFromParent", _SE(js_scene_Node_removeFromParent));
     cls->defineFunction("resumeSystemEvents", _SE(js_scene_Node_resumeSystemEvents));
     cls->defineFunction("rotate", _SE(js_scene_Node_rotate));
+    cls->defineFunction("setActive", _SE(js_scene_Node_setActive));
     cls->defineFunction("setAngle", _SE(js_scene_Node_setAngle));
+    cls->defineFunction("setChangedFlags", _SE(js_scene_Node_setChangedFlags));
+    cls->defineFunction("setDirtyFlag", _SE(js_scene_Node_setDirtyFlag));
     cls->defineFunction("setEulerAngles", _SE(js_scene_Node_setEulerAngles));
     cls->defineFunction("setForward", _SE(js_scene_Node_setForward));
+    cls->defineFunction("setLayer", _SE(js_scene_Node_setLayer));
+    cls->defineFunction("setName", _SE(js_scene_Node_setName));
+    cls->defineFunction("setParent", _SE(js_scene_Node_setParent));
+    cls->defineFunction("setPersistNode", _SE(js_scene_Node_setPersistNode));
     cls->defineFunction("setPosition", _SE(js_scene_Node_setPosition));
     cls->defineFunction("setRTS", _SE(js_scene_Node_setRTS));
     cls->defineFunction("setRotation", _SE(js_scene_Node_setRotation));
     cls->defineFunction("setRotationFromEuler", _SE(js_scene_Node_setRotationFromEuler));
     cls->defineFunction("setScale", _SE(js_scene_Node_setScale));
+    cls->defineFunction("setSiblingIndex", _SE(js_scene_Node_setSiblingIndex));
     cls->defineFunction("setWorldPosition", _SE(js_scene_Node_setWorldPosition));
     cls->defineFunction("setWorldRotation", _SE(js_scene_Node_setWorldRotation));
     cls->defineFunction("setWorldRotationFromEuler", _SE(js_scene_Node_setWorldRotationFromEuler));
     cls->defineFunction("setWorldScale", _SE(js_scene_Node_setWorldScale));
+    cls->defineFunction("targetOff", _SE(js_scene_Node_targetOff));
     cls->defineFunction("translate", _SE(js_scene_Node_translate));
+    cls->defineFunction("updateSiblingIndex", _SE(js_scene_Node_updateSiblingIndex));
+    cls->defineFunction("updateWorldTransform", _SE(js_scene_Node_updateWorldTransform));
+    cls->defineFunction("walk", _SE(js_scene_Node_walk));
+    cls->defineStaticFunction("instantiate", _SE(js_scene_Node_instantiate_static));
+    cls->defineStaticFunction("setScene", _SE(js_scene_Node_setScene_static));
+    cls->defineStaticFunction("getIdxOfChild", _SE(js_scene_Node_getIdxOfChild_static));
     cls->defineStaticFunction("setDirtyNode", _SE(js_scene_Node_setDirtyNode_static));
     cls->defineStaticFunction("getDirtyNode", _SE(js_scene_Node_getDirtyNode_static));
     cls->defineStaticFunction("resetChangedFlags", _SE(js_scene_Node_resetChangedFlags_static));
@@ -11271,6 +10901,26 @@ bool sevalue_to_native(const se::Value &from, cc::scene::DrawBatch2D * to, se::O
     }
     se::Value field;
     bool ok = true;
+    json->getProperty("visFlags", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->visFlags), ctx);
+    }
+    json->getProperty("descriptorSet", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->descriptorSet), ctx);
+    }
+    json->getProperty("inputAssembler", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->inputAssembler), ctx);
+    }
+    json->getProperty("passes", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->passes), ctx);
+    }
+    json->getProperty("shaders", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->shaders), ctx);
+    }
     return ok;
 }
 
@@ -11290,7 +10940,40 @@ static bool js_scene_DrawBatch2D_constructor(se::State& s) // NOLINT(readability
         return true;
     }
 
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::scene::DrawBatch2D* cobj = JSB_ALLOC(cc::scene::DrawBatch2D);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
     cc::scene::DrawBatch2D* cobj = JSB_ALLOC(cc::scene::DrawBatch2D);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->visFlags), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->descriptorSet), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->inputAssembler), nullptr);
+    }
+    if (argc > 3 && !args[3].isUndefined()) {
+        ok &= sevalue_to_native(args[3], &(cobj->passes), nullptr);
+    }
+    if (argc > 4 && !args[4].isUndefined()) {
+        ok &= sevalue_to_native(args[4], &(cobj->shaders), nullptr);
+    }
 
     if(!ok) {
         JSB_FREE(cobj);
@@ -14547,34 +14230,33 @@ bool register_all_scene(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_scene_BaseNode(ns);
-    js_register_scene_Node(ns);
-    js_register_scene_Light(ns);
-    js_register_scene_DirectionalLight(ns);
-    js_register_scene_SpotLight(ns);
-    js_register_scene_SphereLight(ns);
-    js_register_scene_Model(ns);
-    js_register_scene_AmbientInfo(ns);
     js_register_scene_Ambient(ns);
-    js_register_scene_FogInfo(ns);
+    js_register_scene_AmbientInfo(ns);
+    js_register_scene_Camera(ns);
+    js_register_scene_DirectionalLight(ns);
+    js_register_scene_DrawBatch2D(ns);
     js_register_scene_Fog(ns);
-    js_register_scene_IPassStates(ns);
+    js_register_scene_FogInfo(ns);
+    js_register_scene_ICameraInfo(ns);
+    js_register_scene_IMacroPatch(ns);
     js_register_scene_IPassInfo(ns);
     js_register_scene_IPassInfoFull(ns);
-    js_register_scene_IMacroPatch(ns);
-    js_register_scene_ShadowInfo(ns);
-    js_register_scene_Shadow(ns);
-    js_register_scene_SkyboxInfo(ns);
-    js_register_scene_Skybox(ns);
-    js_register_scene_IRenderWindowInfo(ns);
-    js_register_scene_RenderWindow(ns);
-    js_register_scene_ICameraInfo(ns);
-    js_register_scene_Camera(ns);
-    js_register_scene_DrawBatch2D(ns);
+    js_register_scene_IPassStates(ns);
     js_register_scene_IRenderSceneInfo(ns);
-    js_register_scene_RenderScene(ns);
-    js_register_scene_Root(ns);
+    js_register_scene_IRenderWindowInfo(ns);
+    js_register_scene_Light(ns);
+    js_register_scene_Model(ns);
+    js_register_scene_Node(ns);
     js_register_scene_Pass(ns);
+    js_register_scene_RenderScene(ns);
+    js_register_scene_RenderWindow(ns);
+    js_register_scene_Root(ns);
+    js_register_scene_Shadow(ns);
+    js_register_scene_ShadowInfo(ns);
+    js_register_scene_Skybox(ns);
+    js_register_scene_SkyboxInfo(ns);
+    js_register_scene_SphereLight(ns);
+    js_register_scene_SpotLight(ns);
     js_register_scene_SubModel(ns);
     return true;
 }

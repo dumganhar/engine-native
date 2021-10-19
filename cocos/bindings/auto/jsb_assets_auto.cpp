@@ -8364,6 +8364,10 @@ bool sevalue_to_native(const se::Value &from, cc::MorphTarget * to, se::Object *
     }
     se::Value field;
     bool ok = true;
+    json->getProperty("displacements", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->displacements), ctx);
+    }
     return ok;
 }
 
@@ -8384,6 +8388,9 @@ static bool js_assets_MorphTarget_constructor(se::State& s) // NOLINT(readabilit
     }
 
     cc::MorphTarget* cobj = JSB_ALLOC(cc::MorphTarget);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->displacements), nullptr);
+    }
 
     if(!ok) {
         JSB_FREE(cobj);

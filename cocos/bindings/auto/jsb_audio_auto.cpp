@@ -837,8 +837,8 @@ bool register_all_audio(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_audio_AudioProfile(ns);
     js_register_audio_AudioEngine(ns);
+    js_register_audio_AudioProfile(ns);
     return true;
 }
 

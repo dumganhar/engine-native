@@ -13961,7 +13961,7 @@ SE_BIND_FINALIZE_FUNC(js_spine_SkeletonRenderer_finalize)
 
 bool js_register_spine_SkeletonRenderer(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto* cls = se::Class::create("Skeleton", obj, nullptr, _SE(js_spine_SkeletonRenderer_constructor));
+    auto* cls = se::Class::create("SkeletonRenderer", obj, nullptr, _SE(js_spine_SkeletonRenderer_constructor));
 
     cls->defineFunction("beginSchedule", _SE(js_spine_SkeletonRenderer_beginSchedule));
     cls->defineFunction("findBone", _SE(js_spine_SkeletonRenderer_findBone));
@@ -16151,21 +16151,18 @@ bool register_all_spine(se::Object* obj)    // NOLINT
     se::Object* ns = nsVal.toObject();
 
     js_register_spine_Animation(ns);
-    js_register_spine_TrackEntry(ns);
     js_register_spine_AnimationState(ns);
     js_register_spine_AnimationStateData(ns);
     js_register_spine_Attachment(ns);
-    js_register_spine_Timeline(ns);
     js_register_spine_AttachmentTimeline(ns);
     js_register_spine_Bone(ns);
     js_register_spine_BoneData(ns);
-    js_register_spine_VertexAttachment(ns);
     js_register_spine_BoundingBoxAttachment(ns);
     js_register_spine_ClippingAttachment(ns);
     js_register_spine_Color(ns);
-    js_register_spine_CurveTimeline(ns);
     js_register_spine_ColorTimeline(ns);
     js_register_spine_ConstraintData(ns);
+    js_register_spine_CurveTimeline(ns);
     js_register_spine_DeformTimeline(ns);
     js_register_spine_DrawOrderTimeline(ns);
     js_register_spine_Event(ns);
@@ -16174,6 +16171,7 @@ bool register_all_spine(se::Object* obj)    // NOLINT
     js_register_spine_IkConstraint(ns);
     js_register_spine_IkConstraintData(ns);
     js_register_spine_IkConstraintTimeline(ns);
+    js_register_spine_JitterVertexEffect(ns);
     js_register_spine_MeshAttachment(ns);
     js_register_spine_PathAttachment(ns);
     js_register_spine_PathConstraint(ns);
@@ -16182,31 +16180,33 @@ bool register_all_spine(se::Object* obj)    // NOLINT
     js_register_spine_PathConstraintPositionTimeline(ns);
     js_register_spine_PathConstraintSpacingTimeline(ns);
     js_register_spine_PointAttachment(ns);
+    js_register_spine_Polygon(ns);
     js_register_spine_RegionAttachment(ns);
     js_register_spine_RotateTimeline(ns);
-    js_register_spine_TranslateTimeline(ns);
     js_register_spine_ScaleTimeline(ns);
     js_register_spine_ShearTimeline(ns);
     js_register_spine_Skeleton(ns);
+    js_register_spine_SkeletonAnimation(ns);
     js_register_spine_SkeletonBounds(ns);
-    js_register_spine_Polygon(ns);
+    js_register_spine_SkeletonCacheAnimation(ns);
+    js_register_spine_SkeletonCacheMgr(ns);
     js_register_spine_SkeletonData(ns);
+    js_register_spine_SkeletonDataMgr(ns);
+    js_register_spine_SkeletonRenderer(ns);
     js_register_spine_Skin(ns);
     js_register_spine_Slot(ns);
     js_register_spine_SlotData(ns);
+    js_register_spine_SwirlVertexEffect(ns);
+    js_register_spine_Timeline(ns);
+    js_register_spine_TrackEntry(ns);
     js_register_spine_TransformConstraint(ns);
     js_register_spine_TransformConstraintData(ns);
     js_register_spine_TransformConstraintTimeline(ns);
+    js_register_spine_TranslateTimeline(ns);
     js_register_spine_TwoColorTimeline(ns);
+    js_register_spine_VertexAttachment(ns);
     js_register_spine_VertexEffect(ns);
-    js_register_spine_JitterVertexEffect(ns);
-    js_register_spine_SwirlVertexEffect(ns);
     js_register_spine_VertexEffectDelegate(ns);
-    js_register_spine_SkeletonRenderer(ns);
-    js_register_spine_SkeletonAnimation(ns);
-    js_register_spine_SkeletonCacheAnimation(ns);
-    js_register_spine_SkeletonCacheMgr(ns);
-    js_register_spine_SkeletonDataMgr(ns);
     return true;
 }
 

@@ -643,9 +643,9 @@ bool register_all_editor_support(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_editor_support_Texture2D(ns);
-    js_register_editor_support_SharedBufferManager(ns);
     js_register_editor_support_MiddlewareManager(ns);
+    js_register_editor_support_SharedBufferManager(ns);
+    js_register_editor_support_Texture2D(ns);
     return true;
 }
 

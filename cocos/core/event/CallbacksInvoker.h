@@ -160,8 +160,10 @@ public:
  * @en CallbacksInvoker is used to manager and invoke event listeners with different event keys,
  * each key is mapped to a CallbackList.
  */
-class CallbacksInvoker final {
+class CallbacksInvoker {
 public:
+    CallbacksInvoker()          = default;
+    virtual ~CallbacksInvoker() = default;
     /**
      * @zh 向一个事件名注册一个新的事件监听器，包含回调函数和调用者
      * @en Register an event listener to a given event key with callback and target.
@@ -397,7 +399,7 @@ void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
                     }
                 }
             } else {
-                CCASSERT(false, "EventEmitter::emit: Invalid event signature.");
+                CCASSERT(false, "CallbacksInvoker::emit: Invalid event signature.");
             }
         }
 
@@ -413,7 +415,7 @@ void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
 template <typename Target, typename... Args>
 bool CallbacksInvoker::hasEventListener(const std::string &key, void (Target::*memberFn)(Args...), Target *target) {
     using CallbackFn = void (CCObject::*)(Args...);
-    auto iter = _callbackTable.find(key);
+    auto iter        = _callbackTable.find(key);
     if (iter == _callbackTable.end()) {
         return false;
     }
@@ -430,5 +432,7 @@ bool CallbacksInvoker::hasEventListener(const std::string &key, void (Target::*m
 
     return false;
 }
+
+using EventTarget = CallbacksInvoker;
 
 } // namespace cc

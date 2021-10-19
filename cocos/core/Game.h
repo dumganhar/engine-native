@@ -28,7 +28,7 @@
 #include <vector>
 
 #include "core/asset-manager/AssetManager.h"
-#include "core/event/EventEmitter.h"
+#include "core/event/CallbacksInvoker.h"
 #include "core/platform/event-manager/InputManager.h"
 #include "core/platform/native/SystemInfo.h"
 #include "platform/Application.h"
@@ -162,7 +162,7 @@ struct IGameConfig {
     };
 };
 
-class Game final : public EventEmitter {
+class Game final : public EventTarget {
 public:
     /**
     * @en

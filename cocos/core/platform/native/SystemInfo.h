@@ -25,12 +25,12 @@ THE SOFTWARE.
 
 #pragma once
 
-#include "core/event/EventEmitter.h"
+#include "core/event/CallbacksInvoker.h"
 
 namespace cc {
-class SystemInfo final : public EventEmitter {
+class SystemInfo final : public EventTarget {
 public:
-    static SystemInfo& getInstance() {
+    static SystemInfo &getInstance() {
         static SystemInfo instance;
         return instance;
     }
@@ -44,10 +44,10 @@ public:
     const std::string nativeLanguage;
     // const OS os;
     const std::string osVersion;
-    const uint32_t osMainVersion{0};
+    const uint32_t    osMainVersion{0};
     // const BrowserType browserTpe;
     const std::string browserVersion;
-    const float pixelRatio{1};
+    const float       pixelRatio{1};
     // const SupportCapability supportCapability;
 
     // TODO(PP): need to wrap the function __isObjectValid()
@@ -65,10 +65,9 @@ public:
     void close() const;
 
 private:
-    SystemInfo() = default;
+    SystemInfo()  = default;
     ~SystemInfo() = default;
     void registerEvent() const;
-
 };
 
-} // namespace cc 
+} // namespace cc

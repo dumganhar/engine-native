@@ -74,20 +74,21 @@ public:
     static void    setScene(Node *);
     static index_t getIdxOfChild(const std::vector<Node *> &, Node *);
     // TODO(Lenovo):
-    static Component *findComponent(Node *, const std::string &);
+
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     static Component *findComponent(Node *, const T &);
-    static Component *findComponents(Node *, const std::string &, const std::vector<Component *> &);
+
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     static Component *findComponents(Node *, const T &, const std::vector<Component *> &);
-    static Component *findChildComponent(const std::vector<Node *> &, const std::string &);
+
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static Component *              findChildComponent(const std::vector<Node *> &, const T &);
-    static std::vector<Component *> findChildComponents(const std::vector<Node *> &, const std::string &, std::vector<Component *>);
+    static Component *findChildComponent(const std::vector<Node *> &, const T &);
+
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     static std::vector<Component *> findChildComponents(const std::vector<Node *> &, const T &, std::vector<Component *>);
 
-    static bool  isStatic;
+    static bool isStatic; //cjh TODO: add getter / setter
+
     static void  setDirtyNode(const index_t idx, Node *node);
     static Node *getDirtyNode(const index_t idx);
 
@@ -132,7 +133,7 @@ public:
 
     template <typename Target, typename... Args>
     void once(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
-    
+
     template <typename Target, typename... Args>
     void once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
 
@@ -152,7 +153,7 @@ public:
     template <typename... Args>
     void emit(const std::string &type, Args &&...args);
 
-    void dispatchEvent(const Event &);
+    void dispatchEvent(event::Event *event);
     bool hasEventListener(const std::string &type);
     bool hasEventListener(const std::string &type, CallbackInfoBase::ID cbID);
     bool hasEventListener(const std::string &type, void *target);
@@ -232,11 +233,6 @@ public:
 
     Component *addComponent(Component *comp);
     void       removeComponent(Component *comp);
-
-    Component *addComponent(const std::string &className);
-    void       removeComponent(const std::string &className);
-
-    Component *getComponent(const std::string &name) const;
 
     template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<Component, T>::value>>
     Component *getComponent() const {
@@ -608,7 +604,7 @@ void Node::on(const std::string &type, LambdaType &&callback, bool useCapture) {
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
-    _eventProcessor->on(type, callback, useCapture); 
+    _eventProcessor->on(type, callback, useCapture);
 }
 
 template <typename... Args>

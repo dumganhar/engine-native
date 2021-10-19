@@ -26,7 +26,6 @@
 #pragma once
 
 namespace cc {
-
 namespace event {
 
 /**
@@ -646,5 +645,4 @@ enum class KeyCode {
 };
 
 } // namespace event
-
 } // namespace cc

@@ -619,3 +619,19 @@ It should work same as apples CFSwapInt32LittleToHost(..)
     #define CC_PREDICT_TRUE(x)  (x)
     #define CC_PREDICT_FALSE(x) (x)
 #endif
+
+/// @name namespace cc { namespace event {
+/// @{
+#ifdef __cplusplus
+    #define NS_CC_EVENT_BEGIN \
+        namespace cc {        \
+        namespace event {
+    #define NS_CC_EVENT_END \
+        }                   \
+        }
+#else
+    #define NS_CC_EVENT_BEGIN
+    #define NS_CC_EVENT_END
+#endif
+//  end of namespace group
+/// @}

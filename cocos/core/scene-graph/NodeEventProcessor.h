@@ -31,9 +31,10 @@
 #include <variant>
 #include "core/event/CallbacksInvoker.h"
 #include "core/event/Event.h"
-#include "core/platform/event-manager/EventListener.h"
+#include "core/platform/event-manager/EventListeners.h"
 #include "core/platform/event-manager/EventManager.h"
 #include "core/scene-graph/NodeEvent.h"
+
 namespace cc {
 const std::vector<std::string> TOUCH_EVENTS{cc::NodeEventType::TOUCH_START, cc::NodeEventType::TOUCH_MOVE, cc::NodeEventType::TOUCH_END, cc::NodeEventType::TOUCH_CANCEL};
 const std::vector<std::string> MOUSE_EVENTS{cc::NodeEventType::MOUSE_DOWN, cc::NodeEventType::MOUSE_ENTER, cc::NodeEventType::MOUSE_MOVE, cc::NodeEventType::MOUSE_LEAVE, cc::NodeEventType::MOUSE_UP, cc::NodeEventType::MOUSE_WHEEL};
@@ -55,7 +56,7 @@ public:
      *
      * @param event - 分派到事件流中的事件对象。
      */
-    void dispatchEvent(const Event &event) const;
+    void dispatchEvent(event::Event *event);
 
     bool hasEventListener(const std::string &type);
 
@@ -122,10 +123,10 @@ public:
     void getCapturingTargets(const std::string &type, std::vector<Node *> &targets) const;
     void getBubblingTargets(const std::string &type, std::vector<Node *> &targets) const;
 
-    inline CallbacksInvoker *getBubblingTargets() const { return _bubblingTargets; }
-    inline CallbacksInvoker *getCapturingTargets() const { return _capturingTargets; }
-    inline EventListener *   getTouchListener() const { return _touchListener; }
-    inline EventListener *   getMouseListener() const { return _mouseListener; }
+    inline CallbacksInvoker *    getBubblingTargets() const { return _bubblingTargets; }
+    inline CallbacksInvoker *    getCapturingTargets() const { return _capturingTargets; }
+    inline event::EventListener *getTouchListener() const { return _touchListener; }
+    inline event::EventListener *getMouseListener() const { return _mouseListener; }
 
 private:
     /**
@@ -144,13 +145,13 @@ private:
      * @zh
      * 触摸监听器
      */
-    EventListener *_touchListener{nullptr};
+    event::EventListenerTouchOneByOne *_touchListener{nullptr};
 
     /**
      * @zh
      * 鼠标监听器
      */
-    EventListener *_mouseListener{nullptr};
+    event::EventListenerMouse *_mouseListener{nullptr};
 
     CallbackInfoBase::ID _cbID{0};
 
@@ -402,12 +403,12 @@ void NodeEventProcessor::off(const std::string &type, void (Target::*memberFn)(A
 
         if (touchEventExist) {
             if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
-                EventManager::getInstance().removeListener(_touchListener);
+                event::EventManager::getInstance()->removeEventListener(_touchListener);
                 _touchListener = nullptr;
             }
         } else if (mouseEventExist) {
             if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) { // TODO(xwx): why !checkListeners(_node, MOUSE_EVENTS) ???
-                EventManager::getInstance().removeListener(_mouseListener);
+                event::EventManager::getInstance()->removeEventListener(_mouseListener);
                 _mouseListener = nullptr;
             }
         }
@@ -420,10 +421,10 @@ template <typename Target, typename... Args>
 bool NodeEventProcessor::hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) {
     bool has = false;
     if (_bubblingTargets) {
-        has = _bubblingTargets->hasEventListener(type,memberFn, target);
+        has = _bubblingTargets->hasEventListener(type, memberFn, target);
     }
     if (!has && _capturingTargets) {
-        has = _capturingTargets->hasEventListener(type,memberFn, target);
+        has = _capturingTargets->hasEventListener(type, memberFn, target);
     }
     return has;
 }

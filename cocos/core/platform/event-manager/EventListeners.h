@@ -25,25 +25,8 @@
 
 #pragma once
 
-#include <cstdint>
-
-namespace cc {
-/**
- * @en the device accelerometer reports values for each axis in units of g-force.
- * @zh 设备重力传感器传递的各个轴的数据。
- */
-class Acceleration {
-public:
-    explicit Acceleration(float x = 0, float y = 0, float z = 0, uint32_t timestamp = 0)
-    : x(x), y(y), z(z), timestamp(timestamp){};
-    
-    ~Acceleration() = default;
-
-    float    x{0};
-    float    y{0};
-    float    z{0};
-    uint32_t timestamp{0};
-
-};
-
-} // namespace cc
+#include "core/platform/event-manager/EventListenerAcceleration.h"
+#include "core/platform/event-manager/EventListenerCustom.h"
+#include "core/platform/event-manager/EventListenerKeyboard.h"
+#include "core/platform/event-manager/EventListenerMouse.h"
+#include "core/platform/event-manager/EventListenerTouch.h"

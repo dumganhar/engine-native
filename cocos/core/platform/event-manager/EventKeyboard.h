@@ -21,32 +21,45 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
+ 
  ****************************************************************************/
 
-#include "core/platform/event-manager/EventListener.h"
-#include "base/Log.h"
+#ifndef __cocos2d_libs__CCKeyboardEvent__
+#define __cocos2d_libs__CCKeyboardEvent__
+
+#include "core/event/Event.h"
+#include "core/platform/event-manager/KeyCode.h"
+
+/**
+ * @addtogroup base
+ * @{
+ */
 
 NS_CC_EVENT_BEGIN
 
-EventListener::EventListener() {}
+/** @class EventKeyboard
+ * @brief Keyboard event.
+ */
+class CC_DLL EventKeyboard : public Event {
+public:
+    /** Constructor.
+     *
+     * @param keyCode A given keycode.
+     * @param isPressed True if the key is pressed.
+     * @js ctor
+     */
+    EventKeyboard(KeyCode keyCode, bool isPressed, bool bubbles = false);
 
-EventListener::~EventListener() {
-    CC_LOG_DEBUG("In the destructor of EventListener. %p", this);
-}
+private:
+    KeyCode _keyCode;
+    bool    _isPressed;
 
-bool EventListener::init(Type t, const ListenerID &listenerID, const std::function<void(Event *)> &callback) {
-    _onEvent      = callback;
-    _type         = t;
-    _listenerID   = listenerID;
-    _isRegistered = false;
-    _paused       = false;
-    _isEnabled    = true;
-
-    return true;
-}
-
-bool EventListener::checkAvailable() {
-    return (_onEvent != nullptr);
-}
+    friend class EventListenerKeyboard;
+};
 
 NS_CC_EVENT_END
+
+// end of base group
+/// @}
+
+#endif /* defined(__cocos2d_libs__CCKeyboardEvent__) */

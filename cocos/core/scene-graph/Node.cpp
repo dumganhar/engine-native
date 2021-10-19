@@ -160,7 +160,7 @@ void Node::off(const std::string &type, void *target, bool useCapture) {
     }
 }
 
-void Node::dispatchEvent(const Event &eve) {
+void Node::dispatchEvent(event::Event *eve) {
     _eventProcessor->dispatchEvent(eve);
 }
 
@@ -345,31 +345,6 @@ void Node::walk(const std::function<void(Node *)> &preFunc, const std::function<
     walkInternal(preFunc, postFunc);
 }
 
-Component *Node::getComponent(const std::string &name) const {
-    if (name.empty()) {
-        return nullptr;
-    }
-    return findComponent(const_cast<Node *>(this), name);
-}
-
-Component *Node::getComponentInChildren(const std::string &name) const {
-    if (name.empty()) {
-        return nullptr;
-    }
-    return findChildComponent(_children, name);
-}
-std::vector<Component *> Node::getComponentsInChildren(const std::string &name) const {
-    if (name.empty()) {
-        return _components;
-    }
-    return findChildComponents(_children, name, _components);
-}
-
-// TODO: How to add components based on the class name is not defined
-Component *Node::addComponent(const std::string & /*className*/) {
-    return nullptr;
-}
-
 Component *Node::addComponent(Component *comp) {
     comp->_node = this; //cjh TODO: shared_ptr
     _components.emplace_back(comp);
@@ -380,9 +355,6 @@ Component *Node::addComponent(Component *comp) {
 
     return comp;
 }
-
-// TODO: How to remove components based on the class name is not defined
-void Node::removeComponent(const std::string &className) {}
 
 void Node::removeComponent(Component *comp) {
     auto iteComp = std::find(_components.begin(), _components.end(), comp);
@@ -531,23 +503,6 @@ Node *Node::getChildByPath(const std::string &path) const {
         }
     }
     return lastNode;
-}
-
-// TODO(Lenovo): How to get a Component by name internally has not been determined, so there is no implementation here
-Component *Node::findComponent(Node * /*unused*/, const std::string & /*unused*/) {
-    return nullptr;
-}
-
-Component *Node::findComponents(Node * /*unused*/, const std::string & /*unused*/, const std::vector<Component *> /*unused*/ &) {
-    return nullptr;
-}
-
-Component *Node::findChildComponent(const std::vector<Node *> & /*unused*/, const std::string & /*unused*/) {
-    return nullptr;
-}
-
-std::vector<Component *> Node::findChildComponents(const std::vector<Node *> & /*childs*/, const std::string & /*className*/, std::vector<Component *> comps) {
-    return comps;
 }
 
 //
@@ -961,7 +916,7 @@ bool Node::onPreDestroy() {
 }
 
 void Node::onHierarchyChanged(Node *oldParent) {
-    //cjh TODO:    this.eventProcessor.reattach();
+    _eventProcessor->reattach();
     onHierarchyChangedBase(oldParent);
 }
 

@@ -23,30 +23,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "core/platform/event-manager/EventListener.h"
-#include "base/Log.h"
+#include "core/platform/event-manager/EventCustom.h"
+#include "core/event/Event.h"
 
 NS_CC_EVENT_BEGIN
 
-EventListener::EventListener() {}
-
-EventListener::~EventListener() {
-    CC_LOG_DEBUG("In the destructor of EventListener. %p", this);
-}
-
-bool EventListener::init(Type t, const ListenerID &listenerID, const std::function<void(Event *)> &callback) {
-    _onEvent      = callback;
-    _type         = t;
-    _listenerID   = listenerID;
-    _isRegistered = false;
-    _paused       = false;
-    _isEnabled    = true;
-
-    return true;
-}
-
-bool EventListener::checkAvailable() {
-    return (_onEvent != nullptr);
+EventCustom::EventCustom(const std::string &eventName)
+: Event(Type::CUSTOM), _userData(nullptr), _eventName(eventName) {
 }
 
 NS_CC_EVENT_END

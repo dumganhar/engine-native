@@ -279,7 +279,7 @@ void NodeActivator::activateNodeRecursively(Node *node, LifeCycleInvoker *preloa
 
 void NodeActivator::deactivateNodeRecursively(Node *node) {
     // if (DEV) { // TODO(xwx): DEV is not defined
-        // CCASSERT(!(node._objFlags & Deactivating), "node should not deactivating");
+    // CCASSERT(!(node._objFlags & Deactivating), "node should not deactivating");
     //     // ensures _activeInHierarchy is always changing when Deactivating flagged
     //     CCASSERT(node._activeInHierarchy, "node should not deactivated");
     // }

@@ -23,30 +23,57 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "core/platform/event-manager/EventListener.h"
-#include "base/Log.h"
+#ifndef __cocos2d_libs__CCCustomEvent__
+#define __cocos2d_libs__CCCustomEvent__
+
+#include <string>
+#include "core/event/Event.h"
+
+/**
+ * @addtogroup base
+ * @{
+ */
 
 NS_CC_EVENT_BEGIN
 
-EventListener::EventListener() {}
+/** @class EventCustom
+ * @brief Custom event.
+ */
+class CC_DLL EventCustom : public Event {
+public:
+    /** Constructor.
+     *
+     * @param eventName A given name of the custom event.
+     * @js ctor
+     */
+    EventCustom(const std::string &eventName);
 
-EventListener::~EventListener() {
-    CC_LOG_DEBUG("In the destructor of EventListener. %p", this);
-}
+    /** Sets user data.
+     *
+     * @param data The user data pointer, it's a void*.
+     */
+    void setUserData(void *data) { _userData = data; }
 
-bool EventListener::init(Type t, const ListenerID &listenerID, const std::function<void(Event *)> &callback) {
-    _onEvent      = callback;
-    _type         = t;
-    _listenerID   = listenerID;
-    _isRegistered = false;
-    _paused       = false;
-    _isEnabled    = true;
+    /** Gets user data.
+     *
+     * @return The user data pointer, it's a void*.
+     */
+    void *getUserData() const { return _userData; }
 
-    return true;
-}
+    /** Gets event name.
+     *
+     * @return The name of the event.
+     */
+    const std::string &getEventName() const { return _eventName; }
 
-bool EventListener::checkAvailable() {
-    return (_onEvent != nullptr);
-}
+protected:
+    void *      _userData; ///< User data
+    std::string _eventName;
+};
 
 NS_CC_EVENT_END
+
+// end of base group
+/// @}
+
+#endif /* defined(__cocos2d_libs__CCCustomEvent__) */

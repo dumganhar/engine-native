@@ -29,5 +29,4 @@ const std::string NodeEventType::LAYER_CHANGED{"layer-changed"};
 const std::string NodeEventType::SIBLING_ORDER_CHANGED{"sibling-order-changed"};
 const std::string NodeEventType::ACTIVE_IN_HIERARCHY_CHANGED{"active-in-hierarchy-changed"};
 
-
 } // namespace cc

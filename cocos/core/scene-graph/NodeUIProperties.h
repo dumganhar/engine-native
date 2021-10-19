@@ -24,12 +24,13 @@
  ****************************************************************************/
 #pragma once
 
-#include "2d/framework/UITransform.h"
-#include "core/scene-graph/Node.h"
-
 namespace cc {
 
-class NodeUiProperties {
+class UITransform;
+class UIComponent;
+class Node;
+
+class NodeUiProperties final {
 public:
     bool  uiTransformDirty{true};
     float opacity{1.0F};
@@ -37,8 +38,10 @@ public:
 
     NodeUiProperties(/* args */) = default;
     ~NodeUiProperties()          = default;
-    static inline UITransform *getUiTransformComp() { return nullptr; }
-
+    inline UITransform *getUITransformComp() const { return nullptr; } //cjh TODO:
+    inline void         setUITransformComp(UITransform *value) {}      //cjh TODO:
+    inline UIComponent *getUIComp() const { return nullptr; }          //cjh TODO:
+    inline void         setUIComp(UIComponent *comp) {}                //cjh TODO:
 protected:
     UITransform *_uiTransformComp{nullptr};
     Node *       _node{nullptr};

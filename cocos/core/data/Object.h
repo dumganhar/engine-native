@@ -28,10 +28,8 @@
 #include <string>
 
 #include "base/Macros.h"
+#include "base/Ref.h"
 #include "base/TypeDef.h"
-
-//#define EDITOR  0 //cjh
-#define WARN_ID //cjh
 
 namespace cc {
 
@@ -42,7 +40,7 @@ namespace cc {
  * 大部分对象的基类。
  * @private
  */
-class CCObject /*cjh implements EditorExtendableObject*/ {
+class CCObject : public Ref /*cjh implements EditorExtendableObject*/ {
 public:
     // definitions for CCObject.Flags
     enum class Flags : FlagBits {

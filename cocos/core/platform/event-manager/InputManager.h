@@ -25,12 +25,11 @@
 
 #pragma once
 
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
-#include "math/Vec2.h"
 #include "core/platform/event-manager/Touch.h"
-
+#include "math/Vec2.h"
 
 // const uint32_t TOUCH_TIMEOUT = macro.TOUCH_TIMEOUT;
 namespace cc {
@@ -44,8 +43,7 @@ struct IView {
  */
 class InputManager final {
 public:
-
-    static InputManager& getInstance() { 
+    static InputManager &getInstance() {
         static InputManager instance;
         return instance;
     }
@@ -58,9 +56,8 @@ public:
     void frameDispatchEvents() const;
 
 private:
-
     InputManager() = default;
-    
+
     ~InputManager() = default;
 
     // #region Mouse Handle
@@ -68,23 +65,23 @@ private:
 
     // void _dispatchTouchEvent (TouchInputEvent inputEvent);
 
-    void handleTouchesStart(const std::vector<Touch>& touches) const;
+    void handleTouchesStart(const std::vector<event::Touch> &touches) const;
 
-    void handleTouchesMove(const std::vector<Touch>& touches) const;
+    void handleTouchesMove(const std::vector<event::Touch> &touches) const;
 
-    void handleTouchesEnd(const std::vector<Touch>& touches) const;
+    void handleTouchesEnd(const std::vector<event::Touch> &touches) const;
 
-    void handleTouchesCancel(const std::vector<Touch>& touches) const;
+    void handleTouchesCancel(const std::vector<event::Touch> &touches) const;
 
-    std::vector<Touch> getSetOfTouchesEndOrCancel(const std::vector<Touch>& touches) const;
+    std::vector<event::Touch> getSetOfTouchesEndOrCancel(const std::vector<event::Touch> &touches) const;
 
-    void setPreTouch(Touch touch);
+    void setPreTouch(event::Touch touch);
 
-    Touch getPreTouch(Touch touch) const;
+    event::Touch getPreTouch(event::Touch touch) const;
 
     // TODO(PP): remove this private method
     void getViewPixelRatio() const;
-    
+
     // Touch getTouch(MouseInputEvent inputEvent) const;
 
     // EventMouse getMouseEvent(MouseInputEvent inputEvent) const;
@@ -116,17 +113,17 @@ private:
      */
     void setAccelerometerInterval(uint32_t intervalInMileSeconds) const;
 
-    Vec2 _preTouchPoint; 
-    Vec2 _prevMousePoint;
-    std::vector<Touch> _prevTouchPool;
-    uint32_t _preTouchPoolPointer{0};
+    Vec2                      _preTouchPoint;
+    Vec2                      _prevMousePoint;
+    std::vector<event::Touch> _prevTouchPool;
+    uint32_t                  _preTouchPoolPointer{0};
 
-    std::vector<Touch> _touches;
+    std::vector<event::Touch>              _touches;
     std::unordered_map<uint32_t, uint32_t> _touchesIntegerDict;
-    uint32_t _indexBitsUsed{0};
-    uint32_t _maxTouches{0};
+    uint32_t                               _indexBitsUsed{0};
+    uint32_t                               _maxTouches{0};
 
-    IView* _glView{nullptr};
+    IView *_glView{nullptr};
 };
 
 } // namespace cc

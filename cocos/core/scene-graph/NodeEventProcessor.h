@@ -40,6 +40,7 @@ const std::vector<std::string> TOUCH_EVENTS{cc::NodeEventType::TOUCH_START, cc::
 const std::vector<std::string> MOUSE_EVENTS{cc::NodeEventType::MOUSE_DOWN, cc::NodeEventType::MOUSE_ENTER, cc::NodeEventType::MOUSE_MOVE, cc::NodeEventType::MOUSE_LEAVE, cc::NodeEventType::MOUSE_UP, cc::NodeEventType::MOUSE_WHEEL};
 
 class Node;
+
 class NodeEventProcessor final {
 public:
     NodeEventProcessor() = default;
@@ -88,11 +89,11 @@ public:
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
     on(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
-    template <typename... Args>
-    void once(const std::string &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID);
-
     template <typename Target, typename... Args>
     void once(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
+
+    template <typename... Args>
+    void once(const std::string &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     template <typename Target, typename... Args>
     void once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
@@ -103,7 +104,7 @@ public:
 
     template <typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    once(const std::string &type, LambdaType &&callbac, CallbackInfoBase::ID &cbIDk, bool useCapture = false);
+    once(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     void off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture = false);
 
@@ -311,16 +312,8 @@ void NodeEventProcessor::on(const std::string &type, void (Target::*memberFn)(Ar
 }
 
 template <typename... Args>
-void NodeEventProcessor::once(const std::string &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID) {
-    CallbacksInvoker *listeners = nullptr;
-    if (_bubblingTargets == nullptr) {
-        _bubblingTargets = new CallbacksInvoker();
-    }
-    listeners = _bubblingTargets;
-    listeners->on(type, std::forward<std::function<void(Args...)>>(callback), cbID, true);
-    CallbackInfoBase::ID cacheID = cbID;
-    listeners->on(
-        type, [=](Args...) { off(type, cacheID); }, true);
+void NodeEventProcessor::once(const std::string &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture /* = false*/) {
+    once<std::nullptr_t>(type, std::forward<Args...>(callback), nullptr, cbID, useCapture);
 }
 
 template <typename Target, typename... Args>
@@ -369,51 +362,12 @@ template <typename Target, typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
 NodeEventProcessor::once(const std::string &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
     once(type, CallbacksInvoker::toFunction(callback), target, cbID, useCapture);
-
-    // bool              forDispatch = checknSetupSysEvent(type);
-    // CallbacksInvoker *listeners   = nullptr;
-    // if (useCapture) {
-    //     if (_capturingTargets == nullptr) {
-    //         _capturingTargets = new CallbacksInvoker();
-    //     }
-    //     listeners = _capturingTargets;
-    // } else {
-    //     if (_bubblingTargets == nullptr) {
-    //         _bubblingTargets = new CallbacksInvoker();
-    //     }
-    //     listeners = _bubblingTargets;
-    // }
-    // listeners->on(type, callback, target, cbID, true);
-    // CallbackInfoBase::ID cacheID = cbID;
-    // auto                toFunc  = [=]() { off(type, cacheID); };
-    // listeners->on(
-    //     type, CallbacksInvoker::toFunction(toFunc), target, true);
 }
 
 template <typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
 NodeEventProcessor::once(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
-    once(type, CallbacksInvoker::toFunction(callback), cbID, useCapture);
-
-    // bool              forDispatch = checknSetupSysEvent(type);
-    // CallbacksInvoker *listeners   = nullptr;
-    // if (useCapture) {
-    //     if (_capturingTargets == nullptr) {
-    //         _capturingTargets = new CallbacksInvoker();
-    //     }
-    //     listeners = _capturingTargets;
-    // } else {
-    //     if (_bubblingTargets == nullptr) {
-    //         _bubblingTargets = new CallbacksInvoker();
-    //     }
-    //     listeners = _bubblingTargets;
-    // }
-    // listeners->on(type, callback, cbID, true);
-    // CallbackInfoBase::ID cacheID = cbID;
-    // auto                toFunc  = [=]() { off(type, cacheID); };
-
-    // listeners->on(
-    //     type, CallbacksInvoker::toFunction(toFunc), true);
+    once<std::nullptr_t>(type, std::forward<LambdaType>(callback), nullptr, cbID, useCapture);
 }
 
 template <typename Target, typename... Args>

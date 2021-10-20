@@ -1854,10 +1854,10 @@ bool register_all_engine(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_engine_FileUtils(ns);
     js_register_engine_CanvasGradient(ns);
     js_register_engine_CanvasRenderingContext2D(ns);
     js_register_engine_Device(ns);
+    js_register_engine_FileUtils(ns);
     js_register_engine_SAXParser(ns);
     return true;
 }

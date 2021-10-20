@@ -73,19 +73,19 @@ static bool js_${current_class.underlined_class_name}_${current_class.rename_des
 SE_BIND_FUNC(js_${current_class.underlined_class_name}_${current_class.rename_destructor})
 #end if
 
-bool js_register_${generator.prefix}_${current_class.class_name}(se::Object* obj) // NOLINT(readability-identifier-naming)
+bool js_register_${generator.prefix}_${current_class.nested_class_name}(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
 #if has_constructor
     #if len($current_class.parents) > 0
-    auto* cls = se::Class::create("${current_class.target_class_name}", obj, __jsb_${current_class.parents[0].underlined_class_name}_proto, _SE(js_${generator.prefix}_${current_class.class_name}_constructor));
+    auto* cls = se::Class::create(${current_class.nested_class_array}, obj, __jsb_${current_class.parents[0].underlined_class_name}_proto, _SE(js_${generator.prefix}_${current_class.class_name}_constructor));
     #else
-    auto* cls = se::Class::create("${current_class.target_class_name}", obj, nullptr, _SE(js_${generator.prefix}_${current_class.class_name}_constructor));
+    auto* cls = se::Class::create(${current_class.nested_class_array}, obj, nullptr, _SE(js_${generator.prefix}_${current_class.class_name}_constructor));
     #end if
 #else
     #if len($current_class.parents) > 0
-    auto* cls = se::Class::create("${current_class.target_class_name}", obj, __jsb_${current_class.parents[0].underlined_class_name}_proto, nullptr);
+    auto* cls = se::Class::create(${current_class.nested_class_array}, obj, __jsb_${current_class.parents[0].underlined_class_name}_proto, nullptr);
     #else
-    auto* cls = se::Class::create("${current_class.target_class_name}", obj, nullptr, nullptr);
+    auto* cls = se::Class::create(${current_class.nested_class_array}, obj, nullptr, nullptr);
     #end if
 #end if
 

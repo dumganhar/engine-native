@@ -30,6 +30,7 @@
 
 #include "base/TypeDef.h"
 #include "gfx-base/GFXDef.h"
+#include "math/Geometry.h"
 #include "math/Math.h"
 
 // seval to native
@@ -746,6 +747,23 @@ bool sevalue_to_native(const se::Value &from, cc::Vec2 *to, se::Object * /*unuse
     SE_PRECONDITION3(ok && y.isNumber(), false, *to = cc::Vec2::ZERO);
     to->x = x.toFloat();
     to->y = y.toFloat();
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::Size *to, se::Object * /*unused*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Size failed!");
+    if (!from.isObject()) {
+    }
+    se::Object *obj = from.toObject();
+    se::Value   w;
+    se::Value   h;
+    bool        ok = obj->getProperty("width", &w);
+    SE_PRECONDITION3(ok && w.isNumber(), false, *to = cc::Size::ZERO);
+    ok = obj->getProperty("height", &h);
+    SE_PRECONDITION3(ok && h.isNumber(), false, *to = cc::Size::ZERO);
+    to->width = w.toFloat();
+    to->height = h.toFloat();
     return true;
 }
 

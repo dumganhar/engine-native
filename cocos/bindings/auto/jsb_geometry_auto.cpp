@@ -2571,13 +2571,13 @@ bool register_all_geometry(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_geometry_ShapeBase(ns);
     js_register_geometry_AABB(ns);
     js_register_geometry_Capsule(ns);
-    js_register_geometry_Plane(ns);
     js_register_geometry_Frustum(ns);
     js_register_geometry_Line(ns);
+    js_register_geometry_Plane(ns);
     js_register_geometry_Ray(ns);
+    js_register_geometry_ShapeBase(ns);
     js_register_geometry_Sphere(ns);
     js_register_geometry_Triangle(ns);
     return true;

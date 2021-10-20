@@ -338,8 +338,8 @@ bool register_all_network(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_network_DownloaderHints(ns);
     js_register_network_Downloader(ns);
+    js_register_network_DownloaderHints(ns);
     return true;
 }
 

@@ -531,7 +531,7 @@ static bool js_assets_Asset_getNativeUrl(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_getNativeUrl)
+SE_BIND_PROP_GET(js_assets_Asset_getNativeUrl)
 
 static bool js_assets_Asset_getRefCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -569,7 +569,7 @@ static bool js_assets_Asset_getUuid(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_getUuid)
+SE_BIND_PROP_GET(js_assets_Asset_getUuid)
 
 static bool js_assets_Asset_initDefault(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -682,7 +682,7 @@ static bool js_assets_Asset_setUuid(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_setUuid)
+SE_BIND_PROP_SET(js_assets_Asset_setUuid)
 
 static bool js_assets_Asset_toString(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -740,6 +740,8 @@ bool js_register_assets_Asset(se::Object* obj) // NOLINT(readability-identifier-
 {
     auto* cls = se::Class::create("Asset", obj, nullptr, nullptr);
 
+    cls->defineProperty("_uuid", _SE(js_assets_Asset_getUuid), _SE(js_assets_Asset_setUuid));
+    cls->defineProperty("nativeUrl", _SE(js_assets_Asset_getNativeUrl), nullptr);
     cls->defineFunction("addRef", _SE(js_assets_Asset_addRef));
     cls->defineFunction("createNode", _SE(js_assets_Asset_createNode));
     cls->defineFunction("decRef", _SE(js_assets_Asset_decRef));
@@ -747,15 +749,12 @@ bool js_register_assets_Asset(se::Object* obj) // NOLINT(readability-identifier-
     cls->defineFunction("destroy", _SE(js_assets_Asset_destroy));
     cls->defineFunction("getNativeAsset", _SE(js_assets_Asset_getNativeAsset));
     cls->defineFunction("getNativeDep", _SE(js_assets_Asset_getNativeDep));
-    cls->defineFunction("getNativeUrl", _SE(js_assets_Asset_getNativeUrl));
     cls->defineFunction("getRefCount", _SE(js_assets_Asset_getRefCount));
-    cls->defineFunction("getUuid", _SE(js_assets_Asset_getUuid));
     cls->defineFunction("initDefault", _SE(js_assets_Asset_initDefault));
     cls->defineFunction("isDefault", _SE(js_assets_Asset_isDefault));
     cls->defineFunction("onLoaded", _SE(js_assets_Asset_onLoaded));
     cls->defineFunction("serialize", _SE(js_assets_Asset_serialize));
     cls->defineFunction("setNativeAsset", _SE(js_assets_Asset_setNativeAsset));
-    cls->defineFunction("setUuid", _SE(js_assets_Asset_setUuid));
     cls->defineFunction("toString", _SE(js_assets_Asset_toString));
     cls->defineFunction("validate", _SE(js_assets_Asset_validate));
     cls->defineFinalizeFunction(_SE(js_cc_Asset_finalize));
@@ -2241,7 +2240,7 @@ static bool js_assets_ImageAsset_getData(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getData)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getData)
 
 static bool js_assets_ImageAsset_getFormat(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2260,7 +2259,7 @@ static bool js_assets_ImageAsset_getFormat(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getFormat)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getFormat)
 
 static bool js_assets_ImageAsset_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2279,7 +2278,7 @@ static bool js_assets_ImageAsset_getHeight(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getHeight)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getHeight)
 
 static bool js_assets_ImageAsset_getUrl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2298,7 +2297,7 @@ static bool js_assets_ImageAsset_getUrl(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getUrl)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getUrl)
 
 static bool js_assets_ImageAsset_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2317,7 +2316,7 @@ static bool js_assets_ImageAsset_getWidth(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_getWidth)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getWidth)
 
 static bool js_assets_ImageAsset_isCompressed(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2368,11 +2367,11 @@ bool js_register_assets_ImageAsset(se::Object* obj) // NOLINT(readability-identi
 {
     auto* cls = se::Class::create("ImageAsset", obj, __jsb_cc_Asset_proto, _SE(js_assets_ImageAsset_constructor));
 
-    cls->defineFunction("getData", _SE(js_assets_ImageAsset_getData));
-    cls->defineFunction("getFormat", _SE(js_assets_ImageAsset_getFormat));
-    cls->defineFunction("getHeight", _SE(js_assets_ImageAsset_getHeight));
-    cls->defineFunction("getUrl", _SE(js_assets_ImageAsset_getUrl));
-    cls->defineFunction("getWidth", _SE(js_assets_ImageAsset_getWidth));
+    cls->defineProperty("width", _SE(js_assets_ImageAsset_getWidth), nullptr);
+    cls->defineProperty("height", _SE(js_assets_ImageAsset_getHeight), nullptr);
+    cls->defineProperty("format", _SE(js_assets_ImageAsset_getFormat), nullptr);
+    cls->defineProperty("url", _SE(js_assets_ImageAsset_getUrl), nullptr);
+    cls->defineProperty("data", _SE(js_assets_ImageAsset_getData), nullptr);
     cls->defineFunction("isCompressed", _SE(js_assets_ImageAsset_isCompressed));
     cls->defineFinalizeFunction(_SE(js_cc_ImageAsset_finalize));
     cls->install();
@@ -8349,6 +8348,242 @@ bool js_register_assets_TextureCube(se::Object* obj) // NOLINT(readability-ident
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
+se::Object* __jsb_cc_IMeshBufferView_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_IMeshBufferView_class = nullptr;  // NOLINT
+
+static bool js_assets_IMeshBufferView_get_offset(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::IMeshBufferView>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IMeshBufferView_get_offset : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->offset, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->offset, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IMeshBufferView_get_offset)
+
+static bool js_assets_IMeshBufferView_set_offset(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::IMeshBufferView>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IMeshBufferView_set_offset : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->offset, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IMeshBufferView_set_offset : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IMeshBufferView_set_offset)
+
+static bool js_assets_IMeshBufferView_get_length(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::IMeshBufferView>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IMeshBufferView_get_length : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->length, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->length, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IMeshBufferView_get_length)
+
+static bool js_assets_IMeshBufferView_set_length(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::IMeshBufferView>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IMeshBufferView_set_length : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->length, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IMeshBufferView_set_length : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IMeshBufferView_set_length)
+
+static bool js_assets_IMeshBufferView_get_count(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::IMeshBufferView>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IMeshBufferView_get_count : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->count, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->count, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IMeshBufferView_get_count)
+
+static bool js_assets_IMeshBufferView_set_count(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::IMeshBufferView>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IMeshBufferView_set_count : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->count, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IMeshBufferView_set_count : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IMeshBufferView_set_count)
+
+static bool js_assets_IMeshBufferView_get_stride(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::IMeshBufferView>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IMeshBufferView_get_stride : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->stride, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->stride, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IMeshBufferView_get_stride)
+
+static bool js_assets_IMeshBufferView_set_stride(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::IMeshBufferView>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IMeshBufferView_set_stride : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->stride, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IMeshBufferView_set_stride : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IMeshBufferView_set_stride)
+
+
+template<>
+bool sevalue_to_native(const se::Value &from, cc::IMeshBufferView * to, se::Object *ctx)
+{
+    assert(from.isObject());
+    se::Object *json = from.toObject();
+    auto* data = reinterpret_cast<cc::IMeshBufferView*>(json->getPrivateData());
+    if (data) {
+        *to = *data;
+        return true;
+    }
+    se::Value field;
+    bool ok = true;
+    json->getProperty("offset", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->offset), ctx);
+    }
+    json->getProperty("length", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->length), ctx);
+    }
+    json->getProperty("count", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->count), ctx);
+    }
+    json->getProperty("stride", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->stride), ctx);
+    }
+    return ok;
+}
+
+SE_DECLARE_FINALIZE_FUNC(js_cc_IMeshBufferView_finalize)
+
+static bool js_assets_IMeshBufferView_constructor(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    CC_UNUSED bool ok = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+
+    if(argc == 0)
+    {
+        cc::IMeshBufferView* cobj = JSB_ALLOC(cc::IMeshBufferView);
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::IMeshBufferView* cobj = JSB_ALLOC(cc::IMeshBufferView);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    cc::IMeshBufferView* cobj = JSB_ALLOC(cc::IMeshBufferView);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->offset), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->length), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->count), nullptr);
+    }
+    if (argc > 3 && !args[3].isUndefined()) {
+        ok &= sevalue_to_native(args[3], &(cobj->stride), nullptr);
+    }
+
+    if(!ok) {
+        JSB_FREE(cobj);
+        SE_REPORT_ERROR("Argument convertion error");
+        return false;
+    }
+
+    s.thisObject()->setPrivateData(cobj);
+    se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+    return true;
+}
+SE_BIND_CTOR(js_assets_IMeshBufferView_constructor, __jsb_cc_IMeshBufferView_class, js_cc_IMeshBufferView_finalize)
+
+
+
+static bool js_cc_IMeshBufferView_finalize(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::IMeshBufferView>(s));
+    if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
+    {
+        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
+        auto* cobj = SE_THIS_OBJECT<cc::IMeshBufferView>(s);
+        JSB_FREE(cobj);
+    }
+    return true;
+}
+SE_BIND_FINALIZE_FUNC(js_cc_IMeshBufferView_finalize)
+
+bool js_register_assets_IMeshBufferView(se::Object* obj) // NOLINT(readability-identifier-naming)
+{
+    auto* cls = se::Class::create("IMeshBufferView", obj, nullptr, _SE(js_assets_IMeshBufferView_constructor));
+
+    cls->defineProperty("offset", _SE(js_assets_IMeshBufferView_get_offset), _SE(js_assets_IMeshBufferView_set_offset));
+    cls->defineProperty("length", _SE(js_assets_IMeshBufferView_get_length), _SE(js_assets_IMeshBufferView_set_length));
+    cls->defineProperty("count", _SE(js_assets_IMeshBufferView_get_count), _SE(js_assets_IMeshBufferView_set_count));
+    cls->defineProperty("stride", _SE(js_assets_IMeshBufferView_get_stride), _SE(js_assets_IMeshBufferView_set_stride));
+    cls->defineFinalizeFunction(_SE(js_cc_IMeshBufferView_finalize));
+    cls->install();
+    JSBClassType::registerClass<cc::IMeshBufferView>(cls);
+
+    __jsb_cc_IMeshBufferView_proto = cls->getProto();
+    __jsb_cc_IMeshBufferView_class = cls;
+
+    se::ScriptEngine::getInstance()->clearException();
+    return true;
+}
 se::Object* __jsb_cc_MorphTarget_proto = nullptr; // NOLINT
 se::Class* __jsb_cc_MorphTarget_class = nullptr;  // NOLINT
 
@@ -8365,6 +8600,10 @@ bool sevalue_to_native(const se::Value &from, cc::MorphTarget * to, se::Object *
     }
     se::Value field;
     bool ok = true;
+    json->getProperty("displacements", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->displacements), ctx);
+    }
     return ok;
 }
 
@@ -8385,6 +8624,9 @@ static bool js_assets_MorphTarget_constructor(se::State& s) // NOLINT(readabilit
     }
 
     cc::MorphTarget* cobj = JSB_ALLOC(cc::MorphTarget);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->displacements), nullptr);
+    }
 
     if(!ok) {
         JSB_FREE(cobj);
@@ -8829,8 +9071,933 @@ bool js_register_assets_Morph(se::Object* obj) // NOLINT(readability-identifier-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
+se::Object* __jsb_cc_Mesh_IVertexBundle_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_Mesh_IVertexBundle_class = nullptr;  // NOLINT
+
+static bool js_assets_IVertexBundle_get_view(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IVertexBundle>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IVertexBundle_get_view : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->view, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->view, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IVertexBundle_get_view)
+
+static bool js_assets_IVertexBundle_set_view(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IVertexBundle>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IVertexBundle_set_view : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->view, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IVertexBundle_set_view : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IVertexBundle_set_view)
+
+static bool js_assets_IVertexBundle_get_attributes(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IVertexBundle>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IVertexBundle_get_attributes : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->attributes, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->attributes, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IVertexBundle_get_attributes)
+
+static bool js_assets_IVertexBundle_set_attributes(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IVertexBundle>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IVertexBundle_set_attributes : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->attributes, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IVertexBundle_set_attributes : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IVertexBundle_set_attributes)
+
+
+template<>
+bool sevalue_to_native(const se::Value &from, cc::Mesh::IVertexBundle * to, se::Object *ctx)
+{
+    assert(from.isObject());
+    se::Object *json = from.toObject();
+    auto* data = reinterpret_cast<cc::Mesh::IVertexBundle*>(json->getPrivateData());
+    if (data) {
+        *to = *data;
+        return true;
+    }
+    se::Value field;
+    bool ok = true;
+    json->getProperty("view", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->view), ctx);
+    }
+    json->getProperty("attributes", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->attributes), ctx);
+    }
+    return ok;
+}
+
+SE_DECLARE_FINALIZE_FUNC(js_cc_Mesh_IVertexBundle_finalize)
+
+static bool js_assets_IVertexBundle_constructor(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    CC_UNUSED bool ok = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+
+    if(argc == 0)
+    {
+        cc::Mesh::IVertexBundle* cobj = JSB_ALLOC(cc::Mesh::IVertexBundle);
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::Mesh::IVertexBundle* cobj = JSB_ALLOC(cc::Mesh::IVertexBundle);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    cc::Mesh::IVertexBundle* cobj = JSB_ALLOC(cc::Mesh::IVertexBundle);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->view), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->attributes), nullptr);
+    }
+
+    if(!ok) {
+        JSB_FREE(cobj);
+        SE_REPORT_ERROR("Argument convertion error");
+        return false;
+    }
+
+    s.thisObject()->setPrivateData(cobj);
+    se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+    return true;
+}
+SE_BIND_CTOR(js_assets_IVertexBundle_constructor, __jsb_cc_Mesh_IVertexBundle_class, js_cc_Mesh_IVertexBundle_finalize)
+
+
+
+static bool js_cc_Mesh_IVertexBundle_finalize(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::Mesh::IVertexBundle>(s));
+    if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
+    {
+        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
+        auto* cobj = SE_THIS_OBJECT<cc::Mesh::IVertexBundle>(s);
+        JSB_FREE(cobj);
+    }
+    return true;
+}
+SE_BIND_FINALIZE_FUNC(js_cc_Mesh_IVertexBundle_finalize)
+
+bool js_register_assets_Mesh_IVertexBundle(se::Object* obj) // NOLINT(readability-identifier-naming)
+{
+    auto* cls = se::Class::create({"Mesh","IVertexBundle"}, obj, nullptr, _SE(js_assets_IVertexBundle_constructor));
+
+    cls->defineProperty("view", _SE(js_assets_IVertexBundle_get_view), _SE(js_assets_IVertexBundle_set_view));
+    cls->defineProperty("attributes", _SE(js_assets_IVertexBundle_get_attributes), _SE(js_assets_IVertexBundle_set_attributes));
+    cls->defineFinalizeFunction(_SE(js_cc_Mesh_IVertexBundle_finalize));
+    cls->install();
+    JSBClassType::registerClass<cc::Mesh::IVertexBundle>(cls);
+
+    __jsb_cc_Mesh_IVertexBundle_proto = cls->getProto();
+    __jsb_cc_Mesh_IVertexBundle_class = cls;
+
+    se::ScriptEngine::getInstance()->clearException();
+    return true;
+}
+se::Object* __jsb_cc_Mesh_ISubMesh_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_Mesh_ISubMesh_class = nullptr;  // NOLINT
+
+static bool js_assets_ISubMesh_get_vertexBundelIndices(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ISubMesh_get_vertexBundelIndices : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->vertexBundelIndices, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->vertexBundelIndices, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_ISubMesh_get_vertexBundelIndices)
+
+static bool js_assets_ISubMesh_set_vertexBundelIndices(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ISubMesh_set_vertexBundelIndices : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->vertexBundelIndices, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_ISubMesh_set_vertexBundelIndices : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_ISubMesh_set_vertexBundelIndices)
+
+static bool js_assets_ISubMesh_get_primitiveMode(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ISubMesh_get_primitiveMode : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->primitiveMode, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->primitiveMode, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_ISubMesh_get_primitiveMode)
+
+static bool js_assets_ISubMesh_set_primitiveMode(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ISubMesh_set_primitiveMode : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->primitiveMode, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_ISubMesh_set_primitiveMode : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_ISubMesh_set_primitiveMode)
+
+static bool js_assets_ISubMesh_get_indexView(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ISubMesh_get_indexView : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->indexView, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->indexView, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_ISubMesh_get_indexView)
+
+static bool js_assets_ISubMesh_set_indexView(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ISubMesh_set_indexView : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->indexView, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_ISubMesh_set_indexView : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_ISubMesh_set_indexView)
+
+static bool js_assets_ISubMesh_get_jointMapIndex(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ISubMesh_get_jointMapIndex : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->jointMapIndex, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->jointMapIndex, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_ISubMesh_get_jointMapIndex)
+
+static bool js_assets_ISubMesh_set_jointMapIndex(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ISubMesh_set_jointMapIndex : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->jointMapIndex, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_ISubMesh_set_jointMapIndex : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_ISubMesh_set_jointMapIndex)
+
+
+template<>
+bool sevalue_to_native(const se::Value &from, cc::Mesh::ISubMesh * to, se::Object *ctx)
+{
+    assert(from.isObject());
+    se::Object *json = from.toObject();
+    auto* data = reinterpret_cast<cc::Mesh::ISubMesh*>(json->getPrivateData());
+    if (data) {
+        *to = *data;
+        return true;
+    }
+    se::Value field;
+    bool ok = true;
+    json->getProperty("vertexBundelIndices", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->vertexBundelIndices), ctx);
+    }
+    json->getProperty("primitiveMode", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->primitiveMode), ctx);
+    }
+    json->getProperty("indexView", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->indexView), ctx);
+    }
+    json->getProperty("jointMapIndex", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->jointMapIndex), ctx);
+    }
+    return ok;
+}
+
+SE_DECLARE_FINALIZE_FUNC(js_cc_Mesh_ISubMesh_finalize)
+
+static bool js_assets_ISubMesh_constructor(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    CC_UNUSED bool ok = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+
+    if(argc == 0)
+    {
+        cc::Mesh::ISubMesh* cobj = JSB_ALLOC(cc::Mesh::ISubMesh);
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::Mesh::ISubMesh* cobj = JSB_ALLOC(cc::Mesh::ISubMesh);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    cc::Mesh::ISubMesh* cobj = JSB_ALLOC(cc::Mesh::ISubMesh);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->vertexBundelIndices), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->primitiveMode), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->indexView), nullptr);
+    }
+    if (argc > 3 && !args[3].isUndefined()) {
+        ok &= sevalue_to_native(args[3], &(cobj->jointMapIndex), nullptr);
+    }
+
+    if(!ok) {
+        JSB_FREE(cobj);
+        SE_REPORT_ERROR("Argument convertion error");
+        return false;
+    }
+
+    s.thisObject()->setPrivateData(cobj);
+    se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+    return true;
+}
+SE_BIND_CTOR(js_assets_ISubMesh_constructor, __jsb_cc_Mesh_ISubMesh_class, js_cc_Mesh_ISubMesh_finalize)
+
+
+
+static bool js_cc_Mesh_ISubMesh_finalize(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s));
+    if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
+    {
+        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
+        auto* cobj = SE_THIS_OBJECT<cc::Mesh::ISubMesh>(s);
+        JSB_FREE(cobj);
+    }
+    return true;
+}
+SE_BIND_FINALIZE_FUNC(js_cc_Mesh_ISubMesh_finalize)
+
+bool js_register_assets_Mesh_ISubMesh(se::Object* obj) // NOLINT(readability-identifier-naming)
+{
+    auto* cls = se::Class::create({"Mesh","ISubMesh"}, obj, nullptr, _SE(js_assets_ISubMesh_constructor));
+
+    cls->defineProperty("vertexBundelIndices", _SE(js_assets_ISubMesh_get_vertexBundelIndices), _SE(js_assets_ISubMesh_set_vertexBundelIndices));
+    cls->defineProperty("primitiveMode", _SE(js_assets_ISubMesh_get_primitiveMode), _SE(js_assets_ISubMesh_set_primitiveMode));
+    cls->defineProperty("indexView", _SE(js_assets_ISubMesh_get_indexView), _SE(js_assets_ISubMesh_set_indexView));
+    cls->defineProperty("jointMapIndex", _SE(js_assets_ISubMesh_get_jointMapIndex), _SE(js_assets_ISubMesh_set_jointMapIndex));
+    cls->defineFinalizeFunction(_SE(js_cc_Mesh_ISubMesh_finalize));
+    cls->install();
+    JSBClassType::registerClass<cc::Mesh::ISubMesh>(cls);
+
+    __jsb_cc_Mesh_ISubMesh_proto = cls->getProto();
+    __jsb_cc_Mesh_ISubMesh_class = cls;
+
+    se::ScriptEngine::getInstance()->clearException();
+    return true;
+}
+se::Object* __jsb_cc_Mesh_IStruct_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_Mesh_IStruct_class = nullptr;  // NOLINT
+
+static bool js_assets_IStruct_get_vertexBundles(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_get_vertexBundles : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->vertexBundles, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->vertexBundles, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IStruct_get_vertexBundles)
+
+static bool js_assets_IStruct_set_vertexBundles(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_set_vertexBundles : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->vertexBundles, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IStruct_set_vertexBundles : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IStruct_set_vertexBundles)
+
+static bool js_assets_IStruct_get_primitives(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_get_primitives : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->primitives, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->primitives, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IStruct_get_primitives)
+
+static bool js_assets_IStruct_set_primitives(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_set_primitives : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->primitives, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IStruct_set_primitives : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IStruct_set_primitives)
+
+static bool js_assets_IStruct_get_minPosition(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_get_minPosition : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->minPosition, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->minPosition, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IStruct_get_minPosition)
+
+static bool js_assets_IStruct_set_minPosition(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_set_minPosition : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->minPosition, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IStruct_set_minPosition : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IStruct_set_minPosition)
+
+static bool js_assets_IStruct_get_maxPosition(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_get_maxPosition : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->maxPosition, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->maxPosition, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IStruct_get_maxPosition)
+
+static bool js_assets_IStruct_set_maxPosition(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_set_maxPosition : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->maxPosition, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IStruct_set_maxPosition : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IStruct_set_maxPosition)
+
+static bool js_assets_IStruct_get_jointMaps(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_get_jointMaps : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->jointMaps, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->jointMaps, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IStruct_get_jointMaps)
+
+static bool js_assets_IStruct_set_jointMaps(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_set_jointMaps : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->jointMaps, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IStruct_set_jointMaps : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IStruct_set_jointMaps)
+
+static bool js_assets_IStruct_get_morph(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_get_morph : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->morph, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->morph, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_IStruct_get_morph)
+
+static bool js_assets_IStruct_set_morph(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_IStruct_set_morph : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->morph, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_IStruct_set_morph : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_IStruct_set_morph)
+
+
+template<>
+bool sevalue_to_native(const se::Value &from, cc::Mesh::IStruct * to, se::Object *ctx)
+{
+    assert(from.isObject());
+    se::Object *json = from.toObject();
+    auto* data = reinterpret_cast<cc::Mesh::IStruct*>(json->getPrivateData());
+    if (data) {
+        *to = *data;
+        return true;
+    }
+    se::Value field;
+    bool ok = true;
+    json->getProperty("vertexBundles", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->vertexBundles), ctx);
+    }
+    json->getProperty("primitives", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->primitives), ctx);
+    }
+    json->getProperty("minPosition", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->minPosition), ctx);
+    }
+    json->getProperty("maxPosition", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->maxPosition), ctx);
+    }
+    json->getProperty("jointMaps", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->jointMaps), ctx);
+    }
+    json->getProperty("morph", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->morph), ctx);
+    }
+    return ok;
+}
+
+SE_DECLARE_FINALIZE_FUNC(js_cc_Mesh_IStruct_finalize)
+
+static bool js_assets_IStruct_constructor(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    CC_UNUSED bool ok = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+
+    if(argc == 0)
+    {
+        cc::Mesh::IStruct* cobj = JSB_ALLOC(cc::Mesh::IStruct);
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::Mesh::IStruct* cobj = JSB_ALLOC(cc::Mesh::IStruct);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    cc::Mesh::IStruct* cobj = JSB_ALLOC(cc::Mesh::IStruct);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->vertexBundles), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->primitives), nullptr);
+    }
+    if (argc > 2 && !args[2].isUndefined()) {
+        ok &= sevalue_to_native(args[2], &(cobj->minPosition), nullptr);
+    }
+    if (argc > 3 && !args[3].isUndefined()) {
+        ok &= sevalue_to_native(args[3], &(cobj->maxPosition), nullptr);
+    }
+    if (argc > 4 && !args[4].isUndefined()) {
+        ok &= sevalue_to_native(args[4], &(cobj->jointMaps), nullptr);
+    }
+    if (argc > 5 && !args[5].isUndefined()) {
+        ok &= sevalue_to_native(args[5], &(cobj->morph), nullptr);
+    }
+
+    if(!ok) {
+        JSB_FREE(cobj);
+        SE_REPORT_ERROR("Argument convertion error");
+        return false;
+    }
+
+    s.thisObject()->setPrivateData(cobj);
+    se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+    return true;
+}
+SE_BIND_CTOR(js_assets_IStruct_constructor, __jsb_cc_Mesh_IStruct_class, js_cc_Mesh_IStruct_finalize)
+
+
+
+static bool js_cc_Mesh_IStruct_finalize(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::Mesh::IStruct>(s));
+    if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
+    {
+        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
+        auto* cobj = SE_THIS_OBJECT<cc::Mesh::IStruct>(s);
+        JSB_FREE(cobj);
+    }
+    return true;
+}
+SE_BIND_FINALIZE_FUNC(js_cc_Mesh_IStruct_finalize)
+
+bool js_register_assets_Mesh_IStruct(se::Object* obj) // NOLINT(readability-identifier-naming)
+{
+    auto* cls = se::Class::create({"Mesh","IStruct"}, obj, nullptr, _SE(js_assets_IStruct_constructor));
+
+    cls->defineProperty("vertexBundles", _SE(js_assets_IStruct_get_vertexBundles), _SE(js_assets_IStruct_set_vertexBundles));
+    cls->defineProperty("primitives", _SE(js_assets_IStruct_get_primitives), _SE(js_assets_IStruct_set_primitives));
+    cls->defineProperty("minPosition", _SE(js_assets_IStruct_get_minPosition), _SE(js_assets_IStruct_set_minPosition));
+    cls->defineProperty("maxPosition", _SE(js_assets_IStruct_get_maxPosition), _SE(js_assets_IStruct_set_maxPosition));
+    cls->defineProperty("jointMaps", _SE(js_assets_IStruct_get_jointMaps), _SE(js_assets_IStruct_set_jointMaps));
+    cls->defineProperty("morph", _SE(js_assets_IStruct_get_morph), _SE(js_assets_IStruct_set_morph));
+    cls->defineFinalizeFunction(_SE(js_cc_Mesh_IStruct_finalize));
+    cls->install();
+    JSBClassType::registerClass<cc::Mesh::IStruct>(cls);
+
+    __jsb_cc_Mesh_IStruct_proto = cls->getProto();
+    __jsb_cc_Mesh_IStruct_class = cls;
+
+    se::ScriptEngine::getInstance()->clearException();
+    return true;
+}
+se::Object* __jsb_cc_Mesh_ICreateInfo_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_Mesh_ICreateInfo_class = nullptr;  // NOLINT
+
+static bool js_assets_ICreateInfo_get_structInfo(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ICreateInfo>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ICreateInfo_get_structInfo : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->structInfo, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->structInfo, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_ICreateInfo_get_structInfo)
+
+static bool js_assets_ICreateInfo_set_structInfo(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ICreateInfo>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ICreateInfo_set_structInfo : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->structInfo, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_ICreateInfo_set_structInfo : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_ICreateInfo_set_structInfo)
+
+static bool js_assets_ICreateInfo_get_data(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ICreateInfo>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ICreateInfo_get_data : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    se::Value jsret;
+    ok &= nativevalue_to_se(cobj->data, jsret, s.thisObject() /*ctx*/);
+    s.rval() = jsret;
+    SE_HOLD_RETURN_VALUE(cobj->data, s.thisObject(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_assets_ICreateInfo_get_data)
+
+static bool js_assets_ICreateInfo_set_data(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh::ICreateInfo>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_ICreateInfo_set_data : Invalid Native Object");
+
+    CC_UNUSED bool ok = true;
+    ok &= sevalue_to_native(args[0], &cobj->data, s.thisObject());
+    SE_PRECONDITION2(ok, false, "js_assets_ICreateInfo_set_data : Error processing new value");
+    return true;
+}
+SE_BIND_PROP_SET(js_assets_ICreateInfo_set_data)
+
+
+template<>
+bool sevalue_to_native(const se::Value &from, cc::Mesh::ICreateInfo * to, se::Object *ctx)
+{
+    assert(from.isObject());
+    se::Object *json = from.toObject();
+    auto* data = reinterpret_cast<cc::Mesh::ICreateInfo*>(json->getPrivateData());
+    if (data) {
+        *to = *data;
+        return true;
+    }
+    se::Value field;
+    bool ok = true;
+    json->getProperty("structInfo", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->structInfo), ctx);
+    }
+    json->getProperty("data", &field);
+    if(!field.isNullOrUndefined()) {
+        ok &= sevalue_to_native(field, &(to->data), ctx);
+    }
+    return ok;
+}
+
+SE_DECLARE_FINALIZE_FUNC(js_cc_Mesh_ICreateInfo_finalize)
+
+static bool js_assets_ICreateInfo_constructor(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    CC_UNUSED bool ok = true;
+    const auto& args = s.args();
+    size_t argc = args.size();
+
+    if(argc == 0)
+    {
+        cc::Mesh::ICreateInfo* cobj = JSB_ALLOC(cc::Mesh::ICreateInfo);
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    if(argc == 1 && args[0].isObject())
+    {
+        se::Object *json = args[0].toObject();
+        se::Value field;
+
+        cc::Mesh::ICreateInfo* cobj = JSB_ALLOC(cc::Mesh::ICreateInfo);
+        ok &= sevalue_to_native(args[0], cobj, s.thisObject());
+        if(!ok) {
+            JSB_FREE(cobj);
+            SE_REPORT_ERROR("argument convertion error");
+            return false;
+        }
+
+        s.thisObject()->setPrivateData(cobj);
+        se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+        return true;
+    }
+
+    cc::Mesh::ICreateInfo* cobj = JSB_ALLOC(cc::Mesh::ICreateInfo);
+    if (argc > 0 && !args[0].isUndefined()) {
+        ok &= sevalue_to_native(args[0], &(cobj->structInfo), nullptr);
+    }
+    if (argc > 1 && !args[1].isUndefined()) {
+        ok &= sevalue_to_native(args[1], &(cobj->data), nullptr);
+    }
+
+    if(!ok) {
+        JSB_FREE(cobj);
+        SE_REPORT_ERROR("Argument convertion error");
+        return false;
+    }
+
+    s.thisObject()->setPrivateData(cobj);
+    se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
+    return true;
+}
+SE_BIND_CTOR(js_assets_ICreateInfo_constructor, __jsb_cc_Mesh_ICreateInfo_class, js_cc_Mesh_ICreateInfo_finalize)
+
+
+
+static bool js_cc_Mesh_ICreateInfo_finalize(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<cc::Mesh::ICreateInfo>(s));
+    if (iter != se::NonRefNativePtrCreatedByCtorMap::end())
+    {
+        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
+        auto* cobj = SE_THIS_OBJECT<cc::Mesh::ICreateInfo>(s);
+        JSB_FREE(cobj);
+    }
+    return true;
+}
+SE_BIND_FINALIZE_FUNC(js_cc_Mesh_ICreateInfo_finalize)
+
+bool js_register_assets_Mesh_ICreateInfo(se::Object* obj) // NOLINT(readability-identifier-naming)
+{
+    auto* cls = se::Class::create({"Mesh","ICreateInfo"}, obj, nullptr, _SE(js_assets_ICreateInfo_constructor));
+
+    cls->defineProperty("structInfo", _SE(js_assets_ICreateInfo_get_structInfo), _SE(js_assets_ICreateInfo_set_structInfo));
+    cls->defineProperty("data", _SE(js_assets_ICreateInfo_get_data), _SE(js_assets_ICreateInfo_set_data));
+    cls->defineFinalizeFunction(_SE(js_cc_Mesh_ICreateInfo_finalize));
+    cls->install();
+    JSBClassType::registerClass<cc::Mesh::ICreateInfo>(cls);
+
+    __jsb_cc_Mesh_ICreateInfo_proto = cls->getProto();
+    __jsb_cc_Mesh_ICreateInfo_class = cls;
+
+    se::ScriptEngine::getInstance()->clearException();
+    return true;
+}
 se::Object* __jsb_cc_Mesh_proto = nullptr; // NOLINT
 se::Class* __jsb_cc_Mesh_class = nullptr;  // NOLINT
+
+static bool js_assets_Mesh_assign(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_assign : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        HolderType<cc::Mesh::IStruct, true> arg0 = {};
+        HolderType<cc::TypedArrayTemp<unsigned char>, true> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_assign : Error processing arguments");
+        cobj->assign(arg0.value(), arg1.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_assets_Mesh_assign)
+
+static bool js_assets_Mesh_copyAttribute(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_copyAttribute : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 5) {
+        HolderType<int, false> arg0 = {};
+        HolderType<const char*, false> arg1 = {};
+        HolderType<std::shared_ptr<cc::ArrayBuffer>, true> arg2 = {};
+        HolderType<unsigned int, false> arg3 = {};
+        HolderType<unsigned int, false> arg4 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
+        ok &= sevalue_to_native(args[3], &arg3, s.thisObject());
+        ok &= sevalue_to_native(args[4], &arg4, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_copyAttribute : Error processing arguments");
+        bool result = cobj->copyAttribute(arg0.value(), arg1.value(), arg2.value(), arg3.value(), arg4.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_copyAttribute : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 5);
+    return false;
+}
+SE_BIND_FUNC(js_assets_Mesh_copyAttribute)
 
 static bool js_assets_Mesh_copyIndices(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8891,41 +10058,26 @@ static bool js_assets_Mesh_getBoneSpaceBounds(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getBoneSpaceBounds)
+SE_BIND_PROP_GET(js_assets_Mesh_getBoneSpaceBounds)
 
 static bool js_assets_Mesh_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    CC_UNUSED bool ok = true;
     auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
-    SE_PRECONDITION2( cobj, false, "js_assets_Mesh_getData : Invalid Native Object");
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_getData : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
-    do {
-        if (argc == 0) {
-
-            cc::TypedArrayTemp<unsigned char>& result = cobj->getData();
-            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
-            SE_PRECONDITION2(ok, false, "js_assets_Mesh_getData : Error processing arguments");
-            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 0) {
-
-            const cc::TypedArrayTemp<unsigned char>& result = cobj->getData();
-            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
-            SE_PRECONDITION2(ok, false, "js_assets_Mesh_getData : Error processing arguments");
-            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-            return true;
-        }
-    } while(false);
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        const cc::TypedArrayTemp<unsigned char>& result = cobj->getData();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_getData : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getData)
+SE_BIND_PROP_GET(js_assets_Mesh_getData)
 
 static bool js_assets_Mesh_getHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8944,7 +10096,7 @@ static bool js_assets_Mesh_getHash(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getHash)
+SE_BIND_PROP_GET(js_assets_Mesh_getHash)
 
 static bool js_assets_Mesh_getJointBufferIndices(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8963,7 +10115,7 @@ static bool js_assets_Mesh_getJointBufferIndices(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getJointBufferIndices)
+SE_BIND_PROP_GET(js_assets_Mesh_getJointBufferIndices)
 
 static bool js_assets_Mesh_getMaxPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8982,7 +10134,7 @@ static bool js_assets_Mesh_getMaxPosition(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getMaxPosition)
+SE_BIND_PROP_GET(js_assets_Mesh_getMaxPosition)
 
 static bool js_assets_Mesh_getMinPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9001,7 +10153,7 @@ static bool js_assets_Mesh_getMinPosition(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getMinPosition)
+SE_BIND_PROP_GET(js_assets_Mesh_getMinPosition)
 
 static bool js_assets_Mesh_getRenderingSubMeshes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9020,7 +10172,7 @@ static bool js_assets_Mesh_getRenderingSubMeshes(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getRenderingSubMeshes)
+SE_BIND_PROP_GET(js_assets_Mesh_getRenderingSubMeshes)
 
 static bool js_assets_Mesh_getStruct(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9039,7 +10191,7 @@ static bool js_assets_Mesh_getStruct(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getStruct)
+SE_BIND_PROP_GET(js_assets_Mesh_getStruct)
 
 static bool js_assets_Mesh_getSubMeshCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9058,7 +10210,7 @@ static bool js_assets_Mesh_getSubMeshCount(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getSubMeshCount)
+SE_BIND_PROP_GET(js_assets_Mesh_getSubMeshCount)
 
 static bool js_assets_Mesh_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9074,6 +10226,54 @@ static bool js_assets_Mesh_initialize(se::State& s) // NOLINT(readability-identi
     return false;
 }
 SE_BIND_FUNC(js_assets_Mesh_initialize)
+
+static bool js_assets_Mesh_merge(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_merge : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Mesh*, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        bool result = cobj->merge(arg0.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    if (argc == 2) {
+        HolderType<cc::Mesh*, false> arg0 = {};
+        HolderType<const cc::Mat4*, false> arg1 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        bool result = cobj->merge(arg0.value(), arg1.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    if (argc == 3) {
+        HolderType<cc::Mesh*, false> arg0 = {};
+        HolderType<const cc::Mat4*, false> arg1 = {};
+        HolderType<bool, false> arg2 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
+        ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        bool result = cobj->merge(arg0.value(), arg1.value(), arg2.value());
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_merge : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
+    return false;
+}
+SE_BIND_FUNC(js_assets_Mesh_merge)
 
 static bool js_assets_Mesh_readAttribute(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9120,6 +10320,63 @@ static bool js_assets_Mesh_readIndices(se::State& s) // NOLINT(readability-ident
     return false;
 }
 SE_BIND_FUNC(js_assets_Mesh_readIndices)
+
+static bool js_assets_Mesh_reset(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_reset : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Mesh::ICreateInfo, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_reset : Error processing arguments");
+        cobj->reset(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_assets_Mesh_reset)
+
+static bool js_assets_Mesh_setHash(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_setHash : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<uint64_t, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_setHash : Error processing arguments");
+        cobj->setHash(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_PROP_SET(js_assets_Mesh_setHash)
+
+static bool js_assets_Mesh_setStruct(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_setStruct : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Mesh::IStruct, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_setStruct : Error processing arguments");
+        cobj->setStruct(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_PROP_SET(js_assets_Mesh_setStruct)
 
 static bool js_assets_Mesh_validateMergingMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9173,20 +10430,24 @@ bool js_register_assets_Mesh(se::Object* obj) // NOLINT(readability-identifier-n
 {
     auto* cls = se::Class::create("Mesh", obj, __jsb_cc_Asset_proto, _SE(js_assets_Mesh_constructor));
 
+    cls->defineProperty("_struct", _SE(js_assets_Mesh_getStruct), _SE(js_assets_Mesh_setStruct));
+    cls->defineProperty("_hash", _SE(js_assets_Mesh_getHash), _SE(js_assets_Mesh_setHash));
+    cls->defineProperty("data", _SE(js_assets_Mesh_getData), nullptr);
+    cls->defineProperty("boneSpaceBounds", _SE(js_assets_Mesh_getBoneSpaceBounds), nullptr);
+    cls->defineProperty("jointBufferIndices", _SE(js_assets_Mesh_getJointBufferIndices), nullptr);
+    cls->defineProperty("maxPosition", _SE(js_assets_Mesh_getMaxPosition), nullptr);
+    cls->defineProperty("minPosition", _SE(js_assets_Mesh_getMinPosition), nullptr);
+    cls->defineProperty("renderingSubMeshes", _SE(js_assets_Mesh_getRenderingSubMeshes), nullptr);
+    cls->defineProperty("subMeshCount", _SE(js_assets_Mesh_getSubMeshCount), nullptr);
+    cls->defineFunction("assign", _SE(js_assets_Mesh_assign));
+    cls->defineFunction("copyAttribute", _SE(js_assets_Mesh_copyAttribute));
     cls->defineFunction("copyIndices", _SE(js_assets_Mesh_copyIndices));
     cls->defineFunction("destroyRenderingMesh", _SE(js_assets_Mesh_destroyRenderingMesh));
-    cls->defineFunction("getBoneSpaceBounds", _SE(js_assets_Mesh_getBoneSpaceBounds));
-    cls->defineFunction("getData", _SE(js_assets_Mesh_getData));
-    cls->defineFunction("getHash", _SE(js_assets_Mesh_getHash));
-    cls->defineFunction("getJointBufferIndices", _SE(js_assets_Mesh_getJointBufferIndices));
-    cls->defineFunction("getMaxPosition", _SE(js_assets_Mesh_getMaxPosition));
-    cls->defineFunction("getMinPosition", _SE(js_assets_Mesh_getMinPosition));
-    cls->defineFunction("getRenderingSubMeshes", _SE(js_assets_Mesh_getRenderingSubMeshes));
-    cls->defineFunction("getStruct", _SE(js_assets_Mesh_getStruct));
-    cls->defineFunction("getSubMeshCount", _SE(js_assets_Mesh_getSubMeshCount));
     cls->defineFunction("initialize", _SE(js_assets_Mesh_initialize));
+    cls->defineFunction("merge", _SE(js_assets_Mesh_merge));
     cls->defineFunction("readAttribute", _SE(js_assets_Mesh_readAttribute));
     cls->defineFunction("readIndices", _SE(js_assets_Mesh_readIndices));
+    cls->defineFunction("reset", _SE(js_assets_Mesh_reset));
     cls->defineFunction("validateMergingMesh", _SE(js_assets_Mesh_validateMergingMesh));
     cls->defineFinalizeFunction(_SE(js_cc_Mesh_finalize));
     cls->install();
@@ -9576,52 +10837,57 @@ bool register_all_assets(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_assets_BoundingBox(ns);
-    js_register_assets_VertexIdChannel(ns);
     js_register_assets_Asset(ns);
+    js_register_assets_BoundingBox(ns);
     js_register_assets_BufferAsset(ns);
-    js_register_assets_TextureBase(ns);
-    js_register_assets_IGeometricInfo(ns);
-    js_register_assets_IFlatBuffer(ns);
-    js_register_assets_RenderingSubMesh(ns);
-    js_register_assets_IMemoryImageSource(ns);
-    js_register_assets_ImageAsset(ns);
-    js_register_assets_SimpleTexture(ns);
-    js_register_assets_ITexture2DSerializeData(ns);
-    js_register_assets_ITexture2DCreateInfo(ns);
-    js_register_assets_Texture2D(ns);
-    js_register_assets_IPropertyInfo(ns);
-    js_register_assets_ITechniqueInfo(ns);
-    js_register_assets_IBlockInfo(ns);
-    js_register_assets_ISamplerTextureInfo(ns);
+    js_register_assets_EffectAsset(ns);
     js_register_assets_IAttributeInfo(ns);
-    js_register_assets_IDefineInfo(ns);
+    js_register_assets_IBlockInfo(ns);
     js_register_assets_IBuiltin(ns);
     js_register_assets_IBuiltinInfo(ns);
     js_register_assets_IBuiltins(ns);
-    js_register_assets_IShaderSource(ns);
-    js_register_assets_IShaderInfo(ns);
-    js_register_assets_EffectAsset(ns);
-    js_register_assets_JsonAsset(ns);
+    js_register_assets_IDefineInfo(ns);
+    js_register_assets_IFlatBuffer(ns);
+    js_register_assets_IGeometricInfo(ns);
     js_register_assets_IMaterialInfo(ns);
-    js_register_assets_Material(ns);
-    js_register_assets_Prefab(ns);
+    js_register_assets_IMemoryImageSource(ns);
+    js_register_assets_IMeshBufferView(ns);
+    js_register_assets_IPropertyInfo(ns);
     js_register_assets_IRenderTextureCreateInfo(ns);
-    js_register_assets_RenderTexture(ns);
-    js_register_assets_SceneAsset(ns);
-    js_register_assets_TextAsset(ns);
+    js_register_assets_ISamplerTextureInfo(ns);
+    js_register_assets_IShaderInfo(ns);
+    js_register_assets_IShaderSource(ns);
+    js_register_assets_ITechniqueInfo(ns);
+    js_register_assets_ITexture2DCreateInfo(ns);
+    js_register_assets_ITexture2DSerializeData(ns);
     js_register_assets_ITextureCubeMipmap(ns);
-    js_register_assets_ITextureCubeSerializeMipmapData(ns);
     js_register_assets_ITextureCubeSerializeData(ns);
-    js_register_assets_TextureCube(ns);
-    js_register_assets_MorphTarget(ns);
-    js_register_assets_SubMeshMorph(ns);
-    js_register_assets_Morph(ns);
+    js_register_assets_ITextureCubeSerializeMipmapData(ns);
+    js_register_assets_ImageAsset(ns);
+    js_register_assets_JsonAsset(ns);
+    js_register_assets_Material(ns);
     js_register_assets_Mesh(ns);
+    js_register_assets_Mesh_ICreateInfo(ns);
+    js_register_assets_Mesh_IStruct(ns);
+    js_register_assets_Mesh_ISubMesh(ns);
+    js_register_assets_Mesh_IVertexBundle(ns);
+    js_register_assets_Morph(ns);
     js_register_assets_MorphRendering(ns);
     js_register_assets_MorphRenderingInstance(ns);
-    js_register_assets_StdMorphRendering(ns);
+    js_register_assets_MorphTarget(ns);
+    js_register_assets_Prefab(ns);
+    js_register_assets_RenderTexture(ns);
+    js_register_assets_RenderingSubMesh(ns);
+    js_register_assets_SceneAsset(ns);
+    js_register_assets_SimpleTexture(ns);
     js_register_assets_Skeleton(ns);
+    js_register_assets_StdMorphRendering(ns);
+    js_register_assets_SubMeshMorph(ns);
+    js_register_assets_TextAsset(ns);
+    js_register_assets_Texture2D(ns);
+    js_register_assets_TextureBase(ns);
+    js_register_assets_TextureCube(ns);
+    js_register_assets_VertexIdChannel(ns);
     return true;
 }
 

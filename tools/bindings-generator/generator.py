@@ -12,6 +12,7 @@ import io
 import inspect
 import traceback
 import logging
+import json
 
 from Cheetah.Template import Template
 from clang import cindex
@@ -440,6 +441,27 @@ class NativeType(object):
         self.canonical_type = None
         self.kind = None
 
+    def toJSON(self):
+        return {
+            "name": self.name,
+            "script_ns": self.generator.scriptname_from_native(self.namespaced_class_name, self.namespace_name),
+            "whole_name": self.whole_name,
+            "namespace_name": self.namespace_name,
+            "namespaced_class_name": self.namespaced_class_name,
+            "is_const": self.is_const,
+            "is_pointer": self.is_pointer,
+            "is_reference": self.is_reference,
+            "is_rreference": self.is_rreference,
+            "is_object": self.is_object,
+            "is_struct": self.is_struct,
+            "is_function": self.is_function,
+            "is_enum": self.is_enum,
+            "is_numeric": self.is_numeric,
+            "enum_declare_type": self.enum_declare_type,
+            "param_types": list(map(lambda x: x.toJSON(), self.param_types)),
+            "ret_type" : self.ret_type.name if self.ret_type is not None else None
+        }
+
     @property
     def is_const_array(self):
         return self.kind == cindex.TypeKind.CONSTANTARRAY
@@ -767,6 +789,14 @@ class NativeField(object):
         else:
             self.pretty_name = self.name
 
+    def toJSON(self):
+        return {
+            "name": self.name,
+            "pretty_name": self.pretty_name,
+            "signature_name" : self.signature_name,
+            "type": self.ntype.toJSON()
+        }
+
     @staticmethod
     def can_parse(ntype, generator, cursor):
         native_type = NativeType.from_type(ntype, generator)
@@ -847,6 +877,22 @@ class NativeFunction(object):
 
         self.min_args = index if found_default_arg else len(self.arguments)
 
+    def toJSON(self):
+        return {
+            "name": self.func_name,
+            "signature_name": self.signature_name,
+            "arguments": list(map(lambda x : x.toJSON(), self.arguments)),
+            "argumentTips": self.argumtntTips,
+            "static": self.static,
+            # "implementations": self.implementations,
+            "is_overloaded": self.is_overloaded,
+            "is_constructor": self.is_constructor,
+            "not_supported": self.not_supported,
+            "ret_type": self.ret_type.toJSON(),
+            "comment": self.comment,
+            "current_class_name": self.current_class.class_name if self.current_class is not None else None
+        }
+
     def get_comment(self, comment):
         replaceStr = comment
 
@@ -926,7 +972,8 @@ class NativeOverloadedFunction(object):
     def __init__(self, func_array):
         self.implementations = func_array
         self.func_name = func_array[0].func_name
-        self.signature_name = self.func_name
+        self.signature_name = func_array[0].signature_name
+        self.ret_type = func_array[0].ret_type
         self.min_args = 100
         self.is_constructor = False
         self.is_overloaded = True
@@ -936,6 +983,18 @@ class NativeOverloadedFunction(object):
             self.min_args = min(self.min_args, m.min_args)
 
         self.comment = self.get_comment(func_array[0].cursor.raw_comment)
+
+    def toJSON(self):
+        return {
+            "name": self.func_name,
+            "signature_name": self.signature_name,
+            "min_args": self.min_args,
+            "comment": self.comment,
+            "is_ctor": self.is_ctor,
+            "ret_type": self.ret_type.toJSON(),
+            "current_class_name": self.current_class.class_name if self.current_class is not None else None,
+            "implementations": list(map(lambda x: x.toJSON(), self.implementations)),
+        }
 
     def get_comment(self, comment):
         replaceStr = comment
@@ -1049,6 +1108,7 @@ class NativeClass(object):
         self.getter_setter = []
         self.getter_list = []
         self.setter_list = []
+        self.nested_classes = []
 
         registration_name = generator.get_class_or_rename_class(
             self.class_name)
@@ -1060,7 +1120,15 @@ class NativeClass(object):
         self.namespaced_class_name = get_namespaced_class_name(cursor)
         self.namespace_name = get_namespace_name(cursor)
         self.parse()
+        # signature_name
         # post parse
+
+        def get_func_name(func):
+            if isinstance(func, NativeOverloadedFunction):
+                return func.implementations[0].func_name
+            else:
+                return func.func_name
+
         if self.class_name in generator.getter_setter:
             for field_name in iter(generator.getter_setter[self.class_name].keys()):
                 field = generator.getter_setter[self.class_name][field_name]
@@ -1074,10 +1142,31 @@ class NativeClass(object):
                     raise Exception("getter_setter for %s.%s both None" % (
                         self.class_name, field_name))
                 if item["getter"] is not None:
-                    self.getter_list.append(item["getter"].func_name)
+                    self.getter_list.append(get_func_name(item["getter"]))
                 if item["setter"] is not None:
-                    self.setter_list.append(item["setter"].func_name)
+                    self.setter_list.append(get_func_name(item["setter"]))
+                if item["getter"] is not None and isinstance(item["getter"], NativeOverloadedFunction):
+                    old = item["getter"]
+                    # logger.error(" old getter %s" % old.__dict__)
+                    # logger.error(" getter_list %s\n setter_list: %s", self.getter_list, self.setter_list)
+                    item["getter"] = item["getter"].implementations[0]
+                    item["getter"].signature_name = "js_%s_%s_%s" % (self.generator.prefix, self.class_name, old.func_name)
                 self.getter_setter.append(item)
+
+    @property
+    def nested_class_name(self):
+        classes = self.nested_classes.copy()
+        classes.append(self.class_name)
+        return "_".join(classes)
+    
+    @property
+    def nested_class_array(self):
+        classes = self.nested_classes.copy()
+        classes.append(self.target_class_name)
+        if len(classes) == 1:
+            return "\"%s\""%(self.target_class_name)
+        return "{" + ",".join(list(map(lambda x: "\"%s\"" % x, classes))) + "}"
+
 
     @property
     def is_skip_constructor(self):
@@ -1155,12 +1244,39 @@ class NativeClass(object):
                 ret.append({"name": name, "impl": impl})
         return ret
 
+    def toJSON(self):
+        return {
+            "namespace_name" : self.namespace_name,
+            "script_ns": self.generator.scriptname_from_native(self.namespaced_class_name, self.namespace_name),
+            "parents": list(map(lambda x: x.namespaced_class_name, self.parents)),
+            "nested_classes": self.nested_classes,
+            "class_name" : self.class_name,
+            "is_ref_class" : self.is_ref_class,
+            "namespaced_class_name": self.namespaced_class_name,
+            "underlined_class_name": self.underlined_class_name,
+            "is_struct": self.is_struct,
+            "is_abstract": self.is_abstract,
+            "is_persistent" : self.is_persistent,
+            "is_class_owned_by_cpp": self.is_class_owned_by_cpp,
+            "has_constructor": self.has_constructor,
+            "public_fields": list(map(lambda x: x.toJSON(), self.public_fields)),
+            # "fields" : list(map(lambda x: x.toJSON(), self.fields)),
+            "override_methods": dict(map(lambda kv: (kv[0], kv[1].toJSON()), self.override_methods.items())),
+            "getter_setter": list(map(lambda x: {
+                        "name": x["name"],
+                        "type": x["getter"].ret_type.toJSON() if x["getter"] is not None else (x["setter"].arguments[0].toJSON() if x["setter"] is not None else None)
+                    }, self.getter_setter)),
+            "methods": dict(map(lambda kv: (kv[0], kv[1].toJSON()), self.methods.items())),
+            "static_methods": dict(map(lambda kv: (kv[0], kv[1].toJSON()), self.static_methods.items())),
+            "dict_of_override_method_should_be_bound": dict(map(lambda kv: (kv[0], list(map(lambda x: x.toJSON(), kv[1]))), self.dict_of_override_method_should_be_bound.items())),
+        }
+
     def generate_code(self):
         '''
         actually generate the code. it uses the current target templates/rules in order to
         generate the right code
         '''
-
+        
         if not self.is_ref_class:
             self.is_ref_class = self._is_ref_class()
 
@@ -1183,6 +1299,7 @@ class NativeClass(object):
         register = Template(file=os.path.join(self.generator.target, "templates", "register.c"),
                             searchList=[{"current_class": self}])
         self.generator.impl_file.write(unicode(register))
+        self.generator.class_json_list.append(self.toJSON())
 
     def should_export_field(self, field_name):
         return (self.is_struct and not self.generator.should_skip_field(self.class_name, field_name)) or self.generator.should_bind_field(self.class_name, field_name)
@@ -1198,11 +1315,12 @@ class NativeClass(object):
                        searchList=[self])
         self.generator.impl_file.write(unicode(tpl))
 
-    def _deep_iterate(self, cursor=None, depth=0):
+    def _deep_iterate(self, cursor=None, depth=0, nested_classes = []):
+        # self.nested_classes = nested_classes.copy()
         for node in cursor.get_children():
-            # logger.info("%s%s - %s" % ("> " * depth, node.displayname, node.kind))
-            if self._process_node(node):
-                self._deep_iterate(node, depth + 1)
+            # logger.info("_deep_iterate %s%s - %s" % ("> " * depth, node.displayname, node.kind))
+            if self._process_node(node, depth, nested_classes):
+                self._deep_iterate(node, depth + 1, nested_classes)
 
     @staticmethod
     def _is_method_in_parents(current_class, method_name):
@@ -1250,14 +1368,37 @@ class NativeClass(object):
             return True
 
         return False
+        
+    def _contains_same_method(self, methods, curr):
+        for method in methods:
+            if len(curr.arguments) == len(method.arguments):
+                if len(curr.arguments) == 0:
+                    return True
+                sameArguments = True
+                for i in range(len(curr.arguments)):
+                    if curr.arguments[i].name != method.arguments[i].name:
+                        sameArguments = False
+                if sameArguments:
+                    return True
+        return False
 
-    def _process_node(self, cursor):
+    def _previous_method_already_contains(self, previous_m, curr):
+        if isinstance(previous_m, NativeOverloadedFunction):
+            return self._contains_same_method(previous_m.implementations, curr)
+        else:
+            return self._contains_same_method([previous_m], curr)
+
+    def _process_node(self, cursor, depth= 0, nested_classes = []):
         '''
         process the node, depending on the type. If returns true, then it will perform a deep
         iteration on its children. Otherwise it will continue with its siblings (if any)
 
         @param: cursor the cursor to analyze
         '''
+
+        # if nested_classes is None:
+        # logger.error("process class %s found %s nested classes" % (cursor.displayname, len(nested_classes)))
+
         if cursor.kind == cindex.CursorKind.CXX_BASE_SPECIFIER:
             parent = cursor.get_definition()
             parent_name = parent.displayname
@@ -1311,10 +1452,12 @@ class NativeClass(object):
                         self.methods[registration_name] = m
                     else:
                         previous_m = self.methods[registration_name]
-                        if isinstance(previous_m, NativeOverloadedFunction):
-                            previous_m.append(m)
-                        else:
-                            self.methods[registration_name] = NativeOverloadedFunction([
+                        
+                        if not self._previous_method_already_contains(previous_m, m):
+                            if isinstance(previous_m, NativeOverloadedFunction):
+                                previous_m.append(m)
+                            else:
+                                self.methods[registration_name] = NativeOverloadedFunction([
                                                                                        m, previous_m])
 
                     self._handle_override_method_with_same_name_as_instance_method()
@@ -1341,6 +1484,11 @@ class NativeClass(object):
                     m.is_constructor = True
                     self.methods['constructor'] = m
             return True
+        elif cursor.kind == cindex.CursorKind.CLASS_DECL or cursor.kind == cindex.CursorKind.STRUCT_DECL:
+            # logging.error("find class %s in %s , nested_classes %s" % (cursor.displayname, self.class_name, nested_classes))
+            nn = nested_classes.copy()
+            nn.append(self.class_name)
+            self.generator._deep_iterate(cursor, depth + 1, nn)
        # else:
        #     logger.error("unknown cursor: %s - %s" % (cursor.kind, cursor.displayname))
         return False
@@ -1375,13 +1523,13 @@ class NativeEnum(object):
     def parse(self):
         self._deep_iterate(self.cursor, 0)
 
-    def _deep_iterate(self, cursor=None, depth=0):
+    def _deep_iterate(self, cursor=None, depth=0, nested_classes = []):
         for node in cursor.get_children():
             #logger.info("%s%s - %s" % ("> " * depth, node.displayname, node.kind))
-            if self._process_node(node):
-                self._deep_iterate(node, depth + 1)
+            if self._process_node(node, nested_classes):
+                self._deep_iterate(node, depth + 1, nested_classes.copy())
 
-    def _process_node(self, node):
+    def _process_node(self, node, nested_classes = []):
         if node.kind == cindex.CursorKind.ENUM_CONSTANT_DECL:
             field = {}
             field["name"] = node.displayname
@@ -1423,6 +1571,7 @@ class Generator(object):
         self.cpp_ns = opts['cpp_ns']
         self.impl_file = None
         self.head_file = None
+        self.json_file = None
         self.skip_classes = {}
         self.skip_public_fields_classes = {}
         self.bind_fields = {}
@@ -1751,6 +1900,7 @@ class Generator(object):
         # remove dupes from the list
         no_dupes = []
         [no_dupes.append(i) for i in sorted_list if not no_dupes.count(i)]
+        no_dupes.sort(key= lambda x: x.nested_class_name)
         return no_dupes
 
     def _sorted_parents(self, nclass):
@@ -1762,7 +1912,7 @@ class Generator(object):
             if p.class_name in self.generated_classes.keys():
                 sorted_parents += self._sorted_parents(p)
         if nclass.class_name in self.generated_classes.keys():
-            sorted_parents.append(nclass.class_name)
+            sorted_parents.append(nclass)
         return sorted_parents
 
     def generate_code(self):
@@ -1772,6 +1922,7 @@ class Generator(object):
         self.config = data
         implfilepath = os.path.join(self.outdir, self.out_file + ".cpp")
         headfilepath = os.path.join(self.outdir, self.out_file + ".h")
+        jsonfilepath = os.path.join(self.outdir, self.out_file + ".json")
 
         headLicense = ''
         implLicense = ''
@@ -1788,6 +1939,9 @@ class Generator(object):
 
         self.head_file = io.open(headfilepath, "w+", newline="\n")
         self.impl_file = io.open(implfilepath, "w+", newline="\n")
+        self.json_file = io.open(jsonfilepath, "w+", newline="\n")
+
+        self.class_json_list = []
 
         layout_h = Template(file=os.path.join(
             self.target, "templates", "layout_head.h"), searchList=[self])
@@ -1804,9 +1958,14 @@ class Generator(object):
             self.target, "templates", "layout_foot.c"), searchList=[self])
         self.head_file.write(unicode(layout_h))
         self.impl_file.write(unicode(layout_c))
-
+        
+        try:
+            self.json_file.write(unicode(json.dumps(self.class_json_list, sort_keys=False, indent=4)))
+        except Exception as err:
+            logger.error("json.dumps error %s" % (err))
         self.impl_file.close()
         self.head_file.close()
+        self.json_file.close()
 
     def _pretty_print(self, diagnostics):
         errors = []
@@ -1837,9 +1996,12 @@ class Generator(object):
                 if is_fatal:
                     logger.error("*** Found errors - can not continue")
                     raise Exception("Fatal error in parsing headers")
-            self._deep_iterate(tu.cursor)
+            self._deep_iterate(tu.cursor, 0, [])
 
-    def _deep_iterate(self, cursor, depth=0):
+    def _deep_iterate(self, cursor, depth=0, nested_classes = []):
+
+        if nested_classes is None:     
+            logger.error(" ? depth %s, nested_classes %s" %(depth, nested_classes))
 
         def get_children_array_from_iter(iter):
             children = []
@@ -1851,6 +2013,7 @@ class Generator(object):
         if cursor.kind == cindex.CursorKind.CLASS_DECL or cursor.kind == cindex.CursorKind.STRUCT_DECL:
             is_struct = cursor.kind == cindex.CursorKind.STRUCT_DECL
             namespaced_class_name = get_namespaced_class_name(cursor)
+            # logger.error("process class %s" % (namespaced_class_name) )
             if len(namespaced_class_name) == 0 or cursor.displayname.startswith("__"):
                 return
             if cursor == cursor.type.get_declaration() and len(get_children_array_from_iter(cursor.get_children())) > 0:
@@ -1861,10 +2024,11 @@ class Generator(object):
                         if namespaced_class_name.startswith(ns):
                             is_targeted_class = True
                             break
-
                 if is_targeted_class and self.in_listed_classes(cursor.displayname):
                     if cursor.displayname not in self.generated_classes:
                         nclass = NativeClass(cursor, self, is_struct)
+                        # logger.error(" - depth %s, nested_classes %s" %(depth, nested_classes))
+                        nclass.nested_classes = nested_classes.copy()
                         nclass.generate_code()
                         self.generated_classes[cursor.displayname] = nclass
                     return
@@ -1891,10 +2055,20 @@ class Generator(object):
 
         for node in cursor.get_children():
             # print("%s %s - %s" % (">" * depth, node.displayname, node.kind))
-            self._deep_iterate(node, depth + 1)
+            self._deep_iterate(node, depth + 1, nested_classes.copy() if nested_classes is not None else [])
 
     def scriptname_from_native(self, namespace_class_name, namespace_name):
         script_ns_dict = self.config['conversions']['ns_map']
+        if namespace_name.startswith("const "):
+            namespace_name = namespace_name.replace("const ","")
+        if namespace_class_name.startswith("const "):
+            namespace_class_name = namespace_class_name.replace("const ","")
+        if len(namespace_name) == 0 and namespace_class_name.find("::") >=0 and namespace_class_name.find("std:: ") < 0:
+            parts = namespace_class_name.split("::")
+            if len(parts) > 1:
+                parts.pop()
+                namespace_name = "".join(list(map(lambda x: x+"::", parts)))
+
         for (k, v) in script_ns_dict.items():
             if k == namespace_name:
                 return namespace_class_name.replace("*", "").replace("const ", "").replace(k, v)
@@ -1902,8 +2076,15 @@ class Generator(object):
             if namespace_class_name.find("std::") == 0:
                 return namespace_class_name
             else:
-                raise Exception(
-                    "The namespace (%s) conversion wasn't set in 'ns_map' section of the conversions.yaml" % namespace_class_name)
+                #raise Exception(
+                #    "The namespace (%s) conversion wasn't set in 'ns_map' section of the conversions.yaml" % namespace_class_name)
+                if len(namespace_name) == 0:
+                    parts = namespace_class_name.split("::")
+                    if len(parts) > 1:
+                        nn = parts.pop()
+                        return self.scriptname_from_native("::".join(parts)+"::", nn)
+                logger.error("The namespace (%s), '%s' conversion wasn't set in 'ns_map' section of the conversions.yaml" % (namespace_class_name, namespace_name))
+                return "nowhere"
         else:
             return namespace_class_name.replace("*", "").replace("const ", "")
 

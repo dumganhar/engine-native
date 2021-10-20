@@ -45,15 +45,12 @@ SE_DECLARE_FUNC(js_assets_Asset_deserialize);
 SE_DECLARE_FUNC(js_assets_Asset_destroy);
 SE_DECLARE_FUNC(js_assets_Asset_getNativeAsset);
 SE_DECLARE_FUNC(js_assets_Asset_getNativeDep);
-SE_DECLARE_FUNC(js_assets_Asset_getNativeUrl);
 SE_DECLARE_FUNC(js_assets_Asset_getRefCount);
-SE_DECLARE_FUNC(js_assets_Asset_getUuid);
 SE_DECLARE_FUNC(js_assets_Asset_initDefault);
 SE_DECLARE_FUNC(js_assets_Asset_isDefault);
 SE_DECLARE_FUNC(js_assets_Asset_onLoaded);
 SE_DECLARE_FUNC(js_assets_Asset_serialize);
 SE_DECLARE_FUNC(js_assets_Asset_setNativeAsset);
-SE_DECLARE_FUNC(js_assets_Asset_setUuid);
 SE_DECLARE_FUNC(js_assets_Asset_toString);
 SE_DECLARE_FUNC(js_assets_Asset_validate);
 
@@ -150,11 +147,6 @@ bool js_register_cc_ImageAsset(se::Object *obj); // NOLINT
 bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::ImageAsset);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getData);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getFormat);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getHeight);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getUrl);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getWidth);
 SE_DECLARE_FUNC(js_assets_ImageAsset_isCompressed);
 SE_DECLARE_FUNC(js_assets_ImageAsset_ImageAsset);
 
@@ -483,6 +475,16 @@ SE_DECLARE_FUNC(js_assets_TextureCube_setMipmaps);
 SE_DECLARE_FUNC(js_assets_TextureCube_fromTexture2DArray);
 SE_DECLARE_FUNC(js_assets_TextureCube_TextureCube);
 
+extern se::Object *__jsb_cc_IMeshBufferView_proto; // NOLINT
+extern se::Class * __jsb_cc_IMeshBufferView_class; // NOLINT
+
+bool js_register_cc_IMeshBufferView(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::IMeshBufferView *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::IMeshBufferView);
+
 extern se::Object *__jsb_cc_MorphTarget_proto; // NOLINT
 extern se::Class * __jsb_cc_MorphTarget_class; // NOLINT
 
@@ -513,6 +515,46 @@ template <>
 bool sevalue_to_native(const se::Value &, cc::Morph *, se::Object *ctx);
 JSB_REGISTER_OBJECT_TYPE(cc::Morph);
 
+extern se::Object *__jsb_cc_Mesh_IVertexBundle_proto; // NOLINT
+extern se::Class * __jsb_cc_Mesh_IVertexBundle_class; // NOLINT
+
+bool js_register_cc_Mesh_IVertexBundle(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::Mesh::IVertexBundle *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::Mesh::IVertexBundle);
+
+extern se::Object *__jsb_cc_Mesh_ISubMesh_proto; // NOLINT
+extern se::Class * __jsb_cc_Mesh_ISubMesh_class; // NOLINT
+
+bool js_register_cc_Mesh_ISubMesh(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::Mesh::ISubMesh *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::Mesh::ISubMesh);
+
+extern se::Object *__jsb_cc_Mesh_IStruct_proto; // NOLINT
+extern se::Class * __jsb_cc_Mesh_IStruct_class; // NOLINT
+
+bool js_register_cc_Mesh_IStruct(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::Mesh::IStruct *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::Mesh::IStruct);
+
+extern se::Object *__jsb_cc_Mesh_ICreateInfo_proto; // NOLINT
+extern se::Class * __jsb_cc_Mesh_ICreateInfo_class; // NOLINT
+
+bool js_register_cc_Mesh_ICreateInfo(se::Object *obj); // NOLINT
+bool register_all_assets(se::Object *obj);                   // NOLINT
+
+template <>
+bool sevalue_to_native(const se::Value &, cc::Mesh::ICreateInfo *, se::Object *ctx);
+JSB_REGISTER_OBJECT_TYPE(cc::Mesh::ICreateInfo);
+
 extern se::Object *__jsb_cc_Mesh_proto; // NOLINT
 extern se::Class * __jsb_cc_Mesh_class; // NOLINT
 
@@ -520,20 +562,15 @@ bool js_register_cc_Mesh(se::Object *obj); // NOLINT
 bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::Mesh);
+SE_DECLARE_FUNC(js_assets_Mesh_assign);
+SE_DECLARE_FUNC(js_assets_Mesh_copyAttribute);
 SE_DECLARE_FUNC(js_assets_Mesh_copyIndices);
 SE_DECLARE_FUNC(js_assets_Mesh_destroyRenderingMesh);
-SE_DECLARE_FUNC(js_assets_Mesh_getBoneSpaceBounds);
-SE_DECLARE_FUNC(js_assets_Mesh_getData);
-SE_DECLARE_FUNC(js_assets_Mesh_getHash);
-SE_DECLARE_FUNC(js_assets_Mesh_getJointBufferIndices);
-SE_DECLARE_FUNC(js_assets_Mesh_getMaxPosition);
-SE_DECLARE_FUNC(js_assets_Mesh_getMinPosition);
-SE_DECLARE_FUNC(js_assets_Mesh_getRenderingSubMeshes);
-SE_DECLARE_FUNC(js_assets_Mesh_getStruct);
-SE_DECLARE_FUNC(js_assets_Mesh_getSubMeshCount);
 SE_DECLARE_FUNC(js_assets_Mesh_initialize);
+SE_DECLARE_FUNC(js_assets_Mesh_merge);
 SE_DECLARE_FUNC(js_assets_Mesh_readAttribute);
 SE_DECLARE_FUNC(js_assets_Mesh_readIndices);
+SE_DECLARE_FUNC(js_assets_Mesh_reset);
 SE_DECLARE_FUNC(js_assets_Mesh_validateMergingMesh);
 SE_DECLARE_FUNC(js_assets_Mesh_Mesh);
 

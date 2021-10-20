@@ -31,6 +31,7 @@
 #if SCRIPT_ENGINE_TYPE == SCRIPT_ENGINE_V8
 
     #include "Base.h"
+    #include <vector>
 
 namespace se {
 
@@ -51,6 +52,9 @@ public:
          *  @note Don't need to delete the pointer return by this method, it's managed internally.
          */
     static Class *create(const std::string &className, Object *obj, Object *parentProto, v8::FunctionCallback ctor);
+
+    static Class *create(const std::initializer_list<const char *> &classPath, Object *obj, Object *parentProto, v8::FunctionCallback ctor);
+
 
     /**
          *  @brief Defines a member function with a callback. Each objects created by class will have this function property.

@@ -123,7 +123,7 @@ public:
      */
     void destroyScenes();
 
-    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<scene::Model, T>::value>>
+    template <typename T, typename = std::enable_if_t<std::is_base_of<scene::Model, T>::value>>
     T *createModel() {
         //cjh TODO: need use model pool?
         T *model = new T();
@@ -141,7 +141,7 @@ public:
         }
     }
 
-    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<scene::Light, T>::value>>
+    template <typename T, typename = std::enable_if_t<std::is_base_of<scene::Light, T>::value>>
     T *createLight() {
         //TODO(xwx): need use model pool?
         T *light = new T();

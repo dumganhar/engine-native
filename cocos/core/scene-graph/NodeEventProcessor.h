@@ -107,7 +107,7 @@ public:
 
     void off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture = false);
 
-    void off(const std::string &type, void *target, CallbackInfoBase::ID cbID, bool useCapture = false);
+    void off(const std::string &type, void *target, bool useCapture = false);
 
     template <typename Target, typename... Args>
     void off(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
@@ -171,7 +171,7 @@ private:
     void onDispatch(const std::string &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     void offDispatch(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture = false);
-    void offDispatch(const std::string &type, CallbackInfoBase::ID cbID, void *target, bool useCapture = false);
+    void offDispatch(const std::string &type, void *target, bool useCapture = false);
 
     template <typename Target, typename... Args>
     void offDispatch(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);

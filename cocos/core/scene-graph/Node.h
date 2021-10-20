@@ -149,6 +149,8 @@ public:
 
     void off(const std::string &type, bool useCapture = false);
 
+    void off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture = false);
+
     void off(const std::string &type, void *target, bool useCapture = false);
 
     template <typename Target, typename... Args>

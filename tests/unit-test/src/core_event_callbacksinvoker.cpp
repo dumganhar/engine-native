@@ -214,7 +214,7 @@ TEST(CoreEventCallbacksInvoker, output_log) {
 TEST(CoreEventCallbacksInvoker, member_function_target) {
     CallbacksInvoker ci;
 
-    static int ccc;
+    static int ccc = 123344;
     class MyFoo : public CCObject {
     public:
         void foo(int a, float b, int *c) {
@@ -362,7 +362,7 @@ TEST(CoreEventCallbacksInvoker, remove_self_with_target_during_invoking) {
     CallbackInfoBase::ID id1{0};
 
     TestFunctor<> cb1{[&]() {
-        ci.off("eve", id1, &target);
+        ci.off("eve", id1);
     }};
 
     TestFunctor<> cb2{[]() {}};
@@ -402,7 +402,7 @@ TEST(CoreEventCallbacksInvoker, remove_previous_with_target_during_invoking) {
 
     TestFunctor<> cb1{[]() {}};
     TestFunctor<> cb2{[&]() {
-        ci.off("eve", id1, &target);
+        ci.off("eve", id1);
     }};
 
     ci.on("eve", cb1, &target, id1);
@@ -437,7 +437,7 @@ TEST(CoreEventCallbacksInvoker, remove_last_with_target_during_invoking) {
 
     TestFunctor<> cb1{[]() {}};
     TestFunctor<> cb2{[&]() {
-        ci.off("eve", id2, &target);
+        ci.off("eve", id2);
     }};
 
     ci.on("eve", cb1, &target, id1);
@@ -456,10 +456,10 @@ TEST(CoreEventCallbacksInvoker, remove_multiple_callbacks_during_invoking) {
     TestFunctor<> cb1{[]() {}};
     TestFunctor<> cb2{[&]() {
         ci.off("eve", id1);
-        ci.off("eve", id31, &target);
+        ci.off("eve", id31);
     }};
     TestFunctor<> cb3{[&]() {
-        ci.off("eve", id2, &target);
+        ci.off("eve", id2);
     }};
 
     ci.on("eve", cb1, id1);
@@ -490,7 +490,7 @@ TEST(CoreEventCallbacksInvoker, remove_all_callbacks_during_invoking) {
         ci.offAll("eve");
     }};
     TestFunctor<> cb3{[&]() {
-        ci.off("eve", id2, &target);
+        ci.off("eve", id2);
     }};
 
     ci.on("eve", cb1, id1);
@@ -570,9 +570,9 @@ TEST(CoreEventCallbacksInvoker, CallbacksInvoker_support_target) {
     EXPECT_EQ(cb3.getCalledCount(), 2);
 
     ci.off("b", id1_not_target1);
-    ci.off("b", id1_target22, &target22);
+    ci.off("b", id1_target22);
     EXPECT_TRUE(ci.hasEventListener("b", &target11, id1_b1));
-    ci.off("b", id1_b1, &target11);
+    ci.off("b", id1_b1);
     EXPECT_FALSE(ci.hasEventListener("b", &target11, id1_b1));
 
     target11.count         = 0;
@@ -581,9 +581,9 @@ TEST(CoreEventCallbacksInvoker, CallbacksInvoker_support_target) {
     cb2.clear();
     cb3.clear();
 
-    ci.off("a", id1_target22, &target22);
-    ci.off("a", id1_target11, &target11);
-    ci.off("a", id21, &target22);
+    ci.off("a", id1_target22);
+    ci.off("a", id1_target11);
+    ci.off("a", id21);
     ci.emit("a");
 
     EXPECT_EQ(myTargetFooCalledCount, 2);

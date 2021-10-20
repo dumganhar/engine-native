@@ -330,11 +330,33 @@ void NodeEventProcessor::destroy() {
     if (_bubblingTargets) _bubblingTargets->offAll();
 }
 
+void NodeEventProcessor::off(const std::string &type, void *target, bool useCapture /* = false*/) {
+    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
+    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
+    if (touchEventExist || mouseEventExist) {
+        offDispatch(type, target, useCapture);
+
+        if (touchEventExist) {
+            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
+                event::EventManager::getInstance()->removeEventListener(_touchListener);
+                _touchListener = nullptr;
+            }
+        } else if (mouseEventExist) {
+            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) { // TODO(xwx): why !checkListeners(_node, MOUSE_EVENTS) ???
+                event::EventManager::getInstance()->removeEventListener(_mouseListener);
+                _mouseListener = nullptr;
+            }
+        }
+    } else if (_bubblingTargets != nullptr) {
+        _bubblingTargets->offAll(type, target);
+    }
+}
+
 void NodeEventProcessor::off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture) {
     bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
     bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
     if (touchEventExist || mouseEventExist) {
-        offDispatch(type, useCapture);
+        offDispatch(type, cbID, useCapture);
 
         if (touchEventExist) {
             if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
@@ -349,28 +371,6 @@ void NodeEventProcessor::off(const std::string &type, CallbackInfoBase::ID cbID,
         }
     } else if (_bubblingTargets != nullptr) {
         _bubblingTargets->off(type, cbID);
-    }
-}
-
-void NodeEventProcessor::off(const std::string &type, void *target, CallbackInfoBase::ID cbID, bool useCapture) {
-    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
-    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
-    if (touchEventExist || mouseEventExist) {
-        offDispatch(type, cbID, target, useCapture);
-
-        if (touchEventExist) {
-            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
-                event::EventManager::getInstance()->removeEventListener(_touchListener);
-                _touchListener = nullptr;
-            }
-        } else if (mouseEventExist) {
-            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) { // TODO(xwx): why !checkListeners(_node, MOUSE_EVENTS) ???
-                event::EventManager::getInstance()->removeEventListener(_mouseListener);
-                _mouseListener = nullptr;
-            }
-        }
-    } else if (_bubblingTargets != nullptr) {
-        _bubblingTargets->off(type, cbID, target);
     }
 }
 
@@ -545,10 +545,10 @@ void NodeEventProcessor::offDispatch(const std::string &type, CallbackInfoBase::
     }
 }
 
-void NodeEventProcessor::offDispatch(const std::string &type, CallbackInfoBase::ID cbID, void *target, bool useCapture) {
+void NodeEventProcessor::offDispatch(const std::string &type, void *target, bool useCapture) {
     CallbacksInvoker *listeners = useCapture ? _capturingTargets : _bubblingTargets;
     if (listeners != nullptr) {
-        listeners->off(type, cbID, target);
+        listeners->offAll(type, target);
     }
 }
 

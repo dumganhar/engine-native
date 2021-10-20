@@ -89,29 +89,35 @@ TEST(NodeTest, inverseTransformPoint) {
 // });
 
 TEST(NodeTest, remove_and_add_again_during_invoking) {
-    initCocos(100, 100);
-    auto *node = new Node();
+    CallbacksInvoker ci;
 
+    initCocos(100, 100);
+    auto *      node            = new Node();
+    static bool callbackInvoked = false;
+    callbackInvoked             = false;
     class MyTarget : public CCObject {
     public:
         MyTarget(Node *node) : _node{node} {}
         void onEvent(cc::event::Event *event) {
             _node->off("eve", &MyTarget::onEvent, this);
+            EXPECT_FALSE(_node->hasEventListener("eve", &MyTarget::onEvent, this));
             _node->on("eve", &MyTarget::onEvent, this);
+            callbackInvoked = true;
         }
 
     private:
         Node *_node;
     };
 
-    static_assert(std::is_member_function_pointer_v<decltype(&MyTarget::onEvent)>, "wrong");
-
     MyTarget target{node};
 
     node->on("eve", &MyTarget::onEvent, &target);
+    EXPECT_TRUE(node->hasEventListener("eve", &MyTarget::onEvent, &target));
+
     EventCustom event{"eve"};
     node->dispatchEvent(&event);
 
+    EXPECT_TRUE(callbackInvoked);
     EXPECT_TRUE(node->hasEventListener("eve", &MyTarget::onEvent, &target));
     destroyCocos();
 }

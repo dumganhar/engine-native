@@ -27,8 +27,11 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <typeinfo>
 #include <unordered_map>
 #include <vector>
+
+#include "base/Log.h"
 #include "base/Utils.h"
 #include "core/data/Object.h"
 #include "core/memop/Pool.h"
@@ -55,6 +58,9 @@ struct CallbackInfoBase {
     ID    _id{0};
     bool  _once{false};
     bool  _isCCObject{false};
+#if CC_DEBUG
+    std::vector<std::string> _argTypes;
+#endif
 };
 
 template <typename... Args>
@@ -71,6 +77,9 @@ struct CallbackInfo final : public CallbackInfoBase {
         _target     = target;
         _once       = once;
         _isCCObject = std::is_base_of_v<CCObject, Target>;
+#if CC_DEBUG
+        _argTypes = {(typeid(Args).name())...};
+#endif
     }
 
     template <typename Target, typename = std::enable_if_t<std::is_base_of_v<CCObject, Target>>>
@@ -79,6 +88,9 @@ struct CallbackInfo final : public CallbackInfoBase {
         _target     = target;
         _once       = once;
         _isCCObject = true;
+#if CC_DEBUG
+        _argTypes = {(typeid(Args).name())...};
+#endif
     }
 
     void reset() override {
@@ -87,6 +99,9 @@ struct CallbackInfo final : public CallbackInfoBase {
         _target     = nullptr;
         _once       = false;
         _isCCObject = false;
+#if CC_DEBUG
+        _argTypes.clear();
+#endif
     }
 
     bool check() const override {
@@ -234,7 +249,6 @@ public:
      * @param target callback Target
      * @param cbID - The callback ID of the event listener, if absent all event listeners for the given type will be removed
      */
-    void off(const std::string &key, CallbackInfoBase::ID cbID, void *target);
     void off(const std::string &key, CallbackInfoBase::ID cbID);
     void off(CallbackInfoBase::ID cbID);
     template <typename Target, typename... Args>
@@ -362,6 +376,9 @@ void CallbacksInvoker::off(const std::string &key, void (Target::*memberFn)(Args
 
 template <typename... Args>
 void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
+#if CC_DEBUG
+    std::vector<std::string> argTypes{(typeid(Args).name())...};
+#endif
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {
         auto &list        = iter->second;
@@ -370,12 +387,22 @@ void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
 
         auto &infos = list._callbackInfos;
         for (size_t i = 0, len = infos.size(); i < len; ++i) {
-            if (infos[i] == nullptr) {
+            auto &baseInfo = infos[i];
+            if (baseInfo == nullptr) {
                 continue;
             }
 
+#if CC_DEBUG
+            CCASSERT(baseInfo->_argTypes.size() == argTypes.size(), "The argument count in 'emit' is difference from which in 'on'");
+            for (size_t i = 0, len = argTypes.size(); i < len; ++i) {
+                if (baseInfo->_argTypes[i] != argTypes[i]) {
+                    CC_LOG_ERROR("Wrong argument type! baseInfo->_argTypes[%d]=%s, argTypes[%d]=%s", i, baseInfo->_argTypes[i].c_str(), i, argTypes[i].c_str());
+                    CC_ASSERT(false);
+                }
+            }
+#endif
             using CallbackInfoType = CallbackInfo<Args...>;
-            auto info              = std::dynamic_pointer_cast<CallbackInfoType>(infos[i]);
+            auto info              = std::static_pointer_cast<CallbackInfoType>(infos[i]);
             if (info != nullptr) {
                 if (info->_memberFn != nullptr && info->_target != nullptr) {
                     auto      memberFn = info->_memberFn;
@@ -408,7 +435,7 @@ void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
                     }
                 }
             } else {
-                CCASSERT(false, "CallbacksInvoker::emit: Invalid event signature.");
+                CCASSERT(false, "CallbacksInvoker::emit: callbackInfo is nullptr");
             }
         }
 

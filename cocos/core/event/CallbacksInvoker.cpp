@@ -213,22 +213,6 @@ void CallbacksInvoker::offAll() {
     }
 }
 
-void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID, void *target) {
-    auto iter = _callbackTable.find(key);
-    if (iter != _callbackTable.end()) {
-        auto &      list  = iter->second;
-        const auto &infos = list._callbackInfos;
-        size_t      i     = 0;
-        for (const auto &info : infos) {
-            if (info != nullptr && info->_id == cbID && info->_target == target) {
-                list.cancel(i);
-                break;
-            }
-            ++i;
-        }
-    }
-}
-
 void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {

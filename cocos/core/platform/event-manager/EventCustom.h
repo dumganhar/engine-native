@@ -60,15 +60,8 @@ public:
      */
     void *getUserData() const { return _userData; }
 
-    /** Gets event name.
-     *
-     * @return The name of the event.
-     */
-    const std::string &getEventName() const { return _eventName; }
-
 protected:
-    void *      _userData; ///< User data
-    std::string _eventName;
+    void *_userData; ///< User data
 };
 
 NS_CC_EVENT_END

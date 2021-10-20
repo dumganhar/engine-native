@@ -189,7 +189,7 @@ public:
      * @zh
      * 重置事件对象以便在对象池中存储。
      */
-    void unuse();
+    void unuse() {} //cjh TODO:
 
     /**
      * @en
@@ -199,7 +199,7 @@ public:
      * @param type - The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
      * @param bubbles - A boolean indicating whether the event bubbles up through the tree or not
      */
-    void reuse(const std::string &type, bool bubbles = false);
+    void reuse(const std::string &type, bool bubbles = false) {} //cjh TODO:
 
 protected:
     CCObject *  _target{nullptr};

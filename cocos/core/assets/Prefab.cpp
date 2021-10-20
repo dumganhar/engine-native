@@ -24,3 +24,20 @@
 ****************************************************************************/
 
 #include "core/assets/Prefab.h"
+
+namespace cc {
+
+void Prefab::createNode(const CreateNodeCallback &cb) {
+    //cjh TODO:
+}
+
+Node *Prefab::instantiate() {
+    //cjh TODO:
+    return nullptr;
+}
+
+void Prefab::initDefault(const std::optional<std::string> &uuid) {
+    //cjh TODO:
+}
+
+} // namespace cc

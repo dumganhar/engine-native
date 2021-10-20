@@ -28,6 +28,7 @@
 #include <string>
 
 #include "core/data/Object.h"
+#include "core/platform/Macro.h"
 #include "math/Geometry.h"
 
 namespace cc {
@@ -124,7 +125,56 @@ public:
     bool         destroy() override;
     virtual void _onPreDestroy();
 
+    Component *instantiate(Component *cloned) { return nullptr; } //cjh TODO:
+
     Node *getNode() const;
+
+    // Scheduler
+
+    /**
+     * @en
+     * Schedules a custom task.<br/>
+     * If the task is already scheduled, then the interval parameter will be updated without scheduling it again.
+     * @zh
+     * 调度一个自定义的回调任务。<br/>
+     * 如果回调任务已调度，那么将不会重复调度它，只会更新时间间隔参数。
+     * @param callback  The callback function of the task
+     * @param interval  The time interval between each invocation
+     * @param repeat    The repeat count of this task, the task will be invoked (repeat + 1) times, use [[macro.REPEAT_FOREVER]] to repeat a task forever
+     * @param delay     The delay time for the first invocation, Unit: s
+     * @example
+     * ```ts
+     * import { log } from 'cc';
+     * this.schedule((dt) => void log(`time: ${dt}`), 1);
+     * ```
+     */
+    void schedule(SCHEDULE_CB callback, float interval = 1.F, uint32_t repeat = macro::REPEAT_FOREVER, float delay = 0.F) {}
+
+    /**
+     * @en Schedules a task that runs only once, with a delay of 0 or larger.
+     * @zh 调度一个只运行一次的回调任务，可以指定 0 让回调函数在下一帧立即执行或者在一定的延时之后执行。
+     * @method scheduleOnce
+     * @see [[schedule]]
+     * @param callback  The callback function of the task
+     * @param delay  The delay time for the first invocation, Unit: s
+     * @example
+     * ```ts
+     * import { log } from 'cc';
+     * this.scheduleOnce((dt) => void log(`time: ${dt}`), 2);
+     * ```
+     */
+    void scheduleOnce(SCHEDULE_CB callback, float delay = 0.F) {}
+
+    /**
+     * @en Un-schedules a custom task.
+     * @zh 取消调度一个自定义的回调任务。
+     * @param callback_fn  The callback function of the task
+     * @example
+     * ```ts
+     * this.unschedule(_callback);
+     * ```
+     */
+    void unschedule(SCHEDULE_CB callback_fn) {}
 
     /**
      * @en unschedule all scheduled tasks.
@@ -134,9 +184,7 @@ public:
      * this.unscheduleAllCallbacks();
      * ```
      */
-    inline void unscheduleAllCallbacks() {
-        // Director::getInstance()->getScheduler().unscheduleAllForTarget(this); //TODO(xwx): not sure Director will be used
-    }
+    void unscheduleAllCallbacks() {}
 
     // LIFECYCLE METHODS
 

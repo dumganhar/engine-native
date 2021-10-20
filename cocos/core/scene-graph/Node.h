@@ -96,9 +96,9 @@ public:
     void setParent(Node *parent, bool isKeepWorld = false);
 
     Scene *getScene() const;
-    void   walk();
-    void   walk(const std::function<void(Node *)> &);
-    void   walk(const std::function<void(Node *)> &, const std::function<void(Node *)> &);
+
+    void walk(const std::function<void(Node *)> &preFunc);
+    void walk(const std::function<void(Node *)> &preFunc, const std::function<void(Node *)> &postFunc);
 
     template <typename... Args>
     void on(const std::string &type, std::function<void(Args...)> &&callback);
@@ -543,7 +543,6 @@ protected:
     void onHierarchyChanged(Node *);
     void onHierarchyChangedBase(Node *oldParent);
 
-    void         walkInternal(std::function<void(Node *)>, std::function<void(Node *)>);
     virtual void onBatchCreated(bool dontChildPrefab);
 
     bool onPreDestroyBase();

@@ -227,9 +227,9 @@ public:
      * @param cbID - Callback ID
      */
     bool hasEventListener(const std::string &key) const;
-    bool hasEventListener(const std::string &key, const CallbackInfoBase::ID &cbID) const;
+    bool hasEventListener(const std::string &key, CallbackInfoBase::ID cbID) const;
     bool hasEventListener(const std::string &key, void *target);
-    bool hasEventListener(const std::string &key, void *target, const CallbackInfoBase::ID &cbID) const;
+    bool hasEventListener(const std::string &key, void *target, CallbackInfoBase::ID cbID) const;
     template <typename Target, typename... Args>
     bool hasEventListener(const std::string &key, void (Target::*memberFn)(Args...), Target *target) const;
     /**
@@ -249,8 +249,8 @@ public:
      * @param target callback Target
      * @param cbID - The callback ID of the event listener, if absent all event listeners for the given type will be removed
      */
-    void off(const std::string &key, const CallbackInfoBase::ID &cbID);
-    void off(const CallbackInfoBase::ID &cbID);
+    void off(const std::string &key, CallbackInfoBase::ID cbID);
+    void off(CallbackInfoBase::ID cbID);
     template <typename Target, typename... Args>
     void off(const std::string &key, void (Target::*memberFn)(Args...), Target *target);
 

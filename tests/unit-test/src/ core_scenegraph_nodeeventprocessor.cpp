@@ -225,11 +225,15 @@ TEST(CoreNodeEventProcessor, test_lambda) {
     EXPECT_FALSE(node->hasEventListener("hello", id1));
 
     // test once
-    // // TODO(xwx): should fix once implementation first
-    // node.once("helloOnce", [](int b) {
-    //     CC_LOG_DEBUG("hello callback only once, b: %d", b);
-    // }, id2);
-    // node.emit("helloOnce", 1);
+    node->once(
+        "helloOnce", [](int b) {
+            CC_LOG_DEBUG("hello callback only once, b: %d", b);
+        },
+        id2);
+
+    EXPECT_TRUE(node->hasEventListener("helloOnce", id2));
+    node->emit("helloOnce", 1);
+    EXPECT_FALSE(node->hasEventListener("helloOnce", id2));
 
     delete node;
 }
@@ -267,10 +271,10 @@ TEST(CoreNodeEventProcessor, test_memberFunction) {
     EXPECT_FALSE(node->hasEventListener("hello", &MyTarget::foo, &target));
 
     //once
-    // TODO(xwx): should fix once implementation first
-    // MyTarget target1{node};
-    // node->once("helloOnce", &MyTarget::foo, &target1);
-    // node->emit("helloOnce", 1, 2.3F, &ccc);
+    node->once("helloOnce", &MyTarget::foo, &target);
+    EXPECT_TRUE(node->hasEventListener("helloOnce", &MyTarget::foo, &target));
+    node->emit("helloOnce", 1, 2.3F, &ccc);
+    EXPECT_FALSE(node->hasEventListener("helloOnce", &MyTarget::foo, &target));
 
     delete node;
 }
@@ -339,7 +343,19 @@ TEST(CoreNodeEventProcessor, test_function_args) {
     EXPECT_FALSE(node->hasEventListener("a", &target22, id1_target22));
 
     //once
-    // TODO(xwx): should fix once implementation first
+    node->once("b", cb1, id1_not_target1);
+    node->once("b", cb1, id1_not_target2);
+    node->once("b", cb1_target11, &target11, id1_target11);
+    node->once("b", cb1_target22, &target22, id1_target22);
+    EXPECT_TRUE(node->hasEventListener("b", id1_not_target1));
+    EXPECT_TRUE(node->hasEventListener("b", id1_not_target2));
+    EXPECT_TRUE(node->hasEventListener("b", &target11, id1_target11));
+    EXPECT_TRUE(node->hasEventListener("b", &target22, id1_target22));
+    node->emit("b");
+    EXPECT_FALSE(node->hasEventListener("b", id1_not_target1));
+    EXPECT_FALSE(node->hasEventListener("b", id1_not_target2));
+    EXPECT_FALSE(node->hasEventListener("b", id1_not_target1));
+    EXPECT_FALSE(node->hasEventListener("b", id1_not_target2));
 
     delete node;
 }

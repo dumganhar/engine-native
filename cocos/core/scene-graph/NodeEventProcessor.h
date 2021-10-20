@@ -60,11 +60,11 @@ public:
 
     bool hasEventListener(const std::string &type) const;
 
-    bool hasEventListener(const std::string &type, const CallbackInfoBase::ID &cbID) const;
+    bool hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) const;
 
     bool hasEventListener(const std::string &type, void *target) const;
 
-    bool hasEventListener(const std::string &type, void *target, const CallbackInfoBase::ID &cbID) const;
+    bool hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) const;
 
     template <typename Target, typename... Args>
     bool hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) const;
@@ -320,7 +320,7 @@ void NodeEventProcessor::once(const std::string &type, std::function<void(Args..
     listeners->on(type, std::forward<std::function<void(Args...)>>(callback), cbID, true);
     CallbackInfoBase::ID cacheID = cbID;
     listeners->on(
-        type, [=]() { off(type, cacheID); }, true); // TODO(xwx): on how to pass cbID
+        type, [=](Args...) { off(type, cacheID); }, true);
 }
 
 template <typename Target, typename... Args>
@@ -338,9 +338,10 @@ void NodeEventProcessor::once(const std::string &type, void (Target::*memberFn)(
         }
         listeners = _bubblingTargets;
     }
+
     listeners->on(type, memberFn, target, true);
     listeners->on(
-        type, [=]() { off(type, memberFn, target); }, true); // TODO(xwx): on how to pass cbID
+        type, [=](Args...) { off(type, memberFn, target); }, true);
 }
 
 template <typename Target, typename... Args>
@@ -358,54 +359,61 @@ void NodeEventProcessor::once(const std::string &type, std::function<void(Args..
         }
         listeners = _bubblingTargets;
     }
-    listeners->on(type, std::forward<std::function<void(Args...)>>(callback), cbID, target, true);
+    listeners->on(type, std::forward<std::function<void(Args...)>>(callback), target, cbID, true);
     CallbackInfoBase::ID cacheID = cbID;
     listeners->on(
-        type, [=]() { off(type, cacheID); }, target, true); // TODO(xwx): on how to pass cbID
+        type, [=](Args...) { off(type, cacheID); }, target, true);
 }
 
 template <typename Target, typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
 NodeEventProcessor::once(const std::string &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
-    bool              forDispatch = checknSetupSysEvent(type);
-    CallbacksInvoker *listeners   = nullptr;
-    if (useCapture) {
-        if (_capturingTargets == nullptr) {
-            _capturingTargets = new CallbacksInvoker();
-        }
-        listeners = _capturingTargets;
-    } else {
-        if (_bubblingTargets == nullptr) {
-            _bubblingTargets = new CallbacksInvoker();
-        }
-        listeners = _bubblingTargets;
-    }
-    listeners->on(type, callback, cbID, target, true);
-    CallbackInfoBase::ID cacheID = cbID;
-    listeners->on(
-        type, [=]() { off(type, cacheID); }, true); // TODO(xwx): on how to pass cbID
+    once(type, CallbacksInvoker::toFunction(callback), target, cbID, useCapture);
+
+    // bool              forDispatch = checknSetupSysEvent(type);
+    // CallbacksInvoker *listeners   = nullptr;
+    // if (useCapture) {
+    //     if (_capturingTargets == nullptr) {
+    //         _capturingTargets = new CallbacksInvoker();
+    //     }
+    //     listeners = _capturingTargets;
+    // } else {
+    //     if (_bubblingTargets == nullptr) {
+    //         _bubblingTargets = new CallbacksInvoker();
+    //     }
+    //     listeners = _bubblingTargets;
+    // }
+    // listeners->on(type, callback, target, cbID, true);
+    // CallbackInfoBase::ID cacheID = cbID;
+    // auto                toFunc  = [=]() { off(type, cacheID); };
+    // listeners->on(
+    //     type, CallbacksInvoker::toFunction(toFunc), target, true);
 }
 
 template <typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
 NodeEventProcessor::once(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
-    bool              forDispatch = checknSetupSysEvent(type);
-    CallbacksInvoker *listeners   = nullptr;
-    if (useCapture) {
-        if (_capturingTargets == nullptr) {
-            _capturingTargets = new CallbacksInvoker();
-        }
-        listeners = _capturingTargets;
-    } else {
-        if (_bubblingTargets == nullptr) {
-            _bubblingTargets = new CallbacksInvoker();
-        }
-        listeners = _bubblingTargets;
-    }
-    listeners->on(type, callback, cbID, true);
-    CallbackInfoBase::ID cacheID = cbID;
-    listeners->on(
-        type, [=]() { off(type, cacheID); }, true); // TODO(xwx): on how to pass cbID
+    once(type, CallbacksInvoker::toFunction(callback), cbID, useCapture);
+
+    // bool              forDispatch = checknSetupSysEvent(type);
+    // CallbacksInvoker *listeners   = nullptr;
+    // if (useCapture) {
+    //     if (_capturingTargets == nullptr) {
+    //         _capturingTargets = new CallbacksInvoker();
+    //     }
+    //     listeners = _capturingTargets;
+    // } else {
+    //     if (_bubblingTargets == nullptr) {
+    //         _bubblingTargets = new CallbacksInvoker();
+    //     }
+    //     listeners = _bubblingTargets;
+    // }
+    // listeners->on(type, callback, cbID, true);
+    // CallbackInfoBase::ID cacheID = cbID;
+    // auto                toFunc  = [=]() { off(type, cacheID); };
+
+    // listeners->on(
+    //     type, CallbacksInvoker::toFunction(toFunc), true);
 }
 
 template <typename Target, typename... Args>

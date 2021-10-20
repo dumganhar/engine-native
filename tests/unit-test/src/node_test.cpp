@@ -94,27 +94,26 @@ class MyCallbackTarget {
 public:
 };
 
-// TODO(xwx): Uncomment me when fix memory leak
-// TEST(NodeTest, inverseTransformPoint) {
-    // initCocos(100, 100);
+TEST(NodeTest, inverseTransformPoint) {
+    initCocos(100, 100);
 
-    // auto *director = Director::getInstance();
-    // auto *scene    = director->getScene();
+    auto *director = Director::getInstance();
+    auto *scene    = director->getScene();
 
-    // auto *parentNode = new Node("");
-    // auto *subNode    = new Node("");
-    // parentNode->setPosition(20.F, -30.F, 100.F);
-    // subNode->setPosition(55, 35, 22);
-    // parentNode->setParent(scene);
-    // subNode->setParent(parentNode);
-    // auto p = Vec3(100.F, 200.F, 0.F);
-    // subNode->inverseTransformPoint(p, p);
+    auto *parentNode = new Node("");
+    auto *subNode    = new Node("");
+    parentNode->setPosition(20.F, -30.F, 100.F);
+    subNode->setPosition(55, 35, 22);
+    parentNode->setParent(scene);
+    subNode->setParent(parentNode);
+    auto p = Vec3(100.F, 200.F, 0.F);
+    subNode->inverseTransformPoint(p, p);
 
-    // EXPECT_EQ(p, Vec3(25.F, 195.F, -122.F));
+    EXPECT_EQ(p, Vec3(25.F, 195.F, -122.F));
 
-    // // //xwx FIXME: gfx-validator Assert
-    // destroyCocos();
-// }
+    // //xwx FIXME: gfx-validator Assert
+    destroyCocos();
+}
 
 TEST(NodeTest, activeInHierarchyChanged) {
     // TODO(xwx): should fix once implementation first

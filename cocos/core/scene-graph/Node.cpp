@@ -150,7 +150,7 @@ void Node::off(const std::string &type, bool useCapture) {
     }
 }
 
-void Node::off(const std::string &type, const CallbackInfoBase::ID &cbID, bool useCapture) {
+void Node::off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture) {
     _eventProcessor->off(type, cbID, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
@@ -178,13 +178,13 @@ bool Node::hasEventListener(const std::string &type) const {
     return _eventProcessor->hasEventListener(type);
 }
 
-bool Node::hasEventListener(const std::string &type, const CallbackInfoBase::ID &cbID) const {
+bool Node::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) const {
     return _eventProcessor->hasEventListener(type, cbID);
 }
 bool Node::hasEventListener(const std::string &type, void *target) const {
     return _eventProcessor->hasEventListener(type, target);
 }
-bool Node::hasEventListener(const std::string &type, void *target, const CallbackInfoBase::ID &cbID) const {
+bool Node::hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) const {
     return _eventProcessor->hasEventListener(type, target, cbID);
 }
 
@@ -202,7 +202,8 @@ void Node::setActive(bool isActive) {
         if (parent) {
             bool couldActiveInScene = parent->_activeInHierarchy;
             if (couldActiveInScene) {
-                Director::getInstance()->getNodeActivator()->activateNode(this, isActive);
+                // TODO: Director not implemented
+                // Director::getInstance()->getNodeActivator()->activateNode(this, isActive);
             }
         }
     }

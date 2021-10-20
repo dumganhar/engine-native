@@ -390,7 +390,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type) const {
     return has;
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string &type, const CallbackInfoBase::ID &cbID) const {
+bool NodeEventProcessor::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, cbID);
@@ -411,7 +411,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type, void *target)
     }
     return has;
 }
-bool NodeEventProcessor::hasEventListener(const std::string &type, void *target, const CallbackInfoBase::ID &cbID) const {
+bool NodeEventProcessor::hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, target, cbID);

@@ -136,7 +136,7 @@ public:
 
     void off(const std::string &type, bool useCapture = false);
 
-    void off(const std::string &type, const CallbackInfoBase::ID &cbID, bool useCapture = false);
+    void off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture = false);
 
     void off(const std::string &type, void *target, bool useCapture = false);
 
@@ -148,9 +148,9 @@ public:
 
     void dispatchEvent(event::Event *event);
     bool hasEventListener(const std::string &type) const;
-    bool hasEventListener(const std::string &type, const CallbackInfoBase::ID &cbID) const;
+    bool hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) const;
     bool hasEventListener(const std::string &type, void *target) const;
-    bool hasEventListener(const std::string &type, void *target, const CallbackInfoBase::ID &cbID) const;
+    bool hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) const;
 
     template <typename Target, typename... Args>
     bool hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) const;

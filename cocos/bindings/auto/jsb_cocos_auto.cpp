@@ -1830,7 +1830,7 @@ SE_BIND_FUNC(js_engine_SAXParser_init)
 
 bool js_register_engine_SAXParser(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
-    auto* cls = se::Class::create("SAXParser", obj, nullptr, nullptr);
+    auto* cls = se::Class::create("PlistParser", obj, nullptr, nullptr);
 
     cls->defineFunction("init", _SE(js_engine_SAXParser_init));
     cls->install();

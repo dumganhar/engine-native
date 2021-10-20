@@ -1162,9 +1162,9 @@ class NativeClass(object):
     @property
     def nested_class_array(self):
         classes = self.nested_classes.copy()
-        classes.append(self.class_name)
+        classes.append(self.target_class_name)
         if len(classes) == 1:
-            return "\"%s\""%(self.class_name)
+            return "\"%s\""%(self.target_class_name)
         return "{" + ",".join(list(map(lambda x: "\"%s\"" % x, classes))) + "}"
 
 

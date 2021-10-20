@@ -257,7 +257,11 @@ Scene *Node::getScene() const {
     return _scene;
 }
 
-void Node::walkInternal(std::function<void(Node *)> preFunc, std::function<void(Node *)> postFunc) {
+void Node::walk(const std::function<void(Node *)> &preFunc) {
+    walk(preFunc, nullptr);
+}
+
+void Node::walk(const std::function<void(Node *)> &preFunc, const std::function<void(Node *)> &postFunc) {
     uint                index{1};
     index_t             i{0};
     std::vector<Node *> children;
@@ -341,18 +345,6 @@ void Node::walkInternal(std::function<void(Node *)> preFunc, std::function<void(
     }
     stack.clear();
     stackId--;
-}
-
-void Node::walk() {
-    walkInternal(nullptr, nullptr);
-}
-
-void Node::walk(const std::function<void(Node *)> &preFunc) {
-    walkInternal(preFunc, nullptr);
-}
-
-void Node::walk(const std::function<void(Node *)> &preFunc, const std::function<void(Node *)> &postFunc) {
-    walkInternal(preFunc, postFunc);
 }
 
 Component *Node::addComponent(Component *comp) {

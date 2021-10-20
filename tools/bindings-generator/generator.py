@@ -972,7 +972,8 @@ class NativeOverloadedFunction(object):
     def __init__(self, func_array):
         self.implementations = func_array
         self.func_name = func_array[0].func_name
-        self.signature_name = self.func_name
+        self.signature_name = func_array[0].signature_name
+        self.ret_type = func_array[0].ret_type
         self.min_args = 100
         self.is_constructor = False
         self.is_overloaded = True
@@ -990,6 +991,7 @@ class NativeOverloadedFunction(object):
             "min_args": self.min_args,
             "comment": self.comment,
             "is_ctor": self.is_ctor,
+            "ret_type": self.ret_type.toJSON(),
             "current_class_name": self.current_class.class_name if self.current_class is not None else None,
             "implementations": list(map(lambda x: x.toJSON(), self.implementations)),
         }
@@ -1118,7 +1120,15 @@ class NativeClass(object):
         self.namespaced_class_name = get_namespaced_class_name(cursor)
         self.namespace_name = get_namespace_name(cursor)
         self.parse()
+        # signature_name
         # post parse
+
+        def get_func_name(func):
+            if isinstance(func, NativeOverloadedFunction):
+                return func.implementations[0].func_name
+            else:
+                return func.func_name
+
         if self.class_name in generator.getter_setter:
             for field_name in iter(generator.getter_setter[self.class_name].keys()):
                 field = generator.getter_setter[self.class_name][field_name]
@@ -1132,9 +1142,15 @@ class NativeClass(object):
                     raise Exception("getter_setter for %s.%s both None" % (
                         self.class_name, field_name))
                 if item["getter"] is not None:
-                    self.getter_list.append(item["getter"].func_name)
+                    self.getter_list.append(get_func_name(item["getter"]))
                 if item["setter"] is not None:
-                    self.setter_list.append(item["setter"].func_name)
+                    self.setter_list.append(get_func_name(item["setter"]))
+                if item["getter"] is not None and isinstance(item["getter"], NativeOverloadedFunction):
+                    old = item["getter"]
+                    logger.error(" old getter %s" % old.__dict__)
+                    logger.error(" getter_list %s\n setter_list: %s", self.getter_list, self.setter_list)
+                    item["getter"] = item["getter"].implementations[0]
+                    item["getter"].signature_name = "js_%s_%s_%s" % (self.generator.prefix, self.class_name, old.func_name)
                 self.getter_setter.append(item)
 
     @property
@@ -1248,7 +1264,7 @@ class NativeClass(object):
             "override_methods": dict(map(lambda kv: (kv[0], kv[1].toJSON()), self.override_methods.items())),
             "getter_setter": list(map(lambda x: {
                         "name": x["name"],
-                        "type": x["getter"].ret_type.toJSON() if x["getter"] is not None else x["setter"].ret_type.toJSON()
+                        "type": x["getter"].ret_type.toJSON() if x["getter"] is not None else (x["setter"].arguments[0].toJSON() if x["setter"] is not None else None)
                     }, self.getter_setter)),
             "methods": dict(map(lambda kv: (kv[0], kv[1].toJSON()), self.methods.items())),
             "static_methods": dict(map(lambda kv: (kv[0], kv[1].toJSON()), self.static_methods.items())),
@@ -1352,6 +1368,25 @@ class NativeClass(object):
             return True
 
         return False
+        
+    def _contains_same_method(self, methods, curr):
+        for method in methods:
+            if len(curr.arguments) == len(method.arguments):
+                if len(curr.arguments) == 0:
+                    return True
+                sameArguments = True
+                for i in range(len(curr.arguments)):
+                    if curr.arguments[i].name != method.arguments[i].name:
+                        sameArguments = False
+                if sameArguments:
+                    return True
+        return False
+
+    def _previous_method_already_contains(self, previous_m, curr):
+        if isinstance(previous_m, NativeOverloadedFunction):
+            return self._contains_same_method(previous_m.implementations, curr)
+        else:
+            return self._contains_same_method([previous_m], curr)
 
     def _process_node(self, cursor, depth= 0, nested_classes = []):
         '''
@@ -1417,10 +1452,12 @@ class NativeClass(object):
                         self.methods[registration_name] = m
                     else:
                         previous_m = self.methods[registration_name]
-                        if isinstance(previous_m, NativeOverloadedFunction):
-                            previous_m.append(m)
-                        else:
-                            self.methods[registration_name] = NativeOverloadedFunction([
+                        
+                        if not self._previous_method_already_contains(previous_m, m):
+                            if isinstance(previous_m, NativeOverloadedFunction):
+                                previous_m.append(m)
+                            else:
+                                self.methods[registration_name] = NativeOverloadedFunction([
                                                                                        m, previous_m])
 
                     self._handle_override_method_with_same_name_as_instance_method()

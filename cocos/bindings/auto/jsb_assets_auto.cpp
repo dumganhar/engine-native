@@ -362,7 +362,7 @@ static bool js_assets_Asset_addRef(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_addRef)
+SE_BIND_FUNC(js_assets_Asset_addRef)     // addRef
 
 static bool js_assets_Asset_createNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -411,7 +411,7 @@ static bool js_assets_Asset_createNode(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_createNode)
+SE_BIND_FUNC(js_assets_Asset_createNode)     // createNode
 
 static bool js_assets_Asset_decRef(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -434,7 +434,7 @@ static bool js_assets_Asset_decRef(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_decRef)
+SE_BIND_FUNC(js_assets_Asset_decRef)     // decRef
 
 static bool js_assets_Asset_deserialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -455,7 +455,7 @@ static bool js_assets_Asset_deserialize(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_deserialize)
+SE_BIND_FUNC(js_assets_Asset_deserialize)     // deserialize
 
 static bool js_assets_Asset_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -474,7 +474,7 @@ static bool js_assets_Asset_destroy(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_destroy)
+SE_BIND_FUNC(js_assets_Asset_destroy)     // destroy
 
 static bool js_assets_Asset_getNativeAsset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -493,7 +493,7 @@ static bool js_assets_Asset_getNativeAsset(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_getNativeAsset)
+SE_BIND_FUNC(js_assets_Asset_getNativeAsset)     // getNativeAsset
 
 static bool js_assets_Asset_getNativeDep(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -512,7 +512,7 @@ static bool js_assets_Asset_getNativeDep(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_getNativeDep)
+SE_BIND_FUNC(js_assets_Asset_getNativeDep)     // getNativeDep
 
 static bool js_assets_Asset_getNativeUrl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -531,7 +531,7 @@ static bool js_assets_Asset_getNativeUrl(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_assets_Asset_getNativeUrl)
+SE_BIND_PROP_GET(js_assets_Asset_getNativeUrl) // getNativeUrl
 
 static bool js_assets_Asset_getRefCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -550,7 +550,7 @@ static bool js_assets_Asset_getRefCount(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_getRefCount)
+SE_BIND_FUNC(js_assets_Asset_getRefCount)     // getRefCount
 
 static bool js_assets_Asset_getUuid(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -569,7 +569,7 @@ static bool js_assets_Asset_getUuid(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_assets_Asset_getUuid)
+SE_BIND_PROP_GET(js_assets_Asset_getUuid) // getUuid
 
 static bool js_assets_Asset_initDefault(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -588,7 +588,7 @@ static bool js_assets_Asset_initDefault(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_initDefault)
+SE_BIND_FUNC(js_assets_Asset_initDefault)     // initDefault
 
 static bool js_assets_Asset_isDefault(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -607,7 +607,7 @@ static bool js_assets_Asset_isDefault(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_isDefault)
+SE_BIND_FUNC(js_assets_Asset_isDefault)     // isDefault
 
 static bool js_assets_Asset_onLoaded(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -622,7 +622,7 @@ static bool js_assets_Asset_onLoaded(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_onLoaded)
+SE_BIND_FUNC(js_assets_Asset_onLoaded)     // onLoaded
 
 static bool js_assets_Asset_serialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -644,7 +644,7 @@ static bool js_assets_Asset_serialize(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_serialize)
+SE_BIND_FUNC(js_assets_Asset_serialize)     // serialize
 
 static bool js_assets_Asset_setNativeAsset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -663,7 +663,7 @@ static bool js_assets_Asset_setNativeAsset(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_setNativeAsset)
+SE_BIND_FUNC(js_assets_Asset_setNativeAsset)     // setNativeAsset
 
 static bool js_assets_Asset_setUuid(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -682,7 +682,7 @@ static bool js_assets_Asset_setUuid(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_PROP_SET(js_assets_Asset_setUuid)
+SE_BIND_PROP_SET(js_assets_Asset_setUuid) // setUuid
 
 static bool js_assets_Asset_toString(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -701,7 +701,7 @@ static bool js_assets_Asset_toString(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_toString)
+SE_BIND_FUNC(js_assets_Asset_toString)     // toString
 
 static bool js_assets_Asset_validate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -720,7 +720,7 @@ static bool js_assets_Asset_validate(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Asset_validate)
+SE_BIND_FUNC(js_assets_Asset_validate)     // validate
 
 
 static bool js_cc_Asset_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -787,7 +787,7 @@ static bool js_assets_BufferAsset_getBuffer(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_BufferAsset_getBuffer)
+SE_BIND_FUNC(js_assets_BufferAsset_getBuffer)     // getBuffer
 
 
 static bool js_cc_BufferAsset_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -838,7 +838,7 @@ static bool js_assets_TextureBase_getAnisotropy(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_getAnisotropy)
+SE_BIND_FUNC(js_assets_TextureBase_getAnisotropy)     // getAnisotropy
 
 static bool js_assets_TextureBase_getGFXSampler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -857,7 +857,7 @@ static bool js_assets_TextureBase_getGFXSampler(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_getGFXSampler)
+SE_BIND_FUNC(js_assets_TextureBase_getGFXSampler)     // getGFXSampler
 
 static bool js_assets_TextureBase_getGFXTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -876,7 +876,7 @@ static bool js_assets_TextureBase_getGFXTexture(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_getGFXTexture)
+SE_BIND_FUNC(js_assets_TextureBase_getGFXTexture)     // getGFXTexture
 
 static bool js_assets_TextureBase_getHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -895,7 +895,7 @@ static bool js_assets_TextureBase_getHash(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_getHash)
+SE_BIND_FUNC(js_assets_TextureBase_getHash)     // getHash
 
 static bool js_assets_TextureBase_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -914,7 +914,7 @@ static bool js_assets_TextureBase_getHeight(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_getHeight)
+SE_BIND_FUNC(js_assets_TextureBase_getHeight)     // getHeight
 
 static bool js_assets_TextureBase_getId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -933,7 +933,7 @@ static bool js_assets_TextureBase_getId(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_getId)
+SE_BIND_FUNC(js_assets_TextureBase_getId)     // getId
 
 static bool js_assets_TextureBase_getPixelFormat(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -952,7 +952,7 @@ static bool js_assets_TextureBase_getPixelFormat(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_getPixelFormat)
+SE_BIND_FUNC(js_assets_TextureBase_getPixelFormat)     // getPixelFormat
 
 static bool js_assets_TextureBase_getSamplerHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -971,7 +971,7 @@ static bool js_assets_TextureBase_getSamplerHash(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_getSamplerHash)
+SE_BIND_FUNC(js_assets_TextureBase_getSamplerHash)     // getSamplerHash
 
 static bool js_assets_TextureBase_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -990,7 +990,7 @@ static bool js_assets_TextureBase_getWidth(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_getWidth)
+SE_BIND_FUNC(js_assets_TextureBase_getWidth)     // getWidth
 
 static bool js_assets_TextureBase_isCompressed(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1009,7 +1009,7 @@ static bool js_assets_TextureBase_isCompressed(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_isCompressed)
+SE_BIND_FUNC(js_assets_TextureBase_isCompressed)     // isCompressed
 
 static bool js_assets_TextureBase_setAnisotropy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1028,7 +1028,7 @@ static bool js_assets_TextureBase_setAnisotropy(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_setAnisotropy)
+SE_BIND_FUNC(js_assets_TextureBase_setAnisotropy)     // setAnisotropy
 
 static bool js_assets_TextureBase_setFilters(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1049,7 +1049,7 @@ static bool js_assets_TextureBase_setFilters(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_setFilters)
+SE_BIND_FUNC(js_assets_TextureBase_setFilters)     // setFilters
 
 static bool js_assets_TextureBase_setMipFilter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1068,7 +1068,7 @@ static bool js_assets_TextureBase_setMipFilter(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_setMipFilter)
+SE_BIND_FUNC(js_assets_TextureBase_setMipFilter)     // setMipFilter
 
 static bool js_assets_TextureBase_setWrapMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1100,7 +1100,7 @@ static bool js_assets_TextureBase_setWrapMode(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureBase_setWrapMode)
+SE_BIND_FUNC(js_assets_TextureBase_setWrapMode)     // setWrapMode
 
 
 static bool js_cc_TextureBase_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -1601,7 +1601,7 @@ static bool js_assets_RenderingSubMesh_enableVertexIdChannel(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_enableVertexIdChannel)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_enableVertexIdChannel)     // enableVertexIdChannel
 
 static bool js_assets_RenderingSubMesh_genFlatBuffers(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1616,7 +1616,7 @@ static bool js_assets_RenderingSubMesh_genFlatBuffers(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_genFlatBuffers)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_genFlatBuffers)     // genFlatBuffers
 
 static bool js_assets_RenderingSubMesh_geometricInfo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1635,7 +1635,7 @@ static bool js_assets_RenderingSubMesh_geometricInfo(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_geometricInfo)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_geometricInfo)     // geometricInfo
 
 static bool js_assets_RenderingSubMesh_getAttributes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1654,7 +1654,7 @@ static bool js_assets_RenderingSubMesh_getAttributes(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_getAttributes)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_getAttributes)     // getAttributes
 
 static bool js_assets_RenderingSubMesh_getFlatBuffers(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1673,7 +1673,7 @@ static bool js_assets_RenderingSubMesh_getFlatBuffers(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_getFlatBuffers)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_getFlatBuffers)     // getFlatBuffers
 
 static bool js_assets_RenderingSubMesh_getIaInfo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1692,7 +1692,7 @@ static bool js_assets_RenderingSubMesh_getIaInfo(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_getIaInfo)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_getIaInfo)     // getIaInfo
 
 static bool js_assets_RenderingSubMesh_getIndexBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1711,7 +1711,7 @@ static bool js_assets_RenderingSubMesh_getIndexBuffer(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_getIndexBuffer)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_getIndexBuffer)     // getIndexBuffer
 
 static bool js_assets_RenderingSubMesh_getJointMappedBuffers(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1730,7 +1730,7 @@ static bool js_assets_RenderingSubMesh_getJointMappedBuffers(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_getJointMappedBuffers)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_getJointMappedBuffers)     // getJointMappedBuffers
 
 static bool js_assets_RenderingSubMesh_getMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1749,7 +1749,7 @@ static bool js_assets_RenderingSubMesh_getMesh(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_getMesh)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_getMesh)     // getMesh
 
 static bool js_assets_RenderingSubMesh_getPrimitiveMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1768,7 +1768,7 @@ static bool js_assets_RenderingSubMesh_getPrimitiveMode(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_getPrimitiveMode)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_getPrimitiveMode)     // getPrimitiveMode
 
 static bool js_assets_RenderingSubMesh_getSubMeshIdx(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1787,7 +1787,7 @@ static bool js_assets_RenderingSubMesh_getSubMeshIdx(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_getSubMeshIdx)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_getSubMeshIdx)     // getSubMeshIdx
 
 static bool js_assets_RenderingSubMesh_getVertexBuffers(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1806,7 +1806,7 @@ static bool js_assets_RenderingSubMesh_getVertexBuffers(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_getVertexBuffers)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_getVertexBuffers)     // getVertexBuffers
 
 static bool js_assets_RenderingSubMesh_indirectBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1825,7 +1825,7 @@ static bool js_assets_RenderingSubMesh_indirectBuffer(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_indirectBuffer)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_indirectBuffer)     // indirectBuffer
 
 static bool js_assets_RenderingSubMesh_setFlatBuffers(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1844,7 +1844,7 @@ static bool js_assets_RenderingSubMesh_setFlatBuffers(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_setFlatBuffers)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_setFlatBuffers)     // setFlatBuffers
 
 static bool js_assets_RenderingSubMesh_setMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1863,7 +1863,7 @@ static bool js_assets_RenderingSubMesh_setMesh(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_setMesh)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_setMesh)     // setMesh
 
 static bool js_assets_RenderingSubMesh_setSubMeshIdx(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1882,7 +1882,7 @@ static bool js_assets_RenderingSubMesh_setSubMeshIdx(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderingSubMesh_setSubMeshIdx)
+SE_BIND_FUNC(js_assets_RenderingSubMesh_setSubMeshIdx)     // setSubMeshIdx
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_RenderingSubMesh_finalize)
 
@@ -2240,7 +2240,7 @@ static bool js_assets_ImageAsset_getData(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_assets_ImageAsset_getData)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getData) // getData
 
 static bool js_assets_ImageAsset_getFormat(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2259,7 +2259,7 @@ static bool js_assets_ImageAsset_getFormat(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_assets_ImageAsset_getFormat)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getFormat) // getFormat
 
 static bool js_assets_ImageAsset_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2278,7 +2278,7 @@ static bool js_assets_ImageAsset_getHeight(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_assets_ImageAsset_getHeight)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getHeight) // getHeight
 
 static bool js_assets_ImageAsset_getUrl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2297,7 +2297,7 @@ static bool js_assets_ImageAsset_getUrl(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_assets_ImageAsset_getUrl)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getUrl) // getUrl
 
 static bool js_assets_ImageAsset_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2316,7 +2316,7 @@ static bool js_assets_ImageAsset_getWidth(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_assets_ImageAsset_getWidth)
+SE_BIND_PROP_GET(js_assets_ImageAsset_getWidth) // getWidth
 
 static bool js_assets_ImageAsset_isCompressed(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2335,7 +2335,7 @@ static bool js_assets_ImageAsset_isCompressed(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_ImageAsset_isCompressed)
+SE_BIND_FUNC(js_assets_ImageAsset_isCompressed)     // isCompressed
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_ImageAsset_finalize)
 
@@ -2416,7 +2416,7 @@ static bool js_assets_SimpleTexture_assignImage(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_assets_SimpleTexture_assignImage)
+SE_BIND_FUNC(js_assets_SimpleTexture_assignImage)     // assignImage
 
 static bool js_assets_SimpleTexture_checkTextureLoaded(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2431,7 +2431,7 @@ static bool js_assets_SimpleTexture_checkTextureLoaded(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_SimpleTexture_checkTextureLoaded)
+SE_BIND_FUNC(js_assets_SimpleTexture_checkTextureLoaded)     // checkTextureLoaded
 
 static bool js_assets_SimpleTexture_mipmapLevel(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2450,7 +2450,7 @@ static bool js_assets_SimpleTexture_mipmapLevel(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_SimpleTexture_mipmapLevel)
+SE_BIND_FUNC(js_assets_SimpleTexture_mipmapLevel)     // mipmapLevel
 
 static bool js_assets_SimpleTexture_updateImage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2465,7 +2465,7 @@ static bool js_assets_SimpleTexture_updateImage(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_SimpleTexture_updateImage)
+SE_BIND_FUNC(js_assets_SimpleTexture_updateImage)     // updateImage
 
 static bool js_assets_SimpleTexture_updateMipmaps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2486,7 +2486,7 @@ static bool js_assets_SimpleTexture_updateMipmaps(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_SimpleTexture_updateMipmaps)
+SE_BIND_FUNC(js_assets_SimpleTexture_updateMipmaps)     // updateMipmaps
 
 static bool js_assets_SimpleTexture_uploadData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2582,7 +2582,7 @@ static bool js_assets_SimpleTexture_uploadData(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_assets_SimpleTexture_uploadData)
+SE_BIND_FUNC(js_assets_SimpleTexture_uploadData)     // uploadData
 
 
 static bool js_cc_SimpleTexture_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -3066,7 +3066,7 @@ static bool js_assets_Texture2D_create(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_create)
+SE_BIND_FUNC(js_assets_Texture2D_create)     // create
 
 static bool js_assets_Texture2D_description(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3085,7 +3085,7 @@ static bool js_assets_Texture2D_description(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_description)
+SE_BIND_FUNC(js_assets_Texture2D_description)     // description
 
 static bool js_assets_Texture2D_getGfxTextureCreateInfo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3113,7 +3113,7 @@ static bool js_assets_Texture2D_getGfxTextureCreateInfo(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_getGfxTextureCreateInfo)
+SE_BIND_FUNC(js_assets_Texture2D_getGfxTextureCreateInfo)     // getGfxTextureCreateInfo
 
 static bool js_assets_Texture2D_getHtmlElementObj(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3132,7 +3132,7 @@ static bool js_assets_Texture2D_getHtmlElementObj(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_getHtmlElementObj)
+SE_BIND_FUNC(js_assets_Texture2D_getHtmlElementObj)     // getHtmlElementObj
 
 static bool js_assets_Texture2D_getImage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3151,7 +3151,7 @@ static bool js_assets_Texture2D_getImage(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_getImage)
+SE_BIND_FUNC(js_assets_Texture2D_getImage)     // getImage
 
 static bool js_assets_Texture2D_getMipmaps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3170,7 +3170,7 @@ static bool js_assets_Texture2D_getMipmaps(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_getMipmaps)
+SE_BIND_FUNC(js_assets_Texture2D_getMipmaps)     // getMipmaps
 
 static bool js_assets_Texture2D_getMipmapsUuids(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3189,7 +3189,7 @@ static bool js_assets_Texture2D_getMipmapsUuids(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_getMipmapsUuids)
+SE_BIND_FUNC(js_assets_Texture2D_getMipmapsUuids)     // getMipmapsUuids
 
 static bool js_assets_Texture2D_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3204,7 +3204,7 @@ static bool js_assets_Texture2D_initialize(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_initialize)
+SE_BIND_FUNC(js_assets_Texture2D_initialize)     // initialize
 
 static bool js_assets_Texture2D_releaseTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3219,7 +3219,7 @@ static bool js_assets_Texture2D_releaseTexture(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_releaseTexture)
+SE_BIND_FUNC(js_assets_Texture2D_releaseTexture)     // releaseTexture
 
 static bool js_assets_Texture2D_reset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3238,7 +3238,7 @@ static bool js_assets_Texture2D_reset(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_reset)
+SE_BIND_FUNC(js_assets_Texture2D_reset)     // reset
 
 static bool js_assets_Texture2D_setImage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3257,7 +3257,7 @@ static bool js_assets_Texture2D_setImage(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_setImage)
+SE_BIND_FUNC(js_assets_Texture2D_setImage)     // setImage
 
 static bool js_assets_Texture2D_setMipmaps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3276,7 +3276,7 @@ static bool js_assets_Texture2D_setMipmaps(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Texture2D_setMipmaps)
+SE_BIND_FUNC(js_assets_Texture2D_setMipmaps)     // setMipmaps
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_Texture2D_finalize)
 
@@ -5450,7 +5450,7 @@ static bool js_assets_IShaderInfo_getSource(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_IShaderInfo_getSource)
+SE_BIND_FUNC(js_assets_IShaderInfo_getSource)     // getSource
 
 static bool js_assets_IShaderInfo_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6359,7 +6359,7 @@ static bool js_assets_Material_copy(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_copy)
+SE_BIND_FUNC(js_assets_Material_copy)     // copy
 
 static bool js_assets_Material_getEffectAsset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6378,7 +6378,7 @@ static bool js_assets_Material_getEffectAsset(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_getEffectAsset)
+SE_BIND_FUNC(js_assets_Material_getEffectAsset)     // getEffectAsset
 
 static bool js_assets_Material_getEffectName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6397,7 +6397,7 @@ static bool js_assets_Material_getEffectName(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_getEffectName)
+SE_BIND_FUNC(js_assets_Material_getEffectName)     // getEffectName
 
 static bool js_assets_Material_getHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6416,7 +6416,7 @@ static bool js_assets_Material_getHash(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_getHash)
+SE_BIND_FUNC(js_assets_Material_getHash)     // getHash
 
 static bool js_assets_Material_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6435,7 +6435,7 @@ static bool js_assets_Material_getParent(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_getParent)
+SE_BIND_FUNC(js_assets_Material_getParent)     // getParent
 
 static bool js_assets_Material_getPasses(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6454,7 +6454,7 @@ static bool js_assets_Material_getPasses(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_getPasses)
+SE_BIND_FUNC(js_assets_Material_getPasses)     // getPasses
 
 static bool js_assets_Material_getProperty(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6488,7 +6488,7 @@ static bool js_assets_Material_getProperty(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_getProperty)
+SE_BIND_FUNC(js_assets_Material_getProperty)     // getProperty
 
 static bool js_assets_Material_getTechniqueIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6507,7 +6507,7 @@ static bool js_assets_Material_getTechniqueIndex(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_getTechniqueIndex)
+SE_BIND_FUNC(js_assets_Material_getTechniqueIndex)     // getTechniqueIndex
 
 static bool js_assets_Material_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6526,7 +6526,7 @@ static bool js_assets_Material_initialize(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_initialize)
+SE_BIND_FUNC(js_assets_Material_initialize)     // initialize
 
 static bool js_assets_Material_overridePipelineStates(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6547,7 +6547,7 @@ static bool js_assets_Material_overridePipelineStates(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_overridePipelineStates)
+SE_BIND_FUNC(js_assets_Material_overridePipelineStates)     // overridePipelineStates
 
 static bool js_assets_Material_reset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6566,7 +6566,7 @@ static bool js_assets_Material_reset(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_reset)
+SE_BIND_FUNC(js_assets_Material_reset)     // reset
 
 static bool js_assets_Material_resetUniforms(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6589,7 +6589,7 @@ static bool js_assets_Material_resetUniforms(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_resetUniforms)
+SE_BIND_FUNC(js_assets_Material_resetUniforms)     // resetUniforms
 
 static bool js_assets_Material_setEffectAsset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6608,7 +6608,7 @@ static bool js_assets_Material_setEffectAsset(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_setEffectAsset)
+SE_BIND_FUNC(js_assets_Material_setEffectAsset)     // setEffectAsset
 
 static bool js_assets_Material_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6631,7 +6631,7 @@ static bool js_assets_Material_update(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Material_update)
+SE_BIND_FUNC(js_assets_Material_update)     // update
 
 static bool js_assets_Material_getHashForMaterial_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6728,7 +6728,7 @@ static bool js_assets_Prefab__instantiate(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Prefab__instantiate)
+SE_BIND_FUNC(js_assets_Prefab__instantiate)     // _instantiate
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_Prefab_finalize)
 
@@ -7027,7 +7027,7 @@ static bool js_assets_RenderTexture_getHeight(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderTexture_getHeight)
+SE_BIND_FUNC(js_assets_RenderTexture_getHeight)     // getHeight
 
 static bool js_assets_RenderTexture_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7046,7 +7046,7 @@ static bool js_assets_RenderTexture_getWidth(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderTexture_getWidth)
+SE_BIND_FUNC(js_assets_RenderTexture_getWidth)     // getWidth
 
 static bool js_assets_RenderTexture_getWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7065,7 +7065,7 @@ static bool js_assets_RenderTexture_getWindow(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderTexture_getWindow)
+SE_BIND_FUNC(js_assets_RenderTexture_getWindow)     // getWindow
 
 static bool js_assets_RenderTexture_initWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7096,7 +7096,7 @@ static bool js_assets_RenderTexture_initWindow(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderTexture_initWindow)
+SE_BIND_FUNC(js_assets_RenderTexture_initWindow)     // initWindow
 
 static bool js_assets_RenderTexture_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7115,7 +7115,7 @@ static bool js_assets_RenderTexture_initialize(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderTexture_initialize)
+SE_BIND_FUNC(js_assets_RenderTexture_initialize)     // initialize
 
 static bool js_assets_RenderTexture_reset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7134,7 +7134,7 @@ static bool js_assets_RenderTexture_reset(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderTexture_reset)
+SE_BIND_FUNC(js_assets_RenderTexture_reset)     // reset
 
 static bool js_assets_RenderTexture_resize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7155,7 +7155,7 @@ static bool js_assets_RenderTexture_resize(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_RenderTexture_resize)
+SE_BIND_FUNC(js_assets_RenderTexture_resize)     // resize
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_RenderTexture_finalize)
 
@@ -7224,7 +7224,7 @@ static bool js_assets_SceneAsset_getScene(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_SceneAsset_getScene)
+SE_BIND_FUNC(js_assets_SceneAsset_getScene)     // getScene
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_SceneAsset_finalize)
 
@@ -8152,7 +8152,7 @@ static bool js_assets_TextureCube_getGfxTextureCreateInfo(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureCube_getGfxTextureCreateInfo)
+SE_BIND_FUNC(js_assets_TextureCube_getGfxTextureCreateInfo)     // getGfxTextureCreateInfo
 
 static bool js_assets_TextureCube_getImage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8171,7 +8171,7 @@ static bool js_assets_TextureCube_getImage(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureCube_getImage)
+SE_BIND_FUNC(js_assets_TextureCube_getImage)     // getImage
 
 static bool js_assets_TextureCube_getMipmaps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8190,7 +8190,7 @@ static bool js_assets_TextureCube_getMipmaps(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureCube_getMipmaps)
+SE_BIND_FUNC(js_assets_TextureCube_getMipmaps)     // getMipmaps
 
 static bool js_assets_TextureCube_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8205,7 +8205,7 @@ static bool js_assets_TextureCube_initialize(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureCube_initialize)
+SE_BIND_FUNC(js_assets_TextureCube_initialize)     // initialize
 
 static bool js_assets_TextureCube_releaseTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8220,7 +8220,7 @@ static bool js_assets_TextureCube_releaseTexture(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureCube_releaseTexture)
+SE_BIND_FUNC(js_assets_TextureCube_releaseTexture)     // releaseTexture
 
 static bool js_assets_TextureCube_reset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8239,7 +8239,7 @@ static bool js_assets_TextureCube_reset(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureCube_reset)
+SE_BIND_FUNC(js_assets_TextureCube_reset)     // reset
 
 static bool js_assets_TextureCube_setImage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8258,7 +8258,7 @@ static bool js_assets_TextureCube_setImage(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureCube_setImage)
+SE_BIND_FUNC(js_assets_TextureCube_setImage)     // setImage
 
 static bool js_assets_TextureCube_setMipmaps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8277,7 +8277,7 @@ static bool js_assets_TextureCube_setMipmaps(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_TextureCube_setMipmaps)
+SE_BIND_FUNC(js_assets_TextureCube_setMipmaps)     // setMipmaps
 
 static bool js_assets_TextureCube_fromTexture2DArray_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9967,7 +9967,7 @@ static bool js_assets_Mesh_assign(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_assign)
+SE_BIND_FUNC(js_assets_Mesh_assign)     // assign
 
 static bool js_assets_Mesh_copyAttribute(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9997,7 +9997,7 @@ static bool js_assets_Mesh_copyAttribute(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 5);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_copyAttribute)
+SE_BIND_FUNC(js_assets_Mesh_copyAttribute)     // copyAttribute
 
 static bool js_assets_Mesh_copyIndices(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10021,7 +10021,7 @@ static bool js_assets_Mesh_copyIndices(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_copyIndices)
+SE_BIND_FUNC(js_assets_Mesh_copyIndices)     // copyIndices
 
 static bool js_assets_Mesh_destroyRenderingMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10036,7 +10036,7 @@ static bool js_assets_Mesh_destroyRenderingMesh(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_destroyRenderingMesh)
+SE_BIND_FUNC(js_assets_Mesh_destroyRenderingMesh)     // destroyRenderingMesh
 
 static bool js_assets_Mesh_getBoneSpaceBounds(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10058,41 +10058,26 @@ static bool js_assets_Mesh_getBoneSpaceBounds(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getBoneSpaceBounds)
+SE_BIND_PROP_GET(js_assets_Mesh_getBoneSpaceBounds) // getBoneSpaceBounds
 
 static bool js_assets_Mesh_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    CC_UNUSED bool ok = true;
     auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
-    SE_PRECONDITION2( cobj, false, "js_assets_Mesh_getData : Invalid Native Object");
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_getData : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
-    do {
-        if (argc == 0) {
-
-            cc::TypedArrayTemp<unsigned char>& result = cobj->getData();
-            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
-            SE_PRECONDITION2(ok, false, "js_assets_Mesh_getData : Error processing arguments");
-            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-            return true;
-        }
-    } while(false);
-
-    do {
-        if (argc == 0) {
-
-            const cc::TypedArrayTemp<unsigned char>& result = cobj->getData();
-            ok &= nativevalue_to_se(result, s.rval(), s.thisObject() /*ctx*/);
-            SE_PRECONDITION2(ok, false, "js_assets_Mesh_getData : Error processing arguments");
-            SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-            return true;
-        }
-    } while(false);
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        const cc::TypedArrayTemp<unsigned char>& result = cobj->getData();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_getData : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getData)
+SE_BIND_PROP_GET(js_assets_Mesh_getData) // getData
 
 static bool js_assets_Mesh_getHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10111,7 +10096,7 @@ static bool js_assets_Mesh_getHash(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getHash)
+SE_BIND_PROP_GET(js_assets_Mesh_getHash) // getHash
 
 static bool js_assets_Mesh_getJointBufferIndices(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10130,7 +10115,7 @@ static bool js_assets_Mesh_getJointBufferIndices(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getJointBufferIndices)
+SE_BIND_PROP_GET(js_assets_Mesh_getJointBufferIndices) // getJointBufferIndices
 
 static bool js_assets_Mesh_getMaxPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10149,7 +10134,7 @@ static bool js_assets_Mesh_getMaxPosition(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getMaxPosition)
+SE_BIND_PROP_GET(js_assets_Mesh_getMaxPosition) // getMaxPosition
 
 static bool js_assets_Mesh_getMinPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10168,7 +10153,7 @@ static bool js_assets_Mesh_getMinPosition(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getMinPosition)
+SE_BIND_PROP_GET(js_assets_Mesh_getMinPosition) // getMinPosition
 
 static bool js_assets_Mesh_getRenderingSubMeshes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10187,7 +10172,7 @@ static bool js_assets_Mesh_getRenderingSubMeshes(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getRenderingSubMeshes)
+SE_BIND_PROP_GET(js_assets_Mesh_getRenderingSubMeshes) // getRenderingSubMeshes
 
 static bool js_assets_Mesh_getStruct(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10206,7 +10191,7 @@ static bool js_assets_Mesh_getStruct(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getStruct)
+SE_BIND_PROP_GET(js_assets_Mesh_getStruct) // getStruct
 
 static bool js_assets_Mesh_getSubMeshCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10225,7 +10210,7 @@ static bool js_assets_Mesh_getSubMeshCount(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_getSubMeshCount)
+SE_BIND_PROP_GET(js_assets_Mesh_getSubMeshCount) // getSubMeshCount
 
 static bool js_assets_Mesh_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10240,7 +10225,7 @@ static bool js_assets_Mesh_initialize(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_initialize)
+SE_BIND_FUNC(js_assets_Mesh_initialize)     // initialize
 
 static bool js_assets_Mesh_merge(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10288,7 +10273,7 @@ static bool js_assets_Mesh_merge(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_merge)
+SE_BIND_FUNC(js_assets_Mesh_merge)     // merge
 
 static bool js_assets_Mesh_readAttribute(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10312,7 +10297,7 @@ static bool js_assets_Mesh_readAttribute(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_readAttribute)
+SE_BIND_FUNC(js_assets_Mesh_readAttribute)     // readAttribute
 
 static bool js_assets_Mesh_readIndices(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10334,7 +10319,7 @@ static bool js_assets_Mesh_readIndices(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_readIndices)
+SE_BIND_FUNC(js_assets_Mesh_readIndices)     // readIndices
 
 static bool js_assets_Mesh_reset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10353,7 +10338,45 @@ static bool js_assets_Mesh_reset(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_reset)
+SE_BIND_FUNC(js_assets_Mesh_reset)     // reset
+
+static bool js_assets_Mesh_setHash(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_setHash : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<uint64_t, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_setHash : Error processing arguments");
+        cobj->setHash(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_PROP_SET(js_assets_Mesh_setHash) // setHash
+
+static bool js_assets_Mesh_setStruct(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::Mesh>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Mesh_setStruct : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<cc::Mesh::IStruct, true> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_Mesh_setStruct : Error processing arguments");
+        cobj->setStruct(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_PROP_SET(js_assets_Mesh_setStruct) // setStruct
 
 static bool js_assets_Mesh_validateMergingMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10375,7 +10398,7 @@ static bool js_assets_Mesh_validateMergingMesh(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Mesh_validateMergingMesh)
+SE_BIND_FUNC(js_assets_Mesh_validateMergingMesh)     // validateMergingMesh
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_Mesh_finalize)
 
@@ -10407,19 +10430,19 @@ bool js_register_assets_Mesh(se::Object* obj) // NOLINT(readability-identifier-n
 {
     auto* cls = se::Class::create("Mesh", obj, __jsb_cc_Asset_proto, _SE(js_assets_Mesh_constructor));
 
+    cls->defineProperty("_struct", _SE(js_assets_Mesh_getStruct), _SE(js_assets_Mesh_setStruct));
+    cls->defineProperty("_hash", _SE(js_assets_Mesh_getHash), _SE(js_assets_Mesh_setHash));
+    cls->defineProperty("data", _SE(js_assets_Mesh_getData), nullptr);
+    cls->defineProperty("boneSpaceBounds", _SE(js_assets_Mesh_getBoneSpaceBounds), nullptr);
+    cls->defineProperty("jointBufferIndices", _SE(js_assets_Mesh_getJointBufferIndices), nullptr);
+    cls->defineProperty("maxPosition", _SE(js_assets_Mesh_getMaxPosition), nullptr);
+    cls->defineProperty("minPosition", _SE(js_assets_Mesh_getMinPosition), nullptr);
+    cls->defineProperty("renderingSubMeshes", _SE(js_assets_Mesh_getRenderingSubMeshes), nullptr);
+    cls->defineProperty("subMeshCount", _SE(js_assets_Mesh_getSubMeshCount), nullptr);
     cls->defineFunction("assign", _SE(js_assets_Mesh_assign));
     cls->defineFunction("copyAttribute", _SE(js_assets_Mesh_copyAttribute));
     cls->defineFunction("copyIndices", _SE(js_assets_Mesh_copyIndices));
     cls->defineFunction("destroyRenderingMesh", _SE(js_assets_Mesh_destroyRenderingMesh));
-    cls->defineFunction("getBoneSpaceBounds", _SE(js_assets_Mesh_getBoneSpaceBounds));
-    cls->defineFunction("getData", _SE(js_assets_Mesh_getData));
-    cls->defineFunction("getHash", _SE(js_assets_Mesh_getHash));
-    cls->defineFunction("getJointBufferIndices", _SE(js_assets_Mesh_getJointBufferIndices));
-    cls->defineFunction("getMaxPosition", _SE(js_assets_Mesh_getMaxPosition));
-    cls->defineFunction("getMinPosition", _SE(js_assets_Mesh_getMinPosition));
-    cls->defineFunction("getRenderingSubMeshes", _SE(js_assets_Mesh_getRenderingSubMeshes));
-    cls->defineFunction("getStruct", _SE(js_assets_Mesh_getStruct));
-    cls->defineFunction("getSubMeshCount", _SE(js_assets_Mesh_getSubMeshCount));
     cls->defineFunction("initialize", _SE(js_assets_Mesh_initialize));
     cls->defineFunction("merge", _SE(js_assets_Mesh_merge));
     cls->defineFunction("readAttribute", _SE(js_assets_Mesh_readAttribute));
@@ -10456,7 +10479,7 @@ static bool js_assets_MorphRendering_createInstance(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_MorphRendering_createInstance)
+SE_BIND_FUNC(js_assets_MorphRendering_createInstance)     // createInstance
 
 
 static bool js_cc_MorphRendering_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -10509,7 +10532,7 @@ static bool js_assets_MorphRenderingInstance_adaptPipelineState(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_MorphRenderingInstance_adaptPipelineState)
+SE_BIND_FUNC(js_assets_MorphRenderingInstance_adaptPipelineState)     // adaptPipelineState
 
 static bool js_assets_MorphRenderingInstance_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10524,7 +10547,7 @@ static bool js_assets_MorphRenderingInstance_destroy(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_MorphRenderingInstance_destroy)
+SE_BIND_FUNC(js_assets_MorphRenderingInstance_destroy)     // destroy
 
 static bool js_assets_MorphRenderingInstance_requiredPatches(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10546,7 +10569,7 @@ static bool js_assets_MorphRenderingInstance_requiredPatches(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_MorphRenderingInstance_requiredPatches)
+SE_BIND_FUNC(js_assets_MorphRenderingInstance_requiredPatches)     // requiredPatches
 
 static bool js_assets_MorphRenderingInstance_setWeights(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10567,7 +10590,7 @@ static bool js_assets_MorphRenderingInstance_setWeights(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_assets_MorphRenderingInstance_setWeights)
+SE_BIND_FUNC(js_assets_MorphRenderingInstance_setWeights)     // setWeights
 
 
 static bool js_cc_MorphRenderingInstance_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -10671,7 +10694,7 @@ static bool js_assets_Skeleton_getBindposes(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Skeleton_getBindposes)
+SE_BIND_FUNC(js_assets_Skeleton_getBindposes)     // getBindposes
 
 static bool js_assets_Skeleton_getHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10690,7 +10713,7 @@ static bool js_assets_Skeleton_getHash(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Skeleton_getHash)
+SE_BIND_FUNC(js_assets_Skeleton_getHash)     // getHash
 
 static bool js_assets_Skeleton_getInverseBindposes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10709,7 +10732,7 @@ static bool js_assets_Skeleton_getInverseBindposes(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Skeleton_getInverseBindposes)
+SE_BIND_FUNC(js_assets_Skeleton_getInverseBindposes)     // getInverseBindposes
 
 static bool js_assets_Skeleton_getJoints(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10728,7 +10751,7 @@ static bool js_assets_Skeleton_getJoints(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_assets_Skeleton_getJoints)
+SE_BIND_FUNC(js_assets_Skeleton_getJoints)     // getJoints
 
 static bool js_assets_Skeleton_setBindposes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10747,7 +10770,7 @@ static bool js_assets_Skeleton_setBindposes(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Skeleton_setBindposes)
+SE_BIND_FUNC(js_assets_Skeleton_setBindposes)     // setBindposes
 
 static bool js_assets_Skeleton_setJoints(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10766,7 +10789,7 @@ static bool js_assets_Skeleton_setJoints(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_assets_Skeleton_setJoints)
+SE_BIND_FUNC(js_assets_Skeleton_setJoints)     // setJoints
 
 
 static bool js_cc_Skeleton_finalize(se::State& s) // NOLINT(readability-identifier-naming)

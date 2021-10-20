@@ -193,6 +193,10 @@ public:
         return _struct;
     }
 
+    inline void setStruct(const IStruct &input) {
+        _struct = input;
+    }
+
     /**
      * @en The actual data of the mesh
      * @zh 此网格的数据。
@@ -210,6 +214,13 @@ public:
      * @zh 此网格的哈希值。
      */
     uint64_t getHash();
+
+    
+    /**
+     * @en Set the hash of the mesh
+     * @zh 设置此网格的哈希值。
+     */
+    void setHash(uint64_t hash) { _hash = hash;}
 
     using JointBufferIndicesType = std::vector<index_t>;
     /**

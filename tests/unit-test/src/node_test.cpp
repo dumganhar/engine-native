@@ -24,6 +24,7 @@
  ****************************************************************************/
 #include "core/Director.h"
 #include "core/Root.h"
+#include "core/platform/event-manager/Events.h"
 #include "core/scene-graph/SceneGraphModuleHeader.h"
 #include "gtest/gtest.h"
 #include "renderer/GFXDeviceManager.h"
@@ -31,6 +32,7 @@
 #include "utils.h"
 
 using namespace cc;
+using namespace cc::event;
 using namespace cc::gfx;
 
 TEST(NodeTest, inverseTransformPoint) {
@@ -85,3 +87,31 @@ TEST(NodeTest, inverseTransformPoint) {
 //     expect(cb).toBeCalledTimes(3);
 //     expect(cb1).toBeCalledTimes(2);
 // });
+
+TEST(NodeTest, remove_and_add_again_during_invoking) {
+    initCocos(100, 100);
+    auto *node = new Node();
+
+    class MyTarget : public CCObject {
+    public:
+        MyTarget(Node *node) : _node{node} {}
+        void onEvent(cc::event::Event *event) {
+            _node->off("eve", &MyTarget::onEvent, this);
+            _node->on("eve", &MyTarget::onEvent, this);
+        }
+
+    private:
+        Node *_node;
+    };
+
+    static_assert(std::is_member_function_pointer_v<decltype(&MyTarget::onEvent)>, "wrong");
+
+    MyTarget target{node};
+
+    node->on("eve", &MyTarget::onEvent, &target);
+    EventCustom event{"eve"};
+    node->dispatchEvent(&event);
+
+    EXPECT_TRUE(node->hasEventListener("eve", &MyTarget::onEvent, &target));
+    destroyCocos();
+}

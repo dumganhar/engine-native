@@ -183,10 +183,12 @@ public:
     void on(const std::string &key, std::function<void(Args...)> &&callback, bool once = false);
 
     template <typename Target, typename LambdaType>
-    void on(const std::string &key, LambdaType &&callback, Target *target, bool once = false);
+    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    on(const std::string &key, LambdaType &&callback, Target *target, bool once = false);
 
     template <typename LambdaType>
-    void on(const std::string &key, LambdaType &&callback, bool once = false);
+    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    on(const std::string &key, LambdaType &&callback, bool once = false);
 
     //
     template <typename Target, typename... Args>
@@ -196,10 +198,12 @@ public:
     void on(const std::string &key, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     template <typename Target, typename LambdaType>
-    void on(const std::string &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
+    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    on(const std::string &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     template <typename LambdaType>
-    void on(const std::string &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
+    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    on(const std::string &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     /**
      * @zh 检查指定事件是否已注册回调。
@@ -218,6 +222,7 @@ public:
      * @en Removes all callbacks registered in a certain event type or all callbacks registered with a certain target
      * @param key - The event type or target with which the listeners will be removed
      */
+    void offAll(const std::string &key, void *target);
     void offAll(const std::string &key);
     void offAll(void *target);
     void offAll();
@@ -231,7 +236,6 @@ public:
      */
     void off(const std::string &key, CallbackInfoBase::ID cbID, void *target);
     void off(const std::string &key, CallbackInfoBase::ID cbID);
-    void off(const std::string &key, void *target);
     void off(CallbackInfoBase::ID cbID);
     template <typename Target, typename... Args>
     void off(const std::string &key, void (Target::*memberFn)(Args...), Target *target);
@@ -248,7 +252,8 @@ public:
 public:
     template <typename T>
     struct FunctionTraits
-    : public FunctionTraits<decltype(&T::operator())> {};
+    : public FunctionTraits<decltype(&T::operator())> {
+    };
 
     template <typename ClassType, typename ReturnType, typename... Args>
     struct FunctionTraits<ReturnType (ClassType::*)(Args...) const> {
@@ -299,12 +304,14 @@ void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &
 }
 
 template <typename Target, typename LambdaType>
-void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once) {
+std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+CallbacksInvoker::on(const std::string &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once) {
     on(key, toFunction(std::forward<LambdaType>(callback)), target, outCallbackID, once);
 }
 
 template <typename LambdaType>
-void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once) {
+std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+CallbacksInvoker::on(const std::string &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once) {
     on(key, toFunction(std::forward<LambdaType>(callback)), outCallbackID, once);
 }
 
@@ -321,13 +328,15 @@ void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &
 }
 
 template <typename Target, typename LambdaType>
-void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, Target *target, bool once) {
+std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+CallbacksInvoker::on(const std::string &key, LambdaType &&callback, Target *target, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on(key, toFunction(std::forward<LambdaType>(callback)), target, unusedID, once);
 }
 
 template <typename LambdaType>
-void CallbacksInvoker::on(const std::string &key, LambdaType &&callback, bool once) {
+std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+CallbacksInvoker::on(const std::string &key, LambdaType &&callback, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on(key, toFunction(std::forward<LambdaType>(callback)), unusedID, once);
 }

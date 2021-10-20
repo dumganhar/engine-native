@@ -24,3 +24,11 @@
 ****************************************************************************/
 
 #include "core/assets/SceneAsset.h"
+
+namespace cc {
+
+void SceneAsset::initDefault(const std::optional<std::string> &uuid) {
+    //TODO:
+}
+
+} // namespace cc

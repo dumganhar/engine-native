@@ -33,7 +33,7 @@ class Scene;
 
 class SceneAsset final : public Asset {
 public:
-    explicit SceneAsset()  = default;
+    SceneAsset()           = default;
     ~SceneAsset() override = default;
 
     void initDefault(const std::optional<std::string> &uuid) override;

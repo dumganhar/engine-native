@@ -200,7 +200,7 @@ public:
      * @zh
      * 临时窗口（用于数据传输）
      */
-    void setTempWindow(scene::RenderWindow *window);
+    void setTempWindow(scene::RenderWindow *window) { _tempWindow = window; }
 
     inline scene::RenderWindow *getTempWindow() const { return _tempWindow; }
 
@@ -257,7 +257,7 @@ public:
      * @zh
      * 每秒固定帧率
      */
-    void setFixedFPS(uint32_t fps);
+    void setFixedFPS(uint32_t fps) { _fixedFPS = fps; }
 
     inline uint32_t getFixedFPS() const { return _fixedFPS; }
 

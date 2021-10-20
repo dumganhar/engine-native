@@ -73,19 +73,6 @@ public:
 
     static void    setScene(Node *);
     static index_t getIdxOfChild(const std::vector<Node *> &, Node *);
-    // TODO(Lenovo):
-
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static Component *findComponent(Node *, const T &);
-
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static Component *findComponents(Node *, const T &, const std::vector<Component *> &);
-
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static Component *findChildComponent(const std::vector<Node *> &, const T &);
-
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    static std::vector<Component *> findChildComponents(const std::vector<Node *> &, const T &, std::vector<Component *>);
 
     static bool isStatic; //cjh TODO: add getter / setter
 
@@ -225,51 +212,6 @@ public:
     }
     inline bool isActive() const { return _active; }
     inline bool isActiveInHierarchy() const { return _activeInHierarchy; }
-
-    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of_v<Component, T>, T>>
-    T *addComponent() {
-        T *comp = new T();
-        return static_cast<T *>(addComponent(comp));
-    }
-
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    void removeComponent() {
-        for (auto iter = _components.begin(); iter != _components.end(); ++iter) {
-            if (dynamic_cast<T *>(*iter) != nullptr) {
-                _components.erase(iter);
-            }
-        }
-    }
-
-    Component *addComponent(Component *comp);
-    void       removeComponent(Component *comp);
-
-    template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<Component, T>::value>>
-    Component *getComponent() const {
-        for (auto iter = _components.begin(); iter != _components.end(); ++iter) {
-            if (dynamic_cast<T *>(*iter) != nullptr) {
-                return *iter;
-            }
-        }
-        return nullptr;
-    }
-
-    // TODO(Lenovo):
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    inline std::vector<Component *> getComponents(const T & /*unused*/) const {};
-    inline std::vector<Component *> getComponents(const std::string & /*unused*/) const {
-        // TODO: validate return value
-        CC_ASSERT(false);
-        return _components;
-    };
-    Component *getComponentInChildren(const std::string &name) const;
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    Component *              getComponentInChildren(const T &comp) const {}
-    std::vector<Component *> getComponentsInChildren(const std::string &name) const;
-    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
-    std::vector<Component *> getComponentsInChildren(const T &comp) const {}
-
-    inline std::vector<Component *> getComponents() const { return _components; }
 
     virtual void                      onPostActivated(bool active) {}
     inline const std::vector<Node *> &getChildren() { return _children; }
@@ -498,6 +440,94 @@ public:
 
     NodeUiProperties *getUIProps() const { return _uiProps; }
 
+    // ------------------  Component code start -----------------------------
+    // TODO(Lenovo):
+
+    template <typename T, typename = std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *findComponent(Node *node) {
+        //cjh TODO:
+        CC_ASSERT(false);
+        return nullptr;
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *findComponents(Node *node, const std::vector<Component *> &components) {
+        //cjh TODO:
+        CC_ASSERT(false);
+        return nullptr;
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static Component *findChildComponent(const std::vector<Node *> &children) {
+        //cjh TODO:
+        CC_ASSERT(false);
+        return nullptr;
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_base_of<Component, T>::value>>
+    static void findChildComponents(const std::vector<Node *> &children, std::vector<Component *> &components) {
+        //cjh TODO:
+        CC_ASSERT(false);
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_base_of_v<Component, T>, T>>
+    T *addComponent() {
+        T *comp = new T();
+        return static_cast<T *>(addComponent(comp));
+    }
+
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    void removeComponent() {
+        for (auto iter = _components.begin(); iter != _components.end(); ++iter) {
+            if (dynamic_cast<T *>(*iter) != nullptr) {
+                _components.erase(iter);
+            }
+        }
+    }
+
+    Component *addComponent(Component *comp);
+    void       removeComponent(Component *comp);
+
+    template <typename T, typename = std::enable_if_t<std::is_base_of<Component, T>::value>>
+    Component *getComponent() const {
+        for (auto iter = _components.begin(); iter != _components.end(); ++iter) {
+            if (dynamic_cast<T *>(*iter) != nullptr) {
+                return *iter;
+            }
+        }
+        return nullptr;
+    }
+
+    // TODO(Lenovo):
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    std::vector<Component *> getComponents() const {
+        //cjh TODO:
+        CC_ASSERT(false);
+        return {};
+    };
+
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    Component *getComponentInChildren(const T &comp) const {
+        //cjh TODO:
+        CC_ASSERT(false);
+        return nullptr;
+    }
+
+    template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
+    std::vector<Component *> getComponentsInChildren() const {
+        //cjh TODO:
+        CC_ASSERT(false);
+        return {};
+    }
+
+    inline std::vector<Component *> getComponents() const { return _components; }
+
+    void                     checkMultipleComp(Component *comp) {}
+    std::vector<Component *> _components;
+
+    friend void componentCorrupted(Node *node, Component *comp, uint32_t index);
+    // ------------------  Component code end -----------------------------
+
 protected:
     bool onPreDestroy() override;
 
@@ -518,11 +548,9 @@ protected:
 
     bool onPreDestroyBase();
     void onSiblingIndexChanged(uint siblingIndex) {}
-    void checkMultipleComp(Component *comp) {}
 
-    std::vector<Node *>      _children;
-    std::vector<Component *> _components;
-    Node *                   _parent{nullptr};
+    std::vector<Node *> _children;
+    Node *              _parent{nullptr};
 
     bool _persistNode{false};
 
@@ -560,7 +588,6 @@ protected:
     bool              _eulerDirty{false};
     NodeUiProperties *_uiProps{nullptr};
 
-    friend void componentCorrupted(Node *node, Component *comp, uint32_t index);
     friend class NodeActivator;
     friend class Scene;
 

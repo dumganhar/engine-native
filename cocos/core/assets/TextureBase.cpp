@@ -164,4 +164,8 @@ gfx::Format TextureBase::getGFXPixelFormat(PixelFormat format) const {
     return static_cast<gfx::Format>(format);
 }
 
+bool TextureBase::isCompressed() const {
+    return (_format >= PixelFormat::RGB_ETC1 && _format <= PixelFormat::RGBA_ASTC_12x12) || (_format >= PixelFormat::RGB_A_PVRTC_2BPPV1 && _format <= PixelFormat::RGBA_ETC1);
+}
+
 } // namespace cc

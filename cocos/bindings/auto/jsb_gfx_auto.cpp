@@ -12403,7 +12403,7 @@ static bool js_gfx_RasterizerState_reset(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_RasterizerState_reset)
+SE_BIND_FUNC(js_gfx_RasterizerState_reset)     // reset
 
 static bool js_gfx_RasterizerState_get_isDiscard(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12935,7 +12935,7 @@ static bool js_gfx_DepthStencilState_reset(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DepthStencilState_reset)
+SE_BIND_FUNC(js_gfx_DepthStencilState_reset)     // reset
 
 static bool js_gfx_DepthStencilState_get_depthTest(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14088,7 +14088,7 @@ static bool js_gfx_BlendState_destroy(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_BlendState_destroy)
+SE_BIND_FUNC(js_gfx_BlendState_destroy)     // destroy
 
 static bool js_gfx_BlendState_reset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14103,7 +14103,7 @@ static bool js_gfx_BlendState_reset(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_BlendState_reset)
+SE_BIND_FUNC(js_gfx_BlendState_reset)     // reset
 
 static bool js_gfx_BlendState_setTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14124,7 +14124,7 @@ static bool js_gfx_BlendState_setTarget(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_gfx_BlendState_setTarget)
+SE_BIND_FUNC(js_gfx_BlendState_setTarget)     // setTarget
 
 static bool js_gfx_BlendState_get_isA2C(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15885,7 +15885,7 @@ static bool js_gfx_GFXObject_getObjectID(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_GFXObject_getObjectID)
+SE_BIND_PROP_GET(js_gfx_GFXObject_getObjectID) // getObjectID
 
 static bool js_gfx_GFXObject_getObjectType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15904,7 +15904,7 @@ static bool js_gfx_GFXObject_getObjectType(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_GFXObject_getObjectType)
+SE_BIND_PROP_GET(js_gfx_GFXObject_getObjectType) // getObjectType
 
 static bool js_gfx_GFXObject_getTypedID(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15923,7 +15923,7 @@ static bool js_gfx_GFXObject_getTypedID(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_GFXObject_getTypedID)
+SE_BIND_PROP_GET(js_gfx_GFXObject_getTypedID) // getTypedID
 
 static bool js_gfx_GFXObject_resizeObjectID(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15938,7 +15938,7 @@ static bool js_gfx_GFXObject_resizeObjectID(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_GFXObject_resizeObjectID)
+SE_BIND_FUNC(js_gfx_GFXObject_resizeObjectID)     // resizeObjectID
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_GFXObject_finalize)
 
@@ -16005,7 +16005,7 @@ static bool js_gfx_Buffer_destroy(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Buffer_destroy)
+SE_BIND_FUNC(js_gfx_Buffer_destroy)     // destroy
 
 static bool js_gfx_Buffer_getCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16024,7 +16024,7 @@ static bool js_gfx_Buffer_getCount(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Buffer_getCount)
+SE_BIND_PROP_GET(js_gfx_Buffer_getCount) // getCount
 
 static bool js_gfx_Buffer_getFlags(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16043,7 +16043,7 @@ static bool js_gfx_Buffer_getFlags(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Buffer_getFlags)
+SE_BIND_PROP_GET(js_gfx_Buffer_getFlags) // getFlags
 
 static bool js_gfx_Buffer_getMemUsage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16062,7 +16062,7 @@ static bool js_gfx_Buffer_getMemUsage(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Buffer_getMemUsage)
+SE_BIND_PROP_GET(js_gfx_Buffer_getMemUsage) // getMemUsage
 
 static bool js_gfx_Buffer_getSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16081,7 +16081,7 @@ static bool js_gfx_Buffer_getSize(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Buffer_getSize)
+SE_BIND_PROP_GET(js_gfx_Buffer_getSize) // getSize
 
 static bool js_gfx_Buffer_getStride(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16100,7 +16100,7 @@ static bool js_gfx_Buffer_getStride(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Buffer_getStride)
+SE_BIND_PROP_GET(js_gfx_Buffer_getStride) // getStride
 
 static bool js_gfx_Buffer_getUsage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16119,7 +16119,7 @@ static bool js_gfx_Buffer_getUsage(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Buffer_getUsage)
+SE_BIND_PROP_GET(js_gfx_Buffer_getUsage) // getUsage
 
 static bool js_gfx_Buffer_isBufferView(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16138,7 +16138,7 @@ static bool js_gfx_Buffer_isBufferView(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Buffer_isBufferView)
+SE_BIND_FUNC(js_gfx_Buffer_isBufferView)     // isBufferView
 
 static bool js_gfx_Buffer_resize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16157,7 +16157,7 @@ static bool js_gfx_Buffer_resize(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Buffer_resize)
+SE_BIND_FUNC(js_gfx_Buffer_resize)     // resize
 
 static bool js_gfx_Buffer_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16244,7 +16244,7 @@ static bool js_gfx_InputAssembler_destroy(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_InputAssembler_destroy)
+SE_BIND_FUNC(js_gfx_InputAssembler_destroy)     // destroy
 
 static bool js_gfx_InputAssembler_getAttributes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16263,7 +16263,7 @@ static bool js_gfx_InputAssembler_getAttributes(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getAttributes)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getAttributes) // getAttributes
 
 static bool js_gfx_InputAssembler_getAttributesHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16282,7 +16282,7 @@ static bool js_gfx_InputAssembler_getAttributesHash(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getAttributesHash)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getAttributesHash) // getAttributesHash
 
 static bool js_gfx_InputAssembler_getFirstIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16301,7 +16301,7 @@ static bool js_gfx_InputAssembler_getFirstIndex(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getFirstIndex)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getFirstIndex) // getFirstIndex
 
 static bool js_gfx_InputAssembler_getFirstInstance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16320,7 +16320,7 @@ static bool js_gfx_InputAssembler_getFirstInstance(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getFirstInstance)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getFirstInstance) // getFirstInstance
 
 static bool js_gfx_InputAssembler_getFirstVertex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16339,7 +16339,7 @@ static bool js_gfx_InputAssembler_getFirstVertex(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getFirstVertex)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getFirstVertex) // getFirstVertex
 
 static bool js_gfx_InputAssembler_getIndexBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16358,7 +16358,7 @@ static bool js_gfx_InputAssembler_getIndexBuffer(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getIndexBuffer)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getIndexBuffer) // getIndexBuffer
 
 static bool js_gfx_InputAssembler_getIndexCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16377,7 +16377,7 @@ static bool js_gfx_InputAssembler_getIndexCount(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getIndexCount)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getIndexCount) // getIndexCount
 
 static bool js_gfx_InputAssembler_getIndirectBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16396,7 +16396,7 @@ static bool js_gfx_InputAssembler_getIndirectBuffer(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getIndirectBuffer)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getIndirectBuffer) // getIndirectBuffer
 
 static bool js_gfx_InputAssembler_getInstanceCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16415,7 +16415,7 @@ static bool js_gfx_InputAssembler_getInstanceCount(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getInstanceCount)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getInstanceCount) // getInstanceCount
 
 static bool js_gfx_InputAssembler_getVertexBuffers(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16434,7 +16434,7 @@ static bool js_gfx_InputAssembler_getVertexBuffers(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getVertexBuffers)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getVertexBuffers) // getVertexBuffers
 
 static bool js_gfx_InputAssembler_getVertexCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16453,7 +16453,7 @@ static bool js_gfx_InputAssembler_getVertexCount(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getVertexCount)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getVertexCount) // getVertexCount
 
 static bool js_gfx_InputAssembler_getVertexOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16472,7 +16472,7 @@ static bool js_gfx_InputAssembler_getVertexOffset(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_InputAssembler_getVertexOffset)
+SE_BIND_PROP_GET(js_gfx_InputAssembler_getVertexOffset) // getVertexOffset
 
 static bool js_gfx_InputAssembler_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16491,7 +16491,7 @@ static bool js_gfx_InputAssembler_initialize(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_InputAssembler_initialize)
+SE_BIND_FUNC(js_gfx_InputAssembler_initialize)     // initialize
 
 static bool js_gfx_InputAssembler_setFirstIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16510,7 +16510,7 @@ static bool js_gfx_InputAssembler_setFirstIndex(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_PROP_SET(js_gfx_InputAssembler_setFirstIndex)
+SE_BIND_PROP_SET(js_gfx_InputAssembler_setFirstIndex) // setFirstIndex
 
 static bool js_gfx_InputAssembler_setFirstInstance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16529,7 +16529,7 @@ static bool js_gfx_InputAssembler_setFirstInstance(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_PROP_SET(js_gfx_InputAssembler_setFirstInstance)
+SE_BIND_PROP_SET(js_gfx_InputAssembler_setFirstInstance) // setFirstInstance
 
 static bool js_gfx_InputAssembler_setFirstVertex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16548,7 +16548,7 @@ static bool js_gfx_InputAssembler_setFirstVertex(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_PROP_SET(js_gfx_InputAssembler_setFirstVertex)
+SE_BIND_PROP_SET(js_gfx_InputAssembler_setFirstVertex) // setFirstVertex
 
 static bool js_gfx_InputAssembler_setIndexCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16567,7 +16567,7 @@ static bool js_gfx_InputAssembler_setIndexCount(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_PROP_SET(js_gfx_InputAssembler_setIndexCount)
+SE_BIND_PROP_SET(js_gfx_InputAssembler_setIndexCount) // setIndexCount
 
 static bool js_gfx_InputAssembler_setInstanceCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16586,7 +16586,7 @@ static bool js_gfx_InputAssembler_setInstanceCount(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_PROP_SET(js_gfx_InputAssembler_setInstanceCount)
+SE_BIND_PROP_SET(js_gfx_InputAssembler_setInstanceCount) // setInstanceCount
 
 static bool js_gfx_InputAssembler_setVertexCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16605,7 +16605,7 @@ static bool js_gfx_InputAssembler_setVertexCount(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_PROP_SET(js_gfx_InputAssembler_setVertexCount)
+SE_BIND_PROP_SET(js_gfx_InputAssembler_setVertexCount) // setVertexCount
 
 static bool js_gfx_InputAssembler_setVertexOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16624,7 +16624,7 @@ static bool js_gfx_InputAssembler_setVertexOffset(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_PROP_SET(js_gfx_InputAssembler_setVertexOffset)
+SE_BIND_PROP_SET(js_gfx_InputAssembler_setVertexOffset) // setVertexOffset
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_InputAssembler_finalize)
 
@@ -16742,7 +16742,7 @@ static bool js_gfx_CommandBuffer_begin(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_begin)
+SE_BIND_FUNC(js_gfx_CommandBuffer_begin)     // begin
 
 static bool js_gfx_CommandBuffer_beginRenderPassForJS(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16809,7 +16809,7 @@ static bool js_gfx_CommandBuffer_beginRenderPassForJS(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_beginRenderPassForJS)
+SE_BIND_FUNC(js_gfx_CommandBuffer_beginRenderPassForJS)     // beginRenderPassForJS
 
 static bool js_gfx_CommandBuffer_bindDescriptorSetForJS(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16852,7 +16852,7 @@ static bool js_gfx_CommandBuffer_bindDescriptorSetForJS(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_bindDescriptorSetForJS)
+SE_BIND_FUNC(js_gfx_CommandBuffer_bindDescriptorSetForJS)     // bindDescriptorSetForJS
 
 static bool js_gfx_CommandBuffer_bindInputAssembler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16871,7 +16871,7 @@ static bool js_gfx_CommandBuffer_bindInputAssembler(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_bindInputAssembler)
+SE_BIND_FUNC(js_gfx_CommandBuffer_bindInputAssembler)     // bindInputAssembler
 
 static bool js_gfx_CommandBuffer_bindPipelineState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16890,7 +16890,7 @@ static bool js_gfx_CommandBuffer_bindPipelineState(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_bindPipelineState)
+SE_BIND_FUNC(js_gfx_CommandBuffer_bindPipelineState)     // bindPipelineState
 
 static bool js_gfx_CommandBuffer_blitTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16945,7 +16945,7 @@ static bool js_gfx_CommandBuffer_blitTexture(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_blitTexture)
+SE_BIND_FUNC(js_gfx_CommandBuffer_blitTexture)     // blitTexture
 
 static bool js_gfx_CommandBuffer_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16960,7 +16960,7 @@ static bool js_gfx_CommandBuffer_destroy(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_destroy)
+SE_BIND_FUNC(js_gfx_CommandBuffer_destroy)     // destroy
 
 static bool js_gfx_CommandBuffer_dispatch(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16979,7 +16979,7 @@ static bool js_gfx_CommandBuffer_dispatch(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_dispatch)
+SE_BIND_FUNC(js_gfx_CommandBuffer_dispatch)     // dispatch
 
 static bool js_gfx_CommandBuffer_draw(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17013,7 +17013,7 @@ static bool js_gfx_CommandBuffer_draw(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_draw)
+SE_BIND_FUNC(js_gfx_CommandBuffer_draw)     // draw
 
 static bool js_gfx_CommandBuffer_end(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17028,7 +17028,7 @@ static bool js_gfx_CommandBuffer_end(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_end)
+SE_BIND_FUNC(js_gfx_CommandBuffer_end)     // end
 
 static bool js_gfx_CommandBuffer_endRenderPass(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17043,7 +17043,7 @@ static bool js_gfx_CommandBuffer_endRenderPass(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_endRenderPass)
+SE_BIND_FUNC(js_gfx_CommandBuffer_endRenderPass)     // endRenderPass
 
 static bool js_gfx_CommandBuffer_getNumDrawCalls(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17062,7 +17062,7 @@ static bool js_gfx_CommandBuffer_getNumDrawCalls(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_getNumDrawCalls)
+SE_BIND_FUNC(js_gfx_CommandBuffer_getNumDrawCalls)     // getNumDrawCalls
 
 static bool js_gfx_CommandBuffer_getNumInstances(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17081,7 +17081,7 @@ static bool js_gfx_CommandBuffer_getNumInstances(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_getNumInstances)
+SE_BIND_FUNC(js_gfx_CommandBuffer_getNumInstances)     // getNumInstances
 
 static bool js_gfx_CommandBuffer_getNumTris(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17100,7 +17100,7 @@ static bool js_gfx_CommandBuffer_getNumTris(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_getNumTris)
+SE_BIND_FUNC(js_gfx_CommandBuffer_getNumTris)     // getNumTris
 
 static bool js_gfx_CommandBuffer_getQueue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17119,7 +17119,7 @@ static bool js_gfx_CommandBuffer_getQueue(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_getQueue)
+SE_BIND_FUNC(js_gfx_CommandBuffer_getQueue)     // getQueue
 
 static bool js_gfx_CommandBuffer_getType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17138,7 +17138,7 @@ static bool js_gfx_CommandBuffer_getType(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_getType)
+SE_BIND_FUNC(js_gfx_CommandBuffer_getType)     // getType
 
 static bool js_gfx_CommandBuffer_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17157,7 +17157,7 @@ static bool js_gfx_CommandBuffer_initialize(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_initialize)
+SE_BIND_FUNC(js_gfx_CommandBuffer_initialize)     // initialize
 
 static bool js_gfx_CommandBuffer_nextSubpass(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17172,7 +17172,7 @@ static bool js_gfx_CommandBuffer_nextSubpass(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_nextSubpass)
+SE_BIND_FUNC(js_gfx_CommandBuffer_nextSubpass)     // nextSubpass
 
 static bool js_gfx_CommandBuffer_pipelineBarrier(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17232,7 +17232,7 @@ static bool js_gfx_CommandBuffer_pipelineBarrier(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_pipelineBarrier)
+SE_BIND_FUNC(js_gfx_CommandBuffer_pipelineBarrier)     // pipelineBarrier
 
 static bool js_gfx_CommandBuffer_setBlendConstants(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17251,7 +17251,7 @@ static bool js_gfx_CommandBuffer_setBlendConstants(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_setBlendConstants)
+SE_BIND_FUNC(js_gfx_CommandBuffer_setBlendConstants)     // setBlendConstants
 
 static bool js_gfx_CommandBuffer_setDepthBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17274,7 +17274,7 @@ static bool js_gfx_CommandBuffer_setDepthBias(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_setDepthBias)
+SE_BIND_FUNC(js_gfx_CommandBuffer_setDepthBias)     // setDepthBias
 
 static bool js_gfx_CommandBuffer_setDepthBound(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17295,7 +17295,7 @@ static bool js_gfx_CommandBuffer_setDepthBound(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_setDepthBound)
+SE_BIND_FUNC(js_gfx_CommandBuffer_setDepthBound)     // setDepthBound
 
 static bool js_gfx_CommandBuffer_setLineWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17314,7 +17314,7 @@ static bool js_gfx_CommandBuffer_setLineWidth(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_setLineWidth)
+SE_BIND_FUNC(js_gfx_CommandBuffer_setLineWidth)     // setLineWidth
 
 static bool js_gfx_CommandBuffer_setScissor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17333,7 +17333,7 @@ static bool js_gfx_CommandBuffer_setScissor(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_setScissor)
+SE_BIND_FUNC(js_gfx_CommandBuffer_setScissor)     // setScissor
 
 static bool js_gfx_CommandBuffer_setStencilCompareMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17356,7 +17356,7 @@ static bool js_gfx_CommandBuffer_setStencilCompareMask(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_setStencilCompareMask)
+SE_BIND_FUNC(js_gfx_CommandBuffer_setStencilCompareMask)     // setStencilCompareMask
 
 static bool js_gfx_CommandBuffer_setStencilWriteMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17377,7 +17377,7 @@ static bool js_gfx_CommandBuffer_setStencilWriteMask(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_setStencilWriteMask)
+SE_BIND_FUNC(js_gfx_CommandBuffer_setStencilWriteMask)     // setStencilWriteMask
 
 static bool js_gfx_CommandBuffer_setViewport(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17396,7 +17396,7 @@ static bool js_gfx_CommandBuffer_setViewport(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_CommandBuffer_setViewport)
+SE_BIND_FUNC(js_gfx_CommandBuffer_setViewport)     // setViewport
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_CommandBuffer_finalize)
 
@@ -17480,7 +17480,7 @@ static bool js_gfx_Context_destroy(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Context_destroy)
+SE_BIND_FUNC(js_gfx_Context_destroy)     // destroy
 
 static bool js_gfx_Context_getColorFormat(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17499,7 +17499,7 @@ static bool js_gfx_Context_getColorFormat(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Context_getColorFormat)
+SE_BIND_PROP_GET(js_gfx_Context_getColorFormat) // getColorFormat
 
 static bool js_gfx_Context_getDepthStencilFormat(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17518,7 +17518,7 @@ static bool js_gfx_Context_getDepthStencilFormat(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Context_getDepthStencilFormat)
+SE_BIND_PROP_GET(js_gfx_Context_getDepthStencilFormat) // getDepthStencilFormat
 
 static bool js_gfx_Context_getSharedContext(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17537,7 +17537,7 @@ static bool js_gfx_Context_getSharedContext(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Context_getSharedContext)
+SE_BIND_PROP_GET(js_gfx_Context_getSharedContext) // getSharedContext
 
 static bool js_gfx_Context_getVsyncMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17556,7 +17556,7 @@ static bool js_gfx_Context_getVsyncMode(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Context_getVsyncMode)
+SE_BIND_PROP_GET(js_gfx_Context_getVsyncMode) // getVsyncMode
 
 static bool js_gfx_Context_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17578,7 +17578,7 @@ static bool js_gfx_Context_initialize(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Context_initialize)
+SE_BIND_FUNC(js_gfx_Context_initialize)     // initialize
 
 static bool js_gfx_Context_present(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17593,7 +17593,7 @@ static bool js_gfx_Context_present(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Context_present)
+SE_BIND_FUNC(js_gfx_Context_present)     // present
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_Context_finalize)
 
@@ -17685,7 +17685,7 @@ static bool js_gfx_DescriptorSet_bindBuffer(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_bindBuffer)
+SE_BIND_FUNC(js_gfx_DescriptorSet_bindBuffer)     // bindBuffer
 
 static bool js_gfx_DescriptorSet_bindBufferJSB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17711,7 +17711,7 @@ static bool js_gfx_DescriptorSet_bindBufferJSB(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_bindBufferJSB)
+SE_BIND_FUNC(js_gfx_DescriptorSet_bindBufferJSB)     // bindBufferJSB
 
 static bool js_gfx_DescriptorSet_bindSampler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17754,7 +17754,7 @@ static bool js_gfx_DescriptorSet_bindSampler(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_bindSampler)
+SE_BIND_FUNC(js_gfx_DescriptorSet_bindSampler)     // bindSampler
 
 static bool js_gfx_DescriptorSet_bindSamplerJSB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17780,7 +17780,7 @@ static bool js_gfx_DescriptorSet_bindSamplerJSB(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_bindSamplerJSB)
+SE_BIND_FUNC(js_gfx_DescriptorSet_bindSamplerJSB)     // bindSamplerJSB
 
 static bool js_gfx_DescriptorSet_bindTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17823,7 +17823,7 @@ static bool js_gfx_DescriptorSet_bindTexture(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_bindTexture)
+SE_BIND_FUNC(js_gfx_DescriptorSet_bindTexture)     // bindTexture
 
 static bool js_gfx_DescriptorSet_bindTextureJSB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17849,7 +17849,7 @@ static bool js_gfx_DescriptorSet_bindTextureJSB(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_bindTextureJSB)
+SE_BIND_FUNC(js_gfx_DescriptorSet_bindTextureJSB)     // bindTextureJSB
 
 static bool js_gfx_DescriptorSet_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17864,7 +17864,7 @@ static bool js_gfx_DescriptorSet_destroy(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_destroy)
+SE_BIND_FUNC(js_gfx_DescriptorSet_destroy)     // destroy
 
 static bool js_gfx_DescriptorSet_getBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17907,7 +17907,7 @@ static bool js_gfx_DescriptorSet_getBuffer(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_getBuffer)
+SE_BIND_FUNC(js_gfx_DescriptorSet_getBuffer)     // getBuffer
 
 static bool js_gfx_DescriptorSet_getLayout(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17926,7 +17926,7 @@ static bool js_gfx_DescriptorSet_getLayout(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_getLayout)
+SE_BIND_FUNC(js_gfx_DescriptorSet_getLayout)     // getLayout
 
 static bool js_gfx_DescriptorSet_getSampler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -17969,7 +17969,7 @@ static bool js_gfx_DescriptorSet_getSampler(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_getSampler)
+SE_BIND_FUNC(js_gfx_DescriptorSet_getSampler)     // getSampler
 
 static bool js_gfx_DescriptorSet_getTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18012,7 +18012,7 @@ static bool js_gfx_DescriptorSet_getTexture(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_getTexture)
+SE_BIND_FUNC(js_gfx_DescriptorSet_getTexture)     // getTexture
 
 static bool js_gfx_DescriptorSet_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18031,7 +18031,7 @@ static bool js_gfx_DescriptorSet_initialize(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_initialize)
+SE_BIND_FUNC(js_gfx_DescriptorSet_initialize)     // initialize
 
 static bool js_gfx_DescriptorSet_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18046,7 +18046,7 @@ static bool js_gfx_DescriptorSet_update(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSet_update)
+SE_BIND_FUNC(js_gfx_DescriptorSet_update)     // update
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_DescriptorSet_finalize)
 
@@ -18116,7 +18116,7 @@ static bool js_gfx_DescriptorSetLayout_destroy(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSetLayout_destroy)
+SE_BIND_FUNC(js_gfx_DescriptorSetLayout_destroy)     // destroy
 
 static bool js_gfx_DescriptorSetLayout_getBindings(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18135,7 +18135,7 @@ static bool js_gfx_DescriptorSetLayout_getBindings(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSetLayout_getBindings)
+SE_BIND_FUNC(js_gfx_DescriptorSetLayout_getBindings)     // getBindings
 
 static bool js_gfx_DescriptorSetLayout_getDescriptorCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18154,7 +18154,7 @@ static bool js_gfx_DescriptorSetLayout_getDescriptorCount(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSetLayout_getDescriptorCount)
+SE_BIND_FUNC(js_gfx_DescriptorSetLayout_getDescriptorCount)     // getDescriptorCount
 
 static bool js_gfx_DescriptorSetLayout_getDynamicBindings(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18173,7 +18173,7 @@ static bool js_gfx_DescriptorSetLayout_getDynamicBindings(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSetLayout_getDynamicBindings)
+SE_BIND_FUNC(js_gfx_DescriptorSetLayout_getDynamicBindings)     // getDynamicBindings
 
 static bool js_gfx_DescriptorSetLayout_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18192,7 +18192,7 @@ static bool js_gfx_DescriptorSetLayout_initialize(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_DescriptorSetLayout_initialize)
+SE_BIND_FUNC(js_gfx_DescriptorSetLayout_initialize)     // initialize
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_DescriptorSetLayout_finalize)
 
@@ -18254,7 +18254,7 @@ static bool js_gfx_Framebuffer_destroy(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Framebuffer_destroy)
+SE_BIND_FUNC(js_gfx_Framebuffer_destroy)     // destroy
 
 static bool js_gfx_Framebuffer_getColorTextures(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18273,7 +18273,7 @@ static bool js_gfx_Framebuffer_getColorTextures(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Framebuffer_getColorTextures)
+SE_BIND_PROP_GET(js_gfx_Framebuffer_getColorTextures) // getColorTextures
 
 static bool js_gfx_Framebuffer_getDepthStencilTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18292,7 +18292,7 @@ static bool js_gfx_Framebuffer_getDepthStencilTexture(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Framebuffer_getDepthStencilTexture)
+SE_BIND_PROP_GET(js_gfx_Framebuffer_getDepthStencilTexture) // getDepthStencilTexture
 
 static bool js_gfx_Framebuffer_getRenderPass(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18311,7 +18311,7 @@ static bool js_gfx_Framebuffer_getRenderPass(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Framebuffer_getRenderPass)
+SE_BIND_PROP_GET(js_gfx_Framebuffer_getRenderPass) // getRenderPass
 
 static bool js_gfx_Framebuffer_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18330,7 +18330,7 @@ static bool js_gfx_Framebuffer_initialize(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Framebuffer_initialize)
+SE_BIND_FUNC(js_gfx_Framebuffer_initialize)     // initialize
 
 static bool js_gfx_Framebuffer_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18417,7 +18417,7 @@ static bool js_gfx_GlobalBarrier_info(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_GlobalBarrier_info)
+SE_BIND_FUNC(js_gfx_GlobalBarrier_info)     // info
 
 static bool js_gfx_GlobalBarrier_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18497,7 +18497,7 @@ static bool js_gfx_PipelineLayout_destroy(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_PipelineLayout_destroy)
+SE_BIND_FUNC(js_gfx_PipelineLayout_destroy)     // destroy
 
 static bool js_gfx_PipelineLayout_getSetLayouts(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18516,7 +18516,7 @@ static bool js_gfx_PipelineLayout_getSetLayouts(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_PipelineLayout_getSetLayouts)
+SE_BIND_FUNC(js_gfx_PipelineLayout_getSetLayouts)     // getSetLayouts
 
 static bool js_gfx_PipelineLayout_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18535,7 +18535,7 @@ static bool js_gfx_PipelineLayout_initialize(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_PipelineLayout_initialize)
+SE_BIND_FUNC(js_gfx_PipelineLayout_initialize)     // initialize
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_PipelineLayout_finalize)
 
@@ -18595,7 +18595,7 @@ static bool js_gfx_PipelineState_destroy(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_PipelineState_destroy)
+SE_BIND_FUNC(js_gfx_PipelineState_destroy)     // destroy
 
 static bool js_gfx_PipelineState_getBindPoint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18614,7 +18614,7 @@ static bool js_gfx_PipelineState_getBindPoint(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_PipelineState_getBindPoint)
+SE_BIND_PROP_GET(js_gfx_PipelineState_getBindPoint) // getBindPoint
 
 static bool js_gfx_PipelineState_getBlendState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18633,7 +18633,7 @@ static bool js_gfx_PipelineState_getBlendState(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_PipelineState_getBlendState)
+SE_BIND_PROP_GET(js_gfx_PipelineState_getBlendState) // getBlendState
 
 static bool js_gfx_PipelineState_getDepthStencilState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18652,7 +18652,7 @@ static bool js_gfx_PipelineState_getDepthStencilState(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_PipelineState_getDepthStencilState)
+SE_BIND_PROP_GET(js_gfx_PipelineState_getDepthStencilState) // getDepthStencilState
 
 static bool js_gfx_PipelineState_getDynamicStates(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18671,7 +18671,7 @@ static bool js_gfx_PipelineState_getDynamicStates(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_PipelineState_getDynamicStates)
+SE_BIND_FUNC(js_gfx_PipelineState_getDynamicStates)     // getDynamicStates
 
 static bool js_gfx_PipelineState_getInputState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18690,7 +18690,7 @@ static bool js_gfx_PipelineState_getInputState(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_PipelineState_getInputState)
+SE_BIND_PROP_GET(js_gfx_PipelineState_getInputState) // getInputState
 
 static bool js_gfx_PipelineState_getPipelineLayout(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18709,7 +18709,7 @@ static bool js_gfx_PipelineState_getPipelineLayout(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_PipelineState_getPipelineLayout)
+SE_BIND_FUNC(js_gfx_PipelineState_getPipelineLayout)     // getPipelineLayout
 
 static bool js_gfx_PipelineState_getPrimitive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18728,7 +18728,7 @@ static bool js_gfx_PipelineState_getPrimitive(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_PipelineState_getPrimitive)
+SE_BIND_PROP_GET(js_gfx_PipelineState_getPrimitive) // getPrimitive
 
 static bool js_gfx_PipelineState_getRasterizerState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18747,7 +18747,7 @@ static bool js_gfx_PipelineState_getRasterizerState(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_PipelineState_getRasterizerState)
+SE_BIND_PROP_GET(js_gfx_PipelineState_getRasterizerState) // getRasterizerState
 
 static bool js_gfx_PipelineState_getRenderPass(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18766,7 +18766,7 @@ static bool js_gfx_PipelineState_getRenderPass(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_PipelineState_getRenderPass)
+SE_BIND_PROP_GET(js_gfx_PipelineState_getRenderPass) // getRenderPass
 
 static bool js_gfx_PipelineState_getShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18785,7 +18785,7 @@ static bool js_gfx_PipelineState_getShader(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_PipelineState_getShader)
+SE_BIND_PROP_GET(js_gfx_PipelineState_getShader) // getShader
 
 static bool js_gfx_PipelineState_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18804,7 +18804,7 @@ static bool js_gfx_PipelineState_initialize(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_PipelineState_initialize)
+SE_BIND_FUNC(js_gfx_PipelineState_initialize)     // initialize
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_PipelineState_finalize)
 
@@ -18873,7 +18873,7 @@ static bool js_gfx_Queue_destroy(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Queue_destroy)
+SE_BIND_FUNC(js_gfx_Queue_destroy)     // destroy
 
 static bool js_gfx_Queue_getType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18892,7 +18892,7 @@ static bool js_gfx_Queue_getType(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Queue_getType)
+SE_BIND_PROP_GET(js_gfx_Queue_getType) // getType
 
 static bool js_gfx_Queue_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18911,7 +18911,7 @@ static bool js_gfx_Queue_initialize(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Queue_initialize)
+SE_BIND_FUNC(js_gfx_Queue_initialize)     // initialize
 
 static bool js_gfx_Queue_submitForJS(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -18930,7 +18930,7 @@ static bool js_gfx_Queue_submitForJS(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Queue_submitForJS)
+SE_BIND_FUNC(js_gfx_Queue_submitForJS)     // submitForJS
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_Queue_finalize)
 
@@ -18991,7 +18991,7 @@ static bool js_gfx_RenderPass_destroy(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_RenderPass_destroy)
+SE_BIND_FUNC(js_gfx_RenderPass_destroy)     // destroy
 
 static bool js_gfx_RenderPass_getDependencies(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19010,7 +19010,7 @@ static bool js_gfx_RenderPass_getDependencies(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_RenderPass_getDependencies)
+SE_BIND_FUNC(js_gfx_RenderPass_getDependencies)     // getDependencies
 
 static bool js_gfx_RenderPass_getDepthStencilAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19029,7 +19029,7 @@ static bool js_gfx_RenderPass_getDepthStencilAttachment(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_RenderPass_getDepthStencilAttachment)
+SE_BIND_FUNC(js_gfx_RenderPass_getDepthStencilAttachment)     // getDepthStencilAttachment
 
 static bool js_gfx_RenderPass_getHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19048,7 +19048,7 @@ static bool js_gfx_RenderPass_getHash(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_RenderPass_getHash)
+SE_BIND_PROP_GET(js_gfx_RenderPass_getHash) // getHash
 
 static bool js_gfx_RenderPass_getSubpasses(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19067,7 +19067,7 @@ static bool js_gfx_RenderPass_getSubpasses(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_RenderPass_getSubpasses)
+SE_BIND_FUNC(js_gfx_RenderPass_getSubpasses)     // getSubpasses
 
 static bool js_gfx_RenderPass_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19086,7 +19086,7 @@ static bool js_gfx_RenderPass_initialize(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_RenderPass_initialize)
+SE_BIND_FUNC(js_gfx_RenderPass_initialize)     // initialize
 
 static bool js_gfx_RenderPass_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19170,7 +19170,7 @@ static bool js_gfx_Sampler_destroy(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Sampler_destroy)
+SE_BIND_FUNC(js_gfx_Sampler_destroy)     // destroy
 
 static bool js_gfx_Sampler_getAddressU(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19189,7 +19189,7 @@ static bool js_gfx_Sampler_getAddressU(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getAddressU)
+SE_BIND_PROP_GET(js_gfx_Sampler_getAddressU) // getAddressU
 
 static bool js_gfx_Sampler_getAddressV(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19208,7 +19208,7 @@ static bool js_gfx_Sampler_getAddressV(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getAddressV)
+SE_BIND_PROP_GET(js_gfx_Sampler_getAddressV) // getAddressV
 
 static bool js_gfx_Sampler_getAddressW(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19227,7 +19227,7 @@ static bool js_gfx_Sampler_getAddressW(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getAddressW)
+SE_BIND_PROP_GET(js_gfx_Sampler_getAddressW) // getAddressW
 
 static bool js_gfx_Sampler_getBorderColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19246,7 +19246,7 @@ static bool js_gfx_Sampler_getBorderColor(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getBorderColor)
+SE_BIND_PROP_GET(js_gfx_Sampler_getBorderColor) // getBorderColor
 
 static bool js_gfx_Sampler_getCmpFunc(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19265,7 +19265,7 @@ static bool js_gfx_Sampler_getCmpFunc(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getCmpFunc)
+SE_BIND_PROP_GET(js_gfx_Sampler_getCmpFunc) // getCmpFunc
 
 static bool js_gfx_Sampler_getMagFilter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19284,7 +19284,7 @@ static bool js_gfx_Sampler_getMagFilter(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getMagFilter)
+SE_BIND_PROP_GET(js_gfx_Sampler_getMagFilter) // getMagFilter
 
 static bool js_gfx_Sampler_getMaxAnisotropy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19303,7 +19303,7 @@ static bool js_gfx_Sampler_getMaxAnisotropy(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getMaxAnisotropy)
+SE_BIND_PROP_GET(js_gfx_Sampler_getMaxAnisotropy) // getMaxAnisotropy
 
 static bool js_gfx_Sampler_getMinFilter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19322,7 +19322,7 @@ static bool js_gfx_Sampler_getMinFilter(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getMinFilter)
+SE_BIND_PROP_GET(js_gfx_Sampler_getMinFilter) // getMinFilter
 
 static bool js_gfx_Sampler_getMipFilter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19341,7 +19341,7 @@ static bool js_gfx_Sampler_getMipFilter(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getMipFilter)
+SE_BIND_PROP_GET(js_gfx_Sampler_getMipFilter) // getMipFilter
 
 static bool js_gfx_Sampler_getMipLODBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19360,7 +19360,7 @@ static bool js_gfx_Sampler_getMipLODBias(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Sampler_getMipLODBias)
+SE_BIND_PROP_GET(js_gfx_Sampler_getMipLODBias) // getMipLODBias
 
 static bool js_gfx_Sampler_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19379,7 +19379,7 @@ static bool js_gfx_Sampler_initialize(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Sampler_initialize)
+SE_BIND_FUNC(js_gfx_Sampler_initialize)     // initialize
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_Sampler_finalize)
 
@@ -19448,7 +19448,7 @@ static bool js_gfx_Shader_destroy(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Shader_destroy)
+SE_BIND_FUNC(js_gfx_Shader_destroy)     // destroy
 
 static bool js_gfx_Shader_getAttributes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19467,7 +19467,7 @@ static bool js_gfx_Shader_getAttributes(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Shader_getAttributes)
+SE_BIND_PROP_GET(js_gfx_Shader_getAttributes) // getAttributes
 
 static bool js_gfx_Shader_getBlocks(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19486,7 +19486,7 @@ static bool js_gfx_Shader_getBlocks(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Shader_getBlocks)
+SE_BIND_PROP_GET(js_gfx_Shader_getBlocks) // getBlocks
 
 static bool js_gfx_Shader_getBuffers(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19505,7 +19505,7 @@ static bool js_gfx_Shader_getBuffers(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Shader_getBuffers)
+SE_BIND_FUNC(js_gfx_Shader_getBuffers)     // getBuffers
 
 static bool js_gfx_Shader_getImages(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19524,7 +19524,7 @@ static bool js_gfx_Shader_getImages(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Shader_getImages)
+SE_BIND_FUNC(js_gfx_Shader_getImages)     // getImages
 
 static bool js_gfx_Shader_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19543,7 +19543,7 @@ static bool js_gfx_Shader_getName(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Shader_getName)
+SE_BIND_PROP_GET(js_gfx_Shader_getName) // getName
 
 static bool js_gfx_Shader_getSamplerTextures(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19562,7 +19562,7 @@ static bool js_gfx_Shader_getSamplerTextures(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Shader_getSamplerTextures)
+SE_BIND_FUNC(js_gfx_Shader_getSamplerTextures)     // getSamplerTextures
 
 static bool js_gfx_Shader_getSamplers(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19581,7 +19581,7 @@ static bool js_gfx_Shader_getSamplers(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Shader_getSamplers)
+SE_BIND_PROP_GET(js_gfx_Shader_getSamplers) // getSamplers
 
 static bool js_gfx_Shader_getStages(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19600,7 +19600,7 @@ static bool js_gfx_Shader_getStages(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Shader_getStages)
+SE_BIND_PROP_GET(js_gfx_Shader_getStages) // getStages
 
 static bool js_gfx_Shader_getSubpassInputs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19619,7 +19619,7 @@ static bool js_gfx_Shader_getSubpassInputs(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Shader_getSubpassInputs)
+SE_BIND_FUNC(js_gfx_Shader_getSubpassInputs)     // getSubpassInputs
 
 static bool js_gfx_Shader_getTextures(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19638,7 +19638,7 @@ static bool js_gfx_Shader_getTextures(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Shader_getTextures)
+SE_BIND_FUNC(js_gfx_Shader_getTextures)     // getTextures
 
 static bool js_gfx_Shader_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19657,7 +19657,7 @@ static bool js_gfx_Shader_initialize(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Shader_initialize)
+SE_BIND_FUNC(js_gfx_Shader_initialize)     // initialize
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_gfx_Shader_finalize)
 
@@ -19726,7 +19726,7 @@ static bool js_gfx_Texture_destroy(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Texture_destroy)
+SE_BIND_FUNC(js_gfx_Texture_destroy)     // destroy
 
 static bool js_gfx_Texture_getDepth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19745,7 +19745,7 @@ static bool js_gfx_Texture_getDepth(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getDepth)
+SE_BIND_PROP_GET(js_gfx_Texture_getDepth) // getDepth
 
 static bool js_gfx_Texture_getFlags(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19764,7 +19764,7 @@ static bool js_gfx_Texture_getFlags(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getFlags)
+SE_BIND_PROP_GET(js_gfx_Texture_getFlags) // getFlags
 
 static bool js_gfx_Texture_getFormat(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19783,7 +19783,7 @@ static bool js_gfx_Texture_getFormat(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getFormat)
+SE_BIND_PROP_GET(js_gfx_Texture_getFormat) // getFormat
 
 static bool js_gfx_Texture_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19802,7 +19802,7 @@ static bool js_gfx_Texture_getHeight(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getHeight)
+SE_BIND_PROP_GET(js_gfx_Texture_getHeight) // getHeight
 
 static bool js_gfx_Texture_getLayerCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19821,7 +19821,7 @@ static bool js_gfx_Texture_getLayerCount(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getLayerCount)
+SE_BIND_PROP_GET(js_gfx_Texture_getLayerCount) // getLayerCount
 
 static bool js_gfx_Texture_getLevelCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19840,7 +19840,7 @@ static bool js_gfx_Texture_getLevelCount(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getLevelCount)
+SE_BIND_PROP_GET(js_gfx_Texture_getLevelCount) // getLevelCount
 
 static bool js_gfx_Texture_getSamples(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19859,7 +19859,7 @@ static bool js_gfx_Texture_getSamples(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getSamples)
+SE_BIND_PROP_GET(js_gfx_Texture_getSamples) // getSamples
 
 static bool js_gfx_Texture_getSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19878,7 +19878,7 @@ static bool js_gfx_Texture_getSize(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getSize)
+SE_BIND_PROP_GET(js_gfx_Texture_getSize) // getSize
 
 static bool js_gfx_Texture_getType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19897,7 +19897,7 @@ static bool js_gfx_Texture_getType(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getType)
+SE_BIND_PROP_GET(js_gfx_Texture_getType) // getType
 
 static bool js_gfx_Texture_getUsage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19916,7 +19916,7 @@ static bool js_gfx_Texture_getUsage(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getUsage)
+SE_BIND_PROP_GET(js_gfx_Texture_getUsage) // getUsage
 
 static bool js_gfx_Texture_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19935,7 +19935,7 @@ static bool js_gfx_Texture_getWidth(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Texture_getWidth)
+SE_BIND_PROP_GET(js_gfx_Texture_getWidth) // getWidth
 
 static bool js_gfx_Texture_isTextureView(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19954,7 +19954,7 @@ static bool js_gfx_Texture_isTextureView(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Texture_isTextureView)
+SE_BIND_FUNC(js_gfx_Texture_isTextureView)     // isTextureView
 
 static bool js_gfx_Texture_resize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -19975,7 +19975,7 @@ static bool js_gfx_Texture_resize(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Texture_resize)
+SE_BIND_FUNC(js_gfx_Texture_resize)     // resize
 
 static bool js_gfx_Texture_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20071,7 +20071,7 @@ static bool js_gfx_TextureBarrier_info(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_TextureBarrier_info)
+SE_BIND_FUNC(js_gfx_TextureBarrier_info)     // info
 
 static bool js_gfx_TextureBarrier_computeHash_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20151,7 +20151,7 @@ static bool js_gfx_Device_acquire(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_acquire)
+SE_BIND_FUNC(js_gfx_Device_acquire)     // acquire
 
 static bool js_gfx_Device_bindingMappingInfo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20170,7 +20170,7 @@ static bool js_gfx_Device_bindingMappingInfo(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_bindingMappingInfo)
+SE_BIND_FUNC(js_gfx_Device_bindingMappingInfo)     // bindingMappingInfo
 
 static bool js_gfx_Device_createCommandBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20193,7 +20193,7 @@ static bool js_gfx_Device_createCommandBuffer(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createCommandBuffer)
+SE_BIND_FUNC(js_gfx_Device_createCommandBuffer)     // createCommandBuffer
 
 static bool js_gfx_Device_createDescriptorSet(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20216,7 +20216,7 @@ static bool js_gfx_Device_createDescriptorSet(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createDescriptorSet)
+SE_BIND_FUNC(js_gfx_Device_createDescriptorSet)     // createDescriptorSet
 
 static bool js_gfx_Device_createDescriptorSetLayout(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20239,7 +20239,7 @@ static bool js_gfx_Device_createDescriptorSetLayout(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createDescriptorSetLayout)
+SE_BIND_FUNC(js_gfx_Device_createDescriptorSetLayout)     // createDescriptorSetLayout
 
 static bool js_gfx_Device_createFramebuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20262,7 +20262,7 @@ static bool js_gfx_Device_createFramebuffer(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createFramebuffer)
+SE_BIND_FUNC(js_gfx_Device_createFramebuffer)     // createFramebuffer
 
 static bool js_gfx_Device_createGlobalBarrier(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20285,7 +20285,7 @@ static bool js_gfx_Device_createGlobalBarrier(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createGlobalBarrier)
+SE_BIND_FUNC(js_gfx_Device_createGlobalBarrier)     // createGlobalBarrier
 
 static bool js_gfx_Device_createInputAssembler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20308,7 +20308,7 @@ static bool js_gfx_Device_createInputAssembler(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createInputAssembler)
+SE_BIND_FUNC(js_gfx_Device_createInputAssembler)     // createInputAssembler
 
 static bool js_gfx_Device_createPipelineLayout(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20331,7 +20331,7 @@ static bool js_gfx_Device_createPipelineLayout(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createPipelineLayout)
+SE_BIND_FUNC(js_gfx_Device_createPipelineLayout)     // createPipelineLayout
 
 static bool js_gfx_Device_createPipelineState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20354,7 +20354,7 @@ static bool js_gfx_Device_createPipelineState(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createPipelineState)
+SE_BIND_FUNC(js_gfx_Device_createPipelineState)     // createPipelineState
 
 static bool js_gfx_Device_createQueue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20377,7 +20377,7 @@ static bool js_gfx_Device_createQueue(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createQueue)
+SE_BIND_FUNC(js_gfx_Device_createQueue)     // createQueue
 
 static bool js_gfx_Device_createRenderPass(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20400,7 +20400,7 @@ static bool js_gfx_Device_createRenderPass(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createRenderPass)
+SE_BIND_FUNC(js_gfx_Device_createRenderPass)     // createRenderPass
 
 static bool js_gfx_Device_createSampler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20423,7 +20423,7 @@ static bool js_gfx_Device_createSampler(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createSampler)
+SE_BIND_FUNC(js_gfx_Device_createSampler)     // createSampler
 
 static bool js_gfx_Device_createShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20446,7 +20446,7 @@ static bool js_gfx_Device_createShader(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_createShader)
+SE_BIND_FUNC(js_gfx_Device_createShader)     // createShader
 
 static bool js_gfx_Device_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20461,7 +20461,7 @@ static bool js_gfx_Device_destroy(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_destroy)
+SE_BIND_FUNC(js_gfx_Device_destroy)     // destroy
 
 static bool js_gfx_Device_devicePixelRatio(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20480,7 +20480,7 @@ static bool js_gfx_Device_devicePixelRatio(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_devicePixelRatio)
+SE_BIND_FUNC(js_gfx_Device_devicePixelRatio)     // devicePixelRatio
 
 static bool js_gfx_Device_flushCommandsForJS(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20499,7 +20499,7 @@ static bool js_gfx_Device_flushCommandsForJS(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_flushCommandsForJS)
+SE_BIND_FUNC(js_gfx_Device_flushCommandsForJS)     // flushCommandsForJS
 
 static bool js_gfx_Device_getCapabilities(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20518,7 +20518,7 @@ static bool js_gfx_Device_getCapabilities(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getCapabilities)
+SE_BIND_PROP_GET(js_gfx_Device_getCapabilities) // getCapabilities
 
 static bool js_gfx_Device_getColorFormat(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20537,7 +20537,7 @@ static bool js_gfx_Device_getColorFormat(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getColorFormat)
+SE_BIND_PROP_GET(js_gfx_Device_getColorFormat) // getColorFormat
 
 static bool js_gfx_Device_getCommandBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20556,7 +20556,7 @@ static bool js_gfx_Device_getCommandBuffer(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getCommandBuffer)
+SE_BIND_PROP_GET(js_gfx_Device_getCommandBuffer) // getCommandBuffer
 
 static bool js_gfx_Device_getDepthStencilFormat(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20575,7 +20575,7 @@ static bool js_gfx_Device_getDepthStencilFormat(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getDepthStencilFormat)
+SE_BIND_PROP_GET(js_gfx_Device_getDepthStencilFormat) // getDepthStencilFormat
 
 static bool js_gfx_Device_getDeviceName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20594,7 +20594,7 @@ static bool js_gfx_Device_getDeviceName(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getDeviceName)
+SE_BIND_PROP_GET(js_gfx_Device_getDeviceName) // getDeviceName
 
 static bool js_gfx_Device_getGfxAPI(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20613,7 +20613,7 @@ static bool js_gfx_Device_getGfxAPI(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getGfxAPI)
+SE_BIND_PROP_GET(js_gfx_Device_getGfxAPI) // getGfxAPI
 
 static bool js_gfx_Device_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20632,7 +20632,7 @@ static bool js_gfx_Device_getHeight(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getHeight)
+SE_BIND_PROP_GET(js_gfx_Device_getHeight) // getHeight
 
 static bool js_gfx_Device_getMemoryStatus(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20651,7 +20651,7 @@ static bool js_gfx_Device_getMemoryStatus(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getMemoryStatus)
+SE_BIND_PROP_GET(js_gfx_Device_getMemoryStatus) // getMemoryStatus
 
 static bool js_gfx_Device_getNumDrawCalls(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20670,7 +20670,7 @@ static bool js_gfx_Device_getNumDrawCalls(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getNumDrawCalls)
+SE_BIND_PROP_GET(js_gfx_Device_getNumDrawCalls) // getNumDrawCalls
 
 static bool js_gfx_Device_getNumInstances(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20689,7 +20689,7 @@ static bool js_gfx_Device_getNumInstances(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getNumInstances)
+SE_BIND_PROP_GET(js_gfx_Device_getNumInstances) // getNumInstances
 
 static bool js_gfx_Device_getNumTris(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20708,7 +20708,7 @@ static bool js_gfx_Device_getNumTris(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getNumTris)
+SE_BIND_PROP_GET(js_gfx_Device_getNumTris) // getNumTris
 
 static bool js_gfx_Device_getQueue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20727,7 +20727,7 @@ static bool js_gfx_Device_getQueue(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getQueue)
+SE_BIND_PROP_GET(js_gfx_Device_getQueue) // getQueue
 
 static bool js_gfx_Device_getRenderer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20746,7 +20746,7 @@ static bool js_gfx_Device_getRenderer(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getRenderer)
+SE_BIND_PROP_GET(js_gfx_Device_getRenderer) // getRenderer
 
 static bool js_gfx_Device_getSurfaceTransform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20765,7 +20765,7 @@ static bool js_gfx_Device_getSurfaceTransform(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getSurfaceTransform)
+SE_BIND_PROP_GET(js_gfx_Device_getSurfaceTransform) // getSurfaceTransform
 
 static bool js_gfx_Device_getVendor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20784,7 +20784,7 @@ static bool js_gfx_Device_getVendor(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getVendor)
+SE_BIND_PROP_GET(js_gfx_Device_getVendor) // getVendor
 
 static bool js_gfx_Device_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20803,7 +20803,7 @@ static bool js_gfx_Device_getWidth(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_gfx_Device_getWidth)
+SE_BIND_PROP_GET(js_gfx_Device_getWidth) // getWidth
 
 static bool js_gfx_Device_hasFeature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20825,7 +20825,7 @@ static bool js_gfx_Device_hasFeature(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_hasFeature)
+SE_BIND_FUNC(js_gfx_Device_hasFeature)     // hasFeature
 
 static bool js_gfx_Device_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20847,7 +20847,7 @@ static bool js_gfx_Device_initialize(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_initialize)
+SE_BIND_FUNC(js_gfx_Device_initialize)     // initialize
 
 static bool js_gfx_Device_present(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20862,7 +20862,7 @@ static bool js_gfx_Device_present(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_present)
+SE_BIND_FUNC(js_gfx_Device_present)     // present
 
 static bool js_gfx_Device_resize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -20883,7 +20883,7 @@ static bool js_gfx_Device_resize(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_gfx_Device_resize)
+SE_BIND_FUNC(js_gfx_Device_resize)     // resize
 
 
 

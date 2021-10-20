@@ -32,7 +32,7 @@ static bool js_editor_support_Texture2D_getPixelsHigh(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_Texture2D_getPixelsHigh)
+SE_BIND_FUNC(js_editor_support_Texture2D_getPixelsHigh)     // getPixelsHigh
 
 static bool js_editor_support_Texture2D_getPixelsWide(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -51,7 +51,7 @@ static bool js_editor_support_Texture2D_getPixelsWide(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_Texture2D_getPixelsWide)
+SE_BIND_FUNC(js_editor_support_Texture2D_getPixelsWide)     // getPixelsWide
 
 static bool js_editor_support_Texture2D_getRealTextureIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -70,7 +70,7 @@ static bool js_editor_support_Texture2D_getRealTextureIndex(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_Texture2D_getRealTextureIndex)
+SE_BIND_FUNC(js_editor_support_Texture2D_getRealTextureIndex)     // getRealTextureIndex
 
 static bool js_editor_support_Texture2D_setPixelsHigh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -89,7 +89,7 @@ static bool js_editor_support_Texture2D_setPixelsHigh(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_Texture2D_setPixelsHigh)
+SE_BIND_FUNC(js_editor_support_Texture2D_setPixelsHigh)     // setPixelsHigh
 
 static bool js_editor_support_Texture2D_setPixelsWide(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -108,7 +108,7 @@ static bool js_editor_support_Texture2D_setPixelsWide(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_Texture2D_setPixelsWide)
+SE_BIND_FUNC(js_editor_support_Texture2D_setPixelsWide)     // setPixelsWide
 
 static bool js_editor_support_Texture2D_setRealTextureIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -127,7 +127,7 @@ static bool js_editor_support_Texture2D_setRealTextureIndex(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_Texture2D_setRealTextureIndex)
+SE_BIND_FUNC(js_editor_support_Texture2D_setRealTextureIndex)     // setRealTextureIndex
 
 static bool js_editor_support_Texture2D_setTexParamCallback(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -179,7 +179,7 @@ static bool js_editor_support_Texture2D_setTexParamCallback(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_Texture2D_setTexParamCallback)
+SE_BIND_FUNC(js_editor_support_Texture2D_setTexParamCallback)     // setTexParamCallback
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_middleware_Texture2D_finalize)
 
@@ -242,7 +242,7 @@ static bool js_editor_support_SharedBufferManager_getSharedBuffer(se::State& s) 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_SharedBufferManager_getSharedBuffer)
+SE_BIND_FUNC(js_editor_support_SharedBufferManager_getSharedBuffer)     // getSharedBuffer
 
 static bool js_editor_support_SharedBufferManager_setResizeCallback(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -286,7 +286,7 @@ static bool js_editor_support_SharedBufferManager_setResizeCallback(se::State& s
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_SharedBufferManager_setResizeCallback)
+SE_BIND_FUNC(js_editor_support_SharedBufferManager_setResizeCallback)     // setResizeCallback
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_middleware_SharedBufferManager_finalize)
 
@@ -355,7 +355,7 @@ static bool js_editor_support_MiddlewareManager_getAttachInfoMgr(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_MiddlewareManager_getAttachInfoMgr)
+SE_BIND_FUNC(js_editor_support_MiddlewareManager_getAttachInfoMgr)     // getAttachInfoMgr
 
 static bool js_editor_support_MiddlewareManager_getBufferCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -377,7 +377,7 @@ static bool js_editor_support_MiddlewareManager_getBufferCount(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_MiddlewareManager_getBufferCount)
+SE_BIND_FUNC(js_editor_support_MiddlewareManager_getBufferCount)     // getBufferCount
 
 static bool js_editor_support_MiddlewareManager_getIBTypedArray(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -401,7 +401,7 @@ static bool js_editor_support_MiddlewareManager_getIBTypedArray(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_MiddlewareManager_getIBTypedArray)
+SE_BIND_FUNC(js_editor_support_MiddlewareManager_getIBTypedArray)     // getIBTypedArray
 
 static bool js_editor_support_MiddlewareManager_getIBTypedArrayLength(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -425,7 +425,7 @@ static bool js_editor_support_MiddlewareManager_getIBTypedArrayLength(se::State&
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_MiddlewareManager_getIBTypedArrayLength)
+SE_BIND_FUNC(js_editor_support_MiddlewareManager_getIBTypedArrayLength)     // getIBTypedArrayLength
 
 static bool js_editor_support_MiddlewareManager_getRenderInfoMgr(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -444,7 +444,7 @@ static bool js_editor_support_MiddlewareManager_getRenderInfoMgr(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_MiddlewareManager_getRenderInfoMgr)
+SE_BIND_FUNC(js_editor_support_MiddlewareManager_getRenderInfoMgr)     // getRenderInfoMgr
 
 static bool js_editor_support_MiddlewareManager_getVBTypedArray(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -468,7 +468,7 @@ static bool js_editor_support_MiddlewareManager_getVBTypedArray(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_MiddlewareManager_getVBTypedArray)
+SE_BIND_FUNC(js_editor_support_MiddlewareManager_getVBTypedArray)     // getVBTypedArray
 
 static bool js_editor_support_MiddlewareManager_getVBTypedArrayLength(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -492,7 +492,7 @@ static bool js_editor_support_MiddlewareManager_getVBTypedArrayLength(se::State&
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_MiddlewareManager_getVBTypedArrayLength)
+SE_BIND_FUNC(js_editor_support_MiddlewareManager_getVBTypedArrayLength)     // getVBTypedArrayLength
 
 static bool js_editor_support_MiddlewareManager_render(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -511,7 +511,7 @@ static bool js_editor_support_MiddlewareManager_render(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_MiddlewareManager_render)
+SE_BIND_FUNC(js_editor_support_MiddlewareManager_render)     // render
 
 static bool js_editor_support_MiddlewareManager_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -530,7 +530,7 @@ static bool js_editor_support_MiddlewareManager_update(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_editor_support_MiddlewareManager_update)
+SE_BIND_FUNC(js_editor_support_MiddlewareManager_update)     // update
 
 static bool js_editor_support_MiddlewareManager_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {

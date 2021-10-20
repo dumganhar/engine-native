@@ -263,7 +263,7 @@ static bool js_network_Downloader_setOnTaskProgress(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_network_Downloader_setOnTaskProgress)
+SE_BIND_FUNC(js_network_Downloader_setOnTaskProgress)     // setOnTaskProgress
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_network_Downloader_finalize)
 

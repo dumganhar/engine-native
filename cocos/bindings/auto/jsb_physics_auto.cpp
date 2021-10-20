@@ -33,7 +33,7 @@ static bool js_physics_World_createConvex(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_createConvex)
+SE_BIND_FUNC(js_physics_World_createConvex)     // createConvex
 
 static bool js_physics_World_createHeightField(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -55,7 +55,7 @@ static bool js_physics_World_createHeightField(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_createHeightField)
+SE_BIND_FUNC(js_physics_World_createHeightField)     // createHeightField
 
 static bool js_physics_World_createMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -87,7 +87,7 @@ static bool js_physics_World_createMaterial(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_createMaterial)
+SE_BIND_FUNC(js_physics_World_createMaterial)     // createMaterial
 
 static bool js_physics_World_createTrimesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -109,7 +109,7 @@ static bool js_physics_World_createTrimesh(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_createTrimesh)
+SE_BIND_FUNC(js_physics_World_createTrimesh)     // createTrimesh
 
 static bool js_physics_World_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -124,7 +124,7 @@ static bool js_physics_World_destroy(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_destroy)
+SE_BIND_FUNC(js_physics_World_destroy)     // destroy
 
 static bool js_physics_World_emitEvents(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -139,7 +139,7 @@ static bool js_physics_World_emitEvents(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_emitEvents)
+SE_BIND_FUNC(js_physics_World_emitEvents)     // emitEvents
 
 static bool js_physics_World_getContactEventPairs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -158,7 +158,7 @@ static bool js_physics_World_getContactEventPairs(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_getContactEventPairs)
+SE_BIND_FUNC(js_physics_World_getContactEventPairs)     // getContactEventPairs
 
 static bool js_physics_World_getTriggerEventPairs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -177,7 +177,7 @@ static bool js_physics_World_getTriggerEventPairs(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_getTriggerEventPairs)
+SE_BIND_FUNC(js_physics_World_getTriggerEventPairs)     // getTriggerEventPairs
 
 static bool js_physics_World_raycast(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -199,7 +199,7 @@ static bool js_physics_World_raycast(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_raycast)
+SE_BIND_FUNC(js_physics_World_raycast)     // raycast
 
 static bool js_physics_World_raycastClosest(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -221,7 +221,7 @@ static bool js_physics_World_raycastClosest(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_raycastClosest)
+SE_BIND_FUNC(js_physics_World_raycastClosest)     // raycastClosest
 
 static bool js_physics_World_raycastClosestResult(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -240,7 +240,7 @@ static bool js_physics_World_raycastClosestResult(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_raycastClosestResult)
+SE_BIND_FUNC(js_physics_World_raycastClosestResult)     // raycastClosestResult
 
 static bool js_physics_World_raycastResult(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -259,7 +259,7 @@ static bool js_physics_World_raycastResult(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_raycastResult)
+SE_BIND_FUNC(js_physics_World_raycastResult)     // raycastResult
 
 static bool js_physics_World_setAllowSleep(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -278,7 +278,7 @@ static bool js_physics_World_setAllowSleep(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_setAllowSleep)
+SE_BIND_FUNC(js_physics_World_setAllowSleep)     // setAllowSleep
 
 static bool js_physics_World_setCollisionMatrix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -299,7 +299,7 @@ static bool js_physics_World_setCollisionMatrix(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_setCollisionMatrix)
+SE_BIND_FUNC(js_physics_World_setCollisionMatrix)     // setCollisionMatrix
 
 static bool js_physics_World_setGravity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -322,7 +322,7 @@ static bool js_physics_World_setGravity(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_setGravity)
+SE_BIND_FUNC(js_physics_World_setGravity)     // setGravity
 
 static bool js_physics_World_step(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -341,7 +341,7 @@ static bool js_physics_World_step(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_step)
+SE_BIND_FUNC(js_physics_World_step)     // step
 
 static bool js_physics_World_syncSceneToPhysics(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -356,7 +356,7 @@ static bool js_physics_World_syncSceneToPhysics(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_syncSceneToPhysics)
+SE_BIND_FUNC(js_physics_World_syncSceneToPhysics)     // syncSceneToPhysics
 
 static bool js_physics_World_syncSceneWithCheck(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -371,7 +371,7 @@ static bool js_physics_World_syncSceneWithCheck(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_World_syncSceneWithCheck)
+SE_BIND_FUNC(js_physics_World_syncSceneWithCheck)     // syncSceneWithCheck
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_World_finalize)
 
@@ -461,7 +461,7 @@ static bool js_physics_RigidBody_applyForce(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_applyForce)
+SE_BIND_FUNC(js_physics_RigidBody_applyForce)     // applyForce
 
 static bool js_physics_RigidBody_applyImpulse(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -490,7 +490,7 @@ static bool js_physics_RigidBody_applyImpulse(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_applyImpulse)
+SE_BIND_FUNC(js_physics_RigidBody_applyImpulse)     // applyImpulse
 
 static bool js_physics_RigidBody_applyLocalForce(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -519,7 +519,7 @@ static bool js_physics_RigidBody_applyLocalForce(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_applyLocalForce)
+SE_BIND_FUNC(js_physics_RigidBody_applyLocalForce)     // applyLocalForce
 
 static bool js_physics_RigidBody_applyLocalImpulse(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -548,7 +548,7 @@ static bool js_physics_RigidBody_applyLocalImpulse(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_applyLocalImpulse)
+SE_BIND_FUNC(js_physics_RigidBody_applyLocalImpulse)     // applyLocalImpulse
 
 static bool js_physics_RigidBody_applyLocalTorque(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -571,7 +571,7 @@ static bool js_physics_RigidBody_applyLocalTorque(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_applyLocalTorque)
+SE_BIND_FUNC(js_physics_RigidBody_applyLocalTorque)     // applyLocalTorque
 
 static bool js_physics_RigidBody_applyTorque(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -594,7 +594,7 @@ static bool js_physics_RigidBody_applyTorque(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_applyTorque)
+SE_BIND_FUNC(js_physics_RigidBody_applyTorque)     // applyTorque
 
 static bool js_physics_RigidBody_clearForces(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -609,7 +609,7 @@ static bool js_physics_RigidBody_clearForces(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_clearForces)
+SE_BIND_FUNC(js_physics_RigidBody_clearForces)     // clearForces
 
 static bool js_physics_RigidBody_clearState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -624,7 +624,7 @@ static bool js_physics_RigidBody_clearState(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_clearState)
+SE_BIND_FUNC(js_physics_RigidBody_clearState)     // clearState
 
 static bool js_physics_RigidBody_clearVelocity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -639,7 +639,7 @@ static bool js_physics_RigidBody_clearVelocity(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_clearVelocity)
+SE_BIND_FUNC(js_physics_RigidBody_clearVelocity)     // clearVelocity
 
 static bool js_physics_RigidBody_getAngularVelocity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -658,7 +658,7 @@ static bool js_physics_RigidBody_getAngularVelocity(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_getAngularVelocity)
+SE_BIND_FUNC(js_physics_RigidBody_getAngularVelocity)     // getAngularVelocity
 
 static bool js_physics_RigidBody_getGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -677,7 +677,7 @@ static bool js_physics_RigidBody_getGroup(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_getGroup)
+SE_BIND_FUNC(js_physics_RigidBody_getGroup)     // getGroup
 
 static bool js_physics_RigidBody_getImpl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -696,7 +696,7 @@ static bool js_physics_RigidBody_getImpl(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_getImpl)
+SE_BIND_FUNC(js_physics_RigidBody_getImpl)     // getImpl
 
 static bool js_physics_RigidBody_getLinearVelocity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -715,7 +715,7 @@ static bool js_physics_RigidBody_getLinearVelocity(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_getLinearVelocity)
+SE_BIND_FUNC(js_physics_RigidBody_getLinearVelocity)     // getLinearVelocity
 
 static bool js_physics_RigidBody_getMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -734,7 +734,7 @@ static bool js_physics_RigidBody_getMask(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_getMask)
+SE_BIND_FUNC(js_physics_RigidBody_getMask)     // getMask
 
 static bool js_physics_RigidBody_getNodeHandle(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -753,7 +753,7 @@ static bool js_physics_RigidBody_getNodeHandle(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_getNodeHandle)
+SE_BIND_FUNC(js_physics_RigidBody_getNodeHandle)     // getNodeHandle
 
 static bool js_physics_RigidBody_getSleepThreshold(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -772,7 +772,7 @@ static bool js_physics_RigidBody_getSleepThreshold(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_getSleepThreshold)
+SE_BIND_FUNC(js_physics_RigidBody_getSleepThreshold)     // getSleepThreshold
 
 static bool js_physics_RigidBody_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -795,7 +795,7 @@ static bool js_physics_RigidBody_initialize(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_initialize)
+SE_BIND_FUNC(js_physics_RigidBody_initialize)     // initialize
 
 static bool js_physics_RigidBody_isAwake(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -814,7 +814,7 @@ static bool js_physics_RigidBody_isAwake(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_isAwake)
+SE_BIND_FUNC(js_physics_RigidBody_isAwake)     // isAwake
 
 static bool js_physics_RigidBody_isSleeping(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -833,7 +833,7 @@ static bool js_physics_RigidBody_isSleeping(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_isSleeping)
+SE_BIND_FUNC(js_physics_RigidBody_isSleeping)     // isSleeping
 
 static bool js_physics_RigidBody_isSleepy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -852,7 +852,7 @@ static bool js_physics_RigidBody_isSleepy(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_isSleepy)
+SE_BIND_FUNC(js_physics_RigidBody_isSleepy)     // isSleepy
 
 static bool js_physics_RigidBody_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -867,7 +867,7 @@ static bool js_physics_RigidBody_onDestroy(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_onDestroy)
+SE_BIND_FUNC(js_physics_RigidBody_onDestroy)     // onDestroy
 
 static bool js_physics_RigidBody_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -882,7 +882,7 @@ static bool js_physics_RigidBody_onDisable(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_onDisable)
+SE_BIND_FUNC(js_physics_RigidBody_onDisable)     // onDisable
 
 static bool js_physics_RigidBody_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -897,7 +897,7 @@ static bool js_physics_RigidBody_onEnable(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_onEnable)
+SE_BIND_FUNC(js_physics_RigidBody_onEnable)     // onEnable
 
 static bool js_physics_RigidBody_setAllowSleep(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -916,7 +916,7 @@ static bool js_physics_RigidBody_setAllowSleep(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setAllowSleep)
+SE_BIND_FUNC(js_physics_RigidBody_setAllowSleep)     // setAllowSleep
 
 static bool js_physics_RigidBody_setAngularDamping(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -935,7 +935,7 @@ static bool js_physics_RigidBody_setAngularDamping(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setAngularDamping)
+SE_BIND_FUNC(js_physics_RigidBody_setAngularDamping)     // setAngularDamping
 
 static bool js_physics_RigidBody_setAngularFactor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -958,7 +958,7 @@ static bool js_physics_RigidBody_setAngularFactor(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setAngularFactor)
+SE_BIND_FUNC(js_physics_RigidBody_setAngularFactor)     // setAngularFactor
 
 static bool js_physics_RigidBody_setAngularVelocity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -981,7 +981,7 @@ static bool js_physics_RigidBody_setAngularVelocity(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setAngularVelocity)
+SE_BIND_FUNC(js_physics_RigidBody_setAngularVelocity)     // setAngularVelocity
 
 static bool js_physics_RigidBody_setGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1000,7 +1000,7 @@ static bool js_physics_RigidBody_setGroup(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setGroup)
+SE_BIND_FUNC(js_physics_RigidBody_setGroup)     // setGroup
 
 static bool js_physics_RigidBody_setLinearDamping(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1019,7 +1019,7 @@ static bool js_physics_RigidBody_setLinearDamping(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setLinearDamping)
+SE_BIND_FUNC(js_physics_RigidBody_setLinearDamping)     // setLinearDamping
 
 static bool js_physics_RigidBody_setLinearFactor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1042,7 +1042,7 @@ static bool js_physics_RigidBody_setLinearFactor(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setLinearFactor)
+SE_BIND_FUNC(js_physics_RigidBody_setLinearFactor)     // setLinearFactor
 
 static bool js_physics_RigidBody_setLinearVelocity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1065,7 +1065,7 @@ static bool js_physics_RigidBody_setLinearVelocity(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setLinearVelocity)
+SE_BIND_FUNC(js_physics_RigidBody_setLinearVelocity)     // setLinearVelocity
 
 static bool js_physics_RigidBody_setMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1084,7 +1084,7 @@ static bool js_physics_RigidBody_setMask(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setMask)
+SE_BIND_FUNC(js_physics_RigidBody_setMask)     // setMask
 
 static bool js_physics_RigidBody_setMass(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1103,7 +1103,7 @@ static bool js_physics_RigidBody_setMass(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setMass)
+SE_BIND_FUNC(js_physics_RigidBody_setMass)     // setMass
 
 static bool js_physics_RigidBody_setSleepThreshold(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1122,7 +1122,7 @@ static bool js_physics_RigidBody_setSleepThreshold(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setSleepThreshold)
+SE_BIND_FUNC(js_physics_RigidBody_setSleepThreshold)     // setSleepThreshold
 
 static bool js_physics_RigidBody_setType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1141,7 +1141,7 @@ static bool js_physics_RigidBody_setType(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_setType)
+SE_BIND_FUNC(js_physics_RigidBody_setType)     // setType
 
 static bool js_physics_RigidBody_sleep(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1156,7 +1156,7 @@ static bool js_physics_RigidBody_sleep(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_sleep)
+SE_BIND_FUNC(js_physics_RigidBody_sleep)     // sleep
 
 static bool js_physics_RigidBody_useCCD(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1175,7 +1175,7 @@ static bool js_physics_RigidBody_useCCD(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_useCCD)
+SE_BIND_FUNC(js_physics_RigidBody_useCCD)     // useCCD
 
 static bool js_physics_RigidBody_useGravity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1194,7 +1194,7 @@ static bool js_physics_RigidBody_useGravity(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_useGravity)
+SE_BIND_FUNC(js_physics_RigidBody_useGravity)     // useGravity
 
 static bool js_physics_RigidBody_wakeUp(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1209,7 +1209,7 @@ static bool js_physics_RigidBody_wakeUp(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RigidBody_wakeUp)
+SE_BIND_FUNC(js_physics_RigidBody_wakeUp)     // wakeUp
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_RigidBody_finalize)
 
@@ -1310,7 +1310,7 @@ static bool js_physics_SphereShape_getAABB(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_getAABB)
+SE_BIND_FUNC(js_physics_SphereShape_getAABB)     // getAABB
 
 static bool js_physics_SphereShape_getBoundingSphere(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1329,7 +1329,7 @@ static bool js_physics_SphereShape_getBoundingSphere(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_getBoundingSphere)
+SE_BIND_FUNC(js_physics_SphereShape_getBoundingSphere)     // getBoundingSphere
 
 static bool js_physics_SphereShape_getGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1348,7 +1348,7 @@ static bool js_physics_SphereShape_getGroup(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_getGroup)
+SE_BIND_FUNC(js_physics_SphereShape_getGroup)     // getGroup
 
 static bool js_physics_SphereShape_getImpl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1367,7 +1367,7 @@ static bool js_physics_SphereShape_getImpl(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_getImpl)
+SE_BIND_FUNC(js_physics_SphereShape_getImpl)     // getImpl
 
 static bool js_physics_SphereShape_getMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1386,7 +1386,7 @@ static bool js_physics_SphereShape_getMask(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_getMask)
+SE_BIND_FUNC(js_physics_SphereShape_getMask)     // getMask
 
 static bool js_physics_SphereShape_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1405,7 +1405,7 @@ static bool js_physics_SphereShape_initialize(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_initialize)
+SE_BIND_FUNC(js_physics_SphereShape_initialize)     // initialize
 
 static bool js_physics_SphereShape_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1420,7 +1420,7 @@ static bool js_physics_SphereShape_onDestroy(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_onDestroy)
+SE_BIND_FUNC(js_physics_SphereShape_onDestroy)     // onDestroy
 
 static bool js_physics_SphereShape_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1435,7 +1435,7 @@ static bool js_physics_SphereShape_onDisable(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_onDisable)
+SE_BIND_FUNC(js_physics_SphereShape_onDisable)     // onDisable
 
 static bool js_physics_SphereShape_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1450,7 +1450,7 @@ static bool js_physics_SphereShape_onEnable(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_onEnable)
+SE_BIND_FUNC(js_physics_SphereShape_onEnable)     // onEnable
 
 static bool js_physics_SphereShape_setAsTrigger(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1469,7 +1469,7 @@ static bool js_physics_SphereShape_setAsTrigger(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_setAsTrigger)
+SE_BIND_FUNC(js_physics_SphereShape_setAsTrigger)     // setAsTrigger
 
 static bool js_physics_SphereShape_setCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1492,7 +1492,7 @@ static bool js_physics_SphereShape_setCenter(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_setCenter)
+SE_BIND_FUNC(js_physics_SphereShape_setCenter)     // setCenter
 
 static bool js_physics_SphereShape_setGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1511,7 +1511,7 @@ static bool js_physics_SphereShape_setGroup(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_setGroup)
+SE_BIND_FUNC(js_physics_SphereShape_setGroup)     // setGroup
 
 static bool js_physics_SphereShape_setMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1530,7 +1530,7 @@ static bool js_physics_SphereShape_setMask(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_setMask)
+SE_BIND_FUNC(js_physics_SphereShape_setMask)     // setMask
 
 static bool js_physics_SphereShape_setMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1559,7 +1559,7 @@ static bool js_physics_SphereShape_setMaterial(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_setMaterial)
+SE_BIND_FUNC(js_physics_SphereShape_setMaterial)     // setMaterial
 
 static bool js_physics_SphereShape_setRadius(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1578,7 +1578,7 @@ static bool js_physics_SphereShape_setRadius(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_setRadius)
+SE_BIND_FUNC(js_physics_SphereShape_setRadius)     // setRadius
 
 static bool js_physics_SphereShape_updateEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1597,7 +1597,7 @@ static bool js_physics_SphereShape_updateEventListener(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_SphereShape_updateEventListener)
+SE_BIND_FUNC(js_physics_SphereShape_updateEventListener)     // updateEventListener
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_SphereShape_finalize)
 
@@ -1675,7 +1675,7 @@ static bool js_physics_BoxShape_getAABB(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_getAABB)
+SE_BIND_FUNC(js_physics_BoxShape_getAABB)     // getAABB
 
 static bool js_physics_BoxShape_getBoundingSphere(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1694,7 +1694,7 @@ static bool js_physics_BoxShape_getBoundingSphere(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_getBoundingSphere)
+SE_BIND_FUNC(js_physics_BoxShape_getBoundingSphere)     // getBoundingSphere
 
 static bool js_physics_BoxShape_getGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1713,7 +1713,7 @@ static bool js_physics_BoxShape_getGroup(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_getGroup)
+SE_BIND_FUNC(js_physics_BoxShape_getGroup)     // getGroup
 
 static bool js_physics_BoxShape_getImpl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1732,7 +1732,7 @@ static bool js_physics_BoxShape_getImpl(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_getImpl)
+SE_BIND_FUNC(js_physics_BoxShape_getImpl)     // getImpl
 
 static bool js_physics_BoxShape_getMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1751,7 +1751,7 @@ static bool js_physics_BoxShape_getMask(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_getMask)
+SE_BIND_FUNC(js_physics_BoxShape_getMask)     // getMask
 
 static bool js_physics_BoxShape_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1770,7 +1770,7 @@ static bool js_physics_BoxShape_initialize(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_initialize)
+SE_BIND_FUNC(js_physics_BoxShape_initialize)     // initialize
 
 static bool js_physics_BoxShape_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1785,7 +1785,7 @@ static bool js_physics_BoxShape_onDestroy(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_onDestroy)
+SE_BIND_FUNC(js_physics_BoxShape_onDestroy)     // onDestroy
 
 static bool js_physics_BoxShape_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1800,7 +1800,7 @@ static bool js_physics_BoxShape_onDisable(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_onDisable)
+SE_BIND_FUNC(js_physics_BoxShape_onDisable)     // onDisable
 
 static bool js_physics_BoxShape_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1815,7 +1815,7 @@ static bool js_physics_BoxShape_onEnable(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_onEnable)
+SE_BIND_FUNC(js_physics_BoxShape_onEnable)     // onEnable
 
 static bool js_physics_BoxShape_setAsTrigger(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1834,7 +1834,7 @@ static bool js_physics_BoxShape_setAsTrigger(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_setAsTrigger)
+SE_BIND_FUNC(js_physics_BoxShape_setAsTrigger)     // setAsTrigger
 
 static bool js_physics_BoxShape_setCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1857,7 +1857,7 @@ static bool js_physics_BoxShape_setCenter(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_setCenter)
+SE_BIND_FUNC(js_physics_BoxShape_setCenter)     // setCenter
 
 static bool js_physics_BoxShape_setGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1876,7 +1876,7 @@ static bool js_physics_BoxShape_setGroup(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_setGroup)
+SE_BIND_FUNC(js_physics_BoxShape_setGroup)     // setGroup
 
 static bool js_physics_BoxShape_setMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1895,7 +1895,7 @@ static bool js_physics_BoxShape_setMask(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_setMask)
+SE_BIND_FUNC(js_physics_BoxShape_setMask)     // setMask
 
 static bool js_physics_BoxShape_setMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1924,7 +1924,7 @@ static bool js_physics_BoxShape_setMaterial(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_setMaterial)
+SE_BIND_FUNC(js_physics_BoxShape_setMaterial)     // setMaterial
 
 static bool js_physics_BoxShape_setSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1947,7 +1947,7 @@ static bool js_physics_BoxShape_setSize(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_setSize)
+SE_BIND_FUNC(js_physics_BoxShape_setSize)     // setSize
 
 static bool js_physics_BoxShape_updateEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1966,7 +1966,7 @@ static bool js_physics_BoxShape_updateEventListener(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_BoxShape_updateEventListener)
+SE_BIND_FUNC(js_physics_BoxShape_updateEventListener)     // updateEventListener
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_BoxShape_finalize)
 
@@ -2044,7 +2044,7 @@ static bool js_physics_CapsuleShape_getAABB(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_getAABB)
+SE_BIND_FUNC(js_physics_CapsuleShape_getAABB)     // getAABB
 
 static bool js_physics_CapsuleShape_getBoundingSphere(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2063,7 +2063,7 @@ static bool js_physics_CapsuleShape_getBoundingSphere(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_getBoundingSphere)
+SE_BIND_FUNC(js_physics_CapsuleShape_getBoundingSphere)     // getBoundingSphere
 
 static bool js_physics_CapsuleShape_getGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2082,7 +2082,7 @@ static bool js_physics_CapsuleShape_getGroup(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_getGroup)
+SE_BIND_FUNC(js_physics_CapsuleShape_getGroup)     // getGroup
 
 static bool js_physics_CapsuleShape_getImpl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2101,7 +2101,7 @@ static bool js_physics_CapsuleShape_getImpl(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_getImpl)
+SE_BIND_FUNC(js_physics_CapsuleShape_getImpl)     // getImpl
 
 static bool js_physics_CapsuleShape_getMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2120,7 +2120,7 @@ static bool js_physics_CapsuleShape_getMask(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_getMask)
+SE_BIND_FUNC(js_physics_CapsuleShape_getMask)     // getMask
 
 static bool js_physics_CapsuleShape_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2139,7 +2139,7 @@ static bool js_physics_CapsuleShape_initialize(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_initialize)
+SE_BIND_FUNC(js_physics_CapsuleShape_initialize)     // initialize
 
 static bool js_physics_CapsuleShape_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2154,7 +2154,7 @@ static bool js_physics_CapsuleShape_onDestroy(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_onDestroy)
+SE_BIND_FUNC(js_physics_CapsuleShape_onDestroy)     // onDestroy
 
 static bool js_physics_CapsuleShape_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2169,7 +2169,7 @@ static bool js_physics_CapsuleShape_onDisable(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_onDisable)
+SE_BIND_FUNC(js_physics_CapsuleShape_onDisable)     // onDisable
 
 static bool js_physics_CapsuleShape_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2184,7 +2184,7 @@ static bool js_physics_CapsuleShape_onEnable(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_onEnable)
+SE_BIND_FUNC(js_physics_CapsuleShape_onEnable)     // onEnable
 
 static bool js_physics_CapsuleShape_setAsTrigger(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2203,7 +2203,7 @@ static bool js_physics_CapsuleShape_setAsTrigger(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_setAsTrigger)
+SE_BIND_FUNC(js_physics_CapsuleShape_setAsTrigger)     // setAsTrigger
 
 static bool js_physics_CapsuleShape_setCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2226,7 +2226,7 @@ static bool js_physics_CapsuleShape_setCenter(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_setCenter)
+SE_BIND_FUNC(js_physics_CapsuleShape_setCenter)     // setCenter
 
 static bool js_physics_CapsuleShape_setCylinderHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2245,7 +2245,7 @@ static bool js_physics_CapsuleShape_setCylinderHeight(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_setCylinderHeight)
+SE_BIND_FUNC(js_physics_CapsuleShape_setCylinderHeight)     // setCylinderHeight
 
 static bool js_physics_CapsuleShape_setDirection(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2264,7 +2264,7 @@ static bool js_physics_CapsuleShape_setDirection(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_setDirection)
+SE_BIND_FUNC(js_physics_CapsuleShape_setDirection)     // setDirection
 
 static bool js_physics_CapsuleShape_setGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2283,7 +2283,7 @@ static bool js_physics_CapsuleShape_setGroup(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_setGroup)
+SE_BIND_FUNC(js_physics_CapsuleShape_setGroup)     // setGroup
 
 static bool js_physics_CapsuleShape_setMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2302,7 +2302,7 @@ static bool js_physics_CapsuleShape_setMask(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_setMask)
+SE_BIND_FUNC(js_physics_CapsuleShape_setMask)     // setMask
 
 static bool js_physics_CapsuleShape_setMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2331,7 +2331,7 @@ static bool js_physics_CapsuleShape_setMaterial(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_setMaterial)
+SE_BIND_FUNC(js_physics_CapsuleShape_setMaterial)     // setMaterial
 
 static bool js_physics_CapsuleShape_setRadius(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2350,7 +2350,7 @@ static bool js_physics_CapsuleShape_setRadius(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_setRadius)
+SE_BIND_FUNC(js_physics_CapsuleShape_setRadius)     // setRadius
 
 static bool js_physics_CapsuleShape_updateEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2369,7 +2369,7 @@ static bool js_physics_CapsuleShape_updateEventListener(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CapsuleShape_updateEventListener)
+SE_BIND_FUNC(js_physics_CapsuleShape_updateEventListener)     // updateEventListener
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_CapsuleShape_finalize)
 
@@ -2449,7 +2449,7 @@ static bool js_physics_PlaneShape_getAABB(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_getAABB)
+SE_BIND_FUNC(js_physics_PlaneShape_getAABB)     // getAABB
 
 static bool js_physics_PlaneShape_getBoundingSphere(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2468,7 +2468,7 @@ static bool js_physics_PlaneShape_getBoundingSphere(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_getBoundingSphere)
+SE_BIND_FUNC(js_physics_PlaneShape_getBoundingSphere)     // getBoundingSphere
 
 static bool js_physics_PlaneShape_getGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2487,7 +2487,7 @@ static bool js_physics_PlaneShape_getGroup(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_getGroup)
+SE_BIND_FUNC(js_physics_PlaneShape_getGroup)     // getGroup
 
 static bool js_physics_PlaneShape_getImpl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2506,7 +2506,7 @@ static bool js_physics_PlaneShape_getImpl(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_getImpl)
+SE_BIND_FUNC(js_physics_PlaneShape_getImpl)     // getImpl
 
 static bool js_physics_PlaneShape_getMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2525,7 +2525,7 @@ static bool js_physics_PlaneShape_getMask(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_getMask)
+SE_BIND_FUNC(js_physics_PlaneShape_getMask)     // getMask
 
 static bool js_physics_PlaneShape_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2544,7 +2544,7 @@ static bool js_physics_PlaneShape_initialize(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_initialize)
+SE_BIND_FUNC(js_physics_PlaneShape_initialize)     // initialize
 
 static bool js_physics_PlaneShape_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2559,7 +2559,7 @@ static bool js_physics_PlaneShape_onDestroy(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_onDestroy)
+SE_BIND_FUNC(js_physics_PlaneShape_onDestroy)     // onDestroy
 
 static bool js_physics_PlaneShape_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2574,7 +2574,7 @@ static bool js_physics_PlaneShape_onDisable(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_onDisable)
+SE_BIND_FUNC(js_physics_PlaneShape_onDisable)     // onDisable
 
 static bool js_physics_PlaneShape_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2589,7 +2589,7 @@ static bool js_physics_PlaneShape_onEnable(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_onEnable)
+SE_BIND_FUNC(js_physics_PlaneShape_onEnable)     // onEnable
 
 static bool js_physics_PlaneShape_setAsTrigger(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2608,7 +2608,7 @@ static bool js_physics_PlaneShape_setAsTrigger(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_setAsTrigger)
+SE_BIND_FUNC(js_physics_PlaneShape_setAsTrigger)     // setAsTrigger
 
 static bool js_physics_PlaneShape_setCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2631,7 +2631,7 @@ static bool js_physics_PlaneShape_setCenter(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_setCenter)
+SE_BIND_FUNC(js_physics_PlaneShape_setCenter)     // setCenter
 
 static bool js_physics_PlaneShape_setConstant(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2650,7 +2650,7 @@ static bool js_physics_PlaneShape_setConstant(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_setConstant)
+SE_BIND_FUNC(js_physics_PlaneShape_setConstant)     // setConstant
 
 static bool js_physics_PlaneShape_setGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2669,7 +2669,7 @@ static bool js_physics_PlaneShape_setGroup(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_setGroup)
+SE_BIND_FUNC(js_physics_PlaneShape_setGroup)     // setGroup
 
 static bool js_physics_PlaneShape_setMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2688,7 +2688,7 @@ static bool js_physics_PlaneShape_setMask(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_setMask)
+SE_BIND_FUNC(js_physics_PlaneShape_setMask)     // setMask
 
 static bool js_physics_PlaneShape_setMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2717,7 +2717,7 @@ static bool js_physics_PlaneShape_setMaterial(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_setMaterial)
+SE_BIND_FUNC(js_physics_PlaneShape_setMaterial)     // setMaterial
 
 static bool js_physics_PlaneShape_setNormal(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2740,7 +2740,7 @@ static bool js_physics_PlaneShape_setNormal(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_setNormal)
+SE_BIND_FUNC(js_physics_PlaneShape_setNormal)     // setNormal
 
 static bool js_physics_PlaneShape_updateEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2759,7 +2759,7 @@ static bool js_physics_PlaneShape_updateEventListener(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_PlaneShape_updateEventListener)
+SE_BIND_FUNC(js_physics_PlaneShape_updateEventListener)     // updateEventListener
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_PlaneShape_finalize)
 
@@ -2838,7 +2838,7 @@ static bool js_physics_TrimeshShape_getAABB(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_getAABB)
+SE_BIND_FUNC(js_physics_TrimeshShape_getAABB)     // getAABB
 
 static bool js_physics_TrimeshShape_getBoundingSphere(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2857,7 +2857,7 @@ static bool js_physics_TrimeshShape_getBoundingSphere(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_getBoundingSphere)
+SE_BIND_FUNC(js_physics_TrimeshShape_getBoundingSphere)     // getBoundingSphere
 
 static bool js_physics_TrimeshShape_getGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2876,7 +2876,7 @@ static bool js_physics_TrimeshShape_getGroup(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_getGroup)
+SE_BIND_FUNC(js_physics_TrimeshShape_getGroup)     // getGroup
 
 static bool js_physics_TrimeshShape_getImpl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2895,7 +2895,7 @@ static bool js_physics_TrimeshShape_getImpl(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_getImpl)
+SE_BIND_FUNC(js_physics_TrimeshShape_getImpl)     // getImpl
 
 static bool js_physics_TrimeshShape_getMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2914,7 +2914,7 @@ static bool js_physics_TrimeshShape_getMask(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_getMask)
+SE_BIND_FUNC(js_physics_TrimeshShape_getMask)     // getMask
 
 static bool js_physics_TrimeshShape_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2933,7 +2933,7 @@ static bool js_physics_TrimeshShape_initialize(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_initialize)
+SE_BIND_FUNC(js_physics_TrimeshShape_initialize)     // initialize
 
 static bool js_physics_TrimeshShape_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2948,7 +2948,7 @@ static bool js_physics_TrimeshShape_onDestroy(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_onDestroy)
+SE_BIND_FUNC(js_physics_TrimeshShape_onDestroy)     // onDestroy
 
 static bool js_physics_TrimeshShape_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2963,7 +2963,7 @@ static bool js_physics_TrimeshShape_onDisable(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_onDisable)
+SE_BIND_FUNC(js_physics_TrimeshShape_onDisable)     // onDisable
 
 static bool js_physics_TrimeshShape_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2978,7 +2978,7 @@ static bool js_physics_TrimeshShape_onEnable(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_onEnable)
+SE_BIND_FUNC(js_physics_TrimeshShape_onEnable)     // onEnable
 
 static bool js_physics_TrimeshShape_setAsTrigger(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2997,7 +2997,7 @@ static bool js_physics_TrimeshShape_setAsTrigger(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_setAsTrigger)
+SE_BIND_FUNC(js_physics_TrimeshShape_setAsTrigger)     // setAsTrigger
 
 static bool js_physics_TrimeshShape_setCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3020,7 +3020,7 @@ static bool js_physics_TrimeshShape_setCenter(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_setCenter)
+SE_BIND_FUNC(js_physics_TrimeshShape_setCenter)     // setCenter
 
 static bool js_physics_TrimeshShape_setGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3039,7 +3039,7 @@ static bool js_physics_TrimeshShape_setGroup(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_setGroup)
+SE_BIND_FUNC(js_physics_TrimeshShape_setGroup)     // setGroup
 
 static bool js_physics_TrimeshShape_setMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3058,7 +3058,7 @@ static bool js_physics_TrimeshShape_setMask(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_setMask)
+SE_BIND_FUNC(js_physics_TrimeshShape_setMask)     // setMask
 
 static bool js_physics_TrimeshShape_setMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3087,7 +3087,7 @@ static bool js_physics_TrimeshShape_setMaterial(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_setMaterial)
+SE_BIND_FUNC(js_physics_TrimeshShape_setMaterial)     // setMaterial
 
 static bool js_physics_TrimeshShape_setMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3106,7 +3106,7 @@ static bool js_physics_TrimeshShape_setMesh(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_setMesh)
+SE_BIND_FUNC(js_physics_TrimeshShape_setMesh)     // setMesh
 
 static bool js_physics_TrimeshShape_updateEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3125,7 +3125,7 @@ static bool js_physics_TrimeshShape_updateEventListener(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_updateEventListener)
+SE_BIND_FUNC(js_physics_TrimeshShape_updateEventListener)     // updateEventListener
 
 static bool js_physics_TrimeshShape_useConvex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3144,7 +3144,7 @@ static bool js_physics_TrimeshShape_useConvex(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TrimeshShape_useConvex)
+SE_BIND_FUNC(js_physics_TrimeshShape_useConvex)     // useConvex
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_TrimeshShape_finalize)
 
@@ -3223,7 +3223,7 @@ static bool js_physics_CylinderShape_getAABB(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_getAABB)
+SE_BIND_FUNC(js_physics_CylinderShape_getAABB)     // getAABB
 
 static bool js_physics_CylinderShape_getBoundingSphere(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3242,7 +3242,7 @@ static bool js_physics_CylinderShape_getBoundingSphere(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_getBoundingSphere)
+SE_BIND_FUNC(js_physics_CylinderShape_getBoundingSphere)     // getBoundingSphere
 
 static bool js_physics_CylinderShape_getGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3261,7 +3261,7 @@ static bool js_physics_CylinderShape_getGroup(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_getGroup)
+SE_BIND_FUNC(js_physics_CylinderShape_getGroup)     // getGroup
 
 static bool js_physics_CylinderShape_getImpl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3280,7 +3280,7 @@ static bool js_physics_CylinderShape_getImpl(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_getImpl)
+SE_BIND_FUNC(js_physics_CylinderShape_getImpl)     // getImpl
 
 static bool js_physics_CylinderShape_getMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3299,7 +3299,7 @@ static bool js_physics_CylinderShape_getMask(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_getMask)
+SE_BIND_FUNC(js_physics_CylinderShape_getMask)     // getMask
 
 static bool js_physics_CylinderShape_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3318,7 +3318,7 @@ static bool js_physics_CylinderShape_initialize(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_initialize)
+SE_BIND_FUNC(js_physics_CylinderShape_initialize)     // initialize
 
 static bool js_physics_CylinderShape_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3333,7 +3333,7 @@ static bool js_physics_CylinderShape_onDestroy(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_onDestroy)
+SE_BIND_FUNC(js_physics_CylinderShape_onDestroy)     // onDestroy
 
 static bool js_physics_CylinderShape_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3348,7 +3348,7 @@ static bool js_physics_CylinderShape_onDisable(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_onDisable)
+SE_BIND_FUNC(js_physics_CylinderShape_onDisable)     // onDisable
 
 static bool js_physics_CylinderShape_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3363,7 +3363,7 @@ static bool js_physics_CylinderShape_onEnable(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_onEnable)
+SE_BIND_FUNC(js_physics_CylinderShape_onEnable)     // onEnable
 
 static bool js_physics_CylinderShape_setAsTrigger(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3382,7 +3382,7 @@ static bool js_physics_CylinderShape_setAsTrigger(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_setAsTrigger)
+SE_BIND_FUNC(js_physics_CylinderShape_setAsTrigger)     // setAsTrigger
 
 static bool js_physics_CylinderShape_setCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3405,7 +3405,7 @@ static bool js_physics_CylinderShape_setCenter(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_setCenter)
+SE_BIND_FUNC(js_physics_CylinderShape_setCenter)     // setCenter
 
 static bool js_physics_CylinderShape_setConvex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3424,7 +3424,7 @@ static bool js_physics_CylinderShape_setConvex(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_setConvex)
+SE_BIND_FUNC(js_physics_CylinderShape_setConvex)     // setConvex
 
 static bool js_physics_CylinderShape_setCylinder(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3447,7 +3447,7 @@ static bool js_physics_CylinderShape_setCylinder(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_setCylinder)
+SE_BIND_FUNC(js_physics_CylinderShape_setCylinder)     // setCylinder
 
 static bool js_physics_CylinderShape_setGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3466,7 +3466,7 @@ static bool js_physics_CylinderShape_setGroup(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_setGroup)
+SE_BIND_FUNC(js_physics_CylinderShape_setGroup)     // setGroup
 
 static bool js_physics_CylinderShape_setMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3485,7 +3485,7 @@ static bool js_physics_CylinderShape_setMask(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_setMask)
+SE_BIND_FUNC(js_physics_CylinderShape_setMask)     // setMask
 
 static bool js_physics_CylinderShape_setMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3514,7 +3514,7 @@ static bool js_physics_CylinderShape_setMaterial(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_setMaterial)
+SE_BIND_FUNC(js_physics_CylinderShape_setMaterial)     // setMaterial
 
 static bool js_physics_CylinderShape_updateEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3533,7 +3533,7 @@ static bool js_physics_CylinderShape_updateEventListener(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_CylinderShape_updateEventListener)
+SE_BIND_FUNC(js_physics_CylinderShape_updateEventListener)     // updateEventListener
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_CylinderShape_finalize)
 
@@ -3612,7 +3612,7 @@ static bool js_physics_ConeShape_getAABB(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_getAABB)
+SE_BIND_FUNC(js_physics_ConeShape_getAABB)     // getAABB
 
 static bool js_physics_ConeShape_getBoundingSphere(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3631,7 +3631,7 @@ static bool js_physics_ConeShape_getBoundingSphere(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_getBoundingSphere)
+SE_BIND_FUNC(js_physics_ConeShape_getBoundingSphere)     // getBoundingSphere
 
 static bool js_physics_ConeShape_getGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3650,7 +3650,7 @@ static bool js_physics_ConeShape_getGroup(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_getGroup)
+SE_BIND_FUNC(js_physics_ConeShape_getGroup)     // getGroup
 
 static bool js_physics_ConeShape_getImpl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3669,7 +3669,7 @@ static bool js_physics_ConeShape_getImpl(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_getImpl)
+SE_BIND_FUNC(js_physics_ConeShape_getImpl)     // getImpl
 
 static bool js_physics_ConeShape_getMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3688,7 +3688,7 @@ static bool js_physics_ConeShape_getMask(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_getMask)
+SE_BIND_FUNC(js_physics_ConeShape_getMask)     // getMask
 
 static bool js_physics_ConeShape_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3707,7 +3707,7 @@ static bool js_physics_ConeShape_initialize(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_initialize)
+SE_BIND_FUNC(js_physics_ConeShape_initialize)     // initialize
 
 static bool js_physics_ConeShape_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3722,7 +3722,7 @@ static bool js_physics_ConeShape_onDestroy(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_onDestroy)
+SE_BIND_FUNC(js_physics_ConeShape_onDestroy)     // onDestroy
 
 static bool js_physics_ConeShape_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3737,7 +3737,7 @@ static bool js_physics_ConeShape_onDisable(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_onDisable)
+SE_BIND_FUNC(js_physics_ConeShape_onDisable)     // onDisable
 
 static bool js_physics_ConeShape_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3752,7 +3752,7 @@ static bool js_physics_ConeShape_onEnable(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_onEnable)
+SE_BIND_FUNC(js_physics_ConeShape_onEnable)     // onEnable
 
 static bool js_physics_ConeShape_setAsTrigger(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3771,7 +3771,7 @@ static bool js_physics_ConeShape_setAsTrigger(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_setAsTrigger)
+SE_BIND_FUNC(js_physics_ConeShape_setAsTrigger)     // setAsTrigger
 
 static bool js_physics_ConeShape_setCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3794,7 +3794,7 @@ static bool js_physics_ConeShape_setCenter(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_setCenter)
+SE_BIND_FUNC(js_physics_ConeShape_setCenter)     // setCenter
 
 static bool js_physics_ConeShape_setCone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3817,7 +3817,7 @@ static bool js_physics_ConeShape_setCone(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_setCone)
+SE_BIND_FUNC(js_physics_ConeShape_setCone)     // setCone
 
 static bool js_physics_ConeShape_setConvex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3836,7 +3836,7 @@ static bool js_physics_ConeShape_setConvex(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_setConvex)
+SE_BIND_FUNC(js_physics_ConeShape_setConvex)     // setConvex
 
 static bool js_physics_ConeShape_setGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3855,7 +3855,7 @@ static bool js_physics_ConeShape_setGroup(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_setGroup)
+SE_BIND_FUNC(js_physics_ConeShape_setGroup)     // setGroup
 
 static bool js_physics_ConeShape_setMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3874,7 +3874,7 @@ static bool js_physics_ConeShape_setMask(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_setMask)
+SE_BIND_FUNC(js_physics_ConeShape_setMask)     // setMask
 
 static bool js_physics_ConeShape_setMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3903,7 +3903,7 @@ static bool js_physics_ConeShape_setMaterial(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_setMaterial)
+SE_BIND_FUNC(js_physics_ConeShape_setMaterial)     // setMaterial
 
 static bool js_physics_ConeShape_updateEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3922,7 +3922,7 @@ static bool js_physics_ConeShape_updateEventListener(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_ConeShape_updateEventListener)
+SE_BIND_FUNC(js_physics_ConeShape_updateEventListener)     // updateEventListener
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_ConeShape_finalize)
 
@@ -4001,7 +4001,7 @@ static bool js_physics_TerrainShape_getAABB(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_getAABB)
+SE_BIND_FUNC(js_physics_TerrainShape_getAABB)     // getAABB
 
 static bool js_physics_TerrainShape_getBoundingSphere(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4020,7 +4020,7 @@ static bool js_physics_TerrainShape_getBoundingSphere(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_getBoundingSphere)
+SE_BIND_FUNC(js_physics_TerrainShape_getBoundingSphere)     // getBoundingSphere
 
 static bool js_physics_TerrainShape_getGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4039,7 +4039,7 @@ static bool js_physics_TerrainShape_getGroup(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_getGroup)
+SE_BIND_FUNC(js_physics_TerrainShape_getGroup)     // getGroup
 
 static bool js_physics_TerrainShape_getImpl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4058,7 +4058,7 @@ static bool js_physics_TerrainShape_getImpl(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_getImpl)
+SE_BIND_FUNC(js_physics_TerrainShape_getImpl)     // getImpl
 
 static bool js_physics_TerrainShape_getMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4077,7 +4077,7 @@ static bool js_physics_TerrainShape_getMask(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_getMask)
+SE_BIND_FUNC(js_physics_TerrainShape_getMask)     // getMask
 
 static bool js_physics_TerrainShape_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4096,7 +4096,7 @@ static bool js_physics_TerrainShape_initialize(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_initialize)
+SE_BIND_FUNC(js_physics_TerrainShape_initialize)     // initialize
 
 static bool js_physics_TerrainShape_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4111,7 +4111,7 @@ static bool js_physics_TerrainShape_onDestroy(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_onDestroy)
+SE_BIND_FUNC(js_physics_TerrainShape_onDestroy)     // onDestroy
 
 static bool js_physics_TerrainShape_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4126,7 +4126,7 @@ static bool js_physics_TerrainShape_onDisable(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_onDisable)
+SE_BIND_FUNC(js_physics_TerrainShape_onDisable)     // onDisable
 
 static bool js_physics_TerrainShape_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4141,7 +4141,7 @@ static bool js_physics_TerrainShape_onEnable(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_onEnable)
+SE_BIND_FUNC(js_physics_TerrainShape_onEnable)     // onEnable
 
 static bool js_physics_TerrainShape_setAsTrigger(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4160,7 +4160,7 @@ static bool js_physics_TerrainShape_setAsTrigger(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_setAsTrigger)
+SE_BIND_FUNC(js_physics_TerrainShape_setAsTrigger)     // setAsTrigger
 
 static bool js_physics_TerrainShape_setCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4183,7 +4183,7 @@ static bool js_physics_TerrainShape_setCenter(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_setCenter)
+SE_BIND_FUNC(js_physics_TerrainShape_setCenter)     // setCenter
 
 static bool js_physics_TerrainShape_setGroup(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4202,7 +4202,7 @@ static bool js_physics_TerrainShape_setGroup(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_setGroup)
+SE_BIND_FUNC(js_physics_TerrainShape_setGroup)     // setGroup
 
 static bool js_physics_TerrainShape_setMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4221,7 +4221,7 @@ static bool js_physics_TerrainShape_setMask(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_setMask)
+SE_BIND_FUNC(js_physics_TerrainShape_setMask)     // setMask
 
 static bool js_physics_TerrainShape_setMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4250,7 +4250,7 @@ static bool js_physics_TerrainShape_setMaterial(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_setMaterial)
+SE_BIND_FUNC(js_physics_TerrainShape_setMaterial)     // setMaterial
 
 static bool js_physics_TerrainShape_setTerrain(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4275,7 +4275,7 @@ static bool js_physics_TerrainShape_setTerrain(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_setTerrain)
+SE_BIND_FUNC(js_physics_TerrainShape_setTerrain)     // setTerrain
 
 static bool js_physics_TerrainShape_updateEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4294,7 +4294,7 @@ static bool js_physics_TerrainShape_updateEventListener(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_TerrainShape_updateEventListener)
+SE_BIND_FUNC(js_physics_TerrainShape_updateEventListener)     // updateEventListener
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_TerrainShape_finalize)
 
@@ -4372,7 +4372,7 @@ static bool js_physics_RevoluteJoint_getImpl(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_getImpl)
+SE_BIND_FUNC(js_physics_RevoluteJoint_getImpl)     // getImpl
 
 static bool js_physics_RevoluteJoint_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4391,7 +4391,7 @@ static bool js_physics_RevoluteJoint_initialize(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_initialize)
+SE_BIND_FUNC(js_physics_RevoluteJoint_initialize)     // initialize
 
 static bool js_physics_RevoluteJoint_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4406,7 +4406,7 @@ static bool js_physics_RevoluteJoint_onDestroy(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_onDestroy)
+SE_BIND_FUNC(js_physics_RevoluteJoint_onDestroy)     // onDestroy
 
 static bool js_physics_RevoluteJoint_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4421,7 +4421,7 @@ static bool js_physics_RevoluteJoint_onDisable(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_onDisable)
+SE_BIND_FUNC(js_physics_RevoluteJoint_onDisable)     // onDisable
 
 static bool js_physics_RevoluteJoint_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4436,7 +4436,7 @@ static bool js_physics_RevoluteJoint_onEnable(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_onEnable)
+SE_BIND_FUNC(js_physics_RevoluteJoint_onEnable)     // onEnable
 
 static bool js_physics_RevoluteJoint_setAxis(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4459,7 +4459,7 @@ static bool js_physics_RevoluteJoint_setAxis(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_setAxis)
+SE_BIND_FUNC(js_physics_RevoluteJoint_setAxis)     // setAxis
 
 static bool js_physics_RevoluteJoint_setConnectedBody(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4478,7 +4478,7 @@ static bool js_physics_RevoluteJoint_setConnectedBody(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_setConnectedBody)
+SE_BIND_FUNC(js_physics_RevoluteJoint_setConnectedBody)     // setConnectedBody
 
 static bool js_physics_RevoluteJoint_setEnableCollision(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4497,7 +4497,7 @@ static bool js_physics_RevoluteJoint_setEnableCollision(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_setEnableCollision)
+SE_BIND_FUNC(js_physics_RevoluteJoint_setEnableCollision)     // setEnableCollision
 
 static bool js_physics_RevoluteJoint_setPivotA(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4520,7 +4520,7 @@ static bool js_physics_RevoluteJoint_setPivotA(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_setPivotA)
+SE_BIND_FUNC(js_physics_RevoluteJoint_setPivotA)     // setPivotA
 
 static bool js_physics_RevoluteJoint_setPivotB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4543,7 +4543,7 @@ static bool js_physics_RevoluteJoint_setPivotB(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_RevoluteJoint_setPivotB)
+SE_BIND_FUNC(js_physics_RevoluteJoint_setPivotB)     // setPivotB
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_RevoluteJoint_finalize)
 
@@ -4615,7 +4615,7 @@ static bool js_physics_DistanceJoint_getImpl(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_DistanceJoint_getImpl)
+SE_BIND_FUNC(js_physics_DistanceJoint_getImpl)     // getImpl
 
 static bool js_physics_DistanceJoint_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4634,7 +4634,7 @@ static bool js_physics_DistanceJoint_initialize(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_DistanceJoint_initialize)
+SE_BIND_FUNC(js_physics_DistanceJoint_initialize)     // initialize
 
 static bool js_physics_DistanceJoint_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4649,7 +4649,7 @@ static bool js_physics_DistanceJoint_onDestroy(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_DistanceJoint_onDestroy)
+SE_BIND_FUNC(js_physics_DistanceJoint_onDestroy)     // onDestroy
 
 static bool js_physics_DistanceJoint_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4664,7 +4664,7 @@ static bool js_physics_DistanceJoint_onDisable(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_DistanceJoint_onDisable)
+SE_BIND_FUNC(js_physics_DistanceJoint_onDisable)     // onDisable
 
 static bool js_physics_DistanceJoint_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4679,7 +4679,7 @@ static bool js_physics_DistanceJoint_onEnable(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_physics_DistanceJoint_onEnable)
+SE_BIND_FUNC(js_physics_DistanceJoint_onEnable)     // onEnable
 
 static bool js_physics_DistanceJoint_setConnectedBody(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4698,7 +4698,7 @@ static bool js_physics_DistanceJoint_setConnectedBody(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_DistanceJoint_setConnectedBody)
+SE_BIND_FUNC(js_physics_DistanceJoint_setConnectedBody)     // setConnectedBody
 
 static bool js_physics_DistanceJoint_setEnableCollision(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4717,7 +4717,7 @@ static bool js_physics_DistanceJoint_setEnableCollision(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_physics_DistanceJoint_setEnableCollision)
+SE_BIND_FUNC(js_physics_DistanceJoint_setEnableCollision)     // setEnableCollision
 
 static bool js_physics_DistanceJoint_setPivotA(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4740,7 +4740,7 @@ static bool js_physics_DistanceJoint_setPivotA(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_DistanceJoint_setPivotA)
+SE_BIND_FUNC(js_physics_DistanceJoint_setPivotA)     // setPivotA
 
 static bool js_physics_DistanceJoint_setPivotB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4763,7 +4763,7 @@ static bool js_physics_DistanceJoint_setPivotB(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_physics_DistanceJoint_setPivotB)
+SE_BIND_FUNC(js_physics_DistanceJoint_setPivotB)     // setPivotB
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_physics_DistanceJoint_finalize)
 

@@ -30,7 +30,7 @@ static bool js_extension_EventAssetsManagerEx_getAssetId(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getAssetId)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getAssetId)     // getAssetId
 
 static bool js_extension_EventAssetsManagerEx_getAssetsManagerEx(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -49,7 +49,7 @@ static bool js_extension_EventAssetsManagerEx_getAssetsManagerEx(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getAssetsManagerEx)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getAssetsManagerEx)     // getAssetsManagerEx
 
 static bool js_extension_EventAssetsManagerEx_getCURLECode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -68,7 +68,7 @@ static bool js_extension_EventAssetsManagerEx_getCURLECode(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getCURLECode)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getCURLECode)     // getCURLECode
 
 static bool js_extension_EventAssetsManagerEx_getCURLMCode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -87,7 +87,7 @@ static bool js_extension_EventAssetsManagerEx_getCURLMCode(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getCURLMCode)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getCURLMCode)     // getCURLMCode
 
 static bool js_extension_EventAssetsManagerEx_getDownloadedBytes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -106,7 +106,7 @@ static bool js_extension_EventAssetsManagerEx_getDownloadedBytes(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getDownloadedBytes)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getDownloadedBytes)     // getDownloadedBytes
 
 static bool js_extension_EventAssetsManagerEx_getDownloadedFiles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -125,7 +125,7 @@ static bool js_extension_EventAssetsManagerEx_getDownloadedFiles(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getDownloadedFiles)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getDownloadedFiles)     // getDownloadedFiles
 
 static bool js_extension_EventAssetsManagerEx_getEventCode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -144,7 +144,7 @@ static bool js_extension_EventAssetsManagerEx_getEventCode(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getEventCode)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getEventCode)     // getEventCode
 
 static bool js_extension_EventAssetsManagerEx_getMessage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -163,7 +163,7 @@ static bool js_extension_EventAssetsManagerEx_getMessage(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getMessage)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getMessage)     // getMessage
 
 static bool js_extension_EventAssetsManagerEx_getPercent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -182,7 +182,7 @@ static bool js_extension_EventAssetsManagerEx_getPercent(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getPercent)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getPercent)     // getPercent
 
 static bool js_extension_EventAssetsManagerEx_getPercentByFile(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -201,7 +201,7 @@ static bool js_extension_EventAssetsManagerEx_getPercentByFile(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getPercentByFile)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getPercentByFile)     // getPercentByFile
 
 static bool js_extension_EventAssetsManagerEx_getTotalBytes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -220,7 +220,7 @@ static bool js_extension_EventAssetsManagerEx_getTotalBytes(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getTotalBytes)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getTotalBytes)     // getTotalBytes
 
 static bool js_extension_EventAssetsManagerEx_getTotalFiles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -239,7 +239,7 @@ static bool js_extension_EventAssetsManagerEx_getTotalFiles(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getTotalFiles)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_getTotalFiles)     // getTotalFiles
 
 static bool js_extension_EventAssetsManagerEx_isResuming(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -258,7 +258,7 @@ static bool js_extension_EventAssetsManagerEx_isResuming(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_EventAssetsManagerEx_isResuming)
+SE_BIND_FUNC(js_extension_EventAssetsManagerEx_isResuming)     // isResuming
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_extension_EventAssetsManagerEx_finalize)
 
@@ -336,7 +336,7 @@ static bool js_extension_Manifest_getManifestFileUrl(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_getManifestFileUrl)
+SE_BIND_FUNC(js_extension_Manifest_getManifestFileUrl)     // getManifestFileUrl
 
 static bool js_extension_Manifest_getManifestRoot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -355,7 +355,7 @@ static bool js_extension_Manifest_getManifestRoot(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_getManifestRoot)
+SE_BIND_FUNC(js_extension_Manifest_getManifestRoot)     // getManifestRoot
 
 static bool js_extension_Manifest_getPackageUrl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -374,7 +374,7 @@ static bool js_extension_Manifest_getPackageUrl(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_getPackageUrl)
+SE_BIND_FUNC(js_extension_Manifest_getPackageUrl)     // getPackageUrl
 
 static bool js_extension_Manifest_getSearchPaths(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -393,7 +393,7 @@ static bool js_extension_Manifest_getSearchPaths(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_getSearchPaths)
+SE_BIND_FUNC(js_extension_Manifest_getSearchPaths)     // getSearchPaths
 
 static bool js_extension_Manifest_getVersion(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -412,7 +412,7 @@ static bool js_extension_Manifest_getVersion(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_getVersion)
+SE_BIND_FUNC(js_extension_Manifest_getVersion)     // getVersion
 
 static bool js_extension_Manifest_getVersionFileUrl(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -431,7 +431,7 @@ static bool js_extension_Manifest_getVersionFileUrl(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_getVersionFileUrl)
+SE_BIND_FUNC(js_extension_Manifest_getVersionFileUrl)     // getVersionFileUrl
 
 static bool js_extension_Manifest_isLoaded(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -450,7 +450,7 @@ static bool js_extension_Manifest_isLoaded(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_isLoaded)
+SE_BIND_FUNC(js_extension_Manifest_isLoaded)     // isLoaded
 
 static bool js_extension_Manifest_isUpdating(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -469,7 +469,7 @@ static bool js_extension_Manifest_isUpdating(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_isUpdating)
+SE_BIND_FUNC(js_extension_Manifest_isUpdating)     // isUpdating
 
 static bool js_extension_Manifest_isVersionLoaded(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -488,7 +488,7 @@ static bool js_extension_Manifest_isVersionLoaded(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_isVersionLoaded)
+SE_BIND_FUNC(js_extension_Manifest_isVersionLoaded)     // isVersionLoaded
 
 static bool js_extension_Manifest_parseFile(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -507,7 +507,7 @@ static bool js_extension_Manifest_parseFile(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_parseFile)
+SE_BIND_FUNC(js_extension_Manifest_parseFile)     // parseFile
 
 static bool js_extension_Manifest_parseJSONString(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -528,7 +528,7 @@ static bool js_extension_Manifest_parseJSONString(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_parseJSONString)
+SE_BIND_FUNC(js_extension_Manifest_parseJSONString)     // parseJSONString
 
 static bool js_extension_Manifest_setUpdating(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -547,7 +547,7 @@ static bool js_extension_Manifest_setUpdating(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_extension_Manifest_setUpdating)
+SE_BIND_FUNC(js_extension_Manifest_setUpdating)     // setUpdating
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_extension_Manifest_finalize)
 
@@ -643,7 +643,7 @@ static bool js_extension_AssetsManagerEx_checkUpdate(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_checkUpdate)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_checkUpdate)     // checkUpdate
 
 static bool js_extension_AssetsManagerEx_downloadFailedAssets(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -658,7 +658,7 @@ static bool js_extension_AssetsManagerEx_downloadFailedAssets(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_downloadFailedAssets)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_downloadFailedAssets)     // downloadFailedAssets
 
 static bool js_extension_AssetsManagerEx_getDownloadedBytes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -677,7 +677,7 @@ static bool js_extension_AssetsManagerEx_getDownloadedBytes(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_getDownloadedBytes)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_getDownloadedBytes)     // getDownloadedBytes
 
 static bool js_extension_AssetsManagerEx_getDownloadedFiles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -696,7 +696,7 @@ static bool js_extension_AssetsManagerEx_getDownloadedFiles(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_getDownloadedFiles)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_getDownloadedFiles)     // getDownloadedFiles
 
 static bool js_extension_AssetsManagerEx_getLocalManifest(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -715,7 +715,7 @@ static bool js_extension_AssetsManagerEx_getLocalManifest(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_getLocalManifest)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_getLocalManifest)     // getLocalManifest
 
 static bool js_extension_AssetsManagerEx_getMaxConcurrentTask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -734,7 +734,7 @@ static bool js_extension_AssetsManagerEx_getMaxConcurrentTask(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_getMaxConcurrentTask)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_getMaxConcurrentTask)     // getMaxConcurrentTask
 
 static bool js_extension_AssetsManagerEx_getRemoteManifest(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -753,7 +753,7 @@ static bool js_extension_AssetsManagerEx_getRemoteManifest(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_getRemoteManifest)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_getRemoteManifest)     // getRemoteManifest
 
 static bool js_extension_AssetsManagerEx_getState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -772,7 +772,7 @@ static bool js_extension_AssetsManagerEx_getState(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_getState)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_getState)     // getState
 
 static bool js_extension_AssetsManagerEx_getStoragePath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -791,7 +791,7 @@ static bool js_extension_AssetsManagerEx_getStoragePath(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_getStoragePath)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_getStoragePath)     // getStoragePath
 
 static bool js_extension_AssetsManagerEx_getTotalBytes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -810,7 +810,7 @@ static bool js_extension_AssetsManagerEx_getTotalBytes(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_getTotalBytes)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_getTotalBytes)     // getTotalBytes
 
 static bool js_extension_AssetsManagerEx_getTotalFiles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -829,7 +829,7 @@ static bool js_extension_AssetsManagerEx_getTotalFiles(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_getTotalFiles)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_getTotalFiles)     // getTotalFiles
 
 static bool js_extension_AssetsManagerEx_isResuming(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -848,7 +848,7 @@ static bool js_extension_AssetsManagerEx_isResuming(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_isResuming)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_isResuming)     // isResuming
 
 static bool js_extension_AssetsManagerEx_loadLocalManifest(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -891,7 +891,7 @@ static bool js_extension_AssetsManagerEx_loadLocalManifest(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_loadLocalManifest)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_loadLocalManifest)     // loadLocalManifest
 
 static bool js_extension_AssetsManagerEx_loadRemoteManifest(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -913,7 +913,7 @@ static bool js_extension_AssetsManagerEx_loadRemoteManifest(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_loadRemoteManifest)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_loadRemoteManifest)     // loadRemoteManifest
 
 static bool js_extension_AssetsManagerEx_prepareUpdate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -928,7 +928,7 @@ static bool js_extension_AssetsManagerEx_prepareUpdate(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_prepareUpdate)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_prepareUpdate)     // prepareUpdate
 
 static bool js_extension_AssetsManagerEx_setEventCallback(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -976,7 +976,7 @@ static bool js_extension_AssetsManagerEx_setEventCallback(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_setEventCallback)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_setEventCallback)     // setEventCallback
 
 static bool js_extension_AssetsManagerEx_setMaxConcurrentTask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -995,7 +995,7 @@ static bool js_extension_AssetsManagerEx_setMaxConcurrentTask(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_setMaxConcurrentTask)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_setMaxConcurrentTask)     // setMaxConcurrentTask
 
 static bool js_extension_AssetsManagerEx_setVerifyCallback(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1048,7 +1048,7 @@ static bool js_extension_AssetsManagerEx_setVerifyCallback(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_setVerifyCallback)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_setVerifyCallback)     // setVerifyCallback
 
 static bool js_extension_AssetsManagerEx_setVersionCompareHandle(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1101,7 +1101,7 @@ static bool js_extension_AssetsManagerEx_setVersionCompareHandle(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_setVersionCompareHandle)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_setVersionCompareHandle)     // setVersionCompareHandle
 
 static bool js_extension_AssetsManagerEx_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1116,7 +1116,7 @@ static bool js_extension_AssetsManagerEx_update(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_extension_AssetsManagerEx_update)
+SE_BIND_FUNC(js_extension_AssetsManagerEx_update)     // update
 
 static bool js_extension_AssetsManagerEx_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {

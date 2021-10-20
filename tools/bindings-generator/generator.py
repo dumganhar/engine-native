@@ -1147,8 +1147,8 @@ class NativeClass(object):
                     self.setter_list.append(get_func_name(item["setter"]))
                 if item["getter"] is not None and isinstance(item["getter"], NativeOverloadedFunction):
                     old = item["getter"]
-                    logger.error(" old getter %s" % old.__dict__)
-                    logger.error(" getter_list %s\n setter_list: %s", self.getter_list, self.setter_list)
+                    # logger.error(" old getter %s" % old.__dict__)
+                    # logger.error(" getter_list %s\n setter_list: %s", self.getter_list, self.setter_list)
                     item["getter"] = item["getter"].implementations[0]
                     item["getter"].signature_name = "js_%s_%s_%s" % (self.generator.prefix, self.class_name, old.func_name)
                 self.getter_setter.append(item)

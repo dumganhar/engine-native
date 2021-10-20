@@ -30,7 +30,7 @@ static bool js_geometry_ShapeBase_getType(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_geometry_ShapeBase_getType)
+SE_BIND_FUNC(js_geometry_ShapeBase_getType)     // getType
 
 static bool js_geometry_ShapeBase_setType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -49,7 +49,7 @@ static bool js_geometry_ShapeBase_setType(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_ShapeBase_setType)
+SE_BIND_FUNC(js_geometry_ShapeBase_setType)     // setType
 
 
 
@@ -228,7 +228,7 @@ static bool js_geometry_Capsule_transform(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 5);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Capsule_transform)
+SE_BIND_FUNC(js_geometry_Capsule_transform)     // transform
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_geometry_Capsule_finalize)
 
@@ -353,7 +353,7 @@ static bool js_geometry_Plane_getW(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Plane_getW)
+SE_BIND_FUNC(js_geometry_Plane_getW)     // getW
 
 static bool js_geometry_Plane_getX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -372,7 +372,7 @@ static bool js_geometry_Plane_getX(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Plane_getX)
+SE_BIND_FUNC(js_geometry_Plane_getX)     // getX
 
 static bool js_geometry_Plane_getY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -391,7 +391,7 @@ static bool js_geometry_Plane_getY(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Plane_getY)
+SE_BIND_FUNC(js_geometry_Plane_getY)     // getY
 
 static bool js_geometry_Plane_getZ(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -410,7 +410,7 @@ static bool js_geometry_Plane_getZ(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Plane_getZ)
+SE_BIND_FUNC(js_geometry_Plane_getZ)     // getZ
 
 static bool js_geometry_Plane_transform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -429,7 +429,7 @@ static bool js_geometry_Plane_transform(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Plane_transform)
+SE_BIND_FUNC(js_geometry_Plane_transform)     // transform
 
 static bool js_geometry_Plane_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -552,7 +552,7 @@ static bool js_geometry_Frustum_setAccurate(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Frustum_setAccurate)
+SE_BIND_FUNC(js_geometry_Frustum_setAccurate)     // setAccurate
 
 static bool js_geometry_Frustum_transform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -571,7 +571,7 @@ static bool js_geometry_Frustum_transform(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Frustum_transform)
+SE_BIND_FUNC(js_geometry_Frustum_transform)     // transform
 
 static bool js_geometry_Frustum_createOrtho_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -725,7 +725,7 @@ static bool js_geometry_Line_length(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Line_length)
+SE_BIND_FUNC(js_geometry_Line_length)     // length
 
 static bool js_geometry_Line_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1457,7 +1457,7 @@ static bool js_geometry_Sphere_clone(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_clone)
+SE_BIND_FUNC(js_geometry_Sphere_clone)     // clone
 
 static bool js_geometry_Sphere_copy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1479,7 +1479,7 @@ static bool js_geometry_Sphere_copy(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_copy)
+SE_BIND_FUNC(js_geometry_Sphere_copy)     // copy
 
 static bool js_geometry_Sphere_define(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1498,7 +1498,7 @@ static bool js_geometry_Sphere_define(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_define)
+SE_BIND_FUNC(js_geometry_Sphere_define)     // define
 
 static bool js_geometry_Sphere_getCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1517,7 +1517,7 @@ static bool js_geometry_Sphere_getCenter(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_getCenter)
+SE_BIND_FUNC(js_geometry_Sphere_getCenter)     // getCenter
 
 static bool js_geometry_Sphere_getRadius(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1536,7 +1536,7 @@ static bool js_geometry_Sphere_getRadius(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_getRadius)
+SE_BIND_FUNC(js_geometry_Sphere_getRadius)     // getRadius
 
 static bool js_geometry_Sphere_interset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1576,7 +1576,7 @@ static bool js_geometry_Sphere_interset(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_interset)
+SE_BIND_FUNC(js_geometry_Sphere_interset)     // interset
 
 static bool js_geometry_Sphere_mergeAABB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1595,7 +1595,7 @@ static bool js_geometry_Sphere_mergeAABB(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_mergeAABB)
+SE_BIND_FUNC(js_geometry_Sphere_mergeAABB)     // mergeAABB
 
 static bool js_geometry_Sphere_mergePoint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1614,7 +1614,7 @@ static bool js_geometry_Sphere_mergePoint(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_mergePoint)
+SE_BIND_FUNC(js_geometry_Sphere_mergePoint)     // mergePoint
 
 static bool js_geometry_Sphere_setCenter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1633,7 +1633,7 @@ static bool js_geometry_Sphere_setCenter(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_setCenter)
+SE_BIND_FUNC(js_geometry_Sphere_setCenter)     // setCenter
 
 static bool js_geometry_Sphere_setRadius(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1652,7 +1652,7 @@ static bool js_geometry_Sphere_setRadius(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_setRadius)
+SE_BIND_FUNC(js_geometry_Sphere_setRadius)     // setRadius
 
 static bool js_geometry_Sphere_setScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1673,7 +1673,7 @@ static bool js_geometry_Sphere_setScale(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_setScale)
+SE_BIND_FUNC(js_geometry_Sphere_setScale)     // setScale
 
 static bool js_geometry_Sphere_sphereFrustum(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1695,7 +1695,7 @@ static bool js_geometry_Sphere_sphereFrustum(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_sphereFrustum)
+SE_BIND_FUNC(js_geometry_Sphere_sphereFrustum)     // sphereFrustum
 
 static bool js_geometry_Sphere_spherePlane(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1717,7 +1717,7 @@ static bool js_geometry_Sphere_spherePlane(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_spherePlane)
+SE_BIND_FUNC(js_geometry_Sphere_spherePlane)     // spherePlane
 
 static bool js_geometry_Sphere_transform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1744,7 +1744,7 @@ static bool js_geometry_Sphere_transform(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 5);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_transform)
+SE_BIND_FUNC(js_geometry_Sphere_transform)     // transform
 
 static bool js_geometry_Sphere_translateAndRotate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1767,7 +1767,7 @@ static bool js_geometry_Sphere_translateAndRotate(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_geometry_Sphere_translateAndRotate)
+SE_BIND_FUNC(js_geometry_Sphere_translateAndRotate)     // translateAndRotate
 
 static bool js_geometry_Sphere_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {

@@ -27,7 +27,7 @@ static bool js_dragonbones_BaseObject_returnToPool(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseObject_returnToPool)
+SE_BIND_FUNC(js_dragonbones_BaseObject_returnToPool)     // returnToPool
 
 static bool js_dragonbones_BaseObject_setMaxCount_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -103,7 +103,7 @@ static bool js_dragonbones_Rectangle_clear(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Rectangle_clear)
+SE_BIND_FUNC(js_dragonbones_Rectangle_clear)     // clear
 
 SE_DECLARE_FINALIZE_FUNC(js_dragonBones_Rectangle_finalize)
 
@@ -559,7 +559,7 @@ static bool js_dragonbones_TextureAtlasData_addTexture(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TextureAtlasData_addTexture)
+SE_BIND_FUNC(js_dragonbones_TextureAtlasData_addTexture)     // addTexture
 
 static bool js_dragonbones_TextureAtlasData_createTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -578,7 +578,7 @@ static bool js_dragonbones_TextureAtlasData_createTexture(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TextureAtlasData_createTexture)
+SE_BIND_FUNC(js_dragonbones_TextureAtlasData_createTexture)     // createTexture
 
 static bool js_dragonbones_TextureAtlasData_getTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -600,7 +600,7 @@ static bool js_dragonbones_TextureAtlasData_getTexture(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TextureAtlasData_getTexture)
+SE_BIND_FUNC(js_dragonbones_TextureAtlasData_getTexture)     // getTexture
 
 static bool js_dragonbones_TextureAtlasData_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -668,7 +668,7 @@ static bool js_dragonbones_TextureData_getFrame(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TextureData_getFrame)
+SE_BIND_FUNC(js_dragonbones_TextureData_getFrame)     // getFrame
 
 static bool js_dragonbones_TextureData_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -687,7 +687,7 @@ static bool js_dragonbones_TextureData_getParent(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TextureData_getParent)
+SE_BIND_FUNC(js_dragonbones_TextureData_getParent)     // getParent
 
 static bool js_dragonbones_TextureData_getRegion(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -706,7 +706,7 @@ static bool js_dragonbones_TextureData_getRegion(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TextureData_getRegion)
+SE_BIND_FUNC(js_dragonbones_TextureData_getRegion)     // getRegion
 
 static bool js_dragonbones_TextureData_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -725,7 +725,7 @@ static bool js_dragonbones_TextureData_setFrame(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TextureData_setFrame)
+SE_BIND_FUNC(js_dragonbones_TextureData_setFrame)     // setFrame
 
 static bool js_dragonbones_TextureData_setParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -744,7 +744,7 @@ static bool js_dragonbones_TextureData_setParent(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TextureData_setParent)
+SE_BIND_FUNC(js_dragonbones_TextureData_setParent)     // setParent
 
 static bool js_dragonbones_TextureData_createRectangle_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -804,7 +804,7 @@ static bool js_dragonbones_ArmatureData_getAABB(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getAABB)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getAABB)     // getAABB
 
 static bool js_dragonbones_ArmatureData_getAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -826,7 +826,7 @@ static bool js_dragonbones_ArmatureData_getAnimation(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getAnimation)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getAnimation)     // getAnimation
 
 static bool js_dragonbones_ArmatureData_getAnimationNames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -845,7 +845,7 @@ static bool js_dragonbones_ArmatureData_getAnimationNames(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getAnimationNames)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getAnimationNames)     // getAnimationNames
 
 static bool js_dragonbones_ArmatureData_getBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -867,7 +867,7 @@ static bool js_dragonbones_ArmatureData_getBone(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getBone)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getBone)     // getBone
 
 static bool js_dragonbones_ArmatureData_getDefaultAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -886,7 +886,7 @@ static bool js_dragonbones_ArmatureData_getDefaultAnimation(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getDefaultAnimation)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getDefaultAnimation)     // getDefaultAnimation
 
 static bool js_dragonbones_ArmatureData_getDefaultSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -905,7 +905,7 @@ static bool js_dragonbones_ArmatureData_getDefaultSkin(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getDefaultSkin)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getDefaultSkin)     // getDefaultSkin
 
 static bool js_dragonbones_ArmatureData_getMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -931,7 +931,7 @@ static bool js_dragonbones_ArmatureData_getMesh(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getMesh)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getMesh)     // getMesh
 
 static bool js_dragonbones_ArmatureData_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -950,7 +950,7 @@ static bool js_dragonbones_ArmatureData_getParent(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getParent)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getParent)     // getParent
 
 static bool js_dragonbones_ArmatureData_getSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -972,7 +972,7 @@ static bool js_dragonbones_ArmatureData_getSkin(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getSkin)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getSkin)     // getSkin
 
 static bool js_dragonbones_ArmatureData_getSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -994,7 +994,7 @@ static bool js_dragonbones_ArmatureData_getSlot(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getSlot)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getSlot)     // getSlot
 
 static bool js_dragonbones_ArmatureData_getType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1013,7 +1013,7 @@ static bool js_dragonbones_ArmatureData_getType(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_getType)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_getType)     // getType
 
 static bool js_dragonbones_ArmatureData_setDefaultAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1032,7 +1032,7 @@ static bool js_dragonbones_ArmatureData_setDefaultAnimation(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_setDefaultAnimation)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_setDefaultAnimation)     // setDefaultAnimation
 
 static bool js_dragonbones_ArmatureData_setDefaultSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1051,7 +1051,7 @@ static bool js_dragonbones_ArmatureData_setDefaultSkin(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_setDefaultSkin)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_setDefaultSkin)     // setDefaultSkin
 
 static bool js_dragonbones_ArmatureData_setParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1070,7 +1070,7 @@ static bool js_dragonbones_ArmatureData_setParent(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_setParent)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_setParent)     // setParent
 
 static bool js_dragonbones_ArmatureData_setType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1089,7 +1089,7 @@ static bool js_dragonbones_ArmatureData_setType(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_setType)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_setType)     // setType
 
 static bool js_dragonbones_ArmatureData_sortBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1104,7 +1104,7 @@ static bool js_dragonbones_ArmatureData_sortBones(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureData_sortBones)
+SE_BIND_FUNC(js_dragonbones_ArmatureData_sortBones)     // sortBones
 
 static bool js_dragonbones_ArmatureData_get_frameRate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1213,7 +1213,7 @@ static bool js_dragonbones_BoneData_getParent(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BoneData_getParent)
+SE_BIND_FUNC(js_dragonbones_BoneData_getParent)     // getParent
 
 static bool js_dragonbones_BoneData_getTransfrom(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1232,7 +1232,7 @@ static bool js_dragonbones_BoneData_getTransfrom(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BoneData_getTransfrom)
+SE_BIND_FUNC(js_dragonbones_BoneData_getTransfrom)     // getTransfrom
 
 static bool js_dragonbones_BoneData_setParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1251,7 +1251,7 @@ static bool js_dragonbones_BoneData_setParent(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BoneData_setParent)
+SE_BIND_FUNC(js_dragonbones_BoneData_setParent)     // setParent
 
 static bool js_dragonbones_BoneData_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1347,7 +1347,7 @@ static bool js_dragonbones_SlotData_getBlendMode(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_SlotData_getBlendMode)
+SE_BIND_FUNC(js_dragonbones_SlotData_getBlendMode)     // getBlendMode
 
 static bool js_dragonbones_SlotData_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1366,7 +1366,7 @@ static bool js_dragonbones_SlotData_getParent(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_SlotData_getParent)
+SE_BIND_FUNC(js_dragonbones_SlotData_getParent)     // getParent
 
 static bool js_dragonbones_SlotData_setBlendMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1385,7 +1385,7 @@ static bool js_dragonbones_SlotData_setBlendMode(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_SlotData_setBlendMode)
+SE_BIND_FUNC(js_dragonbones_SlotData_setBlendMode)     // setBlendMode
 
 static bool js_dragonbones_SlotData_setParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1404,7 +1404,7 @@ static bool js_dragonbones_SlotData_setParent(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_SlotData_setParent)
+SE_BIND_FUNC(js_dragonbones_SlotData_setParent)     // setParent
 
 static bool js_dragonbones_SlotData_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1501,7 +1501,7 @@ static bool js_dragonbones_DragonBonesData_addArmature(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_DragonBonesData_addArmature)
+SE_BIND_FUNC(js_dragonbones_DragonBonesData_addArmature)     // addArmature
 
 static bool js_dragonbones_DragonBonesData_getArmature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1523,7 +1523,7 @@ static bool js_dragonbones_DragonBonesData_getArmature(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_DragonBonesData_getArmature)
+SE_BIND_FUNC(js_dragonbones_DragonBonesData_getArmature)     // getArmature
 
 static bool js_dragonbones_DragonBonesData_getArmatureNames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1542,7 +1542,7 @@ static bool js_dragonbones_DragonBonesData_getArmatureNames(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_DragonBonesData_getArmatureNames)
+SE_BIND_FUNC(js_dragonbones_DragonBonesData_getArmatureNames)     // getArmatureNames
 
 static bool js_dragonbones_DragonBonesData_getFrameIndices(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1561,7 +1561,7 @@ static bool js_dragonbones_DragonBonesData_getFrameIndices(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_DragonBonesData_getFrameIndices)
+SE_BIND_FUNC(js_dragonbones_DragonBonesData_getFrameIndices)     // getFrameIndices
 
 static bool js_dragonbones_DragonBonesData_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1679,7 +1679,7 @@ static bool js_dragonbones_AnimationData_getBoneCachedFrameIndices(se::State& s)
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationData_getBoneCachedFrameIndices)
+SE_BIND_FUNC(js_dragonbones_AnimationData_getBoneCachedFrameIndices)     // getBoneCachedFrameIndices
 
 static bool js_dragonbones_AnimationData_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1698,7 +1698,7 @@ static bool js_dragonbones_AnimationData_getParent(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationData_getParent)
+SE_BIND_FUNC(js_dragonbones_AnimationData_getParent)     // getParent
 
 static bool js_dragonbones_AnimationData_getSlotCachedFrameIndices(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1720,7 +1720,7 @@ static bool js_dragonbones_AnimationData_getSlotCachedFrameIndices(se::State& s)
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationData_getSlotCachedFrameIndices)
+SE_BIND_FUNC(js_dragonbones_AnimationData_getSlotCachedFrameIndices)     // getSlotCachedFrameIndices
 
 static bool js_dragonbones_AnimationData_getZOrderTimeline(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1739,7 +1739,7 @@ static bool js_dragonbones_AnimationData_getZOrderTimeline(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationData_getZOrderTimeline)
+SE_BIND_FUNC(js_dragonbones_AnimationData_getZOrderTimeline)     // getZOrderTimeline
 
 static bool js_dragonbones_AnimationData_setParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1758,7 +1758,7 @@ static bool js_dragonbones_AnimationData_setParent(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationData_setParent)
+SE_BIND_FUNC(js_dragonbones_AnimationData_setParent)     // setParent
 
 static bool js_dragonbones_AnimationData_get_frameCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1940,7 +1940,7 @@ static bool js_dragonbones_Armature__addBone(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature__addBone)
+SE_BIND_FUNC(js_dragonbones_Armature__addBone)     // _addBone
 
 static bool js_dragonbones_Armature__addSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1959,7 +1959,7 @@ static bool js_dragonbones_Armature__addSlot(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature__addSlot)
+SE_BIND_FUNC(js_dragonbones_Armature__addSlot)     // _addSlot
 
 static bool js_dragonbones_Armature__bufferAction(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1980,7 +1980,7 @@ static bool js_dragonbones_Armature__bufferAction(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature__bufferAction)
+SE_BIND_FUNC(js_dragonbones_Armature__bufferAction)     // _bufferAction
 
 static bool js_dragonbones_Armature_advanceTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1999,7 +1999,7 @@ static bool js_dragonbones_Armature_advanceTime(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_advanceTime)
+SE_BIND_FUNC(js_dragonbones_Armature_advanceTime)     // advanceTime
 
 static bool js_dragonbones_Armature_containsPoint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2023,7 +2023,7 @@ static bool js_dragonbones_Armature_containsPoint(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_containsPoint)
+SE_BIND_FUNC(js_dragonbones_Armature_containsPoint)     // containsPoint
 
 static bool js_dragonbones_Armature_dispose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2038,7 +2038,7 @@ static bool js_dragonbones_Armature_dispose(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_dispose)
+SE_BIND_FUNC(js_dragonbones_Armature_dispose)     // dispose
 
 static bool js_dragonbones_Armature_getAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2057,7 +2057,7 @@ static bool js_dragonbones_Armature_getAnimation(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getAnimation)
+SE_BIND_FUNC(js_dragonbones_Armature_getAnimation)     // getAnimation
 
 static bool js_dragonbones_Armature_getArmatureData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2076,7 +2076,7 @@ static bool js_dragonbones_Armature_getArmatureData(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getArmatureData)
+SE_BIND_FUNC(js_dragonbones_Armature_getArmatureData)     // getArmatureData
 
 static bool js_dragonbones_Armature_getBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2098,7 +2098,7 @@ static bool js_dragonbones_Armature_getBone(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getBone)
+SE_BIND_FUNC(js_dragonbones_Armature_getBone)     // getBone
 
 static bool js_dragonbones_Armature_getCacheFrameRate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2117,7 +2117,7 @@ static bool js_dragonbones_Armature_getCacheFrameRate(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getCacheFrameRate)
+SE_BIND_FUNC(js_dragonbones_Armature_getCacheFrameRate)     // getCacheFrameRate
 
 static bool js_dragonbones_Armature_getClock(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2136,7 +2136,7 @@ static bool js_dragonbones_Armature_getClock(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getClock)
+SE_BIND_FUNC(js_dragonbones_Armature_getClock)     // getClock
 
 static bool js_dragonbones_Armature_getEventDispatcher(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2155,7 +2155,7 @@ static bool js_dragonbones_Armature_getEventDispatcher(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getEventDispatcher)
+SE_BIND_FUNC(js_dragonbones_Armature_getEventDispatcher)     // getEventDispatcher
 
 static bool js_dragonbones_Armature_getFlipX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2174,7 +2174,7 @@ static bool js_dragonbones_Armature_getFlipX(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getFlipX)
+SE_BIND_FUNC(js_dragonbones_Armature_getFlipX)     // getFlipX
 
 static bool js_dragonbones_Armature_getFlipY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2193,7 +2193,7 @@ static bool js_dragonbones_Armature_getFlipY(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getFlipY)
+SE_BIND_FUNC(js_dragonbones_Armature_getFlipY)     // getFlipY
 
 static bool js_dragonbones_Armature_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2212,7 +2212,7 @@ static bool js_dragonbones_Armature_getName(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getName)
+SE_BIND_FUNC(js_dragonbones_Armature_getName)     // getName
 
 static bool js_dragonbones_Armature_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2231,7 +2231,7 @@ static bool js_dragonbones_Armature_getParent(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getParent)
+SE_BIND_FUNC(js_dragonbones_Armature_getParent)     // getParent
 
 static bool js_dragonbones_Armature_getProxy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2250,7 +2250,7 @@ static bool js_dragonbones_Armature_getProxy(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getProxy)
+SE_BIND_FUNC(js_dragonbones_Armature_getProxy)     // getProxy
 
 static bool js_dragonbones_Armature_getSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2272,7 +2272,7 @@ static bool js_dragonbones_Armature_getSlot(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_getSlot)
+SE_BIND_FUNC(js_dragonbones_Armature_getSlot)     // getSlot
 
 static bool js_dragonbones_Armature_invalidUpdate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2304,7 +2304,7 @@ static bool js_dragonbones_Armature_invalidUpdate(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_invalidUpdate)
+SE_BIND_FUNC(js_dragonbones_Armature_invalidUpdate)     // invalidUpdate
 
 static bool js_dragonbones_Armature_render(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2319,7 +2319,7 @@ static bool js_dragonbones_Armature_render(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_render)
+SE_BIND_FUNC(js_dragonbones_Armature_render)     // render
 
 static bool js_dragonbones_Armature_setCacheFrameRate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2338,7 +2338,7 @@ static bool js_dragonbones_Armature_setCacheFrameRate(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_setCacheFrameRate)
+SE_BIND_FUNC(js_dragonbones_Armature_setCacheFrameRate)     // setCacheFrameRate
 
 static bool js_dragonbones_Armature_setClock(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2357,7 +2357,7 @@ static bool js_dragonbones_Armature_setClock(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_setClock)
+SE_BIND_FUNC(js_dragonbones_Armature_setClock)     // setClock
 
 static bool js_dragonbones_Armature_setFlipX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2376,7 +2376,7 @@ static bool js_dragonbones_Armature_setFlipX(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_setFlipX)
+SE_BIND_FUNC(js_dragonbones_Armature_setFlipX)     // setFlipX
 
 static bool js_dragonbones_Armature_setFlipY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2395,7 +2395,7 @@ static bool js_dragonbones_Armature_setFlipY(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Armature_setFlipY)
+SE_BIND_FUNC(js_dragonbones_Armature_setFlipY)     // setFlipY
 
 
 
@@ -2456,7 +2456,7 @@ static bool js_dragonbones_TransformObject_getArmature(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TransformObject_getArmature)
+SE_BIND_FUNC(js_dragonbones_TransformObject_getArmature)     // getArmature
 
 static bool js_dragonbones_TransformObject_getGlobal(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2475,7 +2475,7 @@ static bool js_dragonbones_TransformObject_getGlobal(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TransformObject_getGlobal)
+SE_BIND_FUNC(js_dragonbones_TransformObject_getGlobal)     // getGlobal
 
 static bool js_dragonbones_TransformObject_getGlobalTransformMatrix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2494,7 +2494,7 @@ static bool js_dragonbones_TransformObject_getGlobalTransformMatrix(se::State& s
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TransformObject_getGlobalTransformMatrix)
+SE_BIND_FUNC(js_dragonbones_TransformObject_getGlobalTransformMatrix)     // getGlobalTransformMatrix
 
 static bool js_dragonbones_TransformObject_getOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2513,7 +2513,7 @@ static bool js_dragonbones_TransformObject_getOffset(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TransformObject_getOffset)
+SE_BIND_FUNC(js_dragonbones_TransformObject_getOffset)     // getOffset
 
 static bool js_dragonbones_TransformObject_getOrigin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2532,7 +2532,7 @@ static bool js_dragonbones_TransformObject_getOrigin(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TransformObject_getOrigin)
+SE_BIND_FUNC(js_dragonbones_TransformObject_getOrigin)     // getOrigin
 
 static bool js_dragonbones_TransformObject_updateGlobalTransform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2547,7 +2547,7 @@ static bool js_dragonbones_TransformObject_updateGlobalTransform(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TransformObject_updateGlobalTransform)
+SE_BIND_FUNC(js_dragonbones_TransformObject_updateGlobalTransform)     // updateGlobalTransform
 
 
 
@@ -2599,7 +2599,7 @@ static bool js_dragonbones_AnimationState_addBoneMask(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_addBoneMask)
+SE_BIND_FUNC(js_dragonbones_AnimationState_addBoneMask)     // addBoneMask
 
 static bool js_dragonbones_AnimationState_advanceTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2620,7 +2620,7 @@ static bool js_dragonbones_AnimationState_advanceTime(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_advanceTime)
+SE_BIND_FUNC(js_dragonbones_AnimationState_advanceTime)     // advanceTime
 
 static bool js_dragonbones_AnimationState_containsBoneMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2642,7 +2642,7 @@ static bool js_dragonbones_AnimationState_containsBoneMask(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_containsBoneMask)
+SE_BIND_FUNC(js_dragonbones_AnimationState_containsBoneMask)     // containsBoneMask
 
 static bool js_dragonbones_AnimationState_fadeOut(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2670,7 +2670,7 @@ static bool js_dragonbones_AnimationState_fadeOut(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_fadeOut)
+SE_BIND_FUNC(js_dragonbones_AnimationState_fadeOut)     // fadeOut
 
 static bool js_dragonbones_AnimationState_getAnimationData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2689,7 +2689,7 @@ static bool js_dragonbones_AnimationState_getAnimationData(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_getAnimationData)
+SE_BIND_FUNC(js_dragonbones_AnimationState_getAnimationData)     // getAnimationData
 
 static bool js_dragonbones_AnimationState_getCurrentPlayTimes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2708,7 +2708,7 @@ static bool js_dragonbones_AnimationState_getCurrentPlayTimes(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_getCurrentPlayTimes)
+SE_BIND_FUNC(js_dragonbones_AnimationState_getCurrentPlayTimes)     // getCurrentPlayTimes
 
 static bool js_dragonbones_AnimationState_getCurrentTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2727,7 +2727,7 @@ static bool js_dragonbones_AnimationState_getCurrentTime(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_getCurrentTime)
+SE_BIND_FUNC(js_dragonbones_AnimationState_getCurrentTime)     // getCurrentTime
 
 static bool js_dragonbones_AnimationState_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2746,7 +2746,7 @@ static bool js_dragonbones_AnimationState_getName(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_getName)
+SE_BIND_FUNC(js_dragonbones_AnimationState_getName)     // getName
 
 static bool js_dragonbones_AnimationState_getTotalTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2765,7 +2765,7 @@ static bool js_dragonbones_AnimationState_getTotalTime(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_getTotalTime)
+SE_BIND_FUNC(js_dragonbones_AnimationState_getTotalTime)     // getTotalTime
 
 static bool js_dragonbones_AnimationState_isCompleted(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2784,7 +2784,7 @@ static bool js_dragonbones_AnimationState_isCompleted(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_isCompleted)
+SE_BIND_FUNC(js_dragonbones_AnimationState_isCompleted)     // isCompleted
 
 static bool js_dragonbones_AnimationState_isFadeComplete(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2803,7 +2803,7 @@ static bool js_dragonbones_AnimationState_isFadeComplete(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_isFadeComplete)
+SE_BIND_FUNC(js_dragonbones_AnimationState_isFadeComplete)     // isFadeComplete
 
 static bool js_dragonbones_AnimationState_isFadeIn(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2822,7 +2822,7 @@ static bool js_dragonbones_AnimationState_isFadeIn(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_isFadeIn)
+SE_BIND_FUNC(js_dragonbones_AnimationState_isFadeIn)     // isFadeIn
 
 static bool js_dragonbones_AnimationState_isFadeOut(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2841,7 +2841,7 @@ static bool js_dragonbones_AnimationState_isFadeOut(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_isFadeOut)
+SE_BIND_FUNC(js_dragonbones_AnimationState_isFadeOut)     // isFadeOut
 
 static bool js_dragonbones_AnimationState_isPlaying(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2860,7 +2860,7 @@ static bool js_dragonbones_AnimationState_isPlaying(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_isPlaying)
+SE_BIND_FUNC(js_dragonbones_AnimationState_isPlaying)     // isPlaying
 
 static bool js_dragonbones_AnimationState_play(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2875,7 +2875,7 @@ static bool js_dragonbones_AnimationState_play(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_play)
+SE_BIND_FUNC(js_dragonbones_AnimationState_play)     // play
 
 static bool js_dragonbones_AnimationState_removeAllBoneMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2890,7 +2890,7 @@ static bool js_dragonbones_AnimationState_removeAllBoneMask(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_removeAllBoneMask)
+SE_BIND_FUNC(js_dragonbones_AnimationState_removeAllBoneMask)     // removeAllBoneMask
 
 static bool js_dragonbones_AnimationState_removeBoneMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2918,7 +2918,7 @@ static bool js_dragonbones_AnimationState_removeBoneMask(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_removeBoneMask)
+SE_BIND_FUNC(js_dragonbones_AnimationState_removeBoneMask)     // removeBoneMask
 
 static bool js_dragonbones_AnimationState_setCurrentTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2937,7 +2937,7 @@ static bool js_dragonbones_AnimationState_setCurrentTime(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_setCurrentTime)
+SE_BIND_FUNC(js_dragonbones_AnimationState_setCurrentTime)     // setCurrentTime
 
 static bool js_dragonbones_AnimationState_stop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2952,7 +2952,7 @@ static bool js_dragonbones_AnimationState_stop(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_AnimationState_stop)
+SE_BIND_FUNC(js_dragonbones_AnimationState_stop)     // stop
 
 static bool js_dragonbones_AnimationState_get_additiveBlending(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3235,7 +3235,7 @@ static bool js_dragonbones_Bone_contains(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_contains)
+SE_BIND_FUNC(js_dragonbones_Bone_contains)     // contains
 
 static bool js_dragonbones_Bone_getBoneData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3254,7 +3254,7 @@ static bool js_dragonbones_Bone_getBoneData(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_getBoneData)
+SE_BIND_FUNC(js_dragonbones_Bone_getBoneData)     // getBoneData
 
 static bool js_dragonbones_Bone_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3273,7 +3273,7 @@ static bool js_dragonbones_Bone_getName(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_getName)
+SE_BIND_FUNC(js_dragonbones_Bone_getName)     // getName
 
 static bool js_dragonbones_Bone_getOffsetMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3292,7 +3292,7 @@ static bool js_dragonbones_Bone_getOffsetMode(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_getOffsetMode)
+SE_BIND_FUNC(js_dragonbones_Bone_getOffsetMode)     // getOffsetMode
 
 static bool js_dragonbones_Bone_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3311,7 +3311,7 @@ static bool js_dragonbones_Bone_getParent(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_getParent)
+SE_BIND_FUNC(js_dragonbones_Bone_getParent)     // getParent
 
 static bool js_dragonbones_Bone_getVisible(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3330,7 +3330,7 @@ static bool js_dragonbones_Bone_getVisible(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_getVisible)
+SE_BIND_FUNC(js_dragonbones_Bone_getVisible)     // getVisible
 
 static bool js_dragonbones_Bone_init(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3351,7 +3351,7 @@ static bool js_dragonbones_Bone_init(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_init)
+SE_BIND_FUNC(js_dragonbones_Bone_init)     // init
 
 static bool js_dragonbones_Bone_invalidUpdate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3366,7 +3366,7 @@ static bool js_dragonbones_Bone_invalidUpdate(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_invalidUpdate)
+SE_BIND_FUNC(js_dragonbones_Bone_invalidUpdate)     // invalidUpdate
 
 static bool js_dragonbones_Bone_setOffsetMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3385,7 +3385,7 @@ static bool js_dragonbones_Bone_setOffsetMode(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_setOffsetMode)
+SE_BIND_FUNC(js_dragonbones_Bone_setOffsetMode)     // setOffsetMode
 
 static bool js_dragonbones_Bone_setVisible(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3404,7 +3404,7 @@ static bool js_dragonbones_Bone_setVisible(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_setVisible)
+SE_BIND_FUNC(js_dragonbones_Bone_setVisible)     // setVisible
 
 static bool js_dragonbones_Bone_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3423,7 +3423,7 @@ static bool js_dragonbones_Bone_update(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_update)
+SE_BIND_FUNC(js_dragonbones_Bone_update)     // update
 
 static bool js_dragonbones_Bone_updateByConstraint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3438,7 +3438,7 @@ static bool js_dragonbones_Bone_updateByConstraint(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Bone_updateByConstraint)
+SE_BIND_FUNC(js_dragonbones_Bone_updateByConstraint)     // updateByConstraint
 
 
 
@@ -3490,7 +3490,7 @@ static bool js_dragonbones_Slot__setZorder(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot__setZorder)
+SE_BIND_FUNC(js_dragonbones_Slot__setZorder)     // _setZorder
 
 static bool js_dragonbones_Slot__updateColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3505,7 +3505,7 @@ static bool js_dragonbones_Slot__updateColor(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot__updateColor)
+SE_BIND_FUNC(js_dragonbones_Slot__updateColor)     // _updateColor
 
 static bool js_dragonbones_Slot_containsPoint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3529,7 +3529,7 @@ static bool js_dragonbones_Slot_containsPoint(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_containsPoint)
+SE_BIND_FUNC(js_dragonbones_Slot_containsPoint)     // containsPoint
 
 static bool js_dragonbones_Slot_getBoundingBoxData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3548,7 +3548,7 @@ static bool js_dragonbones_Slot_getBoundingBoxData(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_getBoundingBoxData)
+SE_BIND_FUNC(js_dragonbones_Slot_getBoundingBoxData)     // getBoundingBoxData
 
 static bool js_dragonbones_Slot_getChildArmature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3567,7 +3567,7 @@ static bool js_dragonbones_Slot_getChildArmature(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_getChildArmature)
+SE_BIND_FUNC(js_dragonbones_Slot_getChildArmature)     // getChildArmature
 
 static bool js_dragonbones_Slot_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3586,7 +3586,7 @@ static bool js_dragonbones_Slot_getName(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_getName)
+SE_BIND_FUNC(js_dragonbones_Slot_getName)     // getName
 
 static bool js_dragonbones_Slot_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3605,7 +3605,7 @@ static bool js_dragonbones_Slot_getParent(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_getParent)
+SE_BIND_FUNC(js_dragonbones_Slot_getParent)     // getParent
 
 static bool js_dragonbones_Slot_getSlotData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3624,7 +3624,7 @@ static bool js_dragonbones_Slot_getSlotData(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_getSlotData)
+SE_BIND_FUNC(js_dragonbones_Slot_getSlotData)     // getSlotData
 
 static bool js_dragonbones_Slot_getVisible(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3643,7 +3643,7 @@ static bool js_dragonbones_Slot_getVisible(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_getVisible)
+SE_BIND_FUNC(js_dragonbones_Slot_getVisible)     // getVisible
 
 static bool js_dragonbones_Slot_invalidUpdate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3658,7 +3658,7 @@ static bool js_dragonbones_Slot_invalidUpdate(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_invalidUpdate)
+SE_BIND_FUNC(js_dragonbones_Slot_invalidUpdate)     // invalidUpdate
 
 static bool js_dragonbones_Slot_setChildArmature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3677,7 +3677,7 @@ static bool js_dragonbones_Slot_setChildArmature(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_setChildArmature)
+SE_BIND_FUNC(js_dragonbones_Slot_setChildArmature)     // setChildArmature
 
 static bool js_dragonbones_Slot_setVisible(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3696,7 +3696,7 @@ static bool js_dragonbones_Slot_setVisible(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_setVisible)
+SE_BIND_FUNC(js_dragonbones_Slot_setVisible)     // setVisible
 
 static bool js_dragonbones_Slot_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3715,7 +3715,7 @@ static bool js_dragonbones_Slot_update(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_update)
+SE_BIND_FUNC(js_dragonbones_Slot_update)     // update
 
 static bool js_dragonbones_Slot_updateTransformAndMatrix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3730,7 +3730,7 @@ static bool js_dragonbones_Slot_updateTransformAndMatrix(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Slot_updateTransformAndMatrix)
+SE_BIND_FUNC(js_dragonbones_Slot_updateTransformAndMatrix)     // updateTransformAndMatrix
 
 static bool js_dragonbones_Slot_get_displayController(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3837,7 +3837,7 @@ static bool js_dragonbones_WorldClock_advanceTime(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_WorldClock_advanceTime)
+SE_BIND_FUNC(js_dragonbones_WorldClock_advanceTime)     // advanceTime
 
 static bool js_dragonbones_WorldClock_clear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3852,7 +3852,7 @@ static bool js_dragonbones_WorldClock_clear(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_WorldClock_clear)
+SE_BIND_FUNC(js_dragonbones_WorldClock_clear)     // clear
 
 static bool js_dragonbones_WorldClock_getClock(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3871,7 +3871,7 @@ static bool js_dragonbones_WorldClock_getClock(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_WorldClock_getClock)
+SE_BIND_FUNC(js_dragonbones_WorldClock_getClock)     // getClock
 
 static bool js_dragonbones_WorldClock_render(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3886,7 +3886,7 @@ static bool js_dragonbones_WorldClock_render(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_WorldClock_render)
+SE_BIND_FUNC(js_dragonbones_WorldClock_render)     // render
 
 static bool js_dragonbones_WorldClock_setClock(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3905,7 +3905,7 @@ static bool js_dragonbones_WorldClock_setClock(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_WorldClock_setClock)
+SE_BIND_FUNC(js_dragonbones_WorldClock_setClock)     // setClock
 
 static bool js_dragonbones_WorldClock_getStaticClock_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3965,7 +3965,7 @@ static bool js_dragonbones_Animation_advanceTime(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_advanceTime)
+SE_BIND_FUNC(js_dragonbones_Animation_advanceTime)     // advanceTime
 
 static bool js_dragonbones_Animation_fadeIn(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4067,7 +4067,7 @@ static bool js_dragonbones_Animation_fadeIn(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_fadeIn)
+SE_BIND_FUNC(js_dragonbones_Animation_fadeIn)     // fadeIn
 
 static bool js_dragonbones_Animation_getAnimationNames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4086,7 +4086,7 @@ static bool js_dragonbones_Animation_getAnimationNames(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_getAnimationNames)
+SE_BIND_FUNC(js_dragonbones_Animation_getAnimationNames)     // getAnimationNames
 
 static bool js_dragonbones_Animation_getLastAnimationName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4105,7 +4105,7 @@ static bool js_dragonbones_Animation_getLastAnimationName(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_getLastAnimationName)
+SE_BIND_FUNC(js_dragonbones_Animation_getLastAnimationName)     // getLastAnimationName
 
 static bool js_dragonbones_Animation_getLastAnimationState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4124,7 +4124,7 @@ static bool js_dragonbones_Animation_getLastAnimationState(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_getLastAnimationState)
+SE_BIND_FUNC(js_dragonbones_Animation_getLastAnimationState)     // getLastAnimationState
 
 static bool js_dragonbones_Animation_getState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4146,7 +4146,7 @@ static bool js_dragonbones_Animation_getState(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_getState)
+SE_BIND_FUNC(js_dragonbones_Animation_getState)     // getState
 
 static bool js_dragonbones_Animation_gotoAndPlayByFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4194,7 +4194,7 @@ static bool js_dragonbones_Animation_gotoAndPlayByFrame(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_gotoAndPlayByFrame)
+SE_BIND_FUNC(js_dragonbones_Animation_gotoAndPlayByFrame)     // gotoAndPlayByFrame
 
 static bool js_dragonbones_Animation_gotoAndPlayByProgress(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4242,7 +4242,7 @@ static bool js_dragonbones_Animation_gotoAndPlayByProgress(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_gotoAndPlayByProgress)
+SE_BIND_FUNC(js_dragonbones_Animation_gotoAndPlayByProgress)     // gotoAndPlayByProgress
 
 static bool js_dragonbones_Animation_gotoAndPlayByTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4290,7 +4290,7 @@ static bool js_dragonbones_Animation_gotoAndPlayByTime(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_gotoAndPlayByTime)
+SE_BIND_FUNC(js_dragonbones_Animation_gotoAndPlayByTime)     // gotoAndPlayByTime
 
 static bool js_dragonbones_Animation_gotoAndStopByFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4324,7 +4324,7 @@ static bool js_dragonbones_Animation_gotoAndStopByFrame(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_gotoAndStopByFrame)
+SE_BIND_FUNC(js_dragonbones_Animation_gotoAndStopByFrame)     // gotoAndStopByFrame
 
 static bool js_dragonbones_Animation_gotoAndStopByProgress(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4358,7 +4358,7 @@ static bool js_dragonbones_Animation_gotoAndStopByProgress(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_gotoAndStopByProgress)
+SE_BIND_FUNC(js_dragonbones_Animation_gotoAndStopByProgress)     // gotoAndStopByProgress
 
 static bool js_dragonbones_Animation_gotoAndStopByTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4392,7 +4392,7 @@ static bool js_dragonbones_Animation_gotoAndStopByTime(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_gotoAndStopByTime)
+SE_BIND_FUNC(js_dragonbones_Animation_gotoAndStopByTime)     // gotoAndStopByTime
 
 static bool js_dragonbones_Animation_hasAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4414,7 +4414,7 @@ static bool js_dragonbones_Animation_hasAnimation(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_hasAnimation)
+SE_BIND_FUNC(js_dragonbones_Animation_hasAnimation)     // hasAnimation
 
 static bool js_dragonbones_Animation_init(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4433,7 +4433,7 @@ static bool js_dragonbones_Animation_init(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_init)
+SE_BIND_FUNC(js_dragonbones_Animation_init)     // init
 
 static bool js_dragonbones_Animation_isCompleted(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4452,7 +4452,7 @@ static bool js_dragonbones_Animation_isCompleted(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_isCompleted)
+SE_BIND_FUNC(js_dragonbones_Animation_isCompleted)     // isCompleted
 
 static bool js_dragonbones_Animation_isPlaying(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4471,7 +4471,7 @@ static bool js_dragonbones_Animation_isPlaying(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_isPlaying)
+SE_BIND_FUNC(js_dragonbones_Animation_isPlaying)     // isPlaying
 
 static bool js_dragonbones_Animation_play(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4512,7 +4512,7 @@ static bool js_dragonbones_Animation_play(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_play)
+SE_BIND_FUNC(js_dragonbones_Animation_play)     // play
 
 static bool js_dragonbones_Animation_reset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4527,7 +4527,7 @@ static bool js_dragonbones_Animation_reset(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_reset)
+SE_BIND_FUNC(js_dragonbones_Animation_reset)     // reset
 
 static bool js_dragonbones_Animation_stop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4546,7 +4546,7 @@ static bool js_dragonbones_Animation_stop(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Animation_stop)
+SE_BIND_FUNC(js_dragonbones_Animation_stop)     // stop
 
 static bool js_dragonbones_Animation_get_timeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4630,7 +4630,7 @@ static bool js_dragonbones_EventObject_getAnimationState(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_EventObject_getAnimationState)
+SE_BIND_FUNC(js_dragonbones_EventObject_getAnimationState)     // getAnimationState
 
 static bool js_dragonbones_EventObject_getArmature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4649,7 +4649,7 @@ static bool js_dragonbones_EventObject_getArmature(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_EventObject_getArmature)
+SE_BIND_FUNC(js_dragonbones_EventObject_getArmature)     // getArmature
 
 static bool js_dragonbones_EventObject_getBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4668,7 +4668,7 @@ static bool js_dragonbones_EventObject_getBone(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_EventObject_getBone)
+SE_BIND_FUNC(js_dragonbones_EventObject_getBone)     // getBone
 
 static bool js_dragonbones_EventObject_getSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4687,7 +4687,7 @@ static bool js_dragonbones_EventObject_getSlot(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_EventObject_getSlot)
+SE_BIND_FUNC(js_dragonbones_EventObject_getSlot)     // getSlot
 
 static bool js_dragonbones_EventObject_get_type(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4905,7 +4905,7 @@ static bool js_dragonbones_BaseFactory_addDragonBonesData(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_addDragonBonesData)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_addDragonBonesData)     // addDragonBonesData
 
 static bool js_dragonbones_BaseFactory_addTextureAtlasData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4933,7 +4933,7 @@ static bool js_dragonbones_BaseFactory_addTextureAtlasData(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_addTextureAtlasData)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_addTextureAtlasData)     // addTextureAtlasData
 
 static bool js_dragonbones_BaseFactory_buildArmature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4997,7 +4997,7 @@ static bool js_dragonbones_BaseFactory_buildArmature(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_buildArmature)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_buildArmature)     // buildArmature
 
 static bool js_dragonbones_BaseFactory_changeSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5023,7 +5023,7 @@ static bool js_dragonbones_BaseFactory_changeSkin(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_changeSkin)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_changeSkin)     // changeSkin
 
 static bool js_dragonbones_BaseFactory_clear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5046,7 +5046,7 @@ static bool js_dragonbones_BaseFactory_clear(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_clear)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_clear)     // clear
 
 static bool js_dragonbones_BaseFactory_getArmatureData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5080,7 +5080,7 @@ static bool js_dragonbones_BaseFactory_getArmatureData(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_getArmatureData)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_getArmatureData)     // getArmatureData
 
 static bool js_dragonbones_BaseFactory_getClock(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5099,7 +5099,7 @@ static bool js_dragonbones_BaseFactory_getClock(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_getClock)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_getClock)     // getClock
 
 static bool js_dragonbones_BaseFactory_getDragonBonesData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5121,7 +5121,7 @@ static bool js_dragonbones_BaseFactory_getDragonBonesData(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_getDragonBonesData)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_getDragonBonesData)     // getDragonBonesData
 
 static bool js_dragonbones_BaseFactory_parseDragonBonesData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5169,7 +5169,7 @@ static bool js_dragonbones_BaseFactory_parseDragonBonesData(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_parseDragonBonesData)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_parseDragonBonesData)     // parseDragonBonesData
 
 static bool js_dragonbones_BaseFactory_removeDragonBonesData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5197,7 +5197,7 @@ static bool js_dragonbones_BaseFactory_removeDragonBonesData(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_removeDragonBonesData)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_removeDragonBonesData)     // removeDragonBonesData
 
 static bool js_dragonbones_BaseFactory_removeTextureAtlasData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5225,7 +5225,7 @@ static bool js_dragonbones_BaseFactory_removeTextureAtlasData(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_removeTextureAtlasData)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_removeTextureAtlasData)     // removeTextureAtlasData
 
 static bool js_dragonbones_BaseFactory_replaceAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5263,7 +5263,7 @@ static bool js_dragonbones_BaseFactory_replaceAnimation(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_replaceAnimation)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_replaceAnimation)     // replaceAnimation
 
 static bool js_dragonbones_BaseFactory_replaceSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5291,7 +5291,7 @@ static bool js_dragonbones_BaseFactory_replaceSkin(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_replaceSkin)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_replaceSkin)     // replaceSkin
 
 static bool js_dragonbones_BaseFactory_replaceSlotDisplay(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5341,7 +5341,7 @@ static bool js_dragonbones_BaseFactory_replaceSlotDisplay(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseFactory_replaceSlotDisplay)
+SE_BIND_FUNC(js_dragonbones_BaseFactory_replaceSlotDisplay)     // replaceSlotDisplay
 
 
 
@@ -5388,7 +5388,7 @@ static bool js_dragonbones_CCSlot_updateWorldMatrix(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCSlot_updateWorldMatrix)
+SE_BIND_FUNC(js_dragonbones_CCSlot_updateWorldMatrix)     // updateWorldMatrix
 
 
 
@@ -5457,7 +5457,7 @@ static bool js_dragonbones_CCArmatureDisplay_addDBEventListener(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_addDBEventListener)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_addDBEventListener)     // addDBEventListener
 
 static bool js_dragonbones_CCArmatureDisplay_getArmature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5476,7 +5476,7 @@ static bool js_dragonbones_CCArmatureDisplay_getArmature(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getArmature)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getArmature)     // getArmature
 
 static bool js_dragonbones_CCArmatureDisplay_convertToRootSpace(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5500,7 +5500,7 @@ static bool js_dragonbones_CCArmatureDisplay_convertToRootSpace(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_convertToRootSpace)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_convertToRootSpace)     // convertToRootSpace
 
 static bool js_dragonbones_CCArmatureDisplay_dbClear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5515,7 +5515,7 @@ static bool js_dragonbones_CCArmatureDisplay_dbClear(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dbClear)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dbClear)     // dbClear
 
 static bool js_dragonbones_CCArmatureDisplay_dbInit(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5534,7 +5534,7 @@ static bool js_dragonbones_CCArmatureDisplay_dbInit(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dbInit)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dbInit)     // dbInit
 
 static bool js_dragonbones_CCArmatureDisplay_dbRender(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5549,7 +5549,7 @@ static bool js_dragonbones_CCArmatureDisplay_dbRender(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dbRender)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dbRender)     // dbRender
 
 static bool js_dragonbones_CCArmatureDisplay_dbUpdate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5564,7 +5564,7 @@ static bool js_dragonbones_CCArmatureDisplay_dbUpdate(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dbUpdate)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dbUpdate)     // dbUpdate
 
 static bool js_dragonbones_CCArmatureDisplay_dispatchDBEvent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5585,7 +5585,7 @@ static bool js_dragonbones_CCArmatureDisplay_dispatchDBEvent(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dispatchDBEvent)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dispatchDBEvent)     // dispatchDBEvent
 
 static bool js_dragonbones_CCArmatureDisplay_dispose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5608,7 +5608,7 @@ static bool js_dragonbones_CCArmatureDisplay_dispose(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dispose)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_dispose)     // dispose
 
 static bool js_dragonbones_CCArmatureDisplay_getAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5627,7 +5627,7 @@ static bool js_dragonbones_CCArmatureDisplay_getAnimation(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getAnimation)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getAnimation)     // getAnimation
 
 static bool js_dragonbones_CCArmatureDisplay_getDebugData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5646,7 +5646,7 @@ static bool js_dragonbones_CCArmatureDisplay_getDebugData(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getDebugData)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getDebugData)     // getDebugData
 
 static bool js_dragonbones_CCArmatureDisplay_getParamsBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5665,7 +5665,7 @@ static bool js_dragonbones_CCArmatureDisplay_getParamsBuffer(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getParamsBuffer)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getParamsBuffer)     // getParamsBuffer
 
 static bool js_dragonbones_CCArmatureDisplay_getRootDisplay(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5684,7 +5684,7 @@ static bool js_dragonbones_CCArmatureDisplay_getRootDisplay(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getRootDisplay)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getRootDisplay)     // getRootDisplay
 
 static bool js_dragonbones_CCArmatureDisplay_getSharedBufferOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5703,7 +5703,7 @@ static bool js_dragonbones_CCArmatureDisplay_getSharedBufferOffset(se::State& s)
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getSharedBufferOffset)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_getSharedBufferOffset)     // getSharedBufferOffset
 
 static bool js_dragonbones_CCArmatureDisplay_hasDBEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5725,7 +5725,7 @@ static bool js_dragonbones_CCArmatureDisplay_hasDBEventListener(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_hasDBEventListener)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_hasDBEventListener)     // hasDBEventListener
 
 static bool js_dragonbones_CCArmatureDisplay_removeDBEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5775,7 +5775,7 @@ static bool js_dragonbones_CCArmatureDisplay_removeDBEventListener(se::State& s)
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_removeDBEventListener)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_removeDBEventListener)     // removeDBEventListener
 
 static bool js_dragonbones_CCArmatureDisplay_setAttachEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5794,7 +5794,7 @@ static bool js_dragonbones_CCArmatureDisplay_setAttachEnabled(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setAttachEnabled)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setAttachEnabled)     // setAttachEnabled
 
 static bool js_dragonbones_CCArmatureDisplay_setBatchEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5813,7 +5813,7 @@ static bool js_dragonbones_CCArmatureDisplay_setBatchEnabled(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setBatchEnabled)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setBatchEnabled)     // setBatchEnabled
 
 static bool js_dragonbones_CCArmatureDisplay_setColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5838,7 +5838,7 @@ static bool js_dragonbones_CCArmatureDisplay_setColor(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setColor)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setColor)     // setColor
 
 static bool js_dragonbones_CCArmatureDisplay_setDBEventCallback(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5886,7 +5886,7 @@ static bool js_dragonbones_CCArmatureDisplay_setDBEventCallback(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setDBEventCallback)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setDBEventCallback)     // setDBEventCallback
 
 static bool js_dragonbones_CCArmatureDisplay_setDebugBonesEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5905,7 +5905,7 @@ static bool js_dragonbones_CCArmatureDisplay_setDebugBonesEnabled(se::State& s) 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setDebugBonesEnabled)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setDebugBonesEnabled)     // setDebugBonesEnabled
 
 static bool js_dragonbones_CCArmatureDisplay_setOpacityModifyRGB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5924,7 +5924,7 @@ static bool js_dragonbones_CCArmatureDisplay_setOpacityModifyRGB(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setOpacityModifyRGB)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setOpacityModifyRGB)     // setOpacityModifyRGB
 
 static bool js_dragonbones_CCArmatureDisplay_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6028,7 +6028,7 @@ static bool js_dragonbones_ArmatureCacheMgr_buildArmatureCache(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureCacheMgr_buildArmatureCache)
+SE_BIND_FUNC(js_dragonbones_ArmatureCacheMgr_buildArmatureCache)     // buildArmatureCache
 
 static bool js_dragonbones_ArmatureCacheMgr_removeArmatureCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6047,7 +6047,7 @@ static bool js_dragonbones_ArmatureCacheMgr_removeArmatureCache(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureCacheMgr_removeArmatureCache)
+SE_BIND_FUNC(js_dragonbones_ArmatureCacheMgr_removeArmatureCache)     // removeArmatureCache
 
 static bool js_dragonbones_ArmatureCacheMgr_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6131,7 +6131,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_addDBEventListener(se::State& 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_addDBEventListener)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_addDBEventListener)     // addDBEventListener
 
 static bool js_dragonbones_CCArmatureCacheDisplay_getArmature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6150,7 +6150,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_getArmature(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getArmature)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getArmature)     // getArmature
 
 static bool js_dragonbones_CCArmatureCacheDisplay_beginSchedule(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6165,7 +6165,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_beginSchedule(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_beginSchedule)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_beginSchedule)     // beginSchedule
 
 static bool js_dragonbones_CCArmatureCacheDisplay_dispatchDBEvent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6186,7 +6186,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_dispatchDBEvent(se::State& s) 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_dispatchDBEvent)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_dispatchDBEvent)     // dispatchDBEvent
 
 static bool js_dragonbones_CCArmatureCacheDisplay_dispose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6201,7 +6201,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_dispose(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_dispose)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_dispose)     // dispose
 
 static bool js_dragonbones_CCArmatureCacheDisplay_getAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6220,7 +6220,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_getAnimation(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getAnimation)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getAnimation)     // getAnimation
 
 static bool js_dragonbones_CCArmatureCacheDisplay_getParamsBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6239,7 +6239,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_getParamsBuffer(se::State& s) 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getParamsBuffer)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getParamsBuffer)     // getParamsBuffer
 
 static bool js_dragonbones_CCArmatureCacheDisplay_getSharedBufferOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6258,7 +6258,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_getSharedBufferOffset(se::Stat
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getSharedBufferOffset)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getSharedBufferOffset)     // getSharedBufferOffset
 
 static bool js_dragonbones_CCArmatureCacheDisplay_getTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6277,7 +6277,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_getTimeScale(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getTimeScale)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_getTimeScale)     // getTimeScale
 
 static bool js_dragonbones_CCArmatureCacheDisplay_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6292,7 +6292,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_onDisable(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_onDisable)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_onDisable)     // onDisable
 
 static bool js_dragonbones_CCArmatureCacheDisplay_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6307,7 +6307,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_onEnable(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_onEnable)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_onEnable)     // onEnable
 
 static bool js_dragonbones_CCArmatureCacheDisplay_playAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6328,7 +6328,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_playAnimation(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_playAnimation)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_playAnimation)     // playAnimation
 
 static bool js_dragonbones_CCArmatureCacheDisplay_removeDBEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6347,7 +6347,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_removeDBEventListener(se::Stat
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_removeDBEventListener)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_removeDBEventListener)     // removeDBEventListener
 
 static bool js_dragonbones_CCArmatureCacheDisplay_render(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6366,7 +6366,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_render(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_render)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_render)     // render
 
 static bool js_dragonbones_CCArmatureCacheDisplay_setAttachEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6385,7 +6385,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_setAttachEnabled(se::State& s)
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setAttachEnabled)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setAttachEnabled)     // setAttachEnabled
 
 static bool js_dragonbones_CCArmatureCacheDisplay_setBatchEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6404,7 +6404,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_setBatchEnabled(se::State& s) 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setBatchEnabled)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setBatchEnabled)     // setBatchEnabled
 
 static bool js_dragonbones_CCArmatureCacheDisplay_setColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6429,7 +6429,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_setColor(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setColor)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setColor)     // setColor
 
 static bool js_dragonbones_CCArmatureCacheDisplay_setDBEventCallback(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6477,7 +6477,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_setDBEventCallback(se::State& 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setDBEventCallback)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setDBEventCallback)     // setDBEventCallback
 
 static bool js_dragonbones_CCArmatureCacheDisplay_setOpacityModifyRGB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6496,7 +6496,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_setOpacityModifyRGB(se::State&
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setOpacityModifyRGB)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setOpacityModifyRGB)     // setOpacityModifyRGB
 
 static bool js_dragonbones_CCArmatureCacheDisplay_setTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6515,7 +6515,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_setTimeScale(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setTimeScale)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_setTimeScale)     // setTimeScale
 
 static bool js_dragonbones_CCArmatureCacheDisplay_stopSchedule(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6530,7 +6530,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_stopSchedule(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_stopSchedule)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_stopSchedule)     // stopSchedule
 
 static bool js_dragonbones_CCArmatureCacheDisplay_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6549,7 +6549,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_update(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_update)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_update)     // update
 
 static bool js_dragonbones_CCArmatureCacheDisplay_updateAllAnimationCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6564,7 +6564,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_updateAllAnimationCache(se::St
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_updateAllAnimationCache)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_updateAllAnimationCache)     // updateAllAnimationCache
 
 static bool js_dragonbones_CCArmatureCacheDisplay_updateAnimationCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6583,7 +6583,7 @@ static bool js_dragonbones_CCArmatureCacheDisplay_updateAnimationCache(se::State
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_updateAnimationCache)
+SE_BIND_FUNC(js_dragonbones_CCArmatureCacheDisplay_updateAnimationCache)     // updateAnimationCache
 
 SE_DECLARE_FINALIZE_FUNC(js_dragonBones_CCArmatureCacheDisplay_finalize)
 
@@ -6674,7 +6674,7 @@ static bool js_dragonbones_CCFactory_add(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_add)
+SE_BIND_FUNC(js_dragonbones_CCFactory_add)     // add
 
 static bool js_dragonbones_CCFactory_buildArmatureDisplay(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6738,7 +6738,7 @@ static bool js_dragonbones_CCFactory_buildArmatureDisplay(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_buildArmatureDisplay)
+SE_BIND_FUNC(js_dragonbones_CCFactory_buildArmatureDisplay)     // buildArmatureDisplay
 
 static bool js_dragonbones_CCFactory_getDragonBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6757,7 +6757,7 @@ static bool js_dragonbones_CCFactory_getDragonBones(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_getDragonBones)
+SE_BIND_FUNC(js_dragonbones_CCFactory_getDragonBones)     // getDragonBones
 
 static bool js_dragonbones_CCFactory_getSoundEventManager(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6776,7 +6776,7 @@ static bool js_dragonbones_CCFactory_getSoundEventManager(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_getSoundEventManager)
+SE_BIND_FUNC(js_dragonbones_CCFactory_getSoundEventManager)     // getSoundEventManager
 
 static bool js_dragonbones_CCFactory_getTextureAtlasDataByIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6800,7 +6800,7 @@ static bool js_dragonbones_CCFactory_getTextureAtlasDataByIndex(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_getTextureAtlasDataByIndex)
+SE_BIND_FUNC(js_dragonbones_CCFactory_getTextureAtlasDataByIndex)     // getTextureAtlasDataByIndex
 
 static bool js_dragonbones_CCFactory_getTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6819,7 +6819,7 @@ static bool js_dragonbones_CCFactory_getTimeScale(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_getTimeScale)
+SE_BIND_FUNC(js_dragonbones_CCFactory_getTimeScale)     // getTimeScale
 
 static bool js_dragonbones_CCFactory_parseDragonBonesDataByPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6867,7 +6867,7 @@ static bool js_dragonbones_CCFactory_parseDragonBonesDataByPath(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_parseDragonBonesDataByPath)
+SE_BIND_FUNC(js_dragonbones_CCFactory_parseDragonBonesDataByPath)     // parseDragonBonesDataByPath
 
 static bool js_dragonbones_CCFactory_remove(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6886,7 +6886,7 @@ static bool js_dragonbones_CCFactory_remove(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_remove)
+SE_BIND_FUNC(js_dragonbones_CCFactory_remove)     // remove
 
 static bool js_dragonbones_CCFactory_removeDragonBonesDataByUUID(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6914,7 +6914,7 @@ static bool js_dragonbones_CCFactory_removeDragonBonesDataByUUID(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_removeDragonBonesDataByUUID)
+SE_BIND_FUNC(js_dragonbones_CCFactory_removeDragonBonesDataByUUID)     // removeDragonBonesDataByUUID
 
 static bool js_dragonbones_CCFactory_removeTextureAtlasDataByIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6935,7 +6935,7 @@ static bool js_dragonbones_CCFactory_removeTextureAtlasDataByIndex(se::State& s)
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_removeTextureAtlasDataByIndex)
+SE_BIND_FUNC(js_dragonbones_CCFactory_removeTextureAtlasDataByIndex)     // removeTextureAtlasDataByIndex
 
 static bool js_dragonbones_CCFactory_render(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6954,7 +6954,7 @@ static bool js_dragonbones_CCFactory_render(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_render)
+SE_BIND_FUNC(js_dragonbones_CCFactory_render)     // render
 
 static bool js_dragonbones_CCFactory_setTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6973,7 +6973,7 @@ static bool js_dragonbones_CCFactory_setTimeScale(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_setTimeScale)
+SE_BIND_FUNC(js_dragonbones_CCFactory_setTimeScale)     // setTimeScale
 
 static bool js_dragonbones_CCFactory_stopSchedule(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6988,7 +6988,7 @@ static bool js_dragonbones_CCFactory_stopSchedule(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_stopSchedule)
+SE_BIND_FUNC(js_dragonbones_CCFactory_stopSchedule)     // stopSchedule
 
 static bool js_dragonbones_CCFactory_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7007,7 +7007,7 @@ static bool js_dragonbones_CCFactory_update(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_update)
+SE_BIND_FUNC(js_dragonbones_CCFactory_update)     // update
 
 static bool js_dragonbones_CCFactory_isInit_static(se::State& s) // NOLINT(readability-identifier-naming)
 {

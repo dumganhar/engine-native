@@ -249,7 +249,7 @@ static bool js_pipeline_GlobalDSManager_bindBuffer(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_bindBuffer)     // bindBuffer
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_bindBuffer)
 
 static bool js_pipeline_GlobalDSManager_bindSampler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -270,7 +270,7 @@ static bool js_pipeline_GlobalDSManager_bindSampler(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_bindSampler)     // bindSampler
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_bindSampler)
 
 static bool js_pipeline_GlobalDSManager_bindTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -291,7 +291,7 @@ static bool js_pipeline_GlobalDSManager_bindTexture(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_bindTexture)     // bindTexture
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_bindTexture)
 
 static bool js_pipeline_GlobalDSManager_getDescriptorSetLayout(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -310,7 +310,7 @@ static bool js_pipeline_GlobalDSManager_getDescriptorSetLayout(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_getDescriptorSetLayout)     // getDescriptorSetLayout
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_getDescriptorSetLayout)
 
 static bool js_pipeline_GlobalDSManager_getDescriptorSetMap(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -329,7 +329,7 @@ static bool js_pipeline_GlobalDSManager_getDescriptorSetMap(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_getDescriptorSetMap)     // getDescriptorSetMap
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_getDescriptorSetMap)
 
 static bool js_pipeline_GlobalDSManager_getGlobalDescriptorSet(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -348,7 +348,7 @@ static bool js_pipeline_GlobalDSManager_getGlobalDescriptorSet(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_getGlobalDescriptorSet)     // getGlobalDescriptorSet
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_getGlobalDescriptorSet)
 
 static bool js_pipeline_GlobalDSManager_getLinearSampler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -367,7 +367,7 @@ static bool js_pipeline_GlobalDSManager_getLinearSampler(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_getLinearSampler)     // getLinearSampler
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_getLinearSampler)
 
 static bool js_pipeline_GlobalDSManager_getOrCreateDescriptorSet(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -389,7 +389,7 @@ static bool js_pipeline_GlobalDSManager_getOrCreateDescriptorSet(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_getOrCreateDescriptorSet)     // getOrCreateDescriptorSet
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_getOrCreateDescriptorSet)
 
 static bool js_pipeline_GlobalDSManager_getPointSampler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -408,7 +408,7 @@ static bool js_pipeline_GlobalDSManager_getPointSampler(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_getPointSampler)     // getPointSampler
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_getPointSampler)
 
 static bool js_pipeline_GlobalDSManager_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -423,7 +423,7 @@ static bool js_pipeline_GlobalDSManager_update(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GlobalDSManager_update)     // update
+SE_BIND_FUNC(js_pipeline_GlobalDSManager_update)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_GlobalDSManager_finalize)
 
@@ -661,7 +661,7 @@ static bool js_pipeline_RenderPipeline_activate(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderPipeline_activate)     // activate
+SE_BIND_FUNC(js_pipeline_RenderPipeline_activate)
 
 static bool js_pipeline_RenderPipeline_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -676,7 +676,7 @@ static bool js_pipeline_RenderPipeline_destroy(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderPipeline_destroy)     // destroy
+SE_BIND_FUNC(js_pipeline_RenderPipeline_destroy)
 
 static bool js_pipeline_RenderPipeline_getConstantMacros(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -695,7 +695,7 @@ static bool js_pipeline_RenderPipeline_getConstantMacros(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getConstantMacros) // getConstantMacros
+SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getConstantMacros)
 
 static bool js_pipeline_RenderPipeline_getDescriptorSet(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -714,7 +714,7 @@ static bool js_pipeline_RenderPipeline_getDescriptorSet(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getDescriptorSet) // getDescriptorSet
+SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getDescriptorSet)
 
 static bool js_pipeline_RenderPipeline_getDescriptorSetLayout(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -733,7 +733,7 @@ static bool js_pipeline_RenderPipeline_getDescriptorSetLayout(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getDescriptorSetLayout) // getDescriptorSetLayout
+SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getDescriptorSetLayout)
 
 static bool js_pipeline_RenderPipeline_getDevice(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -752,7 +752,7 @@ static bool js_pipeline_RenderPipeline_getDevice(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderPipeline_getDevice)     // getDevice
+SE_BIND_FUNC(js_pipeline_RenderPipeline_getDevice)
 
 static bool js_pipeline_RenderPipeline_getGlobalDSManager(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -771,7 +771,7 @@ static bool js_pipeline_RenderPipeline_getGlobalDSManager(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getGlobalDSManager) // getGlobalDSManager
+SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getGlobalDSManager)
 
 static bool js_pipeline_RenderPipeline_getRenderstageByName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -793,7 +793,7 @@ static bool js_pipeline_RenderPipeline_getRenderstageByName(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderPipeline_getRenderstageByName)     // getRenderstageByName
+SE_BIND_FUNC(js_pipeline_RenderPipeline_getRenderstageByName)
 
 static bool js_pipeline_RenderPipeline_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -815,7 +815,7 @@ static bool js_pipeline_RenderPipeline_initialize(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderPipeline_initialize)     // initialize
+SE_BIND_FUNC(js_pipeline_RenderPipeline_initialize)
 
 static bool js_pipeline_RenderPipeline_render(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -834,7 +834,7 @@ static bool js_pipeline_RenderPipeline_render(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderPipeline_render)     // render
+SE_BIND_FUNC(js_pipeline_RenderPipeline_render)
 
 static bool js_pipeline_RenderPipeline_resize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -855,7 +855,7 @@ static bool js_pipeline_RenderPipeline_resize(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderPipeline_resize)     // resize
+SE_BIND_FUNC(js_pipeline_RenderPipeline_resize)
 
 static bool js_pipeline_RenderPipeline_setValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -922,7 +922,7 @@ static bool js_pipeline_RenderPipeline_setValue(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderPipeline_setValue)     // setValue
+SE_BIND_FUNC(js_pipeline_RenderPipeline_setValue)
 
 static bool js_pipeline_RenderPipeline_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1268,7 +1268,7 @@ static bool js_pipeline_RenderFlow_activate(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderFlow_activate)     // activate
+SE_BIND_FUNC(js_pipeline_RenderFlow_activate)
 
 static bool js_pipeline_RenderFlow_getRenderstageByName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1290,7 +1290,7 @@ static bool js_pipeline_RenderFlow_getRenderstageByName(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderFlow_getRenderstageByName)     // getRenderstageByName
+SE_BIND_FUNC(js_pipeline_RenderFlow_getRenderstageByName)
 
 static bool js_pipeline_RenderFlow_getTag(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1309,7 +1309,7 @@ static bool js_pipeline_RenderFlow_getTag(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderFlow_getTag)     // getTag
+SE_BIND_FUNC(js_pipeline_RenderFlow_getTag)
 
 static bool js_pipeline_RenderFlow_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1331,7 +1331,7 @@ static bool js_pipeline_RenderFlow_initialize(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderFlow_initialize)     // initialize
+SE_BIND_FUNC(js_pipeline_RenderFlow_initialize)
 
 
 
@@ -1671,7 +1671,7 @@ static bool js_pipeline_RenderStage_activate(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderStage_activate)     // activate
+SE_BIND_FUNC(js_pipeline_RenderStage_activate)
 
 static bool js_pipeline_RenderStage_getFlow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1690,7 +1690,7 @@ static bool js_pipeline_RenderStage_getFlow(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderStage_getFlow)     // getFlow
+SE_BIND_FUNC(js_pipeline_RenderStage_getFlow)
 
 static bool js_pipeline_RenderStage_getTag(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1709,7 +1709,7 @@ static bool js_pipeline_RenderStage_getTag(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderStage_getTag)     // getTag
+SE_BIND_FUNC(js_pipeline_RenderStage_getTag)
 
 static bool js_pipeline_RenderStage_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1731,7 +1731,7 @@ static bool js_pipeline_RenderStage_initialize(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_RenderStage_initialize)     // initialize
+SE_BIND_FUNC(js_pipeline_RenderStage_initialize)
 
 
 
@@ -1894,7 +1894,7 @@ static bool js_pipeline_ShadowStage_setFramebuffer(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_ShadowStage_setFramebuffer)     // setFramebuffer
+SE_BIND_FUNC(js_pipeline_ShadowStage_setFramebuffer)
 
 static bool js_pipeline_ShadowStage_setUseData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1915,7 +1915,7 @@ static bool js_pipeline_ShadowStage_setUseData(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_ShadowStage_setUseData)     // setUseData
+SE_BIND_FUNC(js_pipeline_ShadowStage_setUseData)
 
 static bool js_pipeline_ShadowStage_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1993,7 +1993,7 @@ static bool js_pipeline_InstancedBuffer_destroy(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_InstancedBuffer_destroy)     // destroy
+SE_BIND_FUNC(js_pipeline_InstancedBuffer_destroy)
 
 static bool js_pipeline_InstancedBuffer_setDynamicOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2014,7 +2014,7 @@ static bool js_pipeline_InstancedBuffer_setDynamicOffset(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_InstancedBuffer_setDynamicOffset)     // setDynamicOffset
+SE_BIND_FUNC(js_pipeline_InstancedBuffer_setDynamicOffset)
 
 static bool js_pipeline_InstancedBuffer_get_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2131,7 +2131,7 @@ static bool js_pipeline_DeferredPipeline_destroyFrameGraphExternalTexture(se::St
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_DeferredPipeline_destroyFrameGraphExternalTexture)     // destroyFrameGraphExternalTexture
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_destroyFrameGraphExternalTexture)
 
 static bool js_pipeline_DeferredPipeline_getClearcolor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2153,7 +2153,7 @@ static bool js_pipeline_DeferredPipeline_getClearcolor(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_DeferredPipeline_getClearcolor)     // getClearcolor
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getClearcolor)
 
 static bool js_pipeline_DeferredPipeline_getFrameGraph(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2172,7 +2172,7 @@ static bool js_pipeline_DeferredPipeline_getFrameGraph(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_DeferredPipeline_getFrameGraph)     // getFrameGraph
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getFrameGraph)
 
 static bool js_pipeline_DeferredPipeline_getFrameGraphCamera(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2191,7 +2191,7 @@ static bool js_pipeline_DeferredPipeline_getFrameGraphCamera(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_DeferredPipeline_getFrameGraphCamera)     // getFrameGraphCamera
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getFrameGraphCamera)
 
 static bool js_pipeline_DeferredPipeline_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2210,7 +2210,7 @@ static bool js_pipeline_DeferredPipeline_getHeight(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_DeferredPipeline_getHeight)     // getHeight
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getHeight)
 
 static bool js_pipeline_DeferredPipeline_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2229,7 +2229,7 @@ static bool js_pipeline_DeferredPipeline_getWidth(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_DeferredPipeline_getWidth)     // getWidth
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_getWidth)
 
 static bool js_pipeline_DeferredPipeline_initFrameGraphExternalTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2244,7 +2244,7 @@ static bool js_pipeline_DeferredPipeline_initFrameGraphExternalTexture(se::State
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_DeferredPipeline_initFrameGraphExternalTexture)     // initFrameGraphExternalTexture
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_initFrameGraphExternalTexture)
 
 static bool js_pipeline_DeferredPipeline_prepareFrameGraph(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2259,7 +2259,7 @@ static bool js_pipeline_DeferredPipeline_prepareFrameGraph(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_DeferredPipeline_prepareFrameGraph)     // prepareFrameGraph
+SE_BIND_FUNC(js_pipeline_DeferredPipeline_prepareFrameGraph)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_pipeline_DeferredPipeline_finalize)
 
@@ -2386,7 +2386,7 @@ static bool js_pipeline_GbufferStage_dispenseRenderObject2Queues(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GbufferStage_dispenseRenderObject2Queues)     // dispenseRenderObject2Queues
+SE_BIND_FUNC(js_pipeline_GbufferStage_dispenseRenderObject2Queues)
 
 static bool js_pipeline_GbufferStage_recordCommands(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2407,7 +2407,7 @@ static bool js_pipeline_GbufferStage_recordCommands(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_GbufferStage_recordCommands)     // recordCommands
+SE_BIND_FUNC(js_pipeline_GbufferStage_recordCommands)
 
 static bool js_pipeline_GbufferStage_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2550,7 +2550,7 @@ static bool js_pipeline_PostprocessStage_getGlobalSet(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_PostprocessStage_getGlobalSet)     // getGlobalSet
+SE_BIND_FUNC(js_pipeline_PostprocessStage_getGlobalSet)
 
 static bool js_pipeline_PostprocessStage_getInitializeInfo_static(se::State& s) // NOLINT(readability-identifier-naming)
 {

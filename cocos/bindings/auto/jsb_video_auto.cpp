@@ -58,7 +58,7 @@ static bool js_video_VideoPlayer_addEventListener(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_addEventListener)     // addEventListener
+SE_BIND_FUNC(js_video_VideoPlayer_addEventListener)
 
 static bool js_video_VideoPlayer_currentTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -77,7 +77,7 @@ static bool js_video_VideoPlayer_currentTime(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_currentTime)     // currentTime
+SE_BIND_FUNC(js_video_VideoPlayer_currentTime)
 
 static bool js_video_VideoPlayer_duration(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -96,7 +96,7 @@ static bool js_video_VideoPlayer_duration(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_duration)     // duration
+SE_BIND_FUNC(js_video_VideoPlayer_duration)
 
 static bool js_video_VideoPlayer_isKeepAspectRatioEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -115,7 +115,7 @@ static bool js_video_VideoPlayer_isKeepAspectRatioEnabled(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_isKeepAspectRatioEnabled)     // isKeepAspectRatioEnabled
+SE_BIND_FUNC(js_video_VideoPlayer_isKeepAspectRatioEnabled)
 
 static bool js_video_VideoPlayer_onPlayEvent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -134,7 +134,7 @@ static bool js_video_VideoPlayer_onPlayEvent(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_onPlayEvent)     // onPlayEvent
+SE_BIND_FUNC(js_video_VideoPlayer_onPlayEvent)
 
 static bool js_video_VideoPlayer_pause(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -149,7 +149,7 @@ static bool js_video_VideoPlayer_pause(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_pause)     // pause
+SE_BIND_FUNC(js_video_VideoPlayer_pause)
 
 static bool js_video_VideoPlayer_play(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -164,7 +164,7 @@ static bool js_video_VideoPlayer_play(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_play)     // play
+SE_BIND_FUNC(js_video_VideoPlayer_play)
 
 static bool js_video_VideoPlayer_seekTo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -183,7 +183,7 @@ static bool js_video_VideoPlayer_seekTo(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_seekTo)     // seekTo
+SE_BIND_FUNC(js_video_VideoPlayer_seekTo)
 
 static bool js_video_VideoPlayer_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -208,7 +208,7 @@ static bool js_video_VideoPlayer_setFrame(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_setFrame)     // setFrame
+SE_BIND_FUNC(js_video_VideoPlayer_setFrame)
 
 static bool js_video_VideoPlayer_setFullScreenEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -227,7 +227,7 @@ static bool js_video_VideoPlayer_setFullScreenEnabled(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_setFullScreenEnabled)     // setFullScreenEnabled
+SE_BIND_FUNC(js_video_VideoPlayer_setFullScreenEnabled)
 
 static bool js_video_VideoPlayer_setKeepAspectRatioEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -246,7 +246,7 @@ static bool js_video_VideoPlayer_setKeepAspectRatioEnabled(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_setKeepAspectRatioEnabled)     // setKeepAspectRatioEnabled
+SE_BIND_FUNC(js_video_VideoPlayer_setKeepAspectRatioEnabled)
 
 static bool js_video_VideoPlayer_setURL(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -265,7 +265,7 @@ static bool js_video_VideoPlayer_setURL(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_setURL)     // setURL
+SE_BIND_FUNC(js_video_VideoPlayer_setURL)
 
 static bool js_video_VideoPlayer_setVisible(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -284,7 +284,7 @@ static bool js_video_VideoPlayer_setVisible(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_setVisible)     // setVisible
+SE_BIND_FUNC(js_video_VideoPlayer_setVisible)
 
 static bool js_video_VideoPlayer_stop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -299,7 +299,7 @@ static bool js_video_VideoPlayer_stop(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_video_VideoPlayer_stop)     // stop
+SE_BIND_FUNC(js_video_VideoPlayer_stop)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_VideoPlayer_finalize)
 

@@ -47,7 +47,7 @@ static bool js_scene_CCObject_destroy(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_destroy)     // destroy
+SE_BIND_FUNC(js_scene_CCObject_destroy)
 
 static bool js_scene_CCObject_destroyImmediate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -62,7 +62,7 @@ static bool js_scene_CCObject_destroyImmediate(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_destroyImmediate)     // destroyImmediate
+SE_BIND_FUNC(js_scene_CCObject_destroyImmediate)
 
 static bool js_scene_CCObject_destruct(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -77,7 +77,7 @@ static bool js_scene_CCObject_destruct(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_destruct)     // destruct
+SE_BIND_FUNC(js_scene_CCObject_destruct)
 
 static bool js_scene_CCObject_getHideFlags(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -96,7 +96,7 @@ static bool js_scene_CCObject_getHideFlags(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_getHideFlags)     // getHideFlags
+SE_BIND_FUNC(js_scene_CCObject_getHideFlags)
 
 static bool js_scene_CCObject_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -115,7 +115,7 @@ static bool js_scene_CCObject_getName(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_getName)     // getName
+SE_BIND_FUNC(js_scene_CCObject_getName)
 
 static bool js_scene_CCObject_isReplicated(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -134,7 +134,7 @@ static bool js_scene_CCObject_isReplicated(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_isReplicated)     // isReplicated
+SE_BIND_FUNC(js_scene_CCObject_isReplicated)
 
 static bool js_scene_CCObject_isValid(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -153,7 +153,7 @@ static bool js_scene_CCObject_isValid(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_isValid)     // isValid
+SE_BIND_FUNC(js_scene_CCObject_isValid)
 
 static bool js_scene_CCObject_setHideFlags(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -172,7 +172,7 @@ static bool js_scene_CCObject_setHideFlags(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_setHideFlags)     // setHideFlags
+SE_BIND_FUNC(js_scene_CCObject_setHideFlags)
 
 static bool js_scene_CCObject_setName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -191,7 +191,7 @@ static bool js_scene_CCObject_setName(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_setName)     // setName
+SE_BIND_FUNC(js_scene_CCObject_setName)
 
 static bool js_scene_CCObject_setReplicated(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -210,7 +210,7 @@ static bool js_scene_CCObject_setReplicated(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_setReplicated)     // setReplicated
+SE_BIND_FUNC(js_scene_CCObject_setReplicated)
 
 static bool js_scene_CCObject_toString(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -229,7 +229,7 @@ static bool js_scene_CCObject_toString(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_CCObject_toString)     // toString
+SE_BIND_FUNC(js_scene_CCObject_toString)
 
 static bool js_scene_CCObject_deferredDestroy_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -295,7 +295,7 @@ static bool js_scene_Component___preload(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component___preload)     // __preload
+SE_BIND_FUNC(js_scene_Component___preload)
 
 static bool js_scene_Component__onPreDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -310,7 +310,7 @@ static bool js_scene_Component__onPreDestroy(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component__onPreDestroy)     // _onPreDestroy
+SE_BIND_FUNC(js_scene_Component__onPreDestroy)
 
 static bool js_scene_Component_getExecutionOrder(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -329,7 +329,7 @@ static bool js_scene_Component_getExecutionOrder(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_getExecutionOrder)     // getExecutionOrder
+SE_BIND_FUNC(js_scene_Component_getExecutionOrder)
 
 static bool js_scene_Component_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -348,7 +348,7 @@ static bool js_scene_Component_getName(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_getName)     // getName
+SE_BIND_FUNC(js_scene_Component_getName)
 
 static bool js_scene_Component_getNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -367,7 +367,7 @@ static bool js_scene_Component_getNode(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_getNode)     // getNode
+SE_BIND_FUNC(js_scene_Component_getNode)
 
 static bool js_scene_Component_getUuid(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -386,7 +386,7 @@ static bool js_scene_Component_getUuid(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_getUuid)     // getUuid
+SE_BIND_FUNC(js_scene_Component_getUuid)
 
 static bool js_scene_Component_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -405,7 +405,7 @@ static bool js_scene_Component_isEnabled(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_Component_isEnabled)
 
 static bool js_scene_Component_isEnabledInHierarchy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -424,7 +424,7 @@ static bool js_scene_Component_isEnabledInHierarchy(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_isEnabledInHierarchy)     // isEnabledInHierarchy
+SE_BIND_FUNC(js_scene_Component_isEnabledInHierarchy)
 
 static bool js_scene_Component_isOnLoadCalled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -443,7 +443,7 @@ static bool js_scene_Component_isOnLoadCalled(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_isOnLoadCalled)     // isOnLoadCalled
+SE_BIND_FUNC(js_scene_Component_isOnLoadCalled)
 
 static bool js_scene_Component_lateUpdate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -462,7 +462,7 @@ static bool js_scene_Component_lateUpdate(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_lateUpdate)     // lateUpdate
+SE_BIND_FUNC(js_scene_Component_lateUpdate)
 
 static bool js_scene_Component_onDestroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -477,7 +477,7 @@ static bool js_scene_Component_onDestroy(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_onDestroy)     // onDestroy
+SE_BIND_FUNC(js_scene_Component_onDestroy)
 
 static bool js_scene_Component_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -492,7 +492,7 @@ static bool js_scene_Component_onDisable(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_onDisable)     // onDisable
+SE_BIND_FUNC(js_scene_Component_onDisable)
 
 static bool js_scene_Component_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -507,7 +507,7 @@ static bool js_scene_Component_onEnable(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_onEnable)     // onEnable
+SE_BIND_FUNC(js_scene_Component_onEnable)
 
 static bool js_scene_Component_onFocusInEditor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -522,7 +522,7 @@ static bool js_scene_Component_onFocusInEditor(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_onFocusInEditor)     // onFocusInEditor
+SE_BIND_FUNC(js_scene_Component_onFocusInEditor)
 
 static bool js_scene_Component_onLoad(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -537,7 +537,7 @@ static bool js_scene_Component_onLoad(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_onLoad)     // onLoad
+SE_BIND_FUNC(js_scene_Component_onLoad)
 
 static bool js_scene_Component_onLostFocusInEditor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -552,7 +552,7 @@ static bool js_scene_Component_onLostFocusInEditor(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_onLostFocusInEditor)     // onLostFocusInEditor
+SE_BIND_FUNC(js_scene_Component_onLostFocusInEditor)
 
 static bool js_scene_Component_resetInEditor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -567,7 +567,7 @@ static bool js_scene_Component_resetInEditor(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_resetInEditor)     // resetInEditor
+SE_BIND_FUNC(js_scene_Component_resetInEditor)
 
 static bool js_scene_Component_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -586,7 +586,7 @@ static bool js_scene_Component_setEnabled(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_Component_setEnabled)
 
 static bool js_scene_Component_setName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -605,7 +605,7 @@ static bool js_scene_Component_setName(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_setName)     // setName
+SE_BIND_FUNC(js_scene_Component_setName)
 
 static bool js_scene_Component_start(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -620,7 +620,7 @@ static bool js_scene_Component_start(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_start)     // start
+SE_BIND_FUNC(js_scene_Component_start)
 
 static bool js_scene_Component_unscheduleAllCallbacks(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -635,7 +635,7 @@ static bool js_scene_Component_unscheduleAllCallbacks(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_unscheduleAllCallbacks)     // unscheduleAllCallbacks
+SE_BIND_FUNC(js_scene_Component_unscheduleAllCallbacks)
 
 static bool js_scene_Component_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -654,7 +654,7 @@ static bool js_scene_Component_update(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Component_update)     // update
+SE_BIND_FUNC(js_scene_Component_update)
 
 
 static bool js_cc_Component_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -721,7 +721,7 @@ static bool js_scene_Event_getCurrentTarget(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_getCurrentTarget)     // getCurrentTarget
+SE_BIND_FUNC(js_scene_Event_getCurrentTarget)
 
 static bool js_scene_Event_getEventName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -740,7 +740,7 @@ static bool js_scene_Event_getEventName(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_getEventName)     // getEventName
+SE_BIND_FUNC(js_scene_Event_getEventName)
 
 static bool js_scene_Event_getEventPhase(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -759,7 +759,7 @@ static bool js_scene_Event_getEventPhase(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_getEventPhase)     // getEventPhase
+SE_BIND_FUNC(js_scene_Event_getEventPhase)
 
 static bool js_scene_Event_getEventType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -778,7 +778,7 @@ static bool js_scene_Event_getEventType(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_getEventType)     // getEventType
+SE_BIND_FUNC(js_scene_Event_getEventType)
 
 static bool js_scene_Event_getTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -797,7 +797,7 @@ static bool js_scene_Event_getTarget(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_getTarget)     // getTarget
+SE_BIND_FUNC(js_scene_Event_getTarget)
 
 static bool js_scene_Event_isPropagationImmediateStopped(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -816,7 +816,7 @@ static bool js_scene_Event_isPropagationImmediateStopped(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_isPropagationImmediateStopped)     // isPropagationImmediateStopped
+SE_BIND_FUNC(js_scene_Event_isPropagationImmediateStopped)
 
 static bool js_scene_Event_isPropagationStopped(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -835,7 +835,7 @@ static bool js_scene_Event_isPropagationStopped(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_isPropagationStopped)     // isPropagationStopped
+SE_BIND_FUNC(js_scene_Event_isPropagationStopped)
 
 static bool js_scene_Event_isStopped(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -854,7 +854,7 @@ static bool js_scene_Event_isStopped(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_isStopped)     // isStopped
+SE_BIND_FUNC(js_scene_Event_isStopped)
 
 static bool js_scene_Event_isUseBubbles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -873,7 +873,7 @@ static bool js_scene_Event_isUseBubbles(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_isUseBubbles)     // isUseBubbles
+SE_BIND_FUNC(js_scene_Event_isUseBubbles)
 
 static bool js_scene_Event_reuse(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -901,7 +901,7 @@ static bool js_scene_Event_reuse(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_reuse)     // reuse
+SE_BIND_FUNC(js_scene_Event_reuse)
 
 static bool js_scene_Event_setCurrentTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -920,7 +920,7 @@ static bool js_scene_Event_setCurrentTarget(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_setCurrentTarget)     // setCurrentTarget
+SE_BIND_FUNC(js_scene_Event_setCurrentTarget)
 
 static bool js_scene_Event_setEventName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -939,7 +939,7 @@ static bool js_scene_Event_setEventName(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_setEventName)     // setEventName
+SE_BIND_FUNC(js_scene_Event_setEventName)
 
 static bool js_scene_Event_setEventPhase(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -958,7 +958,7 @@ static bool js_scene_Event_setEventPhase(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_setEventPhase)     // setEventPhase
+SE_BIND_FUNC(js_scene_Event_setEventPhase)
 
 static bool js_scene_Event_setPropagationImmediateStopped(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -977,7 +977,7 @@ static bool js_scene_Event_setPropagationImmediateStopped(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_setPropagationImmediateStopped)     // setPropagationImmediateStopped
+SE_BIND_FUNC(js_scene_Event_setPropagationImmediateStopped)
 
 static bool js_scene_Event_setPropagationStopped(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -996,7 +996,7 @@ static bool js_scene_Event_setPropagationStopped(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_setPropagationStopped)     // setPropagationStopped
+SE_BIND_FUNC(js_scene_Event_setPropagationStopped)
 
 static bool js_scene_Event_setTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1015,7 +1015,7 @@ static bool js_scene_Event_setTarget(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_setTarget)     // setTarget
+SE_BIND_FUNC(js_scene_Event_setTarget)
 
 static bool js_scene_Event_setUseBubbles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1034,7 +1034,7 @@ static bool js_scene_Event_setUseBubbles(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_setUseBubbles)     // setUseBubbles
+SE_BIND_FUNC(js_scene_Event_setUseBubbles)
 
 static bool js_scene_Event_unuse(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1049,7 +1049,7 @@ static bool js_scene_Event_unuse(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Event_unuse)     // unuse
+SE_BIND_FUNC(js_scene_Event_unuse)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_event_Event_finalize)
 
@@ -1155,7 +1155,7 @@ static bool js_scene_EventListener_checkAvailable(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_EventListener_checkAvailable)     // checkAvailable
+SE_BIND_FUNC(js_scene_EventListener_checkAvailable)
 
 static bool js_scene_EventListener_clone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1174,7 +1174,7 @@ static bool js_scene_EventListener_clone(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_EventListener_clone)     // clone
+SE_BIND_FUNC(js_scene_EventListener_clone)
 
 static bool js_scene_EventListener_init(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1229,7 +1229,7 @@ static bool js_scene_EventListener_init(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_scene_EventListener_init)     // init
+SE_BIND_FUNC(js_scene_EventListener_init)
 
 static bool js_scene_EventListener_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1248,7 +1248,7 @@ static bool js_scene_EventListener_isEnabled(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_EventListener_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_EventListener_isEnabled)
 
 static bool js_scene_EventListener_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1267,7 +1267,7 @@ static bool js_scene_EventListener_setEnabled(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_EventListener_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_EventListener_setEnabled)
 
 
 
@@ -1309,7 +1309,7 @@ static bool js_scene_Node_addChild(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_addChild)     // addChild
+SE_BIND_FUNC(js_scene_Node_addChild)
 
 static bool js_scene_Node_addComponent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1331,7 +1331,7 @@ static bool js_scene_Node_addComponent(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_addComponent)     // addComponent
+SE_BIND_FUNC(js_scene_Node_addComponent)
 
 static bool js_scene_Node_destroyAllChildren(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1346,7 +1346,7 @@ static bool js_scene_Node_destroyAllChildren(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_destroyAllChildren)     // destroyAllChildren
+SE_BIND_FUNC(js_scene_Node_destroyAllChildren)
 
 static bool js_scene_Node_dispatchEvent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1365,7 +1365,7 @@ static bool js_scene_Node_dispatchEvent(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_dispatchEvent)     // dispatchEvent
+SE_BIND_FUNC(js_scene_Node_dispatchEvent)
 
 static bool js_scene_Node_getAngle(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1384,7 +1384,7 @@ static bool js_scene_Node_getAngle(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getAngle)     // getAngle
+SE_BIND_FUNC(js_scene_Node_getAngle)
 
 static bool js_scene_Node_getChangedFlags(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1403,7 +1403,7 @@ static bool js_scene_Node_getChangedFlags(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getChangedFlags)     // getChangedFlags
+SE_BIND_FUNC(js_scene_Node_getChangedFlags)
 
 static bool js_scene_Node_getChildByName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1425,7 +1425,7 @@ static bool js_scene_Node_getChildByName(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getChildByName)     // getChildByName
+SE_BIND_FUNC(js_scene_Node_getChildByName)
 
 static bool js_scene_Node_getChildByPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1447,7 +1447,7 @@ static bool js_scene_Node_getChildByPath(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getChildByPath)     // getChildByPath
+SE_BIND_FUNC(js_scene_Node_getChildByPath)
 
 static bool js_scene_Node_getChildByUuid(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1469,7 +1469,7 @@ static bool js_scene_Node_getChildByUuid(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getChildByUuid)     // getChildByUuid
+SE_BIND_FUNC(js_scene_Node_getChildByUuid)
 
 static bool js_scene_Node_getChildren(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1488,7 +1488,7 @@ static bool js_scene_Node_getChildren(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getChildren)     // getChildren
+SE_BIND_FUNC(js_scene_Node_getChildren)
 
 static bool js_scene_Node_getComponentInChildren(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1510,7 +1510,7 @@ static bool js_scene_Node_getComponentInChildren(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getComponentInChildren)     // getComponentInChildren
+SE_BIND_FUNC(js_scene_Node_getComponentInChildren)
 
 static bool js_scene_Node_getComponents(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1547,7 +1547,7 @@ static bool js_scene_Node_getComponents(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getComponents)     // getComponents
+SE_BIND_FUNC(js_scene_Node_getComponents)
 
 static bool js_scene_Node_getComponentsInChildren(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1569,7 +1569,7 @@ static bool js_scene_Node_getComponentsInChildren(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getComponentsInChildren)     // getComponentsInChildren
+SE_BIND_FUNC(js_scene_Node_getComponentsInChildren)
 
 static bool js_scene_Node_getDirtyFlag(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1588,7 +1588,7 @@ static bool js_scene_Node_getDirtyFlag(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getDirtyFlag)     // getDirtyFlag
+SE_BIND_FUNC(js_scene_Node_getDirtyFlag)
 
 static bool js_scene_Node_getEulerAngles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1607,7 +1607,7 @@ static bool js_scene_Node_getEulerAngles(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getEulerAngles)     // getEulerAngles
+SE_BIND_FUNC(js_scene_Node_getEulerAngles)
 
 static bool js_scene_Node_getEventProcessor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1626,7 +1626,7 @@ static bool js_scene_Node_getEventProcessor(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getEventProcessor)     // getEventProcessor
+SE_BIND_FUNC(js_scene_Node_getEventProcessor)
 
 static bool js_scene_Node_getForward(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1645,7 +1645,7 @@ static bool js_scene_Node_getForward(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getForward)     // getForward
+SE_BIND_FUNC(js_scene_Node_getForward)
 
 static bool js_scene_Node_getLayer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1664,7 +1664,7 @@ static bool js_scene_Node_getLayer(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getLayer)     // getLayer
+SE_BIND_FUNC(js_scene_Node_getLayer)
 
 static bool js_scene_Node_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1683,7 +1683,7 @@ static bool js_scene_Node_getName(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getName)     // getName
+SE_BIND_FUNC(js_scene_Node_getName)
 
 static bool js_scene_Node_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1702,7 +1702,7 @@ static bool js_scene_Node_getParent(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getParent)     // getParent
+SE_BIND_FUNC(js_scene_Node_getParent)
 
 static bool js_scene_Node_getPersistNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1721,7 +1721,7 @@ static bool js_scene_Node_getPersistNode(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getPersistNode)     // getPersistNode
+SE_BIND_FUNC(js_scene_Node_getPersistNode)
 
 static bool js_scene_Node_getPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1740,7 +1740,7 @@ static bool js_scene_Node_getPosition(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getPosition)     // getPosition
+SE_BIND_FUNC(js_scene_Node_getPosition)
 
 static bool js_scene_Node_getRight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1759,7 +1759,7 @@ static bool js_scene_Node_getRight(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getRight)     // getRight
+SE_BIND_FUNC(js_scene_Node_getRight)
 
 static bool js_scene_Node_getRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1778,7 +1778,7 @@ static bool js_scene_Node_getRotation(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getRotation)     // getRotation
+SE_BIND_FUNC(js_scene_Node_getRotation)
 
 static bool js_scene_Node_getScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1797,7 +1797,7 @@ static bool js_scene_Node_getScale(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getScale)     // getScale
+SE_BIND_FUNC(js_scene_Node_getScale)
 
 static bool js_scene_Node_getScene(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1816,7 +1816,7 @@ static bool js_scene_Node_getScene(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getScene)     // getScene
+SE_BIND_FUNC(js_scene_Node_getScene)
 
 static bool js_scene_Node_getSiblingIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1835,7 +1835,7 @@ static bool js_scene_Node_getSiblingIndex(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getSiblingIndex)     // getSiblingIndex
+SE_BIND_FUNC(js_scene_Node_getSiblingIndex)
 
 static bool js_scene_Node_getUIProps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1854,7 +1854,7 @@ static bool js_scene_Node_getUIProps(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_PROP_GET(js_scene_Node_getUIProps) // getUIProps
+SE_BIND_PROP_GET(js_scene_Node_getUIProps)
 
 static bool js_scene_Node_getUUid(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1873,7 +1873,7 @@ static bool js_scene_Node_getUUid(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getUUid)     // getUUid
+SE_BIND_FUNC(js_scene_Node_getUUid)
 
 static bool js_scene_Node_getUp(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1892,7 +1892,7 @@ static bool js_scene_Node_getUp(se::State& s) // NOLINT(readability-identifier-n
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getUp)     // getUp
+SE_BIND_FUNC(js_scene_Node_getUp)
 
 static bool js_scene_Node_getWorldMatrix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1911,7 +1911,7 @@ static bool js_scene_Node_getWorldMatrix(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getWorldMatrix)     // getWorldMatrix
+SE_BIND_FUNC(js_scene_Node_getWorldMatrix)
 
 static bool js_scene_Node_getWorldPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1930,7 +1930,7 @@ static bool js_scene_Node_getWorldPosition(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getWorldPosition)     // getWorldPosition
+SE_BIND_FUNC(js_scene_Node_getWorldPosition)
 
 static bool js_scene_Node_getWorldRS(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1949,7 +1949,7 @@ static bool js_scene_Node_getWorldRS(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getWorldRS)     // getWorldRS
+SE_BIND_FUNC(js_scene_Node_getWorldRS)
 
 static bool js_scene_Node_getWorldRT(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1968,7 +1968,7 @@ static bool js_scene_Node_getWorldRT(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getWorldRT)     // getWorldRT
+SE_BIND_FUNC(js_scene_Node_getWorldRT)
 
 static bool js_scene_Node_getWorldRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1987,7 +1987,7 @@ static bool js_scene_Node_getWorldRotation(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getWorldRotation)     // getWorldRotation
+SE_BIND_FUNC(js_scene_Node_getWorldRotation)
 
 static bool js_scene_Node_getWorldScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2006,7 +2006,7 @@ static bool js_scene_Node_getWorldScale(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_getWorldScale)     // getWorldScale
+SE_BIND_FUNC(js_scene_Node_getWorldScale)
 
 static bool js_scene_Node_hasEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2086,7 +2086,7 @@ static bool js_scene_Node_hasEventListener(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_hasEventListener)     // hasEventListener
+SE_BIND_FUNC(js_scene_Node_hasEventListener)
 
 static bool js_scene_Node_insertChild(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2107,7 +2107,7 @@ static bool js_scene_Node_insertChild(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_insertChild)     // insertChild
+SE_BIND_FUNC(js_scene_Node_insertChild)
 
 static bool js_scene_Node_invalidateChildren(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2126,7 +2126,7 @@ static bool js_scene_Node_invalidateChildren(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_invalidateChildren)     // invalidateChildren
+SE_BIND_FUNC(js_scene_Node_invalidateChildren)
 
 static bool js_scene_Node_inverseTransformPoint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2147,7 +2147,7 @@ static bool js_scene_Node_inverseTransformPoint(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_inverseTransformPoint)     // inverseTransformPoint
+SE_BIND_FUNC(js_scene_Node_inverseTransformPoint)
 
 static bool js_scene_Node_isActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2166,7 +2166,7 @@ static bool js_scene_Node_isActive(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_isActive)     // isActive
+SE_BIND_FUNC(js_scene_Node_isActive)
 
 static bool js_scene_Node_isActiveInHierarchy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2185,7 +2185,7 @@ static bool js_scene_Node_isActiveInHierarchy(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_isActiveInHierarchy)     // isActiveInHierarchy
+SE_BIND_FUNC(js_scene_Node_isActiveInHierarchy)
 
 static bool js_scene_Node_isChildOf(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2207,7 +2207,7 @@ static bool js_scene_Node_isChildOf(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_isChildOf)     // isChildOf
+SE_BIND_FUNC(js_scene_Node_isChildOf)
 
 static bool js_scene_Node_lookAt(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2228,7 +2228,7 @@ static bool js_scene_Node_lookAt(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_lookAt)     // lookAt
+SE_BIND_FUNC(js_scene_Node_lookAt)
 
 static bool js_scene_Node_off(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2294,7 +2294,7 @@ static bool js_scene_Node_off(se::State& s) // NOLINT(readability-identifier-nam
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_off)     // off
+SE_BIND_FUNC(js_scene_Node_off)
 
 static bool js_scene_Node_onPostActivated(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2313,7 +2313,7 @@ static bool js_scene_Node_onPostActivated(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_onPostActivated)     // onPostActivated
+SE_BIND_FUNC(js_scene_Node_onPostActivated)
 
 static bool js_scene_Node_pauseSystemEvents(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2332,7 +2332,7 @@ static bool js_scene_Node_pauseSystemEvents(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_pauseSystemEvents)     // pauseSystemEvents
+SE_BIND_FUNC(js_scene_Node_pauseSystemEvents)
 
 static bool js_scene_Node_removeAllChildren(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2347,7 +2347,7 @@ static bool js_scene_Node_removeAllChildren(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_removeAllChildren)     // removeAllChildren
+SE_BIND_FUNC(js_scene_Node_removeAllChildren)
 
 static bool js_scene_Node_removeChild(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2366,7 +2366,7 @@ static bool js_scene_Node_removeChild(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_removeChild)     // removeChild
+SE_BIND_FUNC(js_scene_Node_removeChild)
 
 static bool js_scene_Node_removeComponent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2385,7 +2385,7 @@ static bool js_scene_Node_removeComponent(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_removeComponent)     // removeComponent
+SE_BIND_FUNC(js_scene_Node_removeComponent)
 
 static bool js_scene_Node_removeFromParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2400,7 +2400,7 @@ static bool js_scene_Node_removeFromParent(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_removeFromParent)     // removeFromParent
+SE_BIND_FUNC(js_scene_Node_removeFromParent)
 
 static bool js_scene_Node_resumeSystemEvents(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2419,7 +2419,7 @@ static bool js_scene_Node_resumeSystemEvents(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_resumeSystemEvents)     // resumeSystemEvents
+SE_BIND_FUNC(js_scene_Node_resumeSystemEvents)
 
 static bool js_scene_Node_rotate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2440,7 +2440,7 @@ static bool js_scene_Node_rotate(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_rotate)     // rotate
+SE_BIND_FUNC(js_scene_Node_rotate)
 
 static bool js_scene_Node_setActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2459,7 +2459,7 @@ static bool js_scene_Node_setActive(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setActive)     // setActive
+SE_BIND_FUNC(js_scene_Node_setActive)
 
 static bool js_scene_Node_setAngle(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2478,7 +2478,7 @@ static bool js_scene_Node_setAngle(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setAngle)     // setAngle
+SE_BIND_FUNC(js_scene_Node_setAngle)
 
 static bool js_scene_Node_setChangedFlags(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2497,7 +2497,7 @@ static bool js_scene_Node_setChangedFlags(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setChangedFlags)     // setChangedFlags
+SE_BIND_FUNC(js_scene_Node_setChangedFlags)
 
 static bool js_scene_Node_setDirtyFlag(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2516,7 +2516,7 @@ static bool js_scene_Node_setDirtyFlag(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setDirtyFlag)     // setDirtyFlag
+SE_BIND_FUNC(js_scene_Node_setDirtyFlag)
 
 static bool js_scene_Node_setEulerAngles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2535,7 +2535,7 @@ static bool js_scene_Node_setEulerAngles(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setEulerAngles)     // setEulerAngles
+SE_BIND_FUNC(js_scene_Node_setEulerAngles)
 
 static bool js_scene_Node_setForward(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2554,7 +2554,7 @@ static bool js_scene_Node_setForward(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setForward)     // setForward
+SE_BIND_FUNC(js_scene_Node_setForward)
 
 static bool js_scene_Node_setLayer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2573,7 +2573,7 @@ static bool js_scene_Node_setLayer(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setLayer)     // setLayer
+SE_BIND_FUNC(js_scene_Node_setLayer)
 
 static bool js_scene_Node_setName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2592,7 +2592,7 @@ static bool js_scene_Node_setName(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setName)     // setName
+SE_BIND_FUNC(js_scene_Node_setName)
 
 static bool js_scene_Node_setParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2620,7 +2620,7 @@ static bool js_scene_Node_setParent(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setParent)     // setParent
+SE_BIND_FUNC(js_scene_Node_setParent)
 
 static bool js_scene_Node_setPersistNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2639,7 +2639,7 @@ static bool js_scene_Node_setPersistNode(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setPersistNode)     // setPersistNode
+SE_BIND_FUNC(js_scene_Node_setPersistNode)
 
 static bool js_scene_Node_setPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2679,7 +2679,7 @@ static bool js_scene_Node_setPosition(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setPosition)     // setPosition
+SE_BIND_FUNC(js_scene_Node_setPosition)
 
 static bool js_scene_Node_setRTS(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2702,7 +2702,7 @@ static bool js_scene_Node_setRTS(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setRTS)     // setRTS
+SE_BIND_FUNC(js_scene_Node_setRTS)
 
 static bool js_scene_Node_setRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2745,7 +2745,7 @@ static bool js_scene_Node_setRotation(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setRotation)     // setRotation
+SE_BIND_FUNC(js_scene_Node_setRotation)
 
 static bool js_scene_Node_setRotationFromEuler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2799,7 +2799,7 @@ static bool js_scene_Node_setRotationFromEuler(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setRotationFromEuler)     // setRotationFromEuler
+SE_BIND_FUNC(js_scene_Node_setRotationFromEuler)
 
 static bool js_scene_Node_setScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2839,7 +2839,7 @@ static bool js_scene_Node_setScale(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setScale)     // setScale
+SE_BIND_FUNC(js_scene_Node_setScale)
 
 static bool js_scene_Node_setSiblingIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2858,7 +2858,7 @@ static bool js_scene_Node_setSiblingIndex(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setSiblingIndex)     // setSiblingIndex
+SE_BIND_FUNC(js_scene_Node_setSiblingIndex)
 
 static bool js_scene_Node_setWorldPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2898,7 +2898,7 @@ static bool js_scene_Node_setWorldPosition(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setWorldPosition)     // setWorldPosition
+SE_BIND_FUNC(js_scene_Node_setWorldPosition)
 
 static bool js_scene_Node_setWorldRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2941,7 +2941,7 @@ static bool js_scene_Node_setWorldRotation(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setWorldRotation)     // setWorldRotation
+SE_BIND_FUNC(js_scene_Node_setWorldRotation)
 
 static bool js_scene_Node_setWorldRotationFromEuler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2964,7 +2964,7 @@ static bool js_scene_Node_setWorldRotationFromEuler(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setWorldRotationFromEuler)     // setWorldRotationFromEuler
+SE_BIND_FUNC(js_scene_Node_setWorldRotationFromEuler)
 
 static bool js_scene_Node_setWorldScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3004,7 +3004,7 @@ static bool js_scene_Node_setWorldScale(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_setWorldScale)     // setWorldScale
+SE_BIND_FUNC(js_scene_Node_setWorldScale)
 
 static bool js_scene_Node_targetOff(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3023,7 +3023,7 @@ static bool js_scene_Node_targetOff(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_targetOff)     // targetOff
+SE_BIND_FUNC(js_scene_Node_targetOff)
 
 static bool js_scene_Node_translate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3051,7 +3051,7 @@ static bool js_scene_Node_translate(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_translate)     // translate
+SE_BIND_FUNC(js_scene_Node_translate)
 
 static bool js_scene_Node_updateSiblingIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3066,7 +3066,7 @@ static bool js_scene_Node_updateSiblingIndex(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_updateSiblingIndex)     // updateSiblingIndex
+SE_BIND_FUNC(js_scene_Node_updateSiblingIndex)
 
 static bool js_scene_Node_updateWorldTransform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3081,7 +3081,7 @@ static bool js_scene_Node_updateWorldTransform(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_updateWorldTransform)     // updateWorldTransform
+SE_BIND_FUNC(js_scene_Node_updateWorldTransform)
 
 static bool js_scene_Node_walk(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3213,7 +3213,7 @@ static bool js_scene_Node_walk(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_Node_walk)     // walk
+SE_BIND_FUNC(js_scene_Node_walk)
 
 static bool js_scene_Node_instantiate_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3542,7 +3542,7 @@ static bool js_scene_Light_attachToScene(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_attachToScene)     // attachToScene
+SE_BIND_FUNC(js_scene_Light_attachToScene)
 
 static bool js_scene_Light_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3557,7 +3557,7 @@ static bool js_scene_Light_destroy(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_destroy)     // destroy
+SE_BIND_FUNC(js_scene_Light_destroy)
 
 static bool js_scene_Light_detachFromScene(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3572,7 +3572,7 @@ static bool js_scene_Light_detachFromScene(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_detachFromScene)     // detachFromScene
+SE_BIND_FUNC(js_scene_Light_detachFromScene)
 
 static bool js_scene_Light_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3591,7 +3591,7 @@ static bool js_scene_Light_getName(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_getName)     // getName
+SE_BIND_FUNC(js_scene_Light_getName)
 
 static bool js_scene_Light_getScene(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3610,7 +3610,7 @@ static bool js_scene_Light_getScene(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_getScene)     // getScene
+SE_BIND_FUNC(js_scene_Light_getScene)
 
 static bool js_scene_Light_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3625,7 +3625,7 @@ static bool js_scene_Light_initialize(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_initialize)     // initialize
+SE_BIND_FUNC(js_scene_Light_initialize)
 
 static bool js_scene_Light_isBaked(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3644,7 +3644,7 @@ static bool js_scene_Light_isBaked(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_isBaked)     // isBaked
+SE_BIND_FUNC(js_scene_Light_isBaked)
 
 static bool js_scene_Light_isUseColorTemperature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3663,7 +3663,7 @@ static bool js_scene_Light_isUseColorTemperature(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_isUseColorTemperature)     // isUseColorTemperature
+SE_BIND_FUNC(js_scene_Light_isUseColorTemperature)
 
 static bool js_scene_Light_setBaked(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3682,7 +3682,7 @@ static bool js_scene_Light_setBaked(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_setBaked)     // setBaked
+SE_BIND_FUNC(js_scene_Light_setBaked)
 
 static bool js_scene_Light_setColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3701,7 +3701,7 @@ static bool js_scene_Light_setColor(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_setColor)     // setColor
+SE_BIND_FUNC(js_scene_Light_setColor)
 
 static bool js_scene_Light_setColorTemperature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3720,7 +3720,7 @@ static bool js_scene_Light_setColorTemperature(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_setColorTemperature)     // setColorTemperature
+SE_BIND_FUNC(js_scene_Light_setColorTemperature)
 
 static bool js_scene_Light_setColorTemperatureRGB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3739,7 +3739,7 @@ static bool js_scene_Light_setColorTemperatureRGB(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_setColorTemperatureRGB)     // setColorTemperatureRGB
+SE_BIND_FUNC(js_scene_Light_setColorTemperatureRGB)
 
 static bool js_scene_Light_setName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3758,7 +3758,7 @@ static bool js_scene_Light_setName(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_setName)     // setName
+SE_BIND_FUNC(js_scene_Light_setName)
 
 static bool js_scene_Light_setNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3777,7 +3777,7 @@ static bool js_scene_Light_setNode(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_setNode)     // setNode
+SE_BIND_FUNC(js_scene_Light_setNode)
 
 static bool js_scene_Light_setUseColorTemperature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3796,7 +3796,7 @@ static bool js_scene_Light_setUseColorTemperature(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_setUseColorTemperature)     // setUseColorTemperature
+SE_BIND_FUNC(js_scene_Light_setUseColorTemperature)
 
 static bool js_scene_Light_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3811,7 +3811,7 @@ static bool js_scene_Light_update(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Light_update)     // update
+SE_BIND_FUNC(js_scene_Light_update)
 
 static bool js_scene_Light_nt2lm_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3885,7 +3885,7 @@ static bool js_scene_DirectionalLight_setDirection(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_DirectionalLight_setDirection)     // setDirection
+SE_BIND_FUNC(js_scene_DirectionalLight_setDirection)
 
 static bool js_scene_DirectionalLight_setIlluminance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3904,7 +3904,7 @@ static bool js_scene_DirectionalLight_setIlluminance(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_DirectionalLight_setIlluminance)     // setIlluminance
+SE_BIND_FUNC(js_scene_DirectionalLight_setIlluminance)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_DirectionalLight_finalize)
 
@@ -3968,7 +3968,7 @@ static bool js_scene_SpotLight_getLuminance(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SpotLight_getLuminance)     // getLuminance
+SE_BIND_FUNC(js_scene_SpotLight_getLuminance)
 
 static bool js_scene_SpotLight_setAspect(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3987,7 +3987,7 @@ static bool js_scene_SpotLight_setAspect(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SpotLight_setAspect)     // setAspect
+SE_BIND_FUNC(js_scene_SpotLight_setAspect)
 
 static bool js_scene_SpotLight_setFrustum(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4006,7 +4006,7 @@ static bool js_scene_SpotLight_setFrustum(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SpotLight_setFrustum)     // setFrustum
+SE_BIND_FUNC(js_scene_SpotLight_setFrustum)
 
 static bool js_scene_SpotLight_setLuminance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4025,7 +4025,7 @@ static bool js_scene_SpotLight_setLuminance(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SpotLight_setLuminance)     // setLuminance
+SE_BIND_FUNC(js_scene_SpotLight_setLuminance)
 
 static bool js_scene_SpotLight_setRange(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4044,7 +4044,7 @@ static bool js_scene_SpotLight_setRange(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SpotLight_setRange)     // setRange
+SE_BIND_FUNC(js_scene_SpotLight_setRange)
 
 static bool js_scene_SpotLight_setSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4063,7 +4063,7 @@ static bool js_scene_SpotLight_setSize(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SpotLight_setSize)     // setSize
+SE_BIND_FUNC(js_scene_SpotLight_setSize)
 
 static bool js_scene_SpotLight_setSpotAngle(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4082,7 +4082,7 @@ static bool js_scene_SpotLight_setSpotAngle(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SpotLight_setSpotAngle)     // setSpotAngle
+SE_BIND_FUNC(js_scene_SpotLight_setSpotAngle)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_SpotLight_finalize)
 
@@ -4151,7 +4151,7 @@ static bool js_scene_SphereLight_getLuminance(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SphereLight_getLuminance)     // getLuminance
+SE_BIND_FUNC(js_scene_SphereLight_getLuminance)
 
 static bool js_scene_SphereLight_setLuminance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4170,7 +4170,7 @@ static bool js_scene_SphereLight_setLuminance(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SphereLight_setLuminance)     // setLuminance
+SE_BIND_FUNC(js_scene_SphereLight_setLuminance)
 
 static bool js_scene_SphereLight_setPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4189,7 +4189,7 @@ static bool js_scene_SphereLight_setPosition(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SphereLight_setPosition)     // setPosition
+SE_BIND_FUNC(js_scene_SphereLight_setPosition)
 
 static bool js_scene_SphereLight_setRange(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4208,7 +4208,7 @@ static bool js_scene_SphereLight_setRange(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SphereLight_setRange)     // setRange
+SE_BIND_FUNC(js_scene_SphereLight_setRange)
 
 static bool js_scene_SphereLight_setSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4227,7 +4227,7 @@ static bool js_scene_SphereLight_setSize(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SphereLight_setSize)     // setSize
+SE_BIND_FUNC(js_scene_SphereLight_setSize)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_SphereLight_finalize)
 
@@ -4294,7 +4294,7 @@ static bool js_scene_Model_attachToScene(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_attachToScene)     // attachToScene
+SE_BIND_FUNC(js_scene_Model_attachToScene)
 
 static bool js_scene_Model_createBoundingShape(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4315,7 +4315,7 @@ static bool js_scene_Model_createBoundingShape(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_createBoundingShape)     // createBoundingShape
+SE_BIND_FUNC(js_scene_Model_createBoundingShape)
 
 static bool js_scene_Model_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4330,7 +4330,7 @@ static bool js_scene_Model_destroy(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_destroy)     // destroy
+SE_BIND_FUNC(js_scene_Model_destroy)
 
 static bool js_scene_Model_detachFromScene(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4345,7 +4345,7 @@ static bool js_scene_Model_detachFromScene(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_detachFromScene)     // detachFromScene
+SE_BIND_FUNC(js_scene_Model_detachFromScene)
 
 static bool js_scene_Model_getCastShadow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4364,7 +4364,7 @@ static bool js_scene_Model_getCastShadow(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getCastShadow)     // getCastShadow
+SE_BIND_FUNC(js_scene_Model_getCastShadow)
 
 static bool js_scene_Model_getInstMatWorldIdx(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4383,7 +4383,7 @@ static bool js_scene_Model_getInstMatWorldIdx(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getInstMatWorldIdx)     // getInstMatWorldIdx
+SE_BIND_FUNC(js_scene_Model_getInstMatWorldIdx)
 
 static bool js_scene_Model_getInstanceAttributes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4402,7 +4402,7 @@ static bool js_scene_Model_getInstanceAttributes(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getInstanceAttributes)     // getInstanceAttributes
+SE_BIND_FUNC(js_scene_Model_getInstanceAttributes)
 
 static bool js_scene_Model_getInstancedAttributeBlock(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4421,7 +4421,7 @@ static bool js_scene_Model_getInstancedAttributeBlock(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getInstancedAttributeBlock)     // getInstancedAttributeBlock
+SE_BIND_FUNC(js_scene_Model_getInstancedAttributeBlock)
 
 static bool js_scene_Model_getInstancedBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4440,7 +4440,7 @@ static bool js_scene_Model_getInstancedBuffer(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getInstancedBuffer)     // getInstancedBuffer
+SE_BIND_FUNC(js_scene_Model_getInstancedBuffer)
 
 static bool js_scene_Model_getInstancedBufferSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4459,7 +4459,7 @@ static bool js_scene_Model_getInstancedBufferSize(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getInstancedBufferSize)     // getInstancedBufferSize
+SE_BIND_FUNC(js_scene_Model_getInstancedBufferSize)
 
 static bool js_scene_Model_getLocalData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4478,7 +4478,7 @@ static bool js_scene_Model_getLocalData(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getLocalData)     // getLocalData
+SE_BIND_FUNC(js_scene_Model_getLocalData)
 
 static bool js_scene_Model_getMacroPatches(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4500,7 +4500,7 @@ static bool js_scene_Model_getMacroPatches(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getMacroPatches)     // getMacroPatches
+SE_BIND_FUNC(js_scene_Model_getMacroPatches)
 
 static bool js_scene_Model_getNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4519,7 +4519,7 @@ static bool js_scene_Model_getNode(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getNode)     // getNode
+SE_BIND_FUNC(js_scene_Model_getNode)
 
 static bool js_scene_Model_getReceiveShadow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4538,7 +4538,7 @@ static bool js_scene_Model_getReceiveShadow(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getReceiveShadow)     // getReceiveShadow
+SE_BIND_FUNC(js_scene_Model_getReceiveShadow)
 
 static bool js_scene_Model_getScene(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4557,7 +4557,7 @@ static bool js_scene_Model_getScene(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getScene)     // getScene
+SE_BIND_FUNC(js_scene_Model_getScene)
 
 static bool js_scene_Model_getSubModels(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4576,7 +4576,7 @@ static bool js_scene_Model_getSubModels(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getSubModels)     // getSubModels
+SE_BIND_FUNC(js_scene_Model_getSubModels)
 
 static bool js_scene_Model_getTransform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4595,7 +4595,7 @@ static bool js_scene_Model_getTransform(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getTransform)     // getTransform
+SE_BIND_FUNC(js_scene_Model_getTransform)
 
 static bool js_scene_Model_getTransformUpdated(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4614,7 +4614,7 @@ static bool js_scene_Model_getTransformUpdated(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getTransformUpdated)     // getTransformUpdated
+SE_BIND_FUNC(js_scene_Model_getTransformUpdated)
 
 static bool js_scene_Model_getUpdateStamp(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4633,7 +4633,7 @@ static bool js_scene_Model_getUpdateStamp(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getUpdateStamp)     // getUpdateStamp
+SE_BIND_FUNC(js_scene_Model_getUpdateStamp)
 
 static bool js_scene_Model_getVisFlags(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4652,7 +4652,7 @@ static bool js_scene_Model_getVisFlags(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_getVisFlags)     // getVisFlags
+SE_BIND_FUNC(js_scene_Model_getVisFlags)
 
 static bool js_scene_Model_initSubModel(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4675,7 +4675,7 @@ static bool js_scene_Model_initSubModel(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_initSubModel)     // initSubModel
+SE_BIND_FUNC(js_scene_Model_initSubModel)
 
 static bool js_scene_Model_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4690,7 +4690,7 @@ static bool js_scene_Model_initialize(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_initialize)     // initialize
+SE_BIND_FUNC(js_scene_Model_initialize)
 
 static bool js_scene_Model_isDynamicBatching(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4709,7 +4709,7 @@ static bool js_scene_Model_isDynamicBatching(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_isDynamicBatching)     // isDynamicBatching
+SE_BIND_FUNC(js_scene_Model_isDynamicBatching)
 
 static bool js_scene_Model_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4728,7 +4728,7 @@ static bool js_scene_Model_isEnabled(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_Model_isEnabled)
 
 static bool js_scene_Model_isInited(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4747,7 +4747,7 @@ static bool js_scene_Model_isInited(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_isInited)     // isInited
+SE_BIND_FUNC(js_scene_Model_isInited)
 
 static bool js_scene_Model_isInstancingEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4766,7 +4766,7 @@ static bool js_scene_Model_isInstancingEnabled(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_isInstancingEnabled)     // isInstancingEnabled
+SE_BIND_FUNC(js_scene_Model_isInstancingEnabled)
 
 static bool js_scene_Model_onGlobalPipelineStateChanged(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4781,7 +4781,7 @@ static bool js_scene_Model_onGlobalPipelineStateChanged(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_onGlobalPipelineStateChanged)     // onGlobalPipelineStateChanged
+SE_BIND_FUNC(js_scene_Model_onGlobalPipelineStateChanged)
 
 static bool js_scene_Model_onMacroPatchesStateChanged(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4796,7 +4796,7 @@ static bool js_scene_Model_onMacroPatchesStateChanged(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_onMacroPatchesStateChanged)     // onMacroPatchesStateChanged
+SE_BIND_FUNC(js_scene_Model_onMacroPatchesStateChanged)
 
 static bool js_scene_Model_setBounds(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4815,7 +4815,7 @@ static bool js_scene_Model_setBounds(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setBounds)     // setBounds
+SE_BIND_FUNC(js_scene_Model_setBounds)
 
 static bool js_scene_Model_setCastShadow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4834,7 +4834,7 @@ static bool js_scene_Model_setCastShadow(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setCastShadow)     // setCastShadow
+SE_BIND_FUNC(js_scene_Model_setCastShadow)
 
 static bool js_scene_Model_setDynamicBatching(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4853,7 +4853,7 @@ static bool js_scene_Model_setDynamicBatching(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setDynamicBatching)     // setDynamicBatching
+SE_BIND_FUNC(js_scene_Model_setDynamicBatching)
 
 static bool js_scene_Model_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4872,7 +4872,7 @@ static bool js_scene_Model_setEnabled(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_Model_setEnabled)
 
 static bool js_scene_Model_setInstMatWorldIdx(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4891,7 +4891,7 @@ static bool js_scene_Model_setInstMatWorldIdx(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setInstMatWorldIdx)     // setInstMatWorldIdx
+SE_BIND_FUNC(js_scene_Model_setInstMatWorldIdx)
 
 static bool js_scene_Model_setLocalBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4910,7 +4910,7 @@ static bool js_scene_Model_setLocalBuffer(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setLocalBuffer)     // setLocalBuffer
+SE_BIND_FUNC(js_scene_Model_setLocalBuffer)
 
 static bool js_scene_Model_setNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4929,7 +4929,7 @@ static bool js_scene_Model_setNode(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setNode)     // setNode
+SE_BIND_FUNC(js_scene_Model_setNode)
 
 static bool js_scene_Model_setReceiveShadow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4948,7 +4948,7 @@ static bool js_scene_Model_setReceiveShadow(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setReceiveShadow)     // setReceiveShadow
+SE_BIND_FUNC(js_scene_Model_setReceiveShadow)
 
 static bool js_scene_Model_setSubModelMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4969,7 +4969,7 @@ static bool js_scene_Model_setSubModelMaterial(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setSubModelMaterial)     // setSubModelMaterial
+SE_BIND_FUNC(js_scene_Model_setSubModelMaterial)
 
 static bool js_scene_Model_setSubModelMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4990,7 +4990,7 @@ static bool js_scene_Model_setSubModelMesh(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setSubModelMesh)     // setSubModelMesh
+SE_BIND_FUNC(js_scene_Model_setSubModelMesh)
 
 static bool js_scene_Model_setTransform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5009,7 +5009,7 @@ static bool js_scene_Model_setTransform(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setTransform)     // setTransform
+SE_BIND_FUNC(js_scene_Model_setTransform)
 
 static bool js_scene_Model_setVisFlags(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5028,7 +5028,7 @@ static bool js_scene_Model_setVisFlags(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_setVisFlags)     // setVisFlags
+SE_BIND_FUNC(js_scene_Model_setVisFlags)
 
 static bool js_scene_Model_updateInstancedAttributes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5049,7 +5049,7 @@ static bool js_scene_Model_updateInstancedAttributes(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_updateInstancedAttributes)     // updateInstancedAttributes
+SE_BIND_FUNC(js_scene_Model_updateInstancedAttributes)
 
 static bool js_scene_Model_updateLightingmap(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5070,7 +5070,7 @@ static bool js_scene_Model_updateLightingmap(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_updateLightingmap)     // updateLightingmap
+SE_BIND_FUNC(js_scene_Model_updateLightingmap)
 
 static bool js_scene_Model_updateTransform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5089,7 +5089,7 @@ static bool js_scene_Model_updateTransform(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_updateTransform)     // updateTransform
+SE_BIND_FUNC(js_scene_Model_updateTransform)
 
 static bool js_scene_Model_updateUBOs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5108,7 +5108,7 @@ static bool js_scene_Model_updateUBOs(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_updateUBOs)     // updateUBOs
+SE_BIND_FUNC(js_scene_Model_updateUBOs)
 
 static bool js_scene_Model_updateWorldBound(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5123,7 +5123,7 @@ static bool js_scene_Model_updateWorldBound(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Model_updateWorldBound)     // updateWorldBound
+SE_BIND_FUNC(js_scene_Model_updateWorldBound)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_Model_finalize)
 
@@ -5230,7 +5230,7 @@ static bool js_scene_AmbientInfo_getGroundAlbedo(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_AmbientInfo_getGroundAlbedo)     // getGroundAlbedo
+SE_BIND_FUNC(js_scene_AmbientInfo_getGroundAlbedo)
 
 static bool js_scene_AmbientInfo_getSkyColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5249,7 +5249,7 @@ static bool js_scene_AmbientInfo_getSkyColor(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_AmbientInfo_getSkyColor)     // getSkyColor
+SE_BIND_FUNC(js_scene_AmbientInfo_getSkyColor)
 
 static bool js_scene_AmbientInfo_getSkyIllum(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5268,7 +5268,7 @@ static bool js_scene_AmbientInfo_getSkyIllum(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_AmbientInfo_getSkyIllum)     // getSkyIllum
+SE_BIND_FUNC(js_scene_AmbientInfo_getSkyIllum)
 
 static bool js_scene_AmbientInfo_setGroundAlbedo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5287,7 +5287,7 @@ static bool js_scene_AmbientInfo_setGroundAlbedo(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_AmbientInfo_setGroundAlbedo)     // setGroundAlbedo
+SE_BIND_FUNC(js_scene_AmbientInfo_setGroundAlbedo)
 
 static bool js_scene_AmbientInfo_setSkyColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5306,7 +5306,7 @@ static bool js_scene_AmbientInfo_setSkyColor(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_AmbientInfo_setSkyColor)     // setSkyColor
+SE_BIND_FUNC(js_scene_AmbientInfo_setSkyColor)
 
 static bool js_scene_AmbientInfo_setSkyIllum(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5325,7 +5325,7 @@ static bool js_scene_AmbientInfo_setSkyIllum(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_AmbientInfo_setSkyIllum)     // setSkyIllum
+SE_BIND_FUNC(js_scene_AmbientInfo_setSkyIllum)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_AmbientInfo_finalize)
 
@@ -5393,7 +5393,7 @@ static bool js_scene_Ambient_getAlbedoArray(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_getAlbedoArray)     // getAlbedoArray
+SE_BIND_FUNC(js_scene_Ambient_getAlbedoArray)
 
 static bool js_scene_Ambient_getColorArray(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5412,7 +5412,7 @@ static bool js_scene_Ambient_getColorArray(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_getColorArray)     // getColorArray
+SE_BIND_FUNC(js_scene_Ambient_getColorArray)
 
 static bool js_scene_Ambient_getGroundAlbedo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5431,7 +5431,7 @@ static bool js_scene_Ambient_getGroundAlbedo(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_getGroundAlbedo)     // getGroundAlbedo
+SE_BIND_FUNC(js_scene_Ambient_getGroundAlbedo)
 
 static bool js_scene_Ambient_getSkyColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5450,7 +5450,7 @@ static bool js_scene_Ambient_getSkyColor(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_getSkyColor)     // getSkyColor
+SE_BIND_FUNC(js_scene_Ambient_getSkyColor)
 
 static bool js_scene_Ambient_getSkyIllum(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5469,7 +5469,7 @@ static bool js_scene_Ambient_getSkyIllum(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_getSkyIllum)     // getSkyIllum
+SE_BIND_FUNC(js_scene_Ambient_getSkyIllum)
 
 static bool js_scene_Ambient_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5488,7 +5488,7 @@ static bool js_scene_Ambient_initialize(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_initialize)     // initialize
+SE_BIND_FUNC(js_scene_Ambient_initialize)
 
 static bool js_scene_Ambient_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5507,7 +5507,7 @@ static bool js_scene_Ambient_isEnabled(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_Ambient_isEnabled)
 
 static bool js_scene_Ambient_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5526,7 +5526,7 @@ static bool js_scene_Ambient_setEnabled(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_Ambient_setEnabled)
 
 static bool js_scene_Ambient_setGroundAlbedo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5545,7 +5545,7 @@ static bool js_scene_Ambient_setGroundAlbedo(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_setGroundAlbedo)     // setGroundAlbedo
+SE_BIND_FUNC(js_scene_Ambient_setGroundAlbedo)
 
 static bool js_scene_Ambient_setSkyColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5564,7 +5564,7 @@ static bool js_scene_Ambient_setSkyColor(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_setSkyColor)     // setSkyColor
+SE_BIND_FUNC(js_scene_Ambient_setSkyColor)
 
 static bool js_scene_Ambient_setSkyIllum(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5583,7 +5583,7 @@ static bool js_scene_Ambient_setSkyIllum(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Ambient_setSkyIllum)     // setSkyIllum
+SE_BIND_FUNC(js_scene_Ambient_setSkyIllum)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_Ambient_finalize)
 
@@ -5656,7 +5656,7 @@ static bool js_scene_FogInfo_activate(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_activate)     // activate
+SE_BIND_FUNC(js_scene_FogInfo_activate)
 
 static bool js_scene_FogInfo_getFogAtten(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5675,7 +5675,7 @@ static bool js_scene_FogInfo_getFogAtten(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_getFogAtten)     // getFogAtten
+SE_BIND_FUNC(js_scene_FogInfo_getFogAtten)
 
 static bool js_scene_FogInfo_getFogColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5694,7 +5694,7 @@ static bool js_scene_FogInfo_getFogColor(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_getFogColor)     // getFogColor
+SE_BIND_FUNC(js_scene_FogInfo_getFogColor)
 
 static bool js_scene_FogInfo_getFogDensity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5713,7 +5713,7 @@ static bool js_scene_FogInfo_getFogDensity(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_getFogDensity)     // getFogDensity
+SE_BIND_FUNC(js_scene_FogInfo_getFogDensity)
 
 static bool js_scene_FogInfo_getFogEnd(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5732,7 +5732,7 @@ static bool js_scene_FogInfo_getFogEnd(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_getFogEnd)     // getFogEnd
+SE_BIND_FUNC(js_scene_FogInfo_getFogEnd)
 
 static bool js_scene_FogInfo_getFogRange(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5751,7 +5751,7 @@ static bool js_scene_FogInfo_getFogRange(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_getFogRange)     // getFogRange
+SE_BIND_FUNC(js_scene_FogInfo_getFogRange)
 
 static bool js_scene_FogInfo_getFogStart(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5770,7 +5770,7 @@ static bool js_scene_FogInfo_getFogStart(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_getFogStart)     // getFogStart
+SE_BIND_FUNC(js_scene_FogInfo_getFogStart)
 
 static bool js_scene_FogInfo_getFogTop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5789,7 +5789,7 @@ static bool js_scene_FogInfo_getFogTop(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_getFogTop)     // getFogTop
+SE_BIND_FUNC(js_scene_FogInfo_getFogTop)
 
 static bool js_scene_FogInfo_getType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5808,7 +5808,7 @@ static bool js_scene_FogInfo_getType(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_getType)     // getType
+SE_BIND_FUNC(js_scene_FogInfo_getType)
 
 static bool js_scene_FogInfo_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5827,7 +5827,7 @@ static bool js_scene_FogInfo_isEnabled(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_FogInfo_isEnabled)
 
 static bool js_scene_FogInfo_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5846,7 +5846,7 @@ static bool js_scene_FogInfo_setEnabled(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_FogInfo_setEnabled)
 
 static bool js_scene_FogInfo_setFogAtten(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5865,7 +5865,7 @@ static bool js_scene_FogInfo_setFogAtten(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_setFogAtten)     // setFogAtten
+SE_BIND_FUNC(js_scene_FogInfo_setFogAtten)
 
 static bool js_scene_FogInfo_setFogColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5884,7 +5884,7 @@ static bool js_scene_FogInfo_setFogColor(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_setFogColor)     // setFogColor
+SE_BIND_FUNC(js_scene_FogInfo_setFogColor)
 
 static bool js_scene_FogInfo_setFogDensity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5903,7 +5903,7 @@ static bool js_scene_FogInfo_setFogDensity(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_setFogDensity)     // setFogDensity
+SE_BIND_FUNC(js_scene_FogInfo_setFogDensity)
 
 static bool js_scene_FogInfo_setFogEnd(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5922,7 +5922,7 @@ static bool js_scene_FogInfo_setFogEnd(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_setFogEnd)     // setFogEnd
+SE_BIND_FUNC(js_scene_FogInfo_setFogEnd)
 
 static bool js_scene_FogInfo_setFogRange(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5941,7 +5941,7 @@ static bool js_scene_FogInfo_setFogRange(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_setFogRange)     // setFogRange
+SE_BIND_FUNC(js_scene_FogInfo_setFogRange)
 
 static bool js_scene_FogInfo_setFogStart(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5960,7 +5960,7 @@ static bool js_scene_FogInfo_setFogStart(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_setFogStart)     // setFogStart
+SE_BIND_FUNC(js_scene_FogInfo_setFogStart)
 
 static bool js_scene_FogInfo_setFogTop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5979,7 +5979,7 @@ static bool js_scene_FogInfo_setFogTop(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_setFogTop)     // setFogTop
+SE_BIND_FUNC(js_scene_FogInfo_setFogTop)
 
 static bool js_scene_FogInfo_setType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5998,7 +5998,7 @@ static bool js_scene_FogInfo_setType(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_FogInfo_setType)     // setType
+SE_BIND_FUNC(js_scene_FogInfo_setType)
 
 
 static bool js_cc_scene_FogInfo_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -6063,7 +6063,7 @@ static bool js_scene_Fog_activate(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_activate)     // activate
+SE_BIND_FUNC(js_scene_Fog_activate)
 
 static bool js_scene_Fog_getColorArray(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6082,7 +6082,7 @@ static bool js_scene_Fog_getColorArray(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_getColorArray)     // getColorArray
+SE_BIND_FUNC(js_scene_Fog_getColorArray)
 
 static bool js_scene_Fog_getFogAtten(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6101,7 +6101,7 @@ static bool js_scene_Fog_getFogAtten(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_getFogAtten)     // getFogAtten
+SE_BIND_FUNC(js_scene_Fog_getFogAtten)
 
 static bool js_scene_Fog_getFogColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6120,7 +6120,7 @@ static bool js_scene_Fog_getFogColor(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_getFogColor)     // getFogColor
+SE_BIND_FUNC(js_scene_Fog_getFogColor)
 
 static bool js_scene_Fog_getFogDensity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6139,7 +6139,7 @@ static bool js_scene_Fog_getFogDensity(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_getFogDensity)     // getFogDensity
+SE_BIND_FUNC(js_scene_Fog_getFogDensity)
 
 static bool js_scene_Fog_getFogEnd(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6158,7 +6158,7 @@ static bool js_scene_Fog_getFogEnd(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_getFogEnd)     // getFogEnd
+SE_BIND_FUNC(js_scene_Fog_getFogEnd)
 
 static bool js_scene_Fog_getFogRange(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6177,7 +6177,7 @@ static bool js_scene_Fog_getFogRange(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_getFogRange)     // getFogRange
+SE_BIND_FUNC(js_scene_Fog_getFogRange)
 
 static bool js_scene_Fog_getFogStart(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6196,7 +6196,7 @@ static bool js_scene_Fog_getFogStart(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_getFogStart)     // getFogStart
+SE_BIND_FUNC(js_scene_Fog_getFogStart)
 
 static bool js_scene_Fog_getFogTop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6215,7 +6215,7 @@ static bool js_scene_Fog_getFogTop(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_getFogTop)     // getFogTop
+SE_BIND_FUNC(js_scene_Fog_getFogTop)
 
 static bool js_scene_Fog_getType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6234,7 +6234,7 @@ static bool js_scene_Fog_getType(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_getType)     // getType
+SE_BIND_FUNC(js_scene_Fog_getType)
 
 static bool js_scene_Fog_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6253,7 +6253,7 @@ static bool js_scene_Fog_initialize(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_initialize)     // initialize
+SE_BIND_FUNC(js_scene_Fog_initialize)
 
 static bool js_scene_Fog_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6272,7 +6272,7 @@ static bool js_scene_Fog_isEnabled(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_Fog_isEnabled)
 
 static bool js_scene_Fog_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6291,7 +6291,7 @@ static bool js_scene_Fog_setEnabled(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_Fog_setEnabled)
 
 static bool js_scene_Fog_setFogAtten(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6310,7 +6310,7 @@ static bool js_scene_Fog_setFogAtten(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_setFogAtten)     // setFogAtten
+SE_BIND_FUNC(js_scene_Fog_setFogAtten)
 
 static bool js_scene_Fog_setFogColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6329,7 +6329,7 @@ static bool js_scene_Fog_setFogColor(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_setFogColor)     // setFogColor
+SE_BIND_FUNC(js_scene_Fog_setFogColor)
 
 static bool js_scene_Fog_setFogDensity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6348,7 +6348,7 @@ static bool js_scene_Fog_setFogDensity(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_setFogDensity)     // setFogDensity
+SE_BIND_FUNC(js_scene_Fog_setFogDensity)
 
 static bool js_scene_Fog_setFogEnd(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6367,7 +6367,7 @@ static bool js_scene_Fog_setFogEnd(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_setFogEnd)     // setFogEnd
+SE_BIND_FUNC(js_scene_Fog_setFogEnd)
 
 static bool js_scene_Fog_setFogStart(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6386,7 +6386,7 @@ static bool js_scene_Fog_setFogStart(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_setFogStart)     // setFogStart
+SE_BIND_FUNC(js_scene_Fog_setFogStart)
 
 static bool js_scene_Fog_setFogTop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6405,7 +6405,7 @@ static bool js_scene_Fog_setFogTop(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_setFogTop)     // setFogTop
+SE_BIND_FUNC(js_scene_Fog_setFogTop)
 
 static bool js_scene_Fog_setType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6424,7 +6424,7 @@ static bool js_scene_Fog_setType(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_setType)     // setType
+SE_BIND_FUNC(js_scene_Fog_setType)
 
 static bool js_scene_Fog_setfogRange(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6443,7 +6443,7 @@ static bool js_scene_Fog_setfogRange(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Fog_setfogRange)     // setfogRange
+SE_BIND_FUNC(js_scene_Fog_setfogRange)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_Fog_finalize)
 
@@ -7540,7 +7540,7 @@ static bool js_scene_ShadowInfo_activate(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_activate)     // activate
+SE_BIND_FUNC(js_scene_ShadowInfo_activate)
 
 static bool js_scene_ShadowInfo_getBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7559,7 +7559,7 @@ static bool js_scene_ShadowInfo_getBias(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getBias)     // getBias
+SE_BIND_FUNC(js_scene_ShadowInfo_getBias)
 
 static bool js_scene_ShadowInfo_getDistance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7578,7 +7578,7 @@ static bool js_scene_ShadowInfo_getDistance(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getDistance)     // getDistance
+SE_BIND_FUNC(js_scene_ShadowInfo_getDistance)
 
 static bool js_scene_ShadowInfo_getFar(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7597,7 +7597,7 @@ static bool js_scene_ShadowInfo_getFar(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getFar)     // getFar
+SE_BIND_FUNC(js_scene_ShadowInfo_getFar)
 
 static bool js_scene_ShadowInfo_getMaxReceived(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7616,7 +7616,7 @@ static bool js_scene_ShadowInfo_getMaxReceived(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getMaxReceived)     // getMaxReceived
+SE_BIND_FUNC(js_scene_ShadowInfo_getMaxReceived)
 
 static bool js_scene_ShadowInfo_getNear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7635,7 +7635,7 @@ static bool js_scene_ShadowInfo_getNear(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getNear)     // getNear
+SE_BIND_FUNC(js_scene_ShadowInfo_getNear)
 
 static bool js_scene_ShadowInfo_getNormal(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7654,7 +7654,7 @@ static bool js_scene_ShadowInfo_getNormal(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getNormal)     // getNormal
+SE_BIND_FUNC(js_scene_ShadowInfo_getNormal)
 
 static bool js_scene_ShadowInfo_getNormalBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7673,7 +7673,7 @@ static bool js_scene_ShadowInfo_getNormalBias(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getNormalBias)     // getNormalBias
+SE_BIND_FUNC(js_scene_ShadowInfo_getNormalBias)
 
 static bool js_scene_ShadowInfo_getOrthoSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7692,7 +7692,7 @@ static bool js_scene_ShadowInfo_getOrthoSize(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getOrthoSize)     // getOrthoSize
+SE_BIND_FUNC(js_scene_ShadowInfo_getOrthoSize)
 
 static bool js_scene_ShadowInfo_getPcf(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7711,7 +7711,7 @@ static bool js_scene_ShadowInfo_getPcf(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getPcf)     // getPcf
+SE_BIND_FUNC(js_scene_ShadowInfo_getPcf)
 
 static bool js_scene_ShadowInfo_getSaturation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7730,7 +7730,7 @@ static bool js_scene_ShadowInfo_getSaturation(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getSaturation)     // getSaturation
+SE_BIND_FUNC(js_scene_ShadowInfo_getSaturation)
 
 static bool js_scene_ShadowInfo_getShadowColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7749,7 +7749,7 @@ static bool js_scene_ShadowInfo_getShadowColor(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getShadowColor)     // getShadowColor
+SE_BIND_FUNC(js_scene_ShadowInfo_getShadowColor)
 
 static bool js_scene_ShadowInfo_getShadowMapSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7768,7 +7768,7 @@ static bool js_scene_ShadowInfo_getShadowMapSize(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getShadowMapSize)     // getShadowMapSize
+SE_BIND_FUNC(js_scene_ShadowInfo_getShadowMapSize)
 
 static bool js_scene_ShadowInfo_getSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7787,7 +7787,7 @@ static bool js_scene_ShadowInfo_getSize(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getSize)     // getSize
+SE_BIND_FUNC(js_scene_ShadowInfo_getSize)
 
 static bool js_scene_ShadowInfo_getType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7806,7 +7806,7 @@ static bool js_scene_ShadowInfo_getType(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_getType)     // getType
+SE_BIND_FUNC(js_scene_ShadowInfo_getType)
 
 static bool js_scene_ShadowInfo_isAutoAdapt(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7825,7 +7825,7 @@ static bool js_scene_ShadowInfo_isAutoAdapt(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_isAutoAdapt)     // isAutoAdapt
+SE_BIND_FUNC(js_scene_ShadowInfo_isAutoAdapt)
 
 static bool js_scene_ShadowInfo_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7844,7 +7844,7 @@ static bool js_scene_ShadowInfo_isEnabled(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_ShadowInfo_isEnabled)
 
 static bool js_scene_ShadowInfo_setAutoAdapt(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7863,7 +7863,7 @@ static bool js_scene_ShadowInfo_setAutoAdapt(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setAutoAdapt)     // setAutoAdapt
+SE_BIND_FUNC(js_scene_ShadowInfo_setAutoAdapt)
 
 static bool js_scene_ShadowInfo_setBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7882,7 +7882,7 @@ static bool js_scene_ShadowInfo_setBias(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setBias)     // setBias
+SE_BIND_FUNC(js_scene_ShadowInfo_setBias)
 
 static bool js_scene_ShadowInfo_setDistance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7901,7 +7901,7 @@ static bool js_scene_ShadowInfo_setDistance(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setDistance)     // setDistance
+SE_BIND_FUNC(js_scene_ShadowInfo_setDistance)
 
 static bool js_scene_ShadowInfo_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7920,7 +7920,7 @@ static bool js_scene_ShadowInfo_setEnabled(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_ShadowInfo_setEnabled)
 
 static bool js_scene_ShadowInfo_setFar(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7939,7 +7939,7 @@ static bool js_scene_ShadowInfo_setFar(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setFar)     // setFar
+SE_BIND_FUNC(js_scene_ShadowInfo_setFar)
 
 static bool js_scene_ShadowInfo_setMaxReceived(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7958,7 +7958,7 @@ static bool js_scene_ShadowInfo_setMaxReceived(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setMaxReceived)     // setMaxReceived
+SE_BIND_FUNC(js_scene_ShadowInfo_setMaxReceived)
 
 static bool js_scene_ShadowInfo_setNear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7977,7 +7977,7 @@ static bool js_scene_ShadowInfo_setNear(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setNear)     // setNear
+SE_BIND_FUNC(js_scene_ShadowInfo_setNear)
 
 static bool js_scene_ShadowInfo_setNormal(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7996,7 +7996,7 @@ static bool js_scene_ShadowInfo_setNormal(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setNormal)     // setNormal
+SE_BIND_FUNC(js_scene_ShadowInfo_setNormal)
 
 static bool js_scene_ShadowInfo_setNormalBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8015,7 +8015,7 @@ static bool js_scene_ShadowInfo_setNormalBias(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setNormalBias)     // setNormalBias
+SE_BIND_FUNC(js_scene_ShadowInfo_setNormalBias)
 
 static bool js_scene_ShadowInfo_setOrthoSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8034,7 +8034,7 @@ static bool js_scene_ShadowInfo_setOrthoSize(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setOrthoSize)     // setOrthoSize
+SE_BIND_FUNC(js_scene_ShadowInfo_setOrthoSize)
 
 static bool js_scene_ShadowInfo_setPcf(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8053,7 +8053,7 @@ static bool js_scene_ShadowInfo_setPcf(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setPcf)     // setPcf
+SE_BIND_FUNC(js_scene_ShadowInfo_setPcf)
 
 static bool js_scene_ShadowInfo_setPlaneFromNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8072,7 +8072,7 @@ static bool js_scene_ShadowInfo_setPlaneFromNode(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setPlaneFromNode)     // setPlaneFromNode
+SE_BIND_FUNC(js_scene_ShadowInfo_setPlaneFromNode)
 
 static bool js_scene_ShadowInfo_setSaturation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8091,7 +8091,7 @@ static bool js_scene_ShadowInfo_setSaturation(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setSaturation)     // setSaturation
+SE_BIND_FUNC(js_scene_ShadowInfo_setSaturation)
 
 static bool js_scene_ShadowInfo_setShadowMapSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8110,7 +8110,7 @@ static bool js_scene_ShadowInfo_setShadowMapSize(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setShadowMapSize)     // setShadowMapSize
+SE_BIND_FUNC(js_scene_ShadowInfo_setShadowMapSize)
 
 static bool js_scene_ShadowInfo_setType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8129,7 +8129,7 @@ static bool js_scene_ShadowInfo_setType(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setType)     // setType
+SE_BIND_FUNC(js_scene_ShadowInfo_setType)
 
 static bool js_scene_ShadowInfo_setshadowColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8148,7 +8148,7 @@ static bool js_scene_ShadowInfo_setshadowColor(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_ShadowInfo_setshadowColor)     // setshadowColor
+SE_BIND_FUNC(js_scene_ShadowInfo_setshadowColor)
 
 
 static bool js_cc_scene_ShadowInfo_finalize(se::State& s) // NOLINT(readability-identifier-naming)
@@ -8227,7 +8227,7 @@ static bool js_scene_Shadow_activate(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_activate)     // activate
+SE_BIND_FUNC(js_scene_Shadow_activate)
 
 static bool js_scene_Shadow_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8242,7 +8242,7 @@ static bool js_scene_Shadow_destroy(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_destroy)     // destroy
+SE_BIND_FUNC(js_scene_Shadow_destroy)
 
 static bool js_scene_Shadow_getBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8261,7 +8261,7 @@ static bool js_scene_Shadow_getBias(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getBias)     // getBias
+SE_BIND_FUNC(js_scene_Shadow_getBias)
 
 static bool js_scene_Shadow_getDistance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8280,7 +8280,7 @@ static bool js_scene_Shadow_getDistance(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getDistance)     // getDistance
+SE_BIND_FUNC(js_scene_Shadow_getDistance)
 
 static bool js_scene_Shadow_getFar(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8299,7 +8299,7 @@ static bool js_scene_Shadow_getFar(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getFar)     // getFar
+SE_BIND_FUNC(js_scene_Shadow_getFar)
 
 static bool js_scene_Shadow_getInstancingMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8318,7 +8318,7 @@ static bool js_scene_Shadow_getInstancingMaterial(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getInstancingMaterial)     // getInstancingMaterial
+SE_BIND_FUNC(js_scene_Shadow_getInstancingMaterial)
 
 static bool js_scene_Shadow_getMatLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8337,7 +8337,7 @@ static bool js_scene_Shadow_getMatLight(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getMatLight)     // getMatLight
+SE_BIND_FUNC(js_scene_Shadow_getMatLight)
 
 static bool js_scene_Shadow_getMaterial(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8356,7 +8356,7 @@ static bool js_scene_Shadow_getMaterial(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getMaterial)     // getMaterial
+SE_BIND_FUNC(js_scene_Shadow_getMaterial)
 
 static bool js_scene_Shadow_getMaxReceived(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8375,7 +8375,7 @@ static bool js_scene_Shadow_getMaxReceived(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getMaxReceived)     // getMaxReceived
+SE_BIND_FUNC(js_scene_Shadow_getMaxReceived)
 
 static bool js_scene_Shadow_getNear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8394,7 +8394,7 @@ static bool js_scene_Shadow_getNear(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getNear)     // getNear
+SE_BIND_FUNC(js_scene_Shadow_getNear)
 
 static bool js_scene_Shadow_getNormal(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8413,7 +8413,7 @@ static bool js_scene_Shadow_getNormal(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getNormal)     // getNormal
+SE_BIND_FUNC(js_scene_Shadow_getNormal)
 
 static bool js_scene_Shadow_getNormalBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8432,7 +8432,7 @@ static bool js_scene_Shadow_getNormalBias(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getNormalBias)     // getNormalBias
+SE_BIND_FUNC(js_scene_Shadow_getNormalBias)
 
 static bool js_scene_Shadow_getOrthoSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8451,7 +8451,7 @@ static bool js_scene_Shadow_getOrthoSize(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getOrthoSize)     // getOrthoSize
+SE_BIND_FUNC(js_scene_Shadow_getOrthoSize)
 
 static bool js_scene_Shadow_getPcf(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8470,7 +8470,7 @@ static bool js_scene_Shadow_getPcf(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getPcf)     // getPcf
+SE_BIND_FUNC(js_scene_Shadow_getPcf)
 
 static bool js_scene_Shadow_getPlanarInstanceShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8492,7 +8492,7 @@ static bool js_scene_Shadow_getPlanarInstanceShader(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getPlanarInstanceShader)     // getPlanarInstanceShader
+SE_BIND_FUNC(js_scene_Shadow_getPlanarInstanceShader)
 
 static bool js_scene_Shadow_getPlanarShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8514,7 +8514,7 @@ static bool js_scene_Shadow_getPlanarShader(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getPlanarShader)     // getPlanarShader
+SE_BIND_FUNC(js_scene_Shadow_getPlanarShader)
 
 static bool js_scene_Shadow_getSaturation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8533,7 +8533,7 @@ static bool js_scene_Shadow_getSaturation(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getSaturation)     // getSaturation
+SE_BIND_FUNC(js_scene_Shadow_getSaturation)
 
 static bool js_scene_Shadow_getShadowColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8552,7 +8552,7 @@ static bool js_scene_Shadow_getShadowColor(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getShadowColor)     // getShadowColor
+SE_BIND_FUNC(js_scene_Shadow_getShadowColor)
 
 static bool js_scene_Shadow_getShadowColor4f(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8571,7 +8571,7 @@ static bool js_scene_Shadow_getShadowColor4f(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getShadowColor4f)     // getShadowColor4f
+SE_BIND_FUNC(js_scene_Shadow_getShadowColor4f)
 
 static bool js_scene_Shadow_getShadowMapSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8590,7 +8590,7 @@ static bool js_scene_Shadow_getShadowMapSize(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getShadowMapSize)     // getShadowMapSize
+SE_BIND_FUNC(js_scene_Shadow_getShadowMapSize)
 
 static bool js_scene_Shadow_getSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8609,7 +8609,7 @@ static bool js_scene_Shadow_getSize(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getSize)     // getSize
+SE_BIND_FUNC(js_scene_Shadow_getSize)
 
 static bool js_scene_Shadow_getType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8628,7 +8628,7 @@ static bool js_scene_Shadow_getType(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_getType)     // getType
+SE_BIND_FUNC(js_scene_Shadow_getType)
 
 static bool js_scene_Shadow_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8647,7 +8647,7 @@ static bool js_scene_Shadow_initialize(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_initialize)     // initialize
+SE_BIND_FUNC(js_scene_Shadow_initialize)
 
 static bool js_scene_Shadow_isAutoAdapt(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8666,7 +8666,7 @@ static bool js_scene_Shadow_isAutoAdapt(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_isAutoAdapt)     // isAutoAdapt
+SE_BIND_FUNC(js_scene_Shadow_isAutoAdapt)
 
 static bool js_scene_Shadow_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8685,7 +8685,7 @@ static bool js_scene_Shadow_isEnabled(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_Shadow_isEnabled)
 
 static bool js_scene_Shadow_isShadowMapDirty(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8704,7 +8704,7 @@ static bool js_scene_Shadow_isShadowMapDirty(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_isShadowMapDirty)     // isShadowMapDirty
+SE_BIND_FUNC(js_scene_Shadow_isShadowMapDirty)
 
 static bool js_scene_Shadow_setAutoAdapt(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8723,7 +8723,7 @@ static bool js_scene_Shadow_setAutoAdapt(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setAutoAdapt)     // setAutoAdapt
+SE_BIND_FUNC(js_scene_Shadow_setAutoAdapt)
 
 static bool js_scene_Shadow_setBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8742,7 +8742,7 @@ static bool js_scene_Shadow_setBias(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setBias)     // setBias
+SE_BIND_FUNC(js_scene_Shadow_setBias)
 
 static bool js_scene_Shadow_setDistance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8761,7 +8761,7 @@ static bool js_scene_Shadow_setDistance(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setDistance)     // setDistance
+SE_BIND_FUNC(js_scene_Shadow_setDistance)
 
 static bool js_scene_Shadow_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8780,7 +8780,7 @@ static bool js_scene_Shadow_setEnabled(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_Shadow_setEnabled)
 
 static bool js_scene_Shadow_setFar(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8799,7 +8799,7 @@ static bool js_scene_Shadow_setFar(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setFar)     // setFar
+SE_BIND_FUNC(js_scene_Shadow_setFar)
 
 static bool js_scene_Shadow_setMaxReceived(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8818,7 +8818,7 @@ static bool js_scene_Shadow_setMaxReceived(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setMaxReceived)     // setMaxReceived
+SE_BIND_FUNC(js_scene_Shadow_setMaxReceived)
 
 static bool js_scene_Shadow_setNear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8837,7 +8837,7 @@ static bool js_scene_Shadow_setNear(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setNear)     // setNear
+SE_BIND_FUNC(js_scene_Shadow_setNear)
 
 static bool js_scene_Shadow_setNormal(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8856,7 +8856,7 @@ static bool js_scene_Shadow_setNormal(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setNormal)     // setNormal
+SE_BIND_FUNC(js_scene_Shadow_setNormal)
 
 static bool js_scene_Shadow_setNormalBias(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8875,7 +8875,7 @@ static bool js_scene_Shadow_setNormalBias(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setNormalBias)     // setNormalBias
+SE_BIND_FUNC(js_scene_Shadow_setNormalBias)
 
 static bool js_scene_Shadow_setOrthoSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8894,7 +8894,7 @@ static bool js_scene_Shadow_setOrthoSize(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setOrthoSize)     // setOrthoSize
+SE_BIND_FUNC(js_scene_Shadow_setOrthoSize)
 
 static bool js_scene_Shadow_setPcf(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8913,7 +8913,7 @@ static bool js_scene_Shadow_setPcf(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setPcf)     // setPcf
+SE_BIND_FUNC(js_scene_Shadow_setPcf)
 
 static bool js_scene_Shadow_setSaturation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8932,7 +8932,7 @@ static bool js_scene_Shadow_setSaturation(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setSaturation)     // setSaturation
+SE_BIND_FUNC(js_scene_Shadow_setSaturation)
 
 static bool js_scene_Shadow_setShadowColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8951,7 +8951,7 @@ static bool js_scene_Shadow_setShadowColor(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setShadowColor)     // setShadowColor
+SE_BIND_FUNC(js_scene_Shadow_setShadowColor)
 
 static bool js_scene_Shadow_setShadowMapDirty(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8970,7 +8970,7 @@ static bool js_scene_Shadow_setShadowMapDirty(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setShadowMapDirty)     // setShadowMapDirty
+SE_BIND_FUNC(js_scene_Shadow_setShadowMapDirty)
 
 static bool js_scene_Shadow_setShadowMapSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8989,7 +8989,7 @@ static bool js_scene_Shadow_setShadowMapSize(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setShadowMapSize)     // setShadowMapSize
+SE_BIND_FUNC(js_scene_Shadow_setShadowMapSize)
 
 static bool js_scene_Shadow_setSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9008,7 +9008,7 @@ static bool js_scene_Shadow_setSize(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setSize)     // setSize
+SE_BIND_FUNC(js_scene_Shadow_setSize)
 
 static bool js_scene_Shadow_setType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9027,7 +9027,7 @@ static bool js_scene_Shadow_setType(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Shadow_setType)     // setType
+SE_BIND_FUNC(js_scene_Shadow_setType)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_Shadow_finalize)
 
@@ -9132,7 +9132,7 @@ static bool js_scene_SkyboxInfo_activate(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SkyboxInfo_activate)     // activate
+SE_BIND_FUNC(js_scene_SkyboxInfo_activate)
 
 static bool js_scene_SkyboxInfo_getEnvamp(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9151,7 +9151,7 @@ static bool js_scene_SkyboxInfo_getEnvamp(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SkyboxInfo_getEnvamp)     // getEnvamp
+SE_BIND_FUNC(js_scene_SkyboxInfo_getEnvamp)
 
 static bool js_scene_SkyboxInfo_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9170,7 +9170,7 @@ static bool js_scene_SkyboxInfo_isEnabled(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SkyboxInfo_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_SkyboxInfo_isEnabled)
 
 static bool js_scene_SkyboxInfo_isRGBE(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9189,7 +9189,7 @@ static bool js_scene_SkyboxInfo_isRGBE(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SkyboxInfo_isRGBE)     // isRGBE
+SE_BIND_FUNC(js_scene_SkyboxInfo_isRGBE)
 
 static bool js_scene_SkyboxInfo_isUseIBL(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9208,7 +9208,7 @@ static bool js_scene_SkyboxInfo_isUseIBL(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SkyboxInfo_isUseIBL)     // isUseIBL
+SE_BIND_FUNC(js_scene_SkyboxInfo_isUseIBL)
 
 static bool js_scene_SkyboxInfo_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9227,7 +9227,7 @@ static bool js_scene_SkyboxInfo_setEnabled(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SkyboxInfo_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_SkyboxInfo_setEnabled)
 
 static bool js_scene_SkyboxInfo_setEnvmap(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9246,7 +9246,7 @@ static bool js_scene_SkyboxInfo_setEnvmap(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SkyboxInfo_setEnvmap)     // setEnvmap
+SE_BIND_FUNC(js_scene_SkyboxInfo_setEnvmap)
 
 static bool js_scene_SkyboxInfo_setRGBE(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9265,7 +9265,7 @@ static bool js_scene_SkyboxInfo_setRGBE(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SkyboxInfo_setRGBE)     // setRGBE
+SE_BIND_FUNC(js_scene_SkyboxInfo_setRGBE)
 
 static bool js_scene_SkyboxInfo_setUseIBL(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9284,7 +9284,7 @@ static bool js_scene_SkyboxInfo_setUseIBL(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SkyboxInfo_setUseIBL)     // setUseIBL
+SE_BIND_FUNC(js_scene_SkyboxInfo_setUseIBL)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_SkyboxInfo_finalize)
 
@@ -9351,7 +9351,7 @@ static bool js_scene_Skybox_activate(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_activate)     // activate
+SE_BIND_FUNC(js_scene_Skybox_activate)
 
 static bool js_scene_Skybox_getEnvmap(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9370,7 +9370,7 @@ static bool js_scene_Skybox_getEnvmap(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_getEnvmap)     // getEnvmap
+SE_BIND_FUNC(js_scene_Skybox_getEnvmap)
 
 static bool js_scene_Skybox_getModel(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9389,7 +9389,7 @@ static bool js_scene_Skybox_getModel(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_getModel)     // getModel
+SE_BIND_FUNC(js_scene_Skybox_getModel)
 
 static bool js_scene_Skybox_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9408,7 +9408,7 @@ static bool js_scene_Skybox_initialize(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_initialize)     // initialize
+SE_BIND_FUNC(js_scene_Skybox_initialize)
 
 static bool js_scene_Skybox_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9427,7 +9427,7 @@ static bool js_scene_Skybox_isEnabled(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_Skybox_isEnabled)
 
 static bool js_scene_Skybox_isRGBE(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9446,7 +9446,7 @@ static bool js_scene_Skybox_isRGBE(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_isRGBE)     // isRGBE
+SE_BIND_FUNC(js_scene_Skybox_isRGBE)
 
 static bool js_scene_Skybox_isUseIBL(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9465,7 +9465,7 @@ static bool js_scene_Skybox_isUseIBL(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_isUseIBL)     // isUseIBL
+SE_BIND_FUNC(js_scene_Skybox_isUseIBL)
 
 static bool js_scene_Skybox_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9484,7 +9484,7 @@ static bool js_scene_Skybox_setEnabled(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_Skybox_setEnabled)
 
 static bool js_scene_Skybox_setEnvmap(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9503,7 +9503,7 @@ static bool js_scene_Skybox_setEnvmap(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_setEnvmap)     // setEnvmap
+SE_BIND_FUNC(js_scene_Skybox_setEnvmap)
 
 static bool js_scene_Skybox_setIsRGBE(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9522,7 +9522,7 @@ static bool js_scene_Skybox_setIsRGBE(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_setIsRGBE)     // setIsRGBE
+SE_BIND_FUNC(js_scene_Skybox_setIsRGBE)
 
 static bool js_scene_Skybox_setUseIBL(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9541,7 +9541,7 @@ static bool js_scene_Skybox_setUseIBL(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Skybox_setUseIBL)     // setUseIBL
+SE_BIND_FUNC(js_scene_Skybox_setUseIBL)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_Skybox_finalize)
 
@@ -9920,7 +9920,7 @@ static bool js_scene_RenderWindow_attachCamera(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_attachCamera)     // attachCamera
+SE_BIND_FUNC(js_scene_RenderWindow_attachCamera)
 
 static bool js_scene_RenderWindow_clearCameras(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9935,7 +9935,7 @@ static bool js_scene_RenderWindow_clearCameras(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_clearCameras)     // clearCameras
+SE_BIND_FUNC(js_scene_RenderWindow_clearCameras)
 
 static bool js_scene_RenderWindow_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9950,7 +9950,7 @@ static bool js_scene_RenderWindow_destroy(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_destroy)     // destroy
+SE_BIND_FUNC(js_scene_RenderWindow_destroy)
 
 static bool js_scene_RenderWindow_detachCamera(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9969,7 +9969,7 @@ static bool js_scene_RenderWindow_detachCamera(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_detachCamera)     // detachCamera
+SE_BIND_FUNC(js_scene_RenderWindow_detachCamera)
 
 static bool js_scene_RenderWindow_extractRenderCameras(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9988,7 +9988,7 @@ static bool js_scene_RenderWindow_extractRenderCameras(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_extractRenderCameras)     // extractRenderCameras
+SE_BIND_FUNC(js_scene_RenderWindow_extractRenderCameras)
 
 static bool js_scene_RenderWindow_getCamera(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10007,7 +10007,7 @@ static bool js_scene_RenderWindow_getCamera(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_getCamera)     // getCamera
+SE_BIND_FUNC(js_scene_RenderWindow_getCamera)
 
 static bool js_scene_RenderWindow_getFramebuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10026,7 +10026,7 @@ static bool js_scene_RenderWindow_getFramebuffer(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_getFramebuffer)     // getFramebuffer
+SE_BIND_FUNC(js_scene_RenderWindow_getFramebuffer)
 
 static bool js_scene_RenderWindow_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10045,7 +10045,7 @@ static bool js_scene_RenderWindow_getHeight(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_getHeight)     // getHeight
+SE_BIND_FUNC(js_scene_RenderWindow_getHeight)
 
 static bool js_scene_RenderWindow_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10064,7 +10064,7 @@ static bool js_scene_RenderWindow_getWidth(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_getWidth)     // getWidth
+SE_BIND_FUNC(js_scene_RenderWindow_getWidth)
 
 static bool js_scene_RenderWindow_hasOffScreenAttachments(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10083,7 +10083,7 @@ static bool js_scene_RenderWindow_hasOffScreenAttachments(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_hasOffScreenAttachments)     // hasOffScreenAttachments
+SE_BIND_FUNC(js_scene_RenderWindow_hasOffScreenAttachments)
 
 static bool js_scene_RenderWindow_hasOnScreenAttachments(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10102,7 +10102,7 @@ static bool js_scene_RenderWindow_hasOnScreenAttachments(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_hasOnScreenAttachments)     // hasOnScreenAttachments
+SE_BIND_FUNC(js_scene_RenderWindow_hasOnScreenAttachments)
 
 static bool js_scene_RenderWindow_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10126,7 +10126,7 @@ static bool js_scene_RenderWindow_initialize(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_initialize)     // initialize
+SE_BIND_FUNC(js_scene_RenderWindow_initialize)
 
 static bool js_scene_RenderWindow_resize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10147,7 +10147,7 @@ static bool js_scene_RenderWindow_resize(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_resize)     // resize
+SE_BIND_FUNC(js_scene_RenderWindow_resize)
 
 static bool js_scene_RenderWindow_shouldSyncSizeWithSwapchain(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10166,7 +10166,7 @@ static bool js_scene_RenderWindow_shouldSyncSizeWithSwapchain(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_shouldSyncSizeWithSwapchain)     // shouldSyncSizeWithSwapchain
+SE_BIND_FUNC(js_scene_RenderWindow_shouldSyncSizeWithSwapchain)
 
 static bool js_scene_RenderWindow_sortCameras(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10181,7 +10181,7 @@ static bool js_scene_RenderWindow_sortCameras(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderWindow_sortCameras)     // sortCameras
+SE_BIND_FUNC(js_scene_RenderWindow_sortCameras)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_RenderWindow_finalize)
 
@@ -10599,7 +10599,7 @@ static bool js_scene_Camera_attachToScene(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_attachToScene)     // attachToScene
+SE_BIND_FUNC(js_scene_Camera_attachToScene)
 
 static bool js_scene_Camera_changeTargetWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10618,7 +10618,7 @@ static bool js_scene_Camera_changeTargetWindow(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_changeTargetWindow)     // changeTargetWindow
+SE_BIND_FUNC(js_scene_Camera_changeTargetWindow)
 
 static bool js_scene_Camera_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10633,7 +10633,7 @@ static bool js_scene_Camera_destroy(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_destroy)     // destroy
+SE_BIND_FUNC(js_scene_Camera_destroy)
 
 static bool js_scene_Camera_detachCamera(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10648,7 +10648,7 @@ static bool js_scene_Camera_detachCamera(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_detachCamera)     // detachCamera
+SE_BIND_FUNC(js_scene_Camera_detachCamera)
 
 static bool js_scene_Camera_detachFromScene(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10663,7 +10663,7 @@ static bool js_scene_Camera_detachFromScene(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_detachFromScene)     // detachFromScene
+SE_BIND_FUNC(js_scene_Camera_detachFromScene)
 
 static bool js_scene_Camera_getAperture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10682,7 +10682,7 @@ static bool js_scene_Camera_getAperture(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getAperture)     // getAperture
+SE_BIND_FUNC(js_scene_Camera_getAperture)
 
 static bool js_scene_Camera_getApertureValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10701,7 +10701,7 @@ static bool js_scene_Camera_getApertureValue(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getApertureValue)     // getApertureValue
+SE_BIND_FUNC(js_scene_Camera_getApertureValue)
 
 static bool js_scene_Camera_getAspect(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10720,7 +10720,7 @@ static bool js_scene_Camera_getAspect(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getAspect)     // getAspect
+SE_BIND_FUNC(js_scene_Camera_getAspect)
 
 static bool js_scene_Camera_getClearColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10739,7 +10739,7 @@ static bool js_scene_Camera_getClearColor(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getClearColor)     // getClearColor
+SE_BIND_FUNC(js_scene_Camera_getClearColor)
 
 static bool js_scene_Camera_getClearDepth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10758,7 +10758,7 @@ static bool js_scene_Camera_getClearDepth(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getClearDepth)     // getClearDepth
+SE_BIND_FUNC(js_scene_Camera_getClearDepth)
 
 static bool js_scene_Camera_getClearFlag(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10777,7 +10777,7 @@ static bool js_scene_Camera_getClearFlag(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getClearFlag)     // getClearFlag
+SE_BIND_FUNC(js_scene_Camera_getClearFlag)
 
 static bool js_scene_Camera_getClearStencil(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10796,7 +10796,7 @@ static bool js_scene_Camera_getClearStencil(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getClearStencil)     // getClearStencil
+SE_BIND_FUNC(js_scene_Camera_getClearStencil)
 
 static bool js_scene_Camera_getEc(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10815,7 +10815,7 @@ static bool js_scene_Camera_getEc(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getEc)     // getEc
+SE_BIND_FUNC(js_scene_Camera_getEc)
 
 static bool js_scene_Camera_getExposure(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10834,7 +10834,7 @@ static bool js_scene_Camera_getExposure(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getExposure)     // getExposure
+SE_BIND_FUNC(js_scene_Camera_getExposure)
 
 static bool js_scene_Camera_getFarClip(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10853,7 +10853,7 @@ static bool js_scene_Camera_getFarClip(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getFarClip)     // getFarClip
+SE_BIND_FUNC(js_scene_Camera_getFarClip)
 
 static bool js_scene_Camera_getForward(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10872,7 +10872,7 @@ static bool js_scene_Camera_getForward(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getForward)     // getForward
+SE_BIND_FUNC(js_scene_Camera_getForward)
 
 static bool js_scene_Camera_getFov(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10891,7 +10891,7 @@ static bool js_scene_Camera_getFov(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getFov)     // getFov
+SE_BIND_FUNC(js_scene_Camera_getFov)
 
 static bool js_scene_Camera_getFovAxis(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10910,7 +10910,7 @@ static bool js_scene_Camera_getFovAxis(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getFovAxis)     // getFovAxis
+SE_BIND_FUNC(js_scene_Camera_getFovAxis)
 
 static bool js_scene_Camera_getFrustum(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10929,7 +10929,7 @@ static bool js_scene_Camera_getFrustum(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getFrustum)     // getFrustum
+SE_BIND_FUNC(js_scene_Camera_getFrustum)
 
 static bool js_scene_Camera_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10948,7 +10948,7 @@ static bool js_scene_Camera_getHeight(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getHeight)     // getHeight
+SE_BIND_FUNC(js_scene_Camera_getHeight)
 
 static bool js_scene_Camera_getIso(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10967,7 +10967,7 @@ static bool js_scene_Camera_getIso(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getIso)     // getIso
+SE_BIND_FUNC(js_scene_Camera_getIso)
 
 static bool js_scene_Camera_getIsoValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10986,7 +10986,7 @@ static bool js_scene_Camera_getIsoValue(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getIsoValue)     // getIsoValue
+SE_BIND_FUNC(js_scene_Camera_getIsoValue)
 
 static bool js_scene_Camera_getMatProj(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11005,7 +11005,7 @@ static bool js_scene_Camera_getMatProj(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getMatProj)     // getMatProj
+SE_BIND_FUNC(js_scene_Camera_getMatProj)
 
 static bool js_scene_Camera_getMatProjInv(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11024,7 +11024,7 @@ static bool js_scene_Camera_getMatProjInv(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getMatProjInv)     // getMatProjInv
+SE_BIND_FUNC(js_scene_Camera_getMatProjInv)
 
 static bool js_scene_Camera_getMatView(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11043,7 +11043,7 @@ static bool js_scene_Camera_getMatView(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getMatView)     // getMatView
+SE_BIND_FUNC(js_scene_Camera_getMatView)
 
 static bool js_scene_Camera_getMatViewProj(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11062,7 +11062,7 @@ static bool js_scene_Camera_getMatViewProj(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getMatViewProj)     // getMatViewProj
+SE_BIND_FUNC(js_scene_Camera_getMatViewProj)
 
 static bool js_scene_Camera_getMatViewProjInv(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11081,7 +11081,7 @@ static bool js_scene_Camera_getMatViewProjInv(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getMatViewProjInv)     // getMatViewProjInv
+SE_BIND_FUNC(js_scene_Camera_getMatViewProjInv)
 
 static bool js_scene_Camera_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11100,7 +11100,7 @@ static bool js_scene_Camera_getName(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getName)     // getName
+SE_BIND_FUNC(js_scene_Camera_getName)
 
 static bool js_scene_Camera_getNearClip(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11119,7 +11119,7 @@ static bool js_scene_Camera_getNearClip(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getNearClip)     // getNearClip
+SE_BIND_FUNC(js_scene_Camera_getNearClip)
 
 static bool js_scene_Camera_getNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11138,7 +11138,7 @@ static bool js_scene_Camera_getNode(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getNode)     // getNode
+SE_BIND_FUNC(js_scene_Camera_getNode)
 
 static bool js_scene_Camera_getOrthoHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11157,7 +11157,7 @@ static bool js_scene_Camera_getOrthoHeight(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getOrthoHeight)     // getOrthoHeight
+SE_BIND_FUNC(js_scene_Camera_getOrthoHeight)
 
 static bool js_scene_Camera_getPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11176,7 +11176,7 @@ static bool js_scene_Camera_getPosition(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getPosition)     // getPosition
+SE_BIND_FUNC(js_scene_Camera_getPosition)
 
 static bool js_scene_Camera_getPriority(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11195,7 +11195,7 @@ static bool js_scene_Camera_getPriority(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getPriority)     // getPriority
+SE_BIND_FUNC(js_scene_Camera_getPriority)
 
 static bool js_scene_Camera_getProjectionType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11214,7 +11214,7 @@ static bool js_scene_Camera_getProjectionType(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getProjectionType)     // getProjectionType
+SE_BIND_FUNC(js_scene_Camera_getProjectionType)
 
 static bool js_scene_Camera_getScene(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11233,7 +11233,7 @@ static bool js_scene_Camera_getScene(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getScene)     // getScene
+SE_BIND_FUNC(js_scene_Camera_getScene)
 
 static bool js_scene_Camera_getScreenScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11252,7 +11252,7 @@ static bool js_scene_Camera_getScreenScale(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getScreenScale)     // getScreenScale
+SE_BIND_FUNC(js_scene_Camera_getScreenScale)
 
 static bool js_scene_Camera_getShutter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11271,7 +11271,7 @@ static bool js_scene_Camera_getShutter(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getShutter)     // getShutter
+SE_BIND_FUNC(js_scene_Camera_getShutter)
 
 static bool js_scene_Camera_getShutterValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11290,7 +11290,7 @@ static bool js_scene_Camera_getShutterValue(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getShutterValue)     // getShutterValue
+SE_BIND_FUNC(js_scene_Camera_getShutterValue)
 
 static bool js_scene_Camera_getViewport(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11309,7 +11309,7 @@ static bool js_scene_Camera_getViewport(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getViewport)     // getViewport
+SE_BIND_FUNC(js_scene_Camera_getViewport)
 
 static bool js_scene_Camera_getVisibility(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11328,7 +11328,7 @@ static bool js_scene_Camera_getVisibility(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getVisibility)     // getVisibility
+SE_BIND_FUNC(js_scene_Camera_getVisibility)
 
 static bool js_scene_Camera_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11347,7 +11347,7 @@ static bool js_scene_Camera_getWidth(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getWidth)     // getWidth
+SE_BIND_FUNC(js_scene_Camera_getWidth)
 
 static bool js_scene_Camera_getWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11366,7 +11366,7 @@ static bool js_scene_Camera_getWindow(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_getWindow)     // getWindow
+SE_BIND_FUNC(js_scene_Camera_getWindow)
 
 static bool js_scene_Camera_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11388,7 +11388,7 @@ static bool js_scene_Camera_initialize(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_initialize)     // initialize
+SE_BIND_FUNC(js_scene_Camera_initialize)
 
 static bool js_scene_Camera_isEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11407,7 +11407,7 @@ static bool js_scene_Camera_isEnabled(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_isEnabled)     // isEnabled
+SE_BIND_FUNC(js_scene_Camera_isEnabled)
 
 static bool js_scene_Camera_isWindowSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11426,7 +11426,7 @@ static bool js_scene_Camera_isWindowSize(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_isWindowSize)     // isWindowSize
+SE_BIND_FUNC(js_scene_Camera_isWindowSize)
 
 static bool js_scene_Camera_resize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11447,7 +11447,7 @@ static bool js_scene_Camera_resize(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_resize)     // resize
+SE_BIND_FUNC(js_scene_Camera_resize)
 
 static bool js_scene_Camera_screenToWorld(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11471,7 +11471,7 @@ static bool js_scene_Camera_screenToWorld(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_screenToWorld)     // screenToWorld
+SE_BIND_FUNC(js_scene_Camera_screenToWorld)
 
 static bool js_scene_Camera_setAperture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11490,7 +11490,7 @@ static bool js_scene_Camera_setAperture(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setAperture)     // setAperture
+SE_BIND_FUNC(js_scene_Camera_setAperture)
 
 static bool js_scene_Camera_setClearColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11509,7 +11509,7 @@ static bool js_scene_Camera_setClearColor(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setClearColor)     // setClearColor
+SE_BIND_FUNC(js_scene_Camera_setClearColor)
 
 static bool js_scene_Camera_setClearDepth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11528,7 +11528,7 @@ static bool js_scene_Camera_setClearDepth(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setClearDepth)     // setClearDepth
+SE_BIND_FUNC(js_scene_Camera_setClearDepth)
 
 static bool js_scene_Camera_setClearFlag(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11547,7 +11547,7 @@ static bool js_scene_Camera_setClearFlag(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setClearFlag)     // setClearFlag
+SE_BIND_FUNC(js_scene_Camera_setClearFlag)
 
 static bool js_scene_Camera_setClearStencil(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11566,7 +11566,7 @@ static bool js_scene_Camera_setClearStencil(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setClearStencil)     // setClearStencil
+SE_BIND_FUNC(js_scene_Camera_setClearStencil)
 
 static bool js_scene_Camera_setEc(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11585,7 +11585,7 @@ static bool js_scene_Camera_setEc(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setEc)     // setEc
+SE_BIND_FUNC(js_scene_Camera_setEc)
 
 static bool js_scene_Camera_setEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11604,7 +11604,7 @@ static bool js_scene_Camera_setEnabled(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setEnabled)     // setEnabled
+SE_BIND_FUNC(js_scene_Camera_setEnabled)
 
 static bool js_scene_Camera_setFarClip(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11623,7 +11623,7 @@ static bool js_scene_Camera_setFarClip(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setFarClip)     // setFarClip
+SE_BIND_FUNC(js_scene_Camera_setFarClip)
 
 static bool js_scene_Camera_setFixedSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11644,7 +11644,7 @@ static bool js_scene_Camera_setFixedSize(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setFixedSize)     // setFixedSize
+SE_BIND_FUNC(js_scene_Camera_setFixedSize)
 
 static bool js_scene_Camera_setForward(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11663,7 +11663,7 @@ static bool js_scene_Camera_setForward(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setForward)     // setForward
+SE_BIND_FUNC(js_scene_Camera_setForward)
 
 static bool js_scene_Camera_setFov(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11682,7 +11682,7 @@ static bool js_scene_Camera_setFov(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setFov)     // setFov
+SE_BIND_FUNC(js_scene_Camera_setFov)
 
 static bool js_scene_Camera_setFovAxis(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11701,7 +11701,7 @@ static bool js_scene_Camera_setFovAxis(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setFovAxis)     // setFovAxis
+SE_BIND_FUNC(js_scene_Camera_setFovAxis)
 
 static bool js_scene_Camera_setFrustum(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11720,7 +11720,7 @@ static bool js_scene_Camera_setFrustum(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setFrustum)     // setFrustum
+SE_BIND_FUNC(js_scene_Camera_setFrustum)
 
 static bool js_scene_Camera_setIso(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11739,7 +11739,7 @@ static bool js_scene_Camera_setIso(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setIso)     // setIso
+SE_BIND_FUNC(js_scene_Camera_setIso)
 
 static bool js_scene_Camera_setNearClip(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11758,7 +11758,7 @@ static bool js_scene_Camera_setNearClip(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setNearClip)     // setNearClip
+SE_BIND_FUNC(js_scene_Camera_setNearClip)
 
 static bool js_scene_Camera_setNode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11777,7 +11777,7 @@ static bool js_scene_Camera_setNode(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setNode)     // setNode
+SE_BIND_FUNC(js_scene_Camera_setNode)
 
 static bool js_scene_Camera_setOrthoHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11796,7 +11796,7 @@ static bool js_scene_Camera_setOrthoHeight(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setOrthoHeight)     // setOrthoHeight
+SE_BIND_FUNC(js_scene_Camera_setOrthoHeight)
 
 static bool js_scene_Camera_setPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11815,7 +11815,7 @@ static bool js_scene_Camera_setPosition(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setPosition)     // setPosition
+SE_BIND_FUNC(js_scene_Camera_setPosition)
 
 static bool js_scene_Camera_setPriority(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11834,7 +11834,7 @@ static bool js_scene_Camera_setPriority(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setPriority)     // setPriority
+SE_BIND_FUNC(js_scene_Camera_setPriority)
 
 static bool js_scene_Camera_setProjectionType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11853,7 +11853,7 @@ static bool js_scene_Camera_setProjectionType(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setProjectionType)     // setProjectionType
+SE_BIND_FUNC(js_scene_Camera_setProjectionType)
 
 static bool js_scene_Camera_setScreenScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11872,7 +11872,7 @@ static bool js_scene_Camera_setScreenScale(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setScreenScale)     // setScreenScale
+SE_BIND_FUNC(js_scene_Camera_setScreenScale)
 
 static bool js_scene_Camera_setShutter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11891,7 +11891,7 @@ static bool js_scene_Camera_setShutter(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setShutter)     // setShutter
+SE_BIND_FUNC(js_scene_Camera_setShutter)
 
 static bool js_scene_Camera_setViewport(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11910,7 +11910,7 @@ static bool js_scene_Camera_setViewport(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setViewport)     // setViewport
+SE_BIND_FUNC(js_scene_Camera_setViewport)
 
 static bool js_scene_Camera_setVisibility(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11929,7 +11929,7 @@ static bool js_scene_Camera_setVisibility(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setVisibility)     // setVisibility
+SE_BIND_FUNC(js_scene_Camera_setVisibility)
 
 static bool js_scene_Camera_setWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11948,7 +11948,7 @@ static bool js_scene_Camera_setWindow(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setWindow)     // setWindow
+SE_BIND_FUNC(js_scene_Camera_setWindow)
 
 static bool js_scene_Camera_setWindowSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11967,7 +11967,7 @@ static bool js_scene_Camera_setWindowSize(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_setWindowSize)     // setWindowSize
+SE_BIND_FUNC(js_scene_Camera_setWindowSize)
 
 static bool js_scene_Camera_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11990,7 +11990,7 @@ static bool js_scene_Camera_update(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_update)     // update
+SE_BIND_FUNC(js_scene_Camera_update)
 
 static bool js_scene_Camera_worldMatrixToScreen(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12018,7 +12018,7 @@ static bool js_scene_Camera_worldMatrixToScreen(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_worldMatrixToScreen)     // worldMatrixToScreen
+SE_BIND_FUNC(js_scene_Camera_worldMatrixToScreen)
 
 static bool js_scene_Camera_worldToScreen(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12042,7 +12042,7 @@ static bool js_scene_Camera_worldToScreen(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Camera_worldToScreen)     // worldToScreen
+SE_BIND_FUNC(js_scene_Camera_worldToScreen)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_Camera_finalize)
 
@@ -12429,7 +12429,7 @@ static bool js_scene_RenderScene_addBatch(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_addBatch)     // addBatch
+SE_BIND_FUNC(js_scene_RenderScene_addBatch)
 
 static bool js_scene_RenderScene_addCamera(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12448,7 +12448,7 @@ static bool js_scene_RenderScene_addCamera(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_addCamera)     // addCamera
+SE_BIND_FUNC(js_scene_RenderScene_addCamera)
 
 static bool js_scene_RenderScene_addDirectionalLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12467,7 +12467,7 @@ static bool js_scene_RenderScene_addDirectionalLight(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_addDirectionalLight)     // addDirectionalLight
+SE_BIND_FUNC(js_scene_RenderScene_addDirectionalLight)
 
 static bool js_scene_RenderScene_addModel(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12486,7 +12486,7 @@ static bool js_scene_RenderScene_addModel(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_addModel)     // addModel
+SE_BIND_FUNC(js_scene_RenderScene_addModel)
 
 static bool js_scene_RenderScene_addSphereLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12505,7 +12505,7 @@ static bool js_scene_RenderScene_addSphereLight(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_addSphereLight)     // addSphereLight
+SE_BIND_FUNC(js_scene_RenderScene_addSphereLight)
 
 static bool js_scene_RenderScene_addSpotLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12524,7 +12524,7 @@ static bool js_scene_RenderScene_addSpotLight(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_addSpotLight)     // addSpotLight
+SE_BIND_FUNC(js_scene_RenderScene_addSpotLight)
 
 static bool js_scene_RenderScene_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12539,7 +12539,7 @@ static bool js_scene_RenderScene_destroy(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_destroy)     // destroy
+SE_BIND_FUNC(js_scene_RenderScene_destroy)
 
 static bool js_scene_RenderScene_generateModelId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12558,7 +12558,7 @@ static bool js_scene_RenderScene_generateModelId(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_generateModelId)     // generateModelId
+SE_BIND_FUNC(js_scene_RenderScene_generateModelId)
 
 static bool js_scene_RenderScene_getBatches(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12577,7 +12577,7 @@ static bool js_scene_RenderScene_getBatches(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_getBatches)     // getBatches
+SE_BIND_FUNC(js_scene_RenderScene_getBatches)
 
 static bool js_scene_RenderScene_getCameras(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12596,7 +12596,7 @@ static bool js_scene_RenderScene_getCameras(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_getCameras)     // getCameras
+SE_BIND_FUNC(js_scene_RenderScene_getCameras)
 
 static bool js_scene_RenderScene_getDrawBatch2Ds(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12615,7 +12615,7 @@ static bool js_scene_RenderScene_getDrawBatch2Ds(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_getDrawBatch2Ds)     // getDrawBatch2Ds
+SE_BIND_FUNC(js_scene_RenderScene_getDrawBatch2Ds)
 
 static bool js_scene_RenderScene_getMainLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12634,7 +12634,7 @@ static bool js_scene_RenderScene_getMainLight(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_getMainLight)     // getMainLight
+SE_BIND_FUNC(js_scene_RenderScene_getMainLight)
 
 static bool js_scene_RenderScene_getModels(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12653,7 +12653,7 @@ static bool js_scene_RenderScene_getModels(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_getModels)     // getModels
+SE_BIND_FUNC(js_scene_RenderScene_getModels)
 
 static bool js_scene_RenderScene_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12672,7 +12672,7 @@ static bool js_scene_RenderScene_getName(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_getName)     // getName
+SE_BIND_FUNC(js_scene_RenderScene_getName)
 
 static bool js_scene_RenderScene_getSphereLights(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12691,7 +12691,7 @@ static bool js_scene_RenderScene_getSphereLights(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_getSphereLights)     // getSphereLights
+SE_BIND_FUNC(js_scene_RenderScene_getSphereLights)
 
 static bool js_scene_RenderScene_getSpotLights(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12710,7 +12710,7 @@ static bool js_scene_RenderScene_getSpotLights(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_getSpotLights)     // getSpotLights
+SE_BIND_FUNC(js_scene_RenderScene_getSpotLights)
 
 static bool js_scene_RenderScene_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12732,7 +12732,7 @@ static bool js_scene_RenderScene_initialize(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_initialize)     // initialize
+SE_BIND_FUNC(js_scene_RenderScene_initialize)
 
 static bool js_scene_RenderScene_onGlobalPipelineStateChanged(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12747,7 +12747,7 @@ static bool js_scene_RenderScene_onGlobalPipelineStateChanged(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_onGlobalPipelineStateChanged)     // onGlobalPipelineStateChanged
+SE_BIND_FUNC(js_scene_RenderScene_onGlobalPipelineStateChanged)
 
 static bool js_scene_RenderScene_removeBatch(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12781,7 +12781,7 @@ static bool js_scene_RenderScene_removeBatch(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeBatch)     // removeBatch
+SE_BIND_FUNC(js_scene_RenderScene_removeBatch)
 
 static bool js_scene_RenderScene_removeBatches(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12796,7 +12796,7 @@ static bool js_scene_RenderScene_removeBatches(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeBatches)     // removeBatches
+SE_BIND_FUNC(js_scene_RenderScene_removeBatches)
 
 static bool js_scene_RenderScene_removeCamera(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12815,7 +12815,7 @@ static bool js_scene_RenderScene_removeCamera(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeCamera)     // removeCamera
+SE_BIND_FUNC(js_scene_RenderScene_removeCamera)
 
 static bool js_scene_RenderScene_removeCameras(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12830,7 +12830,7 @@ static bool js_scene_RenderScene_removeCameras(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeCameras)     // removeCameras
+SE_BIND_FUNC(js_scene_RenderScene_removeCameras)
 
 static bool js_scene_RenderScene_removeDirectionalLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12849,7 +12849,7 @@ static bool js_scene_RenderScene_removeDirectionalLight(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeDirectionalLight)     // removeDirectionalLight
+SE_BIND_FUNC(js_scene_RenderScene_removeDirectionalLight)
 
 static bool js_scene_RenderScene_removeModel(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12883,7 +12883,7 @@ static bool js_scene_RenderScene_removeModel(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeModel)     // removeModel
+SE_BIND_FUNC(js_scene_RenderScene_removeModel)
 
 static bool js_scene_RenderScene_removeModels(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12898,7 +12898,7 @@ static bool js_scene_RenderScene_removeModels(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeModels)     // removeModels
+SE_BIND_FUNC(js_scene_RenderScene_removeModels)
 
 static bool js_scene_RenderScene_removeSphereLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12917,7 +12917,7 @@ static bool js_scene_RenderScene_removeSphereLight(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeSphereLight)     // removeSphereLight
+SE_BIND_FUNC(js_scene_RenderScene_removeSphereLight)
 
 static bool js_scene_RenderScene_removeSphereLights(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12932,7 +12932,7 @@ static bool js_scene_RenderScene_removeSphereLights(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeSphereLights)     // removeSphereLights
+SE_BIND_FUNC(js_scene_RenderScene_removeSphereLights)
 
 static bool js_scene_RenderScene_removeSpotLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12951,7 +12951,7 @@ static bool js_scene_RenderScene_removeSpotLight(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeSpotLight)     // removeSpotLight
+SE_BIND_FUNC(js_scene_RenderScene_removeSpotLight)
 
 static bool js_scene_RenderScene_removeSpotLights(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12966,7 +12966,7 @@ static bool js_scene_RenderScene_removeSpotLights(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_removeSpotLights)     // removeSpotLights
+SE_BIND_FUNC(js_scene_RenderScene_removeSpotLights)
 
 static bool js_scene_RenderScene_setMainLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12985,7 +12985,7 @@ static bool js_scene_RenderScene_setMainLight(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_setMainLight)     // setMainLight
+SE_BIND_FUNC(js_scene_RenderScene_setMainLight)
 
 static bool js_scene_RenderScene_unsetMainLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13004,7 +13004,7 @@ static bool js_scene_RenderScene_unsetMainLight(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_unsetMainLight)     // unsetMainLight
+SE_BIND_FUNC(js_scene_RenderScene_unsetMainLight)
 
 static bool js_scene_RenderScene_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13023,7 +13023,7 @@ static bool js_scene_RenderScene_update(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_RenderScene_update)     // update
+SE_BIND_FUNC(js_scene_RenderScene_update)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_RenderScene_finalize)
 
@@ -13117,7 +13117,7 @@ static bool js_scene_Root_activeWindow(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_activeWindow)     // activeWindow
+SE_BIND_FUNC(js_scene_Root_activeWindow)
 
 static bool js_scene_Root_createCamera(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13136,7 +13136,7 @@ static bool js_scene_Root_createCamera(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_createCamera)     // createCamera
+SE_BIND_FUNC(js_scene_Root_createCamera)
 
 static bool js_scene_Root_createScene(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13158,7 +13158,7 @@ static bool js_scene_Root_createScene(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_createScene)     // createScene
+SE_BIND_FUNC(js_scene_Root_createScene)
 
 static bool js_scene_Root_createWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13180,7 +13180,7 @@ static bool js_scene_Root_createWindow(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_createWindow)     // createWindow
+SE_BIND_FUNC(js_scene_Root_createWindow)
 
 static bool js_scene_Root_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13195,7 +13195,7 @@ static bool js_scene_Root_destroy(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_destroy)     // destroy
+SE_BIND_FUNC(js_scene_Root_destroy)
 
 static bool js_scene_Root_destroyLight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13214,7 +13214,7 @@ static bool js_scene_Root_destroyLight(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_destroyLight)     // destroyLight
+SE_BIND_FUNC(js_scene_Root_destroyLight)
 
 static bool js_scene_Root_destroyModel(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13233,7 +13233,7 @@ static bool js_scene_Root_destroyModel(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_destroyModel)     // destroyModel
+SE_BIND_FUNC(js_scene_Root_destroyModel)
 
 static bool js_scene_Root_destroyScene(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13252,7 +13252,7 @@ static bool js_scene_Root_destroyScene(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_destroyScene)     // destroyScene
+SE_BIND_FUNC(js_scene_Root_destroyScene)
 
 static bool js_scene_Root_destroyScenes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13267,7 +13267,7 @@ static bool js_scene_Root_destroyScenes(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_destroyScenes)     // destroyScenes
+SE_BIND_FUNC(js_scene_Root_destroyScenes)
 
 static bool js_scene_Root_destroyWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13286,7 +13286,7 @@ static bool js_scene_Root_destroyWindow(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_destroyWindow)     // destroyWindow
+SE_BIND_FUNC(js_scene_Root_destroyWindow)
 
 static bool js_scene_Root_destroyWindows(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13301,7 +13301,7 @@ static bool js_scene_Root_destroyWindows(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_destroyWindows)     // destroyWindows
+SE_BIND_FUNC(js_scene_Root_destroyWindows)
 
 static bool js_scene_Root_frameMove(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13320,7 +13320,7 @@ static bool js_scene_Root_frameMove(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_frameMove)     // frameMove
+SE_BIND_FUNC(js_scene_Root_frameMove)
 
 static bool js_scene_Root_getBatcher2D(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13339,7 +13339,7 @@ static bool js_scene_Root_getBatcher2D(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getBatcher2D)     // getBatcher2D
+SE_BIND_FUNC(js_scene_Root_getBatcher2D)
 
 static bool js_scene_Root_getCumulativeTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13358,7 +13358,7 @@ static bool js_scene_Root_getCumulativeTime(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getCumulativeTime)     // getCumulativeTime
+SE_BIND_FUNC(js_scene_Root_getCumulativeTime)
 
 static bool js_scene_Root_getCurWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13377,7 +13377,7 @@ static bool js_scene_Root_getCurWindow(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getCurWindow)     // getCurWindow
+SE_BIND_FUNC(js_scene_Root_getCurWindow)
 
 static bool js_scene_Root_getDataPoolManager(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13396,7 +13396,7 @@ static bool js_scene_Root_getDataPoolManager(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getDataPoolManager)     // getDataPoolManager
+SE_BIND_FUNC(js_scene_Root_getDataPoolManager)
 
 static bool js_scene_Root_getDevice(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13415,7 +13415,7 @@ static bool js_scene_Root_getDevice(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getDevice)     // getDevice
+SE_BIND_FUNC(js_scene_Root_getDevice)
 
 static bool js_scene_Root_getFixedFPS(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13434,7 +13434,7 @@ static bool js_scene_Root_getFixedFPS(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getFixedFPS)     // getFixedFPS
+SE_BIND_FUNC(js_scene_Root_getFixedFPS)
 
 static bool js_scene_Root_getFps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13453,7 +13453,7 @@ static bool js_scene_Root_getFps(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getFps)     // getFps
+SE_BIND_FUNC(js_scene_Root_getFps)
 
 static bool js_scene_Root_getFrameCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13472,7 +13472,7 @@ static bool js_scene_Root_getFrameCount(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getFrameCount)     // getFrameCount
+SE_BIND_FUNC(js_scene_Root_getFrameCount)
 
 static bool js_scene_Root_getFrameTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13491,7 +13491,7 @@ static bool js_scene_Root_getFrameTime(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getFrameTime)     // getFrameTime
+SE_BIND_FUNC(js_scene_Root_getFrameTime)
 
 static bool js_scene_Root_getMainWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13510,7 +13510,7 @@ static bool js_scene_Root_getMainWindow(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getMainWindow)     // getMainWindow
+SE_BIND_FUNC(js_scene_Root_getMainWindow)
 
 static bool js_scene_Root_getPipeline(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13529,7 +13529,7 @@ static bool js_scene_Root_getPipeline(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getPipeline)     // getPipeline
+SE_BIND_FUNC(js_scene_Root_getPipeline)
 
 static bool js_scene_Root_getScenes(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13548,7 +13548,7 @@ static bool js_scene_Root_getScenes(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getScenes)     // getScenes
+SE_BIND_FUNC(js_scene_Root_getScenes)
 
 static bool js_scene_Root_getTempWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13567,7 +13567,7 @@ static bool js_scene_Root_getTempWindow(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getTempWindow)     // getTempWindow
+SE_BIND_FUNC(js_scene_Root_getTempWindow)
 
 static bool js_scene_Root_getWindows(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13586,7 +13586,7 @@ static bool js_scene_Root_getWindows(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_getWindows)     // getWindows
+SE_BIND_FUNC(js_scene_Root_getWindows)
 
 static bool js_scene_Root_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13601,7 +13601,7 @@ static bool js_scene_Root_initialize(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_initialize)     // initialize
+SE_BIND_FUNC(js_scene_Root_initialize)
 
 static bool js_scene_Root_isUsingDeferredPipeline(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13620,7 +13620,7 @@ static bool js_scene_Root_isUsingDeferredPipeline(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_isUsingDeferredPipeline)     // isUsingDeferredPipeline
+SE_BIND_FUNC(js_scene_Root_isUsingDeferredPipeline)
 
 static bool js_scene_Root_onGlobalPipelineStateChanged(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13635,7 +13635,7 @@ static bool js_scene_Root_onGlobalPipelineStateChanged(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_onGlobalPipelineStateChanged)     // onGlobalPipelineStateChanged
+SE_BIND_FUNC(js_scene_Root_onGlobalPipelineStateChanged)
 
 static bool js_scene_Root_resetCumulativeTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13650,7 +13650,7 @@ static bool js_scene_Root_resetCumulativeTime(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_resetCumulativeTime)     // resetCumulativeTime
+SE_BIND_FUNC(js_scene_Root_resetCumulativeTime)
 
 static bool js_scene_Root_resize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13671,7 +13671,7 @@ static bool js_scene_Root_resize(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_resize)     // resize
+SE_BIND_FUNC(js_scene_Root_resize)
 
 static bool js_scene_Root_setCurWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13690,7 +13690,7 @@ static bool js_scene_Root_setCurWindow(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_setCurWindow)     // setCurWindow
+SE_BIND_FUNC(js_scene_Root_setCurWindow)
 
 static bool js_scene_Root_setFixedFPS(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13709,7 +13709,7 @@ static bool js_scene_Root_setFixedFPS(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_setFixedFPS)     // setFixedFPS
+SE_BIND_FUNC(js_scene_Root_setFixedFPS)
 
 static bool js_scene_Root_setRenderPipeline(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13738,7 +13738,7 @@ static bool js_scene_Root_setRenderPipeline(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_setRenderPipeline)     // setRenderPipeline
+SE_BIND_FUNC(js_scene_Root_setRenderPipeline)
 
 static bool js_scene_Root_setTempWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13757,7 +13757,7 @@ static bool js_scene_Root_setTempWindow(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Root_setTempWindow)     // setTempWindow
+SE_BIND_FUNC(js_scene_Root_setTempWindow)
 
 static bool js_scene_Root_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13873,7 +13873,7 @@ static bool js_scene_Pass_beginChangeStatesSilently(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_beginChangeStatesSilently)     // beginChangeStatesSilently
+SE_BIND_FUNC(js_scene_Pass_beginChangeStatesSilently)
 
 static bool js_scene_Pass_bindSampler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13905,7 +13905,7 @@ static bool js_scene_Pass_bindSampler(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_bindSampler)     // bindSampler
+SE_BIND_FUNC(js_scene_Pass_bindSampler)
 
 static bool js_scene_Pass_bindTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13937,7 +13937,7 @@ static bool js_scene_Pass_bindTexture(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_bindTexture)     // bindTexture
+SE_BIND_FUNC(js_scene_Pass_bindTexture)
 
 static bool js_scene_Pass_destroy(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13952,7 +13952,7 @@ static bool js_scene_Pass_destroy(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_destroy)     // destroy
+SE_BIND_FUNC(js_scene_Pass_destroy)
 
 static bool js_scene_Pass_endChangeStatesSilently(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13967,7 +13967,7 @@ static bool js_scene_Pass_endChangeStatesSilently(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_endChangeStatesSilently)     // endChangeStatesSilently
+SE_BIND_FUNC(js_scene_Pass_endChangeStatesSilently)
 
 static bool js_scene_Pass_getBatchingScheme(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13986,7 +13986,7 @@ static bool js_scene_Pass_getBatchingScheme(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getBatchingScheme)     // getBatchingScheme
+SE_BIND_FUNC(js_scene_Pass_getBatchingScheme)
 
 static bool js_scene_Pass_getBinding(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14008,7 +14008,7 @@ static bool js_scene_Pass_getBinding(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getBinding)     // getBinding
+SE_BIND_FUNC(js_scene_Pass_getBinding)
 
 static bool js_scene_Pass_getBlendState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14027,7 +14027,7 @@ static bool js_scene_Pass_getBlendState(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getBlendState)     // getBlendState
+SE_BIND_FUNC(js_scene_Pass_getBlendState)
 
 static bool js_scene_Pass_getBlocks(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14046,7 +14046,7 @@ static bool js_scene_Pass_getBlocks(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getBlocks)     // getBlocks
+SE_BIND_FUNC(js_scene_Pass_getBlocks)
 
 static bool js_scene_Pass_getDefines(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14065,7 +14065,7 @@ static bool js_scene_Pass_getDefines(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getDefines)     // getDefines
+SE_BIND_FUNC(js_scene_Pass_getDefines)
 
 static bool js_scene_Pass_getDepthStencilState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14084,7 +14084,7 @@ static bool js_scene_Pass_getDepthStencilState(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getDepthStencilState)     // getDepthStencilState
+SE_BIND_FUNC(js_scene_Pass_getDepthStencilState)
 
 static bool js_scene_Pass_getDescriptorSet(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14103,7 +14103,7 @@ static bool js_scene_Pass_getDescriptorSet(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getDescriptorSet)     // getDescriptorSet
+SE_BIND_FUNC(js_scene_Pass_getDescriptorSet)
 
 static bool js_scene_Pass_getDevice(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14122,7 +14122,7 @@ static bool js_scene_Pass_getDevice(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getDevice)     // getDevice
+SE_BIND_FUNC(js_scene_Pass_getDevice)
 
 static bool js_scene_Pass_getDynamicState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14141,7 +14141,7 @@ static bool js_scene_Pass_getDynamicState(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getDynamicState)     // getDynamicState
+SE_BIND_FUNC(js_scene_Pass_getDynamicState)
 
 static bool js_scene_Pass_getDynamics(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14160,7 +14160,7 @@ static bool js_scene_Pass_getDynamics(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getDynamics)     // getDynamics
+SE_BIND_FUNC(js_scene_Pass_getDynamics)
 
 static bool js_scene_Pass_getHandle(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14208,7 +14208,7 @@ static bool js_scene_Pass_getHandle(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getHandle)     // getHandle
+SE_BIND_FUNC(js_scene_Pass_getHandle)
 
 static bool js_scene_Pass_getHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14227,7 +14227,7 @@ static bool js_scene_Pass_getHash(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getHash)     // getHash
+SE_BIND_FUNC(js_scene_Pass_getHash)
 
 static bool js_scene_Pass_getLocalSetLayout(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14246,7 +14246,7 @@ static bool js_scene_Pass_getLocalSetLayout(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getLocalSetLayout)     // getLocalSetLayout
+SE_BIND_FUNC(js_scene_Pass_getLocalSetLayout)
 
 static bool js_scene_Pass_getPassIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14265,7 +14265,7 @@ static bool js_scene_Pass_getPassIndex(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getPassIndex)     // getPassIndex
+SE_BIND_FUNC(js_scene_Pass_getPassIndex)
 
 static bool js_scene_Pass_getPassInfoFull(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14284,7 +14284,7 @@ static bool js_scene_Pass_getPassInfoFull(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getPassInfoFull)     // getPassInfoFull
+SE_BIND_FUNC(js_scene_Pass_getPassInfoFull)
 
 static bool js_scene_Pass_getPhase(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14303,7 +14303,7 @@ static bool js_scene_Pass_getPhase(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getPhase)     // getPhase
+SE_BIND_FUNC(js_scene_Pass_getPhase)
 
 static bool js_scene_Pass_getPipelineLayout(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14322,7 +14322,7 @@ static bool js_scene_Pass_getPipelineLayout(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getPipelineLayout)     // getPipelineLayout
+SE_BIND_FUNC(js_scene_Pass_getPipelineLayout)
 
 static bool js_scene_Pass_getPrimitive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14341,7 +14341,7 @@ static bool js_scene_Pass_getPrimitive(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getPrimitive)     // getPrimitive
+SE_BIND_FUNC(js_scene_Pass_getPrimitive)
 
 static bool js_scene_Pass_getPriority(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14360,7 +14360,7 @@ static bool js_scene_Pass_getPriority(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getPriority)     // getPriority
+SE_BIND_FUNC(js_scene_Pass_getPriority)
 
 static bool js_scene_Pass_getProgram(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14379,7 +14379,7 @@ static bool js_scene_Pass_getProgram(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getProgram)     // getProgram
+SE_BIND_FUNC(js_scene_Pass_getProgram)
 
 static bool js_scene_Pass_getProperties(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14398,7 +14398,7 @@ static bool js_scene_Pass_getProperties(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getProperties)     // getProperties
+SE_BIND_FUNC(js_scene_Pass_getProperties)
 
 static bool js_scene_Pass_getPropertyIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14417,7 +14417,7 @@ static bool js_scene_Pass_getPropertyIndex(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getPropertyIndex)     // getPropertyIndex
+SE_BIND_FUNC(js_scene_Pass_getPropertyIndex)
 
 static bool js_scene_Pass_getRasterizerState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14436,7 +14436,7 @@ static bool js_scene_Pass_getRasterizerState(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getRasterizerState)     // getRasterizerState
+SE_BIND_FUNC(js_scene_Pass_getRasterizerState)
 
 static bool js_scene_Pass_getRoot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14455,7 +14455,7 @@ static bool js_scene_Pass_getRoot(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getRoot)     // getRoot
+SE_BIND_FUNC(js_scene_Pass_getRoot)
 
 static bool js_scene_Pass_getShaderInfo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14474,7 +14474,7 @@ static bool js_scene_Pass_getShaderInfo(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getShaderInfo)     // getShaderInfo
+SE_BIND_FUNC(js_scene_Pass_getShaderInfo)
 
 static bool js_scene_Pass_getShaderVariant(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14496,7 +14496,7 @@ static bool js_scene_Pass_getShaderVariant(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getShaderVariant)     // getShaderVariant
+SE_BIND_FUNC(js_scene_Pass_getShaderVariant)
 
 static bool js_scene_Pass_getStage(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14515,7 +14515,7 @@ static bool js_scene_Pass_getStage(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_getStage)     // getStage
+SE_BIND_FUNC(js_scene_Pass_getStage)
 
 static bool js_scene_Pass_initPassFromTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14540,7 +14540,7 @@ static bool js_scene_Pass_initPassFromTarget(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_initPassFromTarget)     // initPassFromTarget
+SE_BIND_FUNC(js_scene_Pass_initPassFromTarget)
 
 static bool js_scene_Pass_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14559,7 +14559,7 @@ static bool js_scene_Pass_initialize(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_initialize)     // initialize
+SE_BIND_FUNC(js_scene_Pass_initialize)
 
 static bool js_scene_Pass_isRootBufferDirty(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14578,7 +14578,7 @@ static bool js_scene_Pass_isRootBufferDirty(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_isRootBufferDirty)     // isRootBufferDirty
+SE_BIND_FUNC(js_scene_Pass_isRootBufferDirty)
 
 static bool js_scene_Pass_overridePipelineStates(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14599,7 +14599,7 @@ static bool js_scene_Pass_overridePipelineStates(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_overridePipelineStates)     // overridePipelineStates
+SE_BIND_FUNC(js_scene_Pass_overridePipelineStates)
 
 static bool js_scene_Pass_resetTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14627,7 +14627,7 @@ static bool js_scene_Pass_resetTexture(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_resetTexture)     // resetTexture
+SE_BIND_FUNC(js_scene_Pass_resetTexture)
 
 static bool js_scene_Pass_resetTextures(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14642,7 +14642,7 @@ static bool js_scene_Pass_resetTextures(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_resetTextures)     // resetTextures
+SE_BIND_FUNC(js_scene_Pass_resetTextures)
 
 static bool js_scene_Pass_resetUBOs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14657,7 +14657,7 @@ static bool js_scene_Pass_resetUBOs(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_resetUBOs)     // resetUBOs
+SE_BIND_FUNC(js_scene_Pass_resetUBOs)
 
 static bool js_scene_Pass_resetUniform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14676,7 +14676,7 @@ static bool js_scene_Pass_resetUniform(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_resetUniform)     // resetUniform
+SE_BIND_FUNC(js_scene_Pass_resetUniform)
 
 static bool js_scene_Pass_setDynamicState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14697,7 +14697,7 @@ static bool js_scene_Pass_setDynamicState(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_setDynamicState)     // setDynamicState
+SE_BIND_FUNC(js_scene_Pass_setDynamicState)
 
 static bool js_scene_Pass_setUniform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14718,7 +14718,7 @@ static bool js_scene_Pass_setUniform(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_setUniform)     // setUniform
+SE_BIND_FUNC(js_scene_Pass_setUniform)
 
 static bool js_scene_Pass_setUniformArray(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14739,7 +14739,7 @@ static bool js_scene_Pass_setUniformArray(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_setUniformArray)     // setUniformArray
+SE_BIND_FUNC(js_scene_Pass_setUniformArray)
 
 static bool js_scene_Pass_tryCompile(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14758,7 +14758,7 @@ static bool js_scene_Pass_tryCompile(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_tryCompile)     // tryCompile
+SE_BIND_FUNC(js_scene_Pass_tryCompile)
 
 static bool js_scene_Pass_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14773,7 +14773,7 @@ static bool js_scene_Pass_update(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_Pass_update)     // update
+SE_BIND_FUNC(js_scene_Pass_update)
 
 static bool js_scene_Pass_getPropertyTypeFromHandle_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15021,7 +15021,7 @@ static bool js_scene_SubModel_destroy(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_destroy)     // destroy
+SE_BIND_FUNC(js_scene_SubModel_destroy)
 
 static bool js_scene_SubModel_getPass(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15043,7 +15043,7 @@ static bool js_scene_SubModel_getPass(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_getPass)     // getPass
+SE_BIND_FUNC(js_scene_SubModel_getPass)
 
 static bool js_scene_SubModel_getPasses(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15062,7 +15062,7 @@ static bool js_scene_SubModel_getPasses(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_getPasses)     // getPasses
+SE_BIND_FUNC(js_scene_SubModel_getPasses)
 
 static bool js_scene_SubModel_getPatches(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15081,7 +15081,7 @@ static bool js_scene_SubModel_getPatches(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_getPatches)     // getPatches
+SE_BIND_FUNC(js_scene_SubModel_getPatches)
 
 static bool js_scene_SubModel_getPlanarInstanceShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15100,7 +15100,7 @@ static bool js_scene_SubModel_getPlanarInstanceShader(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_getPlanarInstanceShader)     // getPlanarInstanceShader
+SE_BIND_FUNC(js_scene_SubModel_getPlanarInstanceShader)
 
 static bool js_scene_SubModel_getPlanarShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15119,7 +15119,7 @@ static bool js_scene_SubModel_getPlanarShader(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_getPlanarShader)     // getPlanarShader
+SE_BIND_FUNC(js_scene_SubModel_getPlanarShader)
 
 static bool js_scene_SubModel_getPriority(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15138,7 +15138,7 @@ static bool js_scene_SubModel_getPriority(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_getPriority)     // getPriority
+SE_BIND_FUNC(js_scene_SubModel_getPriority)
 
 static bool js_scene_SubModel_getShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15160,7 +15160,7 @@ static bool js_scene_SubModel_getShader(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_getShader)     // getShader
+SE_BIND_FUNC(js_scene_SubModel_getShader)
 
 static bool js_scene_SubModel_getShaders(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15179,7 +15179,7 @@ static bool js_scene_SubModel_getShaders(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_getShaders)     // getShaders
+SE_BIND_FUNC(js_scene_SubModel_getShaders)
 
 static bool js_scene_SubModel_initPlanarShadowInstanceShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15194,7 +15194,7 @@ static bool js_scene_SubModel_initPlanarShadowInstanceShader(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_initPlanarShadowInstanceShader)     // initPlanarShadowInstanceShader
+SE_BIND_FUNC(js_scene_SubModel_initPlanarShadowInstanceShader)
 
 static bool js_scene_SubModel_initPlanarShadowShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15209,7 +15209,7 @@ static bool js_scene_SubModel_initPlanarShadowShader(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_initPlanarShadowShader)     // initPlanarShadowShader
+SE_BIND_FUNC(js_scene_SubModel_initPlanarShadowShader)
 
 static bool js_scene_SubModel_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15232,7 +15232,7 @@ static bool js_scene_SubModel_initialize(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_initialize)     // initialize
+SE_BIND_FUNC(js_scene_SubModel_initialize)
 
 static bool js_scene_SubModel_onMacroPatchesStateChanged(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15251,7 +15251,7 @@ static bool js_scene_SubModel_onMacroPatchesStateChanged(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_onMacroPatchesStateChanged)     // onMacroPatchesStateChanged
+SE_BIND_FUNC(js_scene_SubModel_onMacroPatchesStateChanged)
 
 static bool js_scene_SubModel_onPipelineStateChanged(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15266,7 +15266,7 @@ static bool js_scene_SubModel_onPipelineStateChanged(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_onPipelineStateChanged)     // onPipelineStateChanged
+SE_BIND_FUNC(js_scene_SubModel_onPipelineStateChanged)
 
 static bool js_scene_SubModel_setDescriptorSet(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15285,7 +15285,7 @@ static bool js_scene_SubModel_setDescriptorSet(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_setDescriptorSet)     // setDescriptorSet
+SE_BIND_FUNC(js_scene_SubModel_setDescriptorSet)
 
 static bool js_scene_SubModel_setInputAssembler(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15304,7 +15304,7 @@ static bool js_scene_SubModel_setInputAssembler(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_setInputAssembler)     // setInputAssembler
+SE_BIND_FUNC(js_scene_SubModel_setInputAssembler)
 
 static bool js_scene_SubModel_setPasses(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15323,7 +15323,7 @@ static bool js_scene_SubModel_setPasses(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_setPasses)     // setPasses
+SE_BIND_FUNC(js_scene_SubModel_setPasses)
 
 static bool js_scene_SubModel_setPlanarInstanceShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15342,7 +15342,7 @@ static bool js_scene_SubModel_setPlanarInstanceShader(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_setPlanarInstanceShader)     // setPlanarInstanceShader
+SE_BIND_FUNC(js_scene_SubModel_setPlanarInstanceShader)
 
 static bool js_scene_SubModel_setPlanarShader(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15361,7 +15361,7 @@ static bool js_scene_SubModel_setPlanarShader(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_setPlanarShader)     // setPlanarShader
+SE_BIND_FUNC(js_scene_SubModel_setPlanarShader)
 
 static bool js_scene_SubModel_setPriority(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15380,7 +15380,7 @@ static bool js_scene_SubModel_setPriority(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_setPriority)     // setPriority
+SE_BIND_FUNC(js_scene_SubModel_setPriority)
 
 static bool js_scene_SubModel_setShaders(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15399,7 +15399,7 @@ static bool js_scene_SubModel_setShaders(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_setShaders)     // setShaders
+SE_BIND_FUNC(js_scene_SubModel_setShaders)
 
 static bool js_scene_SubModel_setSubMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15418,7 +15418,7 @@ static bool js_scene_SubModel_setSubMesh(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_setSubMesh)     // setSubMesh
+SE_BIND_FUNC(js_scene_SubModel_setSubMesh)
 
 static bool js_scene_SubModel_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15433,7 +15433,7 @@ static bool js_scene_SubModel_update(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_SubModel_update)     // update
+SE_BIND_FUNC(js_scene_SubModel_update)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_scene_SubModel_finalize)
 
@@ -15521,7 +15521,7 @@ static bool js_scene_UITransform_convertToNodeSpaceAR(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_convertToNodeSpaceAR)     // convertToNodeSpaceAR
+SE_BIND_FUNC(js_scene_UITransform_convertToNodeSpaceAR)
 
 static bool js_scene_UITransform_convertToWorldSpaceAR(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15543,7 +15543,7 @@ static bool js_scene_UITransform_convertToWorldSpaceAR(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_convertToWorldSpaceAR)     // convertToWorldSpaceAR
+SE_BIND_FUNC(js_scene_UITransform_convertToWorldSpaceAR)
 
 static bool js_scene_UITransform_getAnchorPoint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15562,7 +15562,7 @@ static bool js_scene_UITransform_getAnchorPoint(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getAnchorPoint)     // getAnchorPoint
+SE_BIND_FUNC(js_scene_UITransform_getAnchorPoint)
 
 static bool js_scene_UITransform_getAnchorX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15581,7 +15581,7 @@ static bool js_scene_UITransform_getAnchorX(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getAnchorX)     // getAnchorX
+SE_BIND_FUNC(js_scene_UITransform_getAnchorX)
 
 static bool js_scene_UITransform_getAnchorY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15600,7 +15600,7 @@ static bool js_scene_UITransform_getAnchorY(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getAnchorY)     // getAnchorY
+SE_BIND_FUNC(js_scene_UITransform_getAnchorY)
 
 static bool js_scene_UITransform_getBoundingBox(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15619,7 +15619,7 @@ static bool js_scene_UITransform_getBoundingBox(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getBoundingBox)     // getBoundingBox
+SE_BIND_FUNC(js_scene_UITransform_getBoundingBox)
 
 static bool js_scene_UITransform_getBoundingBoxTo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15641,7 +15641,7 @@ static bool js_scene_UITransform_getBoundingBoxTo(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getBoundingBoxTo)     // getBoundingBoxTo
+SE_BIND_FUNC(js_scene_UITransform_getBoundingBoxTo)
 
 static bool js_scene_UITransform_getBoundingBoxToWorld(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15660,7 +15660,7 @@ static bool js_scene_UITransform_getBoundingBoxToWorld(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getBoundingBoxToWorld)     // getBoundingBoxToWorld
+SE_BIND_FUNC(js_scene_UITransform_getBoundingBoxToWorld)
 
 static bool js_scene_UITransform_getCameraPriority(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15679,7 +15679,7 @@ static bool js_scene_UITransform_getCameraPriority(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getCameraPriority)     // getCameraPriority
+SE_BIND_FUNC(js_scene_UITransform_getCameraPriority)
 
 static bool js_scene_UITransform_getComputeAABB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15698,7 +15698,7 @@ static bool js_scene_UITransform_getComputeAABB(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getComputeAABB)     // getComputeAABB
+SE_BIND_FUNC(js_scene_UITransform_getComputeAABB)
 
 static bool js_scene_UITransform_getContentSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15717,7 +15717,7 @@ static bool js_scene_UITransform_getContentSize(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getContentSize)     // getContentSize
+SE_BIND_FUNC(js_scene_UITransform_getContentSize)
 
 static bool js_scene_UITransform_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15736,7 +15736,7 @@ static bool js_scene_UITransform_getHeight(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getHeight)     // getHeight
+SE_BIND_FUNC(js_scene_UITransform_getHeight)
 
 static bool js_scene_UITransform_getPriority(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15755,7 +15755,7 @@ static bool js_scene_UITransform_getPriority(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getPriority)     // getPriority
+SE_BIND_FUNC(js_scene_UITransform_getPriority)
 
 static bool js_scene_UITransform_getVisibility(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15774,7 +15774,7 @@ static bool js_scene_UITransform_getVisibility(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getVisibility)     // getVisibility
+SE_BIND_FUNC(js_scene_UITransform_getVisibility)
 
 static bool js_scene_UITransform_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15793,7 +15793,7 @@ static bool js_scene_UITransform_getWidth(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_getWidth)     // getWidth
+SE_BIND_FUNC(js_scene_UITransform_getWidth)
 
 static bool js_scene_UITransform_isHit(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15817,7 +15817,7 @@ static bool js_scene_UITransform_isHit(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_isHit)     // isHit
+SE_BIND_FUNC(js_scene_UITransform_isHit)
 
 static bool js_scene_UITransform_setAnchorPoint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15836,7 +15836,7 @@ static bool js_scene_UITransform_setAnchorPoint(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_setAnchorPoint)     // setAnchorPoint
+SE_BIND_FUNC(js_scene_UITransform_setAnchorPoint)
 
 static bool js_scene_UITransform_setAnchorX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15855,7 +15855,7 @@ static bool js_scene_UITransform_setAnchorX(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_setAnchorX)     // setAnchorX
+SE_BIND_FUNC(js_scene_UITransform_setAnchorX)
 
 static bool js_scene_UITransform_setAnchorY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15874,7 +15874,7 @@ static bool js_scene_UITransform_setAnchorY(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_setAnchorY)     // setAnchorY
+SE_BIND_FUNC(js_scene_UITransform_setAnchorY)
 
 static bool js_scene_UITransform_setContentSize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15893,7 +15893,7 @@ static bool js_scene_UITransform_setContentSize(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_setContentSize)     // setContentSize
+SE_BIND_FUNC(js_scene_UITransform_setContentSize)
 
 static bool js_scene_UITransform_setHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15908,7 +15908,7 @@ static bool js_scene_UITransform_setHeight(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_setHeight)     // setHeight
+SE_BIND_FUNC(js_scene_UITransform_setHeight)
 
 static bool js_scene_UITransform_setPriority(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15927,7 +15927,7 @@ static bool js_scene_UITransform_setPriority(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_setPriority)     // setPriority
+SE_BIND_FUNC(js_scene_UITransform_setPriority)
 
 static bool js_scene_UITransform_setWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15946,7 +15946,7 @@ static bool js_scene_UITransform_setWidth(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_scene_UITransform_setWidth)     // setWidth
+SE_BIND_FUNC(js_scene_UITransform_setWidth)
 
 SE_DECLARE_FINALIZE_FUNC(js_cc_UITransform_finalize)
 

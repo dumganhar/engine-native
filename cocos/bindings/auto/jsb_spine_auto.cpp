@@ -30,7 +30,7 @@ static bool js_spine_Animation_getDuration(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Animation_getDuration)     // getDuration
+SE_BIND_FUNC(js_spine_Animation_getDuration)
 
 static bool js_spine_Animation_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -49,7 +49,7 @@ static bool js_spine_Animation_getName(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Animation_getName)     // getName
+SE_BIND_FUNC(js_spine_Animation_getName)
 
 static bool js_spine_Animation_getTimelines(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -68,7 +68,7 @@ static bool js_spine_Animation_getTimelines(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Animation_getTimelines)     // getTimelines
+SE_BIND_FUNC(js_spine_Animation_getTimelines)
 
 static bool js_spine_Animation_hasTimeline(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -90,7 +90,7 @@ static bool js_spine_Animation_hasTimeline(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Animation_hasTimeline)     // hasTimeline
+SE_BIND_FUNC(js_spine_Animation_hasTimeline)
 
 static bool js_spine_Animation_setDuration(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -109,7 +109,7 @@ static bool js_spine_Animation_setDuration(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Animation_setDuration)     // setDuration
+SE_BIND_FUNC(js_spine_Animation_setDuration)
 
 
 
@@ -151,7 +151,7 @@ static bool js_spine_TrackEntry_getAlpha(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getAlpha)     // getAlpha
+SE_BIND_FUNC(js_spine_TrackEntry_getAlpha)
 
 static bool js_spine_TrackEntry_getAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -170,7 +170,7 @@ static bool js_spine_TrackEntry_getAnimation(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getAnimation)     // getAnimation
+SE_BIND_FUNC(js_spine_TrackEntry_getAnimation)
 
 static bool js_spine_TrackEntry_getAnimationEnd(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -189,7 +189,7 @@ static bool js_spine_TrackEntry_getAnimationEnd(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getAnimationEnd)     // getAnimationEnd
+SE_BIND_FUNC(js_spine_TrackEntry_getAnimationEnd)
 
 static bool js_spine_TrackEntry_getAnimationLast(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -208,7 +208,7 @@ static bool js_spine_TrackEntry_getAnimationLast(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getAnimationLast)     // getAnimationLast
+SE_BIND_FUNC(js_spine_TrackEntry_getAnimationLast)
 
 static bool js_spine_TrackEntry_getAnimationStart(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -227,7 +227,7 @@ static bool js_spine_TrackEntry_getAnimationStart(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getAnimationStart)     // getAnimationStart
+SE_BIND_FUNC(js_spine_TrackEntry_getAnimationStart)
 
 static bool js_spine_TrackEntry_getAnimationTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -246,7 +246,7 @@ static bool js_spine_TrackEntry_getAnimationTime(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getAnimationTime)     // getAnimationTime
+SE_BIND_FUNC(js_spine_TrackEntry_getAnimationTime)
 
 static bool js_spine_TrackEntry_getAttachmentThreshold(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -265,7 +265,7 @@ static bool js_spine_TrackEntry_getAttachmentThreshold(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getAttachmentThreshold)     // getAttachmentThreshold
+SE_BIND_FUNC(js_spine_TrackEntry_getAttachmentThreshold)
 
 static bool js_spine_TrackEntry_getDelay(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -284,7 +284,7 @@ static bool js_spine_TrackEntry_getDelay(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getDelay)     // getDelay
+SE_BIND_FUNC(js_spine_TrackEntry_getDelay)
 
 static bool js_spine_TrackEntry_getDrawOrderThreshold(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -303,7 +303,7 @@ static bool js_spine_TrackEntry_getDrawOrderThreshold(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getDrawOrderThreshold)     // getDrawOrderThreshold
+SE_BIND_FUNC(js_spine_TrackEntry_getDrawOrderThreshold)
 
 static bool js_spine_TrackEntry_getEventThreshold(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -322,7 +322,7 @@ static bool js_spine_TrackEntry_getEventThreshold(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getEventThreshold)     // getEventThreshold
+SE_BIND_FUNC(js_spine_TrackEntry_getEventThreshold)
 
 static bool js_spine_TrackEntry_getHoldPrevious(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -341,7 +341,7 @@ static bool js_spine_TrackEntry_getHoldPrevious(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getHoldPrevious)     // getHoldPrevious
+SE_BIND_FUNC(js_spine_TrackEntry_getHoldPrevious)
 
 static bool js_spine_TrackEntry_getLoop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -360,7 +360,7 @@ static bool js_spine_TrackEntry_getLoop(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getLoop)     // getLoop
+SE_BIND_FUNC(js_spine_TrackEntry_getLoop)
 
 static bool js_spine_TrackEntry_getMixBlend(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -379,7 +379,7 @@ static bool js_spine_TrackEntry_getMixBlend(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getMixBlend)     // getMixBlend
+SE_BIND_FUNC(js_spine_TrackEntry_getMixBlend)
 
 static bool js_spine_TrackEntry_getMixDuration(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -398,7 +398,7 @@ static bool js_spine_TrackEntry_getMixDuration(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getMixDuration)     // getMixDuration
+SE_BIND_FUNC(js_spine_TrackEntry_getMixDuration)
 
 static bool js_spine_TrackEntry_getMixTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -417,7 +417,7 @@ static bool js_spine_TrackEntry_getMixTime(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getMixTime)     // getMixTime
+SE_BIND_FUNC(js_spine_TrackEntry_getMixTime)
 
 static bool js_spine_TrackEntry_getMixingFrom(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -436,7 +436,7 @@ static bool js_spine_TrackEntry_getMixingFrom(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getMixingFrom)     // getMixingFrom
+SE_BIND_FUNC(js_spine_TrackEntry_getMixingFrom)
 
 static bool js_spine_TrackEntry_getMixingTo(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -455,7 +455,7 @@ static bool js_spine_TrackEntry_getMixingTo(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getMixingTo)     // getMixingTo
+SE_BIND_FUNC(js_spine_TrackEntry_getMixingTo)
 
 static bool js_spine_TrackEntry_getNext(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -474,7 +474,7 @@ static bool js_spine_TrackEntry_getNext(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getNext)     // getNext
+SE_BIND_FUNC(js_spine_TrackEntry_getNext)
 
 static bool js_spine_TrackEntry_getTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -493,7 +493,7 @@ static bool js_spine_TrackEntry_getTimeScale(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getTimeScale)     // getTimeScale
+SE_BIND_FUNC(js_spine_TrackEntry_getTimeScale)
 
 static bool js_spine_TrackEntry_getTrackEnd(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -512,7 +512,7 @@ static bool js_spine_TrackEntry_getTrackEnd(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getTrackEnd)     // getTrackEnd
+SE_BIND_FUNC(js_spine_TrackEntry_getTrackEnd)
 
 static bool js_spine_TrackEntry_getTrackIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -531,7 +531,7 @@ static bool js_spine_TrackEntry_getTrackIndex(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getTrackIndex)     // getTrackIndex
+SE_BIND_FUNC(js_spine_TrackEntry_getTrackIndex)
 
 static bool js_spine_TrackEntry_getTrackTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -550,7 +550,7 @@ static bool js_spine_TrackEntry_getTrackTime(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_getTrackTime)     // getTrackTime
+SE_BIND_FUNC(js_spine_TrackEntry_getTrackTime)
 
 static bool js_spine_TrackEntry_isComplete(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -569,7 +569,7 @@ static bool js_spine_TrackEntry_isComplete(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_isComplete)     // isComplete
+SE_BIND_FUNC(js_spine_TrackEntry_isComplete)
 
 static bool js_spine_TrackEntry_resetRotationDirections(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -584,7 +584,7 @@ static bool js_spine_TrackEntry_resetRotationDirections(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_resetRotationDirections)     // resetRotationDirections
+SE_BIND_FUNC(js_spine_TrackEntry_resetRotationDirections)
 
 static bool js_spine_TrackEntry_setAlpha(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -603,7 +603,7 @@ static bool js_spine_TrackEntry_setAlpha(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setAlpha)     // setAlpha
+SE_BIND_FUNC(js_spine_TrackEntry_setAlpha)
 
 static bool js_spine_TrackEntry_setAnimationEnd(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -622,7 +622,7 @@ static bool js_spine_TrackEntry_setAnimationEnd(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setAnimationEnd)     // setAnimationEnd
+SE_BIND_FUNC(js_spine_TrackEntry_setAnimationEnd)
 
 static bool js_spine_TrackEntry_setAnimationLast(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -641,7 +641,7 @@ static bool js_spine_TrackEntry_setAnimationLast(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setAnimationLast)     // setAnimationLast
+SE_BIND_FUNC(js_spine_TrackEntry_setAnimationLast)
 
 static bool js_spine_TrackEntry_setAnimationStart(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -660,7 +660,7 @@ static bool js_spine_TrackEntry_setAnimationStart(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setAnimationStart)     // setAnimationStart
+SE_BIND_FUNC(js_spine_TrackEntry_setAnimationStart)
 
 static bool js_spine_TrackEntry_setAttachmentThreshold(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -679,7 +679,7 @@ static bool js_spine_TrackEntry_setAttachmentThreshold(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setAttachmentThreshold)     // setAttachmentThreshold
+SE_BIND_FUNC(js_spine_TrackEntry_setAttachmentThreshold)
 
 static bool js_spine_TrackEntry_setDelay(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -698,7 +698,7 @@ static bool js_spine_TrackEntry_setDelay(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setDelay)     // setDelay
+SE_BIND_FUNC(js_spine_TrackEntry_setDelay)
 
 static bool js_spine_TrackEntry_setDrawOrderThreshold(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -717,7 +717,7 @@ static bool js_spine_TrackEntry_setDrawOrderThreshold(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setDrawOrderThreshold)     // setDrawOrderThreshold
+SE_BIND_FUNC(js_spine_TrackEntry_setDrawOrderThreshold)
 
 static bool js_spine_TrackEntry_setEventThreshold(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -736,7 +736,7 @@ static bool js_spine_TrackEntry_setEventThreshold(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setEventThreshold)     // setEventThreshold
+SE_BIND_FUNC(js_spine_TrackEntry_setEventThreshold)
 
 static bool js_spine_TrackEntry_setHoldPrevious(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -755,7 +755,7 @@ static bool js_spine_TrackEntry_setHoldPrevious(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setHoldPrevious)     // setHoldPrevious
+SE_BIND_FUNC(js_spine_TrackEntry_setHoldPrevious)
 
 static bool js_spine_TrackEntry_setLoop(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -774,7 +774,7 @@ static bool js_spine_TrackEntry_setLoop(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setLoop)     // setLoop
+SE_BIND_FUNC(js_spine_TrackEntry_setLoop)
 
 static bool js_spine_TrackEntry_setMixBlend(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -793,7 +793,7 @@ static bool js_spine_TrackEntry_setMixBlend(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setMixBlend)     // setMixBlend
+SE_BIND_FUNC(js_spine_TrackEntry_setMixBlend)
 
 static bool js_spine_TrackEntry_setMixDuration(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -812,7 +812,7 @@ static bool js_spine_TrackEntry_setMixDuration(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setMixDuration)     // setMixDuration
+SE_BIND_FUNC(js_spine_TrackEntry_setMixDuration)
 
 static bool js_spine_TrackEntry_setMixTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -831,7 +831,7 @@ static bool js_spine_TrackEntry_setMixTime(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setMixTime)     // setMixTime
+SE_BIND_FUNC(js_spine_TrackEntry_setMixTime)
 
 static bool js_spine_TrackEntry_setTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -850,7 +850,7 @@ static bool js_spine_TrackEntry_setTimeScale(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setTimeScale)     // setTimeScale
+SE_BIND_FUNC(js_spine_TrackEntry_setTimeScale)
 
 static bool js_spine_TrackEntry_setTrackEnd(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -869,7 +869,7 @@ static bool js_spine_TrackEntry_setTrackEnd(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setTrackEnd)     // setTrackEnd
+SE_BIND_FUNC(js_spine_TrackEntry_setTrackEnd)
 
 static bool js_spine_TrackEntry_setTrackTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -888,7 +888,7 @@ static bool js_spine_TrackEntry_setTrackTime(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TrackEntry_setTrackTime)     // setTrackTime
+SE_BIND_FUNC(js_spine_TrackEntry_setTrackTime)
 
 
 
@@ -1002,7 +1002,7 @@ static bool js_spine_AnimationState_addAnimation(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_addAnimation)     // addAnimation
+SE_BIND_FUNC(js_spine_AnimationState_addAnimation)
 
 static bool js_spine_AnimationState_addEmptyAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1028,7 +1028,7 @@ static bool js_spine_AnimationState_addEmptyAnimation(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_addEmptyAnimation)     // addEmptyAnimation
+SE_BIND_FUNC(js_spine_AnimationState_addEmptyAnimation)
 
 static bool js_spine_AnimationState_clearTrack(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1047,7 +1047,7 @@ static bool js_spine_AnimationState_clearTrack(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_clearTrack)     // clearTrack
+SE_BIND_FUNC(js_spine_AnimationState_clearTrack)
 
 static bool js_spine_AnimationState_clearTracks(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1062,7 +1062,7 @@ static bool js_spine_AnimationState_clearTracks(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_clearTracks)     // clearTracks
+SE_BIND_FUNC(js_spine_AnimationState_clearTracks)
 
 static bool js_spine_AnimationState_disableQueue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1077,7 +1077,7 @@ static bool js_spine_AnimationState_disableQueue(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_disableQueue)     // disableQueue
+SE_BIND_FUNC(js_spine_AnimationState_disableQueue)
 
 static bool js_spine_AnimationState_enableQueue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1092,7 +1092,7 @@ static bool js_spine_AnimationState_enableQueue(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_enableQueue)     // enableQueue
+SE_BIND_FUNC(js_spine_AnimationState_enableQueue)
 
 static bool js_spine_AnimationState_getCurrent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1114,7 +1114,7 @@ static bool js_spine_AnimationState_getCurrent(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_getCurrent)     // getCurrent
+SE_BIND_FUNC(js_spine_AnimationState_getCurrent)
 
 static bool js_spine_AnimationState_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1133,7 +1133,7 @@ static bool js_spine_AnimationState_getData(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_getData)     // getData
+SE_BIND_FUNC(js_spine_AnimationState_getData)
 
 static bool js_spine_AnimationState_getTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1152,7 +1152,7 @@ static bool js_spine_AnimationState_getTimeScale(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_getTimeScale)     // getTimeScale
+SE_BIND_FUNC(js_spine_AnimationState_getTimeScale)
 
 static bool js_spine_AnimationState_getTracks(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1171,7 +1171,7 @@ static bool js_spine_AnimationState_getTracks(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_getTracks)     // getTracks
+SE_BIND_FUNC(js_spine_AnimationState_getTracks)
 
 static bool js_spine_AnimationState_setAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1221,7 +1221,7 @@ static bool js_spine_AnimationState_setAnimation(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_setAnimation)     // setAnimation
+SE_BIND_FUNC(js_spine_AnimationState_setAnimation)
 
 static bool js_spine_AnimationState_setEmptyAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1245,7 +1245,7 @@ static bool js_spine_AnimationState_setEmptyAnimation(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_setEmptyAnimation)     // setEmptyAnimation
+SE_BIND_FUNC(js_spine_AnimationState_setEmptyAnimation)
 
 static bool js_spine_AnimationState_setEmptyAnimations(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1264,7 +1264,7 @@ static bool js_spine_AnimationState_setEmptyAnimations(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_setEmptyAnimations)     // setEmptyAnimations
+SE_BIND_FUNC(js_spine_AnimationState_setEmptyAnimations)
 
 static bool js_spine_AnimationState_setTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1283,7 +1283,7 @@ static bool js_spine_AnimationState_setTimeScale(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_setTimeScale)     // setTimeScale
+SE_BIND_FUNC(js_spine_AnimationState_setTimeScale)
 
 static bool js_spine_AnimationState_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1302,7 +1302,7 @@ static bool js_spine_AnimationState_update(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationState_update)     // update
+SE_BIND_FUNC(js_spine_AnimationState_update)
 
 
 
@@ -1354,7 +1354,7 @@ static bool js_spine_AnimationStateData_getDefaultMix(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationStateData_getDefaultMix)     // getDefaultMix
+SE_BIND_FUNC(js_spine_AnimationStateData_getDefaultMix)
 
 static bool js_spine_AnimationStateData_getMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1378,7 +1378,7 @@ static bool js_spine_AnimationStateData_getMix(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationStateData_getMix)     // getMix
+SE_BIND_FUNC(js_spine_AnimationStateData_getMix)
 
 static bool js_spine_AnimationStateData_getSkeletonData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1397,7 +1397,7 @@ static bool js_spine_AnimationStateData_getSkeletonData(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationStateData_getSkeletonData)     // getSkeletonData
+SE_BIND_FUNC(js_spine_AnimationStateData_getSkeletonData)
 
 static bool js_spine_AnimationStateData_setDefaultMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1416,7 +1416,7 @@ static bool js_spine_AnimationStateData_setDefaultMix(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationStateData_setDefaultMix)     // setDefaultMix
+SE_BIND_FUNC(js_spine_AnimationStateData_setDefaultMix)
 
 static bool js_spine_AnimationStateData_setMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1462,7 +1462,7 @@ static bool js_spine_AnimationStateData_setMix(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_AnimationStateData_setMix)     // setMix
+SE_BIND_FUNC(js_spine_AnimationStateData_setMix)
 
 
 
@@ -1504,7 +1504,7 @@ static bool js_spine_Attachment_copy(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Attachment_copy)     // copy
+SE_BIND_FUNC(js_spine_Attachment_copy)
 
 static bool js_spine_Attachment_dereference(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1519,7 +1519,7 @@ static bool js_spine_Attachment_dereference(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Attachment_dereference)     // dereference
+SE_BIND_FUNC(js_spine_Attachment_dereference)
 
 static bool js_spine_Attachment_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1538,7 +1538,7 @@ static bool js_spine_Attachment_getName(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Attachment_getName)     // getName
+SE_BIND_FUNC(js_spine_Attachment_getName)
 
 static bool js_spine_Attachment_getRefCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1557,7 +1557,7 @@ static bool js_spine_Attachment_getRefCount(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Attachment_getRefCount)     // getRefCount
+SE_BIND_FUNC(js_spine_Attachment_getRefCount)
 
 static bool js_spine_Attachment_reference(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1572,7 +1572,7 @@ static bool js_spine_Attachment_reference(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Attachment_reference)     // reference
+SE_BIND_FUNC(js_spine_Attachment_reference)
 
 
 
@@ -1614,7 +1614,7 @@ static bool js_spine_Timeline_getPropertyId(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Timeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_Timeline_getPropertyId)
 
 
 
@@ -1652,7 +1652,7 @@ static bool js_spine_AttachmentTimeline_getAttachmentNames(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AttachmentTimeline_getAttachmentNames)     // getAttachmentNames
+SE_BIND_FUNC(js_spine_AttachmentTimeline_getAttachmentNames)
 
 static bool js_spine_AttachmentTimeline_getFrameCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1671,7 +1671,7 @@ static bool js_spine_AttachmentTimeline_getFrameCount(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AttachmentTimeline_getFrameCount)     // getFrameCount
+SE_BIND_FUNC(js_spine_AttachmentTimeline_getFrameCount)
 
 static bool js_spine_AttachmentTimeline_getFrames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1690,7 +1690,7 @@ static bool js_spine_AttachmentTimeline_getFrames(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AttachmentTimeline_getFrames)     // getFrames
+SE_BIND_FUNC(js_spine_AttachmentTimeline_getFrames)
 
 static bool js_spine_AttachmentTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1709,7 +1709,7 @@ static bool js_spine_AttachmentTimeline_getPropertyId(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AttachmentTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_AttachmentTimeline_getPropertyId)
 
 static bool js_spine_AttachmentTimeline_getSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1728,7 +1728,7 @@ static bool js_spine_AttachmentTimeline_getSlotIndex(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_AttachmentTimeline_getSlotIndex)     // getSlotIndex
+SE_BIND_FUNC(js_spine_AttachmentTimeline_getSlotIndex)
 
 static bool js_spine_AttachmentTimeline_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1751,7 +1751,7 @@ static bool js_spine_AttachmentTimeline_setFrame(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_AttachmentTimeline_setFrame)     // setFrame
+SE_BIND_FUNC(js_spine_AttachmentTimeline_setFrame)
 
 static bool js_spine_AttachmentTimeline_setSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1770,7 +1770,7 @@ static bool js_spine_AttachmentTimeline_setSlotIndex(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_AttachmentTimeline_setSlotIndex)     // setSlotIndex
+SE_BIND_FUNC(js_spine_AttachmentTimeline_setSlotIndex)
 
 
 
@@ -1814,7 +1814,7 @@ static bool js_spine_Bone_getA(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getA)     // getA
+SE_BIND_FUNC(js_spine_Bone_getA)
 
 static bool js_spine_Bone_getAScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1833,7 +1833,7 @@ static bool js_spine_Bone_getAScaleX(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getAScaleX)     // getAScaleX
+SE_BIND_FUNC(js_spine_Bone_getAScaleX)
 
 static bool js_spine_Bone_getAScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1852,7 +1852,7 @@ static bool js_spine_Bone_getAScaleY(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getAScaleY)     // getAScaleY
+SE_BIND_FUNC(js_spine_Bone_getAScaleY)
 
 static bool js_spine_Bone_getAShearX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1871,7 +1871,7 @@ static bool js_spine_Bone_getAShearX(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getAShearX)     // getAShearX
+SE_BIND_FUNC(js_spine_Bone_getAShearX)
 
 static bool js_spine_Bone_getAShearY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1890,7 +1890,7 @@ static bool js_spine_Bone_getAShearY(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getAShearY)     // getAShearY
+SE_BIND_FUNC(js_spine_Bone_getAShearY)
 
 static bool js_spine_Bone_getAX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1909,7 +1909,7 @@ static bool js_spine_Bone_getAX(se::State& s) // NOLINT(readability-identifier-n
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getAX)     // getAX
+SE_BIND_FUNC(js_spine_Bone_getAX)
 
 static bool js_spine_Bone_getAY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1928,7 +1928,7 @@ static bool js_spine_Bone_getAY(se::State& s) // NOLINT(readability-identifier-n
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getAY)     // getAY
+SE_BIND_FUNC(js_spine_Bone_getAY)
 
 static bool js_spine_Bone_getAppliedRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1947,7 +1947,7 @@ static bool js_spine_Bone_getAppliedRotation(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getAppliedRotation)     // getAppliedRotation
+SE_BIND_FUNC(js_spine_Bone_getAppliedRotation)
 
 static bool js_spine_Bone_getB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1966,7 +1966,7 @@ static bool js_spine_Bone_getB(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getB)     // getB
+SE_BIND_FUNC(js_spine_Bone_getB)
 
 static bool js_spine_Bone_getC(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1985,7 +1985,7 @@ static bool js_spine_Bone_getC(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getC)     // getC
+SE_BIND_FUNC(js_spine_Bone_getC)
 
 static bool js_spine_Bone_getChildren(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2004,7 +2004,7 @@ static bool js_spine_Bone_getChildren(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getChildren)     // getChildren
+SE_BIND_FUNC(js_spine_Bone_getChildren)
 
 static bool js_spine_Bone_getD(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2023,7 +2023,7 @@ static bool js_spine_Bone_getD(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getD)     // getD
+SE_BIND_FUNC(js_spine_Bone_getD)
 
 static bool js_spine_Bone_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2042,7 +2042,7 @@ static bool js_spine_Bone_getData(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getData)     // getData
+SE_BIND_FUNC(js_spine_Bone_getData)
 
 static bool js_spine_Bone_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2061,7 +2061,7 @@ static bool js_spine_Bone_getParent(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getParent)     // getParent
+SE_BIND_FUNC(js_spine_Bone_getParent)
 
 static bool js_spine_Bone_getRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2080,7 +2080,7 @@ static bool js_spine_Bone_getRotation(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getRotation)     // getRotation
+SE_BIND_FUNC(js_spine_Bone_getRotation)
 
 static bool js_spine_Bone_getScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2099,7 +2099,7 @@ static bool js_spine_Bone_getScaleX(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getScaleX)     // getScaleX
+SE_BIND_FUNC(js_spine_Bone_getScaleX)
 
 static bool js_spine_Bone_getScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2118,7 +2118,7 @@ static bool js_spine_Bone_getScaleY(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getScaleY)     // getScaleY
+SE_BIND_FUNC(js_spine_Bone_getScaleY)
 
 static bool js_spine_Bone_getShearX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2137,7 +2137,7 @@ static bool js_spine_Bone_getShearX(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getShearX)     // getShearX
+SE_BIND_FUNC(js_spine_Bone_getShearX)
 
 static bool js_spine_Bone_getShearY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2156,7 +2156,7 @@ static bool js_spine_Bone_getShearY(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getShearY)     // getShearY
+SE_BIND_FUNC(js_spine_Bone_getShearY)
 
 static bool js_spine_Bone_getSkeleton(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2175,7 +2175,7 @@ static bool js_spine_Bone_getSkeleton(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getSkeleton)     // getSkeleton
+SE_BIND_FUNC(js_spine_Bone_getSkeleton)
 
 static bool js_spine_Bone_getWorldRotationX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2194,7 +2194,7 @@ static bool js_spine_Bone_getWorldRotationX(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getWorldRotationX)     // getWorldRotationX
+SE_BIND_FUNC(js_spine_Bone_getWorldRotationX)
 
 static bool js_spine_Bone_getWorldRotationY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2213,7 +2213,7 @@ static bool js_spine_Bone_getWorldRotationY(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getWorldRotationY)     // getWorldRotationY
+SE_BIND_FUNC(js_spine_Bone_getWorldRotationY)
 
 static bool js_spine_Bone_getWorldScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2232,7 +2232,7 @@ static bool js_spine_Bone_getWorldScaleX(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getWorldScaleX)     // getWorldScaleX
+SE_BIND_FUNC(js_spine_Bone_getWorldScaleX)
 
 static bool js_spine_Bone_getWorldScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2251,7 +2251,7 @@ static bool js_spine_Bone_getWorldScaleY(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getWorldScaleY)     // getWorldScaleY
+SE_BIND_FUNC(js_spine_Bone_getWorldScaleY)
 
 static bool js_spine_Bone_getWorldToLocalRotationX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2270,7 +2270,7 @@ static bool js_spine_Bone_getWorldToLocalRotationX(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getWorldToLocalRotationX)     // getWorldToLocalRotationX
+SE_BIND_FUNC(js_spine_Bone_getWorldToLocalRotationX)
 
 static bool js_spine_Bone_getWorldToLocalRotationY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2289,7 +2289,7 @@ static bool js_spine_Bone_getWorldToLocalRotationY(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getWorldToLocalRotationY)     // getWorldToLocalRotationY
+SE_BIND_FUNC(js_spine_Bone_getWorldToLocalRotationY)
 
 static bool js_spine_Bone_getWorldX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2308,7 +2308,7 @@ static bool js_spine_Bone_getWorldX(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getWorldX)     // getWorldX
+SE_BIND_FUNC(js_spine_Bone_getWorldX)
 
 static bool js_spine_Bone_getWorldY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2327,7 +2327,7 @@ static bool js_spine_Bone_getWorldY(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getWorldY)     // getWorldY
+SE_BIND_FUNC(js_spine_Bone_getWorldY)
 
 static bool js_spine_Bone_getX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2346,7 +2346,7 @@ static bool js_spine_Bone_getX(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getX)     // getX
+SE_BIND_FUNC(js_spine_Bone_getX)
 
 static bool js_spine_Bone_getY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2365,7 +2365,7 @@ static bool js_spine_Bone_getY(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_getY)     // getY
+SE_BIND_FUNC(js_spine_Bone_getY)
 
 static bool js_spine_Bone_isActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2384,7 +2384,7 @@ static bool js_spine_Bone_isActive(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_isActive)     // isActive
+SE_BIND_FUNC(js_spine_Bone_isActive)
 
 static bool js_spine_Bone_isAppliedValid(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2403,7 +2403,7 @@ static bool js_spine_Bone_isAppliedValid(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_isAppliedValid)     // isAppliedValid
+SE_BIND_FUNC(js_spine_Bone_isAppliedValid)
 
 static bool js_spine_Bone_rotateWorld(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2422,7 +2422,7 @@ static bool js_spine_Bone_rotateWorld(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_rotateWorld)     // rotateWorld
+SE_BIND_FUNC(js_spine_Bone_rotateWorld)
 
 static bool js_spine_Bone_setA(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2441,7 +2441,7 @@ static bool js_spine_Bone_setA(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setA)     // setA
+SE_BIND_FUNC(js_spine_Bone_setA)
 
 static bool js_spine_Bone_setAScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2460,7 +2460,7 @@ static bool js_spine_Bone_setAScaleX(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setAScaleX)     // setAScaleX
+SE_BIND_FUNC(js_spine_Bone_setAScaleX)
 
 static bool js_spine_Bone_setAScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2479,7 +2479,7 @@ static bool js_spine_Bone_setAScaleY(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setAScaleY)     // setAScaleY
+SE_BIND_FUNC(js_spine_Bone_setAScaleY)
 
 static bool js_spine_Bone_setAShearX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2498,7 +2498,7 @@ static bool js_spine_Bone_setAShearX(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setAShearX)     // setAShearX
+SE_BIND_FUNC(js_spine_Bone_setAShearX)
 
 static bool js_spine_Bone_setAShearY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2517,7 +2517,7 @@ static bool js_spine_Bone_setAShearY(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setAShearY)     // setAShearY
+SE_BIND_FUNC(js_spine_Bone_setAShearY)
 
 static bool js_spine_Bone_setAX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2536,7 +2536,7 @@ static bool js_spine_Bone_setAX(se::State& s) // NOLINT(readability-identifier-n
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setAX)     // setAX
+SE_BIND_FUNC(js_spine_Bone_setAX)
 
 static bool js_spine_Bone_setAY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2555,7 +2555,7 @@ static bool js_spine_Bone_setAY(se::State& s) // NOLINT(readability-identifier-n
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setAY)     // setAY
+SE_BIND_FUNC(js_spine_Bone_setAY)
 
 static bool js_spine_Bone_setActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2574,7 +2574,7 @@ static bool js_spine_Bone_setActive(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setActive)     // setActive
+SE_BIND_FUNC(js_spine_Bone_setActive)
 
 static bool js_spine_Bone_setAppliedRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2593,7 +2593,7 @@ static bool js_spine_Bone_setAppliedRotation(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setAppliedRotation)     // setAppliedRotation
+SE_BIND_FUNC(js_spine_Bone_setAppliedRotation)
 
 static bool js_spine_Bone_setAppliedValid(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2612,7 +2612,7 @@ static bool js_spine_Bone_setAppliedValid(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setAppliedValid)     // setAppliedValid
+SE_BIND_FUNC(js_spine_Bone_setAppliedValid)
 
 static bool js_spine_Bone_setB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2631,7 +2631,7 @@ static bool js_spine_Bone_setB(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setB)     // setB
+SE_BIND_FUNC(js_spine_Bone_setB)
 
 static bool js_spine_Bone_setC(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2650,7 +2650,7 @@ static bool js_spine_Bone_setC(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setC)     // setC
+SE_BIND_FUNC(js_spine_Bone_setC)
 
 static bool js_spine_Bone_setD(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2669,7 +2669,7 @@ static bool js_spine_Bone_setD(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setD)     // setD
+SE_BIND_FUNC(js_spine_Bone_setD)
 
 static bool js_spine_Bone_setRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2688,7 +2688,7 @@ static bool js_spine_Bone_setRotation(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setRotation)     // setRotation
+SE_BIND_FUNC(js_spine_Bone_setRotation)
 
 static bool js_spine_Bone_setScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2707,7 +2707,7 @@ static bool js_spine_Bone_setScaleX(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setScaleX)     // setScaleX
+SE_BIND_FUNC(js_spine_Bone_setScaleX)
 
 static bool js_spine_Bone_setScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2726,7 +2726,7 @@ static bool js_spine_Bone_setScaleY(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setScaleY)     // setScaleY
+SE_BIND_FUNC(js_spine_Bone_setScaleY)
 
 static bool js_spine_Bone_setShearX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2745,7 +2745,7 @@ static bool js_spine_Bone_setShearX(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setShearX)     // setShearX
+SE_BIND_FUNC(js_spine_Bone_setShearX)
 
 static bool js_spine_Bone_setShearY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2764,7 +2764,7 @@ static bool js_spine_Bone_setShearY(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setShearY)     // setShearY
+SE_BIND_FUNC(js_spine_Bone_setShearY)
 
 static bool js_spine_Bone_setToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2779,7 +2779,7 @@ static bool js_spine_Bone_setToSetupPose(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setToSetupPose)     // setToSetupPose
+SE_BIND_FUNC(js_spine_Bone_setToSetupPose)
 
 static bool js_spine_Bone_setWorldX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2798,7 +2798,7 @@ static bool js_spine_Bone_setWorldX(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setWorldX)     // setWorldX
+SE_BIND_FUNC(js_spine_Bone_setWorldX)
 
 static bool js_spine_Bone_setWorldY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2817,7 +2817,7 @@ static bool js_spine_Bone_setWorldY(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setWorldY)     // setWorldY
+SE_BIND_FUNC(js_spine_Bone_setWorldY)
 
 static bool js_spine_Bone_setX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2836,7 +2836,7 @@ static bool js_spine_Bone_setX(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setX)     // setX
+SE_BIND_FUNC(js_spine_Bone_setX)
 
 static bool js_spine_Bone_setY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2855,7 +2855,7 @@ static bool js_spine_Bone_setY(se::State& s) // NOLINT(readability-identifier-na
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_setY)     // setY
+SE_BIND_FUNC(js_spine_Bone_setY)
 
 static bool js_spine_Bone_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2870,7 +2870,7 @@ static bool js_spine_Bone_update(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_update)     // update
+SE_BIND_FUNC(js_spine_Bone_update)
 
 static bool js_spine_Bone_updateWorldTransform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2919,7 +2919,7 @@ static bool js_spine_Bone_updateWorldTransform(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_Bone_updateWorldTransform)     // updateWorldTransform
+SE_BIND_FUNC(js_spine_Bone_updateWorldTransform)
 
 static bool js_spine_Bone_setYDown_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3050,7 +3050,7 @@ static bool js_spine_BoneData_getIndex(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getIndex)     // getIndex
+SE_BIND_FUNC(js_spine_BoneData_getIndex)
 
 static bool js_spine_BoneData_getLength(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3069,7 +3069,7 @@ static bool js_spine_BoneData_getLength(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getLength)     // getLength
+SE_BIND_FUNC(js_spine_BoneData_getLength)
 
 static bool js_spine_BoneData_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3088,7 +3088,7 @@ static bool js_spine_BoneData_getName(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getName)     // getName
+SE_BIND_FUNC(js_spine_BoneData_getName)
 
 static bool js_spine_BoneData_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3107,7 +3107,7 @@ static bool js_spine_BoneData_getParent(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getParent)     // getParent
+SE_BIND_FUNC(js_spine_BoneData_getParent)
 
 static bool js_spine_BoneData_getRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3126,7 +3126,7 @@ static bool js_spine_BoneData_getRotation(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getRotation)     // getRotation
+SE_BIND_FUNC(js_spine_BoneData_getRotation)
 
 static bool js_spine_BoneData_getScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3145,7 +3145,7 @@ static bool js_spine_BoneData_getScaleX(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getScaleX)     // getScaleX
+SE_BIND_FUNC(js_spine_BoneData_getScaleX)
 
 static bool js_spine_BoneData_getScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3164,7 +3164,7 @@ static bool js_spine_BoneData_getScaleY(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getScaleY)     // getScaleY
+SE_BIND_FUNC(js_spine_BoneData_getScaleY)
 
 static bool js_spine_BoneData_getShearX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3183,7 +3183,7 @@ static bool js_spine_BoneData_getShearX(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getShearX)     // getShearX
+SE_BIND_FUNC(js_spine_BoneData_getShearX)
 
 static bool js_spine_BoneData_getShearY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3202,7 +3202,7 @@ static bool js_spine_BoneData_getShearY(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getShearY)     // getShearY
+SE_BIND_FUNC(js_spine_BoneData_getShearY)
 
 static bool js_spine_BoneData_getTransformMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3221,7 +3221,7 @@ static bool js_spine_BoneData_getTransformMode(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getTransformMode)     // getTransformMode
+SE_BIND_FUNC(js_spine_BoneData_getTransformMode)
 
 static bool js_spine_BoneData_getX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3240,7 +3240,7 @@ static bool js_spine_BoneData_getX(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getX)     // getX
+SE_BIND_FUNC(js_spine_BoneData_getX)
 
 static bool js_spine_BoneData_getY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3259,7 +3259,7 @@ static bool js_spine_BoneData_getY(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_getY)     // getY
+SE_BIND_FUNC(js_spine_BoneData_getY)
 
 static bool js_spine_BoneData_isSkinRequired(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3278,7 +3278,7 @@ static bool js_spine_BoneData_isSkinRequired(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_isSkinRequired)     // isSkinRequired
+SE_BIND_FUNC(js_spine_BoneData_isSkinRequired)
 
 static bool js_spine_BoneData_setLength(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3297,7 +3297,7 @@ static bool js_spine_BoneData_setLength(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setLength)     // setLength
+SE_BIND_FUNC(js_spine_BoneData_setLength)
 
 static bool js_spine_BoneData_setRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3316,7 +3316,7 @@ static bool js_spine_BoneData_setRotation(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setRotation)     // setRotation
+SE_BIND_FUNC(js_spine_BoneData_setRotation)
 
 static bool js_spine_BoneData_setScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3335,7 +3335,7 @@ static bool js_spine_BoneData_setScaleX(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setScaleX)     // setScaleX
+SE_BIND_FUNC(js_spine_BoneData_setScaleX)
 
 static bool js_spine_BoneData_setScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3354,7 +3354,7 @@ static bool js_spine_BoneData_setScaleY(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setScaleY)     // setScaleY
+SE_BIND_FUNC(js_spine_BoneData_setScaleY)
 
 static bool js_spine_BoneData_setShearX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3373,7 +3373,7 @@ static bool js_spine_BoneData_setShearX(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setShearX)     // setShearX
+SE_BIND_FUNC(js_spine_BoneData_setShearX)
 
 static bool js_spine_BoneData_setShearY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3392,7 +3392,7 @@ static bool js_spine_BoneData_setShearY(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setShearY)     // setShearY
+SE_BIND_FUNC(js_spine_BoneData_setShearY)
 
 static bool js_spine_BoneData_setSkinRequired(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3411,7 +3411,7 @@ static bool js_spine_BoneData_setSkinRequired(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setSkinRequired)     // setSkinRequired
+SE_BIND_FUNC(js_spine_BoneData_setSkinRequired)
 
 static bool js_spine_BoneData_setTransformMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3430,7 +3430,7 @@ static bool js_spine_BoneData_setTransformMode(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setTransformMode)     // setTransformMode
+SE_BIND_FUNC(js_spine_BoneData_setTransformMode)
 
 static bool js_spine_BoneData_setX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3449,7 +3449,7 @@ static bool js_spine_BoneData_setX(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setX)     // setX
+SE_BIND_FUNC(js_spine_BoneData_setX)
 
 static bool js_spine_BoneData_setY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3468,7 +3468,7 @@ static bool js_spine_BoneData_setY(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoneData_setY)     // setY
+SE_BIND_FUNC(js_spine_BoneData_setY)
 
 
 
@@ -3528,7 +3528,7 @@ static bool js_spine_VertexAttachment_copyTo(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexAttachment_copyTo)     // copyTo
+SE_BIND_FUNC(js_spine_VertexAttachment_copyTo)
 
 static bool js_spine_VertexAttachment_getDeformAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3547,7 +3547,7 @@ static bool js_spine_VertexAttachment_getDeformAttachment(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexAttachment_getDeformAttachment)     // getDeformAttachment
+SE_BIND_FUNC(js_spine_VertexAttachment_getDeformAttachment)
 
 static bool js_spine_VertexAttachment_getId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3566,7 +3566,7 @@ static bool js_spine_VertexAttachment_getId(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexAttachment_getId)     // getId
+SE_BIND_FUNC(js_spine_VertexAttachment_getId)
 
 static bool js_spine_VertexAttachment_getVertices(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3585,7 +3585,7 @@ static bool js_spine_VertexAttachment_getVertices(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexAttachment_getVertices)     // getVertices
+SE_BIND_FUNC(js_spine_VertexAttachment_getVertices)
 
 static bool js_spine_VertexAttachment_getWorldVerticesLength(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3604,7 +3604,7 @@ static bool js_spine_VertexAttachment_getWorldVerticesLength(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexAttachment_getWorldVerticesLength)     // getWorldVerticesLength
+SE_BIND_FUNC(js_spine_VertexAttachment_getWorldVerticesLength)
 
 static bool js_spine_VertexAttachment_setDeformAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3623,7 +3623,7 @@ static bool js_spine_VertexAttachment_setDeformAttachment(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexAttachment_setDeformAttachment)     // setDeformAttachment
+SE_BIND_FUNC(js_spine_VertexAttachment_setDeformAttachment)
 
 static bool js_spine_VertexAttachment_setWorldVerticesLength(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3642,7 +3642,7 @@ static bool js_spine_VertexAttachment_setWorldVerticesLength(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexAttachment_setWorldVerticesLength)     // setWorldVerticesLength
+SE_BIND_FUNC(js_spine_VertexAttachment_setWorldVerticesLength)
 
 
 
@@ -3686,7 +3686,7 @@ static bool js_spine_BoundingBoxAttachment_copy(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_BoundingBoxAttachment_copy)     // copy
+SE_BIND_FUNC(js_spine_BoundingBoxAttachment_copy)
 
 
 
@@ -3724,7 +3724,7 @@ static bool js_spine_ClippingAttachment_copy(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ClippingAttachment_copy)     // copy
+SE_BIND_FUNC(js_spine_ClippingAttachment_copy)
 
 static bool js_spine_ClippingAttachment_getEndSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3743,7 +3743,7 @@ static bool js_spine_ClippingAttachment_getEndSlot(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ClippingAttachment_getEndSlot)     // getEndSlot
+SE_BIND_FUNC(js_spine_ClippingAttachment_getEndSlot)
 
 static bool js_spine_ClippingAttachment_setEndSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3762,7 +3762,7 @@ static bool js_spine_ClippingAttachment_setEndSlot(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_ClippingAttachment_setEndSlot)     // setEndSlot
+SE_BIND_FUNC(js_spine_ClippingAttachment_setEndSlot)
 
 
 
@@ -3802,7 +3802,7 @@ static bool js_spine_Color_clamp(se::State& s) // NOLINT(readability-identifier-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Color_clamp)     // clamp
+SE_BIND_FUNC(js_spine_Color_clamp)
 
 static bool js_spine_Color_get_r(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3957,7 +3957,7 @@ static bool js_spine_CurveTimeline_getCurvePercent(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_CurveTimeline_getCurvePercent)     // getCurvePercent
+SE_BIND_FUNC(js_spine_CurveTimeline_getCurvePercent)
 
 static bool js_spine_CurveTimeline_getCurveType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3979,7 +3979,7 @@ static bool js_spine_CurveTimeline_getCurveType(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_CurveTimeline_getCurveType)     // getCurveType
+SE_BIND_FUNC(js_spine_CurveTimeline_getCurveType)
 
 static bool js_spine_CurveTimeline_getFrameCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3998,7 +3998,7 @@ static bool js_spine_CurveTimeline_getFrameCount(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_CurveTimeline_getFrameCount)     // getFrameCount
+SE_BIND_FUNC(js_spine_CurveTimeline_getFrameCount)
 
 static bool js_spine_CurveTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4017,7 +4017,7 @@ static bool js_spine_CurveTimeline_getPropertyId(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_CurveTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_CurveTimeline_getPropertyId)
 
 static bool js_spine_CurveTimeline_setCurve(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4044,7 +4044,7 @@ static bool js_spine_CurveTimeline_setCurve(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 5);
     return false;
 }
-SE_BIND_FUNC(js_spine_CurveTimeline_setCurve)     // setCurve
+SE_BIND_FUNC(js_spine_CurveTimeline_setCurve)
 
 static bool js_spine_CurveTimeline_setLinear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4063,7 +4063,7 @@ static bool js_spine_CurveTimeline_setLinear(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_CurveTimeline_setLinear)     // setLinear
+SE_BIND_FUNC(js_spine_CurveTimeline_setLinear)
 
 static bool js_spine_CurveTimeline_setStepped(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4082,7 +4082,7 @@ static bool js_spine_CurveTimeline_setStepped(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_CurveTimeline_setStepped)     // setStepped
+SE_BIND_FUNC(js_spine_CurveTimeline_setStepped)
 
 
 
@@ -4126,7 +4126,7 @@ static bool js_spine_ColorTimeline_getFrames(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ColorTimeline_getFrames)     // getFrames
+SE_BIND_FUNC(js_spine_ColorTimeline_getFrames)
 
 static bool js_spine_ColorTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4145,7 +4145,7 @@ static bool js_spine_ColorTimeline_getPropertyId(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ColorTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_ColorTimeline_getPropertyId)
 
 static bool js_spine_ColorTimeline_getSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4164,7 +4164,7 @@ static bool js_spine_ColorTimeline_getSlotIndex(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ColorTimeline_getSlotIndex)     // getSlotIndex
+SE_BIND_FUNC(js_spine_ColorTimeline_getSlotIndex)
 
 static bool js_spine_ColorTimeline_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4193,7 +4193,7 @@ static bool js_spine_ColorTimeline_setFrame(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_spine_ColorTimeline_setFrame)     // setFrame
+SE_BIND_FUNC(js_spine_ColorTimeline_setFrame)
 
 static bool js_spine_ColorTimeline_setSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4212,7 +4212,7 @@ static bool js_spine_ColorTimeline_setSlotIndex(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_ColorTimeline_setSlotIndex)     // setSlotIndex
+SE_BIND_FUNC(js_spine_ColorTimeline_setSlotIndex)
 
 
 
@@ -4254,7 +4254,7 @@ static bool js_spine_ConstraintData_getName(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ConstraintData_getName)     // getName
+SE_BIND_FUNC(js_spine_ConstraintData_getName)
 
 static bool js_spine_ConstraintData_getOrder(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4273,7 +4273,7 @@ static bool js_spine_ConstraintData_getOrder(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ConstraintData_getOrder)     // getOrder
+SE_BIND_FUNC(js_spine_ConstraintData_getOrder)
 
 static bool js_spine_ConstraintData_isSkinRequired(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4292,7 +4292,7 @@ static bool js_spine_ConstraintData_isSkinRequired(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ConstraintData_isSkinRequired)     // isSkinRequired
+SE_BIND_FUNC(js_spine_ConstraintData_isSkinRequired)
 
 static bool js_spine_ConstraintData_setOrder(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4311,7 +4311,7 @@ static bool js_spine_ConstraintData_setOrder(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_ConstraintData_setOrder)     // setOrder
+SE_BIND_FUNC(js_spine_ConstraintData_setOrder)
 
 static bool js_spine_ConstraintData_setSkinRequired(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4330,7 +4330,7 @@ static bool js_spine_ConstraintData_setSkinRequired(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_ConstraintData_setSkinRequired)     // setSkinRequired
+SE_BIND_FUNC(js_spine_ConstraintData_setSkinRequired)
 
 
 
@@ -4372,7 +4372,7 @@ static bool js_spine_DeformTimeline_getAttachment(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_DeformTimeline_getAttachment)     // getAttachment
+SE_BIND_FUNC(js_spine_DeformTimeline_getAttachment)
 
 static bool js_spine_DeformTimeline_getFrames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4391,7 +4391,7 @@ static bool js_spine_DeformTimeline_getFrames(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_DeformTimeline_getFrames)     // getFrames
+SE_BIND_FUNC(js_spine_DeformTimeline_getFrames)
 
 static bool js_spine_DeformTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4410,7 +4410,7 @@ static bool js_spine_DeformTimeline_getPropertyId(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_DeformTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_DeformTimeline_getPropertyId)
 
 static bool js_spine_DeformTimeline_getSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4429,7 +4429,7 @@ static bool js_spine_DeformTimeline_getSlotIndex(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_DeformTimeline_getSlotIndex)     // getSlotIndex
+SE_BIND_FUNC(js_spine_DeformTimeline_getSlotIndex)
 
 static bool js_spine_DeformTimeline_setAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4448,7 +4448,7 @@ static bool js_spine_DeformTimeline_setAttachment(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_DeformTimeline_setAttachment)     // setAttachment
+SE_BIND_FUNC(js_spine_DeformTimeline_setAttachment)
 
 static bool js_spine_DeformTimeline_setSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4467,7 +4467,7 @@ static bool js_spine_DeformTimeline_setSlotIndex(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_DeformTimeline_setSlotIndex)     // setSlotIndex
+SE_BIND_FUNC(js_spine_DeformTimeline_setSlotIndex)
 
 
 
@@ -4510,7 +4510,7 @@ static bool js_spine_DrawOrderTimeline_getFrameCount(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_DrawOrderTimeline_getFrameCount)     // getFrameCount
+SE_BIND_FUNC(js_spine_DrawOrderTimeline_getFrameCount)
 
 static bool js_spine_DrawOrderTimeline_getFrames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4529,7 +4529,7 @@ static bool js_spine_DrawOrderTimeline_getFrames(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_DrawOrderTimeline_getFrames)     // getFrames
+SE_BIND_FUNC(js_spine_DrawOrderTimeline_getFrames)
 
 static bool js_spine_DrawOrderTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4548,7 +4548,7 @@ static bool js_spine_DrawOrderTimeline_getPropertyId(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_DrawOrderTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_DrawOrderTimeline_getPropertyId)
 
 
 
@@ -4588,7 +4588,7 @@ static bool js_spine_Event_getBalance(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_getBalance)     // getBalance
+SE_BIND_FUNC(js_spine_Event_getBalance)
 
 static bool js_spine_Event_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4607,7 +4607,7 @@ static bool js_spine_Event_getData(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_getData)     // getData
+SE_BIND_FUNC(js_spine_Event_getData)
 
 static bool js_spine_Event_getFloatValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4626,7 +4626,7 @@ static bool js_spine_Event_getFloatValue(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_getFloatValue)     // getFloatValue
+SE_BIND_FUNC(js_spine_Event_getFloatValue)
 
 static bool js_spine_Event_getIntValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4645,7 +4645,7 @@ static bool js_spine_Event_getIntValue(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_getIntValue)     // getIntValue
+SE_BIND_FUNC(js_spine_Event_getIntValue)
 
 static bool js_spine_Event_getStringValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4664,7 +4664,7 @@ static bool js_spine_Event_getStringValue(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_getStringValue)     // getStringValue
+SE_BIND_FUNC(js_spine_Event_getStringValue)
 
 static bool js_spine_Event_getTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4683,7 +4683,7 @@ static bool js_spine_Event_getTime(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_getTime)     // getTime
+SE_BIND_FUNC(js_spine_Event_getTime)
 
 static bool js_spine_Event_getVolume(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4702,7 +4702,7 @@ static bool js_spine_Event_getVolume(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_getVolume)     // getVolume
+SE_BIND_FUNC(js_spine_Event_getVolume)
 
 static bool js_spine_Event_setBalance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4721,7 +4721,7 @@ static bool js_spine_Event_setBalance(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_setBalance)     // setBalance
+SE_BIND_FUNC(js_spine_Event_setBalance)
 
 static bool js_spine_Event_setFloatValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4740,7 +4740,7 @@ static bool js_spine_Event_setFloatValue(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_setFloatValue)     // setFloatValue
+SE_BIND_FUNC(js_spine_Event_setFloatValue)
 
 static bool js_spine_Event_setIntValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4759,7 +4759,7 @@ static bool js_spine_Event_setIntValue(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_setIntValue)     // setIntValue
+SE_BIND_FUNC(js_spine_Event_setIntValue)
 
 static bool js_spine_Event_setStringValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4778,7 +4778,7 @@ static bool js_spine_Event_setStringValue(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_setStringValue)     // setStringValue
+SE_BIND_FUNC(js_spine_Event_setStringValue)
 
 static bool js_spine_Event_setVolume(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4797,7 +4797,7 @@ static bool js_spine_Event_setVolume(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Event_setVolume)     // setVolume
+SE_BIND_FUNC(js_spine_Event_setVolume)
 
 
 
@@ -4846,7 +4846,7 @@ static bool js_spine_EventData_getAudioPath(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_getAudioPath)     // getAudioPath
+SE_BIND_FUNC(js_spine_EventData_getAudioPath)
 
 static bool js_spine_EventData_getBalance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4865,7 +4865,7 @@ static bool js_spine_EventData_getBalance(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_getBalance)     // getBalance
+SE_BIND_FUNC(js_spine_EventData_getBalance)
 
 static bool js_spine_EventData_getFloatValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4884,7 +4884,7 @@ static bool js_spine_EventData_getFloatValue(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_getFloatValue)     // getFloatValue
+SE_BIND_FUNC(js_spine_EventData_getFloatValue)
 
 static bool js_spine_EventData_getIntValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4903,7 +4903,7 @@ static bool js_spine_EventData_getIntValue(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_getIntValue)     // getIntValue
+SE_BIND_FUNC(js_spine_EventData_getIntValue)
 
 static bool js_spine_EventData_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4922,7 +4922,7 @@ static bool js_spine_EventData_getName(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_getName)     // getName
+SE_BIND_FUNC(js_spine_EventData_getName)
 
 static bool js_spine_EventData_getStringValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4941,7 +4941,7 @@ static bool js_spine_EventData_getStringValue(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_getStringValue)     // getStringValue
+SE_BIND_FUNC(js_spine_EventData_getStringValue)
 
 static bool js_spine_EventData_getVolume(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4960,7 +4960,7 @@ static bool js_spine_EventData_getVolume(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_getVolume)     // getVolume
+SE_BIND_FUNC(js_spine_EventData_getVolume)
 
 static bool js_spine_EventData_setAudioPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4979,7 +4979,7 @@ static bool js_spine_EventData_setAudioPath(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_setAudioPath)     // setAudioPath
+SE_BIND_FUNC(js_spine_EventData_setAudioPath)
 
 static bool js_spine_EventData_setBalance(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4998,7 +4998,7 @@ static bool js_spine_EventData_setBalance(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_setBalance)     // setBalance
+SE_BIND_FUNC(js_spine_EventData_setBalance)
 
 static bool js_spine_EventData_setFloatValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5017,7 +5017,7 @@ static bool js_spine_EventData_setFloatValue(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_setFloatValue)     // setFloatValue
+SE_BIND_FUNC(js_spine_EventData_setFloatValue)
 
 static bool js_spine_EventData_setIntValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5036,7 +5036,7 @@ static bool js_spine_EventData_setIntValue(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_setIntValue)     // setIntValue
+SE_BIND_FUNC(js_spine_EventData_setIntValue)
 
 static bool js_spine_EventData_setStringValue(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5055,7 +5055,7 @@ static bool js_spine_EventData_setStringValue(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_setStringValue)     // setStringValue
+SE_BIND_FUNC(js_spine_EventData_setStringValue)
 
 static bool js_spine_EventData_setVolume(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5074,7 +5074,7 @@ static bool js_spine_EventData_setVolume(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventData_setVolume)     // setVolume
+SE_BIND_FUNC(js_spine_EventData_setVolume)
 
 
 
@@ -5124,7 +5124,7 @@ static bool js_spine_EventTimeline_getEvents(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventTimeline_getEvents)     // getEvents
+SE_BIND_FUNC(js_spine_EventTimeline_getEvents)
 
 static bool js_spine_EventTimeline_getFrameCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5143,7 +5143,7 @@ static bool js_spine_EventTimeline_getFrameCount(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventTimeline_getFrameCount)     // getFrameCount
+SE_BIND_FUNC(js_spine_EventTimeline_getFrameCount)
 
 static bool js_spine_EventTimeline_getFrames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5162,7 +5162,7 @@ static bool js_spine_EventTimeline_getFrames(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventTimeline_getFrames)     // getFrames
+SE_BIND_FUNC(js_spine_EventTimeline_getFrames)
 
 static bool js_spine_EventTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5181,7 +5181,7 @@ static bool js_spine_EventTimeline_getPropertyId(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_EventTimeline_getPropertyId)
 
 static bool js_spine_EventTimeline_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5202,7 +5202,7 @@ static bool js_spine_EventTimeline_setFrame(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_EventTimeline_setFrame)     // setFrame
+SE_BIND_FUNC(js_spine_EventTimeline_setFrame)
 
 
 
@@ -5244,7 +5244,7 @@ static bool js_spine_IkConstraint_getBendDirection(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_getBendDirection)     // getBendDirection
+SE_BIND_FUNC(js_spine_IkConstraint_getBendDirection)
 
 static bool js_spine_IkConstraint_getBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5263,7 +5263,7 @@ static bool js_spine_IkConstraint_getBones(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_getBones)     // getBones
+SE_BIND_FUNC(js_spine_IkConstraint_getBones)
 
 static bool js_spine_IkConstraint_getCompress(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5282,7 +5282,7 @@ static bool js_spine_IkConstraint_getCompress(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_getCompress)     // getCompress
+SE_BIND_FUNC(js_spine_IkConstraint_getCompress)
 
 static bool js_spine_IkConstraint_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5301,7 +5301,7 @@ static bool js_spine_IkConstraint_getData(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_getData)     // getData
+SE_BIND_FUNC(js_spine_IkConstraint_getData)
 
 static bool js_spine_IkConstraint_getMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5320,7 +5320,7 @@ static bool js_spine_IkConstraint_getMix(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_getMix)     // getMix
+SE_BIND_FUNC(js_spine_IkConstraint_getMix)
 
 static bool js_spine_IkConstraint_getOrder(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5339,7 +5339,7 @@ static bool js_spine_IkConstraint_getOrder(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_getOrder)     // getOrder
+SE_BIND_FUNC(js_spine_IkConstraint_getOrder)
 
 static bool js_spine_IkConstraint_getSoftness(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5358,7 +5358,7 @@ static bool js_spine_IkConstraint_getSoftness(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_getSoftness)     // getSoftness
+SE_BIND_FUNC(js_spine_IkConstraint_getSoftness)
 
 static bool js_spine_IkConstraint_getStretch(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5377,7 +5377,7 @@ static bool js_spine_IkConstraint_getStretch(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_getStretch)     // getStretch
+SE_BIND_FUNC(js_spine_IkConstraint_getStretch)
 
 static bool js_spine_IkConstraint_getTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5396,7 +5396,7 @@ static bool js_spine_IkConstraint_getTarget(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_getTarget)     // getTarget
+SE_BIND_FUNC(js_spine_IkConstraint_getTarget)
 
 static bool js_spine_IkConstraint_isActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5415,7 +5415,7 @@ static bool js_spine_IkConstraint_isActive(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_isActive)     // isActive
+SE_BIND_FUNC(js_spine_IkConstraint_isActive)
 
 static bool js_spine_IkConstraint_setActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5434,7 +5434,7 @@ static bool js_spine_IkConstraint_setActive(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_setActive)     // setActive
+SE_BIND_FUNC(js_spine_IkConstraint_setActive)
 
 static bool js_spine_IkConstraint_setBendDirection(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5453,7 +5453,7 @@ static bool js_spine_IkConstraint_setBendDirection(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_setBendDirection)     // setBendDirection
+SE_BIND_FUNC(js_spine_IkConstraint_setBendDirection)
 
 static bool js_spine_IkConstraint_setCompress(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5472,7 +5472,7 @@ static bool js_spine_IkConstraint_setCompress(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_setCompress)     // setCompress
+SE_BIND_FUNC(js_spine_IkConstraint_setCompress)
 
 static bool js_spine_IkConstraint_setMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5491,7 +5491,7 @@ static bool js_spine_IkConstraint_setMix(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_setMix)     // setMix
+SE_BIND_FUNC(js_spine_IkConstraint_setMix)
 
 static bool js_spine_IkConstraint_setSoftness(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5510,7 +5510,7 @@ static bool js_spine_IkConstraint_setSoftness(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_setSoftness)     // setSoftness
+SE_BIND_FUNC(js_spine_IkConstraint_setSoftness)
 
 static bool js_spine_IkConstraint_setStretch(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5529,7 +5529,7 @@ static bool js_spine_IkConstraint_setStretch(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_setStretch)     // setStretch
+SE_BIND_FUNC(js_spine_IkConstraint_setStretch)
 
 static bool js_spine_IkConstraint_setTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5548,7 +5548,7 @@ static bool js_spine_IkConstraint_setTarget(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_setTarget)     // setTarget
+SE_BIND_FUNC(js_spine_IkConstraint_setTarget)
 
 static bool js_spine_IkConstraint_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5563,7 +5563,7 @@ static bool js_spine_IkConstraint_update(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraint_update)     // update
+SE_BIND_FUNC(js_spine_IkConstraint_update)
 
 
 
@@ -5618,7 +5618,7 @@ static bool js_spine_IkConstraintData_getBendDirection(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_getBendDirection)     // getBendDirection
+SE_BIND_FUNC(js_spine_IkConstraintData_getBendDirection)
 
 static bool js_spine_IkConstraintData_getBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5637,7 +5637,7 @@ static bool js_spine_IkConstraintData_getBones(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_getBones)     // getBones
+SE_BIND_FUNC(js_spine_IkConstraintData_getBones)
 
 static bool js_spine_IkConstraintData_getCompress(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5656,7 +5656,7 @@ static bool js_spine_IkConstraintData_getCompress(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_getCompress)     // getCompress
+SE_BIND_FUNC(js_spine_IkConstraintData_getCompress)
 
 static bool js_spine_IkConstraintData_getMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5675,7 +5675,7 @@ static bool js_spine_IkConstraintData_getMix(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_getMix)     // getMix
+SE_BIND_FUNC(js_spine_IkConstraintData_getMix)
 
 static bool js_spine_IkConstraintData_getSoftness(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5694,7 +5694,7 @@ static bool js_spine_IkConstraintData_getSoftness(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_getSoftness)     // getSoftness
+SE_BIND_FUNC(js_spine_IkConstraintData_getSoftness)
 
 static bool js_spine_IkConstraintData_getStretch(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5713,7 +5713,7 @@ static bool js_spine_IkConstraintData_getStretch(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_getStretch)     // getStretch
+SE_BIND_FUNC(js_spine_IkConstraintData_getStretch)
 
 static bool js_spine_IkConstraintData_getTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5732,7 +5732,7 @@ static bool js_spine_IkConstraintData_getTarget(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_getTarget)     // getTarget
+SE_BIND_FUNC(js_spine_IkConstraintData_getTarget)
 
 static bool js_spine_IkConstraintData_getUniform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5751,7 +5751,7 @@ static bool js_spine_IkConstraintData_getUniform(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_getUniform)     // getUniform
+SE_BIND_FUNC(js_spine_IkConstraintData_getUniform)
 
 static bool js_spine_IkConstraintData_setBendDirection(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5770,7 +5770,7 @@ static bool js_spine_IkConstraintData_setBendDirection(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_setBendDirection)     // setBendDirection
+SE_BIND_FUNC(js_spine_IkConstraintData_setBendDirection)
 
 static bool js_spine_IkConstraintData_setCompress(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5789,7 +5789,7 @@ static bool js_spine_IkConstraintData_setCompress(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_setCompress)     // setCompress
+SE_BIND_FUNC(js_spine_IkConstraintData_setCompress)
 
 static bool js_spine_IkConstraintData_setMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5808,7 +5808,7 @@ static bool js_spine_IkConstraintData_setMix(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_setMix)     // setMix
+SE_BIND_FUNC(js_spine_IkConstraintData_setMix)
 
 static bool js_spine_IkConstraintData_setSoftness(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5827,7 +5827,7 @@ static bool js_spine_IkConstraintData_setSoftness(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_setSoftness)     // setSoftness
+SE_BIND_FUNC(js_spine_IkConstraintData_setSoftness)
 
 static bool js_spine_IkConstraintData_setStretch(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5846,7 +5846,7 @@ static bool js_spine_IkConstraintData_setStretch(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_setStretch)     // setStretch
+SE_BIND_FUNC(js_spine_IkConstraintData_setStretch)
 
 static bool js_spine_IkConstraintData_setTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5865,7 +5865,7 @@ static bool js_spine_IkConstraintData_setTarget(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_setTarget)     // setTarget
+SE_BIND_FUNC(js_spine_IkConstraintData_setTarget)
 
 static bool js_spine_IkConstraintData_setUniform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5884,7 +5884,7 @@ static bool js_spine_IkConstraintData_setUniform(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintData_setUniform)     // setUniform
+SE_BIND_FUNC(js_spine_IkConstraintData_setUniform)
 
 
 
@@ -5936,7 +5936,7 @@ static bool js_spine_IkConstraintTimeline_getPropertyId(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_IkConstraintTimeline_getPropertyId)
 
 static bool js_spine_IkConstraintTimeline_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5967,7 +5967,7 @@ static bool js_spine_IkConstraintTimeline_setFrame(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 7);
     return false;
 }
-SE_BIND_FUNC(js_spine_IkConstraintTimeline_setFrame)     // setFrame
+SE_BIND_FUNC(js_spine_IkConstraintTimeline_setFrame)
 
 
 
@@ -6006,7 +6006,7 @@ static bool js_spine_MeshAttachment_copy(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_copy)     // copy
+SE_BIND_FUNC(js_spine_MeshAttachment_copy)
 
 static bool js_spine_MeshAttachment_getColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6025,7 +6025,7 @@ static bool js_spine_MeshAttachment_getColor(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getColor)     // getColor
+SE_BIND_FUNC(js_spine_MeshAttachment_getColor)
 
 static bool js_spine_MeshAttachment_getEdges(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6044,7 +6044,7 @@ static bool js_spine_MeshAttachment_getEdges(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getEdges)     // getEdges
+SE_BIND_FUNC(js_spine_MeshAttachment_getEdges)
 
 static bool js_spine_MeshAttachment_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6063,7 +6063,7 @@ static bool js_spine_MeshAttachment_getHeight(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getHeight)     // getHeight
+SE_BIND_FUNC(js_spine_MeshAttachment_getHeight)
 
 static bool js_spine_MeshAttachment_getHullLength(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6082,7 +6082,7 @@ static bool js_spine_MeshAttachment_getHullLength(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getHullLength)     // getHullLength
+SE_BIND_FUNC(js_spine_MeshAttachment_getHullLength)
 
 static bool js_spine_MeshAttachment_getParentMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6101,7 +6101,7 @@ static bool js_spine_MeshAttachment_getParentMesh(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getParentMesh)     // getParentMesh
+SE_BIND_FUNC(js_spine_MeshAttachment_getParentMesh)
 
 static bool js_spine_MeshAttachment_getPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6120,7 +6120,7 @@ static bool js_spine_MeshAttachment_getPath(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getPath)     // getPath
+SE_BIND_FUNC(js_spine_MeshAttachment_getPath)
 
 static bool js_spine_MeshAttachment_getRegionDegrees(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6139,7 +6139,7 @@ static bool js_spine_MeshAttachment_getRegionDegrees(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionDegrees)     // getRegionDegrees
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionDegrees)
 
 static bool js_spine_MeshAttachment_getRegionHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6158,7 +6158,7 @@ static bool js_spine_MeshAttachment_getRegionHeight(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionHeight)     // getRegionHeight
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionHeight)
 
 static bool js_spine_MeshAttachment_getRegionOffsetX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6177,7 +6177,7 @@ static bool js_spine_MeshAttachment_getRegionOffsetX(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionOffsetX)     // getRegionOffsetX
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionOffsetX)
 
 static bool js_spine_MeshAttachment_getRegionOffsetY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6196,7 +6196,7 @@ static bool js_spine_MeshAttachment_getRegionOffsetY(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionOffsetY)     // getRegionOffsetY
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionOffsetY)
 
 static bool js_spine_MeshAttachment_getRegionOriginalHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6215,7 +6215,7 @@ static bool js_spine_MeshAttachment_getRegionOriginalHeight(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionOriginalHeight)     // getRegionOriginalHeight
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionOriginalHeight)
 
 static bool js_spine_MeshAttachment_getRegionOriginalWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6234,7 +6234,7 @@ static bool js_spine_MeshAttachment_getRegionOriginalWidth(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionOriginalWidth)     // getRegionOriginalWidth
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionOriginalWidth)
 
 static bool js_spine_MeshAttachment_getRegionRotate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6253,7 +6253,7 @@ static bool js_spine_MeshAttachment_getRegionRotate(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionRotate)     // getRegionRotate
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionRotate)
 
 static bool js_spine_MeshAttachment_getRegionU(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6272,7 +6272,7 @@ static bool js_spine_MeshAttachment_getRegionU(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionU)     // getRegionU
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionU)
 
 static bool js_spine_MeshAttachment_getRegionU2(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6291,7 +6291,7 @@ static bool js_spine_MeshAttachment_getRegionU2(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionU2)     // getRegionU2
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionU2)
 
 static bool js_spine_MeshAttachment_getRegionUVs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6310,7 +6310,7 @@ static bool js_spine_MeshAttachment_getRegionUVs(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionUVs)     // getRegionUVs
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionUVs)
 
 static bool js_spine_MeshAttachment_getRegionV(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6329,7 +6329,7 @@ static bool js_spine_MeshAttachment_getRegionV(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionV)     // getRegionV
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionV)
 
 static bool js_spine_MeshAttachment_getRegionV2(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6348,7 +6348,7 @@ static bool js_spine_MeshAttachment_getRegionV2(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionV2)     // getRegionV2
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionV2)
 
 static bool js_spine_MeshAttachment_getRegionWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6367,7 +6367,7 @@ static bool js_spine_MeshAttachment_getRegionWidth(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getRegionWidth)     // getRegionWidth
+SE_BIND_FUNC(js_spine_MeshAttachment_getRegionWidth)
 
 static bool js_spine_MeshAttachment_getTriangles(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6386,7 +6386,7 @@ static bool js_spine_MeshAttachment_getTriangles(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getTriangles)     // getTriangles
+SE_BIND_FUNC(js_spine_MeshAttachment_getTriangles)
 
 static bool js_spine_MeshAttachment_getUVs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6405,7 +6405,7 @@ static bool js_spine_MeshAttachment_getUVs(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getUVs)     // getUVs
+SE_BIND_FUNC(js_spine_MeshAttachment_getUVs)
 
 static bool js_spine_MeshAttachment_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6424,7 +6424,7 @@ static bool js_spine_MeshAttachment_getWidth(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_getWidth)     // getWidth
+SE_BIND_FUNC(js_spine_MeshAttachment_getWidth)
 
 static bool js_spine_MeshAttachment_newLinkedMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6443,7 +6443,7 @@ static bool js_spine_MeshAttachment_newLinkedMesh(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_newLinkedMesh)     // newLinkedMesh
+SE_BIND_FUNC(js_spine_MeshAttachment_newLinkedMesh)
 
 static bool js_spine_MeshAttachment_setHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6462,7 +6462,7 @@ static bool js_spine_MeshAttachment_setHeight(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setHeight)     // setHeight
+SE_BIND_FUNC(js_spine_MeshAttachment_setHeight)
 
 static bool js_spine_MeshAttachment_setHullLength(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6481,7 +6481,7 @@ static bool js_spine_MeshAttachment_setHullLength(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setHullLength)     // setHullLength
+SE_BIND_FUNC(js_spine_MeshAttachment_setHullLength)
 
 static bool js_spine_MeshAttachment_setParentMesh(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6500,7 +6500,7 @@ static bool js_spine_MeshAttachment_setParentMesh(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setParentMesh)     // setParentMesh
+SE_BIND_FUNC(js_spine_MeshAttachment_setParentMesh)
 
 static bool js_spine_MeshAttachment_setPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6519,7 +6519,7 @@ static bool js_spine_MeshAttachment_setPath(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setPath)     // setPath
+SE_BIND_FUNC(js_spine_MeshAttachment_setPath)
 
 static bool js_spine_MeshAttachment_setRegionDegrees(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6538,7 +6538,7 @@ static bool js_spine_MeshAttachment_setRegionDegrees(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionDegrees)     // setRegionDegrees
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionDegrees)
 
 static bool js_spine_MeshAttachment_setRegionHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6557,7 +6557,7 @@ static bool js_spine_MeshAttachment_setRegionHeight(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionHeight)     // setRegionHeight
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionHeight)
 
 static bool js_spine_MeshAttachment_setRegionOffsetX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6576,7 +6576,7 @@ static bool js_spine_MeshAttachment_setRegionOffsetX(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionOffsetX)     // setRegionOffsetX
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionOffsetX)
 
 static bool js_spine_MeshAttachment_setRegionOffsetY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6595,7 +6595,7 @@ static bool js_spine_MeshAttachment_setRegionOffsetY(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionOffsetY)     // setRegionOffsetY
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionOffsetY)
 
 static bool js_spine_MeshAttachment_setRegionOriginalHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6614,7 +6614,7 @@ static bool js_spine_MeshAttachment_setRegionOriginalHeight(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionOriginalHeight)     // setRegionOriginalHeight
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionOriginalHeight)
 
 static bool js_spine_MeshAttachment_setRegionOriginalWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6633,7 +6633,7 @@ static bool js_spine_MeshAttachment_setRegionOriginalWidth(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionOriginalWidth)     // setRegionOriginalWidth
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionOriginalWidth)
 
 static bool js_spine_MeshAttachment_setRegionRotate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6652,7 +6652,7 @@ static bool js_spine_MeshAttachment_setRegionRotate(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionRotate)     // setRegionRotate
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionRotate)
 
 static bool js_spine_MeshAttachment_setRegionU(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6671,7 +6671,7 @@ static bool js_spine_MeshAttachment_setRegionU(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionU)     // setRegionU
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionU)
 
 static bool js_spine_MeshAttachment_setRegionU2(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6690,7 +6690,7 @@ static bool js_spine_MeshAttachment_setRegionU2(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionU2)     // setRegionU2
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionU2)
 
 static bool js_spine_MeshAttachment_setRegionV(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6709,7 +6709,7 @@ static bool js_spine_MeshAttachment_setRegionV(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionV)     // setRegionV
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionV)
 
 static bool js_spine_MeshAttachment_setRegionV2(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6728,7 +6728,7 @@ static bool js_spine_MeshAttachment_setRegionV2(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionV2)     // setRegionV2
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionV2)
 
 static bool js_spine_MeshAttachment_setRegionWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6747,7 +6747,7 @@ static bool js_spine_MeshAttachment_setRegionWidth(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setRegionWidth)     // setRegionWidth
+SE_BIND_FUNC(js_spine_MeshAttachment_setRegionWidth)
 
 static bool js_spine_MeshAttachment_setWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6766,7 +6766,7 @@ static bool js_spine_MeshAttachment_setWidth(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_setWidth)     // setWidth
+SE_BIND_FUNC(js_spine_MeshAttachment_setWidth)
 
 static bool js_spine_MeshAttachment_updateUVs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6781,7 +6781,7 @@ static bool js_spine_MeshAttachment_updateUVs(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_MeshAttachment_updateUVs)     // updateUVs
+SE_BIND_FUNC(js_spine_MeshAttachment_updateUVs)
 
 
 
@@ -6860,7 +6860,7 @@ static bool js_spine_PathAttachment_copy(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathAttachment_copy)     // copy
+SE_BIND_FUNC(js_spine_PathAttachment_copy)
 
 static bool js_spine_PathAttachment_getLengths(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6879,7 +6879,7 @@ static bool js_spine_PathAttachment_getLengths(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathAttachment_getLengths)     // getLengths
+SE_BIND_FUNC(js_spine_PathAttachment_getLengths)
 
 static bool js_spine_PathAttachment_isClosed(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6898,7 +6898,7 @@ static bool js_spine_PathAttachment_isClosed(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathAttachment_isClosed)     // isClosed
+SE_BIND_FUNC(js_spine_PathAttachment_isClosed)
 
 static bool js_spine_PathAttachment_isConstantSpeed(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6917,7 +6917,7 @@ static bool js_spine_PathAttachment_isConstantSpeed(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathAttachment_isConstantSpeed)     // isConstantSpeed
+SE_BIND_FUNC(js_spine_PathAttachment_isConstantSpeed)
 
 static bool js_spine_PathAttachment_setClosed(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6936,7 +6936,7 @@ static bool js_spine_PathAttachment_setClosed(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathAttachment_setClosed)     // setClosed
+SE_BIND_FUNC(js_spine_PathAttachment_setClosed)
 
 static bool js_spine_PathAttachment_setConstantSpeed(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6955,7 +6955,7 @@ static bool js_spine_PathAttachment_setConstantSpeed(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathAttachment_setConstantSpeed)     // setConstantSpeed
+SE_BIND_FUNC(js_spine_PathAttachment_setConstantSpeed)
 
 
 
@@ -6994,7 +6994,7 @@ static bool js_spine_PathConstraint_apply(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_apply)     // apply
+SE_BIND_FUNC(js_spine_PathConstraint_apply)
 
 static bool js_spine_PathConstraint_getBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7013,7 +7013,7 @@ static bool js_spine_PathConstraint_getBones(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_getBones)     // getBones
+SE_BIND_FUNC(js_spine_PathConstraint_getBones)
 
 static bool js_spine_PathConstraint_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7032,7 +7032,7 @@ static bool js_spine_PathConstraint_getData(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_getData)     // getData
+SE_BIND_FUNC(js_spine_PathConstraint_getData)
 
 static bool js_spine_PathConstraint_getOrder(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7051,7 +7051,7 @@ static bool js_spine_PathConstraint_getOrder(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_getOrder)     // getOrder
+SE_BIND_FUNC(js_spine_PathConstraint_getOrder)
 
 static bool js_spine_PathConstraint_getPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7070,7 +7070,7 @@ static bool js_spine_PathConstraint_getPosition(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_getPosition)     // getPosition
+SE_BIND_FUNC(js_spine_PathConstraint_getPosition)
 
 static bool js_spine_PathConstraint_getRotateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7089,7 +7089,7 @@ static bool js_spine_PathConstraint_getRotateMix(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_getRotateMix)     // getRotateMix
+SE_BIND_FUNC(js_spine_PathConstraint_getRotateMix)
 
 static bool js_spine_PathConstraint_getSpacing(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7108,7 +7108,7 @@ static bool js_spine_PathConstraint_getSpacing(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_getSpacing)     // getSpacing
+SE_BIND_FUNC(js_spine_PathConstraint_getSpacing)
 
 static bool js_spine_PathConstraint_getTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7127,7 +7127,7 @@ static bool js_spine_PathConstraint_getTarget(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_getTarget)     // getTarget
+SE_BIND_FUNC(js_spine_PathConstraint_getTarget)
 
 static bool js_spine_PathConstraint_getTranslateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7146,7 +7146,7 @@ static bool js_spine_PathConstraint_getTranslateMix(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_getTranslateMix)     // getTranslateMix
+SE_BIND_FUNC(js_spine_PathConstraint_getTranslateMix)
 
 static bool js_spine_PathConstraint_isActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7165,7 +7165,7 @@ static bool js_spine_PathConstraint_isActive(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_isActive)     // isActive
+SE_BIND_FUNC(js_spine_PathConstraint_isActive)
 
 static bool js_spine_PathConstraint_setActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7184,7 +7184,7 @@ static bool js_spine_PathConstraint_setActive(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_setActive)     // setActive
+SE_BIND_FUNC(js_spine_PathConstraint_setActive)
 
 static bool js_spine_PathConstraint_setPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7203,7 +7203,7 @@ static bool js_spine_PathConstraint_setPosition(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_setPosition)     // setPosition
+SE_BIND_FUNC(js_spine_PathConstraint_setPosition)
 
 static bool js_spine_PathConstraint_setRotateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7222,7 +7222,7 @@ static bool js_spine_PathConstraint_setRotateMix(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_setRotateMix)     // setRotateMix
+SE_BIND_FUNC(js_spine_PathConstraint_setRotateMix)
 
 static bool js_spine_PathConstraint_setSpacing(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7241,7 +7241,7 @@ static bool js_spine_PathConstraint_setSpacing(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_setSpacing)     // setSpacing
+SE_BIND_FUNC(js_spine_PathConstraint_setSpacing)
 
 static bool js_spine_PathConstraint_setTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7260,7 +7260,7 @@ static bool js_spine_PathConstraint_setTarget(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_setTarget)     // setTarget
+SE_BIND_FUNC(js_spine_PathConstraint_setTarget)
 
 static bool js_spine_PathConstraint_setTranslateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7279,7 +7279,7 @@ static bool js_spine_PathConstraint_setTranslateMix(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_setTranslateMix)     // setTranslateMix
+SE_BIND_FUNC(js_spine_PathConstraint_setTranslateMix)
 
 static bool js_spine_PathConstraint_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7294,7 +7294,7 @@ static bool js_spine_PathConstraint_update(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraint_update)     // update
+SE_BIND_FUNC(js_spine_PathConstraint_update)
 
 
 
@@ -7348,7 +7348,7 @@ static bool js_spine_PathConstraintData_getBones(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getBones)     // getBones
+SE_BIND_FUNC(js_spine_PathConstraintData_getBones)
 
 static bool js_spine_PathConstraintData_getOffsetRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7367,7 +7367,7 @@ static bool js_spine_PathConstraintData_getOffsetRotation(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getOffsetRotation)     // getOffsetRotation
+SE_BIND_FUNC(js_spine_PathConstraintData_getOffsetRotation)
 
 static bool js_spine_PathConstraintData_getPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7386,7 +7386,7 @@ static bool js_spine_PathConstraintData_getPosition(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getPosition)     // getPosition
+SE_BIND_FUNC(js_spine_PathConstraintData_getPosition)
 
 static bool js_spine_PathConstraintData_getPositionMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7405,7 +7405,7 @@ static bool js_spine_PathConstraintData_getPositionMode(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getPositionMode)     // getPositionMode
+SE_BIND_FUNC(js_spine_PathConstraintData_getPositionMode)
 
 static bool js_spine_PathConstraintData_getRotateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7424,7 +7424,7 @@ static bool js_spine_PathConstraintData_getRotateMix(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getRotateMix)     // getRotateMix
+SE_BIND_FUNC(js_spine_PathConstraintData_getRotateMix)
 
 static bool js_spine_PathConstraintData_getRotateMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7443,7 +7443,7 @@ static bool js_spine_PathConstraintData_getRotateMode(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getRotateMode)     // getRotateMode
+SE_BIND_FUNC(js_spine_PathConstraintData_getRotateMode)
 
 static bool js_spine_PathConstraintData_getSpacing(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7462,7 +7462,7 @@ static bool js_spine_PathConstraintData_getSpacing(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getSpacing)     // getSpacing
+SE_BIND_FUNC(js_spine_PathConstraintData_getSpacing)
 
 static bool js_spine_PathConstraintData_getSpacingMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7481,7 +7481,7 @@ static bool js_spine_PathConstraintData_getSpacingMode(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getSpacingMode)     // getSpacingMode
+SE_BIND_FUNC(js_spine_PathConstraintData_getSpacingMode)
 
 static bool js_spine_PathConstraintData_getTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7500,7 +7500,7 @@ static bool js_spine_PathConstraintData_getTarget(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getTarget)     // getTarget
+SE_BIND_FUNC(js_spine_PathConstraintData_getTarget)
 
 static bool js_spine_PathConstraintData_getTranslateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7519,7 +7519,7 @@ static bool js_spine_PathConstraintData_getTranslateMix(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_getTranslateMix)     // getTranslateMix
+SE_BIND_FUNC(js_spine_PathConstraintData_getTranslateMix)
 
 static bool js_spine_PathConstraintData_setOffsetRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7538,7 +7538,7 @@ static bool js_spine_PathConstraintData_setOffsetRotation(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_setOffsetRotation)     // setOffsetRotation
+SE_BIND_FUNC(js_spine_PathConstraintData_setOffsetRotation)
 
 static bool js_spine_PathConstraintData_setPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7557,7 +7557,7 @@ static bool js_spine_PathConstraintData_setPosition(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_setPosition)     // setPosition
+SE_BIND_FUNC(js_spine_PathConstraintData_setPosition)
 
 static bool js_spine_PathConstraintData_setPositionMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7576,7 +7576,7 @@ static bool js_spine_PathConstraintData_setPositionMode(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_setPositionMode)     // setPositionMode
+SE_BIND_FUNC(js_spine_PathConstraintData_setPositionMode)
 
 static bool js_spine_PathConstraintData_setRotateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7595,7 +7595,7 @@ static bool js_spine_PathConstraintData_setRotateMix(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_setRotateMix)     // setRotateMix
+SE_BIND_FUNC(js_spine_PathConstraintData_setRotateMix)
 
 static bool js_spine_PathConstraintData_setRotateMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7614,7 +7614,7 @@ static bool js_spine_PathConstraintData_setRotateMode(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_setRotateMode)     // setRotateMode
+SE_BIND_FUNC(js_spine_PathConstraintData_setRotateMode)
 
 static bool js_spine_PathConstraintData_setSpacing(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7633,7 +7633,7 @@ static bool js_spine_PathConstraintData_setSpacing(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_setSpacing)     // setSpacing
+SE_BIND_FUNC(js_spine_PathConstraintData_setSpacing)
 
 static bool js_spine_PathConstraintData_setSpacingMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7652,7 +7652,7 @@ static bool js_spine_PathConstraintData_setSpacingMode(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_setSpacingMode)     // setSpacingMode
+SE_BIND_FUNC(js_spine_PathConstraintData_setSpacingMode)
 
 static bool js_spine_PathConstraintData_setTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7671,7 +7671,7 @@ static bool js_spine_PathConstraintData_setTarget(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_setTarget)     // setTarget
+SE_BIND_FUNC(js_spine_PathConstraintData_setTarget)
 
 static bool js_spine_PathConstraintData_setTranslateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7690,7 +7690,7 @@ static bool js_spine_PathConstraintData_setTranslateMix(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintData_setTranslateMix)     // setTranslateMix
+SE_BIND_FUNC(js_spine_PathConstraintData_setTranslateMix)
 
 
 
@@ -7746,7 +7746,7 @@ static bool js_spine_PathConstraintMixTimeline_getPropertyId(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintMixTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_PathConstraintMixTimeline_getPropertyId)
 
 
 
@@ -7784,7 +7784,7 @@ static bool js_spine_PathConstraintPositionTimeline_getPropertyId(se::State& s) 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintPositionTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_PathConstraintPositionTimeline_getPropertyId)
 
 static bool js_spine_PathConstraintPositionTimeline_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7807,7 +7807,7 @@ static bool js_spine_PathConstraintPositionTimeline_setFrame(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintPositionTimeline_setFrame)     // setFrame
+SE_BIND_FUNC(js_spine_PathConstraintPositionTimeline_setFrame)
 
 
 
@@ -7846,7 +7846,7 @@ static bool js_spine_PathConstraintSpacingTimeline_getPropertyId(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PathConstraintSpacingTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_PathConstraintSpacingTimeline_getPropertyId)
 
 
 
@@ -7884,7 +7884,7 @@ static bool js_spine_PointAttachment_copy(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PointAttachment_copy)     // copy
+SE_BIND_FUNC(js_spine_PointAttachment_copy)
 
 static bool js_spine_PointAttachment_getRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7903,7 +7903,7 @@ static bool js_spine_PointAttachment_getRotation(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PointAttachment_getRotation)     // getRotation
+SE_BIND_FUNC(js_spine_PointAttachment_getRotation)
 
 static bool js_spine_PointAttachment_getX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7922,7 +7922,7 @@ static bool js_spine_PointAttachment_getX(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PointAttachment_getX)     // getX
+SE_BIND_FUNC(js_spine_PointAttachment_getX)
 
 static bool js_spine_PointAttachment_getY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7941,7 +7941,7 @@ static bool js_spine_PointAttachment_getY(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_PointAttachment_getY)     // getY
+SE_BIND_FUNC(js_spine_PointAttachment_getY)
 
 static bool js_spine_PointAttachment_setRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7960,7 +7960,7 @@ static bool js_spine_PointAttachment_setRotation(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PointAttachment_setRotation)     // setRotation
+SE_BIND_FUNC(js_spine_PointAttachment_setRotation)
 
 static bool js_spine_PointAttachment_setX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7979,7 +7979,7 @@ static bool js_spine_PointAttachment_setX(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PointAttachment_setX)     // setX
+SE_BIND_FUNC(js_spine_PointAttachment_setX)
 
 static bool js_spine_PointAttachment_setY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7998,7 +7998,7 @@ static bool js_spine_PointAttachment_setY(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_PointAttachment_setY)     // setY
+SE_BIND_FUNC(js_spine_PointAttachment_setY)
 
 
 
@@ -8042,7 +8042,7 @@ static bool js_spine_RegionAttachment_copy(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_copy)     // copy
+SE_BIND_FUNC(js_spine_RegionAttachment_copy)
 
 static bool js_spine_RegionAttachment_getColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8061,7 +8061,7 @@ static bool js_spine_RegionAttachment_getColor(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getColor)     // getColor
+SE_BIND_FUNC(js_spine_RegionAttachment_getColor)
 
 static bool js_spine_RegionAttachment_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8080,7 +8080,7 @@ static bool js_spine_RegionAttachment_getHeight(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getHeight)     // getHeight
+SE_BIND_FUNC(js_spine_RegionAttachment_getHeight)
 
 static bool js_spine_RegionAttachment_getOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8099,7 +8099,7 @@ static bool js_spine_RegionAttachment_getOffset(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getOffset)     // getOffset
+SE_BIND_FUNC(js_spine_RegionAttachment_getOffset)
 
 static bool js_spine_RegionAttachment_getPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8118,7 +8118,7 @@ static bool js_spine_RegionAttachment_getPath(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getPath)     // getPath
+SE_BIND_FUNC(js_spine_RegionAttachment_getPath)
 
 static bool js_spine_RegionAttachment_getRegionHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8137,7 +8137,7 @@ static bool js_spine_RegionAttachment_getRegionHeight(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getRegionHeight)     // getRegionHeight
+SE_BIND_FUNC(js_spine_RegionAttachment_getRegionHeight)
 
 static bool js_spine_RegionAttachment_getRegionOffsetX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8156,7 +8156,7 @@ static bool js_spine_RegionAttachment_getRegionOffsetX(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getRegionOffsetX)     // getRegionOffsetX
+SE_BIND_FUNC(js_spine_RegionAttachment_getRegionOffsetX)
 
 static bool js_spine_RegionAttachment_getRegionOffsetY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8175,7 +8175,7 @@ static bool js_spine_RegionAttachment_getRegionOffsetY(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getRegionOffsetY)     // getRegionOffsetY
+SE_BIND_FUNC(js_spine_RegionAttachment_getRegionOffsetY)
 
 static bool js_spine_RegionAttachment_getRegionOriginalHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8194,7 +8194,7 @@ static bool js_spine_RegionAttachment_getRegionOriginalHeight(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getRegionOriginalHeight)     // getRegionOriginalHeight
+SE_BIND_FUNC(js_spine_RegionAttachment_getRegionOriginalHeight)
 
 static bool js_spine_RegionAttachment_getRegionOriginalWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8213,7 +8213,7 @@ static bool js_spine_RegionAttachment_getRegionOriginalWidth(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getRegionOriginalWidth)     // getRegionOriginalWidth
+SE_BIND_FUNC(js_spine_RegionAttachment_getRegionOriginalWidth)
 
 static bool js_spine_RegionAttachment_getRegionWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8232,7 +8232,7 @@ static bool js_spine_RegionAttachment_getRegionWidth(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getRegionWidth)     // getRegionWidth
+SE_BIND_FUNC(js_spine_RegionAttachment_getRegionWidth)
 
 static bool js_spine_RegionAttachment_getRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8251,7 +8251,7 @@ static bool js_spine_RegionAttachment_getRotation(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getRotation)     // getRotation
+SE_BIND_FUNC(js_spine_RegionAttachment_getRotation)
 
 static bool js_spine_RegionAttachment_getScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8270,7 +8270,7 @@ static bool js_spine_RegionAttachment_getScaleX(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getScaleX)     // getScaleX
+SE_BIND_FUNC(js_spine_RegionAttachment_getScaleX)
 
 static bool js_spine_RegionAttachment_getScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8289,7 +8289,7 @@ static bool js_spine_RegionAttachment_getScaleY(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getScaleY)     // getScaleY
+SE_BIND_FUNC(js_spine_RegionAttachment_getScaleY)
 
 static bool js_spine_RegionAttachment_getUVs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8308,7 +8308,7 @@ static bool js_spine_RegionAttachment_getUVs(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getUVs)     // getUVs
+SE_BIND_FUNC(js_spine_RegionAttachment_getUVs)
 
 static bool js_spine_RegionAttachment_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8327,7 +8327,7 @@ static bool js_spine_RegionAttachment_getWidth(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getWidth)     // getWidth
+SE_BIND_FUNC(js_spine_RegionAttachment_getWidth)
 
 static bool js_spine_RegionAttachment_getX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8346,7 +8346,7 @@ static bool js_spine_RegionAttachment_getX(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getX)     // getX
+SE_BIND_FUNC(js_spine_RegionAttachment_getX)
 
 static bool js_spine_RegionAttachment_getY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8365,7 +8365,7 @@ static bool js_spine_RegionAttachment_getY(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_getY)     // getY
+SE_BIND_FUNC(js_spine_RegionAttachment_getY)
 
 static bool js_spine_RegionAttachment_setHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8384,7 +8384,7 @@ static bool js_spine_RegionAttachment_setHeight(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setHeight)     // setHeight
+SE_BIND_FUNC(js_spine_RegionAttachment_setHeight)
 
 static bool js_spine_RegionAttachment_setPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8403,7 +8403,7 @@ static bool js_spine_RegionAttachment_setPath(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setPath)     // setPath
+SE_BIND_FUNC(js_spine_RegionAttachment_setPath)
 
 static bool js_spine_RegionAttachment_setRegionHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8422,7 +8422,7 @@ static bool js_spine_RegionAttachment_setRegionHeight(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setRegionHeight)     // setRegionHeight
+SE_BIND_FUNC(js_spine_RegionAttachment_setRegionHeight)
 
 static bool js_spine_RegionAttachment_setRegionOffsetX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8441,7 +8441,7 @@ static bool js_spine_RegionAttachment_setRegionOffsetX(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setRegionOffsetX)     // setRegionOffsetX
+SE_BIND_FUNC(js_spine_RegionAttachment_setRegionOffsetX)
 
 static bool js_spine_RegionAttachment_setRegionOffsetY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8460,7 +8460,7 @@ static bool js_spine_RegionAttachment_setRegionOffsetY(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setRegionOffsetY)     // setRegionOffsetY
+SE_BIND_FUNC(js_spine_RegionAttachment_setRegionOffsetY)
 
 static bool js_spine_RegionAttachment_setRegionOriginalHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8479,7 +8479,7 @@ static bool js_spine_RegionAttachment_setRegionOriginalHeight(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setRegionOriginalHeight)     // setRegionOriginalHeight
+SE_BIND_FUNC(js_spine_RegionAttachment_setRegionOriginalHeight)
 
 static bool js_spine_RegionAttachment_setRegionOriginalWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8498,7 +8498,7 @@ static bool js_spine_RegionAttachment_setRegionOriginalWidth(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setRegionOriginalWidth)     // setRegionOriginalWidth
+SE_BIND_FUNC(js_spine_RegionAttachment_setRegionOriginalWidth)
 
 static bool js_spine_RegionAttachment_setRegionWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8517,7 +8517,7 @@ static bool js_spine_RegionAttachment_setRegionWidth(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setRegionWidth)     // setRegionWidth
+SE_BIND_FUNC(js_spine_RegionAttachment_setRegionWidth)
 
 static bool js_spine_RegionAttachment_setRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8536,7 +8536,7 @@ static bool js_spine_RegionAttachment_setRotation(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setRotation)     // setRotation
+SE_BIND_FUNC(js_spine_RegionAttachment_setRotation)
 
 static bool js_spine_RegionAttachment_setScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8555,7 +8555,7 @@ static bool js_spine_RegionAttachment_setScaleX(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setScaleX)     // setScaleX
+SE_BIND_FUNC(js_spine_RegionAttachment_setScaleX)
 
 static bool js_spine_RegionAttachment_setScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8574,7 +8574,7 @@ static bool js_spine_RegionAttachment_setScaleY(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setScaleY)     // setScaleY
+SE_BIND_FUNC(js_spine_RegionAttachment_setScaleY)
 
 static bool js_spine_RegionAttachment_setUVs(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8601,7 +8601,7 @@ static bool js_spine_RegionAttachment_setUVs(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 5);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setUVs)     // setUVs
+SE_BIND_FUNC(js_spine_RegionAttachment_setUVs)
 
 static bool js_spine_RegionAttachment_setWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8620,7 +8620,7 @@ static bool js_spine_RegionAttachment_setWidth(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setWidth)     // setWidth
+SE_BIND_FUNC(js_spine_RegionAttachment_setWidth)
 
 static bool js_spine_RegionAttachment_setX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8639,7 +8639,7 @@ static bool js_spine_RegionAttachment_setX(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setX)     // setX
+SE_BIND_FUNC(js_spine_RegionAttachment_setX)
 
 static bool js_spine_RegionAttachment_setY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8658,7 +8658,7 @@ static bool js_spine_RegionAttachment_setY(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_setY)     // setY
+SE_BIND_FUNC(js_spine_RegionAttachment_setY)
 
 static bool js_spine_RegionAttachment_updateOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8673,7 +8673,7 @@ static bool js_spine_RegionAttachment_updateOffset(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RegionAttachment_updateOffset)     // updateOffset
+SE_BIND_FUNC(js_spine_RegionAttachment_updateOffset)
 
 
 
@@ -8744,7 +8744,7 @@ static bool js_spine_RotateTimeline_getBoneIndex(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RotateTimeline_getBoneIndex)     // getBoneIndex
+SE_BIND_FUNC(js_spine_RotateTimeline_getBoneIndex)
 
 static bool js_spine_RotateTimeline_getFrames(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8763,7 +8763,7 @@ static bool js_spine_RotateTimeline_getFrames(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RotateTimeline_getFrames)     // getFrames
+SE_BIND_FUNC(js_spine_RotateTimeline_getFrames)
 
 static bool js_spine_RotateTimeline_getPropertyId(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8782,7 +8782,7 @@ static bool js_spine_RotateTimeline_getPropertyId(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_RotateTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_RotateTimeline_getPropertyId)
 
 static bool js_spine_RotateTimeline_setBoneIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8801,7 +8801,7 @@ static bool js_spine_RotateTimeline_setBoneIndex(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_RotateTimeline_setBoneIndex)     // setBoneIndex
+SE_BIND_FUNC(js_spine_RotateTimeline_setBoneIndex)
 
 static bool js_spine_RotateTimeline_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8824,7 +8824,7 @@ static bool js_spine_RotateTimeline_setFrame(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_RotateTimeline_setFrame)     // setFrame
+SE_BIND_FUNC(js_spine_RotateTimeline_setFrame)
 
 
 
@@ -8866,7 +8866,7 @@ static bool js_spine_TranslateTimeline_getPropertyId(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TranslateTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_TranslateTimeline_getPropertyId)
 
 static bool js_spine_TranslateTimeline_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -8891,7 +8891,7 @@ static bool js_spine_TranslateTimeline_setFrame(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_spine_TranslateTimeline_setFrame)     // setFrame
+SE_BIND_FUNC(js_spine_TranslateTimeline_setFrame)
 
 
 
@@ -8930,7 +8930,7 @@ static bool js_spine_ScaleTimeline_getPropertyId(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ScaleTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_ScaleTimeline_getPropertyId)
 
 
 
@@ -8968,7 +8968,7 @@ static bool js_spine_ShearTimeline_getPropertyId(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_ShearTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_ShearTimeline_getPropertyId)
 
 
 
@@ -9009,7 +9009,7 @@ static bool js_spine_Skeleton_findBone(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_findBone)     // findBone
+SE_BIND_FUNC(js_spine_Skeleton_findBone)
 
 static bool js_spine_Skeleton_findBoneIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9031,7 +9031,7 @@ static bool js_spine_Skeleton_findBoneIndex(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_findBoneIndex)     // findBoneIndex
+SE_BIND_FUNC(js_spine_Skeleton_findBoneIndex)
 
 static bool js_spine_Skeleton_findIkConstraint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9053,7 +9053,7 @@ static bool js_spine_Skeleton_findIkConstraint(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_findIkConstraint)     // findIkConstraint
+SE_BIND_FUNC(js_spine_Skeleton_findIkConstraint)
 
 static bool js_spine_Skeleton_findPathConstraint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9075,7 +9075,7 @@ static bool js_spine_Skeleton_findPathConstraint(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_findPathConstraint)     // findPathConstraint
+SE_BIND_FUNC(js_spine_Skeleton_findPathConstraint)
 
 static bool js_spine_Skeleton_findSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9097,7 +9097,7 @@ static bool js_spine_Skeleton_findSlot(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_findSlot)     // findSlot
+SE_BIND_FUNC(js_spine_Skeleton_findSlot)
 
 static bool js_spine_Skeleton_findSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9119,7 +9119,7 @@ static bool js_spine_Skeleton_findSlotIndex(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_findSlotIndex)     // findSlotIndex
+SE_BIND_FUNC(js_spine_Skeleton_findSlotIndex)
 
 static bool js_spine_Skeleton_findTransformConstraint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9141,7 +9141,7 @@ static bool js_spine_Skeleton_findTransformConstraint(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_findTransformConstraint)     // findTransformConstraint
+SE_BIND_FUNC(js_spine_Skeleton_findTransformConstraint)
 
 static bool js_spine_Skeleton_getAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9187,7 +9187,7 @@ static bool js_spine_Skeleton_getAttachment(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getAttachment)     // getAttachment
+SE_BIND_FUNC(js_spine_Skeleton_getAttachment)
 
 static bool js_spine_Skeleton_getBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9206,7 +9206,7 @@ static bool js_spine_Skeleton_getBones(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getBones)     // getBones
+SE_BIND_FUNC(js_spine_Skeleton_getBones)
 
 static bool js_spine_Skeleton_getColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9225,7 +9225,7 @@ static bool js_spine_Skeleton_getColor(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getColor)     // getColor
+SE_BIND_FUNC(js_spine_Skeleton_getColor)
 
 static bool js_spine_Skeleton_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9244,7 +9244,7 @@ static bool js_spine_Skeleton_getData(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getData)     // getData
+SE_BIND_FUNC(js_spine_Skeleton_getData)
 
 static bool js_spine_Skeleton_getDrawOrder(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9263,7 +9263,7 @@ static bool js_spine_Skeleton_getDrawOrder(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getDrawOrder)     // getDrawOrder
+SE_BIND_FUNC(js_spine_Skeleton_getDrawOrder)
 
 static bool js_spine_Skeleton_getIkConstraints(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9282,7 +9282,7 @@ static bool js_spine_Skeleton_getIkConstraints(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getIkConstraints)     // getIkConstraints
+SE_BIND_FUNC(js_spine_Skeleton_getIkConstraints)
 
 static bool js_spine_Skeleton_getPathConstraints(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9301,7 +9301,7 @@ static bool js_spine_Skeleton_getPathConstraints(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getPathConstraints)     // getPathConstraints
+SE_BIND_FUNC(js_spine_Skeleton_getPathConstraints)
 
 static bool js_spine_Skeleton_getRootBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9320,7 +9320,7 @@ static bool js_spine_Skeleton_getRootBone(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getRootBone)     // getRootBone
+SE_BIND_FUNC(js_spine_Skeleton_getRootBone)
 
 static bool js_spine_Skeleton_getScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9339,7 +9339,7 @@ static bool js_spine_Skeleton_getScaleX(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getScaleX)     // getScaleX
+SE_BIND_FUNC(js_spine_Skeleton_getScaleX)
 
 static bool js_spine_Skeleton_getScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9358,7 +9358,7 @@ static bool js_spine_Skeleton_getScaleY(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getScaleY)     // getScaleY
+SE_BIND_FUNC(js_spine_Skeleton_getScaleY)
 
 static bool js_spine_Skeleton_getSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9377,7 +9377,7 @@ static bool js_spine_Skeleton_getSkin(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getSkin)     // getSkin
+SE_BIND_FUNC(js_spine_Skeleton_getSkin)
 
 static bool js_spine_Skeleton_getSlots(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9396,7 +9396,7 @@ static bool js_spine_Skeleton_getSlots(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getSlots)     // getSlots
+SE_BIND_FUNC(js_spine_Skeleton_getSlots)
 
 static bool js_spine_Skeleton_getTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9415,7 +9415,7 @@ static bool js_spine_Skeleton_getTime(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getTime)     // getTime
+SE_BIND_FUNC(js_spine_Skeleton_getTime)
 
 static bool js_spine_Skeleton_getTransformConstraints(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9434,7 +9434,7 @@ static bool js_spine_Skeleton_getTransformConstraints(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getTransformConstraints)     // getTransformConstraints
+SE_BIND_FUNC(js_spine_Skeleton_getTransformConstraints)
 
 static bool js_spine_Skeleton_getUpdateCacheList(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9453,7 +9453,7 @@ static bool js_spine_Skeleton_getUpdateCacheList(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getUpdateCacheList)     // getUpdateCacheList
+SE_BIND_FUNC(js_spine_Skeleton_getUpdateCacheList)
 
 static bool js_spine_Skeleton_getX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9472,7 +9472,7 @@ static bool js_spine_Skeleton_getX(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getX)     // getX
+SE_BIND_FUNC(js_spine_Skeleton_getX)
 
 static bool js_spine_Skeleton_getY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9491,7 +9491,7 @@ static bool js_spine_Skeleton_getY(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_getY)     // getY
+SE_BIND_FUNC(js_spine_Skeleton_getY)
 
 static bool js_spine_Skeleton_printUpdateCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9506,7 +9506,7 @@ static bool js_spine_Skeleton_printUpdateCache(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_printUpdateCache)     // printUpdateCache
+SE_BIND_FUNC(js_spine_Skeleton_printUpdateCache)
 
 static bool js_spine_Skeleton_setAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9527,7 +9527,7 @@ static bool js_spine_Skeleton_setAttachment(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setAttachment)     // setAttachment
+SE_BIND_FUNC(js_spine_Skeleton_setAttachment)
 
 static bool js_spine_Skeleton_setBonesToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9542,7 +9542,7 @@ static bool js_spine_Skeleton_setBonesToSetupPose(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setBonesToSetupPose)     // setBonesToSetupPose
+SE_BIND_FUNC(js_spine_Skeleton_setBonesToSetupPose)
 
 static bool js_spine_Skeleton_setPosition(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9563,7 +9563,7 @@ static bool js_spine_Skeleton_setPosition(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setPosition)     // setPosition
+SE_BIND_FUNC(js_spine_Skeleton_setPosition)
 
 static bool js_spine_Skeleton_setScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9582,7 +9582,7 @@ static bool js_spine_Skeleton_setScaleX(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setScaleX)     // setScaleX
+SE_BIND_FUNC(js_spine_Skeleton_setScaleX)
 
 static bool js_spine_Skeleton_setScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9601,7 +9601,7 @@ static bool js_spine_Skeleton_setScaleY(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setScaleY)     // setScaleY
+SE_BIND_FUNC(js_spine_Skeleton_setScaleY)
 
 static bool js_spine_Skeleton_setSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9635,7 +9635,7 @@ static bool js_spine_Skeleton_setSkin(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setSkin)     // setSkin
+SE_BIND_FUNC(js_spine_Skeleton_setSkin)
 
 static bool js_spine_Skeleton_setSlotsToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9650,7 +9650,7 @@ static bool js_spine_Skeleton_setSlotsToSetupPose(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setSlotsToSetupPose)     // setSlotsToSetupPose
+SE_BIND_FUNC(js_spine_Skeleton_setSlotsToSetupPose)
 
 static bool js_spine_Skeleton_setTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9669,7 +9669,7 @@ static bool js_spine_Skeleton_setTime(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setTime)     // setTime
+SE_BIND_FUNC(js_spine_Skeleton_setTime)
 
 static bool js_spine_Skeleton_setToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9684,7 +9684,7 @@ static bool js_spine_Skeleton_setToSetupPose(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setToSetupPose)     // setToSetupPose
+SE_BIND_FUNC(js_spine_Skeleton_setToSetupPose)
 
 static bool js_spine_Skeleton_setX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9703,7 +9703,7 @@ static bool js_spine_Skeleton_setX(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setX)     // setX
+SE_BIND_FUNC(js_spine_Skeleton_setX)
 
 static bool js_spine_Skeleton_setY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9722,7 +9722,7 @@ static bool js_spine_Skeleton_setY(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_setY)     // setY
+SE_BIND_FUNC(js_spine_Skeleton_setY)
 
 static bool js_spine_Skeleton_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9741,7 +9741,7 @@ static bool js_spine_Skeleton_update(se::State& s) // NOLINT(readability-identif
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_update)     // update
+SE_BIND_FUNC(js_spine_Skeleton_update)
 
 static bool js_spine_Skeleton_updateCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9756,7 +9756,7 @@ static bool js_spine_Skeleton_updateCache(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_updateCache)     // updateCache
+SE_BIND_FUNC(js_spine_Skeleton_updateCache)
 
 static bool js_spine_Skeleton_updateWorldTransform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9771,7 +9771,7 @@ static bool js_spine_Skeleton_updateWorldTransform(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skeleton_updateWorldTransform)     // updateWorldTransform
+SE_BIND_FUNC(js_spine_Skeleton_updateWorldTransform)
 
 
 
@@ -9852,7 +9852,7 @@ static bool js_spine_SkeletonBounds_aabbcontainsPoint(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonBounds_aabbcontainsPoint)     // aabbcontainsPoint
+SE_BIND_FUNC(js_spine_SkeletonBounds_aabbcontainsPoint)
 
 static bool js_spine_SkeletonBounds_aabbintersectsSegment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9880,7 +9880,7 @@ static bool js_spine_SkeletonBounds_aabbintersectsSegment(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonBounds_aabbintersectsSegment)     // aabbintersectsSegment
+SE_BIND_FUNC(js_spine_SkeletonBounds_aabbintersectsSegment)
 
 static bool js_spine_SkeletonBounds_containsPoint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9929,7 +9929,7 @@ static bool js_spine_SkeletonBounds_containsPoint(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonBounds_containsPoint)     // containsPoint
+SE_BIND_FUNC(js_spine_SkeletonBounds_containsPoint)
 
 static bool js_spine_SkeletonBounds_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9948,7 +9948,7 @@ static bool js_spine_SkeletonBounds_getHeight(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonBounds_getHeight)     // getHeight
+SE_BIND_FUNC(js_spine_SkeletonBounds_getHeight)
 
 static bool js_spine_SkeletonBounds_getPolygon(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9970,7 +9970,7 @@ static bool js_spine_SkeletonBounds_getPolygon(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonBounds_getPolygon)     // getPolygon
+SE_BIND_FUNC(js_spine_SkeletonBounds_getPolygon)
 
 static bool js_spine_SkeletonBounds_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -9989,7 +9989,7 @@ static bool js_spine_SkeletonBounds_getWidth(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonBounds_getWidth)     // getWidth
+SE_BIND_FUNC(js_spine_SkeletonBounds_getWidth)
 
 static bool js_spine_SkeletonBounds_intersectsSegment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10050,7 +10050,7 @@ static bool js_spine_SkeletonBounds_intersectsSegment(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonBounds_intersectsSegment)     // intersectsSegment
+SE_BIND_FUNC(js_spine_SkeletonBounds_intersectsSegment)
 
 
 
@@ -10115,7 +10115,7 @@ static bool js_spine_SkeletonData_findAnimation(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findAnimation)     // findAnimation
+SE_BIND_FUNC(js_spine_SkeletonData_findAnimation)
 
 static bool js_spine_SkeletonData_findBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10137,7 +10137,7 @@ static bool js_spine_SkeletonData_findBone(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findBone)     // findBone
+SE_BIND_FUNC(js_spine_SkeletonData_findBone)
 
 static bool js_spine_SkeletonData_findBoneIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10159,7 +10159,7 @@ static bool js_spine_SkeletonData_findBoneIndex(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findBoneIndex)     // findBoneIndex
+SE_BIND_FUNC(js_spine_SkeletonData_findBoneIndex)
 
 static bool js_spine_SkeletonData_findEvent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10181,7 +10181,7 @@ static bool js_spine_SkeletonData_findEvent(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findEvent)     // findEvent
+SE_BIND_FUNC(js_spine_SkeletonData_findEvent)
 
 static bool js_spine_SkeletonData_findIkConstraint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10203,7 +10203,7 @@ static bool js_spine_SkeletonData_findIkConstraint(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findIkConstraint)     // findIkConstraint
+SE_BIND_FUNC(js_spine_SkeletonData_findIkConstraint)
 
 static bool js_spine_SkeletonData_findPathConstraint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10225,7 +10225,7 @@ static bool js_spine_SkeletonData_findPathConstraint(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findPathConstraint)     // findPathConstraint
+SE_BIND_FUNC(js_spine_SkeletonData_findPathConstraint)
 
 static bool js_spine_SkeletonData_findPathConstraintIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10247,7 +10247,7 @@ static bool js_spine_SkeletonData_findPathConstraintIndex(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findPathConstraintIndex)     // findPathConstraintIndex
+SE_BIND_FUNC(js_spine_SkeletonData_findPathConstraintIndex)
 
 static bool js_spine_SkeletonData_findSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10269,7 +10269,7 @@ static bool js_spine_SkeletonData_findSkin(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findSkin)     // findSkin
+SE_BIND_FUNC(js_spine_SkeletonData_findSkin)
 
 static bool js_spine_SkeletonData_findSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10291,7 +10291,7 @@ static bool js_spine_SkeletonData_findSlot(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findSlot)     // findSlot
+SE_BIND_FUNC(js_spine_SkeletonData_findSlot)
 
 static bool js_spine_SkeletonData_findSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10313,7 +10313,7 @@ static bool js_spine_SkeletonData_findSlotIndex(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findSlotIndex)     // findSlotIndex
+SE_BIND_FUNC(js_spine_SkeletonData_findSlotIndex)
 
 static bool js_spine_SkeletonData_findTransformConstraint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10335,7 +10335,7 @@ static bool js_spine_SkeletonData_findTransformConstraint(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_findTransformConstraint)     // findTransformConstraint
+SE_BIND_FUNC(js_spine_SkeletonData_findTransformConstraint)
 
 static bool js_spine_SkeletonData_getAnimations(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10354,7 +10354,7 @@ static bool js_spine_SkeletonData_getAnimations(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getAnimations)     // getAnimations
+SE_BIND_FUNC(js_spine_SkeletonData_getAnimations)
 
 static bool js_spine_SkeletonData_getAudioPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10373,7 +10373,7 @@ static bool js_spine_SkeletonData_getAudioPath(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getAudioPath)     // getAudioPath
+SE_BIND_FUNC(js_spine_SkeletonData_getAudioPath)
 
 static bool js_spine_SkeletonData_getBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10392,7 +10392,7 @@ static bool js_spine_SkeletonData_getBones(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getBones)     // getBones
+SE_BIND_FUNC(js_spine_SkeletonData_getBones)
 
 static bool js_spine_SkeletonData_getDefaultSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10411,7 +10411,7 @@ static bool js_spine_SkeletonData_getDefaultSkin(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getDefaultSkin)     // getDefaultSkin
+SE_BIND_FUNC(js_spine_SkeletonData_getDefaultSkin)
 
 static bool js_spine_SkeletonData_getEvents(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10430,7 +10430,7 @@ static bool js_spine_SkeletonData_getEvents(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getEvents)     // getEvents
+SE_BIND_FUNC(js_spine_SkeletonData_getEvents)
 
 static bool js_spine_SkeletonData_getFps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10449,7 +10449,7 @@ static bool js_spine_SkeletonData_getFps(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getFps)     // getFps
+SE_BIND_FUNC(js_spine_SkeletonData_getFps)
 
 static bool js_spine_SkeletonData_getHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10468,7 +10468,7 @@ static bool js_spine_SkeletonData_getHash(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getHash)     // getHash
+SE_BIND_FUNC(js_spine_SkeletonData_getHash)
 
 static bool js_spine_SkeletonData_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10487,7 +10487,7 @@ static bool js_spine_SkeletonData_getHeight(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getHeight)     // getHeight
+SE_BIND_FUNC(js_spine_SkeletonData_getHeight)
 
 static bool js_spine_SkeletonData_getIkConstraints(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10506,7 +10506,7 @@ static bool js_spine_SkeletonData_getIkConstraints(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getIkConstraints)     // getIkConstraints
+SE_BIND_FUNC(js_spine_SkeletonData_getIkConstraints)
 
 static bool js_spine_SkeletonData_getImagesPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10525,7 +10525,7 @@ static bool js_spine_SkeletonData_getImagesPath(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getImagesPath)     // getImagesPath
+SE_BIND_FUNC(js_spine_SkeletonData_getImagesPath)
 
 static bool js_spine_SkeletonData_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10544,7 +10544,7 @@ static bool js_spine_SkeletonData_getName(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getName)     // getName
+SE_BIND_FUNC(js_spine_SkeletonData_getName)
 
 static bool js_spine_SkeletonData_getPathConstraints(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10563,7 +10563,7 @@ static bool js_spine_SkeletonData_getPathConstraints(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getPathConstraints)     // getPathConstraints
+SE_BIND_FUNC(js_spine_SkeletonData_getPathConstraints)
 
 static bool js_spine_SkeletonData_getSkins(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10582,7 +10582,7 @@ static bool js_spine_SkeletonData_getSkins(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getSkins)     // getSkins
+SE_BIND_FUNC(js_spine_SkeletonData_getSkins)
 
 static bool js_spine_SkeletonData_getSlots(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10601,7 +10601,7 @@ static bool js_spine_SkeletonData_getSlots(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getSlots)     // getSlots
+SE_BIND_FUNC(js_spine_SkeletonData_getSlots)
 
 static bool js_spine_SkeletonData_getTransformConstraints(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10620,7 +10620,7 @@ static bool js_spine_SkeletonData_getTransformConstraints(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getTransformConstraints)     // getTransformConstraints
+SE_BIND_FUNC(js_spine_SkeletonData_getTransformConstraints)
 
 static bool js_spine_SkeletonData_getVersion(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10639,7 +10639,7 @@ static bool js_spine_SkeletonData_getVersion(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getVersion)     // getVersion
+SE_BIND_FUNC(js_spine_SkeletonData_getVersion)
 
 static bool js_spine_SkeletonData_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10658,7 +10658,7 @@ static bool js_spine_SkeletonData_getWidth(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getWidth)     // getWidth
+SE_BIND_FUNC(js_spine_SkeletonData_getWidth)
 
 static bool js_spine_SkeletonData_getX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10677,7 +10677,7 @@ static bool js_spine_SkeletonData_getX(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getX)     // getX
+SE_BIND_FUNC(js_spine_SkeletonData_getX)
 
 static bool js_spine_SkeletonData_getY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10696,7 +10696,7 @@ static bool js_spine_SkeletonData_getY(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_getY)     // getY
+SE_BIND_FUNC(js_spine_SkeletonData_getY)
 
 static bool js_spine_SkeletonData_setAudioPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10715,7 +10715,7 @@ static bool js_spine_SkeletonData_setAudioPath(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setAudioPath)     // setAudioPath
+SE_BIND_FUNC(js_spine_SkeletonData_setAudioPath)
 
 static bool js_spine_SkeletonData_setDefaultSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10734,7 +10734,7 @@ static bool js_spine_SkeletonData_setDefaultSkin(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setDefaultSkin)     // setDefaultSkin
+SE_BIND_FUNC(js_spine_SkeletonData_setDefaultSkin)
 
 static bool js_spine_SkeletonData_setFps(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10753,7 +10753,7 @@ static bool js_spine_SkeletonData_setFps(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setFps)     // setFps
+SE_BIND_FUNC(js_spine_SkeletonData_setFps)
 
 static bool js_spine_SkeletonData_setHash(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10772,7 +10772,7 @@ static bool js_spine_SkeletonData_setHash(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setHash)     // setHash
+SE_BIND_FUNC(js_spine_SkeletonData_setHash)
 
 static bool js_spine_SkeletonData_setHeight(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10791,7 +10791,7 @@ static bool js_spine_SkeletonData_setHeight(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setHeight)     // setHeight
+SE_BIND_FUNC(js_spine_SkeletonData_setHeight)
 
 static bool js_spine_SkeletonData_setImagesPath(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10810,7 +10810,7 @@ static bool js_spine_SkeletonData_setImagesPath(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setImagesPath)     // setImagesPath
+SE_BIND_FUNC(js_spine_SkeletonData_setImagesPath)
 
 static bool js_spine_SkeletonData_setName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10829,7 +10829,7 @@ static bool js_spine_SkeletonData_setName(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setName)     // setName
+SE_BIND_FUNC(js_spine_SkeletonData_setName)
 
 static bool js_spine_SkeletonData_setVersion(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10848,7 +10848,7 @@ static bool js_spine_SkeletonData_setVersion(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setVersion)     // setVersion
+SE_BIND_FUNC(js_spine_SkeletonData_setVersion)
 
 static bool js_spine_SkeletonData_setWidth(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10867,7 +10867,7 @@ static bool js_spine_SkeletonData_setWidth(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setWidth)     // setWidth
+SE_BIND_FUNC(js_spine_SkeletonData_setWidth)
 
 static bool js_spine_SkeletonData_setX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10886,7 +10886,7 @@ static bool js_spine_SkeletonData_setX(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setX)     // setX
+SE_BIND_FUNC(js_spine_SkeletonData_setX)
 
 static bool js_spine_SkeletonData_setY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -10905,7 +10905,7 @@ static bool js_spine_SkeletonData_setY(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonData_setY)     // setY
+SE_BIND_FUNC(js_spine_SkeletonData_setY)
 
 
 
@@ -10983,7 +10983,7 @@ static bool js_spine_Skin_addSkin(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skin_addSkin)     // addSkin
+SE_BIND_FUNC(js_spine_Skin_addSkin)
 
 static bool js_spine_Skin_copySkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11002,7 +11002,7 @@ static bool js_spine_Skin_copySkin(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skin_copySkin)     // copySkin
+SE_BIND_FUNC(js_spine_Skin_copySkin)
 
 static bool js_spine_Skin_getAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11026,7 +11026,7 @@ static bool js_spine_Skin_getAttachment(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skin_getAttachment)     // getAttachment
+SE_BIND_FUNC(js_spine_Skin_getAttachment)
 
 static bool js_spine_Skin_getBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11045,7 +11045,7 @@ static bool js_spine_Skin_getBones(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skin_getBones)     // getBones
+SE_BIND_FUNC(js_spine_Skin_getBones)
 
 static bool js_spine_Skin_getConstraints(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11064,7 +11064,7 @@ static bool js_spine_Skin_getConstraints(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skin_getConstraints)     // getConstraints
+SE_BIND_FUNC(js_spine_Skin_getConstraints)
 
 static bool js_spine_Skin_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11083,7 +11083,7 @@ static bool js_spine_Skin_getName(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skin_getName)     // getName
+SE_BIND_FUNC(js_spine_Skin_getName)
 
 static bool js_spine_Skin_removeAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11104,7 +11104,7 @@ static bool js_spine_Skin_removeAttachment(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skin_removeAttachment)     // removeAttachment
+SE_BIND_FUNC(js_spine_Skin_removeAttachment)
 
 static bool js_spine_Skin_setAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11127,7 +11127,7 @@ static bool js_spine_Skin_setAttachment(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_Skin_setAttachment)     // setAttachment
+SE_BIND_FUNC(js_spine_Skin_setAttachment)
 
 
 
@@ -11172,7 +11172,7 @@ static bool js_spine_Slot_getAttachment(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_getAttachment)     // getAttachment
+SE_BIND_FUNC(js_spine_Slot_getAttachment)
 
 static bool js_spine_Slot_getAttachmentTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11191,7 +11191,7 @@ static bool js_spine_Slot_getAttachmentTime(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_getAttachmentTime)     // getAttachmentTime
+SE_BIND_FUNC(js_spine_Slot_getAttachmentTime)
 
 static bool js_spine_Slot_getBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11210,7 +11210,7 @@ static bool js_spine_Slot_getBone(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_getBone)     // getBone
+SE_BIND_FUNC(js_spine_Slot_getBone)
 
 static bool js_spine_Slot_getColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11229,7 +11229,7 @@ static bool js_spine_Slot_getColor(se::State& s) // NOLINT(readability-identifie
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_getColor)     // getColor
+SE_BIND_FUNC(js_spine_Slot_getColor)
 
 static bool js_spine_Slot_getDarkColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11248,7 +11248,7 @@ static bool js_spine_Slot_getDarkColor(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_getDarkColor)     // getDarkColor
+SE_BIND_FUNC(js_spine_Slot_getDarkColor)
 
 static bool js_spine_Slot_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11267,7 +11267,7 @@ static bool js_spine_Slot_getData(se::State& s) // NOLINT(readability-identifier
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_getData)     // getData
+SE_BIND_FUNC(js_spine_Slot_getData)
 
 static bool js_spine_Slot_getDeform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11286,7 +11286,7 @@ static bool js_spine_Slot_getDeform(se::State& s) // NOLINT(readability-identifi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_getDeform)     // getDeform
+SE_BIND_FUNC(js_spine_Slot_getDeform)
 
 static bool js_spine_Slot_getSkeleton(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11305,7 +11305,7 @@ static bool js_spine_Slot_getSkeleton(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_getSkeleton)     // getSkeleton
+SE_BIND_FUNC(js_spine_Slot_getSkeleton)
 
 static bool js_spine_Slot_hasDarkColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11324,7 +11324,7 @@ static bool js_spine_Slot_hasDarkColor(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_hasDarkColor)     // hasDarkColor
+SE_BIND_FUNC(js_spine_Slot_hasDarkColor)
 
 static bool js_spine_Slot_setAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11343,7 +11343,7 @@ static bool js_spine_Slot_setAttachment(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_setAttachment)     // setAttachment
+SE_BIND_FUNC(js_spine_Slot_setAttachment)
 
 static bool js_spine_Slot_setAttachmentTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11362,7 +11362,7 @@ static bool js_spine_Slot_setAttachmentTime(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_setAttachmentTime)     // setAttachmentTime
+SE_BIND_FUNC(js_spine_Slot_setAttachmentTime)
 
 static bool js_spine_Slot_setToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11377,7 +11377,7 @@ static bool js_spine_Slot_setToSetupPose(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_Slot_setToSetupPose)     // setToSetupPose
+SE_BIND_FUNC(js_spine_Slot_setToSetupPose)
 
 
 
@@ -11426,7 +11426,7 @@ static bool js_spine_SlotData_getAttachmentName(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_getAttachmentName)     // getAttachmentName
+SE_BIND_FUNC(js_spine_SlotData_getAttachmentName)
 
 static bool js_spine_SlotData_getBlendMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11445,7 +11445,7 @@ static bool js_spine_SlotData_getBlendMode(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_getBlendMode)     // getBlendMode
+SE_BIND_FUNC(js_spine_SlotData_getBlendMode)
 
 static bool js_spine_SlotData_getBoneData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11464,7 +11464,7 @@ static bool js_spine_SlotData_getBoneData(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_getBoneData)     // getBoneData
+SE_BIND_FUNC(js_spine_SlotData_getBoneData)
 
 static bool js_spine_SlotData_getColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11483,7 +11483,7 @@ static bool js_spine_SlotData_getColor(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_getColor)     // getColor
+SE_BIND_FUNC(js_spine_SlotData_getColor)
 
 static bool js_spine_SlotData_getDarkColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11502,7 +11502,7 @@ static bool js_spine_SlotData_getDarkColor(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_getDarkColor)     // getDarkColor
+SE_BIND_FUNC(js_spine_SlotData_getDarkColor)
 
 static bool js_spine_SlotData_getIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11521,7 +11521,7 @@ static bool js_spine_SlotData_getIndex(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_getIndex)     // getIndex
+SE_BIND_FUNC(js_spine_SlotData_getIndex)
 
 static bool js_spine_SlotData_getName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11540,7 +11540,7 @@ static bool js_spine_SlotData_getName(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_getName)     // getName
+SE_BIND_FUNC(js_spine_SlotData_getName)
 
 static bool js_spine_SlotData_hasDarkColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11559,7 +11559,7 @@ static bool js_spine_SlotData_hasDarkColor(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_hasDarkColor)     // hasDarkColor
+SE_BIND_FUNC(js_spine_SlotData_hasDarkColor)
 
 static bool js_spine_SlotData_setAttachmentName(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11578,7 +11578,7 @@ static bool js_spine_SlotData_setAttachmentName(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_setAttachmentName)     // setAttachmentName
+SE_BIND_FUNC(js_spine_SlotData_setAttachmentName)
 
 static bool js_spine_SlotData_setBlendMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11597,7 +11597,7 @@ static bool js_spine_SlotData_setBlendMode(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_setBlendMode)     // setBlendMode
+SE_BIND_FUNC(js_spine_SlotData_setBlendMode)
 
 static bool js_spine_SlotData_setHasDarkColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11616,7 +11616,7 @@ static bool js_spine_SlotData_setHasDarkColor(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SlotData_setHasDarkColor)     // setHasDarkColor
+SE_BIND_FUNC(js_spine_SlotData_setHasDarkColor)
 
 
 
@@ -11660,7 +11660,7 @@ static bool js_spine_TransformConstraint_apply(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_apply)     // apply
+SE_BIND_FUNC(js_spine_TransformConstraint_apply)
 
 static bool js_spine_TransformConstraint_getBones(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11679,7 +11679,7 @@ static bool js_spine_TransformConstraint_getBones(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_getBones)     // getBones
+SE_BIND_FUNC(js_spine_TransformConstraint_getBones)
 
 static bool js_spine_TransformConstraint_getData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11698,7 +11698,7 @@ static bool js_spine_TransformConstraint_getData(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_getData)     // getData
+SE_BIND_FUNC(js_spine_TransformConstraint_getData)
 
 static bool js_spine_TransformConstraint_getOrder(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11717,7 +11717,7 @@ static bool js_spine_TransformConstraint_getOrder(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_getOrder)     // getOrder
+SE_BIND_FUNC(js_spine_TransformConstraint_getOrder)
 
 static bool js_spine_TransformConstraint_getRotateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11736,7 +11736,7 @@ static bool js_spine_TransformConstraint_getRotateMix(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_getRotateMix)     // getRotateMix
+SE_BIND_FUNC(js_spine_TransformConstraint_getRotateMix)
 
 static bool js_spine_TransformConstraint_getScaleMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11755,7 +11755,7 @@ static bool js_spine_TransformConstraint_getScaleMix(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_getScaleMix)     // getScaleMix
+SE_BIND_FUNC(js_spine_TransformConstraint_getScaleMix)
 
 static bool js_spine_TransformConstraint_getShearMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11774,7 +11774,7 @@ static bool js_spine_TransformConstraint_getShearMix(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_getShearMix)     // getShearMix
+SE_BIND_FUNC(js_spine_TransformConstraint_getShearMix)
 
 static bool js_spine_TransformConstraint_getTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11793,7 +11793,7 @@ static bool js_spine_TransformConstraint_getTarget(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_getTarget)     // getTarget
+SE_BIND_FUNC(js_spine_TransformConstraint_getTarget)
 
 static bool js_spine_TransformConstraint_getTranslateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11812,7 +11812,7 @@ static bool js_spine_TransformConstraint_getTranslateMix(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_getTranslateMix)     // getTranslateMix
+SE_BIND_FUNC(js_spine_TransformConstraint_getTranslateMix)
 
 static bool js_spine_TransformConstraint_isActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11831,7 +11831,7 @@ static bool js_spine_TransformConstraint_isActive(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_isActive)     // isActive
+SE_BIND_FUNC(js_spine_TransformConstraint_isActive)
 
 static bool js_spine_TransformConstraint_setActive(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11850,7 +11850,7 @@ static bool js_spine_TransformConstraint_setActive(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_setActive)     // setActive
+SE_BIND_FUNC(js_spine_TransformConstraint_setActive)
 
 static bool js_spine_TransformConstraint_setRotateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11869,7 +11869,7 @@ static bool js_spine_TransformConstraint_setRotateMix(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_setRotateMix)     // setRotateMix
+SE_BIND_FUNC(js_spine_TransformConstraint_setRotateMix)
 
 static bool js_spine_TransformConstraint_setScaleMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11888,7 +11888,7 @@ static bool js_spine_TransformConstraint_setScaleMix(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_setScaleMix)     // setScaleMix
+SE_BIND_FUNC(js_spine_TransformConstraint_setScaleMix)
 
 static bool js_spine_TransformConstraint_setShearMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11907,7 +11907,7 @@ static bool js_spine_TransformConstraint_setShearMix(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_setShearMix)     // setShearMix
+SE_BIND_FUNC(js_spine_TransformConstraint_setShearMix)
 
 static bool js_spine_TransformConstraint_setTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11926,7 +11926,7 @@ static bool js_spine_TransformConstraint_setTarget(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_setTarget)     // setTarget
+SE_BIND_FUNC(js_spine_TransformConstraint_setTarget)
 
 static bool js_spine_TransformConstraint_setTranslateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11945,7 +11945,7 @@ static bool js_spine_TransformConstraint_setTranslateMix(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_setTranslateMix)     // setTranslateMix
+SE_BIND_FUNC(js_spine_TransformConstraint_setTranslateMix)
 
 static bool js_spine_TransformConstraint_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -11960,7 +11960,7 @@ static bool js_spine_TransformConstraint_update(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraint_update)     // update
+SE_BIND_FUNC(js_spine_TransformConstraint_update)
 
 
 
@@ -12014,7 +12014,7 @@ static bool js_spine_TransformConstraintData_getBones(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getBones)     // getBones
+SE_BIND_FUNC(js_spine_TransformConstraintData_getBones)
 
 static bool js_spine_TransformConstraintData_getOffsetRotation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12033,7 +12033,7 @@ static bool js_spine_TransformConstraintData_getOffsetRotation(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetRotation)     // getOffsetRotation
+SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetRotation)
 
 static bool js_spine_TransformConstraintData_getOffsetScaleX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12052,7 +12052,7 @@ static bool js_spine_TransformConstraintData_getOffsetScaleX(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetScaleX)     // getOffsetScaleX
+SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetScaleX)
 
 static bool js_spine_TransformConstraintData_getOffsetScaleY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12071,7 +12071,7 @@ static bool js_spine_TransformConstraintData_getOffsetScaleY(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetScaleY)     // getOffsetScaleY
+SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetScaleY)
 
 static bool js_spine_TransformConstraintData_getOffsetShearY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12090,7 +12090,7 @@ static bool js_spine_TransformConstraintData_getOffsetShearY(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetShearY)     // getOffsetShearY
+SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetShearY)
 
 static bool js_spine_TransformConstraintData_getOffsetX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12109,7 +12109,7 @@ static bool js_spine_TransformConstraintData_getOffsetX(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetX)     // getOffsetX
+SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetX)
 
 static bool js_spine_TransformConstraintData_getOffsetY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12128,7 +12128,7 @@ static bool js_spine_TransformConstraintData_getOffsetY(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetY)     // getOffsetY
+SE_BIND_FUNC(js_spine_TransformConstraintData_getOffsetY)
 
 static bool js_spine_TransformConstraintData_getRotateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12147,7 +12147,7 @@ static bool js_spine_TransformConstraintData_getRotateMix(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getRotateMix)     // getRotateMix
+SE_BIND_FUNC(js_spine_TransformConstraintData_getRotateMix)
 
 static bool js_spine_TransformConstraintData_getScaleMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12166,7 +12166,7 @@ static bool js_spine_TransformConstraintData_getScaleMix(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getScaleMix)     // getScaleMix
+SE_BIND_FUNC(js_spine_TransformConstraintData_getScaleMix)
 
 static bool js_spine_TransformConstraintData_getShearMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12185,7 +12185,7 @@ static bool js_spine_TransformConstraintData_getShearMix(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getShearMix)     // getShearMix
+SE_BIND_FUNC(js_spine_TransformConstraintData_getShearMix)
 
 static bool js_spine_TransformConstraintData_getTarget(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12204,7 +12204,7 @@ static bool js_spine_TransformConstraintData_getTarget(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getTarget)     // getTarget
+SE_BIND_FUNC(js_spine_TransformConstraintData_getTarget)
 
 static bool js_spine_TransformConstraintData_getTranslateMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12223,7 +12223,7 @@ static bool js_spine_TransformConstraintData_getTranslateMix(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_getTranslateMix)     // getTranslateMix
+SE_BIND_FUNC(js_spine_TransformConstraintData_getTranslateMix)
 
 static bool js_spine_TransformConstraintData_isLocal(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12242,7 +12242,7 @@ static bool js_spine_TransformConstraintData_isLocal(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_isLocal)     // isLocal
+SE_BIND_FUNC(js_spine_TransformConstraintData_isLocal)
 
 static bool js_spine_TransformConstraintData_isRelative(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12261,7 +12261,7 @@ static bool js_spine_TransformConstraintData_isRelative(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintData_isRelative)     // isRelative
+SE_BIND_FUNC(js_spine_TransformConstraintData_isRelative)
 
 
 
@@ -12312,7 +12312,7 @@ static bool js_spine_TransformConstraintTimeline_getPropertyId(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_TransformConstraintTimeline_getPropertyId)
 
 static bool js_spine_TransformConstraintTimeline_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12341,7 +12341,7 @@ static bool js_spine_TransformConstraintTimeline_setFrame(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 6);
     return false;
 }
-SE_BIND_FUNC(js_spine_TransformConstraintTimeline_setFrame)     // setFrame
+SE_BIND_FUNC(js_spine_TransformConstraintTimeline_setFrame)
 
 
 
@@ -12380,7 +12380,7 @@ static bool js_spine_TwoColorTimeline_getPropertyId(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TwoColorTimeline_getPropertyId)     // getPropertyId
+SE_BIND_FUNC(js_spine_TwoColorTimeline_getPropertyId)
 
 static bool js_spine_TwoColorTimeline_getSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12399,7 +12399,7 @@ static bool js_spine_TwoColorTimeline_getSlotIndex(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_TwoColorTimeline_getSlotIndex)     // getSlotIndex
+SE_BIND_FUNC(js_spine_TwoColorTimeline_getSlotIndex)
 
 static bool js_spine_TwoColorTimeline_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12434,7 +12434,7 @@ static bool js_spine_TwoColorTimeline_setFrame(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 9);
     return false;
 }
-SE_BIND_FUNC(js_spine_TwoColorTimeline_setFrame)     // setFrame
+SE_BIND_FUNC(js_spine_TwoColorTimeline_setFrame)
 
 static bool js_spine_TwoColorTimeline_setSlotIndex(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12453,7 +12453,7 @@ static bool js_spine_TwoColorTimeline_setSlotIndex(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_TwoColorTimeline_setSlotIndex)     // setSlotIndex
+SE_BIND_FUNC(js_spine_TwoColorTimeline_setSlotIndex)
 
 
 
@@ -12512,7 +12512,7 @@ static bool js_spine_JitterVertexEffect_getJitterX(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_JitterVertexEffect_getJitterX)     // getJitterX
+SE_BIND_FUNC(js_spine_JitterVertexEffect_getJitterX)
 
 static bool js_spine_JitterVertexEffect_getJitterY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12531,7 +12531,7 @@ static bool js_spine_JitterVertexEffect_getJitterY(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_JitterVertexEffect_getJitterY)     // getJitterY
+SE_BIND_FUNC(js_spine_JitterVertexEffect_getJitterY)
 
 static bool js_spine_JitterVertexEffect_setJitterX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12550,7 +12550,7 @@ static bool js_spine_JitterVertexEffect_setJitterX(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_JitterVertexEffect_setJitterX)     // setJitterX
+SE_BIND_FUNC(js_spine_JitterVertexEffect_setJitterX)
 
 static bool js_spine_JitterVertexEffect_setJitterY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12569,7 +12569,7 @@ static bool js_spine_JitterVertexEffect_setJitterY(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_JitterVertexEffect_setJitterY)     // setJitterY
+SE_BIND_FUNC(js_spine_JitterVertexEffect_setJitterY)
 
 
 
@@ -12610,7 +12610,7 @@ static bool js_spine_SwirlVertexEffect_getAngle(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_getAngle)     // getAngle
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_getAngle)
 
 static bool js_spine_SwirlVertexEffect_getCenterX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12629,7 +12629,7 @@ static bool js_spine_SwirlVertexEffect_getCenterX(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_getCenterX)     // getCenterX
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_getCenterX)
 
 static bool js_spine_SwirlVertexEffect_getCenterY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12648,7 +12648,7 @@ static bool js_spine_SwirlVertexEffect_getCenterY(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_getCenterY)     // getCenterY
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_getCenterY)
 
 static bool js_spine_SwirlVertexEffect_getRadius(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12667,7 +12667,7 @@ static bool js_spine_SwirlVertexEffect_getRadius(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_getRadius)     // getRadius
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_getRadius)
 
 static bool js_spine_SwirlVertexEffect_getWorldX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12686,7 +12686,7 @@ static bool js_spine_SwirlVertexEffect_getWorldX(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_getWorldX)     // getWorldX
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_getWorldX)
 
 static bool js_spine_SwirlVertexEffect_getWorldY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12705,7 +12705,7 @@ static bool js_spine_SwirlVertexEffect_getWorldY(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_getWorldY)     // getWorldY
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_getWorldY)
 
 static bool js_spine_SwirlVertexEffect_setAngle(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12724,7 +12724,7 @@ static bool js_spine_SwirlVertexEffect_setAngle(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_setAngle)     // setAngle
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_setAngle)
 
 static bool js_spine_SwirlVertexEffect_setCenterX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12743,7 +12743,7 @@ static bool js_spine_SwirlVertexEffect_setCenterX(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_setCenterX)     // setCenterX
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_setCenterX)
 
 static bool js_spine_SwirlVertexEffect_setCenterY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12762,7 +12762,7 @@ static bool js_spine_SwirlVertexEffect_setCenterY(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_setCenterY)     // setCenterY
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_setCenterY)
 
 static bool js_spine_SwirlVertexEffect_setRadius(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12781,7 +12781,7 @@ static bool js_spine_SwirlVertexEffect_setRadius(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_setRadius)     // setRadius
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_setRadius)
 
 static bool js_spine_SwirlVertexEffect_setWorldX(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12800,7 +12800,7 @@ static bool js_spine_SwirlVertexEffect_setWorldX(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_setWorldX)     // setWorldX
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_setWorldX)
 
 static bool js_spine_SwirlVertexEffect_setWorldY(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12819,7 +12819,7 @@ static bool js_spine_SwirlVertexEffect_setWorldY(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SwirlVertexEffect_setWorldY)     // setWorldY
+SE_BIND_FUNC(js_spine_SwirlVertexEffect_setWorldY)
 
 
 
@@ -12864,7 +12864,7 @@ static bool js_spine_VertexEffectDelegate_clear(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexEffectDelegate_clear)     // clear
+SE_BIND_FUNC(js_spine_VertexEffectDelegate_clear)
 
 static bool js_spine_VertexEffectDelegate_getEffectType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12883,7 +12883,7 @@ static bool js_spine_VertexEffectDelegate_getEffectType(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexEffectDelegate_getEffectType)     // getEffectType
+SE_BIND_FUNC(js_spine_VertexEffectDelegate_getEffectType)
 
 static bool js_spine_VertexEffectDelegate_getJitterVertexEffect(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12902,7 +12902,7 @@ static bool js_spine_VertexEffectDelegate_getJitterVertexEffect(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexEffectDelegate_getJitterVertexEffect)     // getJitterVertexEffect
+SE_BIND_FUNC(js_spine_VertexEffectDelegate_getJitterVertexEffect)
 
 static bool js_spine_VertexEffectDelegate_getSwirlVertexEffect(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12921,7 +12921,7 @@ static bool js_spine_VertexEffectDelegate_getSwirlVertexEffect(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexEffectDelegate_getSwirlVertexEffect)     // getSwirlVertexEffect
+SE_BIND_FUNC(js_spine_VertexEffectDelegate_getSwirlVertexEffect)
 
 static bool js_spine_VertexEffectDelegate_getVertexEffect(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12940,7 +12940,7 @@ static bool js_spine_VertexEffectDelegate_getVertexEffect(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexEffectDelegate_getVertexEffect)     // getVertexEffect
+SE_BIND_FUNC(js_spine_VertexEffectDelegate_getVertexEffect)
 
 static bool js_spine_VertexEffectDelegate_initJitter(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12964,7 +12964,7 @@ static bool js_spine_VertexEffectDelegate_initJitter(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexEffectDelegate_initJitter)     // initJitter
+SE_BIND_FUNC(js_spine_VertexEffectDelegate_initJitter)
 
 static bool js_spine_VertexEffectDelegate_initSwirlWithPow(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -12988,7 +12988,7 @@ static bool js_spine_VertexEffectDelegate_initSwirlWithPow(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexEffectDelegate_initSwirlWithPow)     // initSwirlWithPow
+SE_BIND_FUNC(js_spine_VertexEffectDelegate_initSwirlWithPow)
 
 static bool js_spine_VertexEffectDelegate_initSwirlWithPowOut(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13012,7 +13012,7 @@ static bool js_spine_VertexEffectDelegate_initSwirlWithPowOut(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_VertexEffectDelegate_initSwirlWithPowOut)     // initSwirlWithPowOut
+SE_BIND_FUNC(js_spine_VertexEffectDelegate_initSwirlWithPowOut)
 
 SE_DECLARE_FINALIZE_FUNC(js_spine_VertexEffectDelegate_finalize)
 
@@ -13072,7 +13072,7 @@ static bool js_spine_SkeletonRenderer_beginSchedule(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_beginSchedule)     // beginSchedule
+SE_BIND_FUNC(js_spine_SkeletonRenderer_beginSchedule)
 
 static bool js_spine_SkeletonRenderer_findBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13094,7 +13094,7 @@ static bool js_spine_SkeletonRenderer_findBone(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_findBone)     // findBone
+SE_BIND_FUNC(js_spine_SkeletonRenderer_findBone)
 
 static bool js_spine_SkeletonRenderer_findSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13116,7 +13116,7 @@ static bool js_spine_SkeletonRenderer_findSlot(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_findSlot)     // findSlot
+SE_BIND_FUNC(js_spine_SkeletonRenderer_findSlot)
 
 static bool js_spine_SkeletonRenderer_getAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13140,7 +13140,7 @@ static bool js_spine_SkeletonRenderer_getAttachment(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_getAttachment)     // getAttachment
+SE_BIND_FUNC(js_spine_SkeletonRenderer_getAttachment)
 
 static bool js_spine_SkeletonRenderer_getBoundingBox(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13159,7 +13159,7 @@ static bool js_spine_SkeletonRenderer_getBoundingBox(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_getBoundingBox)     // getBoundingBox
+SE_BIND_FUNC(js_spine_SkeletonRenderer_getBoundingBox)
 
 static bool js_spine_SkeletonRenderer_getDebugData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13178,7 +13178,7 @@ static bool js_spine_SkeletonRenderer_getDebugData(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_getDebugData)     // getDebugData
+SE_BIND_FUNC(js_spine_SkeletonRenderer_getDebugData)
 
 static bool js_spine_SkeletonRenderer_getParamsBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13197,7 +13197,7 @@ static bool js_spine_SkeletonRenderer_getParamsBuffer(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_getParamsBuffer)     // getParamsBuffer
+SE_BIND_FUNC(js_spine_SkeletonRenderer_getParamsBuffer)
 
 static bool js_spine_SkeletonRenderer_getSharedBufferOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13216,7 +13216,7 @@ static bool js_spine_SkeletonRenderer_getSharedBufferOffset(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_getSharedBufferOffset)     // getSharedBufferOffset
+SE_BIND_FUNC(js_spine_SkeletonRenderer_getSharedBufferOffset)
 
 static bool js_spine_SkeletonRenderer_getSkeleton(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13235,7 +13235,7 @@ static bool js_spine_SkeletonRenderer_getSkeleton(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_getSkeleton)     // getSkeleton
+SE_BIND_FUNC(js_spine_SkeletonRenderer_getSkeleton)
 
 static bool js_spine_SkeletonRenderer_getTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13254,7 +13254,7 @@ static bool js_spine_SkeletonRenderer_getTimeScale(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_getTimeScale)     // getTimeScale
+SE_BIND_FUNC(js_spine_SkeletonRenderer_getTimeScale)
 
 static bool js_spine_SkeletonRenderer_initWithSkeleton(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13306,7 +13306,7 @@ static bool js_spine_SkeletonRenderer_initWithSkeleton(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_initWithSkeleton)     // initWithSkeleton
+SE_BIND_FUNC(js_spine_SkeletonRenderer_initWithSkeleton)
 
 static bool js_spine_SkeletonRenderer_initWithUUID(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13325,7 +13325,7 @@ static bool js_spine_SkeletonRenderer_initWithUUID(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_initWithUUID)     // initWithUUID
+SE_BIND_FUNC(js_spine_SkeletonRenderer_initWithUUID)
 
 static bool js_spine_SkeletonRenderer_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13340,7 +13340,7 @@ static bool js_spine_SkeletonRenderer_initialize(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_initialize)     // initialize
+SE_BIND_FUNC(js_spine_SkeletonRenderer_initialize)
 
 static bool js_spine_SkeletonRenderer_isOpacityModifyRGB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13359,7 +13359,7 @@ static bool js_spine_SkeletonRenderer_isOpacityModifyRGB(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_isOpacityModifyRGB)     // isOpacityModifyRGB
+SE_BIND_FUNC(js_spine_SkeletonRenderer_isOpacityModifyRGB)
 
 static bool js_spine_SkeletonRenderer_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13374,7 +13374,7 @@ static bool js_spine_SkeletonRenderer_onDisable(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_onDisable)     // onDisable
+SE_BIND_FUNC(js_spine_SkeletonRenderer_onDisable)
 
 static bool js_spine_SkeletonRenderer_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13389,7 +13389,7 @@ static bool js_spine_SkeletonRenderer_onEnable(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_onEnable)     // onEnable
+SE_BIND_FUNC(js_spine_SkeletonRenderer_onEnable)
 
 static bool js_spine_SkeletonRenderer_paused(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13408,7 +13408,7 @@ static bool js_spine_SkeletonRenderer_paused(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_paused)     // paused
+SE_BIND_FUNC(js_spine_SkeletonRenderer_paused)
 
 static bool js_spine_SkeletonRenderer_render(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13427,7 +13427,7 @@ static bool js_spine_SkeletonRenderer_render(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_render)     // render
+SE_BIND_FUNC(js_spine_SkeletonRenderer_render)
 
 static bool js_spine_SkeletonRenderer_setAttachEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13446,7 +13446,7 @@ static bool js_spine_SkeletonRenderer_setAttachEnabled(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setAttachEnabled)     // setAttachEnabled
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setAttachEnabled)
 
 static bool js_spine_SkeletonRenderer_setAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13492,7 +13492,7 @@ static bool js_spine_SkeletonRenderer_setAttachment(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setAttachment)     // setAttachment
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setAttachment)
 
 static bool js_spine_SkeletonRenderer_setBatchEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13511,7 +13511,7 @@ static bool js_spine_SkeletonRenderer_setBatchEnabled(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setBatchEnabled)     // setBatchEnabled
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setBatchEnabled)
 
 static bool js_spine_SkeletonRenderer_setBonesToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13526,7 +13526,7 @@ static bool js_spine_SkeletonRenderer_setBonesToSetupPose(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setBonesToSetupPose)     // setBonesToSetupPose
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setBonesToSetupPose)
 
 static bool js_spine_SkeletonRenderer_setColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13551,7 +13551,7 @@ static bool js_spine_SkeletonRenderer_setColor(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setColor)     // setColor
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setColor)
 
 static bool js_spine_SkeletonRenderer_setDebugBonesEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13570,7 +13570,7 @@ static bool js_spine_SkeletonRenderer_setDebugBonesEnabled(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setDebugBonesEnabled)     // setDebugBonesEnabled
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setDebugBonesEnabled)
 
 static bool js_spine_SkeletonRenderer_setDebugMeshEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13589,7 +13589,7 @@ static bool js_spine_SkeletonRenderer_setDebugMeshEnabled(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setDebugMeshEnabled)     // setDebugMeshEnabled
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setDebugMeshEnabled)
 
 static bool js_spine_SkeletonRenderer_setDebugSlotsEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13608,7 +13608,7 @@ static bool js_spine_SkeletonRenderer_setDebugSlotsEnabled(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setDebugSlotsEnabled)     // setDebugSlotsEnabled
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setDebugSlotsEnabled)
 
 static bool js_spine_SkeletonRenderer_setOpacityModifyRGB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13627,7 +13627,7 @@ static bool js_spine_SkeletonRenderer_setOpacityModifyRGB(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setOpacityModifyRGB)     // setOpacityModifyRGB
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setOpacityModifyRGB)
 
 static bool js_spine_SkeletonRenderer_setSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13661,7 +13661,7 @@ static bool js_spine_SkeletonRenderer_setSkin(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setSkin)     // setSkin
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setSkin)
 
 static bool js_spine_SkeletonRenderer_setSlotsRange(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13682,7 +13682,7 @@ static bool js_spine_SkeletonRenderer_setSlotsRange(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setSlotsRange)     // setSlotsRange
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setSlotsRange)
 
 static bool js_spine_SkeletonRenderer_setSlotsToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13697,7 +13697,7 @@ static bool js_spine_SkeletonRenderer_setSlotsToSetupPose(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setSlotsToSetupPose)     // setSlotsToSetupPose
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setSlotsToSetupPose)
 
 static bool js_spine_SkeletonRenderer_setTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13716,7 +13716,7 @@ static bool js_spine_SkeletonRenderer_setTimeScale(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setTimeScale)     // setTimeScale
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setTimeScale)
 
 static bool js_spine_SkeletonRenderer_setToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13731,7 +13731,7 @@ static bool js_spine_SkeletonRenderer_setToSetupPose(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setToSetupPose)     // setToSetupPose
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setToSetupPose)
 
 static bool js_spine_SkeletonRenderer_setUseTint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13750,7 +13750,7 @@ static bool js_spine_SkeletonRenderer_setUseTint(se::State& s) // NOLINT(readabi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setUseTint)     // setUseTint
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setUseTint)
 
 static bool js_spine_SkeletonRenderer_setVertexEffectDelegate(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13769,7 +13769,7 @@ static bool js_spine_SkeletonRenderer_setVertexEffectDelegate(se::State& s) // N
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_setVertexEffectDelegate)     // setVertexEffectDelegate
+SE_BIND_FUNC(js_spine_SkeletonRenderer_setVertexEffectDelegate)
 
 static bool js_spine_SkeletonRenderer_stopSchedule(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13784,7 +13784,7 @@ static bool js_spine_SkeletonRenderer_stopSchedule(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_stopSchedule)     // stopSchedule
+SE_BIND_FUNC(js_spine_SkeletonRenderer_stopSchedule)
 
 static bool js_spine_SkeletonRenderer_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13803,7 +13803,7 @@ static bool js_spine_SkeletonRenderer_update(se::State& s) // NOLINT(readability
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_update)     // update
+SE_BIND_FUNC(js_spine_SkeletonRenderer_update)
 
 static bool js_spine_SkeletonRenderer_updateWorldTransform(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -13818,7 +13818,7 @@ static bool js_spine_SkeletonRenderer_updateWorldTransform(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonRenderer_updateWorldTransform)     // updateWorldTransform
+SE_BIND_FUNC(js_spine_SkeletonRenderer_updateWorldTransform)
 
 SE_DECLARE_FINALIZE_FUNC(js_spine_SkeletonRenderer_finalize)
 
@@ -14053,7 +14053,7 @@ static bool js_spine_SkeletonAnimation_addAnimation(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_addAnimation)     // addAnimation
+SE_BIND_FUNC(js_spine_SkeletonAnimation_addAnimation)
 
 static bool js_spine_SkeletonAnimation_addEmptyAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14091,7 +14091,7 @@ static bool js_spine_SkeletonAnimation_addEmptyAnimation(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_addEmptyAnimation)     // addEmptyAnimation
+SE_BIND_FUNC(js_spine_SkeletonAnimation_addEmptyAnimation)
 
 static bool js_spine_SkeletonAnimation_clearTrack(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14114,7 +14114,7 @@ static bool js_spine_SkeletonAnimation_clearTrack(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_clearTrack)     // clearTrack
+SE_BIND_FUNC(js_spine_SkeletonAnimation_clearTrack)
 
 static bool js_spine_SkeletonAnimation_clearTracks(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14129,7 +14129,7 @@ static bool js_spine_SkeletonAnimation_clearTracks(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_clearTracks)     // clearTracks
+SE_BIND_FUNC(js_spine_SkeletonAnimation_clearTracks)
 
 static bool js_spine_SkeletonAnimation_findAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14151,7 +14151,7 @@ static bool js_spine_SkeletonAnimation_findAnimation(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_findAnimation)     // findAnimation
+SE_BIND_FUNC(js_spine_SkeletonAnimation_findAnimation)
 
 static bool js_spine_SkeletonAnimation_getCurrent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14180,7 +14180,7 @@ static bool js_spine_SkeletonAnimation_getCurrent(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_getCurrent)     // getCurrent
+SE_BIND_FUNC(js_spine_SkeletonAnimation_getCurrent)
 
 static bool js_spine_SkeletonAnimation_getState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14199,7 +14199,7 @@ static bool js_spine_SkeletonAnimation_getState(se::State& s) // NOLINT(readabil
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_getState)     // getState
+SE_BIND_FUNC(js_spine_SkeletonAnimation_getState)
 
 static bool js_spine_SkeletonAnimation_setAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14225,7 +14225,7 @@ static bool js_spine_SkeletonAnimation_setAnimation(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setAnimation)     // setAnimation
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setAnimation)
 
 static bool js_spine_SkeletonAnimation_setAnimationStateData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14244,7 +14244,7 @@ static bool js_spine_SkeletonAnimation_setAnimationStateData(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setAnimationStateData)     // setAnimationStateData
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setAnimationStateData)
 
 static bool js_spine_SkeletonAnimation_setCompleteListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14292,7 +14292,7 @@ static bool js_spine_SkeletonAnimation_setCompleteListener(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setCompleteListener)     // setCompleteListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setCompleteListener)
 
 static bool js_spine_SkeletonAnimation_setDisposeListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14340,7 +14340,7 @@ static bool js_spine_SkeletonAnimation_setDisposeListener(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setDisposeListener)     // setDisposeListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setDisposeListener)
 
 static bool js_spine_SkeletonAnimation_setEmptyAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14364,7 +14364,7 @@ static bool js_spine_SkeletonAnimation_setEmptyAnimation(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setEmptyAnimation)     // setEmptyAnimation
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setEmptyAnimation)
 
 static bool js_spine_SkeletonAnimation_setEmptyAnimations(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14383,7 +14383,7 @@ static bool js_spine_SkeletonAnimation_setEmptyAnimations(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setEmptyAnimations)     // setEmptyAnimations
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setEmptyAnimations)
 
 static bool js_spine_SkeletonAnimation_setEndListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14431,7 +14431,7 @@ static bool js_spine_SkeletonAnimation_setEndListener(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setEndListener)     // setEndListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setEndListener)
 
 static bool js_spine_SkeletonAnimation_setEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14480,7 +14480,7 @@ static bool js_spine_SkeletonAnimation_setEventListener(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setEventListener)     // setEventListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setEventListener)
 
 static bool js_spine_SkeletonAnimation_setInterruptListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14528,7 +14528,7 @@ static bool js_spine_SkeletonAnimation_setInterruptListener(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setInterruptListener)     // setInterruptListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setInterruptListener)
 
 static bool js_spine_SkeletonAnimation_setMix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14551,7 +14551,7 @@ static bool js_spine_SkeletonAnimation_setMix(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setMix)     // setMix
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setMix)
 
 static bool js_spine_SkeletonAnimation_setStartListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14599,7 +14599,7 @@ static bool js_spine_SkeletonAnimation_setStartListener(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setStartListener)     // setStartListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setStartListener)
 
 static bool js_spine_SkeletonAnimation_setTrackCompleteListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14649,7 +14649,7 @@ static bool js_spine_SkeletonAnimation_setTrackCompleteListener(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackCompleteListener)     // setTrackCompleteListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackCompleteListener)
 
 static bool js_spine_SkeletonAnimation_setTrackDisposeListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14699,7 +14699,7 @@ static bool js_spine_SkeletonAnimation_setTrackDisposeListener(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackDisposeListener)     // setTrackDisposeListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackDisposeListener)
 
 static bool js_spine_SkeletonAnimation_setTrackEndListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14749,7 +14749,7 @@ static bool js_spine_SkeletonAnimation_setTrackEndListener(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackEndListener)     // setTrackEndListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackEndListener)
 
 static bool js_spine_SkeletonAnimation_setTrackEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14800,7 +14800,7 @@ static bool js_spine_SkeletonAnimation_setTrackEventListener(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackEventListener)     // setTrackEventListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackEventListener)
 
 static bool js_spine_SkeletonAnimation_setTrackInterruptListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14850,7 +14850,7 @@ static bool js_spine_SkeletonAnimation_setTrackInterruptListener(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackInterruptListener)     // setTrackInterruptListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackInterruptListener)
 
 static bool js_spine_SkeletonAnimation_setTrackStartListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -14900,7 +14900,7 @@ static bool js_spine_SkeletonAnimation_setTrackStartListener(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackStartListener)     // setTrackStartListener
+SE_BIND_FUNC(js_spine_SkeletonAnimation_setTrackStartListener)
 
 static bool js_spine_SkeletonAnimation_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15119,7 +15119,7 @@ static bool js_spine_SkeletonCacheAnimation_addAnimation(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 3);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_addAnimation)     // addAnimation
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_addAnimation)
 
 static bool js_spine_SkeletonCacheAnimation_beginSchedule(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15134,7 +15134,7 @@ static bool js_spine_SkeletonCacheAnimation_beginSchedule(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_beginSchedule)     // beginSchedule
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_beginSchedule)
 
 static bool js_spine_SkeletonCacheAnimation_findAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15156,7 +15156,7 @@ static bool js_spine_SkeletonCacheAnimation_findAnimation(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_findAnimation)     // findAnimation
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_findAnimation)
 
 static bool js_spine_SkeletonCacheAnimation_findBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15178,7 +15178,7 @@ static bool js_spine_SkeletonCacheAnimation_findBone(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_findBone)     // findBone
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_findBone)
 
 static bool js_spine_SkeletonCacheAnimation_findSlot(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15200,7 +15200,7 @@ static bool js_spine_SkeletonCacheAnimation_findSlot(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_findSlot)     // findSlot
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_findSlot)
 
 static bool js_spine_SkeletonCacheAnimation_getAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15224,7 +15224,7 @@ static bool js_spine_SkeletonCacheAnimation_getAttachment(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getAttachment)     // getAttachment
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getAttachment)
 
 static bool js_spine_SkeletonCacheAnimation_getParamsBuffer(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15243,7 +15243,7 @@ static bool js_spine_SkeletonCacheAnimation_getParamsBuffer(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getParamsBuffer)     // getParamsBuffer
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getParamsBuffer)
 
 static bool js_spine_SkeletonCacheAnimation_getSharedBufferOffset(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15262,7 +15262,7 @@ static bool js_spine_SkeletonCacheAnimation_getSharedBufferOffset(se::State& s) 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getSharedBufferOffset)     // getSharedBufferOffset
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getSharedBufferOffset)
 
 static bool js_spine_SkeletonCacheAnimation_getSkeleton(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15281,7 +15281,7 @@ static bool js_spine_SkeletonCacheAnimation_getSkeleton(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getSkeleton)     // getSkeleton
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getSkeleton)
 
 static bool js_spine_SkeletonCacheAnimation_getTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15300,7 +15300,7 @@ static bool js_spine_SkeletonCacheAnimation_getTimeScale(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getTimeScale)     // getTimeScale
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_getTimeScale)
 
 static bool js_spine_SkeletonCacheAnimation_isOpacityModifyRGB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15319,7 +15319,7 @@ static bool js_spine_SkeletonCacheAnimation_isOpacityModifyRGB(se::State& s) // 
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_isOpacityModifyRGB)     // isOpacityModifyRGB
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_isOpacityModifyRGB)
 
 static bool js_spine_SkeletonCacheAnimation_onDisable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15334,7 +15334,7 @@ static bool js_spine_SkeletonCacheAnimation_onDisable(se::State& s) // NOLINT(re
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_onDisable)     // onDisable
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_onDisable)
 
 static bool js_spine_SkeletonCacheAnimation_onEnable(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15349,7 +15349,7 @@ static bool js_spine_SkeletonCacheAnimation_onEnable(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_onEnable)     // onEnable
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_onEnable)
 
 static bool js_spine_SkeletonCacheAnimation_paused(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15368,7 +15368,7 @@ static bool js_spine_SkeletonCacheAnimation_paused(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_paused)     // paused
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_paused)
 
 static bool js_spine_SkeletonCacheAnimation_setAnimation(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15389,7 +15389,7 @@ static bool js_spine_SkeletonCacheAnimation_setAnimation(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setAnimation)     // setAnimation
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setAnimation)
 
 static bool js_spine_SkeletonCacheAnimation_setAttachEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15408,7 +15408,7 @@ static bool js_spine_SkeletonCacheAnimation_setAttachEnabled(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setAttachEnabled)     // setAttachEnabled
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setAttachEnabled)
 
 static bool js_spine_SkeletonCacheAnimation_setAttachment(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15454,7 +15454,7 @@ static bool js_spine_SkeletonCacheAnimation_setAttachment(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setAttachment)     // setAttachment
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setAttachment)
 
 static bool js_spine_SkeletonCacheAnimation_setBatchEnabled(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15473,7 +15473,7 @@ static bool js_spine_SkeletonCacheAnimation_setBatchEnabled(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setBatchEnabled)     // setBatchEnabled
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setBatchEnabled)
 
 static bool js_spine_SkeletonCacheAnimation_setBonesToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15488,7 +15488,7 @@ static bool js_spine_SkeletonCacheAnimation_setBonesToSetupPose(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setBonesToSetupPose)     // setBonesToSetupPose
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setBonesToSetupPose)
 
 static bool js_spine_SkeletonCacheAnimation_setColor(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15513,7 +15513,7 @@ static bool js_spine_SkeletonCacheAnimation_setColor(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setColor)     // setColor
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setColor)
 
 static bool js_spine_SkeletonCacheAnimation_setCompleteListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15561,7 +15561,7 @@ static bool js_spine_SkeletonCacheAnimation_setCompleteListener(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setCompleteListener)     // setCompleteListener
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setCompleteListener)
 
 static bool js_spine_SkeletonCacheAnimation_setEndListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15609,7 +15609,7 @@ static bool js_spine_SkeletonCacheAnimation_setEndListener(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setEndListener)     // setEndListener
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setEndListener)
 
 static bool js_spine_SkeletonCacheAnimation_setOpacityModifyRGB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15628,7 +15628,7 @@ static bool js_spine_SkeletonCacheAnimation_setOpacityModifyRGB(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setOpacityModifyRGB)     // setOpacityModifyRGB
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setOpacityModifyRGB)
 
 static bool js_spine_SkeletonCacheAnimation_setSkin(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15662,7 +15662,7 @@ static bool js_spine_SkeletonCacheAnimation_setSkin(se::State& s) // NOLINT(read
     SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setSkin)     // setSkin
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setSkin)
 
 static bool js_spine_SkeletonCacheAnimation_setSlotsToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15677,7 +15677,7 @@ static bool js_spine_SkeletonCacheAnimation_setSlotsToSetupPose(se::State& s) //
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setSlotsToSetupPose)     // setSlotsToSetupPose
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setSlotsToSetupPose)
 
 static bool js_spine_SkeletonCacheAnimation_setStartListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15725,7 +15725,7 @@ static bool js_spine_SkeletonCacheAnimation_setStartListener(se::State& s) // NO
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setStartListener)     // setStartListener
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setStartListener)
 
 static bool js_spine_SkeletonCacheAnimation_setTimeScale(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15744,7 +15744,7 @@ static bool js_spine_SkeletonCacheAnimation_setTimeScale(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setTimeScale)     // setTimeScale
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setTimeScale)
 
 static bool js_spine_SkeletonCacheAnimation_setToSetupPose(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15759,7 +15759,7 @@ static bool js_spine_SkeletonCacheAnimation_setToSetupPose(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setToSetupPose)     // setToSetupPose
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setToSetupPose)
 
 static bool js_spine_SkeletonCacheAnimation_setUseTint(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15778,7 +15778,7 @@ static bool js_spine_SkeletonCacheAnimation_setUseTint(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setUseTint)     // setUseTint
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_setUseTint)
 
 static bool js_spine_SkeletonCacheAnimation_stopSchedule(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15793,7 +15793,7 @@ static bool js_spine_SkeletonCacheAnimation_stopSchedule(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_stopSchedule)     // stopSchedule
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_stopSchedule)
 
 static bool js_spine_SkeletonCacheAnimation_update(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15812,7 +15812,7 @@ static bool js_spine_SkeletonCacheAnimation_update(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_update)     // update
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_update)
 
 static bool js_spine_SkeletonCacheAnimation_updateAllAnimationCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15827,7 +15827,7 @@ static bool js_spine_SkeletonCacheAnimation_updateAllAnimationCache(se::State& s
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_updateAllAnimationCache)     // updateAllAnimationCache
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_updateAllAnimationCache)
 
 static bool js_spine_SkeletonCacheAnimation_updateAnimationCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15846,7 +15846,7 @@ static bool js_spine_SkeletonCacheAnimation_updateAnimationCache(se::State& s) /
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_updateAnimationCache)     // updateAnimationCache
+SE_BIND_FUNC(js_spine_SkeletonCacheAnimation_updateAnimationCache)
 
 SE_DECLARE_FINALIZE_FUNC(js_spine_SkeletonCacheAnimation_finalize)
 
@@ -15945,7 +15945,7 @@ static bool js_spine_SkeletonCacheMgr_buildSkeletonCache(se::State& s) // NOLINT
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheMgr_buildSkeletonCache)     // buildSkeletonCache
+SE_BIND_FUNC(js_spine_SkeletonCacheMgr_buildSkeletonCache)
 
 static bool js_spine_SkeletonCacheMgr_removeSkeletonCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -15964,7 +15964,7 @@ static bool js_spine_SkeletonCacheMgr_removeSkeletonCache(se::State& s) // NOLIN
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonCacheMgr_removeSkeletonCache)     // removeSkeletonCache
+SE_BIND_FUNC(js_spine_SkeletonCacheMgr_removeSkeletonCache)
 
 static bool js_spine_SkeletonCacheMgr_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -16077,7 +16077,7 @@ static bool js_spine_SkeletonDataMgr_setDestroyCallback(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_spine_SkeletonDataMgr_setDestroyCallback)     // setDestroyCallback
+SE_BIND_FUNC(js_spine_SkeletonDataMgr_setDestroyCallback)
 
 static bool js_spine_SkeletonDataMgr_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
 {

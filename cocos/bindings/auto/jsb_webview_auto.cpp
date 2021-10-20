@@ -31,7 +31,7 @@ static bool js_webview_WebView_canGoBack(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_canGoBack)     // canGoBack
+SE_BIND_FUNC(js_webview_WebView_canGoBack)
 
 static bool js_webview_WebView_canGoForward(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -50,7 +50,7 @@ static bool js_webview_WebView_canGoForward(se::State& s) // NOLINT(readability-
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_canGoForward)     // canGoForward
+SE_BIND_FUNC(js_webview_WebView_canGoForward)
 
 static bool js_webview_WebView_evaluateJS(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -69,7 +69,7 @@ static bool js_webview_WebView_evaluateJS(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_evaluateJS)     // evaluateJS
+SE_BIND_FUNC(js_webview_WebView_evaluateJS)
 
 static bool js_webview_WebView_getOnDidFailLoading(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -88,7 +88,7 @@ static bool js_webview_WebView_getOnDidFailLoading(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_getOnDidFailLoading)     // getOnDidFailLoading
+SE_BIND_FUNC(js_webview_WebView_getOnDidFailLoading)
 
 static bool js_webview_WebView_getOnDidFinishLoading(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -107,7 +107,7 @@ static bool js_webview_WebView_getOnDidFinishLoading(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_getOnDidFinishLoading)     // getOnDidFinishLoading
+SE_BIND_FUNC(js_webview_WebView_getOnDidFinishLoading)
 
 static bool js_webview_WebView_getOnJSCallback(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -126,7 +126,7 @@ static bool js_webview_WebView_getOnJSCallback(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_getOnJSCallback)     // getOnJSCallback
+SE_BIND_FUNC(js_webview_WebView_getOnJSCallback)
 
 static bool js_webview_WebView_getOnShouldStartLoading(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -145,7 +145,7 @@ static bool js_webview_WebView_getOnShouldStartLoading(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_getOnShouldStartLoading)     // getOnShouldStartLoading
+SE_BIND_FUNC(js_webview_WebView_getOnShouldStartLoading)
 
 static bool js_webview_WebView_goBack(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -160,7 +160,7 @@ static bool js_webview_WebView_goBack(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_goBack)     // goBack
+SE_BIND_FUNC(js_webview_WebView_goBack)
 
 static bool js_webview_WebView_goForward(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -175,7 +175,7 @@ static bool js_webview_WebView_goForward(se::State& s) // NOLINT(readability-ide
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_goForward)     // goForward
+SE_BIND_FUNC(js_webview_WebView_goForward)
 
 static bool js_webview_WebView_loadData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -200,7 +200,7 @@ static bool js_webview_WebView_loadData(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_loadData)     // loadData
+SE_BIND_FUNC(js_webview_WebView_loadData)
 
 static bool js_webview_WebView_loadFile(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -219,7 +219,7 @@ static bool js_webview_WebView_loadFile(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_loadFile)     // loadFile
+SE_BIND_FUNC(js_webview_WebView_loadFile)
 
 static bool js_webview_WebView_loadHTMLString(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -247,7 +247,7 @@ static bool js_webview_WebView_loadHTMLString(se::State& s) // NOLINT(readabilit
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_loadHTMLString)     // loadHTMLString
+SE_BIND_FUNC(js_webview_WebView_loadHTMLString)
 
 static bool js_webview_WebView_loadURL(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -266,7 +266,7 @@ static bool js_webview_WebView_loadURL(se::State& s) // NOLINT(readability-ident
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_loadURL)     // loadURL
+SE_BIND_FUNC(js_webview_WebView_loadURL)
 
 static bool js_webview_WebView_reload(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -281,7 +281,7 @@ static bool js_webview_WebView_reload(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_reload)     // reload
+SE_BIND_FUNC(js_webview_WebView_reload)
 
 static bool js_webview_WebView_setBackgroundTransparent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -300,7 +300,7 @@ static bool js_webview_WebView_setBackgroundTransparent(se::State& s) // NOLINT(
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setBackgroundTransparent)     // setBackgroundTransparent
+SE_BIND_FUNC(js_webview_WebView_setBackgroundTransparent)
 
 static bool js_webview_WebView_setBounces(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -319,7 +319,7 @@ static bool js_webview_WebView_setBounces(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setBounces)     // setBounces
+SE_BIND_FUNC(js_webview_WebView_setBounces)
 
 static bool js_webview_WebView_setFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -344,7 +344,7 @@ static bool js_webview_WebView_setFrame(se::State& s) // NOLINT(readability-iden
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 4);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setFrame)     // setFrame
+SE_BIND_FUNC(js_webview_WebView_setFrame)
 
 static bool js_webview_WebView_setJavascriptInterfaceScheme(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -363,7 +363,7 @@ static bool js_webview_WebView_setJavascriptInterfaceScheme(se::State& s) // NOL
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setJavascriptInterfaceScheme)     // setJavascriptInterfaceScheme
+SE_BIND_FUNC(js_webview_WebView_setJavascriptInterfaceScheme)
 
 static bool js_webview_WebView_setOnDidFailLoading(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -412,7 +412,7 @@ static bool js_webview_WebView_setOnDidFailLoading(se::State& s) // NOLINT(reada
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setOnDidFailLoading)     // setOnDidFailLoading
+SE_BIND_FUNC(js_webview_WebView_setOnDidFailLoading)
 
 static bool js_webview_WebView_setOnDidFinishLoading(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -461,7 +461,7 @@ static bool js_webview_WebView_setOnDidFinishLoading(se::State& s) // NOLINT(rea
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setOnDidFinishLoading)     // setOnDidFinishLoading
+SE_BIND_FUNC(js_webview_WebView_setOnDidFinishLoading)
 
 static bool js_webview_WebView_setOnJSCallback(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -510,7 +510,7 @@ static bool js_webview_WebView_setOnJSCallback(se::State& s) // NOLINT(readabili
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setOnJSCallback)     // setOnJSCallback
+SE_BIND_FUNC(js_webview_WebView_setOnJSCallback)
 
 static bool js_webview_WebView_setOnShouldStartLoading(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -563,7 +563,7 @@ static bool js_webview_WebView_setOnShouldStartLoading(se::State& s) // NOLINT(r
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setOnShouldStartLoading)     // setOnShouldStartLoading
+SE_BIND_FUNC(js_webview_WebView_setOnShouldStartLoading)
 
 static bool js_webview_WebView_setScalesPageToFit(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -582,7 +582,7 @@ static bool js_webview_WebView_setScalesPageToFit(se::State& s) // NOLINT(readab
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setScalesPageToFit)     // setScalesPageToFit
+SE_BIND_FUNC(js_webview_WebView_setScalesPageToFit)
 
 static bool js_webview_WebView_setVisible(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -601,7 +601,7 @@ static bool js_webview_WebView_setVisible(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_setVisible)     // setVisible
+SE_BIND_FUNC(js_webview_WebView_setVisible)
 
 static bool js_webview_WebView_stopLoading(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -616,7 +616,7 @@ static bool js_webview_WebView_stopLoading(se::State& s) // NOLINT(readability-i
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_stopLoading)     // stopLoading
+SE_BIND_FUNC(js_webview_WebView_stopLoading)
 
 static bool js_webview_WebView_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {

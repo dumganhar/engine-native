@@ -379,7 +379,7 @@ void NodeEventProcessor::dispatchEvent(event::Event *event) {
     cachedArray.clear();
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string &type) {
+bool NodeEventProcessor::hasEventListener(const std::string &type) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type);
@@ -390,7 +390,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type) {
     return has;
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) {
+bool NodeEventProcessor::hasEventListener(const std::string &type, const CallbackInfoBase::ID &cbID) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, cbID);
@@ -401,7 +401,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type, CallbackInfoB
     return has;
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string &type, void *target) {
+bool NodeEventProcessor::hasEventListener(const std::string &type, void *target) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, target);
@@ -411,7 +411,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type, void *target)
     }
     return has;
 }
-bool NodeEventProcessor::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID, void *target) {
+bool NodeEventProcessor::hasEventListener(const std::string &type, void *target, const CallbackInfoBase::ID &cbID) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, target, cbID);

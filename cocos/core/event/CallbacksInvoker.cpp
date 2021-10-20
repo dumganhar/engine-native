@@ -89,8 +89,7 @@ void CallbackList::clear() {
     _containCanceled = false;
 }
 
-//
-bool CallbacksInvoker::hasEventListener(const std::string &key) {
+bool CallbacksInvoker::hasEventListener(const std::string &key) const {
     auto iter = _callbackTable.find(key);
     if (iter == _callbackTable.end()) {
         return false;
@@ -112,7 +111,7 @@ bool CallbacksInvoker::hasEventListener(const std::string &key) {
     return !infos.empty();
 }
 
-bool CallbacksInvoker::hasEventListener(const std::string &key, CallbackInfoBase::ID cbID) {
+bool CallbacksInvoker::hasEventListener(const std::string &key, const CallbackInfoBase::ID &cbID) const {
     auto iter = _callbackTable.find(key);
     if (iter == _callbackTable.end()) {
         return false;
@@ -150,7 +149,7 @@ bool CallbacksInvoker::hasEventListener(const std::string &key, void *target) {
     return false;
 }
 
-bool CallbacksInvoker::hasEventListener(const std::string &key, void *target, CallbackInfoBase::ID cbID) {
+bool CallbacksInvoker::hasEventListener(const std::string &key, void *target, const CallbackInfoBase::ID &cbID) const {
     auto iter = _callbackTable.find(key);
     if (iter == _callbackTable.end()) {
         return false;
@@ -213,7 +212,7 @@ void CallbacksInvoker::offAll() {
     }
 }
 
-void CallbacksInvoker::off(const std::string &key, CallbackInfoBase::ID cbID) {
+void CallbacksInvoker::off(const std::string &key, const CallbackInfoBase::ID &cbID) {
     auto iter = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {
         auto &      list  = iter->second;
@@ -248,7 +247,7 @@ void CallbacksInvoker::offAll(const std::string &key, void *target) {
     }
 }
 
-void CallbacksInvoker::off(CallbackInfoBase::ID cbID) {
+void CallbacksInvoker::off(const CallbackInfoBase::ID &cbID) {
     for (auto &cbInfo : _callbackTable) {
         auto &      list  = cbInfo.second;
         const auto &infos = list._callbackInfos;

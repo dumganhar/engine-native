@@ -58,16 +58,16 @@ public:
      */
     void dispatchEvent(event::Event *event);
 
-    bool hasEventListener(const std::string &type);
+    bool hasEventListener(const std::string &type) const;
 
-    bool hasEventListener(const std::string &type, CallbackInfoBase::ID cbID);
+    bool hasEventListener(const std::string &type, const CallbackInfoBase::ID &cbID) const;
 
-    bool hasEventListener(const std::string &type, void *target);
+    bool hasEventListener(const std::string &type, void *target) const;
 
-    bool hasEventListener(const std::string &type, CallbackInfoBase::ID cbID, void *target);
+    bool hasEventListener(const std::string &type, void *target, const CallbackInfoBase::ID &cbID) const;
 
     template <typename Target, typename... Args>
-    bool hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target);
+    bool hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) const;
 
     static bool checkListeners(Node *node, const std::vector<std::string> &events);
 
@@ -273,7 +273,7 @@ std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
 NodeEventProcessor::on(const std::string &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
     bool forDispatch = checknSetupSysEvent(type);
     if (forDispatch) {
-        onDispatch(type, toFunction(std::forward<LambdaType>(callback)), target, cbID, useCapture);
+        onDispatch(type, CallbacksInvoker::toFunction(std::forward<LambdaType>(callback)), target, cbID, useCapture);
     } else {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
@@ -287,7 +287,7 @@ std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
 NodeEventProcessor::on(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
     bool forDispatch = checknSetupSysEvent(type);
     if (forDispatch) {
-        onDispatch(type, toFunction(std::forward<LambdaType>(callback)), cbID, useCapture);
+        onDispatch(type, CallbacksInvoker::toFunction(std::forward<LambdaType>(callback)), cbID, useCapture);
     } else {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
@@ -318,6 +318,9 @@ void NodeEventProcessor::once(const std::string &type, std::function<void(Args..
     }
     listeners = _bubblingTargets;
     listeners->on(type, std::forward<std::function<void(Args...)>>(callback), cbID, true);
+    CallbackInfoBase::ID cacheID = cbID;
+    listeners->on(
+        type, [=]() { off(type, cacheID); }, true); // TODO(xwx): on how to pass cbID
 }
 
 template <typename Target, typename... Args>
@@ -337,7 +340,7 @@ void NodeEventProcessor::once(const std::string &type, void (Target::*memberFn)(
     }
     listeners->on(type, memberFn, target, true);
     listeners->on(
-        type, [&]() { off(type, memberFn, target); }, nullptr, true);
+        type, [=]() { off(type, memberFn, target); }, true); // TODO(xwx): on how to pass cbID
 }
 
 template <typename Target, typename... Args>
@@ -358,7 +361,7 @@ void NodeEventProcessor::once(const std::string &type, std::function<void(Args..
     listeners->on(type, std::forward<std::function<void(Args...)>>(callback), cbID, target, true);
     CallbackInfoBase::ID cacheID = cbID;
     listeners->on(
-        type, [=]() { off(type, target, cacheID); }, target, true);
+        type, [=]() { off(type, cacheID); }, target, true); // TODO(xwx): on how to pass cbID
 }
 
 template <typename Target, typename LambdaType>
@@ -380,7 +383,7 @@ NodeEventProcessor::once(const std::string &type, LambdaType &&callback, Target 
     listeners->on(type, callback, cbID, target, true);
     CallbackInfoBase::ID cacheID = cbID;
     listeners->on(
-        type, [=]() { off(type, target, cacheID); }, nullptr, true);
+        type, [=]() { off(type, cacheID); }, true); // TODO(xwx): on how to pass cbID
 }
 
 template <typename LambdaType>
@@ -402,7 +405,7 @@ NodeEventProcessor::once(const std::string &type, LambdaType &&callback, Callbac
     listeners->on(type, callback, cbID, true);
     CallbackInfoBase::ID cacheID = cbID;
     listeners->on(
-        type, [=]() { off(type, cacheID); }, nullptr, true);
+        type, [=]() { off(type, cacheID); }, true); // TODO(xwx): on how to pass cbID
 }
 
 template <typename Target, typename... Args>
@@ -446,7 +449,7 @@ void NodeEventProcessor::offDispatch(const std::string &type, void (Target::*mem
 }
 
 template <typename Target, typename... Args>
-bool NodeEventProcessor::hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) {
+bool NodeEventProcessor::hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, memberFn, target);

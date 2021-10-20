@@ -27,8 +27,8 @@
 
 #pragma once
 
-#include "base/Macros.h"
 #include "base/Config.h"
+#include "base/Macros.h"
 
 #define CC_REF_LEAK_DETECTION 0
 
@@ -118,5 +118,8 @@ public:
     static void printLeaks();
 #endif
 };
+
+using SCHEDULE_CB = void (Ref::*)(float);
+#define CC_SCHEDULE_CALLBACK(cb) static_cast<cc::SCHEDULE_CB>(&cb)
 
 } // namespace cc

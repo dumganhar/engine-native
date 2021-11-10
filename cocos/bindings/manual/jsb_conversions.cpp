@@ -682,15 +682,14 @@ bool nativevalue_to_se(const cc::ArrayBuffer &arrayBuffer, se::Value &to, se::Ob
     return true;
 }
 
-template <>
-bool nativevalue_to_se(const cc::TypedArray &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    std::visit(overloaded{[&](auto &typedArray) {
-                              to.setObject(typedArray.getJSTypedArray());
-                          },
-                          [](std::monostate) {}},
-               from);
-    return true;
-}
+//template <>
+//bool nativevalue_to_se(const cc::TypedArray &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+//    std::visit([&](auto &typedArray) {
+//        to.setObject(typedArray.getJSTypedArray());
+//    },
+//               from);
+//    return true;
+//}
 
 template <>
 bool sevalue_to_native(const se::Value &from, cc::Vec4 *to, se::Object * /*unused*/) {

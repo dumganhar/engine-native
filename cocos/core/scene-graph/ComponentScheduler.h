@@ -26,6 +26,7 @@
 #pragma once
 #include <functional>
 #include <vector>
+#include <optional>
 #include "base/TypeDef.h"
 #include "core/components/Component.h"
 #include "core/scene-graph/Node.h"

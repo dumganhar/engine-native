@@ -104,8 +104,8 @@ struct InputAssemblerInfo;
 #define SE_PRECONDITION2_VOID(condition, ...)                                                           \
     do {                                                                                                \
         if (!(condition)) {                                                                             \
-            SE_LOGE("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
-            SE_LOGE(__VA_ARGS__);                                                                       \
+            CC_LOG_ERROR("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
+            CC_LOG_ERROR(__VA_ARGS__);                                                                       \
             return;                                                                                     \
         }                                                                                               \
     } while (0)
@@ -113,8 +113,8 @@ struct InputAssemblerInfo;
 #define SE_PRECONDITION2(condition, ret_value, ...)                                                     \
     do {                                                                                                \
         if (!(condition)) {                                                                             \
-            SE_LOGE("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
-            SE_LOGE(__VA_ARGS__);                                                                       \
+            CC_LOG_ERROR("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
+            CC_LOG_ERROR(__VA_ARGS__);                                                                       \
             return (ret_value);                                                                         \
         }                                                                                               \
     } while (0)
@@ -130,7 +130,7 @@ struct InputAssemblerInfo;
 #define SE_PRECONDITION4(condition, ret_value, errorCode)                                               \
     do {                                                                                                \
         if (!(condition)) {                                                                             \
-            SE_LOGE("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
+            CC_LOG_ERROR("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
             __glErrorCode = errorCode;                                                                  \
             return (ret_value);                                                                         \
         }                                                                                               \
@@ -138,8 +138,8 @@ struct InputAssemblerInfo;
 
 #define SE_PRECONDITION_ERROR_BREAK(condition, ...)                                                 \
     if (!(condition)) {                                                                             \
-        SE_LOGE("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
-        SE_LOGE(__VA_ARGS__);                                                                       \
+        CC_LOG_ERROR("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
+        CC_LOG_ERROR(__VA_ARGS__);                                                                       \
         break;                                                                                      \
     }
 
@@ -1575,8 +1575,8 @@ inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se:
 template <typename T>
 bool nativevalue_to_se(const std::reference_wrapper<T> ref, se::Value &to, se::Object *ctx); // NOLINT
 
-template <>
-bool nativevalue_to_se(const cc::TypedArray &typedArray, se::Value &to, se::Object * /*ctx*/); // NOLINT
+//template <>
+//bool nativevalue_to_se(const cc::TypedArray &typedArray, se::Value &to, se::Object * /*ctx*/); // NOLINT
 
 template <>
 bool nativevalue_to_se(const cc::ArrayBuffer &arrayBuffer, se::Value &to, se::Object * /*ctx*/); // NOLINT

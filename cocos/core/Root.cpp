@@ -214,7 +214,9 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
         }
 
         //cjh TODO:        legacyCC.director.emit(legacyCC.Director.EVENT_BEFORE_COMMIT);
-        std::stable_sort(cameraList.begin(), cameraList.end(), [](const auto *a, const auto *b) { return a->getPriority() < b->getPriority(); });
+        std::stable_sort(cameraList.begin(), cameraList.end(), [](const auto *a, const auto *b) {
+            return a->getPriority() < b->getPriority();
+        });
         _pipeline->render(cameraList);
         _device->present();
     }

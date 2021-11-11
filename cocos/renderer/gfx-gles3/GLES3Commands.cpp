@@ -1566,12 +1566,14 @@ static GLuint doCreateFramebuffer(GLES3Device *                    device,
             }
             *resolveMask |= GL_COLOR_BUFFER_BIT; // fallback to blit-based manual resolve
         }
-        if (gpuColorTexture->glTexture) {
-            GL_CHECK(glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + j),
-                                            gpuColorTexture->glTarget, gpuColorTexture->glTexture, 0));
-        } else {
-            GL_CHECK(glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + j),
-                                               gpuColorTexture->glTarget, gpuColorTexture->glRenderbuffer));
+        if (gpuColorTexture) {
+            if (gpuColorTexture->glTexture) {
+                GL_CHECK(glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + j),
+                                                gpuColorTexture->glTarget, gpuColorTexture->glTexture, 0));
+            } else {
+                GL_CHECK(glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + j),
+                                                   gpuColorTexture->glTarget, gpuColorTexture->glRenderbuffer));
+            }
         }
     }
     if (depthStencil) {

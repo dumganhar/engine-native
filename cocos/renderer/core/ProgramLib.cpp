@@ -298,7 +298,6 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
     if (itCurrTmpl != _templates.end() && itCurrTmpl->second.hash == shader.hash) {
         return &itCurrTmpl->second;
     }
-    auto &currTmpl = itCurrTmpl->second;
 
     IProgramInfo &tmpl = _templates[shader.name];
     tmpl.copyFrom(shader);

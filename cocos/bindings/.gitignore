@@ -74,3 +74,6 @@ cmake_install.cmake
 CMakeLists.txt.user
 
 *.jsc
+
+
+auto/*_auto.json

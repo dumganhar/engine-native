@@ -24,236 +24,57 @@
 ****************************************************************************/
 
 #include "jsb_conversions.h"
+#include <stdio.h>
 
 #include <regex>
 #include <sstream>
+#include <string_view>
+#include <type_traits>
+#include <utility>
+#include <variant>
 
+#include "Value.h"
 #include "base/TypeDef.h"
+#include "core/geometry/AABB.h"
+#include "core/geometry/Capsule.h"
+#include "core/geometry/Plane.h"
+#include "core/geometry/Sphere.h"
 #include "gfx-base/GFXDef.h"
+#include "math/Geometry.h"
 #include "math/Math.h"
+#include "math/Vec3.h"
+#include "scene/Fog.h"
+#include "scene/Shadow.h"
+#include "scene/Skybox.h"
+#include "v8/Object.h"
+
+template <class... Ts>
+struct overloaded : Ts... { using Ts::operator()...; };
+template <class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
 
 // seval to native
 
-bool seval_to_int32(const se::Value &v, int32_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toInt32();
+template <typename A, typename T, typename F>
+bool set_member_field(se::Object *obj, T *to, const std::string_view &property, F f, se::Value &tmp) {
+    bool ok = obj->getProperty(property.data(), &tmp);
+    SE_PRECONDITION2(ok, false, "Property '%s' is not set", property.data());
+    if constexpr (std::is_member_function_pointer_v<F>) {
+        A m;
+        ok = sevalue_to_native(tmp, &m, obj);
+        SE_PRECONDITION2(ok, false, "Convert property '%s' failed", property.data());
+        ((*to).*f)(m);
         return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
+    } else if constexpr (std::is_member_object_pointer_v<F>) {
+        A m;
+        ok       = sevalue_to_native(tmp, &m, obj);
+        (*to).*f = m;
+        SE_PRECONDITION2(ok, false, "Convert property '%s' failed", property.data());
         return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_uint32(const se::Value &v, uint32_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toUint32();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_int8(const se::Value &v, int8_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toInt8();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_uint8(const se::Value &v, uint8_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toUint8();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_int16(const se::Value &v, int16_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toInt16();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_uint16(const se::Value &v, uint16_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toUint16();
-        return true;
-    }
-    if (v.isBoolean()) {
-        *ret = v.toBoolean() ? 1 : 0;
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_boolean(const se::Value &v, bool *ret) {
-    assert(ret != nullptr);
-    if (v.isBoolean()) {
-        *ret = v.toBoolean();
-    } else if (v.isNumber()) {
-        *ret = v.toInt32() != 0;
-    } else if (v.isNullOrUndefined()) {
-        *ret = false;
-    } else if (v.isObject()) {
-        *ret = true;
-    } else if (v.isString()) {
-        *ret = !v.toString().empty();
     } else {
-        *ret = false;
-        assert(false);
+        static_assert(std::is_member_pointer_v<F>, "only member pointer allowed!");
     }
-
-    return true;
-}
-
-bool seval_to_float(const se::Value &v, float *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toFloat();
-        if (!std::isnan(*ret)) {
-            return true;
-        }
-    }
-    *ret = 0.0F;
     return false;
-}
-
-bool seval_to_double(const se::Value &v, double *ret) {
-    if (v.isNumber()) {
-        *ret = v.toDouble();
-        if (!std::isnan(*ret)) {
-            return true;
-        }
-    }
-    *ret = 0.0;
-    return false;
-}
-
-bool seval_to_size(const se::Value &v, size_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = v.toSize();
-        return true;
-    }
-    *ret = 0;
-    return false;
-}
-
-bool seval_to_std_string(const se::Value &v, std::string *ret) {
-    assert(ret != nullptr);
-    *ret = v.toStringForce();
-    return true;
-}
-
-bool seval_to_Vec2(const se::Value &v, cc::Vec2 *pt) {
-    assert(pt != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to Vec2 failed!");
-    se::Object *obj = v.toObject();
-    se::Value   x;
-    se::Value   y;
-    bool        ok = obj->getProperty("x", &x);
-    SE_PRECONDITION3(ok && x.isNumber(), false, *pt = cc::Vec2::ZERO);
-    ok = obj->getProperty("y", &y);
-    SE_PRECONDITION3(ok && y.isNumber(), false, *pt = cc::Vec2::ZERO);
-    pt->x = x.toFloat();
-    pt->y = y.toFloat();
-    return true;
-}
-
-bool seval_to_mat(const se::Value &v, int length, float *out) {
-    assert(out != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to Matrix failed!");
-    se::Object *obj = v.toObject();
-
-    se::Value tmp;
-    char      propName[3] = {0};
-    for (int i = 0; i < length; ++i) {
-        snprintf(propName, 3, "m%2d", i);
-        obj->getProperty(propName, &tmp);
-        *(out + i) = tmp.toFloat();
-    }
-
-    return true;
-}
-
-bool seval_to_Uint8Array(const se::Value &v, uint8_t *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to Array failed!");
-    se::Object *obj = v.toObject();
-    SE_PRECONDITION2(obj->isArray(), false, "Convert parameter to Array failed!");
-
-    CC_UNUSED bool ok     = true;
-    uint32_t       length = 0;
-    obj->getArrayLength(&length);
-    se::Value value;
-    uint8_t   data = 0;
-    for (uint32_t i = 0; i < length; ++i) {
-        if (obj->getArrayElement(i, &value)) {
-            ok = seval_to_uint8(value, &data);
-            SE_PRECONDITION2(ok, false, "Convert parameter to Array failed!");
-            ret[i] = data;
-        }
-    }
-
-    return true;
-}
-
-bool seval_to_uintptr_t(const se::Value &v, uintptr_t *ret) {
-    assert(ret != nullptr);
-    if (v.isNumber()) {
-        *ret = static_cast<uintptr_t>(v.toDouble());
-        return true;
-    }
-    *ret = 0UL;
-    return false;
-}
-
-bool seval_to_Size(const se::Value &v, cc::Size *size) {
-    assert(size != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to Size failed!");
-    se::Object *obj = v.toObject();
-    se::Value   width;
-    se::Value   height;
-
-    bool ok = obj->getProperty("width", &width);
-    SE_PRECONDITION3(ok && width.isNumber(), false, *size = cc::Size::ZERO);
-    ok = obj->getProperty("height", &height);
-    SE_PRECONDITION3(ok && height.isNumber(), false, *size = cc::Size::ZERO);
-    size->width  = width.toFloat();
-    size->height = height.toFloat();
-    return true;
 }
 
 bool seval_to_ccvalue(const se::Value &v, cc::Value *ret) {
@@ -405,202 +226,6 @@ bool sevals_variadic_to_ccvaluevector(const se::ValueArray &args, cc::ValueVecto
     return true;
 }
 
-bool seval_to_std_vector_string(const se::Value &v, std::vector<std::string> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of String failed!");
-    se::Object *obj = v.toObject();
-    SE_PRECONDITION2(obj->isArray(), false, "Convert parameter to vector of String failed!");
-    uint32_t len = 0;
-    if (obj->getArrayLength(&len)) {
-        se::Value value;
-        for (uint32_t i = 0; i < len; ++i) {
-            SE_PRECONDITION3(obj->getArrayElement(i, &value) && value.isString(), false, ret->clear());
-            ret->push_back(value.toString());
-        }
-        return true;
-    }
-
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_vector_int(const se::Value &v, std::vector<int> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of int failed!");
-    se::Object *obj = v.toObject();
-
-    if (obj->isArray()) {
-        uint32_t len = 0;
-        if (obj->getArrayLength(&len)) {
-            se::Value value;
-            for (uint32_t i = 0; i < len; ++i) {
-                SE_PRECONDITION3(obj->getArrayElement(i, &value) && value.isNumber(), false, ret->clear());
-                ret->push_back(value.toInt32());
-            }
-            return true;
-        }
-    } else if (obj->isTypedArray()) {
-        size_t                     bytesPerElements = 0;
-        uint8_t *                  data             = nullptr;
-        size_t                     dataBytes        = 0;
-        se::Object::TypedArrayType type             = obj->getTypedArrayType();
-
-#define SE_UINT8_PTR_TO_INT(ptr)  (*((uint8_t *)(ptr)))
-#define SE_UINT16_PTR_TO_INT(ptr) (*((uint16_t *)(ptr)))
-#define SE_UINT32_PTR_TO_INT(ptr) (*((uint32_t *)(ptr)))
-
-        if (obj->getTypedArrayData(&data, &dataBytes)) {
-            for (size_t i = 0; i < dataBytes; i += bytesPerElements) {
-                switch (type) {
-                    case se::Object::TypedArrayType::INT8:
-                    case se::Object::TypedArrayType::UINT8:
-                    case se::Object::TypedArrayType::UINT8_CLAMPED:
-                        ret->push_back(SE_UINT8_PTR_TO_INT(data + i));
-                        bytesPerElements = 1;
-                        break;
-                    case se::Object::TypedArrayType::INT16:
-                    case se::Object::TypedArrayType::UINT16:
-                        ret->push_back(SE_UINT16_PTR_TO_INT(data + i));
-                        bytesPerElements = 2;
-                        break;
-                    case se::Object::TypedArrayType::INT32:
-                    case se::Object::TypedArrayType::UINT32:
-                        ret->push_back(SE_UINT32_PTR_TO_INT(data + i));
-                        bytesPerElements = 4;
-                        break;
-                    default:
-                        SE_LOGE("Unsupported typed array: %d\n", (int)type);
-                        assert(false);
-                        break;
-                }
-            }
-        }
-
-#undef SE_UINT8_PTR_TO_INT
-#undef SE_UINT16_PTR_TO_INT
-#undef SE_UINT32_PTR_TO_INT
-
-        return true;
-    } else {
-        assert(false);
-    }
-
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_vector_uint16(const se::Value &v, std::vector<uint16_t> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of uint16 failed!");
-    se::Object *obj = v.toObject();
-
-    if (obj->isArray()) {
-        uint32_t len = 0;
-        if (obj->getArrayLength(&len)) {
-            se::Value value;
-            for (uint32_t i = 0; i < len; ++i) {
-                SE_PRECONDITION3(obj->getArrayElement(i, &value) && value.isNumber(), false, ret->clear());
-                ret->push_back(value.toUint16());
-            }
-            return true;
-        }
-    } else if (obj->isTypedArray()) {
-        size_t                     bytesPerElements = 0;
-        uint8_t *                  data             = nullptr;
-        size_t                     dataBytes        = 0;
-        se::Object::TypedArrayType type             = obj->getTypedArrayType();
-
-        if (obj->getTypedArrayData(&data, &dataBytes)) {
-            for (size_t i = 0; i < dataBytes; i += bytesPerElements) {
-                switch (type) {
-                    case se::Object::TypedArrayType::INT16:
-                    case se::Object::TypedArrayType::UINT16:
-                        ret->push_back(*(reinterpret_cast<uint16_t *>(data + i)));
-                        bytesPerElements = 2;
-                        break;
-                    default:
-                        SE_LOGE("Unsupported typed array: %d\n", (int)type);
-                        assert(false);
-                        break;
-                }
-            }
-        }
-        return true;
-    } else {
-        assert(false);
-    }
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_vector_float(const se::Value &v, std::vector<float> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of float failed!");
-    se::Object *obj = v.toObject();
-    SE_PRECONDITION2(obj->isArray(), false, "Convert parameter to vector of float failed!");
-    uint32_t len = 0;
-    if (obj->getArrayLength(&len)) {
-        se::Value value;
-        for (uint32_t i = 0; i < len; ++i) {
-            SE_PRECONDITION3(obj->getArrayElement(i, &value) && value.isNumber(), false, ret->clear());
-            ret->push_back(value.toFloat());
-        }
-        return true;
-    }
-
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_vector_Vec2(const se::Value &v, std::vector<cc::Vec2> *ret) {
-    assert(ret != nullptr);
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to vector of Vec2 failed!");
-    se::Object *obj = v.toObject();
-    SE_PRECONDITION2(obj->isArray(), false, "Convert parameter to vector of Vec2 failed!");
-    uint32_t len = 0;
-    if (obj->getArrayLength(&len)) {
-        se::Value value;
-        cc::Vec2  pt;
-        for (uint32_t i = 0; i < len; ++i) {
-            SE_PRECONDITION3(obj->getArrayElement(i, &value) && seval_to_Vec2(value, &pt), false, ret->clear());
-            ret->push_back(pt);
-        }
-        return true;
-    }
-
-    ret->clear();
-    return true;
-}
-
-bool seval_to_std_map_string_string(const se::Value &v, std::map<std::string, std::string> *ret) {
-    assert(ret != nullptr);
-
-    if (v.isNullOrUndefined()) {
-        ret->clear();
-        return true;
-    }
-
-    SE_PRECONDITION2(v.isObject(), false, "Convert parameter to map of String to String failed!");
-    SE_PRECONDITION3(!v.isNullOrUndefined(), false, ret->clear());
-
-    se::Object *obj = v.toObject();
-
-    std::vector<std::string> allKeys;
-    SE_PRECONDITION3(obj->getAllKeys(&allKeys), false, ret->clear());
-
-    bool        ok = false;
-    se::Value   value;
-    std::string strValue;
-    for (const auto &key : allKeys) {
-        SE_PRECONDITION3(obj->getProperty(key.c_str(), &value), false, ret->clear());
-        ok = seval_to_std_string(value, &strValue);
-        SE_PRECONDITION3(ok, false, ret->clear());
-        ret->emplace(key, strValue);
-    }
-
-    return true;
-}
-
 bool seval_to_Data(const se::Value &v, cc::Data *ret) {
     assert(ret != nullptr);
     SE_PRECONDITION2(v.isObject() && v.toObject()->isTypedArray(), false, "Convert parameter to Data failed!");
@@ -642,67 +267,18 @@ bool seval_to_DownloaderHints(const se::Value &v, cc::network::DownloaderHints *
 //////////////////////////////////////////////////////////////////////////////////
 // native to seval
 
-bool int32_to_seval(int32_t v, se::Value *ret) {
-    ret->setInt32(v);
-    return true;
-}
-
-bool uint32_to_seval(uint32_t v, se::Value *ret) {
-    ret->setUint32(v);
-    return true;
-}
-
-bool int16_to_seval(uint16_t v, se::Value *ret) {
-    ret->setInt16(v);
-    return true;
-}
-
-bool uint16_to_seval(uint16_t v, se::Value *ret) {
-    ret->setUint16(v);
-    return true;
-}
-
-bool int8_to_seval(int8_t v, se::Value *ret) {
-    ret->setInt8(v);
-    return true;
-}
-
-bool uint8_to_seval(uint8_t v, se::Value *ret) {
-    ret->setUint8(v);
-    return true;
-}
-
-bool boolean_to_seval(bool v, se::Value *ret) {
-    ret->setBoolean(v);
-    return true;
-}
-
-bool float_to_seval(float v, se::Value *ret) {
-    ret->setFloat(v);
-    return true;
-}
-
-bool double_to_seval(double v, se::Value *ret) {
+namespace {
+bool uintptr_t_to_seval(uintptr_t v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     ret->setDouble(v);
     return true;
 }
 
-bool uintptr_t_to_seval(uintptr_t v, se::Value *ret) {
-    ret->setDouble(v);
-    return true;
-}
-
-bool size_to_seval(size_t v, se::Value *ret) {
+bool size_to_seval(size_t v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     ret->setSize(v);
     return true;
 }
 
-bool std_string_to_seval(const std::string &v, se::Value *ret) {
-    ret->setString(v);
-    return true;
-}
-
-bool Vec2_to_seval(const cc::Vec2 &v, se::Value *ret) {
+bool Vec2_to_seval(const cc::Vec2 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("x", se::Value(v.x));
@@ -712,7 +288,7 @@ bool Vec2_to_seval(const cc::Vec2 &v, se::Value *ret) {
     return true;
 }
 
-bool Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) {
+bool Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("x", se::Value(v.x));
@@ -723,7 +299,7 @@ bool Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) {
     return true;
 }
 
-bool Vec4_to_seval(const cc::Vec4 &v, se::Value *ret) {
+bool Vec4_to_seval(const cc::Vec4 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("x", se::Value(v.x));
@@ -735,7 +311,19 @@ bool Vec4_to_seval(const cc::Vec4 &v, se::Value *ret) {
     return true;
 }
 
-bool Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) {
+bool Quaternion_to_seval(const cc::Quaternion &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
+    assert(ret != nullptr);
+    se::HandleObject obj(se::Object::createPlainObject());
+    obj->setProperty("x", se::Value(v.x));
+    obj->setProperty("y", se::Value(v.y));
+    obj->setProperty("z", se::Value(v.z));
+    obj->setProperty("w", se::Value(v.w));
+    ret->setObject(obj);
+
+    return true;
+}
+
+bool Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createArrayObject(16));
 
@@ -747,7 +335,7 @@ bool Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) {
     return true;
 }
 
-bool Size_to_seval(const cc::Size &v, se::Value *ret) {
+bool Size_to_seval(const cc::Size &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("width", se::Value(v.width));
@@ -756,7 +344,7 @@ bool Size_to_seval(const cc::Size &v, se::Value *ret) {
     return true;
 }
 
-bool Rect_to_seval(const cc::Rect &v, se::Value *ret) {
+bool Rect_to_seval(const cc::Rect &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createPlainObject());
     obj->setProperty("x", se::Value(v.origin.x));
@@ -767,6 +355,8 @@ bool Rect_to_seval(const cc::Rect &v, se::Value *ret) {
 
     return true;
 }
+
+} // namespace
 
 bool ccvalue_to_seval(const cc::Value &v, se::Value *ret) {
     assert(ret != nullptr);
@@ -896,7 +486,7 @@ bool ccvaluevector_to_seval(const cc::ValueVector &v, se::Value *ret) {
 namespace {
 
 template <typename T>
-bool std_vector_T_to_seval(const std::vector<T> &v, se::Value *ret) {
+bool std_vector_T_to_seval(const std::vector<T> &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     se::HandleObject obj(se::Object::createArrayObject(v.size()));
     bool             ok = true;
@@ -919,52 +509,6 @@ bool std_vector_T_to_seval(const std::vector<T> &v, se::Value *ret) {
 }
 
 } // namespace
-
-bool std_vector_string_to_seval(const std::vector<std::string> &v, se::Value *ret) {
-    return std_vector_T_to_seval(v, ret);
-}
-
-bool std_vector_int_to_seval(const std::vector<int> &v, se::Value *ret) {
-    return std_vector_T_to_seval(v, ret);
-}
-
-bool std_vector_uint16_to_seval(const std::vector<uint16_t> &v, se::Value *ret) {
-    return std_vector_T_to_seval(v, ret);
-}
-
-bool std_vector_float_to_seval(const std::vector<float> &v, se::Value *ret) {
-    return std_vector_T_to_seval(v, ret);
-}
-
-bool std_map_string_string_to_seval(const std::map<std::string, std::string> &v, se::Value *ret) {
-    assert(ret != nullptr);
-
-    se::HandleObject obj(se::Object::createPlainObject());
-    bool             ok = true;
-    for (const auto &e : v) {
-        const std::string &key   = e.first;
-        const std::string &value = e.second;
-
-        if (key.empty()) {
-            continue;
-        }
-
-        se::Value tmp;
-        if (!std_string_to_seval(value, &tmp)) {
-            ok = false;
-            ret->setUndefined();
-            break;
-        }
-
-        obj->setProperty(key.c_str(), tmp);
-    }
-
-    if (ok) {
-        ret->setObject(obj);
-    }
-
-    return ok;
-}
 
 namespace {
 enum class DataType {
@@ -1102,10 +646,10 @@ bool nativevalue_to_se(const cc::Vec4 &from, se::Value &to, se::Object * /*unuse
     return Vec4_to_seval(from, &to);
 }
 
-template <>
-bool nativevalue_to_se(const cc::Vec2 &from, se::Value &to, se::Object * /*unused*/) {
-    return Vec2_to_seval(from, &to);
-}
+// template <>
+// bool nativevalue_to_se(const cc::Vec2 &from, se::Value &to, se::Object * /*unused*/) {
+//     return Vec2_to_seval(from, &to);
+// }
 
 template <>
 bool nativevalue_to_se(const cc::Vec3 &from, se::Value &to, se::Object * /*unused*/) {
@@ -1123,30 +667,83 @@ bool nativevalue_to_se(const cc::extension::ManifestAsset &from, se::Value &to, 
 }
 
 template <>
+bool nativevalue_to_se(const cc::Quaternion &from, se::Value &to, se::Object *ctx) {
+    return Quaternion_to_seval(from, &to);
+}
+
+template <>
 bool nativevalue_to_se(const cc::Rect &from, se::Value &to, se::Object * /*unused*/) {
     return Rect_to_seval(from, &to);
+}
+
+template <>
+bool nativevalue_to_se(const cc::ArrayBuffer &arrayBuffer, se::Value &to, se::Object * /*ctx*/) {
+    to.setObject(arrayBuffer.getJSArrayBuffer());
+    return true;
+}
+
+template <>
+bool nativevalue_to_se(const cc::TypedArray &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    std::visit(overloaded{[&](auto &typedArray) {
+                              to.setObject(typedArray.getJSTypedArray());
+                          },
+                          [](std::monostate) {}},
+               from);
+    return true;
 }
 
 template <>
 bool sevalue_to_native(const se::Value &from, cc::Vec4 *to, se::Object * /*unused*/) {
     SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Vec4 failed!");
     se::Object *obj = from.toObject();
-    se::Value   x;
-    se::Value   y;
-    se::Value   z;
-    se::Value   w;
-    bool        ok = obj->getProperty("x", &x);
-    SE_PRECONDITION3(ok && x.isNumber(), false, *to = cc::Vec4::ZERO);
-    ok = obj->getProperty("y", &y);
-    SE_PRECONDITION3(ok && y.isNumber(), false, *to = cc::Vec4::ZERO);
-    ok = obj->getProperty("z", &z);
-    SE_PRECONDITION3(ok && z.isNumber(), false, *to = cc::Vec4::ZERO);
-    ok = obj->getProperty("w", &w);
-    SE_PRECONDITION3(ok && w.isNumber(), false, *to = cc::Vec4::ZERO);
-    to->x = x.toFloat();
-    to->y = y.toFloat();
-    to->z = z.toFloat();
-    to->w = w.toFloat();
+    se::Value   tmp;
+    set_member_field<float>(obj, to, "x", &cc::Vec4::x, tmp);
+    set_member_field<float>(obj, to, "y", &cc::Vec4::y, tmp);
+    set_member_field<float>(obj, to, "z", &cc::Vec4::z, tmp);
+    set_member_field<float>(obj, to, "w", &cc::Vec4::w, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::Mat3 *to, se::Object * /*unused*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Matrix3 failed!");
+    se::Object *obj = from.toObject();
+
+    if (obj->isTypedArray()) {
+        // typed array
+        SE_PRECONDITION2(obj->isTypedArray(), false, "Convert parameter to Matrix3 failed!");
+
+        size_t   length = 0;
+        uint8_t *ptr    = nullptr;
+        obj->getTypedArrayData(&ptr, &length);
+
+        memcpy(to->m, ptr, length);
+    } else {
+        bool        ok = false;
+        se::Value   tmp;
+        std::string prefix = "m";
+        for (uint32_t i = 0; i < 9; ++i) {
+            std::string name;
+            if (i < 10) {
+                name = prefix + "0" + std::to_string(i);
+            } else {
+                name = prefix + std::to_string(i);
+            }
+            ok = obj->getProperty(name.c_str(), &tmp);
+            SE_PRECONDITION3(ok, false, *to = cc::Mat3::IDENTITY);
+
+            if (tmp.isNumber()) {
+                to->m[i] = tmp.toFloat();
+            } else {
+                SE_REPORT_ERROR("%u, not supported type in matrix", i);
+                *to = cc::Mat3::IDENTITY;
+                return false;
+            }
+
+            tmp.setUndefined();
+        }
+    }
+
     return true;
 }
 
@@ -1196,63 +793,549 @@ bool sevalue_to_native(const se::Value &from, cc::Mat4 *to, se::Object * /*unuse
 template <>
 bool sevalue_to_native(const se::Value &from, cc::Vec3 *to, se::Object * /*unused*/) {
     SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Vec3 failed!");
-    if (!from.isObject()) {
-    }
+
     se::Object *obj = from.toObject();
-    se::Value   x;
-    se::Value   y;
-    se::Value   z;
-    bool        ok = obj->getProperty("x", &x);
-    SE_PRECONDITION3(ok && x.isNumber(), false, *to = cc::Vec3::ZERO);
-    ok = obj->getProperty("y", &y);
-    SE_PRECONDITION3(ok && y.isNumber(), false, *to = cc::Vec3::ZERO);
-    ok = obj->getProperty("z", &z);
-    SE_PRECONDITION3(ok && z.isNumber(), false, *to = cc::Vec3::ZERO);
-    to->x = x.toFloat();
-    to->y = y.toFloat();
-    to->z = z.toFloat();
+    se::Value   tmp;
+    set_member_field<float>(obj, to, "x", &cc::Vec3::x, tmp);
+    set_member_field<float>(obj, to, "y", &cc::Vec3::y, tmp);
+    set_member_field<float>(obj, to, "z", &cc::Vec3::z, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::Color *to, se::Object * /*unused*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Color failed!");
+
+    se::Object *obj = from.toObject();
+    se::Value   t;
+    set_member_field<uint8_t>(obj, to, "r", &cc::Color::r, t);
+    set_member_field<uint8_t>(obj, to, "g", &cc::Color::g, t);
+    set_member_field<uint8_t>(obj, to, "b", &cc::Color::b, t);
+    set_member_field<uint8_t>(obj, to, "a", &cc::Color::a, t);
     return true;
 }
 
 template <>
 bool sevalue_to_native(const se::Value &from, cc::Vec2 *to, se::Object * /*unused*/) {
     SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Vec2 failed!");
-    if (!from.isObject()) {
-    }
+
     se::Object *obj = from.toObject();
-    se::Value   x;
-    se::Value   y;
-    bool        ok = obj->getProperty("x", &x);
-    SE_PRECONDITION3(ok && x.isNumber(), false, *to = cc::Vec2::ZERO);
-    ok = obj->getProperty("y", &y);
-    SE_PRECONDITION3(ok && y.isNumber(), false, *to = cc::Vec2::ZERO);
-    to->x = x.toFloat();
-    to->y = y.toFloat();
+    se::Value   tmp;
+    set_member_field<float>(obj, to, "x", &cc::Vec2::x, tmp);
+    set_member_field<float>(obj, to, "y", &cc::Vec2::y, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::Size *to, se::Object * /*unused*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Size failed!");
+
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<float>(obj, to, "width", &cc::Size::width, tmp);
+    set_member_field<float>(obj, to, "height", &cc::Size::height, tmp);
     return true;
 }
 
 template <>
 bool sevalue_to_native(const se::Value &from, cc::Quaternion *to, se::Object * /*unused*/) {
     SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Quaternion failed!");
-    if (!from.isObject()) {
-    }
     se::Object *obj = from.toObject();
-    se::Value   x;
-    se::Value   y;
-    se::Value   z;
-    se::Value   w;
-    bool        ok = obj->getProperty("x", &x);
-    SE_PRECONDITION3(ok && x.isNumber(), false, *to = cc::Quaternion::ZERO);
-    ok = obj->getProperty("y", &y);
-    SE_PRECONDITION3(ok && y.isNumber(), false, *to = cc::Quaternion::ZERO);
-    ok = obj->getProperty("z", &z);
-    SE_PRECONDITION3(ok && z.isNumber(), false, *to = cc::Quaternion::ZERO);
-    ok = obj->getProperty("w", &w);
-    SE_PRECONDITION3(ok && w.isNumber(), false, *to = cc::Quaternion::ZERO);
-    to->x = x.toFloat();
-    to->y = y.toFloat();
-    to->z = z.toFloat();
-    to->w = w.toFloat();
+    se::Value   tmp;
+    set_member_field<float>(obj, to, "x", &cc::Quaternion::x, tmp);
+    set_member_field<float>(obj, to, "y", &cc::Quaternion::y, tmp);
+    set_member_field<float>(obj, to, "z", &cc::Quaternion::z, tmp);
+    set_member_field<float>(obj, to, "w", &cc::Quaternion::w, tmp);
+    return true;
+}
+
+//////////////////// geometry
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::AABB *to, se::Object * /*ctx*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to AABB failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<cc::Vec3>(obj, to, "halfExtents", &cc::geometry::AABB::halfExtents, tmp);
+    set_member_field<cc::Vec3>(obj, to, "center", &cc::geometry::AABB::center, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Capsule *to, se::Object * /*ctx*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Capsule failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<float>(obj, to, "radius", &cc::geometry::Capsule::radius, tmp);
+    set_member_field<float>(obj, to, "halfHeight", &cc::geometry::Capsule::halfHeight, tmp);
+    set_member_field<cc::geometry::Capsule::CenterEnum>(obj, to, "axis", &cc::geometry::Capsule::axis, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Line *to, se::Object * /*ctx*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Line failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<cc::Vec3>(obj, to, "s", &cc::geometry::Line::s, tmp);
+    set_member_field<cc::Vec3>(obj, to, "e", &cc::geometry::Line::e, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Ray *to, se::Object * /*ctx*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Sphere failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<cc::Vec3>(obj, to, "o", &cc::geometry::Ray::o, tmp);
+    set_member_field<cc::Vec3>(obj, to, "d", &cc::geometry::Ray::d, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Sphere *to, se::Object * /*ctx*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Sphere failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    bool        ok;
+    set_member_field<float>(obj, to, "radius", &cc::geometry::Sphere::setRadius, tmp);
+    set_member_field<cc::Vec3>(obj, to, "center", &cc::geometry::Sphere::setCenter, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Triangle *to, se::Object * /*ctx*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Plane failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<cc::Vec3>(obj, to, "a", &cc::geometry::Triangle::a, tmp);
+    set_member_field<cc::Vec3>(obj, to, "b", &cc::geometry::Triangle::b, tmp);
+    set_member_field<cc::Vec3>(obj, to, "c", &cc::geometry::Triangle::c, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Plane *to, se::Object * /*unused*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Plane failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<cc::Vec3>(obj, to, "n", &cc::geometry::Plane::n, tmp);
+    set_member_field<float>(obj, to, "d", &cc::geometry::Plane::d, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::geometry::Frustum *to, se::Object * /*unused*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Frustum failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<std::array<cc::geometry::Plane, 6>>(obj, to, "planes", &cc::geometry::Frustum::planes, tmp);
+    set_member_field<std::array<cc::Vec3, 8>>(obj, to, "vertices", &cc::geometry::Frustum::vertices, tmp);
+    return true;
+}
+
+////////////////////////// scene info
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::scene::FogInfo *to, se::Object * /*ctx*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to FogInfo failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<cc::scene::FogType>(obj, to, "type", &cc::scene::FogInfo::setType, tmp);
+    set_member_field<cc::Color>(obj, to, "fogColor", &cc::scene::FogInfo::setFogColor, tmp);
+    set_member_field<bool>(obj, to, "enabled", &cc::scene::FogInfo::setEnabled, tmp);
+    set_member_field<float>(obj, to, "fogDensity", &cc::scene::FogInfo::setFogDensity, tmp);
+    set_member_field<float>(obj, to, "fogStart", &cc::scene::FogInfo::setFogStart, tmp);
+    set_member_field<float>(obj, to, "fogEnd", &cc::scene::FogInfo::setFogEnd, tmp);
+    set_member_field<float>(obj, to, "fogAtten", &cc::scene::FogInfo::setFogAtten, tmp);
+    set_member_field<float>(obj, to, "fogTop", &cc::scene::FogInfo::setFogTop, tmp);
+    set_member_field<float>(obj, to, "fogRange", &cc::scene::FogInfo::setFogRange, tmp);
+    //TODO(PatriceJiang): covnert resource ??
+    // set_member_field<cc::scene::Fog>(obj, to, "resource", &cc::scene::FogInfo::setResource, tmp);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::scene::ShadowsInfo *to, se::Object * /*ctx*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to ShadowInfo failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    set_member_field<cc::scene::ShadowType>(obj, to, "type", &cc::scene::ShadowsInfo::setType, tmp);
+    set_member_field<bool>(obj, to, "enabled", &cc::scene::ShadowsInfo::setEnabled, tmp);
+    set_member_field<cc::Vec3>(obj, to, "normal", &cc::scene::ShadowsInfo::setNormal, tmp);
+    set_member_field<float>(obj, to, "distance", &cc::scene::ShadowsInfo::setDistance, tmp);
+    set_member_field<cc::Color>(obj, to, "shadowColor", &cc::scene::ShadowsInfo::setShadowColor, tmp);
+    set_member_field<bool>(obj, to, "autoAdapt", &cc::scene::ShadowsInfo::setAutoAdapt, tmp);
+    set_member_field<cc::scene::PCFType>(obj, to, "pcf", &cc::scene::ShadowsInfo::setPcf, tmp);
+    set_member_field<float>(obj, to, "bias", &cc::scene::ShadowsInfo::setBias, tmp);
+    set_member_field<float>(obj, to, "normalBias", &cc::scene::ShadowsInfo::setNormalBias, tmp);
+    set_member_field<float>(obj, to, "near", &cc::scene::ShadowsInfo::setNear, tmp);
+    set_member_field<float>(obj, to, "far", &cc::scene::ShadowsInfo::setFar, tmp);
+    set_member_field<float>(obj, to, "orthoSize", &cc::scene::ShadowsInfo::setOrthoSize, tmp);
+    set_member_field<float>(obj, to, "maxReceived", &cc::scene::ShadowsInfo::setMaxReceived, tmp);
+    set_member_field<float>(obj, to, "size", &cc::scene::ShadowsInfo::setShadowMapSize, tmp);
+    set_member_field<float>(obj, to, "saturation", &cc::scene::ShadowsInfo::setSaturation, tmp);
+    //TODO(PatriceJiang): covnert resource ??
+    // set_member_field<cc::scene::Shadow>(obj, to, "resource", &cc::scene::ShadowInfo::setResource, tmp);
+
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::scene::SkyboxInfo *to, se::Object * /*ctx*/) {
+    SE_PRECONDITION2(from.isObject(), false, "Convert parameter to ShadowInfo failed!");
+    se::Object *obj = from.toObject();
+    se::Value   tmp;
+    //TODO(PatriceJiang): export TextureCube
+    // set_member_field<cc::TextureCube*>(obj, to, "envmap", &cc::scene::SkyboxInfo::setEnvmap, tmp);
+    set_member_field<bool>(obj, to, "isRGBE", &cc::scene::SkyboxInfo::setRGBE, tmp);
+    set_member_field<bool>(obj, to, "enabled", &cc::scene::SkyboxInfo::setEnabled, tmp);
+    set_member_field<bool>(obj, to, "useIBL", &cc::scene::SkyboxInfo::setUseIBL, tmp);
+    return true;
+}
+
+// std::variant<int32_t, float, bool, std::string>;
+template <>
+bool sevalue_to_native(const se::Value &from, cc::MacroValue *to, se::Object *ctx) {
+    if (from.isBoolean()) {
+        *to = from.toBoolean();
+    } else if (from.isNumber()) {
+        //cjh TODO: how to check it's a int32_t or float?
+        *to = from.toFloat();
+    } else if (from.isString()) {
+        *to = from.toString();
+    }
+
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, std::vector<cc::MacroRecord> *to, se::Object * /*ctx*/) {
+    if (from.isNullOrUndefined()) {
+        to->clear();
+        return true;
+    }
+
+    SE_PRECONDITION2(from.isObject(), false, "sevalue_to_native(std::vector<cc::MacroRecord>), not an object");
+    auto *fromObj = from.toObject();
+    CC_ASSERT(fromObj->isArray());
+    uint32_t len = 0;
+    bool     ok  = fromObj->getArrayLength(&len);
+    if (ok) {
+        to->resize(len);
+        se::Value arrElement;
+        for (uint32_t i = 0; i < len; ++i) {
+            ok = fromObj->getArrayElement(i, &arrElement);
+            if (!ok || !arrElement.isObject()) {
+                continue;
+            }
+            cc::MacroRecord          macroRecord;
+            std::vector<std::string> keys;
+            ok = arrElement.toObject()->getAllKeys(&keys);
+            if (ok) {
+                se::Value seMacroVal;
+                for (const auto &key : keys) {
+                    ok = arrElement.toObject()->getProperty(key, &seMacroVal);
+                    cc::MacroValue macroVal;
+                    sevalue_to_native(seMacroVal, &macroVal, nullptr);
+                    macroRecord.emplace(key, std::move(macroVal));
+                }
+            }
+            (*to)[i] = std::move(macroRecord);
+        }
+    }
+
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Object *ctx) {
+    if (from.isNullOrUndefined()) {
+        *to = std::monostate();
+        return true;
+    }
+
+    //TODO(PatriceJiang): float/int32_t from js number
+    if (from.isNumber()) {
+        double v = from.toDouble();
+        if (std::trunc(v) != v) {
+            *to = static_cast<float>(v);
+        } else {
+            *to = static_cast<int32_t>(v);
+        }
+        return true;
+    }
+
+    if (from.isObject()) {
+        se::Object *obj = const_cast<se::Object *>(from.toObject());
+        bool        hasX;
+        bool        hasY;
+        bool        hasZ;
+        bool        hasW;
+        bool        hasEuler;
+        bool        hasM01;
+        bool        hasM08;
+        bool        hasM15;
+        bool        hasAssetID;
+        bool        hasColorVal;
+
+        se::Value tmp0;
+        se::Value tmp1;
+        se::Value tmp2;
+        se::Value tmp3;
+        se::Value tmp4;
+
+        hasColorVal = obj->getProperty("_val", &tmp0);
+        if (hasColorVal) {
+            *to = cc::Color{tmp0.toUint32()};
+            return true;
+        }
+
+        hasX     = obj->getProperty("x", &tmp0);
+        hasY     = hasX && obj->getProperty("y", &tmp1);
+        hasZ     = hasY && obj->getProperty("z", &tmp2);
+        hasW     = hasZ && obj->getProperty("w", &tmp3);
+        hasEuler = hasW && obj->getProperty("getEulerAngles", &tmp4);
+
+        if (hasW) {
+            if (hasEuler) {
+                *to = cc::Quaternion(tmp0.toFloat(), tmp1.toFloat(), tmp2.toFloat(), tmp3.toFloat());
+            } else {
+                *to = cc::Vec4(tmp0.toFloat(), tmp1.toFloat(), tmp2.toFloat(), tmp3.toFloat());
+            }
+            return true;
+        }
+
+        if (hasZ) {
+            *to = cc::Vec3(tmp0.toFloat(), tmp1.toFloat(), tmp2.toFloat());
+            return true;
+        }
+
+        if (hasY) {
+            *to = cc::Vec2(tmp0.toFloat(), tmp1.toFloat());
+            return true;
+        }
+
+        hasM01 = obj->getProperty("m00", &tmp0);
+        hasM08 = hasM01 && obj->getProperty("m08", &tmp1);
+        hasM15 = hasM08 && obj->getProperty("m15", &tmp2);
+
+        if (hasM15) {
+            cc::Mat4 m4;
+            sevalue_to_native(from, &m4, ctx);
+            *to = m4;
+            return true;
+        }
+
+        if (hasM08) {
+            cc::Mat3 m3;
+            sevalue_to_native(from, &m3, ctx);
+            *to = m3;
+            return true;
+        }
+
+        hasAssetID = obj->getProperty("_id", &tmp3);
+        if (hasAssetID) {
+            *to = reinterpret_cast<cc::TextureBase *>(obj->getPrivateData());
+            return true;
+        }
+
+        // TODO: optimize the the performance?
+        if (obj->_getClass() != nullptr) {
+            if (0 == strcmp(obj->_getClass()->getName(), "Texture2D")) {
+                *to = reinterpret_cast<cc::Texture2D *>(obj->getPrivateData());
+                return true;
+            }
+
+            if (0 == strcmp(obj->_getClass()->getName(), "TextureCube")) {
+                *to = reinterpret_cast<cc::TextureCube *>(obj->getPrivateData());
+                return true;
+            }
+        }
+
+        // gfx::Texture?
+        *to = reinterpret_cast<cc::gfx::Texture *>(obj->getPrivateData());
+        return true;
+    }
+
+    return false;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::IPreCompileInfoValueType *to, se::Object *ctx) {
+    se::Object *obj = from.toObject();
+    SE_PRECONDITION2(obj->isArray(), false, "faild to convert to IPreCompileInfoValueType");
+
+    uint32_t len;
+    obj->getArrayLength(&len);
+    if (len == 0) {
+        //TODO(PatriceJiang): judge type of empty array?
+        *to = std::vector<bool>{};
+        return false;
+    }
+
+    se::Value firstEle;
+    obj->getArrayElement(0, &firstEle);
+    if (firstEle.isBoolean()) {
+        std::vector<bool> result;
+        sevalue_to_native(from, &result, ctx);
+        return true;
+    }
+    if (firstEle.isNumber()) {
+        std::vector<float> result;
+        sevalue_to_native(from, &result, ctx);
+        return true;
+    }
+    if (firstEle.isString()) {
+        std::vector<std::string> result;
+        sevalue_to_native(from, &result, ctx);
+        return true;
+    }
+
+    return false;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, std::variant<std::vector<float>, std::string> *to, se::Object *ctx) {
+    if (from.isObject() && from.toObject()->isArray()) {
+        uint32_t           len = 0;
+        bool               ok  = from.toObject()->getArrayLength(&len);
+        std::vector<float> arr;
+        arr.resize(len);
+        for (uint32_t i = 0; i < len; ++i) {
+            se::Value e;
+            ok = from.toObject()->getArrayElement(i, &e);
+            if (ok) {
+                if (e.isNumber()) {
+                    arr[i] = e.toFloat();
+                }
+            }
+        }
+        *to = std::move(arr);
+    } else if (from.isString()) {
+        *to = from.toString();
+    } else {
+        CC_ASSERT(false);
+    }
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, std::variant<std::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx) {
+    bool ok = false;
+    if (from.isObject() && from.toObject()->isArray()) {
+        cc::MaterialPropertyList propertyList{};
+        ok = sevalue_to_native(from, &propertyList, ctx);
+        if (ok) {
+            *to = std::move(propertyList);
+        }
+    } else {
+        cc::MaterialProperty property;
+        ok = sevalue_to_native(from, &property, ctx);
+        if (ok) {
+            *to = std::move(property);
+        }
+    }
+
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * /*ctx*/) {
+    assert(from.isObject());
+    to->setJSArrayBuffer(from.toObject());
+    return true;
+}
+template <>
+bool sevalue_to_native(const se::Value &from, std::shared_ptr<cc::ArrayBuffer> *out, se::Object *ctx) {
+    if (!out->get()) {
+        *out = std::make_shared<cc::ArrayBuffer>();
+    }
+    sevalue_to_native<cc::ArrayBuffer>(from, out->get(), ctx);
+    //TODO(PatriceJiang): should not mix smart pointers with raw pointers.
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, std::vector<bool> *to, se::Object * /*ctx*/) {
+    if (from.isNullOrUndefined()) {
+        to->clear();
+        return true;
+    }
+
+    se::Object *arr = from.toObject();
+    uint32_t    size;
+    se::Value   tmp;
+    arr->getArrayLength(&size);
+    to->resize(size);
+    for (uint32_t i = 0; i < size; i++) {
+        arr->getArrayElement(i, &tmp);
+        (*to)[i] = tmp.toBoolean();
+    }
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, std::vector<unsigned char> *to, se::Object * /*ctx*/) {
+    if (from.isNullOrUndefined()) {
+        to->clear();
+        return true;
+    }
+
+    assert(from.isObject());
+    se::Object *in = from.toObject();
+
+    if (in->isTypedArray()) {
+        uint8_t *data    = nullptr;
+        size_t   dataLen = 0;
+        in->getTypedArrayData(&data, &dataLen);
+        to->resize(dataLen);
+        to->assign(data, data + dataLen);
+        return true;
+    }
+
+    if (in->isArrayBuffer()) {
+        uint8_t *data    = nullptr;
+        size_t   dataLen = 0;
+        in->getArrayBufferData(&data, &dataLen);
+        to->resize(dataLen);
+        to->assign(data, data + dataLen);
+        return true;
+    }
+
+    if (in->isArray()) {
+        uint32_t len = 0;
+        in->getArrayLength(&len);
+        to->resize(len);
+        se::Value ele;
+        for (uint32_t i = 0; i < len; i++) {
+            in->getArrayElement(i, &ele);
+            (*to)[i] = ele.toUint8();
+        }
+        return true;
+    }
+
+    SE_LOGE("type error, ArrayBuffer/TypedArray/Array expected!");
+    return false;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /*ctx*/) {
+    std::visit(overloaded{[&](auto &typedArray) {
+                              typedArray.setJSTypedArray(from.toObject());
+                          },
+                          [](std::monostate) {}},
+               *to);
+    return true;
+}
+
+template <>
+bool sevalue_to_native(const se::Value &from, cc::IBArray *to, se::Object * /*ctx*/) {
+    std::visit([&](auto &typedArray) {
+        typedArray.setJSTypedArray(from.toObject());
+    },
+               *to);
+
     return true;
 }
 
@@ -1318,6 +1401,51 @@ bool nativevalue_to_se(const spine::Vector<spine::String> &v, se::Value &ret, se
     }
 
     return ok;
+}
+
+// template <>
+// bool nativevalue_to_se(const cc::Color &from, se::Value &to, se::Object *ctx) {
+//     se::HandleObject obj(se::Object::createPlainObject());
+//     obj->setProperty("r", se::Value(from.r));
+//     obj->setProperty("g", se::Value(from.g));
+//     obj->setProperty("b", se::Value(from.b));
+//     obj->setProperty("a", se::Value(from.a));
+//     to.setObject(obj);
+//     return true;
+// }
+
+template <>
+bool nativevalue_to_se(const cc::NativeDep &from, se::Value &to, se::Object *ctx) {
+    se::HandleObject obj(se::Object::createPlainObject());
+    obj->setProperty("uuid", se::Value(from.uuid));
+    obj->setProperty("ext", se::Value(from.ext));
+    obj->setProperty("__isNative__", se::Value(from.__isNative__));
+    to.setObject(obj);
+    return true;
+}
+
+template <>
+bool nativevalue_to_se(const cc::Mat3 &from, se::Value &to, se::Object *ctx) {
+    se::HandleObject obj(se::Object::createPlainObject());
+    char             keybuf[8] = {0};
+    for (auto i = 0; i < 9; i++) {
+        snprintf(keybuf, sizeof(keybuf), "m%02d", i);
+        obj->setProperty(keybuf, se::Value(from.m[i]));
+    }
+    to.setObject(obj);
+    return true;
+}
+
+template <>
+bool nativevalue_to_se(const cc::Mat4 &from, se::Value &to, se::Object *ctx) {
+    se::HandleObject obj(se::Object::createPlainObject());
+    char             keybuf[8] = {0};
+    for (auto i = 0; i < 16; i++) {
+        snprintf(keybuf, sizeof(keybuf), "m%02d", i);
+        obj->setProperty(keybuf, se::Value(from.m[i]));
+    }
+    to.setObject(obj);
+    return true;
 }
 
 template <>

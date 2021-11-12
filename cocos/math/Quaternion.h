@@ -23,8 +23,8 @@
 #ifndef QUATERNION_H_
 #define QUATERNION_H_
 
-#include "math/Vec3.h"
 #include "math/Mat4.h"
+#include "math/Vec3.h"
 //#include "Plane.h"
 
 /**
@@ -35,7 +35,7 @@
 NS_CC_MATH_BEGIN
 
 class Mat4;
-
+class Mat3;
 /**
  * Defines a 4-element quaternion that represents the orientation of an object in space.
  *
@@ -162,6 +162,16 @@ public:
      * @return true if this quaternion is all zeros, false otherwise.
      */
     bool isZero() const;
+
+    /**
+     * Calculates the quaternion with Euler angles, the rotation order is YZX
+     */
+    static void fromEuler(float x, float y, float z, Quaternion *dst);
+
+    /**
+     * Converts the quaternion to angles, result angle x, y in the range of [-180, 180], z in the range of [-90, 90] interval, the rotation order is YZX
+     */
+    static void toEuler(Vec3 *out, const Quaternion &q, bool outerZ = false);
 
     /**
      * Creates a quaternion equal to the rotational part of the specified matrix
@@ -313,6 +323,17 @@ public:
      * @param dst A quaternion to store the result in.
      */
     static void lerp(const Quaternion &q1, const Quaternion &q2, float t, Quaternion *dst);
+
+    /**
+     * Calculates the quaternion with the three-dimensional transform matrix, considering no scale included in the matrix
+     */
+    static void fromMat3(Quaternion &out, const Mat3 &m);
+
+    /**
+     * Calculates the quaternion with the up direction and the direction of the viewport
+     */
+    static void fromViewUp(Quaternion &out, const Vec3 &view);
+    static void fromViewUp(Quaternion &out, const Vec3 &view, const Vec3 &up);
 
     /**
      * Interpolates between two quaternions using spherical linear interpolation.

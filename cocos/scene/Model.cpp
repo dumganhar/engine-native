@@ -22,34 +22,189 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#include "scene/Model.h"
+#include <array>
+
+#include "core/Director.h"
+#include "core/TypedArray.h"
+#include "core/assets/Material.h"
+#include "core/event/EventTypesToJS.h"
+#include "gfx-base/GFXTexture.h"
 #include "renderer/pipeline/Define.h"
+#include "renderer/pipeline/InstancedBuffer.h"
+#include "scene/Model.h"
+#include "scene/Pass.h"
+#include "scene/RenderScene.h"
 #include "scene/SubModel.h"
+
+namespace {
+cc::TypedArray getTypedArrayConstructor(const cc::gfx::FormatInfo &info, const cc::ArrayBuffer::Ptr &buffer, uint32_t byteOffset, uint32_t length) {
+    const uint32_t stride = info.size / info.count;
+    switch (info.type) {
+        case cc::gfx::FormatType::UNORM:
+        case cc::gfx::FormatType::UINT: {
+            switch (stride) {
+                case 1: return cc::Uint8Array(buffer, byteOffset, length);
+                case 2: return cc::Uint16Array(buffer, byteOffset, length);
+                case 4: return cc::Uint32Array(buffer, byteOffset, length);
+                default:
+                    break;
+            }
+            break;
+        }
+        case cc::gfx::FormatType::SNORM:
+        case cc::gfx::FormatType::INT: {
+            switch (stride) {
+                case 1: return cc::Int8Array(buffer, byteOffset, length);
+                case 2: return cc::Int16Array(buffer, byteOffset, length);
+                case 4: return cc::Int32Array(buffer, byteOffset, length);
+                default:
+                    break;
+            }
+            break;
+        }
+        case cc::gfx::FormatType::FLOAT: {
+            return cc::Float32Array(buffer, byteOffset, length);
+        }
+        default:
+            break;
+    }
+    return cc::Float32Array(buffer, byteOffset, length);
+}
+
+cc::Float32Array vec4ToFloat32Array(const cc::Vec4 &v, cc::Float32Array &out, index_t ofs = 0) {
+    out[ofs + 0] = v.x;
+    out[ofs + 1] = v.y;
+    out[ofs + 2] = v.z;
+    out[ofs + 3] = v.w;
+    return out;
+}
+
+cc::Float32Array mat4ToFloat32Array(const cc::Mat4 &mat, cc::Float32Array &out, index_t ofs = 0) {
+    out[ofs + 0]  = mat.m[0];
+    out[ofs + 1]  = mat.m[1];
+    out[ofs + 2]  = mat.m[2];
+    out[ofs + 3]  = mat.m[3];
+    out[ofs + 4]  = mat.m[4];
+    out[ofs + 5]  = mat.m[5];
+    out[ofs + 6]  = mat.m[6];
+    out[ofs + 7]  = mat.m[7];
+    out[ofs + 8]  = mat.m[8];
+    out[ofs + 9]  = mat.m[9];
+    out[ofs + 10] = mat.m[10];
+    out[ofs + 11] = mat.m[11];
+    out[ofs + 12] = mat.m[12];
+    out[ofs + 13] = mat.m[13];
+    out[ofs + 14] = mat.m[14];
+    out[ofs + 15] = mat.m[15];
+    return out;
+}
+
+const uint32_t LIGHTMAP_SAMPLER_HASH = cc::pipeline::SamplerLib::genSamplerHash({
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Filter::NONE,
+    cc::gfx::Address::CLAMP,
+    cc::gfx::Address::CLAMP,
+    cc::gfx::Address::CLAMP,
+});
+
+const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = cc::pipeline::SamplerLib::genSamplerHash({
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Filter::LINEAR,
+    cc::gfx::Address::CLAMP,
+    cc::gfx::Address::CLAMP,
+    cc::gfx::Address::CLAMP,
+});
+
+const std::vector<cc::scene::IMacroPatch> SHADOW_MAP_PATCHES{{"CC_RECEIVE_SHADOW", true}};
+const std::string                         INST_MAT_WORLD = "a_matWorld0";
+} // namespace
 
 namespace cc {
 namespace scene {
-void Model::uploadMat4AsVec4x3(const Mat4 &mat, float *v1, float *v2, float *v3) {
-    uint size = sizeof(float) * 4;
-    memcpy(v1, mat.m, size);
-    memcpy(v2, mat.m + 4, size);
-    memcpy(v3, mat.m + 8, size);
+
+Model::Model() {
+    _device = Root::getInstance()->getDevice();
+}
+
+void Model::initialize() {
+    if (_inited) return;
+    _receiveShadow = true;
+    _castShadow    = false;
+    _enabled       = true;
+    _visFlags      = static_cast<uint32_t>(Layers::Enum::NONE);
+    _inited        = true;
+    _localData.reset(pipeline::UBOLocal::COUNT);
+}
+
+void Model::destroy() {
+    for (SubModel *subModel : _subModels) {
+        CC_SAFE_DESTROY(subModel);
+    }
+    CC_SAFE_DESTROY(_localBuffer);
+    CC_SAFE_DELETE(_worldBounds);
+    CC_SAFE_DELETE(_modelBounds);
+    _subModels.clear();
+    _inited           = false;
+    _transformUpdated = true;
+    //    CC_SAFE_DELETE(_transform); //cjh TODO: should not delete
+    //    CC_SAFE_DELETE(_node);      //cjh TODO: should not delete
+    _isDynamicBatching = false;
+}
+
+void Model::uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &v2, Float32Array &v3) {
+    v1[0] = mat.m[0];
+    v1[1] = mat.m[1];
+    v1[2] = mat.m[2];
     v1[3] = mat.m[12];
+    v2[0] = mat.m[4];
+    v2[1] = mat.m[5];
+    v2[2] = mat.m[6];
     v2[3] = mat.m[13];
+    v3[0] = mat.m[8];
+    v3[1] = mat.m[9];
+    v3[2] = mat.m[10];
     v3[3] = mat.m[14];
 }
 
-void Model::updateTransform(uint32_t /*stamp*/) {
+void Model::updateTransform(uint32_t stamp) {
+    if (_type != Type::DEFAULT) {
+        if (!_isCalledFromJS) {
+            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_TRANSFORM, stamp);
+            return;
+        }
+    }
+
     Node *node = _transform;
-    if (node->getFlagsChanged() || node->getDirtyFlag()) {
+    if (node->getChangedFlags() || node->getDirtyFlag()) {
         node->updateWorldTransform();
         _transformUpdated = true;
-        if (_modelBounds.getValid() && _worldBounds) {
-            _modelBounds.transform(node->getWorldMatrix(), _worldBounds);
+        if (_modelBounds != nullptr && _modelBounds->isValid() && _worldBounds != nullptr) {
+            _modelBounds->transform(node->getWorldMatrix(), _worldBounds);
+        }
+    }
+}
+
+void Model::updateWorldBound() {
+    Node *node = _transform;
+    if (node) {
+        node->updateWorldTransform();
+        _transformUpdated = true;
+        if (_modelBounds != nullptr && _modelBounds->isValid() && _worldBounds != nullptr) {
+            _modelBounds->transform(node->getWorldMatrix(), _worldBounds);
         }
     }
 }
 
 void Model::updateUBOs(uint32_t stamp) {
+    if (_type != Type::DEFAULT) {
+        if (!_isCalledFromJS) {
+            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_UBO, stamp);
+            return;
+        }
+    }
+
     for (SubModel *subModel : _subModels) {
         subModel->update();
     }
@@ -59,30 +214,200 @@ void Model::updateUBOs(uint32_t stamp) {
     }
     _transformUpdated = false;
     getTransform()->updateWorldTransform();
-    const auto &                                 worldMatrix = getTransform()->getWorldMatrix();
-    int                                          idx         = _instMatWorldIdx;
-    Mat4                                         mat4;
-    std::array<float, pipeline::UBOLocal::COUNT> bufferView;
+    const auto &worldMatrix = getTransform()->getWorldMatrix();
+    Mat4        mat4;
+    int         idx = _instMatWorldIdx;
     if (idx >= 0) {
-        const std::vector<uint8_t *> &attrs = getInstancedAttributeBlock()->views;
-        uploadMat4AsVec4x3(worldMatrix,
-                           reinterpret_cast<float *>(attrs[idx]),
-                           reinterpret_cast<float *>(attrs[idx + 1]),
-                           reinterpret_cast<float *>(attrs[idx + 2]));
+        std::vector<TypedArray> &attrs = getInstancedAttributeBlock()->views;
+        uploadMat4AsVec4x3(worldMatrix, std::get<Float32Array>(attrs[idx]), std::get<Float32Array>(attrs[idx + 1]), std::get<Float32Array>(attrs[idx + 2]));
     } else if (_localBuffer) {
-        memcpy(bufferView.data() + pipeline::UBOLocal::MAT_WORLD_OFFSET, worldMatrix.m, sizeof(Mat4));
+        mat4ToFloat32Array(worldMatrix, _localData, pipeline::UBOLocal::MAT_WORLD_OFFSET);
         Mat4::inverseTranspose(worldMatrix, &mat4);
-        memcpy(bufferView.data() + pipeline::UBOLocal::MAT_WORLD_IT_OFFSET, mat4.m, sizeof(Mat4));
-        _localBuffer->update(bufferView.data(), pipeline::UBOLocal::SIZE);
+
+        mat4ToFloat32Array(mat4, _localData, pipeline::UBOLocal::MAT_WORLD_IT_OFFSET);
+        _localBuffer->update(_localData.buffer()->getData());
     }
 }
 
-void Model::setSubModel(uint32_t idx, SubModel *subModel) {
-    if (idx >= static_cast<uint32_t>(_subModels.size())) {
-        _subModels.emplace_back(subModel);
+void Model::createBoundingShape(const std::optional<Vec3> &minPos, const std::optional<Vec3> &maxPos) {
+    if (!minPos.has_value() || !maxPos.has_value()) {
         return;
     }
-    _subModels[idx] = subModel;
+    _modelBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB());
+    _worldBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB()); // AABB.clone(this._modelBounds) in ts
+}
+
+SubModel *Model::createSubModel() const {
+    return new SubModel(); //cjh how to delete?
+}
+
+void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Material *mat) {
+    initialize();
+    bool isNewSubModel = false;
+    if (idx >= _subModels.size()) {
+        _subModels.resize(idx + 1, nullptr);
+    }
+
+    if (_subModels[idx] == nullptr) {
+        _subModels[idx] = createSubModel();
+        isNewSubModel   = true;
+    } else {
+        CC_SAFE_DESTROY(_subModels[idx]);
+    }
+    _subModels[idx]->initialize(subMeshData, mat->getPasses(), getMacroPatches(idx));
+    _subModels[idx]->initPlanarShadowShader();
+    _subModels[idx]->initPlanarShadowInstanceShader();
+    updateAttributesAndBinding(idx);
+}
+
+void Model::setSubModelMesh(index_t idx, cc::RenderingSubMesh *subMesh) const {
+    if (idx < _subModels.size()) {
+        _subModels[idx]->setSubMesh(subMesh);
+    }
+}
+
+void Model::setSubModelMaterial(index_t idx, Material *mat) {
+    if (idx < _subModels.size()) {
+        _subModels[idx]->setPasses(mat->getPasses());
+        updateAttributesAndBinding(idx);
+    }
+}
+
+void Model::onGlobalPipelineStateChanged() const {
+    for (SubModel *subModel : _subModels) {
+        subModel->onPipelineStateChanged();
+    }
+}
+
+void Model::onMacroPatchesStateChanged() {
+    for (index_t i = 0; i < _subModels.size(); ++i) {
+        _subModels[i]->onMacroPatchesStateChanged(getMacroPatches(i));
+    }
+}
+
+void Model::updateLightingmap(Texture2D *texture, const Vec4 &uvParam) {
+    vec4ToFloat32Array(uvParam, _localData, pipeline::UBOLocal::LIGHTINGMAP_UVPARAM); //TODO(xwx): toArray not implemented in Math
+    _lightmap        = texture;
+    _lightmapUVParam = uvParam;
+
+    if (texture == nullptr) {
+        texture = BuiltinResMgr::getInstance()->get<Texture2D>(std::string("empty-texture"));
+    }
+    gfx::Texture *gfxTexture = texture->getGFXTexture();
+    if (gfxTexture) {
+        auto *sampler = pipeline::SamplerLib::getSampler(texture->getMipmaps().size() > 1 ? LIGHTMAP_SAMPLER_WITH_MIP_HASH : LIGHTMAP_SAMPLER_HASH);
+        for (SubModel *subModel : _subModels) {
+            gfx::DescriptorSet *descriptorSet = subModel->getDescriptorSet();
+            // // TODO(Yun Hsiao Wu): should manage lightmap macro switches automatically
+            // // USE_LIGHTMAP -> CC_USE_LIGHTMAP
+            descriptorSet->bindTexture(pipeline::LIGHTMAPTEXTURE::BINDING, gfxTexture);
+            descriptorSet->bindSampler(pipeline::LIGHTMAPTEXTURE::BINDING, sampler);
+            descriptorSet->update();
+        }
+    }
+}
+
+std::vector<IMacroPatch> Model::getMacroPatches(index_t subModelIndex) {
+    if (_type != Type::DEFAULT) {
+        if (!_isCalledFromJS) {
+            std::vector<IMacroPatch> result;
+            _eventProcessor.emit(EventTypesToJS::MODEL_GET_MACRO_PATCHES, subModelIndex, &result);
+            return result;
+        }
+    }
+
+    return _receiveShadow ? SHADOW_MAP_PATCHES : std::vector<IMacroPatch>();
+}
+
+void Model::updateAttributesAndBinding(index_t subModelIndex) {
+    if (subModelIndex >= _subModels.size()) return;
+    SubModel *subModel = _subModels[subModelIndex];
+    initLocalDescriptors(subModelIndex);
+    updateLocalDescriptors(subModelIndex, subModel->getDescriptorSet());
+    gfx::Shader *shader = subModel->getPasses()[0]->getShaderVariant(subModel->getPatches());
+    updateInstancedAttributes(shader->getAttributes(), subModel->getPasses()[0]);
+}
+
+index_t Model::getInstancedAttributeIndex(const std::string &name) const {
+    const auto &attributes = _instanceAttributeBlock.attributes;
+    for (index_t i = 0; i < attributes.size(); ++i) {
+        if (attributes[i].name == name) {
+            return i;
+        }
+    }
+    return CC_INVALID_INDEX;
+}
+
+void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass) {
+    if (_type != Type::DEFAULT) {
+        if (!_isCalledFromJS) {
+            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES, attributes, pass);
+            return;
+        }
+    }
+
+    if (!pass->getDevice()->hasFeature(gfx::Feature::INSTANCED_ARRAYS)) return;
+    // free old data
+
+    uint32_t size = 0;
+    for (const gfx::Attribute &attribute : attributes) {
+        if (!attribute.isInstanced) continue;
+        size += gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)].size;
+    }
+    auto &attrs  = _instanceAttributeBlock;
+    attrs.buffer = Uint8Array(size);
+    attrs.views.clear();
+    attrs.attributes.clear();
+    uint32_t offset = 0;
+
+    for (const gfx::Attribute &attribute : attributes) {
+        if (!attribute.isInstanced) continue;
+        gfx::Attribute attr = gfx::Attribute();
+        attr.format         = attribute.format;
+        attr.name           = attribute.name;
+        attr.isNormalized   = attribute.isNormalized;
+        attr.location       = attribute.location;
+        attrs.attributes.emplace_back(attr);
+        const auto &info          = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)];
+        auto        buffer        = attrs.buffer.buffer();
+        auto        typeViewArray = getTypedArrayConstructor(info, attrs.buffer.buffer(), offset, info.count);
+        attrs.views.emplace_back(typeViewArray);
+        offset += info.size;
+    }
+    if (pass->getBatchingScheme() == BatchingSchemes::INSTANCING) {
+        pipeline::InstancedBuffer *instanceBuffer = pipeline::InstancedBuffer::get(pass);
+        CC_SAFE_DESTROY(instanceBuffer); // instancing IA changed
+    }
+    setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD));
+    _transformUpdated = true;
+}
+
+void Model::initLocalDescriptors(index_t /*subModelIndex*/) {
+    if (!_localBuffer) {
+        _localBuffer = _device->createBuffer({
+            gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST,
+            gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE,
+            pipeline::UBOLocal::SIZE,
+            pipeline::UBOLocal::SIZE,
+        });
+    }
+}
+
+void Model::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) {
+    if (_type != Type::DEFAULT) {
+        if (!_isCalledFromJS) {
+            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, subModelIndex, descriptorSet);
+            return;
+        }
+    }
+
+    if (_localBuffer) {
+        descriptorSet->bindBuffer(pipeline::UBOLocal::BINDING, _localBuffer);
+    }
+}
+
+void Model::_setInstancedAttributesViewData(index_t viewIdx, index_t arrIdx, float value) {
+    std::get<Float32Array>(_instanceAttributeBlock.views[viewIdx])[arrIdx] = value;
 }
 
 } // namespace scene

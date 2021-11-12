@@ -25,8 +25,10 @@
 
 #include "jsb_scene_manual.h"
 #include "bindings/auto/jsb_scene_auto.h"
+#include "core/event/EventTypesToJS.h"
+#include "core/scene-graph/Node.h"
+#include "core/scene-graph/NodeEvent.h"
 #include "scene/Model.h"
-#include "scene/Node.h"
 
 #ifndef JSB_ALLOC
     #define JSB_ALLOC(kls, ...) new (std::nothrow) kls(__VA_ARGS__)
@@ -36,151 +38,352 @@
     #define JSB_FREE(ptr) delete ptr
 #endif
 
-extern bool register_all_scene_ext_manual(se::Object* obj); //NOLINT
-
-static bool js_scene_Pass_setRootBufferAndBlock(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_root_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
-    auto* cobj = SE_THIS_OBJECT<cc::scene::Pass>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Pass_setRootBlock : Invalid Native Object");
-    const auto&    args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
-    if (argc == 2) {
-        HolderType<cc::gfx::Buffer*, false> arg0 = {};
-        uint8_t*                            rootBlock{nullptr};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        args[1].toObject()->getArrayBufferData(&rootBlock, nullptr);
-        cobj->setRootBufferAndBlock(arg0.value(), rootBlock);
+    auto *cobj = SE_THIS_OBJECT<cc::Root>(s);
+    SE_PRECONDITION2(cobj, false, "js_root_registerListeners : Invalid Native Object");
+
+#define ROOT_DISPATCH_EVENT_TO_JS(eventType, jsFuncName)                                         \
+    cobj->getEventProcessor()->on(eventType, [](cc::Root *rootObj) {                             \
+        se::AutoHandleScope hs;                                                                  \
+        se::Value           rootVal;                                                             \
+        bool                ok = nativevalue_to_se(rootObj, rootVal);                            \
+        SE_PRECONDITION2_VOID(ok, "js_root_registerListeners : Error processing arguments");     \
+        if (rootVal.isObject()) {                                                                \
+            se::Value funcVal;                                                                   \
+            ok = rootVal.toObject()->getProperty(#jsFuncName, &funcVal) && funcVal.isObject();   \
+            SE_PRECONDITION2_VOID(ok, "js_root_registerListeners : Error processing arguments"); \
+            funcVal.toObject()->call(se::EmptyValueArray, rootVal.toObject());                   \
+        }                                                                                        \
+    })
+
+    ROOT_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::ROOT_BATCH2D_INIT, _onBatch2DInit);
+    ROOT_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::ROOT_BATCH2D_UPDATE, _onBatch2DUpdate);
+    ROOT_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::ROOT_BATCH2D_UPLOAD_BUFFERS, _onBatch2DUploadBuffers);
+    ROOT_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::ROOT_BATCH2D_RESET, _onBatch2DReset);
+
+    return true;
+}
+SE_BIND_FUNC(js_root_registerListeners) // NOLINT(readability-identifier-naming)
+
+static void registerOnTransformChanged(cc::Node *node, se::Object *jsObject) {
+    node->on(
+        cc::NodeEventType::TRANSFORM_CHANGED,
+        [jsObject](cc::TransformBit transformBit) {
+            se::AutoHandleScope hs;
+            se::Value           funcVal;
+            jsObject->getProperty("_onTransformChanged", &funcVal);
+            SE_PRECONDITION2_VOID(funcVal.isObject() && funcVal.toObject()->isFunction(), "Not function named _onTransformChanged.");
+
+            se::ValueArray args;
+            se::Value      arg0;
+            nativevalue_to_se(transformBit, arg0);
+            args.push_back(arg0);
+            funcVal.toObject()->call(args, jsObject);
+        });
+}
+
+static void registerOnParentChanged(cc::Node *node, se::Object *jsObject) {
+    node->on(
+        cc::NodeEventType::PARENT_CHANGED,
+        [jsObject](cc::Node *oldParent) {
+            se::AutoHandleScope hs;
+            se::Value           funcVal;
+            jsObject->getProperty("_onParentChanged", &funcVal);
+            SE_PRECONDITION2_VOID(funcVal.isObject() && funcVal.toObject()->isFunction(), "Not function named _onParentChanged.");
+
+            se::ValueArray args;
+            se::Value      arg0;
+            nativevalue_to_se(oldParent, arg0);
+            args.push_back(arg0);
+            funcVal.toObject()->call(args, jsObject);
+        });
+}
+
+static void registerOnLayerChanged(cc::Node *node, se::Object *jsObject) {
+    node->on(
+        cc::NodeEventType::LAYER_CHANGED,
+        [jsObject](uint32_t layer) {
+            se::AutoHandleScope hs;
+            se::Value           funcVal;
+            jsObject->getProperty("_onLayerChanged", &funcVal);
+            SE_PRECONDITION2_VOID(funcVal.isObject() && funcVal.toObject()->isFunction(), "Not function named _onLayerChanged.");
+
+            se::ValueArray args;
+            se::Value      arg0;
+            nativevalue_to_se(layer, arg0);
+            args.push_back(arg0);
+            funcVal.toObject()->call(args, jsObject);
+        });
+}
+
+static void registerOnChildRemoved(cc::Node *node, se::Object *jsObject) {
+    node->on(
+        cc::NodeEventType::CHILD_REMOVED,
+        [jsObject](cc::Node *child) {
+            se::AutoHandleScope hs;
+            se::Value           funcVal;
+            jsObject->getProperty("_onChildRemoved", &funcVal);
+            SE_PRECONDITION2_VOID(funcVal.isObject() && funcVal.toObject()->isFunction(), "Not function named _onChildRemoved.");
+
+            se::ValueArray args;
+            se::Value      arg0;
+            nativevalue_to_se(child, arg0);
+            args.push_back(arg0);
+            funcVal.toObject()->call(args, jsObject);
+        });
+}
+
+static void registerOnChildAdded(cc::Node *node, se::Object *jsObject) {
+    cc::CallbackInfoBase::ID skip;
+    node->on(
+        cc::NodeEventType::CHILD_ADDED,
+        [jsObject](cc::Node *child) {
+            se::AutoHandleScope hs;
+            se::Value           funcVal;
+            jsObject->getProperty("_onChildAdded", &funcVal);
+            SE_PRECONDITION2_VOID(funcVal.isObject() && funcVal.toObject()->isFunction(), "Not function named _onChildAdded.");
+
+            se::ValueArray args;
+            se::Value      arg0;
+            nativevalue_to_se(child, arg0);
+            args.push_back(arg0);
+            funcVal.toObject()->call(args, jsObject);
+        },
+        skip);
+}
+
+static void registerOnActiveNode(cc::Node *node, se::Object *jsObject) {
+    cc::CallbackInfoBase::ID skip;
+    node->on(
+        cc::EventTypesToJS::NODE_ACTIVE_NODE,
+        [jsObject](bool shouldActiveNow) {
+            se::AutoHandleScope hs;
+            se::Value           funcVal;
+            jsObject->getProperty("_onActiveNode", &funcVal);
+            SE_PRECONDITION2_VOID(funcVal.isObject() && funcVal.toObject()->isFunction(), "Not function named _onActiveNode.");
+
+            se::ValueArray args;
+            se::Value      arg0;
+            nativevalue_to_se(shouldActiveNow, arg0);
+            args.push_back(arg0);
+            funcVal.toObject()->call(args, jsObject);
+        },
+        skip);
+}
+
+static void registerOnBatchCreated(cc::Node *node, se::Object *jsObject) {
+    cc::CallbackInfoBase::ID skip;
+    node->on(
+        cc::EventTypesToJS::NODE_ON_BATCH_CREATED,
+        [jsObject](bool dontChildPrefab) {
+            se::AutoHandleScope hs;
+            se::Value           funcVal;
+            jsObject->getProperty("_onBatchCreated", &funcVal);
+            SE_PRECONDITION2_VOID(funcVal.isObject() && funcVal.toObject()->isFunction(), "Not function named _onBatchCreated.");
+
+            se::ValueArray args;
+            se::Value      arg0;
+            nativevalue_to_se(dontChildPrefab, arg0);
+            args.push_back(arg0);
+            funcVal.toObject()->call(args, jsObject);
+        },
+        skip);
+}
+
+static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_registerListeners : Invalid Native Object");
+
+    auto *jsObject = s.thisObject();
+
+#define NODE_DISPATCH_EVENT_TO_JS(eventType, jsFuncName)                                                 \
+    cobj->on(                                                                                            \
+        eventType, [jsObject]() {                                                                        \
+            se::AutoHandleScope hs;                                                                      \
+            se::Value           funcVal;                                                                 \
+            bool                ok = jsObject->getProperty(#jsFuncName, &funcVal) && funcVal.isObject(); \
+            SE_PRECONDITION2_VOID(ok, "js_scene_Node_registerListeners : Error processing arguments");   \
+            funcVal.toObject()->call(se::EmptyValueArray, jsObject);                                     \
+        });
+
+    registerOnActiveNode(cobj, jsObject);
+    registerOnBatchCreated(cobj, jsObject);
+
+    NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_REATTACH, _onReAttach);
+    NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_REMOVE_PERSIST_ROOT_NODE, _onRemovePersistRootNode);
+    NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_DESTROY_COMPONENTS, _onDestroyComponents);
+    NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_UI_TRANSFORM_DIRTY, _onUiTransformDirty);
+    NODE_DISPATCH_EVENT_TO_JS(cc::NodeEventType::NODE_DESTROYED, _onNodeDestroyed);
+    NODE_DISPATCH_EVENT_TO_JS(cc::NodeEventType::SIBLING_ORDER_CHANGED, _onSiblingOrderChanged);
+
+    return true;
+}
+SE_BIND_FUNC(js_scene_Node_registerListeners) // NOLINT(readability-identifier-naming)
+
+static bool js_scene_Node_registerOnTransformChanged(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_registerOnTransformChanged : Invalid Native Object");
+
+    auto *jsObject = s.thisObject();
+
+    registerOnTransformChanged(cobj, jsObject);
+    return true;
+}
+SE_BIND_FUNC(js_scene_Node_registerOnTransformChanged) // NOLINT(readability-identifier-naming)
+
+static bool js_scene_Node_registerOnParentChanged(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_registerOnParentChanged : Invalid Native Object");
+
+    auto *jsObject = s.thisObject();
+
+    registerOnParentChanged(cobj, jsObject);
+    return true;
+}
+SE_BIND_FUNC(js_scene_Node_registerOnParentChanged) // NOLINT(readability-identifier-naming)
+
+static bool js_scene_Node_registerOnLayerChanged(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_registerOnLayerChanged : Invalid Native Object");
+
+    auto *jsObject = s.thisObject();
+
+    registerOnLayerChanged(cobj, jsObject);
+    return true;
+}
+SE_BIND_FUNC(js_scene_Node_registerOnLayerChanged) // NOLINT(readability-identifier-naming)
+
+static bool js_scene_Node_registerOnChildRemoved(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_registerOnChildRemoved : Invalid Native Object");
+
+    auto *jsObject = s.thisObject();
+
+    registerOnChildRemoved(cobj, jsObject);
+    return true;
+}
+SE_BIND_FUNC(js_scene_Node_registerOnChildRemoved) // NOLINT(readability-identifier-naming)
+
+static bool js_scene_Node_registerOnChildAdded(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_registerOnChildAdded : Invalid Native Object");
+
+    auto *jsObject = s.thisObject();
+
+    registerOnChildAdded(cobj, jsObject);
+    return true;
+}
+SE_BIND_FUNC(js_scene_Node_registerOnChildAdded) // NOLINT(readability-identifier-naming)
+
+
+static bool js_scene_Pass_blocks_getter(se::State &s) {
+    auto *cobj = SE_THIS_OBJECT<cc::scene::Pass>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_registerListeners : Invalid Native Object");
+    auto *thiz = s.thisObject();
+
+    se::Value blocksVal;
+    if (thiz->getProperty("_blocks", &blocksVal) && blocksVal.isObject() && blocksVal.toObject()->isArray()) {
+        s.rval() = blocksVal;
         return true;
     }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_Pass_setRootBufferAndBlock) // NOLINT(readability-identifier-naming)
 
-static bool js_scene_RenderScene_updateBatches(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::scene::RenderScene>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_RenderScene_updateBatches : Invalid Native Object");
-    const auto&    args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
-    if (argc == 1) {
-        HolderType<std::vector<cc::scene::DrawBatch2D*>, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_RenderScene_updateBatches : Error processing arguments");
-        cobj->updateBatches(std::move(arg0.value()));
-        return true;
+    const auto &blocks = cobj->getBlocks();
+
+    se::HandleObject jsBlocks{se::Object::createArrayObject(blocks.size())};
+    int32_t          i = 0;
+    for (const auto &block : blocks) {
+        se::HandleObject jsBlock{se::Object::createTypedArray(se::Object::TypedArrayType::FLOAT32, block.data, block.size * 4)};
+        jsBlocks->setArrayElement(i, se::Value(jsBlock));
+        ++i;
     }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
+    thiz->setProperty("_blocks", se::Value(jsBlocks));
+    s.rval().setObject(jsBlocks);
+    return true;
 }
-SE_BIND_FUNC(js_scene_RenderScene_updateBatches) // NOLINT(readability-identifier-naming)
+SE_BIND_PROP_GET(js_scene_Pass_blocks_getter)
 
-static bool js_scene_Model_setInstancedAttrBlock(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_scene_RenderScene_root_getter(se::State &s) {
+    nativevalue_to_se(cc::Root::getInstance(), s.rval());
+    return true;
+}
+SE_BIND_PROP_GET(js_scene_RenderScene_root_getter)
+
+static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
-    auto* cobj = static_cast<cc::scene::Model*>(s.nativeThisObject());
-    SE_PRECONDITION2(cobj, false, "js_scene_Model_setInstancedAttrBlock : Invalid Native Object");
-    const auto& args = s.args();
-    size_t      argc = args.size();
+    auto *cobj = SE_THIS_OBJECT<cc::scene::Model>(s);
+    SE_PRECONDITION2(cobj, false, "js_Model_registerListeners : Invalid Native Object");
+    auto *thiz = s.thisObject();
 
-    if (argc == 3) {
-        SE_PRECONDITION2(args[0].isObject() && args[0].toObject()->isArrayBuffer(), false, "js_gfx_Device_createBuffer: expected Array Buffer!");
+#define MODEL_DISPATCH_EVENT_TO_JS(eventType, jsFuncName)                                        \
+    cobj->getEventProcessor().on(eventType, [=](uint32_t stamp) {                                \
+        se::AutoHandleScope hs;                                                                  \
+        se::Value           funcVal;                                                             \
+        bool                ok = thiz->getProperty(#jsFuncName, &funcVal) && funcVal.isObject(); \
+        SE_PRECONDITION2_VOID(ok, "js_Model_registerListeners : Could not find callback");       \
+        se::ValueArray args;                                                                     \
+        args.emplace_back(se::Value(stamp));                                                     \
+        funcVal.toObject()->call(args, thiz);                                                    \
+    })
 
-        // instanced buffer
-        uint8_t* instanceBuff{nullptr};
-        size_t   instanceBufferSize;
-        args[0].toObject()->getArrayBufferData(&instanceBuff, &instanceBufferSize);
+    MODEL_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::MODEL_UPDATE_TRANSFORM, updateTransform);
+    MODEL_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::MODEL_UPDATE_UBO, updateUBOs);
 
-        // views
-        se::Object* dataObj = args[1].toObject();
-        if (!dataObj->isArray()) {
-            return false;
+#undef MODEL_DISPATCH_EVENT_TO_JS
+
+    cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, [=](index_t subModelIndex, cc::gfx::DescriptorSet *descriptorSet) {
+        se::AutoHandleScope hs;
+        se::Value           funcVal;
+        bool                ok = thiz->getProperty("_updateLocalDescriptors", &funcVal) && funcVal.isObject() && funcVal.toObject()->isFunction();
+        SE_PRECONDITION2_VOID(ok, "Not function named _updateLocalDescriptors.");
+
+        se::ValueArray args;
+        args.resize(2);
+        nativevalue_to_se(subModelIndex, args[0]);
+        nativevalue_to_se(descriptorSet, args[1]);
+        funcVal.toObject()->call(args, thiz);
+    });
+
+    cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES, [=](const std::vector<cc::gfx::Attribute> &attributes, cc::scene::Pass *pass) {
+        se::AutoHandleScope hs;
+        se::Value           funcVal;
+        bool                ok = thiz->getProperty("_updateInstancedAttributes", &funcVal) && funcVal.isObject() && funcVal.toObject()->isFunction();
+        SE_PRECONDITION2_VOID(ok, "Not function named _updateInstancedAttributes.");
+
+        se::ValueArray args;
+        args.resize(2);
+        nativevalue_to_se(attributes, args[0]);
+        nativevalue_to_se(pass, args[1]);
+        funcVal.toObject()->call(args, thiz);
+    });
+
+    cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_GET_MACRO_PATCHES, [=](index_t subModelIndex, std::vector<cc::scene::IMacroPatch> *pPatches) {
+        se::AutoHandleScope hs;
+        se::Value           funcVal;
+        bool                ok = thiz->getProperty("getMacroPatches", &funcVal) && funcVal.isObject() && funcVal.toObject()->isFunction();
+        SE_PRECONDITION2_VOID(ok, "Not function named getMacroPatches.");
+
+        se::ValueArray args;
+        se::Value      rval;
+        args.resize(1);
+        nativevalue_to_se(subModelIndex, args[0]);
+        ok = funcVal.toObject()->call(args, thiz, &rval);
+        if (ok) {
+            sevalue_to_native(rval, pPatches);
         }
-        std::vector<uint8_t*> viewsData;
-        uint32_t              length = 0;
-        dataObj->getArrayLength(&length);
-        viewsData.resize(length);
-        se::Value value;
-        for (uint32_t i = 0; i < length; i++) {
-            dataObj->getArrayElement(i, &value);
-            uint8_t* viewBuff{nullptr};
-            value.toObject()->getTypedArrayData(&viewBuff, nullptr);
-            viewsData[i] = viewBuff;
-        }
+    });
 
-        cc::scene::InstancedAttributeBlock attrBlock;
-        attrBlock.views = std::move(viewsData);
-
-        // attrs
-        CC_UNUSED bool                                    ok   = true;
-        HolderType<std::vector<cc::gfx::Attribute>, true> arg2 = {};
-        ok &= sevalue_to_native(args[2], &arg2, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_scene_Model_setInstancedAttrBlock : Error processing arguments");
-        cobj->setInstancedAttrBlock(instanceBuff, static_cast<uint32_t>(instanceBufferSize), std::move(attrBlock), arg2.value());
-
-        return true;
-    }
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
+    return true;
 }
-SE_BIND_FUNC(js_scene_Model_setInstancedAttrBlock) // NOLINT(readability-identifier-naming)
+SE_BIND_FUNC(js_Model_registerListeners) // NOLINT(readability-identifier-naming)
 
-static bool js_scene_SubModel_setSubMeshBuffers(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = static_cast<cc::scene::SubModel*>(s.nativeThisObject());
-    SE_PRECONDITION2(cobj, false, "js_scene_SubModel_setSubMeshBuffers : Invalid Native Object");
-    const auto& args = s.args();
-    size_t      argc = args.size();
-
-    if (argc == 1) {
-        if (args[0].isObject()) {
-            se::Object* dataObj = args[0].toObject();
-            if (!dataObj->isArray()) {
-                return false;
-            }
-            uint32_t length = 0;
-            dataObj->getArrayLength(&length);
-            std::vector<cc::scene::FlatBuffer> flatBuffers;
-            flatBuffers.resize(length);
-            se::Value value;
-            for (uint32_t i = 0; i < length; ++i) {
-                if (dataObj->getArrayElement(i, &value)) {
-                    if (value.isObject()) {
-                        cc::scene::FlatBuffer currBuffer;
-                        se::Value             bufferVal;
-                        se::Object*           valObj = value.toObject();
-                        valObj->getProperty("buffer", &bufferVal);
-                        // data
-                        CC_UNUSED size_t bufferLength = 0;
-                        uint8_t*         address      = nullptr;
-                        bufferVal.toObject()->getTypedArrayData(&address, &bufferLength);
-                        currBuffer.data = address;
-                        currBuffer.size = bufferLength;
-                        // stride
-                        se::Value strideVal;
-                        valObj->getProperty("stride", &strideVal);
-                        currBuffer.stride = strideVal.toUint32();
-                        // count
-                        se::Value countVal;
-                        valObj->getProperty("count", &countVal);
-                        currBuffer.count = countVal.toUint32();
-                        flatBuffers[i]   = currBuffer;
-                    }
-                }
-            }
-            cobj->setSubMeshBuffers(flatBuffers);
-            return true;
-        }
-    }
-
-    SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
-    return false;
-}
-SE_BIND_FUNC(js_scene_SubModel_setSubMeshBuffers) // NOLINT(readability-identifier-naming)
-
-bool register_all_scene_manual(se::Object* obj) // NOLINT(readability-identifier-naming)
+bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier-naming)
 {
     // Get the ns
     se::Value nsVal;
@@ -190,14 +393,22 @@ bool register_all_scene_manual(se::Object* obj) // NOLINT(readability-identifier
         obj->setProperty("ns", nsVal);
     }
 
-    __jsb_cc_scene_Model_proto->defineFunction("setInstancedAttrBlock", _SE(js_scene_Model_setInstancedAttrBlock));
+    __jsb_cc_Root_proto->defineFunction("_registerListeners", _SE(js_root_registerListeners));
 
-    __jsb_cc_scene_SubModel_proto->defineFunction("setSubMeshBuffers", _SE(js_scene_SubModel_setSubMeshBuffers));
-    __jsb_cc_scene_Pass_proto->defineFunction("setRootBufferAndBlock", _SE(js_scene_Pass_setRootBufferAndBlock));
-    __jsb_cc_scene_RenderScene_proto->defineFunction("updateBatches", _SE(js_scene_RenderScene_updateBatches));
+    // Node TS wrapper will invoke this function to let native object listen some events.
+    __jsb_cc_Node_proto->defineFunction("_registerListeners", _SE(js_scene_Node_registerListeners));
 
-    // Impl MQ for DrawBatch2D
-    register_all_scene_ext_manual(obj);
+    __jsb_cc_Node_proto->defineFunction("_registerOnTransformChanged", _SE(js_scene_Node_registerOnTransformChanged));
+    __jsb_cc_Node_proto->defineFunction("_registerOnParentChanged", _SE(js_scene_Node_registerOnParentChanged));
+    __jsb_cc_Node_proto->defineFunction("_registerOnLayerChanged", _SE(js_scene_Node_registerOnLayerChanged));
+    __jsb_cc_Node_proto->defineFunction("_registerOnChildRemoved", _SE(js_scene_Node_registerOnChildRemoved));
+    __jsb_cc_Node_proto->defineFunction("_registerOnChildAdded", _SE(js_scene_Node_registerOnChildAdded));
+
+    __jsb_cc_scene_Pass_proto->defineProperty("blocks", _SE(js_scene_Pass_blocks_getter), nullptr);
+
+    __jsb_cc_scene_RenderScene_proto->defineProperty("root", _SE(js_scene_RenderScene_root_getter), nullptr);
+
+    __jsb_cc_scene_Model_proto->defineFunction("_registerListeners", _SE(js_Model_registerListeners));
 
     return true;
 }

@@ -31,21 +31,28 @@
 namespace cc {
 namespace pipeline {
 
-void PipelineSceneData::activate(gfx::Device *device, RenderPipeline *pipeline)
-{
-    _device = device;
+PipelineSceneData::PipelineSceneData() {
+    _fog     = new scene::Fog(); //cjh how to delete?
+    _ambient = new scene::Ambient();
+    _skybox  = new scene::Skybox();
+    _shadow  = new scene::Shadow();
+}
+
+PipelineSceneData::~PipelineSceneData() {
+    CC_SAFE_DELETE(_fog); //cjh correct ?
+    CC_SAFE_DELETE(_ambient);
+    CC_SAFE_DELETE(_skybox);
+    CC_SAFE_DELETE(_shadow);
+}
+
+void PipelineSceneData::activate(gfx::Device *device, RenderPipeline *pipeline) {
+    _device   = device;
     _pipeline = pipeline;
 
-    _sphere = CC_NEW(scene::Sphere);
+    _sphere = CC_NEW(geometry::Sphere);
 }
 
-void PipelineSceneData::setPipelineSharedSceneData(scene::PipelineSharedSceneData *data)
-{
-    _sharedSceneData = data;
-}
-
-void PipelineSceneData::destroy()
-{
+void PipelineSceneData::destroy() {
     CC_SAFE_DELETE(_sphere);
 
     for (auto &pair : _shadowFrameBufferMap) {

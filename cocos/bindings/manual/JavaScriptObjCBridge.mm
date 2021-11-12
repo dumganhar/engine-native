@@ -300,10 +300,10 @@ static bool JavaScriptObjCBridge_callStaticMethod(se::State &s) {
     if (argc >= 2) {
         bool ok = false;
         std::string clsName, methodName;
-        ok = seval_to_std_string(args[0], &clsName);
+        ok = sevalue_to_native(args[0], &clsName);
         SE_PRECONDITION2(ok, false, "Converting class name failed!");
 
-        ok = seval_to_std_string(args[1], &methodName);
+        ok = sevalue_to_native(args[1], &methodName);
         SE_PRECONDITION2(ok, false, "Converting method name failed!");
 
         JavaScriptObjCBridge::CallInfo call(clsName.c_str(), methodName.c_str());

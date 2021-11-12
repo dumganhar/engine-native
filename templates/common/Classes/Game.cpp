@@ -29,6 +29,7 @@
 #include "cocos/bindings/manual/jsb_classtype.h"
 #include "cocos/bindings/manual/jsb_global.h"
 #include "cocos/bindings/manual/jsb_module_register.h"
+#include "cocos/core/Director.h"
 
 #if (CC_PLATFORM == CC_PLATFORM_MAC_IOS)
     #include "platform/Device.h"
@@ -39,6 +40,13 @@ Game::Game(int width, int height) : cc::Application(width, height) {}
 bool Game::init() {
     cc::Application::init();
 
+    //TODO: Is here the correct place to invoke setDescriptorSetLayout?
+    cc::pipeline::GlobalDSManager::setDescriptorSetLayout();
+    //cjh FIXME: Initialize director
+    auto *director = new cc::Director();
+    director->init();
+    //
+
     se::ScriptEngine *se = se::ScriptEngine::getInstance();
 
     jsb_set_xxtea_key("");
@@ -46,7 +54,7 @@ bool Game::init() {
 
 #if defined(CC_DEBUG) && (CC_DEBUG > 0)
     // Enable debugger here
-    jsb_enable_debugger("0.0.0.0", 6086, false);
+    jsb_enable_debugger("0.0.0.0", 6086, true);
 #endif
 
     se->setExceptionCallback([](const char *location, const char *message, const char *stack) {

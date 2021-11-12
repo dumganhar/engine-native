@@ -139,6 +139,11 @@ public:
     static float angle(const Vec3 &v1, const Vec3 &v2);
 
     /**
+     * Transforms the current vector with given scale, rotation and translation in reverse order
+     */
+    static void transformInverseRTS(Vec3 &out, const Vec3 &v, const Quaternion &r, const Vec3 &t, const Vec3 &s);
+
+    /**
      * Adds the elements of the specified vector to this one.
      *
      * @param v The vector to add.
@@ -228,6 +233,15 @@ public:
      * @param m The matrix.
      */
     void transformMat4(const Vec3 &v, const Mat4 &m);
+
+    /**
+     * Transforms vector v by the specified Mat4 and stores the result in dst vector.
+     *
+     * @param v The Vec3 to transform.
+     * @param m The matrix.
+     * @param dst The destination vector
+     */
+    static void transformMat4(const Vec3 &v, const Mat4 &m, Vec3 *dst);
 
     /**
      * Transforms this vector by the specified quaternion and stores the result in this vector.
@@ -525,9 +539,11 @@ public:
      * @return bool
      */
     inline bool operator<(const Vec3 &rhs) const {
-        if (x < rhs.x && y < rhs.y && z < rhs.z)
-            return true;
-        return false;
+        return x < rhs.x && y < rhs.y && z < rhs.z;
+    }
+
+    inline bool operator<=(const Vec3 &rhs) const {
+        return x <= rhs.x && y <= rhs.y && z <= rhs.z;
     }
 
     /**
@@ -538,9 +554,11 @@ public:
      * @return bool
      */
     inline bool operator>(const Vec3 &rhs) const {
-        if (x > rhs.x && y > rhs.y && z > rhs.z)
-            return true;
-        return false;
+        return x > rhs.x && y > rhs.y && z > rhs.z;
+    }
+
+    inline bool operator>=(const Vec3 &rhs) const {
+        return x >= rhs.x && y >= rhs.y && z >= rhs.z;
     }
 
     /**

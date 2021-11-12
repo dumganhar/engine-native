@@ -653,10 +653,10 @@ static bool XMLHttpRequest_open(se::State &s) { //NOLINT(readability-identifier-
         auto *      request = static_cast<XMLHttpRequest *>(s.nativeThisObject());
         bool        ok      = false;
         std::string method;
-        ok = seval_to_std_string(args[0], &method);
+        ok = sevalue_to_native(args[0], &method);
         SE_PRECONDITION2(ok, false, "args[0] isn't a string.");
         std::string url;
-        ok = seval_to_std_string(args[1], &url);
+        ok = sevalue_to_native(args[1], &url);
         SE_PRECONDITION2(ok, false, "args[1] isn't a string.");
         bool ret = request->open(method, url);
         s.rval().setBoolean(ret);
@@ -741,10 +741,10 @@ static bool XMLHttpRequest_setRequestHeader(se::State &s) { //NOLINT(readability
     if (argc >= 2) {
         auto *      xhr = static_cast<XMLHttpRequest *>(s.nativeThisObject());
         std::string key;
-        bool        ok = seval_to_std_string(args[0], &key);
+        bool        ok = sevalue_to_native(args[0], &key);
         SE_PRECONDITION2(ok, false, "args[0] couldn't be converted to string.");
         std::string value;
-        ok = seval_to_std_string(args[1], &value);
+        ok = sevalue_to_native(args[1], &value);
         SE_PRECONDITION2(ok, false, "args[1] couldn't be converted to string.");
         xhr->setRequestHeader(key, value);
         return true;
@@ -769,7 +769,7 @@ static bool XMLHttpRequest_getResonpseHeader(se::State &s) { //NOLINT(readabilit
     if (argc > 0) {
         auto *      xhr = static_cast<XMLHttpRequest *>(s.nativeThisObject());
         std::string key;
-        bool        ok = seval_to_std_string(args[0], &key);
+        bool        ok = sevalue_to_native(args[0], &key);
         SE_PRECONDITION2(ok, false, "args[0] couldn't be converted to string.");
         std::string header = xhr->getResponseHeader(key);
         s.rval().setString(header);
@@ -786,7 +786,7 @@ static bool XMLHttpRequest_overrideMimeType(se::State &s) { //NOLINT(readability
     int         argc = static_cast<int>(args.size());
     if (argc > 0 && args[0].isString()) {
         std::string mimeType;
-        seval_to_std_string(args[0], &mimeType);
+        sevalue_to_native(args[0], &mimeType);
         auto *xhr = static_cast<XMLHttpRequest *>(s.nativeThisObject());
         xhr->overrideMimeType(mimeType);
     }
@@ -887,7 +887,7 @@ static bool XMLHttpRequest_setTimeout(se::State &s) { //NOLINT(readability-ident
     if (argc > 0) {
         auto *   cobj                  = static_cast<XMLHttpRequest *>(s.nativeThisObject());
         uint32_t timeoutInMilliseconds = 0;
-        bool     ok                    = seval_to_uint32(args[0], &timeoutInMilliseconds);
+        bool     ok                    = sevalue_to_native(args[0], &timeoutInMilliseconds);
         SE_PRECONDITION2(ok, false, "args[0] isn't a number");
         if (timeoutInMilliseconds < 50) {
             SE_LOGE("The timeout value (%u ms) is too small, please note that timeout unit is milliseconds!", timeoutInMilliseconds);
@@ -926,7 +926,7 @@ static bool XMLHttpRequest_setResponseType(se::State &s) { //NOLINT(readability-
 
     if (argc > 0) {
         std::string type;
-        bool        ok = seval_to_std_string(args[0], &type);
+        bool        ok = sevalue_to_native(args[0], &type);
         SE_PRECONDITION2(ok, false, "args[0] couldn't be converted to string!");
 
         auto *xhr = static_cast<XMLHttpRequest *>(s.nativeThisObject());

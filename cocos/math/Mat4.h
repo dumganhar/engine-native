@@ -201,7 +201,13 @@ public:
      * @param zFarPlane The distance to the far view plane.
      * @param dst A matrix to store the result in.
      */
-    static void createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane, Mat4 *dst);
+    static void createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane, Mat4 *dst = nullptr) {
+        Mat4::createPerspective(fieldOfView, aspectRatio, zNearPlane, zFarPlane, true, -1.0F, 1.0F, 0, dst);
+    }
+
+    static void createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane,
+                                  bool isFieldOfViewY = false, float minClipZ = -1, float projectionSignY = 1,
+                                  int orientation = 0, Mat4 *dst = nullptr);
 
     /**
      * Creates an orthographic projection matrix.
@@ -245,7 +251,8 @@ public:
     static void createOrthographicOffCenter(float left, float right, float bottom, float top,
                                             float zNearPlane, float zFarPlane, Mat4 *dst);
     static void createOrthographicOffCenter(float left, float right, float bottom, float top,
-                                            float zNearPlane, float zFarPlane, float minClipZ, float projectionSignY, Mat4 *dst);
+                                            float zNearPlane, float zFarPlane, float minClipZ,
+                                            float projectionSignY, int orientation, Mat4 *dst);
 
     /**
      * Creates a spherical billboard that rotates around a specified object position.
@@ -890,7 +897,7 @@ public:
     /**
     * Calculates the inverse transpose of a matrix and save the results to out matrix
     */
-    static void inverseTranspose(const Mat4& mat, Mat4 *dst);
+    static void inverseTranspose(const Mat4 &mat, Mat4 *dst);
     /**
      * Calculates the sum of this matrix with the given matrix.
      *

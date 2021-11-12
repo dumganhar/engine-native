@@ -52,6 +52,10 @@ namespace {
     (dst)[(offset) + 3] = (src).w;
 } // namespace
 
+ForwardPipeline::ForwardPipeline() {
+    _pipelineSceneData = new PipelineSceneData();
+}
+
 gfx::RenderPass *ForwardPipeline::getOrCreateRenderPass(gfx::ClearFlags clearFlags) {
     if (_renderPasses.count(clearFlags)) {
         return _renderPasses[clearFlags];
@@ -142,7 +146,6 @@ void ForwardPipeline::render(const vector<scene::Camera *> &cameras) {
 
 bool ForwardPipeline::activeRenderer() {
     _commandBuffers.push_back(_device->getCommandBuffer());
-    auto *const sharedData = _pipelineSceneData->getSharedData();
 
     gfx::SamplerInfo info{
         gfx::Filter::POINT,
@@ -169,13 +172,13 @@ bool ForwardPipeline::activeRenderer() {
 
     _descriptorSet->update();
     // update global defines when all states initialized.
-    _macros.setValue("CC_USE_HDR", static_cast<bool>(sharedData->isHDR));
-    _macros.setValue("CC_SUPPORT_FLOAT_TEXTURE", _device->hasFeature(gfx::Feature::TEXTURE_FLOAT));
+    _macros["CC_USE_HDR"]               = _pipelineSceneData->isHDR();
+    _macros["CC_SUPPORT_FLOAT_TEXTURE"] = _device->hasFeature(gfx::Feature::TEXTURE_FLOAT);
 
     return true;
 }
 
-void ForwardPipeline::destroy() {
+bool ForwardPipeline::destroy() {
     if (_descriptorSet) {
         _descriptorSet->getBuffer(UBOGlobal::BINDING)->destroy();
         _descriptorSet->getBuffer(UBOCamera::BINDING)->destroy();
@@ -193,7 +196,7 @@ void ForwardPipeline::destroy() {
 
     _commandBuffers.clear();
 
-    RenderPipeline::destroy();
+    return RenderPipeline::destroy();
 }
 
 } // namespace pipeline

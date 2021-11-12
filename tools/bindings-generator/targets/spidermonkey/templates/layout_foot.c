@@ -1,4 +1,4 @@
-bool register_all_${prefix}(se::Object* obj)
+bool register_all_${prefix}(se::Object* obj)    // NOLINT
 {
 #if $target_ns
     // Get the ns
@@ -16,8 +16,8 @@ bool register_all_${prefix}(se::Object* obj)
 #end if
 
 #for jsclass in $sorted_classes
-    #if $in_listed_classes(jsclass)
-    js_register_${prefix}_${jsclass}(ns);
+    #if $in_listed_classes(jsclass.class_name)
+    js_register_${prefix}_${jsclass.nested_class_name}(ns);
     #end if
 #end for
     return true;
@@ -26,3 +26,4 @@ bool register_all_${prefix}(se::Object* obj)
 #if $macro_judgement
 \#endif //$macro_judgement
 #end if
+// clang-format on

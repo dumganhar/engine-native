@@ -33,6 +33,7 @@
 #include "gfx-base/GFXFramebuffer.h"
 #include "pipeline/Define.h"
 #include "scene/SubModel.h"
+#include "DeferredPipelineSceneData.h"
 
 namespace cc {
 namespace pipeline {
@@ -88,28 +89,29 @@ void PostprocessStage::render(scene::Camera *camera) {
     assert(pp != nullptr);
     gfx::CommandBuffer *cmdBf = pp->getCommandBuffers()[0];
 
-    gfx::Rect renderArea = pp->getRenderArea(camera, !camera->window->hasOffScreenAttachments);
+    gfx::Rect renderArea = pp->getRenderArea(camera, !camera->getWindow()->hasOffScreenAttachments());
 
-    if (hasFlag(static_cast<gfx::ClearFlags>(camera->clearFlag), gfx::ClearFlagBit::COLOR)) {
-        _clearColors[0].x = camera->clearColor.x;
-        _clearColors[0].y = camera->clearColor.y;
-        _clearColors[0].z = camera->clearColor.z;
+    const gfx::Color &clearColor = camera->getClearColor();
+    if (hasFlag(static_cast<gfx::ClearFlags>(camera->getClearFlag()), gfx::ClearFlagBit::COLOR)) {
+        _clearColors[0].x = clearColor.x;
+        _clearColors[0].y = clearColor.y;
+        _clearColors[0].z = clearColor.z;
     }
 
-    _clearColors[0].w = camera->clearColor.w;
+    _clearColors[0].w = clearColor.w;
 
-    gfx::Framebuffer *fb            = camera->window->frameBuffer;
+    gfx::Framebuffer *fb            = camera->getWindow()->getFramebuffer();
     const auto &      colorTextures = fb->getColorTextures();
-    gfx::RenderPass * rp            = !colorTextures.empty() && colorTextures[0] ? fb->getRenderPass() : pp->getOrCreateRenderPass(static_cast<gfx::ClearFlags>(camera->clearFlag));
+    gfx::RenderPass * rp            = !colorTextures.empty() && colorTextures[0] ? fb->getRenderPass() : pp->getOrCreateRenderPass(camera->getClearFlag());
 
-    cmdBf->beginRenderPass(rp, fb, renderArea, _clearColors, camera->clearDepth, camera->clearStencil);
+    cmdBf->beginRenderPass(rp, fb, renderArea, _clearColors, camera->getClearDepth(), camera->getClearStencil());
     uint const globalOffsets[] = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
     cmdBf->bindDescriptorSet(globalSet, pp->getDescriptorSet(), static_cast<uint>(std::size(globalOffsets)), globalOffsets);
 
     // post proces
-    auto *const  sceneData     = _pipeline->getPipelineSceneData();
-    scene::Pass *pv            = sceneData->getSharedData()->deferredPostPass;
-    gfx::Shader *sd            = sceneData->getSharedData()->deferredPostPassShader;
+    auto *const  sceneData     = static_cast<DeferredPipelineSceneData*>(_pipeline->getPipelineSceneData());
+    scene::Pass *pv            = sceneData->getDeferredPostPass();
+    gfx::Shader *sd            = sceneData->getDeferredPostPassShader();
     const auto & renderObjects = sceneData->getRenderObjects();
 
     if (!renderObjects.empty()) {

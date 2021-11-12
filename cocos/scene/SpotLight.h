@@ -25,69 +25,72 @@
 
 #pragma once
 
-#include "scene/AABB.h"
-#include "scene/Frustum.h"
+#include "core/geometry/AABB.h"
+#include "core/geometry/Frustum.h"
 #include "scene/Light.h"
 
 namespace cc {
 namespace scene {
 
-class SpotLight : public Light {
+class SpotLight final : public Light {
 public:
-    SpotLight()                  = default;
-    SpotLight(const SpotLight &) = delete;
-    SpotLight(SpotLight &&)      = delete;
-    ~SpotLight() override        = default;
-    SpotLight &operator=(const SpotLight &) = delete;
-    SpotLight &operator=(SpotLight &&) = delete;
+    SpotLight();
+    ~SpotLight() override = default;
 
+    void initialize() override;
     void update() override;
 
-    inline void setAABB(AABB *aabb) { _aabb = aabb; }
-    inline void setAngle(float angle) {
-        _spotAngle  = angle;
-        _angle      = acos(_spotAngle) * 2;
-        _needUpdate = true;
-    }
-    inline void setAspect(float aspect) {
-        _aspect     = aspect;
-        _needUpdate = true;
-    }
-    inline void setDirection(const Vec3 &dir) { _dir = dir; }
-    inline void setFrustum(Frustum frustum) { _frustum = std::move(frustum); }
-    inline void setIlluminance(float illu) { _illuminance = illu; }
-    inline void setNeedUpdate(bool value) { _needUpdate = value; }
-    inline void setRange(float range) {
+    inline const Vec3 &getPosition() const { return _pos; }
+
+    inline float getSize() const { return _size; }
+    inline void  setSize(float size) { _size = size; }
+
+    inline float getRange() const { return _range; }
+    inline void  setRange(float range) {
         _range      = range;
         _needUpdate = true;
     }
-    inline void setPosition(const Vec3 &pos) { _pos = pos; }
-    inline void setSize(float size) { _size = size; }
 
-    inline AABB *         getAABB() const { return _aabb; }
-    inline float          getAngle() const { return _angle; }
-    inline float          getSpotAngle() const { return _spotAngle; }
-    inline float          getAspect() const { return _aspect; }
-    inline const Vec3 &   getDirection() const { return _dir; }
-    inline const Frustum &getFrustum() const { return _frustum; }
-    inline float          getIlluminance() const { return _illuminance; }
-    inline bool           getNeedUpdate() const { return _needUpdate; }
-    inline float          getRange() const { return _range; }
-    inline const Vec3 &   getPosition() const { return _pos; }
-    inline float          getSize() const { return _size; }
+    inline float getLuminance() const { return _luminance; }
+    inline void  setLuminance(float lum) { _luminance = lum; }
+
+    inline const Vec3 &getDirection() const { return _dir; }
+
+    inline float getSpotAngle() const { return _spotAngle; }
+    inline void  setSpotAngle(float val) {
+        _angle      = val;
+        _spotAngle  = cos(val * 0.5F);
+        _needUpdate = true;
+    }
+
+    inline float getAngle() const { return _angle; }
+
+    inline float getAspect() const { return _aspect; }
+    inline void  setAspect(float aspect) {
+        _aspect     = aspect;
+        _needUpdate = true;
+    }
+
+    inline const geometry::AABB &getAABB() const { return _aabb; }
+
+    inline const geometry::Frustum &getFrustum() const { return _frustum; }
+
+    inline void setFrustum(geometry::Frustum frustum) { _frustum = std::move(frustum); }
 
 private:
-    bool    _needUpdate{false};
-    float   _illuminance{0.F};
-    float   _range{0.F};
-    float   _size{0.F};
-    float   _angle{0.F};
-    float   _spotAngle{0.F};
-    float   _aspect{0.F};
-    Vec3    _dir;
-    Vec3    _pos;
-    AABB *  _aabb{nullptr};
-    Frustum _frustum;
+    bool              _needUpdate{false};
+    float             _luminance{0.F};
+    float             _range{0.F};
+    float             _size{0.F};
+    float             _angle{0.F};
+    float             _spotAngle{0.F};
+    float             _aspect{0.F};
+    Vec3              _dir;
+    Vec3              _pos;
+    geometry::AABB    _aabb;
+    geometry::Frustum _frustum;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(SpotLight);
 };
 
 } // namespace scene

@@ -38,6 +38,7 @@
 #include "gfx-base/GFXSampler.h"
 #include "gfx-base/GFXTexture.h"
 #include "platform/Application.h"
+#include "DeferredPipelineSceneData.h"
 
 namespace cc {
 namespace pipeline {
@@ -52,6 +53,10 @@ namespace {
     (dst)[(offset) + 2] = (src).z; \
     (dst)[(offset) + 3] = (src).w;
 } // namespace
+
+DeferredPipeline::DeferredPipeline() {
+    _pipelineSceneData = new DeferredPipelineSceneData();
+}
 
 gfx::RenderPass *DeferredPipeline::getOrCreateRenderPass(gfx::ClearFlags clearFlags) {
     if (_renderPasses.find(clearFlags) != _renderPasses.end()) {
@@ -111,7 +116,7 @@ bool DeferredPipeline::initialize(const RenderPipelineInfo &info) {
 }
 
 bool DeferredPipeline::activate() {
-    _macros.setValue("CC_PIPELINE_TYPE", static_cast<float>(1.0));
+    _macros["CC_PIPELINE_TYPE"] = 1.0F;
 
     if (!RenderPipeline::activate()) {
         CC_LOG_ERROR("RenderPipeline active failed.");
@@ -230,18 +235,18 @@ gfx::Rect DeferredPipeline::getRenderArea(scene::Camera *camera, bool onScreen) 
     uint w;
     uint h;
     if (onScreen) {
-        w = camera->window->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->height : camera->width;
-        h = camera->window->hasOnScreenAttachments && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->width : camera->height;
+        w = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getHeight() : camera->getWidth();
+        h = camera->getWindow()->hasOnScreenAttachments() && static_cast<uint>(_device->getSurfaceTransform()) % 2 ? camera->getWidth() : camera->getHeight();
     } else {
-        w = camera->width;
-        h = camera->height;
+        w = camera->getWidth();
+        h = camera->getHeight();
     }
 
-    const auto &viewport = camera->viewPort;
+    const auto &viewport = camera->getViewport();
     renderArea.x         = static_cast<int>(viewport.x * w);
     renderArea.y         = static_cast<int>(viewport.y * h);
-    renderArea.width     = static_cast<uint>(viewport.z * w * _pipelineSceneData->getSharedData()->shadingScale);
-    renderArea.height    = static_cast<uint>(viewport.w * h * _pipelineSceneData->getSharedData()->shadingScale);
+    renderArea.width     = static_cast<uint>(viewport.z * w * _pipelineSceneData->getShadingScale());
+    renderArea.height    = static_cast<uint>(viewport.w * h * _pipelineSceneData->getShadingScale());
     return renderArea;
 }
 
@@ -253,7 +258,6 @@ void DeferredPipeline::destroyQuadInputAssembler() {
 
 bool DeferredPipeline::activeRenderer() {
     _commandBuffers.push_back(_device->getCommandBuffer());
-    auto *const sharedData = _pipelineSceneData->getSharedData();
 
     gfx::SamplerInfo info{
         gfx::Filter::POINT,
@@ -281,8 +285,8 @@ bool DeferredPipeline::activeRenderer() {
     _descriptorSet->update();
 
     // update global defines when all states initialized.
-    _macros.setValue("CC_USE_HDR", static_cast<bool>(sharedData->isHDR));
-    _macros.setValue("CC_SUPPORT_FLOAT_TEXTURE", _device->hasFeature(gfx::Feature::TEXTURE_FLOAT));
+    _macros["CC_USE_HDR"]               = _pipelineSceneData->isHDR();
+    _macros["CC_SUPPORT_FLOAT_TEXTURE"] = _device->hasFeature(gfx::Feature::TEXTURE_FLOAT);
 
     if (!createQuadInputAssembler(&_quadIB, &_quadVBOffscreen, &_quadIAOffscreen)) {
         return false;
@@ -426,7 +430,7 @@ void DeferredPipeline::generateDeferredRenderData() {
         static_cast<uint>(PipelineGlobalBindings::SAMPLER_LIGHTING_RESULTMAP), _deferredRenderData->lightingFrameBuff->getColorTextures()[0]);
 }
 
-void DeferredPipeline::destroy() {
+bool DeferredPipeline::destroy() {
     destroyQuadInputAssembler();
     destroyDeferredData();
 
@@ -450,7 +454,7 @@ void DeferredPipeline::destroy() {
     CC_SAFE_DESTROY(_gbufferRenderPass);
     CC_SAFE_DESTROY(_lightingRenderPass);
 
-    RenderPipeline::destroy();
+    return RenderPipeline::destroy();
 }
 
 void DeferredPipeline::destroyDeferredData() {

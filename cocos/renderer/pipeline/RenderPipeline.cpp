@@ -50,7 +50,6 @@ RenderPipeline::RenderPipeline()
 
     _globalDSManager   = new GlobalDSManager();
     _pipelineUBO       = new PipelineUBO();
-    _pipelineSceneData = new PipelineSceneData();
 }
 
 RenderPipeline::~RenderPipeline() {
@@ -96,7 +95,7 @@ void RenderPipeline::render(const vector<scene::Camera *> &cameras) {
     }
 }
 
-void RenderPipeline::destroy() {
+bool RenderPipeline::destroy() {
     for (auto *flow : _flows) {
         flow->destroy();
     }
@@ -119,10 +118,8 @@ void RenderPipeline::destroy() {
     SamplerLib::destroyAll();
     PipelineStateManager::destroyAll();
     InstancedBuffer::destroyInstancedBuffer();
-}
 
-void RenderPipeline::setPipelineSharedSceneData(scene::PipelineSharedSceneData *data) {
-    _pipelineSceneData->setPipelineSharedSceneData(data);
+    return Super::destroy();
 }
 
 void RenderPipeline::generateConstantMacros() {

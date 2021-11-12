@@ -164,8 +164,8 @@ void printJSBInvokeAtFrame(int n);
 
     #define SE_BIND_SUB_CLS_CTOR SE_BIND_CTOR
 
-    #define SE_BIND_PROP_GET(funcName)                                                                                   \
-        void funcName##Registry(v8::Local<v8::Name> /*_property*/, const v8::PropertyCallbackInfo<v8::Value> &_v8args) { \
+    #define SE_BIND_PROP_GET_IMPL(funcName,postFix)                                                                                   \
+        void funcName##postFix##Registry(v8::Local<v8::Name> /*_property*/, const v8::PropertyCallbackInfo<v8::Value> &_v8args) { \
             JsbInvokeScope(#funcName);                                                                                   \
             v8::Isolate *   _isolate = _v8args.GetIsolate();                                                             \
             v8::HandleScope _hs(_isolate);                                                                               \
@@ -179,8 +179,11 @@ void printJSBInvokeAtFrame(int n);
             se::internal::setReturnValue(state.rval(), _v8args);                                                         \
         }
 
-    #define SE_BIND_PROP_SET(funcName)                                                                                                           \
-        void funcName##Registry(v8::Local<v8::Name> /*_property*/, v8::Local<v8::Value> _value, const v8::PropertyCallbackInfo<void> &_v8args) { \
+    #define SE_BIND_PROP_GET(funcName) SE_BIND_PROP_GET_IMPL(funcName,)
+    #define SE_BIND_FUNC_AS_PROP_GET(funcName) SE_BIND_PROP_GET_IMPL(funcName,_asGetter)
+
+    #define SE_BIND_PROP_SET_IMPL(funcName,postFix)                                                                                                           \
+        void funcName##postFix##Registry(v8::Local<v8::Name> /*_property*/, v8::Local<v8::Value> _value, const v8::PropertyCallbackInfo<void> &_v8args) { \
             JsbInvokeScope(#funcName);                                                                                                           \
             v8::Isolate *   _isolate = _v8args.GetIsolate();                                                                                     \
             v8::HandleScope _hs(_isolate);                                                                                                       \
@@ -197,6 +200,9 @@ void printJSBInvokeAtFrame(int n);
                 SE_LOGE("[ERROR] Failed to invoke %s, location: %s:%d\n", #funcName, __FILE__, __LINE__);                                        \
             }                                                                                                                                    \
         }
+
+    #define SE_BIND_PROP_SET(funcName) SE_BIND_PROP_SET_IMPL(funcName,)
+    #define SE_BIND_FUNC_AS_PROP_SET(funcName) SE_BIND_PROP_SET_IMPL(funcName,_asSetter)
 
     #define SE_TYPE_NAME(t) typeid(t).name()
 

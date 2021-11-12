@@ -54,7 +54,7 @@ gfx::PipelineState *PipelineStateManager::getOrCreatePipelineState(const scene::
             *(pass->getDepthStencilState()),
             *(pass->getBlendState()),
             pass->getPrimitive(),
-            pass->getDynamicState(),
+            pass->getDynamicStates(),
         });
 
         psoHashMap[hash] = pso;

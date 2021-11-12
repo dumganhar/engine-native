@@ -184,17 +184,18 @@ void CCMTLBuffer::update(const void *buffer, uint size) {
         return;
     }
 
-    uint drawInfoCount = size / _stride;
-    const auto *drawInfo = static_cast<const DrawInfo *>(buffer);
-    if (drawInfoCount > 0) {
-        if (drawInfo->indexCount) {
-            _isDrawIndirectByIndex = true;
-        } else {
-            _isDrawIndirectByIndex = false;
-        }
-    }
+    _isDrawIndirectByIndex = false;
 
     if (hasFlag(_usage, BufferUsageBit::INDIRECT)) {
+
+        uint drawInfoCount = size / _stride;
+        const auto *drawInfo = static_cast<const DrawInfo *>(buffer);
+        if (drawInfoCount > 0) {
+            if (drawInfo->indexCount) {
+                _isDrawIndirectByIndex = true;
+            }
+        }
+
         if (_isIndirectDrawSupported) {
             if (drawInfoCount > 0) {
                 if (_isDrawIndirectByIndex) {

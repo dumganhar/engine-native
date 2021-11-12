@@ -6,6 +6,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/predefine.cmake)
 set(CWD ${CMAKE_CURRENT_LIST_DIR})
 set(COCOS2D_SOURCE_LIST)
 
+
 # Should be enable someday in the future
 # set(CMAKE_CXX_FLAGS "${WERROR_FLAGS}")
 
@@ -391,8 +392,12 @@ endif()
 
 ######### module math
 cocos_source_files(MODULE ccmath
+    cocos/math/Utils.h
+    cocos/math/Utils.cpp
     cocos/math/Geometry.cpp
     cocos/math/Geometry.h
+    cocos/math/Color.cpp
+    cocos/math/Color.h
     cocos/math/Math.h
     cocos/math/Math.cpp
     cocos/math/MathBase.h
@@ -638,6 +643,17 @@ endif()
 
 ##### renderer
 cocos_source_files(
+                 cocos/renderer/core/PassUtils.h
+                 cocos/renderer/core/PassUtils.cpp
+                 cocos/renderer/core/ProgramLib.h
+                 cocos/renderer/core/ProgramLib.cpp
+                 cocos/renderer/core/MaterialInstance.h
+                 cocos/renderer/core/MaterialInstance.cpp
+                 cocos/renderer/core/PassInstance.h
+                 cocos/renderer/core/PassInstance.cpp
+                 cocos/renderer/core/TextureBufferPool.h
+                 cocos/renderer/core/TextureBufferPool.cpp
+
                  cocos/renderer/GFXDeviceManager.h
 
                  cocos/renderer/gfx-base/GFXObject.h
@@ -816,12 +832,14 @@ cocos_source_files(
                  cocos/renderer/pipeline/forward/UIPhase.h
                  cocos/renderer/pipeline/deferred/DeferredPipeline.cpp
                  cocos/renderer/pipeline/deferred/DeferredPipeline.h
-                 cocos/renderer/pipeline/deferred/GbufferFlow.cpp
-                 cocos/renderer/pipeline/deferred/GbufferFlow.h
+                 cocos/renderer/pipeline/deferred/DeferredPipelineSceneData.cpp
+                 cocos/renderer/pipeline/deferred/DeferredPipelineSceneData.h
                  cocos/renderer/pipeline/deferred/GbufferStage.cpp
                  cocos/renderer/pipeline/deferred/GbufferStage.h
                  cocos/renderer/pipeline/deferred/LightingFlow.cpp
                  cocos/renderer/pipeline/deferred/LightingFlow.h
+                 cocos/renderer/pipeline/deferred/GbufferFlow.cpp
+                 cocos/renderer/pipeline/deferred/GbufferFlow.h
                  cocos/renderer/pipeline/deferred/LightingStage.cpp
                  cocos/renderer/pipeline/deferred/LightingStage.h
                  cocos/renderer/pipeline/deferred/PostprocessStage.cpp
@@ -836,46 +854,112 @@ cocos_source_files(
                  cocos/renderer/pipeline/helper/DefineMap.cpp
 )
 
+##### terrain
+
+cocos_source_files(
+    cocos/terrain/HeightField.cpp
+    cocos/terrain/HeightField.h
+    cocos/terrain/Terrain.cpp
+    cocos/terrain/Terrain.h
+    cocos/terrain/TerrainAsset.cpp
+    cocos/terrain/TerrainAsset.h
+    cocos/terrain/TerrainLod.cpp
+    cocos/terrain/TerrainLod.h
+)
+
+
 ##### scene
 cocos_source_files(
-                 cocos/scene/AABB.h
-                 cocos/scene/AABB.cpp
+                 cocos/scene/Ambient.h
+                 cocos/scene/Ambient.cpp
                  cocos/scene/BakedSkinningModel.h
                  cocos/scene/BakedSkinningModel.cpp
                  cocos/scene/Camera.h
+                 cocos/scene/Camera.cpp
                  cocos/scene/Define.h
                  cocos/scene/Define.cpp
                  cocos/scene/DirectionalLight.h
                  cocos/scene/DirectionalLight.cpp
                  cocos/scene/DrawBatch2D.h
-                 cocos/scene/Frustum.h
-                 cocos/scene/Frustum.cpp
+                 cocos/scene/Fog.h
+                 cocos/scene/Fog.cpp
                  cocos/scene/Light.h
                  cocos/scene/Light.cpp
                  cocos/scene/Model.h
                  cocos/scene/Model.cpp
                  cocos/scene/MorphModel.h
-                 cocos/scene/BaseNode.h
-                 cocos/scene/BaseNode.cpp
-                 cocos/scene/Node.h
-                 cocos/scene/Node.cpp
-                 cocos/scene/Scene.h
-                 cocos/scene/Scene.cpp
+                 cocos/scene/MorphModel.cpp
                  cocos/scene/Pass.h
                  cocos/scene/Pass.cpp
                  cocos/scene/RenderScene.h
                  cocos/scene/RenderScene.cpp
+                 cocos/scene/RenderWindow.cpp
                  cocos/scene/RenderWindow.h
                  cocos/scene/SkinningModel.h
                  cocos/scene/SkinningModel.cpp
-                 cocos/scene/Sphere.h
-                 cocos/scene/Sphere.cpp
+                 cocos/scene/Skybox.h
+                 cocos/scene/Skybox.cpp
                  cocos/scene/SphereLight.h
                  cocos/scene/SphereLight.cpp
                  cocos/scene/SpotLight.h
                  cocos/scene/SpotLight.cpp
                  cocos/scene/SubModel.h
                  cocos/scene/SubModel.cpp
+                 cocos/scene/Shadow.h
+                 cocos/scene/Shadow.cpp
+)
+
+##### primitive
+cocos_source_files(
+    cocos/primitive/Box.cpp
+    cocos/primitive/Box.h
+    cocos/primitive/Capsule.cpp
+    cocos/primitive/Capsule.h
+    cocos/primitive/Circle.cpp
+    cocos/primitive/Circle.h
+    cocos/primitive/Cone.cpp
+    cocos/primitive/Cone.h
+    cocos/primitive/Cylinder.cpp
+    cocos/primitive/Cylinder.h
+    cocos/primitive/Plane.cpp
+    cocos/primitive/Plane.h
+    cocos/primitive/Primitive.cpp
+    cocos/primitive/Primitive.h
+    cocos/primitive/PrimitiveDefine.h
+    cocos/primitive/PrimitiveUtils.cpp
+    cocos/primitive/PrimitiveUtils.h
+    cocos/primitive/Quad.cpp
+    cocos/primitive/Quad.h
+    cocos/primitive/Sphere.cpp
+    cocos/primitive/Sphere.h
+    cocos/primitive/Torus.cpp
+    cocos/primitive/Torus.h
+    cocos/primitive/Transform.cpp
+    cocos/primitive/Transform.h
+)
+
+##### components
+cocos_source_files(
+    cocos/core/components/Component.h
+    cocos/core/components/Component.cpp
+    cocos/core/components/RenderableComponent.h
+    cocos/core/components/RenderableComponent.cpp
+    cocos/core/components/CameraComponent.h
+    cocos/core/components/CameraComponent.cpp
+    cocos/3d/framework/MeshRenderer.h
+    cocos/3d/framework/MeshRenderer.cpp
+)
+
+##### lights
+cocos_source_files(
+    cocos/3d/lights/LightComponent.h
+    cocos/3d/lights/LightComponent.cpp
+    cocos/3d/lights/DirectionalLightComponent.h
+    cocos/3d/lights/DirectionalLightComponent.cpp
+    cocos/3d/lights/SpotLightComponent.h
+    cocos/3d/lights/SpotLightComponent.cpp
+    cocos/3d/lights/SphereLightComponent.h
+    cocos/3d/lights/SphereLightComponent.cpp
 )
 
 if(CC_USE_GLES2 OR CC_USE_GLES3)
@@ -1199,20 +1283,346 @@ if(USE_PHYSICS_PHYSX)
         cocos/physics/physx/joints/PhysXRevolute.cpp
         cocos/physics/physx/joints/PhysXDistance.h
         cocos/physics/physx/joints/PhysXDistance.cpp
+    )
+    cocos_source_files(
         cocos/bindings/auto/jsb_physics_auto.cpp
         cocos/bindings/auto/jsb_physics_auto.h
     )
 endif()
 
+
+##### 2d
+cocos_source_files(
+    cocos/2d/framework/UITransform.h
+    cocos/2d/framework/UITransform.cpp
+)
+
+##### 3d
+cocos_source_files(
+    cocos/3d/assets/Types.h
+    cocos/3d/assets/Types.cpp
+    cocos/3d/assets/Mesh.h
+    cocos/3d/assets/Mesh.cpp
+    cocos/3d/assets/Morph.h
+    cocos/3d/assets/Morph.cpp
+    cocos/3d/assets/MorphRendering.h
+    cocos/3d/assets/MorphRendering.cpp
+    cocos/3d/assets/Skeleton.h
+    cocos/3d/assets/Skeleton.cpp
+
+    cocos/3d/misc/CreateMesh.h
+    cocos/3d/misc/CreateMesh.cpp
+    cocos/3d/misc/BufferBlob.h
+    cocos/3d/misc/BufferBlob.cpp
+
+    cocos/3d/skeletal-animation/DataPoolManager.h
+    cocos/3d/skeletal-animation/DataPoolManager.cpp
+    cocos/3d/skeletal-animation/SkeletalAnimationUtils.h
+    cocos/3d/skeletal-animation/SkeletalAnimationUtils.cpp
+)
+
+##### core
+
+cocos_source_files(
+    cocos/core/Any.h
+    cocos/core/ArrayBuffer.h
+
+    cocos/core/CoreModuleHeader.h
+    cocos/core/DataView.h
+    cocos/core/DataView.cpp
+    cocos/core/Director.cpp
+    cocos/core/Director.h
+    cocos/core/Game.cpp
+    cocos/core/Game.h
+    cocos/core/Root.cpp
+    cocos/core/Root.h
+    
+    cocos/core/System.h
+    
+    cocos/core/Scheduler.cpp
+    cocos/core/Scheduler.h
+    cocos/core/SplashScreen.cpp
+    cocos/core/SplashScreen.h
+    cocos/core/Types.h
+    cocos/core/Types.cpp
+    cocos/core/TypedArray.h
+    cocos/core/TypedArray.cpp
+
+    # memop
+    cocos/core/memop/CachedArray.h
+    cocos/core/memop/CachedArray.cpp
+    cocos/core/memop/Pool.h
+    cocos/core/memop/Pool.cpp
+    cocos/core/memop/RecyclePool.h
+    cocos/core/memop/RecyclePool.cpp
+
+
+    cocos/core/asset-manager/AssetManager.cpp
+    cocos/core/asset-manager/AssetManager.h
+    cocos/core/asset-manager/AssetManagerModuleHeader.h
+    cocos/core/asset-manager/Bundle.cpp
+    cocos/core/asset-manager/Bundle.h
+    cocos/core/asset-manager/Cache.cpp
+    cocos/core/asset-manager/Cache.h
+    cocos/core/asset-manager/CacheManager.cpp
+    cocos/core/asset-manager/CacheManager.h
+    cocos/core/asset-manager/AssetManagerConfig.cpp
+    cocos/core/asset-manager/AssetManagerConfig.h
+    cocos/core/asset-manager/DependMaps.cpp
+    cocos/core/asset-manager/DependMaps.h
+    cocos/core/asset-manager/DependUtil.cpp
+    cocos/core/asset-manager/DependUtil.h
+    cocos/core/asset-manager/Deserialize.cpp
+    cocos/core/asset-manager/Deserialize.h
+    cocos/core/asset-manager/DownloadFile.cpp
+    cocos/core/asset-manager/DownloadFile.h
+    cocos/core/asset-manager/DownloadImage.cpp
+    cocos/core/asset-manager/DownloadImage.h
+    cocos/core/asset-manager/DownloadScript.cpp
+    cocos/core/asset-manager/DownloadScript.h
+    cocos/core/asset-manager/Downloader.cpp
+    cocos/core/asset-manager/Downloader.h
+    cocos/core/asset-manager/Factory.cpp
+    cocos/core/asset-manager/Factory.h
+    cocos/core/asset-manager/Fetch.cpp
+    cocos/core/asset-manager/Fetch.h
+    cocos/core/asset-manager/Helper.cpp
+    cocos/core/asset-manager/Helper.h
+    cocos/core/asset-manager/Load.cpp
+    cocos/core/asset-manager/Load.h
+    cocos/core/asset-manager/PackManager.cpp
+    cocos/core/asset-manager/PackManager.h
+    cocos/core/asset-manager/Parser.cpp
+    cocos/core/asset-manager/Parser.h
+    cocos/core/asset-manager/Pipeline.cpp
+    cocos/core/asset-manager/Pipeline.h
+    cocos/core/asset-manager/PlistParser.cpp
+    cocos/core/asset-manager/PlistParser.h
+    cocos/core/asset-manager/PreProcess.cpp
+    cocos/core/asset-manager/PreProcess.h
+    cocos/core/asset-manager/ReleaseManager.cpp
+    cocos/core/asset-manager/ReleaseManager.h
+    cocos/core/asset-manager/RequestItem.cpp
+    cocos/core/asset-manager/RequestItem.h
+    cocos/core/asset-manager/Shared.cpp
+    cocos/core/asset-manager/Shared.h
+    cocos/core/asset-manager/Task.cpp
+    cocos/core/asset-manager/Task.h
+    cocos/core/asset-manager/UrlTransformer.cpp
+    cocos/core/asset-manager/UrlTransformer.h
+    cocos/core/asset-manager/Utilities.cpp
+    cocos/core/asset-manager/Utilities.h
+    cocos/core/asset-manager/WeakCache.cpp
+    cocos/core/asset-manager/WeakCache.h
+
+    cocos/core/assets/Asset.cpp
+    cocos/core/assets/Asset.h
+    cocos/core/assets/AssetEnum.cpp
+    cocos/core/assets/AssetEnum.h
+    cocos/core/assets/AssetsModuleHeader.h
+    cocos/core/assets/BufferAsset.cpp
+    cocos/core/assets/BufferAsset.h
+    cocos/core/assets/EffectAsset.cpp
+    cocos/core/assets/EffectAsset.h
+    cocos/core/assets/ImageAsset.cpp
+    cocos/core/assets/ImageAsset.h
+    cocos/core/assets/JsonAsset.cpp
+    cocos/core/assets/JsonAsset.h
+    cocos/core/assets/Material.cpp
+    cocos/core/assets/Material.h
+    cocos/core/assets/Prefab.cpp
+    cocos/core/assets/Prefab.h
+    cocos/core/assets/RenderTexture.cpp
+    cocos/core/assets/RenderTexture.h
+    cocos/core/assets/RenderingSubMesh.cpp
+    cocos/core/assets/RenderingSubMesh.h
+    cocos/core/assets/SceneAsset.cpp
+    cocos/core/assets/SceneAsset.h
+    cocos/core/assets/SimpleTexture.cpp
+    cocos/core/assets/SimpleTexture.h
+    cocos/core/assets/TextAsset.cpp
+    cocos/core/assets/TextAsset.h
+    cocos/core/assets/Texture2D.cpp
+    cocos/core/assets/Texture2D.h
+    cocos/core/assets/TextureBase.cpp
+    cocos/core/assets/TextureBase.h
+    cocos/core/assets/TextureCube.cpp
+    cocos/core/assets/TextureCube.h
+
+    # builtin
+    cocos/core/builtin/BuiltinResMgr.cpp
+    cocos/core/builtin/BuiltinResMgr.h
+    cocos/core/builtin/ShaderSourceAssembly.cpp
+    cocos/core/builtin/ShaderSourceAssembly.h
+    # cocos/core/builtin/Effects.cpp # generated
+    cocos/core/builtin/Effects.h
+    # cocos/core/builtin/shader-sources/glsl1.cpp # generated
+    cocos/core/builtin/shader-sources/glsl1.h
+    # cocos/core/builtin/shader-sources/glsl3.cpp # generated
+    cocos/core/builtin/shader-sources/glsl3.h
+    # cocos/core/builtin/shader-sources/glsl4.cpp # generated
+    cocos/core/builtin/shader-sources/glsl4.h
+    #
+
+    cocos/core/data/Object.cpp
+    cocos/core/data/Object.h
+    cocos/core/data/deserializer/EffectAssetDeserializer.cpp
+    cocos/core/data/deserializer/EffectAssetDeserializer.h
+    cocos/core/data/deserializer/MeshDeserializer.cpp
+    cocos/core/data/deserializer/MeshDeserializer.h
+    cocos/core/data/deserializer/MaterialDeserializer.cpp
+    cocos/core/data/deserializer/MaterialDeserializer.h
+    cocos/core/data/deserializer/ImageAssetDeserializer.cpp
+    cocos/core/data/deserializer/ImageAssetDeserializer.h
+    cocos/core/data/deserializer/TextureBaseDeserializer.h
+    cocos/core/data/deserializer/TextureBaseDeserializer.cpp
+    cocos/core/data/deserializer/Texture2DDeserializer.cpp
+    cocos/core/data/deserializer/Texture2DDeserializer.h
+    cocos/core/data/deserializer/TerrainAssetDeserializer.cpp
+    cocos/core/data/deserializer/TerrainAssetDeserializer.h
+    cocos/core/data/deserializer/IAssetDeserializer.h
+    cocos/core/data/deserializer/AssetDeserializerFactory.cpp
+    cocos/core/data/deserializer/AssetDeserializerFactory.h
+
+    cocos/core/event/CallbacksInvoker.cpp
+    cocos/core/event/CallbacksInvoker.h
+    cocos/core/event/EventTypesToJS.h
+    cocos/core/event/EventTypesToJS.cpp
+    cocos/core/event/Event.cpp
+    cocos/core/event/Event.h
+    cocos/core/event/EventModuleHeader.h
+    cocos/core/event/EventTarget.cpp
+    cocos/core/event/EventTarget.h
+    cocos/core/event/EventTargetFactory.cpp
+    cocos/core/event/EventTargetFactory.h
+    
+    cocos/core/scene-graph/Find.cpp
+    cocos/core/scene-graph/Find.h
+    cocos/core/scene-graph/Layers.h
+    cocos/core/scene-graph/Node.cpp
+    cocos/core/scene-graph/Node.h
+    cocos/core/scene-graph/BaseNode.h
+    cocos/core/scene-graph/ComponentScheduler.h
+    cocos/core/scene-graph/ComponentScheduler.cpp
+    cocos/core/scene-graph/NodeActivator.cpp
+    cocos/core/scene-graph/NodeActivator.h
+    cocos/core/scene-graph/NodeEnum.h
+    cocos/core/scene-graph/NodeEvent.cpp
+    cocos/core/scene-graph/NodeEvent.h
+    cocos/core/scene-graph/NodeEventProcessor.cpp
+    cocos/core/scene-graph/NodeEventProcessor.h
+    cocos/core/scene-graph/NodeUIProperties.cpp
+    cocos/core/scene-graph/NodeUIProperties.h
+    cocos/core/scene-graph/Scene.cpp
+    cocos/core/scene-graph/Scene.h
+    cocos/core/scene-graph/SceneGlobals.cpp
+    cocos/core/scene-graph/SceneGlobals.h
+    cocos/core/scene-graph/SceneGraphModuleHeader.h
+
+    cocos/core/utils/IDGenerator.cpp
+    cocos/core/utils/IDGenerator.h
+    cocos/core/utils/Path.cpp
+    cocos/core/utils/Path.h
+    cocos/core/utils/MutableForwardIterator.cpp
+    cocos/core/utils/MutableForwardIterator.h
+    cocos/core/utils/Pool.h
+    cocos/core/utils/ImageUtils.h
+    cocos/core/utils/ImageUtils.cpp
+
+    cocos/core/platform/event-manager/Events.h
+    cocos/core/platform/event-manager/EventListeners.h
+    cocos/core/platform/event-manager/EventAcceleration.cpp
+    cocos/core/platform/event-manager/EventAcceleration.h
+    cocos/core/platform/event-manager/EventCustom.cpp
+    cocos/core/platform/event-manager/EventCustom.h
+    cocos/core/platform/event-manager/EventManager.cpp
+    cocos/core/platform/event-manager/EventManager.h
+    cocos/core/platform/event-manager/EventKeyboard.cpp
+    cocos/core/platform/event-manager/EventKeyboard.h
+    cocos/core/platform/event-manager/EventListener.cpp
+    cocos/core/platform/event-manager/EventListener.h
+    cocos/core/platform/event-manager/EventListenerAcceleration.cpp
+    cocos/core/platform/event-manager/EventListenerAcceleration.h
+    cocos/core/platform/event-manager/EventListenerCustom.cpp
+    cocos/core/platform/event-manager/EventListenerCustom.h
+    cocos/core/platform/event-manager/EventListenerKeyboard.cpp
+    cocos/core/platform/event-manager/EventListenerKeyboard.h
+    cocos/core/platform/event-manager/EventListenerMouse.cpp
+    cocos/core/platform/event-manager/EventListenerMouse.h
+    cocos/core/platform/event-manager/EventListenerTouch.cpp
+    cocos/core/platform/event-manager/EventListenerTouch.h
+    cocos/core/platform/event-manager/EventMouse.cpp
+    cocos/core/platform/event-manager/EventMouse.h
+    cocos/core/platform/event-manager/EventTouch.cpp
+    cocos/core/platform/event-manager/EventTouch.h
+    cocos/core/platform/event-manager/EventType.h
+    cocos/core/platform/event-manager/Touch.cpp
+    cocos/core/platform/event-manager/Touch.h
+    cocos/core/platform/event-manager/EventEnum.cpp
+    cocos/core/platform/event-manager/EventEnum.h
+    cocos/core/platform/event-manager/InputManager.cpp
+    cocos/core/platform/event-manager/InputManager.h
+    cocos/core/platform/event-manager/SystemEvent.cpp
+    cocos/core/platform/event-manager/SystemEvent.h
+    cocos/core/platform/event-manager/KeyCode.cpp
+    cocos/core/platform/event-manager/KeyCode.h
+
+    cocos/core/platform/native/SystemInfo.h
+    cocos/core/platform/native/SystemInfo.cpp
+
+    cocos/core/platform/Debug.h
+    cocos/core/platform/Debug.cpp
+    cocos/core/platform/Macro.h
+    cocos/core/platform/Macro.cpp
+    cocos/core/platform/Screen.h
+    cocos/core/platform/Screen.cpp
+    cocos/core/platform/View.h
+    cocos/core/platform/View.cpp
+    cocos/core/platform/VisibleRect.h
+    cocos/core/platform/VisibleRect.cpp
+
+)
+
+cocos_source_files(MODULE ccgeometry
+    cocos/core/geometry/AABB.cpp
+    cocos/core/geometry/AABB.h
+    cocos/core/geometry/Capsule.cpp
+    cocos/core/geometry/Capsule.h
+    # cocos/core/geometry/Curve.cpp
+    # cocos/core/geometry/Curve.h
+    cocos/core/geometry/Distance.cpp
+    cocos/core/geometry/Distance.h
+    cocos/core/geometry/Enums.h
+    cocos/core/geometry/Frustum.cpp
+    cocos/core/geometry/Frustum.h
+    cocos/core/geometry/Intersect.cpp
+    cocos/core/geometry/Intersect.h
+    cocos/core/geometry/Line.cpp
+    cocos/core/geometry/Line.h
+    cocos/core/geometry/Obb.cpp
+    cocos/core/geometry/Obb.h
+    cocos/core/geometry/Plane.cpp
+    cocos/core/geometry/Plane.h
+    cocos/core/geometry/Ray.cpp
+    cocos/core/geometry/Ray.h
+    cocos/core/geometry/Spec.cpp
+    cocos/core/geometry/Spec.h
+    cocos/core/geometry/Sphere.cpp
+    cocos/core/geometry/Sphere.h
+    cocos/core/geometry/Triangle.cpp
+    cocos/core/geometry/Triangle.h
+
+)
+
 ##### script bindings
 ######## dop
 cocos_source_files(
     NO_WERROR    cocos/bindings/dop/BufferPool.cpp
-                 cocos/bindings/dop/BufferPool.h
+                cocos/bindings/dop/BufferPool.h
     NO_WERROR    cocos/bindings/dop/jsb_dop.cpp
-                 cocos/bindings/dop/jsb_dop.h
-                 cocos/bindings/dop/PoolType.h
-                 cocos/bindings/dop/BufferAllocator.h
+                cocos/bindings/dop/jsb_dop.h
+                cocos/bindings/dop/PoolType.h
+                cocos/bindings/dop/BufferAllocator.h
     NO_WERROR    cocos/bindings/dop/BufferAllocator.cpp
 )
 
@@ -1230,6 +1640,10 @@ cocos_source_files(
                  cocos/bindings/auto/jsb_pipeline_auto.h
     NO_WERROR    cocos/bindings/auto/jsb_scene_auto.cpp
                  cocos/bindings/auto/jsb_scene_auto.h
+    NO_WERROR    cocos/bindings/auto/jsb_assets_auto.cpp
+                 cocos/bindings/auto/jsb_assets_auto.h
+    NO_WERROR    cocos/bindings/auto/jsb_geometry_auto.cpp
+                 cocos/bindings/auto/jsb_geometry_auto.h
 )
 
 if(USE_AUDIO)
@@ -1270,8 +1684,11 @@ if(USE_MIDDLEWARE)
                      cocos/editor-support/SharedBufferManager.h
                      cocos/editor-support/TypedArrayPool.cpp
                      cocos/editor-support/TypedArrayPool.h
+    )
+
+    cocos_source_files(
         NO_WERROR    cocos/bindings/auto/jsb_editor_support_auto.cpp
-                     cocos/bindings/auto/jsb_editor_support_auto.h
+                    cocos/bindings/auto/jsb_editor_support_auto.h
     )
 
     if(USE_SPINE)
@@ -1438,10 +1855,13 @@ if(USE_MIDDLEWARE)
                          cocos/editor-support/spine-creator-support/spine-cocos2dx.h
             NO_WERROR    cocos/editor-support/spine-creator-support/VertexEffectDelegate.cpp
                          cocos/editor-support/spine-creator-support/VertexEffectDelegate.h
-            NO_WERROR    cocos/bindings/auto/jsb_spine_auto.cpp
-                         cocos/bindings/auto/jsb_spine_auto.h
-            NO_WERROR    cocos/bindings/manual/jsb_spine_manual.cpp
-                         cocos/bindings/manual/jsb_spine_manual.h
+
+        )
+        cocos_source_files(
+        NO_WERROR    cocos/bindings/auto/jsb_spine_auto.cpp
+                        cocos/bindings/auto/jsb_spine_auto.h
+        NO_WERROR    cocos/bindings/manual/jsb_spine_manual.cpp
+                        cocos/bindings/manual/jsb_spine_manual.h
         )
     endif()
 
@@ -1531,10 +1951,13 @@ if(USE_MIDDLEWARE)
                          cocos/editor-support/dragonbones-creator-support/CCSlot.h
             NO_WERROR    cocos/editor-support/dragonbones-creator-support/CCTextureAtlasData.cpp
                          cocos/editor-support/dragonbones-creator-support/CCTextureAtlasData.h
+
+        )
+        cocos_source_files(
             NO_WERROR    cocos/bindings/auto/jsb_dragonbones_auto.cpp
-                         cocos/bindings/auto/jsb_dragonbones_auto.h
+                        cocos/bindings/auto/jsb_dragonbones_auto.h
             NO_WERROR    cocos/bindings/manual/jsb_dragonbones_manual.cpp
-                         cocos/bindings/manual/jsb_dragonbones_manual.h
+                        cocos/bindings/manual/jsb_dragonbones_manual.h
         )
     endif()
 endif()
@@ -1556,10 +1979,12 @@ cocos_source_files(
     NO_WERROR    cocos/bindings/manual/jsb_helper.cpp
                  cocos/bindings/manual/jsb_helper.h
                  cocos/bindings/manual/jsb_module_register.h
+    NO_WERROR    cocos/bindings/manual/jsb_module_register.cpp
                  cocos/bindings/manual/jsb_platform.h
     NO_WERROR    cocos/bindings/manual/jsb_scene_manual.cpp
-    NO_WERROR    cocos/bindings/manual/jsb_scene_manual_ext.cpp
                  cocos/bindings/manual/jsb_scene_manual.h
+    NO_WERROR    cocos/bindings/manual/jsb_assets_manual.cpp
+                 cocos/bindings/manual/jsb_assets_manual.h
     NO_WERROR    cocos/bindings/manual/jsb_network_manual.cpp
                  cocos/bindings/manual/jsb_network_manual.h
     NO_WERROR    cocos/bindings/manual/jsb_xmlhttprequest.cpp
@@ -1584,29 +2009,29 @@ if(NOT IOS AND USE_WEBSOCKET_SERVER)
     )
 endif()
 
-if(ANDROID)
-    cocos_source_files(
-                     cocos/bindings/manual/jsb_platform_android.cpp
-                     cocos/bindings/manual/JavaScriptJavaBridge.cpp
-                     cocos/bindings/manual/JavaScriptJavaBridge.h
-    )
-elseif(OHOS)
-    cocos_source_files(
-        cocos/bindings/manual/jsb_platform_ohos.cpp
-        cocos/bindings/manual/JavaScriptJavaBridge.cpp
-        cocos/bindings/manual/JavaScriptJavaBridge.h
-    )
-elseif(APPLE)
-    cocos_source_files(
-                    cocos/bindings/manual/jsb_platfrom_apple.mm
-                     cocos/bindings/manual/JavaScriptObjCBridge.h
-                     cocos/bindings/manual/JavaScriptObjCBridge.mm
-    )
-elseif(WIN32)
-    cocos_source_files(
-        NO_WERROR    cocos/bindings/manual/jsb_platfrom_win32.cpp
-    )
-endif()
+    if(ANDROID)
+        cocos_source_files(
+                        cocos/bindings/manual/jsb_platform_android.cpp
+                        cocos/bindings/manual/JavaScriptJavaBridge.cpp
+                        cocos/bindings/manual/JavaScriptJavaBridge.h
+        )
+    elseif(OHOS)
+        cocos_source_files(
+            cocos/bindings/manual/jsb_platform_ohos.cpp
+            cocos/bindings/manual/JavaScriptJavaBridge.cpp
+            cocos/bindings/manual/JavaScriptJavaBridge.h
+        )
+    elseif(APPLE)
+        cocos_source_files(
+                        cocos/bindings/manual/jsb_platfrom_apple.mm
+                        cocos/bindings/manual/JavaScriptObjCBridge.h
+                        cocos/bindings/manual/JavaScriptObjCBridge.mm
+        )
+    elseif(WIN32)
+        cocos_source_files(
+            NO_WERROR    cocos/bindings/manual/jsb_platfrom_win32.cpp
+        )
+    endif()
 
 ############# module bindings 
 if(USE_SE_V8)
@@ -1693,8 +2118,11 @@ cocos_source_files(MODULE ccbindings
                  cocos/bindings/jswrapper/State.h
                  cocos/bindings/jswrapper/Value.cpp
                  cocos/bindings/jswrapper/Value.h 
+)
+
+cocos_source_files(
     NO_WERROR    cocos/bindings/manual/jsb_global_init.cpp
-                 cocos/bindings/manual/jsb_global_init.h
+                cocos/bindings/manual/jsb_global_init.h
 )
 
 cocos_source_files(
@@ -1819,6 +2247,62 @@ cocos_source_files(
 list(APPEND COCOS2D_SOURCE_LIST ${CC_EXTERNAL_SOURCES})
 
 
+### generate source files
+
+
+macro(compile_ts file_without_ext)
+    add_custom_command(
+        OUTPUT ${file_without_ext}.js
+        COMMAND ${TSC_EXECUTABLE} --module commonjs ${file_without_ext}.ts
+        DEPENDS ${file_without_ext}.ts
+        VERBATIM USES_TERMINAL
+    )
+endmacro()
+
+macro(generate_glsl ver)
+    compile_ts(${CWD}/cocos/core/builtin/shader-sources/${ver})
+    add_custom_command(
+        OUTPUT ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp
+        COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/glsl_gzip.js
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
+            ${ver}
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp.in
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp
+        DEPENDS 
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
+            ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp.in
+            ${CWD}/cmake/scripts/glsl_gzip.js
+        VERBATIM USES_TERMINAL)
+endmacro()
+
+compile_ts(${CWD}/cocos/core/builtin/effects)
+add_custom_command(
+    OUTPUT ${CWD}/cocos/core/builtin/Effects.cpp
+    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/effects_gzip.js 
+        ${CWD}/cocos/core/builtin/effects.js
+        effects
+        ${CWD}/cocos/core/builtin/Effects.cpp.in
+        ${CWD}/cocos/core/builtin/Effects.cpp
+    DEPENDS 
+        ${CWD}/cocos/core/builtin/Effects.cpp.in
+        ${CWD}/cocos/core/builtin/effects.js
+        ${CWD}/cmake/scripts/effects_gzip.js
+    VERBATIM USES_TERMINAL)
+
+
+generate_glsl(glsl1)
+generate_glsl(glsl3)
+generate_glsl(glsl4)
+
+set(CC_GENERATED_FILES
+    ${CWD}/cocos/core/builtin/Effects.cpp
+    ${CWD}/cocos/core/builtin/shader-sources/glsl1.cpp
+    ${CWD}/cocos/core/builtin/shader-sources/glsl3.cpp
+    ${CWD}/cocos/core/builtin/shader-sources/glsl4.cpp
+)
+
+list(APPEND COCOS2D_SOURCE_LIST ${CC_GENERATED_FILES})
+
 if(USE_MODULES)
     add_library(ccmath ${ccmath_SOURCE_LIST})
     add_library(cclog ${cclog_SOURCE_LIST})
@@ -1826,8 +2310,12 @@ if(USE_MODULES)
     add_library(ccutils ${ccutils_SOURCE_LIST} ${CC_UTILS_SOURCES})
     add_library(ccunzip ${ccunzip_SOURCE_LIST} ${CC_UNZIP_SOURCES})
     add_library(ccbindings ${ccbindings_SOURCE_LIST})
+    add_library(ccgeometry ${ccgeometry_SOURCE_LIST})
 
     target_include_directories(ccmath PRIVATE
+        ${CWD}/cocos
+    )
+    target_include_directories(ccgeometry PRIVATE
         ${CWD}/cocos
     )
     target_include_directories(ccunzip PRIVATE
@@ -1868,6 +2356,9 @@ if(USE_MODULES)
         ${se_libs_name}
         uv
     )
+    target_link_libraries(ccgeometry PUBLIC 
+        ccmath
+    )
     if(ANDROID)
         target_link_libraries(ccmath PUBLIC
             android_platform
@@ -1895,6 +2386,7 @@ if(USE_MODULES)
 else()
     list(APPEND COCOS2D_SOURCE_LIST
         ${ccmath_SOURCE_LIST}
+        ${ccgeometry_SOURCE_LIST}
         ${cclog_SOURCE_LIST}
         ${ccfilesystem_SOURCE_LIST}
         ${ccunzip_SOURCE_LIST}
@@ -1934,6 +2426,8 @@ if(ANDROID OR OHOS)
         )
     endif()
 endif()
+
+
 
 ################################# cc_apply_definations ###################################
 function(cc_apply_definations target)

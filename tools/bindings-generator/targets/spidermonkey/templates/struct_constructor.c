@@ -13,6 +13,9 @@ bool sevalue_to_native(const se::Value &from, ${namespaced_class_name} * to, se:
     }
     se::Value field;
     bool ok = true;
+#for p in $parents
+    ok &= sevalue_to_native<${p.namespaced_class_name}>(from, to, ctx);
+#end for
 #set arg_idx = 0
 #for field in $public_fields
     #set field_type = field.ntype.to_string($generator)
@@ -40,7 +43,7 @@ static bool ${struct_constructor_name}(se::State& s) // NOLINT(readability-ident
         se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
         return true;
     }
-    #if len($public_fields) > 1
+    #if len($public_fields) > 1 or len($parents) > 0
 
     if(argc == 1 && args[0].isObject())
     {
@@ -54,7 +57,9 @@ static bool ${struct_constructor_name}(se::State& s) // NOLINT(readability-ident
             SE_REPORT_ERROR("argument convertion error");
             return false;
         }
-
+#for p in $parents
+        sevalue_to_native<${p.namespaced_class_name}>(args[0], cobj, s.thisObject()); // skip ok
+#end for
         s.thisObject()->setPrivateData(cobj);
         se::NonRefNativePtrCreatedByCtorMap::emplace(cobj);
         return true;

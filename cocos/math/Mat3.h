@@ -29,10 +29,10 @@
 
 #include "base/Macros.h"
 
+#include "math/Mat4.h"
 #include "math/Vec2.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
-#include "math/Mat4.h"
 
 /**
  * @addtogroup base
@@ -84,7 +84,7 @@ public:
      *
      * @param mat An array containing 16 elements in column-major order.
      */
-    Mat3(const float *mat);
+    explicit Mat3(const float *mat);
 
     /**
      * Constructs a new matrix by copying the values from the specified matrix.
@@ -197,6 +197,12 @@ public:
      * Creates a matrix from a scale vector.
      */
     static void fromScaling(Mat3 &out, const Vec2 &vec);
+
+    /**
+     * Sets a third order matrix with view direction and up direction. Then save the results to out matrix
+     */
+    static void fromViewUp(Mat3 &out, const Vec3 &view);
+    static void fromViewUp(Mat3 &out, const Vec3 &view, const Vec3 &up);
 
     /**
      * Calculates a 3x3 matrix from the given quaternion.

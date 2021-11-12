@@ -47,11 +47,11 @@ struct CC_DLL DeferredRenderData {
 
 class CC_DLL DeferredPipeline : public RenderPipeline {
 public:
-    DeferredPipeline()           = default;
+    DeferredPipeline();
     ~DeferredPipeline() override = default;
 
     bool initialize(const RenderPipelineInfo &info) override;
-    void destroy() override;
+    bool destroy() override;
     bool activate() override;
     void render(const vector<scene::Camera *> &cameras) override;
     void resize(uint width, uint height) override;

@@ -742,12 +742,6 @@ bool ScriptEngine::evalString(const char *script, ssize_t length /* = -1 */, Val
         sourceUrl = sourceUrl.substr(prefixPos + PREFIX_KEY.length());
     }
 
-    #if CC_PLATFORM == CC_PLATFORM_MAC_OSX
-    if (strncmp("(no filename)", sourceUrl.c_str(), sizeof("(no filename)")) != 0) {
-        sourceUrl = cc::FileUtils::getInstance()->fullPathForFilename(sourceUrl);
-    }
-    #endif
-
     // It is needed, or will crash if invoked from non C++ context, such as invoked from objective-c context(for example, handler of UIKit).
     v8::HandleScope handleScope(_isolate);
 

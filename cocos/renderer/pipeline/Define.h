@@ -29,6 +29,7 @@
 
 #include "base/Object.h"
 #include "base/Value.h"
+#include "gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "scene/Light.h"
 #include "scene/Model.h"
@@ -249,6 +250,7 @@ enum class CC_DLL SetIndex {
     GLOBAL,
     MATERIAL,
     LOCAL,
+    COUNT,
 };
 CC_ENUM_CONVERSION_OPERATOR(SetIndex)
 

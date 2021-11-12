@@ -126,11 +126,11 @@ bool jsb_register_all_modules() {
     se->addRegisterCallback(register_all_dop_bindings);
     se->addRegisterCallback(register_all_pipeline);
     se->addRegisterCallback(register_all_pipeline_manual);
-    se->addRegisterCallback(register_all_scene);
-    se->addRegisterCallback(register_all_scene_manual);
     se->addRegisterCallback(register_all_geometry);
     se->addRegisterCallback(register_all_assets);
     se->addRegisterCallback(register_all_assets_manual);
+    se->addRegisterCallback(register_all_scene);
+    se->addRegisterCallback(register_all_scene_manual);
 
 #if (CC_PLATFORM == CC_PLATFORM_MAC_IOS || CC_PLATFORM == CC_PLATFORM_MAC_OSX)
     se->addRegisterCallback(register_javascript_objc_bridge);

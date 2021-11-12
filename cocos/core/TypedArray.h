@@ -109,10 +109,26 @@ public:
       _byteEndPos(byteOffset + length) {
         CC_ASSERT(_byteEndPos <= _buffer->byteLength());
         _jsTypedArray = se::Object::createTypedArrayWithBuffer(toTypedArrayType<T>(), buffer->getJSArrayBuffer(), byteOffset, length);
+        _jsTypedArray->root();
+    }
+
+    TypedArrayTemp(const TypedArrayTemp &o) {
+        *this = o;
     }
 
     ~TypedArrayTemp() {
         _buffer.reset();
+        if (_jsTypedArray != nullptr) {
+            _jsTypedArray->unroot();
+            _jsTypedArray->decRef();
+        }
+    }
+
+    TypedArrayTemp &operator=(const TypedArrayTemp &o) {
+        if (this != &o) {
+            setJSTypedArray(o._jsTypedArray);
+        }
+        return *this;
     }
 
     T &operator[](index_t idx) {
@@ -152,20 +168,26 @@ public:
     }
 
     void reset(uint32_t length) {
+        if (_jsTypedArray != nullptr) {
+            _jsTypedArray->unroot();
+            _jsTypedArray->decRef();
+            _jsTypedArray = nullptr;
+        }
         const uint32_t byteLength = length * BYTES_PER_ELEMENT;
         _buffer                   = std::make_shared<ArrayBuffer>(byteLength);
         _byteLength               = _buffer->byteLength();
         _byteOffset               = 0;
         _byteEndPos               = byteLength;
         _jsTypedArray             = se::Object::createTypedArrayWithBuffer(toTypedArrayType<T>(), _buffer->getJSArrayBuffer(), 0, length);
+        _jsTypedArray->root();
     }
 
-    void reset(const ArrayBuffer::Ptr &buffer, uint32_t offset = 0, uint32_t length = std::numeric_limits<uint32_t>::max()) {
-        _buffer     = buffer;
-        _byteOffset = offset;
-        _byteEndPos = length == std::numeric_limits<uint32_t>::max() ? buffer->byteLength() : (length * BYTES_PER_ELEMENT);
-        _byteLength = buffer->byteLength();
-    }
+    //    void reset(const ArrayBuffer::Ptr &buffer, uint32_t offset = 0, uint32_t length = std::numeric_limits<uint32_t>::max()) {
+    //        _buffer     = buffer;
+    //        _byteOffset = offset;
+    //        _byteEndPos = length == std::numeric_limits<uint32_t>::max() ? buffer->byteLength() : (length * BYTES_PER_ELEMENT);
+    //        _byteLength = buffer->byteLength();
+    //    }
 
     inline const ArrayBuffer::Ptr &buffer() const { return _buffer; }
     inline uint32_t                byteLength() const { return _byteLength; }
@@ -174,7 +196,13 @@ public:
     inline bool                    empty() const { return _byteLength == 0; }
     inline se::Object *            getJSTypedArray() const { return _jsTypedArray; }
     inline void                    setJSTypedArray(se::Object *typedArray) {
+        if (_jsTypedArray != nullptr) {
+            _jsTypedArray->unroot();
+            _jsTypedArray->decRef();
+        }
         _jsTypedArray = typedArray;
+        _jsTypedArray->root();
+        _jsTypedArray->incRef();
 
         se::Value bufferVal;
         _jsTypedArray->getProperty("buffer", &bufferVal);
@@ -183,6 +211,9 @@ public:
 
         _buffer = std::make_shared<ArrayBuffer>();
         _buffer->setJSArrayBuffer(bufferVal.toObject());
+        _byteLength = _buffer->byteLength();
+        _byteOffset = 0;
+        _byteEndPos = _byteLength;
     }
 
 private:

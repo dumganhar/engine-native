@@ -32,6 +32,19 @@ namespace cc {
 
 RenderingSubMesh::RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
                                    const gfx::AttributeList &attributes,
+                                   gfx::PrimitiveMode        primitiveMode)
+: RenderingSubMesh(vertexBuffers, attributes, primitiveMode, nullptr, nullptr) {
+}
+
+RenderingSubMesh::RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
+                                   const gfx::AttributeList &attributes,
+                                   gfx::PrimitiveMode        primitiveMode,
+                                   gfx::Buffer *             indexBuffer)
+: RenderingSubMesh(vertexBuffers, attributes, primitiveMode, indexBuffer, nullptr) {
+}
+
+RenderingSubMesh::RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
+                                   const gfx::AttributeList &attributes,
                                    gfx::PrimitiveMode        primitiveMode,
                                    gfx::Buffer *             indexBuffer /* = nullptr*/,
                                    gfx::Buffer *             indirectBuffer /* = nullptr*/)

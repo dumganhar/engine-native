@@ -65,6 +65,11 @@ public:
 
     void onPassStateChange(bool dontNotify);
 
+    // For JS
+    using RebuildPSOCallback = std::function<void(index_t index, Material *material)>;
+    void setRebuildPSOCallback(const RebuildPSOCallback &cb);
+    //
+
 protected:
     std::vector<scene::Pass *> createPasses() override;
 
@@ -74,6 +79,8 @@ private:
     Material *           _parent{nullptr};
     RenderableComponent *_owner{nullptr};
     uint32_t             _subModelIdx{0};
+
+    RebuildPSOCallback _rebuildPSOCallback{nullptr};
 };
 
 } // namespace cc

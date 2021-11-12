@@ -565,7 +565,7 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     }
     auto itRes = _cache.find(key);
     if (itRes != _cache.end()) {
-        CC_LOG_DEBUG("Found ProgramLib::_cache[%s]=%p, defines: %d", key.c_str(), itRes->second, defines.size());
+        //        CC_LOG_DEBUG("Found ProgramLib::_cache[%s]=%p, defines: %d", key.c_str(), itRes->second, defines.size());
         return itRes->second;
     }
 

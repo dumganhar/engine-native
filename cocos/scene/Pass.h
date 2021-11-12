@@ -270,6 +270,7 @@ public:
     // data
     inline const IPassDynamics &         getDynamics() const { return _dynamics; }
     inline const std::vector<IBlockRef> &getBlocks() const { return _blocks; }
+    inline ArrayBuffer *                 getRootBlock() { return _rootBlock; }
     inline bool                          isRootBufferDirty() const { return _rootBufferDirty; }
     //NOTE: _setRootBufferDirty must contain a _ prefix to make bindings-generator work correctly.
     // In ts engine, Pass has rootBufferDirty getter and without setter, but it contains a protected function named _setRootBufferDirty.

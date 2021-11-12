@@ -77,9 +77,19 @@ std::vector<scene::Pass *> MaterialInstance::createPasses() {
 
 void MaterialInstance::onPassStateChange(bool dontNotify) {
     _hash = Material::getHashForMaterial(this);
-    if (!dontNotify && _owner != nullptr) {
-        _owner->onRebuildPSO(_subModelIdx, this);
+    if (!dontNotify) {
+        if (_rebuildPSOCallback != nullptr) {
+            _rebuildPSOCallback(_subModelIdx, this);
+        }
+
+        if (_owner != nullptr) {
+            _owner->onRebuildPSO(_subModelIdx, this);
+        }
     }
+}
+
+void MaterialInstance::setRebuildPSOCallback(const RebuildPSOCallback &cb) {
+    _rebuildPSOCallback = cb;
 }
 
 } // namespace cc

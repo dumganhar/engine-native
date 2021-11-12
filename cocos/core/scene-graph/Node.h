@@ -32,6 +32,7 @@
 #include "core/components/Component.h"
 #include "core/event/Event.h"
 #include "core/scene-graph/BaseNode.h"
+#include "core/scene-graph/Layers.h"
 #include "core/scene-graph/NodeEnum.h"
 #include "core/scene-graph/NodeEvent.h"
 #include "core/scene-graph/NodeEventProcessor.h"
@@ -617,8 +618,8 @@ protected:
 
     Scene *             _scene{nullptr};
     NodeEventProcessor *_eventProcessor{nullptr};
-    index_t             _siblingIndex{0};
-    uint32_t            _eventMask{0};
+
+    uint32_t _eventMask{0};
 
     Mat4     _rtMat{Mat4::IDENTITY};
     cc::Mat4 _worldMatrix{Mat4::IDENTITY};
@@ -634,6 +635,7 @@ protected:
     NodeUiProperties *_uiProps{nullptr};
 
 public:
+    index_t _siblingIndex{0};
     // For deserialization
     std::string         _id{IDGenerator("Node").getNewId()};
     std::vector<Node *> _children;
@@ -650,7 +652,7 @@ public:
     cc::Vec3       _worldScale{Vec3::ONE};
     //
     Vec3     _euler{0, 0, 0};
-    uint32_t _layer{0};
+    uint32_t _layer{static_cast<uint32_t>(Layers::Enum::DEFAULT)};
     //
 private:
     friend class NodeActivator;

@@ -25,9 +25,9 @@
 
 #pragma once
 
+#include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "renderer/gfx-base/GFXDef.h"
-#include "core/TypedArray.h"
 
 #include <variant>
 
@@ -92,9 +92,18 @@ class RenderingSubMesh final : public Asset {
 public:
     RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
                      const gfx::AttributeList &attributes,
+                     gfx::PrimitiveMode        primitiveMode);
+
+    RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
+                     const gfx::AttributeList &attributes,
                      gfx::PrimitiveMode        primitiveMode,
-                     gfx::Buffer *             indexBuffer    = nullptr,
-                     gfx::Buffer *             indirectBuffer = nullptr);
+                     gfx::Buffer *             indexBuffer);
+
+    RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
+                     const gfx::AttributeList &attributes,
+                     gfx::PrimitiveMode        primitiveMode,
+                     gfx::Buffer *             indexBuffer,
+                     gfx::Buffer *             indirectBuffer);
 
     ~RenderingSubMesh() override;
 

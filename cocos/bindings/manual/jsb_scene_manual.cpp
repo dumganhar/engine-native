@@ -215,8 +215,22 @@ static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-
     NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_REMOVE_PERSIST_ROOT_NODE, _onRemovePersistRootNode);
     NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_DESTROY_COMPONENTS, _onDestroyComponents);
     NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_UI_TRANSFORM_DIRTY, _onUiTransformDirty);
-    NODE_DISPATCH_EVENT_TO_JS(cc::NodeEventType::NODE_DESTROYED, _onNodeDestroyed);
     NODE_DISPATCH_EVENT_TO_JS(cc::NodeEventType::SIBLING_ORDER_CHANGED, _onSiblingOrderChanged);
+
+    cobj->on(
+        cc::NodeEventType::NODE_DESTROYED,
+        [](cc::Node *node) {
+            se::AutoHandleScope hs;
+            se::Value           funcVal;
+            se::Value           nodeVal;
+            nativevalue_to_se(node, nodeVal);
+            nodeVal.toObject()->getProperty("_onNodeDestroyed", &funcVal);
+            SE_PRECONDITION2_VOID(funcVal.isObject() && funcVal.toObject()->isFunction(), "Not function named _onNodeDestroyed.");
+
+            se::ValueArray args;
+            args.emplace_back(nodeVal);
+            funcVal.toObject()->call(args, nodeVal.toObject());
+        });
 
     return true;
 }
@@ -294,12 +308,18 @@ static bool js_scene_Pass_blocks_getter(se::State &s) {
         return true;
     }
 
-    const auto &blocks = cobj->getBlocks();
+    const auto &   blocks        = cobj->getBlocks();
+    const uint8_t *blockDataBase = cobj->getRootBlock()->getData();
 
     se::HandleObject jsBlocks{se::Object::createArrayObject(blocks.size())};
     int32_t          i = 0;
     for (const auto &block : blocks) {
-        se::HandleObject jsBlock{se::Object::createTypedArray(se::Object::TypedArrayType::FLOAT32, block.data, block.size * 4)};
+        se::HandleObject jsBlock{
+            se::Object::createTypedArrayWithBuffer(
+                se::Object::TypedArrayType::FLOAT32,
+                cobj->getRootBlock()->getJSArrayBuffer(),
+                reinterpret_cast<const uint8_t *>(block.data) - blockDataBase,
+                block.size * 4)};
         jsBlocks->setArrayElement(i, se::Value(jsBlock));
         ++i;
     }
@@ -383,6 +403,28 @@ static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-ident
 }
 SE_BIND_FUNC(js_Model_registerListeners) // NOLINT(readability-identifier-naming)
 
+static bool js_assets_MaterialInstance_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::MaterialInstance>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_MaterialInstance_registerListeners : Invalid Native Object");
+    cobj->setRebuildPSOCallback([](index_t index, cc::Material *material) {
+        se::AutoHandleScope hs;
+        se::Value           matVal;
+        bool                ok = nativevalue_to_se(material, matVal);
+        if (!ok) {
+            return;
+        }
+        se::Object *jsObject = matVal.toObject();
+        se::Value   funcVal;
+        jsObject->getProperty("_onRebuildPSO", &funcVal);
+        SE_PRECONDITION2_VOID(funcVal.isObject() && funcVal.toObject()->isFunction(), "Not function named _onRebuildPSO.");
+        funcVal.toObject()->call(se::EmptyValueArray, jsObject);
+    });
+
+    return true;
+}
+SE_BIND_FUNC(js_assets_MaterialInstance_registerListeners) // NOLINT(readability-identifier-naming)
+
 bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier-naming)
 {
     // Get the ns
@@ -409,6 +451,7 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_scene_RenderScene_proto->defineProperty("root", _SE(js_scene_RenderScene_root_getter), nullptr);
 
     __jsb_cc_scene_Model_proto->defineFunction("_registerListeners", _SE(js_Model_registerListeners));
+    __jsb_cc_MaterialInstance_proto->defineFunction("_registerListeners", _SE(js_assets_MaterialInstance_registerListeners));
 
     return true;
 }

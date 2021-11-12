@@ -437,28 +437,26 @@ bool Object::defineProperty(const char *name, v8::AccessorNameGetterCallback get
     return ret.IsJust() && ret.FromJust();
 }
 
-
-bool Object::defineOwnProperty(const char *name,const se::Value &value, bool writable, bool enumerable, bool configurable)
-{
+bool Object::defineOwnProperty(const char *name, const se::Value &value, bool writable, bool enumerable, bool configurable) {
     v8::MaybeLocal<v8::String> nameValue = v8::String::NewFromUtf8(__isolate, name, v8::NewStringType::kNormal);
     if (nameValue.IsEmpty()) {
         return false;
     }
 
     int flag{v8::PropertyAttribute::None};
-    if(!writable) {
+    if (!writable) {
         flag |= v8::PropertyAttribute::ReadOnly;
     }
-    if(!enumerable) {
+    if (!enumerable) {
         flag |= v8::PropertyAttribute::DontEnum;
     }
-    if(!configurable){
+    if (!configurable) {
         flag |= v8::PropertyAttribute::DontDelete;
     }
-    
+
     v8::Local<v8::Value> v8Value;
     internal::seToJsValue(__isolate, value, &v8Value);
-    
+
     v8::Local<v8::String> nameValChecked = nameValue.ToLocalChecked();
     v8::Local<v8::Name>   jsName         = v8::Local<v8::Name>::Cast(nameValChecked);
     v8::Maybe<bool>       ret            = _obj.handle(__isolate)->DefineOwnProperty(__isolate->GetCurrentContext(), jsName, v8Value, static_cast<v8::PropertyAttribute>(flag));
@@ -561,7 +559,7 @@ void Object::clearPrivateData(bool clearMapping) {
             NativePtrToObjectMap::erase(_privateData);
         }
         internal::clearPrivate(__isolate, _obj);
-        defineOwnProperty("__native_ptr__", se::Value(static_cast<uint64_t>(reinterpret_cast<uintptr_t>(nullptr))),false, false, false);
+        defineOwnProperty("__native_ptr__", se::Value(static_cast<uint64_t>(reinterpret_cast<uintptr_t>(nullptr))), false, false, false);
         _privateData = nullptr;
     }
 }
@@ -609,8 +607,8 @@ bool Object::call(const ValueArray &args, Object *thisObject, Value *rval /* = n
 
     #if CC_DEBUG
     if (tryCatch.HasCaught()) {
-        v8::String::Utf8Value msg(__isolate, tryCatch.Exception());
-        SE_REPORT_ERROR("Invoking function (%s) failed!", *msg);
+        v8::String::Utf8Value stack(__isolate, tryCatch.StackTrace(__isolate->GetCurrentContext()).ToLocalChecked());
+        SE_REPORT_ERROR("Invoking function failed, %s", *stack);
     }
     #endif
 

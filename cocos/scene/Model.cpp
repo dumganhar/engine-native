@@ -71,7 +71,7 @@ cc::TypedArray getTypedArrayConstructor(const cc::gfx::FormatInfo &info, const c
     return cc::Float32Array(buffer, byteOffset, length);
 }
 
-cc::Float32Array vec4ToFloat32Array(const cc::Vec4 &v, cc::Float32Array &out, index_t ofs = 0) {
+cc::Float32Array &vec4ToFloat32Array(const cc::Vec4 &v, cc::Float32Array &out, index_t ofs = 0) {
     out[ofs + 0] = v.x;
     out[ofs + 1] = v.y;
     out[ofs + 2] = v.z;
@@ -79,7 +79,7 @@ cc::Float32Array vec4ToFloat32Array(const cc::Vec4 &v, cc::Float32Array &out, in
     return out;
 }
 
-cc::Float32Array mat4ToFloat32Array(const cc::Mat4 &mat, cc::Float32Array &out, index_t ofs = 0) {
+cc::Float32Array &mat4ToFloat32Array(const cc::Mat4 &mat, cc::Float32Array &out, index_t ofs = 0) {
     out[ofs + 0]  = mat.m[0];
     out[ofs + 1]  = mat.m[1];
     out[ofs + 2]  = mat.m[2];

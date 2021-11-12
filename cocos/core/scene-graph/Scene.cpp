@@ -99,7 +99,7 @@ bool Scene::destroy() {
     }
 
     if (_renderScene != nullptr) {
-        Director::getInstance()->getRoot()->destroyScene(_renderScene);
+        Root::getInstance()->destroyScene(_renderScene);
     }
 
     _active            = false;

@@ -1,5 +1,3 @@
-
-// clang-format off
 #include "cocos/bindings/auto/jsb_video_auto.h"
 #if (USE_VIDEO > 0)
 #include "cocos/bindings/manual/jsb_conversions.h"
@@ -13,8 +11,8 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_cc_VideoPlayer_proto = nullptr; // NOLINT
-se::Class* __jsb_cc_VideoPlayer_class = nullptr;  // NOLINT
+se::Object* __jsb_cc_VideoPlayer_proto = nullptr;
+se::Class* __jsb_cc_VideoPlayer_class = nullptr;
 
 static bool js_video_VideoPlayer_addEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -313,6 +311,8 @@ static bool js_video_VideoPlayer_constructor(se::State& s) // NOLINT(readability
 }
 SE_BIND_CTOR(js_video_VideoPlayer_constructor, __jsb_cc_VideoPlayer_class, js_cc_VideoPlayer_finalize)
 
+
+
 static bool js_cc_VideoPlayer_finalize(se::State& s) // NOLINT(readability-identifier-naming)
 {
     // destructor is skipped
@@ -359,11 +359,10 @@ bool js_register_video_VideoPlayer(se::Object* obj) // NOLINT(readability-identi
     __jsb_cc_VideoPlayer_proto = cls->getProto();
     __jsb_cc_VideoPlayer_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_video(se::Object* obj)    // NOLINT
+bool register_all_video(se::Object* obj)
 {
     // Get the ns
     se::Value nsVal;
@@ -380,4 +379,3 @@ bool register_all_video(se::Object* obj)    // NOLINT
 }
 
 #endif //#if (USE_VIDEO > 0)
-// clang-format on

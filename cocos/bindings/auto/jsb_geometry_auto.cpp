@@ -32,7 +32,7 @@ static bool js_geometry_ShapeBase_getType(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC_AS_PROP_GET(js_geometry_ShapeBase_getType)
+SE_BIND_FUNC(js_geometry_ShapeBase_getType)
 
 static bool js_geometry_ShapeBase_setType(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -51,13 +51,14 @@ static bool js_geometry_ShapeBase_setType(se::State& s) // NOLINT(readability-id
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC_AS_PROP_SET(js_geometry_ShapeBase_setType)
+SE_BIND_FUNC(js_geometry_ShapeBase_setType)
 
 bool js_register_geometry_ShapeBase(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("ShapeBase", obj, nullptr, nullptr);
 
-    cls->defineProperty("_type", _SE(js_geometry_ShapeBase_getType_asGetter), _SE(js_geometry_ShapeBase_setType_asSetter));
+    cls->defineFunction("getType", _SE(js_geometry_ShapeBase_getType));
+    cls->defineFunction("setType", _SE(js_geometry_ShapeBase_setType));
     cls->install();
     JSBClassType::registerClass<cc::geometry::ShapeBase>(cls);
 
@@ -123,60 +124,6 @@ static bool js_geometry_AABB_toBoundingSphere_static(se::State& s) // NOLINT(rea
 }
 SE_BIND_FUNC(js_geometry_AABB_toBoundingSphere_static)
 
-static bool js_geometry_AABB_get_center(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::geometry::AABB>(s);
-    SE_PRECONDITION2(cobj, false, "js_geometry_AABB_get_center : Invalid Native Object");
-
-    CC_UNUSED bool ok = true;
-    se::Value jsret;
-    ok &= nativevalue_to_se(cobj->center, jsret, s.thisObject() /*ctx*/);
-    s.rval() = jsret;
-    SE_HOLD_RETURN_VALUE(cobj->center, s.thisObject(), s.rval());
-    return true;
-}
-SE_BIND_PROP_GET(js_geometry_AABB_get_center)
-
-static bool js_geometry_AABB_set_center(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    auto* cobj = SE_THIS_OBJECT<cc::geometry::AABB>(s);
-    SE_PRECONDITION2(cobj, false, "js_geometry_AABB_set_center : Invalid Native Object");
-
-    CC_UNUSED bool ok = true;
-    ok &= sevalue_to_native(args[0], &cobj->center, s.thisObject());
-    SE_PRECONDITION2(ok, false, "js_geometry_AABB_set_center : Error processing new value");
-    return true;
-}
-SE_BIND_PROP_SET(js_geometry_AABB_set_center)
-
-static bool js_geometry_AABB_get_halfExtents(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::geometry::AABB>(s);
-    SE_PRECONDITION2(cobj, false, "js_geometry_AABB_get_halfExtents : Invalid Native Object");
-
-    CC_UNUSED bool ok = true;
-    se::Value jsret;
-    ok &= nativevalue_to_se(cobj->halfExtents, jsret, s.thisObject() /*ctx*/);
-    s.rval() = jsret;
-    SE_HOLD_RETURN_VALUE(cobj->halfExtents, s.thisObject(), s.rval());
-    return true;
-}
-SE_BIND_PROP_GET(js_geometry_AABB_get_halfExtents)
-
-static bool js_geometry_AABB_set_halfExtents(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    auto* cobj = SE_THIS_OBJECT<cc::geometry::AABB>(s);
-    SE_PRECONDITION2(cobj, false, "js_geometry_AABB_set_halfExtents : Invalid Native Object");
-
-    CC_UNUSED bool ok = true;
-    ok &= sevalue_to_native(args[0], &cobj->halfExtents, s.thisObject());
-    SE_PRECONDITION2(ok, false, "js_geometry_AABB_set_halfExtents : Error processing new value");
-    return true;
-}
-SE_BIND_PROP_SET(js_geometry_AABB_set_halfExtents)
-
 SE_DECLARE_FINALIZE_FUNC(js_cc_geometry_AABB_finalize)
 
 static bool js_geometry_AABB_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor_overloaded.c
@@ -240,8 +187,6 @@ bool js_register_geometry_AABB(se::Object* obj) // NOLINT(readability-identifier
 {
     auto* cls = se::Class::create("AABB", obj, __jsb_cc_geometry_ShapeBase_proto, _SE(js_geometry_AABB_constructor));
 
-    cls->defineProperty("center", _SE(js_geometry_AABB_get_center), _SE(js_geometry_AABB_set_center));
-    cls->defineProperty("halfExtents", _SE(js_geometry_AABB_get_halfExtents), _SE(js_geometry_AABB_set_halfExtents));
     cls->defineStaticFunction("create", _SE(js_geometry_AABB_create_static));
     cls->defineStaticFunction("toBoundingSphere", _SE(js_geometry_AABB_toBoundingSphere_static));
     cls->defineFinalizeFunction(_SE(js_cc_geometry_AABB_finalize));
@@ -2619,13 +2564,13 @@ bool register_all_geometry(se::Object* obj)    // NOLINT
     }
     se::Object* ns = nsVal.toObject();
 
-    js_register_geometry_ShapeBase(ns);
     js_register_geometry_AABB(ns);
     js_register_geometry_Capsule(ns);
     js_register_geometry_Frustum(ns);
     js_register_geometry_Line(ns);
     js_register_geometry_Plane(ns);
     js_register_geometry_Ray(ns);
+    js_register_geometry_ShapeBase(ns);
     js_register_geometry_Sphere(ns);
     js_register_geometry_Triangle(ns);
     return true;

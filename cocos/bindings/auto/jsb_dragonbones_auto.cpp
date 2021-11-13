@@ -1,5 +1,3 @@
-
-// clang-format off
 #include "cocos/bindings/auto/jsb_dragonbones_auto.h"
 #if USE_DRAGONBONES > 0
 #include "cocos/bindings/manual/jsb_conversions.h"
@@ -13,8 +11,8 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_dragonBones_BaseObject_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_BaseObject_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_BaseObject_proto = nullptr;
+se::Class* __jsb_dragonBones_BaseObject_class = nullptr;
 
 static bool js_dragonbones_BaseObject_returnToPool(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -31,7 +29,7 @@ static bool js_dragonbones_BaseObject_returnToPool(se::State& s) // NOLINT(reada
 }
 SE_BIND_FUNC(js_dragonbones_BaseObject_returnToPool)
 
-static bool js_dragonbones_BaseObject_clearPool_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_BaseObject_clearPool(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -43,16 +41,16 @@ static bool js_dragonbones_BaseObject_clearPool_static(se::State& s) // NOLINT(r
     if (argc == 1) {
         HolderType<size_t, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_BaseObject_clearPool_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_dragonbones_BaseObject_clearPool : Error processing arguments");
         dragonBones::BaseObject::clearPool(arg0.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseObject_clearPool_static)
+SE_BIND_FUNC(js_dragonbones_BaseObject_clearPool)
 
-static bool js_dragonbones_BaseObject_setMaxCount_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_BaseObject_setMaxCount(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -62,34 +60,35 @@ static bool js_dragonbones_BaseObject_setMaxCount_static(se::State& s) // NOLINT
         HolderType<unsigned int, false> arg1 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
         ok &= sevalue_to_native(args[1], &arg1, nullptr);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_BaseObject_setMaxCount_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_dragonbones_BaseObject_setMaxCount : Error processing arguments");
         dragonBones::BaseObject::setMaxCount(arg0.value(), arg1.value());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_BaseObject_setMaxCount_static)
+SE_BIND_FUNC(js_dragonbones_BaseObject_setMaxCount)
+
+
 
 bool js_register_dragonbones_BaseObject(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("BaseObject", obj, nullptr, nullptr);
 
     cls->defineFunction("returnToPool", _SE(js_dragonbones_BaseObject_returnToPool));
-    cls->defineStaticFunction("clearPool", _SE(js_dragonbones_BaseObject_clearPool_static));
-    cls->defineStaticFunction("setMaxCount", _SE(js_dragonbones_BaseObject_setMaxCount_static));
+    cls->defineStaticFunction("clearPool", _SE(js_dragonbones_BaseObject_clearPool));
+    cls->defineStaticFunction("setMaxCount", _SE(js_dragonbones_BaseObject_setMaxCount));
     cls->install();
     JSBClassType::registerClass<dragonBones::BaseObject>(cls);
 
     __jsb_dragonBones_BaseObject_proto = cls->getProto();
     __jsb_dragonBones_BaseObject_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_Rectangle_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_Rectangle_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_Rectangle_proto = nullptr;
+se::Class* __jsb_dragonBones_Rectangle_class = nullptr;
 
 static bool js_dragonbones_Rectangle_clear(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -117,6 +116,8 @@ static bool js_dragonbones_Rectangle_constructor(se::State& s) // NOLINT(readabi
 }
 SE_BIND_CTOR(js_dragonbones_Rectangle_constructor, __jsb_dragonBones_Rectangle_class, js_dragonBones_Rectangle_finalize)
 
+
+
 static bool js_dragonBones_Rectangle_finalize(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<dragonBones::Rectangle>(s));
@@ -142,12 +143,11 @@ bool js_register_dragonbones_Rectangle(se::Object* obj) // NOLINT(readability-id
     __jsb_dragonBones_Rectangle_proto = cls->getProto();
     __jsb_dragonBones_Rectangle_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_Matrix_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_Matrix_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_Matrix_proto = nullptr;
+se::Class* __jsb_dragonBones_Matrix_class = nullptr;
 
 static bool js_dragonbones_Matrix_get_a(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -311,6 +311,8 @@ static bool js_dragonbones_Matrix_set_ty(se::State& s) // NOLINT(readability-ide
 }
 SE_BIND_PROP_SET(js_dragonbones_Matrix_set_ty)
 
+
+
 bool js_register_dragonbones_Matrix(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("Matrix", obj, nullptr, nullptr);
@@ -327,14 +329,13 @@ bool js_register_dragonbones_Matrix(se::Object* obj) // NOLINT(readability-ident
     __jsb_dragonBones_Matrix_proto = cls->getProto();
     __jsb_dragonBones_Matrix_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_Transform_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_Transform_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_Transform_proto = nullptr;
+se::Class* __jsb_dragonBones_Transform_class = nullptr;
 
-static bool js_dragonbones_Transform_normalizeRadian_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_Transform_normalizeRadian(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -342,17 +343,17 @@ static bool js_dragonbones_Transform_normalizeRadian_static(se::State& s) // NOL
     if (argc == 1) {
         HolderType<float, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, nullptr);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_Transform_normalizeRadian_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_dragonbones_Transform_normalizeRadian : Error processing arguments");
         float result = dragonBones::Transform::normalizeRadian(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_Transform_normalizeRadian_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_dragonbones_Transform_normalizeRadian : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_Transform_normalizeRadian_static)
+SE_BIND_FUNC(js_dragonbones_Transform_normalizeRadian)
 
 static bool js_dragonbones_Transform_get_x(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -516,6 +517,8 @@ static bool js_dragonbones_Transform_set_scaleY(se::State& s) // NOLINT(readabil
 }
 SE_BIND_PROP_SET(js_dragonbones_Transform_set_scaleY)
 
+
+
 bool js_register_dragonbones_Transform(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("Transform", obj, nullptr, nullptr);
@@ -526,19 +529,18 @@ bool js_register_dragonbones_Transform(se::Object* obj) // NOLINT(readability-id
     cls->defineProperty("rotation", _SE(js_dragonbones_Transform_get_rotation), _SE(js_dragonbones_Transform_set_rotation));
     cls->defineProperty("scaleX", _SE(js_dragonbones_Transform_get_scaleX), _SE(js_dragonbones_Transform_set_scaleX));
     cls->defineProperty("scaleY", _SE(js_dragonbones_Transform_get_scaleY), _SE(js_dragonbones_Transform_set_scaleY));
-    cls->defineStaticFunction("normalizeRadian", _SE(js_dragonbones_Transform_normalizeRadian_static));
+    cls->defineStaticFunction("normalizeRadian", _SE(js_dragonbones_Transform_normalizeRadian));
     cls->install();
     JSBClassType::registerClass<dragonBones::Transform>(cls);
 
     __jsb_dragonBones_Transform_proto = cls->getProto();
     __jsb_dragonBones_Transform_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_TextureAtlasData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_TextureAtlasData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_TextureAtlasData_proto = nullptr;
+se::Class* __jsb_dragonBones_TextureAtlasData_class = nullptr;
 
 static bool js_dragonbones_TextureAtlasData_addTexture(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -627,6 +629,8 @@ static bool js_dragonbones_TextureAtlasData_set_name(se::State& s) // NOLINT(rea
 }
 SE_BIND_PROP_SET(js_dragonbones_TextureAtlasData_set_name)
 
+
+
 bool js_register_dragonbones_TextureAtlasData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("TextureAtlasData", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -641,12 +645,11 @@ bool js_register_dragonbones_TextureAtlasData(se::Object* obj) // NOLINT(readabi
     __jsb_dragonBones_TextureAtlasData_proto = cls->getProto();
     __jsb_dragonBones_TextureAtlasData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_TextureData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_TextureData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_TextureData_proto = nullptr;
+se::Class* __jsb_dragonBones_TextureData_class = nullptr;
 
 static bool js_dragonbones_TextureData_getFrame(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -743,7 +746,7 @@ static bool js_dragonbones_TextureData_setParent(se::State& s) // NOLINT(readabi
 }
 SE_BIND_FUNC(js_dragonbones_TextureData_setParent)
 
-static bool js_dragonbones_TextureData_createRectangle_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_TextureData_createRectangle(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -751,14 +754,16 @@ static bool js_dragonbones_TextureData_createRectangle_static(se::State& s) // N
     if (argc == 0) {
         dragonBones::Rectangle* result = dragonBones::TextureData::createRectangle();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_TextureData_createRectangle_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_dragonbones_TextureData_createRectangle : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_TextureData_createRectangle_static)
+SE_BIND_FUNC(js_dragonbones_TextureData_createRectangle)
+
+
 
 bool js_register_dragonbones_TextureData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
@@ -769,19 +774,18 @@ bool js_register_dragonbones_TextureData(se::Object* obj) // NOLINT(readability-
     cls->defineFunction("getRegion", _SE(js_dragonbones_TextureData_getRegion));
     cls->defineFunction("setFrame", _SE(js_dragonbones_TextureData_setFrame));
     cls->defineFunction("setParent", _SE(js_dragonbones_TextureData_setParent));
-    cls->defineStaticFunction("createRectangle", _SE(js_dragonbones_TextureData_createRectangle_static));
+    cls->defineStaticFunction("createRectangle", _SE(js_dragonbones_TextureData_createRectangle));
     cls->install();
     JSBClassType::registerClass<dragonBones::TextureData>(cls);
 
     __jsb_dragonBones_TextureData_proto = cls->getProto();
     __jsb_dragonBones_TextureData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_ArmatureData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_ArmatureData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_ArmatureData_proto = nullptr;
+se::Class* __jsb_dragonBones_ArmatureData_class = nullptr;
 
 static bool js_dragonbones_ArmatureData_getAABB(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1156,6 +1160,8 @@ static bool js_dragonbones_ArmatureData_set_name(se::State& s) // NOLINT(readabi
 }
 SE_BIND_PROP_SET(js_dragonbones_ArmatureData_set_name)
 
+
+
 bool js_register_dragonbones_ArmatureData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("ArmatureData", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -1184,12 +1190,11 @@ bool js_register_dragonbones_ArmatureData(se::Object* obj) // NOLINT(readability
     __jsb_dragonBones_ArmatureData_proto = cls->getProto();
     __jsb_dragonBones_ArmatureData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_BoneData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_BoneData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_BoneData_proto = nullptr;
+se::Class* __jsb_dragonBones_BoneData_class = nullptr;
 
 static bool js_dragonbones_BoneData_getParent(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1302,6 +1307,8 @@ static bool js_dragonbones_BoneData_set_parent(se::State& s) // NOLINT(readabili
 }
 SE_BIND_PROP_SET(js_dragonbones_BoneData_set_parent)
 
+
+
 bool js_register_dragonbones_BoneData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("BoneData", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -1317,12 +1324,11 @@ bool js_register_dragonbones_BoneData(se::Object* obj) // NOLINT(readability-ide
     __jsb_dragonBones_BoneData_proto = cls->getProto();
     __jsb_dragonBones_BoneData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_SlotData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_SlotData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_SlotData_proto = nullptr;
+se::Class* __jsb_dragonBones_SlotData_class = nullptr;
 
 static bool js_dragonbones_SlotData_getBlendMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1454,6 +1460,8 @@ static bool js_dragonbones_SlotData_set_parent(se::State& s) // NOLINT(readabili
 }
 SE_BIND_PROP_SET(js_dragonbones_SlotData_set_parent)
 
+
+
 bool js_register_dragonbones_SlotData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("SlotData", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -1470,12 +1478,11 @@ bool js_register_dragonbones_SlotData(se::Object* obj) // NOLINT(readability-ide
     __jsb_dragonBones_SlotData_proto = cls->getProto();
     __jsb_dragonBones_SlotData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_DragonBonesData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_DragonBonesData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_DragonBonesData_proto = nullptr;
+se::Class* __jsb_dragonBones_DragonBonesData_class = nullptr;
 
 static bool js_dragonbones_DragonBonesData_addArmature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1583,6 +1590,8 @@ static bool js_dragonbones_DragonBonesData_set_name(se::State& s) // NOLINT(read
 }
 SE_BIND_PROP_SET(js_dragonbones_DragonBonesData_set_name)
 
+
+
 bool js_register_dragonbones_DragonBonesData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("DragonBonesData", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -1598,12 +1607,11 @@ bool js_register_dragonbones_DragonBonesData(se::Object* obj) // NOLINT(readabil
     __jsb_dragonBones_DragonBonesData_proto = cls->getProto();
     __jsb_dragonBones_DragonBonesData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_SkinData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_SkinData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_SkinData_proto = nullptr;
+se::Class* __jsb_dragonBones_SkinData_class = nullptr;
 
 static bool js_dragonbones_SkinData_get_name(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1632,6 +1640,8 @@ static bool js_dragonbones_SkinData_set_name(se::State& s) // NOLINT(readability
 }
 SE_BIND_PROP_SET(js_dragonbones_SkinData_set_name)
 
+
+
 bool js_register_dragonbones_SkinData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("SkinData", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -1643,12 +1653,11 @@ bool js_register_dragonbones_SkinData(se::Object* obj) // NOLINT(readability-ide
     __jsb_dragonBones_SkinData_proto = cls->getProto();
     __jsb_dragonBones_SkinData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_AnimationData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_AnimationData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_AnimationData_proto = nullptr;
+se::Class* __jsb_dragonBones_AnimationData_class = nullptr;
 
 static bool js_dragonbones_AnimationData_getBoneCachedFrameIndices(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1886,6 +1895,8 @@ static bool js_dragonbones_AnimationData_set_name(se::State& s) // NOLINT(readab
 }
 SE_BIND_PROP_SET(js_dragonbones_AnimationData_set_name)
 
+
+
 bool js_register_dragonbones_AnimationData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("AnimationData", obj, nullptr, nullptr);
@@ -1906,12 +1917,11 @@ bool js_register_dragonbones_AnimationData(se::Object* obj) // NOLINT(readabilit
     __jsb_dragonBones_AnimationData_proto = cls->getProto();
     __jsb_dragonBones_AnimationData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_Armature_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_Armature_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_Armature_proto = nullptr;
+se::Class* __jsb_dragonBones_Armature_class = nullptr;
 
 static bool js_dragonbones_Armature__addBone(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2387,6 +2397,8 @@ static bool js_dragonbones_Armature_setFlipY(se::State& s) // NOLINT(readability
 }
 SE_BIND_FUNC(js_dragonbones_Armature_setFlipY)
 
+
+
 bool js_register_dragonbones_Armature(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("Armature", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -2421,12 +2433,11 @@ bool js_register_dragonbones_Armature(se::Object* obj) // NOLINT(readability-ide
     __jsb_dragonBones_Armature_proto = cls->getProto();
     __jsb_dragonBones_Armature_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_TransformObject_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_TransformObject_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_TransformObject_proto = nullptr;
+se::Class* __jsb_dragonBones_TransformObject_class = nullptr;
 
 static bool js_dragonbones_TransformObject_getArmature(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -2538,6 +2549,8 @@ static bool js_dragonbones_TransformObject_updateGlobalTransform(se::State& s) /
 }
 SE_BIND_FUNC(js_dragonbones_TransformObject_updateGlobalTransform)
 
+
+
 bool js_register_dragonbones_TransformObject(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("TransformObject", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -2554,12 +2567,11 @@ bool js_register_dragonbones_TransformObject(se::Object* obj) // NOLINT(readabil
     __jsb_dragonBones_TransformObject_proto = cls->getProto();
     __jsb_dragonBones_TransformObject_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_AnimationState_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_AnimationState_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_AnimationState_proto = nullptr;
+se::Class* __jsb_dragonBones_AnimationState_class = nullptr;
 
 static bool js_dragonbones_AnimationState_addBoneMask(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3158,6 +3170,8 @@ static bool js_dragonbones_AnimationState_set_name(se::State& s) // NOLINT(reada
 }
 SE_BIND_PROP_SET(js_dragonbones_AnimationState_set_name)
 
+
+
 bool js_register_dragonbones_AnimationState(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("AnimationState", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -3195,12 +3209,11 @@ bool js_register_dragonbones_AnimationState(se::Object* obj) // NOLINT(readabili
     __jsb_dragonBones_AnimationState_proto = cls->getProto();
     __jsb_dragonBones_AnimationState_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_Bone_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_Bone_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_Bone_proto = nullptr;
+se::Class* __jsb_dragonBones_Bone_class = nullptr;
 
 static bool js_dragonbones_Bone_contains(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3427,6 +3440,8 @@ static bool js_dragonbones_Bone_updateByConstraint(se::State& s) // NOLINT(reada
 }
 SE_BIND_FUNC(js_dragonbones_Bone_updateByConstraint)
 
+
+
 bool js_register_dragonbones_Bone(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("Bone", obj, __jsb_dragonBones_TransformObject_proto, nullptr);
@@ -3449,12 +3464,11 @@ bool js_register_dragonbones_Bone(se::Object* obj) // NOLINT(readability-identif
     __jsb_dragonBones_Bone_proto = cls->getProto();
     __jsb_dragonBones_Bone_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_Slot_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_Slot_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_Slot_proto = nullptr;
+se::Class* __jsb_dragonBones_Slot_class = nullptr;
 
 static bool js_dragonbones_Slot__setZorder(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3772,6 +3786,8 @@ static bool js_dragonbones_Slot_set__zOrder(se::State& s) // NOLINT(readability-
 }
 SE_BIND_PROP_SET(js_dragonbones_Slot_set__zOrder)
 
+
+
 bool js_register_dragonbones_Slot(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("Slot", obj, __jsb_dragonBones_TransformObject_proto, nullptr);
@@ -3798,12 +3814,11 @@ bool js_register_dragonbones_Slot(se::Object* obj) // NOLINT(readability-identif
     __jsb_dragonBones_Slot_proto = cls->getProto();
     __jsb_dragonBones_Slot_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_WorldClock_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_WorldClock_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_WorldClock_proto = nullptr;
+se::Class* __jsb_dragonBones_WorldClock_class = nullptr;
 
 static bool js_dragonbones_WorldClock_advanceTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3892,7 +3907,7 @@ static bool js_dragonbones_WorldClock_setClock(se::State& s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_dragonbones_WorldClock_setClock)
 
-static bool js_dragonbones_WorldClock_getStaticClock_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_WorldClock_getStaticClock(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -3900,14 +3915,16 @@ static bool js_dragonbones_WorldClock_getStaticClock_static(se::State& s) // NOL
     if (argc == 0) {
         dragonBones::WorldClock* result = dragonBones::WorldClock::getStaticClock();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_WorldClock_getStaticClock_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_dragonbones_WorldClock_getStaticClock : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_WorldClock_getStaticClock_static)
+SE_BIND_FUNC(js_dragonbones_WorldClock_getStaticClock)
+
+
 
 bool js_register_dragonbones_WorldClock(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
@@ -3918,19 +3935,18 @@ bool js_register_dragonbones_WorldClock(se::Object* obj) // NOLINT(readability-i
     cls->defineFunction("getClock", _SE(js_dragonbones_WorldClock_getClock));
     cls->defineFunction("render", _SE(js_dragonbones_WorldClock_render));
     cls->defineFunction("setClock", _SE(js_dragonbones_WorldClock_setClock));
-    cls->defineStaticFunction("getStaticClock", _SE(js_dragonbones_WorldClock_getStaticClock_static));
+    cls->defineStaticFunction("getStaticClock", _SE(js_dragonbones_WorldClock_getStaticClock));
     cls->install();
     JSBClassType::registerClass<dragonBones::WorldClock>(cls);
 
     __jsb_dragonBones_WorldClock_proto = cls->getProto();
     __jsb_dragonBones_WorldClock_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_Animation_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_Animation_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_Animation_proto = nullptr;
+se::Class* __jsb_dragonBones_Animation_class = nullptr;
 
 static bool js_dragonbones_Animation_advanceTime(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4559,6 +4575,8 @@ static bool js_dragonbones_Animation_set_timeScale(se::State& s) // NOLINT(reada
 }
 SE_BIND_PROP_SET(js_dragonbones_Animation_set_timeScale)
 
+
+
 bool js_register_dragonbones_Animation(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("Animation", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -4589,12 +4607,11 @@ bool js_register_dragonbones_Animation(se::Object* obj) // NOLINT(readability-id
     __jsb_dragonBones_Animation_proto = cls->getProto();
     __jsb_dragonBones_Animation_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_EventObject_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_EventObject_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_EventObject_proto = nullptr;
+se::Class* __jsb_dragonBones_EventObject_class = nullptr;
 
 static bool js_dragonbones_EventObject_getAnimationState(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -4834,6 +4851,8 @@ static bool js_dragonbones_EventObject_set_animationState(se::State& s) // NOLIN
 }
 SE_BIND_PROP_SET(js_dragonbones_EventObject_set_animationState)
 
+
+
 bool js_register_dragonbones_EventObject(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("EventObject", obj, __jsb_dragonBones_BaseObject_proto, nullptr);
@@ -4854,12 +4873,11 @@ bool js_register_dragonbones_EventObject(se::Object* obj) // NOLINT(readability-
     __jsb_dragonBones_EventObject_proto = cls->getProto();
     __jsb_dragonBones_EventObject_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_BaseFactory_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_BaseFactory_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_BaseFactory_proto = nullptr;
+se::Class* __jsb_dragonBones_BaseFactory_class = nullptr;
 
 static bool js_dragonbones_BaseFactory_addDragonBonesData(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5325,6 +5343,8 @@ static bool js_dragonbones_BaseFactory_replaceSlotDisplay(se::State& s) // NOLIN
 }
 SE_BIND_FUNC(js_dragonbones_BaseFactory_replaceSlotDisplay)
 
+
+
 bool js_register_dragonbones_BaseFactory(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("BaseFactory", obj, nullptr, nullptr);
@@ -5349,12 +5369,11 @@ bool js_register_dragonbones_BaseFactory(se::Object* obj) // NOLINT(readability-
     __jsb_dragonBones_BaseFactory_proto = cls->getProto();
     __jsb_dragonBones_BaseFactory_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_CCSlot_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_CCSlot_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_CCSlot_proto = nullptr;
+se::Class* __jsb_dragonBones_CCSlot_class = nullptr;
 
 static bool js_dragonbones_CCSlot_updateWorldMatrix(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5371,6 +5390,8 @@ static bool js_dragonbones_CCSlot_updateWorldMatrix(se::State& s) // NOLINT(read
 }
 SE_BIND_FUNC(js_dragonbones_CCSlot_updateWorldMatrix)
 
+
+
 bool js_register_dragonbones_CCSlot(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
     auto* cls = se::Class::create("CCSlot", obj, __jsb_dragonBones_Slot_proto, nullptr);
@@ -5382,12 +5403,11 @@ bool js_register_dragonbones_CCSlot(se::Object* obj) // NOLINT(readability-ident
     __jsb_dragonBones_CCSlot_proto = cls->getProto();
     __jsb_dragonBones_CCSlot_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_CCArmatureDisplay_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_CCArmatureDisplay_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_CCArmatureDisplay_proto = nullptr;
+se::Class* __jsb_dragonBones_CCArmatureDisplay_class = nullptr;
 
 static bool js_dragonbones_CCArmatureDisplay_addDBEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5906,7 +5926,7 @@ static bool js_dragonbones_CCArmatureDisplay_setOpacityModifyRGB(se::State& s) /
 }
 SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_setOpacityModifyRGB)
 
-static bool js_dragonbones_CCArmatureDisplay_create_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_CCArmatureDisplay_create(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -5922,7 +5942,7 @@ static bool js_dragonbones_CCArmatureDisplay_create_static(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_create_static)
+SE_BIND_FUNC(js_dragonbones_CCArmatureDisplay_create)
 
 SE_DECLARE_FINALIZE_FUNC(js_dragonBones_CCArmatureDisplay_finalize)
 
@@ -5933,6 +5953,8 @@ static bool js_dragonbones_CCArmatureDisplay_constructor(se::State& s) // NOLINT
     return true;
 }
 SE_BIND_CTOR(js_dragonbones_CCArmatureDisplay_constructor, __jsb_dragonBones_CCArmatureDisplay_class, js_dragonBones_CCArmatureDisplay_finalize)
+
+
 
 static bool js_dragonBones_CCArmatureDisplay_finalize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -5968,7 +5990,7 @@ bool js_register_dragonbones_CCArmatureDisplay(se::Object* obj) // NOLINT(readab
     cls->defineFunction("setDBEventCallback", _SE(js_dragonbones_CCArmatureDisplay_setDBEventCallback));
     cls->defineFunction("setDebugBonesEnabled", _SE(js_dragonbones_CCArmatureDisplay_setDebugBonesEnabled));
     cls->defineFunction("setOpacityModifyRGB", _SE(js_dragonbones_CCArmatureDisplay_setOpacityModifyRGB));
-    cls->defineStaticFunction("create", _SE(js_dragonbones_CCArmatureDisplay_create_static));
+    cls->defineStaticFunction("create", _SE(js_dragonbones_CCArmatureDisplay_create));
     cls->defineFinalizeFunction(_SE(js_dragonBones_CCArmatureDisplay_finalize));
     cls->install();
     JSBClassType::registerClass<dragonBones::CCArmatureDisplay>(cls);
@@ -5976,12 +5998,11 @@ bool js_register_dragonbones_CCArmatureDisplay(se::Object* obj) // NOLINT(readab
     __jsb_dragonBones_CCArmatureDisplay_proto = cls->getProto();
     __jsb_dragonBones_CCArmatureDisplay_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_ArmatureCacheMgr_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_ArmatureCacheMgr_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_ArmatureCacheMgr_proto = nullptr;
+se::Class* __jsb_dragonBones_ArmatureCacheMgr_class = nullptr;
 
 static bool js_dragonbones_ArmatureCacheMgr_buildArmatureCache(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6028,7 +6049,7 @@ static bool js_dragonbones_ArmatureCacheMgr_removeArmatureCache(se::State& s) //
 }
 SE_BIND_FUNC(js_dragonbones_ArmatureCacheMgr_removeArmatureCache)
 
-static bool js_dragonbones_ArmatureCacheMgr_destroyInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_ArmatureCacheMgr_destroyInstance(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -6039,9 +6060,9 @@ static bool js_dragonbones_ArmatureCacheMgr_destroyInstance_static(se::State& s)
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureCacheMgr_destroyInstance_static)
+SE_BIND_FUNC(js_dragonbones_ArmatureCacheMgr_destroyInstance)
 
-static bool js_dragonbones_ArmatureCacheMgr_getInstance_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_ArmatureCacheMgr_getInstance(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -6049,14 +6070,16 @@ static bool js_dragonbones_ArmatureCacheMgr_getInstance_static(se::State& s) // 
     if (argc == 0) {
         dragonBones::ArmatureCacheMgr* result = dragonBones::ArmatureCacheMgr::getInstance();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_ArmatureCacheMgr_getInstance_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_dragonbones_ArmatureCacheMgr_getInstance : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_ArmatureCacheMgr_getInstance_static)
+SE_BIND_FUNC(js_dragonbones_ArmatureCacheMgr_getInstance)
+
+
 static bool js_dragonBones_ArmatureCacheMgr_finalize(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto iter = se::NonRefNativePtrCreatedByCtorMap::find(SE_THIS_OBJECT<dragonBones::ArmatureCacheMgr>(s));
@@ -6076,8 +6099,8 @@ bool js_register_dragonbones_ArmatureCacheMgr(se::Object* obj) // NOLINT(readabi
 
     cls->defineFunction("buildArmatureCache", _SE(js_dragonbones_ArmatureCacheMgr_buildArmatureCache));
     cls->defineFunction("removeArmatureCache", _SE(js_dragonbones_ArmatureCacheMgr_removeArmatureCache));
-    cls->defineStaticFunction("destroyInstance", _SE(js_dragonbones_ArmatureCacheMgr_destroyInstance_static));
-    cls->defineStaticFunction("getInstance", _SE(js_dragonbones_ArmatureCacheMgr_getInstance_static));
+    cls->defineStaticFunction("destroyInstance", _SE(js_dragonbones_ArmatureCacheMgr_destroyInstance));
+    cls->defineStaticFunction("getInstance", _SE(js_dragonbones_ArmatureCacheMgr_getInstance));
     cls->defineFinalizeFunction(_SE(js_dragonBones_ArmatureCacheMgr_finalize));
     cls->install();
     JSBClassType::registerClass<dragonBones::ArmatureCacheMgr>(cls);
@@ -6085,12 +6108,11 @@ bool js_register_dragonbones_ArmatureCacheMgr(se::Object* obj) // NOLINT(readabi
     __jsb_dragonBones_ArmatureCacheMgr_proto = cls->getProto();
     __jsb_dragonBones_ArmatureCacheMgr_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_CCArmatureCacheDisplay_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_CCArmatureCacheDisplay_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_CCArmatureCacheDisplay_proto = nullptr;
+se::Class* __jsb_dragonBones_CCArmatureCacheDisplay_class = nullptr;
 
 static bool js_dragonbones_CCArmatureCacheDisplay_addDBEventListener(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6584,6 +6606,8 @@ static bool js_dragonbones_CCArmatureCacheDisplay_constructor(se::State& s) // N
 }
 SE_BIND_CTOR(js_dragonbones_CCArmatureCacheDisplay_constructor, __jsb_dragonBones_CCArmatureCacheDisplay_class, js_dragonBones_CCArmatureCacheDisplay_finalize)
 
+
+
 static bool js_dragonBones_CCArmatureCacheDisplay_finalize(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj =SE_THIS_OBJECT<dragonBones::CCArmatureCacheDisplay>(s);
@@ -6627,12 +6651,11 @@ bool js_register_dragonbones_CCArmatureCacheDisplay(se::Object* obj) // NOLINT(r
     __jsb_dragonBones_CCArmatureCacheDisplay_proto = cls->getProto();
     __jsb_dragonBones_CCArmatureCacheDisplay_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_CCFactory_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_CCFactory_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_CCFactory_proto = nullptr;
+se::Class* __jsb_dragonBones_CCFactory_class = nullptr;
 
 static bool js_dragonbones_CCFactory_add(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -6986,7 +7009,24 @@ static bool js_dragonbones_CCFactory_update(se::State& s) // NOLINT(readability-
 }
 SE_BIND_FUNC(js_dragonbones_CCFactory_update)
 
-static bool js_dragonbones_CCFactory_destroyFactory_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_CCFactory_isInit(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 0) {
+        bool result = dragonBones::CCFactory::isInit();
+        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        SE_PRECONDITION2(ok, false, "js_dragonbones_CCFactory_isInit : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_dragonbones_CCFactory_isInit)
+
+static bool js_dragonbones_CCFactory_destroyFactory(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -6997,26 +7037,9 @@ static bool js_dragonbones_CCFactory_destroyFactory_static(se::State& s) // NOLI
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_destroyFactory_static)
+SE_BIND_FUNC(js_dragonbones_CCFactory_destroyFactory)
 
-static bool js_dragonbones_CCFactory_getClock_static(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        dragonBones::WorldClock* result = dragonBones::CCFactory::getClock();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_CCFactory_getClock_static : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_dragonbones_CCFactory_getClock_static)
-
-static bool js_dragonbones_CCFactory_getFactory_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_CCFactory_getFactory(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -7024,31 +7047,31 @@ static bool js_dragonbones_CCFactory_getFactory_static(se::State& s) // NOLINT(r
     if (argc == 0) {
         dragonBones::CCFactory* result = dragonBones::CCFactory::getFactory();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_CCFactory_getFactory_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_dragonbones_CCFactory_getFactory : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_getFactory_static)
+SE_BIND_FUNC(js_dragonbones_CCFactory_getFactory)
 
-static bool js_dragonbones_CCFactory_isInit_static(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_dragonbones_CCFactory_getClock(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        bool result = dragonBones::CCFactory::isInit();
+        dragonBones::WorldClock* result = dragonBones::CCFactory::getClock();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_dragonbones_CCFactory_isInit_static : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_dragonbones_CCFactory_getClock : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_dragonbones_CCFactory_isInit_static)
+SE_BIND_FUNC(js_dragonbones_CCFactory_getClock)
 
 SE_DECLARE_FINALIZE_FUNC(js_dragonBones_CCFactory_finalize)
 
@@ -7060,6 +7083,8 @@ static bool js_dragonbones_CCFactory_constructor(se::State& s) // NOLINT(readabi
     return true;
 }
 SE_BIND_CTOR(js_dragonbones_CCFactory_constructor, __jsb_dragonBones_CCFactory_class, js_dragonBones_CCFactory_finalize)
+
+
 
 static bool js_dragonBones_CCFactory_finalize(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -7092,10 +7117,10 @@ bool js_register_dragonbones_CCFactory(se::Object* obj) // NOLINT(readability-id
     cls->defineFunction("setTimeScale", _SE(js_dragonbones_CCFactory_setTimeScale));
     cls->defineFunction("stopSchedule", _SE(js_dragonbones_CCFactory_stopSchedule));
     cls->defineFunction("update", _SE(js_dragonbones_CCFactory_update));
-    cls->defineStaticFunction("destroyFactory", _SE(js_dragonbones_CCFactory_destroyFactory_static));
-    cls->defineStaticFunction("getClock", _SE(js_dragonbones_CCFactory_getClock_static));
-    cls->defineStaticFunction("getInstance", _SE(js_dragonbones_CCFactory_getFactory_static));
-    cls->defineStaticFunction("isInit", _SE(js_dragonbones_CCFactory_isInit_static));
+    cls->defineStaticFunction("isInit", _SE(js_dragonbones_CCFactory_isInit));
+    cls->defineStaticFunction("destroyFactory", _SE(js_dragonbones_CCFactory_destroyFactory));
+    cls->defineStaticFunction("getFactory", _SE(js_dragonbones_CCFactory_getFactory));
+    cls->defineStaticFunction("getClock", _SE(js_dragonbones_CCFactory_getClock));
     cls->defineFinalizeFunction(_SE(js_dragonBones_CCFactory_finalize));
     cls->install();
     JSBClassType::registerClass<dragonBones::CCFactory>(cls);
@@ -7103,12 +7128,13 @@ bool js_register_dragonbones_CCFactory(se::Object* obj) // NOLINT(readability-id
     __jsb_dragonBones_CCFactory_proto = cls->getProto();
     __jsb_dragonBones_CCFactory_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_CCTextureAtlasData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_CCTextureAtlasData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_CCTextureAtlasData_proto = nullptr;
+se::Class* __jsb_dragonBones_CCTextureAtlasData_class = nullptr;
+
+
 
 bool js_register_dragonbones_CCTextureAtlasData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
@@ -7120,12 +7146,13 @@ bool js_register_dragonbones_CCTextureAtlasData(se::Object* obj) // NOLINT(reada
     __jsb_dragonBones_CCTextureAtlasData_proto = cls->getProto();
     __jsb_dragonBones_CCTextureAtlasData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-se::Object* __jsb_dragonBones_CCTextureData_proto = nullptr; // NOLINT
-se::Class* __jsb_dragonBones_CCTextureData_class = nullptr;  // NOLINT
+se::Object* __jsb_dragonBones_CCTextureData_proto = nullptr;
+se::Class* __jsb_dragonBones_CCTextureData_class = nullptr;
+
+
 
 bool js_register_dragonbones_CCTextureData(se::Object* obj) // NOLINT(readability-identifier-naming)
 {
@@ -7137,11 +7164,10 @@ bool js_register_dragonbones_CCTextureData(se::Object* obj) // NOLINT(readabilit
     __jsb_dragonBones_CCTextureData_proto = cls->getProto();
     __jsb_dragonBones_CCTextureData_class = cls;
 
-
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_dragonbones(se::Object* obj)    // NOLINT
+bool register_all_dragonbones(se::Object* obj)
 {
     // Get the ns
     se::Value nsVal;
@@ -7154,35 +7180,34 @@ bool register_all_dragonbones(se::Object* obj)    // NOLINT
     se::Object* ns = nsVal.toObject();
 
     js_register_dragonbones_BaseObject(ns);
-    js_register_dragonbones_Animation(ns);
-    js_register_dragonbones_AnimationData(ns);
-    js_register_dragonbones_AnimationState(ns);
-    js_register_dragonbones_Armature(ns);
-    js_register_dragonbones_ArmatureCacheMgr(ns);
-    js_register_dragonbones_ArmatureData(ns);
-    js_register_dragonbones_BaseFactory(ns);
     js_register_dragonbones_TransformObject(ns);
-    js_register_dragonbones_Bone(ns);
-    js_register_dragonbones_BoneData(ns);
-    js_register_dragonbones_CCArmatureCacheDisplay(ns);
-    js_register_dragonbones_CCArmatureDisplay(ns);
-    js_register_dragonbones_CCFactory(ns);
     js_register_dragonbones_Slot(ns);
-    js_register_dragonbones_CCSlot(ns);
-    js_register_dragonbones_TextureAtlasData(ns);
-    js_register_dragonbones_CCTextureAtlasData(ns);
+    js_register_dragonbones_Matrix(ns);
+    js_register_dragonbones_Transform(ns);
+    js_register_dragonbones_Animation(ns);
     js_register_dragonbones_TextureData(ns);
     js_register_dragonbones_CCTextureData(ns);
-    js_register_dragonbones_DragonBonesData(ns);
-    js_register_dragonbones_EventObject(ns);
-    js_register_dragonbones_Matrix(ns);
-    js_register_dragonbones_Rectangle(ns);
-    js_register_dragonbones_SkinData(ns);
-    js_register_dragonbones_SlotData(ns);
-    js_register_dragonbones_Transform(ns);
+    js_register_dragonbones_BaseFactory(ns);
+    js_register_dragonbones_CCFactory(ns);
     js_register_dragonbones_WorldClock(ns);
+    js_register_dragonbones_Rectangle(ns);
+    js_register_dragonbones_TextureAtlasData(ns);
+    js_register_dragonbones_CCArmatureDisplay(ns);
+    js_register_dragonbones_AnimationState(ns);
+    js_register_dragonbones_BoneData(ns);
+    js_register_dragonbones_ArmatureData(ns);
+    js_register_dragonbones_CCTextureAtlasData(ns);
+    js_register_dragonbones_CCSlot(ns);
+    js_register_dragonbones_Armature(ns);
+    js_register_dragonbones_Bone(ns);
+    js_register_dragonbones_ArmatureCacheMgr(ns);
+    js_register_dragonbones_SkinData(ns);
+    js_register_dragonbones_EventObject(ns);
+    js_register_dragonbones_SlotData(ns);
+    js_register_dragonbones_DragonBonesData(ns);
+    js_register_dragonbones_AnimationData(ns);
+    js_register_dragonbones_CCArmatureCacheDisplay(ns);
     return true;
 }
 
 #endif //#if USE_DRAGONBONES > 0
-// clang-format on

@@ -1,4 +1,3 @@
-// clang-format off
 #pragma once
 #include "base/Config.h"
 #if USE_WEBVIEW > 0
@@ -7,11 +6,11 @@
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/ui/webview/WebView.h"
 
-extern se::Object *__jsb_cc_WebView_proto; // NOLINT
-extern se::Class * __jsb_cc_WebView_class; // NOLINT
+extern se::Object* __jsb_cc_WebView_proto;
+extern se::Class* __jsb_cc_WebView_class;
 
-bool js_register_cc_WebView(se::Object *obj); // NOLINT
-bool register_all_webview(se::Object *obj);                   // NOLINT
+bool js_register_cc_WebView(se::Object* obj);
+bool register_all_webview(se::Object* obj);
 
 JSB_REGISTER_OBJECT_TYPE(cc::WebView);
 SE_DECLARE_FUNC(js_webview_WebView_canGoBack);
@@ -42,5 +41,3 @@ SE_DECLARE_FUNC(js_webview_WebView_stopLoading);
 SE_DECLARE_FUNC(js_webview_WebView_create);
 
 #endif //#if USE_WEBVIEW > 0
-
-// clang-format on

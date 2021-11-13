@@ -4,7 +4,6 @@
 #include <type_traits>
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
-#include "cocos/bindings/auto/jsb_cocos_auto.h"
 #include "cocos/core/geometry/Geometry.h"
 
 extern se::Object *__jsb_cc_geometry_ShapeBase_proto; // NOLINT
@@ -14,6 +13,8 @@ bool js_register_cc_geometry_ShapeBase(se::Object *obj); // NOLINT
 bool register_all_geometry(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::geometry::ShapeBase);
+SE_DECLARE_FUNC(js_geometry_ShapeBase_getType);
+SE_DECLARE_FUNC(js_geometry_ShapeBase_setType);
 
 extern se::Object *__jsb_cc_geometry_AABB_proto; // NOLINT
 extern se::Class * __jsb_cc_geometry_AABB_class; // NOLINT
@@ -140,6 +141,5 @@ SE_DECLARE_FUNC(js_geometry_Triangle_create);
 SE_DECLARE_FUNC(js_geometry_Triangle_fromPoints);
 SE_DECLARE_FUNC(js_geometry_Triangle_set);
 SE_DECLARE_FUNC(js_geometry_Triangle_Triangle);
-
 
 // clang-format on

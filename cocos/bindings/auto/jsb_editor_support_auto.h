@@ -1,4 +1,3 @@
-// clang-format off
 #pragma once
 #include "base/Config.h"
 #include <type_traits>
@@ -8,11 +7,11 @@
 #include "cocos/editor-support/MiddlewareManager.h"
 #include "cocos/editor-support/SharedBufferManager.h"
 
-extern se::Object *__jsb_cc_middleware_Texture2D_proto; // NOLINT
-extern se::Class * __jsb_cc_middleware_Texture2D_class; // NOLINT
+extern se::Object* __jsb_cc_middleware_Texture2D_proto;
+extern se::Class* __jsb_cc_middleware_Texture2D_class;
 
-bool js_register_cc_middleware_Texture2D(se::Object *obj); // NOLINT
-bool register_all_editor_support(se::Object *obj);                   // NOLINT
+bool js_register_cc_middleware_Texture2D(se::Object* obj);
+bool register_all_editor_support(se::Object* obj);
 
 JSB_REGISTER_OBJECT_TYPE(cc::middleware::Texture2D);
 SE_DECLARE_FUNC(js_editor_support_Texture2D_getPixelsHigh);
@@ -24,22 +23,22 @@ SE_DECLARE_FUNC(js_editor_support_Texture2D_setRealTextureIndex);
 SE_DECLARE_FUNC(js_editor_support_Texture2D_setTexParamCallback);
 SE_DECLARE_FUNC(js_editor_support_Texture2D_Texture2D);
 
-extern se::Object *__jsb_cc_middleware_SharedBufferManager_proto; // NOLINT
-extern se::Class * __jsb_cc_middleware_SharedBufferManager_class; // NOLINT
+extern se::Object* __jsb_cc_middleware_SharedBufferManager_proto;
+extern se::Class* __jsb_cc_middleware_SharedBufferManager_class;
 
-bool js_register_cc_middleware_SharedBufferManager(se::Object *obj); // NOLINT
-bool register_all_editor_support(se::Object *obj);                   // NOLINT
+bool js_register_cc_middleware_SharedBufferManager(se::Object* obj);
+bool register_all_editor_support(se::Object* obj);
 
 JSB_REGISTER_OBJECT_TYPE(cc::middleware::SharedBufferManager);
 SE_DECLARE_FUNC(js_editor_support_SharedBufferManager_getSharedBuffer);
 SE_DECLARE_FUNC(js_editor_support_SharedBufferManager_setResizeCallback);
 SE_DECLARE_FUNC(js_editor_support_SharedBufferManager_SharedBufferManager);
 
-extern se::Object *__jsb_cc_middleware_MiddlewareManager_proto; // NOLINT
-extern se::Class * __jsb_cc_middleware_MiddlewareManager_class; // NOLINT
+extern se::Object* __jsb_cc_middleware_MiddlewareManager_proto;
+extern se::Class* __jsb_cc_middleware_MiddlewareManager_class;
 
-bool js_register_cc_middleware_MiddlewareManager(se::Object *obj); // NOLINT
-bool register_all_editor_support(se::Object *obj);                   // NOLINT
+bool js_register_cc_middleware_MiddlewareManager(se::Object* obj);
+bool register_all_editor_support(se::Object* obj);
 
 JSB_REGISTER_OBJECT_TYPE(cc::middleware::MiddlewareManager);
 SE_DECLARE_FUNC(js_editor_support_MiddlewareManager_getAttachInfoMgr);
@@ -56,5 +55,3 @@ SE_DECLARE_FUNC(js_editor_support_MiddlewareManager_generateModuleID);
 SE_DECLARE_FUNC(js_editor_support_MiddlewareManager_getInstance);
 SE_DECLARE_FUNC(js_editor_support_MiddlewareManager_MiddlewareManager);
 
-
-// clang-format on

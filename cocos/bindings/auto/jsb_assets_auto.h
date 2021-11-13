@@ -12,16 +12,6 @@
 #include "cocos/3d/assets/MorphRendering.h"
 #include "cocos/3d/assets/Skeleton.h"
 
-extern se::Object *__jsb_cc_Error_proto; // NOLINT
-extern se::Class * __jsb_cc_Error_class; // NOLINT
-
-bool js_register_cc_Error(se::Object *obj); // NOLINT
-bool register_all_assets(se::Object *obj);                   // NOLINT
-
-template <>
-bool sevalue_to_native(const se::Value &, cc::Error *, se::Object *ctx);
-JSB_REGISTER_OBJECT_TYPE(cc::Error);
-
 extern se::Object *__jsb_cc_BoundingBox_proto; // NOLINT
 extern se::Class * __jsb_cc_BoundingBox_class; // NOLINT
 
@@ -53,13 +43,16 @@ SE_DECLARE_FUNC(js_assets_Asset_addRef);
 SE_DECLARE_FUNC(js_assets_Asset_createNode);
 SE_DECLARE_FUNC(js_assets_Asset_decRef);
 SE_DECLARE_FUNC(js_assets_Asset_deserialize);
+SE_DECLARE_FUNC(js_assets_Asset_destroy);
 SE_DECLARE_FUNC(js_assets_Asset_getNativeAsset);
+SE_DECLARE_FUNC(js_assets_Asset_getNativeDep);
 SE_DECLARE_FUNC(js_assets_Asset_getRefCount);
 SE_DECLARE_FUNC(js_assets_Asset_initDefault);
 SE_DECLARE_FUNC(js_assets_Asset_isDefault);
 SE_DECLARE_FUNC(js_assets_Asset_onLoaded);
 SE_DECLARE_FUNC(js_assets_Asset_serialize);
 SE_DECLARE_FUNC(js_assets_Asset_setNativeAsset);
+SE_DECLARE_FUNC(js_assets_Asset_toString);
 SE_DECLARE_FUNC(js_assets_Asset_validate);
 SE_DECLARE_FUNC(js_assets_Asset_Asset);
 
@@ -70,6 +63,7 @@ bool js_register_cc_BufferAsset(se::Object *obj); // NOLINT
 bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::BufferAsset);
+SE_DECLARE_FUNC(js_assets_BufferAsset_getBuffer);
 
 extern se::Object *__jsb_cc_TextureBase_proto; // NOLINT
 extern se::Class * __jsb_cc_TextureBase_class; // NOLINT
@@ -82,9 +76,12 @@ SE_DECLARE_FUNC(js_assets_TextureBase_getAnisotropy);
 SE_DECLARE_FUNC(js_assets_TextureBase_getGFXSampler);
 SE_DECLARE_FUNC(js_assets_TextureBase_getGFXTexture);
 SE_DECLARE_FUNC(js_assets_TextureBase_getHash);
+SE_DECLARE_FUNC(js_assets_TextureBase_getHeight);
 SE_DECLARE_FUNC(js_assets_TextureBase_getId);
 SE_DECLARE_FUNC(js_assets_TextureBase_getPixelFormat);
 SE_DECLARE_FUNC(js_assets_TextureBase_getSamplerHash);
+SE_DECLARE_FUNC(js_assets_TextureBase_getWidth);
+SE_DECLARE_FUNC(js_assets_TextureBase_isCompressed);
 SE_DECLARE_FUNC(js_assets_TextureBase_setAnisotropy);
 SE_DECLARE_FUNC(js_assets_TextureBase_setFilters);
 SE_DECLARE_FUNC(js_assets_TextureBase_setMipFilter);
@@ -138,7 +135,6 @@ bool js_register_cc_ImageAsset(se::Object *obj); // NOLINT
 bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::ImageAsset);
-SE_DECLARE_FUNC(js_assets_ImageAsset_getData);
 SE_DECLARE_FUNC(js_assets_ImageAsset_isCompressed);
 SE_DECLARE_FUNC(js_assets_ImageAsset_ImageAsset);
 
@@ -151,6 +147,7 @@ bool register_all_assets(se::Object *obj);                   // NOLINT
 JSB_REGISTER_OBJECT_TYPE(cc::SimpleTexture);
 SE_DECLARE_FUNC(js_assets_SimpleTexture_assignImage);
 SE_DECLARE_FUNC(js_assets_SimpleTexture_checkTextureLoaded);
+SE_DECLARE_FUNC(js_assets_SimpleTexture_mipmapLevel);
 SE_DECLARE_FUNC(js_assets_SimpleTexture_updateImage);
 SE_DECLARE_FUNC(js_assets_SimpleTexture_updateMipmaps);
 SE_DECLARE_FUNC(js_assets_SimpleTexture_uploadData);
@@ -186,10 +183,14 @@ SE_DECLARE_FUNC(js_assets_Texture2D_create);
 SE_DECLARE_FUNC(js_assets_Texture2D_description);
 SE_DECLARE_FUNC(js_assets_Texture2D_getGfxTextureCreateInfo);
 SE_DECLARE_FUNC(js_assets_Texture2D_getHtmlElementObj);
+SE_DECLARE_FUNC(js_assets_Texture2D_getImage);
+SE_DECLARE_FUNC(js_assets_Texture2D_getMipmaps);
 SE_DECLARE_FUNC(js_assets_Texture2D_getMipmapsUuids);
 SE_DECLARE_FUNC(js_assets_Texture2D_initialize);
 SE_DECLARE_FUNC(js_assets_Texture2D_releaseTexture);
 SE_DECLARE_FUNC(js_assets_Texture2D_reset);
+SE_DECLARE_FUNC(js_assets_Texture2D_setImage);
+SE_DECLARE_FUNC(js_assets_Texture2D_setMipmaps);
 SE_DECLARE_FUNC(js_assets_Texture2D_Texture2D);
 
 extern se::Object *__jsb_cc_IPropertyInfo_proto; // NOLINT
@@ -201,26 +202,6 @@ bool register_all_assets(se::Object *obj);                   // NOLINT
 template <>
 bool sevalue_to_native(const se::Value &, cc::IPropertyInfo *, se::Object *ctx);
 JSB_REGISTER_OBJECT_TYPE(cc::IPropertyInfo);
-
-extern se::Object *__jsb_cc_IPassStates_proto; // NOLINT
-extern se::Class * __jsb_cc_IPassStates_class; // NOLINT
-
-bool js_register_cc_IPassStates(se::Object *obj); // NOLINT
-bool register_all_assets(se::Object *obj);                   // NOLINT
-
-template <>
-bool sevalue_to_native(const se::Value &, cc::IPassStates *, se::Object *ctx);
-JSB_REGISTER_OBJECT_TYPE(cc::IPassStates);
-
-extern se::Object *__jsb_cc_IPassInfoFull_proto; // NOLINT
-extern se::Class * __jsb_cc_IPassInfoFull_class; // NOLINT
-
-bool js_register_cc_IPassInfoFull(se::Object *obj); // NOLINT
-bool register_all_assets(se::Object *obj);                   // NOLINT
-
-template <>
-bool sevalue_to_native(const se::Value &, cc::IPassInfoFull *, se::Object *ctx);
-JSB_REGISTER_OBJECT_TYPE(cc::IPassInfoFull);
 
 extern se::Object *__jsb_cc_ITechniqueInfo_proto; // NOLINT
 extern se::Class * __jsb_cc_ITechniqueInfo_class; // NOLINT
@@ -362,34 +343,19 @@ bool js_register_cc_Material(se::Object *obj); // NOLINT
 bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::Material);
-SE_DECLARE_FUNC(js_assets_Material_getProperty);
 SE_DECLARE_FUNC(js_assets_Material_copy);
+SE_DECLARE_FUNC(js_assets_Material_getEffectAsset);
+SE_DECLARE_FUNC(js_assets_Material_getEffectName);
+SE_DECLARE_FUNC(js_assets_Material_getHash);
+SE_DECLARE_FUNC(js_assets_Material_getParent);
+SE_DECLARE_FUNC(js_assets_Material_getPasses);
+SE_DECLARE_FUNC(js_assets_Material_getProperty);
+SE_DECLARE_FUNC(js_assets_Material_getTechniqueIndex);
 SE_DECLARE_FUNC(js_assets_Material_initialize);
 SE_DECLARE_FUNC(js_assets_Material_overridePipelineStates);
 SE_DECLARE_FUNC(js_assets_Material_reset);
 SE_DECLARE_FUNC(js_assets_Material_resetUniforms);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyColor);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyColorArray);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyFloat32);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyFloat32Array);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyGFXTexture);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyGFXTextureArray);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyInt32);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyInt32Array);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyMat3);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyMat3Array);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyMat4);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyMat4Array);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyQuaternion);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyQuaternionArray);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyTextureBase);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyTextureBaseArray);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyVec2);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyVec2Array);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyVec3);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyVec3Array);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyVec4);
-SE_DECLARE_FUNC(js_assets_Material_setPropertyVec4Array);
+SE_DECLARE_FUNC(js_assets_Material_setEffectAsset);
 SE_DECLARE_FUNC(js_assets_Material_update);
 SE_DECLARE_FUNC(js_assets_Material_getHashForMaterial);
 SE_DECLARE_FUNC(js_assets_Material_Material);
@@ -421,6 +387,9 @@ bool js_register_cc_RenderTexture(se::Object *obj); // NOLINT
 bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::RenderTexture);
+SE_DECLARE_FUNC(js_assets_RenderTexture_getHeight);
+SE_DECLARE_FUNC(js_assets_RenderTexture_getWidth);
+SE_DECLARE_FUNC(js_assets_RenderTexture_getWindow);
 SE_DECLARE_FUNC(js_assets_RenderTexture_initWindow);
 SE_DECLARE_FUNC(js_assets_RenderTexture_initialize);
 SE_DECLARE_FUNC(js_assets_RenderTexture_reset);
@@ -484,9 +453,13 @@ bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::TextureCube);
 SE_DECLARE_FUNC(js_assets_TextureCube_getGfxTextureCreateInfo);
+SE_DECLARE_FUNC(js_assets_TextureCube_getImage);
+SE_DECLARE_FUNC(js_assets_TextureCube_getMipmaps);
 SE_DECLARE_FUNC(js_assets_TextureCube_initialize);
 SE_DECLARE_FUNC(js_assets_TextureCube_releaseTexture);
 SE_DECLARE_FUNC(js_assets_TextureCube_reset);
+SE_DECLARE_FUNC(js_assets_TextureCube_setImage);
+SE_DECLARE_FUNC(js_assets_TextureCube_setMipmaps);
 SE_DECLARE_FUNC(js_assets_TextureCube_fromTexture2DArray);
 SE_DECLARE_FUNC(js_assets_TextureCube_TextureCube);
 
@@ -581,12 +554,13 @@ SE_DECLARE_FUNC(js_assets_Mesh_assign);
 SE_DECLARE_FUNC(js_assets_Mesh_copyAttribute);
 SE_DECLARE_FUNC(js_assets_Mesh_copyIndices);
 SE_DECLARE_FUNC(js_assets_Mesh_destroyRenderingMesh);
-SE_DECLARE_FUNC(js_assets_Mesh_getBoneSpaceBounds);
+SE_DECLARE_FUNC(js_assets_Mesh_getAssetData);
 SE_DECLARE_FUNC(js_assets_Mesh_initialize);
 SE_DECLARE_FUNC(js_assets_Mesh_merge);
 SE_DECLARE_FUNC(js_assets_Mesh_readAttribute);
 SE_DECLARE_FUNC(js_assets_Mesh_readIndices);
 SE_DECLARE_FUNC(js_assets_Mesh_reset);
+SE_DECLARE_FUNC(js_assets_Mesh_setAssetData);
 SE_DECLARE_FUNC(js_assets_Mesh_validateMergingMesh);
 SE_DECLARE_FUNC(js_assets_Mesh_Mesh);
 
@@ -628,9 +602,10 @@ bool register_all_assets(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::Skeleton);
 SE_DECLARE_FUNC(js_assets_Skeleton_getBindposes);
-SE_DECLARE_FUNC(js_assets_Skeleton_setBindposes);
+SE_DECLARE_FUNC(js_assets_Skeleton_getHash);
 SE_DECLARE_FUNC(js_assets_Skeleton_getInverseBindposes);
-SE_DECLARE_FUNC(js_assets_Skeleton_Skeleton);
-
+SE_DECLARE_FUNC(js_assets_Skeleton_getJoints);
+SE_DECLARE_FUNC(js_assets_Skeleton_setBindposes);
+SE_DECLARE_FUNC(js_assets_Skeleton_setJoints);
 
 // clang-format on

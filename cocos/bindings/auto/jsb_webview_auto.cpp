@@ -1,3 +1,5 @@
+
+// clang-format off
 #include "cocos/bindings/auto/jsb_webview_auto.h"
 #if USE_WEBVIEW > 0
 #include "cocos/bindings/manual/jsb_conversions.h"
@@ -11,8 +13,8 @@
 #ifndef JSB_FREE
 #define JSB_FREE(ptr) delete ptr
 #endif
-se::Object* __jsb_cc_WebView_proto = nullptr;
-se::Class* __jsb_cc_WebView_class = nullptr;
+se::Object* __jsb_cc_WebView_proto = nullptr; // NOLINT
+se::Class* __jsb_cc_WebView_class = nullptr;  // NOLINT
 
 static bool js_webview_WebView_canGoBack(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -618,7 +620,7 @@ static bool js_webview_WebView_stopLoading(se::State& s) // NOLINT(readability-i
 }
 SE_BIND_FUNC(js_webview_WebView_stopLoading)
 
-static bool js_webview_WebView_create(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_webview_WebView_create_static(se::State& s) // NOLINT(readability-identifier-naming)
 {
     const auto& args = s.args();
     size_t argc = args.size();
@@ -634,9 +636,7 @@ static bool js_webview_WebView_create(se::State& s) // NOLINT(readability-identi
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_webview_WebView_create)
-
-
+SE_BIND_FUNC(js_webview_WebView_create_static)
 static bool js_cc_WebView_finalize(se::State& s) // NOLINT(readability-identifier-naming)
 {
     // destructor is skipped
@@ -687,7 +687,7 @@ bool js_register_webview_WebView(se::Object* obj) // NOLINT(readability-identifi
     cls->defineFunction("setVisible", _SE(js_webview_WebView_setVisible));
     cls->defineFunction("stopLoading", _SE(js_webview_WebView_stopLoading));
     cls->defineFunction("destroy", _SE(js_cc_WebView_destroy));
-    cls->defineStaticFunction("create", _SE(js_webview_WebView_create));
+    cls->defineStaticFunction("create", _SE(js_webview_WebView_create_static));
     cls->defineFinalizeFunction(_SE(js_cc_WebView_finalize));
     cls->install();
     JSBClassType::registerClass<cc::WebView>(cls);
@@ -695,10 +695,11 @@ bool js_register_webview_WebView(se::Object* obj) // NOLINT(readability-identifi
     __jsb_cc_WebView_proto = cls->getProto();
     __jsb_cc_WebView_class = cls;
 
+
     se::ScriptEngine::getInstance()->clearException();
     return true;
 }
-bool register_all_webview(se::Object* obj)
+bool register_all_webview(se::Object* obj)    // NOLINT
 {
     // Get the ns
     se::Value nsVal;
@@ -715,3 +716,4 @@ bool register_all_webview(se::Object* obj)
 }
 
 #endif //#if USE_WEBVIEW > 0
+// clang-format on

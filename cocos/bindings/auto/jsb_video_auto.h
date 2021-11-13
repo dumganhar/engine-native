@@ -1,3 +1,4 @@
+// clang-format off
 #pragma once
 #include "base/Config.h"
 #if (USE_VIDEO > 0)
@@ -6,11 +7,11 @@
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/ui/videoplayer/VideoPlayer.h"
 
-extern se::Object* __jsb_cc_VideoPlayer_proto;
-extern se::Class* __jsb_cc_VideoPlayer_class;
+extern se::Object *__jsb_cc_VideoPlayer_proto; // NOLINT
+extern se::Class * __jsb_cc_VideoPlayer_class; // NOLINT
 
-bool js_register_cc_VideoPlayer(se::Object* obj);
-bool register_all_video(se::Object* obj);
+bool js_register_cc_VideoPlayer(se::Object *obj); // NOLINT
+bool register_all_video(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::VideoPlayer);
 SE_DECLARE_FUNC(js_video_VideoPlayer_addEventListener);
@@ -30,3 +31,5 @@ SE_DECLARE_FUNC(js_video_VideoPlayer_stop);
 SE_DECLARE_FUNC(js_video_VideoPlayer_VideoPlayer);
 
 #endif //#if (USE_VIDEO > 0)
+
+// clang-format on

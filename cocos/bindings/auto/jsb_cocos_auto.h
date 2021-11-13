@@ -1,3 +1,4 @@
+// clang-format off
 #pragma once
 #include "base/Config.h"
 #include <type_traits>
@@ -7,12 +8,17 @@
 #include "cocos/platform/CanvasRenderingContext2D.h"
 #include "cocos/platform/Device.h"
 #include "cocos/platform/SAXParser.h"
+#include "cocos/math/Vec2.h"
+#include "cocos/math/Vec3.h"
+#include "cocos/math/Quaternion.h"
+#include "cocos/math/Color.h"
+#include "cocos/core/data/Object.h"
 
-extern se::Object* __jsb_cc_FileUtils_proto;
-extern se::Class* __jsb_cc_FileUtils_class;
+extern se::Object *__jsb_cc_FileUtils_proto; // NOLINT
+extern se::Class * __jsb_cc_FileUtils_class; // NOLINT
 
-bool js_register_cc_FileUtils(se::Object* obj);
-bool register_all_engine(se::Object* obj);
+bool js_register_cc_FileUtils(se::Object *obj); // NOLINT
+bool register_all_engine(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::FileUtils);
 SE_DECLARE_FUNC(js_engine_FileUtils_addSearchPath);
@@ -47,26 +53,35 @@ SE_DECLARE_FUNC(js_engine_FileUtils_writeStringToFile);
 SE_DECLARE_FUNC(js_engine_FileUtils_writeToFile);
 SE_DECLARE_FUNC(js_engine_FileUtils_writeValueMapToFile);
 SE_DECLARE_FUNC(js_engine_FileUtils_writeValueVectorToFile);
+SE_DECLARE_FUNC(js_engine_FileUtils_getFileDir);
+SE_DECLARE_FUNC(js_engine_FileUtils_getInstance);
 SE_DECLARE_FUNC(js_engine_FileUtils_normalizePath);
 SE_DECLARE_FUNC(js_engine_FileUtils_setDelegate);
-SE_DECLARE_FUNC(js_engine_FileUtils_getInstance);
-SE_DECLARE_FUNC(js_engine_FileUtils_getFileDir);
 
-extern se::Object* __jsb_cc_CanvasGradient_proto;
-extern se::Class* __jsb_cc_CanvasGradient_class;
+extern se::Object *__jsb_cc_Vec2_proto; // NOLINT
+extern se::Class * __jsb_cc_Vec2_class; // NOLINT
 
-bool js_register_cc_CanvasGradient(se::Object* obj);
-bool register_all_engine(se::Object* obj);
+bool js_register_cc_Vec2(se::Object *obj); // NOLINT
+bool register_all_engine(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::Vec2);
+SE_DECLARE_FUNC(js_engine_Vec2_Vec2);
+
+extern se::Object *__jsb_cc_CanvasGradient_proto; // NOLINT
+extern se::Class * __jsb_cc_CanvasGradient_class; // NOLINT
+
+bool js_register_cc_CanvasGradient(se::Object *obj); // NOLINT
+bool register_all_engine(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::CanvasGradient);
 SE_DECLARE_FUNC(js_engine_CanvasGradient_addColorStop);
 SE_DECLARE_FUNC(js_engine_CanvasGradient_CanvasGradient);
 
-extern se::Object* __jsb_cc_CanvasRenderingContext2D_proto;
-extern se::Class* __jsb_cc_CanvasRenderingContext2D_class;
+extern se::Object *__jsb_cc_CanvasRenderingContext2D_proto; // NOLINT
+extern se::Class * __jsb_cc_CanvasRenderingContext2D_class; // NOLINT
 
-bool js_register_cc_CanvasRenderingContext2D(se::Object* obj);
-bool register_all_engine(se::Object* obj);
+bool js_register_cc_CanvasRenderingContext2D(se::Object *obj); // NOLINT
+bool register_all_engine(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::CanvasRenderingContext2D);
 SE_DECLARE_FUNC(js_engine_CanvasRenderingContext2D_beginPath);
@@ -88,31 +103,55 @@ SE_DECLARE_FUNC(js_engine_CanvasRenderingContext2D_transform);
 SE_DECLARE_FUNC(js_engine_CanvasRenderingContext2D_translate);
 SE_DECLARE_FUNC(js_engine_CanvasRenderingContext2D_CanvasRenderingContext2D);
 
-extern se::Object* __jsb_cc_Device_proto;
-extern se::Class* __jsb_cc_Device_class;
+extern se::Object *__jsb_cc_Device_proto; // NOLINT
+extern se::Class * __jsb_cc_Device_class; // NOLINT
 
-bool js_register_cc_Device(se::Object* obj);
-bool register_all_engine(se::Object* obj);
+bool js_register_cc_Device(se::Object *obj); // NOLINT
+bool register_all_engine(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::Device);
+SE_DECLARE_FUNC(js_engine_Device_getBatteryLevel);
+SE_DECLARE_FUNC(js_engine_Device_getDPI);
+SE_DECLARE_FUNC(js_engine_Device_getDeviceModel);
+SE_DECLARE_FUNC(js_engine_Device_getDeviceOrientation);
 SE_DECLARE_FUNC(js_engine_Device_getDevicePixelRatio);
+SE_DECLARE_FUNC(js_engine_Device_getNetworkType);
+SE_DECLARE_FUNC(js_engine_Device_getSafeAreaEdge);
 SE_DECLARE_FUNC(js_engine_Device_setAccelerometerEnabled);
 SE_DECLARE_FUNC(js_engine_Device_setAccelerometerInterval);
-SE_DECLARE_FUNC(js_engine_Device_vibrate);
 SE_DECLARE_FUNC(js_engine_Device_setKeepScreenOn);
-SE_DECLARE_FUNC(js_engine_Device_getNetworkType);
-SE_DECLARE_FUNC(js_engine_Device_getBatteryLevel);
-SE_DECLARE_FUNC(js_engine_Device_getDeviceOrientation);
-SE_DECLARE_FUNC(js_engine_Device_getDPI);
-SE_DECLARE_FUNC(js_engine_Device_getSafeAreaEdge);
-SE_DECLARE_FUNC(js_engine_Device_getDeviceModel);
+SE_DECLARE_FUNC(js_engine_Device_vibrate);
 
-extern se::Object* __jsb_cc_SAXParser_proto;
-extern se::Class* __jsb_cc_SAXParser_class;
+extern se::Object *__jsb_cc_SAXParser_proto; // NOLINT
+extern se::Class * __jsb_cc_SAXParser_class; // NOLINT
 
-bool js_register_cc_SAXParser(se::Object* obj);
-bool register_all_engine(se::Object* obj);
+bool js_register_cc_SAXParser(se::Object *obj); // NOLINT
+bool register_all_engine(se::Object *obj);                   // NOLINT
 
 JSB_REGISTER_OBJECT_TYPE(cc::SAXParser);
 SE_DECLARE_FUNC(js_engine_SAXParser_init);
 
+extern se::Object *__jsb_cc_Color_proto; // NOLINT
+extern se::Class * __jsb_cc_Color_class; // NOLINT
+
+bool js_register_cc_Color(se::Object *obj); // NOLINT
+bool register_all_engine(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::Color);
+SE_DECLARE_FUNC(js_engine_Color_Color);
+
+extern se::Object *__jsb_cc_CCObject_proto; // NOLINT
+extern se::Class * __jsb_cc_CCObject_class; // NOLINT
+
+bool js_register_cc_CCObject(se::Object *obj); // NOLINT
+bool register_all_engine(se::Object *obj);                   // NOLINT
+
+JSB_REGISTER_OBJECT_TYPE(cc::CCObject);
+SE_DECLARE_FUNC(js_engine_CCObject_destroy);
+SE_DECLARE_FUNC(js_engine_CCObject_destroyImmediate);
+SE_DECLARE_FUNC(js_engine_CCObject_destruct);
+SE_DECLARE_FUNC(js_engine_CCObject_toString);
+SE_DECLARE_FUNC(js_engine_CCObject_deferredDestroy);
+
+
+// clang-format on

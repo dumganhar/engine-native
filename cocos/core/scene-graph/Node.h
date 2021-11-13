@@ -657,6 +657,9 @@ public:
 private:
     friend class NodeActivator;
     friend class Scene;
+    
+    // Used to shared memory of Node._uiProps._uiTransformDirty.
+    uint32_t *_uiTransformDirty{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(Node);
 };

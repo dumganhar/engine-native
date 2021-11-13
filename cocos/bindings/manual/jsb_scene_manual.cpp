@@ -191,6 +191,27 @@ static void registerOnBatchCreated(cc::Node *node, se::Object *jsObject) {
         skip);
 }
 
+static void registerOnUiTransformDirty(cc::Node *node, se::Object *jsObject) {
+    cc::CallbackInfoBase::ID skip;
+    node->on(
+        cc::EventTypesToJS::NODE_UI_TRANSFORM_DIRTY,
+        [jsObject](uint32_t **uiTransformDirty) {
+            if (!*uiTransformDirty) {
+                se::AutoHandleScope hs;
+                se::Value           uiPropsVal;
+                jsObject->getProperty("_uiProps", &uiPropsVal);
+                SE_PRECONDITION2_VOID(uiPropsVal.isObject(), "Not property named _uiProps.");
+                se::Value uiTransformDirtyVal;
+                uiPropsVal.toObject()->getProperty("_uiTransformDirty", &uiTransformDirtyVal);
+                SE_PRECONDITION2_VOID(uiTransformDirtyVal.isObject() && uiTransformDirtyVal.toObject()->isTypedArray(), "_uiTransformDirtyVal is not a TypedArray");
+                sevalue_to_native(uiTransformDirtyVal, uiTransformDirty);
+            }
+
+            **uiTransformDirty = 1;
+        },
+        skip);
+}
+
 static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
     auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -214,8 +235,9 @@ static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-
     NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_REATTACH, _onReAttach);
     NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_REMOVE_PERSIST_ROOT_NODE, _onRemovePersistRootNode);
     NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_DESTROY_COMPONENTS, _onDestroyComponents);
-    NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_UI_TRANSFORM_DIRTY, _onUiTransformDirty);
+    //    NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_UI_TRANSFORM_DIRTY, _onUiTransformDirty);
     NODE_DISPATCH_EVENT_TO_JS(cc::NodeEventType::SIBLING_ORDER_CHANGED, _onSiblingOrderChanged);
+    registerOnUiTransformDirty(cobj, jsObject);
 
     cobj->on(
         cc::NodeEventType::NODE_DESTROYED,
@@ -295,7 +317,6 @@ static bool js_scene_Node_registerOnChildAdded(se::State &s) // NOLINT(readabili
     return true;
 }
 SE_BIND_FUNC(js_scene_Node_registerOnChildAdded) // NOLINT(readability-identifier-naming)
-
 
 static bool js_scene_Pass_blocks_getter(se::State &s) {
     auto *cobj = SE_THIS_OBJECT<cc::scene::Pass>(s);

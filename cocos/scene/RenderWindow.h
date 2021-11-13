@@ -130,7 +130,7 @@ private:
     bool                        _hasOnScreenAttachments{false};
     bool                        _hasOffScreenAttachments{false};
     bool                        _shouldSyncSizeWithSwapchain{false};
-    int32_t                    _swapchainBufferIndices{0};
+    uint32_t                    _swapchainBufferIndices{0};
     uint32_t                    _width{1};
     uint32_t                    _height{1};
     std::string                 _title;

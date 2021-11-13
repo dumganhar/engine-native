@@ -25,9 +25,11 @@
 
 #include "jsb_spine_manual.h"
 #include "base/Config.h"
+#include "platform/FileUtils.h"
 
 #if USE_SPINE > 0
 
+    #include "base/Data.h"
     #include "cocos/bindings/auto/jsb_spine_auto.h"
     #include "cocos/bindings/jswrapper/SeApi.h"
     #include "cocos/bindings/manual/jsb_conversions.h"

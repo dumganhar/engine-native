@@ -1970,8 +1970,9 @@ cocos_source_files(
                  #cocos/bindings/manual/jsb_extension_manual.h
     NO_WERROR    cocos/bindings/manual/jsb_cocos_manual.cpp
                  cocos/bindings/manual/jsb_cocos_manual.h
-    NO_WERROR    cocos/bindings/manual/jsb_conversions.cpp
                  cocos/bindings/manual/jsb_conversions.h
+    NO_WERROR    cocos/bindings/manual/jsb_conversions_spec.cpp
+                 cocos/bindings/manual/jsb_conversions_spec.h
     NO_WERROR    cocos/bindings/manual/jsb_gfx_manual.cpp
                  cocos/bindings/manual/jsb_gfx_manual.h
     NO_WERROR    cocos/bindings/manual/jsb_global.cpp

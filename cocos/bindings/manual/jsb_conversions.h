@@ -35,88 +35,34 @@
 #include <variant>
 #include "bindings/jswrapper/HandleObject.h"
 #include "bindings/jswrapper/SeApi.h"
-#include "bindings/jswrapper/Value.h"
-#include "bindings/jswrapper/v8/Object.h"
 #include "bindings/manual/jsb_classtype.h"
-#include "bindings/manual/jsb_conversions.h"
-#include "cocos/base/Map.h"
-#include "cocos/base/Vector.h"
-#include "cocos/core/TypedArray.h"
-#include "cocos/core/assets/AssetsModuleHeader.h"
-#include "cocos/math/Geometry.h"
-#include "cocos/math/Quaternion.h"
-#include "cocos/math/Vec2.h"
-#include "cocos/math/Vec3.h"
-#include "core/ArrayBuffer.h"
-#include "core/geometry/AABB.h"
-#include "extensions/cocos-ext.h"
-#include "network/Downloader.h"
 
-#include "cocos/core/geometry/Geometry.h"
-#include "renderer/core/MaterialInstance.h"
-#include "scene/Fog.h"
-#include "scene/Shadow.h"
-#include "scene/Skybox.h"
+#include "jsb_conversions_spec.h"
 
 #if USE_SPINE
     #include "cocos/editor-support/spine-creator-support/spine-cocos2dx.h"
 #endif
 
-namespace cc {
-namespace gfx {
-struct Rect;
-struct Viewport;
-struct Color;
-struct Offset;
-struct Extent;
-struct TextureSubres;
-struct TextureCopy;
-struct BufferTextureCopy;
-struct BufferInfo;
-struct BufferViewInfo;
-struct TextureInfo;
-struct DescriptorSetInfo;
-struct BindingMappingInfo;
-struct ShaderStage;
-struct UniformSampler;
-struct UniformBlock;
-struct Uniform;
-struct ShaderInfo;
-struct DrawInfo;
-struct IndirectBuffer;
-struct SamplerInfo;
-struct ColorAttachment;
-struct DepthStencilAttachment;
-struct SubPassInfo;
-struct RenderPassInfo;
-struct QueueInfo;
-struct PipelineLayoutInfo;
-struct DescriptorSetLayoutBinding;
-struct DescriptorSetLayoutInfo;
-struct FramebufferInfo;
-struct CommandBufferInfo;
-struct InputAssemblerInfo;
-} // namespace gfx
-} // namespace cc
+#include "core/geometry/Geometry.h"
+#include "math/Color.h"
+#include "math/Math.h"
 
-//#include "Box2D/Box2D.h"
-
-#define SE_PRECONDITION2_VOID(condition, ...)                                                           \
-    do {                                                                                                \
-        if (!(condition)) {                                                                             \
+#define SE_PRECONDITION2_VOID(condition, ...)                                                                \
+    do {                                                                                                     \
+        if (!(condition)) {                                                                                  \
             CC_LOG_ERROR("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
             CC_LOG_ERROR(__VA_ARGS__);                                                                       \
-            return;                                                                                     \
-        }                                                                                               \
+            return;                                                                                          \
+        }                                                                                                    \
     } while (0)
 
-#define SE_PRECONDITION2(condition, ret_value, ...)                                                     \
-    do {                                                                                                \
-        if (!(condition)) {                                                                             \
+#define SE_PRECONDITION2(condition, ret_value, ...)                                                          \
+    do {                                                                                                     \
+        if (!(condition)) {                                                                                  \
             CC_LOG_ERROR("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
             CC_LOG_ERROR(__VA_ARGS__);                                                                       \
-            return (ret_value);                                                                         \
-        }                                                                                               \
+            return (ret_value);                                                                              \
+        }                                                                                                    \
     } while (0)
 
 #define SE_PRECONDITION3(condition, ret_value, failed_code) \
@@ -127,20 +73,20 @@ struct InputAssemblerInfo;
         }                                                   \
     } while (0)
 
-#define SE_PRECONDITION4(condition, ret_value, errorCode)                                               \
-    do {                                                                                                \
-        if (!(condition)) {                                                                             \
+#define SE_PRECONDITION4(condition, ret_value, errorCode)                                                    \
+    do {                                                                                                     \
+        if (!(condition)) {                                                                                  \
             CC_LOG_ERROR("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
-            __glErrorCode = errorCode;                                                                  \
-            return (ret_value);                                                                         \
-        }                                                                                               \
+            __glErrorCode = errorCode;                                                                       \
+            return (ret_value);                                                                              \
+        }                                                                                                    \
     } while (0)
 
-#define SE_PRECONDITION_ERROR_BREAK(condition, ...)                                                 \
-    if (!(condition)) {                                                                             \
+#define SE_PRECONDITION_ERROR_BREAK(condition, ...)                                                      \
+    if (!(condition)) {                                                                                  \
         CC_LOG_ERROR("jsb: ERROR: File %s: Line: %d, Function: %s\n", __FILE__, __LINE__, __FUNCTION__); \
         CC_LOG_ERROR(__VA_ARGS__);                                                                       \
-        break;                                                                                      \
+        break;                                                                                           \
     }
 
 #if CC_ENABLE_CACHE_JSB_FUNC_RESULT
@@ -176,16 +122,6 @@ struct InputAssemblerInfo;
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wc++17-extensions"
 #endif
-
-// se value -> native value
-bool seval_to_ccvalue(const se::Value &v, cc::Value *ret);                               // NOLINT(readability-identifier-naming)
-bool seval_to_ccvaluemap(const se::Value &v, cc::ValueMap *ret);                         // NOLINT(readability-identifier-naming)
-bool seval_to_ccvaluemapintkey(const se::Value &v, cc::ValueMapIntKey *ret);             // NOLINT(readability-identifier-naming)
-bool seval_to_ccvaluevector(const se::Value &v, cc::ValueVector *ret);                   // NOLINT(readability-identifier-naming)
-bool sevals_variadic_to_ccvaluevector(const se::ValueArray &args, cc::ValueVector *ret); // NOLINT(readability-identifier-naming)
-
-bool seval_to_Data(const se::Value &v, cc::Data *ret);                                // NOLINT(readability-identifier-naming)
-bool seval_to_DownloaderHints(const se::Value &v, cc::network::DownloaderHints *ret); // NOLINT(readability-identifier-naming)
 
 template <typename T>
 bool seval_to_native_ptr(const se::Value &v, T *ret) { // NOLINT(readability-identifier-naming)
@@ -372,24 +308,6 @@ bool seval_to_Map_string_key(const se::Value &v, cc::Map<std::string, T> *ret) {
 
     return true;
 }
-
-// native value -> se value
-bool ccvalue_to_seval(const cc::Value &v, se::Value *ret);                   // NOLINT(readability-identifier-naming)
-bool ccvaluemap_to_seval(const cc::ValueMap &v, se::Value *ret);             // NOLINT(readability-identifier-naming)
-bool ccvaluemapintkey_to_seval(const cc::ValueMapIntKey &v, se::Value *ret); // NOLINT(readability-identifier-naming)
-bool ccvaluevector_to_seval(const cc::ValueVector &v, se::Value *ret);       // NOLINT(readability-identifier-naming)
-
-bool ManifestAsset_to_seval(const cc::extension::ManifestAsset &v, se::Value *ret); // NOLINT(readability-identifier-naming)
-bool Data_to_seval(const cc::Data &v, se::Value *ret);                              // NOLINT(readability-identifier-naming)
-bool DownloadTask_to_seval(const cc::network::DownloadTask &v, se::Value *ret);     // NOLINT(readability-identifier-naming)
-
-// TODO(minggo): should add these functions if only bind gfx.
-// gfx_color_attachment_to_seval
-// gfx_depth_stecil_attachment_to_seval
-// sub_pass_info_to_seval
-
-#if USE_GFX_RENDERER
-#endif
 
 template <typename T>
 typename std::enable_if<!std::is_base_of<cc::Ref, T>::value, bool>::type
@@ -707,7 +625,7 @@ template <typename T>
 struct is_jsb_object : std::false_type {}; // NOLINT(readability-identifier-naming)
 
 template <typename T>
-constexpr bool is_jsb_object_v = is_jsb_object<typename std::remove_const<T>::type>::value; // NOLINT(readability-identifier-naming)
+constexpr bool is_jsb_object_v = is_jsb_object<typename std::remove_const<T>::type>::value; // NOLINT
 
 #define JSB_REGISTER_OBJECT_TYPE(T) \
     template <>                     \
@@ -837,11 +755,6 @@ sevalue_to_native(const se::Value &from, T *to, se::Object *ctx) { // NOLINT(rea
 template <typename... Args>
 bool sevalue_to_native(const se::Value &from, std::variant<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
-template <>
-bool sevalue_to_native(const se::Value &from, cc::MacroValue *to, se::Object *ctx);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::IPreCompileInfoValueType *to, se::Object * /*ctx*/);
-
 template <typename T>
 bool sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 /// std::unordered_map<std::string, V>
@@ -849,7 +762,7 @@ template <typename V>
 bool sevalue_to_native(const se::Value &from, std::unordered_map<std::string, V> *to, se::Object *ctx); //NOLINT(readability-identifier-naming)
 // std::tuple
 template <typename... Args>
-constexpr bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 // std::shared_ptr
 template <typename T>
 bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Object *ctx); // NOLINT(readability-identifier-naming)
@@ -859,15 +772,6 @@ bool sevalue_to_native(const se::Value &from, std::vector<T, Allocator> *to, se:
 // std::vector
 template <typename T, size_t N>
 bool sevalue_to_native(const se::Value &from, std::array<T, N> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
-// std::any
-template <>
-bool sevalue_to_native(const se::Value &from, std::any *to, se::Object *ctx); //NOLINT(readability-identifier-naming)
-////////////////// ArrayBuffer
-template <>
-bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * /*ctx*/);
-///////////////// std::shared_ptr<cc::ArrayBuffer>
-template <>
-bool sevalue_to_native(const se::Value &from, std::shared_ptr<cc::ArrayBuffer> *out, se::Object *ctx);
 
 //////////////////// std::array
 
@@ -921,14 +825,8 @@ bool sevalue_to_native(const se::Value &from, std::array<uint8_t, CNT> *to, se::
     return true;
 }
 
-template <>
-bool sevalue_to_native(const se::Value &from, std::vector<cc::MacroRecord> *to, se::Object * /*ctx*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Object * /*ctx*/);
-
 template <typename T>
-bool sevalue_to_native(const se::Value &from, std::variant<T, std::vector<T>> *to, se::Object *ctx) {
+bool sevalue_to_native(const se::Value &from, std::variant<T, std::vector<T>> *to, se::Object *ctx) { // NOLINT
     se::Object *array = from.toObject();
     if (array->isArray()) {
         std::vector<T> result;
@@ -942,168 +840,14 @@ bool sevalue_to_native(const se::Value &from, std::variant<T, std::vector<T>> *t
     return true;
 }
 
-template <>
-inline bool sevalue_to_native(const se::Value &from, std::string *to, se::Object * /*ctx*/) {
-    *to = from.toString();
-    return true;
-}
-
-///// integers
-template <>
-inline bool sevalue_to_native(const se::Value &from, bool *to, se::Object * /*ctx*/) {
-    *to = from.isNullOrUndefined() ? false : (from.isNumber() ? from.toDouble() != 0 : from.toBoolean());
-    return true;
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, int32_t *to, se::Object * /*ctx*/) {
-    *to = from.toInt32();
-    return true;
-}
-template <>
-inline bool sevalue_to_native(const se::Value &from, uint32_t *to, se::Object * /*ctx*/) {
-    *to = from.toUint32();
-    return true;
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, int16_t *to, se::Object * /*ctx*/) {
-    *to = from.toInt16();
-    return true;
-}
-template <>
-inline bool sevalue_to_native(const se::Value &from, uint16_t *to, se::Object * /*ctx*/) {
-    *to = from.toUint16();
-    return true;
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, int8_t *to, se::Object * /*ctx*/) {
-    *to = from.toInt8();
-    return true;
-}
-template <>
-inline bool sevalue_to_native(const se::Value &from, uint8_t *to, se::Object * /*ctx*/) {
-    *to = from.toUint8();
-    return true;
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, uint64_t *to, se::Object * /*ctx*/) {
-    *to = from.toUint64();
-    return true;
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, int64_t *to, se::Object * /*ctx*/) {
-    *to = from.toInt64();
-    return true;
-}
-
-#if CC_PLATFORM == CC_PLATFORM_MAC_IOS || CC_PLATFORM == CC_PLATFORM_MAC_OSX
-template <>
-inline bool sevalue_to_native(const se::Value &from, unsigned long *to, se::Object * /*ctx*/) {
-    *to = static_cast<unsigned long>(from.toDouble());
-    return true;
-}
-#endif
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, float *to, se::Object * /*ctx*/) {
-    *to = from.toFloat();
-    return true;
-}
-inline bool sevalue_to_native(const se::Value &from, double *to, se::Object * /*unused*/) {
-    *to = from.toDouble();
-    return true;
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value & /*from*/, void * /*to*/, se::Object * /*ctx*/) {
-    assert(false); // void not supported
-    return false;
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, cc::Data *to, se::Object * /*ctx*/) {
-    return seval_to_Data(from, to);
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, cc::Value *to, se::Object * /*unused*/) {
-    return seval_to_ccvalue(from, to);
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, se::Value *to, se::Object * /*unused*/) {
-    *to = from;
-    return true;
-}
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::Vec4 *to, se::Object * /*unused*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::Mat3 *to, se::Object * /*unused*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::Mat4 *to, se::Object * /*unused*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::Vec3 *to, se::Object * /*unused*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::Vec2 *to, se::Object * /*unused*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::Size *to, se::Object * /*unused*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::Quaternion *to, se::Object * /*unused*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::Color *to, se::Object * /*unused*/);
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, std::vector<se::Value> *to, se::Object * /*unused*/) {
-    if (from.isNullOrUndefined()) {
-        to->clear();
-        return true;
-    }
-    assert(from.isObject() && from.toObject()->isArray());
-    auto *array = from.toObject();
-    to->clear();
-    uint32_t size;
-    array->getArrayLength(&size);
-    for (uint32_t i = 0; i < size; i++) {
-        se::Value ele;
-        array->getArrayElement(i, &ele);
-        to->emplace_back(ele);
-    }
-    return true;
-}
-
-//////////////////  std::any
-template <>
-inline bool sevalue_to_native(const se::Value &from, std::any *to, se::Object *ctx) {
-    assert(false);
-    //TODO(PatriceJiang): convert any to specific types
-    return false;
-}
-
 ////////////////// TypedArray
 
 template <typename T>
-typename std::enable_if<std::is_arithmetic<T>::value, bool>::type inline sevalue_to_native(const se::Value &from, cc::TypedArrayTemp<T> *to, se::Object * /*ctx*/) {
+inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
+    sevalue_to_native(const se::Value &from, cc::TypedArrayTemp<T> *to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to->setJSTypedArray(from.toObject());
     return true;
 }
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /*ctx*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::IBArray *to, se::Object * /*ctx*/);
 
 ////////////////// pointer types
 
@@ -1218,37 +962,6 @@ bool sevalue_to_native(const se::Value &from, std::vector<T, allocator> *to, se:
     return false;
 }
 
-//template<>
-//bool sevalue_to_native(const se::Value &from, cc::gfx::Context **to, se::Object*) {
-//    assert(from.isObject());
-//    *to = (cc::gfx::Context*)from.toObject()->getPrivateData();
-//    return true;
-//}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, void **to, se::Object * /*ctx*/) {
-    SE_LOGE("[warn] don't know how to convert to void *\n");
-    *to = from.toObject()->getPrivateData();
-    return true;
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, std::string **to, se::Object * /*ctx*/) {
-    **to = from.toString();
-    return true;
-}
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, cc::ValueMap *to, se::Object * /*ctx*/) {
-    return seval_to_ccvaluemap(from, to);
-}
-
-template <>
-bool sevalue_to_native(const se::Value &from, std::vector<bool> *to, se::Object * /*ctx*/);
-
-template <>
-bool sevalue_to_native(const se::Value &from, std::vector<unsigned char> *to, se::Object * /*ctx*/);
-
 ///////////////////// TypedArray
 
 template <typename R, typename... Args>
@@ -1282,24 +995,12 @@ inline bool sevalue_to_native(const se::Value &from, std::function<R(Args...)> *
 
 //////////////////////// std::variant
 
-template <>
-bool sevalue_to_native(const se::Value &from, std::variant<std::vector<float>, std::string> *to, se::Object *ctx);
-
 template <typename... Args>
-inline bool sevalue_to_native(const se::Value &from, std::variant<Args...> *to, se::Object *ctx) {
-    static_assert(sizeof...(Args) == 0); //TODO(PatriceJiang): should not pass variant from js -> native
+inline bool sevalue_to_native(const se::Value & /*from*/, std::variant<Args...> * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    static_assert(sizeof...(Args) == 0);                                                                          //TODO(PatriceJiang): should not pass variant from js -> native
     assert(false);
     return false;
 }
-
-template <>
-inline bool sevalue_to_native(const se::Value &from, std::monostate *to, se::Object *ctx) {
-    // nothing todo
-    return false;
-}
-
-template <>
-bool sevalue_to_native(const se::Value &from, std::variant<std::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx);
 
 #if HAS_CONSTEXPR
 template <typename T, bool is_reference>
@@ -1415,9 +1116,8 @@ bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Objec
 }
 
 template <typename T>
-inline
-    typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
-    sevalue_to_native(const se::Value &from, std::shared_ptr<cc::TypedArrayTemp<T>> *out, se::Object *ctx) {
+inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
+sevalue_to_native(const se::Value &from, std::shared_ptr<cc::TypedArrayTemp<T>> *out, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     *out = std::make_shared<cc::TypedArrayTemp<T>>();
     sevalue_to_native<T>(from, out->get(), ctx);
     //TODO(PatriceJiang): should not mix smart pointers with raw pointers.
@@ -1426,15 +1126,15 @@ inline
 
 /////////////////// std::tuple
 template <typename T, T... S, typename F>
-constexpr void se_for_each(std::integer_sequence<T, S...> index, F &&f) {
+constexpr void se_for_each(std::integer_sequence<T, S...> index, F &&f) { // NOLINT
     (static_cast<void>(f(std::integral_constant<T, S>{})), ...);
 }
 
 template <typename... Args>
-constexpr bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx) {
-    constexpr size_t ARGSIZE = std::tuple_size<std::tuple<Args...>>::value;
+bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx) { // NOLINT
+    constexpr size_t argsize = std::tuple_size<std::tuple<Args...>>::value;
     bool             result  = true;
-    se_for_each(std::make_index_sequence<ARGSIZE>{}, [&](auto i) {
+    se_for_each(std::make_index_sequence<argsize>{}, [&](auto i) {
         se::Value tmp;
         from.toObject()->getArrayElement(i, &tmp);
         result &= sevalue_to_native(tmp, &std::get<i>(*to), ctx);
@@ -1482,36 +1182,10 @@ inline bool sevalue_to_native(const se::Value &from, T to) { // NOLINT(readabili
     return sevalue_to_native(from, to, static_cast<se::Object *>(nullptr));
 }
 
-//////////////////////// scene info
-template <>
-bool sevalue_to_native(const se::Value &from, cc::scene::FogInfo *, se::Object * /*ctx*/);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::scene::ShadowsInfo *, se::Object * /*ctx*/);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::scene::SkyboxInfo *, se::Object * /*ctx*/);
-
-/////////////////////// geometry
-
-template <>
-bool sevalue_to_native(const se::Value &from, cc::geometry::AABB *, se::Object * /*ctx*/);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::geometry::Capsule *, se::Object * /*ctx*/);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::geometry::Line *, se::Object * /*ctx*/);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::geometry::Ray *, se::Object * /*ctx*/);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::geometry::Sphere *, se::Object * /*ctx*/);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::geometry::Triangle *, se::Object * /*ctx*/);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::geometry::Plane *to, se::Object * /*unused*/);
-template <>
-bool sevalue_to_native(const se::Value &from, cc::geometry::Frustum *to, se::Object * /*unused*/);
-
 ///////////////////////////////////////////////////////////////////
 //////////////////  nativevalue_to_se   ///////////////////////////
 ///////////////////////////////////////////////////////////////////
+
 template <typename T>
 inline bool nativevalue_to_se(T &&from, se::Value &to); // NOLINT(readability-identifier-naming)
 
@@ -1575,12 +1249,6 @@ inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se:
 template <typename T>
 bool nativevalue_to_se(const std::reference_wrapper<T> ref, se::Value &to, se::Object *ctx); // NOLINT
 
-//template <>
-//bool nativevalue_to_se(const cc::TypedArray &typedArray, se::Value &to, se::Object * /*ctx*/); // NOLINT
-
-template <>
-bool nativevalue_to_se(const cc::ArrayBuffer &arrayBuffer, se::Value &to, se::Object * /*ctx*/); // NOLINT
-
 template <typename... ARGS>
 bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx); // NOLINT
 
@@ -1604,7 +1272,7 @@ bool nativevalue_to_se(const std::optional<T> &from, se::Value &to, se::Object *
 }
 
 template <typename T>
-inline bool nativevalue_to_se(const cc::TypedArrayTemp<T> &typedArray, se::Value &to, se::Object *ctx) {
+inline bool nativevalue_to_se(const cc::TypedArrayTemp<T> &typedArray, se::Value &to, se::Object *ctx) { // NOLINT
     to.setObject(typedArray.getJSTypedArray());
     return true;
 }
@@ -1621,24 +1289,8 @@ inline bool nativevalue_to_se(const std::vector<T, A> &from, se::Value &to, se::
     return true;
 }
 
-template <>
-inline bool nativevalue_to_se(const std::vector<int8_t> &from, se::Value &to, se::Object * /*ctx*/) {
-    se::Object *array = se::Object::createTypedArray(se::Object::TypedArrayType::INT8, from.data(), from.size());
-    to.setObject(array);
-    array->decRef();
-    return true;
-}
-
-template <>
-inline bool nativevalue_to_se(const std::vector<uint8_t> &from, se::Value &to, se::Object * /*ctx*/) {
-    se::Object *array = se::Object::createTypedArray(se::Object::TypedArrayType::UINT8, from.data(), from.size());
-    to.setObject(array);
-    array->decRef();
-    return true;
-}
-
 template <typename A>
-inline bool nativevalue_to_se(const std::vector<bool, A> &from, se::Value &to, se::Object * /*ctx*/) {
+inline bool nativevalue_to_se(const std::vector<bool, A> &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT
     se::HandleObject array(se::Object::createArrayObject(from.size()));
     for (auto i = 0; i < from.size(); i++) {
         array->setArrayElement(i, se::Value(from[i]));
@@ -1702,85 +1354,6 @@ inline bool nativevalue_to_se(const std::array<float, N> &from, se::Value &to, s
     return true;
 }
 
-template <>
-inline bool nativevalue_to_se(const int64_t &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setInt64(from);
-    return true;
-}
-
-template <>
-inline bool nativevalue_to_se(const uint64_t &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setUint64(from);
-    return true;
-}
-
-template <>
-inline bool nativevalue_to_se(const int32_t &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setInt32(from);
-    return true;
-}
-
-template <>
-inline bool nativevalue_to_se(const uint32_t &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setUint32(from);
-    return true;
-}
-template <>
-inline bool nativevalue_to_se(const int16_t &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setInt16(from);
-    return true;
-}
-template <>
-inline bool nativevalue_to_se(const uint16_t &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setUint16(from);
-    return true;
-}
-
-template <>
-inline bool nativevalue_to_se(const int8_t &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setInt8(from);
-    return true;
-}
-
-template <>
-inline bool nativevalue_to_se(const uint8_t &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setUint8(from);
-    return true;
-}
-
-template <>
-inline bool nativevalue_to_se(const std::string &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setString(from);
-    return true;
-}
-template <>
-inline bool nativevalue_to_se(const float &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setFloat(from);
-    return true;
-}
-template <>
-inline bool nativevalue_to_se(const double &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setFloat(static_cast<float>(from));
-    return true;
-}
-template <>
-inline bool nativevalue_to_se(const bool &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setBoolean(from);
-    return true;
-}
-
-// template <>
-// bool nativevalue_to_se(const cc::Color &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::NativeDep &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::Mat3 &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::Mat4 &from, se::Value &to, se::Object *ctx);
-
 template <typename R, typename... Args>
 inline bool nativevalue_to_se(std::function<R(Args...)> & /*from*/, se::Value & /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     SE_LOGE("Can not convert C++ lambda to JS object");                                                         // TODO(jiangzhan)
@@ -1809,63 +1382,9 @@ bool nativevalue_to_se_args_v(se::ValueArray &array, Args &...args) { // NOLINT(
     return nativevalue_to_se_args<0, Args...>(array, args...);
 }
 
-/////////////////////// FIXME: remove all code bellow
-///////////////// gfx type
-namespace cc {
-class GFXContext;
-class Data;
-class Value;
-class Vec4;
-class Size;
-} // namespace cc
-//template<>
-
-// JSB_REGISTER_OBJECT_TYPE(cc::network::DownloaderHints);
-
-template <>
-bool nativevalue_to_se(const cc::Data &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::Value &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const std::unordered_map<std::string, cc::Value> &from, se::Value &to, se::Object *ctx);
-
-// template <>
-// bool nativevalue_to_se(const cc::Vec2 &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::Vec3 &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::Vec4 &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::Size &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::Quaternion &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::extension::ManifestAsset &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const cc::Rect &from, se::Value &to, se::Object *ctx);
-
-template <>
-inline bool nativevalue_to_se(const cc::network::DownloadTask &from, se::Value &to, se::Object * /*ctx*/) {
-    return DownloadTask_to_seval(from, &to);
-}
-
-#if __clang__
-    #pragma clang diagnostic pop
-#endif
 
 // Spine conversions
 #if USE_SPINE
-
-template <>
-bool sevalue_to_native(const se::Value &, spine::String *, se::Object *);
 
 template <typename T>
 bool nativevalue_to_se(const spine::Vector<T> &v, se::Value &ret, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
@@ -1943,27 +1462,7 @@ bool sevalue_to_native(const se::Value &v, spine::Vector<T *> *ret, se::Object *
 
     return true;
 }
-
-template <>
-bool nativevalue_to_se(const spine::Vector<spine::String> &v, se::Value &ret, se::Object *ctx);
-
-template <>
-bool nativevalue_to_se(const spine::String &from, se::Value &to, se::Object *ctx);
-
-template <>
-bool sevalue_to_native(const se::Value &v, spine::Vector<spine::String> *ret, se::Object *ctx);
-
-template <>
-bool seval_to_Map_string_key(const se::Value &v, cc::Map<std::string, cc::middleware::Texture2D *> *ret);
 #endif //USE_SPINE
-
-#if USE_MIDDLEWARE
-template <>
-inline bool nativevalue_to_se(const se_object_ptr &from, se::Value &to, se::Object * /*ctx*/) {
-    to.setObject(const_cast<se::Object *>(from));
-    return true;
-}
-#endif //USE_MIDDLEWARE
 
 /////////////////// shorter form
 template <typename T>
@@ -1972,7 +1471,7 @@ inline bool nativevalue_to_se(T &&from, se::Value &to) { // NOLINT(readability-i
 }
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx) {
+bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx) {// NOLINT(readability-identifier-naming)
     bool ok = false;
     se_for_each(std::make_index_sequence<sizeof...(ARGS)>{}, [&](auto i) {
         if (i != from.index()) {
@@ -1982,20 +1481,6 @@ bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Obj
     });
     return ok;
 }
-
-template <>
-inline bool nativevalue_to_se(const std::monostate &from, se::Value &to, se::Object *ctx) { //NOLINT
-    to.setUndefined();
-    return true;
-}
-
-template <>
-inline bool nativevalue_to_se(const std::any &from, se::Value &to, se::Object *ctx) { //NOLINT
-    assert(false);
-    //TODO(PatriceJiang): // should not convert std::any
-    return true;
-}
-
 template <typename T>
 inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se::Object *ctx) { //NOLINT
     if (!from) {
@@ -2006,7 +1491,7 @@ inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se:
 }
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::tuple<ARGS...> &from, se::Value &to, se::Object *ctx) {
+bool nativevalue_to_se(const std::tuple<ARGS...> &from, se::Value &to, se::Object *ctx) {// NOLINT(readability-identifier-naming)
     bool        ok = true;
     se::Value   tmp;
     se::Object *array = se::Object::createArrayObject(sizeof...(ARGS));
@@ -2022,3 +1507,7 @@ template <typename T>
 bool nativevalue_to_se(const std::reference_wrapper<T> ref, se::Value &to, se::Object *ctx) { // NOLINT
     return nativevalue_to_se(ref.get(), to, ctx);
 }
+
+#if __clang__
+    #pragma clang diagnostic pop
+#endif

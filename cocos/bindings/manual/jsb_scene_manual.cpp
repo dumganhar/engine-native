@@ -38,9 +38,9 @@
     #define JSB_FREE(ptr) delete ptr
 #endif
 
-static se::Object *_nodeVec3CacheObj{nullptr};
-static se::Object *_nodeQuatCacheObj{nullptr};
-static se::Object *_nodeMat4CacheObj{nullptr};
+static se::Object *nodeVec3CacheObj{nullptr};
+static se::Object *nodeQuatCacheObj{nullptr};
+static se::Object *nodeMat4CacheObj{nullptr};
 
 static bool js_root_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
@@ -300,13 +300,13 @@ static bool js_scene_Node_registerOnChildAdded(se::State &s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_scene_Node_registerOnChildAdded) // NOLINT(readability-identifier-naming)
 
-static bool _scene_Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
+static bool scene_Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
-    if (!_nodeVec3CacheObj) {
-        _nodeVec3CacheObj = se::Object::createPlainObject();
-        _nodeVec3CacheObj->root();
+    if (!nodeVec3CacheObj) {
+        nodeVec3CacheObj = se::Object::createPlainObject();
+        nodeVec3CacheObj->root();
     }
-    se::Object *obj(_nodeVec3CacheObj);
+    se::Object *obj(nodeVec3CacheObj);
     obj->setProperty("x", se::Value(v.x));
     obj->setProperty("y", se::Value(v.y));
     obj->setProperty("z", se::Value(v.z));
@@ -315,13 +315,13 @@ static bool _scene_Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) { // NOLINT(
     return true;
 }
 
-static bool _scene_Quaternion_to_seval(const cc::Quaternion &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
+static bool scene_Quaternion_to_seval(const cc::Quaternion &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
-    if (!_nodeQuatCacheObj) {
-        _nodeQuatCacheObj = se::Object::createPlainObject();
-        _nodeQuatCacheObj->root();
+    if (!nodeQuatCacheObj) {
+        nodeQuatCacheObj = se::Object::createPlainObject();
+        nodeQuatCacheObj->root();
     }
-    se::Object *obj(_nodeQuatCacheObj);
+    se::Object *obj(nodeQuatCacheObj);
     obj->setProperty("x", se::Value(v.x));
     obj->setProperty("y", se::Value(v.y));
     obj->setProperty("z", se::Value(v.z));
@@ -331,13 +331,13 @@ static bool _scene_Quaternion_to_seval(const cc::Quaternion &v, se::Value *ret) 
     return true;
 }
 
-static bool _scene_Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
+static bool scene_Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
-    if (!_nodeMat4CacheObj) {
-        _nodeMat4CacheObj = se::Object::createPlainObject();
-        _nodeMat4CacheObj->root();
+    if (!nodeMat4CacheObj) {
+        nodeMat4CacheObj = se::Object::createPlainObject();
+        nodeMat4CacheObj->root();
     }
-    se::Object *obj(_nodeMat4CacheObj);
+    se::Object *obj(nodeMat4CacheObj);
 
     char             keybuf[8] = {0};
     for (auto i = 0; i < 16; i++) {
@@ -358,7 +358,7 @@ static bool js_scene_Node_getPosition(se::State &s) // NOLINT(readability-identi
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Vec3 &result = cobj->getPosition();
-        ok &= _scene_Vec3_to_seval(result, &s.rval());
+        ok &= scene_Vec3_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getPosition : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -377,7 +377,7 @@ static bool js_scene_Node_getRight(se::State &s) // NOLINT(readability-identifie
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         cc::Vec3 result = cobj->getRight();
-        ok &= _scene_Vec3_to_seval(result, &s.rval());
+        ok &= scene_Vec3_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getRight : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -396,7 +396,7 @@ static bool js_scene_Node_getRotation(se::State &s) // NOLINT(readability-identi
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Quaternion &result = cobj->getRotation();
-        ok &= _scene_Quaternion_to_seval(result, &s.rval());
+        ok &= scene_Quaternion_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getRotation : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -415,7 +415,7 @@ static bool js_scene_Node_getScale(se::State &s) // NOLINT(readability-identifie
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Vec3 &result = cobj->getScale();
-        ok &= _scene_Vec3_to_seval(result, &s.rval());
+        ok &= scene_Vec3_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getScale : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -434,7 +434,7 @@ static bool js_scene_Node_getUp(se::State &s) // NOLINT(readability-identifier-n
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         cc::Vec3 result = cobj->getUp();
-        ok &= _scene_Vec3_to_seval(result, &s.rval());
+        ok &= scene_Vec3_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getUp : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -453,7 +453,7 @@ static bool js_scene_Node_getWorldMatrix(se::State &s) // NOLINT(readability-ide
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Mat4 &result = cobj->getWorldMatrix();
-        ok &= _scene_Mat4_to_seval(result, &s.rval());
+        ok &= scene_Mat4_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldMatrix : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -473,7 +473,7 @@ static bool js_scene_Node_getWorldPosition(se::State &s) // NOLINT(readability-i
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Vec3 &result = cobj->getWorldPosition();
-        ok &= _scene_Vec3_to_seval(result, &s.rval());
+        ok &= scene_Vec3_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldPosition : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -492,7 +492,7 @@ static bool js_scene_Node_getWorldRS(se::State &s) // NOLINT(readability-identif
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         cc::Mat4 result = cobj->getWorldRS();
-        ok &= _scene_Mat4_to_seval(result, &s.rval());
+        ok &= scene_Mat4_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldRS : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -511,7 +511,7 @@ static bool js_scene_Node_getWorldRT(se::State &s) // NOLINT(readability-identif
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         cc::Mat4 result = cobj->getWorldRT();
-        ok &= _scene_Mat4_to_seval(result, &s.rval());
+        ok &= scene_Mat4_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldRT : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -530,7 +530,7 @@ static bool js_scene_Node_getWorldRotation(se::State &s) // NOLINT(readability-i
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Quaternion &result = cobj->getWorldRotation();
-        ok &= _scene_Quaternion_to_seval(result, &s.rval());
+        ok &= scene_Quaternion_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldRotation : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -549,7 +549,7 @@ static bool js_scene_Node_getWorldScale(se::State &s) // NOLINT(readability-iden
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Vec3 &result = cobj->getWorldScale();
-        ok &= _scene_Vec3_to_seval(result, &s.rval());
+        ok &= scene_Vec3_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldScale : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -568,7 +568,7 @@ static bool js_scene_Node_getEulerAngles(se::State &s) // NOLINT(readability-ide
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Vec3 &result = cobj->getEulerAngles();
-        ok &= _scene_Vec3_to_seval(result, &s.rval());
+        ok &= scene_Vec3_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getEulerAngles : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -587,7 +587,7 @@ static bool js_scene_Node_getForward(se::State &s) // NOLINT(readability-identif
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         cc::Vec3 result = cobj->getForward();
-        ok &= _scene_Vec3_to_seval(result, &s.rval());
+        ok &= scene_Vec3_to_seval(result, &s.rval());
         SE_PRECONDITION2(ok, false, "js_scene_Node_getForward : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
@@ -736,9 +736,9 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
         obj->setProperty("ns", nsVal);
     }
     se::ScriptEngine::getInstance()->addBeforeCleanupHook([]() {
-        SAFE_DEC_REF(_nodeVec3CacheObj);
-        SAFE_DEC_REF(_nodeQuatCacheObj);
-        SAFE_DEC_REF(_nodeMat4CacheObj);
+        SAFE_DEC_REF(nodeVec3CacheObj);
+        SAFE_DEC_REF(nodeQuatCacheObj);
+        SAFE_DEC_REF(nodeMat4CacheObj);
     });
 
     __jsb_cc_Root_proto->defineFunction("_registerListeners", _SE(js_root_registerListeners));

@@ -735,6 +735,11 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
         nsVal.setObject(jsobj);
         obj->setProperty("ns", nsVal);
     }
+    se::ScriptEngine::getInstance()->addBeforeCleanupHook([]() {
+        SAFE_DEC_REF(_nodeVec3CacheObj);
+        SAFE_DEC_REF(_nodeQuatCacheObj);
+        SAFE_DEC_REF(_nodeMat4CacheObj);
+    });
 
     __jsb_cc_Root_proto->defineFunction("_registerListeners", _SE(js_root_registerListeners));
 

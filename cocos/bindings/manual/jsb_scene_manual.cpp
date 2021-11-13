@@ -38,6 +38,10 @@
     #define JSB_FREE(ptr) delete ptr
 #endif
 
+static se::Object *nodeVec3CacheObj{nullptr};
+static se::Object *nodeQuatCacheObj{nullptr};
+static se::Object *nodeMat4CacheObj{nullptr};
+
 static bool js_root_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
     auto *cobj = SE_THIS_OBJECT<cc::Root>(s);
@@ -296,6 +300,303 @@ static bool js_scene_Node_registerOnChildAdded(se::State &s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_scene_Node_registerOnChildAdded) // NOLINT(readability-identifier-naming)
 
+static bool scene_Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
+    assert(ret != nullptr);
+    if (!nodeVec3CacheObj) {
+        nodeVec3CacheObj = se::Object::createPlainObject();
+        nodeVec3CacheObj->root();
+    }
+    se::Object *obj(nodeVec3CacheObj);
+    obj->setProperty("x", se::Value(v.x));
+    obj->setProperty("y", se::Value(v.y));
+    obj->setProperty("z", se::Value(v.z));
+    ret->setObject(obj);
+
+    return true;
+}
+
+static bool scene_Quaternion_to_seval(const cc::Quaternion &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
+    assert(ret != nullptr);
+    if (!nodeQuatCacheObj) {
+        nodeQuatCacheObj = se::Object::createPlainObject();
+        nodeQuatCacheObj->root();
+    }
+    se::Object *obj(nodeQuatCacheObj);
+    obj->setProperty("x", se::Value(v.x));
+    obj->setProperty("y", se::Value(v.y));
+    obj->setProperty("z", se::Value(v.z));
+    obj->setProperty("w", se::Value(v.w));
+    ret->setObject(obj);
+
+    return true;
+}
+
+static bool scene_Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
+    assert(ret != nullptr);
+    if (!nodeMat4CacheObj) {
+        nodeMat4CacheObj = se::Object::createPlainObject();
+        nodeMat4CacheObj->root();
+    }
+    se::Object *obj(nodeMat4CacheObj);
+
+    char             keybuf[8] = {0};
+    for (auto i = 0; i < 16; i++) {
+        snprintf(keybuf, sizeof(keybuf), "m%02d", i);
+        obj->setProperty(keybuf, se::Value(v.m[i]));
+    }
+    ret->setObject(obj);
+
+    return true;
+}
+
+static bool js_scene_Node_getPosition(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getPosition : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        const cc::Vec3 &result = cobj->getPosition();
+        ok &= scene_Vec3_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getPosition : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getPosition)
+
+static bool js_scene_Node_getRight(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getRight : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        cc::Vec3 result = cobj->getRight();
+        ok &= scene_Vec3_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getRight : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getRight)
+
+static bool js_scene_Node_getRotation(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getRotation : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        const cc::Quaternion &result = cobj->getRotation();
+        ok &= scene_Quaternion_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getRotation : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getRotation)
+
+static bool js_scene_Node_getScale(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getScale : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        const cc::Vec3 &result = cobj->getScale();
+        ok &= scene_Vec3_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getScale : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getScale)
+
+static bool js_scene_Node_getUp(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getUp : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        cc::Vec3 result = cobj->getUp();
+        ok &= scene_Vec3_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getUp : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getUp)
+
+static bool js_scene_Node_getWorldMatrix(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getWorldMatrix : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        const cc::Mat4 &result = cobj->getWorldMatrix();
+        ok &= scene_Mat4_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldMatrix : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC_AS_PROP_GET(js_scene_Node_getWorldMatrix)
+SE_BIND_FUNC(js_scene_Node_getWorldMatrix)
+
+static bool js_scene_Node_getWorldPosition(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getWorldPosition : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        const cc::Vec3 &result = cobj->getWorldPosition();
+        ok &= scene_Vec3_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldPosition : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getWorldPosition)
+
+static bool js_scene_Node_getWorldRS(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getWorldRS : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        cc::Mat4 result = cobj->getWorldRS();
+        ok &= scene_Mat4_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldRS : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getWorldRS)
+
+static bool js_scene_Node_getWorldRT(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getWorldRT : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        cc::Mat4 result = cobj->getWorldRT();
+        ok &= scene_Mat4_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldRT : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getWorldRT)
+
+static bool js_scene_Node_getWorldRotation(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getWorldRotation : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        const cc::Quaternion &result = cobj->getWorldRotation();
+        ok &= scene_Quaternion_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldRotation : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getWorldRotation)
+
+static bool js_scene_Node_getWorldScale(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getWorldScale : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        const cc::Vec3 &result = cobj->getWorldScale();
+        ok &= scene_Vec3_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldScale : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getWorldScale)
+
+static bool js_scene_Node_getEulerAngles(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getEulerAngles : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        const cc::Vec3 &result = cobj->getEulerAngles();
+        ok &= scene_Vec3_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getEulerAngles : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getEulerAngles)
+
+static bool js_scene_Node_getForward(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getForward : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        cc::Vec3 result = cobj->getForward();
+        ok &= scene_Vec3_to_seval(result, &s.rval());
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getForward : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getForward)
+
 
 static bool js_scene_Pass_blocks_getter(se::State &s) {
     auto *cobj = SE_THIS_OBJECT<cc::scene::Pass>(s);
@@ -434,6 +735,11 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
         nsVal.setObject(jsobj);
         obj->setProperty("ns", nsVal);
     }
+    se::ScriptEngine::getInstance()->addBeforeCleanupHook([]() {
+        SAFE_DEC_REF(nodeVec3CacheObj);
+        SAFE_DEC_REF(nodeQuatCacheObj);
+        SAFE_DEC_REF(nodeMat4CacheObj);
+    });
 
     __jsb_cc_Root_proto->defineFunction("_registerListeners", _SE(js_root_registerListeners));
 
@@ -445,6 +751,21 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_Node_proto->defineFunction("_registerOnLayerChanged", _SE(js_scene_Node_registerOnLayerChanged));
     __jsb_cc_Node_proto->defineFunction("_registerOnChildRemoved", _SE(js_scene_Node_registerOnChildRemoved));
     __jsb_cc_Node_proto->defineFunction("_registerOnChildAdded", _SE(js_scene_Node_registerOnChildAdded));
+    
+    __jsb_cc_Node_proto->defineFunction("getPosition", _SE(js_scene_Node_getPosition));
+    __jsb_cc_Node_proto->defineFunction("getRotation", _SE(js_scene_Node_getRotation));
+    __jsb_cc_Node_proto->defineFunction("getScale", _SE(js_scene_Node_getScale));
+    __jsb_cc_Node_proto->defineFunction("getEulerAngles", _SE(js_scene_Node_getEulerAngles));
+    __jsb_cc_Node_proto->defineFunction("getForward", _SE(js_scene_Node_getForward));
+    __jsb_cc_Node_proto->defineFunction("getUp", _SE(js_scene_Node_getUp));
+    __jsb_cc_Node_proto->defineFunction("getRight", _SE(js_scene_Node_getRight));
+    __jsb_cc_Node_proto->defineFunction("getWorldMatrix", _SE(js_scene_Node_getWorldMatrix));
+    __jsb_cc_Node_proto->defineFunction("getWorldPosition", _SE(js_scene_Node_getWorldPosition));
+    __jsb_cc_Node_proto->defineFunction("getWorldRS", _SE(js_scene_Node_getWorldRS));
+    __jsb_cc_Node_proto->defineFunction("getWorldRT", _SE(js_scene_Node_getWorldRT));
+    __jsb_cc_Node_proto->defineFunction("getWorldRotation", _SE(js_scene_Node_getWorldRotation));
+    __jsb_cc_Node_proto->defineFunction("getWorldScale", _SE(js_scene_Node_getWorldScale));
+    __jsb_cc_Node_proto->defineProperty("worldMatrix", _SE(js_scene_Node_getWorldMatrix_asGetter), nullptr);
 
     __jsb_cc_scene_Pass_proto->defineProperty("blocks", _SE(js_scene_Pass_blocks_getter), nullptr);
 

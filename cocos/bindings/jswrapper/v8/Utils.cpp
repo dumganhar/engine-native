@@ -42,16 +42,17 @@ void jsToSeArgs(const v8::FunctionCallbackInfo<v8::Value> &v8args, ValueArray *o
     for (int i = 0; i < v8args.Length(); i++) {
         Value v;
         jsToSeValue(isolate, v8args[i], &v);
-        outArr->push_back(v);
+        outArr->emplace_back(std::move(v));
     }
 }
 
-void seToJsArgs(v8::Isolate *isolate, const ValueArray &args, std::vector<v8::Local<v8::Value>> *outArr) {
+void seToJsArgs(v8::Isolate *isolate, const ValueArray &args, v8::Local<v8::Value> *outArr) {
     assert(outArr != nullptr);
+    uint32_t i = 0;
     for (const auto &data : args) {
-        v8::Local<v8::Value> jsval;
+        v8::Local<v8::Value> &jsval = outArr[i];
         seToJsValue(isolate, data, &jsval);
-        outArr->push_back(jsval);
+        ++i;
     }
 }
 
@@ -240,7 +241,7 @@ void *getPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value) {
     }
 
     // Pure JS subclass object doesn't have a internal field
-    v8::MaybeLocal<v8::String> key = v8::String::NewFromUtf8(isolate, keyPrivateData, v8::NewStringType::kNormal);
+    v8::MaybeLocal<v8::String> key = ScriptEngine::getInstance()->_getStringPool().get(isolate, keyPrivateData);
     if (key.IsEmpty()) {
         return nullptr;
     }

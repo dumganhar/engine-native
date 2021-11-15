@@ -306,6 +306,22 @@ public:
     uint32_t getVMId() const { return _vmId; }
 
     // Private API used in wrapper
+    class VMStringPool final {
+    public:
+        VMStringPool();
+        ~VMStringPool();
+        v8::MaybeLocal<v8::String> get(v8::Isolate *isolate, const char *name);
+        void                       clear();
+
+    private:
+        struct Element {
+            std::string                 name;
+            v8::Persistent<v8::String> *vmStr;
+        };
+        std::vector<Element> _vmStringPool;
+    };
+
+    inline VMStringPool &  _getStringPool() { return _stringPool; }         //NOLINT(readability-identifier-naming)
     void                   _retainScriptObject(void *owner, void *target);  //NOLINT(readability-identifier-naming)
     void                   _releaseScriptObject(void *owner, void *target); //NOLINT(readability-identifier-naming)
     v8::Local<v8::Context> _getContext() const;                             //NOLINT(readability-identifier-naming)
@@ -354,6 +370,7 @@ private:
     node::Environment *_env;
     node::IsolateData *_isolateData;
     #endif
+    VMStringPool _stringPool;
 
     std::thread::id _engineThreadId;
 

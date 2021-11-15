@@ -41,6 +41,42 @@
 static se::Object *nodeVec3CacheObj{nullptr};
 static se::Object *nodeQuatCacheObj{nullptr};
 static se::Object *nodeMat4CacheObj{nullptr};
+static se::Object *nodeEmptyVectorCacheObj{nullptr};
+
+class _NodeUserData : public cc::Node::UserData {
+public:
+    _NodeUserData(uint32_t size) : _NodeUserData("") {
+        setBufferSize(size);
+        _arrayObject = se::Object::createArrayObject(size);
+        _arrayObject->root();
+    };
+
+    explicit _NodeUserData(const std::string &name = "") {}
+
+    ~_NodeUserData() override {
+        if (_arrayObject) {
+            _arrayObject->unroot();
+            _arrayObject->decRef();
+            _arrayObject = nullptr;
+        }
+    }
+
+    se::Object* getArrayObject() {
+        return _arrayObject;
+    }
+
+    void setBufferSize(uint32_t size) {
+        _bufferLength = size;
+    }
+
+    uint32_t getBufferSize() {
+        return _bufferLength;
+    }
+
+private:
+    se::Object *_arrayObject{nullptr};
+    uint32_t    _bufferLength{0};
+};
 
 static bool js_root_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
@@ -371,6 +407,41 @@ static bool scene_Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(r
     return true;
 }
 
+static bool scene_Vector_to_seval(cc::Node * node, const std::vector<cc::Node *> &from, se::Value &to) { // NOLINT(readability-identifier-naming)
+    assert(node != nullptr);
+    uint32_t size = from.size();
+   // if (size > 0) {
+        _NodeUserData *userData = nullptr;
+        if (!node->getUserData()) {
+            userData = new _NodeUserData(size);
+            node->setUserData(userData);
+        } else {
+            userData = static_cast<_NodeUserData *>(node->getUserData());
+        }
+        se::Object *array(userData->getArrayObject());
+
+        se::Value tmp;
+        for (size_t i = 0; i < size; i++) {
+            nativevalue_to_se(from[i], tmp, nullptr);
+            array->setArrayElement(static_cast<uint32_t>(i), tmp);
+        }
+        if (userData->getBufferSize() != size) {
+            userData->setBufferSize(size);
+            array->setProperty("length", se::Value(size));
+        }
+        to.setObject(array);
+    /*} else {
+        if (!nodeEmptyVectorCacheObj) {
+            nodeEmptyVectorCacheObj = se::Object::createArrayObject(0);
+            nodeEmptyVectorCacheObj->root();
+        }
+        se::Object *array(nodeEmptyVectorCacheObj);
+        to.setObject(array);
+    }*/
+
+    return true;
+}
+
 static bool js_scene_Node_getPosition(se::State &s) // NOLINT(readability-identifier-naming)
 {
     auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -619,6 +690,27 @@ static bool js_scene_Node_getForward(se::State &s) // NOLINT(readability-identif
 }
 SE_BIND_FUNC(js_scene_Node_getForward)
 
+static bool js_scene_Node_getChildren(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_getChildren : Invalid Native Object");
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 0) {
+        const std::vector<cc::Node *> &result = cobj->getChildren();
+        ok &= scene_Vector_to_seval(cobj, result, s.rval());
+        //ok &= nativevalue_to_se(result, s.rval(), nullptr);
+        SE_PRECONDITION2(ok, false, "js_scene_Node_getChildren : Error processing arguments");
+        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node_getChildren)
+
+
 static bool js_scene_Pass_blocks_getter(se::State &s) {
     auto *cobj = SE_THIS_OBJECT<cc::scene::Pass>(s);
     SE_PRECONDITION2(cobj, false, "js_scene_Node_registerListeners : Invalid Native Object");
@@ -757,9 +849,18 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
         obj->setProperty("ns", nsVal);
     }
     se::ScriptEngine::getInstance()->addBeforeCleanupHook([]() {
-        SAFE_DEC_REF(nodeVec3CacheObj);
-        SAFE_DEC_REF(nodeQuatCacheObj);
-        SAFE_DEC_REF(nodeMat4CacheObj);
+        #define _SAFE_UNROOT_AND_DEC(obj) if ((obj) != nullptr) { \
+            (obj)->unroot();                              \
+            (obj)->decRef();                              \
+            (obj) = nullptr;                              \
+        }
+
+        _SAFE_UNROOT_AND_DEC(nodeVec3CacheObj);
+        _SAFE_UNROOT_AND_DEC(nodeQuatCacheObj);
+        _SAFE_UNROOT_AND_DEC(nodeMat4CacheObj);
+        _SAFE_UNROOT_AND_DEC(nodeEmptyVectorCacheObj);
+        
+        #undef _SAFE_UNROOT_AND_DEC
     });
 
     __jsb_cc_Root_proto->defineFunction("_registerListeners", _SE(js_root_registerListeners));
@@ -772,7 +873,8 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_Node_proto->defineFunction("_registerOnLayerChanged", _SE(js_scene_Node_registerOnLayerChanged));
     __jsb_cc_Node_proto->defineFunction("_registerOnChildRemoved", _SE(js_scene_Node_registerOnChildRemoved));
     __jsb_cc_Node_proto->defineFunction("_registerOnChildAdded", _SE(js_scene_Node_registerOnChildAdded));
-
+    
+    __jsb_cc_Node_proto->defineFunction("getChildren", _SE(js_scene_Node_getChildren));
     __jsb_cc_Node_proto->defineFunction("getPosition", _SE(js_scene_Node_getPosition));
     __jsb_cc_Node_proto->defineFunction("getRotation", _SE(js_scene_Node_getRotation));
     __jsb_cc_Node_proto->defineFunction("getScale", _SE(js_scene_Node_getScale));

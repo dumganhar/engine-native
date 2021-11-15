@@ -44,7 +44,7 @@ static se::Object *nodeMat4CacheObj{nullptr};
 
 class NodeUserData : public cc::Node::UserData {
 public:
-    NodeUserData(uint32_t size) : cc::Node::UserData(size) {
+    NodeUserData(uint32_t size) {
         setArrayLength(size);
         _arrayObject = se::Object::createArrayObject(size);
         _arrayObject->root();

@@ -62,8 +62,10 @@ class Node : public BaseNode {
 public:
     class UserData {
     public:
-        UserData(uint32_t size) {}
         virtual ~UserData() = default;
+
+    protected:
+        UserData() = default;
     };
 
     using Super = BaseNode;

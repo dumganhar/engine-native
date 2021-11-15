@@ -32,10 +32,12 @@
 #include "gfx-base/GFXDef.h"
 #include "jsb_conversions.h"
 #include "network/HttpClient.h"
+#include "network/Downloader.h"
 #include "platform/Application.h"
 #include "platform/Image.h"
 #include "ui/edit-box/EditBox.h"
 #include "xxtea/xxtea.h"
+
 
 #if CC_PLATFORM == CC_PLATFORM_ANDROID
     #include "platform/java/jni/JniImp.h"

@@ -42,17 +42,15 @@ static se::Object *nodeVec3CacheObj{nullptr};
 static se::Object *nodeQuatCacheObj{nullptr};
 static se::Object *nodeMat4CacheObj{nullptr};
 
-class _NodeUserData : public cc::Node::UserData {
+class NodeUserData : public cc::Node::UserData {
 public:
-    _NodeUserData(uint32_t size) : _NodeUserData("") {
-        setBufferSize(size);
+    NodeUserData(uint32_t size) : cc::Node::UserData(size) {
+        setArrayLength(size);
         _arrayObject = se::Object::createArrayObject(size);
         _arrayObject->root();
-    };
+    }
 
-    explicit _NodeUserData(const std::string &name = "") {}
-
-    ~_NodeUserData() override {
+    ~NodeUserData() override {
         if (_arrayObject) {
             _arrayObject->unroot();
             _arrayObject->decRef();
@@ -60,21 +58,21 @@ public:
         }
     }
 
-    se::Object* getArrayObject() {
+    inline se::Object* getArrayObject() {
         return _arrayObject;
     }
 
-    void setBufferSize(uint32_t size) {
-        _bufferLength = size;
+    inline void setArrayLength(uint32_t length) {
+        _arrayLength = length;
     }
 
-    uint32_t getBufferSize() {
-        return _bufferLength;
+    inline uint32_t getArrayLength() {
+        return _arrayLength;
     }
 
 private:
     se::Object *_arrayObject{nullptr};
-    uint32_t    _bufferLength{0};
+    uint32_t    _arrayLength{0};
 };
 
 static bool js_root_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
@@ -409,12 +407,12 @@ static bool scene_Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(r
 static bool scene_Vector_to_seval(cc::Node * node, const std::vector<cc::Node *> &from, se::Value &to) { // NOLINT(readability-identifier-naming)
     assert(node != nullptr);
     uint32_t size = from.size();
-    _NodeUserData *userData = nullptr;
+    NodeUserData *userData = nullptr;
     if (!node->getUserData()) {
-        userData = new _NodeUserData(size);
+        userData = new NodeUserData(size);
         node->setUserData(userData);
     } else {
-        userData = static_cast<_NodeUserData *>(node->getUserData());
+        userData = static_cast<NodeUserData *>(node->getUserData());
     }
     se::Object *array(userData->getArrayObject());
 
@@ -423,8 +421,8 @@ static bool scene_Vector_to_seval(cc::Node * node, const std::vector<cc::Node *>
         nativevalue_to_se(from[i], tmp, nullptr);
         array->setArrayElement(static_cast<uint32_t>(i), tmp);
     }
-    if (userData->getBufferSize() != size) {
-        userData->setBufferSize(size);
+    if (userData->getArrayLength() != size) {
+        userData->setArrayLength(size);
         array->setProperty("length", se::Value(size));
     }
     to.setObject(array);

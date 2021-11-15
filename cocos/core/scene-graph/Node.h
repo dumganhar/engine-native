@@ -60,7 +60,10 @@ using TransformDirtyBit = TransformBit;
 
 class Node : public BaseNode {
 public:
-    class UserData : public CCObject {
+    class UserData {
+    public:
+        UserData(uint32_t size) {}
+        virtual ~UserData() = default;
     };
 
     using Super = BaseNode;

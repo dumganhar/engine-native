@@ -642,7 +642,7 @@ void Node::invalidateChildren(TransformBit dirtyBit) {
         const uint32_t hasChangedFlags = cur->getChangedFlags();
         if (cur->isValid() && (cur->getDirtyFlag() & hasChangedFlags & curDirtyBit) != curDirtyBit) {
             cur->setDirtyFlag(cur->getDirtyFlag() | curDirtyBit);
-            emit(EventTypesToJS::NODE_UI_TRANSFORM_DIRTY);
+            emit(EventTypesToJS::NODE_UI_TRANSFORM_DIRTY, &_uiTransformDirty);
             cur->setChangedFlags(hasChangedFlags | curDirtyBit);
 
             for (Node *curChild : cur->getChildren()) {

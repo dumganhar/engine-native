@@ -268,8 +268,11 @@ public:
 
     void invalidateChildren(TransformBit dirtyBit);
 
-    void translate(const Vec3 &, NodeSpace ns = NodeSpace::LOCAL);
-    void rotate(const Quaternion &rot, NodeSpace ns = NodeSpace::LOCAL);
+    void        translate(const Vec3 &, NodeSpace ns = NodeSpace::LOCAL);
+    void        rotate(const Quaternion &rot, NodeSpace ns = NodeSpace::LOCAL);
+    inline void rotateForJS(float x, float y, float z, float w, NodeSpace ns = NodeSpace::LOCAL) {
+        rotate(Quaternion(x, y, z, w), ns);
+    }
     void lookAt(const Vec3 &pos, const Vec3 &up = Vec3::UNIT_Y);
 
     void pauseSystemEvents(bool recursive) {}  //cjh TODO:
@@ -657,7 +660,7 @@ public:
 private:
     friend class NodeActivator;
     friend class Scene;
-    
+
     // Used to shared memory of Node._uiProps._uiTransformDirty.
     uint32_t *_uiTransformDirty{nullptr};
 

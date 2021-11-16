@@ -371,6 +371,8 @@ static bool scene_Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(r
     return true;
 }
 
+static float *_tempFloatArray = nullptr;
+
 static bool js_scene_Node_getPosition(se::State &s) // NOLINT(readability-identifier-naming)
 {
     auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -380,15 +382,31 @@ static bool js_scene_Node_getPosition(se::State &s) // NOLINT(readability-identi
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Vec3 &result = cobj->getPosition();
-        ok &= scene_Vec3_to_seval(result, &s.rval());
-        SE_PRECONDITION2(ok, false, "js_scene_Node_getPosition : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        _tempFloatArray[0]     = result.x;
+        _tempFloatArray[1]     = result.y;
+        _tempFloatArray[2]     = result.z;
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
 SE_BIND_FUNC(js_scene_Node_getPosition)
+
+static bool js_scene_Node__setTempFloatArray(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if (argc == 1) {
+        uint8_t *buffer = nullptr;
+        args[0].toObject()->getArrayBufferData(&buffer, nullptr);
+        _tempFloatArray = reinterpret_cast<float *>(buffer);
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node__setTempFloatArray)
 
 static bool js_scene_Node_getRight(se::State &s) // NOLINT(readability-identifier-naming)
 {
@@ -773,6 +791,12 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_Node_proto->defineFunction("_registerOnChildRemoved", _SE(js_scene_Node_registerOnChildRemoved));
     __jsb_cc_Node_proto->defineFunction("_registerOnChildAdded", _SE(js_scene_Node_registerOnChildAdded));
 
+    se::Value jsbVal;
+    obj->getProperty("jsb", &jsbVal);
+    se::Value nodeVal;
+    jsbVal.toObject()->getProperty("Node", &nodeVal);
+
+    nodeVal.toObject()->defineFunction("_setTempFloatArray", _SE(js_scene_Node__setTempFloatArray));
     __jsb_cc_Node_proto->defineFunction("getPosition", _SE(js_scene_Node_getPosition));
     __jsb_cc_Node_proto->defineFunction("getRotation", _SE(js_scene_Node_getRotation));
     __jsb_cc_Node_proto->defineFunction("getScale", _SE(js_scene_Node_getScale));

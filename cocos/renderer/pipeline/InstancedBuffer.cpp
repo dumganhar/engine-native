@@ -58,7 +58,7 @@ void InstancedBuffer::destroyInstancedBuffer() {
     InstancedBuffer::buffers.clear();
 }
 
-void InstancedBuffer::destoryInstancedBuffer(scene::Pass *pass) {
+void InstancedBuffer::destroyInstancedBuffer(scene::Pass *pass) {
     auto iter = InstancedBuffer::buffers.find(pass);
     if (iter == InstancedBuffer::buffers.end()) {
         return;
@@ -71,7 +71,7 @@ void InstancedBuffer::destoryInstancedBuffer(scene::Pass *pass) {
     }
     
     InstancedBuffer *instancedBuffer = iter2->second;
-    delete instancedBuffer;
+    CC_DELETE(instancedBuffer);
     bufferMap.erase(iter2);
 }
 

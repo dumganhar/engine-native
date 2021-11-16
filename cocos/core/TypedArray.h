@@ -106,9 +106,9 @@ public:
     : _buffer(buffer),
       _byteOffset(byteOffset),
       _byteLength(length * BYTES_PER_ELEMENT),
-      _byteEndPos(byteOffset + length) {
+      _byteEndPos(byteOffset + length * BYTES_PER_ELEMENT) {
         CC_ASSERT(_byteEndPos <= _buffer->byteLength());
-        _jsTypedArray = se::Object::createTypedArrayWithBuffer(toTypedArrayType<T>(), buffer->getJSArrayBuffer(), byteOffset, length);
+        _jsTypedArray = se::Object::createTypedArrayWithBuffer(toTypedArrayType<T>(), buffer->getJSArrayBuffer(), byteOffset, _byteLength);
         _jsTypedArray->root();
     }
 
@@ -204,16 +204,23 @@ public:
         _jsTypedArray->root();
         _jsTypedArray->incRef();
 
-        se::Value bufferVal;
-        _jsTypedArray->getProperty("buffer", &bufferVal);
-        assert(bufferVal.isObject());
-        assert(bufferVal.toObject()->isArrayBuffer());
-
+        se::Value tmpVal;
+        _jsTypedArray->getProperty("buffer", &tmpVal);
+        assert(tmpVal.isObject());
+        assert(tmpVal.toObject()->isArrayBuffer());
+        
         _buffer = std::make_shared<ArrayBuffer>();
-        _buffer->setJSArrayBuffer(bufferVal.toObject());
-        _byteLength = _buffer->byteLength();
-        _byteOffset = 0;
-        _byteEndPos = _byteLength;
+        _buffer->setJSArrayBuffer(tmpVal.toObject());
+        
+        _jsTypedArray->getProperty("byteOffset", &tmpVal);
+        assert(tmpVal.isNumber());
+        _byteOffset = tmpVal.toUint32();
+        
+        _jsTypedArray->getProperty("byteLength", &tmpVal);
+        assert(tmpVal.isNumber());
+        _byteLength = tmpVal.toUint32();
+        
+        _byteEndPos = _buffer->byteLength();
     }
 
 private:

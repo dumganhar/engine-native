@@ -29,17 +29,18 @@ namespace cc {
 
 PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) : Super(parent->getRoot()), _parent(parent), _owner(owner) {
     doInit(_parent->getPassInfoFull());
-    for (const auto &b : _shaderInfo->blocks) { //cjh FIXME:logic is wrong!!! seem logically useless in ts?
-        scene::IBlockRef block       = _blocks[b.binding];
+    for (const auto &b : _shaderInfo->blocks) {
+        scene::IBlockRef &block      = _blocks[b.binding];
         scene::IBlockRef parentBlock = _parent->getBlocks()[b.binding];
         block                        = parentBlock;
     }
-    // setRootBufferDirty(true); // error in ts
-    auto *paren = dynamic_cast<PassInstance *>(_parent);
+    
+    _rootBufferDirty = true;
+    gfx::DescriptorSet *parentDescriptorSet = _parent->getDescriptorSet();
     for (const auto &samplerTexture : _shaderInfo->samplerTextures) {
         for (uint32_t i = 0; i < samplerTexture.count; ++i) {
-            auto *sampler = paren->_descriptorSet->getSampler(samplerTexture.binding, i);
-            auto *texture = paren->_descriptorSet->getTexture(samplerTexture.binding, i);
+            auto *sampler = parentDescriptorSet->getSampler(samplerTexture.binding, i);
+            auto *texture = parentDescriptorSet->getTexture(samplerTexture.binding, i);
             _descriptorSet->bindSampler(samplerTexture.binding, sampler, i);
             _descriptorSet->bindTexture(samplerTexture.binding, texture, i);
         }

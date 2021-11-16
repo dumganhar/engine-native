@@ -114,8 +114,8 @@ public:
     inline int32_t                            getInstMatWorldIdx() const { return _instMatWorldIdx; }
     inline const std::vector<gfx::Attribute> &getInstanceAttributes() const { return _instanceAttributes; }
     inline InstancedAttributeBlock *          getInstancedAttributeBlock() { return &_instanceAttributeBlock; }
-    inline uint8_t *                          getInstancedBuffer() const { return std::get<0>(_instancedBuffer); }
-    inline uint32_t                           getInstancedBufferSize() const { return std::get<1>(_instancedBuffer); }
+    inline const uint8_t *                    getInstancedBuffer() const { return _instanceAttributeBlock.buffer.buffer()->getData(); }
+    inline uint32_t                           getInstancedBufferSize() const { return _instanceAttributeBlock.buffer.length(); }
     inline gfx::Buffer *                      getLocalBuffer() const { return _localBuffer; }
     inline Float32Array                       getLocalData() const { return _localData; }
     inline geometry::AABB *                   getModelBounds() const { return _modelBounds; }

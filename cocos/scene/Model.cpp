@@ -362,21 +362,20 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
 
     for (const gfx::Attribute &attribute : attributes) {
         if (!attribute.isInstanced) continue;
-        gfx::Attribute attr = gfx::Attribute();
-        attr.format         = attribute.format;
-        attr.name           = attribute.name;
-        attr.isNormalized   = attribute.isNormalized;
-        attr.location       = attribute.location;
+        gfx::Attribute attr;
+        attr.format       = attribute.format;
+        attr.name         = attribute.name;
+        attr.isNormalized = attribute.isNormalized;
+        attr.location     = attribute.location;
         attrs.attributes.emplace_back(attr);
         const auto &info          = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)];
         auto        buffer        = attrs.buffer.buffer();
-        auto        typeViewArray = getTypedArrayConstructor(info, attrs.buffer.buffer(), offset, info.count);
+        auto        typeViewArray = getTypedArrayConstructor(info, buffer, offset, info.count);
         attrs.views.emplace_back(typeViewArray);
         offset += info.size;
     }
     if (pass->getBatchingScheme() == BatchingSchemes::INSTANCING) {
-        pipeline::InstancedBuffer *instanceBuffer = pipeline::InstancedBuffer::get(pass);
-        CC_SAFE_DESTROY(instanceBuffer); // instancing IA changed
+        pipeline::InstancedBuffer::destroyInstancedBuffer(pass);
     }
     setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD));
     _transformUpdated = true;

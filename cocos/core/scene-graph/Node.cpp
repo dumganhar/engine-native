@@ -72,6 +72,7 @@ Node::~Node() {
         allNodes.erase(iter);
     }
     CC_SAFE_DELETE(_eventProcessor);
+    CC_SAFE_DELETE(_userData);
 }
 
 void Node::onBatchCreated(bool dontChildPrefab) {

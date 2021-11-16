@@ -60,6 +60,14 @@ using TransformDirtyBit = TransformBit;
 
 class Node : public BaseNode {
 public:
+    class UserData {
+    public:
+        virtual ~UserData() = default;
+
+    protected:
+        UserData() = default;
+    };
+
     using Super = BaseNode;
 
     static const uint32_t TRANSFORM_ON;
@@ -257,11 +265,13 @@ public:
     inline Node *                     getParent() const { return _parent; }
     inline NodeEventProcessor *       getEventProcessor() const { return _eventProcessor; }
 
-    Node *          getChildByUuid(const std::string &) const;
-    Node *          getChildByName(const std::string &) const;
-    Node *          getChildByPath(const std::string &) const;
-    inline uint32_t getSiblingIndex() const { return _siblingIndex; }
-    inline void     insertChild(Node *child, uint32_t siblingIndex) {
+    Node *           getChildByUuid(const std::string &) const;
+    Node *           getChildByName(const std::string &) const;
+    Node *           getChildByPath(const std::string &) const;
+    inline uint32_t  getSiblingIndex() const { return _siblingIndex; }
+    inline UserData *getUserData() { return _userData; }
+    inline void      setUserData(UserData *data) { _userData = data; }
+    inline void      insertChild(Node *child, uint32_t siblingIndex) {
         child->_parent = this;
         child->setSiblingIndex(siblingIndex);
     }
@@ -658,6 +668,7 @@ public:
     uint32_t _layer{static_cast<uint32_t>(Layers::Enum::DEFAULT)};
     //
 private:
+    UserData *_userData{nullptr};
     friend class NodeActivator;
     friend class Scene;
 

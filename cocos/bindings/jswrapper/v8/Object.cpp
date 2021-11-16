@@ -32,9 +32,12 @@
     #include "ScriptEngine.h"
     #include "Utils.h"
 
+    #include <array>
     #include <memory>
     #include <sstream>
     #include <unordered_map>
+
+    #define JSB_FUNC_DEFAULT_MAX_ARG_COUNT (10)
 
 namespace se {
 //NOLINTNEXTLINE
@@ -347,7 +350,7 @@ bool Object::init(Class *cls, v8::Local<v8::Object> obj) {
     return true;
 }
 
-bool Object::getProperty(const char *name, Value *data) {
+bool Object::getProperty(const char *name, Value *data, bool cachePropertyName) {
     assert(data != nullptr);
     data->setUndefined();
 
@@ -357,7 +360,14 @@ bool Object::getProperty(const char *name, Value *data) {
         return false;
     }
 
-    v8::MaybeLocal<v8::String> nameValue = v8::String::NewFromUtf8(__isolate, name, v8::NewStringType::kNormal);
+    v8::MaybeLocal<v8::String> nameValue;
+
+    if (cachePropertyName) {
+        nameValue = ScriptEngine::getInstance()->_getStringPool().get(__isolate, name);
+    } else {
+        nameValue = v8::String::NewFromUtf8(__isolate, name, v8::NewStringType::kNormal);
+    }
+
     if (nameValue.IsEmpty()) {
         return false;
     }
@@ -577,11 +587,19 @@ bool Object::call(const ValueArray &args, Object *thisObject, Value *rval /* = n
         SE_LOGD("Function object is released!\n");
         return false;
     }
-    size_t                            argc = 0;
-    std::vector<v8::Local<v8::Value>> argv;
-    argv.reserve(10);
-    argc = args.size();
-    internal::seToJsArgs(__isolate, args, &argv);
+    size_t argc = args.size();
+
+    std::array<v8::Local<v8::Value>, JSB_FUNC_DEFAULT_MAX_ARG_COUNT> argv;
+    std::unique_ptr<std::vector<v8::Local<v8::Value>>>               vecArgs;
+    v8::Local<v8::Value> *                                           pArgv = argv.data();
+
+    if (argc > JSB_FUNC_DEFAULT_MAX_ARG_COUNT) {
+        vecArgs = std::make_unique<std::vector<v8::Local<v8::Value>>>();
+        vecArgs->resize(argc);
+        pArgv = vecArgs->data();
+    }
+
+    internal::seToJsArgs(__isolate, args, pArgv);
 
     v8::Local<v8::Object> thiz = v8::Local<v8::Object>::Cast(v8::Undefined(__isolate));
     if (thisObject != nullptr) {
@@ -593,7 +611,7 @@ bool Object::call(const ValueArray &args, Object *thisObject, Value *rval /* = n
     }
 
     for (size_t i = 0; i < argc; ++i) {
-        if (argv[i].IsEmpty()) {
+        if (pArgv[i].IsEmpty()) {
             SE_LOGD("%s argv[%d] is released!\n", __FUNCTION__, (int)i);
             return false;
         }
@@ -603,7 +621,7 @@ bool Object::call(const ValueArray &args, Object *thisObject, Value *rval /* = n
     #if CC_DEBUG
     v8::TryCatch tryCatch(__isolate);
     #endif
-    v8::MaybeLocal<v8::Value> result = _obj.handle(__isolate)->CallAsFunction(context, thiz, static_cast<int>(argc), argv.data());
+    v8::MaybeLocal<v8::Value> result = _obj.handle(__isolate)->CallAsFunction(context, thiz, static_cast<int>(argc), pArgv);
 
     #if CC_DEBUG
     if (tryCatch.HasCaught()) {

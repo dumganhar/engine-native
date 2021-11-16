@@ -551,6 +551,8 @@ void ScriptEngine::cleanup() {
         }
         _beforeCleanupHookArray.clear();
 
+        _stringPool.clear();
+
         SAFE_DEC_REF(_globalObj);
         Object::cleanup();
         Class::cleanup();
@@ -1010,6 +1012,42 @@ bool ScriptEngine::isDebuggerEnabled() const {
 
 void ScriptEngine::mainLoopUpdate() {
     // empty implementation
+}
+
+// VMStringPool
+ScriptEngine::VMStringPool::VMStringPool() {
+}
+
+ScriptEngine::VMStringPool::~VMStringPool() {
+}
+
+v8::MaybeLocal<v8::String> ScriptEngine::VMStringPool::get(v8::Isolate *isolate, const char *name) {
+    v8::Local<v8::String> ret;
+    auto                  iter = std::find_if(_vmStringPool.begin(), _vmStringPool.end(), [&](const auto &e) -> bool {
+        return e.name == name;
+    });
+
+    if (iter == _vmStringPool.end()) {
+        v8::MaybeLocal<v8::String> nameValue = v8::String::NewFromUtf8(isolate, name, v8::NewStringType::kNormal);
+        if (!nameValue.IsEmpty()) {
+            v8::Persistent<v8::String> *persistentName = new v8::Persistent<v8::String>();
+            persistentName->Reset(isolate, nameValue.ToLocalChecked());
+            _vmStringPool.emplace_back(Element{name, persistentName});
+            ret = v8::Local<v8::String>::New(isolate, *_vmStringPool.back().vmStr);
+        }
+    } else {
+        ret = v8::Local<v8::String>::New(isolate, *iter->vmStr);
+    }
+
+    return ret;
+}
+
+void ScriptEngine::VMStringPool::clear() {
+    for (auto &e : _vmStringPool) {
+        e.vmStr->Reset();
+        delete e.vmStr;
+    }
+    _vmStringPool.clear();
 }
 
 } // namespace se

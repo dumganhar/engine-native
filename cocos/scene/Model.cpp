@@ -375,7 +375,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         offset += info.size;
     }
     if (pass->getBatchingScheme() == BatchingSchemes::INSTANCING) {
-        pipeline::InstancedBuffer::destoryInstancedBuffer(pass);
+        pipeline::InstancedBuffer::destroyInstancedBuffer(pass);
     }
     setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD));
     _transformUpdated = true;

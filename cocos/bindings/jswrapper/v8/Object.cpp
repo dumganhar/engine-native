@@ -420,7 +420,7 @@ bool Object::deleteProperty(const char *name) {
 }
 
 bool Object::setProperty(const char *name, const Value &data) {
-    v8::MaybeLocal<v8::String> nameValue = v8::String::NewFromUtf8(__isolate, name, v8::NewStringType::kNormal);
+    v8::MaybeLocal<v8::String> nameValue = ScriptEngine::getInstance()->_getStringPool().get(__isolate, name);
     if (nameValue.IsEmpty()) {
         return false;
     }
@@ -672,7 +672,7 @@ bool Object::getArrayLength(uint32_t *length) const {
     assert(length != nullptr);
     auto *thiz = const_cast<Object *>(this);
 
-    v8::MaybeLocal<v8::String> lengthStr = v8::String::NewFromUtf8(__isolate, "length", v8::NewStringType::kNormal);
+    v8::MaybeLocal<v8::String> lengthStr = ScriptEngine::getInstance()->_getStringPool().get(__isolate, "length");
     if (lengthStr.IsEmpty()) {
         *length = 0;
         return false;

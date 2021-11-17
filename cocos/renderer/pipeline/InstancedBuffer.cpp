@@ -63,13 +63,13 @@ void InstancedBuffer::destroyInstancedBuffer(scene::Pass *pass) {
     if (iter == InstancedBuffer::buffers.end()) {
         return;
     }
-    
+
     auto &bufferMap = iter->second;
-    auto iter2 = bufferMap.find(0);
+    auto  iter2     = bufferMap.find(0);
     if (iter2 == bufferMap.end()) {
         return;
     }
-    
+
     InstancedBuffer *instancedBuffer = iter2->second;
     CC_DELETE(instancedBuffer);
     bufferMap.erase(iter2);
@@ -158,8 +158,7 @@ void InstancedBuffer::merge(const scene::Model *model, const scene::SubModel *su
             attribute.isNormalized,
             static_cast<uint>(vertexBuffers.size()), // stream
             true,
-            attribute.location
-            });
+            attribute.location});
     }
 
     auto *data = static_cast<uint8_t *>(CC_MALLOC(newSize));

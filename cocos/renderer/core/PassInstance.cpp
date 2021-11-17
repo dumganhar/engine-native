@@ -30,12 +30,12 @@ namespace cc {
 PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) : Super(parent->getRoot()), _parent(parent), _owner(owner) {
     doInit(_parent->getPassInfoFull());
     for (const auto &b : _shaderInfo->blocks) {
-        scene::IBlockRef &block      = _blocks[b.binding];
-        scene::IBlockRef parentBlock = _parent->getBlocks()[b.binding];
-        block                        = parentBlock;
+        scene::IBlockRef &block       = _blocks[b.binding];
+        scene::IBlockRef  parentBlock = _parent->getBlocks()[b.binding];
+        block                         = parentBlock;
     }
-    
-    _rootBufferDirty = true;
+
+    _rootBufferDirty                        = true;
     gfx::DescriptorSet *parentDescriptorSet = _parent->getDescriptorSet();
     for (const auto &samplerTexture : _shaderInfo->samplerTextures) {
         for (uint32_t i = 0; i < samplerTexture.count; ++i) {

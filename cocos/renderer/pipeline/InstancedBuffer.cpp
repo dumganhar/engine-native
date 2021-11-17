@@ -58,23 +58,6 @@ void InstancedBuffer::destroyInstancedBuffer() {
     InstancedBuffer::buffers.clear();
 }
 
-void InstancedBuffer::destroyInstancedBuffer(scene::Pass *pass) {
-    auto iter = InstancedBuffer::buffers.find(pass);
-    if (iter == InstancedBuffer::buffers.end()) {
-        return;
-    }
-    
-    auto &bufferMap = iter->second;
-    auto iter2 = bufferMap.find(0);
-    if (iter2 == bufferMap.end()) {
-        return;
-    }
-    
-    InstancedBuffer *instancedBuffer = iter2->second;
-    CC_DELETE(instancedBuffer);
-    bufferMap.erase(iter2);
-}
-
 InstancedBuffer::InstancedBuffer(const scene::Pass *pass)
 : _pass(pass),
   _device(gfx::Device::getInstance()) {

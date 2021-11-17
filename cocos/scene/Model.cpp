@@ -157,6 +157,7 @@ void Model::updateTransform(uint32_t stamp) {
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {
             _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_TRANSFORM, stamp);
+            _isCalledFromJS = false;
             return;
         }
     }
@@ -186,6 +187,7 @@ void Model::updateUBOs(uint32_t stamp) {
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {
             _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_UBO, stamp);
+            _isCalledFromJS = false;
             return;
         }
     }
@@ -297,6 +299,7 @@ std::vector<IMacroPatch> Model::getMacroPatches(index_t subModelIndex) {
         if (!_isCalledFromJS) {
             std::vector<IMacroPatch> result;
             _eventProcessor.emit(EventTypesToJS::MODEL_GET_MACRO_PATCHES, subModelIndex, &result);
+            _isCalledFromJS = false;
             return result;
         }
     }
@@ -327,6 +330,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {
             _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES, attributes, pass);
+            _isCalledFromJS = false;
             return;
         }
     }
@@ -381,6 +385,7 @@ void Model::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *de
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {
             _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, subModelIndex, descriptorSet);
+            _isCalledFromJS = false;
             return;
         }
     }

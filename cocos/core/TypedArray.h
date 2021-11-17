@@ -178,7 +178,7 @@ public:
         _byteLength               = _buffer->byteLength();
         _byteOffset               = 0;
         _byteEndPos               = byteLength;
-        _jsTypedArray             = se::Object::createTypedArrayWithBuffer(toTypedArrayType<T>(), _buffer->getJSArrayBuffer(), 0, length);
+        _jsTypedArray             = se::Object::createTypedArrayWithBuffer(toTypedArrayType<T>(), _buffer->getJSArrayBuffer(), 0, byteLength);
         _jsTypedArray->root();
     }
 

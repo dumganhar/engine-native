@@ -23,14 +23,17 @@
 #include "core/Director.h"
 
 namespace cc {
-
-const std::string Game::EVENT_HIDE{"game_on_hide"};
-const std::string Game::EVENT_LOW_MEMORY{"game_on_low_memory"};
-const std::string Game::EVENT_SHOW{"game_on_show"};
-const std::string Game::EVENT_ENGINE_INITED{"engine_inited"};
-const std::string Game::EVENT_RENDERER_INITED{"renderer_inited"};
-const std::string Game::EVENT_GAME_INITED{"game_inited"};
-const std::string Game::EVENT_RESTART{"game_on_restart"};
+// Internal NodeEventType : 0~99
+// Internal EventTypesToJS : 100~199
+// Internal Game event : 200~299
+// Internal Director Event Type: 300~399
+const CallbacksInvoker::KeyType Game::EVENT_HIDE{200};            //{"game_on_hide"};
+const CallbacksInvoker::KeyType Game::EVENT_LOW_MEMORY{201};      //{"game_on_low_memory"};
+const CallbacksInvoker::KeyType Game::EVENT_SHOW{202};            //{"game_on_show"};
+const CallbacksInvoker::KeyType Game::EVENT_ENGINE_INITED{203};   //{"engine_inited"};
+const CallbacksInvoker::KeyType Game::EVENT_RENDERER_INITED{204}; //{"renderer_inited"};
+const CallbacksInvoker::KeyType Game::EVENT_GAME_INITED{205};     //{"game_inited"};
+const CallbacksInvoker::KeyType Game::EVENT_RESTART{206};         //{"game_on_restart"};
 
 void Game::step() const {
     Director::getInstance()->tick(frameTime / 1000);
@@ -210,7 +213,7 @@ void Game::setRenderPipeline(pipeline::RenderPipeline *pipeline) {
     safeEmit(Game::EVENT_RENDERER_INITED);
 }
 
-void Game::safeEmit(const std::string &event) {
+void Game::safeEmit(const CallbacksInvoker::KeyType &event) {
     // TODO(xwx):
     // if (EDITOR){}
     // else

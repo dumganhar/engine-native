@@ -141,7 +141,7 @@ void Node::onHierarchyChangedBase(Node *oldParent) {
     }
 }
 
-void Node::off(const std::string &type, bool useCapture) {
+void Node::off(const CallbacksInvoker::KeyType &type, bool useCapture) {
     _eventProcessor->off(type, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
@@ -151,7 +151,7 @@ void Node::off(const std::string &type, bool useCapture) {
     }
 }
 
-void Node::off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture) {
+void Node::off(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID, bool useCapture) {
     _eventProcessor->off(type, cbID, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
@@ -161,7 +161,7 @@ void Node::off(const std::string &type, CallbackInfoBase::ID cbID, bool useCaptu
     }
 }
 
-void Node::off(const std::string &type, void *target, bool useCapture) {
+void Node::off(const CallbacksInvoker::KeyType &type, void *target, bool useCapture) {
     _eventProcessor->off(type, target, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
@@ -175,21 +175,21 @@ void Node::dispatchEvent(event::Event *eve) {
     _eventProcessor->dispatchEvent(eve);
 }
 
-bool Node::hasEventListener(const std::string &type) const {
+bool Node::hasEventListener(const CallbacksInvoker::KeyType &type) const {
     return _eventProcessor->hasEventListener(type);
 }
 
-bool Node::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) const {
+bool Node::hasEventListener(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID) const {
     return _eventProcessor->hasEventListener(type, cbID);
 }
-bool Node::hasEventListener(const std::string &type, void *target) const {
+bool Node::hasEventListener(const CallbacksInvoker::KeyType &type, void *target) const {
     return _eventProcessor->hasEventListener(type, target);
 }
-bool Node::hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) const {
+bool Node::hasEventListener(const CallbacksInvoker::KeyType &type, void *target, CallbackInfoBase::ID cbID) const {
     return _eventProcessor->hasEventListener(type, target, cbID);
 }
 
-void Node::targetOff(const std::string &type) {
+void Node::targetOff(const CallbacksInvoker::KeyType &type) {
     _eventProcessor->targetOff(type);
     if ((_eventMask & TRANSFORM_ON) && !_eventProcessor->hasEventListener(NodeEventType::TRANSFORM_CHANGED)) {
         _eventMask &= ~TRANSFORM_ON;
@@ -643,7 +643,10 @@ void Node::invalidateChildren(TransformBit dirtyBit) {
         const uint32_t hasChangedFlags = cur->getChangedFlags();
         if (cur->isValid() && (cur->getDirtyFlag() & hasChangedFlags & curDirtyBit) != curDirtyBit) {
             cur->setDirtyFlag(cur->getDirtyFlag() | curDirtyBit);
-            emit(EventTypesToJS::NODE_UI_TRANSFORM_DIRTY, &_uiTransformDirty);
+            if (_uiPropsTransformDirtyCallback != nullptr) {
+                _uiPropsTransformDirtyCallback(&_uiTransformDirty);
+            }
+            //            emit(EventTypesToJS::NODE_UI_TRANSFORM_DIRTY, &_uiTransformDirty);
             cur->setChangedFlags(hasChangedFlags | curDirtyBit);
 
             for (Node *curChild : cur->getChildren()) {

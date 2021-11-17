@@ -28,7 +28,7 @@
 
 NS_CC_EVENT_BEGIN
 
-EventCustom::EventCustom(const std::string &eventName)
+EventCustom::EventCustom(const CallbacksInvoker::KeyType &eventName)
 : Event(Type::CUSTOM), _userData(nullptr) {
     _eventName = eventName;
 }

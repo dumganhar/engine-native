@@ -191,7 +191,7 @@ public:
      * });
      * ```
      */
-    static const std::string EVENT_HIDE;
+    static const CallbacksInvoker::KeyType EVENT_HIDE;
 
     /**
      * @en Event triggered when game back to foreground<br>
@@ -201,7 +201,7 @@ public:
      * 请注意，在 WEB 平台，这个事件不一定会 100% 触发，这完全取决于浏览器的回调行为。<br>
      * 在原生平台，它对应的是应用被切换到前台事件。
      */
-    static const std::string EVENT_SHOW;
+    static const CallbacksInvoker::KeyType EVENT_SHOW;
 
     /**
      * @en Event triggered when system in low memory status.<br>
@@ -209,13 +209,13 @@ public:
      * @zh 程序在内存不足时触发的事件。<br>
      * 该事件只会在 iOS/Android 平台触发。
      */
-    static const std::string EVENT_LOW_MEMORY;
+    static const CallbacksInvoker::KeyType EVENT_LOW_MEMORY;
 
     /**
      * @en Event triggered after game inited, at this point all engine objects and game scripts are loaded
      * @zh 游戏启动后的触发事件，此时加载所有的引擎对象和游戏脚本。
      */
-    static const std::string EVENT_GAME_INITED;
+    static const CallbacksInvoker::KeyType EVENT_GAME_INITED;
 
     /**
      * @en Event triggered after engine inited, at this point you will be able to use all engine classes.<br>
@@ -225,19 +225,19 @@ public:
      * 它在 Cocos Creator v1.x 版本中名字为 EVENT_RENDERER_INITED，在 v2.0 更名为 EVENT_ENGINE_INITED
      * 并在 Cocos Creator v3.0 中将 EVENT_RENDERER_INITED 用作为渲染器初始化的事件。
      */
-    static const std::string EVENT_ENGINE_INITED;
+    static const CallbacksInvoker::KeyType EVENT_ENGINE_INITED;
 
     /**
      * @en Event triggered after renderer inited, at this point you will be able to use all gfx renderer feature.<br>
      * @zh 在渲染器初始化之后触发的事件，此事件在 EVENT_ENGINE_INITED 之前触发，此时开始可使用 gfx 渲染框架。
      */
-    static const std::string EVENT_RENDERER_INITED;
+    static const CallbacksInvoker::KeyType EVENT_RENDERER_INITED;
 
     /**
      * @en Event triggered when game restart
      * @zh 调用restart后，触发事件
      */
-    static const std::string EVENT_RESTART;
+    static const CallbacksInvoker::KeyType EVENT_RESTART;
 
     /**
      * @en Web Canvas 2d API as renderer backend.
@@ -549,7 +549,7 @@ private:
 
     void setRenderPipeline(pipeline::RenderPipeline *pipeline);
 
-    void safeEmit(const std::string &event);
+    void safeEmit(const CallbacksInvoker::KeyType &event);
 
     gfx::Device *_gfxDevice = nullptr;
 

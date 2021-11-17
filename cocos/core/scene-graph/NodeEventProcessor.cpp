@@ -269,7 +269,7 @@ std::vector<cc::event::IListenerMask> searchComponentsInParent(cc::Node *node) {
 namespace cc {
 NodeEventProcessor::NodeEventProcessor(Node *node) : _node(node) {}
 
-bool NodeEventProcessor::checkListeners(cc::Node *node, const std::vector<std::string> &events) {
+bool NodeEventProcessor::checkListeners(cc::Node *node, const std::vector<CallbacksInvoker::KeyType> &events) {
     if (!node->isPersistNode()) {
         if (node->getEventProcessor()->_bubblingTargets) {
             for (const auto &event : events) {
@@ -330,7 +330,7 @@ void NodeEventProcessor::destroy() {
     if (_bubblingTargets) _bubblingTargets->offAll();
 }
 
-void NodeEventProcessor::off(const std::string &type, void *target, bool useCapture /* = false*/) {
+void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, void *target, bool useCapture /* = false*/) {
     bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
     bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
     if (touchEventExist || mouseEventExist) {
@@ -352,7 +352,7 @@ void NodeEventProcessor::off(const std::string &type, void *target, bool useCapt
     }
 }
 
-void NodeEventProcessor::off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture) {
+void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID, bool useCapture) {
     bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
     bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
     if (touchEventExist || mouseEventExist) {
@@ -379,7 +379,7 @@ void NodeEventProcessor::dispatchEvent(event::Event *event) {
     cachedArray.clear();
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string &type) const {
+bool NodeEventProcessor::hasEventListener(const CallbacksInvoker::KeyType &type) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type);
@@ -390,7 +390,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type) const {
     return has;
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) const {
+bool NodeEventProcessor::hasEventListener(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, cbID);
@@ -401,7 +401,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type, CallbackInfoB
     return has;
 }
 
-bool NodeEventProcessor::hasEventListener(const std::string &type, void *target) const {
+bool NodeEventProcessor::hasEventListener(const CallbacksInvoker::KeyType &type, void *target) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, target);
@@ -411,7 +411,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type, void *target)
     }
     return has;
 }
-bool NodeEventProcessor::hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) const {
+bool NodeEventProcessor::hasEventListener(const CallbacksInvoker::KeyType &type, void *target, CallbackInfoBase::ID cbID) const {
     bool has = false;
     if (_bubblingTargets) {
         has = _bubblingTargets->hasEventListener(type, target, cbID);
@@ -422,7 +422,7 @@ bool NodeEventProcessor::hasEventListener(const std::string &type, void *target,
     return has;
 }
 
-void NodeEventProcessor::targetOff(const std::string &target) {
+void NodeEventProcessor::targetOff(const CallbacksInvoker::KeyType &target) {
     if (_capturingTargets) {
         _capturingTargets->offAll(target);
     }
@@ -440,7 +440,7 @@ void NodeEventProcessor::targetOff(const std::string &target) {
     }
 }
 
-void NodeEventProcessor::getCapturingTargets(const std::string &type, std::vector<Node *> &targets) const {
+void NodeEventProcessor::getCapturingTargets(const CallbacksInvoker::KeyType &type, std::vector<Node *> &targets) const {
     auto *parent = _node->getParent();
     while (parent != nullptr) {
         if (parent->getEventProcessor()->_capturingTargets != nullptr && parent->getEventProcessor()->_capturingTargets->hasEventListener(type)) {
@@ -450,7 +450,7 @@ void NodeEventProcessor::getCapturingTargets(const std::string &type, std::vecto
     }
 }
 
-void NodeEventProcessor::getBubblingTargets(const std::string &type, std::vector<Node *> &targets) const {
+void NodeEventProcessor::getBubblingTargets(const CallbacksInvoker::KeyType &type, std::vector<Node *> &targets) const {
     auto *parent = _node->getParent();
     while (parent != nullptr) {
         if (parent->getEventProcessor()->_bubblingTargets != nullptr && parent->getEventProcessor()->_bubblingTargets->hasEventListener(type)) {
@@ -460,7 +460,7 @@ void NodeEventProcessor::getBubblingTargets(const std::string &type, std::vector
     }
 }
 
-bool NodeEventProcessor::checknSetupSysEvent(const std::string &type) {
+bool NodeEventProcessor::checknSetupSysEvent(const CallbacksInvoker::KeyType &type) {
     bool newAdded    = false;
     bool forDispatch = false;
     // just for ui
@@ -529,7 +529,7 @@ bool NodeEventProcessor::checknSetupSysEvent(const std::string &type) {
     return forDispatch;
 }
 
-void NodeEventProcessor::offDispatch(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture) {
+void NodeEventProcessor::offDispatch(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID, bool useCapture) {
     if (cbID == 0) {
         if (_capturingTargets != nullptr) {
             _capturingTargets->offAll(type);
@@ -545,7 +545,7 @@ void NodeEventProcessor::offDispatch(const std::string &type, CallbackInfoBase::
     }
 }
 
-void NodeEventProcessor::offDispatch(const std::string &type, void *target, bool useCapture) {
+void NodeEventProcessor::offDispatch(const CallbacksInvoker::KeyType &type, void *target, bool useCapture) {
     CallbacksInvoker *listeners = useCapture ? _capturingTargets : _bubblingTargets;
     if (listeners != nullptr) {
         listeners->offAll(type, target);

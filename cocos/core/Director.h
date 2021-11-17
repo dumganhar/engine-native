@@ -90,14 +90,14 @@ public:
      * @zh Director 单例初始化时触发的事件 
     */
 
-    static std::string EVENT_INIT;
+    static const CallbacksInvoker::KeyType EVENT_INIT;
 
     /**
      * @en The event which will be triggered when the singleton of Director reset.
      * @zh Director 单例重置时触发的事件
      * @event Director.EVENT_RESET
      */
-    static std::string EVENT_RESET;
+    static const CallbacksInvoker::KeyType EVENT_RESET;
 
     /**
      * @en The event which will be triggered before loading a new scene.
@@ -105,7 +105,7 @@ public:
      * @event Director.EVENT_BEFORE_SCENE_LOADING
      * @param {String} sceneName - The loading scene name
      */
-    static std::string EVENT_BEFORE_SCENE_LOADING;
+    static const CallbacksInvoker::KeyType EVENT_BEFORE_SCENE_LOADING;
 
     /**
      * @en The event which will be triggered before launching a new scene.
@@ -113,7 +113,7 @@ public:
      * @event Director.EVENT_BEFORE_SCENE_LAUNCH
      * @param {String} sceneName - New scene which will be launched
      */
-    static std::string EVENT_BEFORE_SCENE_LAUNCH;
+    static const CallbacksInvoker::KeyType EVENT_BEFORE_SCENE_LAUNCH;
 
     /**
      * @en The event which will be triggered after launching a new scene.
@@ -121,70 +121,70 @@ public:
      * @event Director.EVENT_AFTER_SCENE_LAUNCH
      * @param {String} sceneName - New scene which is launched
      */
-    static std::string EVENT_AFTER_SCENE_LAUNCH;
+    static const CallbacksInvoker::KeyType EVENT_AFTER_SCENE_LAUNCH;
 
     /**
      * @en The event which will be triggered at the beginning of every frame.
      * @zh 每个帧的开始时所触发的事件。
      * @event Director.EVENT_BEFORE_UPDATE
      */
-    static std::string EVENT_BEFORE_UPDATE;
+    static const CallbacksInvoker::KeyType EVENT_BEFORE_UPDATE;
 
     /**
      * @en The event which will be triggered after engine and components update logic.
      * @zh 将在引擎和组件 “update” 逻辑之后所触发的事件。
      * @event Director.EVENT_AFTER_UPDATE
      */
-    static std::string EVENT_AFTER_UPDATE;
+    static const CallbacksInvoker::KeyType EVENT_AFTER_UPDATE;
 
     /**
      * @en The event which will be triggered before the rendering process.
      * @zh 渲染过程之前所触发的事件。
      * @event Director.EVENT_BEFORE_DRAW
      */
-    static std::string EVENT_BEFORE_DRAW;
+    static const CallbacksInvoker::KeyType EVENT_BEFORE_DRAW;
 
     /**
      * @en The event which will be triggered after the rendering process.
      * @zh 渲染过程之后所触发的事件。
      * @event Director.EVENT_AFTER_DRAW
      */
-    static std::string EVENT_AFTER_DRAW;
+    static const CallbacksInvoker::KeyType EVENT_AFTER_DRAW;
 
     /**
      * @en The event which will be triggered before the pipeline render commit.
      * @zh 当前渲染帧提交前所触发的事件。
      * @event Director.EVENT_BEFORE_COMMIT
      */
-    static std::string EVENT_BEFORE_COMMIT;
+    static const CallbacksInvoker::KeyType EVENT_BEFORE_COMMIT;
 
     /**
      * The event which will be triggered before the physics process.<br/>
      * 物理过程之前所触发的事件。
      * @event Director.EVENT_BEFORE_PHYSICS
      */
-    static std::string EVENT_BEFORE_PHYSICS;
+    static const CallbacksInvoker::KeyType EVENT_BEFORE_PHYSICS;
 
     /**
      * The event which will be triggered after the physics process.<br/>
      * 物理过程之后所触发的事件。
      * @event Director.EVENT_AFTER_PHYSICS
      */
-    static std::string EVENT_AFTER_PHYSICS;
+    static const CallbacksInvoker::KeyType EVENT_AFTER_PHYSICS;
 
     /**
      * The event which will be triggered at the frame begin.<br/>
      * 一帧开始时所触发的事件。
      * @event Director.EVENT_BEGIN_FRAME
      */
-    static std::string EVENT_BEGIN_FRAME;
+    static const CallbacksInvoker::KeyType EVENT_BEGIN_FRAME;
 
     /**
      * The event which will be triggered at the frame end.<br/>
      * 一帧结束之后所触发的事件。
      * @event Director.EVENT_END_FRAME
      */
-    static std::string EVENT_END_FRAME;
+    static const CallbacksInvoker::KeyType EVENT_END_FRAME;
 
     static Director *getInstance() {
         return instance;

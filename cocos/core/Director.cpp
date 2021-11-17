@@ -33,21 +33,24 @@
 namespace cc {
 
 Director *Director::instance{nullptr};
-
-std::string Director::EVENT_INIT{"director_init"};
-std::string Director::EVENT_RESET{"director_reset"};
-std::string Director::EVENT_BEFORE_SCENE_LOADING{"director_before_scene_loading"};
-std::string Director::EVENT_BEFORE_SCENE_LAUNCH{"director_before_scene_launch"};
-std::string Director::EVENT_AFTER_SCENE_LAUNCH{"director_after_scene_launch"};
-std::string Director::EVENT_BEFORE_UPDATE{"director_before_update"};
-std::string Director::EVENT_AFTER_UPDATE{"director_after_update"};
-std::string Director::EVENT_BEFORE_DRAW{"director_before_draw"};
-std::string Director::EVENT_AFTER_DRAW{"director_after_draw"};
-std::string Director::EVENT_BEFORE_COMMIT{"director_before_commit"};
-std::string Director::EVENT_BEFORE_PHYSICS{"director_before_physics"};
-std::string Director::EVENT_AFTER_PHYSICS{"director_after_physics"};
-std::string Director::EVENT_BEGIN_FRAME{"director_begin_frame"};
-std::string Director::EVENT_END_FRAME{"director_end_frame"};
+// Internal NodeEventType : 0~99
+// Internal EventTypesToJS : 100~199
+// Internal Game event : 200~299
+// Internal Director Event Type: 300~399
+const CallbacksInvoker::KeyType Director::EVENT_INIT{300};                 //{"director_init"};
+const CallbacksInvoker::KeyType Director::EVENT_RESET{301};                //{"director_reset"};
+const CallbacksInvoker::KeyType Director::EVENT_BEFORE_SCENE_LOADING{302}; //{"director_before_scene_loading"};
+const CallbacksInvoker::KeyType Director::EVENT_BEFORE_SCENE_LAUNCH{303};  //{"director_before_scene_launch"};
+const CallbacksInvoker::KeyType Director::EVENT_AFTER_SCENE_LAUNCH{304};   //{"director_after_scene_launch"};
+const CallbacksInvoker::KeyType Director::EVENT_BEFORE_UPDATE{305};        //{"director_before_update"};
+const CallbacksInvoker::KeyType Director::EVENT_AFTER_UPDATE{306};         //{"director_after_update"};
+const CallbacksInvoker::KeyType Director::EVENT_BEFORE_DRAW{307};          //{"director_before_draw"};
+const CallbacksInvoker::KeyType Director::EVENT_AFTER_DRAW{308};           //{"director_after_draw"};
+const CallbacksInvoker::KeyType Director::EVENT_BEFORE_COMMIT{309};        //{"director_before_commit"};
+const CallbacksInvoker::KeyType Director::EVENT_BEFORE_PHYSICS{310};       //{"director_before_physics"};
+const CallbacksInvoker::KeyType Director::EVENT_AFTER_PHYSICS{311};        //{"director_after_physics"};
+const CallbacksInvoker::KeyType Director::EVENT_BEGIN_FRAME{312};          //{"director_begin_frame"};
+const CallbacksInvoker::KeyType Director::EVENT_END_FRAME{313};            //{"director_end_frame"};
 
 Director::Director()
 : _compScheduler{new ComponentScheduler()}, _nodeActivator{new NodeActivator()}, _scheduler{new core::Scheduler()} {

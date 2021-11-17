@@ -74,7 +74,8 @@ public:
         CUSTOM
     };
 
-    typedef std::string ListenerID;
+    //    typedef std::string ListenerID;
+    typedef uint32_t ListenerID;
 
     /**
      * Constructor

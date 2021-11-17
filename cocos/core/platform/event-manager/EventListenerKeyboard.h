@@ -45,7 +45,7 @@ class Event;
  */
 class CC_DLL EventListenerKeyboard : public EventListener {
 public:
-    static const std::string LISTENER_ID;
+    static const ListenerID LISTENER_ID;
 
     /** Create a keyboard event listener.
      * 

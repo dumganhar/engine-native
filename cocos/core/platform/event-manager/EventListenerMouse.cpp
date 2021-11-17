@@ -28,7 +28,7 @@
 
 NS_CC_EVENT_BEGIN
 
-const std::string EventListenerMouse::LISTENER_ID = "__cc_mouse";
+const EventListener::ListenerID EventListenerMouse::LISTENER_ID = 3; //"__cc_mouse";
 
 bool EventListenerMouse::checkAvailable() {
     return true;

@@ -208,18 +208,18 @@ public:
         _jsTypedArray->getProperty("buffer", &tmpVal);
         assert(tmpVal.isObject());
         assert(tmpVal.toObject()->isArrayBuffer());
-        
+
         _buffer = std::make_shared<ArrayBuffer>();
         _buffer->setJSArrayBuffer(tmpVal.toObject());
-        
+
         _jsTypedArray->getProperty("byteOffset", &tmpVal);
         assert(tmpVal.isNumber());
         _byteOffset = tmpVal.toUint32();
-        
+
         _jsTypedArray->getProperty("byteLength", &tmpVal);
         assert(tmpVal.isNumber());
         _byteLength = tmpVal.toUint32();
-        
+
         _byteEndPos = _buffer->byteLength();
     }
 

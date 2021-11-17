@@ -19,8 +19,8 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "jsb_conversions.h"
 #include <sstream>
+#include "jsb_conversions.h"
 
 #include "cocos/base/Map.h"
 #include "cocos/base/Vector.h"
@@ -48,7 +48,7 @@ overloaded(Ts...) -> overloaded<Ts...>;
 
 template <typename A, typename T, typename F>
 bool set_member_field(se::Object *obj, T *to, const std::string_view &property, F f, se::Value &tmp) { //NOLINT
-    bool ok = obj->getProperty(property.data(), &tmp);
+    bool ok = obj->getProperty(property.data(), &tmp, true);
     SE_PRECONDITION2(ok, false, "Property '%s' is not set", property.data());
     if constexpr (std::is_member_function_pointer<F>::value) {
         A m;
@@ -490,7 +490,7 @@ bool sevalue_to_native(const se::Value &from, cc::Mat3 *to, se::Object * /*unuse
             } else {
                 name = prefix + std::to_string(i);
             }
-            ok = obj->getProperty(name.c_str(), &tmp);
+            ok = obj->getProperty(name.c_str(), &tmp, true);
             SE_PRECONDITION3(ok, false, *to = cc::Mat3::IDENTITY);
 
             if (tmp.isNumber()) {
@@ -533,7 +533,7 @@ bool sevalue_to_native(const se::Value &from, cc::Mat4 *to, se::Object * /*unuse
             } else {
                 name = prefix + std::to_string(i);
             }
-            ok = obj->getProperty(name.c_str(), &tmp);
+            ok = obj->getProperty(name.c_str(), &tmp, true);
             SE_PRECONDITION3(ok, false, *to = cc::Mat4::IDENTITY);
 
             if (tmp.isNumber()) {
@@ -846,17 +846,17 @@ bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Obje
         se::Value tmp3;
         se::Value tmp4;
 
-        hasColorVal = obj->getProperty("_val", &tmp0);
+        hasColorVal = obj->getProperty("_val", &tmp0, true);
         if (hasColorVal) {
             *to = cc::Color{tmp0.toUint32()};
             return true;
         }
 
-        hasX     = obj->getProperty("x", &tmp0);
-        hasY     = hasX && obj->getProperty("y", &tmp1);
-        hasZ     = hasY && obj->getProperty("z", &tmp2);
-        hasW     = hasZ && obj->getProperty("w", &tmp3);
-        hasEuler = hasW && obj->getProperty("getEulerAngles", &tmp4);
+        hasX     = obj->getProperty("x", &tmp0, true);
+        hasY     = hasX && obj->getProperty("y", &tmp1, true);
+        hasZ     = hasY && obj->getProperty("z", &tmp2, true);
+        hasW     = hasZ && obj->getProperty("w", &tmp3, true);
+        hasEuler = hasW && obj->getProperty("getEulerAngles", &tmp4, true);
 
         if (hasW) {
             if (hasEuler) {
@@ -877,9 +877,9 @@ bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Obje
             return true;
         }
 
-        hasM01 = obj->getProperty("m00", &tmp0);
-        hasM08 = hasM01 && obj->getProperty("m08", &tmp1);
-        hasM15 = hasM08 && obj->getProperty("m15", &tmp2);
+        hasM01 = obj->getProperty("m00", &tmp0, true);
+        hasM08 = hasM01 && obj->getProperty("m08", &tmp1, true);
+        hasM15 = hasM08 && obj->getProperty("m15", &tmp2, true);
 
         if (hasM15) {
             cc::Mat4 m4;
@@ -895,7 +895,7 @@ bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Obje
             return true;
         }
 
-        hasAssetID = obj->getProperty("_id", &tmp3);
+        hasAssetID = obj->getProperty("_id", &tmp3, true);
         if (hasAssetID) {
             *to = reinterpret_cast<cc::TextureBase *>(obj->getPrivateData());
             return true;

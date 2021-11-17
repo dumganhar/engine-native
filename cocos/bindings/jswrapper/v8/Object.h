@@ -153,7 +153,11 @@ public:
          *  @param[out] value The property's value if object has the property, otherwise the undefined value.
          *  @return true if object has the property, otherwise false.
          */
-    bool getProperty(const char *name, Value *data);
+    inline bool getProperty(const char *name, Value *data) {
+        return getProperty(name, data, false);
+    }
+
+    bool getProperty(const char *name, Value *data, bool cachePropertyName);
 
     inline bool getProperty(const std::string &name, Value *value) {
         return getProperty(name.c_str(), value);
@@ -187,9 +191,8 @@ public:
          */
     bool defineProperty(const char *name, v8::AccessorNameGetterCallback getter, v8::AccessorNameSetterCallback setter);
 
-    
-    bool defineOwnProperty(const char *name,const se::Value &value, bool writable = true, bool enumerable= true, bool configurable= true);
-    
+    bool defineOwnProperty(const char *name, const se::Value &value, bool writable = true, bool enumerable = true, bool configurable = true);
+
     /**
          *  @brief Defines a function with a native callback for an object.
          *  @param[in] funcName A utf-8 string containing the function name.

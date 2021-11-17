@@ -374,7 +374,8 @@ bool Object::getProperty(const char *name, Value *data, bool cachePropertyName) 
 
     v8::Local<v8::String>  nameValToLocal = nameValue.ToLocalChecked();
     v8::Local<v8::Context> context        = __isolate->GetCurrentContext();
-    v8::Maybe<bool>        maybeExist     = _obj.handle(__isolate)->Has(context, nameValToLocal);
+    v8::Local<v8::Object>  localObj       = _obj.handle(__isolate);
+    v8::Maybe<bool>        maybeExist     = localObj->Has(context, nameValToLocal);
     if (maybeExist.IsNothing()) {
         return false;
     }
@@ -383,7 +384,7 @@ bool Object::getProperty(const char *name, Value *data, bool cachePropertyName) 
         return false;
     }
 
-    v8::MaybeLocal<v8::Value> result = _obj.handle(__isolate)->Get(context, nameValToLocal);
+    v8::MaybeLocal<v8::Value> result = localObj->Get(context, nameValToLocal);
     if (result.IsEmpty()) {
         return false;
     }

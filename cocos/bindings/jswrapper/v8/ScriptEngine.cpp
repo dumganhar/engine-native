@@ -43,7 +43,7 @@
 
     #endif
 
-    #include <sstream>
+    #include <array>
 
     #define EXPOSE_GC "__jsb_gc__"
 
@@ -1012,6 +1012,63 @@ bool ScriptEngine::isDebuggerEnabled() const {
 
 void ScriptEngine::mainLoopUpdate() {
     // empty implementation
+}
+
+bool ScriptEngine::callFunction(Object *targetObj, const char *funcName, uint32_t argc, Value *args, Value *rval /* = nullptr*/) {
+    v8::HandleScope handleScope(_isolate);
+
+    v8::MaybeLocal<v8::String> nameValue = _getStringPool().get(_isolate, funcName);
+
+    if (nameValue.IsEmpty()) {
+        if (rval != nullptr) {
+            rval->setUndefined();
+        }
+        return false;
+    }
+
+    v8::Local<v8::String>  nameValToLocal = nameValue.ToLocalChecked();
+    v8::Local<v8::Context> context        = _isolate->GetCurrentContext();
+    v8::Local<v8::Object>  localObj       = targetObj->_obj.handle(_isolate);
+
+    v8::MaybeLocal<v8::Value> funcVal = localObj->Get(context, nameValToLocal);
+    if (funcVal.IsEmpty()) {
+        if (rval != nullptr) {
+            rval->setUndefined();
+        }
+        return false;
+    }
+
+    SE_ASSERT(argc < 11, "Only support argument count that less than 11");
+    std::array<v8::Local<v8::Value>, 10> argv;
+
+    for (size_t i = 0; i < argc; ++i) {
+        internal::seToJsValue(_isolate, args[i], &argv[i]);
+    }
+
+    #if CC_DEBUG
+    v8::TryCatch tryCatch(_isolate);
+    #endif
+
+    v8::MaybeLocal<v8::Object> funcObj = funcVal.ToLocalChecked()->ToObject(context);
+    v8::MaybeLocal<v8::Value>  result  = funcObj.ToLocalChecked()->CallAsFunction(_getContext(), localObj, argc, argv.data());
+
+    #if CC_DEBUG
+    if (tryCatch.HasCaught()) {
+        v8::String::Utf8Value stack(_isolate, tryCatch.StackTrace(context).ToLocalChecked());
+        SE_REPORT_ERROR("Invoking function failed, %s", *stack);
+        if (rval != nullptr) {
+            rval->setUndefined();
+        }
+        return false;
+    }
+    #endif
+
+    if (!result.IsEmpty()) {
+        if (rval != nullptr) {
+            internal::jsToSeValue(_isolate, result.ToLocalChecked(), rval);
+        }
+    }
+    return true;
 }
 
 // VMStringPool

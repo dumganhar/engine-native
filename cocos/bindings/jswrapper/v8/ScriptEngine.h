@@ -314,11 +314,7 @@ public:
         void                       clear();
 
     private:
-        struct Element {
-            std::string                 name;
-            v8::Persistent<v8::String> *vmStr;
-        };
-        std::vector<Element> _vmStringPool;
+        std::unordered_map<std::string, v8::Persistent<v8::String> *> _vmStringPoolMap;
     };
 
     inline VMStringPool &  _getStringPool() { return _stringPool; }         //NOLINT(readability-identifier-naming)

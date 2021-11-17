@@ -305,6 +305,11 @@ public:
          */
     uint32_t getVMId() const { return _vmId; }
 
+    /**
+     * @brief Fast version of call script function, faster than Object::call
+     */
+    bool callFunction(Object *targetObj, const char *funcName, uint32_t argc, Value *args, Value *rval = nullptr);
+
     // Private API used in wrapper
     class VMStringPool final {
     public:

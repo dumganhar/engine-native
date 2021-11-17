@@ -27,22 +27,26 @@
 
 namespace cc {
 
-const std::string EventTypesToJS::ROOT_BATCH2D_INIT{"ROOT_BATCH2D_INIT"};
-const std::string EventTypesToJS::ROOT_BATCH2D_UPDATE{"ROOT_BATCH2D_UPDATE"};
-const std::string EventTypesToJS::ROOT_BATCH2D_UPLOAD_BUFFERS{"ROOT_BATCH2D_UPLOAD_BUFFERS"};
-const std::string EventTypesToJS::ROOT_BATCH2D_RESET{"ROOT_BATCH2D_RESET"};
+// Internal NodeEventType : 0~99
+// Internal EventTypesToJS : 100~199
+// Internal Game event : 200~299
+// Internal Director Event Type: 300~399
+const CallbacksInvoker::KeyType EventTypesToJS::ROOT_BATCH2D_INIT{100};           //{"ROOT_BATCH2D_INIT"};
+const CallbacksInvoker::KeyType EventTypesToJS::ROOT_BATCH2D_UPDATE{101};         //{"ROOT_BATCH2D_UPDATE"};
+const CallbacksInvoker::KeyType EventTypesToJS::ROOT_BATCH2D_UPLOAD_BUFFERS{102}; //{"ROOT_BATCH2D_UPLOAD_BUFFERS"};
+const CallbacksInvoker::KeyType EventTypesToJS::ROOT_BATCH2D_RESET{103};          //{"ROOT_BATCH2D_RESET"};
 
-const std::string EventTypesToJS::NODE_REATTACH{"NODE_REATTACH"};
-const std::string EventTypesToJS::NODE_REMOVE_PERSIST_ROOT_NODE{"NODE_REMOVE_PERSIST_ROOT_NODE"};
-const std::string EventTypesToJS::NODE_DESTROY_COMPONENTS{"NODE_DESTROY_COMPONENTS"};
-const std::string EventTypesToJS::NODE_UI_TRANSFORM_DIRTY{"NODE_UI_TRANSFORM_DIRTY"};
-const std::string EventTypesToJS::NODE_ACTIVE_NODE{"NODE_ACTIVE_NODE"};
-const std::string EventTypesToJS::NODE_ON_BATCH_CREATED{"NODE_ON_BATCH_CREATED"};
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_REATTACH{104};                 //{"NODE_REATTACH"};
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_REMOVE_PERSIST_ROOT_NODE{105}; //{"NODE_REMOVE_PERSIST_ROOT_NODE"};
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_DESTROY_COMPONENTS{106};       //{"NODE_DESTROY_COMPONENTS"};
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_UI_TRANSFORM_DIRTY{107};       //{"NODE_UI_TRANSFORM_DIRTY"};
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_ACTIVE_NODE{108};              //{"NODE_ACTIVE_NODE"};
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_ON_BATCH_CREATED{109};         //{"NODE_ON_BATCH_CREATED"};
 
-const std::string EventTypesToJS::MODEL_UPDATE_TRANSFORM{"MODEL_UPDATE_TRANSFORM"};
-const std::string EventTypesToJS::MODEL_UPDATE_UBO{"MODEL_UPDATE_UBO"};
-const std::string EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS{"MODEL_UPDATE_LOCAL_DESCRIPTORS"};
-const std::string EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES{"MODEL_UPDATE_INSTANCED_ATTRIBUTES"};
-const std::string EventTypesToJS::MODEL_GET_MACRO_PATCHES{"MODEL_GET_MACRO_PATCHES"};
+const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_TRANSFORM{110};            //{"MODEL_UPDATE_TRANSFORM"};
+const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_UBO{111};                  //{"MODEL_UPDATE_UBO"};
+const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS{112};    //{"MODEL_UPDATE_LOCAL_DESCRIPTORS"};
+const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES{113}; //{"MODEL_UPDATE_INSTANCED_ATTRIBUTES"};
+const CallbacksInvoker::KeyType EventTypesToJS::MODEL_GET_MACRO_PATCHES{114};           //{"MODEL_GET_MACRO_PATCHES"};
 
 } // namespace cc

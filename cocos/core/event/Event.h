@@ -131,8 +131,8 @@ public:
      */
     inline Type getEventType() const { return _eventType; }
 
-    inline const std::string &getEventName() const { return _eventName; }
-    inline void               setEventName(const std::string &eventName) { _eventName = eventName; }
+    inline const CallbacksInvoker::KeyType &getEventName() const { return _eventName; }
+    inline void                             setEventName(const CallbacksInvoker::KeyType &eventName) { _eventName = eventName; }
 
     /**
      * @en
@@ -202,14 +202,14 @@ public:
     void reuse(const std::string &type, bool bubbles = false) {} //cjh TODO:
 
 protected:
-    CCObject *  _target{nullptr};
-    CCObject *  _currentTarget{nullptr};
-    Phase       _eventPhase{Phase::NONE};
-    Type        _eventType;
-    std::string _eventName;
-    bool        _bubbles{false};
-    bool        _propagationStopped{false};
-    bool        _propagationImmediateStopped{false};
+    CCObject *                _target{nullptr};
+    CCObject *                _currentTarget{nullptr};
+    Phase                     _eventPhase{Phase::NONE};
+    Type                      _eventType;
+    CallbacksInvoker::KeyType _eventName;
+    bool                      _bubbles{false};
+    bool                      _propagationStopped{false};
+    bool                      _propagationImmediateStopped{false};
 };
 
 NS_CC_EVENT_END

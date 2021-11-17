@@ -26,28 +26,29 @@
 #pragma once
 
 #include <string>
+#include "core/event/CallbacksInvoker.h"
 
 namespace cc {
 
 class EventTypesToJS final {
 public:
-    static const std::string ROOT_BATCH2D_INIT;
-    static const std::string ROOT_BATCH2D_UPDATE;
-    static const std::string ROOT_BATCH2D_UPLOAD_BUFFERS;
-    static const std::string ROOT_BATCH2D_RESET;
+    static const CallbacksInvoker::KeyType ROOT_BATCH2D_INIT;
+    static const CallbacksInvoker::KeyType ROOT_BATCH2D_UPDATE;
+    static const CallbacksInvoker::KeyType ROOT_BATCH2D_UPLOAD_BUFFERS;
+    static const CallbacksInvoker::KeyType ROOT_BATCH2D_RESET;
 
-    static const std::string NODE_REATTACH;
-    static const std::string NODE_REMOVE_PERSIST_ROOT_NODE;
-    static const std::string NODE_DESTROY_COMPONENTS;
-    static const std::string NODE_UI_TRANSFORM_DIRTY;
-    static const std::string NODE_ACTIVE_NODE;
-    static const std::string NODE_ON_BATCH_CREATED;
+    static const CallbacksInvoker::KeyType NODE_REATTACH;
+    static const CallbacksInvoker::KeyType NODE_REMOVE_PERSIST_ROOT_NODE;
+    static const CallbacksInvoker::KeyType NODE_DESTROY_COMPONENTS;
+    static const CallbacksInvoker::KeyType NODE_UI_TRANSFORM_DIRTY;
+    static const CallbacksInvoker::KeyType NODE_ACTIVE_NODE;
+    static const CallbacksInvoker::KeyType NODE_ON_BATCH_CREATED;
 
-    static const std::string MODEL_UPDATE_TRANSFORM;
-    static const std::string MODEL_UPDATE_UBO;
-    static const std::string MODEL_UPDATE_LOCAL_DESCRIPTORS;
-    static const std::string MODEL_UPDATE_INSTANCED_ATTRIBUTES;
-    static const std::string MODEL_GET_MACRO_PATCHES;
+    static const CallbacksInvoker::KeyType MODEL_UPDATE_TRANSFORM;
+    static const CallbacksInvoker::KeyType MODEL_UPDATE_UBO;
+    static const CallbacksInvoker::KeyType MODEL_UPDATE_LOCAL_DESCRIPTORS;
+    static const CallbacksInvoker::KeyType MODEL_UPDATE_INSTANCED_ATTRIBUTES;
+    static const CallbacksInvoker::KeyType MODEL_GET_MACRO_PATCHES;
 };
 
 } // namespace cc

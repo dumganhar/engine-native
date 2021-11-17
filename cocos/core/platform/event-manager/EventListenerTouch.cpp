@@ -34,7 +34,7 @@
 
 NS_CC_EVENT_BEGIN
 
-const std::string EventListenerTouchOneByOne::LISTENER_ID = "__cc_touch_one_by_one";
+const EventListener::ListenerID EventListenerTouchOneByOne::LISTENER_ID = 4; //"__cc_touch_one_by_one";
 
 EventListenerTouchOneByOne::EventListenerTouchOneByOne()
 : onTouchBegan(nullptr), onTouchMoved(nullptr), onTouchEnded(nullptr), onTouchCancelled(nullptr), _needSwallow(false) {
@@ -101,7 +101,7 @@ EventListenerTouchOneByOne *EventListenerTouchOneByOne::clone() {
 
 /////////
 
-const std::string EventListenerTouchAllAtOnce::LISTENER_ID = "__cc_touch_all_at_once";
+const EventListener::ListenerID EventListenerTouchAllAtOnce::LISTENER_ID = 5; //"__cc_touch_all_at_once";
 
 EventListenerTouchAllAtOnce::EventListenerTouchAllAtOnce()
 : onTouchesBegan(nullptr), onTouchesMoved(nullptr), onTouchesEnded(nullptr), onTouchesCancelled(nullptr) {

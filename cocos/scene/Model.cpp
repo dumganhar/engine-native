@@ -80,22 +80,7 @@ cc::Float32Array &vec4ToFloat32Array(const cc::Vec4 &v, cc::Float32Array &out, i
 }
 
 cc::Float32Array &mat4ToFloat32Array(const cc::Mat4 &mat, cc::Float32Array &out, index_t ofs = 0) {
-    out[ofs + 0]  = mat.m[0];
-    out[ofs + 1]  = mat.m[1];
-    out[ofs + 2]  = mat.m[2];
-    out[ofs + 3]  = mat.m[3];
-    out[ofs + 4]  = mat.m[4];
-    out[ofs + 5]  = mat.m[5];
-    out[ofs + 6]  = mat.m[6];
-    out[ofs + 7]  = mat.m[7];
-    out[ofs + 8]  = mat.m[8];
-    out[ofs + 9]  = mat.m[9];
-    out[ofs + 10] = mat.m[10];
-    out[ofs + 11] = mat.m[11];
-    out[ofs + 12] = mat.m[12];
-    out[ofs + 13] = mat.m[13];
-    out[ofs + 14] = mat.m[14];
-    out[ofs + 15] = mat.m[15];
+    memcpy(reinterpret_cast<float *>(const_cast<uint8_t *>(out.buffer()->getData())) + ofs, mat.m, 16 * sizeof(float));
     return out;
 }
 
@@ -172,6 +157,7 @@ void Model::updateTransform(uint32_t stamp) {
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {
             _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_TRANSFORM, stamp);
+            _isCalledFromJS = false;
             return;
         }
     }
@@ -201,6 +187,7 @@ void Model::updateUBOs(uint32_t stamp) {
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {
             _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_UBO, stamp);
+            _isCalledFromJS = false;
             return;
         }
     }
@@ -312,6 +299,7 @@ std::vector<IMacroPatch> Model::getMacroPatches(index_t subModelIndex) {
         if (!_isCalledFromJS) {
             std::vector<IMacroPatch> result;
             _eventProcessor.emit(EventTypesToJS::MODEL_GET_MACRO_PATCHES, subModelIndex, &result);
+            _isCalledFromJS = false;
             return result;
         }
     }
@@ -342,6 +330,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {
             _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES, attributes, pass);
+            _isCalledFromJS = false;
             return;
         }
     }
@@ -396,6 +385,7 @@ void Model::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *de
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {
             _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, subModelIndex, descriptorSet);
+            _isCalledFromJS = false;
             return;
         }
     }

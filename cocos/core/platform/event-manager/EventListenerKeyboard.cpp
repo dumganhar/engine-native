@@ -29,7 +29,7 @@
 
 NS_CC_EVENT_BEGIN
 
-const std::string EventListenerKeyboard::LISTENER_ID = "__cc_keyboard";
+const EventListener::ListenerID EventListenerKeyboard::LISTENER_ID = 1; //"__cc_keyboard";
 
 bool EventListenerKeyboard::checkAvailable() {
     if (onKeyPressed == nullptr && onKeyReleased == nullptr) {

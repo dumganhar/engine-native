@@ -45,7 +45,7 @@ class Touch;
  */
 class CC_DLL EventListenerTouchOneByOne : public EventListener {
 public:
-    static const std::string LISTENER_ID;
+    static const ListenerID LISTENER_ID;
 
     /** Create a one by one touch event listener.
      */
@@ -97,7 +97,7 @@ private:
  */
 class CC_DLL EventListenerTouchAllAtOnce : public EventListener {
 public:
-    static const std::string LISTENER_ID;
+    static const ListenerID LISTENER_ID;
 
     /** Create a all at once event listener.
      *

@@ -177,6 +177,7 @@ public:
  */
 class CallbacksInvoker {
 public:
+    using KeyType               = uint32_t;
     CallbacksInvoker()          = default;
     virtual ~CallbacksInvoker() = default;
     /**
@@ -189,36 +190,36 @@ public:
      * @param once - Whether invoke the callback only once (and remove it)
      */
     template <typename Target, typename... Args>
-    void on(const std::string &key, void (Target::*memberFn)(Args...), Target *target, bool once = false);
+    void on(const KeyType &key, void (Target::*memberFn)(Args...), Target *target, bool once = false);
 
     template <typename Target, typename... Args>
-    void on(const std::string &key, std::function<void(Args...)> &&callback, Target *target, bool once = false);
+    void on(const KeyType &key, std::function<void(Args...)> &&callback, Target *target, bool once = false);
 
     template <typename... Args>
-    void on(const std::string &key, std::function<void(Args...)> &&callback, bool once = false);
+    void on(const KeyType &key, std::function<void(Args...)> &&callback, bool once = false);
 
     template <typename Target, typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    on(const std::string &key, LambdaType &&callback, Target *target, bool once = false);
+    on(const KeyType &key, LambdaType &&callback, Target *target, bool once = false);
 
     template <typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    on(const std::string &key, LambdaType &&callback, bool once = false);
+    on(const KeyType &key, LambdaType &&callback, bool once = false);
 
     //
     template <typename Target, typename... Args>
-    void on(const std::string &key, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
+    void on(const KeyType &key, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     template <typename... Args>
-    void on(const std::string &key, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
+    void on(const KeyType &key, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     template <typename Target, typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    on(const std::string &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
+    on(const KeyType &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     template <typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    on(const std::string &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
+    on(const KeyType &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     /**
      * @zh 检查指定事件是否已注册回调。
@@ -226,19 +227,19 @@ public:
      * @param key - Event type
      * @param cbID - Callback ID
      */
-    bool hasEventListener(const std::string &key) const;
-    bool hasEventListener(const std::string &key, CallbackInfoBase::ID cbID) const;
-    bool hasEventListener(const std::string &key, void *target);
-    bool hasEventListener(const std::string &key, void *target, CallbackInfoBase::ID cbID) const;
+    bool hasEventListener(const KeyType &key) const;
+    bool hasEventListener(const KeyType &key, CallbackInfoBase::ID cbID) const;
+    bool hasEventListener(const KeyType &key, void *target);
+    bool hasEventListener(const KeyType &key, void *target, CallbackInfoBase::ID cbID) const;
     template <typename Target, typename... Args>
-    bool hasEventListener(const std::string &key, void (Target::*memberFn)(Args...), Target *target) const;
+    bool hasEventListener(const KeyType &key, void (Target::*memberFn)(Args...), Target *target) const;
     /**
      * @zh 移除在特定事件类型中注册的所有回调或在某个目标中注册的所有回调。
      * @en Removes all callbacks registered in a certain event type or all callbacks registered with a certain target
      * @param key - The event type or target with which the listeners will be removed
      */
-    void offAll(const std::string &key, void *target);
-    void offAll(const std::string &key);
+    void offAll(const KeyType &key, void *target);
+    void offAll(const KeyType &key);
     void offAll(void *target);
     void offAll();
 
@@ -249,10 +250,10 @@ public:
      * @param target callback Target
      * @param cbID - The callback ID of the event listener, if absent all event listeners for the given type will be removed
      */
-    void off(const std::string &key, CallbackInfoBase::ID cbID);
+    void off(const KeyType &key, CallbackInfoBase::ID cbID);
     void off(CallbackInfoBase::ID cbID);
     template <typename Target, typename... Args>
-    void off(const std::string &key, void (Target::*memberFn)(Args...), Target *target);
+    void off(const KeyType &key, void (Target::*memberFn)(Args...), Target *target);
 
     /**
      * @zh 派发一个指定事件，并传递需要的参数
@@ -261,7 +262,7 @@ public:
      * @param args - The  arguments to be passed to the callback
      */
     template <typename... Args>
-    void emit(const std::string &key, Args &&...args);
+    void emit(const KeyType &key, Args &&...args);
 
 public:
     template <typename T>
@@ -285,12 +286,12 @@ public:
     }
 
 private:
-    std::unordered_map<std::string, CallbackList> _callbackTable;
-    static CallbackInfoBase::ID                   cbIDCounter;
+    std::unordered_map<KeyType, CallbackList> _callbackTable;
+    static CallbackInfoBase::ID               cbIDCounter;
 };
 
 template <typename Target, typename... Args>
-void CallbacksInvoker::on(const std::string &key, void (Target::*memberFn)(Args...), Target *target, bool once) {
+void CallbacksInvoker::on(const KeyType &key, void (Target::*memberFn)(Args...), Target *target, bool once) {
     static_assert(std::is_base_of_v<CCObject, Target>, "Target must be the subclass of CCObject");
     using CallbackInfoType    = CallbackInfo<Args...>;
     auto &list                = _callbackTable[key];
@@ -302,7 +303,7 @@ void CallbacksInvoker::on(const std::string &key, void (Target::*memberFn)(Args.
 }
 
 template <typename Target, typename... Args>
-void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once) {
+void CallbacksInvoker::on(const KeyType &key, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once) {
     auto &list                = _callbackTable[key];
     auto  info                = std::make_shared<CallbackInfo<Args...>>();
     info->_id                 = ++cbIDCounter;
@@ -313,50 +314,50 @@ void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &
 }
 
 template <typename... Args>
-void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &outCallbackID, bool once) {
+void CallbacksInvoker::on(const KeyType &key, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &outCallbackID, bool once) {
     on<std::nullptr_t>(key, std::forward<std::function<void(Args...)>>(callback), nullptr, outCallbackID, once);
 }
 
 template <typename Target, typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-CallbacksInvoker::on(const std::string &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once) {
+CallbacksInvoker::on(const KeyType &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once) {
     on(key, toFunction(std::forward<LambdaType>(callback)), target, outCallbackID, once);
 }
 
 template <typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-CallbacksInvoker::on(const std::string &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once) {
+CallbacksInvoker::on(const KeyType &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once) {
     on(key, toFunction(std::forward<LambdaType>(callback)), outCallbackID, once);
 }
 
 template <typename Target, typename... Args>
-void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, Target *target, bool once) {
+void CallbacksInvoker::on(const KeyType &key, std::function<void(Args...)> &&callback, Target *target, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on(key, callback, target, unusedID, once);
 }
 
 template <typename... Args>
-void CallbacksInvoker::on(const std::string &key, std::function<void(Args...)> &&callback, bool once) {
+void CallbacksInvoker::on(const KeyType &key, std::function<void(Args...)> &&callback, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on<std::nullptr_t>(key, std::forward<std::function<void(Args...)>>(callback), nullptr, unusedID, once);
 }
 
 template <typename Target, typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-CallbacksInvoker::on(const std::string &key, LambdaType &&callback, Target *target, bool once) {
+CallbacksInvoker::on(const KeyType &key, LambdaType &&callback, Target *target, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on(key, toFunction(std::forward<LambdaType>(callback)), target, unusedID, once);
 }
 
 template <typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-CallbacksInvoker::on(const std::string &key, LambdaType &&callback, bool once) {
+CallbacksInvoker::on(const KeyType &key, LambdaType &&callback, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on(key, toFunction(std::forward<LambdaType>(callback)), unusedID, once);
 }
 
 template <typename Target, typename... Args>
-void CallbacksInvoker::off(const std::string &key, void (Target::*memberFn)(Args...), Target *target) {
+void CallbacksInvoker::off(const KeyType &key, void (Target::*memberFn)(Args...), Target *target) {
     static_assert(std::is_base_of_v<CCObject, Target>, "Target must be the subclass of CCObject");
     using CallbackFn = void (CCObject::*)(Args...);
     auto iter        = _callbackTable.find(key);
@@ -375,7 +376,7 @@ void CallbacksInvoker::off(const std::string &key, void (Target::*memberFn)(Args
 }
 
 template <typename... Args>
-void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
+void CallbacksInvoker::emit(const KeyType &key, Args &&...args) {
 #if CC_DEBUG
     std::vector<std::string> argTypes{(typeid(Args).name())...};
 #endif
@@ -449,7 +450,7 @@ void CallbacksInvoker::emit(const std::string &key, Args &&...args) {
 }
 
 template <typename Target, typename... Args>
-bool CallbacksInvoker::hasEventListener(const std::string &key, void (Target::*memberFn)(Args...), Target *target) const {
+bool CallbacksInvoker::hasEventListener(const KeyType &key, void (Target::*memberFn)(Args...), Target *target) const {
     using CallbackFn = void (CCObject::*)(Args...);
     auto iter        = _callbackTable.find(key);
     if (iter == _callbackTable.end()) {

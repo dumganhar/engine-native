@@ -25,36 +25,37 @@
 
 #pragma once
 #include <string>
+#include "core/event/CallbacksInvoker.h"
 
 namespace cc {
 
 class NodeEventType {
 public:
-    static const std::string TOUCH_START;
-    static const std::string TOUCH_MOVE;
-    static const std::string TOUCH_END;
-    static const std::string TOUCH_CANCEL;
-    static const std::string MOUSE_DOWN;
-    static const std::string MOUSE_MOVE;
-    static const std::string MOUSE_UP;
-    static const std::string MOUSE_WHEEL;
-    static const std::string MOUSE_ENTER;
-    static const std::string MOUSE_LEAVE;
-    static const std::string KEY_DOWN;
-    static const std::string KEY_UP;
-    static const std::string DEVICEMOTION;
-    static const std::string TRANSFORM_CHANGED;
-    static const std::string SCENE_CHANGED_FOR_PERSISTS;
-    static const std::string SIZE_CHANGED;
-    static const std::string ANCHOR_CHANGED;
-    static const std::string COLOR_CHANGED;
-    static const std::string CHILD_ADDED;
-    static const std::string CHILD_REMOVED;
-    static const std::string PARENT_CHANGED;
-    static const std::string NODE_DESTROYED;
-    static const std::string LAYER_CHANGED;
-    static const std::string SIBLING_ORDER_CHANGED;
-    static const std::string ACTIVE_IN_HIERARCHY_CHANGED;
+    static const CallbacksInvoker::KeyType TOUCH_START;
+    static const CallbacksInvoker::KeyType TOUCH_MOVE;
+    static const CallbacksInvoker::KeyType TOUCH_END;
+    static const CallbacksInvoker::KeyType TOUCH_CANCEL;
+    static const CallbacksInvoker::KeyType MOUSE_DOWN;
+    static const CallbacksInvoker::KeyType MOUSE_MOVE;
+    static const CallbacksInvoker::KeyType MOUSE_UP;
+    static const CallbacksInvoker::KeyType MOUSE_WHEEL;
+    static const CallbacksInvoker::KeyType MOUSE_ENTER;
+    static const CallbacksInvoker::KeyType MOUSE_LEAVE;
+    static const CallbacksInvoker::KeyType KEY_DOWN;
+    static const CallbacksInvoker::KeyType KEY_UP;
+    static const CallbacksInvoker::KeyType DEVICEMOTION;
+    static const CallbacksInvoker::KeyType TRANSFORM_CHANGED;
+    static const CallbacksInvoker::KeyType SCENE_CHANGED_FOR_PERSISTS;
+    static const CallbacksInvoker::KeyType SIZE_CHANGED;
+    static const CallbacksInvoker::KeyType ANCHOR_CHANGED;
+    static const CallbacksInvoker::KeyType COLOR_CHANGED;
+    static const CallbacksInvoker::KeyType CHILD_ADDED;
+    static const CallbacksInvoker::KeyType CHILD_REMOVED;
+    static const CallbacksInvoker::KeyType PARENT_CHANGED;
+    static const CallbacksInvoker::KeyType NODE_DESTROYED;
+    static const CallbacksInvoker::KeyType LAYER_CHANGED;
+    static const CallbacksInvoker::KeyType SIBLING_ORDER_CHANGED;
+    static const CallbacksInvoker::KeyType ACTIVE_IN_HIERARCHY_CHANGED;
 };
 
 } // namespace cc

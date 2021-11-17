@@ -230,8 +230,7 @@ static void registerOnBatchCreated(cc::Node *node, se::Object *jsObject) {
 
 static void registerOnUiTransformDirty(cc::Node *node, se::Object *jsObject) {
     cc::CallbackInfoBase::ID skip;
-    node->on(
-        cc::EventTypesToJS::NODE_UI_TRANSFORM_DIRTY,
+    node->setUIPropsTransformDirtyCallback(
         [jsObject](uint32_t **uiTransformDirty) {
             if (!*uiTransformDirty) {
                 se::AutoHandleScope hs;
@@ -245,8 +244,7 @@ static void registerOnUiTransformDirty(cc::Node *node, se::Object *jsObject) {
             }
 
             **uiTransformDirty = 1;
-        },
-        skip);
+        });
 }
 
 static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
@@ -552,9 +550,7 @@ static bool js_scene_Node_getWorldMatrix(se::State &s) // NOLINT(readability-ide
     CC_UNUSED bool ok   = true;
     if (argc == 0) {
         const cc::Mat4 &result = cobj->getWorldMatrix();
-        ok &= scene_Mat4_to_seval(result, &s.rval());
-        SE_PRECONDITION2(ok, false, "js_scene_Node_getWorldMatrix : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        memcpy(_tempFloatArray, result.m, sizeof(result.m));
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);

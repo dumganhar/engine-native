@@ -32,7 +32,7 @@ EventListenerCustom::EventListenerCustom()
 : _onCustomEvent(nullptr) {
 }
 
-EventListenerCustom *EventListenerCustom::create(const std::string &eventName, const std::function<void(EventCustom *)> &callback) {
+EventListenerCustom *EventListenerCustom::create(const CallbacksInvoker::KeyType &eventName, const std::function<void(EventCustom *)> &callback) {
     EventListenerCustom *ret = new (std::nothrow) EventListenerCustom();
     if (ret && ret->init(eventName, callback)) {
         ret->autorelease();

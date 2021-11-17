@@ -122,89 +122,89 @@ public:
     void walk(const std::function<void(Node *)> &preFunc, const std::function<void(Node *)> &postFunc);
 
     template <typename Target, typename... Args>
-    void on(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
+    void on(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
 
     template <typename... Args>
-    void on(const std::string &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
+    void on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     template <typename Target, typename... Args>
-    void on(const std::string &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
+    void on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     template <typename Target, typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    on(const std::string &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
+    on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     template <typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    on(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
+    on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     template <typename... Args>
-    void on(const std::string &type, std::function<void(Args...)> &&callback, bool useCapture = false);
+    void on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, bool useCapture = false);
 
     template <typename Target, typename... Args>
-    void on(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
+    void on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
 
     template <typename Target, typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    on(const std::string &type, LambdaType &&callback, Target *target, bool useCapture = false);
+    on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, bool useCapture = false);
 
     template <typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    on(const std::string &type, LambdaType &&callback, bool useCapture = false);
+    on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, bool useCapture = false);
 
     template <typename Target, typename... Args>
-    void once(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
+    void once(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
 
     template <typename... Args>
-    void once(const std::string &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
+    void once(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     template <typename Target, typename... Args>
-    void once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
+    void once(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     template <typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    once(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
+    once(const CallbacksInvoker::KeyType &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     template <typename Target, typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    once(const std::string &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
+    once(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture = false);
 
     template <typename... Args>
-    void once(const std::string &type, std::function<void(Args...)> &&callback, bool useCapture = false);
+    void once(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, bool useCapture = false);
 
     template <typename Target, typename... Args>
-    void once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
+    void once(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture = false);
 
     template <typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    once(const std::string &type, LambdaType &&callback, bool useCapture = false);
+    once(const CallbacksInvoker::KeyType &type, LambdaType &&callback, bool useCapture = false);
 
     template <typename Target, typename LambdaType>
     std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-    once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture = false);
+    once(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, bool useCapture = false);
 
-    void off(const std::string &type, bool useCapture = false);
+    void off(const CallbacksInvoker::KeyType &type, bool useCapture = false);
 
-    void off(const std::string &type, CallbackInfoBase::ID cbID, bool useCapture = false);
+    void off(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID, bool useCapture = false);
 
-    void off(const std::string &type, void *target, bool useCapture = false);
+    void off(const CallbacksInvoker::KeyType &type, void *target, bool useCapture = false);
 
     template <typename Target, typename... Args>
-    void off(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
+    void off(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
 
     template <typename... Args>
-    void emit(const std::string &type, Args &&...args);
+    void emit(const CallbacksInvoker::KeyType &type, Args &&...args);
 
     void dispatchEvent(event::Event *event);
-    bool hasEventListener(const std::string &type) const;
-    bool hasEventListener(const std::string &type, CallbackInfoBase::ID cbID) const;
-    bool hasEventListener(const std::string &type, void *target) const;
-    bool hasEventListener(const std::string &type, void *target, CallbackInfoBase::ID cbID) const;
+    bool hasEventListener(const CallbacksInvoker::KeyType &type) const;
+    bool hasEventListener(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID) const;
+    bool hasEventListener(const CallbacksInvoker::KeyType &type, void *target) const;
+    bool hasEventListener(const CallbacksInvoker::KeyType &type, void *target, CallbackInfoBase::ID cbID) const;
 
     template <typename Target, typename... Args>
-    bool hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) const;
+    bool hasEventListener(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target) const;
 
-    void targetOff(const std::string &);
+    void targetOff(const CallbacksInvoker::KeyType &target);
 
     bool destroy() override {
         if (CCObject::destroy()) {
@@ -509,6 +509,9 @@ public:
 
     inline NodeUiProperties *getUIProps() const { return _uiProps; }
 
+    using UIPropsTransformDirtyCallback = std::function<void(uint32_t **)>;
+    inline void setUIPropsTransformDirtyCallback(const UIPropsTransformDirtyCallback &cb) { _uiPropsTransformDirtyCallback = cb; }
+
     // ------------------  Component code start -----------------------------
     // TODO(Lenovo):
 
@@ -672,6 +675,7 @@ private:
     friend class NodeActivator;
     friend class Scene;
 
+    UIPropsTransformDirtyCallback _uiPropsTransformDirtyCallback{nullptr};
     // Used to shared memory of Node._uiProps._uiTransformDirty.
     uint32_t *_uiTransformDirty{nullptr};
 
@@ -684,12 +688,12 @@ bool Node::isNode(T *obj) {
 }
 
 template <typename... Args>
-void Node::emit(const std::string &type, Args &&...args) {
+void Node::emit(const CallbacksInvoker::KeyType &type, Args &&...args) {
     _eventProcessor->emit(type, std::forward<Args>(args)...);
 }
 
 template <typename Target, typename... Args>
-void Node::on(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
+void Node::on(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
@@ -697,7 +701,7 @@ void Node::on(const std::string &type, void (Target::*memberFn)(Args...), Target
 }
 
 template <typename... Args>
-void Node::on(const std::string &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
+void Node::on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
@@ -705,7 +709,7 @@ void Node::on(const std::string &type, std::function<void(Args...)> &&callback, 
 }
 
 template <typename Target, typename... Args>
-void Node::on(const std::string &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
+void Node::on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
@@ -714,7 +718,7 @@ void Node::on(const std::string &type, std::function<void(Args...)> &&callback, 
 
 template <typename Target, typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-Node::on(const std::string &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
+Node::on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
@@ -723,7 +727,7 @@ Node::on(const std::string &type, LambdaType &&callback, Target *target, Callbac
 
 template <typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-Node::on(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
+Node::on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
     if (type == NodeEventType::TRANSFORM_CHANGED) {
         _eventMask |= TRANSFORM_ON;
     }
@@ -731,84 +735,84 @@ Node::on(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &c
 }
 
 template <typename... Args>
-void Node::on(const std::string &type, std::function<void(Args...)> &&callback, bool useCapture) {
+void Node::on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, bool useCapture) {
     CallbackInfoBase::ID unusedID{0};
     on(type, callback, unusedID, useCapture);
 }
 
 template <typename Target, typename... Args>
-void Node::on(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture) {
+void Node::on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture) {
     CallbackInfoBase::ID unusedID{0};
     on(type, callback, target, unusedID, useCapture);
 }
 
 template <typename Target, typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-Node::on(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
+Node::on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, bool useCapture) {
     CallbackInfoBase::ID unusedID{0};
     on(type, callback, target, unusedID, useCapture);
 }
 
 template <typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-Node::on(const std::string &type, LambdaType &&callback, bool useCapture) {
+Node::on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, bool useCapture) {
     CallbackInfoBase::ID unusedID{0};
     on(type, callback, unusedID, useCapture);
 }
 template <typename Target, typename... Args>
-void Node::once(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
+void Node::once(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
     _eventProcessor->once(type, memberFn, target, useCapture);
 }
 template <typename... Args>
-void Node::once(const std::string &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
+void Node::once(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
     _eventProcessor->once(type, callback, cbID, useCapture);
 }
 
 template <typename Target, typename... Args>
-void Node::once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
+void Node::once(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
     _eventProcessor->once(type, std::forward<std::function<void(Args...)>>(callback), target, cbID, useCapture);
 }
 
 template <typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-Node::once(const std::string &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
+Node::once(const CallbacksInvoker::KeyType &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool useCapture) {
     _eventProcessor->once(type, callback, cbID, useCapture);
 }
 
 template <typename Target, typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-Node::once(const std::string &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
+Node::once(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
     _eventProcessor->once(type, callback, target, cbID, useCapture);
 }
 
 template <typename... Args>
-void Node::once(const std::string &type, std::function<void(Args...)> &&callback, bool useCapture) {
+void Node::once(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, bool useCapture) {
     CallbackInfoBase::ID unusedID{0};
     once(type, callback, unusedID, useCapture);
 }
 
 template <typename Target, typename... Args>
-void Node::once(const std::string &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture) {
+void Node::once(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target *target, bool useCapture) {
     CallbackInfoBase::ID unusedID{0};
     once(type, callback, target, unusedID, useCapture);
 }
 
 template <typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-Node::once(const std::string &type, LambdaType &&callback, bool useCapture) {
+Node::once(const CallbacksInvoker::KeyType &type, LambdaType &&callback, bool useCapture) {
     CallbackInfoBase::ID unusedID{0};
     once(type, callback, unusedID, useCapture);
 }
 
 template <typename Target, typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-Node::once(const std::string &type, LambdaType &&callback, Target *target, bool useCapture) {
+Node::once(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, bool useCapture) {
     CallbackInfoBase::ID unusedID{0};
     once(type, callback, target, unusedID, useCapture);
 }
 
 template <typename Target, typename... Args>
-void Node::off(const std::string &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
+void Node::off(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
     _eventProcessor->off(type, memberFn, target, useCapture);
     bool hasListeners = _eventProcessor->hasEventListener(type);
     if (!hasListeners) {
@@ -819,7 +823,7 @@ void Node::off(const std::string &type, void (Target::*memberFn)(Args...), Targe
 }
 
 template <typename Target, typename... Args>
-bool Node::hasEventListener(const std::string &type, void (Target::*memberFn)(Args...), Target *target) const {
+bool Node::hasEventListener(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target) const {
     return _eventProcessor->hasEventListener(type, memberFn, target);
 }
 

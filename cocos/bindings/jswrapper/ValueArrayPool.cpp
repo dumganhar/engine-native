@@ -42,7 +42,9 @@ ValueArrayPool::ValueArrayPool() {
 
 ValueArray& ValueArrayPool::get(uint32_t argc) {
     if (SE_UNLIKELY(_depth >= _pools.size())) {
+        auto* ptr = _pools.data();
         _pools.resize(_depth + 1);
+        assert(_pools.data() == ptr);
         initPool(_depth);
     }
 

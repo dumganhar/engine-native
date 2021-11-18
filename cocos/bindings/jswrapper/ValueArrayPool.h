@@ -26,37 +26,45 @@
 
 #pragma once
 
-#include "../config.h"
-
-#if SCRIPT_ENGINE_TYPE == SCRIPT_ENGINE_V8
-
-    #include "../Value.h"
-    #include "Base.h"
-    #include "ObjectWrap.h"
+#include <array>
+#include "Value.h"
 
 namespace se {
 
-namespace internal {
+class CallbackDepthGuard final {
+public:
+    CallbackDepthGuard(ValueArray& arr, uint32_t& depth)
+    : _arr(arr), _depth(depth) {
+        ++_depth;
+    }
 
-struct PrivateData {
-    void *  data{nullptr};
-    Object *seObj{nullptr};
+    ~CallbackDepthGuard() {
+        --_depth;
+        for (auto& e : _arr) {
+            e.setUndefined();
+        }
+    }
+
+private:
+    ValueArray& _arr;
+    uint32_t&   _depth;
 };
 
-void jsToSeArgs(const v8::FunctionCallbackInfo<v8::Value> &_v8args, ValueArray &outArr);
-void jsToSeValue(v8::Isolate *isolate, v8::Local<v8::Value> jsval, Value *v);
-void seToJsArgs(v8::Isolate *isolate, const ValueArray &args, v8::Local<v8::Value> *outArr);
-void seToJsValue(v8::Isolate *isolate, const Value &v, v8::Local<v8::Value> *outJsVal);
+class ValueArrayPool final {
+public:
+    static const uint32_t MAX_ARGS = 20;
 
-void setReturnValue(const Value &data, const v8::FunctionCallbackInfo<v8::Value> &argv);
-void setReturnValue(const Value &data, const v8::PropertyCallbackInfo<v8::Value> &argv);
+    ValueArrayPool();
 
-bool  hasPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value);
-void  setPrivate(v8::Isolate *isolate, ObjectWrap &wrap, void *data, Object *obj, PrivateData **outInternalData);
-void *getPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value, uint32_t index = 0);
-void  clearPrivate(v8::Isolate *isolate, ObjectWrap &wrap);
+    ValueArray& get(uint32_t argc);
 
-} // namespace internal
+    uint32_t _depth{0};
+
+private:
+    void                                              initPool(uint32_t index);
+    std::vector<std::array<ValueArray, MAX_ARGS + 1>> _pools;
+};
+
+extern ValueArrayPool gValueArrayPool;
+
 } // namespace se
-
-#endif // #if SCRIPT_ENGINE_TYPE == SCRIPT_ENGINE_V8

@@ -2119,6 +2119,8 @@ cocos_source_files(MODULE ccbindings
                  cocos/bindings/jswrapper/State.h
                  cocos/bindings/jswrapper/Value.cpp
                  cocos/bindings/jswrapper/Value.h 
+                 cocos/bindings/jswrapper/ValueArrayPool.cpp
+                 cocos/bindings/jswrapper/ValueArrayPool.h 
 )
 
 cocos_source_files(

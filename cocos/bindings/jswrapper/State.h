@@ -97,6 +97,9 @@ public:
          */
     State(Object *thisObject, const ValueArray &args);
 
+    State(Object *thisObject, void *nativeThisObject);
+    State(Object *thisObject, void *nativeThisObject, const ValueArray &args);
+
 private:
     // Disable copy/move constructor, copy/move assigment
     State(const State &);
@@ -104,9 +107,9 @@ private:
     State &operator=(const State &);
     State &operator=(State &&);
 
-    void *_nativeThisObject; //weak ref
-    Object *_thisObject;     //weak ref
-    const ValueArray *_args; //weak ref
-    Value _retVal;           //weak ref
+    void *            _nativeThisObject; //weak ref
+    Object *          _thisObject;       //weak ref
+    const ValueArray *_args;             //weak ref
+    Value             _retVal;           //weak ref
 };
 } // namespace se

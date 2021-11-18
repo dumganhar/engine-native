@@ -859,15 +859,15 @@ void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
     uint32_t dirtyBit = 0;
     if (rot) {
         dirtyBit |= static_cast<uint32_t>(TransformBit::ROTATION);
-        _localRotation = _worldRotation;
+        _localRotation = *rot;
         _eulerDirty    = true;
     }
     if (pos) {
-        _localPosition = _worldPosition;
+        _localPosition = *pos;
         dirtyBit |= static_cast<uint32_t>(TransformBit::POSITION);
     }
     if (scale) {
-        _localScale = _worldScale;
+        _localScale = *scale;
         dirtyBit |= static_cast<uint32_t>(TransformBit::SCALE);
     }
     if (dirtyBit) {

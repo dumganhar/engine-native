@@ -60,6 +60,24 @@ State::State(Object *thisObject, const ValueArray &args)
     }
 }
 
+State::State(Object *thisObject, void *nativeThisObject)
+: _nativeThisObject(nativeThisObject),
+  _thisObject(thisObject),
+  _args(nullptr) {
+    if (_thisObject != nullptr) {
+        _thisObject->incRef();
+    }
+}
+
+State::State(Object *thisObject, void *nativeThisObject, const ValueArray &args)
+: _nativeThisObject(nativeThisObject),
+  _thisObject(thisObject),
+  _args(&args) {
+    if (_thisObject != nullptr) {
+        _thisObject->incRef();
+    }
+}
+
 void *State::nativeThisObject() const {
     return _nativeThisObject;
 }

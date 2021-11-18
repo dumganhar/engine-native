@@ -24,39 +24,43 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#pragma once
-
-#include "../config.h"
-
-#if SCRIPT_ENGINE_TYPE == SCRIPT_ENGINE_V8
-
-    #include "../Value.h"
-    #include "Base.h"
-    #include "ObjectWrap.h"
+#include "ValueArrayPool.h"
+#include "config.h"
 
 namespace se {
 
-namespace internal {
+ValueArrayPool gValueArrayPool;
 
-struct PrivateData {
-    void *  data{nullptr};
-    Object *seObj{nullptr};
-};
+#define SE_DEFAULT_MAX_DEPTH (5)
 
-void jsToSeArgs(const v8::FunctionCallbackInfo<v8::Value> &_v8args, ValueArray &outArr);
-void jsToSeValue(v8::Isolate *isolate, v8::Local<v8::Value> jsval, Value *v);
-void seToJsArgs(v8::Isolate *isolate, const ValueArray &args, v8::Local<v8::Value> *outArr);
-void seToJsValue(v8::Isolate *isolate, const Value &v, v8::Local<v8::Value> *outJsVal);
+ValueArrayPool::ValueArrayPool() {
+    _pools.resize(SE_DEFAULT_MAX_DEPTH);
+    for (uint32_t i = 0; i < SE_DEFAULT_MAX_DEPTH; ++i) {
+        initPool(i);
+    }
+}
 
-void setReturnValue(const Value &data, const v8::FunctionCallbackInfo<v8::Value> &argv);
-void setReturnValue(const Value &data, const v8::PropertyCallbackInfo<v8::Value> &argv);
+ValueArray& ValueArrayPool::get(uint32_t argc) {
+    if (SE_UNLIKELY(_depth >= _pools.size())) {
+        auto* ptr = _pools.data();
+        _pools.resize(_depth + 1);
+        assert(_pools.data() == ptr);
+        initPool(_depth);
+    }
 
-bool  hasPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value);
-void  setPrivate(v8::Isolate *isolate, ObjectWrap &wrap, void *data, Object *obj, PrivateData **outInternalData);
-void *getPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value, uint32_t index = 0);
-void  clearPrivate(v8::Isolate *isolate, ObjectWrap &wrap);
+    assert(argc <= MAX_ARGS);
+    auto& ret = _pools[_depth][argc];
+    assert(ret.size() == argc);
+    return ret;
+}
 
-} // namespace internal
+void ValueArrayPool::initPool(uint32_t index) {
+    auto&    pool = _pools[index];
+    uint32_t i    = 0;
+    for (auto& arr : pool) {
+        arr.resize(i);
+        ++i;
+    }
+}
+
 } // namespace se
-
-#endif // #if SCRIPT_ENGINE_TYPE == SCRIPT_ENGINE_V8

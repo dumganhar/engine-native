@@ -551,7 +551,7 @@ bool Object::getArrayBufferData(uint8_t **ptr, size_t *length) const {
 void Object::setPrivateData(void *data) {
     assert(_privateData == nullptr);
     assert(NativePtrToObjectMap::find(data) == NativePtrToObjectMap::end());
-    internal::setPrivate(__isolate, _obj, data, &_internalData);
+    internal::setPrivate(__isolate, _obj, data, this, &_internalData);
     NativePtrToObjectMap::emplace(data, this);
     _privateData = data;
     defineOwnProperty("__native_ptr__", se::Value(static_cast<uint64_t>(reinterpret_cast<uintptr_t>(data))), false, false, false);

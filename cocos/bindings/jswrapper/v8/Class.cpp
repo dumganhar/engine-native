@@ -100,7 +100,7 @@ bool Class::init(const std::string &clsName, Object *parent, Object *parentProto
     }
 
     _ctorTemplate.Get(__isolate)->SetClassName(jsNameVal.ToLocalChecked());
-    _ctorTemplate.Get(__isolate)->InstanceTemplate()->SetInternalFieldCount(1);
+    _ctorTemplate.Get(__isolate)->InstanceTemplate()->SetInternalFieldCount(2);
 
     return true;
 }

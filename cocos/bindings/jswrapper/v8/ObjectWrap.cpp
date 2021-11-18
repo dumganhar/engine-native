@@ -50,8 +50,8 @@
 namespace se {
 
 ObjectWrap::ObjectWrap() {
-    refs_ = 0;
-    _nativeObj = nullptr;
+    refs_       = 0;
+    _nativeObj  = nullptr;
     _finalizeCb = nullptr;
 }
 
@@ -75,10 +75,11 @@ ObjectWrap::~ObjectWrap() {
 }
 
 /*static*/
-void *ObjectWrap::unwrap(v8::Local<v8::Object> handle) {
+void *ObjectWrap::unwrap(v8::Local<v8::Object> handle, uint32_t fieldIndex) {
     assert(!handle.IsEmpty());
-    assert(handle->InternalFieldCount() > 0);
-    return handle->GetAlignedPointerFromInternalField(0);
+    assert(handle->InternalFieldCount() > 1);
+    assert(fieldIndex >= 0 && fieldIndex < 2);
+    return handle->GetAlignedPointerFromInternalField(fieldIndex);
 }
 
 v8::Local<v8::Object> ObjectWrap::handle() {
@@ -93,10 +94,14 @@ v8::Persistent<v8::Object> &ObjectWrap::persistent() {
     return handle_;
 }
 
-void ObjectWrap::wrap(void *nativeObj) {
-    assert(handle()->InternalFieldCount() > 0);
-    _nativeObj = nativeObj;
-    handle()->SetAlignedPointerInInternalField(0, nativeObj);
+void ObjectWrap::wrap(void *nativeObj, uint32_t fieldIndex) {
+    assert(handle()->InternalFieldCount() > 1);
+    assert(fieldIndex >= 0 && fieldIndex < 2);
+
+    if (fieldIndex == 0) {
+        _nativeObj = nativeObj;
+    }
+    handle()->SetAlignedPointerInInternalField(fieldIndex, nativeObj);
 }
 
 void ObjectWrap::makeWeak() {

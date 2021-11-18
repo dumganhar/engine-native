@@ -36,13 +36,10 @@ namespace se {
 
 namespace internal {
 
-void jsToSeArgs(const v8::FunctionCallbackInfo<v8::Value> &v8args, ValueArray *outArr) {
-    assert(outArr != nullptr);
+void jsToSeArgs(const v8::FunctionCallbackInfo<v8::Value> &v8args, ValueArray &outArr) {
     v8::Isolate *isolate = v8args.GetIsolate();
     for (int i = 0; i < v8args.Length(); i++) {
-        Value v;
-        jsToSeValue(isolate, v8args[i], &v);
-        outArr->emplace_back(std::move(v));
+        jsToSeValue(isolate, v8args[i], &outArr[i]);
     }
 }
 
@@ -194,11 +191,12 @@ bool hasPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value) {
     return ret.IsJust() && ret.FromJust();
 }
 
-void setPrivate(v8::Isolate *isolate, ObjectWrap &wrap, void *data, PrivateData **outInternalData) {
+void setPrivate(v8::Isolate *isolate, ObjectWrap &wrap, void *data, Object *thizObj, PrivateData **outInternalData) {
     v8::Local<v8::Object> obj = wrap.handle(isolate);
     int                   c   = obj->InternalFieldCount();
-    if (c > 0) {
-        wrap.wrap(data);
+    if (c > 1) {
+        wrap.wrap(data, 0);
+        wrap.wrap(thizObj, 1);
         //                SE_LOGD("setPrivate1: %p\n", data);
         if (outInternalData != nullptr) {
             *outInternalData = nullptr;
@@ -210,7 +208,8 @@ void setPrivate(v8::Isolate *isolate, ObjectWrap &wrap, void *data, PrivateData 
         privateData->seObj  = privateObj;
 
         privateObj->_getWrap().setFinalizeCallback(__jsb_CCPrivateData_class->_getFinalizeFunction());
-        privateObj->_getWrap().wrap(privateData);
+        privateObj->_getWrap().wrap(privateData, 0);
+        privateObj->_getWrap().wrap(thizObj, 1);
 
         v8::MaybeLocal<v8::String> key = v8::String::NewFromUtf8(isolate, keyPrivateData, v8::NewStringType::kNormal);
         assert(!key.IsEmpty());
@@ -225,17 +224,25 @@ void setPrivate(v8::Isolate *isolate, ObjectWrap &wrap, void *data, PrivateData 
     }
 }
 
-void *getPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value) {
+void *getPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value, uint32_t index /* = 0*/) {
     v8::Local<v8::Context>     context = isolate->GetCurrentContext();
     v8::MaybeLocal<v8::Object> obj     = value->ToObject(context);
     if (obj.IsEmpty()) {
         return nullptr;
     }
 
+    assert(index >= 0 && index < 2);
+    if (index > 1) {
+        return nullptr;
+    }
+
     v8::Local<v8::Object> objChecked = obj.ToLocalChecked();
     int                   c          = objChecked->InternalFieldCount();
-    if (c > 0) {
-        void *nativeObj = ObjectWrap::unwrap(objChecked);
+    if (c > 1) {
+        void *nativeObj = nullptr;
+        if (index >= 0 && index < 2) {
+            nativeObj = ObjectWrap::unwrap(objChecked, index);
+        }
         //                SE_LOGD("getPrivate1: %p\n", nativeObj);
         return nativeObj;
     }
@@ -261,7 +268,7 @@ void *getPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value) {
     if (privateObj.IsEmpty()) {
         return nullptr;
     }
-    auto *privateData = static_cast<PrivateData *>(ObjectWrap::unwrap(privateObj.ToLocalChecked()));
+    auto *privateData = static_cast<PrivateData *>(ObjectWrap::unwrap(privateObj.ToLocalChecked(), index));
     //                SE_LOGD("getPrivate: native data: %p\n", privateData);
     return privateData->data;
 }
@@ -269,8 +276,9 @@ void *getPrivate(v8::Isolate *isolate, v8::Local<v8::Value> value) {
 void clearPrivate(v8::Isolate *isolate, ObjectWrap &wrap) {
     v8::Local<v8::Object> obj = wrap.handle(isolate);
     int                   c   = obj->InternalFieldCount();
-    if (c > 0) {
-        wrap.wrap(nullptr);
+    if (c > 1) {
+        wrap.wrap(nullptr, 0);
+        wrap.wrap(nullptr, 1);
     } else {
         v8::Local<v8::Context> context = isolate->GetCurrentContext();
         // Pure JS subclass object doesn't have a internal field
@@ -295,7 +303,7 @@ void clearPrivate(v8::Isolate *isolate, ObjectWrap &wrap) {
             return;
         }
 
-        auto *privateData = static_cast<PrivateData *>(ObjectWrap::unwrap(privateObj.ToLocalChecked()));
+        auto *privateData = static_cast<PrivateData *>(ObjectWrap::unwrap(privateObj.ToLocalChecked(), 0));
         free(privateData);
         v8::Maybe<bool> ok = obj->Delete(context, keyChecked);
         if (ok.IsNothing()) {

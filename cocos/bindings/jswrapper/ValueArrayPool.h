@@ -31,14 +31,14 @@
 
 namespace se {
 
-class CallbackDepthGurad final {
+class CallbackDepthGuard final {
 public:
-    CallbackDepthGurad(ValueArray& arr, uint32_t& depth)
+    CallbackDepthGuard(ValueArray& arr, uint32_t& depth)
     : _arr(arr), _depth(depth) {
         ++_depth;
     }
 
-    ~CallbackDepthGurad() {
+    ~CallbackDepthGuard() {
         --_depth;
         for (auto& e : _arr) {
             e.setUndefined();

@@ -111,7 +111,7 @@ void printJSBInvokeAtFrame(int n);
             v8::Isolate *          _isolate = _v8args.GetIsolate();                                                               \
             v8::HandleScope        _hs(_isolate);                                                                                 \
             se::ValueArray &       args = se::gValueArrayPool.get(_v8args.Length());                                              \
-            se::CallbackDepthGurad depthGuard{args, se::gValueArrayPool._depth};                                                  \
+            se::CallbackDepthGuard depthGuard{args, se::gValueArrayPool._depth};                                                  \
             se::internal::jsToSeArgs(_v8args, args);                                                                              \
             void *      nativeThisObject = se::internal::getPrivate(_isolate, _v8args.This(), 0);                                 \
             se::Object *thisObject       = reinterpret_cast<se::Object *>(se::internal::getPrivate(_isolate, _v8args.This(), 1)); \
@@ -149,7 +149,7 @@ void printJSBInvokeAtFrame(int n);
             v8::HandleScope        _hs(_isolate);                                                         \
             bool                   ret  = true;                                                           \
             se::ValueArray &       args = se::gValueArrayPool.get(_v8args.Length());                      \
-            se::CallbackDepthGurad depthGuard{args, se::gValueArrayPool._depth};                          \
+            se::CallbackDepthGuard depthGuard{args, se::gValueArrayPool._depth};                          \
             se::internal::jsToSeArgs(_v8args, args);                                                      \
             se::Object *thisObject = se::Object::_createJSObject(cls, _v8args.This());                    \
             thisObject->_setFinalizeCallback(_SE(finalizeCb));                                            \
@@ -194,7 +194,7 @@ void printJSBInvokeAtFrame(int n);
             void *                 nativeThisObject = se::internal::getPrivate(_isolate, _v8args.This(), 0);                                              \
             se::Object *           thisObject       = reinterpret_cast<se::Object *>(se::internal::getPrivate(_isolate, _v8args.This(), 1));              \
             se::ValueArray &       args             = se::gValueArrayPool.get(1);                                                                         \
-            se::CallbackDepthGurad depthGuard{args, se::gValueArrayPool._depth};                                                                          \
+            se::CallbackDepthGuard depthGuard{args, se::gValueArrayPool._depth};                                                                          \
             se::Value &            data{args[0]};                                                                                                         \
             se::internal::jsToSeValue(_isolate, _value, &data);                                                                                           \
             se::State state(thisObject, nativeThisObject, args);                                                                                          \

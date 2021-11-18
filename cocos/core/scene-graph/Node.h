@@ -452,9 +452,9 @@ public:
     void setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale);
 
     inline void setForward(const Vec3 &dir) {
-        auto       len    = static_cast<uint32_t>(dir.length());
-        Vec3       v3Temp = dir * -1 / len;
-        Quaternion qTemp{Quaternion::identity()};
+        const float len    = dir.length();
+        Vec3        v3Temp = dir * (-1.F / len);
+        Quaternion  qTemp{Quaternion::identity()};
         Quaternion::fromViewUp(qTemp, v3Temp);
         setWorldRotation(qTemp);
     }

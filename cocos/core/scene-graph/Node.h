@@ -36,7 +36,6 @@
 #include "core/scene-graph/NodeEnum.h"
 #include "core/scene-graph/NodeEvent.h"
 #include "core/scene-graph/NodeEventProcessor.h"
-#include "core/utils/IDGenerator.h"
 #include "math/Mat3.h"
 #include "math/Mat4.h"
 #include "math/Quaternion.h"
@@ -653,7 +652,7 @@ protected:
 public:
     index_t _siblingIndex{0};
     // For deserialization
-    std::string         _id{IDGenerator("Node").getNewId()};
+    std::string         _id;
     std::vector<Node *> _children;
     Node *              _parent{nullptr};
     bool                _active{true};

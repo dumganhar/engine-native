@@ -139,17 +139,19 @@ void Model::destroy() {
 }
 
 void Model::uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &v2, Float32Array &v3) {
-    v1[0] = mat.m[0];
-    v1[1] = mat.m[1];
-    v1[2] = mat.m[2];
+    uint32_t copyBytes = sizeof(float) * 3;
+    uint8_t *buffer    = const_cast<uint8_t *>(v1.buffer()->getData());
+
+    uint8_t *dst = buffer + v1.byteOffset();
+    memcpy(dst, mat.m, copyBytes);
     v1[3] = mat.m[12];
-    v2[0] = mat.m[4];
-    v2[1] = mat.m[5];
-    v2[2] = mat.m[6];
+
+    dst = buffer + v2.byteOffset();
+    memcpy(dst, mat.m + 4, copyBytes);
     v2[3] = mat.m[13];
-    v3[0] = mat.m[8];
-    v3[1] = mat.m[9];
-    v3[2] = mat.m[10];
+
+    dst = buffer + v3.byteOffset();
+    memcpy(dst, mat.m + 8, copyBytes);
     v3[3] = mat.m[14];
 }
 

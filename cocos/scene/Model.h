@@ -112,7 +112,7 @@ public:
     inline bool                               isEnabled() const { return _enabled; }
     inline bool                               isInstancingEnabled() const { return _instMatWorldIdx >= 0; };
     inline int32_t                            getInstMatWorldIdx() const { return _instMatWorldIdx; }
-    inline const std::vector<gfx::Attribute> &getInstanceAttributes() const { return _instanceAttributes; }
+    inline const std::vector<gfx::Attribute> &getInstanceAttributes() const { return _instanceAttributeBlock.attributes; }
     inline InstancedAttributeBlock *          getInstancedAttributeBlock() { return &_instanceAttributeBlock; }
     inline const uint8_t *                    getInstancedBuffer() const { return _instanceAttributeBlock.buffer.buffer()->getData(); }
     inline uint32_t                           getInstancedBufferSize() const { return _instanceAttributeBlock.buffer.length(); }
@@ -174,7 +174,6 @@ protected:
     gfx::Buffer *                   _localBuffer{nullptr};
     InstancedAttributeBlock         _instanceAttributeBlock{};
     std::vector<SubModel *>         _subModels;
-    std::vector<gfx::Attribute>     _instanceAttributes;
 
     Texture2D *_lightmap{nullptr};
     Vec4       _lightmapUVParam;

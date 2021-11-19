@@ -32,6 +32,7 @@
 #include "core/scene-graph/NodeActivator.h"
 #include "core/scene-graph/NodeEnum.h"
 #include "core/scene-graph/Scene.h"
+#include "core/utils/IDGenerator.h"
 
 namespace cc {
 
@@ -51,12 +52,14 @@ std::vector<std::vector<Node *>> Node::stacks;
 namespace {
 std::unordered_map<Node *, int32_t /* place_holder */> allNodes; //cjh how to clear ?
 const std::string                                      EMPTY_NODE_NAME;
+IDGenerator                                            idGenerator("Node");
 } // namespace
 
 Node::Node() : Node(EMPTY_NODE_NAME) {
 }
 
 Node::Node(const std::string &name) {
+    _id = idGenerator.getNewId();
     if (name.empty()) {
         _name.append("New Node");
     } else {

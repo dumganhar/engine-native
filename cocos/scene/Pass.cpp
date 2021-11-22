@@ -135,15 +135,17 @@ uint64_t Pass::getPassHash(Pass *pass) {
 }
 
 Pass::Pass() {
-    _device = gfx::Device::getInstance();
-    _root   = Root::getInstance();
-    _phase  = pipeline::getPhaseID("default");
+    _device      = gfx::Device::getInstance();
+    _root        = Root::getInstance();
+    _phaseString = "default";
+    _phase       = pipeline::getPhaseID(_phaseString);
 }
 
 Pass::Pass(Root *root) {
-    _device = root->getDevice();
-    _root   = root;
-    _phase  = pipeline::getPhaseID("default");
+    _device      = root->getDevice();
+    _root        = root;
+    _phaseString = "default";
+    _phase       = pipeline::getPhaseID(_phaseString);
 }
 
 Pass::~Pass() {
@@ -449,7 +451,8 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     auto *programLib = ProgramLib::getInstance();
     _priority        = pipeline::RenderPriority::DEFAULT;
     _stage           = pipeline::RenderPassStage::DEFAULT;
-    _phase           = pipeline::getPhaseID("default");
+    _phaseString     = "default";
+    _phase           = pipeline::getPhaseID(_phaseString);
     _primitive       = gfx::PrimitiveMode::TRIANGLE_LIST;
 
     _passIndex     = info.passIndex;

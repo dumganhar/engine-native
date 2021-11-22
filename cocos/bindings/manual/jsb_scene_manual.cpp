@@ -512,19 +512,19 @@ static bool js_scene_Node_setRTS(void* s) // NOLINT(readability-identifier-namin
     cc::Quaternion qt;
     int rotSize = _tempFloatArray[0];
     if (rotSize > 0) {
-        qt = std::move(cc::Quaternion(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3], _tempFloatArray[4]));
+        qt.set(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3], _tempFloatArray[4]);
     }
 
     int posSize = _tempFloatArray[5];
     cc::Vec3 pos;
     if (posSize > 0) {
-        pos = std::move(cc::Vec3(_tempFloatArray[6], _tempFloatArray[7], _tempFloatArray[8]));
+        pos.set(_tempFloatArray[6], _tempFloatArray[7], _tempFloatArray[8]);
     }
 
     int scaleSize = _tempFloatArray[9];
     cc::Vec3 scale;
     if (scaleSize > 0) {
-        scale = std::move(cc::Vec3(_tempFloatArray[10], _tempFloatArray[11], _tempFloatArray[12]));
+        scale.set(_tempFloatArray[10], _tempFloatArray[11], _tempFloatArray[12]);
     }
     cobj->setRTS(rotSize > 0 ? &qt : nullptr, posSize > 0 ? &pos : nullptr, scaleSize > 0 ? &scale : nullptr);
     return true;

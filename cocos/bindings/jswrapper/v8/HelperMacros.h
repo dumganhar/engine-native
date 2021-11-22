@@ -123,6 +123,13 @@ void printJSBInvokeAtFrame(int n);
             se::internal::setReturnValue(state.rval(), _v8args);                                                                  \
         }
 
+ #define SE_BIND_FUNC_FAST(funcName)                                               \
+        void funcName##Registry(const v8::FunctionCallbackInfo<v8::Value> &_v8args) { \
+            void *self = _v8args.This()->GetAlignedPointerFromInternalField(0);       \
+            funcName(self);                                                           \
+        }
+
+
     #define SE_BIND_FINALIZE_FUNC(funcName)                                                               \
         void funcName##Registry(void *nativeThisObject) {                                                 \
             JsbInvokeScope(#funcName);                                                                    \

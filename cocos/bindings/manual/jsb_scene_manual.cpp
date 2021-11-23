@@ -41,6 +41,7 @@
 static se::Object *nodeVec3CacheObj{nullptr};
 static se::Object *nodeQuatCacheObj{nullptr};
 static se::Object *nodeMat4CacheObj{nullptr};
+static float *     _tempFloatArray = nullptr;
 
 class NodeUserData : public cc::Node::UserData {
 public:
@@ -299,6 +300,15 @@ static bool js_scene_Node_registerOnChildAdded(se::State &s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_scene_Node_registerOnChildAdded) // NOLINT(readability-identifier-naming)
 
+static bool js_scene_Node_isActiveInHierarchy(void* s) // NOLINT(readability-identifier-naming)
+{
+    auto *         cobj = reinterpret_cast<cc::Node *>(s);
+    bool result = cobj->isActiveInHierarchy();
+    _tempFloatArray[0] = result ? 1 : 0;
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Node_isActiveInHierarchy)
+
 static bool scene_Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
     if (!nodeVec3CacheObj) {
@@ -374,7 +384,7 @@ static bool scene_Vector_to_seval(cc::Node *node, const std::vector<cc::Node *> 
     return true;
 }
 
-static float *_tempFloatArray = nullptr;
+
 
 static bool js_scene_Node_getPosition(se::State &s) // NOLINT(readability-identifier-naming)
 {
@@ -467,6 +477,73 @@ static bool js_scene_Node_getScale(se::State &s) // NOLINT(readability-identifie
     return false;
 }
 SE_BIND_FUNC(js_scene_Node_getScale)
+
+static bool js_scene_Node_setPosition(void* s) // NOLINT(readability-identifier-naming)
+{
+    auto *         cobj = reinterpret_cast<cc::Node *>(s);
+    size_t argc = _tempFloatArray[0];
+    if (argc == 2) {
+        cobj->setPosition(_tempFloatArray[1], _tempFloatArray[2]);
+
+    } else {
+        cobj->setPosition(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3]);
+    }
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Node_setPosition)
+
+static bool js_scene_Node_setScale(void* s) // NOLINT(readability-identifier-naming)
+{
+    auto * cobj = reinterpret_cast<cc::Node *>(s);
+    size_t argc = _tempFloatArray[0];
+    if (argc == 2) {
+        cobj->setScale(_tempFloatArray[1], _tempFloatArray[2]);
+
+    } else {
+        cobj->setScale(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3]);
+    }
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Node_setScale)
+
+static bool js_scene_Node_setRTS(void* s) // NOLINT(readability-identifier-naming)
+{
+    auto * cobj = reinterpret_cast<cc::Node *>(s);
+    cc::Quaternion qt;
+    int rotSize = _tempFloatArray[0];
+    if (rotSize > 0) {
+        qt.set(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3], _tempFloatArray[4]);
+    }
+
+    int posSize = _tempFloatArray[5];
+    cc::Vec3 pos;
+    if (posSize > 0) {
+        pos.set(_tempFloatArray[6], _tempFloatArray[7], _tempFloatArray[8]);
+    }
+
+    int scaleSize = _tempFloatArray[9];
+    cc::Vec3 scale;
+    if (scaleSize > 0) {
+        scale.set(_tempFloatArray[10], _tempFloatArray[11], _tempFloatArray[12]);
+    }
+    cobj->setRTS(rotSize > 0 ? &qt : nullptr, posSize > 0 ? &pos : nullptr, scaleSize > 0 ? &scale : nullptr);
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Node_setRTS)
+
+static bool js_scene_Node_rotateForJS(void* s) // NOLINT(readability-identifier-naming)
+{
+    auto * cobj = reinterpret_cast<cc::Node *>(s);
+    size_t argc = _tempFloatArray[0];
+    if (argc == 4) {
+        cobj->rotateForJS(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3], _tempFloatArray[4]);
+    } else {
+        int size = _tempFloatArray[5];
+        cobj->rotateForJS(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3], _tempFloatArray[4], size == 0 ? cc::NodeSpace::LOCAL : cc::NodeSpace::LOCAL);
+    }
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Node_rotateForJS)
 
 static bool js_scene_Node_getUp(se::State &s) // NOLINT(readability-identifier-naming)
 {
@@ -823,6 +900,11 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_Node_proto->defineFunction("getWorldRotation", _SE(js_scene_Node_getWorldRotation));
     __jsb_cc_Node_proto->defineFunction("getWorldScale", _SE(js_scene_Node_getWorldScale));
     __jsb_cc_Node_proto->defineProperty("worldMatrix", _SE(js_scene_Node_getWorldMatrix_asGetter), nullptr);
+    __jsb_cc_Node_proto->defineFunction("isActiveInHierarchy", _SE(js_scene_Node_isActiveInHierarchy));
+    __jsb_cc_Node_proto->defineFunction("setPosition", _SE(js_scene_Node_setPosition));
+    __jsb_cc_Node_proto->defineFunction("setScale", _SE(js_scene_Node_setScale));
+    __jsb_cc_Node_proto->defineFunction("rotateForJS", _SE(js_scene_Node_rotateForJS));
+    __jsb_cc_Node_proto->defineFunction("setRTS", _SE(js_scene_Node_setRTS));
 
     __jsb_cc_scene_Pass_proto->defineProperty("blocks", _SE(js_scene_Pass_blocks_getter), nullptr);
 

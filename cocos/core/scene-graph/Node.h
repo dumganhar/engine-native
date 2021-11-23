@@ -207,7 +207,7 @@ public:
 
     bool destroy() override {
         if (CCObject::destroy()) {
-            _active = false;
+            setActive(false);
             return true;
         }
         return false;
@@ -218,7 +218,7 @@ public:
         }
     }
     inline void updateSiblingIndex() {
-        uint32_t i = 0;
+        index_t i = 0;
         for (auto *child : _children) {
             child->_siblingIndex = i++;
         }
@@ -628,8 +628,6 @@ protected:
 
     bool onPreDestroyBase();
     void onSiblingIndexChanged(uint32_t siblingIndex) {}
-
-    bool _persistNode{false};
 
     Scene *             _scene{nullptr};
     NodeEventProcessor *_eventProcessor{nullptr};

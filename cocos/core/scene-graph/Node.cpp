@@ -113,8 +113,8 @@ Node *Node::instantiate(Node *cloned, bool isSyncedNode) {
 
 void Node::onHierarchyChangedBase(Node *oldParent) {
     Node * newParent = _parent;
-    Scene *scene     = dynamic_cast<Scene *>(newParent);
-    if (_persistNode && scene) {
+    auto *scene     = dynamic_cast<Scene *>(newParent);
+    if (isPersistNode() && scene) {
         emit(EventTypesToJS::NODE_REMOVE_PERSIST_ROOT_NODE);
 
         //        if (EDITOR) {
@@ -241,7 +241,7 @@ void Node::setParent(Node *parent, bool isKeepWorld /* = false */) {
             if (removeAt < 0) {
                 return;
             }
-            std::remove(oldParent->_children.begin(), oldParent->_children.end(), this);
+            oldParent->_children.erase(oldParent->_children.begin() + removeAt);
             oldParent->updateSiblingIndex();
             oldParent->emit(NodeEventType::CHILD_REMOVED, this);
         }
@@ -377,7 +377,7 @@ bool Node::onPreDestroyBase() {
     /*if (!destroyByParent && EDITOR) {
         this._registerIfAttached !(false);
     }*/
-    if (_persistNode) {
+    if (isPersistNode()) {
         emit(EventTypesToJS::NODE_REMOVE_PERSIST_ROOT_NODE);
     }
     if (!destroyByParent) {
@@ -385,7 +385,7 @@ bool Node::onPreDestroyBase() {
             emit(NodeEventType::PARENT_CHANGED, this);
             index_t childIdx = getIdxOfChild(_parent->_children, this);
             if (childIdx != -1) {
-                std::remove(_parent->_children.begin(), _parent->_children.end(), this);
+                _parent->_children.erase(_parent->_children.begin() + childIdx);
             }
             _siblingIndex = 0;
             _parent->updateSiblingIndex();
@@ -472,7 +472,7 @@ void Node::setSiblingIndex(index_t index) {
     index                         = index != -1 ? index : siblings.size() - 1;
     index_t oldIdx                = getIdxOfChild(siblings, this);
     if (index != oldIdx) {
-        std::remove(siblings.begin(), siblings.end(), this);
+        siblings.erase(siblings.begin() + oldIdx);
         if (index < siblings.size()) {
             siblings.insert(siblings.begin() + 2, 1, this);
         } else {

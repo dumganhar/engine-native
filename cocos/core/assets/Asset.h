@@ -120,16 +120,6 @@ public:
 
     std::string toString() const override { return _nativeUrl; }
 
-    //cjh FOR JSB, Consider remove this?
-    void setNativeAssetBase(const std::string &val) {
-        CC_ASSERT(false);
-    }
-    std::string getNativeAssetBase() {
-        CC_ASSERT(false);
-        return "";
-    }
-    //
-
 protected:
     /**
      * @en

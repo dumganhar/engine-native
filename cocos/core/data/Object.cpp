@@ -35,6 +35,7 @@ std::vector<CCObject *> objectsToDestroy;
 
 /* static */
 void CCObject::deferredDestroy() {
+    if (objectsToDestroy.empty()) return;
     size_t deleteCount = objectsToDestroy.size();
     for (size_t i = 0; i < deleteCount; ++i) {
         CCObject *obj = objectsToDestroy[i];

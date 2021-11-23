@@ -238,7 +238,7 @@ inline bool CCObject::isValid() const {
 }
 
 inline void CCObject::setHideFlags(Flags hideFlags) {
-    Flags flags = hideFlags | Flags::ALL_HIDE_MASKS;
+    Flags flags = hideFlags & Flags::ALL_HIDE_MASKS;
     _objFlags   = (_objFlags & ~Flags::ALL_HIDE_MASKS) | flags;
 }
 

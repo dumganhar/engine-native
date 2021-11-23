@@ -475,7 +475,7 @@ const IAnimInfo &JointAnimationInfo::switchClip(IAnimInfo &info /*, AnimationCli
 
 void JointAnimationInfo::clear() {
     for (auto pool : _pool) {
-        CC_UNSAFE_DESTROY(pool.second.buffer);
+        CC_SAFE_DESTROY(pool.second.buffer);
     }
     _pool.clear();
 }

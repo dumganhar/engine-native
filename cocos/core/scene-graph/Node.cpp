@@ -393,12 +393,12 @@ bool Node::onPreDestroyBase() {
         }
     }
     emit(NodeEventType::NODE_DESTROYED, this);
-    _eventProcessor->destroy();
     for (auto *child : _children) {
         child->destroyImmediate();
     }
 
     emit(EventTypesToJS::NODE_DESTROY_COMPONENTS);
+    _eventProcessor->destroy();
     return destroyByParent;
 }
 

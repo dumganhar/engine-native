@@ -41,6 +41,7 @@ void CCObject::deferredDestroy() {
         CCObject *obj = objectsToDestroy[i];
         if (!(obj->_objFlags & Flags::DESTROYED)) {
             obj->destroyImmediate();
+            obj->release();
         }
     }
     // if we called b.destory() in a.onDestroy(), objectsToDestroy will be resized,
@@ -61,14 +62,15 @@ CCObject::CCObject(const std::string &name /* = ""*/)
 }
 
 bool CCObject::destroy() {
-    if (!!(_objFlags & Flags::DESTROYED)) {
+    if (static_cast<bool>(_objFlags & Flags::DESTROYED)) {
         //cjh TODO:        warnID(5000);
         return false;
     }
-    if (!!(_objFlags & Flags::TO_DESTROY)) {
+    if (static_cast<bool>(_objFlags & Flags::TO_DESTROY)) {
         return false;
     }
     _objFlags |= Flags::TO_DESTROY;
+    this->retain();
     objectsToDestroy.emplace_back(this);
 
     //cjh TODO:   if (EDITOR && deferredDestroyTimer === null && legacyCC.engine && !legacyCC.engine._isUpdating) {
@@ -91,7 +93,7 @@ void CCObject::destruct() {
 }
 
 void CCObject::destroyImmediate() {
-    if (!!(_objFlags & Flags::DESTROYED)) {
+    if (static_cast<bool>(_objFlags & Flags::DESTROYED)) {
         //cjh TODO:        errorID(5000);
         return;
     }

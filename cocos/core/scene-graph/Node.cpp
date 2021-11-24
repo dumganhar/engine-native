@@ -112,9 +112,9 @@ Node *Node::instantiate(Node *cloned, bool isSyncedNode) {
 }
 
 void Node::onHierarchyChangedBase(Node *oldParent) {
-    Node * newParent = _parent;
+    Node *newParent = _parent;
     auto *scene     = dynamic_cast<Scene *>(newParent);
-    if (isPersistNode() && scene) {
+    if (isPersistNode() && scene == nullptr) {
         emit(EventTypesToJS::NODE_REMOVE_PERSIST_ROOT_NODE);
 
         //        if (EDITOR) {
@@ -139,7 +139,7 @@ void Node::onHierarchyChangedBase(Node *oldParent) {
     //}
     bool shouldActiveNow = _active && !!(newParent && newParent->_activeInHierarchy);
     if (_activeInHierarchy != shouldActiveNow) {
-        Director::getInstance()->getNodeActivator()->activateNode(this, shouldActiveNow);
+        // Director::getInstance()->getNodeActivator()->activateNode(this, shouldActiveNow); // TODO(xwx): use TS temporarily
         emit(EventTypesToJS::NODE_ACTIVE_NODE, shouldActiveNow);
     }
 }
@@ -206,6 +206,7 @@ void Node::setActive(bool isActive) {
         if (parent) {
             bool couldActiveInScene = parent->_activeInHierarchy;
             if (couldActiveInScene) {
+                // Director::getInstance()->getNodeActivator()->activateNode(this, isActive); // TODO(xwx): use TS temporarily
                 emit(EventTypesToJS::NODE_ACTIVE_NODE, isActive);
             }
         }

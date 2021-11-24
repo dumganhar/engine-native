@@ -267,11 +267,11 @@ public:
     Node *           getChildByUuid(const std::string &) const;
     Node *           getChildByName(const std::string &) const;
     Node *           getChildByPath(const std::string &) const;
-    inline uint32_t  getSiblingIndex() const { return _siblingIndex; }
+    inline index_t   getSiblingIndex() const { return _siblingIndex; }
     inline UserData *getUserData() { return _userData; }
     inline void      setUserData(UserData *data) { _userData = data; }
-    inline void      insertChild(Node *child, uint32_t siblingIndex) {
-        child->_parent = this;
+    inline void      insertChild(Node *child, index_t siblingIndex) {
+        child->setParent(this);
         child->setSiblingIndex(siblingIndex);
     }
 

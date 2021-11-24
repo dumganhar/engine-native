@@ -212,7 +212,7 @@ void CCMTLBuffer::update(const void *buffer, uint size) {
                     }
                     updateMTLBuffer(_indexedPrimitivesIndirectArguments.data(), 0, drawInfoCount * stride);
                 } else {
-                    uint stride = sizeof(MTLDrawIndexedPrimitivesIndirectArguments);
+                    uint stride = sizeof(MTLDrawPrimitivesIndirectArguments);
 
                     for (uint i = 0; i < drawInfoCount; ++i) {
                         auto &arguments = _primitiveIndirectArguments[i];

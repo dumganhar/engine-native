@@ -49,4 +49,6 @@ const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS{1
 const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES{113}; //{"MODEL_UPDATE_INSTANCED_ATTRIBUTES"};
 const CallbacksInvoker::KeyType EventTypesToJS::MODEL_GET_MACRO_PATCHES{114};           //{"MODEL_GET_MACRO_PATCHES"};
 
+const CallbacksInvoker::KeyType EventTypesToJS::DIRECTOR_BEFORE_COMMIT{115}; //{"MODEL_GET_MACRO_PATCHES"};
+
 } // namespace cc

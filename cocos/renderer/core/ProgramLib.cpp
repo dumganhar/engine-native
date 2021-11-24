@@ -314,6 +314,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
                 if (pValue != nullptr) {
                     return *pValue - range[0];
                 }
+                CC_ASSERT(false); //We only support macro with int32_t type now.
                 return 0;
             };
         } else if (def.type == "string") {

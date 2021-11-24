@@ -102,8 +102,8 @@ const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = cc::pipeline::SamplerLib::genSam
     cc::gfx::Address::CLAMP,
 });
 
-const std::vector<cc::scene::IMacroPatch> SHADOW_MAP_PATCHES{{"CC_RECEIVE_SHADOW", true}};
-const std::string                         INST_MAT_WORLD = "a_matWorld0";
+const cc::scene::IMacroPatch SHADOW_MAP_PATCH{"CC_RECEIVE_SHADOW", true};
+const std::string            INST_MAT_WORLD = "a_matWorld0";
 } // namespace
 
 namespace cc {
@@ -296,17 +296,22 @@ void Model::updateLightingmap(Texture2D *texture, const Vec4 &uvParam) {
     }
 }
 
-std::vector<IMacroPatch> Model::getMacroPatches(index_t subModelIndex) {
+std::vector<IMacroPatch> &Model::getMacroPatches(index_t subModelIndex) {
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {
-            std::vector<IMacroPatch> result;
-            _eventProcessor.emit(EventTypesToJS::MODEL_GET_MACRO_PATCHES, subModelIndex, &result);
+            _eventProcessor.emit(EventTypesToJS::MODEL_GET_MACRO_PATCHES, subModelIndex, &_macroPatches);
             _isCalledFromJS = false;
-            return result;
+            return _macroPatches;
         }
     }
 
-    return _receiveShadow ? SHADOW_MAP_PATCHES : std::vector<IMacroPatch>();
+    if (_receiveShadow) {
+        _macroPatches.emplace_back(SHADOW_MAP_PATCH);
+    } else {
+        _macroPatches.clear();
+    }
+
+    return _macroPatches;
 }
 
 void Model::updateAttributesAndBinding(index_t subModelIndex) {

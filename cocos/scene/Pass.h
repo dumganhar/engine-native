@@ -61,7 +61,8 @@ enum class BatchingSchemes {
 
 struct IBlockRef {
     float *data{nullptr};
-    size_t size{0};
+    size_t count{0};
+    size_t offset{0};
 };
 
 class Pass {
@@ -245,7 +246,8 @@ public:
      * @en Try to compile the shader and retrieve related resources references.
      * @zh 尝试编译 shader 并获取相关资源引用。
      */
-    bool tryCompile();
+    virtual bool tryCompile();
+    virtual bool tryCompile(const std::optional<MacroRecord> &defineOverrides) { return Pass::tryCompile(); }
 
     /**
      * @en Gets the shader variant of the current pass and given macro patches

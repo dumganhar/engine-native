@@ -52,14 +52,290 @@ struct IPropertyInfo {
 };
 
 struct IPassInfoFull;
+
+struct RasterizerStateInfo {
+    std::optional<bool> isDiscard;
+    std::optional<bool> isFrontFaceCCW;
+    std::optional<bool> depthBiasEnabled;
+    std::optional<bool> isDepthClip;
+    std::optional<bool> isMultisample;
+
+    std::optional<gfx::PolygonMode> polygonMode;
+    std::optional<gfx::ShadeModel>  shadeModel;
+    std::optional<gfx::CullMode>    cullMode;
+
+    std::optional<float> depthBias;
+    std::optional<float> depthBiasClamp;
+    std::optional<float> depthBiasSlop;
+    std::optional<float> lineWidth;
+
+    void fromGFXRasterizerState(const gfx::RasterizerState &rs) {
+        isDiscard        = rs.isDiscard;
+        isFrontFaceCCW   = rs.isFrontFaceCCW;
+        depthBiasEnabled = rs.depthBiasEnabled;
+        isDepthClip      = rs.isDepthClip;
+        isMultisample    = rs.isMultisample;
+
+        polygonMode = rs.polygonMode;
+        shadeModel  = rs.shadeModel;
+        cullMode    = rs.cullMode;
+
+        depthBias      = rs.depthBias;
+        depthBiasClamp = rs.depthBiasClamp;
+        depthBiasSlop  = rs.depthBiasSlop;
+        lineWidth      = rs.lineWidth;
+    }
+
+    void assignToGFXRasterizerState(gfx::RasterizerState &rs) const {
+        if (isDiscard.has_value()) {
+            rs.isDiscard = isDiscard.value();
+        }
+        if (isFrontFaceCCW.has_value()) {
+            rs.isFrontFaceCCW = isFrontFaceCCW.value();
+        }
+        if (depthBiasEnabled.has_value()) {
+            rs.depthBiasEnabled = depthBiasEnabled.value();
+        }
+        if (isDepthClip.has_value()) {
+            rs.isDepthClip = isDepthClip.value();
+        }
+        if (isMultisample.has_value()) {
+            rs.isMultisample = isMultisample.value();
+        }
+        if (polygonMode.has_value()) {
+            rs.polygonMode = polygonMode.value();
+        }
+        if (shadeModel.has_value()) {
+            rs.shadeModel = shadeModel.value();
+        }
+        if (cullMode.has_value()) {
+            rs.cullMode = cullMode.value();
+        }
+        if (depthBias.has_value()) {
+            rs.depthBias = depthBias.value();
+        }
+        if (depthBiasClamp.has_value()) {
+            rs.depthBiasClamp = depthBiasClamp.value();
+        }
+        if (depthBiasSlop.has_value()) {
+            rs.depthBiasSlop = depthBiasSlop.value();
+        }
+        if (lineWidth.has_value()) {
+            rs.lineWidth = lineWidth.value();
+        }
+    }
+};
+
+struct DepthStencilStateInfo {
+    std::optional<bool> depthTest;
+    std::optional<bool> depthWrite;
+    std::optional<bool> stencilTestFront;
+    std::optional<bool> stencilTestBack;
+
+    std::optional<gfx::ComparisonFunc> depthFunc;
+    std::optional<gfx::ComparisonFunc> stencilFuncFront;
+    std::optional<uint>                stencilReadMaskFront;
+    std::optional<uint>                stencilWriteMaskFront;
+    std::optional<gfx::StencilOp>      stencilFailOpFront;
+    std::optional<gfx::StencilOp>      stencilZFailOpFront;
+    std::optional<gfx::StencilOp>      stencilPassOpFront;
+    std::optional<uint>                stencilRefFront;
+
+    std::optional<gfx::ComparisonFunc> stencilFuncBack;
+    std::optional<uint>                stencilReadMaskBack;
+    std::optional<uint>                stencilWriteMaskBack;
+    std::optional<gfx::StencilOp>      stencilFailOpBack;
+    std::optional<gfx::StencilOp>      stencilZFailOpBack;
+    std::optional<gfx::StencilOp>      stencilPassOpBack;
+    std::optional<uint>                stencilRefBack;
+
+    void fromGFXDepthStencilState(const gfx::DepthStencilState &ds) {
+        depthTest        = ds.depthTest;
+        depthWrite       = ds.depthWrite;
+        stencilTestFront = ds.stencilTestFront;
+        stencilTestBack  = ds.stencilTestBack;
+
+        depthFunc             = ds.depthFunc;
+        stencilFuncFront      = ds.stencilFuncFront;
+        stencilReadMaskFront  = ds.stencilReadMaskFront;
+        stencilWriteMaskFront = ds.stencilWriteMaskFront;
+        stencilFailOpFront    = ds.stencilFailOpFront;
+        stencilZFailOpFront   = ds.stencilZFailOpFront;
+        stencilPassOpFront    = ds.stencilPassOpFront;
+        stencilRefFront       = ds.stencilRefFront;
+
+        stencilFuncBack      = ds.stencilFuncBack;
+        stencilReadMaskBack  = ds.stencilReadMaskBack;
+        stencilWriteMaskBack = ds.stencilWriteMaskBack;
+        stencilFailOpBack    = ds.stencilFailOpBack;
+        stencilZFailOpBack   = ds.stencilZFailOpBack;
+        stencilPassOpBack    = ds.stencilPassOpBack;
+        stencilRefBack       = ds.stencilRefBack;
+    }
+
+    void assignToGFXDepthStencilState(gfx::DepthStencilState &ds) const {
+        if (depthTest.has_value()) {
+            ds.depthTest = depthTest.value();
+        }
+        if (depthWrite.has_value()) {
+            ds.depthWrite = depthWrite.value();
+        }
+        if (stencilTestFront.has_value()) {
+            ds.stencilTestFront = stencilTestFront.value();
+        }
+        if (stencilTestBack.has_value()) {
+            ds.stencilTestBack = stencilTestBack.value();
+        }
+        if (depthFunc.has_value()) {
+            ds.depthFunc = depthFunc.value();
+        }
+        if (stencilFuncFront.has_value()) {
+            ds.stencilFuncFront = stencilFuncFront.value();
+        }
+        if (stencilReadMaskFront.has_value()) {
+            ds.stencilReadMaskFront = stencilReadMaskFront.value();
+        }
+        if (stencilWriteMaskFront.has_value()) {
+            ds.stencilWriteMaskFront = stencilWriteMaskFront.value();
+        }
+        if (stencilFailOpFront.has_value()) {
+            ds.stencilFailOpFront = stencilFailOpFront.value();
+        }
+        if (stencilZFailOpFront.has_value()) {
+            ds.stencilZFailOpFront = stencilZFailOpFront.value();
+        }
+        if (stencilPassOpFront.has_value()) {
+            ds.stencilPassOpFront = stencilPassOpFront.value();
+        }
+        if (stencilRefFront.has_value()) {
+            ds.stencilRefFront = stencilRefFront.value();
+        }
+        if (stencilFuncBack.has_value()) {
+            ds.stencilFuncBack = stencilFuncBack.value();
+        }
+        if (stencilReadMaskBack.has_value()) {
+            ds.stencilReadMaskBack = stencilReadMaskBack.value();
+        }
+        if (stencilWriteMaskBack.has_value()) {
+            ds.stencilWriteMaskBack = stencilWriteMaskBack.value();
+        }
+        if (stencilFailOpBack.has_value()) {
+            ds.stencilFailOpBack = stencilFailOpBack.value();
+        }
+        if (stencilZFailOpBack.has_value()) {
+            ds.stencilZFailOpBack = stencilZFailOpBack.value();
+        }
+        if (stencilPassOpBack.has_value()) {
+            ds.stencilPassOpBack = stencilPassOpBack.value();
+        }
+        if (stencilRefBack.has_value()) {
+            ds.stencilRefBack = stencilRefBack.value();
+        }
+    }
+};
+
+struct BlendTargetInfo {
+    std::optional<bool>             blend;
+    std::optional<gfx::BlendFactor> blendSrc;
+    std::optional<gfx::BlendFactor> blendDst;
+    std::optional<gfx::BlendOp>     blendEq;
+    std::optional<gfx::BlendFactor> blendSrcAlpha;
+    std::optional<gfx::BlendFactor> blendDstAlpha;
+    std::optional<gfx::BlendOp>     blendAlphaEq;
+    std::optional<gfx::ColorMask>   blendColorMask;
+
+    void fromGFXBlendTarget(const gfx::BlendTarget &target) {
+        blend          = target.blend;
+        blendSrc       = target.blendSrc;
+        blendDst       = target.blendDst;
+        blendEq        = target.blendEq;
+        blendSrcAlpha  = target.blendSrcAlpha;
+        blendDstAlpha  = target.blendDstAlpha;
+        blendAlphaEq   = target.blendAlphaEq;
+        blendColorMask = target.blendColorMask;
+    }
+
+    void assignToGFXBlendTarget(gfx::BlendTarget &target) const {
+        if (blend.has_value()) {
+            target.blend = blend.value();
+        }
+        if (blendSrc.has_value()) {
+            target.blendSrc = blendSrc.value();
+        }
+        if (blendDst.has_value()) {
+            target.blendDst = blendDst.value();
+        }
+        if (blendEq.has_value()) {
+            target.blendEq = blendEq.value();
+        }
+        if (blendSrcAlpha.has_value()) {
+            target.blendSrcAlpha = blendSrcAlpha.value();
+        }
+        if (blendDstAlpha.has_value()) {
+            target.blendDstAlpha = blendDstAlpha.value();
+        }
+        if (blendAlphaEq.has_value()) {
+            target.blendAlphaEq = blendAlphaEq.value();
+        }
+        if (blendColorMask.has_value()) {
+            target.blendColorMask = blendColorMask.value();
+        }
+    }
+};
+
+using BlendTargetInfoList = std::vector<BlendTargetInfo>;
+
+struct BlendStateInfo {
+    std::optional<bool>                isA2C;
+    std::optional<bool>                isIndepend;
+    std::optional<gfx::Color>          blendColor;
+    std::optional<BlendTargetInfoList> targets;
+
+    void fromGFXBlendState(const gfx::BlendState &bs) {
+        isA2C      = bs.isA2C;
+        isIndepend = bs.isIndepend;
+        blendColor = bs.blendColor;
+        size_t len = bs.targets.size();
+        if (len > 0) {
+            BlendTargetInfoList targetsList(len);
+            for (size_t i = 0; i < len; ++i) {
+                targetsList[i].fromGFXBlendTarget(bs.targets[i]);
+            }
+            targets = targetsList;
+        }
+    }
+
+    void assignToGFXBlendState(gfx::BlendState &bs) const {
+        if (targets.has_value()) {
+            auto &targetsVal = targets.value();
+            bs.targets.resize(targetsVal.size());
+            for (size_t i = 0, len = targetsVal.size(); i < len; ++i) {
+                targetsVal[i].assignToGFXBlendTarget(bs.targets[i]);
+            }
+        }
+
+        if (isA2C.has_value()) {
+            bs.isA2C = isA2C.value();
+        }
+
+        if (isIndepend.has_value()) {
+            bs.isIndepend = isIndepend.value();
+        }
+
+        if (blendColor.has_value()) {
+            bs.blendColor = blendColor.value();
+        }
+    }
+};
+
 // Pass instance itself are compliant to IPassStates too
 struct IPassStates {
     std::optional<int32_t>                   priority;
     std::optional<gfx::PrimitiveMode>        primitive;
     std::optional<pipeline::RenderPassStage> stage;
-    std::optional<gfx::RasterizerState>      rasterizerState; //cjh TODO: need to change to shared_ptr?
-    std::optional<gfx::DepthStencilState>    depthStencilState;
-    std::optional<gfx::BlendState>           blendState;
+    std::optional<RasterizerStateInfo>       rasterizerState; //cjh TODO: need to change to shared_ptr?
+    std::optional<DepthStencilStateInfo>     depthStencilState;
+    std::optional<BlendStateInfo>            blendState;
     std::optional<gfx::DynamicStateFlags>    dynamicStates;
     std::optional<std::string>               phase;
 
@@ -84,9 +360,9 @@ struct IPassInfoFull final { //cjh } : public IPassInfo {
     std::optional<int32_t>                   priority;
     std::optional<gfx::PrimitiveMode>        primitive;
     std::optional<pipeline::RenderPassStage> stage;
-    std::optional<gfx::RasterizerState>      rasterizerState; //cjh TODO: need to change to shared_ptr?
-    std::optional<gfx::DepthStencilState>    depthStencilState;
-    std::optional<gfx::BlendState>           blendState;
+    std::optional<RasterizerStateInfo>       rasterizerState; //cjh TODO: need to change to shared_ptr?
+    std::optional<DepthStencilStateInfo>     depthStencilState;
+    std::optional<BlendStateInfo>            blendState;
     std::optional<gfx::DynamicStateFlags>    dynamicStates;
     std::optional<std::string>               phase;
     // IPassInfo

@@ -844,7 +844,7 @@ bool sevalue_to_native(const se::Value &from, std::variant<T, std::vector<T>> *t
 
 template <typename T>
 inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
-    sevalue_to_native(const se::Value &from, cc::TypedArrayTemp<T> *to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+sevalue_to_native(const se::Value &from, cc::TypedArrayTemp<T> *to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to->setJSTypedArray(from.toObject());
     return true;
 }
@@ -1189,6 +1189,14 @@ inline bool sevalue_to_native(const se::Value &from, T to) { // NOLINT(readabili
 template <typename T>
 inline bool nativevalue_to_se(T &&from, se::Value &to); // NOLINT(readability-identifier-naming)
 
+template <typename... ARGS>
+bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx); // NOLINT
+
+template <typename... ARGS>
+bool nativevalue_to_se(const std::variant<ARGS...> *from, se::Value &to, se::Object *ctx) { // NOLINT
+    return nativevalue_to_se(*from, to, ctx);
+}
+
 #if HAS_CONSTEXPR
 
 template <typename T>
@@ -1248,9 +1256,6 @@ inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se:
 
 template <typename T>
 bool nativevalue_to_se(const std::reference_wrapper<T> ref, se::Value &to, se::Object *ctx); // NOLINT
-
-template <typename... ARGS>
-bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx); // NOLINT
 
 template <typename... ARGS>
 bool nativevalue_to_se(const std::tuple<ARGS...> &from, se::Value &to, se::Object *ctx); // NOLINT
@@ -1382,7 +1387,6 @@ bool nativevalue_to_se_args_v(se::ValueArray &array, Args &...args) { // NOLINT(
     return nativevalue_to_se_args<0, Args...>(array, args...);
 }
 
-
 // Spine conversions
 #if USE_SPINE
 
@@ -1471,7 +1475,7 @@ inline bool nativevalue_to_se(T &&from, se::Value &to) { // NOLINT(readability-i
 }
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx) {// NOLINT(readability-identifier-naming)
+bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     bool ok = false;
     se_for_each(std::make_index_sequence<sizeof...(ARGS)>{}, [&](auto i) {
         if (i != from.index()) {
@@ -1491,7 +1495,7 @@ inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se:
 }
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::tuple<ARGS...> &from, se::Value &to, se::Object *ctx) {// NOLINT(readability-identifier-naming)
+bool nativevalue_to_se(const std::tuple<ARGS...> &from, se::Value &to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     bool        ok = true;
     se::Value   tmp;
     se::Object *array = se::Object::createArrayObject(sizeof...(ARGS));

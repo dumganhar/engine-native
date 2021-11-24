@@ -81,7 +81,7 @@ static bool js_root_registerListeners(se::State &s) // NOLINT(readability-identi
     auto *cobj = SE_THIS_OBJECT<cc::Root>(s);
     SE_PRECONDITION2(cobj, false, "js_root_registerListeners : Invalid Native Object");
 
-#define ROOT_DISPATCH_EVENT_TO_JS(eventType, jsFuncName)                                                \
+#define DISPATCH_EVENT_TO_JS_ARGS_0(eventType, jsFuncName)                                              \
     cobj->getEventProcessor()->on(eventType, [](cc::Root *rootObj) {                                    \
         se::AutoHandleScope hs;                                                                         \
         se::Value           rootVal;                                                                    \
@@ -92,10 +92,11 @@ static bool js_root_registerListeners(se::State &s) // NOLINT(readability-identi
         }                                                                                               \
     })
 
-    ROOT_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::ROOT_BATCH2D_INIT, _onBatch2DInit);
-    ROOT_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::ROOT_BATCH2D_UPDATE, _onBatch2DUpdate);
-    ROOT_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::ROOT_BATCH2D_UPLOAD_BUFFERS, _onBatch2DUploadBuffers);
-    ROOT_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::ROOT_BATCH2D_RESET, _onBatch2DReset);
+    DISPATCH_EVENT_TO_JS_ARGS_0(cc::EventTypesToJS::ROOT_BATCH2D_INIT, _onBatch2DInit);
+    DISPATCH_EVENT_TO_JS_ARGS_0(cc::EventTypesToJS::ROOT_BATCH2D_UPDATE, _onBatch2DUpdate);
+    DISPATCH_EVENT_TO_JS_ARGS_0(cc::EventTypesToJS::ROOT_BATCH2D_UPLOAD_BUFFERS, _onBatch2DUploadBuffers);
+    DISPATCH_EVENT_TO_JS_ARGS_0(cc::EventTypesToJS::ROOT_BATCH2D_RESET, _onBatch2DReset);
+    DISPATCH_EVENT_TO_JS_ARGS_0(cc::EventTypesToJS::DIRECTOR_BEFORE_COMMIT, _onDirectorBeforeCommit);
 
     return true;
 }
@@ -757,7 +758,7 @@ static bool js_scene_Pass_blocks_getter(se::State &s) {
                 se::Object::TypedArrayType::FLOAT32,
                 cobj->getRootBlock()->getJSArrayBuffer(),
                 reinterpret_cast<const uint8_t *>(block.data) - blockDataBase,
-                block.size * 4)};
+                block.count * 4)};
         jsBlocks->setArrayElement(i, se::Value(jsBlock));
         ++i;
     }
@@ -781,6 +782,7 @@ static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-ident
 
 #define MODEL_DISPATCH_EVENT_TO_JS(eventType, jsFuncName)                               \
     cobj->getEventProcessor().on(eventType, [=](uint32_t stamp) {                       \
+        cobj->setCalledFromJS(true);                                                    \
         se::AutoHandleScope hs;                                                         \
         se::Value           stampVal{stamp};                                            \
         se::ScriptEngine::getInstance()->callFunction(thiz, #jsFuncName, 1, &stampVal); \
@@ -792,6 +794,7 @@ static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-ident
 #undef MODEL_DISPATCH_EVENT_TO_JS
 
     cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, [=](index_t subModelIndex, cc::gfx::DescriptorSet *descriptorSet) {
+        cobj->setCalledFromJS(true);
         se::AutoHandleScope hs;
 
         std::array<se::Value, 2> args;
@@ -801,6 +804,7 @@ static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-ident
     });
 
     cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES, [=](const std::vector<cc::gfx::Attribute> &attributes, cc::scene::Pass *pass) {
+        cobj->setCalledFromJS(true);
         se::AutoHandleScope hs;
 
         std::array<se::Value, 2> args;
@@ -810,6 +814,7 @@ static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-ident
     });
 
     cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_GET_MACRO_PATCHES, [=](index_t subModelIndex, std::vector<cc::scene::IMacroPatch> *pPatches) {
+        cobj->setCalledFromJS(true);
         se::AutoHandleScope hs;
 
         se::Value                rval;

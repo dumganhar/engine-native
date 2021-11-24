@@ -170,7 +170,7 @@ void Root::resetCumulativeTime() {
 void Root::frameMove(float deltaTime, int32_t totalFrames) {
     //FIXME: It is invoked in Director in TS. As Director is not implemented in C++ now, so invoke it here.
     CCObject::deferredDestroy();
-    
+
     _frameTime = deltaTime;
 
     ++_frameCount;
@@ -205,15 +205,16 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
         uint32_t stamp = totalFrames;
 
         _eventProcessor->emit(EventTypesToJS::ROOT_BATCH2D_UPLOAD_BUFFERS, this);
-//                if (_batcher != nullptr) {
-//                    _batcher->uploadBuffers();
-//                }
+        //                if (_batcher != nullptr) {
+        //                    _batcher->uploadBuffers();
+        //                }
 
         for (auto *scene : _scenes) {
             scene->update(stamp);
         }
 
-        //cjh TODO:        legacyCC.director.emit(legacyCC.Director.EVENT_BEFORE_COMMIT);
+        _eventProcessor->emit(EventTypesToJS::DIRECTOR_BEFORE_COMMIT, this);
+
         std::stable_sort(cameraList.begin(), cameraList.end(), [](const auto *a, const auto *b) {
             return a->getPriority() < b->getPriority();
         });

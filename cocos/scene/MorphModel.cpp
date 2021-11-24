@@ -26,11 +26,17 @@
 #include "scene/MorphModel.h"
 namespace cc {
 namespace scene {
-std::vector<IMacroPatch> MorphModel::getMacroPatches(index_t subModelIndex) {
+
+std::vector<IMacroPatch> &MorphModel::getMacroPatches(index_t subModelIndex) {
     if (_morphRenderingInstance != nullptr) {
-        return _morphRenderingInstance->requiredPatches(subModelIndex);
+        auto patches = _morphRenderingInstance->requiredPatches(subModelIndex);
+        _macroPatches.clear();
+        _macroPatches.insert(_macroPatches.begin(), patches.begin(), patches.end());
+        return _macroPatches;
     }
-    return std::vector<IMacroPatch>();
+
+    _macroPatches.clear();
+    return _macroPatches;
 }
 
 void MorphModel::initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) {

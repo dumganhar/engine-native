@@ -30,9 +30,10 @@ namespace cc {
 PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) : Super(parent->getRoot()), _parent(parent), _owner(owner) {
     doInit(_parent->getPassInfoFull());
     for (const auto &b : _shaderInfo->blocks) {
-        scene::IBlockRef &block       = _blocks[b.binding];
-        scene::IBlockRef  parentBlock = _parent->getBlocks()[b.binding];
-        block                         = parentBlock;
+        scene::IBlockRef &      block       = _blocks[b.binding];
+        const scene::IBlockRef &parentBlock = _parent->getBlocks()[b.binding];
+        assert(block.count == parentBlock.count);
+        memcpy(block.data, parentBlock.data, parentBlock.count * 4);
     }
 
     _rootBufferDirty                        = true;

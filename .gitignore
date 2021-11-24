@@ -55,6 +55,7 @@ bin/
 obj/
 gen/
 assets/
+!/cocos/core/assets
 local.properties
 
 # Ignore python compiled files

@@ -103,10 +103,12 @@ void Material::doDestroy() {
 }
 
 void Material::recompileShaders(const MacroRecord & /*overrides*/, index_t /*passIdx*/) {
+    assert(false);
     CC_LOG_WARNING("Shaders in material asset '%s' cannot be modified at runtime, please instantiate the material first.", _name.c_str());
 }
 
 void Material::overridePipelineStates(const PassOverrides & /*overrides*/, index_t /*passIdx*/) {
+    assert(false);
     CC_LOG_WARNING("Pipeline states in material asset '%s' cannot be modified at runtime, please instantiate the material first.", _name.c_str());
 }
 
@@ -199,7 +201,7 @@ CC_MATERIAL_SETPROPERTY_ARRAY_IMPL(GFXTexture, gfx::Texture *)
 
 #undef CC_MATERIAL_SETPROPERTY_ARRAY_IMPL
 
-MaterialPropertyVariant *Material::getProperty(const std::string &name, index_t passIdx) {
+const MaterialPropertyVariant *Material::getProperty(const std::string &name, index_t passIdx) const {
     if (passIdx == CC_INVALID_INDEX) { // try get property in all possible passes
         auto & propsArray = _props;
         size_t len        = propsArray.size();

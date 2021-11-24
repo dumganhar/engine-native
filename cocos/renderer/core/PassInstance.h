@@ -55,7 +55,7 @@ public:
      */
     void overridePipelineStates(const IPassInfo &original, const PassOverrides &override) override;
 
-    bool tryCompile(const std::optional<MacroRecord> &defineOverrides);
+    bool tryCompile(const std::optional<MacroRecord> &defineOverrides) override;
 
     /**
      * @en Prepare to change states of the pass and do not notify the material to rebuild the pipeline state object

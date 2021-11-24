@@ -17,11 +17,14 @@ void MaterialInstance::recompileShaders(const MacroRecord &overrides, index_t pa
     }
 
     if (passIdx == CC_INVALID_INDEX) {
-        for (auto *pass : _passInstances) {
+        for (auto *pass : _passes) {
             pass->tryCompile(overrides);
         }
     } else {
-        _passInstances[passIdx]->tryCompile(overrides);
+        if (passIdx < _passes.size()) {
+            auto *pass = _passes[passIdx];
+            pass->tryCompile(overrides);
+        }
     }
 }
 
@@ -32,8 +35,8 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
 
     std::vector<IPassInfoFull> &passInfos = _effectAsset->_techniques[getTechniqueIndex()].passes;
     if (passIdx == CC_INVALID_INDEX) {
-        for (size_t i = 0, len = _passInstances.size(); i < len; i++) {
-            auto *pass = _passInstances[i];
+        for (size_t i = 0, len = _passes.size(); i < len; i++) {
+            auto *pass = _passes[i];
             if (i >= _states.size()) {
                 _states.resize(i + 1);
             }

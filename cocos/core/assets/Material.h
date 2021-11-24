@@ -135,6 +135,9 @@ public:
      * @param overrides The shader macro override values.
      * @param passIdx The pass to apply to. Will apply to all passes if not specified.
      */
+    virtual void recompileShaders(const MacroRecord &overrides) {
+        Material::recompileShaders(overrides, CC_INVALID_INDEX);
+    }
     virtual void recompileShaders(const MacroRecord &overrides, index_t passIdx);
 
     /**
@@ -143,6 +146,9 @@ public:
      * @param overrides The pipeline state override values.
      * @param passIdx The pass to apply to. Will apply to all passes if not specified.
      */
+    virtual void overridePipelineStates(const PassOverrides &overrides) {
+        Material::overridePipelineStates(overrides, CC_INVALID_INDEX);
+    }
     virtual void overridePipelineStates(const PassOverrides &overrides, index_t passIdx);
 
     /**
@@ -207,7 +213,7 @@ public:
      * @param name The property or uniform name.
      * @param passIdx The target pass index. If not specified, return the first found value in all passes.
      */
-    MaterialPropertyVariant *getProperty(const std::string &name, index_t passIdx = CC_INVALID_INDEX);
+    const MaterialPropertyVariant *getProperty(const std::string &name, index_t passIdx = CC_INVALID_INDEX) const;
 
     /**
      * @en Copy the target material.

@@ -183,8 +183,8 @@ static PassPropertyInfoMap jsonToPassPropertyInfoMap(const rapidjson::Value &pro
     return propertyInfoMap;
 }
 
-static gfx::RasterizerState jsonToRasterizerState(const rapidjson::Value &rasterizerStateVal) {
-    gfx::RasterizerState rasterizerState;
+static RasterizerStateInfo jsonToRasterizerState(const rapidjson::Value &rasterizerStateVal) {
+    RasterizerStateInfo rasterizerState;
 
     CC_ASSERT(rasterizerStateVal.IsObject());
 
@@ -240,8 +240,8 @@ static gfx::RasterizerState jsonToRasterizerState(const rapidjson::Value &raster
     return rasterizerState;
 }
 
-static gfx::DepthStencilState jsonToDepthStencilState(const rapidjson::Value &val) {
-    gfx::DepthStencilState dss;
+static DepthStencilStateInfo jsonToDepthStencilState(const rapidjson::Value &val) {
+    DepthStencilStateInfo dss;
 
     CC_ASSERT(val.IsObject());
 
@@ -324,7 +324,7 @@ static gfx::DepthStencilState jsonToDepthStencilState(const rapidjson::Value &va
     return dss;
 }
 
-static void jsonToBlendTarget(const rapidjson::Value &val, gfx::BlendTarget *outBlendTarget) {
+static void jsonToBlendTarget(const rapidjson::Value &val, BlendTargetInfo *outBlendTarget) {
     if (outBlendTarget == nullptr) {
         return;
     }
@@ -364,10 +364,10 @@ static void jsonToBlendTarget(const rapidjson::Value &val, gfx::BlendTarget *out
     }
 }
 
-static gfx::BlendState jsonToBlendState(const rapidjson::Value &val) {
+static BlendStateInfo jsonToBlendState(const rapidjson::Value &val) {
     CC_ASSERT(val.IsObject());
 
-    gfx::BlendState bs;
+    BlendStateInfo bs;
 
     if (val.HasMember("isA2C")) {
         bs.isA2C = val["isA2C"].GetBool() ? 1 : 0;
@@ -383,13 +383,16 @@ static gfx::BlendState jsonToBlendState(const rapidjson::Value &val) {
 
     if (val.HasMember("targets")) {
         if (val["targets"].IsArray()) {
-            const auto &targetsVal = val["targets"].GetArray();
-            bs.targets.resize(targetsVal.Size());
+            const auto &        targetsVal = val["targets"].GetArray();
+            BlendTargetInfoList targets;
+            targets.resize(targetsVal.Size());
             int32_t i = 0;
             for (const auto &targetVal : targetsVal) {
-                jsonToBlendTarget(targetVal, &bs.targets[i]);
+                jsonToBlendTarget(targetVal, &targets[i]);
                 ++i;
             }
+
+            bs.targets = targets;
         }
     }
 

@@ -98,27 +98,17 @@ void Pass::fillPipelineInfo(Pass *pass, const IPassInfoFull &info) {
         pass->_phase       = pipeline::getPhaseID(pass->_phaseString);
     }
 
-    auto &bs = pass->_blendState;
     if (info.blendState.has_value()) {
-        const auto &bsInfo  = info.blendState.value();
-        const auto &targets = bsInfo.targets;
-        for (size_t i = 0, len = targets.size(); i < len; ++i) {
-            bs.setTarget(i, targets[i]);
-        }
-
-        //cjh        if (bsInfo.isA2C !== undefined) {
-        bs.isA2C = bsInfo.isA2C;
-        //        }
-        //        if (bsInfo.isIndepend !== undefined) {
-        bs.isIndepend = bsInfo.isIndepend;
-        //        }
-        //        if (bsInfo.blendColor !== undefined) {
-        bs.blendColor = bsInfo.blendColor;
-        //        }
+        info.blendState.value().assignToGFXBlendState(pass->_blendState);
     }
 
-    pass->_rs                = info.rasterizerState.has_value() ? info.rasterizerState.value() : pass->_rs;
-    pass->_depthStencilState = info.depthStencilState.has_value() ? info.depthStencilState.value() : pass->_depthStencilState;
+    if (info.rasterizerState.has_value()) {
+        info.rasterizerState.value().assignToGFXRasterizerState(pass->_rs);
+    }
+
+    if (info.depthStencilState.has_value()) {
+        info.depthStencilState.value().assignToGFXDepthStencilState(pass->_depthStencilState);
+    }
 }
 
 /* static */
@@ -428,13 +418,23 @@ IPassInfoFull Pass::getPassInfoFull() const {
     ret.properties    = _properties;
     ret.priority      = static_cast<int32_t>(_priority);
 
-    ret.primitive         = _primitive;
-    ret.stage             = _stage;
-    ret.rasterizerState   = _rs;
-    ret.depthStencilState = _depthStencilState;
-    ret.blendState        = _blendState;
-    ret.dynamicStates     = _dynamicStates;
-    ret.phase             = _phaseString;
+    ret.primitive = _primitive;
+    ret.stage     = _stage;
+
+    RasterizerStateInfo rsInfo;
+    rsInfo.fromGFXRasterizerState(_rs);
+    ret.rasterizerState = rsInfo;
+
+    DepthStencilStateInfo dsInfo;
+    dsInfo.fromGFXDepthStencilState(_depthStencilState);
+    ret.depthStencilState = dsInfo;
+
+    BlendStateInfo bsInfo;
+    bsInfo.fromGFXBlendState(_blendState);
+    ret.blendState = bsInfo;
+
+    ret.dynamicStates = _dynamicStates;
+    ret.phase         = _phaseString;
 
     return ret;
 }
@@ -482,8 +482,9 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
 
     const auto            alignment = device->getCapabilities().uboOffsetAlignment;
     std::vector<uint32_t> startOffsets;
-    uint32_t              lastSize   = 0;
-    uint32_t              lastOffset = 0;
+    startOffsets.reserve(blocks.size());
+    uint32_t lastSize   = 0;
+    uint32_t lastOffset = 0;
     for (size_t i = 0; i < blocks.size(); i++) {
         const auto &size = blockSizes[i];
         startOffsets.emplace_back(lastOffset);
@@ -515,8 +516,9 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         if (binding >= _blocks.size()) {
             _blocks.resize(binding + 1);
         }
-        _blocks[binding].data = reinterpret_cast<float *>(const_cast<uint8_t *>(_rootBlock->getData()) + bufferViewInfo.offset);
-        _blocks[binding].size = size / 4;
+        _blocks[binding].data   = reinterpret_cast<float *>(const_cast<uint8_t *>(_rootBlock->getData()) + bufferViewInfo.offset);
+        _blocks[binding].count  = size / 4;
+        _blocks[binding].offset = bufferViewInfo.offset / 4;
         _descriptorSet->bindBuffer(binding, bufferView);
     }
     // store handles

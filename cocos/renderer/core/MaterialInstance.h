@@ -57,8 +57,16 @@ public:
         return _owner;
     }
 
-    void recompileShaders(const MacroRecord &overrides, index_t passIdx = CC_INVALID_INDEX) override;
-    void overridePipelineStates(const PassOverrides &overrides, index_t passIdx = CC_INVALID_INDEX) override;
+    void recompileShaders(const MacroRecord &overrides) override {
+        MaterialInstance::recompileShaders(overrides, CC_INVALID_INDEX);
+    }
+    void recompileShaders(const MacroRecord &overrides, index_t passIdx) override;
+
+    void overridePipelineStates(const PassOverrides &overrides) override {
+        MaterialInstance::overridePipelineStates(overrides, CC_INVALID_INDEX);
+    }
+    void overridePipelineStates(const PassOverrides &overrides, index_t passIdx) override;
+
     bool destroy() override;
 
     void doDestroy() override;
@@ -72,8 +80,6 @@ public:
 
 protected:
     std::vector<scene::Pass *> createPasses() override;
-
-    std::vector<PassInstance *> _passInstances; //cjh could we use Material::_passes ?
 
 private:
     Material *           _parent{nullptr};

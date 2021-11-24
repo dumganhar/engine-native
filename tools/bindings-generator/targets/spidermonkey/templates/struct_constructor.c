@@ -19,7 +19,7 @@ bool sevalue_to_native(const se::Value &from, ${namespaced_class_name} * to, se:
 #set arg_idx = 0
 #for field in $public_fields
     #set field_type = field.ntype.to_string($generator)
-    json->getProperty("${field.export_name}", &field);
+    json->getProperty("${field.export_name}", &field, true);
     if(!field.isNullOrUndefined()) {
         ok &= sevalue_to_native(field, &(to->${field.name}), ctx);
     }

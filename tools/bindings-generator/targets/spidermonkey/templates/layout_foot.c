@@ -3,7 +3,7 @@ bool register_all_${prefix}(se::Object* obj)    // NOLINT
 #if $target_ns
     // Get the ns
     se::Value nsVal;
-    if (!obj->getProperty("${target_ns}", &nsVal))
+    if (!obj->getProperty("${target_ns}", &nsVal, true))
     {
         se::HandleObject jsobj(se::Object::createPlainObject());
         nsVal.setObject(jsobj);

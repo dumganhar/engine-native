@@ -72,18 +72,18 @@ public:
     Model();
     virtual ~Model() = default;
 
-    void                             initialize();
-    virtual void                     destroy();
-    void                             updateWorldBound();
-    void                             createBoundingShape(const std::optional<Vec3> &minPos, const std::optional<Vec3> &maxPos);
-    virtual void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat);
-    void                             setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
-    virtual void                     setSubModelMaterial(index_t idx, Material *mat);
-    void                             onGlobalPipelineStateChanged() const;
-    void                             onMacroPatchesStateChanged();
-    void                             updateLightingmap(Texture2D *texture, const Vec4 &uvParam);
-    virtual std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex);
-    virtual void                     updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass);
+    void                              initialize();
+    virtual void                      destroy();
+    void                              updateWorldBound();
+    void                              createBoundingShape(const std::optional<Vec3> &minPos, const std::optional<Vec3> &maxPos);
+    virtual void                      initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat);
+    void                              setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
+    virtual void                      setSubModelMaterial(index_t idx, Material *mat);
+    void                              onGlobalPipelineStateChanged() const;
+    void                              onMacroPatchesStateChanged();
+    void                              updateLightingmap(Texture2D *texture, const Vec4 &uvParam);
+    virtual std::vector<IMacroPatch> &getMacroPatches(index_t subModelIndex);
+    virtual void                      updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass);
 
     virtual void updateTransform(uint32_t stamp);
     virtual void updateUBOs(uint32_t stamp);
@@ -179,6 +179,8 @@ protected:
     Vec4       _lightmapUVParam;
 
     RenderScene *_scene{nullptr};
+
+    std::vector<IMacroPatch> _macroPatches;
 
     // For JS
     CallbacksInvoker _eventProcessor;

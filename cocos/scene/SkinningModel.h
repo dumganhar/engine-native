@@ -65,15 +65,15 @@ public:
         _bufferIndices = bufferIndices;
         _joints        = joints;
     }
-    inline void              setNeedUpdate(bool needUpdate) { _needUpdate = needUpdate; }
-    void                     setBuffers(const std::vector<gfx::Buffer *> &buffers);
-    void                     updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) override;
-    void                     updateTransform(uint32_t stamp) override;
-    void                     updateUBOs(uint32_t stamp) override;
-    void                     destroy() override;
-    void                     bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
-    void                     initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
-    std::vector<IMacroPatch> getMacroPatches(index_t subModelIndex) override;
+    inline void               setNeedUpdate(bool needUpdate) { _needUpdate = needUpdate; }
+    void                      setBuffers(const std::vector<gfx::Buffer *> &buffers);
+    void                      updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) override;
+    void                      updateTransform(uint32_t stamp) override;
+    void                      updateUBOs(uint32_t stamp) override;
+    void                      destroy() override;
+    void                      bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
+    void                      initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
+    std::vector<IMacroPatch> &getMacroPatches(index_t subModelIndex) override;
 
 private:
     static void                                                    uploadJointData(uint32_t base, const Mat4 &mat, float *dst);

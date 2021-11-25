@@ -168,11 +168,19 @@ const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer = {
          a[idx + 1] = p->y;
      }},
     {gfx::Type::FLOAT3, [](float *a, const MaterialProperty &v, index_t idx) {
-         const auto *p = std::get_if<Vec3>(&v);
-         CC_ASSERT(p != nullptr);
-         a[idx]     = p->x;
-         a[idx + 1] = p->y;
-         a[idx + 2] = p->z;
+         if (std::holds_alternative<Vec3>(v)) {
+             const auto &vec3 = std::get<Vec3>(v);
+             a[idx]           = vec3.x;
+             a[idx + 1]       = vec3.y;
+             a[idx + 2]       = vec3.z;
+         } else if (std::holds_alternative<Vec4>(v)) {
+             const auto &vec4 = std::get<Vec4>(v);
+             a[idx]           = vec4.x;
+             a[idx + 1]       = vec4.y;
+             a[idx + 2]       = vec4.z;
+         } else {
+             assert(false);
+         }
      }},
     {gfx::Type::FLOAT4, [](float *a, const MaterialProperty &v, index_t idx) {
          if (std::holds_alternative<Vec4>(v)) {
@@ -194,6 +202,8 @@ const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer = {
              a[idx + 1]       = quat.y;
              a[idx + 2]       = quat.z;
              a[idx + 3]       = quat.w;
+         } else {
+             assert(false);
          }
      }},
     {gfx::Type::MAT3, [](float *a, const MaterialProperty &v, index_t idx) {

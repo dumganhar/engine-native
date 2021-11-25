@@ -385,7 +385,22 @@ static bool scene_Vector_to_seval(cc::Node *node, const std::vector<cc::Node *> 
     return true;
 }
 
+static bool js_scene_Camera_screenPointToRay(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::scene::Camera>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Camera_screenPointToRay : Invalid Native Object");
 
+    cc::geometry::Ray  ray;
+    cobj->screenPointToRay(&ray, _tempFloatArray[0], _tempFloatArray[1]);
+    _tempFloatArray[0]        = ray.o.x;
+    _tempFloatArray[1]        = ray.o.y;
+    _tempFloatArray[2]        = ray.o.z;
+    _tempFloatArray[3]        = ray.d.x;
+    _tempFloatArray[4]        = ray.d.y;
+    _tempFloatArray[5]        = ray.d.z;
+    return true;
+}
+SE_BIND_FUNC(js_scene_Camera_screenPointToRay)
 
 static bool js_scene_Node_getPosition(se::State &s) // NOLINT(readability-identifier-naming)
 {
@@ -873,6 +888,8 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     });
 
     __jsb_cc_Root_proto->defineFunction("_registerListeners", _SE(js_root_registerListeners));
+
+    __jsb_cc_scene_Camera_proto->defineFunction("screenPointToRay", _SE(js_scene_Camera_screenPointToRay));
 
     // Node TS wrapper will invoke this function to let native object listen some events.
     __jsb_cc_Node_proto->defineFunction("_registerListeners", _SE(js_scene_Node_registerListeners));

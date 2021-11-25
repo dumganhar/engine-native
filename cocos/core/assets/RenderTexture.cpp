@@ -52,7 +52,7 @@ namespace cc {
 static IDGenerator idGenerator("RenderTex");
 
 void RenderTexture::initialize(const IRenderTextureCreateInfo &info) {
-    _name   = info.name.value();
+    _name   = info.name.has_value() ? info.name.value() : "";
     _width  = info.width;
     _height = info.height;
     initWindow(info);
@@ -80,7 +80,10 @@ void RenderTexture::resize(uint32_t width, uint32_t height) {
 }
 
 gfx::Texture *RenderTexture::getGFXTexture() const {
-    return _window ? _window->getFramebuffer()->getColorTextures()[0] : nullptr;
+    if (_window && _window->getFramebuffer()->getColorTextures().size() > 0) {
+        return _window->getFramebuffer()->getColorTextures()[0];
+    }
+    return nullptr;
 }
 
 gfx::Sampler *RenderTexture::getGFXSampler() const {

@@ -160,7 +160,11 @@ bool sevalue_to_native(const se::Value &from, std::vector<cc::MacroRecord> *to, 
 bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
 
 inline bool sevalue_to_native(const se::Value &from, std::string *to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    *to = from.toString();
+    if (!from.isNullOrUndefined()) {
+        *to = from.toString();
+    } else {
+        to->clear();
+    }
     return true;
 }
 

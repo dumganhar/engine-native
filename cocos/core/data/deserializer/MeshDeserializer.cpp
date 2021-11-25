@@ -166,7 +166,8 @@ void deserializeMorph(const rapidjson::Value &morph, std::optional<Morph> &cMorp
     cMorph            = Morph{};
     auto &cMorphValue = cMorph.value();
     if (morph.HasMember("subMeshMorphs")) {
-        deserializeArray<SubMeshMorph>(morph["subMeshMorphs"], cMorphValue.subMeshMorphs, deserializeSubMeshMorph);
+        //TODO:minggo
+//        deserializeArray<SubMeshMorph>(morph["subMeshMorphs"], cMorphValue.subMeshMorphs, deserializeSubMeshMorph);
     }
 
     if (morph.HasMember("weights")) {

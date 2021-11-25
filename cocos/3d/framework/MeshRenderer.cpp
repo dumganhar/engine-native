@@ -383,7 +383,12 @@ void MeshRenderer::initSubMeshShapesWeights() {
     const auto &                 subMeshMorphs = morph.value().subMeshMorphs;
     std::vector<MeshWeightsType> shapesWeights;
 
-    for (const auto &subMeshMorph : subMeshMorphs) {
+    for (const auto &subMeshMorphHolder : subMeshMorphs) {
+        if (!subMeshMorphHolder.has_value()) {
+            shapesWeights.emplace_back(std::vector<float>{});
+        }
+        
+        const auto &subMeshMorph = subMeshMorphHolder.value();
         if (subMeshMorph.weights.has_value()) {
             shapesWeights.emplace_back(subMeshMorph.weights.value());
         } else if (commonWeights.has_value()) {
@@ -407,8 +412,16 @@ bool MeshRenderer::validateShapeWeights() {
     }
     for (index_t subMeshIdx = 0; subMeshIdx < _subMeshShapesWeights.size(); ++subMeshIdx) {
         uint32_t shapeCount = _subMeshShapesWeights[subMeshIdx].size();
-        if (morph->subMeshMorphs[subMeshIdx].targets.size() == shapeCount) continue;
-        return false;
+        
+        const auto &subMeshMorphHolder = morph->subMeshMorphs[subMeshIdx];
+        if (!subMeshMorphHolder.has_value()) {
+            continue;
+        }
+        
+        const auto &subMeshMorph = subMeshMorphHolder.value();
+        if (subMeshMorph.targets.size() != shapeCount) {
+            return false;
+        }
     }
     return true;
 }

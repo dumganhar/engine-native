@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
-
+ 
  http://www.cocos.com
-
+ 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
-
+ 
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
-
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,67 +21,37 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
-****************************************************************************/
-
+ ****************************************************************************/
 #pragma once
 
-#include <stdint.h>
-#include <optional>
-#include <string>
 #include <vector>
-#include <variant>
+#include <set>
+#include "scene/Model.h"
+#include "scene/Define.h"
+#include "3d/assets/Morph.h"
 
 namespace cc {
 
-struct IMeshBufferView {
-    uint32_t offset{0};
-    uint32_t length{0};
-    uint32_t count{0};
-    uint32_t stride{0};
-};
+class MorphModel : public scene::Model {
+public:
+    MorphModel()           = default;
+    ~MorphModel() override = default;
 
-using MeshWeightsType = std::vector<float>;
+    std::vector<scene::IMacroPatch> &getMacroPatches(index_t subModelIndex) override;
+    void                             initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
+    void                             destroy() override;
+    void                             setSubModelMaterial(index_t idx, Material *mat) override;
 
-struct MorphTarget {
-    /**
-     * Displacement of each target attribute.
-     */
-    std::vector<IMeshBufferView> displacements;
-};
+    inline void setMorphRendering(MorphRenderingInstance *morphRendering) { _morphRenderingInstance = morphRendering; }
 
-struct SubMeshMorph {
-    /**
-     * Attributes to morph.
-     */
-    std::vector<std::string> attributes;
+protected:
+    void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) override;
 
-    /**
-     * Targets.
-     */
-    std::vector<MorphTarget> targets;
+private:
+    inline Material *launderMaterial(Material *materail) { return materail; }
 
-    /**
-     * Initial weights of each target.
-     */
-    std::optional<MeshWeightsType> weights;
-};
-
-struct Morph {
-    /**
-     * Morph data of each sub-mesh.
-     */
-    std::vector<std::optional<SubMeshMorph>> subMeshMorphs;
-
-    /**
-     * Common initial weights of each sub-mesh.
-     */
-    std::optional<MeshWeightsType> weights;
-
-    /**
-     * Name of each target of each sub-mesh morph.
-     * This field is only meaningful if every sub-mesh has the same number of targets.
-     */
-    std::optional<std::vector<std::string>> targetNames;
+    MorphRenderingInstance *_morphRenderingInstance{nullptr};
+    std::set<Material *>    _usedMaterials;
 };
 
 } // namespace cc

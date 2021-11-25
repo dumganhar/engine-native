@@ -154,7 +154,7 @@ private:
     Texture2D *      _textureAsset{nullptr};
     gfx::Sampler *   _sampler{nullptr};
     ArrayBuffer::Ptr _arrayBuffer{nullptr};
-    Float32Array     _valueView{nullptr};
+    Float32Array     _valueView;
     Uint8Array *     _updateView{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(MorphTexture);
@@ -501,7 +501,7 @@ private:
 //
 CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph, gfx::Device *gfxDevice) {
     _gfxDevice               = gfxDevice;
-    const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex];
+    const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();;
     enableVertexId(mesh, subMeshIndex, gfxDevice);
 
     for (size_t attributeIndex = 0, len = subMeshMorph.attributes.size(); attributeIndex < len; ++attributeIndex) {
@@ -539,9 +539,10 @@ const std::vector<CpuMorphAttribute> &CpuComputing::getData() const {
 //
 GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph, gfx::Device *gfxDevice) {
     _gfxDevice               = gfxDevice;
-    const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex];
+    const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();
 
     _subMeshMorph = &subMeshMorph;
+//    assertIsNonNullable(subMeshMorph);
 
     enableVertexId(mesh, subMeshIndex, gfxDevice);
 
@@ -628,7 +629,7 @@ public:
 
     std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) override {
         CC_ASSERT(_owner->_mesh->getStruct().morph.has_value());
-        auto &subMeshMorph             = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex];
+        auto &subMeshMorph             = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex].value();
         auto *subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
         if (subMeshRenderingInstance == nullptr) {
             return {};
@@ -692,10 +693,12 @@ StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
     _subMeshRenderings.resize(nSubMeshes, nullptr);
     const auto &morph = structInfo.morph.value();
     for (size_t iSubMesh = 0; iSubMesh < nSubMeshes; ++iSubMesh) {
-        const auto &subMeshMorph = morph.subMeshMorphs[iSubMesh];
-        //cjh We changed it to value, so it's always valid.        if (nullptr == subMeshMorph) {
-        //            continue;
-        //        }
+        const auto &subMeshMorphHolder = morph.subMeshMorphs[iSubMesh];
+        if (!subMeshMorphHolder.has_value()) {
+            continue;
+        }
+        
+        const auto &subMeshMorph = subMeshMorphHolder.value();
 
         if (PREFER_CPU_COMPUTING || subMeshMorph.targets.size() > pipeline::UBOMorph::MAX_MORPH_TARGET_COUNT) {
             _subMeshRenderings[iSubMesh] = new CpuComputing(

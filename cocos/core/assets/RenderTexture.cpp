@@ -52,7 +52,7 @@ namespace cc {
 static IDGenerator idGenerator("RenderTex");
 
 void RenderTexture::initialize(const IRenderTextureCreateInfo &info) {
-    _name   = info.name.value();
+    _name   = info.name.has_value() ? info.name.value() : "";
     _width  = info.width;
     _height = info.height;
     initWindow(info);

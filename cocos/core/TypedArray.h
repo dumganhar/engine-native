@@ -97,7 +97,7 @@ public:
     }
 
     explicit TypedArrayTemp(ArrayBuffer::Ptr buffer)
-    : TypedArrayTemp(buffer, 0, buffer->byteLength() / BYTES_PER_ELEMENT) {}
+    : TypedArrayTemp(buffer, 0) {}
 
     TypedArrayTemp(ArrayBuffer::Ptr buffer, uint32_t byteOffset)
     : TypedArrayTemp(buffer, byteOffset, (buffer->byteLength() - byteOffset) / BYTES_PER_ELEMENT) {}

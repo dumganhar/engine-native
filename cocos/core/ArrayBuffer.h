@@ -73,7 +73,8 @@ public:
     inline uint32_t byteLength() const { return _byteLength; }
 
     // Just use it to copy data. Use TypedArray to get/set data.
-    const uint8_t *getData() const { return _data; }
+    inline const uint8_t *getData() const { return _data; }
+    inline uint8_t *      getData() { return _data; }
 
     inline void reset(const uint8_t *data, uint32_t length) {
         if (_jsArrayBuffer != nullptr) {

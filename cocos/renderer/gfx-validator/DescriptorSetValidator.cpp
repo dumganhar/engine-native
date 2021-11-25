@@ -99,9 +99,7 @@ void DescriptorSetValidator::bindTexture(uint binding, Texture *texture, uint in
 
     DescriptorSet::bindTexture(binding, texture, index);
 
-    if (texture) {
-        _actor->bindTexture(binding, static_cast<TextureValidator *>(texture)->getActor(), index);
-    }
+    _actor->bindTexture(binding, static_cast<TextureValidator *>(texture)->getActor(), index);
 }
 
 void DescriptorSetValidator::bindSampler(uint binding, Sampler *sampler, uint index) {

@@ -80,10 +80,7 @@ void RenderTexture::resize(uint32_t width, uint32_t height) {
 }
 
 gfx::Texture *RenderTexture::getGFXTexture() const {
-    if (_window && _window->getFramebuffer()->getColorTextures().size() > 0) {
-        return _window->getFramebuffer()->getColorTextures()[0];
-    }
-    return nullptr;
+    return _window ? _window->getFramebuffer()->getColorTextures()[0] : nullptr;
 }
 
 gfx::Sampler *RenderTexture::getGFXSampler() const {

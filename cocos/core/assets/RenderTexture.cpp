@@ -37,18 +37,15 @@ uint64_t getDefaultSamlerHash() {
     return defaultSamplerHash;
 }
 
-cc::gfx::RenderPassInfo getPassInfo() {
-    auto passInfo = cc::gfx::RenderPassInfo();
-    for (auto &colorAttachment : passInfo.colorAttachments) {
-        colorAttachment.endAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::COLOR_ATTACHMENT_WRITE};
-    }
-    return passInfo;
-}
+cc::gfx::ColorAttachment colorAttachment{
+    .endAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}
+};
+cc::gfx::RenderPassInfo passInfo{std::vector<cc::gfx::ColorAttachment>{colorAttachment}, cc::gfx::DepthStencilAttachment{}};
 
 cc::scene::IRenderWindowInfo windowInfo{
     .width          = 1,
     .height         = 1,
-    .renderPassInfo = getPassInfo()};
+    .renderPassInfo = passInfo};
 } // namespace
 namespace cc {
 
@@ -102,7 +99,7 @@ void RenderTexture::initWindow() {
     windowInfo.title          = _name;
     windowInfo.width          = _width;
     windowInfo.height         = _height;
-    windowInfo.renderPassInfo = getPassInfo();
+    windowInfo.renderPassInfo = passInfo;
 
     if (_window != nullptr) {
         _window->destroy();
@@ -119,7 +116,7 @@ void RenderTexture::initWindow(const IRenderTextureCreateInfo &info) {
     if (info.passInfo.has_value()) {
         windowInfo.renderPassInfo = info.passInfo.value();
     } else {
-        windowInfo.renderPassInfo = getPassInfo();
+        windowInfo.renderPassInfo = passInfo;
     }
     if (_window != nullptr) {
         _window->destroy();

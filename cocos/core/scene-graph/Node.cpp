@@ -453,9 +453,9 @@ bool Node::isChildOf(Node *parent) {
 }
 
 void Node::removeAllChildren() {
-    for (auto *child : _children) {
-        if (child) {
-            child->setParent(nullptr);
+    for (auto i = static_cast<index_t>(_children.size() - 1); i >= 0; --i) {
+        if (_children[i]) {
+            _children[i]->setParent(nullptr);
         }
     }
     _children.clear();

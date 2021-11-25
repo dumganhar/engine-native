@@ -39,7 +39,8 @@ ImageAsset::~ImageAsset() {
 
 void ImageAsset::setNativeAsset(const std::any &obj) {
     if (obj.has_value()) {
-        if (auto *image = const_cast<Image*>(std::any_cast<Image*>(obj)); image != nullptr) {
+        if (auto **pImage = const_cast<Image**>(std::any_cast<Image*>(&obj)); pImage != nullptr) {
+            Image *image = *pImage;
             image->takeData(&_data);
             _needFreeData = true;
 

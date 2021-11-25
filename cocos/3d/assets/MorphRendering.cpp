@@ -154,7 +154,7 @@ private:
     Texture2D *      _textureAsset{nullptr};
     gfx::Sampler *   _sampler{nullptr};
     ArrayBuffer::Ptr _arrayBuffer{nullptr};
-    Float32Array     _valueView{nullptr};
+    Float32Array     _valueView;
     Uint8Array *     _updateView{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(MorphTexture);

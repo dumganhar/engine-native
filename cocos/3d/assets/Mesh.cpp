@@ -394,20 +394,20 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
         worldMatrix->getRotation(&rotate);
     }
     if (!_initialized) {
-        auto structInfo = mesh->_struct; //NOTE: Need copy struct, so don't use referece
-        auto data       = mesh->_data;   //NOTE: Need copy struct, so don't use referece
+        auto       structInfo = mesh->_struct; //NOTE: Need copy struct, so don't use referece
+        Uint8Array data{mesh->_data.slice()};
         if (worldMatrix != nullptr) {
-            if (_struct.maxPosition.has_value() && _struct.minPosition.has_value()) {
-                Vec3::add(_struct.maxPosition.value(), _struct.minPosition.value(), &boundingBox.center);
+            if (structInfo.maxPosition.has_value() && structInfo.minPosition.has_value()) {
+                Vec3::add(structInfo.maxPosition.value(), structInfo.minPosition.value(), &boundingBox.center);
                 boundingBox.center.scale(0.5F);
-                Vec3::subtract(_struct.maxPosition.value(), _struct.minPosition.value(), &boundingBox.halfExtents);
+                Vec3::subtract(structInfo.maxPosition.value(), structInfo.minPosition.value(), &boundingBox.halfExtents);
                 boundingBox.halfExtents.scale(0.5F);
 
                 boundingBox.transform(*worldMatrix, &boundingBox);
-                Vec3::add(boundingBox.center, boundingBox.halfExtents, &_struct.maxPosition.value());
-                Vec3::subtract(boundingBox.center, boundingBox.halfExtents, &_struct.minPosition.value());
+                Vec3::add(boundingBox.center, boundingBox.halfExtents, &structInfo.maxPosition.value());
+                Vec3::subtract(boundingBox.center, boundingBox.halfExtents, &structInfo.minPosition.value());
             }
-            for (auto &vtxBdl : _struct.vertexBundles) {
+            for (auto &vtxBdl : structInfo.vertexBundles) {
                 for (size_t j = 0; j < vtxBdl.attributes.size(); j++) {
                     if (vtxBdl.attributes[j].name == gfx::ATTR_NAME_POSITION || vtxBdl.attributes[j].name == gfx::ATTR_NAME_NORMAL) {
                         const gfx::Format format = vtxBdl.attributes[j].format;
@@ -602,9 +602,17 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
             }
             //
             if (idxStride == prim.indexView.value().stride) {
-                ibView = srcIBView;
-                //FIXME:(minggo) it is the same as TS?
-                //                ibView.set(srcIBView);
+                switch (idxStride) {
+                    case 2:
+                        std::get<Uint16Array>(ibView).set(std::get<Uint16Array>(srcIBView));
+                        break;
+                    case 1:
+                        std::get<Uint8Array>(ibView).set(std::get<Uint8Array>(srcIBView));
+                        break;
+                    default:
+                        std::get<Uint32Array>(ibView).set(std::get<Uint32Array>(srcIBView));
+                        break;
+                }
             } else {
                 for (uint32_t n = 0; n < prim.indexView.value().count; ++n) {
                     if (idxStride == 2) {
@@ -630,21 +638,23 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
             for (uint32_t n = 0; n < dstPrim.indexView.value().count; ++n) {
                 if (idxStride == 2) {
                     std::get<Uint16Array>(ibView)[prim.indexView->count + n] =
-                        vertBatchCount + static_cast<uint16_t>(getTypedArrayValue<uint32_t>(srcIBView, n));
+                        vertBatchCount + static_cast<uint16_t>(getTypedArrayValue<uint32_t>(dstIBView, n));
                 } else if (idxStride == 1) {
                     std::get<Uint8Array>(ibView)[prim.indexView->count + n] =
-                        vertBatchCount + static_cast<uint16_t>(getTypedArrayValue<uint8_t>(srcIBView, n));
+                        vertBatchCount + static_cast<uint8_t>(getTypedArrayValue<uint32_t>(dstIBView, n));
                 } else {
                     std::get<Uint32Array>(ibView)[prim.indexView->count + n] =
-                        vertBatchCount + getTypedArrayValue<uint32_t>(srcIBView, n);
+                        vertBatchCount + getTypedArrayValue<uint32_t>(dstIBView, n);
                 }
             }
             dstOffset += dstPrim.indexView.value().length;
 
-            primitives[i].indexView.value().offset = bufferBlob.getLength();
-            primitives[i].indexView.value().length = ib->byteLength();
-            primitives[i].indexView.value().count  = idxCount;
-            primitives[i].indexView.value().stride = idxStride;
+            IBufferView indexView;
+            indexView.offset        = bufferBlob.getLength();
+            indexView.length        = ib->byteLength();
+            indexView.count         = idxCount;
+            indexView.stride        = idxStride;
+            primitives[i].indexView = indexView;
 
             bufferBlob.setNextAlignment(idxStride);
             bufferBlob.addBuffer(ib);

@@ -97,10 +97,10 @@ public:
     }
 
     explicit TypedArrayTemp(ArrayBuffer::Ptr buffer)
-    : TypedArrayTemp(buffer, 0, buffer->byteLength()) {}
+    : TypedArrayTemp(buffer, 0) {}
 
     TypedArrayTemp(ArrayBuffer::Ptr buffer, uint32_t byteOffset)
-    : TypedArrayTemp(buffer, byteOffset, buffer->byteLength() / BYTES_PER_ELEMENT) {}
+    : TypedArrayTemp(buffer, byteOffset, (buffer->byteLength() - byteOffset) / BYTES_PER_ELEMENT) {}
 
     TypedArrayTemp(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t length)
     : _buffer(buffer),
@@ -142,11 +142,29 @@ public:
     }
 
     TypedArrayTemp subarray(uint32_t begin, uint32_t end) {
-        return TypedArrayTemp(_buffer, begin, end - begin + 1);
+        return TypedArrayTemp(_buffer, begin * BYTES_PER_ELEMENT, end - begin);
     }
 
     TypedArrayTemp subarray(uint32_t begin) {
-        return subarray(begin, _byteLength - begin + 1UL);
+        return TypedArrayTemp(_buffer, begin * BYTES_PER_ELEMENT);
+    }
+
+    TypedArrayTemp slice() {
+        return slice(0);
+    }
+
+    TypedArrayTemp slice(uint32_t start) {
+        return slice(start, _byteLength / BYTES_PER_ELEMENT);
+    }
+
+    TypedArrayTemp slice(uint32_t start, uint32_t end) {
+        CC_ASSERT(end > start);
+        CC_ASSERT(start < (_byteLength / BYTES_PER_ELEMENT));
+        CC_ASSERT(end <= (_byteLength / BYTES_PER_ELEMENT));
+        uint32_t newBufByteLength = (end - start) * BYTES_PER_ELEMENT;
+        auto     buffer           = std::make_shared<ArrayBuffer>(newBufByteLength);
+        memcpy(buffer->getData(), _buffer->getData() + start * BYTES_PER_ELEMENT, newBufByteLength);
+        return TypedArrayTemp(buffer);
     }
 
     void set(const ArrayBuffer::Ptr &buffer) {
@@ -159,12 +177,27 @@ public:
         memcpy(_buffer->_data + offset, buffer->_data, buffer->byteLength());
     }
 
-    void set(const TypedArrayTemp<T> &array) {
-        set(array._buffer);
+    template <typename SrcType>
+    void set(const TypedArrayTemp<SrcType> &array) {
+        set(array, 0);
     }
 
-    void set(const TypedArrayTemp<T> &array, uint32_t offset) {
-        set(array._buffer, offset);
+    template <typename SrcType>
+    void set(const TypedArrayTemp<SrcType> &array, uint32_t offset) {
+        CC_ASSERT(_buffer);
+        uint32_t dstByteOffset = offset * BYTES_PER_ELEMENT;
+        uint32_t srcByteOffset = array.byteOffset();
+        uint32_t srcCount      = array.length();
+        if constexpr (std::is_same_v<T, SrcType>) {
+            CC_ASSERT(dstByteOffset + srcCount * TypedArrayTemp<SrcType>::BYTES_PER_ELEMENT <= _byteEndPos);
+            memcpy(_buffer->_data + dstByteOffset, array._buffer->_data + srcByteOffset, array.byteLength());
+        } else {
+            uint32_t remainCount = (_byteEndPos - dstByteOffset) / BYTES_PER_ELEMENT;
+            CC_ASSERT(srcCount <= remainCount);
+            for (uint32_t i = 0; i < srcCount; ++i) {
+                (*this)[offset + i] = reinterpret_cast<T>(array[i]);
+            }
+        }
     }
 
     void reset(uint32_t length) {

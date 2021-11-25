@@ -26,6 +26,7 @@
 #include "core/Scheduler.h"
 #include <iostream>
 #include "base/Macros.h"
+#include "base/TypeDef.h"
 
 namespace {
 constexpr uint32_t CC_REPEAT_FOREVER{UINT_MAX - 1};
@@ -588,8 +589,8 @@ void Scheduler::unscheduleAll() {
     unscheduleAllWithMinPriority(Priority::SCHEDULER);
 }
 void Scheduler::unscheduleAllWithMinPriority(Priority minPriority) {
-    for (auto element : _arrayForTimers) {
-        unscheduleAllForTarget(element->_target);
+    for (auto i = static_cast<index_t>(_arrayForTimers.size()) - 1; i >= 0; i--) {
+        unscheduleAllForTarget(_arrayForTimers[i]->_target);
     }
 
     uint32_t   temp_size;

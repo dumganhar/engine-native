@@ -38,8 +38,7 @@ uint64_t getDefaultSamlerHash() {
 }
 
 cc::gfx::ColorAttachment colorAttachment{
-    .endAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}
-};
+    .endAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}};
 cc::gfx::RenderPassInfo passInfo{std::vector<cc::gfx::ColorAttachment>{colorAttachment}, cc::gfx::DepthStencilAttachment{}};
 
 cc::scene::IRenderWindowInfo windowInfo{

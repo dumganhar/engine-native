@@ -108,7 +108,7 @@ public:
     inline void setInstancedAttributeBlock(const InstancedAttributeBlock &val) { _instanceAttributeBlock = val; }
 
     inline bool                               isInited() const { return _inited; };
-    inline bool                               getCastShadow() const { return _castShadow; }
+    inline bool                               isCastShadow() const { return _castShadow; }
     inline bool                               isEnabled() const { return _enabled; }
     inline bool                               isInstancingEnabled() const { return _instMatWorldIdx >= 0; };
     inline int32_t                            getInstMatWorldIdx() const { return _instMatWorldIdx; }
@@ -120,10 +120,10 @@ public:
     inline Float32Array                       getLocalData() const { return _localData; }
     inline geometry::AABB *                   getModelBounds() const { return _modelBounds; }
     inline Node *                             getNode() const { return _node; }
-    inline bool                               getReceiveShadow() const { return _receiveShadow; }
+    inline bool                               isReceiveShadow() const { return _receiveShadow; }
     inline const std::vector<SubModel *> &    getSubModels() const { return _subModels; }
     inline Node *                             getTransform() const { return _transform; }
-    inline bool                               getTransformUpdated() const { return _transformUpdated; }
+    inline bool                               isTransformUpdated() const { return _transformUpdated; }
     inline uint32_t                           getUpdateStamp() const { return _updateStamp; }
     inline uint32_t                           getVisFlags() const { return _visFlags; }
     inline geometry::AABB *                   getWorldBounds() const { return _worldBounds; }

@@ -121,7 +121,7 @@ public:
     void initDefault(const std::optional<std::string> &uuid) override;
 
     bool validate() const override;
-    
+
     // Functions for TS deserialization.
     inline void setWidth(uint32_t width) { _width = width; }
     inline void setHeight(uint32_t height) { _height = height; }

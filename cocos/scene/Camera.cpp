@@ -206,7 +206,11 @@ geometry::Ray *Camera::screenPointToRay(geometry::Ray *out, float x, float y) {
     tmpVec3.x = tmpVec3.x * preTransform[0] + tmpVec3.y * preTransform[2] * ySign;
     tmpVec3.y = tmpVec3.x * preTransform[1] + tmpVec3.y * preTransform[3] * ySign;
 
-    _matViewProjInv.transformVector(tmpVec3.x, tmpVec3.y, tmpVec3.z, 1, isProj ? &tmpVec3 : &out->o);
+    if (isProj) {
+        tmpVec3.transformMat4(tmpVec3, _matViewProjInv);
+    } else {
+        out->o.transformMat4(tmpVec3, _matViewProjInv);
+    }
 
     if (isProj) {
         // camera origin

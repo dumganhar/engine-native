@@ -122,6 +122,10 @@ public:
 
     bool validate() const override;
 
+    // Functions for TS deserialization.
+    inline void setWidth(uint32_t width) { _width = width; }
+    inline void setHeight(uint32_t height) { _height = height; }
+
 private:
     /*    @serializable
     @rangeMin(1)

@@ -20,6 +20,7 @@
  This file was modified to fit the cocos2d-x project
  */
 
+#include "math/Math.h"
 #include "math/Vec3.h"
 #include "base/Macros.h"
 #include "math/Mat3.h"
@@ -196,7 +197,7 @@ void Vec3::transformMat4(const Vec3 &v, const Mat4 &m) {
     float iy  = v.y;
     float iz  = v.z;
     float rhw = m.m[3] * ix + m.m[7] * iy + m.m[11] * iz + m.m[15];
-    rhw       = rhw != 0.0F ? 1 / rhw : 1;
+    rhw       = math::IsNotEqualF(rhw, 0.0F) ? 1 / rhw : 1;
 
     x = (m.m[0] * ix + m.m[4] * iy + m.m[8] * iz + m.m[12]) * rhw;
     y = (m.m[1] * ix + m.m[5] * iy + m.m[9] * iz + m.m[13]) * rhw;

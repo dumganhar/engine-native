@@ -32,7 +32,7 @@ namespace cc {
 
 class BufferAsset final : public Asset {
 public:
-    //    BufferAsset()           = default;
+    BufferAsset() = default;
     ~BufferAsset() override = default;
 
     inline const ArrayBuffer::Ptr &getBuffer() const { return _buffer; }

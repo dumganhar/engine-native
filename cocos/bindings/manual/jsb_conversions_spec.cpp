@@ -42,12 +42,12 @@
 ///////////////////////// utils /////////////////////////
 
 template <class... Ts>
-struct overloaded : Ts... { using Ts::operator()...; }; //NOLINT
+struct overloaded : Ts... { using Ts::operator()...; }; // NOLINT
 template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
 template <typename A, typename T, typename F>
-bool set_member_field(se::Object *obj, T *to, const std::string_view &property, F f, se::Value &tmp) { //NOLINT
+bool set_member_field(se::Object *obj, T *to, const std::string_view &property, F f, se::Value &tmp) { // NOLINT
     bool ok = obj->getProperty(property.data(), &tmp, true);
     SE_PRECONDITION2(ok, false, "Property '%s' is not set", property.data());
     if constexpr (std::is_member_function_pointer<F>::value) {
@@ -196,8 +196,8 @@ bool Rect_to_seval(const cc::Rect &v, se::Value *ret) { // NOLINT(readability-id
     return true;
 }
 void toVec2(void *data, DataType type, se::Value *ret) {
-    auto *   intptr   = static_cast<int32_t *>(data);
-    auto *   floatptr = static_cast<float *>(data);
+    auto    *intptr   = static_cast<int32_t *>(data);
+    auto    *floatptr = static_cast<float *>(data);
     cc::Vec2 vec2;
     if (DataType::INT == type) {
         vec2.x = static_cast<float>(intptr[0]);
@@ -211,8 +211,8 @@ void toVec2(void *data, DataType type, se::Value *ret) {
 }
 
 void toVec3(void *data, DataType type, se::Value *ret) {
-    auto *   intptr   = static_cast<int32_t *>(data);
-    auto *   floatptr = static_cast<float *>(data);
+    auto    *intptr   = static_cast<int32_t *>(data);
+    auto    *floatptr = static_cast<float *>(data);
     cc::Vec3 vec3;
     if (DataType::INT == type) {
         vec3.x = static_cast<float>(intptr[0]);
@@ -228,8 +228,8 @@ void toVec3(void *data, DataType type, se::Value *ret) {
 }
 
 void toVec4(void *data, DataType type, se::Value *ret) {
-    auto *   intptr   = static_cast<int32_t *>(data);
-    auto *   floatptr = static_cast<float *>(data);
+    auto    *intptr   = static_cast<int32_t *>(data);
+    auto    *floatptr = static_cast<float *>(data);
     cc::Vec4 vec4;
     if (DataType::INT == type) {
         vec4.x = static_cast<float>(intptr[0]);
@@ -711,8 +711,8 @@ bool sevalue_to_native(const se::Value &from, cc::scene::FogInfo *to, se::Object
     set_member_field<float>(obj, to, "fogAtten", &cc::scene::FogInfo::setFogAtten, tmp);
     set_member_field<float>(obj, to, "fogTop", &cc::scene::FogInfo::setFogTop, tmp);
     set_member_field<float>(obj, to, "fogRange", &cc::scene::FogInfo::setFogRange, tmp);
-    //TODO(PatriceJiang): covnert resource ??
-    // set_member_field<cc::scene::Fog>(obj, to, "resource", &cc::scene::FogInfo::setResource, tmp);
+    // TODO(PatriceJiang): covnert resource ??
+    //  set_member_field<cc::scene::Fog>(obj, to, "resource", &cc::scene::FogInfo::setResource, tmp);
     return true;
 }
 
@@ -736,8 +736,8 @@ bool sevalue_to_native(const se::Value &from, cc::scene::ShadowsInfo *to, se::Ob
     set_member_field<float>(obj, to, "maxReceived", &cc::scene::ShadowsInfo::setMaxReceived, tmp);
     set_member_field<float>(obj, to, "size", &cc::scene::ShadowsInfo::setShadowMapSize, tmp);
     set_member_field<float>(obj, to, "saturation", &cc::scene::ShadowsInfo::setSaturation, tmp);
-    //TODO(PatriceJiang): covnert resource ??
-    // set_member_field<cc::scene::Shadow>(obj, to, "resource", &cc::scene::ShadowInfo::setResource, tmp);
+    // TODO(PatriceJiang): covnert resource ??
+    //  set_member_field<cc::scene::Shadow>(obj, to, "resource", &cc::scene::ShadowInfo::setResource, tmp);
 
     return true;
 }
@@ -747,8 +747,8 @@ bool sevalue_to_native(const se::Value &from, cc::scene::SkyboxInfo *to, se::Obj
     SE_PRECONDITION2(from.isObject(), false, "Convert parameter to ShadowInfo failed!");
     se::Object *obj = from.toObject();
     se::Value   tmp;
-    //TODO(PatriceJiang): export TextureCube
-    // set_member_field<cc::TextureCube*>(obj, to, "envmap", &cc::scene::SkyboxInfo::setEnvmap, tmp);
+    // TODO(PatriceJiang): export TextureCube
+    //  set_member_field<cc::TextureCube*>(obj, to, "envmap", &cc::scene::SkyboxInfo::setEnvmap, tmp);
     set_member_field<bool>(obj, to, "isRGBE", &cc::scene::SkyboxInfo::setRGBE, tmp);
     set_member_field<bool>(obj, to, "enabled", &cc::scene::SkyboxInfo::setEnabled, tmp);
     set_member_field<bool>(obj, to, "useIBL", &cc::scene::SkyboxInfo::setUseIBL, tmp);
@@ -761,7 +761,7 @@ bool sevalue_to_native(const se::Value &from, cc::MacroValue *to, se::Object * /
     if (from.isBoolean()) {
         *to = from.toBoolean();
     } else if (from.isNumber()) {
-        //cjh TODO: how to check it's a int32_t or float?
+        // cjh TODO: how to check it's a int32_t or float?
         *to = from.toInt32();
     } else if (from.isString()) {
         *to = from.toString();
@@ -816,7 +816,7 @@ bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Obje
         return true;
     }
 
-    //TODO(PatriceJiang): float/int32_t from js number
+    // TODO(PatriceJiang): float/int32_t from js number
     if (from.isNumber()) {
         double v = from.toDouble();
         if (std::trunc(v) != v) {
@@ -930,7 +930,7 @@ bool sevalue_to_native(const se::Value &from, cc::IPreCompileInfoValueType *to, 
     uint32_t len;
     obj->getArrayLength(&len);
     if (len == 0) {
-        //TODO(PatriceJiang): judge type of empty array?
+        // TODO(PatriceJiang): judge type of empty array?
         *to = std::vector<bool>{};
         return false;
     }
@@ -1013,7 +1013,7 @@ bool sevalue_to_native(const se::Value &from, std::shared_ptr<cc::ArrayBuffer> *
         *out = std::make_shared<cc::ArrayBuffer>();
     }
     sevalue_to_native(from, out->get(), ctx);
-    //TODO(PatriceJiang): should not mix smart pointers with raw pointers.
+    // TODO(PatriceJiang): should not mix smart pointers with raw pointers.
     return true;
 }
 
@@ -1082,6 +1082,40 @@ bool sevalue_to_native(const se::Value &from, std::vector<unsigned char> *to, se
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /*ctx*/) {
+    CC_ASSERT(from.isObject());
+    CC_ASSERT(from.toObject()->isTypedArray());
+    if (to->index() == 0) {
+        se::Object::TypedArrayType type = from.toObject()->getTypedArrayType();
+        switch (type) {
+            case se::Object::TypedArrayType::FLOAT32:
+                *to = cc::Float32Array();
+                break;
+            case se::Object::TypedArrayType::UINT16:
+                *to = cc::Uint16Array();
+                break;
+            case se::Object::TypedArrayType::UINT32:
+                *to = cc::Uint32Array();
+                break;
+            case se::Object::TypedArrayType::UINT8:
+                *to = cc::Uint8Array();
+                break;
+            case se::Object::TypedArrayType::INT32:
+                *to = cc::Int32Array();
+                break;
+            case se::Object::TypedArrayType::INT16:
+                *to = cc::Int16Array();
+                break;
+            case se::Object::TypedArrayType::INT8:
+                *to = cc::Int8Array();
+                break;
+            case se::Object::TypedArrayType::FLOAT64:
+                *to = cc::Float64Array();
+                break;
+            default:
+                CC_ASSERT(false);
+        }
+    }
+
     std::visit(overloaded{[&](auto &typedArray) {
                               typedArray.setJSTypedArray(from.toObject());
                           },
@@ -1226,7 +1260,7 @@ bool ccvaluemap_to_seval(const cc::ValueMap &v, se::Value *ret) {
     bool             ok = true;
     for (const auto &e : v) {
         const std::string &key   = e.first;
-        const cc::Value &  value = e.second;
+        const cc::Value   &value = e.second;
 
         if (key.empty()) {
             continue;
@@ -1432,13 +1466,13 @@ bool nativevalue_to_se(const cc::ArrayBuffer &arrayBuffer, se::Value &to, se::Ob
 }
 
 //// NOLINTNEXTLINE(readability-identifier-naming)
-//bool nativevalue_to_se(const cc::TypedArray &from, se::Value &to, se::Object * /*ctx*/) {
-//    std::visit([&](auto &typedArray) {
-//        to.setObject(typedArray.getJSTypedArray());
-//    },
-//               from);
-//    return true;
-//}
+// bool nativevalue_to_se(const cc::TypedArray &from, se::Value &to, se::Object * /*ctx*/) {
+//     std::visit([&](auto &typedArray) {
+//         to.setObject(typedArray.getJSTypedArray());
+//     },
+//                from);
+//     return true;
+// }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool nativevalue_to_se(const cc::NativeDep &from, se::Value &to, se::Object * /*ctx*/) {

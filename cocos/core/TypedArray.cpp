@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -66,10 +66,40 @@ uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
 }
 
 void setTypedArrayValue(TypedArray &arr, index_t idx, const TypedArrayElementType &value) {
-#define TYPEDARRAY_SET_VALUE(type, elemType)               \
-    if (auto *p = std::get_if<type>(&arr); p != nullptr) { \
-        (*p)[idx] = std::get<elemType>(value);             \
-        return;                                            \
+#define TYPEDARRAY_SET_VALUE(type, elemType)                             \
+    if (auto *p = std::get_if<elemType>(&value); p != nullptr) {         \
+        if (std::holds_alternative<Float32Array>(arr)) {                 \
+            std::get<Float32Array>(arr)[idx] = static_cast<float>(*p);   \
+            return;                                                      \
+        }                                                                \
+        if (std::holds_alternative<Uint16Array>(arr)) {                  \
+            std::get<Uint16Array>(arr)[idx] = static_cast<uint16_t>(*p); \
+            return;                                                      \
+        }                                                                \
+        if (std::holds_alternative<Uint32Array>(arr)) {                  \
+            std::get<Uint32Array>(arr)[idx] = static_cast<uint32_t>(*p); \
+            return;                                                      \
+        }                                                                \
+        if (std::holds_alternative<Uint8Array>(arr)) {                   \
+            std::get<Uint8Array>(arr)[idx] = static_cast<uint8_t>(*p);   \
+            return;                                                      \
+        }                                                                \
+        if (std::holds_alternative<Int32Array>(arr)) {                   \
+            std::get<Int32Array>(arr)[idx] = static_cast<int32_t>(*p);   \
+            return;                                                      \
+        }                                                                \
+        if (std::holds_alternative<Int16Array>(arr)) {                   \
+            std::get<Int16Array>(arr)[idx] = static_cast<int16_t>(*p);   \
+            return;                                                      \
+        }                                                                \
+        if (std::holds_alternative<Int8Array>(arr)) {                    \
+            std::get<Int8Array>(arr)[idx] = static_cast<int8_t>(*p);     \
+            return;                                                      \
+        }                                                                \
+        if (std::holds_alternative<Float64Array>(arr)) {                 \
+            std::get<Float64Array>(arr)[idx] = static_cast<double>(*p);  \
+            return;                                                      \
+        }                                                                \
     }
 
     TYPEDARRAY_SET_VALUE(Float32Array, float)

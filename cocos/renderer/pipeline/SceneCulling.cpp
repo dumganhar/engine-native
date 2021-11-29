@@ -154,7 +154,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
                 (visibility & model->getVisFlags())) {
                 // shadow render Object
                 const auto *modelWorldBounds = model->getWorldBounds();
-                if (isShadowMap && model->getCastShadow() && modelWorldBounds) {
+                if (isShadowMap && model->isCastShadow() && modelWorldBounds) {
                     if (!castBoundsInitialized) {
                         castWorldBounds.set(modelWorldBounds->getCenter(), modelWorldBounds->getHalfExtents());
                         castBoundsInitialized = true;

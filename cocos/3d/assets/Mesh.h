@@ -396,7 +396,7 @@ private:
 
     RenderingSubMeshList _renderingSubMeshes;
 
-    std::unordered_map<int32_t, BoneSpaceBounds> _boneSpaceBounds;
+    std::unordered_map<uint64_t, BoneSpaceBounds> _boneSpaceBounds;
 
     JointBufferIndicesType _jointBufferIndices;
 

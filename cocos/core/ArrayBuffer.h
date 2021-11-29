@@ -72,6 +72,20 @@ public:
 
     inline uint32_t byteLength() const { return _byteLength; }
 
+    Ptr slice(uint32_t begin) {
+        return slice(begin, _byteLength);
+    }
+
+    Ptr slice(uint32_t begin, uint32_t end) {
+        CC_ASSERT(end > begin);
+        CC_ASSERT(begin < _byteLength);
+        CC_ASSERT(end <= _byteLength);
+        uint32_t newBufByteLength = (end - begin);
+        auto     buffer           = std::make_shared<ArrayBuffer>(newBufByteLength);
+        memcpy(buffer->getData(), _data + begin, newBufByteLength);
+        return buffer;
+    }
+
     // Just use it to copy data. Use TypedArray to get/set data.
     inline const uint8_t *getData() const { return _data; }
     inline uint8_t *      getData() { return _data; }

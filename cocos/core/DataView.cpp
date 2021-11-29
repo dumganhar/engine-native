@@ -30,6 +30,24 @@ namespace cc {
 #include "base/Macros.h"
 #include "core/ArrayBuffer.h"
 
+std::unordered_map<std::string, DataView::IntReader> DataView::intReaderMap{
+    {"getUint8", reinterpret_cast<DataView::IntReader>(&DataView::getUint8)},
+    {"getUint16", reinterpret_cast<DataView::IntReader>(&DataView::getUint16)},
+    {"getUint32", reinterpret_cast<DataView::IntReader>(&DataView::getUint32)},
+    {"getInt8", reinterpret_cast<DataView::IntReader>(&DataView::getInt8)},
+    {"getInt16", reinterpret_cast<DataView::IntReader>(&DataView::getInt16)},
+    {"getInt32", reinterpret_cast<DataView::IntReader>(&DataView::getInt32)},
+};
+
+std::unordered_map<std::string, DataView::IntWritter> DataView::intWritterMap{
+    {"setUint8", reinterpret_cast<DataView::IntWritter>(&DataView::setUint8)},
+    {"setUint16", reinterpret_cast<DataView::IntWritter>(&DataView::setUint16)},
+    {"setUint32", reinterpret_cast<DataView::IntWritter>(&DataView::setUint32)},
+    {"setInt8", reinterpret_cast<DataView::IntWritter>(&DataView::setInt8)},
+    {"setInt16", reinterpret_cast<DataView::IntWritter>(&DataView::setInt16)},
+    {"setInt32", reinterpret_cast<DataView::IntWritter>(&DataView::setInt32)},
+};
+
 DataView::DataView(ArrayBuffer::Ptr buffer) : DataView(buffer, 0) {}
 
 DataView::DataView(ArrayBuffer::Ptr buffer, uint32_t byteOffset)

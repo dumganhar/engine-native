@@ -25,6 +25,8 @@
 
 #include "core/assets/RenderingSubMesh.h"
 #include "3d/assets/Mesh.h"
+#include "3d/misc/Buffer.h"
+#include "core/DataView.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDevice.h"
 
@@ -225,7 +227,7 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
 
     auto &      structInfo = _mesh->getStruct();
     const auto &prim       = structInfo.primitives[_subMeshIdx.value()];
-    if (structInfo.jointMaps.has_value() || !prim.jointMapIndex.has_value() || structInfo.jointMaps.value()[prim.jointMapIndex.value()].empty()) {
+    if (!structInfo.jointMaps.has_value() || !prim.jointMapIndex.has_value() || structInfo.jointMaps.value()[prim.jointMapIndex.value()].empty()) {
         _jointMappedBuffers = _vertexBuffers;
         return _jointMappedBuffers;
     }
@@ -245,19 +247,29 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
             jointOffset += gfx::GFX_FORMAT_INFOS[static_cast<int32_t>(attr.format)].size;
         }
         if (jointFormat != gfx::Format::UNKNOWN) {
-            assert(false);
-            //cjh TODO:            const data = new Uint8Array(mesh.data.buffer, bundle.view.offset, bundle.view.length);
-            //            const dataView = new DataView(data.slice().buffer);
-            //            const idxMap = structInfo.jointMaps[prim.jointMapIndex];
-            //            mapBuffer(dataView, (cur) => idxMap.indexOf(cur), jointFormat, jointOffset,
-            //                bundle.view.length, bundle.view.stride, dataView);
-            //            const buffer = device.createBuffer(new BufferInfo(
-            //                BufferUsageBit.VERTEX | BufferUsageBit.TRANSFER_DST,
-            //                MemoryUsageBit.DEVICE,
-            //                bundle.view.length,
-            //                bundle.view.stride,
-            //            ));
-            //            buffer.update(dataView.buffer); buffers.push(buffer); indices.push(i);
+            Uint8Array  data{_mesh->getData().buffer(), bundle.view.offset, bundle.view.length};
+            DataView    dataView(data.slice().buffer());
+            const auto &idxMap = structInfo.jointMaps.value()[prim.jointMapIndex.value()];
+
+            mapBuffer(
+                dataView, [&](const DataVariant &cur, uint32_t idx, const DataView &view) -> DataVariant {
+                    auto iter = std::find(idxMap.begin(), idxMap.end(), std::get<0>(cur));
+                    if (iter != idxMap.end()) {
+                        return static_cast<int32_t>(iter - idxMap.begin());
+                    }
+                    return 0;
+                },
+                jointFormat, jointOffset, bundle.view.length, bundle.view.stride, &dataView);
+
+            auto *buffer = device->createBuffer(gfx::BufferInfo{
+                gfx::BufferUsageBit::VERTEX | gfx::BufferUsageBit::TRANSFER_DST,
+                gfx::MemoryUsageBit::DEVICE,
+                bundle.view.length,
+                bundle.view.stride});
+
+            buffer->update(dataView.buffer()->getData());
+            buffers.emplace_back(buffer);
+            indices.emplace_back(i);
         } else {
             buffers.emplace_back(_vertexBuffers[prim.vertexBundelIndices[i]]);
         }

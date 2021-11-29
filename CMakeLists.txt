@@ -1316,6 +1316,8 @@ cocos_source_files(
     cocos/3d/misc/CreateMesh.cpp
     cocos/3d/misc/BufferBlob.h
     cocos/3d/misc/BufferBlob.cpp
+    cocos/3d/misc/Buffer.h
+    cocos/3d/misc/Buffer.cpp
 
     cocos/3d/skeletal-animation/DataPoolManager.h
     cocos/3d/skeletal-animation/DataPoolManager.cpp

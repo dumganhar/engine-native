@@ -324,9 +324,8 @@ Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
     if (auto iter = _boneSpaceBounds.find(skeleton->getHash()); iter != _boneSpaceBounds.end()) {
         return iter->second;
     }
-    Vec3            v32;
-    BoneSpaceBounds bounds;
-    _boneSpaceBounds.emplace(skeleton->getHash(), bounds);
+    Vec3              v32;
+    BoneSpaceBounds & bounds = _boneSpaceBounds[skeleton->getHash()];
     std::vector<bool> valid;
     const auto &      bindposes = skeleton->getBindposes();
     valid.reserve(bindposes.size());
@@ -357,6 +356,7 @@ Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
             for (uint32_t j = 0; j < 4; ++j) {
                 const uint32_t idx   = 4 * i + j;
                 const int32_t  joint = getTypedArrayValue<int32_t>(joints, idx);
+
                 if (std::fabs(getTypedArrayValue<float>(weights, idx)) < FLT_EPSILON || joint >= bindposes.size()) {
                     continue;
                 }

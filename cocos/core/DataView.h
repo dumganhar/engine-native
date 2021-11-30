@@ -37,6 +37,7 @@ public:
     explicit DataView(ArrayBuffer::Ptr buffer);
     DataView(ArrayBuffer::Ptr buffer, uint32_t byteOffset);
     DataView(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t byteLength);
+    ~DataView() = default;
 
     void assign(ArrayBuffer::Ptr buffer);
     void assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset);
@@ -59,14 +60,23 @@ public:
     void setFloat32(index_t offset, float value);
 
     inline const ArrayBuffer::Ptr &buffer() const { return _buffer; }
+    inline ArrayBuffer::Ptr &      buffer() { return _buffer; }
+    inline uint32_t                byteOffset() const { return _byteOffset; }
+    inline uint32_t                byteLength() const {
+        return _byteEndPos - _byteOffset;
+    }
+
+    using IntReader = int32_t (DataView::*)(index_t);
+    static std::unordered_map<std::string, IntReader> intReaderMap;
+
+    using IntWritter = void (DataView::*)(index_t, int32_t);
+    static std::unordered_map<std::string, IntWritter> intWritterMap;
 
 private:
     ArrayBuffer::Ptr _buffer{nullptr};
     uint8_t *        _data{nullptr};
     uint32_t         _byteOffset{0};
     uint32_t         _byteEndPos{0};
-
-    CC_DISALLOW_COPY_MOVE_ASSIGN(DataView);
 };
 
 } // namespace cc

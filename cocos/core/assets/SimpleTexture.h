@@ -101,18 +101,19 @@ public:
     void assignImage(ImageAsset *image, uint32_t level, uint32_t arrayIndex = 0);
 
     void checkTextureLoaded();
+    
+    /**
+     * Set mipmap level of this texture.
+     * The value is passes as presumed info to `this._getGfxTextureCreateInfo()`.
+     * @param value The mipmap level.
+     * @warn As it is invoked by subclass(TextureCube) in TS, so should make it as public.
+     */
+    void setMipmapLevel(uint32_t value);
 
 protected:
     explicit SimpleTexture() = default;
 
     void textureReady();
-
-    /**
-     * Set mipmap level of this texture.
-     * The value is passes as presumed info to `this._getGfxTextureCreateInfo()`.
-     * @param value The mipmap level.
-     */
-    void setMipmapLevel(uint32_t value);
 
     /**
      * @en This method is overrided by derived classes to provide GFX texture info.

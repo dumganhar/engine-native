@@ -301,10 +301,10 @@ static bool js_scene_Node_registerOnChildAdded(se::State &s) // NOLINT(readabili
 }
 SE_BIND_FUNC(js_scene_Node_registerOnChildAdded) // NOLINT(readability-identifier-naming)
 
-static bool js_scene_Node_isActiveInHierarchy(void* s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_isActiveInHierarchy(void *s) // NOLINT(readability-identifier-naming)
 {
-    auto *         cobj = reinterpret_cast<cc::Node *>(s);
-    bool result = cobj->isActiveInHierarchy();
+    auto *cobj         = reinterpret_cast<cc::Node *>(s);
+    bool  result       = cobj->isActiveInHierarchy();
     _tempFloatArray[0] = result ? 1 : 0;
     return true;
 }
@@ -390,14 +390,14 @@ static bool js_scene_Camera_screenPointToRay(se::State &s) // NOLINT(readability
     auto *cobj = SE_THIS_OBJECT<cc::scene::Camera>(s);
     SE_PRECONDITION2(cobj, false, "js_scene_Camera_screenPointToRay : Invalid Native Object");
 
-    cc::geometry::Ray  ray;
+    cc::geometry::Ray ray;
     cobj->screenPointToRay(&ray, _tempFloatArray[0], _tempFloatArray[1]);
-    _tempFloatArray[0]        = ray.o.x;
-    _tempFloatArray[1]        = ray.o.y;
-    _tempFloatArray[2]        = ray.o.z;
-    _tempFloatArray[3]        = ray.d.x;
-    _tempFloatArray[4]        = ray.d.y;
-    _tempFloatArray[5]        = ray.d.z;
+    _tempFloatArray[0] = ray.o.x;
+    _tempFloatArray[1] = ray.o.y;
+    _tempFloatArray[2] = ray.o.z;
+    _tempFloatArray[3] = ray.d.x;
+    _tempFloatArray[4] = ray.d.y;
+    _tempFloatArray[5] = ray.d.z;
     return true;
 }
 SE_BIND_FUNC(js_scene_Camera_screenPointToRay)
@@ -494,9 +494,9 @@ static bool js_scene_Node_getScale(se::State &s) // NOLINT(readability-identifie
 }
 SE_BIND_FUNC(js_scene_Node_getScale)
 
-static bool js_scene_Node_setPosition(void* s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_setPosition(void *s) // NOLINT(readability-identifier-naming)
 {
-    auto *         cobj = reinterpret_cast<cc::Node *>(s);
+    auto * cobj = reinterpret_cast<cc::Node *>(s);
     size_t argc = _tempFloatArray[0];
     if (argc == 2) {
         cobj->setPosition(_tempFloatArray[1], _tempFloatArray[2]);
@@ -508,7 +508,23 @@ static bool js_scene_Node_setPosition(void* s) // NOLINT(readability-identifier-
 }
 SE_BIND_FUNC_FAST(js_scene_Node_setPosition)
 
-static bool js_scene_Node_setScale(void* s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_setRotation(void *s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = reinterpret_cast<cc::Node *>(s);
+    cobj->setRotation(_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3]);
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Node_setRotation)
+
+static bool js_scene_Node_setRotationFromEuler(void *s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = reinterpret_cast<cc::Node *>(s);
+    cobj->setRotationFromEuler(_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2]);
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Node_setRotationFromEuler)
+
+static bool js_scene_Node_setScale(void *s) // NOLINT(readability-identifier-naming)
 {
     auto * cobj = reinterpret_cast<cc::Node *>(s);
     size_t argc = _tempFloatArray[0];
@@ -522,22 +538,22 @@ static bool js_scene_Node_setScale(void* s) // NOLINT(readability-identifier-nam
 }
 SE_BIND_FUNC_FAST(js_scene_Node_setScale)
 
-static bool js_scene_Node_setRTS(void* s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_setRTS(void *s) // NOLINT(readability-identifier-naming)
 {
-    auto * cobj = reinterpret_cast<cc::Node *>(s);
+    auto *         cobj = reinterpret_cast<cc::Node *>(s);
     cc::Quaternion qt;
-    int rotSize = _tempFloatArray[0];
+    int            rotSize = _tempFloatArray[0];
     if (rotSize > 0) {
         qt.set(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3], _tempFloatArray[4]);
     }
 
-    int posSize = _tempFloatArray[5];
+    int      posSize = _tempFloatArray[5];
     cc::Vec3 pos;
     if (posSize > 0) {
         pos.set(_tempFloatArray[6], _tempFloatArray[7], _tempFloatArray[8]);
     }
 
-    int scaleSize = _tempFloatArray[9];
+    int      scaleSize = _tempFloatArray[9];
     cc::Vec3 scale;
     if (scaleSize > 0) {
         scale.set(_tempFloatArray[10], _tempFloatArray[11], _tempFloatArray[12]);
@@ -547,7 +563,7 @@ static bool js_scene_Node_setRTS(void* s) // NOLINT(readability-identifier-namin
 }
 SE_BIND_FUNC_FAST(js_scene_Node_setRTS)
 
-static bool js_scene_Node_rotateForJS(void* s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_rotateForJS(void *s) // NOLINT(readability-identifier-naming)
 {
     auto * cobj = reinterpret_cast<cc::Node *>(s);
     size_t argc = _tempFloatArray[0];
@@ -910,6 +926,8 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_Node_proto->defineFunction("getChildren", _SE(js_scene_Node_getChildren));
     __jsb_cc_Node_proto->defineFunction("getPosition", _SE(js_scene_Node_getPosition));
     __jsb_cc_Node_proto->defineFunction("getRotation", _SE(js_scene_Node_getRotation));
+    __jsb_cc_Node_proto->defineFunction("setRotation", _SE(js_scene_Node_setRotation));
+    __jsb_cc_Node_proto->defineFunction("setRotationFromEuler", _SE(js_scene_Node_setRotationFromEuler));
     __jsb_cc_Node_proto->defineFunction("getScale", _SE(js_scene_Node_getScale));
     __jsb_cc_Node_proto->defineFunction("getEulerAngles", _SE(js_scene_Node_getEulerAngles));
     __jsb_cc_Node_proto->defineFunction("getForward", _SE(js_scene_Node_getForward));

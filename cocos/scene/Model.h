@@ -75,6 +75,8 @@ public:
     void                              initialize();
     virtual void                      destroy();
     void                              updateWorldBound();
+    void                              updateWorldBoundsForJSSkinningModel(const Vec3 &min, const Vec3 &max);
+    void                              updateWorldBoundsForJSBakedSkinningModel(geometry::AABB *aabb);
     void                              createBoundingShape(const std::optional<Vec3> &minPos, const std::optional<Vec3> &maxPos);
     virtual void                      initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat);
     void                              setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
@@ -142,6 +144,15 @@ public:
     inline void              setCalledFromJS(bool v) { _isCalledFromJS = v; }
     inline CallbacksInvoker &getEventProcessor() { return _eventProcessor; }
     void                     _setInstancedAttributesViewData(index_t viewIdx, index_t arrIdx, float value);
+    inline void              setTransformUpdated(bool v) { _transformUpdated = v; }
+    inline void              setWorldBounds(geometry::AABB *bounds) {
+        //cjh TODO: how to remove old one
+        _worldBounds = bounds;
+    }
+    inline void setModelBounds(geometry::AABB *bounds) {
+        //cjh TODO: how to remove old one
+        _modelBounds = bounds;
+    }
     //
 
 protected:

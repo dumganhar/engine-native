@@ -185,6 +185,21 @@ void Model::updateWorldBound() {
     }
 }
 
+void Model::updateWorldBoundsForJSSkinningModel(const Vec3 &min, const Vec3 &max) {
+    Node *node = _transform;
+    if (node) {
+        if (_modelBounds != nullptr && _modelBounds->isValid() && _worldBounds != nullptr) {
+            geometry::AABB::fromPoints(min, max, _modelBounds);
+            _modelBounds->transform(node->getWorldMatrix(), _worldBounds);
+        }
+    }
+}
+
+void Model::updateWorldBoundsForJSBakedSkinningModel(geometry::AABB *aabb) {
+    _worldBounds->center      = aabb->center;
+    _worldBounds->halfExtents = aabb->halfExtents;
+}
+
 void Model::updateUBOs(uint32_t stamp) {
     if (_type != Type::DEFAULT) {
         if (!_isCalledFromJS) {

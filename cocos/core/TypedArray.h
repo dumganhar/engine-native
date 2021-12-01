@@ -184,7 +184,7 @@ public:
         CC_ASSERT(end <= (_byteLength / BYTES_PER_ELEMENT));
         uint32_t newBufByteLength = (end - start) * BYTES_PER_ELEMENT;
         auto     buffer           = std::make_shared<ArrayBuffer>(newBufByteLength);
-        memcpy(buffer->getData(), _buffer->getData() + start * BYTES_PER_ELEMENT, newBufByteLength);
+        memcpy(buffer->getData(), _buffer->getData() + start * BYTES_PER_ELEMENT + _byteOffset, newBufByteLength);
         return TypedArrayTemp(buffer);
     }
 
@@ -248,7 +248,7 @@ public:
     inline uint32_t                length() const { return _byteLength / BYTES_PER_ELEMENT; }
     inline uint32_t                byteOffset() const { return _byteOffset; }
     inline bool                    empty() const { return _byteLength == 0; }
-    inline se::Object             *getJSTypedArray() const { return _jsTypedArray; }
+    inline se::Object *            getJSTypedArray() const { return _jsTypedArray; }
     inline void                    setJSTypedArray(se::Object *typedArray) {
         if (_jsTypedArray != nullptr) {
             _jsTypedArray->unroot();
@@ -290,7 +290,7 @@ private:
     uint32_t         _byteOffset{0};
     uint32_t         _byteLength{0};
     uint32_t         _byteEndPos{0};
-    se::Object      *_jsTypedArray{nullptr};
+    se::Object *     _jsTypedArray{nullptr};
 };
 
 using Int8Array             = TypedArrayTemp<int8_t>;

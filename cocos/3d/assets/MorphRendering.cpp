@@ -83,7 +83,7 @@ namespace {
 /**
  * True if force to use cpu computing based sub-mesh rendering.
  */
-const bool PREFER_CPU_COMPUTING = false;
+const bool PREFER_CPU_COMPUTING = true;
 
 class MorphTexture final {
 public:
@@ -261,7 +261,7 @@ Vec4TextureFactory createVec4TextureFactory(gfx::Device *gfxDevice, uint32_t vec
     ret.width  = width;
     ret.height = height;
     ret.create = [=]() -> MorphTexture * {
-        MorphTexture *texture = new MorphTexture(); //cjh how to release?
+        auto *texture = new MorphTexture(); //cjh how to release?
         texture->initialize(width, height, pixelBytes, useFloat32Array, pixelFormat);
         return texture;
     };
@@ -558,8 +558,8 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
     // Creates texture for each attribute.
     uint32_t attributeIndex = 0;
     _attributes.reserve(subMeshMorph.attributes.size());
-    for (auto &attributeName : subMeshMorph.attributes) {
-        auto          vec4Tex   = vec4TextureFactory.create();
+    for (const auto &attributeName : subMeshMorph.attributes) {
+        auto *          vec4Tex   = vec4TextureFactory.create();
         Float32Array &valueView = vec4Tex->getValueView();
         // if (DEV) { // Make it easy to view texture in profilers...
         //     for (let i = 0; i < valueView.length / 4; ++i) {
@@ -568,7 +568,7 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
         // }
 
         uint32_t morphTargetIndex = 0;
-        for (auto &morphTarget : subMeshMorph.targets) {
+        for (const auto &morphTarget : subMeshMorph.targets) {
             const auto &   displacementsView = morphTarget.displacements[attributeIndex];
             Float32Array   displacements(mesh->getData().buffer(),
                                        mesh->getData().byteOffset() + displacementsView.offset,
@@ -629,7 +629,7 @@ public:
 
     std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) override {
         CC_ASSERT(_owner->_mesh->getStruct().morph.has_value());
-        auto &subMeshMorph             = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex].value();
+        const auto &subMeshMorph             = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex].value();
         auto *subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
         if (subMeshRenderingInstance == nullptr) {
             return {};

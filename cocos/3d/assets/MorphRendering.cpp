@@ -380,7 +380,7 @@ public:
             const auto &  attributeMorph = _owner->getData()[iAttribute];
             CC_ASSERT(weights.size() == attributeMorph.targets.size());
             for (size_t iTarget = 0; iTarget < attributeMorph.targets.size(); ++iTarget) {
-                auto &         targetDisplacements = attributeMorph.targets[iTarget].displacements;
+                const auto &   targetDisplacements = attributeMorph.targets[iTarget].displacements;
                 const float    weight              = weights[iTarget];
                 const uint32_t nVertices           = targetDisplacements.length() / 3;
                 if (iTarget == 0) {
@@ -389,7 +389,7 @@ public:
                         valueView[4 * iVertex + 1] = targetDisplacements[3 * iVertex + 1] * weight;
                         valueView[4 * iVertex + 2] = targetDisplacements[3 * iVertex + 2] * weight;
                     }
-                } else if (std::abs(weight) < std::numeric_limits<float>::epsilon()) {
+                } else if (std::fabs(weight) >= std::numeric_limits<float>::epsilon()) {
                     for (uint32_t iVertex = 0; iVertex < nVertices; ++iVertex) {
                         valueView[4 * iVertex + 0] += targetDisplacements[3 * iVertex + 0] * weight;
                         valueView[4 * iVertex + 1] += targetDisplacements[3 * iVertex + 1] * weight;
@@ -501,7 +501,7 @@ private:
 //
 CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph, gfx::Device *gfxDevice) {
     _gfxDevice               = gfxDevice;
-    const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();;
+    const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();
     enableVertexId(mesh, subMeshIndex, gfxDevice);
 
     for (size_t attributeIndex = 0, len = subMeshMorph.attributes.size(); attributeIndex < len; ++attributeIndex) {
@@ -542,7 +542,7 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
     const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();
 
     _subMeshMorph = &subMeshMorph;
-//    assertIsNonNullable(subMeshMorph);
+    //    assertIsNonNullable(subMeshMorph);
 
     enableVertexId(mesh, subMeshIndex, gfxDevice);
 
@@ -559,7 +559,7 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
     uint32_t attributeIndex = 0;
     _attributes.reserve(subMeshMorph.attributes.size());
     for (const auto &attributeName : subMeshMorph.attributes) {
-        auto *          vec4Tex   = vec4TextureFactory.create();
+        auto *        vec4Tex   = vec4TextureFactory.create();
         Float32Array &valueView = vec4Tex->getValueView();
         // if (DEV) { // Make it easy to view texture in profilers...
         //     for (let i = 0; i < valueView.length / 4; ++i) {
@@ -630,7 +630,7 @@ public:
     std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) override {
         CC_ASSERT(_owner->_mesh->getStruct().morph.has_value());
         const auto &subMeshMorph             = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex].value();
-        auto *subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
+        auto *      subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
         if (subMeshRenderingInstance == nullptr) {
             return {};
         }
@@ -697,7 +697,7 @@ StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
         if (!subMeshMorphHolder.has_value()) {
             continue;
         }
-        
+
         const auto &subMeshMorph = subMeshMorphHolder.value();
 
         if (PREFER_CPU_COMPUTING || subMeshMorph.targets.size() > pipeline::UBOMorph::MAX_MORPH_TARGET_COUNT) {

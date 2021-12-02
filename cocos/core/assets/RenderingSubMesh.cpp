@@ -135,7 +135,7 @@ const IGeometricInfo &RenderingSubMesh::geometricInfo() {
 }
 
 void RenderingSubMesh::genFlatBuffers() {
-    if (!_flatBuffers.empty() || _mesh != nullptr || !_subMeshIdx.has_value()) {
+    if (!_flatBuffers.empty() || _mesh == nullptr || !_subMeshIdx.has_value()) {
         return;
     }
 

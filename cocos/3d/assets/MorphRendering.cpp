@@ -515,7 +515,7 @@ CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
         for (const auto &attributeDisplacement : subMeshMorph.targets) {
             const Mesh::IBufferView &displacementsView = attributeDisplacement.displacements[attributeIndex];
             attr.targets[i].displacements              = Float32Array(mesh->getData().buffer(),
-                                                         mesh->getData().buffer()->byteLength() + displacementsView.offset,
+                                                         mesh->getData().byteOffset() + displacementsView.offset,
                                                          attributeDisplacement.displacements[attributeIndex].count);
 
             ++i;

@@ -83,7 +83,7 @@ namespace {
 /**
  * True if force to use cpu computing based sub-mesh rendering.
  */
-const bool PREFER_CPU_COMPUTING = false;
+const bool PREFER_CPU_COMPUTING = true;
 
 class MorphTexture final {
 public:
@@ -261,7 +261,7 @@ Vec4TextureFactory createVec4TextureFactory(gfx::Device *gfxDevice, uint32_t vec
     ret.width  = width;
     ret.height = height;
     ret.create = [=]() -> MorphTexture * {
-        MorphTexture *texture = new MorphTexture(); //cjh how to release?
+        auto *texture = new MorphTexture(); //cjh how to release?
         texture->initialize(width, height, pixelBytes, useFloat32Array, pixelFormat);
         return texture;
     };
@@ -380,7 +380,7 @@ public:
             const auto &  attributeMorph = _owner->getData()[iAttribute];
             CC_ASSERT(weights.size() == attributeMorph.targets.size());
             for (size_t iTarget = 0; iTarget < attributeMorph.targets.size(); ++iTarget) {
-                auto &         targetDisplacements = attributeMorph.targets[iTarget].displacements;
+                const auto &   targetDisplacements = attributeMorph.targets[iTarget].displacements;
                 const float    weight              = weights[iTarget];
                 const uint32_t nVertices           = targetDisplacements.length() / 3;
                 if (iTarget == 0) {
@@ -389,7 +389,7 @@ public:
                         valueView[4 * iVertex + 1] = targetDisplacements[3 * iVertex + 1] * weight;
                         valueView[4 * iVertex + 2] = targetDisplacements[3 * iVertex + 2] * weight;
                     }
-                } else if (std::abs(weight) < std::numeric_limits<float>::epsilon()) {
+                } else if (std::fabs(weight) >= std::numeric_limits<float>::epsilon()) {
                     for (uint32_t iVertex = 0; iVertex < nVertices; ++iVertex) {
                         valueView[4 * iVertex + 0] += targetDisplacements[3 * iVertex + 0] * weight;
                         valueView[4 * iVertex + 1] += targetDisplacements[3 * iVertex + 1] * weight;
@@ -501,7 +501,7 @@ private:
 //
 CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph, gfx::Device *gfxDevice) {
     _gfxDevice               = gfxDevice;
-    const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();;
+    const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();
     enableVertexId(mesh, subMeshIndex, gfxDevice);
 
     for (size_t attributeIndex = 0, len = subMeshMorph.attributes.size(); attributeIndex < len; ++attributeIndex) {
@@ -515,7 +515,7 @@ CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
         for (const auto &attributeDisplacement : subMeshMorph.targets) {
             const Mesh::IBufferView &displacementsView = attributeDisplacement.displacements[attributeIndex];
             attr.targets[i].displacements              = Float32Array(mesh->getData().buffer(),
-                                                         mesh->getData().buffer()->byteLength() + displacementsView.offset,
+                                                         mesh->getData().byteOffset() + displacementsView.offset,
                                                          attributeDisplacement.displacements[attributeIndex].count);
 
             ++i;
@@ -542,7 +542,7 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
     const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();
 
     _subMeshMorph = &subMeshMorph;
-//    assertIsNonNullable(subMeshMorph);
+    //    assertIsNonNullable(subMeshMorph);
 
     enableVertexId(mesh, subMeshIndex, gfxDevice);
 
@@ -558,8 +558,8 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
     // Creates texture for each attribute.
     uint32_t attributeIndex = 0;
     _attributes.reserve(subMeshMorph.attributes.size());
-    for (auto &attributeName : subMeshMorph.attributes) {
-        auto          vec4Tex   = vec4TextureFactory.create();
+    for (const auto &attributeName : subMeshMorph.attributes) {
+        auto *        vec4Tex   = vec4TextureFactory.create();
         Float32Array &valueView = vec4Tex->getValueView();
         // if (DEV) { // Make it easy to view texture in profilers...
         //     for (let i = 0; i < valueView.length / 4; ++i) {
@@ -568,7 +568,7 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
         // }
 
         uint32_t morphTargetIndex = 0;
-        for (auto &morphTarget : subMeshMorph.targets) {
+        for (const auto &morphTarget : subMeshMorph.targets) {
             const auto &   displacementsView = morphTarget.displacements[attributeIndex];
             Float32Array   displacements(mesh->getData().buffer(),
                                        mesh->getData().byteOffset() + displacementsView.offset,
@@ -629,8 +629,8 @@ public:
 
     std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) override {
         CC_ASSERT(_owner->_mesh->getStruct().morph.has_value());
-        auto &subMeshMorph             = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex].value();
-        auto *subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
+        const auto &subMeshMorph             = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex].value();
+        auto *      subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
         if (subMeshRenderingInstance == nullptr) {
             return {};
         }
@@ -697,7 +697,7 @@ StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
         if (!subMeshMorphHolder.has_value()) {
             continue;
         }
-        
+
         const auto &subMeshMorph = subMeshMorphHolder.value();
 
         if (PREFER_CPU_COMPUTING || subMeshMorph.targets.size() > pipeline::UBOMorph::MAX_MORPH_TARGET_COUNT) {

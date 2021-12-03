@@ -103,6 +103,7 @@ public:
     inline void setHeight(uint32_t height) { _height = height; }
     inline void setFormat(PixelFormat format) { _format = format; }
     inline void setData(uint8_t *data) { _data = data; }
+    inline void setUrl(const std::string &url) { _url = url; }
 
 private:
     uint32_t         _width{0};
@@ -110,7 +111,7 @@ private:
     PixelFormat      _format{PixelFormat::RGBA8888};
     uint8_t *        _data{nullptr};
     bool             _needFreeData{false}; // Should free data if the data is assigned in C++.
-    ArrayBuffer::Ptr _arrayBuffer; //minggo: hold the data from ImageSource.
+    ArrayBuffer::Ptr _arrayBuffer;         //minggo: hold the data from ImageSource.
     std::string      _url;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(ImageAsset);

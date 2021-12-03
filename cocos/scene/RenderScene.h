@@ -33,15 +33,15 @@
 namespace cc {
 
 class Node;
+class SkinningModel;
+class BakedSkinningModel;
 
 namespace scene {
 
 class DirectionalLight;
 class SphereLight;
 class SpotLight;
-class SkinningModel;
 class Model;
-class BakedSkinningModel;
 class DrawBatch2D;
 class Camera;
 

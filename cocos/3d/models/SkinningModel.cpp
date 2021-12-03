@@ -22,7 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#include "scene/SkinningModel.h"
+#include "3d/models/SkinningModel.h"
 
 #include <array>
 #include <utility>
@@ -53,7 +53,6 @@ std::vector<cc::scene::IMacroPatch> myPatches{{"CC_USE_SKINNING", true}};
 
 } // namespace
 namespace cc {
-namespace scene {
 
 SkinningModel::SkinningModel() {
     _type = Model::Type::SKINNING;
@@ -158,7 +157,7 @@ void SkinningModel::initSubModel(index_t idx, RenderingSubMesh *subMeshData, Mat
     iaInfo.vertexBuffers = original;
 }
 
-std::vector<IMacroPatch> &SkinningModel::getMacroPatches(index_t subModelIndex) {
+std::vector<scene::IMacroPatch> &SkinningModel::getMacroPatches(index_t subModelIndex) {
     auto &patches = Super::getMacroPatches(subModelIndex);
     patches.reserve(myPatches.size() + patches.size());
     patches.insert(std::begin(patches), std::begin(myPatches), std::end(myPatches));
@@ -232,5 +231,4 @@ void SkinningModel::ensureEnoughBuffers(index_t count) {
         }
     }
 }
-} // namespace scene
 } // namespace cc

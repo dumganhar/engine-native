@@ -83,7 +83,7 @@ namespace {
 /**
  * True if force to use cpu computing based sub-mesh rendering.
  */
-const bool PREFER_CPU_COMPUTING = true;
+const bool PREFER_CPU_COMPUTING = false;
 
 class MorphTexture final {
 public:
@@ -451,7 +451,7 @@ public:
         _morphUniforms->setMorphTextureInfo(_owner->_textureWidth, _owner->_textureHeight);
         _morphUniforms->setVerticesCount(_owner->_verticesCount);
         _morphUniforms->commit();
-        _attributes = _owner->_attributes; // TODO(xwx): should copy one?
+        _attributes = &_owner->_attributes; // TODO(xwx): should copy one?
     }
 
     void setWeights(const std::vector<float> &weights) override {
@@ -466,7 +466,7 @@ public:
     }
 
     void adaptPipelineState(gfx::DescriptorSet *descriptorSet) override {
-        for (const auto &attribute : _attributes) {
+        for (const auto &attribute : *_attributes) {
             const auto &            attributeName = attribute.attributeName;
             std::optional<uint32_t> binding;
             if (attributeName == gfx::ATTR_NAME_POSITION) {
@@ -492,12 +492,11 @@ public:
     }
 
 private:
-    std::vector<GpuMorphAttribute> _attributes;
-    GpuComputing *                 _owner{nullptr};
-    MorphUniforms *                _morphUniforms{nullptr};
+    std::vector<GpuMorphAttribute> *_attributes{nullptr};
+    GpuComputing *                  _owner{nullptr};
+    MorphUniforms *                 _morphUniforms{nullptr};
 };
 
-//
 CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph, gfx::Device *gfxDevice) {
     _gfxDevice               = gfxDevice;
     const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();
@@ -535,7 +534,6 @@ const std::vector<CpuMorphAttribute> &CpuComputing::getData() const {
     return _attributes;
 }
 
-//
 GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph, gfx::Device *gfxDevice) {
     _gfxDevice               = gfxDevice;
     const auto &subMeshMorph = morph->subMeshMorphs[subMeshIndex].value();

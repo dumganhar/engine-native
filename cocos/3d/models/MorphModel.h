@@ -24,11 +24,11 @@
  ****************************************************************************/
 #pragma once
 
-#include <vector>
 #include <set>
-#include "scene/Model.h"
-#include "scene/Define.h"
+#include <vector>
 #include "3d/assets/Morph.h"
+#include "scene/Define.h"
+#include "scene/Model.h"
 
 namespace cc {
 
@@ -36,6 +36,7 @@ class MorphModel : public scene::Model {
 public:
     MorphModel()           = default;
     ~MorphModel() override = default;
+    CC_DISALLOW_COPY_MOVE_ASSIGN(MorphModel);
 
     std::vector<scene::IMacroPatch> &getMacroPatches(index_t subModelIndex) override;
     void                             initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
@@ -48,7 +49,7 @@ protected:
     void updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) override;
 
 private:
-    inline Material *launderMaterial(Material *materail) { return materail; }
+    inline Material *launderMaterial(Material *material) { return material; }
 
     MorphRenderingInstance *_morphRenderingInstance{nullptr};
     std::set<Material *>    _usedMaterials;

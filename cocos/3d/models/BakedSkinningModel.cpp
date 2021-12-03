@@ -22,7 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#include "scene/BakedSkinningModel.h"
+#include "3d/models/BakedSkinningModel.h"
 #include "3d/skeletal-animation/SkeletalAnimationUtils.h"
 #include "scene/Model.h"
 #include "scene/SubModel.h"
@@ -44,7 +44,6 @@ std::vector<cc::scene::IMacroPatch> myPatches{
 const std::string INST_JOINT_ANIM_INFO = "a_jointAnimInfo";
 } // namespace
 namespace cc {
-namespace scene {
 
 BakedSkinningModel::BakedSkinningModel()
 : Super(), _dataPoolManager(Root::getInstance()->getDataPoolManager()) {
@@ -134,7 +133,7 @@ void BakedSkinningModel::applyJointTexture(const std::optional<IJointTextureHand
     }
 }
 
-std::vector<IMacroPatch> &BakedSkinningModel::getMacroPatches(index_t subModelIndex) {
+std::vector<scene::IMacroPatch> &BakedSkinningModel::getMacroPatches(index_t subModelIndex) {
     auto &patches = Super::getMacroPatches(subModelIndex);
     patches.reserve(patches.size() + myPatches.size());
     patches.insert(std::end(patches), std::begin(myPatches), std::end(myPatches));
@@ -155,7 +154,7 @@ void BakedSkinningModel::updateLocalDescriptors(index_t subModelIndex, gfx::Desc
     }
 }
 
-void BakedSkinningModel::updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass) {
+void BakedSkinningModel::updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, scene::Pass *pass) {
     Super::updateInstancedAttributes(attributes, pass);
     _instAnimInfoIdx = getInstancedAttributeIndex(INST_JOINT_ANIM_INFO);
     updateInstancedJointTextureInfo();
@@ -173,5 +172,4 @@ void BakedSkinningModel::updateInstancedJointTextureInfo() {
     }
 }
 
-} // namespace scene
 } // namespace cc

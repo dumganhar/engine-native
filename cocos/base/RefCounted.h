@@ -106,3 +106,18 @@ using SCHEDULE_CB = void (RefCounted::*)(float);
 #define CC_SCHEDULE_CALLBACK(cb) static_cast<cc::SCHEDULE_CB>(&cb)
 
 } // namespace cc
+
+inline void intrusive_ptr_add_ref(void *v) { // NOLINT
+    static_cast<cc::RefCounted *>(v)->addRef();
+}
+
+inline void intrusive_ptr_release(void *v) { // NOLINT
+    static_cast<cc::RefCounted *>(v)->release();
+}
+
+
+#include "boost/smart_ptr/intrusive_ptr.hpp"
+namespace cc {
+template <typename T>
+using intrusive_ptr = boost::intrusive_ptr<T>;
+}

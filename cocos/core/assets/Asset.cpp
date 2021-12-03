@@ -72,12 +72,12 @@ void Asset::setRawAsset(const std::string &filename, bool inLibrary /* = true*/)
     }
 }
 
-Asset *Asset::addRef() {
+Asset *Asset::addAssetRef() {
     ++_ref;
     return this;
 }
 
-Asset *Asset::decRef(bool autoRelease /* = true*/) {
+Asset *Asset::decAssetRef(bool autoRelease /* = true*/) {
     if (_ref > 0) {
         --_ref;
     }

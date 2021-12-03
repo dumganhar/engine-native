@@ -53,7 +53,7 @@ static bool ${signature_name}(se::State& s) // NOLINT(readability-identifier-nam
         auto result = ${namespaced_class_name}::${func_name}($arg_list);
         result->addRef();
         auto obj = se::Object::createObjectWithClass(__jsb_${underlined_class_name}_class);
-        obj->setPrivateData(result);
+        obj->setPrivateObject(se::make_shared_private_object(result));
         s.rval().setObject(obj);
         #elif $func_name.startswith("getInstance") and $is_ref_class
         auto result = ${namespaced_class_name}::${func_name}($arg_list);

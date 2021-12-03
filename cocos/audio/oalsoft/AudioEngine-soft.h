@@ -38,7 +38,7 @@ class Scheduler;
 
 #define MAX_AUDIOINSTANCES 32
 
-class CC_DLL AudioEngineImpl : public cc::Ref {
+class CC_DLL AudioEngineImpl : public cc::RefCounted {
 public:
     AudioEngineImpl();
     ~AudioEngineImpl() override;

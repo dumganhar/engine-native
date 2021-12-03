@@ -27,7 +27,7 @@
 
 #include "base/DeferredReleasePool.h"
 #include "base/Log.h"
-
+#include <vector>
 namespace cc {
 
 std::vector<RefCounted *> DeferredReleasePool::managedObjectArray{};

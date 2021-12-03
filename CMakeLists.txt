@@ -2121,6 +2121,7 @@ cocos_source_files(MODULE ccbindings
                  cocos/bindings/jswrapper/SeApi.h
                  cocos/bindings/jswrapper/State.cpp
                  cocos/bindings/jswrapper/State.h
+                 cocos/bindings/jswrapper/PrivateObject.h
                  cocos/bindings/jswrapper/Value.cpp
                  cocos/bindings/jswrapper/Value.h 
                  cocos/bindings/jswrapper/ValueArrayPool.cpp
@@ -2424,6 +2425,7 @@ if(ANDROID OR OHOS)
     target_include_directories(cocos2d_jni PUBLIC
         ${CWD}
         ${CWD}/cocos
+        ${CC_EXTERNAL_INCLUDES}
     )
     if(ANDROID)
         target_link_libraries(cocos2d_jni PUBLIC

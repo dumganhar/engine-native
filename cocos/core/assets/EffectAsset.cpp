@@ -53,7 +53,7 @@ void EffectAsset::registerAsset(EffectAsset *asset) {
         return;
     }
     __effects.emplace(asset->getName(), asset);
-    asset->addRef();
+    asset->addAssetRef();
 }
 
 /* static */

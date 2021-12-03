@@ -35,7 +35,6 @@
 #include <memory>
 #include <sstream>
 #include "audio/include/AudioEngine.h"
-#include "base/AutoreleasePool.h"
 #include "base/Scheduler.h"
 #include "cocos/bindings/event/EventDispatcher.h"
 #include "cocos/bindings/jswrapper/SeApi.h"

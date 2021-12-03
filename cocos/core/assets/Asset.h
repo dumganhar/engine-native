@@ -92,8 +92,8 @@ public:
      */
     virtual void createNode(const CreateNodeCallback &cb) {}
 
-    Asset *         addRef();
-    Asset *         decRef(bool autoRelease = true);
+    Asset *         addAssetRef();
+    Asset *         decAssetRef(bool autoRelease = true);
     inline uint32_t getRefCount() const { return _ref; }
 
     virtual void onLoaded() {}

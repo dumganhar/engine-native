@@ -145,7 +145,6 @@ static bool SocketIO_finalize(se::State &s) {
     } else {
         delegate->release();
     }
-    cobj->release();
     return true;
 }
 SE_BIND_FINALIZE_FUNC(SocketIO_finalize)
@@ -296,7 +295,7 @@ static bool SocketIO_connect(se::State &s) {
             siodelegate->addRef();
 
             se::Object *obj = se::Object::createObjectWithClass(__jsb_SocketIO_class);
-            obj->setPrivateData(ret);
+            obj->setPrivateObject(se::intrusive_private_object(ret));
 
             s.rval().setObject(obj);
             obj->root();

@@ -196,8 +196,8 @@ bool Rect_to_seval(const cc::Rect &v, se::Value *ret) { // NOLINT(readability-id
     return true;
 }
 void toVec2(void *data, DataType type, se::Value *ret) {
-    auto    *intptr   = static_cast<int32_t *>(data);
-    auto    *floatptr = static_cast<float *>(data);
+    auto *   intptr   = static_cast<int32_t *>(data);
+    auto *   floatptr = static_cast<float *>(data);
     cc::Vec2 vec2;
     if (DataType::INT == type) {
         vec2.x = static_cast<float>(intptr[0]);
@@ -211,8 +211,8 @@ void toVec2(void *data, DataType type, se::Value *ret) {
 }
 
 void toVec3(void *data, DataType type, se::Value *ret) {
-    auto    *intptr   = static_cast<int32_t *>(data);
-    auto    *floatptr = static_cast<float *>(data);
+    auto *   intptr   = static_cast<int32_t *>(data);
+    auto *   floatptr = static_cast<float *>(data);
     cc::Vec3 vec3;
     if (DataType::INT == type) {
         vec3.x = static_cast<float>(intptr[0]);
@@ -228,8 +228,8 @@ void toVec3(void *data, DataType type, se::Value *ret) {
 }
 
 void toVec4(void *data, DataType type, se::Value *ret) {
-    auto    *intptr   = static_cast<int32_t *>(data);
-    auto    *floatptr = static_cast<float *>(data);
+    auto *   intptr   = static_cast<int32_t *>(data);
+    auto *   floatptr = static_cast<float *>(data);
     cc::Vec4 vec4;
     if (DataType::INT == type) {
         vec4.x = static_cast<float>(intptr[0]);
@@ -1196,7 +1196,6 @@ bool seval_to_Map_string_key(const se::Value &v, cc::Map<std::string, cc::middle
             ret->clear();
             return false;
         }
-
         auto *nativeObj = static_cast<cc::middleware::Texture2D *>(tmp.toObject()->getPrivateData());
         ret->insert(key, nativeObj);
     }
@@ -1260,7 +1259,7 @@ bool ccvaluemap_to_seval(const cc::ValueMap &v, se::Value *ret) {
     bool             ok = true;
     for (const auto &e : v) {
         const std::string &key   = e.first;
-        const cc::Value   &value = e.second;
+        const cc::Value &  value = e.second;
 
         if (key.empty()) {
             continue;

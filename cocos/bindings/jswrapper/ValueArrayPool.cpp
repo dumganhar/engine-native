@@ -26,6 +26,7 @@
 
 #include "ValueArrayPool.h"
 #include "config.h"
+#include <cassert>
 
 namespace se {
 

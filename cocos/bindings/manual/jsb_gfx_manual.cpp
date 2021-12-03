@@ -206,9 +206,8 @@ static bool js_gfx_Device_createBuffer(se::State &s) { // NOLINT(readability-ide
             sevalue_to_native(args[0], &bufferInfo, s.thisObject());
             buffer = cobj->createBuffer(bufferInfo);
         }
-        se::NonRefNativePtrCreatedByCtorMap::emplace(buffer);
-
         CC_UNUSED bool ok = native_ptr_to_seval(buffer, &s.rval());
+        s.rval().toObject()->getPrivateObject()->allowDestroyInGC();
         SE_PRECONDITION2(ok, false, "js_gfx_Device_createBuffer : Error processing arguments");
         return true;
     }
@@ -236,9 +235,8 @@ static bool js_gfx_Device_createTexture(se::State &s) { // NOLINT(readability-id
             sevalue_to_native(args[0], &textureInfo, s.thisObject());
             texture = cobj->createTexture(textureInfo);
         }
-        se::NonRefNativePtrCreatedByCtorMap::emplace(texture);
-
         CC_UNUSED bool ok = native_ptr_to_seval(texture, &s.rval());
+        s.rval().toObject()->getPrivateObject()->allowDestroyInGC();
         SE_PRECONDITION2(ok, false, "js_gfx_Device_createTexture : Error processing arguments");
         return true;
     }
@@ -371,7 +369,6 @@ static bool js_gfx_CommandBuffer_execute(se::State &s) { // NOLINT(readability-i
                     cmdBufs.clear();
                     break;
                 }
-
                 auto *cmdBuf = static_cast<cc::gfx::CommandBuffer *>(tmp.toObject()->getPrivateData());
                 cmdBufs[i]   = cmdBuf;
             }

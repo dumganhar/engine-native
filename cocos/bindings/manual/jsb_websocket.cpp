@@ -246,11 +246,6 @@ static bool webSocketFinalize(const se::State &s) {
     }
 
     static_cast<JsbWebSocketDelegate *>(cobj->getDelegate())->release();
-    if (cobj->getRefCounted() == 1) {
-        cc::DeferredReleasePool::add(cobj);
-    } else {
-        cobj->release();
-    }
     return true;
 }
 SE_BIND_FINALIZE_FUNC(webSocketFinalize)
@@ -335,7 +330,7 @@ static bool webSocketConstructor(se::State &s) {
         // Initialize protocol property with an empty string, it will be assigned in onOpen delegate.
         obj->setProperty("protocol", se::Value(""));
 
-        obj->setPrivateData(cobj);
+        obj->setPrivateObject(se::intrusive_private_object(cobj));
 
         obj->root();
 

@@ -25,9 +25,9 @@
 ****************************************************************************/
 
 #include "JavaScriptObjCBridge.h"
+#include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/bindings/manual/jsb_global.h"
-#include "cocos/bindings/jswrapper/SeApi.h"
 
 #include <string>
 #include <vector>
@@ -61,14 +61,14 @@ public:
     private:
         se::Value objc_to_seval(id objcVal);
 
-        int _error = JSO_ERR_OK;
+        int         _error = JSO_ERR_OK;
         std::string _className;
         std::string _methodName;
     };
 };
 
 bool JavaScriptObjCBridge::CallInfo::execute(const se::ValueArray &argv, se::Value &rval) {
-    NSString *className = [NSString stringWithCString:_className.c_str() encoding:NSUTF8StringEncoding];
+    NSString *className  = [NSString stringWithCString:_className.c_str() encoding:NSUTF8StringEncoding];
     NSString *methodName = [NSString stringWithCString:_methodName.c_str() encoding:NSUTF8StringEncoding];
 
     if (!className || !methodName) {
@@ -87,7 +87,7 @@ bool JavaScriptObjCBridge::CallInfo::execute(const se::ValueArray &argv, se::Val
         _error = JSO_ERR_METHOD_NOT_FOUND;
         return false;
     }
-    methodSel = NSSelectorFromString(methodName);
+    methodSel                    = NSSelectorFromString(methodName);
     NSMethodSignature *methodSig = [targetClass methodSignatureForSelector:(SEL)methodSel];
     if (methodSig == nil) {
         _error = JSO_ERR_METHOD_NOT_FOUND;
@@ -95,7 +95,7 @@ bool JavaScriptObjCBridge::CallInfo::execute(const se::ValueArray &argv, se::Val
         return false;
     }
     @try {
-        int argc = (int)argv.size();
+        int        argc          = (int)argv.size();
         NSUInteger argumentCount = [methodSig numberOfArguments];
         if (argumentCount != argc) {
             _error = JSO_ERR_INVALID_ARGUMENTS;
@@ -107,8 +107,8 @@ bool JavaScriptObjCBridge::CallInfo::execute(const se::ValueArray &argv, se::Val
         [invocation setSelector:methodSel];
 
         for (int i = 2; i < argc; ++i) {
-            std::string argumentType = [methodSig getArgumentTypeAtIndex:i];
-            const se::Value &arg = argv[i];
+            std::string      argumentType = [methodSig getArgumentTypeAtIndex:i];
+            const se::Value &arg          = argv[i];
 
             /* - (void)setArgument:(void *)argumentLocation atIndex:(NSInteger)idx;
              *
@@ -181,8 +181,8 @@ bool JavaScriptObjCBridge::CallInfo::execute(const se::ValueArray &argv, se::Val
             }
         }
 
-        NSUInteger returnLength = [methodSig methodReturnLength];
-        std::string returnType = [methodSig methodReturnType];
+        NSUInteger  returnLength = [methodSig methodReturnLength];
+        std::string returnType   = [methodSig methodReturnType];
         [invocation invoke];
 
         if (returnLength > 0) {
@@ -255,7 +255,7 @@ se::Value JavaScriptObjCBridge::CallInfo::objc_to_seval(id objcVal) {
         return ret;
 
     if ([objcVal isKindOfClass:[NSNumber class]]) {
-        NSNumber *number = (NSNumber *)objcVal;
+        NSNumber *  number     = (NSNumber *)objcVal;
         std::string numberType = [number objCType];
         if (numberType == @encode(BOOL) || numberType == @encode(bool)) {
             ret.setBoolean([number boolValue]);
@@ -280,25 +280,23 @@ se::Value JavaScriptObjCBridge::CallInfo::objc_to_seval(id objcVal) {
 se::Class *__jsb_JavaScriptObjCBridge_class = nullptr;
 
 static bool JavaScriptObjCBridge_finalize(se::State &s) {
-    JavaScriptObjCBridge *cobj = (JavaScriptObjCBridge *)s.nativeThisObject();
-    delete cobj;
     return true;
 }
 SE_BIND_FINALIZE_FUNC(JavaScriptObjCBridge_finalize)
 
 static bool JavaScriptObjCBridge_constructor(se::State &s) {
     JavaScriptObjCBridge *cobj = new (std::nothrow) JavaScriptObjCBridge();
-    s.thisObject()->setPrivateData(cobj);
+    s.thisObject()->setPrivateObject(se::make_shared_private_object(cobj));
     return true;
 }
 SE_BIND_CTOR(JavaScriptObjCBridge_constructor, __jsb_JavaScriptObjCBridge_class, JavaScriptObjCBridge_finalize)
 
 static bool JavaScriptObjCBridge_callStaticMethod(se::State &s) {
     const auto &args = s.args();
-    int argc = (int)args.size();
+    int         argc = (int)args.size();
 
     if (argc >= 2) {
-        bool ok = false;
+        bool        ok = false;
         std::string clsName, methodName;
         ok = sevalue_to_native(args[0], &clsName);
         SE_PRECONDITION2(ok, false, "Converting class name failed!");

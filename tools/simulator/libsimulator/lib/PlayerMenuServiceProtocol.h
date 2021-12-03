@@ -31,7 +31,7 @@
 #include "PlayerMacros.h"
 #include "PlayerServiceProtocol.h"
 #include "SimulatorExport.h"
-#include "cocos/base/Ref.h"
+#include "cocos/base/RefCounted.h"
 
 PLAYER_NS_BEGIN
 
@@ -40,7 +40,7 @@ PLAYER_NS_BEGIN
 #define kPlayerCtrlModifyKey  "ctrl"
 #define kPlayerAltModifyKey   "alt"
 
-class CC_LIBSIM_DLL PlayerMenuItem : public cc::Ref {
+class CC_LIBSIM_DLL PlayerMenuItem : public cc::RefCounted {
 public:
     virtual ~PlayerMenuItem();
 

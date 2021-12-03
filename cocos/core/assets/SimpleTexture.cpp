@@ -110,7 +110,7 @@ void SimpleTexture::assignImage(ImageAsset *image, uint32_t level, uint32_t arra
         //        const index = deps.indexOf(image._uuid);
         //        if (index !== -1) {
         //            fastRemoveAt(deps, index);
-        //            image.decRef();
+        //            image.decAssetRef();
         //        }
     }
 }

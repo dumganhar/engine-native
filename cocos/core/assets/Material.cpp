@@ -252,6 +252,7 @@ void Material::copy(const Material *mat) {
 void Material::update(bool keepProps /* = true*/) {
     if (_effectAsset) {
         _passes = createPasses();
+        CC_ASSERT(!_effectAsset->_techniques.empty());
         // handle property values
         size_t totalPasses = _effectAsset->_techniques[_techIdx].passes.size();
         _props.resize(totalPasses);

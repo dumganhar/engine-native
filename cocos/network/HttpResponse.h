@@ -45,7 +45,7 @@ namespace network {
  * @since v2.0.2.
  * @lua NA
  */
-class CC_DLL HttpResponse : public cc::Ref {
+class CC_DLL HttpResponse : public cc::RefCounted {
 public:
     /**
      * Constructor, it's used by HttpClient internal, users don't need to create HttpResponse manually.
@@ -56,7 +56,7 @@ public:
       _succeed(false),
       _responseDataString("") {
         if (_pHttpRequest) {
-            _pHttpRequest->retain();
+            _pHttpRequest->addRef();
         }
     }
 
@@ -75,7 +75,7 @@ public:
      * If this method is called , it would trigger CCASSERT.
      * @return cc::Ref* always return nullptr.
      */
-    cc::Ref *autorelease() {
+    cc::RefCounted *autorelease() {
         CCASSERT(false, "HttpResponse is used between network thread and ui thread \
                         therefore, autorelease is forbidden here");
         return nullptr;

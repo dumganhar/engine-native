@@ -26,7 +26,7 @@
 #ifndef __CC_TOUCH_H__
 #define __CC_TOUCH_H__
 
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "math/Vec2.h"
 
 NS_CC_EVENT_BEGIN
@@ -40,7 +40,7 @@ NS_CC_EVENT_BEGIN
  * @brief Encapsulates the Touch information, such as touch point, id and so on,
  and provides the methods that commonly used.
  */
-class CC_DLL Touch : public Ref {
+class CC_DLL Touch : public RefCounted {
 public:
     /** 
      * Dispatch mode, how the touches are dispatched.

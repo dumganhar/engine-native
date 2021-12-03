@@ -31,7 +31,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "extensions/ExtensionMacros.h"
 #include "extensions/ExtensionExport.h"
 #include "network/Downloader.h"
@@ -58,7 +58,7 @@ struct ManifestAsset {
 
 typedef std::unordered_map<std::string, DownloadUnit> DownloadUnits;
 
-class CC_EX_DLL Manifest : public Ref {
+class CC_EX_DLL Manifest : public RefCounted {
 public:
     friend class AssetsManagerEx;
 

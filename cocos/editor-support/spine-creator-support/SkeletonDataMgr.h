@@ -29,7 +29,7 @@
 
 #pragma once
 
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "spine/SkeletonData.h"
 #include "spine/spine.h"
 #include <functional>

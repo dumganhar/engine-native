@@ -29,7 +29,7 @@
 
 #include <map>
 #include <string>
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 
 namespace cc {
 
@@ -37,7 +37,7 @@ namespace gfx {
 enum class Format;
 } // namespace gfx
 
-class Image : public Ref {
+class Image : public RefCounted {
 public:
     Image();
 

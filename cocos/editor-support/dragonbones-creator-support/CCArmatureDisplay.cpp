@@ -26,6 +26,7 @@
 #include "SharedBufferManager.h"
 #include "base/TypeDef.h"
 #include "base/memory/Memory.h"
+#include "base/DeferredReleasePool.h"
 #include "dragonbones-creator-support/CCSlot.h"
 #include "math/Math.h"
 #include "math/Vec3.h"
@@ -43,7 +44,7 @@ DRAGONBONES_NAMESPACE_BEGIN
 CCArmatureDisplay *CCArmatureDisplay::create() {
     CCArmatureDisplay *displayContainer = new (std::nothrow) CCArmatureDisplay();
     if (displayContainer) {
-        displayContainer->autorelease();
+        cc::DeferredReleasePool::add(displayContainer);
     } else {
         CC_SAFE_DELETE(displayContainer);
     }

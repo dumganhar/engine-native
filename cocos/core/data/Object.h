@@ -28,7 +28,7 @@
 #include <string>
 
 #include "base/Macros.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "base/TypeDef.h"
 
 namespace cc {
@@ -40,7 +40,7 @@ namespace cc {
  * 大部分对象的基类。
  * @private
  */
-class CCObject : public Ref /*cjh implements EditorExtendableObject*/ {
+class CCObject : public RefCounted /*cjh implements EditorExtendableObject*/ {
 public:
     // definitions for CCObject.Flags
     enum class Flags : FlagBits {

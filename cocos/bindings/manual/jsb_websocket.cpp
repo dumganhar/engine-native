@@ -29,6 +29,7 @@
     #include "cocos/bindings/jswrapper/SeApi.h"
     #include "cocos/bindings/manual/jsb_conversions.h"
     #include "cocos/bindings/manual/jsb_global.h"
+    #include "cocos/base/DeferredReleasePool.h"
 
     #include "base/UTF8.h"
     #include "platform/Application.h"
@@ -245,8 +246,8 @@ static bool webSocketFinalize(const se::State &s) {
     }
 
     static_cast<JsbWebSocketDelegate *>(cobj->getDelegate())->release();
-    if (cobj->getReferenceCount() == 1) {
-        cobj->autorelease();
+    if (cobj->getRefCounted() == 1) {
+        cc::DeferredReleasePool::add(cobj);
     } else {
         cobj->release();
     }
@@ -303,8 +304,8 @@ static bool webSocketConstructor(se::State &s) {
             auto *delegate = new (std::nothrow) JsbWebSocketDelegate();
             if (cobj->init(*delegate, url, &protocols, caFilePath)) {
                 delegate->setJSDelegate(se::Value(obj, true));
-                cobj->retain();     // release in finalize function and onClose delegate method
-                delegate->retain(); // release in finalize function and onClose delegate method
+                cobj->addRef();     // release in finalize function and onClose delegate method
+                delegate->addRef(); // release in finalize function and onClose delegate method
             } else {
                 cobj->release();
                 delegate->release();
@@ -316,8 +317,8 @@ static bool webSocketConstructor(se::State &s) {
             auto *delegate = new (std::nothrow) JsbWebSocketDelegate();
             if (cobj->init(*delegate, url)) {
                 delegate->setJSDelegate(se::Value(obj, true));
-                cobj->retain();     // release in finalize function and onClose delegate method
-                delegate->retain(); // release in finalize function and onClose delegate method
+                cobj->addRef();     // release in finalize function and onClose delegate method
+                delegate->addRef(); // release in finalize function and onClose delegate method
             } else {
                 cobj->release();
                 delegate->release();

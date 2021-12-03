@@ -31,6 +31,7 @@
 #include "base/UTF8.h"
 #include "AsyncTaskPool.h"
 #include "base/Log.h"
+#include "base/DeferredReleasePool.h"
 
 #ifdef MINIZIP_FROM_SYSTEM
     #include <minizip/unzip.h>
@@ -112,7 +113,7 @@ AssetsManagerEx::~AssetsManagerEx() {
 AssetsManagerEx *AssetsManagerEx::create(const std::string &manifestUrl, const std::string &storagePath) {
     AssetsManagerEx *ret = new (std::nothrow) AssetsManagerEx(manifestUrl, storagePath);
     if (ret) {
-        ret->autorelease();
+        cc::DeferredReleasePool::add(ret);
     } else {
         CC_SAFE_DELETE(ret);
     }
@@ -182,7 +183,7 @@ bool AssetsManagerEx::loadLocalManifest(Manifest *localManifest, const std::stri
         CC_SAFE_RELEASE(_localManifest);
     }
     _localManifest = localManifest;
-    _localManifest->retain();
+    _localManifest->addRef();
     // Find the cached manifest file
     Manifest *cachedManifest = nullptr;
     if (_fileUtils->isFileExist(_cacheManifestPath)) {
@@ -308,7 +309,7 @@ bool AssetsManagerEx::loadRemoteManifest(Manifest *remoteManifest) {
         CC_SAFE_RELEASE(_remoteManifest);
     }
     _remoteManifest = remoteManifest;
-    _remoteManifest->retain();
+    _remoteManifest->addRef();
     // Compare manifest version and set state
     if (_localManifest->versionGreaterOrEquals(_remoteManifest, _versionCompareHandle)) {
         _updateState = State::UP_TO_DATE;

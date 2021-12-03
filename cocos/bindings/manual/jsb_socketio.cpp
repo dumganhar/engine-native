@@ -28,6 +28,7 @@
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/bindings/manual/jsb_global.h"
+#include "cocos/base/DeferredReleasePool.h"
 
 #include "base/UTF8.h"
 #include "cocos/network/SocketIO.h"
@@ -38,7 +39,7 @@ using namespace cc::network;
 
 se::Class *__jsb_SocketIO_class = nullptr;
 
-class JSB_SocketIODelegate : public Ref, public SocketIO::SIODelegate {
+class JSB_SocketIODelegate : public RefCounted, public SocketIO::SIODelegate {
 public:
     //c++11 map to callbacks
     typedef std::unordered_map<std::string /* eventName */, se::ValueArray /* 0:callbackFunc, 1:target */> JSB_SIOCallbackRegistry;
@@ -65,8 +66,8 @@ public:
             iter->second->unroot();
         }
 
-        if (getReferenceCount() == 1) {
-            autorelease();
+        if (getRefCounted() == 1) {
+            cc::DeferredReleasePool::add(this);
         } else {
             release();
         }
@@ -139,8 +140,8 @@ static bool SocketIO_finalize(se::State &s) {
     CC_LOG_INFO("jsbindings: finalizing JS object %p (SocketIO)", cobj);
     cobj->disconnect();
     JSB_SocketIODelegate *delegate = static_cast<JSB_SocketIODelegate *>(cobj->getDelegate());
-    if (delegate->getReferenceCount() == 1) {
-        delegate->autorelease();
+    if (delegate->getRefCounted() == 1) {
+        cc::DeferredReleasePool::add(delegate);
     } else {
         delegate->release();
     }
@@ -291,8 +292,8 @@ static bool SocketIO_connect(se::State &s) {
         CC_LOG_DEBUG("Calling native SocketIO.connect method");
         SIOClient *ret = SocketIO::connect(url, *siodelegate, caFilePath);
         if (ret != nullptr) {
-            ret->retain();
-            siodelegate->retain();
+            ret->addRef();
+            siodelegate->addRef();
 
             se::Object *obj = se::Object::createObjectWithClass(__jsb_SocketIO_class);
             obj->setPrivateData(ret);

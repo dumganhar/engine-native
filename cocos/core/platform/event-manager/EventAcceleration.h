@@ -38,8 +38,7 @@ NS_CC_EVENT_BEGIN
 /** @struct Acceleration
  * The device accelerometer reports values for each axis in units of g-force.
  */
-class CC_DLL Acceleration
-: public Ref {
+class CC_DLL Acceleration : public RefCounted {
 public:
     double x;
     double y;

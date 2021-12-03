@@ -310,7 +310,7 @@ bool seval_to_Map_string_key(const se::Value &v, cc::Map<std::string, T> *ret) {
 }
 
 template <typename T>
-typename std::enable_if<!std::is_base_of<cc::Ref, T>::value, bool>::type
+typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, bool>::type
 native_ptr_to_seval(T *v_c, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
     using DecayT = typename std::decay<typename std::remove_const<T>::type>::type;
     auto *v      = const_cast<DecayT *>(v_c);
@@ -345,7 +345,7 @@ native_ptr_to_seval(T *v_c, se::Value *ret, bool *isReturnCachedValue = nullptr)
 
 //handle reference
 template <typename T>
-typename std::enable_if<!std::is_base_of<cc::Ref, T>::value && !std::is_pointer<T>::value, bool>::type
+typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value && !std::is_pointer<T>::value, bool>::type
 native_ptr_to_seval(T &v_ref, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
     using DecayT = typename std::decay<typename std::remove_const<decltype(v_ref)>::type>::type;
     auto *v      = const_cast<DecayT *>(&v_ref);
@@ -381,7 +381,7 @@ native_ptr_to_seval(T &v_ref, se::Value *ret, bool *isReturnCachedValue = nullpt
 
 template <typename T>
 bool native_ptr_to_rooted_seval( // NOLINT(readability-identifier-naming)
-    typename std::enable_if<!std::is_base_of<cc::Ref, T>::value, T>::type *v,
+    typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, T>::type *v,
     se::Value *ret, bool *isReturnCachedValue = nullptr) {
     assert(ret != nullptr);
     if (v == nullptr) {
@@ -416,7 +416,7 @@ bool native_ptr_to_rooted_seval( // NOLINT(readability-identifier-naming)
 }
 
 template <typename T>
-typename std::enable_if<!std::is_base_of<cc::Ref, T>::value, bool>::type
+typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, bool>::type
 native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
     using DecayT = typename std::decay<typename std::remove_const<T>::type>::type;
     auto *v      = const_cast<DecayT *>(vp);
@@ -451,7 +451,7 @@ native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedV
 
 //handle ref
 template <typename T>
-typename std::enable_if<!std::is_base_of<cc::Ref, T>::value, bool>::type
+typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, bool>::type
 native_ptr_to_seval(T &v_ref, se::Class *cls, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
     using DecayT = typename std::decay<typename std::remove_const<decltype(v_ref)>::type>::type;
     auto *v      = const_cast<DecayT *>(&v_ref);
@@ -487,7 +487,7 @@ native_ptr_to_seval(T &v_ref, se::Class *cls, se::Value *ret, bool *isReturnCach
 
 template <typename T>
 bool native_ptr_to_rooted_seval( // NOLINT(readability-identifier-naming)
-    typename std::enable_if<!std::is_base_of<cc::Ref, T>::value, T>::type *v,
+    typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, T>::type *v,
     se::Class *cls, se::Value *ret, bool *isReturnCachedValue = nullptr) {
     assert(ret != nullptr);
     if (v == nullptr) {
@@ -521,7 +521,7 @@ bool native_ptr_to_rooted_seval( // NOLINT(readability-identifier-naming)
 }
 
 template <typename T>
-typename std::enable_if<std::is_base_of<cc::Ref, T>::value, bool>::type
+typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, bool>::type
 native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
     using DecayT = typename std::decay<typename std::remove_const<T>::type>::type;
     auto *v      = const_cast<DecayT *>(vp);
@@ -540,7 +540,7 @@ native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) 
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
         obj->setPrivateData(v);
-        v->retain(); // Retain the native object to unify the logic in finalize method of js object.
+        v->addRef(); // Retain the native object to unify the logic in finalize method of js object.
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -557,7 +557,7 @@ native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) 
 }
 
 template <typename T>
-typename std::enable_if<std::is_base_of<cc::Ref, T>::value, bool>::type
+typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, bool>::type
 native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
     using DecayT = typename std::decay<typename std::remove_const<T>::type>::type;
     auto *v      = const_cast<DecayT *>(vp);
@@ -575,7 +575,7 @@ native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedV
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
         obj->setPrivateData(v);
-        v->retain(); // Retain the native object to unify the logic in finalize method of js object.
+        v->addRef(); // Retain the native object to unify the logic in finalize method of js object.
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }

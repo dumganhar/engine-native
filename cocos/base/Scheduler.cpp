@@ -203,7 +203,7 @@ void Scheduler::unschedule(const std::string &key, void *target) {
 
             if (timer && key == timer->getKey()) {
                 if (timer == element->currentTimer && (!element->currentTimerSalvaged)) {
-                    element->currentTimer->retain();
+                    element->currentTimer->addRef();
                     element->currentTimerSalvaged = true;
                 }
 
@@ -272,7 +272,7 @@ void Scheduler::unscheduleAllForTarget(void *target) {
         auto &          timers  = element->timers;
         if (std::find(timers.begin(), timers.end(), element->currentTimer) != timers.end() &&
             (!element->currentTimerSalvaged)) {
-            element->currentTimer->retain();
+            element->currentTimer->addRef();
             element->currentTimerSalvaged = true;
         }
 

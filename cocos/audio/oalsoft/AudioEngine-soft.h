@@ -30,7 +30,7 @@
 
 #include "audio/oalsoft/AudioCache.h"
 #include "audio/oalsoft/AudioPlayer.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 
 namespace cc {
 

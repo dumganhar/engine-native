@@ -272,8 +272,6 @@ cocos_source_files(
     cocos/base/Agent.h
     cocos/base/astc.cpp
     cocos/base/astc.h
-    cocos/base/AutoreleasePool.cpp
-    cocos/base/AutoreleasePool.h
     cocos/base/base64.cpp
     cocos/base/base64.h
     cocos/base/CachedArray.h
@@ -281,6 +279,8 @@ cocos_source_files(
     cocos/base/CoreStd.h
     cocos/base/csscolorparser.cpp
     cocos/base/csscolorparser.h
+    cocos/base/DeferredReleasePool.cpp
+    cocos/base/DeferredReleasePool.h
     cocos/base/etc1.cpp
     cocos/base/etc1.h
     cocos/base/etc2.cpp
@@ -291,8 +291,8 @@ cocos_source_files(
     cocos/base/Map.h
     cocos/base/Object.h
     cocos/base/Random.h
-    cocos/base/Ref.cpp
-    cocos/base/Ref.h
+    cocos/base/RefCounted.cpp
+    cocos/base/RefCounted.h
     cocos/base/Scheduler.cpp
     cocos/base/Scheduler.h
     cocos/base/StringHandle.cpp

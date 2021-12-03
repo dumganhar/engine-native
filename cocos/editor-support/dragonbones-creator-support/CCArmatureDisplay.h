@@ -27,7 +27,7 @@
 #include "IOTypedArray.h"
 #include "MiddlewareManager.h"
 #include "base/Map.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "bindings/event/EventDispatcher.h"
 #include "dragonbones-creator-support/CCSlot.h"
 #include "dragonbones/DragonBonesHeaders.h"
@@ -42,7 +42,7 @@ DRAGONBONES_NAMESPACE_BEGIN
  * It will not save vertices and indices.Only CCSlot will save these info.
  * And CCArmatureDisplay will traverse all tree node and calculate render data.
  */
-class CCArmatureDisplay : public cc::Ref, public virtual IArmatureProxy {
+class CCArmatureDisplay : public cc::RefCounted, public virtual IArmatureProxy {
     DRAGONBONES_DISALLOW_COPY_AND_ASSIGN(CCArmatureDisplay)
 
 public:

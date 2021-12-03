@@ -34,7 +34,7 @@
 
 namespace cc {
 
-class Ref;
+class RefCounted;
 
 /**
   * Interface that defines how to clone an Ref.
@@ -51,7 +51,7 @@ public:
  * Ref is used for reference count management. If a class inherits from Ref,
  * then it is easy to be shared in different places.
  */
-class CC_DLL Ref {
+class CC_DLL RefCounted {
 public:
     /**
      * Retains the ownership.
@@ -60,7 +60,7 @@ public:
      *
      * @see release, autorelease
      */
-    void retain();
+    void addRef();
 
     /**
      * Releases the ownership immediately.
@@ -75,26 +75,11 @@ public:
     void release();
 
     /**
-     * Releases the ownership sometime soon automatically.
-     *
-     * This decrements the Ref's reference count at the end of current
-     * autorelease pool block.
-     *
-     * If the reference count reaches 0 after the decrement, this Ref is
-     * destructed.
-     *
-     * @returns The Ref itself.
-     *
-     * @see AutoreleasePool, retain, release
-     */
-    Ref *autorelease();
-
-    /**
      * Returns the Ref's current reference count.
      *
      * @returns The Ref's reference count.
      */
-    unsigned int getReferenceCount() const;
+    unsigned int getRefCounted() const;
 
 protected:
     /**
@@ -102,15 +87,13 @@ protected:
      *
      * The Ref's reference count is 1 after construction.
      */
-    Ref();
+    RefCounted();
 
-    virtual ~Ref();
+    virtual ~RefCounted();
 
 protected:
     /// count of references
-    unsigned int _referenceCount;
-
-    friend class AutoreleasePool;
+    unsigned int _referenceCount{1};
 
     // Memory leak diagnostic data (only included when CC_REF_LEAK_DETECTION is defined and its value isn't zero)
 #if CC_REF_LEAK_DETECTION
@@ -119,7 +102,7 @@ public:
 #endif
 };
 
-using SCHEDULE_CB = void (Ref::*)(float);
+using SCHEDULE_CB = void (RefCounted::*)(float);
 #define CC_SCHEDULE_CALLBACK(cb) static_cast<cc::SCHEDULE_CB>(&cb)
 
 } // namespace cc

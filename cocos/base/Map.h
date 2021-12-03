@@ -38,7 +38,7 @@
 
 #include "base/Log.h"
 #include "base/Random.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 
 namespace cc {
 
@@ -85,21 +85,21 @@ public:
     /** Default constructor */
     Map<K, V>()
     : _data() {
-        static_assert(std::is_convertible<V, Ref *>::value, "Invalid Type for cc::Map<K, V>!");
+        static_assert(std::is_convertible<V, RefCounted *>::value, "Invalid Type for cc::Map<K, V>!");
         CC_LOG_INFO("In the default constructor of Map!");
     }
 
     /** Constructor with capacity. */
     explicit Map<K, V>(ssize_t capacity)
     : _data() {
-        static_assert(std::is_convertible<V, Ref *>::value, "Invalid Type for cc::Map<K, V>!");
+        static_assert(std::is_convertible<V, RefCounted *>::value, "Invalid Type for cc::Map<K, V>!");
         CC_LOG_INFO("In the constructor with capacity of Map!");
         _data.reserve(capacity);
     }
 
     /** Copy constructor. */
     Map<K, V>(const Map<K, V> &other) {
-        static_assert(std::is_convertible<V, Ref *>::value, "Invalid Type for cc::Map<K, V>!");
+        static_assert(std::is_convertible<V, RefCounted *>::value, "Invalid Type for cc::Map<K, V>!");
         CC_LOG_INFO("In the copy constructor of Map!");
         _data = other._data;
         addRefForAllObjects();
@@ -107,7 +107,7 @@ public:
 
     /** Move constructor. */
     Map<K, V>(Map<K, V> &&other) noexcept {
-        static_assert(std::is_convertible<V, Ref *>::value, "Invalid Type for cc::Map<K, V>!");
+        static_assert(std::is_convertible<V, RefCounted *>::value, "Invalid Type for cc::Map<K, V>!");
         CC_LOG_INFO("In the move constructor of Map!");
         _data = std::move(other._data);
     }
@@ -242,7 +242,7 @@ public:
      */
     void insert(const K &key, V object) {
         CCASSERT(object != nullptr, "Object is nullptr!");
-        object->retain();
+        object->addRef();
         erase(key);
         _data.insert(std::make_pair(key, object));
     }

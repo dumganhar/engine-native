@@ -110,7 +110,7 @@ void Cocos2dTextureLoader::load(AtlasPage &page, const spine::String &path) {
     CCASSERT(texture != nullptr, "Invalid image");
 
     if (texture) {
-        texture->retain();
+        texture->addRef();
 
         Texture2D::TexParams textureParams = {filter(page.minFilter), filter(page.magFilter), wrap(page.uWrap), wrap(page.vWrap)};
         texture->setTexParameters(textureParams);

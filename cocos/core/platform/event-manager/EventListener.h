@@ -32,7 +32,7 @@
 #include <vector>
 
 #include "base/Macros.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 
 namespace cc {
 class Node;
@@ -59,7 +59,7 @@ struct IListenerMask {
  *  If you need custom listener which with different callback, you need to inherit this class.
  *  For instance, you could refer to EventListenerAcceleration, EventListenerKeyboard, EventListenerTouchOneByOne, EventListenerCustom.
  */
-class CC_DLL EventListener : public Ref {
+class CC_DLL EventListener : public RefCounted {
 public:
     /** Type Event type.*/
     enum class Type {

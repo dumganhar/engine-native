@@ -34,10 +34,10 @@ EventListenerCustom::EventListenerCustom()
 
 EventListenerCustom *EventListenerCustom::create(const CallbacksInvoker::KeyType &eventName, const std::function<void(EventCustom *)> &callback) {
     EventListenerCustom *ret = new (std::nothrow) EventListenerCustom();
-    if (ret && ret->init(eventName, callback)) {
-        ret->autorelease();
-    } else {
-        CC_SAFE_DELETE(ret);
+    if (ret) {
+        if (!ret->init(eventName, callback)) {
+            CC_SAFE_DELETE(ret);
+        }
     }
     return ret;
 }
@@ -61,10 +61,10 @@ bool EventListenerCustom::init(const ListenerID &listenerId, const std::function
 
 EventListenerCustom *EventListenerCustom::clone() {
     EventListenerCustom *ret = new (std::nothrow) EventListenerCustom();
-    if (ret && ret->init(_listenerID, _onCustomEvent)) {
-        ret->autorelease();
-    } else {
-        CC_SAFE_DELETE(ret);
+    if (ret) {
+        if (!ret->init(_listenerID, _onCustomEvent)) {
+            CC_SAFE_DELETE(ret);
+        }
     }
     return ret;
 }

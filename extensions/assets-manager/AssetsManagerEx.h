@@ -46,7 +46,7 @@ NS_CC_EXT_BEGIN
 /**
  * @brief   This class is used to auto update resources, such as pictures or scripts.
  */
-class CC_EX_DLL AssetsManagerEx : public Ref {
+class CC_EX_DLL AssetsManagerEx : public RefCounted {
 public:
     //! Update states
     enum class State {

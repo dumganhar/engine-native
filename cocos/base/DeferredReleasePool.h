@@ -29,47 +29,15 @@
 
 #include <vector>
 #include <string>
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 
 namespace cc {
 
-/**
- * A pool for managing autorelease objects.
- */
-class CC_DLL LegacyAutoreleasePool {
+class CC_DLL DeferredReleasePool {
 public:
-    /**
-     * @warning Don't create an autorelease pool in heap, create it in stack.
-     */
-    LegacyAutoreleasePool();
 
-    /**
-     * Create an autorelease pool with specific name. This name is useful for debugging.
-     * @warning Don't create an autorelease pool in heap, create it in stack.
-     *
-     * @param name The name of created autorelease pool.
-     */
-    explicit LegacyAutoreleasePool(std::string name);
-
-    ~LegacyAutoreleasePool();
-
-    /**
-     * Add a given object to this autorelease pool.
-     *
-     * The same object may be added several times to an autorelease pool. When the
-     * pool is destructed, the object's `Ref::release()` method will be called
-     * the same times as it was added.
-     *
-     * @param object    The object to be added into the autorelease pool.
-     */
-    void addObject(Ref *object);
-
-    /**
-     * Clear the autorelease pool.
-     *
-     * It will invoke each element's `release()` function.
-     */
-    void clear();
+    static void add(RefCounted *object);
+    static void clear();
 
 #if defined(CC_DEBUG) && (CC_DEBUG > 0)
     /**
@@ -77,7 +45,7 @@ public:
      *
      * @return True if autorelease pool is clearing, false if not.
      */
-    bool isClearing() const { return _isClearing; };
+    static bool isClearing() { return DeferredReleasePool::isClearing; };
 #endif
 
     /**
@@ -86,7 +54,7 @@ public:
      * @param object The object to be checked.
      * @return True if the autorelease pool contains the object, false if not
      */
-    bool contains(Ref *object) const;
+    static bool contains(RefCounted *object);
 
     /**
      * Dump the objects that are put into the autorelease pool. It is used for debugging.
@@ -94,7 +62,7 @@ public:
      * The result will look like:
      * Object pointer address     object id     reference count
      */
-    void dump();
+    static void dump();
 
 private:
     /**
@@ -106,43 +74,7 @@ private:
      * be destructed properly by calling Ref::release() even if the object
      * is in the pool.
      */
-    std::vector<Ref *> _managedObjectArray;
-    std::string _name;
-
-#if defined(CC_DEBUG) && (CC_DEBUG > 0)
-    /**
-     *  The flag for checking whether the pool is doing `clear` operation.
-     */
-    bool _isClearing;
-#endif
-};
-
-class CC_DLL PoolManager {
-public:
-    static PoolManager *getInstance();
-
-    static void destroyInstance();
-
-    /**
-     * Get current auto release pool, there is at least one auto release pool that created by engine.
-     * You can create your own auto release pool at demand, which will be put into auto release pool stack.
-     */
-    LegacyAutoreleasePool *getCurrentPool() const;
-
-    bool isObjectInPools(Ref *obj) const;
-
-    friend class LegacyAutoreleasePool;
-
-private:
-    PoolManager();
-    ~PoolManager();
-
-    void push(LegacyAutoreleasePool *pool);
-    void pop();
-
-    static PoolManager *_singleInstance;
-
-    std::vector<LegacyAutoreleasePool *> _releasePoolStack;
+    static std::vector<RefCounted *> managedObjectArray;
 };
 
 } // namespace cc

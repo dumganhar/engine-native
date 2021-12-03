@@ -42,10 +42,10 @@ bool EventListenerKeyboard::checkAvailable() {
 
 EventListenerKeyboard *EventListenerKeyboard::create() {
     auto ret = new (std::nothrow) EventListenerKeyboard();
-    if (ret && ret->init()) {
-        ret->autorelease();
-    } else {
-        CC_SAFE_DELETE(ret);
+    if (ret) {
+        if (!ret->init()) {
+            CC_SAFE_DELETE(ret);
+        }
     }
     return ret;
 }
@@ -53,7 +53,6 @@ EventListenerKeyboard *EventListenerKeyboard::create() {
 EventListenerKeyboard *EventListenerKeyboard::clone() {
     auto ret = new (std::nothrow) EventListenerKeyboard();
     if (ret && ret->init()) {
-        ret->autorelease();
         ret->onKeyPressed  = onKeyPressed;
         ret->onKeyReleased = onKeyReleased;
     } else {

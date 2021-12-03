@@ -37,6 +37,7 @@
 #include "platform/Image.h"
 #include "ui/edit-box/EditBox.h"
 #include "xxtea/xxtea.h"
+#include "base/DeferredReleasePool.h"
 
 
 #if CC_PLATFORM == CC_PLATFORM_ANDROID
@@ -902,11 +903,11 @@ bool jsb_register_global_variables(se::Object *global) { //NOLINT
         delete gThreadPool;
         gThreadPool = nullptr;
 
-        PoolManager::getInstance()->getCurrentPool()->clear();
+        DeferredReleasePool::clear();
     });
 
     se::ScriptEngine::getInstance()->addAfterCleanupHook([]() {
-        PoolManager::getInstance()->getCurrentPool()->clear();
+        DeferredReleasePool::clear();
 
         gModuleCache.clear();
 

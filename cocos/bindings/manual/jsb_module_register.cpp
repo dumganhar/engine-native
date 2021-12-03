@@ -24,7 +24,6 @@
 ****************************************************************************/
 
 #include "cocos/bindings/manual/jsb_module_register.h"
-#include "cocos/base/AutoreleasePool.h"
 #include "cocos/bindings/auto/jsb_assets_auto.h"
 #include "cocos/bindings/auto/jsb_cocos_auto.h"
 #include "cocos/bindings/auto/jsb_extension_auto.h"
@@ -45,6 +44,7 @@
 #include "cocos/bindings/manual/jsb_platform.h"
 #include "cocos/bindings/manual/jsb_scene_manual.h"
 #include "cocos/bindings/manual/jsb_xmlhttprequest.h"
+#include "cocos/base/DeferredReleasePool.h"
 
 #if USE_GFX_RENDERER
 #endif
@@ -106,9 +106,9 @@ bool jsb_register_all_modules() {
 
     se->addBeforeCleanupHook([se]() {
         se->garbageCollect();
-        cc::PoolManager::getInstance()->getCurrentPool()->clear();
+        cc::DeferredReleasePool::clear();
         se->garbageCollect();
-        cc::PoolManager::getInstance()->getCurrentPool()->clear();
+        cc::DeferredReleasePool::clear();
     });
 
     se->addRegisterCallback(jsb_register_global_variables);
@@ -184,7 +184,7 @@ bool jsb_register_all_modules() {
     se->addRegisterCallback(register_all_websocket_server);
 #endif
     se->addAfterCleanupHook([]() {
-        cc::PoolManager::getInstance()->getCurrentPool()->clear();
+        cc::DeferredReleasePool::clear();
         JSBClassType::cleanup();
     });
     return true;

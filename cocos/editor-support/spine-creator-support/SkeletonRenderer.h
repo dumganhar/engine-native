@@ -34,7 +34,7 @@
 #include "Object.h"
 #include "base/Macros.h"
 #include "base/Map.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "middleware-adapter.h"
 #include "spine-creator-support/VertexEffectDelegate.h"
 #include "spine/spine.h"
@@ -46,7 +46,7 @@ class AttachmentVertices;
 
 /** Draws a skeleton.
      */
-class SkeletonRenderer : public cc::middleware::IMiddleware, public cc::Ref {
+class SkeletonRenderer : public cc::middleware::IMiddleware, public cc::RefCounted {
 public:
     static SkeletonRenderer *create();
     static SkeletonRenderer *createWithSkeleton(Skeleton *skeleton, bool ownsSkeleton = false, bool ownsSkeletonData = false);

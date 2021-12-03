@@ -1,4 +1,6 @@
 /****************************************************************************
+ Copyright (c) 2010-2012 cocos2d-x.org
+ Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2021 Xiamen Yaji Software Co., Ltd.
 
  http://www.cocos.com
@@ -23,44 +25,40 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#pragma once
+#include "base/DeferredReleasePool.h"
+#include "base/Log.h"
 
-#include "cocos/bindings/jswrapper/SeApi.h"
-#include "cocos/network/WebSocket.h"
+namespace cc {
 
-namespace se {
-class Object;
-class Value;
-} // namespace se
+std::vector<RefCounted *> DeferredReleasePool::managedObjectArray{};
 
-class JsbWebSocketDelegate : public cc::RefCounted, public cc::network::WebSocket::Delegate {
-public:
-    JsbWebSocketDelegate() = default;
+void DeferredReleasePool::add(RefCounted *object) {
+    DeferredReleasePool::managedObjectArray.push_back(object);
+}
 
-    void onOpen(cc::network::WebSocket *ws) override;
+void DeferredReleasePool::clear() {
+    for (const auto &obj : DeferredReleasePool::managedObjectArray) {
+        obj->release();
+    }
+    DeferredReleasePool::managedObjectArray.clear();
+}
 
-    void onMessage(cc::network::WebSocket *            ws,
-                   const cc::network::WebSocket::Data &data) override;
+bool DeferredReleasePool::contains(RefCounted *object) {
+    for (const auto &obj : DeferredReleasePool::managedObjectArray) {
+        if (obj == object) {
+            return true;
+        }
+    }
+    return false;
+}
 
-    void onClose(cc::network::WebSocket *ws) override;
+void DeferredReleasePool::dump() {
+    CC_LOG_DEBUG("number of managed object %ul\n", DeferredReleasePool::managedObjectArray.size());
+    CC_LOG_DEBUG("%20s%20s%20s", "Object pointer", "Object id", "reference count");
+    for (const auto &obj : DeferredReleasePool::managedObjectArray) {
+        CC_UNUSED_PARAM(obj);
+        CC_LOG_DEBUG("%20p%20u\n", obj, obj->getRefCounted());
+    }
+}
 
-    void onError(cc::network::WebSocket *                 ws,
-                 const cc::network::WebSocket::ErrorCode &error) override;
-
-    void setJSDelegate(const se::Value &jsDelegate);
-
-private:
-    ~JsbWebSocketDelegate() override;
-
-    se::Value _JSDelegate; // NOLINT (bugprone-reserved-identifier)
-};
-
-SE_DECLARE_FINALIZE_FUNC(WebSocket_finalize);
-
-SE_DECLARE_FUNC(WebSocket_constructor);
-
-SE_DECLARE_FUNC(WebSocket_send);
-
-SE_DECLARE_FUNC(WebSocket_close);
-
-bool register_all_websocket(se::Object *obj); // NOLINT (readability-identifier-naming)
+} // namespace cc

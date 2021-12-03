@@ -36,10 +36,10 @@ bool EventListenerMouse::checkAvailable() {
 
 EventListenerMouse *EventListenerMouse::create() {
     auto ret = new (std::nothrow) EventListenerMouse();
-    if (ret && ret->init()) {
-        ret->autorelease();
-    } else {
-        CC_SAFE_DELETE(ret);
+    if (ret) {
+        if (!ret->init()) {
+            CC_SAFE_DELETE(ret);
+        }
     }
     return ret;
 }
@@ -47,7 +47,6 @@ EventListenerMouse *EventListenerMouse::create() {
 EventListenerMouse *EventListenerMouse::clone() {
     auto ret = new (std::nothrow) EventListenerMouse();
     if (ret && ret->init()) {
-        ret->autorelease();
         ret->onMouseUp     = onMouseUp;
         ret->onMouseDown   = onMouseDown;
         ret->onMouseMove   = onMouseMove;

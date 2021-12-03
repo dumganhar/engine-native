@@ -32,7 +32,7 @@
 
 NS_CC_EVENT_BEGIN
 
-class Event : public Ref {
+class Event : public RefCounted {
 public:
     // Event types
     enum class Type {

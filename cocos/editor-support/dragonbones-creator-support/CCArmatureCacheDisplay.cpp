@@ -48,11 +48,9 @@ CCArmatureCacheDisplay::CCArmatureCacheDisplay(const std::string &armatureName, 
 
     if (isShare) {
         _armatureCache = ArmatureCacheMgr::getInstance()->buildArmatureCache(armatureName, armatureKey, atlasUUID);
-        _armatureCache->retain();
+        _armatureCache->addRef();
     } else {
         _armatureCache = new ArmatureCache(armatureName, armatureKey, atlasUUID);
-        _armatureCache->retain();
-        _armatureCache->autorelease();
     }
 
     // store global TypedArray begin and end offset

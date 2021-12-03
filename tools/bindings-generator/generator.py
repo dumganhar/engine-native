@@ -1091,7 +1091,7 @@ class NativeClass(object):
         # the cursor to the implementation
         self.cursor = cursor
         self.class_name = cursor.displayname
-        self.is_ref_class = self.class_name == "Ref"
+        self.is_ref_class = self.class_name == "RefCount"
         self.rename_destructor = generator.rename_destructor(self.class_name)
         self.parents = []
         self.fields = []
@@ -1431,7 +1431,7 @@ class NativeClass(object):
 
                     self.parents.append(parent)
 
-            if parent_name == "Ref":
+            if parent_name == "RefCount":
                 self.is_ref_class = True
         elif cursor.kind == cindex.CursorKind.FIELD_DECL or cursor.kind == cindex.CursorKind.VAR_DECL:
             self.fields.append(NativeField(cursor, self, self.generator))

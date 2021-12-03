@@ -33,6 +33,7 @@
 #include "SkeletonDataMgr.h"
 #include "base/TypeDef.h"
 #include "base/memory/Memory.h"
+#include "base/DeferredReleasePool.h"
 #include "math/Math.h"
 #include "math/Vec3.h"
 #include "gfx-base/GFXDef.h"
@@ -61,25 +62,25 @@ enum DebugType {
 };
 SkeletonRenderer *SkeletonRenderer::create() {
     auto *skeleton = new SkeletonRenderer();
-    skeleton->autorelease();
+    cc::DeferredReleasePool::add(skeleton);
     return skeleton;
 }
 
 SkeletonRenderer *SkeletonRenderer::createWithSkeleton(Skeleton *skeleton, bool ownsSkeleton, bool ownsSkeletonData) {
     auto *node = new SkeletonRenderer(skeleton, ownsSkeleton, ownsSkeletonData);
-    node->autorelease();
+    cc::DeferredReleasePool::add(node);
     return node;
 }
 
 SkeletonRenderer *SkeletonRenderer::createWithData(SkeletonData *skeletonData, bool ownsSkeletonData) {
     auto *node = new SkeletonRenderer(skeletonData, ownsSkeletonData);
-    node->autorelease();
+    cc::DeferredReleasePool::add(node);
     return node;
 }
 
 SkeletonRenderer *SkeletonRenderer::createWithFile(const std::string &skeletonDataFile, const std::string &atlasFile, float scale) {
     auto *node = new SkeletonRenderer(skeletonDataFile, atlasFile, scale);
-    node->autorelease();
+    cc::DeferredReleasePool::add(node);
     return node;
 }
 
@@ -1032,7 +1033,7 @@ void SkeletonRenderer::setVertexEffectDelegate(VertexEffectDelegate *effectDeleg
     }
     CC_SAFE_RELEASE(_effectDelegate);
     _effectDelegate = effectDelegate;
-    CC_SAFE_RETAIN(_effectDelegate);
+    CC_SAFE_ADD_REF(_effectDelegate);
 }
 
 void SkeletonRenderer::setSlotsRange(int startSlotIndex, int endSlotIndex) {

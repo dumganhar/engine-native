@@ -41,6 +41,7 @@
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/network/HttpClient.h"
+#include "cocos/base/DeferredReleasePool.h"
 #include "platform/Application.h"
 
 using namespace cc;          //NOLINT
@@ -114,7 +115,7 @@ std::unordered_map<int, std::string> _httpStatusCodeMap = {
     {599, "Network Connect Timeout Error"}};
 } // namespace
 
-class XMLHttpRequest : public Ref {
+class XMLHttpRequest : public RefCounted {
 public:
     // Ready States: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
     enum class ReadyState : char {
@@ -574,8 +575,8 @@ se::Class *__jsb_XMLHttpRequest_class = nullptr; //NOLINT(readability-identifier
 static bool XMLHttpRequest_finalize(se::State &s) { //NOLINT(readability-identifier-naming, google-runtime-references)
     auto *request = static_cast<XMLHttpRequest *>(s.nativeThisObject());
     SE_LOGD("XMLHttpRequest_finalize, %p ... \n", request);
-    if (request->getReferenceCount() == 1) {
-        request->autorelease();
+    if (request->getRefCounted() == 1) {
+        cc::DeferredReleasePool::add(request);
     } else {
         request->release();
     }

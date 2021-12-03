@@ -393,7 +393,7 @@ void EventManager::addEventListener(EventListener *listener) {
         sEngine->retainScriptObject(this, listener);
     }
 #endif // CC_ENABLE_GC_FOR_NATIVE_OBJECTS
-    listener->retain();
+    listener->addRef();
 }
 
 void EventManager::forceAddEventListener(EventListener *listener) {
@@ -530,7 +530,7 @@ void EventManager::removeEventListener(EventListener *listener) {
         for (auto iter = listeners->begin(); iter != listeners->end(); ++iter) {
             auto l = *iter;
             if (l == listener) {
-                CC_SAFE_RETAIN(l);
+                l->addRef();
                 l->setRegistered(false);
                 if (l->getAssociatedNode() != nullptr) {
                     dissociateNodeAndEventListener(l->getAssociatedNode(), l);

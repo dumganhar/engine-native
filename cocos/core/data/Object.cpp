@@ -70,7 +70,7 @@ bool CCObject::destroy() {
         return false;
     }
     _objFlags |= Flags::TO_DESTROY;
-    this->retain();
+    addRef();
     objectsToDestroy.emplace_back(this);
 
     //cjh TODO:   if (EDITOR && deferredDestroyTimer === null && legacyCC.engine && !legacyCC.engine._isUpdating) {

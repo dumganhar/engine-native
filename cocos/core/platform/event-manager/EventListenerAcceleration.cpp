@@ -26,6 +26,7 @@
 #include "core/platform/event-manager/EventListenerAcceleration.h"
 #include "base/Log.h"
 #include "base/Macros.h"
+#include "base/DeferredReleasePool.h"
 #include "core/platform/event-manager/EventAcceleration.h"
 
 NS_CC_EVENT_BEGIN
@@ -42,7 +43,7 @@ EventListenerAcceleration::~EventListenerAcceleration() {
 EventListenerAcceleration *EventListenerAcceleration::create(const std::function<void(Acceleration *, Event *)> &callback) {
     EventListenerAcceleration *ret = new (std::nothrow) EventListenerAcceleration();
     if (ret && ret->init(callback)) {
-        ret->autorelease();
+        cc::DeferredReleasePool::add(ret);
     } else {
         CC_SAFE_DELETE(ret);
     }
@@ -67,10 +68,10 @@ bool EventListenerAcceleration::init(const std::function<void(Acceleration *, Ev
 EventListenerAcceleration *EventListenerAcceleration::clone() {
     auto ret = new (std::nothrow) EventListenerAcceleration();
 
-    if (ret && ret->init(onAccelerationEvent)) {
-        ret->autorelease();
-    } else {
-        CC_SAFE_DELETE(ret);
+    if (ret) {
+        if (!ret->init(onAccelerationEvent)) {
+            CC_SAFE_DELETE(ret);
+        }
     }
 
     return ret;

@@ -160,10 +160,10 @@ It should work same as apples CFSwapInt32LittleToHost(..)
             (p) = nullptr;      \
         }                       \
     } while (0)
-#define CC_SAFE_RETAIN(p)  \
+#define CC_SAFE_ADD_REF(p) \
     do {                   \
         if (p) {           \
-            (p)->retain(); \
+            (p)->addRef(); \
         }                  \
     } while (0)
 #define CC_BREAK_IF(cond) \

@@ -111,7 +111,7 @@ public:
     }
 
     void setImage(ImageAsset *value) {
-        value->addRef();
+        value->addAssetRef();
         std::vector<ImageAsset *> mipmaps;
         if (value != nullptr) {
             mipmaps.emplace_back(value);

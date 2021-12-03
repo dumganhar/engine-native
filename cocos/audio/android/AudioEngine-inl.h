@@ -46,7 +46,7 @@ class AudioPlayerProvider;
 
 class AudioEngineImpl;
 
-class AudioEngineImpl : public cc::Ref {
+class AudioEngineImpl : public cc::RefCounted {
 public:
     AudioEngineImpl();
     ~AudioEngineImpl() override;

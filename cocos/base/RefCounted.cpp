@@ -36,8 +36,8 @@
 namespace cc {
 
 #if CC_REF_LEAK_DETECTION
-static void trackRef(Ref *ref);
-static void untrackRef(Ref *ref);
+static void trackRef(RefCounted *ref);
+static void untrackRef(RefCounted *ref);
 #endif
 
 RefCounted::RefCounted()
@@ -78,9 +78,9 @@ unsigned int RefCounted::getRefCounted() const {
 
 #if CC_REF_LEAK_DETECTION
 
-static std::list<Ref *> __refAllocationList;
+static std::list<RefCounted *> __refAllocationList;
 
-void Ref::printLeaks() {
+void RefCounted::printLeaks() {
     // Dump Ref object memory leaks
     if (__refAllocationList.empty()) {
         log("[memory] All Ref objects successfully cleaned up (no leaks detected).\n");
@@ -95,14 +95,14 @@ void Ref::printLeaks() {
     }
 }
 
-static void trackRef(Ref *ref) {
+static void trackRef(RefCounted *ref) {
     CCASSERT(ref, "Invalid parameter, ref should not be null!");
 
     // Create memory allocation record.
     __refAllocationList.push_back(ref);
 }
 
-static void untrackRef(Ref *ref) {
+static void untrackRef(RefCounted *ref) {
     auto iter = std::find(__refAllocationList.begin(), __refAllocationList.end(), ref);
     if (iter == __refAllocationList.end()) {
         log("[memory] CORRUPTION: Attempting to free (%s) with invalid ref tracking record.\n", typeid(*ref).name());

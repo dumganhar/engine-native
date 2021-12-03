@@ -31,14 +31,13 @@
 #include "base/base64.h"
 #include "gfx-base/GFXDef.h"
 #include "jsb_conversions.h"
-#include "network/HttpClient.h"
 #include "network/Downloader.h"
+#include "network/HttpClient.h"
 #include "platform/Application.h"
 #include "platform/Image.h"
 #include "ui/edit-box/EditBox.h"
 #include "xxtea/xxtea.h"
 #include "base/DeferredReleasePool.h"
-
 
 #if CC_PLATFORM == CC_PLATFORM_ANDROID
     #include "platform/java/jni/JniImp.h"
@@ -300,7 +299,7 @@ static bool jsc_dumpNativePtrToSeObjectMap(se::State &s) { //NOLINT
     for (const auto &e : namePtrArray) {
         CC_LOG_DEBUG("%s: %p", e.name, e.ptr);
     }
-    CC_LOG_DEBUG(">>> total: %d, nonRefMap: %d, Dump (native -> jsobj) map end", (int)se::NativePtrToObjectMap::size(), (int)se::NonRefNativePtrCreatedByCtorMap::size());
+    CC_LOG_DEBUG(">>> total: %d, Dump (native -> jsobj) map end", (int)se::NativePtrToObjectMap::size());
     return true;
 }
 SE_BIND_FUNC(jsc_dumpNativePtrToSeObjectMap)

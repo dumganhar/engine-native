@@ -398,8 +398,8 @@ void ScriptEngine::onPromiseRejectCallback(v8::PromiseRejectMessage msg) {
     getInstance()->callExceptionCallback("", eventName, ss.str().c_str());
 }
 
-void ScriptEngine::privateDataFinalize(void *nativeObj) {
-    auto *p = static_cast<internal::PrivateData *>(nativeObj);
+void ScriptEngine::privateDataFinalize(PrivateObjectBase *privateData) {
+    auto *p = static_cast<internal::PrivateData *>(privateData->getRaw());
 
     Object::nativeObjectFinalizeHook(p->data);
 
@@ -478,7 +478,6 @@ bool ScriptEngine::init() {
     _context.Get(_isolate)->Enter();
 
     NativePtrToObjectMap::init();
-    NonRefNativePtrCreatedByCtorMap::init();
 
     Object::setup();
     Class::setIsolate(_isolate);
@@ -603,7 +602,6 @@ void ScriptEngine::cleanup() {
 
     _isInCleanup = false;
     NativePtrToObjectMap::destroy();
-    NonRefNativePtrCreatedByCtorMap::destroy();
     _gcFunc = nullptr;
     SE_LOGD("ScriptEngine::cleanup end ...\n");
 }
@@ -1059,6 +1057,7 @@ bool ScriptEngine::callFunction(Object *targetObj, const char *funcName, uint32_
         if (rval != nullptr) {
             rval->setUndefined();
         }
+        tryCatch.ReThrow();
         return false;
     }
     #endif
@@ -1080,7 +1079,7 @@ ScriptEngine::VMStringPool::~VMStringPool() {
 
 v8::MaybeLocal<v8::String> ScriptEngine::VMStringPool::get(v8::Isolate *isolate, const char *name) {
     v8::Local<v8::String> ret;
-    auto iter = _vmStringPoolMap.find(name);
+    auto                  iter = _vmStringPoolMap.find(name);
     if (iter == _vmStringPoolMap.end()) {
         v8::MaybeLocal<v8::String> nameValue = v8::String::NewFromUtf8(isolate, name, v8::NewStringType::kNormal);
         if (!nameValue.IsEmpty()) {

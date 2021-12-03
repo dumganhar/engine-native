@@ -367,7 +367,7 @@ void CallbacksInvoker::off(const KeyType &key, void (Target::*memberFn)(Args...)
         size_t      i     = 0;
         for (const auto &info : infos) {
             if (info != nullptr && reinterpret_cast<CallbackFn>(info->getMemberFn()) == memberFn && info->_target == target) {
-                list.cancel(i);
+                list.cancel(static_cast<uint32_t>(i));
                 break;
             }
             ++i;

@@ -51,7 +51,7 @@ uint32_t     nativeObjectId = 0;
 Object::Object()
 : _cls(nullptr),
   _rootCount(0),
-  _privateData(nullptr),
+  _privateObject(nullptr),
   _finalizeCb(nullptr),
   _internalData(nullptr) {
 }
@@ -64,23 +64,24 @@ Object::~Object() {
     if (__objectMap) {
         __objectMap->erase(this);
     }
+    delete _privateObject;
+    _privateObject = nullptr;
 }
 
-/*static*/
-void Object::nativeObjectFinalizeHook(void *nativeObj) {
-    if (nativeObj == nullptr) {
+void Object::nativeObjectFinalizeHook(PrivateObjectBase *privateObj) {
+    if (privateObj == nullptr) {
         return;
     }
-
-    auto iter = NativePtrToObjectMap::find(nativeObj);
+    void *nativeObj = privateObj->getRaw();
+    auto  iter      = NativePtrToObjectMap::find(nativeObj);
     if (iter != NativePtrToObjectMap::end()) {
         Object *obj = iter->second;
         if (obj->_finalizeCb != nullptr) {
-            obj->_finalizeCb(nativeObj);
+            obj->_finalizeCb(privateObj);
         } else {
             assert(obj->_getClass() != nullptr);
             if (obj->_getClass()->_finalizeFunc != nullptr) {
-                obj->_getClass()->_finalizeFunc(nativeObj);
+                obj->_getClass()->_finalizeFunc(privateObj);
             }
         }
         obj->decRef();
@@ -99,7 +100,6 @@ void Object::setup() {
     __objectMap = std::make_unique<std::unordered_map<Object *, void *>>();
 }
 
-/* static */
 void Object::cleanup() {
     void *  nativeObj = nullptr;
     Object *obj       = nullptr;
@@ -107,15 +107,15 @@ void Object::cleanup() {
 
     const auto &nativePtrToObjectMap = NativePtrToObjectMap::instance();
     for (const auto &e : nativePtrToObjectMap) {
-        nativeObj = e.first;
-        obj       = e.second;
-
+        nativeObj                        = e.first;
+        obj                              = e.second;
+        PrivateObjectBase *privateObject = obj->getPrivateObject();
         if (obj->_finalizeCb != nullptr) {
-            obj->_finalizeCb(nativeObj);
+            obj->_finalizeCb(privateObject);
         } else {
             if (obj->_getClass() != nullptr) {
                 if (obj->_getClass()->_finalizeFunc != nullptr) {
-                    obj->_getClass()->_finalizeFunc(nativeObj);
+                    obj->_getClass()->_finalizeFunc(privateObject);
                 }
             }
         }
@@ -128,7 +128,6 @@ void Object::cleanup() {
     }
 
     NativePtrToObjectMap::clear();
-    NonRefNativePtrCreatedByCtorMap::clear();
 
     if (__objectMap) {
         std::vector<Object *> toReleaseObjects;
@@ -548,30 +547,31 @@ bool Object::getArrayBufferData(uint8_t **ptr, size_t *length) const {
     return true;
 }
 
-void Object::setPrivateData(void *data) {
-    assert(_privateData == nullptr);
-    assert(NativePtrToObjectMap::find(data) == NativePtrToObjectMap::end());
+void Object::setPrivateObject(PrivateObjectBase *data) {
+    assert(_privateObject == nullptr);
+    assert(NativePtrToObjectMap::find(data->getRaw()) == NativePtrToObjectMap::end());
     internal::setPrivate(__isolate, _obj, data, this, &_internalData);
-    NativePtrToObjectMap::emplace(data, this);
-    _privateData = data;
-    defineOwnProperty("__native_ptr__", se::Value(static_cast<uint64_t>(reinterpret_cast<uintptr_t>(data))), false, false, false);
+    NativePtrToObjectMap::emplace(data->getRaw(), this);
+    _privateObject = data;
+    defineOwnProperty("__native_ptr__", se::Value(static_cast<uint64_t>(reinterpret_cast<uintptr_t>(data->getRaw()))), false, false, false);
 }
 
-void *Object::getPrivateData() const {
-    if (_privateData == nullptr) {
-        const_cast<Object *>(this)->_privateData = internal::getPrivate(__isolate, const_cast<Object *>(this)->_obj.handle(__isolate));
+PrivateObjectBase *Object::getPrivateObject() const {
+    if (_privateObject == nullptr) {
+        const_cast<Object *>(this)->_privateObject = static_cast<PrivateObjectBase *>(internal::getPrivate(__isolate, const_cast<Object *>(this)->_obj.handle(__isolate)));
     }
-    return _privateData;
+    return _privateObject;
 }
 
 void Object::clearPrivateData(bool clearMapping) {
-    if (_privateData != nullptr) {
+    if (_privateObject != nullptr) {
         if (clearMapping) {
-            NativePtrToObjectMap::erase(_privateData);
+            NativePtrToObjectMap::erase(_privateObject->getRaw());
         }
         internal::clearPrivate(__isolate, _obj);
         defineOwnProperty("__native_ptr__", se::Value(static_cast<uint64_t>(reinterpret_cast<uintptr_t>(nullptr))), false, false, false);
-        _privateData = nullptr;
+        delete _privateObject;
+        _privateObject = nullptr;
     }
 }
 

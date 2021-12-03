@@ -92,7 +92,8 @@ static bool js_network_Downloader_setOnFileTaskSuccess(se::State &s) { // NOLINT
                 se::Value jsThis(s.thisObject());
                 se::Value jsFunc(args[0]);
                 jsThis.toObject()->attachObject(jsFunc.toObject());
-                auto lambda = [=](const cc::network::DownloadTask &larg0) -> void {
+                auto *thisObj = s.thisObject();
+                auto  lambda  = [=](const cc::network::DownloadTask &larg0) -> void {
                     se::ScriptEngine::getInstance()->clearException();
                     se::AutoHandleScope hs;
 
@@ -102,7 +103,6 @@ static bool js_network_Downloader_setOnFileTaskSuccess(se::State &s) { // NOLINT
                     ok &= DownloadTask_to_seval(larg0, &args[0]);
                     se::Value   rval;
                     se::Object *funcObj = jsFunc.toObject();
-                    se::Object *thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
                     bool        succeed = funcObj->call(args, thisObj, &rval);
                     if (!succeed) {
                         se::ScriptEngine::getInstance()->clearException();
@@ -138,7 +138,8 @@ static bool js_network_Downloader_setOnTaskError(se::State &s) { // NOLINT(reada
                 se::Value jsThis(s.thisObject());
                 se::Value jsFunc(args[0]);
                 jsThis.toObject()->attachObject(jsFunc.toObject());
-                auto lambda = [=](const cc::network::DownloadTask &larg0, int larg1, int larg2, const std::string &larg3) -> void {
+                auto *thisObj = s.thisObject();
+                auto  lambda  = [=](const cc::network::DownloadTask &larg0, int larg1, int larg2, const std::string &larg3) -> void {
                     se::ScriptEngine::getInstance()->clearException();
                     se::AutoHandleScope hs;
 
@@ -150,7 +151,6 @@ static bool js_network_Downloader_setOnTaskError(se::State &s) { // NOLINT(reada
                     ok &= nativevalue_to_se(larg2, args[2]);
                     ok &= nativevalue_to_se(larg3, args[3]);
                     se::Value   rval;
-                    se::Object *thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
                     se::Object *funcObj = jsFunc.toObject();
                     bool        succeed = funcObj->call(args, thisObj, &rval);
                     if (!succeed) {

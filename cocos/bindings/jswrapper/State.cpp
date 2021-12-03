@@ -30,7 +30,7 @@
 namespace se {
 
 State::State()
-: _nativeThisObject(nullptr),
+: _privateObject(nullptr),
   _thisObject(nullptr),
   _args(nullptr) {
 }
@@ -39,20 +39,20 @@ State::~State() {
     SAFE_DEC_REF(_thisObject);
 }
 
-State::State(void *nativeThisObject)
-: _nativeThisObject(nativeThisObject),
+State::State(PrivateObjectBase *privateObject)
+: _privateObject(privateObject),
   _thisObject(nullptr),
   _args(nullptr) {
 }
 
-State::State(void *nativeThisObject, const ValueArray &args)
-: _nativeThisObject(nativeThisObject),
+State::State(PrivateObjectBase *privateObject, const ValueArray &args)
+: _privateObject(privateObject),
   _thisObject(nullptr),
   _args(&args) {
 }
 
 State::State(Object *thisObject, const ValueArray &args)
-: _nativeThisObject(nullptr),
+: _privateObject(nullptr),
   _thisObject(thisObject),
   _args(&args) {
     if (_thisObject != nullptr) {
@@ -60,8 +60,8 @@ State::State(Object *thisObject, const ValueArray &args)
     }
 }
 
-State::State(Object *thisObject, void *nativeThisObject)
-: _nativeThisObject(nativeThisObject),
+State::State(Object *thisObject, PrivateObjectBase *privateObject)
+: _privateObject(privateObject),
   _thisObject(thisObject),
   _args(nullptr) {
     if (_thisObject != nullptr) {
@@ -69,8 +69,8 @@ State::State(Object *thisObject, void *nativeThisObject)
     }
 }
 
-State::State(Object *thisObject, void *nativeThisObject, const ValueArray &args)
-: _nativeThisObject(nativeThisObject),
+State::State(Object *thisObject, PrivateObjectBase *nativeThisObject, const ValueArray &args)
+: _privateObject(nativeThisObject),
   _thisObject(thisObject),
   _args(&args) {
     if (_thisObject != nullptr) {
@@ -79,7 +79,16 @@ State::State(Object *thisObject, void *nativeThisObject, const ValueArray &args)
 }
 
 void *State::nativeThisObject() const {
-    return _nativeThisObject;
+    return _privateObject ? _privateObject->getRaw() : nullptr;
+}
+
+Object *State::thisObject() {
+    if (nullptr == _thisObject && nullptr != _privateObject) {
+        _thisObject = se::Object::getObjectWithPtr(_privateObject->getRaw());
+    }
+    // _nativeThisObject in Static method will be nullptr
+    //        assert(_thisObject != nullptr);
+    return _thisObject;
 }
 
 const ValueArray &State::args() const {
@@ -87,15 +96,6 @@ const ValueArray &State::args() const {
         return *(_args);
     }
     return EmptyValueArray;
-}
-
-Object *State::thisObject() {
-    if (nullptr == _thisObject && nullptr != _nativeThisObject) {
-        _thisObject = se::Object::getObjectWithPtr(_nativeThisObject);
-    }
-    // _nativeThisObject in Static method will be nullptr
-    //        assert(_thisObject != nullptr);
-    return _thisObject;
 }
 
 Value &State::rval() {

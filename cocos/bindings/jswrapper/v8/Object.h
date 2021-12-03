@@ -285,24 +285,35 @@ public:
          */
     bool getAllKeys(std::vector<std::string> *allKeys) const;
 
-    /**
-         *  @brief Sets a pointer to private data on an object.
-         *  @param[in] data A void* to set as the object's private data.
-         *  @note This method will associate private data with se::Object by std::unordered_map::emplace.
-         *        It's used for search a se::Object via a void* private data.
-         */
-    void setPrivateData(void *data);
+    void               setPrivateObject(PrivateObjectBase *data);
+    PrivateObjectBase *getPrivateObject() const;
 
     /**
-         *  @brief Gets an object's private data.
-         *  @return A void* that is the object's private data, if the object has private data, otherwise nullptr.
-         */
-    void *getPrivateData() const;
+     *  @brief Gets an object's private data.
+     *  @return A void* that is the object's private data, if the object has private data, otherwise nullptr.
+     */
+    inline void *getPrivateData() const {
+        return _privateObject ? _privateObject->getRaw() : nullptr;
+    }
 
     /**
-         *  @brief Clears private data of an object.
-         *  @param clearMapping Whether to clear the mapping of native object & se::Object.
-         */
+     *  @brief Sets a pointer to private data on an object.
+     *  @param[in] data A void* to set as the object's private data.
+     *  @note This method will associate private data with se::Object by std::unordered_map::emplace.
+     *        It's used for search a se::Object via a void* private data.
+     */
+    CC_DEPRECATED("Use setPrivateObject instead")
+    inline void setPrivateData(void *) { assert(false); }
+
+    template <typename T>
+    inline T *getTypedPrivateData() const {
+        return reinterpret_cast<T *>(getPrivateData());
+    }
+
+    /**
+     *  @brief Clears private data of an object.
+     *  @param clearMapping Whether to clear the mapping of native object & se::Object.
+     */
     void clearPrivateData(bool clearMapping = true);
 
     /**
@@ -414,7 +425,7 @@ public:
     #endif
 
 private:
-    static void nativeObjectFinalizeHook(void *nativeObj);
+    static void nativeObjectFinalizeHook(PrivateObjectBase *privateObject);
     static void setIsolate(v8::Isolate *isolate);
     static void cleanup();
     static void setup();
@@ -428,7 +439,7 @@ private:
     ObjectWrap _obj;
     uint32_t   _rootCount;
 
-    void *                 _privateData;
+    PrivateObjectBase *    _privateObject{nullptr};
     V8FinalizeFunc         _finalizeCb;
     internal::PrivateData *_internalData;
 

@@ -30,11 +30,11 @@
 
 #include "PlayerMacros.h"
 #include "PlayerServiceProtocol.h"
-#include "cocos/base/Ref.h"
+#include "cocos/base/RefCounted.h"
 
 PLAYER_NS_BEGIN
 
-class PlayerTask : public cc::Ref {
+class PlayerTask : public cc::RefCounted {
 public:
     static const int STATE_IDLE = 0;
     static const int STATE_RUNNING = 1;

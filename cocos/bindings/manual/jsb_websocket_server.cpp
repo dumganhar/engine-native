@@ -56,7 +56,6 @@ static std::string gen_send_index() {
 static bool WebSocketServer_finalize(se::State &s) {
     WSSPTR cobj = (WSSPTR)s.nativeThisObject();
     CC_LOG_INFO("jsbindings: finalizing JS object %p (WebSocketServer)", cobj);
-    delete cobj;
     return true;
 }
 SE_BIND_FINALIZE_FUNC(WebSocketServer_finalize)
@@ -67,7 +66,7 @@ static bool WebSocketServer_constructor(se::State &s) {
     if (argc == 0) {
         se::Object *obj  = s.thisObject();
         WSSPTR      cobj = new std::shared_ptr<WebSocketServer>(new WebSocketServer());
-        obj->setPrivateData(cobj);
+        obj->setPrivateObject(se::make_shared_private_object(cobj));
         (*cobj)->setData(obj);
 
         (*cobj)->setOnBegin([obj]() {
@@ -188,7 +187,7 @@ static bool WebSocketServer_onconnection(se::State &s) {
         WSCONNPTR   prv = new std::shared_ptr<WebSocketServerConnection>(conn);
         // a connection is dead only if no reference & closed!
         obj->root();
-        obj->setPrivateData(prv);
+        obj->setPrivateObject(se::make_shared_private_object(prv));
         conn->setData(obj);
         std::weak_ptr<WebSocketServerConnection> connWeak = conn;
         prv->get()->setOnEnd([connWeak, obj]() {
@@ -339,7 +338,6 @@ SE_BIND_PROP_GET(WebSocketServer_connections)
 static bool WebSocketServer_Connection_finalize(se::State &s) {
     WSCONNPTR cobj = (WSCONNPTR)s.nativeThisObject();
     CC_LOG_INFO("jsbindings: finalizing JS object %p (WebSocketServer_Connection)", cobj);
-    delete cobj;
     return true;
 }
 SE_BIND_FINALIZE_FUNC(WebSocketServer_Connection_finalize)

@@ -463,15 +463,13 @@ bool JavaScriptJavaBridge::convertReturnValue(ReturnValue retValue, ValueType ty
 se::Class *__jsb_JavaScriptJavaBridge_class = nullptr; // NOLINT
 
 static bool JavaScriptJavaBridge_finalize(se::State &s) { //NOLINT(readability-identifier-naming)
-    auto *cobj = static_cast<JavaScriptJavaBridge *>(s.nativeThisObject());
-    delete cobj;
     return true;
 }
 SE_BIND_FINALIZE_FUNC(JavaScriptJavaBridge_finalize)
 
 static bool JavaScriptJavaBridge_constructor(se::State &s) { //NOLINT(readability-identifier-naming)
     auto *cobj = new (std::nothrow) JavaScriptJavaBridge();
-    s.thisObject()->setPrivateData(cobj);
+    s.thisObject()->setPrivateObject(se::make_shared_private_object(cobj));
     return true;
 }
 SE_BIND_CTOR(JavaScriptJavaBridge_constructor, __jsb_JavaScriptJavaBridge_class, JavaScriptJavaBridge_finalize)

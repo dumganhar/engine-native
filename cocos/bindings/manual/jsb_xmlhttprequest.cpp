@@ -575,19 +575,13 @@ se::Class *__jsb_XMLHttpRequest_class = nullptr; //NOLINT(readability-identifier
 static bool XMLHttpRequest_finalize(se::State &s) { //NOLINT(readability-identifier-naming, google-runtime-references)
     auto *request = static_cast<XMLHttpRequest *>(s.nativeThisObject());
     SE_LOGD("XMLHttpRequest_finalize, %p ... \n", request);
-    if (request->getRefCounted() == 1) {
-        cc::DeferredReleasePool::add(request);
-    } else {
-        request->release();
-    }
     return true;
 }
 SE_BIND_FINALIZE_FUNC(XMLHttpRequest_finalize)
 
 static bool XMLHttpRequest_constructor(se::State &s) { //NOLINT(readability-identifier-naming, google-runtime-references)
     auto *request = new XMLHttpRequest();
-    s.thisObject()->setPrivateData(request);
-
+    s.thisObject()->setPrivateObject(se::intrusive_private_object(request));
     se::Value thiz(s.thisObject());
 
     auto cb = [thiz](const char *eventName) {

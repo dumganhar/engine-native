@@ -26,7 +26,7 @@
 #ifndef __CC_HTTP_REQUEST_H_
 #define __CC_HTTP_REQUEST_H_
 
-#include "cocos/base/Ref.h"
+#include "cocos/base/RefCounted.h"
 #include "cocos2dx_extra.h"
 #include "network/CCHTTPRequestDelegate.h"
 
@@ -71,7 +71,7 @@ NS_CC_EXTRA_BEGIN
 typedef vector<string> HTTPRequestHeaders;
 typedef HTTPRequestHeaders::iterator HTTPRequestHeadersIterator;
 
-class HTTPRequest : public cc::Ref {
+class HTTPRequest : public cc::RefCounted {
 public:
     static HTTPRequest *createWithUrl(HTTPRequestDelegate *delegate,
                                       const char *url,

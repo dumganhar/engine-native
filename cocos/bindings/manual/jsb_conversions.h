@@ -324,11 +324,11 @@ native_ptr_to_seval(T *v_c, se::Value *ret, bool *isReturnCachedValue = nullptr)
     auto        iter = se::NativePtrToObjectMap::find(v);
     if (iter == se::NativePtrToObjectMap::end()) { // If we couldn't find native object in map, then the native object is created from native code. e.g. TMXLayer::getTileAt
         // CC_LOG_DEBUGWARN("WARNING: non-Ref type: (%s) isn't catched!", typeid(*v).name());
-        se::Class *cls = JSBClassType::findClass<T>(v);
+        se::Class *cls = JSBClassType::findClass(v);
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateData(v);
+        obj->setPrivateObject(se::rawref_private_object(v));
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -360,11 +360,11 @@ native_ptr_to_seval(T &v_ref, se::Value *ret, bool *isReturnCachedValue = nullpt
     auto        iter = se::NativePtrToObjectMap::find(v);
     if (iter == se::NativePtrToObjectMap::end()) { // If we couldn't find native object in map, then the native object is created from native code. e.g. TMXLayer::getTileAt
         // CC_LOG_DEBUGWARN("WARNING: non-Ref type: (%s) isn't catched!", typeid(*v).name());
-        se::Class *cls = JSBClassType::findClass<DecayT>(v);
+        se::Class *cls = JSBClassType::findClass(v);
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateData(v);
+        obj->setPrivateObject(se::rawref_private_object(v));
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -392,12 +392,11 @@ bool native_ptr_to_rooted_seval( // NOLINT(readability-identifier-naming)
     se::Object *obj  = nullptr;
     auto        iter = se::NativePtrToObjectMap::find(reinterpret_cast<void *>(v));
     if (iter == se::NativePtrToObjectMap::end()) { // If we couldn't find native object in map, then the native object is created from native code. e.g. TMXLayer::getTileAt
-        se::Class *cls = JSBClassType::findClass<T>(v);
+        se::Class *cls = JSBClassType::findClass(v);
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         obj->root();
-        obj->setPrivateData(reinterpret_cast<void *>(v));
-
+        obj->setPrivateObject(se::rawref_private_object(v));
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -433,8 +432,7 @@ native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedV
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateData(v);
-
+        obj->setPrivateObject(se::rawref_private_object(v));
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -469,7 +467,7 @@ native_ptr_to_seval(T &v_ref, se::Class *cls, se::Value *ret, bool *isReturnCach
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateData(v);
+        obj->setPrivateObject(se::rawref_private_object(v));
 
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
@@ -501,8 +499,7 @@ bool native_ptr_to_rooted_seval( // NOLINT(readability-identifier-naming)
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         obj->root();
-        obj->setPrivateData(v);
-
+        obj->setPrivateObject(se::rawref_private_object(v));
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -535,11 +532,11 @@ native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) 
     auto        iter = se::NativePtrToObjectMap::find(v);
     if (iter == se::NativePtrToObjectMap::end()) { // If we couldn't find native object in map, then the native object is created from native code. e.g. TMXLayer::getTileAt
                                                    //        CC_LOG_DEBUGWARN("WARNING: Ref type: (%s) isn't catched!", typeid(*v).name());
-        se::Class *cls = JSBClassType::findClass<T>(v);
+        se::Class *cls = JSBClassType::findClass(v);
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateData(v);
+        obj->setPrivateObject(se::intrusive_private_object(v));
         v->addRef(); // Retain the native object to unify the logic in finalize method of js object.
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
@@ -574,7 +571,7 @@ native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedV
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateData(v);
+        obj->setPrivateObject(se::intrusive_private_object(v));
         v->addRef(); // Retain the native object to unify the logic in finalize method of js object.
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
@@ -772,6 +769,9 @@ bool sevalue_to_native(const se::Value &from, std::vector<T, Allocator> *to, se:
 // std::vector
 template <typename T, size_t N>
 bool sevalue_to_native(const se::Value &from, std::array<T, N> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+
+template <typename T>
+bool sevalue_to_native(const se::Value &from, boost::intrusive_ptr<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 //////////////////// std::array
 
@@ -1108,11 +1108,26 @@ sevalue_to_native(const se::Value &from, HolderType<std::vector<T, allocator>, t
 
 template <typename T>
 bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Object *ctx) {
-    T *  tmp = new T;
-    bool ok  = sevalue_to_native<T>(from, tmp, ctx);
-    out->reset(tmp);
-    //TODO(PatriceJiang): should not mix smart pointers with raw pointers.
-    return ok;
+    if (from.isNullOrUndefined()) {
+        out->reset();
+        return true;
+    }
+    auto *privateObject = from.toObject()->getPrivateObject();
+    assert(privateObject->isSharedPtr());
+    *out = static_cast<se::TypedPrivateObject<T>>(privateObject).share();
+    return true;
+}
+
+template <typename T>
+bool sevalue_to_native(const se::Value &from, cc::intrusive_ptr<T> *to, se::Object *ctx) {
+    if (from.isNullOrUndefined()) {
+        to->reset();
+        return true;
+    }
+    auto *privateObject = from.toObject()->getPrivateObject();
+    assert(privateObject->isIntrusive());
+    *to = static_cast<se::IntrusivePrivateObject<T> *>(privateObject)->intrusive();
+    return true;
 }
 
 template <typename T>
@@ -1253,6 +1268,9 @@ nativevalue_to_se(const T &from, se::Value &to, se::Object *ctx) {
 
 template <typename T>
 inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se::Object *ctx); // NOLINT
+
+template <typename T>
+inline bool nativevalue_to_se(const boost::intrusive_ptr<T> &from, se::Value &to, se::Object *ctx); // NOLINT
 
 template <typename T>
 bool nativevalue_to_se(const std::reference_wrapper<T> ref, se::Value &to, se::Object *ctx); // NOLINT
@@ -1487,11 +1505,44 @@ bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Obj
 }
 template <typename T>
 inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se::Object *ctx) { //NOLINT
-    if (!from) {
-        to.setNull(); // or undefined ?
+
+    auto *nativePtr = from.get();
+    if (!nativePtr) {
+        to.setNull();
         return true;
     }
-    return nativevalue_to_se(*from, to, ctx);
+    auto it = se::NativePtrToObjectMap::find(nativePtr);
+    if (it == se::NativePtrToObjectMap::end()) {
+        se::Class *cls = JSBClassType::findClass(nativePtr);
+        assert(cls);
+        se::Object *obj = se::Object::createObjectWithClass(cls);
+        to.setObject(obj, true);
+        obj->setPrivateObject(se::shared_private_object(from));
+    } else {
+        to.setObject(it->second);
+    }
+    return true;
+}
+
+template <typename T>
+inline bool nativevalue_to_se(const boost::intrusive_ptr<T> &from, se::Value &to, se::Object *ctx) { //NOLINT
+
+    auto *nativePtr = from.get();
+    if (!nativePtr) {
+        to.setNull();
+        return true;
+    }
+    auto it = se::NativePtrToObjectMap::find(nativePtr);
+    if (it == se::NativePtrToObjectMap::end()) {
+        se::Class *cls = JSBClassType::findClass(nativePtr);
+        assert(cls);
+        se::Object *obj = se::Object::createObjectWithClass(cls);
+        to.setObject(obj, true);
+        obj->setPrivateObject(se::intrusive_private_object(from));
+    } else {
+        to.setObject(it->second);
+    }
+    return true;
 }
 
 template <typename... ARGS>

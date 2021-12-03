@@ -37,7 +37,7 @@
 
 PLAYER_NS_BEGIN
 
-class CC_LIBSIM_DLL PlayerWin : public PlayerProtocol, public cc::Ref
+class CC_LIBSIM_DLL PlayerWin : public PlayerProtocol, public cc::RefCounted
 {
 public:
     static PlayerWin *createWithHwnd(HWND hWnd);

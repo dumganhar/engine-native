@@ -66,7 +66,7 @@ public:
         _jsArrayBuffer->root();
         size_t length{0};
         _jsArrayBuffer->getArrayBufferData(static_cast<uint8_t **>(&_data), &length);
-        _byteLength = length;
+        _byteLength = static_cast<uint32_t>(length);
     }
     inline se::Object *getJSArrayBuffer() const { return _jsArrayBuffer; }
 

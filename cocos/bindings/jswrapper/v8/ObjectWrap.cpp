@@ -50,9 +50,9 @@
 namespace se {
 
 ObjectWrap::ObjectWrap() {
-    refs_       = 0;
-    _nativeObj  = nullptr;
-    _finalizeCb = nullptr;
+    refs_          = 0;
+    _privateObject = nullptr;
+    _finalizeCb    = nullptr;
 }
 
 bool ObjectWrap::init(v8::Local<v8::Object> handle) {
@@ -81,6 +81,16 @@ void *ObjectWrap::unwrap(v8::Local<v8::Object> handle, uint32_t fieldIndex) {
     assert(fieldIndex >= 0 && fieldIndex < 2);
     return handle->GetAlignedPointerFromInternalField(fieldIndex);
 }
+void ObjectWrap::wrap(void *nativeObj, uint32_t fieldIndex) {
+    assert(handle()->InternalFieldCount() > 1);
+    assert(fieldIndex >= 0 && fieldIndex < 2);
+
+    if (fieldIndex == 0) {
+        delete _privateObject;
+        _privateObject = reinterpret_cast<PrivateObjectBase *>(nativeObj);
+    }
+    handle()->SetAlignedPointerInInternalField(fieldIndex, nativeObj);
+}
 
 v8::Local<v8::Object> ObjectWrap::handle() {
     return handle(v8::Isolate::GetCurrent());
@@ -92,16 +102,6 @@ v8::Local<v8::Object> ObjectWrap::handle(v8::Isolate *isolate) {
 
 v8::Persistent<v8::Object> &ObjectWrap::persistent() {
     return handle_;
-}
-
-void ObjectWrap::wrap(void *nativeObj, uint32_t fieldIndex) {
-    assert(handle()->InternalFieldCount() > 1);
-    assert(fieldIndex >= 0 && fieldIndex < 2);
-
-    if (fieldIndex == 0) {
-        _nativeObj = nativeObj;
-    }
-    handle()->SetAlignedPointerInInternalField(fieldIndex, nativeObj);
 }
 
 void ObjectWrap::makeWeak() {
@@ -130,7 +130,7 @@ void ObjectWrap::weakCallback(const v8::WeakCallbackInfo<ObjectWrap> &data) {
     assert(wrap->refs_ == 0);
     wrap->handle_.Reset();
     if (wrap->_finalizeCb != nullptr) {
-        wrap->_finalizeCb(wrap->_nativeObj); // wrap will be destroyed in wrap->_finalizeCb, should not use any wrap object after this line.
+        wrap->_finalizeCb(wrap->_privateObject);
     } else {
         assert(false);
     }

@@ -31,6 +31,7 @@
 #include "cocos/bindings/manual/jsb_global_init.h"
 
 #include "storage/local-storage/LocalStorage.h"
+#include "v8/Object.h"
 
 extern se::Object *__jsb_cc_FileUtils_proto; // NOLINT(readability-redundant-declaration)
 
@@ -355,7 +356,8 @@ static bool js_CanvasRenderingContext2D_setCanvasBufferUpdatedCallback(se::State
                 se::Value jsThis(s.thisObject());
                 se::Value jsFunc(args[0]);
                 jsThis.toObject()->attachObject(jsFunc.toObject());
-                auto lambda = [=](const cc::Data &larg0) -> void {
+                se::Object *thisObj = s.thisObject();
+                auto        lambda  = [=](const cc::Data &larg0) -> void {
                     se::ScriptEngine::getInstance()->clearException();
                     se::AutoHandleScope hs;
 
@@ -364,7 +366,6 @@ static bool js_CanvasRenderingContext2D_setCanvasBufferUpdatedCallback(se::State
                     args.resize(1);
                     ok &= Data_to_seval(larg0, &args[0]);
                     se::Value   rval;
-                    se::Object *thisObj = jsThis.isObject() ? jsThis.toObject() : nullptr;
                     se::Object *funcObj = jsFunc.toObject();
                     bool        succeed = funcObj->call(args, thisObj, &rval);
                     if (!succeed) {
@@ -372,8 +373,8 @@ static bool js_CanvasRenderingContext2D_setCanvasBufferUpdatedCallback(se::State
                     }
                 };
                 // Add an unroot to avoid the root of the copy constructor caused by the internal reference of Lambda.
-                if (jsThis.isObject()) {
-                    jsThis.toObject()->unroot();
+                if (thisObj) {
+                    thisObj->unroot();
                 }
                 jsFunc.toObject()->unroot();
                 arg0 = lambda;

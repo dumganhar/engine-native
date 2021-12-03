@@ -64,8 +64,7 @@ static bool jsb_BufferPool_constructor(se::State &s) { // NOLINT
         }
 
         se::BufferPool *pool = JSB_ALLOC(se::BufferPool, (se::PoolType)poolType, entryBits, bytesPerEntry);
-        s.thisObject()->setPrivateData(pool);
-        se::NonRefNativePtrCreatedByCtorMap::emplace(pool);
+        s.thisObject()->setPrivateObject(se::make_shared_private_object(pool));
         return true;
     }
 
@@ -75,12 +74,6 @@ static bool jsb_BufferPool_constructor(se::State &s) { // NOLINT
 SE_BIND_CTOR(jsb_BufferPool_constructor, jsb_BufferPool_class, jsb_BufferPool_finalize) // NOLINT
 
 static bool jsb_BufferPool_finalize(se::State &s) { // NOLINT
-    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(s.nativeThisObject());
-    if (iter != se::NonRefNativePtrCreatedByCtorMap::end()) {
-        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
-        auto *cobj = static_cast<se::BufferPool *>(s.nativeThisObject());
-        JSB_FREE(cobj);
-    }
     return true;
 }
 SE_BIND_FINALIZE_FUNC(jsb_BufferPool_finalize)
@@ -112,8 +105,7 @@ static bool jsb_BufferAllocator_constructor(se::State &s) { // NOLINT
         uint type = 0;
 
         se::BufferAllocator *bufferAllocator = JSB_ALLOC(se::BufferAllocator, static_cast<se::PoolType>(type));
-        s.thisObject()->setPrivateData(bufferAllocator);
-        se::NonRefNativePtrCreatedByCtorMap::emplace(bufferAllocator);
+        s.thisObject()->setPrivateObject(se::make_shared_private_object(bufferAllocator));
         return true;
     }
 
@@ -123,12 +115,6 @@ static bool jsb_BufferAllocator_constructor(se::State &s) { // NOLINT
 SE_BIND_CTOR(jsb_BufferAllocator_constructor, jsb_BufferAllocator_class, jsb_BufferAllocator_finalize)
 
 static bool jsb_BufferAllocator_finalize(se::State &s) { // NOLINT
-    auto iter = se::NonRefNativePtrCreatedByCtorMap::find(s.nativeThisObject());
-    if (iter != se::NonRefNativePtrCreatedByCtorMap::end()) {
-        se::NonRefNativePtrCreatedByCtorMap::erase(iter);
-        auto *cobj = static_cast<se::BufferAllocator *>(s.nativeThisObject());
-        JSB_FREE(cobj);
-    }
     return true;
 }
 SE_BIND_FINALIZE_FUNC(jsb_BufferAllocator_finalize)

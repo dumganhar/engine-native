@@ -365,10 +365,8 @@ public:
         auto vec4TextureFactory = createVec4TextureFactory(gfxDevice, nVertices);
         _morphUniforms->setMorphTextureInfo(vec4TextureFactory.width, vec4TextureFactory.height);
         _morphUniforms->commit();
-
-        for (size_t attributeIndex = 0, len = _owner->getData().size(); attributeIndex < len; ++attributeIndex) {
-            const auto &attributeMorph = _owner->getData()[attributeIndex];
-            auto *      morphTexture   = vec4TextureFactory.create(); //cjh how to release?
+        for (const auto &attributeMorph : _owner->getData()) {
+            auto *morphTexture = vec4TextureFactory.create(); //cjh how to release?
             _attributes.emplace_back(GpuMorphAttribute{attributeMorph.name, morphTexture});
         }
     }
@@ -453,6 +451,7 @@ public:
         _morphUniforms->setMorphTextureInfo(_owner->_textureWidth, _owner->_textureHeight);
         _morphUniforms->setVerticesCount(_owner->_verticesCount);
         _morphUniforms->commit();
+        _attributes = _owner->_attributes; // TODO(xwx): should copy one?
     }
 
     void setWeights(const std::vector<float> &weights) override {

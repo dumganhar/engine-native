@@ -92,9 +92,12 @@ public:
         return _mipmaps;
     }
 
-    const std::vector<std::string> &getMipmapsUuids() const {  // TODO(xwx): temporary use _mipmaps as string array
+    const std::vector<std::string> &getMipmapsUuids() const { // TODO(xwx): temporary use _mipmaps as string array
         return _mipmapsUuids;
     }
+
+    //cjh TODO: TextureCube also needs this method.
+    void syncMipmapsForJS(const std::vector<ImageAsset *> &value);
 
     void setMipmaps(const std::vector<ImageAsset *> &value);
 
@@ -202,7 +205,7 @@ private:
     std::vector<std::string> _mipmapsUuids; // TODO(xwx): temporary use _mipmaps as UUIDs string array
 
     friend class Texture2DDeserializer;
-    
+
     CC_DISALLOW_COPY_MOVE_ASSIGN(Texture2D);
 };
 

@@ -757,7 +757,7 @@ Node *Node::getDirtyNode(const index_t idx) {
 
 void Node::setAngle(float val) {
     _euler.set(0, 0, val);
-    Quaternion::createFromAxisAngle(Vec3(0, 0, 1), val, &_localRotation);
+    Quaternion::createFromAngleZ(val, &_localRotation);
     _eulerDirty = false;
     invalidateChildren(TransformBit::ROTATION);
     if (_eventMask & TRANSFORM_ON) {

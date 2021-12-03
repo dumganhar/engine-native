@@ -193,6 +193,15 @@ public:
     static void createFromAxisAngle(const Vec3 &axis, float angle, Quaternion *dst);
 
     /**
+     * @en Calculates the quaternion with given 2D angle (0, 0, z).
+     * @zh 根据 2D 角度（0, 0, z）计算四元数
+     *
+     * @param out Output quaternion
+     * @param z Angle to rotate around Z axis in degrees.
+     */
+    static void createFromAngleZ(float z, Quaternion *dst);
+
+    /**
      * Sets this quaternion to the conjugate of itself.
      */
     void conjugate();

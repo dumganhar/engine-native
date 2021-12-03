@@ -32,6 +32,10 @@
 
 namespace cc {
 
+void Texture2D::syncMipmapsForJS(const std::vector<ImageAsset *> &value) {
+    _mipmaps = value;
+}
+
 void Texture2D::setMipmaps(const std::vector<ImageAsset *> &value) {
     _mipmaps = value;
     setMipmapLevel(_mipmaps.size());

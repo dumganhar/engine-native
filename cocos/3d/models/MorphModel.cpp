@@ -23,10 +23,19 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "3d/models/MorphModel.h"
+#include "core/event/EventTypesToJS.h"
 
 namespace cc {
 
 std::vector<scene::IMacroPatch> &MorphModel::getMacroPatches(index_t subModelIndex) {
+    if (_type != Type::DEFAULT) {
+        if (!_isCalledFromJS) {
+            _eventProcessor.emit(EventTypesToJS::MODEL_GET_MACRO_PATCHES, subModelIndex, &_macroPatches);
+            _isCalledFromJS = false;
+            return _macroPatches;
+        }
+    }
+
     if (_morphRenderingInstance) {
         _macroPatches = _morphRenderingInstance->requiredPatches(subModelIndex);
     } else {
@@ -50,6 +59,14 @@ void MorphModel::setSubModelMaterial(index_t idx, Material *mat) {
 }
 
 void MorphModel::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) {
+    if (_type != Type::DEFAULT) {
+        if (!_isCalledFromJS) {
+            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, subModelIndex, descriptorSet);
+            _isCalledFromJS = false;
+            return;
+        }
+    }
+
     Model::updateLocalDescriptors(subModelIndex, descriptorSet);
 
     if (_morphRenderingInstance) {

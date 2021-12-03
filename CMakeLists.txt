@@ -872,8 +872,6 @@ cocos_source_files(
 cocos_source_files(
                  cocos/scene/Ambient.h
                  cocos/scene/Ambient.cpp
-                 cocos/scene/BakedSkinningModel.h
-                 cocos/scene/BakedSkinningModel.cpp
                  cocos/scene/Camera.h
                  cocos/scene/Camera.cpp
                  cocos/scene/Define.h
@@ -887,16 +885,12 @@ cocos_source_files(
                  cocos/scene/Light.cpp
                  cocos/scene/Model.h
                  cocos/scene/Model.cpp
-                 cocos/scene/MorphModel.h
-                 cocos/scene/MorphModel.cpp
                  cocos/scene/Pass.h
                  cocos/scene/Pass.cpp
                  cocos/scene/RenderScene.h
                  cocos/scene/RenderScene.cpp
                  cocos/scene/RenderWindow.cpp
                  cocos/scene/RenderWindow.h
-                 cocos/scene/SkinningModel.h
-                 cocos/scene/SkinningModel.cpp
                  cocos/scene/Skybox.h
                  cocos/scene/Skybox.cpp
                  cocos/scene/SphereLight.h
@@ -946,8 +940,12 @@ cocos_source_files(
     cocos/core/components/RenderableComponent.cpp
     cocos/core/components/CameraComponent.h
     cocos/core/components/CameraComponent.cpp
+    cocos/3d/models/BakedSkinningModel.h
+    cocos/3d/models/BakedSkinningModel.cpp
     cocos/3d/models/MorphModel.h
     cocos/3d/models/MorphModel.cpp
+    cocos/3d/models/SkinningModel.h
+    cocos/3d/models/SkinningModel.cpp
     cocos/3d/framework/MeshRenderer.h
     cocos/3d/framework/MeshRenderer.cpp
 )

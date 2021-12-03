@@ -28,15 +28,14 @@
 #include <utility>
 #include <vector>
 #include "3d/assets/Skeleton.h"
+#include "3d/models/MorphModel.h"
 #include "math/Mat4.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDescriptorSet.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Model.h"
-#include "scene/MorphModel.h"
 
 namespace cc {
-namespace scene {
 
 struct JointTransform {
     Node *node{nullptr};
@@ -73,7 +72,7 @@ public:
     void                      destroy() override;
     void                      bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
     void                      initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
-    std::vector<IMacroPatch> &getMacroPatches(index_t subModelIndex) override;
+    std::vector<scene::IMacroPatch> &getMacroPatches(index_t subModelIndex) override;
 
 private:
     static void                                                    uploadJointData(uint32_t base, const Mat4 &mat, float *dst);
@@ -88,5 +87,4 @@ private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(SkinningModel);
 };
 
-} // namespace scene
 } // namespace cc

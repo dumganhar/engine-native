@@ -26,14 +26,14 @@
 #include "3d/framework/MeshRenderer.h"
 #include "3d/assets/Mesh.h"
 #include "3d/assets/MorphRendering.h"
+#include "3d/models/BakedSkinningModel.h"
+#include "3d/models/MorphModel.h"
+#include "3d/models/SkinningModel.h"
 #include "core/Root.h"
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/scene-graph/Node.h"
-#include "scene/BakedSkinningModel.h"
-#include "scene/MorphModel.h"
 #include "scene/Pass.h"
 #include "scene/RenderScene.h"
-#include "scene/SkinningModel.h"
 
 namespace cc {
 
@@ -182,17 +182,17 @@ void MeshRenderer::createModel() {
     // derived classes should use a morph-able model type(i.e. model type derived from `MorphModel`).
     // So we should take care of the edge case.
     if (preferMorphOverPlain && _modelType == scene::Model::Type::DEFAULT) {
-        _model = Root::getInstance()->createModel<scene::MorphModel>();
+        _model = Root::getInstance()->createModel<MorphModel>();
     } else {
         switch (_modelType) {
             case scene::Model::Type::DEFAULT:
                 _model = Root::getInstance()->createModel<scene::Model>();
                 break;
             case scene::Model::Type::SKINNING:
-                _model = Root::getInstance()->createModel<scene::SkinningModel>();
+                _model = Root::getInstance()->createModel<SkinningModel>();
                 break;
             case scene::Model::Type::BAKED_SKINNING:
-                _model = Root::getInstance()->createModel<scene::BakedSkinningModel>();
+                _model = Root::getInstance()->createModel<BakedSkinningModel>();
                 break;
             case scene::Model::Type::PARTICLE_BATCH:
                 //cjh todo:
@@ -213,7 +213,7 @@ void MeshRenderer::createModel() {
     _models.clear();
     _models.emplace_back(_model);
     if (_morphInstance != nullptr) {
-        auto *morphModel = dynamic_cast<scene::MorphModel *>(_model);
+        auto *morphModel = dynamic_cast<MorphModel *>(_model);
         if (morphModel != nullptr) {
             morphModel->setMorphRendering(_morphInstance);
         }
@@ -364,7 +364,7 @@ void MeshRenderer::watchMorphInMesh() {
     }
 
     if (_model != nullptr) {
-        auto *morphModel = dynamic_cast<scene::MorphModel *>(_model);
+        auto *morphModel = dynamic_cast<MorphModel *>(_model);
         if (morphModel != nullptr) {
             morphModel->setMorphRendering(_morphInstance);
         }
@@ -387,7 +387,7 @@ void MeshRenderer::initSubMeshShapesWeights() {
         if (!subMeshMorphHolder.has_value()) {
             shapesWeights.emplace_back(std::vector<float>{});
         }
-        
+
         const auto &subMeshMorph = subMeshMorphHolder.value();
         if (subMeshMorph.weights.has_value()) {
             shapesWeights.emplace_back(subMeshMorph.weights.value());
@@ -412,12 +412,12 @@ bool MeshRenderer::validateShapeWeights() {
     }
     for (index_t subMeshIdx = 0; subMeshIdx < _subMeshShapesWeights.size(); ++subMeshIdx) {
         uint32_t shapeCount = _subMeshShapesWeights[subMeshIdx].size();
-        
+
         const auto &subMeshMorphHolder = morph->subMeshMorphs[subMeshIdx];
         if (!subMeshMorphHolder.has_value()) {
             continue;
         }
-        
+
         const auto &subMeshMorph = subMeshMorphHolder.value();
         if (subMeshMorph.targets.size() != shapeCount) {
             return false;

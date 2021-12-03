@@ -8,9 +8,10 @@ namespace cc {
 
 namespace mathutils {
 
-constexpr auto EPSILON = 0.000001;
-constexpr auto D2R     = M_PI / 180.0;
-constexpr auto R2D     = 180.0 / M_PI;
+constexpr auto EPSILON     = 0.000001;
+constexpr auto D2R         = M_PI / 180.0;
+constexpr auto R2D         = 180.0 / M_PI;
+constexpr auto HALF_TO_RAD = 0.5 * D2R;
 /**
  * @en Tests whether or not the arguments have approximately the same value, within an absolute<br/>
  * or relative tolerance of glMatrix.EPSILON (an absolute tolerance is used for values less<br/>

@@ -26,6 +26,7 @@
 #include "base/Macros.h"
 #include "math/Mat3.h"
 #include "math/Math.h"
+#include "math/Utils.h"
 
 NS_CC_MATH_BEGIN
 
@@ -98,6 +99,15 @@ void Quaternion::createFromAxisAngle(const Vec3 &axis, float angle, Quaternion *
     dst->y = normal.y * sinHalfAngle;
     dst->z = normal.z * sinHalfAngle;
     dst->w = cosf(halfAngle);
+}
+
+void Quaternion::createFromAngleZ(float z, Quaternion *dst) {
+    GP_ASSERT(dst);
+
+    z *= mathutils::HALF_TO_RAD;
+    dst->x = dst->y = 0.F;
+    dst->z          = sinf(z);
+    dst->w          = cosf(z);
 }
 
 void Quaternion::conjugate() {

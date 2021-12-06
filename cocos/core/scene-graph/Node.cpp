@@ -470,12 +470,14 @@ void Node::setSiblingIndex(index_t index) {
         return;
     }
     std::vector<Node *> &siblings = _parent->_children;
-    index                         = index != -1 ? index : siblings.size() - 1;
+    index                         = index != -1 ? index : static_cast<index_t>(siblings.size()) - 1;
     index_t oldIdx                = getIdxOfChild(siblings, this);
     if (index != oldIdx) {
-        siblings.erase(siblings.begin() + oldIdx);
+        if (oldIdx != CC_INVALID_INDEX) {
+            siblings.erase(siblings.begin() + oldIdx);
+        }
         if (index < siblings.size()) {
-            siblings.insert(siblings.begin() + 2, 1, this);
+            siblings.insert(siblings.begin() + index, this);
         } else {
             siblings.emplace_back(this);
         }

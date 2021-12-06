@@ -87,7 +87,7 @@ public:
 
     SharedPtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)
         if (ptr_) {
-            ptr_->AddRef();
+            ptr_->addRef();
         }
     }
 
@@ -137,7 +137,7 @@ public:
     SharedPtr<T> &operator=(T *p) {
         // AddRef first so that self assignment should work
         if (p) {
-            p->AddRef();
+            p->addRef();
         }
         if (_ptr) {
             _ptr->release();

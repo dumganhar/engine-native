@@ -805,6 +805,63 @@ static bool js_scene_RenderScene_root_getter(se::State &s) {
 }
 SE_BIND_PROP_GET(js_scene_RenderScene_root_getter)
 
+static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::scene::Model>(s);
+    SE_PRECONDITION2(cobj, false, "js_Model_registerListeners : Invalid Native Object");
+    auto *thiz = s.thisObject();
+
+#define MODEL_DISPATCH_EVENT_TO_JS(eventType, jsFuncName)                               \
+    cobj->getEventProcessor().on(eventType, [=](uint32_t stamp) {                       \
+        cobj->setCalledFromJS(true);                                                    \
+        se::AutoHandleScope hs;                                                         \
+        se::Value           stampVal{stamp};                                            \
+        se::ScriptEngine::getInstance()->callFunction(thiz, #jsFuncName, 1, &stampVal); \
+    })
+
+    MODEL_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::MODEL_UPDATE_TRANSFORM, updateTransform);
+    MODEL_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::MODEL_UPDATE_UBO, updateUBOs);
+
+#undef MODEL_DISPATCH_EVENT_TO_JS
+
+    cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, [=](index_t subModelIndex, cc::gfx::DescriptorSet *descriptorSet) {
+        cobj->setCalledFromJS(true);
+        se::AutoHandleScope hs;
+
+        std::array<se::Value, 2> args;
+        nativevalue_to_se(subModelIndex, args[0]);
+        nativevalue_to_se(descriptorSet, args[1]);
+        se::ScriptEngine::getInstance()->callFunction(thiz, "_updateLocalDescriptors", args.size(), args.data());
+    });
+
+    cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES, [=](const std::vector<cc::gfx::Attribute> &attributes, cc::scene::Pass *pass) {
+        cobj->setCalledFromJS(true);
+        se::AutoHandleScope hs;
+
+        std::array<se::Value, 2> args;
+        nativevalue_to_se(attributes, args[0]);
+        nativevalue_to_se(pass, args[1]);
+        se::ScriptEngine::getInstance()->callFunction(thiz, "_updateInstancedAttributes", args.size(), args.data());
+    });
+
+    cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_GET_MACRO_PATCHES, [=](index_t subModelIndex, std::vector<cc::scene::IMacroPatch> *pPatches) {
+        cobj->setCalledFromJS(true);
+        se::AutoHandleScope hs;
+
+        se::Value                rval;
+        std::array<se::Value, 1> args;
+        nativevalue_to_se(subModelIndex, args[0]);
+        bool ok = se::ScriptEngine::getInstance()->callFunction(thiz, "getMacroPatches", args.size(), args.data(), &rval);
+
+        if (ok) {
+            sevalue_to_native(rval, pPatches);
+        }
+    });
+
+    return true;
+}
+SE_BIND_FUNC(js_Model_registerListeners) // NOLINT(readability-identifier-naming)
+
 static bool js_assets_MaterialInstance_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
     auto *cobj = SE_THIS_OBJECT<cc::MaterialInstance>(s);
@@ -893,6 +950,7 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
 
     __jsb_cc_scene_RenderScene_proto->defineProperty("root", _SE(js_scene_RenderScene_root_getter), nullptr);
 
+    __jsb_cc_scene_Model_proto->defineFunction("_registerListeners", _SE(js_Model_registerListeners));
     __jsb_cc_MaterialInstance_proto->defineFunction("_registerListeners", _SE(js_assets_MaterialInstance_registerListeners));
 
     return true;

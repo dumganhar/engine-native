@@ -153,6 +153,7 @@ public:
         //cjh TODO: how to remove old one
         _modelBounds = bounds;
     }
+    inline bool isModelImplementedInJS() const { return (_type != Type::DEFAULT && _type != Type::SKINNING && _type != Type::BAKED_SKINNING); };
     //
 
 protected:

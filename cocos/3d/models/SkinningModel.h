@@ -46,7 +46,7 @@ struct JointInfo {
     geometry::AABB *     bound{nullptr};
     Node *               target{nullptr};
     Mat4                 bindpose;
-    IJointTransform *    transform;
+    IJointTransform *    transform{nullptr};
     std::vector<index_t> buffers;
     std::vector<index_t> indices;
 };

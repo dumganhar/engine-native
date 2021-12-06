@@ -156,14 +156,6 @@ void Model::uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &
 }
 
 void Model::updateTransform(uint32_t stamp) {
-    if (_type != Type::DEFAULT) {
-        if (!_isCalledFromJS) {
-            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_TRANSFORM, stamp);
-            _isCalledFromJS = false;
-            return;
-        }
-    }
-
     Node *node = _transform;
     if (node->getChangedFlags() || node->getDirtyFlag()) {
         node->updateWorldTransform();
@@ -201,14 +193,6 @@ void Model::updateWorldBoundsForJSBakedSkinningModel(geometry::AABB *aabb) {
 }
 
 void Model::updateUBOs(uint32_t stamp) {
-    if (_type != Type::DEFAULT) {
-        if (!_isCalledFromJS) {
-            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_UBO, stamp);
-            _isCalledFromJS = false;
-            return;
-        }
-    }
-
     for (SubModel *subModel : _subModels) {
         subModel->update();
     }
@@ -312,14 +296,6 @@ void Model::updateLightingmap(Texture2D *texture, const Vec4 &uvParam) {
 }
 
 std::vector<IMacroPatch> &Model::getMacroPatches(index_t subModelIndex) {
-    if (_type != Type::DEFAULT) {
-        if (!_isCalledFromJS) {
-            _eventProcessor.emit(EventTypesToJS::MODEL_GET_MACRO_PATCHES, subModelIndex, &_macroPatches);
-            _isCalledFromJS = false;
-            return _macroPatches;
-        }
-    }
-
     if (_receiveShadow) {
         _macroPatches.emplace_back(SHADOW_MAP_PATCH);
     } else {
@@ -349,14 +325,6 @@ index_t Model::getInstancedAttributeIndex(const std::string &name) const {
 }
 
 void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass) {
-    if (_type != Type::DEFAULT) {
-        if (!_isCalledFromJS) {
-            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES, attributes, pass);
-            _isCalledFromJS = false;
-            return;
-        }
-    }
-
     if (!pass->getDevice()->hasFeature(gfx::Feature::INSTANCED_ARRAYS)) return;
     // free old data
 
@@ -404,14 +372,6 @@ void Model::initLocalDescriptors(index_t /*subModelIndex*/) {
 }
 
 void Model::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) {
-    if (_type != Type::DEFAULT) {
-        if (!_isCalledFromJS) {
-            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, subModelIndex, descriptorSet);
-            _isCalledFromJS = false;
-            return;
-        }
-    }
-
     if (_localBuffer) {
         descriptorSet->bindBuffer(pipeline::UBOLocal::BINDING, _localBuffer);
     }

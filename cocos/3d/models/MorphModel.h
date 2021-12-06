@@ -34,6 +34,8 @@ namespace cc {
 
 class MorphModel : public scene::Model {
 public:
+    using Super = scene::Model;
+
     MorphModel()           = default;
     ~MorphModel() override = default;
     CC_DISALLOW_COPY_MOVE_ASSIGN(MorphModel);

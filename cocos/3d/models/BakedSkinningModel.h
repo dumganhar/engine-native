@@ -35,23 +35,28 @@
 
 namespace cc {
 
+namespace gfx {
+class Texture;
+}
+
 class DataPoolManager;
 
 struct BakedJointInfo {
-    gfx::Buffer *                      buffer{nullptr};
-    Float32Array                       jointTextureInfo;
-    std::optional<IJointTextureHandle> texture;
-    IAnimInfo                          animInfo;
-    std::vector<geometry::AABB *>      boundsInfo;
+    gfx::Buffer *                              buffer{nullptr};
+    Float32Array                               jointTextureInfo;
+    std::optional<IJointTextureHandle>         texture;
+    IAnimInfo                                  animInfo;
+    std::vector<std::optional<geometry::AABB>> boundsInfo;
 };
+
 class BakedSkinningModel final : public MorphModel {
 public:
     using Super = MorphModel;
     BakedSkinningModel();
     ~BakedSkinningModel() override = default;
 
-    void                             destroy() override;
-    void                             bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
+    void destroy() override;
+
     std::vector<scene::IMacroPatch> &getMacroPatches(index_t subModelIndex) override;
     void                             updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) override;
     void                             updateTransform(uint32_t stamp) override;
@@ -59,6 +64,9 @@ public:
     void                             updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, scene::Pass *pass) override;
     void                             updateInstancedJointTextureInfo();
     // void                             uploadAnimation(AnimationClip *anim); // TODO(xwx): AnimationClip not define
+
+    void bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
+
     inline void updateModelBounds(geometry::AABB *modelBounds) {
         if (modelBounds == nullptr) {
             return;
@@ -67,25 +75,29 @@ public:
         _modelBounds->set(modelBounds->getCenter(), modelBounds->getHalfExtents());
     }
 
-    inline void setJointMedium(bool isUploadAnim, BakedJointInfo &&jointMedium) {
-        _isUploadAnim = isUploadAnim;
-        _jointMedium  = std::move(jointMedium);
-    }
-    inline void setAnimInfoIdx(index_t idx) {
-        _instAnimInfoIdx = idx;
-    }
+    void syncAnimInfoForJS(gfx::Buffer *buffer, const Float32Array &data, Uint8Array &dirty);
+    void syncDataForJS(const std::vector<std::optional<geometry::AABB>> &boundsInfo,
+                       const std::optional<geometry::AABB> &             modelBound,
+                       float                                             jointTextureInfo_0,
+                       float                                             jointTextureInfo_1,
+                       float                                             jointTextureInfo_2,
+                       float                                             jointTextureInfo_3,
+                       gfx::Texture *                                    tex,
+                       const Float32Array &                              animInfoData);
+
+    void setUploadedAnimForJS(bool value) { _isUploadedAnim = value; }
 
 protected:
     void applyJointTexture(const std::optional<IJointTextureHandle> &texture);
 
 private:
     BakedJointInfo   _jointMedium;
-    bool             _isUploadAnim{false};
     index_t          _instAnimInfoIdx{CC_INVALID_INDEX};
     DataPoolManager *_dataPoolManager{nullptr};
     Skeleton *       _skeleton{nullptr};
     Mesh *           _mesh{nullptr};
     // AnimationClip* uploadedAnim;
+    bool _isUploadedAnim{false};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(BakedSkinningModel);
 };

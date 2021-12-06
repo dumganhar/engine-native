@@ -119,6 +119,9 @@ private:
 struct IAnimInfo {
     gfx::Buffer *buffer{nullptr};
     Float32Array data;
+    const float *curFrame{nullptr};    // Only used in JSB
+    uint32_t     frameDataBytes{0};    // Only used in JSB
+    uint8_t *    dirtyForJSB{nullptr}; // Only used in JSB
     bool         dirty{false};
 };
 

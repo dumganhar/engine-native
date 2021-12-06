@@ -43,12 +43,6 @@ const CallbacksInvoker::KeyType EventTypesToJS::NODE_UI_TRANSFORM_DIRTY{107};   
 const CallbacksInvoker::KeyType EventTypesToJS::NODE_ACTIVE_NODE{108};              //{"NODE_ACTIVE_NODE"};
 const CallbacksInvoker::KeyType EventTypesToJS::NODE_ON_BATCH_CREATED{109};         //{"NODE_ON_BATCH_CREATED"};
 
-const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_TRANSFORM{110};            //{"MODEL_UPDATE_TRANSFORM"};
-const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_UBO{111};                  //{"MODEL_UPDATE_UBO"};
-const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS{112};    //{"MODEL_UPDATE_LOCAL_DESCRIPTORS"};
-const CallbacksInvoker::KeyType EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES{113}; //{"MODEL_UPDATE_INSTANCED_ATTRIBUTES"};
-const CallbacksInvoker::KeyType EventTypesToJS::MODEL_GET_MACRO_PATCHES{114};           //{"MODEL_GET_MACRO_PATCHES"};
-
-const CallbacksInvoker::KeyType EventTypesToJS::DIRECTOR_BEFORE_COMMIT{115}; //{"MODEL_GET_MACRO_PATCHES"};
+const CallbacksInvoker::KeyType EventTypesToJS::DIRECTOR_BEFORE_COMMIT{110}; //{"MODEL_GET_MACRO_PATCHES"};
 
 } // namespace cc

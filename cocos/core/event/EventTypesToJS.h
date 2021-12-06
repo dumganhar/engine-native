@@ -44,12 +44,6 @@ public:
     static const CallbacksInvoker::KeyType NODE_ACTIVE_NODE;
     static const CallbacksInvoker::KeyType NODE_ON_BATCH_CREATED;
 
-    static const CallbacksInvoker::KeyType MODEL_UPDATE_TRANSFORM;
-    static const CallbacksInvoker::KeyType MODEL_UPDATE_UBO;
-    static const CallbacksInvoker::KeyType MODEL_UPDATE_LOCAL_DESCRIPTORS;
-    static const CallbacksInvoker::KeyType MODEL_UPDATE_INSTANCED_ATTRIBUTES;
-    static const CallbacksInvoker::KeyType MODEL_GET_MACRO_PATCHES;
-
     static const CallbacksInvoker::KeyType DIRECTOR_BEFORE_COMMIT;
 };
 

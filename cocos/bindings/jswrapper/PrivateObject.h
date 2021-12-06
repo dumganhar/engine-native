@@ -159,12 +159,12 @@ inline cc::intrusive_ptr<T> &TypedPrivateObject<T>::intrusive() {
 
 #if CC_DEBUG
 inline void inHeap(void *ptr) {
-    constexpr size_t D = 1 * 1024 * 1024; // 1M
+    constexpr size_t r = 4 * 1024; // 4K
     char a;
     intptr_t anchor = reinterpret_cast<intptr_t>(&a);
     intptr_t p = reinterpret_cast<intptr_t>(ptr);
     // must be in heaps
-    assert( abs(anchor - p ) > D);
+    assert( abs(anchor - p ) > r);
 }
 #endif
 

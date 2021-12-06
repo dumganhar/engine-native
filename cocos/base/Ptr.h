@@ -86,8 +86,8 @@ public:
     SharedPtr() = default;
 
     SharedPtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)
-        if (ptr_) {
-            ptr_->addRef();
+        if (_ptr) {
+            _ptr->addRef();
         }
     }
 

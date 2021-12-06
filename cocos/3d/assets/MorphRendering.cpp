@@ -617,20 +617,25 @@ public:
     ~StdMorphRenderingInstance() override = default;
 
     void setWeights(index_t subMeshIndex, const MeshWeightsType &weights) override {
-        _subMeshInstances[subMeshIndex]->setWeights(weights);
+        if (_subMeshInstances[subMeshIndex]) {
+            _subMeshInstances[subMeshIndex]->setWeights(weights);
+        }
     }
 
     void adaptPipelineState(index_t subMeshIndex, gfx::DescriptorSet *descriptorSet) override {
-        _subMeshInstances[subMeshIndex]->adaptPipelineState(descriptorSet);
+        if (_subMeshInstances[subMeshIndex]) {
+            _subMeshInstances[subMeshIndex]->adaptPipelineState(descriptorSet);
+        }
     }
 
     std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) override {
         CC_ASSERT(_owner->_mesh->getStruct().morph.has_value());
-        const auto &subMeshMorph             = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex].value();
+        const auto &subMeshMorphOpt = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex];
         auto *      subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
-        if (subMeshRenderingInstance == nullptr) {
+        if (subMeshRenderingInstance == nullptr || !subMeshMorphOpt.has_value()) {
             return {};
         }
+        const auto &subMeshMorph = subMeshMorphOpt.value();
 
         std::vector<scene::IMacroPatch> patches{
             {"CC_USE_MORPH", true},

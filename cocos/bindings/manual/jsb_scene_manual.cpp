@@ -192,10 +192,10 @@ static void registerOnUiTransformDirty(cc::Node *node, se::Object *jsObject) {
             if (!*uiTransformDirty) {
                 se::AutoHandleScope hs;
                 se::Value           uiPropsVal;
-                jsObject->getProperty("_uiProps", &uiPropsVal);
+                jsObject->getProperty("_uiProps", &uiPropsVal, true);
                 SE_PRECONDITION2_VOID(uiPropsVal.isObject(), "Not property named _uiProps.");
                 se::Value uiTransformDirtyVal;
-                uiPropsVal.toObject()->getProperty("_uiTransformDirty", &uiTransformDirtyVal);
+                uiPropsVal.toObject()->getProperty("_uiTransformDirty", &uiTransformDirtyVal, true);
                 SE_PRECONDITION2_VOID(uiTransformDirtyVal.isObject() && uiTransformDirtyVal.toObject()->isTypedArray(), "_uiTransformDirtyVal is not a TypedArray");
                 sevalue_to_native(uiTransformDirtyVal, uiTransformDirty);
             }

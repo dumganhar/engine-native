@@ -58,6 +58,12 @@ SkinningModel::SkinningModel() {
     _type = Model::Type::SKINNING;
 }
 
+SkinningModel::~SkinningModel() {
+    for (auto *curr : _dataArray) {
+        delete curr;
+    }
+}
+
 void SkinningModel::destroy() {
     bindSkeleton(nullptr, nullptr, nullptr);
     if (!_buffers.empty()) {
@@ -71,24 +77,27 @@ void SkinningModel::destroy() {
 
 void SkinningModel::bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh) {
     for (const JointInfo &joint : _joints) {
-        // deleteTransform(joint.target); // deleteTransform not implementation
+        deleteTransform(joint.target);
     }
     _bufferIndices.clear();
     _joints.clear();
 
-    if (!skeleton || !skinningRoot || !mesh) return;
+    if (!skeleton || !skinningRoot || !mesh)
+        return;
     setTransform(skinningRoot);
-    // std::vector<geometry::AABB> boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton); // 'AABB' has been explicitly marked deleted here
-    auto jointMaps = mesh->getStruct().jointMaps;
-    ensureEnoughBuffers((jointMaps != std::nullopt && !jointMaps->empty()) ? jointMaps->size() : 1);
+    auto        boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton);
+    const auto &jointMaps       = mesh->getStruct().jointMaps;
+    ensureEnoughBuffers((jointMaps.has_value() && !jointMaps->empty()) ? jointMaps->size() : 1);
     _bufferIndices = mesh->getJointBufferIndices();
 
     for (index_t index = 0; index < skeleton->getJoints().size(); ++index) {
-        // geometry::AABB bound  = boneSpaceBounds[index]; // 'AABB' has been explicitly marked deleted here
-        auto *target = skinningRoot->getChildByPath(skeleton->getJoints()[index]);
-        // if (!bound || !target) continue;
-        // auto transform = getTransform(target, skiinningRoot); // getTransform not implementation
-        Mat4                 bindPose = skeleton->getBindposes()[index];
+        geometry::AABB *bound  = boneSpaceBounds[index];
+        auto *          target = skinningRoot->getChildByPath(skeleton->getJoints()[index]);
+        if (!bound || !target)
+            continue;
+
+        auto *               transform = cc::getTransform(target, skinningRoot);
+        const Mat4 &         bindPose  = skeleton->getBindposes()[index];
         std::vector<index_t> indices;
         std::vector<index_t> buffers;
         if (!jointMaps.has_value()) {
@@ -97,98 +106,15 @@ void SkinningModel::bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *m
         } else {
             getRelevantBuffers(indices, buffers, jointMaps.value(), index);
         }
-        // _joints.emplace_back({indices, buffers, bound, target, bindPose, transform}); // transform not define
-    }
-}
 
-void SkinningModel::updateWorldMatrix(JointInfo *info, uint32_t stamp) {
-    int i = -1;
-    _worldMatrix.setIdentity();
-    auto *                        currTransform = &info->transform;
-    auto                          parentSize    = static_cast<int>(info->parents.size());
-    std::vector<JointTransform *> transStacks;
-    while (currTransform->node) {
-        if ((currTransform->stamp == stamp || currTransform->stamp + 1 == stamp) && !currTransform->node->getChangedFlags()) {
-            _worldMatrix.set(currTransform->world);
-            currTransform->stamp = stamp;
-            break;
-        }
-        currTransform->stamp = stamp;
-        transStacks.push_back(currTransform);
-        i++;
-        if (i >= parentSize) {
-            break;
-        }
-        currTransform = &info->parents[i];
-    }
-    while (i > -1) {
-        currTransform = transStacks[i--];
-        auto *node    = currTransform->node;
-        Mat4::fromRTS(node->getRotation(), node->getPosition(), node->getScale(), &currTransform->local);
-        Mat4::multiply(_worldMatrix, currTransform->local, &currTransform->world);
-        _worldMatrix.set(currTransform->world);
-    }
-}
-
-void SkinningModel::updateUBOs(uint32_t stamp) {
-    Super::updateUBOs(stamp);
-    uint32_t bIdx = 0;
-    Mat4     mat4;
-    for (const JointInfo &jointInfo : _joints) {
-        Mat4::multiply(jointInfo.transform.world, jointInfo.bindpose, &mat4);
-        for (uint32_t buffer : jointInfo.buffers) {
-            uploadJointData(jointInfo.indices[bIdx] * 12, mat4, _dataArray[buffer]->data());
-            bIdx++;
-        }
-        bIdx = 0;
-    }
-    bIdx = 0;
-    for (gfx::Buffer *buffer : _buffers) {
-        buffer->update(_dataArray[bIdx]->data(), buffer->getSize());
-        bIdx++;
-    }
-}
-
-void SkinningModel::initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) {
-    auto original        = subMeshData->getVertexBuffers();
-    auto iaInfo          = subMeshData->getIaInfo();
-    iaInfo.vertexBuffers = subMeshData->getJointMappedBuffers();
-    Super::initSubModel(idx, subMeshData, mat);
-    iaInfo.vertexBuffers = original;
-}
-
-std::vector<scene::IMacroPatch> &SkinningModel::getMacroPatches(index_t subModelIndex) {
-    auto &patches = Super::getMacroPatches(subModelIndex);
-    patches.reserve(myPatches.size() + patches.size());
-    patches.insert(std::begin(patches), std::begin(myPatches), std::end(myPatches));
-    return patches;
-}
-void SkinningModel::uploadJointData(uint32_t base, const Mat4 &mat, float *dst) {
-    memcpy(reinterpret_cast<void *>(dst + base), mat.m, sizeof(float) * 12);
-    dst[base + 3]  = mat.m[12];
-    dst[base + 7]  = mat.m[13];
-    dst[base + 11] = mat.m[14];
-}
-
-SkinningModel::~SkinningModel() {
-    for (auto *curr : _dataArray) {
-        delete curr;
-    }
-}
-
-void SkinningModel::setBuffers(const std::vector<gfx::Buffer *> &buffers) {
-    _buffers = buffers;
-    for (auto *buffer : _buffers) {
-        auto *data = new std::array<float, pipeline::UBOSkinning::COUNT>();
-        _dataArray.push_back(data);
-    }
-}
-
-void SkinningModel::updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) {
-    Super::updateLocalDescriptors(submodelIdx, descriptorset);
-    gfx::Buffer *buffer = _buffers[_bufferIndices[submodelIdx]];
-    if (buffer) {
-        descriptorset->bindBuffer(pipeline::UBOSkinning::BINDING, buffer);
+        JointInfo jointInfo;
+        jointInfo.bound     = bound;
+        jointInfo.target    = target;
+        jointInfo.bindpose  = bindPose;
+        jointInfo.transform = transform;
+        jointInfo.buffers   = std::move(buffers);
+        jointInfo.indices   = std::move(indices);
+        _joints.emplace_back(std::move(jointInfo));
     }
 }
 
@@ -204,8 +130,10 @@ void SkinningModel::updateTransform(uint32_t stamp) {
     Vec3           v31;
     Vec3           v32;
     for (JointInfo &jointInfo : _joints) {
-        updateWorldMatrix(&jointInfo, stamp);
-        jointInfo.bound->transform(_worldMatrix, &ab1);
+        const auto *bound       = jointInfo.bound;
+        auto *      transform   = jointInfo.transform;
+        Mat4        worldMatrix = cc::getWorldMatrix(transform, stamp);
+        jointInfo.bound->transform(worldMatrix, &ab1);
         ab1.getBoundary(&v31, &v32);
         Vec3::min(v3Min, v31, &v3Min);
         Vec3::max(v3Max, v32, &v3Max);
@@ -216,17 +144,75 @@ void SkinningModel::updateTransform(uint32_t stamp) {
     }
 }
 
+void SkinningModel::updateUBOs(uint32_t stamp) {
+    Super::updateUBOs(stamp);
+    uint32_t bIdx = 0;
+    Mat4     mat4;
+    for (const JointInfo &jointInfo : _joints) {
+        Mat4::multiply(jointInfo.transform->world, jointInfo.bindpose, &mat4);
+        for (uint32_t buffer : jointInfo.buffers) {
+            uploadJointData(jointInfo.indices[bIdx] * 12, mat4, _dataArray[buffer]->data());
+            bIdx++;
+        }
+        bIdx = 0;
+    }
+    bIdx = 0;
+    for (gfx::Buffer *buffer : _buffers) {
+        buffer->update(_dataArray[bIdx]->data(), buffer->getSize());
+        bIdx++;
+    }
+}
+
+void SkinningModel::initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) {
+    const auto &original = subMeshData->getVertexBuffers();
+    auto &      iaInfo   = subMeshData->getIaInfo();
+    iaInfo.vertexBuffers = subMeshData->getJointMappedBuffers();
+    Super::initSubModel(idx, subMeshData, mat);
+    iaInfo.vertexBuffers = original;
+}
+
+std::vector<scene::IMacroPatch> &SkinningModel::getMacroPatches(index_t subModelIndex) {
+    auto &patches = Super::getMacroPatches(subModelIndex);
+    patches.reserve(myPatches.size() + patches.size());
+    patches.insert(std::begin(patches), std::begin(myPatches), std::end(myPatches));
+    return patches;
+}
+
+void SkinningModel::uploadJointData(uint32_t base, const Mat4 &mat, float *dst) {
+    memcpy(reinterpret_cast<void *>(dst + base), mat.m, sizeof(float) * 12);
+    dst[base + 3]  = mat.m[12];
+    dst[base + 7]  = mat.m[13];
+    dst[base + 11] = mat.m[14];
+}
+
+void SkinningModel::updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) {
+    Super::updateLocalDescriptors(submodelIdx, descriptorset);
+    gfx::Buffer *buffer = _buffers[_bufferIndices[submodelIdx]];
+    if (buffer) {
+        descriptorset->bindBuffer(pipeline::UBOSkinning::BINDING, buffer);
+    }
+}
+
 void SkinningModel::ensureEnoughBuffers(index_t count) {
     for (index_t i = 0; i < count; i++) {
-        if (!_buffers[i]) {
-            _device->createBuffer({
+        if (i >= _buffers.size()) {
+            _buffers.resize(i + 1);
+        }
+
+        if (_buffers[i] == nullptr) {
+            _buffers[i] = _device->createBuffer({
                 gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST,
                 gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE,
                 pipeline::UBOSkinning::SIZE,
                 pipeline::UBOSkinning::SIZE,
             });
         }
-        if (!_dataArray[i]) {
+
+        if (i >= _dataArray.size()) {
+            _dataArray.resize(i + 1);
+        }
+
+        if (_dataArray[i] == nullptr) {
             _dataArray[i] = new std::array<float, pipeline::UBOSkinning::COUNT>;
         }
     }

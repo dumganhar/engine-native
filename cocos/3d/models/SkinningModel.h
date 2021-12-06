@@ -29,6 +29,7 @@
 #include <vector>
 #include "3d/assets/Skeleton.h"
 #include "3d/models/MorphModel.h"
+#include "core/animation/SkeletalAnimationUtils.h"
 #include "math/Mat4.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDescriptorSet.h"
@@ -37,21 +38,17 @@
 
 namespace cc {
 
-struct JointTransform {
-    Node *node{nullptr};
-    Mat4  local;
-    Mat4  world;
-    int   stamp{-1};
-};
+namespace geometry {
+class AABB;
+}
 
 struct JointInfo {
-    geometry::AABB *            bound{nullptr};
-    Node *                      target{nullptr};
-    Mat4                        bindpose;
-    JointTransform              transform;
-    std::vector<JointTransform> parents;
-    std::vector<uint32_t>       buffers;
-    std::vector<uint32_t>       indices;
+    geometry::AABB *     bound{nullptr};
+    Node *               target{nullptr};
+    Mat4                 bindpose;
+    IJointTransform *    transform{nullptr};
+    std::vector<index_t> buffers;
+    std::vector<index_t> indices;
 };
 
 class SkinningModel final : public MorphModel {
@@ -60,26 +57,20 @@ public:
     SkinningModel();
     ~SkinningModel() override;
 
-    inline void setIndicesAndJoints(const std::vector<index_t> &bufferIndices, const std::vector<JointInfo> &joints) {
-        _bufferIndices = bufferIndices;
-        _joints        = joints;
-    }
-    inline void               setNeedUpdate(bool needUpdate) { _needUpdate = needUpdate; }
-    void                      setBuffers(const std::vector<gfx::Buffer *> &buffers);
-    void                      updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) override;
-    void                      updateTransform(uint32_t stamp) override;
-    void                      updateUBOs(uint32_t stamp) override;
-    void                      destroy() override;
-    void                      bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
-    void                      initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
+    void updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorSet *descriptorset) override;
+    void updateTransform(uint32_t stamp) override;
+    void updateUBOs(uint32_t stamp) override;
+    void destroy() override;
+
+    void                             initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
     std::vector<scene::IMacroPatch> &getMacroPatches(index_t subModelIndex) override;
 
+    void bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
+
 private:
-    static void                                                    uploadJointData(uint32_t base, const Mat4 &mat, float *dst);
-    void                                                           updateWorldMatrix(JointInfo *info, uint32_t stamp);
-    void                                                           ensureEnoughBuffers(index_t count);
-    bool                                                           _needUpdate{false};
-    Mat4                                                           _worldMatrix;
+    static void uploadJointData(uint32_t base, const Mat4 &mat, float *dst);
+    void        ensureEnoughBuffers(index_t count);
+
     std::vector<index_t>                                           _bufferIndices;
     std::vector<gfx::Buffer *>                                     _buffers;
     std::vector<JointInfo>                                         _joints;

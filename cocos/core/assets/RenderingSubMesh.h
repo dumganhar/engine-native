@@ -153,6 +153,7 @@ public:
     void genFlatBuffers();
 
     inline const gfx::InputAssemblerInfo &getIaInfo() const { return _iaInfo; }
+    inline gfx::InputAssemblerInfo &      getIaInfo() { return _iaInfo; }
 
     /**
      * @en The vertex buffer for joint after mapping

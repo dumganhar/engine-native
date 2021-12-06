@@ -951,6 +951,12 @@ cocos_source_files(
     cocos/3d/framework/MeshRenderer.cpp
 )
 
+##### animations
+cocos_source_files(
+    cocos/core/animation/SkeletalAnimationUtils.h
+    cocos/core/animation/SkeletalAnimationUtils.cpp
+)
+
 ##### lights
 cocos_source_files(
     cocos/3d/lights/LightComponent.h

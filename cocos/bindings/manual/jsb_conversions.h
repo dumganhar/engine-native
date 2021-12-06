@@ -685,6 +685,7 @@ HOLD_UNBOUND_TYPE(cc::Quaternion *, false);
 HOLD_UNBOUND_TYPE(const cc::Mat4 *, false);
 HOLD_UNBOUND_TYPE(cc::Color *, false);
 HOLD_UNBOUND_TYPE(cc::geometry::Frustum *, false);
+HOLD_UNBOUND_TYPE(cc::geometry::AABB *, false);
 
 template <>
 struct HolderType<cc::ArrayBuffer, true> {
@@ -704,15 +705,15 @@ struct HolderType<std::function<R(ARGS...)>, true> {
     inline type                value() { return data; }
 };
 
-template <typename T>
-struct HolderType<std::optional<T>, true> {
-    using NonconstT  = typename std::remove_const<T>::type;
-    using type       = std::optional<NonconstT>;
-    using local_type = NonconstT;
-    local_type                 data;
-    std::remove_const_t<type> *ptr = nullptr;
-    inline type                value() { return std::make_optional<T>(data); }
-};
+//template <typename T>
+//struct HolderType<std::optional<T>, true> {
+//    using NonconstT  = typename std::remove_const<T>::type;
+//    using type       = std::optional<NonconstT>;
+//    using local_type = NonconstT;
+//    local_type                 data;
+//    std::remove_const_t<type> *ptr = nullptr;
+//    inline type                value() { return std::make_optional<T>(data); }
+//};
 
 ///////////////////////////////////convertion//////////////////////////////////////////////////////////
 

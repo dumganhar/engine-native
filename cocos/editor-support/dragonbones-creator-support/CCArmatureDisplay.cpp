@@ -42,13 +42,7 @@ static const std::string textureKey = "texture";
 DRAGONBONES_NAMESPACE_BEGIN
 
 CCArmatureDisplay *CCArmatureDisplay::create() {
-    CCArmatureDisplay *displayContainer = new (std::nothrow) CCArmatureDisplay();
-    if (displayContainer) {
-        cc::DeferredReleasePool::add(displayContainer);
-    } else {
-        CC_SAFE_DELETE(displayContainer);
-    }
-    return displayContainer;
+    return new (std::nothrow) CCArmatureDisplay();
 }
 
 CCArmatureDisplay::CCArmatureDisplay() {

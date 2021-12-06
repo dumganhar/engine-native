@@ -40,6 +40,7 @@ enum class Format;
 class Image : public RefCounted {
 public:
     Image();
+    ~Image() override;
 
     /** Supported formats for Image */
     enum class Format {
@@ -105,8 +106,6 @@ protected:
     gfx::Format    _renderFormat;
     std::string    _filePath;
     bool           _isCompressed = false;
-
-    ~Image() override;
 
     static Format detectFormat(const unsigned char *data, ssize_t dataLen);
     static bool   isPng(const unsigned char *data, ssize_t dataLen);

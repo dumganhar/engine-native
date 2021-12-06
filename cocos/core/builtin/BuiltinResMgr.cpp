@@ -415,7 +415,7 @@ void BuiltinResMgr::initTexture2DWithUuid(const std::string &uuid, const uint8_t
         texture->initialize();
         _resources.emplace(texture->getUuid(), texture);
 
-        image->release();
+        delete image;
     }
 }
 
@@ -446,7 +446,7 @@ void BuiltinResMgr::initTextureCubeWithUuid(const std::string &uuid, const uint8
         texture->initialize();
         _resources.emplace(texture->getUuid(), texture);
 
-        image->release();
+        delete image;
     }
 }
 

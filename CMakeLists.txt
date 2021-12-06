@@ -290,6 +290,7 @@ cocos_source_files(
     cocos/base/Macros.h
     cocos/base/Map.h
     cocos/base/Object.h
+    cocos/base/Ptr.h
     cocos/base/Random.h
     cocos/base/RefCounted.cpp
     cocos/base/RefCounted.h

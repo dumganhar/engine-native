@@ -57,7 +57,7 @@ void DeferredReleasePool::dump() {
     CC_LOG_DEBUG("%20s%20s%20s", "Object pointer", "Object id", "reference count");
     for (const auto &obj : DeferredReleasePool::managedObjectArray) {
         CC_UNUSED_PARAM(obj);
-        CC_LOG_DEBUG("%20p%20u\n", obj, obj->getRefCounted());
+        CC_LOG_DEBUG("%20p%20u\n", obj, obj->getRefCount());
     }
 }
 

@@ -31,6 +31,7 @@ ArmatureCache *ArmatureCacheMgr::buildArmatureCache(const std::string &armatureN
     ArmatureCache *animation = _caches.at(armatureKey);
     if (!animation) {
         animation = new ArmatureCache(armatureName, armatureKey, atlasUUID);
+        animation->addRef();
         _caches.insert(armatureKey, animation);
         cc::DeferredReleasePool::add(animation);
     }

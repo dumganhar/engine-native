@@ -66,7 +66,7 @@ public:
             iter->second->unroot();
         }
 
-        if (getRefCounted() == 1) {
+        if (getRefCount() == 1) {
             cc::DeferredReleasePool::add(this);
         } else {
             release();
@@ -140,7 +140,7 @@ static bool SocketIO_finalize(se::State &s) {
     CC_LOG_INFO("jsbindings: finalizing JS object %p (SocketIO)", cobj);
     cobj->disconnect();
     JSB_SocketIODelegate *delegate = static_cast<JSB_SocketIODelegate *>(cobj->getDelegate());
-    if (delegate->getRefCounted() == 1) {
+    if (delegate->getRefCount() == 1) {
         cc::DeferredReleasePool::add(delegate);
     } else {
         delegate->release();

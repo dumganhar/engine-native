@@ -87,8 +87,8 @@ void EffectAsset::remove(EffectAsset *asset) {
 
     auto iter = __effects.find(asset->getName());
     if (iter != __effects.end() && iter->second == asset) {
-        __effects.erase(iter); //cjh TODO: need to delete asset here ?
         iter->second->release();
+        __effects.erase(iter); //cjh TODO: need to delete asset here ?
     }
 }
 

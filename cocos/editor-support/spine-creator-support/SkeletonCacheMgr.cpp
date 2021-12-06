@@ -36,6 +36,7 @@ SkeletonCache *SkeletonCacheMgr::buildSkeletonCache(const std::string &uuid) {
     SkeletonCache *animation = _caches.at(uuid);
     if (!animation) {
         animation = new SkeletonCache();
+        animation->addRef();
         animation->initWithUUID(uuid);
         _caches.insert(uuid, animation);
         cc::DeferredReleasePool::add(animation);

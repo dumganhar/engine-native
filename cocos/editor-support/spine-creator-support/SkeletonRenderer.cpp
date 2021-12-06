@@ -61,27 +61,19 @@ enum DebugType {
     BONES
 };
 SkeletonRenderer *SkeletonRenderer::create() {
-    auto *skeleton = new SkeletonRenderer();
-    cc::DeferredReleasePool::add(skeleton);
-    return skeleton;
+    return new SkeletonRenderer();
 }
 
 SkeletonRenderer *SkeletonRenderer::createWithSkeleton(Skeleton *skeleton, bool ownsSkeleton, bool ownsSkeletonData) {
-    auto *node = new SkeletonRenderer(skeleton, ownsSkeleton, ownsSkeletonData);
-    cc::DeferredReleasePool::add(node);
-    return node;
+    return new SkeletonRenderer(skeleton, ownsSkeleton, ownsSkeletonData);
 }
 
 SkeletonRenderer *SkeletonRenderer::createWithData(SkeletonData *skeletonData, bool ownsSkeletonData) {
-    auto *node = new SkeletonRenderer(skeletonData, ownsSkeletonData);
-    cc::DeferredReleasePool::add(node);
-    return node;
+    return new SkeletonRenderer(skeletonData, ownsSkeletonData);
 }
 
 SkeletonRenderer *SkeletonRenderer::createWithFile(const std::string &skeletonDataFile, const std::string &atlasFile, float scale) {
-    auto *node = new SkeletonRenderer(skeletonDataFile, atlasFile, scale);
-    cc::DeferredReleasePool::add(node);
-    return node;
+    return new SkeletonRenderer(skeletonDataFile, atlasFile, scale);
 }
 
 void SkeletonRenderer::initialize() {

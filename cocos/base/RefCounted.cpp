@@ -55,7 +55,6 @@ RefCounted::~RefCounted() {
 }
 
 void RefCounted::addRef() {
-    CCASSERT(_referenceCount > 0, "reference count should be greater than 0");
     ++_referenceCount;
 }
 
@@ -72,7 +71,7 @@ void RefCounted::release() {
     }
 }
 
-unsigned int RefCounted::getRefCounted() const {
+unsigned int RefCounted::getRefCount() const {
     return _referenceCount;
 }
 

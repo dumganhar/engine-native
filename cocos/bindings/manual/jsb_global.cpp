@@ -646,7 +646,7 @@ bool jsb_global_load_image(const std::string &path, const se::Value &callbackVal
                     SE_REPORT_ERROR("initWithImageFile: %s failed!", path.c_str());
                 }
                 callbackPtr->toObject()->call(seArgs, nullptr);
-                img->release();
+                delete img;
             });
         });
     };

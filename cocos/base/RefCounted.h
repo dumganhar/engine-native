@@ -53,6 +53,8 @@ public:
  */
 class CC_DLL RefCounted {
 public:
+    virtual ~RefCounted();
+
     /**
      * Retains the ownership.
      *
@@ -79,7 +81,7 @@ public:
      *
      * @returns The Ref's reference count.
      */
-    unsigned int getRefCounted() const;
+    unsigned int getRefCount() const;
 
 protected:
     /**
@@ -89,11 +91,9 @@ protected:
      */
     RefCounted();
 
-    virtual ~RefCounted();
-
 protected:
     /// count of references
-    unsigned int _referenceCount{1};
+    unsigned int _referenceCount{0};
 
     // Memory leak diagnostic data (only included when CC_REF_LEAK_DETECTION is defined and its value isn't zero)
 #if CC_REF_LEAK_DETECTION

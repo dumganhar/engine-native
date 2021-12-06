@@ -74,28 +74,24 @@ void  SkeletonAnimation::setGlobalTimeScale(float timeScale) {
 
 SkeletonAnimation *SkeletonAnimation::create() {
     auto *skeleton = new SkeletonAnimation();
-    cc::DeferredReleasePool::add(skeleton);
     return skeleton;
 }
 
 SkeletonAnimation *SkeletonAnimation::createWithData(SkeletonData *skeletonData, bool ownsSkeletonData) {
     auto *node = new SkeletonAnimation();
     node->initWithData(skeletonData, ownsSkeletonData);
-    cc::DeferredReleasePool::add(node);
     return node;
 }
 
 SkeletonAnimation *SkeletonAnimation::createWithJsonFile(const std::string &skeletonJsonFile, const std::string &atlasFile, float scale) {
     auto *node = new SkeletonAnimation();
     node->initWithJsonFile(skeletonJsonFile, atlasFile, scale);
-    cc::DeferredReleasePool::add(node);
     return node;
 }
 
 SkeletonAnimation *SkeletonAnimation::createWithBinaryFile(const std::string &skeletonBinaryFile, const std::string &atlasFile, float scale) {
     auto *node = new SkeletonAnimation();
     node->initWithBinaryFile(skeletonBinaryFile, atlasFile, scale);
-    cc::DeferredReleasePool::add(node);
     return node;
 }
 

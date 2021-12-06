@@ -116,7 +116,6 @@ void Texture2D::setTexParameters(const TexParams &texParams) {
 SpriteFrame *SpriteFrame::createWithTexture(Texture2D *texture, const cc::Rect &rect) {
     SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
     spriteFrame->initWithTexture(texture, rect);
-    cc::DeferredReleasePool::add(spriteFrame);
 
     return spriteFrame;
 }
@@ -124,7 +123,6 @@ SpriteFrame *SpriteFrame::createWithTexture(Texture2D *texture, const cc::Rect &
 SpriteFrame *SpriteFrame::createWithTexture(Texture2D *texture, const cc::Rect &rect, bool rotated, const cc::Vec2 &offset, const cc::Size &originalSize) {
     SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
     spriteFrame->initWithTexture(texture, rect, rotated, offset, originalSize);
-    cc::DeferredReleasePool::add(spriteFrame);
 
     return spriteFrame;
 }

@@ -177,7 +177,7 @@ inline PrivateObjectBase *make_shared_private_object(T *cobj) { // NOLINT
 #endif
     if constexpr (std::is_base_of<cc::RefCounted, T>::value) {
         // return new RawPrivateData<T>(cobj);
-        return new IntrusivePrivateObject<T>(cc::intrusive_ptr<T>(cobj, false));
+        return new IntrusivePrivateObject<T>(cc::intrusive_ptr<T>(cobj, true));
     } else {
         return new SharedPrivateObject<T>(std::shared_ptr<T>(cobj));
     }
@@ -212,6 +212,6 @@ inline PrivateObjectBase *intrusive_private_object(const cc::intrusive_ptr<T> &p
 template <typename T>
 inline PrivateObjectBase *intrusive_private_object(T *cobj) { // NOLINT
     static_assert(std::is_base_of<cc::RefCounted, T>::value, "cc::RefCounted expected!");
-    return new IntrusivePrivateObject<T>(cc::intrusive_ptr<T>(cobj, false));
+    return new IntrusivePrivateObject<T>(cc::intrusive_ptr<T>(cobj, true));
 }
 } // namespace se

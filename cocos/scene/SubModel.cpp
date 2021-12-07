@@ -26,6 +26,8 @@
 #include "pipeline/Define.h"
 #include "scene/Model.h"
 #include "scene/Pass.h"
+#include "renderer/pipeline/forward/ForwardPipeline.h"
+
 namespace cc {
 namespace scene {
 const static uint32_t  MAX_PASS_COUNT = 8;
@@ -130,7 +132,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowShader() {
-    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
+    auto *  pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
     Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     if (shadowInfo != nullptr) {
         _planarShader = shadowInfo->getPlanarShader(_patches);
@@ -143,7 +145,7 @@ void SubModel::initPlanarShadowShader() {
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() {
-    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
+    auto *  pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
     Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     if (shadowInfo != nullptr) {
         _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches);

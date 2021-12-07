@@ -94,7 +94,7 @@ void Skybox::setIsRGBE(bool val) {
 }
 
 void Skybox::setEnvmap(TextureCube *val) {
-    _envmap = val != nullptr ? val : _default;
+    _envmap = val ? val : _default.get();
     if (_envmap != nullptr) {
         Root::getInstance()->getPipeline()->getPipelineSceneData()->getAmbient()->_albedoArray[3] = static_cast<float>(_envmap->getMipmaps().size());
         updateGlobalBinding();

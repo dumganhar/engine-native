@@ -27,12 +27,11 @@
 
 #include <string>
 #include "base/RefCounted.h"
+#include "base/Ptr.h"
 #include "math/Vec3.h"
+#include "core/scene-graph/Node.h"
 
 namespace cc {
-
-class Node;
-
 namespace scene {
 
 class RenderScene;
@@ -76,7 +75,7 @@ public:
     inline float getColorTemperature() const { return _colorTemp; }
     inline void  setColorTemperature(float val) { _colorTemp = val; }
 
-    inline Node *getNode() const { return _node; }
+    inline Node *getNode() const { return _node.get(); }
     inline void  setNode(Node *node) { _node = node; }
 
     inline LightType getType() const { return _type; }
@@ -92,16 +91,16 @@ public:
     static float nt2lm(float size);
 
 protected:
-    bool         _useColorTemperature{false};
-    bool         _baked{false};
-    Node *       _node{nullptr};
-    float        _colorTemp{6550.F};
-    LightType    _type{LightType::UNKNOWN};
-    std::string  _name;
-    RenderScene *_scene{nullptr};
-    Vec3         _color{1, 1, 1};
-    Vec3         _colorTemperatureRGB;
-    Vec3         _forward{0, 0, -1};
+    bool            _useColorTemperature{false};
+    bool            _baked{false};
+    SharedPtr<Node> _node;
+    float           _colorTemp{6550.F};
+    LightType       _type{LightType::UNKNOWN};
+    std::string     _name;
+    RenderScene *   _scene{nullptr};
+    Vec3            _color{1, 1, 1};
+    Vec3            _colorTemperatureRGB;
+    Vec3            _forward{0, 0, -1};
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(Light);

@@ -380,7 +380,7 @@ void LightingStage::render(scene::Camera *camera) {
     size_t k = 0;
     for (auto ro : renderObjects) {
         const auto *const model = ro.model;
-        for (auto *subModel : model->getSubModels()) {
+        for (const auto &subModel : model->getSubModels()) {
             for (auto *pass : subModel->getPasses()) {
                 // TODO(xwx): need fallback of unlit and gizmo material.
                 if (pass->getPhase() != _phaseID && pass->getPhase() != _defPhaseID) continue;
@@ -407,7 +407,7 @@ void LightingStage::render(scene::Camera *camera) {
         size_t k = 0;
         for (const auto &ro : renderObjects) {
             const auto *model = ro.model;
-            for (auto *subModel : model->getSubModels()) {
+            for (const auto &subModel : model->getSubModels()) {
                 for (auto *pass : subModel->getPasses()) {
                     if (pass->getPhase() != _reflectionPhaseID) continue;
                     // dispatch for reflection
@@ -454,7 +454,7 @@ void LightingStage::render(scene::Camera *camera) {
     p = 0;
     for (const auto &ro : renderObjects) {
         const auto *model = ro.model;
-        for (auto *subModel : model->getSubModels()) {
+        for (const auto &subModel : model->getSubModels()) {
             for (auto *pass : subModel->getPasses()) {
                 if (pass->getPhase() != _reflectionPhaseID) continue;
                 _reflectionRenderQueue->insertRenderPass(ro, m, p);

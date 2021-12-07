@@ -94,7 +94,7 @@ void ShadowMapBatchedQueue::add(const scene::Model *model, gfx::CommandBuffer *c
         return;
     }
 
-    for (auto *subModel : model->getSubModels()) {
+    for (const auto &subModel : model->getSubModels()) {
         const auto *pass           = subModel->getPass(shadowPassIdx);
         const auto  batchingScheme = pass->getBatchingScheme();
 
@@ -145,7 +145,7 @@ void ShadowMapBatchedQueue::destroy() {
 }
 
 int ShadowMapBatchedQueue::getShadowPassIndex(const scene::Model *model) const {
-    for (auto *subModel : model->getSubModels()) {
+    for (const auto &subModel : model->getSubModels()) {
         int i = 0;
         for (auto *pass : subModel->getPasses()) {
             if (pass->getPhase() == _phaseID) {

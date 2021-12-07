@@ -79,7 +79,7 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
 
         if (!model->getInstanceAttributes().empty()) {
             int i = 0;
-            for (auto *subModel : model->getSubModels()) {
+            for (const auto &subModel : model->getSubModels()) {
                 instancedBuffer->merge(model, subModel, i, subModel->getPlanarInstanceShader());
                 _instancedQueue->add(instancedBuffer);
                 ++i;
@@ -114,7 +114,7 @@ void PlanarShadowQueue::recordCommandBuffer(gfx::Device *device, gfx::RenderPass
     cmdBuffer->bindDescriptorSet(materialSet, pass->getDescriptorSet());
 
     for (const auto *model : _pendingModels) {
-        for (auto *subModel : model->getSubModels()) {
+        for (const auto &subModel : model->getSubModels()) {
             auto *const shader = subModel->getPlanarShader();
             auto *const ia     = subModel->getInputAssembler();
             auto *const pso    = PipelineStateManager::getOrCreatePipelineState(pass, shader, ia, renderPass);

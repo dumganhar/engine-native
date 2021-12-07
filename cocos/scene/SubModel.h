@@ -26,20 +26,18 @@
 #pragma once
 
 #include <vector>
-#include "core/Director.h"
+#include "base/RefCounted.h"
 #include "core/assets/RenderingSubMesh.h"
 #include "renderer/gfx-base/GFXDescriptorSet.h"
 #include "renderer/gfx-base/GFXInputAssembler.h"
 #include "renderer/gfx-base/GFXShader.h"
 #include "renderer/pipeline/Define.h"
-#include "renderer/pipeline/forward/ForwardPipeline.h"
 #include "scene/Define.h"
-#include "scene/Pass.h"
 
 namespace cc {
 namespace scene {
 class Pass;
-class SubModel final {
+class SubModel : public RefCounted {
 public:
     SubModel() = default;
     ~SubModel();

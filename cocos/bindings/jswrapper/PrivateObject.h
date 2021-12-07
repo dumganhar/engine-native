@@ -154,7 +154,7 @@ inline std::shared_ptr<T> TypedPrivateObject<T>::share() {
 }
 template <typename T>
 inline cc::SharedPtr<T> &TypedPrivateObject<T>::ccShared() {
-    assert(isCCShared()());
+    assert(isCCShared());
     return reinterpret_cast<CCSharedPtrPrivateObject<T> *>(this)->_ptr;
 }
 

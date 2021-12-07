@@ -39,14 +39,6 @@ public:
     static void add(RefCounted *object);
     static void clear();
 
-#if defined(CC_DEBUG) && (CC_DEBUG > 0)
-    /**
-     * Whether the autorelease pool is doing `clear` operation.
-     *
-     * @return True if autorelease pool is clearing, false if not.
-     */
-    static bool isClearing() { return DeferredReleasePool::isClearing; };
-#endif
 
     /**
      * Checks whether the autorelease pool contains the specified object.

@@ -206,6 +206,9 @@ protected:
 
     gfx::Format getGFXPixelFormat(PixelFormat format) const;
 
+private:
+    void notifySamplerUpdated();
+
 public:
     /*@serializable*/
     PixelFormat _format{PixelFormat::RGBA8888};

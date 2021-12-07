@@ -25,6 +25,7 @@
 
 #include "core/assets/TextureBase.h"
 #include "base/StringUtil.h"
+#include "core/event/EventTypesToJS.h"
 #include "core/utils/IDGenerator.h"
 
 #include "renderer/gfx-base/GFXDevice.h"
@@ -43,6 +44,7 @@ TextureBase::TextureBase() {
     _id          = idGenerator.getNewId();
     _gfxDevice   = getGFXDevice();
     _textureHash = murmurhash2::MurmurHash2(_id.data(), _id.length(), 666); //cjh TODO: How about using boost hash functionality?
+    _samplerHash = pipeline::SamplerLib::genSamplerHash(_samplerInfo);
 }
 
 void TextureBase::setWrapMode(WrapMode wrapS, WrapMode wrapT, WrapMode wrapR /* = WrapMode::REPEAT*/) {
@@ -60,6 +62,8 @@ void TextureBase::setWrapMode(WrapMode wrapS, WrapMode wrapT, WrapMode wrapR /* 
     if (_gfxDevice != nullptr) {
         _gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
     }
+
+    notifySamplerUpdated();
 }
 
 void TextureBase::setFilters(Filter minFilter, Filter magFilter) {
@@ -71,6 +75,8 @@ void TextureBase::setFilters(Filter minFilter, Filter magFilter) {
     if (_gfxDevice != nullptr) {
         _gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
     }
+
+    notifySamplerUpdated();
 }
 
 void TextureBase::setMipFilter(Filter mipFilter) {
@@ -80,6 +86,8 @@ void TextureBase::setMipFilter(Filter mipFilter) {
     if (_gfxDevice) {
         _gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
     }
+
+    notifySamplerUpdated();
 }
 
 void TextureBase::setAnisotropy(uint32_t anisotropy) {
@@ -89,6 +97,8 @@ void TextureBase::setAnisotropy(uint32_t anisotropy) {
     if (_gfxDevice != nullptr) {
         _gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
     }
+
+    notifySamplerUpdated();
 }
 
 bool TextureBase::destroy() {
@@ -166,6 +176,10 @@ gfx::Format TextureBase::getGFXPixelFormat(PixelFormat format) const {
 
 bool TextureBase::isCompressed() const {
     return (_format >= PixelFormat::RGB_ETC1 && _format <= PixelFormat::RGBA_ASTC_12x12) || (_format >= PixelFormat::RGB_A_PVRTC_2BPPV1 && _format <= PixelFormat::RGBA_ETC1);
+}
+
+void TextureBase::notifySamplerUpdated() {
+    emit(EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED, _gfxSampler, _samplerHash);
 }
 
 } // namespace cc

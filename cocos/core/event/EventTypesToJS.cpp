@@ -51,4 +51,7 @@ const CallbacksInvoker::KeyType EventTypesToJS::MODEL_GET_MACRO_PATCHES{114};   
 
 const CallbacksInvoker::KeyType EventTypesToJS::DIRECTOR_BEFORE_COMMIT{115}; //{"MODEL_GET_MACRO_PATCHES"};
 
+const CallbacksInvoker::KeyType EventTypesToJS::SIMPLE_TEXTURE_GFX_TEXTURE_UPDATED{116};
+const CallbacksInvoker::KeyType EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED{117};
+
 } // namespace cc

@@ -31,7 +31,6 @@
 #include <sstream>
 
 #include "audio/include/AudioEngine.h"
-#include "base/AutoreleasePool.h"
 #include "base/Scheduler.h"
 #include "bindings/event/EventDispatcher.h"
 #include "bindings/jswrapper/SeApi.h"

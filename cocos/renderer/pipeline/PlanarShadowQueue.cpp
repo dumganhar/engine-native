@@ -65,7 +65,7 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
     const auto &models          = scene->getModels();
     auto *      instancedBuffer = InstancedBuffer::get(shadow->getInstancingMaterial()->getPasses()[0]);
 
-    for (const auto *model : models) {
+    for (const auto &model : models) {
         if (!model->isEnabled() || !model->isCastShadow() || !model->getNode()) {
             continue;
         }

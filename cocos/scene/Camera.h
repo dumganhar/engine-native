@@ -29,6 +29,7 @@
 #include <optional>
 #include <string>
 #include "base/Macros.h"
+#include "base/RefCounted.h"
 #include "core/geometry/Frustum.h"
 #include "core/geometry/Ray.h"
 #include "math/Mat4.h"
@@ -117,7 +118,7 @@ struct ICameraInfo {
     std::optional<std::string> pipeline;
 };
 
-class Camera final {
+class Camera : public RefCounted {
 public:
     static constexpr int32_t SKYBOX_FLAG{static_cast<int32_t>(gfx::ClearFlagBit::STENCIL) << 1};
 

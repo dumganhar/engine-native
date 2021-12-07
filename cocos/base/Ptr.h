@@ -81,7 +81,7 @@ namespace cc {
 template <class T>
 class SharedPtr {
 public:
-    using element_type T;
+    using element_type = T;
 
     SharedPtr() = default;
 
@@ -98,7 +98,7 @@ public:
     }
 
     template <typename U>
-    SharedPtr(const scoped_refptr<U> &r) : _ptr(r.get()) {
+    SharedPtr(const SharedPtr<U> &r) : _ptr(r.get()) {
         if (_ptr) {
             _ptr->addRef();
         }

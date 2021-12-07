@@ -36,6 +36,7 @@
 #include "bindings/jswrapper/HandleObject.h"
 #include "bindings/jswrapper/SeApi.h"
 #include "bindings/manual/jsb_classtype.h"
+#include "base/Ptr.h"
 
 #include "jsb_conversions_spec.h"
 
@@ -536,8 +537,7 @@ native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) 
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateObject(se::intrusive_private_object(v));
-        v->addRef(); // Retain the native object to unify the logic in finalize method of js object.
+        obj->setPrivateObject(se::ccshared_private_object(v));
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -571,8 +571,7 @@ native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedV
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateObject(se::intrusive_private_object(v));
-        v->addRef(); // Retain the native object to unify the logic in finalize method of js object.
+        obj->setPrivateObject(se::ccshared_private_object(v));
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -772,7 +771,7 @@ template <typename T, size_t N>
 bool sevalue_to_native(const se::Value &from, std::array<T, N> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 template <typename T>
-bool sevalue_to_native(const se::Value &from, boost::intrusive_ptr<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 //////////////////// std::array
 
@@ -1120,14 +1119,14 @@ bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Objec
 }
 
 template <typename T>
-bool sevalue_to_native(const se::Value &from, cc::intrusive_ptr<T> *to, se::Object *ctx) {
+bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *ctx) {
     if (from.isNullOrUndefined()) {
         to->reset();
         return true;
     }
     auto *privateObject = from.toObject()->getPrivateObject();
-    assert(privateObject->isIntrusive());
-    *to = static_cast<se::IntrusivePrivateObject<T> *>(privateObject)->intrusive();
+    assert(privateObject->isCCShared());
+    *to = static_cast<se::CCSharedPtrPrivateObject<T> *>(privateObject)->intrusive();
     return true;
 }
 
@@ -1271,7 +1270,7 @@ template <typename T>
 inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se::Object *ctx); // NOLINT
 
 template <typename T>
-inline bool nativevalue_to_se(const boost::intrusive_ptr<T> &from, se::Value &to, se::Object *ctx); // NOLINT
+inline bool nativevalue_to_se(const cc::SharedPtr<T> &from, se::Value &to, se::Object *ctx); // NOLINT
 
 template <typename T>
 bool nativevalue_to_se(const std::reference_wrapper<T> ref, se::Value &to, se::Object *ctx); // NOLINT
@@ -1526,7 +1525,7 @@ inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se:
 }
 
 template <typename T>
-inline bool nativevalue_to_se(const boost::intrusive_ptr<T> &from, se::Value &to, se::Object *ctx) { //NOLINT
+inline bool nativevalue_to_se(const cc::SharedPtr<T> &from, se::Value &to, se::Object *ctx) { //NOLINT
 
     auto *nativePtr = from.get();
     if (!nativePtr) {
@@ -1539,7 +1538,7 @@ inline bool nativevalue_to_se(const boost::intrusive_ptr<T> &from, se::Value &to
         assert(cls);
         se::Object *obj = se::Object::createObjectWithClass(cls);
         to.setObject(obj, true);
-        obj->setPrivateObject(se::intrusive_private_object(from));
+        obj->setPrivateObject(se::ccshared_private_object(from));
     } else {
         to.setObject(it->second);
     }

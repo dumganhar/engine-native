@@ -147,7 +147,6 @@ static void registerOnChildRemoved(cc::Node *node, se::Object *jsObject) {
 }
 
 static void registerOnChildAdded(cc::Node *node, se::Object *jsObject) {
-    cc::CallbackInfoBase::ID skip;
     node->on(
         cc::NodeEventType::CHILD_ADDED,
         [jsObject](cc::Node *child) {
@@ -155,8 +154,16 @@ static void registerOnChildAdded(cc::Node *node, se::Object *jsObject) {
             se::Value           arg0;
             nativevalue_to_se(child, arg0);
             se::ScriptEngine::getInstance()->callFunction(jsObject, "_onChildAdded", 1, &arg0);
-        },
-        skip);
+        });
+}
+
+static void registerOnSiblingOrderChanged(cc::Node *node, se::Object *jsObject) {
+    node->on(
+        cc::NodeEventType::SIBLING_ORDER_CHANGED,
+        [jsObject]() {
+            se::AutoHandleScope hs;
+            se::ScriptEngine::getInstance()->callFunction(jsObject, "_onSiblingOrderChanged", 0, nullptr);
+        });
 }
 
 static void registerOnActiveNode(cc::Node *node, se::Object *jsObject) {
@@ -225,7 +232,7 @@ static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-
     NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_REMOVE_PERSIST_ROOT_NODE, _onRemovePersistRootNode);
     NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_DESTROY_COMPONENTS, _onDestroyComponents);
     //    NODE_DISPATCH_EVENT_TO_JS(cc::EventTypesToJS::NODE_UI_TRANSFORM_DIRTY, _onUiTransformDirty);
-    NODE_DISPATCH_EVENT_TO_JS(cc::NodeEventType::SIBLING_ORDER_CHANGED, _onSiblingOrderChanged);
+    //    NODE_DISPATCH_EVENT_TO_JS(cc::NodeEventType::SIBLING_ORDER_CHANGED, _onSiblingOrderChanged);
     registerOnUiTransformDirty(cobj, jsObject);
 
     cobj->on(
@@ -236,6 +243,13 @@ static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-
             nativevalue_to_se(node, nodeVal);
             se::ScriptEngine::getInstance()->callFunction(nodeVal.toObject(), "_onNodeDestroyed", 1, &nodeVal);
         });
+
+    cobj->onSiblingIndexChanged = [jsObject](index_t newIndex) {
+        se::AutoHandleScope hs;
+        se::Value           arg0;
+        nativevalue_to_se(newIndex, arg0);
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onSiblingIndexChanged", 1, &arg0);
+    };
 
     return true;
 }
@@ -300,6 +314,17 @@ static bool js_scene_Node_registerOnChildAdded(se::State &s) // NOLINT(readabili
     return true;
 }
 SE_BIND_FUNC(js_scene_Node_registerOnChildAdded) // NOLINT(readability-identifier-naming)
+
+static bool js_scene_Node_registerOnSiblingOrderChanged(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
+    SE_PRECONDITION2(cobj, false, "js_scene_Node_registerOnSiblingOrderChanged : Invalid Native Object");
+
+    auto *jsObject = s.thisObject();
+    registerOnSiblingOrderChanged(cobj, jsObject);
+    return true;
+}
+SE_BIND_FUNC(js_scene_Node_registerOnSiblingOrderChanged) // NOLINT(readability-identifier-naming)
 
 static bool js_scene_Node_isActiveInHierarchy(void *s) // NOLINT(readability-identifier-naming)
 {
@@ -915,6 +940,7 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_Node_proto->defineFunction("_registerOnLayerChanged", _SE(js_scene_Node_registerOnLayerChanged));
     __jsb_cc_Node_proto->defineFunction("_registerOnChildRemoved", _SE(js_scene_Node_registerOnChildRemoved));
     __jsb_cc_Node_proto->defineFunction("_registerOnChildAdded", _SE(js_scene_Node_registerOnChildAdded));
+    __jsb_cc_Node_proto->defineFunction("_registerOnSiblingOrderChanged", _SE(js_scene_Node_registerOnSiblingOrderChanged));
 
     se::Value jsbVal;
     obj->getProperty("jsb", &jsbVal);

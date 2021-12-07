@@ -482,7 +482,9 @@ void Node::setSiblingIndex(index_t index) {
             siblings.emplace_back(this);
         }
         _parent->updateSiblingIndex();
-        onSiblingIndexChanged(index);
+        if (onSiblingIndexChanged != nullptr) {
+            onSiblingIndexChanged(index);
+        }
     }
 }
 
@@ -945,30 +947,30 @@ Node *Node::find(const std::string &path, Node *referenceNode /* = nullptr*/) {
 }
 
 // For deserialization
-void Node::_setChild(index_t i, Node *child) {
-    if (i < _children.size()) {
-        _children[i] = child;
-    } else {
-        CC_LOG_ERROR("Invalid index (%d) for Node children (size: %u)", i, static_cast<uint32_t>(_children.size()));
-    }
-}
-
-Node *Node::_getChild(index_t i) {
-    if (i < _children.size()) {
-        return _children[i];
-    }
-    CC_LOG_ERROR("Invalid index (%d) for Node children (size: %u)", i, static_cast<uint32_t>(_children.size()));
-    return nullptr;
-}
-
-void Node::_setChildrenSize(uint32_t size) {
-    _children.resize(size);
-}
-
-uint32_t Node::_getChildrenSize() {
-    return _children.size();
-}
-
+//void Node::_setChild(index_t i, Node *child) {
+//    if (i < _children.size()) {
+//        _children[i] = child;
+//    } else {
+//        CC_LOG_ERROR("Invalid index (%d) for Node children (size: %u)", i, static_cast<uint32_t>(_children.size()));
+//    }
+//}
+//
+//Node *Node::_getChild(index_t i) {
+//    if (i < _children.size()) {
+//        return _children[i];
+//    }
+//    CC_LOG_ERROR("Invalid index (%d) for Node children (size: %u)", i, static_cast<uint32_t>(_children.size()));
+//    return nullptr;
+//}
+//
+//void Node::_setChildrenSize(uint32_t size) {
+//    _children.resize(size);
+//}
+//
+//uint32_t Node::_getChildrenSize() {
+//    return _children.size();
+//}
+//
 void Node::_setChildren(std::vector<Node *> &&children) {
     _children = std::move(children);
 }

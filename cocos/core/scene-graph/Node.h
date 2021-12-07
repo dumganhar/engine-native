@@ -603,11 +603,11 @@ public:
     // ------------------  Component code end -----------------------------
 
     // For deserialization
-    void     _setChild(index_t i, Node *child);
-    Node *   _getChild(index_t i);
-    void     _setChildrenSize(uint32_t size);
-    uint32_t _getChildrenSize();
-    void     _setChildren(std::vector<Node *> &&children);
+    //    void     _setChild(index_t i, Node *child);
+    //    Node *   _getChild(index_t i);
+    //    void     _setChildrenSize(uint32_t size);
+    //    uint32_t _getChildrenSize();
+    void _setChildren(std::vector<Node *> &&children);
     // For JS wrapper.
     inline uint32_t getEventMask() const { return _eventMask; }
     inline void     setEventMask(uint32_t mask) { _eventMask = mask; }
@@ -630,7 +630,6 @@ protected:
     virtual void onBatchCreated(bool dontChildPrefab);
 
     bool onPreDestroyBase();
-    void onSiblingIndexChanged(uint32_t siblingIndex) {}
 
     Scene *             _scene{nullptr};
     NodeEventProcessor *_eventProcessor{nullptr};
@@ -651,7 +650,8 @@ protected:
     NodeUiProperties *_uiProps{nullptr};
 
 public:
-    index_t _siblingIndex{0};
+    std::function<void(index_t)> onSiblingIndexChanged{nullptr};
+    index_t                      _siblingIndex{0};
     // For deserialization
     std::string         _id;
     std::vector<Node *> _children;

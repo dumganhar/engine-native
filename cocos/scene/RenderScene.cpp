@@ -54,13 +54,13 @@ void RenderScene::update(uint32_t stamp) {
     if (_mainLight) {
         _mainLight->update();
     }
-    for (SphereLight *light : _sphereLights) {
+    for (const auto &light : _sphereLights) {
         light->update();
     }
-    for (SpotLight *spotLight : _spotLights) {
+    for (const auto &spotLight : _spotLights) {
         spotLight->update();
     }
-    for (auto *model : _models) {
+    for (const auto &model : _models) {
         if (model->isEnabled()) {
             model->updateTransform(stamp);
             model->updateUBOs(stamp);
@@ -88,7 +88,7 @@ void RenderScene::removeCamera(Camera *camera) {
 }
 
 void RenderScene::removeCameras() {
-    for (auto *camera : _cameras) {
+    for (const auto &camera : _cameras) {
         camera->detachFromScene();
     }
     _cameras.clear();
@@ -150,14 +150,14 @@ void RenderScene::removeSpotLight(SpotLight *spotLight) {
 }
 
 void RenderScene::removeSphereLights() {
-    for (auto *sphereLight : _sphereLights) {
+    for (const auto &sphereLight : _sphereLights) {
         sphereLight->detachFromScene();
     }
     _sphereLights.clear();
 }
 
 void RenderScene::removeSpotLights() {
-    for (auto *spotLight : _spotLights) {
+    for (const auto &spotLight : _spotLights) {
         spotLight->detachFromScene();
     }
     _spotLights.clear();
@@ -187,7 +187,7 @@ void RenderScene::removeModel(Model *model) {
 }
 
 void RenderScene::removeModels() {
-    for (auto *model : _models) {
+    for (const auto &model : _models) {
         model->detachFromScene();
         CC_SAFE_DESTROY(model);
     }
@@ -211,7 +211,7 @@ void RenderScene::removeBatches() {
 }
 
 void RenderScene::onGlobalPipelineStateChanged() {
-    for (auto *model : _models) {
+    for (const auto &model : _models) {
         model->onGlobalPipelineStateChanged();
     }
 }

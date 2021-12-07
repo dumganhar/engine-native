@@ -26,7 +26,7 @@
 #pragma once
 
 #include <string>
-
+#include "base/RefCounted.h"
 #include "math/Vec3.h"
 
 namespace cc {
@@ -44,7 +44,7 @@ enum class LightType {
     UNKNOWN,
 };
 
-class Light {
+class Light : public RefCounted {
 public:
     Light()          = default;
     virtual ~Light() = default;

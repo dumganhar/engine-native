@@ -29,6 +29,12 @@
 #include <vector>
 #include "base/Macros.h"
 #include "base/TypeDef.h"
+#include "base/Ptr.h"
+#include "scene/DirectionalLight.h"
+#include "scene/Camera.h"
+#include "scene/SpotLight.h"
+#include "scene/SphereLight.h"
+#include "scene/Model.h"
 
 namespace cc {
 
@@ -38,12 +44,7 @@ class BakedSkinningModel;
 
 namespace scene {
 
-class DirectionalLight;
-class SphereLight;
-class SpotLight;
-class Model;
 class DrawBatch2D;
-class Camera;
 
 struct IRaycastResult {
     Node *node{nullptr};
@@ -90,29 +91,29 @@ public:
 
     void onGlobalPipelineStateChanged();
 
-    inline DirectionalLight *getMainLight() const { return _mainLight; }
+    inline DirectionalLight* getMainLight() const { return _mainLight.get(); }
     inline void              setMainLight(DirectionalLight *dl) { _mainLight = dl; }
 
-    inline uint64_t                          generateModelId() { return _modelId++; }
-    inline const std::string &               getName() const { return _name; }
-    inline const std::vector<Camera *> &     getCameras() const { return _cameras; }
-    inline const std::vector<SphereLight *> &getSphereLights() const { return _sphereLights; }
-    inline const std::vector<SpotLight *> &  getSpotLights() const { return _spotLights; }
-    inline const std::vector<Model *> &      getModels() const { return _models; }
+    inline uint64_t                                   generateModelId() { return _modelId++; }
+    inline const std::string &                        getName() const { return _name; }
+    inline const std::vector<SharedPtr<Camera>> &     getCameras() const { return _cameras; }
+    inline const std::vector<SharedPtr<SphereLight>> &getSphereLights() const { return _sphereLights; }
+    inline const std::vector<SharedPtr<SpotLight>> &  getSpotLights() const { return _spotLights; }
+    inline const std::vector<SharedPtr<Model>> &      getModels() const { return _models; }
     //FIXME: remove getDrawBatch2Ds
     inline const std::vector<DrawBatch2D *> &getBatches() const { return _batches; }
     inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _batches; }
 
 private:
-    std::string                     _name;
-    uint64_t                        _modelId{0};
-    DirectionalLight *              _mainLight{nullptr};
-    std::vector<Model *>            _models;
-    std::vector<Camera *>           _cameras;
-    std::vector<DirectionalLight *> _directionalLights;
-    std::vector<SphereLight *>      _sphereLights;
-    std::vector<SpotLight *>        _spotLights;
-    std::vector<DrawBatch2D *>      _batches;
+    std::string                              _name;
+    uint64_t                                 _modelId{0};
+    SharedPtr<DirectionalLight>              _mainLight{nullptr};
+    std::vector<SharedPtr<Model>>            _models;
+    std::vector<SharedPtr<Camera>>           _cameras;
+    std::vector<SharedPtr<DirectionalLight>> _directionalLights;
+    std::vector<SharedPtr<SphereLight>>      _sphereLights;
+    std::vector<SharedPtr<SpotLight>>        _spotLights;
+    std::vector<DrawBatch2D *>               _batches;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderScene);
 };

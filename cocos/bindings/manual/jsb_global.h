@@ -60,7 +60,7 @@ template <typename T, typename... ARGS>
 typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, se::PrivateObjectBase *>::type
 jsb_make_private_object(ARGS &&...args) { //NOLINT(readability-identifier-naming)
     //return se::raw_private_data(new T(std::forward<ARGS>(args)...));
-    return se::intrusive_private_object(new T(std::forward<ARGS>(args)...));
+    return se::ccshared_private_object(new T(std::forward<ARGS>(args)...));
 }
 
 template <typename T, typename... ARGS>

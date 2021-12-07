@@ -115,7 +115,7 @@ void lightCollecting(scene::Camera *camera, std::vector<const scene::Light *> *v
     const scene::Light *mainLight = scene->getMainLight();
     validLights->emplace_back(mainLight);
 
-    for (auto *spotLight : scene->getSpotLights()) {
+    for (auto &spotLight : scene->getSpotLights()) {
         sphere->setCenter(spotLight->getPosition());
         sphere->setRadius(spotLight->getRange());
         if (sphere->interset(camera->getFrustum())) {
@@ -145,7 +145,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
         renderObjects.emplace_back(genRenderObject(skyBox->getModel(), camera));
     }
 
-    for (auto *model : scene->getModels()) {
+    for (const auto &model : scene->getModels()) {
         // filter model by view visibility
         if (model->isEnabled()) {
             const auto        visibility = camera->getVisibility();

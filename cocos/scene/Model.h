@@ -27,6 +27,7 @@
 
 #include <tuple>
 #include <vector>
+#include "base/RefCounted.h"
 #include "core/TypedArray.h"
 #include "core/assets/RenderingSubMesh.h"
 #include "core/assets/Texture2D.h"
@@ -56,7 +57,7 @@ struct InstancedAttributeBlock {
     std::vector<gfx::Attribute> attributes;
 };
 
-class Model {
+class Model : public RefCounted {
 public:
     friend class Skybox;
 

@@ -104,7 +104,7 @@ void LightingStage::gatherLights(scene::Camera *camera) {
     cc::Vec4      tmpArray;
 
     uint i = 0;
-    for (auto *light : scene->getSphereLights()) {
+    for (const auto &light : scene->getSphereLights()) {
         if (i >= _maxDeferredLights) {
             break;
         }
@@ -155,7 +155,7 @@ void LightingStage::gatherLights(scene::Camera *camera) {
     }
 
     i = 0;
-    for (auto *light : scene->getSpotLights()) {
+    for (const auto &light : scene->getSpotLights()) {
         if (i >= _maxDeferredLights) {
             break;
         }

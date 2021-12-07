@@ -175,7 +175,7 @@ void RenderAdditiveLightQueue::gatherValidLights(const scene::Camera *camera) {
     const auto *const scene = camera->getScene();
     geometry::Sphere  sphere;
 
-    for (auto *light : scene->getSphereLights()) {
+    for (const auto &light : scene->getSphereLights()) {
         sphere.setCenter(light->getPosition());
         sphere.setRadius(light->getRange());
         if (sphere.sphereFrustum(camera->getFrustum())) {
@@ -183,7 +183,7 @@ void RenderAdditiveLightQueue::gatherValidLights(const scene::Camera *camera) {
         }
     }
 
-    for (auto *light : scene->getSpotLights()) {
+    for (const auto &light : scene->getSpotLights()) {
         sphere.setCenter(light->getPosition());
         sphere.setRadius(light->getRange());
         if (sphere.sphereFrustum(camera->getFrustum())) {

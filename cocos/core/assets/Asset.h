@@ -32,12 +32,13 @@
 #include "base/Macros.h"
 #include "core/Types.h"
 #include "core/data/Object.h"
+#include "core/event/CallbacksInvoker.h"
 
 namespace cc {
 
 class Node;
 
-class Asset : public CCObject {
+class Asset : public CCObject, public EventTarget {
 public:
     using Super = CCObject;
 

@@ -81,6 +81,8 @@ namespace cc {
 template <class T>
 class SharedPtr {
 public:
+    using element_type = T;
+
     SharedPtr() = default;
 
     SharedPtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)

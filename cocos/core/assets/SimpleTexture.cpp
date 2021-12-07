@@ -25,6 +25,7 @@
 
 #include "core/assets/SimpleTexture.h"
 #include "core/assets/ImageAsset.h"
+#include "core/event/EventTypesToJS.h"
 #include "core/platform/Macro.h"
 #include "renderer/gfx-base/GFXDevice.h"
 
@@ -167,6 +168,8 @@ void SimpleTexture::createTexture(gfx::Device *device) {
 
     delete _gfxTexture;
     _gfxTexture = texture;
+
+    notifyTextureUpdated();
 }
 
 void SimpleTexture::tryDestroyTexture() {
@@ -174,7 +177,13 @@ void SimpleTexture::tryDestroyTexture() {
         _gfxTexture->destroy();
         delete _gfxTexture;
         _gfxTexture = nullptr;
+
+        notifyTextureUpdated();
     }
+}
+
+void SimpleTexture::notifyTextureUpdated() {
+    emit(EventTypesToJS::SIMPLE_TEXTURE_GFX_TEXTURE_UPDATED, _gfxTexture);
 }
 
 } // namespace cc

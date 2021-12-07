@@ -101,7 +101,7 @@ public:
     void assignImage(ImageAsset *image, uint32_t level, uint32_t arrayIndex = 0);
 
     void checkTextureLoaded();
-    
+
     /**
      * Set mipmap level of this texture.
      * The value is passes as presumed info to `this._getGfxTextureCreateInfo()`.
@@ -127,6 +127,7 @@ protected:
     void createTexture(gfx::Device *device);
 
     void tryDestroyTexture();
+    void notifyTextureUpdated();
 
     gfx::Texture *_gfxTexture{nullptr};
 

@@ -25,15 +25,16 @@
 
 #pragma once
 
-#include <memory>
 #include "base/Macros.h"
+#include "base/RefCounted.h"
+#include "base/Ptr.h"
 #include "bindings/jswrapper/Object.h"
 
 namespace cc {
 
-class ArrayBuffer final {
+class ArrayBuffer : public RefCounted {
 public:
-    using Ptr = std::shared_ptr<ArrayBuffer>;
+    using Ptr = SharedPtr<ArrayBuffer>;
 
     explicit ArrayBuffer(uint32_t length) : _byteLength{length} {
         _jsArrayBuffer = se::Object::createArrayBufferObject(nullptr, length);
@@ -81,7 +82,7 @@ public:
         CC_ASSERT(begin < _byteLength);
         CC_ASSERT(end <= _byteLength);
         uint32_t newBufByteLength = (end - begin);
-        auto     buffer           = std::make_shared<ArrayBuffer>(newBufByteLength);
+        Ptr      buffer           = new ArrayBuffer(newBufByteLength);
         memcpy(buffer->getData(), _data + begin, newBufByteLength);
         return buffer;
     }

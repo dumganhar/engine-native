@@ -26,7 +26,7 @@
 #pragma once
 
 #include <optional>
-
+#include "base/Ptr.h"
 #include "core/assets/Asset.h"
 #include "core/assets/AssetEnum.h"
 #include "core/assets/ImageAsset.h"
@@ -88,7 +88,7 @@ public:
      * @zh 所有层级 Mipmap，注意，这里不包含自动生成的 Mipmap。
      * 当设置 Mipmap 时，贴图的尺寸以及像素格式可能会改变。
      */
-    const std::vector<ImageAsset *> &getMipmaps() const {
+    const std::vector<SharedPtr<ImageAsset>> &getMipmaps() const {
         return _mipmaps;
     }
 
@@ -97,9 +97,9 @@ public:
     }
 
     //cjh TODO: TextureCube also needs this method.
-    void syncMipmapsForJS(const std::vector<ImageAsset *> &value);
+    void syncMipmapsForJS(const std::vector<SharedPtr<ImageAsset>> &value);
 
-    void setMipmaps(const std::vector<ImageAsset *> &value);
+    void setMipmaps(const std::vector<SharedPtr<ImageAsset>> &value);
 
     /**
      * @en Level 0 mipmap image.
@@ -110,12 +110,12 @@ public:
      * 也就是说，通过 `this.image` 设置 0 级 Mipmap 时将隐式地清除之前的所有 Mipmap。
      */
     inline ImageAsset *getImage() const {
-        return _mipmaps.empty() ? nullptr : _mipmaps[0];
+        return _mipmaps.empty() ? nullptr : _mipmaps[0].get();
     }
 
     void setImage(ImageAsset *value) {
         value->addAssetRef();
-        std::vector<ImageAsset *> mipmaps;
+        std::vector<SharedPtr<ImageAsset>> mipmaps;
         if (value != nullptr) {
             mipmaps.emplace_back(value);
         }
@@ -200,7 +200,7 @@ public:
     bool validate() const override;
 
 private:
-    std::vector<ImageAsset *> _mipmaps; //cjh how about using std::vector<std::shared_ptr<ImageAsset>>?
+    std::vector<SharedPtr<ImageAsset>> _mipmaps;
 
     std::vector<std::string> _mipmapsUuids; // TODO(xwx): temporary use _mipmaps as UUIDs string array
 

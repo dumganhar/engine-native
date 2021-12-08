@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "base/Ptr.h"
 #include "core/assets/Asset.h"
 
 namespace cc {
@@ -43,7 +44,7 @@ public:
         return _scene != nullptr;
     }
 
-    inline Scene *getScene() const { return _scene; }
+    inline Scene *getScene() const { return _scene.get(); }
 
     //cjh FOR deserialization
 public:
@@ -53,7 +54,7 @@ public:
 
     @editable
     @serializable*/
-    Scene *_scene = nullptr;
+    SharedPtr<Scene> _scene;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(SceneAsset);
 };

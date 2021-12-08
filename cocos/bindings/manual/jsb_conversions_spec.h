@@ -26,7 +26,7 @@
 #include <unordered_map>
 #include <variant>
 #include <vector>
-
+#include "base/Ptr.h"
 #include "base/Value.h"
 #include "bindings/jswrapper/SeApi.h"
 #include "cocos/core/assets/AssetsModuleHeader.h"
@@ -153,7 +153,7 @@ bool sevalue_to_native(const se::Value &from, std::any *to, se::Object *ctx); //
 ////////////////// ArrayBuffer
 bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
 ///////////////// std::shared_ptr<cc::ArrayBuffer>
-bool sevalue_to_native(const se::Value &from, std::shared_ptr<cc::ArrayBuffer> *out, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::SharedPtr<cc::ArrayBuffer> *out, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 bool sevalue_to_native(const se::Value &from, std::vector<cc::MacroRecord> *to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
 

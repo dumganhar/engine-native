@@ -1121,23 +1121,30 @@ bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Objec
 }
 
 template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
+sevalue_to_native(const se::Value &from, cc::SharedPtr<cc::TypedArrayTemp<T>> *out, se::Object *ctx) { // NOLINT(readability-identifier-naming)
+    *out = new cc::TypedArrayTemp<T>();
+    sevalue_to_native(from, out->get(), ctx);
+    return true;
+}
+
+template <typename T>
 bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *ctx) {
     if (from.isNullOrUndefined()) {
         to = nullptr;
         return true;
     }
+
     auto *privateObject = from.toObject()->getPrivateObject();
+    if (!privateObject) {
+        T *tmp = nullptr;
+        bool ok = sevalue_to_native(from, &tmp, ctx);
+        *to = tmp;
+        return ok;
+    }
+
     assert(privateObject->isCCShared());
     *to = static_cast<se::CCSharedPtrPrivateObject<T> *>(privateObject)->ccShared();
-    return true;
-}
-
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
-sevalue_to_native(const se::Value &from, std::shared_ptr<cc::TypedArrayTemp<T>> *out, se::Object *ctx) { // NOLINT(readability-identifier-naming)
-    *out = std::make_shared<cc::TypedArrayTemp<T>>();
-    sevalue_to_native<T>(from, out->get(), ctx);
-    //TODO(PatriceJiang): should not mix smart pointers with raw pointers.
     return true;
 }
 

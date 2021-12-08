@@ -487,7 +487,7 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
         vertStride = bundle.view.stride;
         vertCount  = bundle.view.count + dstBundle.view.count;
 
-        ArrayBuffer::Ptr vb = std::make_shared<ArrayBuffer>(vertCount * vertStride);
+        ArrayBuffer::Ptr vb = new ArrayBuffer(vertCount * vertStride);
         Uint8Array       vbView(vb);
 
         Uint8Array srcVBView = _data.subarray(srcOffset, srcOffset + bundle.view.length);
@@ -578,7 +578,7 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
                 idxStride = 4;
             }
 
-            ArrayBuffer::Ptr ib = std::make_shared<ArrayBuffer>(idxCount * idxStride);
+            ArrayBuffer::Ptr ib = new ArrayBuffer(idxCount * idxStride);
 
             TypedArray ibView;
             TypedArray srcIBView;

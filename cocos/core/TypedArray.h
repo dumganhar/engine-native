@@ -121,7 +121,7 @@ public:
     }
 
     ~TypedArrayTemp() {
-        _buffer.reset();
+        _buffer = nullptr;
         if (_jsTypedArray != nullptr) {
             _jsTypedArray->unroot();
             _jsTypedArray->decRef();
@@ -143,7 +143,7 @@ public:
             _byteEndPos   = o._byteEndPos;
             _jsTypedArray = o._jsTypedArray;
 
-            o._buffer.reset();
+            o._buffer       = nullptr;
             o._byteOffset   = 0;
             o._byteLength   = 0;
             o._byteEndPos   = 0;
@@ -182,8 +182,8 @@ public:
         CC_ASSERT(end > start);
         CC_ASSERT(start < (_byteLength / BYTES_PER_ELEMENT));
         CC_ASSERT(end <= (_byteLength / BYTES_PER_ELEMENT));
-        uint32_t newBufByteLength = (end - start) * BYTES_PER_ELEMENT;
-        auto     buffer           = std::make_shared<ArrayBuffer>(newBufByteLength);
+        uint32_t         newBufByteLength = (end - start) * BYTES_PER_ELEMENT;
+        ArrayBuffer::Ptr buffer           = new ArrayBuffer(newBufByteLength);
         memcpy(buffer->getData(), _buffer->getData() + start * BYTES_PER_ELEMENT + _byteOffset, newBufByteLength);
         return TypedArrayTemp(buffer);
     }
@@ -228,7 +228,7 @@ public:
             _jsTypedArray = nullptr;
         }
         const uint32_t byteLength = length * BYTES_PER_ELEMENT;
-        _buffer                   = std::make_shared<ArrayBuffer>(byteLength);
+        _buffer                   = new ArrayBuffer(byteLength);
         _byteLength               = _buffer->byteLength();
         _byteOffset               = 0;
         _byteEndPos               = byteLength;
@@ -265,7 +265,7 @@ public:
             assert(tmpVal.isObject());
             assert(tmpVal.toObject()->isArrayBuffer());
 
-            _buffer = std::make_shared<ArrayBuffer>();
+            _buffer = new ArrayBuffer();
             _buffer->setJSArrayBuffer(tmpVal.toObject());
 
             _jsTypedArray->getProperty("byteOffset", &tmpVal);
@@ -278,7 +278,7 @@ public:
 
             _byteEndPos = _buffer->byteLength();
         } else {
-            _buffer.reset();
+            _buffer     = nullptr;
             _byteOffset = 0;
             _byteLength = 0;
             _byteEndPos = 0;
@@ -286,7 +286,7 @@ public:
     }
 
 private:
-    ArrayBuffer::Ptr _buffer{nullptr};
+    ArrayBuffer::Ptr _buffer;
     uint32_t         _byteOffset{0};
     uint32_t         _byteLength{0};
     uint32_t         _byteEndPos{0};

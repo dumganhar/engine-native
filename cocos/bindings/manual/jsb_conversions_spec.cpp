@@ -1008,9 +1008,9 @@ bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * 
     return true;
 }
 // NOLINTNEXTLINE(readability-identifier-naming)
-bool sevalue_to_native(const se::Value &from, std::shared_ptr<cc::ArrayBuffer> *out, se::Object *ctx) {
+bool sevalue_to_native(const se::Value &from, cc::SharedPtr<cc::ArrayBuffer> *out, se::Object *ctx) {
     if (!*out) {
-        *out = std::make_shared<cc::ArrayBuffer>();
+        *out = new cc::ArrayBuffer();
     }
     sevalue_to_native(from, out->get(), ctx);
     // TODO(PatriceJiang): should not mix smart pointers with raw pointers.

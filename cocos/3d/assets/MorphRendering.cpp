@@ -31,8 +31,8 @@
 #include "3d/assets/Morph.h"
 #include "core/DataView.h"
 #include "core/TypedArray.h"
-#include "core/assets/Texture2D.h"
 #include "core/assets/RenderingSubMesh.h"
+#include "core/assets/Texture2D.h"
 #include "platform/Image.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Pass.h"
@@ -132,7 +132,7 @@ public:
     }
 
     void initialize(uint32_t width, uint32_t height, uint32_t pixelBytes, bool useFloat32Array, PixelFormat pixelFormat) {
-        _arrayBuffer = std::make_shared<ArrayBuffer>(width * height * pixelBytes);
+        _arrayBuffer = new ArrayBuffer(width * height * pixelBytes);
         _valueView   = Float32Array(_arrayBuffer);
 
         auto *             imageAsset = new ImageAsset();
@@ -277,7 +277,7 @@ class MorphUniforms final {
 public:
     MorphUniforms(gfx::Device *gfxDevice, uint32_t targetCount) {
         _targetCount = targetCount;
-        _localBuffer = new DataView(std::make_shared<ArrayBuffer>(pipeline::UBOMorph::SIZE));
+        _localBuffer = new DataView(SharedPtr<ArrayBuffer>(new ArrayBuffer(pipeline::UBOMorph::SIZE)));
 
         _remoteBuffer = gfxDevice->createBuffer(gfx::BufferInfo{
             gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST,
@@ -631,7 +631,7 @@ public:
 
     std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) override {
         CC_ASSERT(_owner->_mesh->getStruct().morph.has_value());
-        const auto &subMeshMorphOpt = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex];
+        const auto &subMeshMorphOpt          = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex];
         auto *      subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
         if (subMeshRenderingInstance == nullptr || !subMeshMorphOpt.has_value()) {
             return {};

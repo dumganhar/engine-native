@@ -23,14 +23,13 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-
 #pragma once
 
 #include <cassert>
 #include <memory>
 #include <type_traits>
-#include "base/RefCounted.h"
 #include "base/Ptr.h"
+#include "base/RefCounted.h"
 
 namespace se {
 
@@ -71,9 +70,10 @@ public:
 template <typename T>
 class TypedPrivateObject : public PrivateObjectBase {
 public:
-    inline std::shared_ptr<T>    share();
-    inline cc::SharedPtr<T>      &ccShared();
-    inline const char *          getName() const override {
+    inline std::shared_ptr<T> share();
+    inline cc::SharedPtr<T> & ccShared();
+    inline const char *       getName() const override {
+        static_assert(!std::is_base_of<PrivateObjectBase, T>::value);
         return typeid(T).name();
     }
 };
@@ -161,11 +161,11 @@ inline cc::SharedPtr<T> &TypedPrivateObject<T>::ccShared() {
 #if CC_DEBUG
 inline void inHeap(void *ptr) {
     constexpr size_t r = 4 * 1024; // 4K
-    char a;
-    intptr_t anchor = reinterpret_cast<intptr_t>(&a);
-    intptr_t p = reinterpret_cast<intptr_t>(ptr);
+    char             a;
+    auto             anchor = reinterpret_cast<intptr_t>(&a);
+    auto             p      = reinterpret_cast<intptr_t>(ptr);
     // must be in heaps
-    assert( abs(anchor - p ) > r);
+    assert(abs(anchor - p) > r);
 }
 #endif
 

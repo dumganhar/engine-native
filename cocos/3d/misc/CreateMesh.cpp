@@ -1,10 +1,10 @@
 #include "3d/misc/CreateMesh.h"
 #include <algorithm>
-#include "renderer/gfx-base/GFXDef-common.h"
 #include "3d/assets/Mesh.h"
 #include "3d/misc/BufferBlob.h"
-#include "core/DataView.h"
 #include "core/ArrayBuffer.h"
+#include "core/DataView.h"
+#include "renderer/gfx-base/GFXDef-common.h"
 
 namespace cc {
 namespace {
@@ -136,7 +136,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     if (geometry.normals.has_value() && !geometry.normals.value().empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (const auto& att : geometry.attributes.value()) {
+            for (const auto &att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_NORMAL) {
                     attr = &att;
                     break;
@@ -158,7 +158,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     if (geometry.uvs.has_value() && !geometry.uvs.value().empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (const auto& att : geometry.attributes.value()) {
+            for (const auto &att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_TEX_COORD) {
                     attr = &att;
                     break;
@@ -180,7 +180,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     if (geometry.tangents.has_value() && !geometry.tangents.value().empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (const auto& att : geometry.attributes.value()) {
+            for (const auto &att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_TANGENT) {
                     attr = &att;
                     break;
@@ -202,7 +202,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     if (geometry.colors.has_value() && !geometry.colors.value().empty()) {
         attr = nullptr;
         if (geometry.attributes.has_value()) {
-            for (const auto& att : geometry.attributes.value()) {
+            for (const auto &att : geometry.attributes.value()) {
                 if (att.name == gfx::ATTR_NAME_COLOR) {
                     attr = &att;
                     break;
@@ -235,8 +235,8 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     BufferBlob bufferBlob;
 
     // Fill vertex buffer.
-    auto     vertexBuffer = std::make_shared<ArrayBuffer>(vertCount * stride);
-    DataView vertexBufferView(vertexBuffer);
+    ArrayBuffer::Ptr vertexBuffer = new ArrayBuffer(vertCount * stride);
+    DataView         vertexBufferView(vertexBuffer);
     for (const auto &channel : channels) {
         writeBuffer(vertexBufferView, channel.data, channel.attribute.format, channel.offset, stride);
     }
@@ -257,7 +257,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     if (geometry.indices.has_value()) {
         const std::vector<uint32_t> &indices = geometry.indices.value();
         idxCount                             = indices.size();
-        indexBuffer                          = std::make_shared<ArrayBuffer>(idxStride * idxCount);
+        indexBuffer                          = new ArrayBuffer(idxStride * idxCount);
         DataView indexBufferView(indexBuffer);
         writeBuffer(indexBufferView, indices, gfx::Format::R16UI);
     }
@@ -311,9 +311,7 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     }
     out->reset(
         Mesh::ICreateInfo({.structInfo = meshStruct,
-                           .data       = Uint8Array(bufferBlob.getCombined())
-                         })
-        );
+                           .data       = Uint8Array(bufferBlob.getCombined())}));
 
     return out;
 }

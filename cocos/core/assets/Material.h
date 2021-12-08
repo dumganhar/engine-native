@@ -220,7 +220,7 @@ public:
 
     // For deserialization, we need to make the following properties public
     /* @type(EffectAsset) */
-    EffectAsset *_effectAsset{nullptr};
+    SharedPtr<EffectAsset> _effectAsset;
 
     /* @serializable */
     uint32_t _techIdx{0};
@@ -254,7 +254,7 @@ public:
      * @zh 当前使用的 [[EffectAsset]] 资源。
      */
     inline const EffectAsset *getEffectAsset() {
-        return _effectAsset;
+        return _effectAsset.get();
     }
 
     /**

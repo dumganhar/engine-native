@@ -26,10 +26,10 @@
 #include "jsb_websocket.h"
 #include "base/Config.h"
 #if (USE_SOCKET > 0)
+    #include "cocos/base/DeferredReleasePool.h"
     #include "cocos/bindings/jswrapper/SeApi.h"
     #include "cocos/bindings/manual/jsb_conversions.h"
     #include "cocos/bindings/manual/jsb_global.h"
-    #include "cocos/base/DeferredReleasePool.h"
 
     #include "base/UTF8.h"
     #include "platform/Application.h"
@@ -330,7 +330,7 @@ static bool webSocketConstructor(se::State &s) {
         // Initialize protocol property with an empty string, it will be assigned in onOpen delegate.
         obj->setProperty("protocol", se::Value(""));
 
-        obj->setPrivateObject(se::ccshared_private_object(cobj));
+        obj->setPrivateData(cobj);
 
         obj->root();
 

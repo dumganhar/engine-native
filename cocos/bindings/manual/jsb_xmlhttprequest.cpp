@@ -38,10 +38,10 @@
 #include <unordered_map>
 #include "base/Config.h"
 #include "cocos/base/Data.h"
+#include "cocos/base/DeferredReleasePool.h"
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/network/HttpClient.h"
-#include "cocos/base/DeferredReleasePool.h"
 #include "platform/Application.h"
 
 using namespace cc;          //NOLINT
@@ -581,7 +581,7 @@ SE_BIND_FINALIZE_FUNC(XMLHttpRequest_finalize)
 
 static bool XMLHttpRequest_constructor(se::State &s) { //NOLINT(readability-identifier-naming, google-runtime-references)
     auto *request = new XMLHttpRequest();
-    s.thisObject()->setPrivateObject(se::make_shared_private_object(request));
+    s.thisObject()->setPrivateData(request);
     se::Value thiz(s.thisObject());
 
     auto cb = [thiz](const char *eventName) {

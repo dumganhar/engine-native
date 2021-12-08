@@ -76,6 +76,9 @@
 //
 
 #pragma once
+
+#include <utility>
+
 namespace cc {
 
 template <class T>
@@ -117,7 +120,7 @@ public:
     }
 
     T *get() const { return _ptr; }
-    operator T *() const { return _ptr; }
+       operator T *() const { return _ptr; }
     T &operator*() const { return *_ptr; }
     T *operator->() const { return _ptr; }
 
@@ -164,6 +167,14 @@ public:
     SharedPtr<T> &operator=(SharedPtr<U> &&r) noexcept {
         SharedPtr<T>(std::move(r)).swap(*this);
         return *this;
+    }
+
+    bool operator==(std::nullptr_t) {
+        return _ptr == nullptr;
+    }
+
+    bool operator!=(std::nullptr_t) {
+        return _ptr != nullptr;
     }
 
     void swap(T **pp) noexcept {

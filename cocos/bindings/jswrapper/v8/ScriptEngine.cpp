@@ -1047,6 +1047,13 @@ bool ScriptEngine::callFunction(Object *targetObj, const char *funcName, uint32_
     v8::TryCatch tryCatch(_isolate);
     #endif
 
+    assert(!funcVal.IsEmpty());
+    if (!funcVal.ToLocalChecked()->IsFunction()) {
+        v8::String::Utf8Value funcStr(_isolate, funcVal.ToLocalChecked());
+        SE_REPORT_ERROR("%s is not a function: %s", funcName, *funcStr);
+        return false;
+    }
+
     v8::MaybeLocal<v8::Object> funcObj = funcVal.ToLocalChecked()->ToObject(context);
     v8::MaybeLocal<v8::Value>  result  = funcObj.ToLocalChecked()->CallAsFunction(_getContext(), localObj, argc, argv.data());
 

@@ -469,7 +469,7 @@ SE_BIND_FINALIZE_FUNC(JavaScriptJavaBridge_finalize)
 
 static bool JavaScriptJavaBridge_constructor(se::State &s) { //NOLINT(readability-identifier-naming)
     auto *cobj = new (std::nothrow) JavaScriptJavaBridge();
-    s.thisObject()->setPrivateObject(se::make_shared_private_object(cobj));
+    s.thisObject()->setPrivateData(cobj);
     return true;
 }
 SE_BIND_CTOR(JavaScriptJavaBridge_constructor, __jsb_JavaScriptJavaBridge_class, JavaScriptJavaBridge_finalize)

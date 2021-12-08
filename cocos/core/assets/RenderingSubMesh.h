@@ -25,11 +25,11 @@
 
 #pragma once
 
+#include <variant>
+#include "3d/assets/Mesh.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "renderer/gfx-base/GFXDef.h"
-
-#include <variant>
 
 namespace cc {
 
@@ -78,8 +78,6 @@ struct IFlatBuffer {
     uint32_t   count{0};
     Uint8Array buffer;
 };
-
-class Mesh;
 
 namespace gfx {
 class Buffer;
@@ -173,7 +171,7 @@ public:
     void enableVertexIdChannel(gfx::Device *device);
 
     inline void  setMesh(Mesh *mesh) { _mesh = mesh; } //cjh shared_ptr
-    inline Mesh *getMesh() const { return _mesh; }
+    inline Mesh *getMesh() const { return _mesh.get(); }
 
     inline void                           setSubMeshIdx(uint32_t idx) { _subMeshIdx = idx; }
     inline const std::optional<uint32_t> &getSubMeshIdx() const { return _subMeshIdx; }
@@ -182,7 +180,7 @@ private:
     gfx::Buffer *allocVertexIdBuffer(gfx::Device *device);
 
 private:
-    Mesh *                  _mesh{nullptr};
+    SharedPtr<Mesh>         _mesh;
     std::optional<uint32_t> _subMeshIdx;
 
     std::vector<IFlatBuffer> _flatBuffers;

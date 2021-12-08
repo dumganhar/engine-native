@@ -257,7 +257,10 @@ public:
     }
 
     inline bool isActive() const { return _active; }
-    inline bool isActiveInHierarchy() const { return _activeInHierarchy; }
+
+    inline bool isActiveInHierarchy() const { return _activeInHierarchyArr[0] != 0; }
+    inline void setActiveInHierarchy(bool v) { _activeInHierarchyArr[0] = (v ? 1 : 0); }
+    inline void setActiveInHierarchyPtr(uint8_t *ptr) { _activeInHierarchyArr = ptr; }
 
     virtual void                      onPostActivated(bool active) {}
     inline const std::vector<Node *> &getChildren() { return _children; }
@@ -657,7 +660,8 @@ public:
     std::vector<Node *> _children;
     Node *              _parent{nullptr};
     bool                _active{true};
-    bool                _activeInHierarchy{false};
+    //    bool                _activeInHierarchy{false};
+    uint8_t *_activeInHierarchyArr{nullptr};
     // local transform
     cc::Vec3       _localPosition{Vec3::ZERO};
     cc::Quaternion _localRotation{Quaternion::identity()};

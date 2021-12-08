@@ -211,12 +211,24 @@ static void registerOnUiTransformDirty(cc::Node *node, se::Object *jsObject) {
         });
 }
 
+static void registerActiveInHierarchyArr(cc::Node *node, se::Object *jsObject) {
+    se::Value _activeInHierarchyArrVal;
+    bool      ok = jsObject->getProperty("_activeInHierarchyArr", &_activeInHierarchyArrVal);
+    CC_ASSERT(ok && _activeInHierarchyArrVal.isObject() && _activeInHierarchyArrVal.toObject()->isTypedArray() && _activeInHierarchyArrVal.toObject()->getTypedArrayType() == se::Object::TypedArrayType::UINT8);
+
+    uint8_t *pActiveInHierarchyArrData = nullptr;
+    ok                                 = _activeInHierarchyArrVal.toObject()->getTypedArrayData(&pActiveInHierarchyArrData, nullptr);
+    CC_ASSERT(ok);
+    node->setActiveInHierarchyPtr(pActiveInHierarchyArrData);
+}
+
 static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
     auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
     SE_PRECONDITION2(cobj, false, "js_scene_Node_registerListeners : Invalid Native Object");
 
     auto *jsObject = s.thisObject();
+    registerActiveInHierarchyArr(cobj, jsObject);
 
 #define NODE_DISPATCH_EVENT_TO_JS(eventType, jsFuncName)                                      \
     cobj->on(                                                                                 \
@@ -325,15 +337,6 @@ static bool js_scene_Node_registerOnSiblingOrderChanged(se::State &s) // NOLINT(
     return true;
 }
 SE_BIND_FUNC(js_scene_Node_registerOnSiblingOrderChanged) // NOLINT(readability-identifier-naming)
-
-static bool js_scene_Node_isActiveInHierarchy(void *s) // NOLINT(readability-identifier-naming)
-{
-    auto *cobj         = reinterpret_cast<cc::Node *>(s);
-    bool  result       = cobj->isActiveInHierarchy();
-    _tempFloatArray[0] = result ? 1 : 0;
-    return true;
-}
-SE_BIND_FUNC_FAST(js_scene_Node_isActiveInHierarchy)
 
 static bool scene_Vec3_to_seval(const cc::Vec3 &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
@@ -966,7 +969,6 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_Node_proto->defineFunction("getWorldRotation", _SE(js_scene_Node_getWorldRotation));
     __jsb_cc_Node_proto->defineFunction("getWorldScale", _SE(js_scene_Node_getWorldScale));
     __jsb_cc_Node_proto->defineProperty("worldMatrix", _SE(js_scene_Node_getWorldMatrix_asGetter), nullptr);
-    __jsb_cc_Node_proto->defineFunction("isActiveInHierarchy", _SE(js_scene_Node_isActiveInHierarchy));
     __jsb_cc_Node_proto->defineFunction("setPosition", _SE(js_scene_Node_setPosition));
     __jsb_cc_Node_proto->defineFunction("setScale", _SE(js_scene_Node_setScale));
     __jsb_cc_Node_proto->defineFunction("rotateForJS", _SE(js_scene_Node_rotateForJS));

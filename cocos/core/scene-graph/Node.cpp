@@ -137,8 +137,8 @@ void Node::onHierarchyChangedBase(Node *oldParent) {
     //    // conflict detection
     //    // _Scene.DetectConflict.afterAddChild(this);
     //}
-    bool shouldActiveNow = _active && !!(newParent && newParent->_activeInHierarchy);
-    if (_activeInHierarchy != shouldActiveNow) {
+    bool shouldActiveNow = _active && !!(newParent && newParent->isActiveInHierarchy());
+    if (isActiveInHierarchy() != shouldActiveNow) {
         // Director::getInstance()->getNodeActivator()->activateNode(this, shouldActiveNow); // TODO(xwx): use TS temporarily
         emit(EventTypesToJS::NODE_ACTIVE_NODE, shouldActiveNow);
     }
@@ -204,7 +204,7 @@ void Node::setActive(bool isActive) {
         _active      = isActive;
         Node *parent = _parent;
         if (parent) {
-            bool couldActiveInScene = parent->_activeInHierarchy;
+            bool couldActiveInScene = parent->isActiveInHierarchy();
             if (couldActiveInScene) {
                 // Director::getInstance()->getNodeActivator()->activateNode(this, isActive); // TODO(xwx): use TS temporarily
                 emit(EventTypesToJS::NODE_ACTIVE_NODE, isActive);
@@ -356,7 +356,7 @@ Component *Node::addComponent(Component *comp) {
     comp->_node = this; //cjh TODO: shared_ptr
     _components.emplace_back(comp);
 
-    if (_activeInHierarchy) {
+    if (isActiveInHierarchy()) {
         Director::getInstance()->getNodeActivator()->activateComp(comp);
     }
 

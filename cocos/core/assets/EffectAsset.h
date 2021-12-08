@@ -342,6 +342,7 @@ struct IPassStates {
     IPassStates() = default;
     IPassStates(const IPassInfoFull &o);
     IPassStates &operator=(const IPassInfoFull &o);
+    void overrides(const IPassInfoFull &o);
 };
 using PassOverrides = IPassStates;
 

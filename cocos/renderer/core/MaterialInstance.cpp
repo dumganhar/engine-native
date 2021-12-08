@@ -41,7 +41,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
                 _states.resize(i + 1);
             }
             auto &state = _states[i];
-            state       = overrides;
+            state.overrides(overrides);
             pass->overridePipelineStates(passInfos[pass->getPassIndex()], state);
         }
     } else {
@@ -49,7 +49,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
             _states.resize(passIdx + 1);
         }
         auto &state = _states[passIdx];
-        state       = overrides;
+        state.overrides(overrides);
         _passes[passIdx]->overridePipelineStates(passInfos[passIdx], state);
     }
 }

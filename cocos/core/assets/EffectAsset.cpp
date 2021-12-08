@@ -45,6 +45,33 @@ IPassStates &IPassStates::operator=(const IPassInfoFull &o) {
     return *this;
 }
 
+void IPassStates::overrides(const IPassInfoFull& o) {
+    if (o.priority.has_value()) {
+        this->priority = o.priority.value();
+    }
+    if (o.primitive.has_value()) {
+        this->primitive = o.primitive.value();
+    }
+    if (o.stage.has_value()) {
+        this->stage = o.stage.value();
+    }
+    if (o.rasterizerState.has_value()) {
+        this->rasterizerState = o.rasterizerState.value();
+    }
+    if (o.depthStencilState.has_value()) {
+        this->depthStencilState = o.depthStencilState.value();
+    }
+    if (o.blendState.has_value()) {
+        this->blendState = o.blendState.value();
+    }
+    if (o.dynamicStates.has_value()) {
+        this->dynamicStates = o.dynamicStates.value();
+    }
+    if (o.phase.has_value()) {
+        this->phase = o.phase.value();
+    }
+}
+
 EffectAsset::RegisteredEffectAssetMap EffectAsset::__effects;
 
 /* static */

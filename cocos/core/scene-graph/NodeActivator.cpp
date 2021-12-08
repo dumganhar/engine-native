@@ -250,7 +250,7 @@ void NodeActivator::activateNodeRecursively(Node *node, LifeCycleInvoker *preloa
         return;
     }
 
-    node->_activeInHierarchy = true;
+    node->setActiveInHierarchy(true);
 
     // component maybe added during onEnable, and the onEnable of new component is already called
     // so we should record the origin length
@@ -284,7 +284,7 @@ void NodeActivator::deactivateNodeRecursively(Node *node) {
     //     CCASSERT(node._activeInHierarchy, "node should not deactivated");
     // }
     node->_objFlags |= CCObject::Flags::DEACTIVATING;
-    node->_activeInHierarchy = false;
+    node->setActiveInHierarchy(false);
 
     // component maybe added during onEnable, and the onEnable of new component is already called
     // so we should record the origin length
@@ -292,7 +292,7 @@ void NodeActivator::deactivateNodeRecursively(Node *node) {
         if (component->_enabled) {
             Director::getInstance()->getCompScheduler()->disableComp(component);
 
-            if (node->_activeInHierarchy) {
+            if (node->isActiveInHierarchy()) {
                 // reactivated from root
                 node->_objFlags &= ~CCObject::Flags::DEACTIVATING;
                 return;
@@ -300,10 +300,10 @@ void NodeActivator::deactivateNodeRecursively(Node *node) {
         }
     }
     for (auto *child : node->_children) {
-        if (child->_activeInHierarchy) {
+        if (child->isActiveInHierarchy()) {
             deactivateNodeRecursively(child);
 
-            if (node->_activeInHierarchy) {
+            if (node->isActiveInHierarchy()) {
                 // reactivated from root
                 node->_objFlags &= ~CCObject::Flags::DEACTIVATING;
                 return;

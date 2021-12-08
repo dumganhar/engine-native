@@ -32,9 +32,10 @@ namespace cc {
 
 Scene::Scene(const std::string &name)
 : Node(name) {
-    _activeInHierarchy = false;
-    _renderScene       = Root::getInstance()->createScene({});
-//    _globals           = new SceneGlobals();
+    // _activeInHierarchy is initalized to 'false', so doesn't need to set it to false again
+    //    _activeInHierarchy = false;
+    _renderScene = Root::getInstance()->createScene({});
+    //    _globals           = new SceneGlobals();
 }
 
 Scene::Scene()
@@ -42,7 +43,7 @@ Scene::Scene()
 }
 
 Scene::~Scene() {
-//    CC_SAFE_DELETE(_globals);
+    //    CC_SAFE_DELETE(_globals);
 }
 
 void Scene::load() {
@@ -102,8 +103,8 @@ bool Scene::destroy() {
         Root::getInstance()->destroyScene(_renderScene);
     }
 
-    _active            = false;
-    _activeInHierarchy = false;
+    _active = false;
+    setActiveInHierarchy(false);
     return success;
 }
 

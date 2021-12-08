@@ -420,6 +420,14 @@ void Node::setScene(Node *node) {
     node->updateScene();
 }
 
+void Node::updateScene() {
+    if (_parent == nullptr) {
+        return;
+    }
+    _scene = _parent->_scene;
+    emit(EventTypesToJS::NODE_SCENE_UPDATED, _scene);
+}
+
 index_t Node::getIdxOfChild(const std::vector<Node *> &child, Node *target) {
     auto iteChild = std::find(child.begin(), child.end(), target);
     if (iteChild != child.end()) {

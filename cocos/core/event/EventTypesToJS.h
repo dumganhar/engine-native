@@ -43,6 +43,7 @@ public:
     static const CallbacksInvoker::KeyType NODE_UI_TRANSFORM_DIRTY;
     static const CallbacksInvoker::KeyType NODE_ACTIVE_NODE;
     static const CallbacksInvoker::KeyType NODE_ON_BATCH_CREATED;
+    static const CallbacksInvoker::KeyType NODE_SCENE_UPDATED;
 
     static const CallbacksInvoker::KeyType MODEL_UPDATE_TRANSFORM;
     static const CallbacksInvoker::KeyType MODEL_UPDATE_UBO;

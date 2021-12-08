@@ -286,7 +286,7 @@ SE_BIND_FINALIZE_FUNC(JavaScriptObjCBridge_finalize)
 
 static bool JavaScriptObjCBridge_constructor(se::State &s) {
     JavaScriptObjCBridge *cobj = new (std::nothrow) JavaScriptObjCBridge();
-    s.thisObject()->setPrivateObject(se::make_shared_private_object(cobj));
+    s.thisObject()->setPrivateData(cobj);
     return true;
 }
 SE_BIND_CTOR(JavaScriptObjCBridge_constructor, __jsb_JavaScriptObjCBridge_class, JavaScriptObjCBridge_finalize)

@@ -64,7 +64,7 @@ static bool jsb_BufferPool_constructor(se::State &s) { // NOLINT
         }
 
         se::BufferPool *pool = JSB_ALLOC(se::BufferPool, (se::PoolType)poolType, entryBits, bytesPerEntry);
-        s.thisObject()->setPrivateObject(se::make_shared_private_object(pool));
+        s.thisObject()->setPrivateData(pool);
         return true;
     }
 
@@ -105,7 +105,7 @@ static bool jsb_BufferAllocator_constructor(se::State &s) { // NOLINT
         uint type = 0;
 
         se::BufferAllocator *bufferAllocator = JSB_ALLOC(se::BufferAllocator, static_cast<se::PoolType>(type));
-        s.thisObject()->setPrivateObject(se::make_shared_private_object(bufferAllocator));
+        s.thisObject()->setPrivateData(bufferAllocator);
         return true;
     }
 

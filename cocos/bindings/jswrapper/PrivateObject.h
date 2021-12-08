@@ -74,6 +74,7 @@ public:
     inline std::shared_ptr<T>    share();
     inline cc::SharedPtr<T>      &ccShared();
     inline const char *          getName() const override {
+        static_assert(!std::is_base_of<PrivateObjectBase, T>::value);
         return typeid(T).name();
     }
 };
@@ -162,8 +163,8 @@ inline cc::SharedPtr<T> &TypedPrivateObject<T>::ccShared() {
 inline void inHeap(void *ptr) {
     constexpr size_t r = 4 * 1024; // 4K
     char a;
-    intptr_t anchor = reinterpret_cast<intptr_t>(&a);
-    intptr_t p = reinterpret_cast<intptr_t>(ptr);
+    auto anchor = reinterpret_cast<intptr_t>(&a);
+    auto p = reinterpret_cast<intptr_t>(ptr);
     // must be in heaps
     assert( abs(anchor - p ) > r);
 }

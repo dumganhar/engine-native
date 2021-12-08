@@ -295,7 +295,7 @@ static bool SocketIO_connect(se::State &s) {
             siodelegate->addRef();
 
             se::Object *obj = se::Object::createObjectWithClass(__jsb_SocketIO_class);
-            obj->setPrivateObject(se::ccshared_private_object(ret));
+            obj->setPrivateData(ret);
 
             s.rval().setObject(obj);
             obj->root();

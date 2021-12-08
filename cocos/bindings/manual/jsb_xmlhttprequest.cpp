@@ -581,7 +581,7 @@ SE_BIND_FINALIZE_FUNC(XMLHttpRequest_finalize)
 
 static bool XMLHttpRequest_constructor(se::State &s) { //NOLINT(readability-identifier-naming, google-runtime-references)
     auto *request = new XMLHttpRequest();
-    s.thisObject()->setPrivateObject(se::make_shared_private_object(request));
+    s.thisObject()->setPrivateData(request);
     se::Value thiz(s.thisObject());
 
     auto cb = [thiz](const char *eventName) {

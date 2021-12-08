@@ -549,7 +549,15 @@ bool Object::getArrayBufferData(uint8_t **ptr, size_t *length) const {
 
 void Object::setPrivateObject(PrivateObjectBase *data) {
     assert(_privateObject == nullptr);
-    assert(NativePtrToObjectMap::find(data->getRaw()) == NativePtrToObjectMap::end());
+    #if CC_DEBUG
+    //assert(NativePtrToObjectMap::find(data->getRaw()) == NativePtrToObjectMap::end());
+    auto it = NativePtrToObjectMap::find(data->getRaw());
+    if (it != NativePtrToObjectMap::end()) {
+        auto *pri = it->second->getPrivateObject();
+        SE_LOGE("Already exists object %s/[%s], trying to add %s/[%s]\n", pri->getName(), typeid(*pri).name(), data->getName(), typeid(*data).name());
+        assert(false);
+    }
+    #endif
     internal::setPrivate(__isolate, _obj, data, this, &_internalData);
     NativePtrToObjectMap::emplace(data->getRaw(), this);
     _privateObject = data;

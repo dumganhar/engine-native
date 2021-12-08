@@ -66,7 +66,7 @@ static bool WebSocketServer_constructor(se::State &s) {
     if (argc == 0) {
         se::Object *obj  = s.thisObject();
         WSSPTR      cobj = new std::shared_ptr<WebSocketServer>(new WebSocketServer());
-        obj->setPrivateObject(se::make_shared_private_object(cobj));
+        obj->setPrivateData(cobj);
         (*cobj)->setData(obj);
 
         (*cobj)->setOnBegin([obj]() {
@@ -187,7 +187,7 @@ static bool WebSocketServer_onconnection(se::State &s) {
         WSCONNPTR   prv = new std::shared_ptr<WebSocketServerConnection>(conn);
         // a connection is dead only if no reference & closed!
         obj->root();
-        obj->setPrivateObject(se::make_shared_private_object(prv));
+        obj->setPrivateData(prv);
         conn->setData(obj);
         std::weak_ptr<WebSocketServerConnection> connWeak = conn;
         prv->get()->setOnEnd([connWeak, obj]() {

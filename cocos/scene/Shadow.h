@@ -449,8 +449,8 @@ public:
     inline void setAutoAdapt(bool val) { _autoAdapt = val; }
 
     inline const Mat4 &getMatLight() const { return _matLight; }
-    inline Material *  getMaterial() const { return _material; }
-    inline Material *  getInstancingMaterial() const { return _instancingMaterial; }
+    inline Material *  getMaterial() const { return _material.get(); }
+    inline Material *  getInstancingMaterial() const { return _instancingMaterial.get(); }
 
     /**
      * @en get or set shadow max received
@@ -486,8 +486,8 @@ private:
     Color                _shadowColor{0, 0, 0, 76};
     std::array<float, 4> _shadowColor4f{0.F, 0.F, 0.F, 76.F / 255.F};
     Mat4                 _matLight;
-    Material *           _material{nullptr};
-    Material *           _instancingMaterial{nullptr};
+    SharedPtr<Material>  _material;
+    SharedPtr<Material>  _instancingMaterial;
     Vec2                 _size{512.F, 512.F};
     bool                 _enabled{false};
     float                _distance{0.F};

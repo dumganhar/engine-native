@@ -32,9 +32,14 @@
 #include "gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "scene/Light.h"
-#include "scene/Model.h"
 
 namespace cc {
+
+namespace scene {
+class Model;
+class SubModel;
+}
+
 namespace pipeline {
 
 class RenderStage;

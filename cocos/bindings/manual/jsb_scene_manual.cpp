@@ -29,6 +29,7 @@
 #include "core/scene-graph/Node.h"
 #include "core/scene-graph/NodeEvent.h"
 #include "scene/Model.h"
+#include "core/Root.h"
 
 #ifndef JSB_ALLOC
     #define JSB_ALLOC(kls, ...) new (std::nothrow) kls(__VA_ARGS__)

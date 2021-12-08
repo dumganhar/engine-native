@@ -17,12 +17,12 @@ void MaterialInstance::recompileShaders(const MacroRecord &overrides, index_t pa
     }
 
     if (passIdx == CC_INVALID_INDEX) {
-        for (auto *pass : _passes) {
+        for (const auto &pass : _passes) {
             pass->tryCompile(overrides);
         }
     } else {
         if (passIdx < _passes.size()) {
-            auto *pass = _passes[passIdx];
+            auto *pass = _passes[passIdx].get();
             pass->tryCompile(overrides);
         }
     }
@@ -36,7 +36,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
     std::vector<IPassInfoFull> &passInfos = _effectAsset->_techniques[getTechniqueIndex()].passes;
     if (passIdx == CC_INVALID_INDEX) {
         for (size_t i = 0, len = _passes.size(); i < len; i++) {
-            auto *pass = _passes[i];
+            auto *pass = _passes[i].get();
             if (i >= _states.size()) {
                 _states.resize(i + 1);
             }
@@ -61,16 +61,16 @@ bool MaterialInstance::destroy() {
 
 void MaterialInstance::doDestroy() {
     if (!_passes.empty()) {
-        for (auto *pass : _passes) {
+        for (const auto &pass : _passes) {
             pass->destroy();
         }
     }
     _passes.clear();
 }
 
-std::vector<scene::Pass *> MaterialInstance::createPasses() {
-    std::vector<scene::Pass *> passes;
-    auto &                     parentPasses = _parent->getPasses();
+std::vector<SharedPtr<scene::Pass>> MaterialInstance::createPasses() {
+    std::vector<SharedPtr<scene::Pass>> passes;
+    auto &                              parentPasses = _parent->getPasses();
 
     for (size_t k = 0; k < parentPasses.size(); ++k) {
         passes.emplace_back(new PassInstance(parentPasses[k], this)); //cjh shared_ptr?

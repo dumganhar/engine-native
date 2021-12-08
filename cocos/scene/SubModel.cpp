@@ -26,6 +26,9 @@
 #include "pipeline/Define.h"
 #include "scene/Model.h"
 #include "scene/Pass.h"
+#include "renderer/pipeline/forward/ForwardPipeline.h"
+#include "core/Root.h"
+
 namespace cc {
 namespace scene {
 const static uint32_t  MAX_PASS_COUNT = 8;
@@ -42,7 +45,7 @@ SubModel::~SubModel() {
     //cjh TODO:    CC_SAFE_DELETE(_subMesh);
 }
 
-void SubModel::setPasses(const std::vector<Pass *> &passes) {
+void SubModel::setPasses(const std::vector<SharedPtr<Pass>> &passes) {
     if (passes.size() > MAX_PASS_COUNT) {
         // errorID(12004, MAX_PASS_COUNT); //errorID not implemented
         return;
@@ -73,7 +76,7 @@ Pass *SubModel::getPass(uint index) const {
     return _passes[index];
 }
 
-void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &passes, const std::vector<IMacroPatch> &patches) {
+void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr<Pass>> &passes, const std::vector<IMacroPatch> &patches) {
     _device = Root::getInstance()->getDevice();
     if (!passes.empty()) {
         dsInfo.layout = passes[0]->getLocalSetLayout();
@@ -130,7 +133,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowShader() {
-    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
+    auto *  pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
     Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     if (shadowInfo != nullptr) {
         _planarShader = shadowInfo->getPlanarShader(_patches);
@@ -143,7 +146,7 @@ void SubModel::initPlanarShadowShader() {
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() {
-    auto *  pipeline   = dynamic_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
+    auto *  pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
     Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     if (shadowInfo != nullptr) {
         _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches);

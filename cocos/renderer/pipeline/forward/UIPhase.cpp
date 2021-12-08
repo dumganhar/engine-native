@@ -27,6 +27,7 @@
 #include "gfx-base/GFXCommandBuffer.h"
 #include "pipeline/PipelineStateManager.h"
 #include "scene/RenderScene.h"
+#include "scene/DrawBatch2D.h"
 
 namespace cc {
 namespace pipeline {
@@ -49,7 +50,7 @@ void UIPhase::render(scene::Camera *camera, gfx::RenderPass *renderPass) {
 
         if (!visible) continue;
         int i = 0;
-        for (const auto *pass : batch->passes) {
+        for (const auto &pass : batch->passes) {
             if (pass->getPhase() != _phaseID) continue;
             auto *const shader         = batch->shaders[i];
             if (shader == nullptr) break;

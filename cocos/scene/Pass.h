@@ -28,22 +28,22 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-
+#include "base/RefCounted.h"
 #include "base/TypeDef.h"
 #include "core/ArrayBuffer.h"
-#include "core/Root.h"
 #include "core/assets/EffectAsset.h"
 #include "renderer/core/PassUtils.h"
-#include "renderer/core/ProgramLib.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDescriptorSet.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
+#include "scene/Define.h"
 
 namespace cc {
 
 class Root;
+struct IProgramInfo;
 
 namespace scene {
 
@@ -65,7 +65,7 @@ struct IBlockRef {
     size_t offset{0};
 };
 
-class Pass {
+class Pass : public RefCounted {
 public:
     /**
      * @en The binding type enums of the property
@@ -263,7 +263,7 @@ public:
     inline Root *                                    getRoot() const { return _root; }
     inline gfx::Device *                             getDevice() const { return _device; }
     inline IProgramInfo *                            getShaderInfo() const { return _shaderInfo; }
-    inline gfx::DescriptorSetLayout *                getLocalSetLayout() const { return ProgramLib::getInstance()->getDescriptorSetLayout(_device, _programName, true); }
+    gfx::DescriptorSetLayout *                       getLocalSetLayout() const;
     inline const std::string &                       getProgram() const { return _programName; }
     inline const Record<std::string, IPropertyInfo> &getProperties() const { return _properties; }
     inline const MacroRecord &                       getDefines() const { return _defines; }

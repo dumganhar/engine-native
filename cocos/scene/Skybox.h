@@ -66,8 +66,8 @@ public:
 
     void activate(Skybox *resource);
 
-//cjh JSB need to bind the property, so need to make it public
-//private:
+    //cjh JSB need to bind the property, so need to make it public
+    //private:
     TextureCube *_envmap{nullptr};
     bool         _isRGBE{false};
     bool         _enabled{false};
@@ -83,7 +83,7 @@ public:
     void initialize(const SkyboxInfo &skyboxInfo);
     void activate();
 
-    inline Model *getModel() const { return _model; }
+    inline Model *getModel() const { return _model.get(); }
 
     /**
      * @en Whether activate skybox in the scene
@@ -119,17 +119,17 @@ public:
      * @en The texture cube used for the skybox
      * @zh 使用的立方体贴图
      */
-    inline TextureCube *getEnvmap() const { return _envmap; }
+    inline TextureCube *getEnvmap() const { return _envmap.get(); }
     void                setEnvmap(TextureCube *val);
 
 private:
     void updatePipeline() const;
     void updateGlobalBinding();
 
-    TextureCube *              _envmap{nullptr};
+    SharedPtr<TextureCube>     _envmap;
     pipeline::GlobalDSManager *_globalDSManager{nullptr};
-    Model *                    _model{nullptr};
-    TextureCube *              _default{nullptr};
+    SharedPtr<Model>           _model;
+    SharedPtr<TextureCube>     _default;
     bool                       _enabled{false};
     bool                       _useIBL{false};
     bool                       _isRGBE{false};

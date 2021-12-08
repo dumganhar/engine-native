@@ -130,7 +130,7 @@ void RenderAdditiveLightQueue::gatherLightPasses(const scene::Camera *camera, gf
 
         if (_lightIndices.empty()) continue;
         int i = 0;
-        for (const auto *subModel : model->getSubModels()) {
+        for (const auto &subModel : model->getSubModels()) {
             const auto lightPassIdx = lightPassIndices[i];
             if (lightPassIdx == UINT_MAX) continue;
             const auto *pass          = subModel->getPass(lightPassIdx);
@@ -394,9 +394,9 @@ bool RenderAdditiveLightQueue::getLightPassIndex(const scene::Model *model, vect
     lightPassIndices->clear();
     bool hasValidLightPass = false;
 
-    for (auto *subModel : model->getSubModels()) {
+    for (const auto &subModel : model->getSubModels()) {
         int lightPassIndex = 0;
-        for (auto *pass : subModel->getPasses()) {
+        for (const auto &pass : subModel->getPasses()) {
             if (pass->getPhase() == _phaseID) {
                 hasValidLightPass = true;
                 break;

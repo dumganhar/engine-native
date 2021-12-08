@@ -27,6 +27,7 @@
 #include <cmath>
 #include "core/scene-graph/Node.h"
 #include "scene/Pass.h"
+#include "core/Root.h"
 
 namespace cc {
 namespace scene {

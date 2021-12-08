@@ -32,12 +32,10 @@
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/gfx-base/GFXFramebuffer.h"
 #include "renderer/gfx-base/GFXTexture.h"
+#include "scene/Camera.h"
 
 namespace cc {
 namespace scene {
-
-// Because Camera includes RenderWindow, so forward declare it here.
-class Camera;
 
 struct IRenderWindowInfo {
     std::optional<std::string> title;
@@ -124,7 +122,7 @@ public:
      */
     inline bool hasOffScreenAttachments() const { return _hasOffScreenAttachments; }
 
-    inline const std::vector<Camera *> &getCameras() const { return _cameras; }
+    inline const std::vector<SharedPtr<Camera>> &getCameras() const { return _cameras; }
 
 private:
     bool                        _hasOnScreenAttachments{false};
@@ -137,7 +135,7 @@ private:
     gfx::RenderPass *           _renderPass{nullptr};
     gfx::Texture *              _depthStencilTexture{nullptr};
     gfx::Framebuffer *          _frameBuffer{nullptr};
-    std::vector<Camera *>       _cameras;
+    std::vector<SharedPtr<Camera>>       _cameras;
     std::vector<gfx::Texture *> _colorTextures;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderWindow);

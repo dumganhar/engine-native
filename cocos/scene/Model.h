@@ -28,6 +28,7 @@
 #include <tuple>
 #include <vector>
 #include "base/RefCounted.h"
+#include "base/Ptr.h"
 #include "core/TypedArray.h"
 #include "core/assets/RenderingSubMesh.h"
 #include "core/assets/Texture2D.h"
@@ -35,13 +36,14 @@
 #include "core/event/CallbacksInvoker.h"
 #include "core/geometry/AABB.h"
 #include "core/scene-graph/Layers.h"
+#include "core/scene-graph/Node.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
+#include "scene/SubModel.h"
 
 namespace cc {
 
 class Material;
-class Node;
 
 namespace scene {
 
@@ -110,28 +112,28 @@ public:
     }
     inline void setInstancedAttributeBlock(const InstancedAttributeBlock &val) { _instanceAttributeBlock = val; }
 
-    inline bool                               isInited() const { return _inited; };
-    inline bool                               isCastShadow() const { return _castShadow; }
-    inline bool                               isEnabled() const { return _enabled; }
-    inline bool                               isInstancingEnabled() const { return _instMatWorldIdx >= 0; };
-    inline int32_t                            getInstMatWorldIdx() const { return _instMatWorldIdx; }
-    inline const std::vector<gfx::Attribute> &getInstanceAttributes() const { return _instanceAttributeBlock.attributes; }
-    inline InstancedAttributeBlock *          getInstancedAttributeBlock() { return &_instanceAttributeBlock; }
-    inline const uint8_t *                    getInstancedBuffer() const { return _instanceAttributeBlock.buffer.buffer()->getData(); }
-    inline uint32_t                           getInstancedBufferSize() const { return _instanceAttributeBlock.buffer.length(); }
-    inline gfx::Buffer *                      getLocalBuffer() const { return _localBuffer; }
-    inline Float32Array                       getLocalData() const { return _localData; }
-    inline geometry::AABB *                   getModelBounds() const { return _modelBounds; }
-    inline Node *                             getNode() const { return _node; }
-    inline bool                               isReceiveShadow() const { return _receiveShadow; }
-    inline const std::vector<SubModel *> &    getSubModels() const { return _subModels; }
-    inline Node *                             getTransform() const { return _transform; }
-    inline bool                               isTransformUpdated() const { return _transformUpdated; }
-    inline uint32_t                           getUpdateStamp() const { return _updateStamp; }
-    inline uint32_t                           getVisFlags() const { return _visFlags; }
-    inline geometry::AABB *                   getWorldBounds() const { return _worldBounds; }
-    inline Type                               getType() const { return _type; };
-    inline void                               setType(Type type) { _type = type; }
+    inline bool                                    isInited() const { return _inited; };
+    inline bool                                    isCastShadow() const { return _castShadow; }
+    inline bool                                    isEnabled() const { return _enabled; }
+    inline bool                                    isInstancingEnabled() const { return _instMatWorldIdx >= 0; };
+    inline int32_t                                 getInstMatWorldIdx() const { return _instMatWorldIdx; }
+    inline const std::vector<gfx::Attribute> &     getInstanceAttributes() const { return _instanceAttributeBlock.attributes; }
+    inline InstancedAttributeBlock *               getInstancedAttributeBlock() { return &_instanceAttributeBlock; }
+    inline const uint8_t *                         getInstancedBuffer() const { return _instanceAttributeBlock.buffer.buffer()->getData(); }
+    inline uint32_t                                getInstancedBufferSize() const { return _instanceAttributeBlock.buffer.length(); }
+    inline gfx::Buffer *                           getLocalBuffer() const { return _localBuffer; }
+    inline Float32Array                            getLocalData() const { return _localData; }
+    inline geometry::AABB *                        getModelBounds() const { return _modelBounds; }
+    inline Node *                                  getNode() const { return _node.get(); }
+    inline bool                                    isReceiveShadow() const { return _receiveShadow; }
+    inline const std::vector<SharedPtr<SubModel>> &getSubModels() const { return _subModels; }
+    inline Node *                                  getTransform() const { return _transform.get(); }
+    inline bool                                    isTransformUpdated() const { return _transformUpdated; }
+    inline uint32_t                                getUpdateStamp() const { return _updateStamp; }
+    inline uint32_t                                getVisFlags() const { return _visFlags; }
+    inline geometry::AABB *                        getWorldBounds() const { return _worldBounds; }
+    inline Type                                    getType() const { return _type; };
+    inline void                                    setType(Type type) { _type = type; }
 
     inline RenderScene *getScene() const { return _scene; }
     inline void         setDynamicBatching(bool val) { _isDynamicBatching = val; }
@@ -177,19 +179,19 @@ protected:
     bool _receiveShadow{false};
     bool _isDynamicBatching{false};
 
-    int32_t                         _instMatWorldIdx{-1};
-    uint32_t                        _visFlags{static_cast<uint32_t>(Layers::Enum::NONE)};
-    uint32_t                        _updateStamp{0};
-    Node *                          _transform{nullptr};
-    Node *                          _node{nullptr};
-    Float32Array                    _localData;
-    std::tuple<uint8_t *, uint32_t> _instancedBuffer{nullptr, 0};
-    gfx::Buffer *                   _localBuffer{nullptr};
-    InstancedAttributeBlock         _instanceAttributeBlock{};
-    std::vector<SubModel *>         _subModels;
+    int32_t                          _instMatWorldIdx{-1};
+    uint32_t                         _visFlags{static_cast<uint32_t>(Layers::Enum::NONE)};
+    uint32_t                         _updateStamp{0};
+    SharedPtr<Node>                  _transform;
+    SharedPtr<Node>                  _node;
+    Float32Array                     _localData;
+    std::tuple<uint8_t *, uint32_t>  _instancedBuffer{nullptr, 0};
+    gfx::Buffer *                    _localBuffer{nullptr};
+    InstancedAttributeBlock          _instanceAttributeBlock{};
+    std::vector<SharedPtr<SubModel>> _subModels;
 
-    Texture2D *_lightmap{nullptr};
-    Vec4       _lightmapUVParam;
+    SharedPtr<Texture2D> _lightmap;
+    Vec4                 _lightmapUVParam;
 
     RenderScene *_scene{nullptr};
 

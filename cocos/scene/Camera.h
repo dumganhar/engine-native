@@ -30,23 +30,24 @@
 #include <string>
 #include "base/Macros.h"
 #include "base/RefCounted.h"
+#include "base/Ptr.h"
 #include "core/geometry/Frustum.h"
 #include "core/geometry/Ray.h"
+#include "core/scene-graph/Node.h"
 #include "math/Mat4.h"
 #include "math/Vec3.h"
 #include "math/Vec4.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/pipeline/Define.h"
-#include "scene/RenderWindow.h"
 
 namespace cc {
-
-class Node;
 
 namespace scene {
 
 // As RenderScene includes Camera.h, so use forward declaration here.
 class RenderScene;
+// As RenderWindow includes Camera.h, so use forward declaration here.
+class RenderWindow;
 
 enum class CameraProjection {
     ORTHO,
@@ -159,7 +160,7 @@ public:
     const Mat4 &worldMatrixToScreen(Mat4 &out, const Mat4 &worldMatrix, uint32_t width, uint32_t height);
 
     inline void  setNode(Node *val) { _node = val; }
-    inline Node *getNode() const { return _node; }
+    inline Node *getNode() const { return _node.get(); }
 
     inline void setEnabled(bool val) { _enabled = val; }
     inline bool isEnabled() const { return _enabled; }
@@ -282,11 +283,7 @@ public:
     inline float getScreenScale() const { return _screenScale; }
     inline void  setScreenScale(float val) { _screenScale = val; }
 
-    inline void detachCamera() {
-        if (_window) {
-            _window->detachCamera(this);
-        }
-    }
+    void detachCamera();
 
 protected:
     void setExposure(float ev100);
@@ -298,7 +295,7 @@ private:
     float            _screenScale{0.F};
     gfx::Device *    _device{nullptr};
     RenderScene *    _scene{nullptr};
-    Node *           _node{nullptr};
+    SharedPtr<Node>  _node;
     std::string      _name;
     bool             _enabled{false};
     CameraProjection _proj{CameraProjection::UNKNOWN};

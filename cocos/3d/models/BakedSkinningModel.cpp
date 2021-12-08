@@ -24,6 +24,8 @@
  ****************************************************************************/
 #include "3d/models/BakedSkinningModel.h"
 #include "3d/skeletal-animation/SkeletalAnimationUtils.h"
+#include "3d/skeletal-animation/DataPoolManager.h"
+#include "core/Root.h"
 #include "scene/Model.h"
 #include "scene/SubModel.h"
 
@@ -143,7 +145,7 @@ void BakedSkinningModel::applyJointTexture(const std::optional<IJointTextureHand
     }
     auto *tex = texture->handle.texture;
 
-    for (auto *subModel : _subModels) {
+    for (const auto &subModel : _subModels) {
         auto *descriptorSet = subModel->getDescriptorSet();
         descriptorSet->bindTexture(pipeline::JOINTTEXTURE::BINDING, tex);
     }
@@ -230,7 +232,7 @@ void BakedSkinningModel::syncDataForJS(const std::vector<std::optional<geometry:
         buffer->update(&_jointMedium.jointTextureInfo[0], _jointMedium.jointTextureInfo.byteLength());
     }
 
-    for (auto *subModel : _subModels) {
+    for (const auto &subModel : _subModels) {
         auto *descriptorSet = subModel->getDescriptorSet();
         descriptorSet->bindTexture(pipeline::JOINTTEXTURE::BINDING, tex);
     }

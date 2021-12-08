@@ -23,7 +23,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "PassInstance.h"
+#include "renderer/core/PassInstance.h"
+#include "renderer/core/ProgramLib.h"
 
 namespace cc {
 

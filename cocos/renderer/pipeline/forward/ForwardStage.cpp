@@ -37,6 +37,7 @@
 #include "gfx-base/GFXDevice.h"
 #include "gfx-base/GFXFramebuffer.h"
 #include "gfx-base/GFXQueue.h"
+#include "scene/RenderWindow.h"
 
 namespace cc {
 namespace pipeline {

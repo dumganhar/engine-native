@@ -348,5 +348,11 @@ void Camera::setViewport(const Vec4 &val) {
     resize(_width, _height);
 }
 
+void Camera::detachCamera() {
+    if (_window) {
+        _window->detachCamera(this);
+    }
+}
+
 } // namespace scene
 } // namespace cc

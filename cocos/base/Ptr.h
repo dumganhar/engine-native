@@ -169,6 +169,14 @@ public:
         return *this;
     }
 
+    bool operator==(std::nullptr_t) {
+        return _ptr == nullptr;
+    }
+
+    bool operator!=(std::nullptr_t) {
+        return _ptr != nullptr;
+    }
+
     void swap(T **pp) noexcept {
         T *p = _ptr;
         _ptr = *pp;

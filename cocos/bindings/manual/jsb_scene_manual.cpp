@@ -25,11 +25,11 @@
 
 #include "jsb_scene_manual.h"
 #include "bindings/auto/jsb_scene_auto.h"
+#include "core/Root.h"
 #include "core/event/EventTypesToJS.h"
 #include "core/scene-graph/Node.h"
 #include "core/scene-graph/NodeEvent.h"
 #include "scene/Model.h"
-#include "core/Root.h"
 
 #ifndef JSB_ALLOC
     #define JSB_ALLOC(kls, ...) new (std::nothrow) kls(__VA_ARGS__)
@@ -636,23 +636,14 @@ static bool js_scene_Node_getUp(se::State &s) // NOLINT(readability-identifier-n
 }
 SE_BIND_FUNC(js_scene_Node_getUp)
 
-static bool js_scene_Node_getWorldMatrix(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getWorldMatrix(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Node_getWorldMatrix : Invalid Native Object");
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
-    if (argc == 0) {
-        const cc::Mat4 &result = cobj->getWorldMatrix();
-        memcpy(_tempFloatArray, result.m, sizeof(result.m));
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
+    auto *          cobj   = reinterpret_cast<cc::Node *>(nativeObject);
+    const cc::Mat4 &result = cobj->getWorldMatrix();
+    memcpy(_tempFloatArray, result.m, sizeof(result.m));
+    return true;
 }
-SE_BIND_FUNC_AS_PROP_GET(js_scene_Node_getWorldMatrix)
-SE_BIND_FUNC(js_scene_Node_getWorldMatrix)
+SE_BIND_FUNC_FAST(js_scene_Node_getWorldMatrix)
 
 static bool js_scene_Node_getWorldPosition(se::State &s) // NOLINT(readability-identifier-naming)
 {
@@ -980,7 +971,6 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_Node_proto->defineFunction("getWorldRT", _SE(js_scene_Node_getWorldRT));
     __jsb_cc_Node_proto->defineFunction("getWorldRotation", _SE(js_scene_Node_getWorldRotation));
     __jsb_cc_Node_proto->defineFunction("getWorldScale", _SE(js_scene_Node_getWorldScale));
-    __jsb_cc_Node_proto->defineProperty("worldMatrix", _SE(js_scene_Node_getWorldMatrix_asGetter), nullptr);
     __jsb_cc_Node_proto->defineFunction("setPosition", _SE(js_scene_Node_setPosition));
     __jsb_cc_Node_proto->defineFunction("setScale", _SE(js_scene_Node_setScale));
     __jsb_cc_Node_proto->defineFunction("rotateForJS", _SE(js_scene_Node_rotateForJS));

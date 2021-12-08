@@ -44,9 +44,9 @@ public:
     }
 
     inline Scene *getScene() const { return _scene; }
+    inline void   setScene(Scene *scene) { _scene = scene; };
 
-    //cjh FOR deserialization
-public:
+private:
     /**
      * @en The scene node
      * @zh 场景节点。

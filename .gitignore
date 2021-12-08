@@ -186,3 +186,7 @@ cocos/platform/ohos/libcocos/build
 
 
 **/*~
+
+/cocos/bindings/auto/*.h
+/cocos/bindings/auto/*.cpp
+/cocos/bindings/auto/*.json

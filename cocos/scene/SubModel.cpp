@@ -27,6 +27,7 @@
 #include "scene/Model.h"
 #include "scene/Pass.h"
 #include "renderer/pipeline/forward/ForwardPipeline.h"
+#include "core/Root.h"
 
 namespace cc {
 namespace scene {
@@ -44,7 +45,7 @@ SubModel::~SubModel() {
     //cjh TODO:    CC_SAFE_DELETE(_subMesh);
 }
 
-void SubModel::setPasses(const std::vector<Pass *> &passes) {
+void SubModel::setPasses(const std::vector<SharedPtr<Pass>> &passes) {
     if (passes.size() > MAX_PASS_COUNT) {
         // errorID(12004, MAX_PASS_COUNT); //errorID not implemented
         return;
@@ -75,7 +76,7 @@ Pass *SubModel::getPass(uint index) const {
     return _passes[index];
 }
 
-void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<Pass *> &passes, const std::vector<IMacroPatch> &patches) {
+void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr<Pass>> &passes, const std::vector<IMacroPatch> &patches) {
     _device = Root::getInstance()->getDevice();
     if (!passes.empty()) {
         dsInfo.layout = passes[0]->getLocalSetLayout();

@@ -34,6 +34,7 @@
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "renderer/pipeline/Define.h"
+#include "renderer/core/ProgramLib.h"
 
 namespace cc {
 namespace scene {
@@ -577,6 +578,10 @@ void Pass::initPassFromTarget(Pass *target, const gfx::DepthStencilState &dss, c
 
     _pipelineLayout = ProgramLib::getInstance()->getTemplateInfo(_programName)->pipelineLayout;
     _hash           = target->_hash ^ hashFactor;
+}
+
+gfx::DescriptorSetLayout *Pass::getLocalSetLayout() const {
+    return ProgramLib::getInstance()->getDescriptorSetLayout(_device, _programName, true);
 }
 
 } // namespace scene

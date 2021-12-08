@@ -32,19 +32,15 @@
 #include <unordered_map>
 #include <variant>
 #include <vector>
-
+#include "base/Ptr.h"
 #include "core/Types.h"
 #include "core/assets/EffectAsset.h"
 #include "core/assets/TextureBase.h"
-
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXTexture.h"
+#include "scene/Pass.h"
 
 namespace cc {
-
-namespace scene {
-class Pass;
-}
 
 class RenderableComponent;
 
@@ -240,7 +236,7 @@ public:
     //
 
 protected:
-    std::vector<scene::Pass *> _passes;
+    std::vector<SharedPtr<scene::Pass>> _passes;
 
     uint64_t _hash{0};
 
@@ -281,7 +277,7 @@ public:
      * @en The passes defined in this material.
      * @zh 当前正在使用的 pass 数组。
      */
-    std::vector<scene::Pass *> &getPasses() {
+    std::vector<SharedPtr<scene::Pass>> &getPasses() {
         return _passes;
     }
 
@@ -344,7 +340,7 @@ protected:
 
     virtual void doDestroy();
 
-    virtual std::vector<scene::Pass *> createPasses();
+    virtual std::vector<SharedPtr<scene::Pass>> createPasses();
 
 private:
     friend class MaterialDeserializer;

@@ -32,6 +32,7 @@
 #include "core/DataView.h"
 #include "core/TypedArray.h"
 #include "core/assets/Texture2D.h"
+#include "core/assets/RenderingSubMesh.h"
 #include "platform/Image.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Pass.h"

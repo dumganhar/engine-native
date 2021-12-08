@@ -342,7 +342,7 @@ bool MeshRenderer::isBatchingEnabled() {
             continue;
         }
 
-        for (auto *pass : mat->getPasses()) {
+        for (const auto &pass : mat->getPasses()) {
             if (pass->getBatchingScheme() != scene::BatchingSchemes::NONE) {
                 return true;
             }

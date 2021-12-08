@@ -79,7 +79,7 @@ public:
     //
 
 protected:
-    std::vector<scene::Pass *> createPasses() override;
+    std::vector<SharedPtr<scene::Pass>> createPasses() override;
 
 private:
     Material *           _parent{nullptr};

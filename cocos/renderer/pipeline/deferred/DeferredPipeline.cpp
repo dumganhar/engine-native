@@ -39,6 +39,7 @@
 #include "gfx-base/GFXTexture.h"
 #include "platform/Application.h"
 #include "DeferredPipelineSceneData.h"
+#include "scene/RenderWindow.h"
 
 namespace cc {
 namespace pipeline {

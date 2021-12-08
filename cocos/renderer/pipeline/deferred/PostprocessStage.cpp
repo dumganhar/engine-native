@@ -34,6 +34,7 @@
 #include "pipeline/Define.h"
 #include "scene/SubModel.h"
 #include "DeferredPipelineSceneData.h"
+#include "scene/RenderWindow.h"
 
 namespace cc {
 namespace pipeline {

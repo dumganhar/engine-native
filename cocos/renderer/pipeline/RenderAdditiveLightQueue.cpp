@@ -396,7 +396,7 @@ bool RenderAdditiveLightQueue::getLightPassIndex(const scene::Model *model, vect
 
     for (const auto &subModel : model->getSubModels()) {
         int lightPassIndex = 0;
-        for (auto *pass : subModel->getPasses()) {
+        for (const auto &pass : subModel->getPasses()) {
             if (pass->getPhase() == _phaseID) {
                 hasValidLightPass = true;
                 break;

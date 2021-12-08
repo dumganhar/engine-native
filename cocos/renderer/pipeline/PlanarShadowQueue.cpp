@@ -110,7 +110,7 @@ void PlanarShadowQueue::recordCommandBuffer(gfx::Device *device, gfx::RenderPass
         return;
     }
 
-    const auto *pass = shadow->getMaterial()->getPasses()[0];
+    const auto *pass = shadow->getMaterial()->getPasses()[0].get();
     cmdBuffer->bindDescriptorSet(materialSet, pass->getDescriptorSet());
 
     for (const auto *model : _pendingModels) {

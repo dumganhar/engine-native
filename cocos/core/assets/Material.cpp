@@ -27,6 +27,7 @@
 
 #include "base/Utils.h"
 #include "core/assets/EffectAsset.h"
+#include "core/builtin/BuiltinResMgr.h"
 #include "math/Color.h"
 #include "scene/Pass.h"
 
@@ -39,7 +40,7 @@ uint64_t Material::getHashForMaterial(Material *material) {
     }
 
     uint64_t hash = 0;
-    for (auto *pass : material->_passes) {
+    for (const auto &pass : material->_passes) {
         hash ^= pass->getHash();
     }
     return hash;
@@ -95,7 +96,7 @@ bool Material::destroy() {
 
 void Material::doDestroy() {
     if (!_passes.empty()) {
-        for (auto *pass : _passes) {
+        for (const auto &pass : _passes) {
             pass->destroy();
         }
     }
@@ -123,7 +124,7 @@ void Material::resetUniforms(bool clearPasses /* = true */) {
         return;
     }
 
-    for (auto *pass : _passes) {
+    for (const auto &pass : _passes) {
         pass->resetUBOs();
         pass->resetTextures();
     }
@@ -134,7 +135,7 @@ void Material::setProperty(const std::string &name, const MaterialPropertyVarian
     if (passIdx == CC_INVALID_INDEX) { // try set property for all applicable passes
         size_t len = _passes.size();
         for (size_t i = 0; i < len; i++) {
-            auto *pass = _passes[i];
+            const auto &pass = _passes[i];
             if (uploadProperty(pass, name, val)) {
                 _props[pass->getPropertyIndex()][name] = val;
                 success                                = true;
@@ -146,7 +147,7 @@ void Material::setProperty(const std::string &name, const MaterialPropertyVarian
             return;
         }
 
-        auto *pass = _passes[passIdx];
+        const auto &pass = _passes[passIdx];
         if (uploadProperty(pass, name, val)) {
             _props[pass->getPropertyIndex()][name] = val;
             success                                = true;
@@ -274,7 +275,7 @@ void Material::update(bool keepProps /* = true*/) {
             };
 
             for (size_t i = 0, len = _passes.size(); i < len; ++i) {
-                cb(_passes[i], i);
+                cb(_passes[i].get(), i);
             }
         }
         //cjh FIXME: no need since we resize _props?
@@ -287,8 +288,8 @@ void Material::update(bool keepProps /* = true*/) {
     _hash = Material::getHashForMaterial(this);
 }
 
-std::vector<scene::Pass *> Material::createPasses() {
-    std::vector<scene::Pass *> passes;
+std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
+    std::vector<SharedPtr<scene::Pass>> passes;
     ITechniqueInfo *           tech = nullptr;
     if (_techIdx < _effectAsset->_techniques.size()) {
         tech = &_effectAsset->_techniques[_techIdx];

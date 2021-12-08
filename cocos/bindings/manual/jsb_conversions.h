@@ -1121,12 +1121,12 @@ bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Objec
 template <typename T>
 bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *ctx) {
     if (from.isNullOrUndefined()) {
-        to->reset();
+        to = nullptr;
         return true;
     }
     auto *privateObject = from.toObject()->getPrivateObject();
     assert(privateObject->isCCShared());
-    *to = static_cast<se::CCSharedPtrPrivateObject<T> *>(privateObject)->intrusive();
+    *to = static_cast<se::CCSharedPtrPrivateObject<T> *>(privateObject)->ccShared();
     return true;
 }
 

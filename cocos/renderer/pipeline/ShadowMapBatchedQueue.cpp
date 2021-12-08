@@ -147,7 +147,7 @@ void ShadowMapBatchedQueue::destroy() {
 int ShadowMapBatchedQueue::getShadowPassIndex(const scene::Model *model) const {
     for (const auto &subModel : model->getSubModels()) {
         int i = 0;
-        for (auto *pass : subModel->getPasses()) {
+        for (const auto &pass : subModel->getPasses()) {
             if (pass->getPhase() == _phaseID) {
                 return i;
             }

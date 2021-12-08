@@ -223,6 +223,17 @@ static void registerActiveInHierarchyArr(cc::Node *node, se::Object *jsObject) {
     node->setActiveInHierarchyPtr(pActiveInHierarchyArrData);
 }
 
+static void registerLayerArr(cc::Node *node, se::Object *jsObject) {
+    se::Value _layerArrVal;
+    bool      ok = jsObject->getProperty("_layerArr", &_layerArrVal);
+    CC_ASSERT(ok && _layerArrVal.isObject() && _layerArrVal.toObject()->isTypedArray() && _layerArrVal.toObject()->getTypedArrayType() == se::Object::TypedArrayType::UINT32);
+
+    uint8_t *pLayerArrValData = nullptr;
+    ok                        = _layerArrVal.toObject()->getTypedArrayData(&pLayerArrValData, nullptr);
+    CC_ASSERT(ok);
+    node->setLayerPtr(reinterpret_cast<uint32_t *>(pLayerArrValData));
+}
+
 static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
     auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -230,6 +241,7 @@ static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-
 
     auto *jsObject = s.thisObject();
     registerActiveInHierarchyArr(cobj, jsObject);
+    registerLayerArr(cobj, jsObject);
 
 #define NODE_DISPATCH_EVENT_TO_JS(eventType, jsFuncName)                                      \
     cobj->on(                                                                                 \
@@ -263,6 +275,13 @@ static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-
         nativevalue_to_se(newIndex, arg0);
         se::ScriptEngine::getInstance()->callFunction(jsObject, "_onSiblingIndexChanged", 1, &arg0);
     };
+
+    cobj->on(cc::EventTypesToJS::NODE_SCENE_UPDATED, [jsObject](cc::Scene *scene) {
+        se::AutoHandleScope hs;
+        se::Value           arg0;
+        nativevalue_to_se(scene, arg0);
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onSceneUpdated", 1, &arg0);
+    });
 
     return true;
 }
@@ -431,24 +450,16 @@ static bool js_scene_Camera_screenPointToRay(se::State &s) // NOLINT(readability
 }
 SE_BIND_FUNC(js_scene_Camera_screenPointToRay)
 
-static bool js_scene_Node_getPosition(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getPosition(void *nativeObj) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Node_getPosition : Invalid Native Object");
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
-    if (argc == 0) {
-        const cc::Vec3 &result = cobj->getPosition();
-        _tempFloatArray[0]     = result.x;
-        _tempFloatArray[1]     = result.y;
-        _tempFloatArray[2]     = result.z;
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
+    auto *          cobj   = reinterpret_cast<cc::Node *>(nativeObj);
+    const cc::Vec3 &result = cobj->getPosition();
+    _tempFloatArray[0]     = result.x;
+    _tempFloatArray[1]     = result.y;
+    _tempFloatArray[2]     = result.z;
+    return true;
 }
-SE_BIND_FUNC(js_scene_Node_getPosition)
+SE_BIND_FUNC_FAST(js_scene_Node_getPosition)
 
 static bool js_scene_Node__setTempFloatArray(se::State &s) // NOLINT(readability-identifier-naming)
 {

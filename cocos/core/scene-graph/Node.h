@@ -502,15 +502,11 @@ public:
     inline void     setDirtyFlag(uint32_t value) { _dirtyFlag = value; }
     inline uint32_t getDirtyFlag() const { return _dirtyFlag; }
     inline void     setLayer(uint32_t layer) {
-        _layer = layer;
-        emit(NodeEventType::LAYER_CHANGED, _layer);
+        _layerArr[0] = layer;
+        emit(NodeEventType::LAYER_CHANGED, layer);
     }
-    inline uint32_t getLayer() const { return _layer; }
-    //minggo: This function is invoked by JS just to sync value in deserialization.
-    inline uint32_t getLayerForJS() const { return _layer; }
-    inline void     setLayerForJS(uint32_t layer) {
-        _layer = layer;
-    }
+    inline uint32_t getLayer() const { return _layerArr[0]; }
+    inline void     setLayerPtr(uint32_t *ptr) { _layerArr = ptr; }
 
     inline NodeUiProperties *getUIProps() const { return _uiProps; }
 
@@ -620,12 +616,7 @@ protected:
 
     void onSetParent(Node *oldParent, bool keepWorldTransform);
 
-    virtual void updateScene() {
-        if (_parent == nullptr) {
-            return;
-        }
-        _scene = _parent->_scene;
-    }
+    virtual void updateScene();
 
     void onHierarchyChanged(Node *);
     void onHierarchyChangedBase(Node *oldParent);
@@ -651,6 +642,9 @@ protected:
 
     bool              _eulerDirty{false};
     NodeUiProperties *_uiProps{nullptr};
+    //    bool _activeInHierarchy{false};
+    uint8_t * _activeInHierarchyArr{nullptr};
+    uint32_t *_layerArr{nullptr};
 
 public:
     std::function<void(index_t)> onSiblingIndexChanged{nullptr};
@@ -660,8 +654,7 @@ public:
     std::vector<Node *> _children;
     Node *              _parent{nullptr};
     bool                _active{true};
-    //    bool                _activeInHierarchy{false};
-    uint8_t *_activeInHierarchyArr{nullptr};
+
     // local transform
     cc::Vec3       _localPosition{Vec3::ZERO};
     cc::Quaternion _localRotation{Quaternion::identity()};
@@ -671,8 +664,8 @@ public:
     cc::Quaternion _worldRotation{Quaternion::identity()};
     cc::Vec3       _worldScale{Vec3::ONE};
     //
-    Vec3     _euler{0, 0, 0};
-    uint32_t _layer{static_cast<uint32_t>(Layers::Enum::DEFAULT)};
+    Vec3 _euler{0, 0, 0};
+
     //
 private:
     UserData *_userData{nullptr};

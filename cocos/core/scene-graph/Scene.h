@@ -53,12 +53,10 @@ public:
     void onBatchCreated(bool dontChildPrefab) override;
     bool destroy() override;
 
-    // TODO:minggo For JS usage.
-    scene::RenderScene *_renderScene{nullptr};
-
 protected:
     void updateScene() override { _scene = this; }
 
+    scene::RenderScene *_renderScene{nullptr};
     /**
      * @en Per-scene level rendering info
      * @zh 场景级别的渲染信息

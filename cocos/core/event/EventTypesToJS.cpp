@@ -54,4 +54,6 @@ const CallbacksInvoker::KeyType EventTypesToJS::DIRECTOR_BEFORE_COMMIT{115}; //{
 const CallbacksInvoker::KeyType EventTypesToJS::SIMPLE_TEXTURE_GFX_TEXTURE_UPDATED{116};
 const CallbacksInvoker::KeyType EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED{117};
 
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_SCENE_UPDATED{118};
+
 } // namespace cc

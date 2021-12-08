@@ -27,6 +27,7 @@
 
 #include "base/Ptr.h"
 #include "core/assets/Asset.h"
+#include "core/scene-graph/Scene.h"
 
 namespace cc {
 

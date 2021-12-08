@@ -168,8 +168,6 @@ void Root::resetCumulativeTime() {
 }
 
 void Root::frameMove(float deltaTime, int32_t totalFrames) {
-    //FIXME: It is invoked in Director in TS. As Director is not implemented in C++ now, so invoke it here.
-    CCObject::deferredDestroy();
 
     _frameTime = deltaTime;
 

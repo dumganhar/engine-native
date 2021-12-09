@@ -68,11 +68,11 @@ struct IJointTextureHandle {
     std::optional<std::vector<IInternalJointAnimInfo>>        animInfos;
 };
 
-class JointTexturePool {
+class JointTexturePool : public RefCounted {
 public:
     JointTexturePool() = default;
     explicit JointTexturePool(gfx::Device *device);
-    ~JointTexturePool() = default;
+    ~JointTexturePool() override = default;
 
     inline float getPixelsPerJoint() const { return _pixelsPerJoint; }
 
@@ -106,11 +106,11 @@ private:
     // const IInternalJointAnimInfo &createAnimInfos(Skeleton *skeleton, AnimationClip *clip, Node *skinningRoot); // TODO(xwx): AnimationClip not define
 
     gfx::Device *                                     _device{nullptr};
-    TextureBufferPool *                               _pool{nullptr};
+    SharedPtr<TextureBufferPool>                      _pool;
     std::unordered_map<uint64_t, IJointTextureHandle> _textureBuffers;
     uint32_t                                          _formatSize{0};
     float                                             _pixelsPerJoint{0}; // TODO(xwx): int or float?
-    TextureBufferPool *                               _customPool{nullptr};
+    SharedPtr<TextureBufferPool>                      _customPool;
     std::unordered_map<uint64_t, index_t>             _chunkIdxMap; // hash -> chunkIdx
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(JointTexturePool);
@@ -125,11 +125,11 @@ struct IAnimInfo {
     bool         dirty{false};
 };
 
-class JointAnimationInfo {
+class JointAnimationInfo : public RefCounted {
 public:
     JointAnimationInfo();
     explicit JointAnimationInfo(gfx::Device *device);
-    ~JointAnimationInfo() = default;
+    ~JointAnimationInfo() override = default;
 
     IAnimInfo        getData(const std::string &nodeID = "-1");
     void             destroy(const std::string &nodeID);

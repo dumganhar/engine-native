@@ -29,14 +29,14 @@
 #include "renderer/gfx-base/GFXDevice.h"
 
 namespace cc {
-class DataPoolManager {
+class DataPoolManager : public RefCounted {
 public:
     DataPoolManager() = default;
     explicit DataPoolManager(gfx::Device *device);
-    ~DataPoolManager() = default;
+    ~DataPoolManager() override = default;
 
-    JointTexturePool *  jointTexturePool{nullptr};
-    JointAnimationInfo *jointAnimationInfo{nullptr};
+    SharedPtr<JointTexturePool>   jointTexturePool;
+    SharedPtr<JointAnimationInfo> jointAnimationInfo;
 
     void releaseSkeleton(Skeleton *skeleton) const;
 

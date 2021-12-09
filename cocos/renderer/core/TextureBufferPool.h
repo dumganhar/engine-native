@@ -26,6 +26,7 @@
 
 #include <functional>
 #include <optional>
+#include "audio/android/PcmBufferProvider.h"
 #include "core/ArrayBuffer.h"
 #include "gfx-base/GFXTexture.h"
 #include "renderer/gfx-base/GFXDef.h"
@@ -59,11 +60,11 @@ struct ITextureBufferPoolInfo {
     std::optional<roundUpType> roundUpFn;                    // given a target size, how will the actual texture size round up?
 };
 
-class TextureBufferPool {
+class TextureBufferPool : public RefCounted {
 public:
     TextureBufferPool() = default;
     explicit TextureBufferPool(gfx::Device *device);
-    ~TextureBufferPool() = default;
+    ~TextureBufferPool() override = default;
 
     void                 initialize(const ITextureBufferPoolInfo &info);
     void                 destroy();

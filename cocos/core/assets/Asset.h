@@ -43,7 +43,7 @@ public:
     using Super = CCObject;
 
     Asset()          = default;
-    virtual ~Asset() = default;
+     ~Asset() override = default;
 
     /**
      * @en

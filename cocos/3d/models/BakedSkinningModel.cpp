@@ -23,8 +23,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "3d/models/BakedSkinningModel.h"
-#include "3d/skeletal-animation/SkeletalAnimationUtils.h"
 #include "3d/skeletal-animation/DataPoolManager.h"
+#include "3d/skeletal-animation/SkeletalAnimationUtils.h"
 #include "core/Root.h"
 #include "scene/Model.h"
 #include "scene/SubModel.h"
@@ -69,8 +69,7 @@ void BakedSkinningModel::destroy() {
 void BakedSkinningModel::bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh) {
     _skeleton = skeleton;
     _mesh     = mesh;
-    if (skeleton == nullptr || skinningRoot == nullptr || mesh == nullptr)
-        return;
+    if (skeleton == nullptr || skinningRoot == nullptr || mesh == nullptr) return;
     setTransform(skinningRoot);
 
     // JSB uses _dataPoolManager in JS and the data is synchronized by syncDataForJS & syncAnimInfoForJS
@@ -95,7 +94,7 @@ void BakedSkinningModel::updateTransform(uint32_t stamp) {
     geometry::AABB *skelBound = nullptr;
     const float *   curFrame  = animInfo.curFrame;
     //    float curFrame = info.data[0];
-    index_t index = static_cast<index_t>(std::roundf(*curFrame));
+    auto index = static_cast<index_t>(std::roundf(*curFrame));
     if (!_jointMedium.boundsInfo.empty() && index < _jointMedium.boundsInfo.size()) {
         skelBound = &_jointMedium.boundsInfo[index].value();
     }
@@ -137,7 +136,7 @@ void BakedSkinningModel::applyJointTexture(const std::optional<IJointTextureHand
     auto &jointTextureInfo = _jointMedium.jointTextureInfo;
     jointTextureInfo[0]    = texture->handle.texture->getWidth();
     jointTextureInfo[1]    = _skeleton->getJoints().size();
-    jointTextureInfo[2]    = texture->pixelOffset + 0.1f; // guard against floor() underflow
+    jointTextureInfo[2]    = texture->pixelOffset + 0.1F; // guard against floor() underflow
     jointTextureInfo[3]    = 1 / jointTextureInfo[0];
     updateInstancedJointTextureInfo();
     if (buffer != nullptr) {
@@ -183,9 +182,9 @@ void BakedSkinningModel::updateInstancedJointTextureInfo() {
     const IAnimInfo &animInfo         = _jointMedium.animInfo;
     index_t          idx              = _instAnimInfoIdx;
     if (idx >= 0) {
-        Float32Array &view = std::get<Float32Array>(getInstancedAttributeBlock()->views[idx]); // TODO(xwx): not sure can get Float32Array or Uint8Array
-        view[0]            = *animInfo.curFrame;                                               //NOTE: curFrame is only used in JSB.
-                                                                                               //        view[0]           = animInfo.data[0];
+        auto &view = std::get<Float32Array>(getInstancedAttributeBlock()->views[idx]); // TODO(xwx): not sure can get Float32Array or Uint8Array
+        view[0]    = *animInfo.curFrame;                                               //NOTE: curFrame is only used in JSB.
+                                                                                       //        view[0]           = animInfo.data[0];
         view[1] = jointTextureInfo[1];
         view[2] = jointTextureInfo[2];
     }

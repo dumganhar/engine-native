@@ -91,11 +91,11 @@ protected:
     void applyJointTexture(const std::optional<IJointTextureHandle> &texture);
 
 private:
-    BakedJointInfo   _jointMedium;
-    index_t          _instAnimInfoIdx{CC_INVALID_INDEX};
-    DataPoolManager *_dataPoolManager{nullptr};
-    Skeleton *       _skeleton{nullptr};
-    Mesh *           _mesh{nullptr};
+    BakedJointInfo             _jointMedium;
+    index_t                    _instAnimInfoIdx{CC_INVALID_INDEX};
+    SharedPtr<DataPoolManager> _dataPoolManager;
+    SharedPtr<Skeleton>        _skeleton;
+    SharedPtr<Mesh>            _mesh;
     // AnimationClip* uploadedAnim;
     bool _isUploadedAnim{false};
 

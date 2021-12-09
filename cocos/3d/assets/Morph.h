@@ -54,9 +54,9 @@ public:
 /**
  * This rendering instance of a morph resource.
  */
-class MorphRenderingInstance {
+class MorphRenderingInstance : public RefCounted {
 public:
-    virtual ~MorphRenderingInstance() = default;
+    ~MorphRenderingInstance() override = default;
     /**
      * Sets weights of targets of specified sub mesh.
      * @param subMeshIndex

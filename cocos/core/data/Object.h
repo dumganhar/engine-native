@@ -124,7 +124,7 @@ public:
 
 protected:
     explicit CCObject(const std::string &name = "");
-    virtual ~CCObject() = default;
+    ~CCObject() override = default;
 
 public:
     // MEMBER

@@ -57,7 +57,6 @@ namespace cc {
 SkinningModel::SkinningModel() {
     _type = Model::Type::SKINNING;
 }
-
 SkinningModel::~SkinningModel() {
     for (auto *curr : _dataArray) {
         delete curr;
@@ -82,8 +81,7 @@ void SkinningModel::bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *m
     _bufferIndices.clear();
     _joints.clear();
 
-    if (!skeleton || !skinningRoot || !mesh)
-        return;
+    if (!skeleton || !skinningRoot || !mesh) return;
     setTransform(skinningRoot);
     auto        boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton);
     const auto &jointMaps       = mesh->getStruct().jointMaps;
@@ -93,8 +91,7 @@ void SkinningModel::bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *m
     for (index_t index = 0; index < skeleton->getJoints().size(); ++index) {
         geometry::AABB *bound  = boneSpaceBounds[index];
         auto *          target = skinningRoot->getChildByPath(skeleton->getJoints()[index]);
-        if (!bound || !target)
-            continue;
+        if (!bound || !target) continue;
 
         auto *               transform = cc::getTransform(target, skinningRoot);
         const Mat4 &         bindPose  = skeleton->getBindposes()[index];

@@ -43,11 +43,11 @@ public:
     void assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset);
     void assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t byteLength);
 
-    uint8_t  getUint8(index_t offset) const;
-    uint16_t getUint16(index_t offset) const;
-    uint32_t getUint32(index_t offset) const;
-    int8_t   getInt8(index_t offset) const;
-    int16_t  getInt16(index_t offset) const;
+    int32_t  getUint8(index_t offset) const;
+    int32_t  getUint16(index_t offset) const;
+    int32_t  getUint32(index_t offset) const;
+    int32_t  getInt8(index_t offset) const;
+    int32_t  getInt16(index_t offset) const;
     int32_t  getInt32(index_t offset) const;
     float    getFloat32(index_t offset) const;
 

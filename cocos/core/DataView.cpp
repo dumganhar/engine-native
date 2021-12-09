@@ -76,35 +76,35 @@ void DataView::assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t byt
     _data = buffer->_data;
 }
 
-uint8_t DataView::getUint8(index_t offset) const {
+int32_t DataView::getUint8(index_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos);
 
     return _data[offset];
 }
 
-uint16_t DataView::getUint16(index_t offset) const {
+int32_t DataView::getUint16(index_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < (_byteEndPos - 1));
 
     return *reinterpret_cast<uint16_t *>(_data + offset);
 }
 
-uint32_t DataView::getUint32(index_t offset) const {
+int32_t DataView::getUint32(index_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < (_byteEndPos - 3));
 
     return *reinterpret_cast<uint32_t *>(_data + offset);
 }
 
-int8_t DataView::getInt8(index_t offset) const {
+int32_t DataView::getInt8(index_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos);
 
     return static_cast<int8_t>(_data[offset]);
 }
 
-int16_t DataView::getInt16(index_t offset) const {
+int32_t DataView::getInt16(index_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < (_byteEndPos - 1));
 

@@ -27,7 +27,7 @@
 
 #include <any>
 #include <vector>
-
+#include "base/Ptr.h"
 #include "base/TypeDef.h"
 #include "core/components/Component.h"
 #include "core/event/Event.h"
@@ -59,9 +59,9 @@ using TransformDirtyBit = TransformBit;
 
 class Node : public BaseNode {
 public:
-    class UserData {
+    class UserData : public RefCounted {
     public:
-        virtual ~UserData() = default;
+        ~UserData() override = default;
 
     protected:
         UserData() = default;
@@ -80,7 +80,7 @@ public:
     static index_t                          stackId;
 
     static void    setScene(Node *);
-    static index_t getIdxOfChild(const std::vector<Node *> &, Node *);
+    static index_t getIdxOfChild(const std::vector<SharedPtr<Node>> &, Node *);
 
     static bool isStatic; //cjh TODO: add getter / setter
 
@@ -192,7 +192,7 @@ public:
     void off(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
 
     template <typename... Args>
-    void emit(const CallbacksInvoker::KeyType &type, Args &&...args);
+    void emit(const CallbacksInvoker::KeyType &type, Args &&... args);
 
     void dispatchEvent(event::Event *event);
     bool hasEventListener(const CallbacksInvoker::KeyType &type) const;
@@ -213,13 +213,13 @@ public:
         return false;
     }
     inline void destroyAllChildren() {
-        for (auto *child : _children) {
+        for (const auto &child : _children) {
             child->destroy();
         }
     }
     inline void updateSiblingIndex() {
         index_t i = 0;
-        for (auto *child : _children) {
+        for (const auto &child : _children) {
             child->_siblingIndex = i++;
         }
         emit(NodeEventType::SIBLING_ORDER_CHANGED);
@@ -262,16 +262,16 @@ public:
     inline void setActiveInHierarchy(bool v) { _activeInHierarchyArr[0] = (v ? 1 : 0); }
     inline void setActiveInHierarchyPtr(uint8_t *ptr) { _activeInHierarchyArr = ptr; }
 
-    virtual void                      onPostActivated(bool active) {}
-    inline const std::vector<Node *> &getChildren() { return _children; }
-    inline Node *                     getParent() const { return _parent; }
-    inline NodeEventProcessor *       getEventProcessor() const { return _eventProcessor; }
+    virtual void                               onPostActivated(bool active) {}
+    inline const std::vector<SharedPtr<Node>> &getChildren() { return _children; }
+    inline Node *                              getParent() const { return _parent; }
+    inline NodeEventProcessor *                getEventProcessor() const { return _eventProcessor; }
 
     Node *           getChildByUuid(const std::string &) const;
     Node *           getChildByName(const std::string &) const;
     Node *           getChildByPath(const std::string &) const;
     inline index_t   getSiblingIndex() const { return _siblingIndex; }
-    inline UserData *getUserData() { return _userData; }
+    inline UserData *getUserData() { return _userData.get(); }
     inline void      setUserData(UserData *data) { _userData = data; }
     inline void      insertChild(Node *child, index_t siblingIndex) {
         child->setParent(this);
@@ -508,7 +508,7 @@ public:
     inline uint32_t getLayer() const { return _layerArr[0]; }
     inline void     setLayerPtr(uint32_t *ptr) { _layerArr = ptr; }
 
-    inline NodeUiProperties *getUIProps() const { return _uiProps; }
+    inline NodeUiProperties *getUIProps() const { return _uiProps.get(); }
 
     using UIPropsTransformDirtyCallback = std::function<void(uint32_t **)>;
     inline void setUIPropsTransformDirtyCallback(const UIPropsTransformDirtyCallback &cb) { _uiPropsTransformDirtyCallback = cb; }
@@ -606,7 +606,7 @@ public:
     //    Node *   _getChild(index_t i);
     //    void     _setChildrenSize(uint32_t size);
     //    uint32_t _getChildrenSize();
-    void _setChildren(std::vector<Node *> &&children);
+    void _setChildren(std::vector<SharedPtr<Node>> &&children);
     // For JS wrapper.
     inline uint32_t getEventMask() const { return _eventMask; }
     inline void     setEventMask(uint32_t mask) { _eventMask = mask; }
@@ -625,6 +625,10 @@ protected:
 
     bool onPreDestroyBase();
 
+    static std::vector<SharedPtr<Node>> dirtyNodes;
+    static uint32_t                     clearFrame;
+    static uint32_t                     clearRound;
+
     Scene *             _scene{nullptr};
     NodeEventProcessor *_eventProcessor{nullptr};
 
@@ -633,16 +637,13 @@ protected:
     Mat4     _rtMat{Mat4::IDENTITY};
     cc::Mat4 _worldMatrix{Mat4::IDENTITY};
 
-    static std::vector<Node *> dirtyNodes;
-    static uint32_t            clearFrame;
-    static uint32_t            clearRound;
-
     uint32_t _flagChange{0};
     uint32_t _dirtyFlag{0};
 
-    bool              _eulerDirty{false};
-    NodeUiProperties *_uiProps{nullptr};
+    bool                        _eulerDirty{false};
+    SharedPtr<NodeUiProperties> _uiProps;
     //    bool _activeInHierarchy{false};
+    // Shared memory with JS.
     uint8_t * _activeInHierarchyArr{nullptr};
     uint32_t *_layerArr{nullptr};
 
@@ -650,10 +651,10 @@ public:
     std::function<void(index_t)> onSiblingIndexChanged{nullptr};
     index_t                      _siblingIndex{0};
     // For deserialization
-    std::string         _id;
-    std::vector<Node *> _children;
-    Node *              _parent{nullptr};
-    bool                _active{true};
+    std::string                  _id;
+    std::vector<SharedPtr<Node>> _children;
+    Node *                       _parent{nullptr};
+    bool                         _active{true};
 
     // local transform
     cc::Vec3       _localPosition{Vec3::ZERO};
@@ -668,7 +669,7 @@ public:
 
     //
 private:
-    UserData *_userData{nullptr};
+    SharedPtr<UserData> _userData;
     friend class NodeActivator;
     friend class Scene;
 
@@ -685,7 +686,7 @@ bool Node::isNode(T *obj) {
 }
 
 template <typename... Args>
-void Node::emit(const CallbacksInvoker::KeyType &type, Args &&...args) {
+void Node::emit(const CallbacksInvoker::KeyType &type, Args &&... args) {
     _eventProcessor->emit(type, std::forward<Args>(args)...);
 }
 

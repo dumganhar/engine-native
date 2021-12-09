@@ -269,6 +269,13 @@ std::vector<cc::event::IListenerMask> searchComponentsInParent(cc::Node *node) {
 namespace cc {
 NodeEventProcessor::NodeEventProcessor(Node *node) : _node(node) {}
 
+NodeEventProcessor::~NodeEventProcessor() {
+    delete _bubblingTargets;
+    delete _capturingTargets;
+    delete _touchListener;
+    delete _mouseListener;
+}
+
 bool NodeEventProcessor::checkListeners(cc::Node *node, const std::vector<CallbacksInvoker::KeyType> &events) {
     if (!node->isPersistNode()) {
         if (node->getEventProcessor()->_bubblingTargets) {

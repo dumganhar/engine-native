@@ -24,15 +24,15 @@
  ****************************************************************************/
 
 #pragma once
+
 #include "core/scene-graph/Node.h"
+#include "core/scene-graph/SceneGlobals.h"
 
 namespace cc {
 
 namespace scene {
 class RenderScene;
 }
-
-class SceneGlobals;
 
 class Scene final : public Node {
 public:
@@ -42,7 +42,7 @@ public:
     ~Scene() override;
 
     inline scene::RenderScene *getRenderScene() const { return _renderScene; }
-    inline SceneGlobals *      getSceneGlobals() const { return _globals; }
+    inline SceneGlobals *      getSceneGlobals() const { return _globals.get(); }
     inline void                setSceneGlobals(SceneGlobals *globals) { _globals = globals; }
     inline bool                isAutoReleaseAssets() const { return _autoReleaseAssets; }
     inline void                setAutoReleaseAssets(bool val) { _autoReleaseAssets = val; }
@@ -62,8 +62,8 @@ protected:
      * @zh 场景级别的渲染信息
      */
     //    @serializable
-    SceneGlobals *_globals{nullptr};
-    bool          _inited{false};
+    SharedPtr<SceneGlobals> _globals;
+    bool                    _inited{false};
 
     /**
      * @en Indicates whether all (directly or indirectly) static referenced assets of this scene are releasable by default after scene unloading.

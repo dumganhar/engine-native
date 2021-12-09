@@ -24,20 +24,22 @@
  ****************************************************************************/
 #pragma once
 
+#include "base/RefCounted.h"
+
 namespace cc {
 
 class UITransform;
 class UIComponent;
 class Node;
 
-class NodeUiProperties final {
+class NodeUiProperties : public RefCounted {
 public:
     bool  uiTransformDirty{true};
     float opacity{1.0F};
     float localOpacity{1.0F};
 
     NodeUiProperties(/* args */) = default;
-    ~NodeUiProperties()          = default;
+    ~NodeUiProperties() override = default;
     inline UITransform *getUITransformComp() const { return nullptr; } //cjh TODO:
     inline void         setUITransformComp(UITransform *value) {}      //cjh TODO:
     inline UIComponent *getUIComp() const { return nullptr; }          //cjh TODO:

@@ -26,6 +26,7 @@
 #pragma once
 
 #include "base/Macros.h"
+#include "base/RefCounted.h"
 #include "core/assets/TextureCube.h"
 #include "pipeline/GlobalDescriptorSetManager.h"
 #include "scene/Model.h"
@@ -35,10 +36,10 @@ namespace scene {
 
 class Skybox;
 
-class SkyboxInfo {
+class SkyboxInfo : public RefCounted {
 public:
     SkyboxInfo(/* args */) = default;
-    ~SkyboxInfo()          = default;
+    ~SkyboxInfo() override = default;
 
     /**
      * @en Whether activate skybox in the scene

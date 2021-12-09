@@ -27,8 +27,8 @@
 
 #include <tuple>
 #include <vector>
-#include "base/RefCounted.h"
 #include "base/Ptr.h"
+#include "base/RefCounted.h"
 #include "core/TypedArray.h"
 #include "core/assets/RenderingSubMesh.h"
 #include "core/assets/Texture2D.h"
@@ -73,7 +73,7 @@ public:
     };
 
     Model();
-    virtual ~Model() = default;
+    ~Model() override = default;
 
     void                              initialize();
     virtual void                      destroy();

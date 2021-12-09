@@ -93,7 +93,7 @@ public:
     /** Destructor.
      * @js NA 
      */
-    virtual ~EventListener();
+    ~EventListener() override;
 
     /** Checks whether the listener is available.
      * 

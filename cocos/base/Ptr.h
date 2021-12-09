@@ -120,7 +120,7 @@ public:
     }
 
     T *get() const { return _ptr; }
-       operator T *() const { return _ptr; }
+    operator T *() const { return _ptr; }
     T &operator*() const { return *_ptr; }
     T *operator->() const { return _ptr; }
 
@@ -173,8 +173,16 @@ public:
         return _ptr == nullptr;
     }
 
+    bool operator==(T *r) {
+        return _ptr == r;
+    }
+
     bool operator!=(std::nullptr_t) {
         return _ptr != nullptr;
+    }
+
+    bool operator!=(T *r) {
+        return _ptr != r;
     }
 
     void swap(T **pp) noexcept {

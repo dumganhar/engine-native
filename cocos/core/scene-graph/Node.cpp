@@ -31,13 +31,14 @@
 #include "core/scene-graph/Find.h"
 #include "core/scene-graph/NodeActivator.h"
 #include "core/scene-graph/NodeEnum.h"
+#include "core/scene-graph/NodeUIProperties.h"
 #include "core/scene-graph/Scene.h"
 #include "core/utils/IDGenerator.h"
 
 namespace cc {
 
 // static variables
-std::vector<Node *>              Node::dirtyNodes;
+std::vector<SharedPtr<Node>>     Node::dirtyNodes;
 uint32_t                         Node::clearFrame{0};
 uint32_t                         Node::clearRound{1000};
 bool                             Node::isStatic{false};
@@ -75,7 +76,6 @@ Node::~Node() {
         allNodes.erase(iter);
     }
     CC_SAFE_DELETE(_eventProcessor);
-    CC_SAFE_DELETE(_userData);
 }
 
 void Node::onBatchCreated(bool dontChildPrefab) {
@@ -267,11 +267,11 @@ void Node::walk(const std::function<void(Node *)> &preFunc) {
 }
 
 void Node::walk(const std::function<void(Node *)> &preFunc, const std::function<void(Node *)> &postFunc) {
-    index_t                    index{1};
-    index_t                    i{0};
-    const std::vector<Node *> *children = nullptr;
-    Node *                     curr{nullptr};
-    auto                       stacksCount = static_cast<index_t>(Node::stacks.size());
+    index_t                             index{1};
+    index_t                             i{0};
+    const std::vector<SharedPtr<Node>> *children = nullptr;
+    Node *                              curr{nullptr};
+    auto                                stacksCount = static_cast<index_t>(Node::stacks.size());
     if (stackId >= stacksCount) {
         stacks.resize(stackId + 1);
     }
@@ -394,7 +394,7 @@ bool Node::onPreDestroyBase() {
         }
     }
     emit(NodeEventType::NODE_DESTROYED, this);
-    for (auto *child : _children) {
+    for (const auto &child : _children) {
         child->destroyImmediate();
     }
 
@@ -408,7 +408,7 @@ Node *Node::getChildByName(const std::string &name) const {
         CC_LOG_INFO("Invalid name");
         return nullptr;
     }
-    for (auto *child : _children) {
+    for (const auto &child : _children) {
         if (child->_name == name) {
             return child;
         }
@@ -428,7 +428,7 @@ void Node::updateScene() {
     emit(EventTypesToJS::NODE_SCENE_UPDATED, _scene);
 }
 
-index_t Node::getIdxOfChild(const std::vector<Node *> &child, Node *target) {
+index_t Node::getIdxOfChild(const std::vector<SharedPtr<Node>> &child, Node *target) {
     auto iteChild = std::find(child.begin(), child.end(), target);
     if (iteChild != child.end()) {
         return iteChild - child.begin();
@@ -441,7 +441,7 @@ Node *Node::getChildByUuid(const std::string &uuid) const {
         CC_LOG_INFO("Invalid uuid");
         return nullptr;
     }
-    for (auto *child : _children) {
+    for (const auto &child : _children) {
         if (child->_id == uuid) {
             return child;
         }
@@ -477,9 +477,9 @@ void Node::setSiblingIndex(index_t index) {
         // TODO: errorID(3821);
         return;
     }
-    std::vector<Node *> &siblings = _parent->_children;
-    index                         = index != -1 ? index : static_cast<index_t>(siblings.size()) - 1;
-    index_t oldIdx                = getIdxOfChild(siblings, this);
+    std::vector<SharedPtr<Node>> &siblings = _parent->_children;
+    index                                  = index != -1 ? index : static_cast<index_t>(siblings.size()) - 1;
+    index_t oldIdx                         = getIdxOfChild(siblings, this);
     if (index != oldIdx) {
         if (oldIdx != CC_INVALID_INDEX) {
             siblings.erase(siblings.begin() + oldIdx);
@@ -507,7 +507,7 @@ Node *Node::getChildByPath(const std::string &path) const {
         }
         Node *next{nullptr};
         if (lastNode) {
-            for (auto *child : lastNode->_children) {
+            for (const auto &child : lastNode->_children) {
                 if (child->_name == segment) {
                     next = child;
                     break;
@@ -764,7 +764,7 @@ void Node::setDirtyNode(const index_t idx, Node *node) {
 }
 
 Node *Node::getDirtyNode(const index_t idx) {
-    return dirtyNodes[idx];
+    return dirtyNodes[idx].get();
 }
 
 void Node::setAngle(float val) {
@@ -979,7 +979,7 @@ Node *Node::find(const std::string &path, Node *referenceNode /* = nullptr*/) {
 //    return _children.size();
 //}
 //
-void Node::_setChildren(std::vector<Node *> &&children) {
+void Node::_setChildren(std::vector<SharedPtr<Node>> &&children) {
     _children = std::move(children);
 }
 

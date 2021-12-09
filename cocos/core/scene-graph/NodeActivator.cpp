@@ -269,7 +269,7 @@ void NodeActivator::activateNodeRecursively(Node *node, LifeCycleInvoker *preloa
     }
     //    node->_childArrivalOrder = node->_children.size(); //TODO(xwx): not declare _childArrivalOrder attribute in c++, seems could remove this line
     // activate children recursively
-    for (auto *child : node->_children) {
+    for (const auto &child : node->_children) {
         if (child->_active) {
             activateNodeRecursively(child, preloadInvoker, onLoadInvoker, onEnableInvoker); // TODO(xwx): not sure child should be Node or Node
         }
@@ -299,7 +299,7 @@ void NodeActivator::deactivateNodeRecursively(Node *node) {
             }
         }
     }
-    for (auto *child : node->_children) {
+    for (const auto &child : node->_children) {
         if (child->isActiveInHierarchy()) {
             deactivateNodeRecursively(child);
 

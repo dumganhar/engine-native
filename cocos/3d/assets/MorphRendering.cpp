@@ -31,8 +31,8 @@
 #include "3d/assets/Morph.h"
 #include "core/DataView.h"
 #include "core/TypedArray.h"
-#include "core/assets/Texture2D.h"
 #include "core/assets/RenderingSubMesh.h"
+#include "core/assets/Texture2D.h"
 #include "platform/Image.h"
 #include "renderer/pipeline/Define.h"
 #include "scene/Pass.h"
@@ -631,7 +631,7 @@ public:
 
     std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) override {
         CC_ASSERT(_owner->_mesh->getStruct().morph.has_value());
-        const auto &subMeshMorphOpt = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex];
+        const auto &subMeshMorphOpt          = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex];
         auto *      subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
         if (subMeshRenderingInstance == nullptr || !subMeshMorphOpt.has_value()) {
             return {};

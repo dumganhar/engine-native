@@ -27,6 +27,7 @@
 
 #include "base/Ptr.h"
 #include "core/assets/Asset.h"
+#include "core/scene-graph/Scene.h"
 
 namespace cc {
 
@@ -45,9 +46,9 @@ public:
     }
 
     inline Scene *getScene() const { return _scene.get(); }
+    inline void   setScene(Scene *scene) { _scene = scene; };
 
-    //cjh FOR deserialization
-public:
+private:
     /**
      * @en The scene node
      * @zh 场景节点。

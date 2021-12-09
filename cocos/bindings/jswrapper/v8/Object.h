@@ -302,8 +302,8 @@ public:
      *  @note This method will associate private data with se::Object by std::unordered_map::emplace.
      *        It's used for search a se::Object via a void* private data.
      */
-    template<typename T>
-    inline void setPrivateData(T * data) {
+    template <typename T>
+    inline void setPrivateData(T *data) {
         static_assert(!std::is_void<T>::value, "void * is not allowed for private data");
         setPrivateObject(se::make_shared_private_object(data));
     }

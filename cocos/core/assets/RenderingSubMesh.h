@@ -26,10 +26,10 @@
 #pragma once
 
 #include <variant>
+#include "3d/assets/Mesh.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "renderer/gfx-base/GFXDef.h"
-#include "3d/assets/Mesh.h"
 
 namespace cc {
 

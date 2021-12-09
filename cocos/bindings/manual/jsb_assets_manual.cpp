@@ -116,6 +116,20 @@ static bool js_assets_TextureBase_registerGFXSamplerUpdatedListener(se::State &s
 }
 SE_BIND_FUNC(js_assets_TextureBase_registerGFXSamplerUpdatedListener) // NOLINT(readability-identifier-naming)
 
+static bool js_assets_Material_registerPassesUpdatedListener(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = SE_THIS_OBJECT<cc::Material>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_Material_registerPassesUpdatedListener : Invalid Native Object");
+    auto *thisObj = s.thisObject();
+    cobj->on(cc::EventTypesToJS::MATERIAL_PASSES_UPDATED, [thisObj]() {
+        se::AutoHandleScope hs;
+        se::ScriptEngine::getInstance()->callFunction(thisObj, "_onPassesUpdated", 0, nullptr);
+    });
+
+    return true;
+}
+SE_BIND_FUNC(js_assets_Material_registerPassesUpdatedListener) // NOLINT(readability-identifier-naming)
+
 bool register_all_assets_manual(se::Object *obj) // NOLINT(readability-identifier-naming)
 {
     // Get the ns
@@ -130,6 +144,7 @@ bool register_all_assets_manual(se::Object *obj) // NOLINT(readability-identifie
     __jsb_cc_ImageAsset_proto->defineFunction("setData", _SE(js_assets_ImageAsset_setData));
     __jsb_cc_SimpleTexture_proto->defineFunction("_registerGFXTextureUpdatedListener", _SE(js_assets_SimpleTexture_registerGFXTextureUpdatedListener));
     __jsb_cc_TextureBase_proto->defineFunction("_registerGFXSamplerUpdatedListener", _SE(js_assets_TextureBase_registerGFXSamplerUpdatedListener));
+    __jsb_cc_Material_proto->defineFunction("_registerPassesUpdatedListener", _SE(js_assets_Material_registerPassesUpdatedListener));
 
     return true;
 }

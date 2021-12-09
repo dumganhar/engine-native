@@ -1046,7 +1046,7 @@ bool ScriptEngine::callFunction(Object *targetObj, const char *funcName, uint32_
     #if CC_DEBUG
     v8::TryCatch tryCatch(_isolate);
     #endif
-    
+
     assert(!funcVal.IsEmpty());
     if (!funcVal.ToLocalChecked()->IsFunction()) {
         v8::String::Utf8Value funcStr(_isolate, funcVal.ToLocalChecked());

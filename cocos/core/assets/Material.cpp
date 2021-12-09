@@ -28,6 +28,7 @@
 #include "base/Utils.h"
 #include "core/assets/EffectAsset.h"
 #include "core/builtin/BuiltinResMgr.h"
+#include "core/event/EventTypesToJS.h"
 #include "math/Color.h"
 #include "scene/Pass.h"
 
@@ -284,13 +285,15 @@ void Material::update(bool keepProps /* = true*/) {
         //                _props[i] = {};
         //            }
         //        }
+
+        emit(EventTypesToJS::MATERIAL_PASSES_UPDATED);
     }
     _hash = Material::getHashForMaterial(this);
 }
 
 std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
     std::vector<SharedPtr<scene::Pass>> passes;
-    ITechniqueInfo *           tech = nullptr;
+    ITechniqueInfo *                    tech = nullptr;
     if (_techIdx < _effectAsset->_techniques.size()) {
         tech = &_effectAsset->_techniques[_techIdx];
     }

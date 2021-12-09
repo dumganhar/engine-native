@@ -120,7 +120,7 @@ public:
     }
 
     T *get() const { return _ptr; }
-    operator T *() const { return _ptr; }
+       operator T *() const { return _ptr; }
     T &operator*() const { return *_ptr; }
     T *operator->() const { return _ptr; }
 

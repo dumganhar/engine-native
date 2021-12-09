@@ -33,10 +33,10 @@
 #include <type_traits>
 #include <utility>
 #include <variant>
+#include "base/Ptr.h"
 #include "bindings/jswrapper/HandleObject.h"
 #include "bindings/jswrapper/SeApi.h"
 #include "bindings/manual/jsb_classtype.h"
-#include "base/Ptr.h"
 
 #include "jsb_conversions_spec.h"
 
@@ -538,7 +538,7 @@ native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) 
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
         obj->setPrivateData(v);
-        v->addRef();    // TODO(PatriceJiang): reference Count should be greater than 1
+        v->addRef(); // TODO(PatriceJiang): reference Count should be greater than 1
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -573,7 +573,7 @@ native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedV
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
         obj->setPrivateData(v);
-        v->addRef();  // TODO(PatriceJiang): reference Count should be greater than 1
+        v->addRef(); // TODO(PatriceJiang): reference Count should be greater than 1
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -1137,9 +1137,9 @@ bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *
 
     auto *privateObject = from.toObject()->getPrivateObject();
     if (!privateObject) {
-        T *tmp = nullptr;
-        bool ok = sevalue_to_native(from, &tmp, ctx);
-        *to = tmp;
+        T *  tmp = nullptr;
+        bool ok  = sevalue_to_native(from, &tmp, ctx);
+        *to      = tmp;
         return ok;
     }
 

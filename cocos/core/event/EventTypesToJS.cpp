@@ -56,4 +56,6 @@ const CallbacksInvoker::KeyType EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED
 
 const CallbacksInvoker::KeyType EventTypesToJS::NODE_SCENE_UPDATED{118};
 
+const CallbacksInvoker::KeyType EventTypesToJS::MATERIAL_PASSES_UPDATED{119};
+
 } // namespace cc

@@ -1,10 +1,10 @@
 #include "3d/misc/CreateMesh.h"
 #include <algorithm>
-#include "renderer/gfx-base/GFXDef-common.h"
 #include "3d/assets/Mesh.h"
 #include "3d/misc/BufferBlob.h"
-#include "core/DataView.h"
 #include "core/ArrayBuffer.h"
+#include "core/DataView.h"
+#include "renderer/gfx-base/GFXDef-common.h"
 
 namespace cc {
 namespace {

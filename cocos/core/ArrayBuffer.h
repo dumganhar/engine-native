@@ -26,8 +26,8 @@
 #pragma once
 
 #include "base/Macros.h"
-#include "base/RefCounted.h"
 #include "base/Ptr.h"
+#include "base/RefCounted.h"
 #include "bindings/jswrapper/Object.h"
 
 namespace cc {

@@ -168,7 +168,6 @@ void Root::resetCumulativeTime() {
 }
 
 void Root::frameMove(float deltaTime, int32_t totalFrames) {
-
     _frameTime = deltaTime;
 
     ++_frameCount;

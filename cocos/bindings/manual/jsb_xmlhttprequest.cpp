@@ -38,10 +38,10 @@
 #include <unordered_map>
 #include "base/Config.h"
 #include "cocos/base/Data.h"
+#include "cocos/base/DeferredReleasePool.h"
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/network/HttpClient.h"
-#include "cocos/base/DeferredReleasePool.h"
 #include "platform/Application.h"
 
 using namespace cc;          //NOLINT

@@ -54,6 +54,9 @@ Object::Object()
   _privateObject(nullptr),
   _finalizeCb(nullptr),
   _internalData(nullptr) {
+    #if JSB_TRACK_OBJECT_CREATION
+    _objectCreationStackFrame = se::ScriptEngine::getInstance()->getCurrentStackTrace();
+    #endif
 }
 
 Object::~Object() {
@@ -555,6 +558,9 @@ void Object::setPrivateObject(PrivateObjectBase *data) {
     if (it != NativePtrToObjectMap::end()) {
         auto *pri = it->second->getPrivateObject();
         SE_LOGE("Already exists object %s/[%s], trying to add %s/[%s]\n", pri->getName(), typeid(*pri).name(), data->getName(), typeid(*data).name());
+        #if JSB_TRACK_OBJECT_CREATION
+        SE_LOGE(" previous object created at %s\n", it->second->_objectCreationStackFrame.c_str());
+        #endif
         assert(false);
     }
     #endif

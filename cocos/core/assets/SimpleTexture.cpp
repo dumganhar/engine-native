@@ -166,7 +166,6 @@ void SimpleTexture::createTexture(gfx::Device *device) {
     _textureWidth  = textureCreateInfo.width;
     _textureHeight = textureCreateInfo.height;
 
-    delete _gfxTexture;
     _gfxTexture = texture;
 
     notifyTextureUpdated();
@@ -175,7 +174,6 @@ void SimpleTexture::createTexture(gfx::Device *device) {
 void SimpleTexture::tryDestroyTexture() {
     if (_gfxTexture != nullptr) {
         _gfxTexture->destroy();
-        delete _gfxTexture;
         _gfxTexture = nullptr;
 
         notifyTextureUpdated();
@@ -183,7 +181,7 @@ void SimpleTexture::tryDestroyTexture() {
 }
 
 void SimpleTexture::notifyTextureUpdated() {
-    emit(EventTypesToJS::SIMPLE_TEXTURE_GFX_TEXTURE_UPDATED, _gfxTexture);
+    emit(EventTypesToJS::SIMPLE_TEXTURE_GFX_TEXTURE_UPDATED, _gfxTexture.get());
 }
 
 } // namespace cc

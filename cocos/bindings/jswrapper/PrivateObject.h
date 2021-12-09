@@ -58,6 +58,7 @@ public:
     virtual void        allowDestroyInGC() const {
         assert(false);
     }
+    virtual void tryAllowDestroyInGC() const {}
 
     virtual bool isSharedPtr() const { return false; }
     virtual bool isCCShared() const { return false; }
@@ -131,6 +132,9 @@ public:
 
     void allowDestroyInGC() const override {
         _allowGC = true;
+    }
+    void tryAllowDestroyInGC() const override {
+        allowDestroyInGC();
     }
 
     void *getRaw() const override {

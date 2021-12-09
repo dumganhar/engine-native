@@ -27,6 +27,7 @@
 
 #include <array>
 #include "base/Macros.h"
+#include "base/RefCounted.h"
 #include "math/Color.h"
 
 namespace cc {
@@ -70,10 +71,10 @@ enum class FogType {
 
 class Fog;
 
-class FogInfo final {
+class FogInfo : public RefCounted {
 public:
-    FogInfo()  = default;
-    ~FogInfo() = default;
+    FogInfo()           = default;
+    ~FogInfo() override = default;
     /**
      * @zh 是否启用全局雾效
      * @en Enable global fog

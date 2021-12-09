@@ -27,7 +27,7 @@
 
 #include <array>
 #include "base/Macros.h"
-#include "core/scene-graph/SceneGlobals.h"
+#include "base/RefCounted.h"
 #include "math/Color.h"
 
 namespace cc {
@@ -35,10 +35,10 @@ namespace scene {
 
 class Ambient;
 
-class AmbientInfo final {
+class AmbientInfo : public RefCounted {
 public:
     AmbientInfo(/* args */) = default;
-    ~AmbientInfo()          = default;
+    ~AmbientInfo() override = default;
 
     /**
      * @en Sky color
@@ -62,8 +62,8 @@ public:
     inline const Color &getGroundAlbedo() { return _groundAlbedo; }
     void                activate(Ambient *resource);
 
-//cjh JSB need to bind the property, so need to make it public
-//private:
+    //cjh JSB need to bind the property, so need to make it public
+    //private:
     Color    _skyColor{51, 128, 204, 1};
     float    _skyIllum{20000.0F};
     Color    _groundAlbedo{51, 51, 51, 255};

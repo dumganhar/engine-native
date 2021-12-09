@@ -39,13 +39,6 @@ SceneGlobals::SceneGlobals() {
     _fogInfo     = new scene::FogInfo();
 }
 
-SceneGlobals::~SceneGlobals() {
-    //cjh FIXME:    CC_SAFE_DELETE(_ambientInfo);
-    //    CC_SAFE_DELETE(_shadowInfo);
-    //    CC_SAFE_DELETE(_skyboxInfo);
-    //    CC_SAFE_DELETE(_fogInfo);
-}
-
 void SceneGlobals::activate() {
     auto *sceneData = Root::getInstance()->getPipeline()->getPipelineSceneData();
     if (_ambientInfo != nullptr) {

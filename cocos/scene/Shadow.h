@@ -134,10 +134,10 @@ enum class PCFType {
 
 class Shadow;
 
-class ShadowsInfo final {
+class ShadowsInfo : public RefCounted {
 public:
-    ShadowsInfo()  = default;
-    ~ShadowsInfo() = default;
+    ShadowsInfo()           = default;
+    ~ShadowsInfo() override = default;
     /**
      * @en Whether activate planar shadow
      * @zh 是否启用平面阴影？

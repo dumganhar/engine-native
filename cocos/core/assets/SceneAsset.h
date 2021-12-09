@@ -42,7 +42,7 @@ public:
     void initDefault(const std::optional<std::string> &uuid) override;
 
     bool validate() const override {
-        return _scene != nullptr;
+        return _scene.get() != nullptr;
     }
 
     inline Scene *getScene() const { return _scene.get(); }

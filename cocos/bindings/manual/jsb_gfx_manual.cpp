@@ -207,7 +207,7 @@ static bool js_gfx_Device_createBuffer(se::State &s) { // NOLINT(readability-ide
             buffer = cobj->createBuffer(bufferInfo);
         }
         CC_UNUSED bool ok = native_ptr_to_seval(buffer, &s.rval());
-        s.rval().toObject()->getPrivateObject()->allowDestroyInGC();
+        s.rval().toObject()->getPrivateObject()->tryAllowDestroyInGC();
         SE_PRECONDITION2(ok, false, "js_gfx_Device_createBuffer : Error processing arguments");
         return true;
     }
@@ -236,7 +236,7 @@ static bool js_gfx_Device_createTexture(se::State &s) { // NOLINT(readability-id
             texture = cobj->createTexture(textureInfo);
         }
         CC_UNUSED bool ok = native_ptr_to_seval(texture, &s.rval());
-        s.rval().toObject()->getPrivateObject()->allowDestroyInGC();
+        s.rval().toObject()->getPrivateObject()->tryAllowDestroyInGC();
         SE_PRECONDITION2(ok, false, "js_gfx_Device_createTexture : Error processing arguments");
         return true;
     }

@@ -37,6 +37,8 @@
 
     #include <memory>
 
+    #define JSB_TRACK_OBJECT_CREATION 0
+
 namespace se {
 
 class Class;
@@ -448,6 +450,9 @@ private:
 
     #if CC_DEBUG
     uint32_t _objectId = 0;
+    #endif
+    #if JSB_TRACK_OBJECT_CREATION
+    std::string _objectCreationStackFrame;
     #endif
     friend class ScriptEngine;
 };

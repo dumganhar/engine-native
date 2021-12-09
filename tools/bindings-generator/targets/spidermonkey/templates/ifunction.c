@@ -73,7 +73,7 @@ static bool ${signature_name}(se::State& s) // NOLINT(readability-identifier-nam
                                     "level": 2})};
         SE_PRECONDITION2(ok, false, "${signature_name} : Error processing arguments");
             #if $generator.should_obtain_return_value($class_name, $func_name)
-        s.rval().toObject()->getPrivateObject()->allowDestroyInGC();
+        s.rval().toObject()->getPrivateObject()->tryAllowDestroyInGC();
             #end if
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         #else

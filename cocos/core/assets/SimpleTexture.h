@@ -58,7 +58,7 @@ public:
      * @zh 获取此贴图底层的 GFX 贴图对象。
      */
     gfx::Texture *getGFXTexture() const override {
-        return _gfxTexture;
+        return _gfxTexture.get();
     }
 
     bool destroy() override;
@@ -129,7 +129,7 @@ protected:
     void tryDestroyTexture();
     void notifyTextureUpdated();
 
-    gfx::Texture *_gfxTexture{nullptr};
+    cc::SharedPtr<gfx::Texture> _gfxTexture{nullptr};
 
     uint32_t _mipmapLevel{1};
     // Cache these data to reduce JSB invoking.

@@ -27,11 +27,12 @@
 
 #include "GFXDef.h"
 #include "base/Object.h"
+#include "base/RefCounted.h"
 
 namespace cc {
 namespace gfx {
 
-class GFXObject : public Object {
+class GFXObject : public Object, public RefCounted {
 public:
     explicit GFXObject(ObjectType type);
     ~GFXObject() override = default;

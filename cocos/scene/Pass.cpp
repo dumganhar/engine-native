@@ -139,10 +139,6 @@ Pass::Pass(Root *root) {
     _phase       = pipeline::getPhaseID(_phaseString);
 }
 
-Pass::~Pass() {
-    delete _rootBlock;
-}
-
 void Pass::initialize(const IPassInfoFull &info) {
     doInit(info);
     resetUBOs();
@@ -510,7 +506,8 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         if (binding >= _buffers.size()) {
             _buffers.resize(binding + 1);
         }
-        auto *bufferView = _buffers[binding] = device->createBuffer(bufferViewInfo);
+        auto *bufferView  = device->createBuffer(bufferViewInfo);
+        _buffers[binding] = bufferView;
         // non-builtin UBO data pools, note that the effect compiler
         // guarantees these bindings to be consecutive, starting from 0 and non-array-typed
         if (binding >= _blocks.size()) {

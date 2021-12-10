@@ -52,7 +52,7 @@ struct IRenderWindowInfo {
  */
 class RenderWindow : public RefCounted {
 public:
-    RenderWindow()  = default;
+    RenderWindow()           = default;
     ~RenderWindow() override = default;
 
     bool initialize(gfx::Device *device, IRenderWindowInfo &info);
@@ -132,11 +132,13 @@ private:
     uint32_t                       _width{1};
     uint32_t                       _height{1};
     std::string                    _title;
-    gfx::RenderPass *              _renderPass{nullptr};
-    gfx::Texture *                 _depthStencilTexture{nullptr};
-    gfx::Framebuffer *             _frameBuffer{nullptr};
+    SharedPtr<gfx::RenderPass>     _renderPass;
+    SharedPtr<gfx::Texture>        _depthStencilTexture;
+    SharedPtr<gfx::Framebuffer>    _frameBuffer;
     std::vector<SharedPtr<Camera>> _cameras;
-    std::vector<gfx::Texture *>    _colorTextures;
+    // As it will be used to create gfx::FrameBuffer, and we do not want to modify
+    // gfx classes, so manually invoke retain/release.
+    std::vector<gfx::Texture *> _colorTextures;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderWindow);
 };

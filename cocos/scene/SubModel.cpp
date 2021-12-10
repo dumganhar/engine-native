@@ -23,11 +23,11 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "scene/SubModel.h"
+#include "core/Root.h"
 #include "pipeline/Define.h"
+#include "renderer/pipeline/forward/ForwardPipeline.h"
 #include "scene/Model.h"
 #include "scene/Pass.h"
-#include "renderer/pipeline/forward/ForwardPipeline.h"
-#include "core/Root.h"
 
 namespace cc {
 namespace scene {
@@ -39,10 +39,6 @@ void SubModel::update() {
         pass->update();
     }
     _descriptorSet->update();
-}
-
-SubModel::~SubModel() {
-    //cjh TODO:    CC_SAFE_DELETE(_subMesh);
 }
 
 void SubModel::setPasses(const std::vector<SharedPtr<Pass>> &passes) {
@@ -156,22 +152,18 @@ void SubModel::initPlanarShadowInstanceShader() {
 }
 
 void SubModel::destroy() {
-    CC_SAFE_DESTROY(_descriptorSet);
-    CC_SAFE_DESTROY(_inputAssembler);
+    CC_SAFE_DESTROY_NULL(_descriptorSet);
+    CC_SAFE_DESTROY_NULL(_inputAssembler);
+
     _priority = pipeline::RenderPriority::DEFAULT;
+
     _patches.clear();
-
-    //cjh TODO: ts only assign _subMesh to null, but here we delete the subMesh, is it reasonable?
-    //    CC_SAFE_DELETE(_subMesh);
+    _subMesh = nullptr;
     _passes.clear();
-
-    //cjh    for (gfx::Shader *shader : _shaders) {
-    //        CC_SAFE_DESTROY(shader);
-    //    }
     _shaders.clear();
 
-    CC_SAFE_DESTROY(_reflectionTex);
-    CC_SAFE_DESTROY(_reflectionSampler);
+    CC_SAFE_DESTROY_NULL(_reflectionTex);
+    CC_SAFE_DESTROY_NULL(_reflectionSampler);
 }
 
 void SubModel::onPipelineStateChanged() {

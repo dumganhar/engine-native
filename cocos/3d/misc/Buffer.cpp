@@ -87,7 +87,7 @@ DataView mapBuffer(DataView&                  target,
         intWritter = DataView::intWritterMap[setPrefix + _getDataViewType(info)];
     }
 
-    DataView::IntReader intReader = nullptr;
+    DataView::FunctionVariant intReader;
     if (!isFloat) {
         intReader = DataView::intReaderMap[getPrefix + _getDataViewType(info)];
     }
@@ -103,7 +103,7 @@ DataView mapBuffer(DataView&                  target,
                 float cur = target.getFloat32(y);
                 out->setFloat32(y, std::get<1>(callback(cur, iComponent, target)));
             } else {
-                int32_t cur = (target.*intReader)(y);
+                int32_t cur = target.readInt(intReader, y);
                 // iComponent is usually more useful than y
                 (target.*intWritter)(y, std::get<0>(callback(cur, iComponent, target)));
             }

@@ -53,6 +53,7 @@ Root::Root(gfx::Device *device)
 
 Root::~Root() {
     instance = nullptr;
+    delete _cameraPool;
     CC_SAFE_DELETE(_eventProcessor);
 }
 

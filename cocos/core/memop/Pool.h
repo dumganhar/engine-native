@@ -29,7 +29,6 @@
 #include <cstdint>
 #include <functional>
 #include <vector>
-#include "base/RefCounted.h"
 #include "base/TypeDef.h"
 
 namespace cc {
@@ -37,7 +36,7 @@ namespace cc {
 namespace memop {
 
 template <typename T>
-class Pool : public RefCounted {
+class Pool final {
 public:
     /**
      * @en Constructor with the allocator of elements and initial pool size
@@ -57,7 +56,7 @@ public:
 
     Pool(const Pool &) = delete;
     Pool(Pool &&)      = delete;
-    ~Pool() override   = default;
+    ~Pool()            = default;
     Pool &operator=(const Pool &) = delete;
     Pool &operator=(Pool &&) = delete;
 

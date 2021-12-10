@@ -279,7 +279,7 @@ private:
     scene::DrawBatch2D *                        _batcher2D{nullptr};
     SharedPtr<DataPoolManager>                  _dataPoolMgr;
     std::vector<SharedPtr<scene::RenderScene>>  _scenes;
-    SharedPtr<memop::Pool<scene::Camera>>       _cameraPool;
+    memop::Pool<scene::Camera> *                _cameraPool{nullptr};
     float                                       _cumulativeTime{0.F};
     float                                       _frameTime{0.F};
     float                                       _fpsTime{0.F};

@@ -24,6 +24,7 @@
 */
 
 #pragma once
+#include <vector>
 
 #include "base/Macros.h"
 #include "base/TypeDef.h"
@@ -39,6 +40,9 @@ namespace cc {
  */
 class Layers final {
 public:
+    Layers()  = delete;
+    ~Layers() = delete;
+
     // built-in layers, users can use 0~19 bits, 20~31 are system preserve bits.
     enum class LayerList {
         NONE           = 0,
@@ -112,10 +116,6 @@ public:
      * @param bitNum layer's value
      */
     static std::string layerToName(uint32_t bitNum);
-
-private:
-    Layers()  = delete;
-    ~Layers() = delete;
 };
 
 CC_ENUM_BITWISE_OPERATORS(Layers::LayerList);

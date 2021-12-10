@@ -53,7 +53,6 @@ Root::Root(gfx::Device *device)
 
 Root::~Root() {
     instance = nullptr;
-    delete _cameraPool;
     CC_SAFE_DELETE(_eventProcessor);
 }
 
@@ -92,10 +91,6 @@ void Root::destroy() {
     CC_SAFE_DESTROY(_pipeline);
     //TODO: minggo
     //    CC_SAFE_DESTROY(_batcher2D);
-    if (_mainWindow != _curWindow) {
-        CC_SAFE_DELETE(_mainWindow);
-    }
-    CC_SAFE_DELETE(_curWindow);
 
     //TODO: minggo
     //    this.dataPoolManager.clear();
@@ -104,7 +99,7 @@ void Root::destroy() {
 void Root::resize(uint32_t width, uint32_t height) {
     _device->resize(width, height);
     _mainWindow->resize(width, height);
-    for (auto *window : _windows) {
+    for (const auto &window : _windows) {
         if (window->shouldSyncSizeWithSwapchain()) {
             window->resize(width, height);
         }
@@ -152,7 +147,7 @@ bool Root::setRenderPipeline(pipeline::RenderPipeline *rppl /* = nullptr*/) {
 }
 
 void Root::onGlobalPipelineStateChanged() {
-    for (auto *scene : _scenes) {
+    for (const auto &scene : _scenes) {
         scene->onGlobalPipelineStateChanged();
     }
 
@@ -179,7 +174,7 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
         _fpsTime    = 0.0;
     }
 
-    for (auto *scene : _scenes) {
+    for (const auto &scene : _scenes) {
         scene->removeBatches();
     }
 
@@ -192,7 +187,7 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
 
     //
     std::vector<scene::Camera *> cameraList;
-    for (auto *window : _windows) {
+    for (const auto &window : _windows) {
         window->extractRenderCameras(cameraList);
     }
 
@@ -206,7 +201,7 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
         //                    _batcher->uploadBuffers();
         //                }
 
-        for (auto *scene : _scenes) {
+        for (const auto &scene : _scenes) {
             scene->update(stamp);
         }
 
@@ -224,7 +219,7 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
 }
 
 scene::RenderWindow *Root::createWindow(scene::IRenderWindowInfo &info) {
-    auto *window = new scene::RenderWindow();
+    SharedPtr<scene::RenderWindow> window = new scene::RenderWindow();
 
     window->initialize(_device, info);
     _windows.emplace_back(window);
@@ -240,17 +235,17 @@ void Root::destroyWindow(scene::RenderWindow *window) {
 }
 
 void Root::destroyWindows() {
-    for (auto *window : _windows) {
+    for (const auto &window : _windows) {
         CC_SAFE_DESTROY(window);
     }
     _windows.clear();
 }
 
 scene::RenderScene *Root::createScene(const scene::IRenderSceneInfo &info) {
-    auto *scene = new scene::RenderScene();
+    SharedPtr<scene::RenderScene> scene = new scene::RenderScene();
     scene->initialize(info);
     _scenes.emplace_back(scene);
-    return scene;
+    return scene.get();
 }
 
 void Root::destroyScene(scene::RenderScene *scene) {
@@ -262,7 +257,7 @@ void Root::destroyScene(scene::RenderScene *scene) {
 }
 
 void Root::destroyScenes() {
-    for (auto *scene : _scenes) {
+    for (const auto &scene : _scenes) {
         CC_SAFE_DESTROY(scene);
     }
     _scenes.clear();

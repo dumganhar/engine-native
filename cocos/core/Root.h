@@ -188,7 +188,7 @@ public:
      * @zh
      * 主窗口
      */
-    inline scene::RenderWindow *getMainWindow() const { return _mainWindow; }
+    inline scene::RenderWindow *getMainWindow() const { return _mainWindow.get(); }
 
     /**
      * @zh
@@ -196,7 +196,7 @@ public:
      */
     inline void setCurWindow(scene::RenderWindow *window) { _curWindow = window; }
 
-    inline scene::RenderWindow *getCurWindow() const { return _curWindow; }
+    inline scene::RenderWindow *getCurWindow() const { return _curWindow.get(); }
 
     /**
      * @zh
@@ -204,13 +204,13 @@ public:
      */
     void setTempWindow(scene::RenderWindow *window) { _tempWindow = window; }
 
-    inline scene::RenderWindow *getTempWindow() const { return _tempWindow; }
+    inline scene::RenderWindow *getTempWindow() const { return _tempWindow.get(); }
 
     /**
      * @zh
      * 窗口列表
      */
-    inline const std::vector<scene::RenderWindow *> &getWindows() const { return _windows; }
+    inline const std::vector<SharedPtr<scene::RenderWindow>> &getWindows() const { return _windows; }
 
     /**
      * @zh
@@ -229,7 +229,7 @@ public:
      * @zh
      * 场景列表
      */
-    inline const std::vector<scene::RenderScene *> &getScenes() const { return _scenes; }
+    inline const std::vector<SharedPtr<scene::RenderScene>> &getScenes() const { return _scenes; }
 
     /**
      * @zh
@@ -263,31 +263,31 @@ public:
 
     inline uint32_t getFixedFPS() const { return _fixedFPS; }
 
-    inline DataPoolManager *getDataPoolManager() { return _dataPoolMgr; }
+    inline DataPoolManager *getDataPoolManager() { return _dataPoolMgr.get(); }
 
     inline bool isUsingDeferredPipeline() const { return _useDeferredPipeline; }
 
     inline CallbacksInvoker *getEventProcessor() const { return _eventProcessor; }
 
 private:
-    gfx::Device *                      _device{nullptr};
-    scene::RenderWindow *              _mainWindow{nullptr};
-    scene::RenderWindow *              _curWindow{nullptr};
-    scene::RenderWindow *              _tempWindow{nullptr};
-    std::vector<scene::RenderWindow *> _windows;
-    pipeline::RenderPipeline *         _pipeline{nullptr};
-    scene::DrawBatch2D *               _batcher2D{nullptr};
-    DataPoolManager *                  _dataPoolMgr{nullptr};
-    std::vector<scene::RenderScene *>  _scenes;
-    memop::Pool<scene::Camera> *       _cameraPool{nullptr};
-    float                              _cumulativeTime{0.F};
-    float                              _frameTime{0.F};
-    float                              _fpsTime{0.F};
-    uint32_t                           _frameCount{0};
-    uint32_t                           _fps{0};
-    uint32_t                           _fixedFPS{0};
-    bool                               _useDeferredPipeline{false};
-    CallbacksInvoker *                 _eventProcessor{nullptr};
+    gfx::Device *                               _device{nullptr};
+    SharedPtr<scene::RenderWindow>              _mainWindow;
+    SharedPtr<scene::RenderWindow>              _curWindow;
+    SharedPtr<scene::RenderWindow>              _tempWindow;
+    std::vector<SharedPtr<scene::RenderWindow>> _windows;
+    pipeline::RenderPipeline *                  _pipeline{nullptr};
+    scene::DrawBatch2D *                        _batcher2D{nullptr};
+    SharedPtr<DataPoolManager>                  _dataPoolMgr;
+    std::vector<SharedPtr<scene::RenderScene>>  _scenes;
+    SharedPtr<memop::Pool<scene::Camera>>       _cameraPool;
+    float                                       _cumulativeTime{0.F};
+    float                                       _frameTime{0.F};
+    float                                       _fpsTime{0.F};
+    uint32_t                                    _frameCount{0};
+    uint32_t                                    _fps{0};
+    uint32_t                                    _fixedFPS{0};
+    bool                                        _useDeferredPipeline{false};
+    CallbacksInvoker *                          _eventProcessor{nullptr};
 };
 
 } // namespace cc

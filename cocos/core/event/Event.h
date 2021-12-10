@@ -27,6 +27,7 @@
 
 #include <string>
 
+#include "base/Ptr.h"
 #include "core/data/Object.h"
 #include "core/platform/event-manager/EventEnum.h"
 
@@ -110,7 +111,7 @@ public:
      * 获取当前目标节点
      * @returns - The target with which the event associates.
      */
-    inline CCObject *getCurrentTarget() const { return _currentTarget; }
+    inline CCObject *getCurrentTarget() const { return _currentTarget.get(); }
     inline void      setCurrentTarget(CCObject *target) { _currentTarget = target; }
 
     /**
@@ -120,7 +121,7 @@ public:
      * @zh
      * 最初事件触发的目标。
      */
-    inline CCObject *getTarget() const { return _target; }
+    inline CCObject *getTarget() const { return _target.get(); }
     inline void      setTarget(CCObject *target) { _target = target; } //cjh shared_ptr?
 
     /**
@@ -202,8 +203,8 @@ public:
     void reuse(const std::string &type, bool bubbles = false) {} //cjh TODO:
 
 protected:
-    CCObject *                _target{nullptr};
-    CCObject *                _currentTarget{nullptr};
+    SharedPtr<CCObject>       _target;
+    SharedPtr<CCObject>       _currentTarget;
     Phase                     _eventPhase{Phase::NONE};
     Type                      _eventType;
     CallbacksInvoker::KeyType _eventName;

@@ -35,7 +35,7 @@ namespace cc {
 
 /**
  * @en
- * The base class of most of all the objects in Fireball.
+ * The base class of most of all the objects in Cocos Creator.
  * @zh
  * 大部分对象的基类。
  * @private

@@ -28,13 +28,13 @@
 #include <string>
 #include <vector>
 #include "base/Macros.h"
-#include "base/TypeDef.h"
 #include "base/Ptr.h"
-#include "scene/DirectionalLight.h"
+#include "base/TypeDef.h"
 #include "scene/Camera.h"
-#include "scene/SpotLight.h"
-#include "scene/SphereLight.h"
+#include "scene/DirectionalLight.h"
 #include "scene/Model.h"
+#include "scene/SphereLight.h"
+#include "scene/SpotLight.h"
 
 namespace cc {
 
@@ -55,10 +55,10 @@ struct IRenderSceneInfo {
     std::string name;
 };
 
-class RenderScene final {
+class RenderScene : public RefCounted {
 public:
     RenderScene()  = default;
-    ~RenderScene() = default;
+    ~RenderScene() override = default;
 
     bool initialize(const IRenderSceneInfo &info);
     void update(uint32_t stamp);
@@ -91,7 +91,7 @@ public:
 
     void onGlobalPipelineStateChanged();
 
-    inline DirectionalLight* getMainLight() const { return _mainLight.get(); }
+    inline DirectionalLight *getMainLight() const { return _mainLight.get(); }
     inline void              setMainLight(DirectionalLight *dl) { _mainLight = dl; }
 
     inline uint64_t                                   generateModelId() { return _modelId++; }

@@ -50,10 +50,10 @@ struct IRenderWindowInfo {
  * @en The render window represents the render target, it could be an off screen frame buffer or the on screen buffer.
  * @zh 渲染窗口代表了一个渲染目标，可以是离屏的帧缓冲，也可以是屏幕缓冲
  */
-class RenderWindow final {
+class RenderWindow : public RefCounted {
 public:
     RenderWindow()  = default;
-    ~RenderWindow() = default;
+    ~RenderWindow() override = default;
 
     bool initialize(gfx::Device *device, IRenderWindowInfo &info);
     void destroy();
@@ -125,18 +125,18 @@ public:
     inline const std::vector<SharedPtr<Camera>> &getCameras() const { return _cameras; }
 
 private:
-    bool                        _hasOnScreenAttachments{false};
-    bool                        _hasOffScreenAttachments{false};
-    bool                        _shouldSyncSizeWithSwapchain{false};
-    int32_t                    _swapchainBufferIndices{0};
-    uint32_t                    _width{1};
-    uint32_t                    _height{1};
-    std::string                 _title;
-    gfx::RenderPass *           _renderPass{nullptr};
-    gfx::Texture *              _depthStencilTexture{nullptr};
-    gfx::Framebuffer *          _frameBuffer{nullptr};
-    std::vector<SharedPtr<Camera>>       _cameras;
-    std::vector<gfx::Texture *> _colorTextures;
+    bool                           _hasOnScreenAttachments{false};
+    bool                           _hasOffScreenAttachments{false};
+    bool                           _shouldSyncSizeWithSwapchain{false};
+    int32_t                        _swapchainBufferIndices{0};
+    uint32_t                       _width{1};
+    uint32_t                       _height{1};
+    std::string                    _title;
+    gfx::RenderPass *              _renderPass{nullptr};
+    gfx::Texture *                 _depthStencilTexture{nullptr};
+    gfx::Framebuffer *             _frameBuffer{nullptr};
+    std::vector<SharedPtr<Camera>> _cameras;
+    std::vector<gfx::Texture *>    _colorTextures;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderWindow);
 };

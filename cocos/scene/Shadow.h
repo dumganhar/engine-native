@@ -39,7 +39,6 @@
 namespace cc {
 
 class Node;
-;
 
 namespace scene {
 

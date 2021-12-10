@@ -75,9 +75,9 @@ protected:
     void onStateChange();
 
 private:
-    scene::Pass *     _parent{nullptr};
-    MaterialInstance *_owner{nullptr};
-    bool              _dontNotify{false};
+    SharedPtr<scene::Pass>      _parent;
+    SharedPtr<MaterialInstance> _owner;
+    bool                        _dontNotify{false};
 };
 
 } // namespace cc

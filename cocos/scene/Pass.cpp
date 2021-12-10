@@ -32,9 +32,9 @@
 #include "core/assets/TextureBase.h"
 #include "core/builtin/BuiltinResMgr.h"
 #include "renderer/core/PassUtils.h"
+#include "renderer/core/ProgramLib.h"
 #include "renderer/gfx-base/GFXDef.h"
 #include "renderer/pipeline/Define.h"
-#include "renderer/core/ProgramLib.h"
 
 namespace cc {
 namespace scene {
@@ -141,7 +141,6 @@ Pass::Pass(Root *root) {
 
 Pass::~Pass() {
     delete _rootBlock;
-    CC_LOG_DEBUG("Pass::~Pass");
 }
 
 void Pass::initialize(const IPassInfoFull &info) {

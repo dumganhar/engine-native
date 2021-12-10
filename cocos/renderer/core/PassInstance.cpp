@@ -51,7 +51,7 @@ PassInstance::PassInstance(scene::Pass *parent, MaterialInstance *owner) : Super
 }
 
 scene::Pass *PassInstance::getParent() const {
-    return _parent;
+    return _parent.get();
 }
 
 void PassInstance::overridePipelineStates(const IPassInfo &original, const PassOverrides &override) {

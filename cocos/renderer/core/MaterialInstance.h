@@ -50,7 +50,7 @@ public:
     MaterialInstance(const IMaterialInstanceInfo &info);
 
     Material *getParent() const override {
-        return _parent;
+        return _parent.get();
     }
 
     RenderableComponent *getOwner() const override {
@@ -82,7 +82,7 @@ protected:
     std::vector<SharedPtr<scene::Pass>> createPasses() override;
 
 private:
-    Material *           _parent{nullptr};
+    SharedPtr<Material>  _parent;
     RenderableComponent *_owner{nullptr};
     uint32_t             _subModelIdx{0};
 

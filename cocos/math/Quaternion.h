@@ -171,7 +171,7 @@ public:
     /**
      * Converts the quaternion to angles, result angle x, y in the range of [-180, 180], z in the range of [-90, 90] interval, the rotation order is YZX
      */
-    static void toEuler(Vec3 *out, const Quaternion &q, bool outerZ = false);
+    static void toEuler(const Quaternion &q, bool outerZ, Vec3 *out);
 
     /**
      * Creates a quaternion equal to the rotational part of the specified matrix
@@ -336,13 +336,13 @@ public:
     /**
      * Calculates the quaternion with the three-dimensional transform matrix, considering no scale included in the matrix
      */
-    static void fromMat3(Quaternion &out, const Mat3 &m);
+    static void fromMat3(const Mat3 &m, Quaternion *out);
 
     /**
      * Calculates the quaternion with the up direction and the direction of the viewport
      */
-    static void fromViewUp(Quaternion &out, const Vec3 &view);
-    static void fromViewUp(Quaternion &out, const Vec3 &view, const Vec3 &up);
+    static void fromViewUp(const Vec3 &view, Quaternion *out);
+    static void fromViewUp(const Vec3 &view, const Vec3 &up, Quaternion *out);
 
     /**
      * Interpolates between two quaternions using spherical linear interpolation.

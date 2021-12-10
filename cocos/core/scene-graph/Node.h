@@ -457,14 +457,14 @@ public:
         const float len    = dir.length();
         Vec3        v3Temp = dir * (-1.F / len);
         Quaternion  qTemp{Quaternion::identity()};
-        Quaternion::fromViewUp(qTemp, v3Temp);
+        Quaternion::fromViewUp(v3Temp, &qTemp);
         setWorldRotation(qTemp);
     }
     void setAngle(float);
 
     inline const Vec3 &getEulerAngles() {
         if (_eulerDirty) {
-            Quaternion::toEuler(&_euler, _localRotation);
+            Quaternion::toEuler(_localRotation, false, &_euler);
             _eulerDirty = false;
         }
         return _euler;

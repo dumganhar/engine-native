@@ -141,7 +141,7 @@ public:
     /**
      * Transforms the current vector with given scale, rotation and translation in reverse order
      */
-    static void transformInverseRTS(Vec3 &out, const Vec3 &v, const Quaternion &r, const Vec3 &t, const Vec3 &s);
+    static void transformInverseRTS(const Vec3 &v, const Quaternion &r, const Vec3 &t, const Vec3 &s, Vec3 *out);
 
     /**
      * Adds the elements of the specified vector to this one.

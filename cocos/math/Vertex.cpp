@@ -31,7 +31,8 @@
 
 namespace cc {
 
-void ccVertexLineToPolygon(const std::vector<Vec2> &points, float stroke, std::vector<Vec2> &vertices, unsigned int offset, unsigned int nuPoints) {
+void ccVertexLineToPolygon(const std::vector<Vec2> &points, float stroke, unsigned int offset, unsigned int nuPoints, std::vector<Vec2> *vertices) {
+    GP_ASSERT(vertices);
     nuPoints += offset;
     if (nuPoints <= 1) return;
 
@@ -69,8 +70,8 @@ void ccVertexLineToPolygon(const std::vector<Vec2> &points, float stroke, std::v
         }
         perpVector = perpVector * stroke;
 
-        vertices[idx].set(p1.x + perpVector.x, p1.y + perpVector.y);
-        vertices[idx + 1].set(p1.x - perpVector.x, p1.y - perpVector.y);
+        (*vertices)[idx].set(p1.x + perpVector.x, p1.y + perpVector.y);
+        (*vertices)[idx + 1].set(p1.x - perpVector.x, p1.y - perpVector.y);
     }
 
     // Validate vertexes
@@ -79,10 +80,10 @@ void ccVertexLineToPolygon(const std::vector<Vec2> &points, float stroke, std::v
         idx                     = i * 2;
         const unsigned int idx1 = idx + 2;
 
-        Vec2 p1 = vertices[idx];
-        Vec2 p2 = vertices[idx + 1];
-        Vec2 p3 = vertices[idx1];
-        Vec2 p4 = vertices[idx1 + 1];
+        Vec2 p1 = (*vertices)[idx];
+        Vec2 p2 = (*vertices)[idx + 1];
+        Vec2 p3 = (*vertices)[idx1];
+        Vec2 p4 = (*vertices)[idx1 + 1];
 
         float s;
         //BOOL fixVertex = !ccpLineIntersect(Vec2(p1.x, p1.y), Vec2(p4.x, p4.y), Vec2(p2.x, p2.y), Vec2(p3.x, p3.y), &s, &t);
@@ -92,8 +93,8 @@ void ccVertexLineToPolygon(const std::vector<Vec2> &points, float stroke, std::v
                 fixVertex = true;
 
         if (fixVertex) {
-            vertices[idx1]     = p4;
-            vertices[idx1 + 1] = p3;
+            (*vertices)[idx1]  = p4;
+            (*vertices)[idx1 + 1] = p3;
         }
     }
 }

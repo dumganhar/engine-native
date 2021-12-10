@@ -599,9 +599,9 @@ void Node::updateWorldTransform() {
                 }
                 quat = currChild->_worldRotation;
                 quat.conjugate();
-                Mat3::fromQuat(mat3, quat);
-                Mat3::fromMat4(m43, currChild->_worldMatrix);
-                Mat3::multiply(mat3, mat3, m43);
+                Mat3::fromQuat(quat, &mat3);
+                Mat3::fromMat4(currChild->_worldMatrix, &m43);
+                Mat3::multiply(mat3, m43, &mat3);
                 currChild->_worldScale.set(mat3.m[0], mat3.m[4], mat3.m[8]);
             }
         } else if (child) {
@@ -724,17 +724,17 @@ void Node::setWorldScale(float x, float y, float z) {
     if (_parent != nullptr) {
         _parent->updateWorldTransform();
         Mat3 m3_1;
-        Mat3::fromQuat(m3_1, _parent->getWorldRotation().getConjugated());
+        Mat3::fromQuat(_parent->getWorldRotation().getConjugated(), &m3_1);
         Mat3 b;
-        Mat3::fromMat4(b, _parent->getWorldMatrix());
-        Mat3::multiply(m3_1, m3_1, b);
+        Mat3::fromMat4(_parent->getWorldMatrix(), &b);
+        Mat3::multiply(m3_1, b, &m3_1);
         Mat3 m3_scaling;
         m3_scaling.m[0] = _worldScale.x;
         m3_scaling.m[4] = _worldScale.y;
         m3_scaling.m[8] = _worldScale.z;
 
         m3_1.inverse();
-        Mat3::multiply(m3_1, m3_scaling, m3_1);
+        Mat3::multiply(m3_scaling, m3_1, &m3_1);
         _localScale.x = Vec3{m3_1.m[0], m3_1.m[1], m3_1.m[2]}.length();
         _localScale.y = Vec3{m3_1.m[3], m3_1.m[4], m3_1.m[5]}.length();
         _localScale.z = Vec3{m3_1.m[6], m3_1.m[7], m3_1.m[8]}.length();
@@ -827,7 +827,7 @@ void Node::lookAt(const Vec3 &pos, const Vec3 &up) {
     Quaternion qTemp{Quaternion::identity()};
     vTemp -= pos;
     vTemp.normalize();
-    Quaternion::fromViewUp(qTemp, vTemp, up);
+    Quaternion::fromViewUp(vTemp, up, &qTemp);
     setWorldRotation(qTemp);
 }
 
@@ -840,7 +840,7 @@ void Node::inverseTransformPoint(Vec3 &out, const Vec3 &p) {
         cur = cur->getParent();
     }
     while (i >= 0) {
-        Vec3::transformInverseRTS(out, out, cur->getRotation(), cur->getPosition(), cur->getScale());
+        Vec3::transformInverseRTS(out, cur->getRotation(), cur->getPosition(), cur->getScale(), &out);
         --i;
         cur = dirtyNodes[i];
     }

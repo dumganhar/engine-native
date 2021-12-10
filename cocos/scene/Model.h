@@ -39,6 +39,7 @@
 #include "core/scene-graph/Node.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDef-common.h"
+#include "renderer/gfx-base/GFXTexture.h"
 #include "scene/SubModel.h"
 
 namespace cc {

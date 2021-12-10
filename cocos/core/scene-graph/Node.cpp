@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,7 +38,7 @@
 namespace cc {
 
 // static variables
-std::vector<SharedPtr<Node>>     Node::dirtyNodes;
+std::vector<Node *>              Node::dirtyNodes;
 uint32_t                         Node::clearFrame{0};
 uint32_t                         Node::clearRound{1000};
 bool                             Node::isStatic{false};
@@ -51,7 +51,7 @@ std::vector<std::vector<Node *>> Node::stacks;
 //
 
 namespace {
-std::unordered_map<Node *, int32_t /* place_holder */> allNodes; //cjh how to clear ?
+std::unordered_map<Node *, int32_t /* place_holder */> allNodes; // cjh how to clear ?
 const std::string                                      EMPTY_NODE_NAME;
 IDGenerator                                            idGenerator("Node");
 } // namespace
@@ -91,8 +91,8 @@ Node *Node::instantiate(Node *cloned, bool isSyncedNode) {
         return nullptr;
     }
     // TODO
-    //const newPrefabInfo = cloned._prefab;
-    //if (EDITOR && newPrefabInfo) {
+    // const newPrefabInfo = cloned._prefab;
+    // if (EDITOR && newPrefabInfo) {
     //    if (cloned == = newPrefabInfo.root) {
     //        // newPrefabInfo.fileId = '';
     //    } else {
@@ -100,7 +100,7 @@ Node *Node::instantiate(Node *cloned, bool isSyncedNode) {
     //        // PrefabUtils.unlinkPrefab(cloned);
     //    }
     //}
-    //if (EDITOR && legacyCC.GAME_VIEW) {
+    // if (EDITOR && legacyCC.GAME_VIEW) {
     //    const syncing = newPrefabInfo&& cloned == = newPrefabInfo.root && newPrefabInfo.sync;
     //    if (!syncing) {
     //        cloned._name += ' (Clone)';
@@ -122,7 +122,7 @@ void Node::onHierarchyChangedBase(Node *oldParent) {
         //        }
     }
     // TODO
-    //if (EDITOR) {
+    // if (EDITOR) {
     //    const scene                = legacyCC.director.getScene() as this | null;
     //    const inCurrentSceneBefore = oldParent && oldParent.isChildOf(scene);
     //    const inCurrentSceneNow    = newParent && newParent.isChildOf(scene);
@@ -270,7 +270,7 @@ void Node::walk(const std::function<void(Node *)> &preFunc, const std::function<
     index_t                             index{1};
     index_t                             i{0};
     const std::vector<SharedPtr<Node>> *children = nullptr;
-    Node *                              curr{nullptr};
+    Node                               *curr{nullptr};
     auto                                stacksCount = static_cast<index_t>(Node::stacks.size());
     if (stackId >= stacksCount) {
         stacks.resize(stackId + 1);
@@ -353,7 +353,7 @@ void Node::walk(const std::function<void(Node *)> &preFunc, const std::function<
 }
 
 Component *Node::addComponent(Component *comp) {
-    comp->_node = this; //cjh TODO: shared_ptr
+    comp->_node = this; // cjh TODO: shared_ptr
     _components.emplace_back(comp);
 
     if (isActiveInHierarchy()) {
@@ -500,7 +500,7 @@ Node *Node::getChildByPath(const std::string &path) const {
     size_t                   start;
     size_t                   end      = 0;
     std::vector<std::string> segments = StringUtil::split(path, "/");
-    auto *                   lastNode = const_cast<Node *>(this);
+    auto                    *lastNode = const_cast<Node *>(this);
     for (const std::string &segment : segments) {
         if (segment.empty()) {
             continue;
@@ -567,7 +567,7 @@ void Node::updateWorldTransform() {
         return;
     }
     index_t    i    = 0;
-    Node *     curr = this;
+    Node      *curr = this;
     Mat3       mat3;
     Mat3       m43;
     Quaternion quat;
@@ -575,7 +575,7 @@ void Node::updateWorldTransform() {
         setDirtyNode(i++, curr);
         curr = curr->getParent();
     }
-    Node *   child{nullptr};
+    Node    *child{nullptr};
     uint32_t dirtyBits = 0;
     while (i) {
         child = getDirtyNode(--i);
@@ -764,7 +764,7 @@ void Node::setDirtyNode(const index_t idx, Node *node) {
 }
 
 Node *Node::getDirtyNode(const index_t idx) {
-    return dirtyNodes[idx].get();
+    return dirtyNodes[idx];
 }
 
 void Node::setAngle(float val) {
@@ -788,7 +788,7 @@ void Node::onSetParent(Node *oldParent, bool keepWorldTransform) {
         Node *parent = _parent;
         if (parent) {
             parent->updateWorldTransform();
-            Mat4 mTemp{Mat4::IDENTITY}; //cjh FIXME: the logic is different from ts version.
+            Mat4 mTemp{Mat4::IDENTITY}; // cjh FIXME: the logic is different from ts version.
             Mat4::inverseTranspose(parent->getWorldMatrix(), &mTemp);
             mTemp *= _worldMatrix;
 
@@ -833,7 +833,7 @@ void Node::lookAt(const Vec3 &pos, const Vec3 &up) {
 
 void Node::inverseTransformPoint(Vec3 &out, const Vec3 &p) {
     out.set(p.x, p.y, p.z);
-    Node *  cur{this};
+    Node   *cur{this};
     index_t i{0};
     while (cur != nullptr && cur->getParent()) {
         setDirtyNode(i++, cur);
@@ -955,7 +955,7 @@ Node *Node::find(const std::string &path, Node *referenceNode /* = nullptr*/) {
 }
 
 // For deserialization
-//void Node::_setChild(index_t i, Node *child) {
+// void Node::_setChild(index_t i, Node *child) {
 //    if (i < _children.size()) {
 //        _children[i] = child;
 //    } else {
@@ -963,7 +963,7 @@ Node *Node::find(const std::string &path, Node *referenceNode /* = nullptr*/) {
 //    }
 //}
 //
-//Node *Node::_getChild(index_t i) {
+// Node *Node::_getChild(index_t i) {
 //    if (i < _children.size()) {
 //        return _children[i];
 //    }
@@ -971,11 +971,11 @@ Node *Node::find(const std::string &path, Node *referenceNode /* = nullptr*/) {
 //    return nullptr;
 //}
 //
-//void Node::_setChildrenSize(uint32_t size) {
+// void Node::_setChildrenSize(uint32_t size) {
 //    _children.resize(size);
 //}
 //
-//uint32_t Node::_getChildrenSize() {
+// uint32_t Node::_getChildrenSize() {
 //    return _children.size();
 //}
 //

@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -82,7 +82,7 @@ public:
     static void    setScene(Node *);
     static index_t getIdxOfChild(const std::vector<SharedPtr<Node>> &, Node *);
 
-    static bool isStatic; //cjh TODO: add getter / setter
+    static bool isStatic; // cjh TODO: add getter / setter
 
     static void  setDirtyNode(const index_t idx, Node *node);
     static Node *getDirtyNode(const index_t idx);
@@ -192,7 +192,7 @@ public:
     void off(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture = false);
 
     template <typename... Args>
-    void emit(const CallbacksInvoker::KeyType &type, Args &&... args);
+    void emit(const CallbacksInvoker::KeyType &type, Args &&...args);
 
     void dispatchEvent(event::Event *event);
     bool hasEventListener(const CallbacksInvoker::KeyType &type) const;
@@ -264,12 +264,12 @@ public:
 
     virtual void                               onPostActivated(bool active) {}
     inline const std::vector<SharedPtr<Node>> &getChildren() { return _children; }
-    inline Node *                              getParent() const { return _parent; }
-    inline NodeEventProcessor *                getEventProcessor() const { return _eventProcessor; }
+    inline Node                               *getParent() const { return _parent; }
+    inline NodeEventProcessor                 *getEventProcessor() const { return _eventProcessor; }
 
-    Node *           getChildByUuid(const std::string &) const;
-    Node *           getChildByName(const std::string &) const;
-    Node *           getChildByPath(const std::string &) const;
+    Node            *getChildByUuid(const std::string &) const;
+    Node            *getChildByName(const std::string &) const;
+    Node            *getChildByPath(const std::string &) const;
     inline index_t   getSiblingIndex() const { return _siblingIndex; }
     inline UserData *getUserData() { return _userData.get(); }
     inline void      setUserData(UserData *data) { _userData = data; }
@@ -287,8 +287,8 @@ public:
     }
     void lookAt(const Vec3 &pos, const Vec3 &up = Vec3::UNIT_Y);
 
-    void pauseSystemEvents(bool recursive) {}  //cjh TODO:
-    void resumeSystemEvents(bool recursive) {} //cjh TODO:
+    void pauseSystemEvents(bool recursive) {}  // cjh TODO:
+    void resumeSystemEvents(bool recursive) {} // cjh TODO:
 
     // ===============================
     // transform
@@ -518,28 +518,28 @@ public:
 
     template <typename T, typename = std::enable_if_t<std::is_base_of<Component, T>::value>>
     static Component *findComponent(Node *node) {
-        //cjh TODO:
+        // cjh TODO:
         CC_ASSERT(false);
         return nullptr;
     }
 
     template <typename T, typename = std::enable_if_t<std::is_base_of<Component, T>::value>>
     static Component *findComponents(Node *node, const std::vector<Component *> &components) {
-        //cjh TODO:
+        // cjh TODO:
         CC_ASSERT(false);
         return nullptr;
     }
 
     template <typename T, typename = std::enable_if_t<std::is_base_of<Component, T>::value>>
     static Component *findChildComponent(const std::vector<Node *> &children) {
-        //cjh TODO:
+        // cjh TODO:
         CC_ASSERT(false);
         return nullptr;
     }
 
     template <typename T, typename = std::enable_if_t<std::is_base_of<Component, T>::value>>
     static void findChildComponents(const std::vector<Node *> &children, std::vector<Component *> &components) {
-        //cjh TODO:
+        // cjh TODO:
         CC_ASSERT(false);
     }
 
@@ -574,21 +574,21 @@ public:
     // TODO(Lenovo):
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     std::vector<Component *> getComponents() const {
-        //cjh TODO:
+        // cjh TODO:
         CC_ASSERT(false);
         return {};
     };
 
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     Component *getComponentInChildren(const T &comp) const {
-        //cjh TODO:
+        // cjh TODO:
         CC_ASSERT(false);
         return nullptr;
     }
 
     template <typename T, typename std::enable_if_t<std::is_base_of<Component, T>::value>>
     std::vector<Component *> getComponentsInChildren() const {
-        //cjh TODO:
+        // cjh TODO:
         CC_ASSERT(false);
         return {};
     }
@@ -625,11 +625,11 @@ protected:
 
     bool onPreDestroyBase();
 
-    static std::vector<SharedPtr<Node>> dirtyNodes;
-    static uint32_t                     clearFrame;
-    static uint32_t                     clearRound;
+    static std::vector<Node *> dirtyNodes;
+    static uint32_t            clearFrame;
+    static uint32_t            clearRound;
 
-    Scene *             _scene{nullptr};
+    Scene              *_scene{nullptr};
     NodeEventProcessor *_eventProcessor{nullptr};
 
     uint32_t _eventMask{0};
@@ -644,7 +644,7 @@ protected:
     SharedPtr<NodeUiProperties> _uiProps;
     //    bool _activeInHierarchy{false};
     // Shared memory with JS.
-    uint8_t * _activeInHierarchyArr{nullptr};
+    uint8_t  *_activeInHierarchyArr{nullptr};
     uint32_t *_layerArr{nullptr};
 
 public:
@@ -653,7 +653,7 @@ public:
     // For deserialization
     std::string                  _id;
     std::vector<SharedPtr<Node>> _children;
-    Node *                       _parent{nullptr};
+    Node                        *_parent{nullptr};
     bool                         _active{true};
 
     // local transform
@@ -686,7 +686,7 @@ bool Node::isNode(T *obj) {
 }
 
 template <typename... Args>
-void Node::emit(const CallbacksInvoker::KeyType &type, Args &&... args) {
+void Node::emit(const CallbacksInvoker::KeyType &type, Args &&...args) {
     _eventProcessor->emit(type, std::forward<Args>(args)...);
 }
 

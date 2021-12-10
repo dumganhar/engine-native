@@ -510,8 +510,7 @@ public:
 
     inline NodeUiProperties *getUIProps() const { return _uiProps.get(); }
 
-    using UIPropsTransformDirtyCallback = std::function<void(uint32_t **)>;
-    inline void setUIPropsTransformDirtyCallback(const UIPropsTransformDirtyCallback &cb) { _uiPropsTransformDirtyCallback = cb; }
+    inline void setUIPropsTransformDirtyPtr(uint32_t* pDirty) { _uiTransformDirty = pDirty; }
 
     // ------------------  Component code start -----------------------------
     // TODO(Lenovo):
@@ -673,7 +672,6 @@ private:
     friend class NodeActivator;
     friend class Scene;
 
-    UIPropsTransformDirtyCallback _uiPropsTransformDirtyCallback{nullptr};
     // Used to shared memory of Node._uiProps._uiTransformDirty.
     uint32_t *_uiTransformDirty{nullptr};
 

@@ -634,8 +634,8 @@ protected:
     bool onPreDestroyBase();
 
     static std::vector<Node *> dirtyNodes;
-    static uint32_t                     clearFrame;
-    static uint32_t                     clearRound;
+    static uint32_t            clearFrame;
+    static uint32_t            clearRound;
 
 private:
     inline void notifyLocalPositionUpdated() {
@@ -658,7 +658,7 @@ private:
     }
 
 protected:
-    Scene *             _scene{nullptr};
+    Scene              *_scene{nullptr};
     NodeEventProcessor *_eventProcessor{nullptr};
 
     uint32_t _eventMask{0};

@@ -26,10 +26,10 @@
 #pragma once
 
 #include <string>
-#include "base/RefCounted.h"
 #include "base/Ptr.h"
-#include "math/Vec3.h"
+#include "base/RefCounted.h"
 #include "core/scene-graph/Node.h"
+#include "math/Vec3.h"
 
 namespace cc {
 namespace scene {
@@ -45,8 +45,8 @@ enum class LightType {
 
 class Light : public RefCounted {
 public:
-    Light()          = default;
-    virtual ~Light() = default;
+    Light()           = default;
+    ~Light() override = default;
 
     inline void attachToScene(RenderScene *scene) { _scene = scene; }
     inline void detachFromScene() { _scene = nullptr; }

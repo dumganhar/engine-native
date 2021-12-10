@@ -78,6 +78,7 @@
 #pragma once
 
 #include <utility>
+#include "base/RefCounted.h"
 
 namespace cc {
 
@@ -90,20 +91,20 @@ public:
 
     SharedPtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)
         if (_ptr) {
-            _ptr->addRef();
+            reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
     }
 
     SharedPtr(const SharedPtr<T> &r) : _ptr(r._ptr) {
         if (_ptr) {
-            _ptr->addRef();
+            reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
     }
 
     template <typename U>
     SharedPtr(const SharedPtr<U> &r) : _ptr(r.get()) {
         if (_ptr) {
-            _ptr->addRef();
+            reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
     }
 
@@ -115,7 +116,7 @@ public:
 
     ~SharedPtr() {
         if (_ptr) {
-            _ptr->release();
+            reinterpret_cast<RefCounted *>(_ptr)->release();
         }
     }
 
@@ -140,10 +141,10 @@ public:
     SharedPtr<T> &operator=(T *p) {
         // AddRef first so that self assignment should work
         if (p) {
-            p->addRef();
+            reinterpret_cast<RefCounted *>(p)->addRef();
         }
         if (_ptr) {
-            _ptr->release();
+            reinterpret_cast<RefCounted *>(_ptr)->release();
         }
         _ptr = p;
         return *this;

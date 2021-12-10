@@ -26,12 +26,13 @@
 #pragma once
 
 #include <variant>
-#include "3d/assets/Mesh.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "renderer/gfx-base/GFXDef.h"
 
 namespace cc {
+
+class Mesh;
 
 /**
  * @en Array views for index buffer
@@ -171,7 +172,7 @@ public:
     void enableVertexIdChannel(gfx::Device *device);
 
     inline void  setMesh(Mesh *mesh) { _mesh = mesh; } //cjh shared_ptr
-    inline Mesh *getMesh() const { return _mesh.get(); }
+    inline Mesh *getMesh() const { return _mesh; }
 
     inline void                           setSubMeshIdx(uint32_t idx) { _subMeshIdx = idx; }
     inline const std::optional<uint32_t> &getSubMeshIdx() const { return _subMeshIdx; }
@@ -180,7 +181,7 @@ private:
     gfx::Buffer *allocVertexIdBuffer(gfx::Device *device);
 
 private:
-    SharedPtr<Mesh>         _mesh;
+    Mesh *                  _mesh{nullptr};
     std::optional<uint32_t> _subMeshIdx;
 
     std::vector<IFlatBuffer> _flatBuffers;

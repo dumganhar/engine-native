@@ -26,6 +26,7 @@
 #pragma once
 
 #include "3d/assets/Morph.h"
+#include "base/Ptr.h"
 
 namespace cc {
 
@@ -43,8 +44,8 @@ public:
     MorphRenderingInstance *createInstance() override;
 
 private:
-    Mesh *                               _mesh{nullptr};
-    std::vector<SubMeshMorphRendering *> _subMeshRenderings;
+    Mesh *                                        _mesh{nullptr};
+    std::vector<SharedPtr<SubMeshMorphRendering>> _subMeshRenderings;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(StdMorphRendering);
 

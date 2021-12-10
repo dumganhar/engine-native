@@ -32,7 +32,7 @@
 namespace cc {
 namespace gfx {
 
-class GFXObject : public Object, public RefCounted {
+class GFXObject : public RefCounted, public Object {
 public:
     explicit GFXObject(ObjectType type);
     ~GFXObject() override = default;

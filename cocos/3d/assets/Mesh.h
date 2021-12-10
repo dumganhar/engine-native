@@ -36,9 +36,10 @@
 
 namespace cc {
 
-class MorphRendering;
-class RenderingSubMesh;
 class Skeleton;
+class RenderingSubMesh;
+class MorphRendering;
+
 /**
  * @en Mesh asset
  * @zh 网格资源。
@@ -241,7 +242,7 @@ public:
      */
     const JointBufferIndicesType &getJointBufferIndices();
 
-    using RenderingSubMeshList = std::vector<RenderingSubMesh *>;
+    using RenderingSubMeshList = std::vector<SharedPtr<RenderingSubMesh>>;
     /**
      * @en The sub meshes for rendering. Mesh could be split into different sub meshes for rendering.
      * @zh 此网格创建的渲染网格。
@@ -381,7 +382,7 @@ private:
     static TypedArray createTypedArrayWithGFXFormat(gfx::Format format, uint32_t count);
 
 public:
-    MorphRendering *morphRendering{nullptr};
+    SharedPtr<MorphRendering> morphRendering;
 
 private:
     //cjh howto ? @serializable

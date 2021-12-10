@@ -220,12 +220,12 @@ void Mesh::initialize() {
         return;
     }
 
-    _initialized                                  = true;
-    auto &                          buffer        = _data;
-    gfx::Device *                   gfxDevice     = gfx::Device::getInstance();
-    auto                            vertexBuffers = createVertexBuffers(gfxDevice, buffer.buffer().get());
-    gfx::BufferList                 indexBuffers;
-    std::vector<RenderingSubMesh *> subMeshes;
+    _initialized                                           = true;
+    auto &                                   buffer        = _data;
+    gfx::Device *                            gfxDevice     = gfx::Device::getInstance();
+    auto                                     vertexBuffers = createVertexBuffers(gfxDevice, buffer.buffer().get());
+    gfx::BufferList                          indexBuffers;
+    std::vector<SharedPtr<RenderingSubMesh>> subMeshes;
 
     for (size_t i = 0; i < _struct.primitives.size(); i++) {
         auto &prim = _struct.primitives[i];
@@ -861,8 +861,8 @@ bool Mesh::copyIndices(index_t primitiveIndex, TypedArray &outputArray) {
     const gfx::Format indexFormat = primitive.indexView.value().stride == 1 ? gfx::Format::R8UI
                                                                             : (primitive.indexView.value().stride == 2 ? gfx::Format::R16UI
                                                                                                                        : gfx::Format::R32UI);
-    DataView          view(_data.buffer());
-    auto              reader = getReader(view, indexFormat);
+    DataView view(_data.buffer());
+    auto     reader = getReader(view, indexFormat);
     for (uint32_t i = 0; i < indexCount; ++i) {
         TypedArrayElementType element = reader(primitive.indexView.value().offset + gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(indexFormat)].size * i);
         setTypedArrayValue(outputArray, i, element);

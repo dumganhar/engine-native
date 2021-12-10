@@ -23,6 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "3d/models/BakedSkinningModel.h"
+#include "3d/assets/Mesh.h"
 #include "3d/skeletal-animation/DataPoolManager.h"
 #include "3d/skeletal-animation/SkeletalAnimationUtils.h"
 #include "core/Root.h"

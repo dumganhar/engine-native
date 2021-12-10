@@ -26,6 +26,7 @@
 #pragma once
 
 #include "3d/assets/Types.h"
+#include "base/RefCounted.h"
 #include "base/TypeDef.h"
 #include "scene/Define.h"
 
@@ -45,7 +46,7 @@ MorphRendering *createMorphRendering(Mesh *mesh, gfx::Device *gfxDevice);
 /**
  * Class which control rendering of a morph resource.
  */
-class MorphRendering {
+class MorphRendering : public RefCounted {
 public:
     virtual ~MorphRendering()                        = default;
     virtual MorphRenderingInstance *createInstance() = 0;

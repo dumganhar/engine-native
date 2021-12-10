@@ -25,6 +25,7 @@
 
 #include "core/assets/TextureCube.h"
 #include "core/assets/ImageAsset.h"
+#include "renderer/gfx-base/GFXTexture.h"
 
 namespace cc {
 

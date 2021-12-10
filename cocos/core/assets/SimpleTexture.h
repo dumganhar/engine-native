@@ -28,6 +28,7 @@
 #include "core/ArrayBuffer.h"
 #include "core/assets/Asset.h"
 #include "core/assets/TextureBase.h"
+#include "renderer/gfx-base/GFXTexture.h"
 
 namespace cc {
 

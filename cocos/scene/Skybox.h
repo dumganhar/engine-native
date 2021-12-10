@@ -29,6 +29,7 @@
 #include "base/RefCounted.h"
 #include "core/assets/TextureCube.h"
 #include "pipeline/GlobalDescriptorSetManager.h"
+#include "renderer/gfx-base/GFXTexture.h"
 #include "scene/Model.h"
 
 namespace cc {

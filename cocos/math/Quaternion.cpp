@@ -284,9 +284,11 @@ void Quaternion::squad(const Quaternion &q1, const Quaternion &q2, const Quatern
 }
 
 void Quaternion::fromViewUp(const Vec3 &view, Quaternion *out) {
+    GP_ASSERT(out);
     fromViewUp(view, Vec3(0, 1, 0), out);
 }
 void Quaternion::fromViewUp(const Vec3 &view, const Vec3 &up, Quaternion *out) {
+    GP_ASSERT(out);
     Mat3 mTemp{Mat3::IDENTITY};
     Mat3::fromViewUp(view, up, &mTemp);
     Quaternion::fromMat3(mTemp, out);
@@ -294,6 +296,7 @@ void Quaternion::fromViewUp(const Vec3 &view, const Vec3 &up, Quaternion *out) {
 }
 
 void Quaternion::fromEuler(float x, float y, float z, Quaternion *dst) {
+    GP_ASSERT(dst);
     float halfToRad = 0.5F * cc::math::PI / 180.0F;
     x *= halfToRad;
     y *= halfToRad;
@@ -312,6 +315,7 @@ void Quaternion::fromEuler(float x, float y, float z, Quaternion *dst) {
 }
 
 void Quaternion::toEuler(const Quaternion &q, bool outerZ, Vec3 *out) {
+    GP_ASSERT(out);
     float x{q.x};
     float y{q.y};
     float z{q.z};
@@ -348,6 +352,7 @@ void Quaternion::toEuler(const Quaternion &q, bool outerZ, Vec3 *out) {
 }
 
 void Quaternion::fromMat3(const Mat3 &m, Quaternion *out) {
+    GP_ASSERT(out);
     float m00   = m.m[0];
     float m03   = m.m[1];
     float m06   = m.m[2];

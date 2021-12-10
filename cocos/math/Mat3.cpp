@@ -86,9 +86,11 @@ void Mat3::identity(Mat3 &mat) {
 }
 
 void Mat3::fromViewUp(const Vec3 &view, Mat3 *out) {
+    GP_ASSERT(out);
     fromViewUp(view, Vec3(0, 1, 0), out);
 }
 void Mat3::fromViewUp(const Vec3 &view, const Vec3 &up, Mat3 *out) {
+    GP_ASSERT(out);
     if (view.lengthSquared() < math::EPSILON * math::EPSILON) {
         Mat3::identity(*out);
         return;
@@ -103,7 +105,7 @@ void Mat3::fromViewUp(const Vec3 &view, const Vec3 &up, Mat3 *out) {
         return;
     }
     Vec3::cross(view, vTempA, &vTempB);
-    (*out).set(vTempA.x, vTempA.y, vTempA.z,
+    out->set(vTempA.x, vTempA.y, vTempA.z,
             vTempB.x, vTempB.y, vTempB.z,
             view.x, view.y, view.z);
 }
@@ -119,15 +121,16 @@ void Mat3::transpose() {
 }
 
 void Mat3::transpose(const Mat3 &mat, Mat3 *out) {
-    (*out).m[0] = mat.m[0];
-    (*out).m[1] = mat.m[3];
-    (*out).m[2] = mat.m[6];
-    (*out).m[3] = mat.m[1];
-    (*out).m[4] = mat.m[4];
-    (*out).m[5] = mat.m[7];
-    (*out).m[6] = mat.m[2];
-    (*out).m[7] = mat.m[5];
-    (*out).m[8] = mat.m[8];
+    GP_ASSERT(out);
+    out->m[0] = mat.m[0];
+    out->m[1] = mat.m[3];
+    out->m[2] = mat.m[6];
+    out->m[3] = mat.m[1];
+    out->m[4] = mat.m[4];
+    out->m[5] = mat.m[7];
+    out->m[6] = mat.m[2];
+    out->m[7] = mat.m[5];
+    out->m[8] = mat.m[8];
 }
 
 void Mat3::inverse() {
@@ -155,19 +158,20 @@ void Mat3::inverse() {
 }
 
 void Mat3::adjoint(const Mat3 &mat, Mat3 *out) {
+    GP_ASSERT(out);
     float a00 = mat.m[0], a01 = mat.m[1], a02 = mat.m[2];
     float a10 = mat.m[3], a11 = mat.m[4], a12 = mat.m[5];
     float a20 = mat.m[6], a21 = mat.m[7], a22 = mat.m[8];
 
-    (*out).m[0] = (a11 * a22 - a12 * a21);
-    (*out).m[1] = (a02 * a21 - a01 * a22);
-    (*out).m[2] = (a01 * a12 - a02 * a11);
-    (*out).m[3] = (a12 * a20 - a10 * a22);
-    (*out).m[4] = (a00 * a22 - a02 * a20);
-    (*out).m[5] = (a02 * a10 - a00 * a12);
-    (*out).m[6] = (a10 * a21 - a11 * a20);
-    (*out).m[7] = (a01 * a20 - a00 * a21);
-    (*out).m[8] = (a00 * a11 - a01 * a10);
+    out->m[0] = (a11 * a22 - a12 * a21);
+    out->m[1] = (a02 * a21 - a01 * a22);
+    out->m[2] = (a01 * a12 - a02 * a11);
+    out->m[3] = (a12 * a20 - a10 * a22);
+    out->m[4] = (a00 * a22 - a02 * a20);
+    out->m[5] = (a02 * a10 - a00 * a12);
+    out->m[6] = (a10 * a21 - a11 * a20);
+    out->m[7] = (a01 * a20 - a00 * a21);
+    out->m[8] = (a00 * a11 - a01 * a10);
 }
 
 float Mat3::determinant() {
@@ -175,6 +179,7 @@ float Mat3::determinant() {
 }
 
 void Mat3::multiply(const Mat3 &a, const Mat3 &b, Mat3 *out) {
+    GP_ASSERT(out);
     float a00 = a.m[0], a01 = a.m[1], a02 = a.m[2];
     float a10 = a.m[3], a11 = a.m[4], a12 = a.m[5];
     float a20 = a.m[6], a21 = a.m[7], a22 = a.m[8];
@@ -183,39 +188,41 @@ void Mat3::multiply(const Mat3 &a, const Mat3 &b, Mat3 *out) {
     float b10 = b.m[3], b11 = b.m[4], b12 = b.m[5];
     float b20 = b.m[6], b21 = b.m[7], b22 = b.m[8];
 
-    (*out).m[0] = b00 * a00 + b01 * a10 + b02 * a20;
-    (*out).m[1] = b00 * a01 + b01 * a11 + b02 * a21;
-    (*out).m[2] = b00 * a02 + b01 * a12 + b02 * a22;
+    out->m[0] = b00 * a00 + b01 * a10 + b02 * a20;
+    out->m[1] = b00 * a01 + b01 * a11 + b02 * a21;
+    out->m[2] = b00 * a02 + b01 * a12 + b02 * a22;
 
-    (*out).m[3] = b10 * a00 + b11 * a10 + b12 * a20;
-    (*out).m[4] = b10 * a01 + b11 * a11 + b12 * a21;
-    (*out).m[5] = b10 * a02 + b11 * a12 + b12 * a22;
+    out->m[3] = b10 * a00 + b11 * a10 + b12 * a20;
+    out->m[4] = b10 * a01 + b11 * a11 + b12 * a21;
+    out->m[5] = b10 * a02 + b11 * a12 + b12 * a22;
 
-    (*out).m[6] = b20 * a00 + b21 * a10 + b22 * a20;
-    (*out).m[7] = b20 * a01 + b21 * a11 + b22 * a21;
-    (*out).m[8] = b20 * a02 + b21 * a12 + b22 * a22;
+    out->m[6] = b20 * a00 + b21 * a10 + b22 * a20;
+    out->m[7] = b20 * a01 + b21 * a11 + b22 * a21;
+    out->m[8] = b20 * a02 + b21 * a12 + b22 * a22;
 }
 
 void Mat3::translate(const Mat3 &mat, const Vec2 &vec, Mat3 *out) {
+    GP_ASSERT(out);
     float a00 = mat.m[0], a01 = mat.m[1], a02 = mat.m[2];
     float a10 = mat.m[3], a11 = mat.m[4], a12 = mat.m[5];
     float a20 = mat.m[6], a21 = mat.m[7], a22 = mat.m[8];
     float x = vec.x, y = vec.y;
 
-    (*out).m[0] = a00;
-    (*out).m[1] = a01;
-    (*out).m[2] = a02;
+    out->m[0] = a00;
+    out->m[1] = a01;
+    out->m[2] = a02;
 
-    (*out).m[3] = a10;
-    (*out).m[4] = a11;
-    (*out).m[5] = a12;
+    out->m[3] = a10;
+    out->m[4] = a11;
+    out->m[5] = a12;
 
-    (*out).m[6] = x * a00 + y * a10 + a20;
-    (*out).m[7] = x * a01 + y * a11 + a21;
-    (*out).m[8] = x * a02 + y * a12 + a22;
+    out->m[6] = x * a00 + y * a10 + a20;
+    out->m[7] = x * a01 + y * a11 + a21;
+    out->m[8] = x * a02 + y * a12 + a22;
 }
 
 void Mat3::rotate(const Mat3 &mat, float rad, Mat3 *out) {
+    GP_ASSERT(out);
     float a00 = mat.m[0], a01 = mat.m[1], a02 = mat.m[2];
     float a10 = mat.m[3], a11 = mat.m[4], a12 = mat.m[5];
     float a20 = mat.m[6], a21 = mat.m[7], a22 = mat.m[8];
@@ -223,91 +230,97 @@ void Mat3::rotate(const Mat3 &mat, float rad, Mat3 *out) {
     float s = sin(rad);
     float c = cos(rad);
 
-    (*out).m[0] = c * a00 + s * a10;
-    (*out).m[1] = c * a01 + s * a11;
-    (*out).m[2] = c * a02 + s * a12;
+    out->m[0] = c * a00 + s * a10;
+    out->m[1] = c * a01 + s * a11;
+    out->m[2] = c * a02 + s * a12;
 
-    (*out).m[3] = c * a10 - s * a00;
-    (*out).m[4] = c * a11 - s * a01;
-    (*out).m[5] = c * a12 - s * a02;
+    out->m[3] = c * a10 - s * a00;
+    out->m[4] = c * a11 - s * a01;
+    out->m[5] = c * a12 - s * a02;
 
-    (*out).m[6] = a20;
-    (*out).m[7] = a21;
-    (*out).m[8] = a22;
+    out->m[6] = a20;
+    out->m[7] = a21;
+    out->m[8] = a22;
 }
 
 void Mat3::scale(const Mat3 &mat, const Vec2 &vec, Mat3 *out) {
+    GP_ASSERT(out);
     float x = vec.x, y = vec.y;
 
-    (*out).m[0] = x * mat.m[0];
-    (*out).m[1] = x * mat.m[1];
-    (*out).m[2] = x * mat.m[2];
+    out->m[0] = x * mat.m[0];
+    out->m[1] = x * mat.m[1];
+    out->m[2] = x * mat.m[2];
 
-    (*out).m[3] = y * mat.m[3];
-    (*out).m[4] = y * mat.m[4];
-    (*out).m[5] = y * mat.m[5];
+    out->m[3] = y * mat.m[3];
+    out->m[4] = y * mat.m[4];
+    out->m[5] = y * mat.m[5];
 
-    (*out).m[6] = mat.m[6];
-    (*out).m[7] = mat.m[7];
-    (*out).m[8] = mat.m[8];
+    out->m[6] = mat.m[6];
+    out->m[7] = mat.m[7];
+    out->m[8] = mat.m[8];
 }
 
 void Mat3::fromMat4(const Mat4 &mat, Mat3 *out) {
-    (*out).m[0] = mat.m[0];
-    (*out).m[1] = mat.m[1];
-    (*out).m[2] = mat.m[2];
-    (*out).m[3] = mat.m[4];
-    (*out).m[4] = mat.m[5];
-    (*out).m[5] = mat.m[6];
-    (*out).m[6] = mat.m[8];
-    (*out).m[7] = mat.m[9];
-    (*out).m[8] = mat.m[10];
+    GP_ASSERT(out);
+    out->m[0] = mat.m[0];
+    out->m[1] = mat.m[1];
+    out->m[2] = mat.m[2];
+    out->m[3] = mat.m[4];
+    out->m[4] = mat.m[5];
+    out->m[5] = mat.m[6];
+    out->m[6] = mat.m[8];
+    out->m[7] = mat.m[9];
+    out->m[8] = mat.m[10];
 }
 
 void Mat3::fromTranslation(const Vec2 &vec, Mat3 *out) {
-    (*out).m[0] = 1;
-    (*out).m[1] = 0;
-    (*out).m[2] = 0;
-    (*out).m[3] = 0;
-    (*out).m[4] = 1;
-    (*out).m[5] = 0;
-    (*out).m[6] = vec.x;
-    (*out).m[7] = vec.y;
-    (*out).m[8] = 1;
+    GP_ASSERT(out);
+    out->m[0] = 1;
+    out->m[1] = 0;
+    out->m[2] = 0;
+    out->m[3] = 0;
+    out->m[4] = 1;
+    out->m[5] = 0;
+    out->m[6] = vec.x;
+    out->m[7] = vec.y;
+    out->m[8] = 1;
 }
 
 void Mat3::fromRotation(float rad, Mat3 *out) {
+    GP_ASSERT(out);
     float s = sin(rad);
     float c = cos(rad);
 
-    (*out).m[0] = c;
-    (*out).m[1] = s;
-    (*out).m[2] = 0;
+    out->m[0] = c;
+    out->m[1] = s;
+    out->m[2] = 0;
 
-    (*out).m[3] = -s;
-    (*out).m[4] = c;
-    (*out).m[5] = 0;
+    out->m[3] = -s;
+    out->m[4] = c;
+    out->m[5] = 0;
 
-    (*out).m[6] = 0;
-    (*out).m[7] = 0;
-    (*out).m[8] = 1;
+    out->m[6] = 0;
+    out->m[7] = 0;
+    out->m[8] = 1;
 }
 
 void Mat3::fromScaling(const Vec2 &vec, Mat3 *out) {
-    (*out).m[0] = vec.x;
-    (*out).m[1] = 0;
-    (*out).m[2] = 0;
+    GP_ASSERT(out);
+    out->m[0] = vec.x;
+    out->m[1] = 0;
+    out->m[2] = 0;
 
-    (*out).m[3] = 0;
-    (*out).m[4] = vec.y;
-    (*out).m[5] = 0;
+    out->m[3] = 0;
+    out->m[4] = vec.y;
+    out->m[5] = 0;
 
-    (*out).m[6] = 0;
-    (*out).m[7] = 0;
-    (*out).m[8] = 1;
+    out->m[6] = 0;
+    out->m[7] = 0;
+    out->m[8] = 1;
 }
 
 void Mat3::fromQuat(const Quaternion &quat, Mat3 *out) {
+    GP_ASSERT(out);
     float x = quat.x, y = quat.y, z = quat.z, w = quat.w;
     float x2 = x + x;
     float y2 = y + y;
@@ -323,41 +336,43 @@ void Mat3::fromQuat(const Quaternion &quat, Mat3 *out) {
     float wy = w * y2;
     float wz = w * z2;
 
-    (*out).m[0] = 1 - yy - zz;
-    (*out).m[3] = yx - wz;
-    (*out).m[6] = zx + wy;
+    out->m[0] = 1 - yy - zz;
+    out->m[3] = yx - wz;
+    out->m[6] = zx + wy;
 
-    (*out).m[1] = yx + wz;
-    (*out).m[4] = 1 - xx - zz;
-    (*out).m[7] = zy - wx;
+    out->m[1] = yx + wz;
+    out->m[4] = 1 - xx - zz;
+    out->m[7] = zy - wx;
 
-    (*out).m[2] = zx - wy;
-    (*out).m[5] = zy + wx;
-    (*out).m[8] = 1 - xx - yy;
+    out->m[2] = zx - wy;
+    out->m[5] = zy + wx;
+    out->m[8] = 1 - xx - yy;
 }
 
 void Mat3::add(const Mat3 &a, const Mat3 &b, Mat3 *out) {
-    (*out).m[0] = a.m[0] + b.m[0];
-    (*out).m[1] = a.m[1] + b.m[1];
-    (*out).m[2] = a.m[2] + b.m[2];
-    (*out).m[3] = a.m[3] + b.m[3];
-    (*out).m[4] = a.m[4] + b.m[4];
-    (*out).m[5] = a.m[5] + b.m[5];
-    (*out).m[6] = a.m[6] + b.m[6];
-    (*out).m[7] = a.m[7] + b.m[7];
-    (*out).m[8] = a.m[8] + b.m[8];
+    GP_ASSERT(out);
+    out->m[0] = a.m[0] + b.m[0];
+    out->m[1] = a.m[1] + b.m[1];
+    out->m[2] = a.m[2] + b.m[2];
+    out->m[3] = a.m[3] + b.m[3];
+    out->m[4] = a.m[4] + b.m[4];
+    out->m[5] = a.m[5] + b.m[5];
+    out->m[6] = a.m[6] + b.m[6];
+    out->m[7] = a.m[7] + b.m[7];
+    out->m[8] = a.m[8] + b.m[8];
 }
 
 void Mat3::subtract(const Mat3 &a, const Mat3 &b, Mat3 *out) {
-    (*out).m[0] = a.m[0] - b.m[0];
-    (*out).m[1] = a.m[1] - b.m[1];
-    (*out).m[2] = a.m[2] - b.m[2];
-    (*out).m[3] = a.m[3] - b.m[3];
-    (*out).m[4] = a.m[4] - b.m[4];
-    (*out).m[5] = a.m[5] - b.m[5];
-    (*out).m[6] = a.m[6] - b.m[6];
-    (*out).m[7] = a.m[7] - b.m[7];
-    (*out).m[8] = a.m[8] - b.m[8];
+    GP_ASSERT(out);
+    out->m[0] = a.m[0] - b.m[0];
+    out->m[1] = a.m[1] - b.m[1];
+    out->m[2] = a.m[2] - b.m[2];
+    out->m[3] = a.m[3] - b.m[3];
+    out->m[4] = a.m[4] - b.m[4];
+    out->m[5] = a.m[5] - b.m[5];
+    out->m[6] = a.m[6] - b.m[6];
+    out->m[7] = a.m[7] - b.m[7];
+    out->m[8] = a.m[8] - b.m[8];
 }
 
 const Mat3 Mat3::IDENTITY = Mat3(

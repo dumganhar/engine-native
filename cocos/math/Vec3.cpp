@@ -69,6 +69,7 @@ Vec3 Vec3::fromColor(unsigned int color) {
 Vec3::~Vec3() = default;
 
 void Vec3::transformInverseRTS(const Vec3 &v, const Quaternion &r, const Vec3 &t, const Vec3 &s, Vec3 *out) {
+    GP_ASSERT(out);
     const float x = v.x - t.x;
     const float y = v.y - t.y;
     const float z = v.z - t.z;

@@ -27,7 +27,6 @@
 #include "core/Director.h"
 #include "core/Game.h"
 #include "core/data/Object.h"
-#include "core/event/EventTypesToJS.h"
 #include "core/scene-graph/Find.h"
 #include "core/scene-graph/NodeActivator.h"
 #include "core/scene-graph/NodeEnum.h"
@@ -523,16 +522,20 @@ Node *Node::getChildByPath(const std::string &path) const {
 
 //
 
-void Node::setPosition(float x, float y, float z) {
+void Node::setPositionInternal(float x, float y, float z, bool calledFromJS) {
     _localPosition.set(x, y, z);
     invalidateChildren(TransformBit::POSITION);
 
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::POSITION);
     }
+
+    if (!calledFromJS) {
+        notifyLocalPositionUpdated();
+    }
 }
 
-void Node::setRotation(float x, float y, float z, float w) {
+void Node::setRotationInternal(float x, float y, float z, float w, bool calledFromJS) {
     _localRotation.set(x, y, z, w);
     _eulerDirty = true;
 
@@ -540,6 +543,10 @@ void Node::setRotation(float x, float y, float z, float w) {
 
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
+    }
+
+    if (!calledFromJS) {
+        notifyLocalRotationUpdated();
     }
 }
 
@@ -551,14 +558,20 @@ void Node::setRotationFromEuler(float x, float y, float z) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
-void Node::setScale(float x, float y, float z) {
+void Node::setScaleInternal(float x, float y, float z, bool calledFromJS) {
     _localScale.set(x, y, z);
 
     invalidateChildren(TransformBit::SCALE);
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::SCALE);
+    }
+
+    if (!calledFromJS) {
+        notifyLocalScaleUpdated();
     }
 }
 
@@ -566,6 +579,7 @@ void Node::updateWorldTransform() {
     if (!getDirtyFlag()) {
         return;
     }
+
     index_t    i    = 0;
     Node      *curr = this;
     Mat3       mat3;
@@ -680,6 +694,8 @@ void Node::setWorldPosition(float x, float y, float z) {
     } else {
         _localPosition.set(_worldPosition);
     }
+    notifyLocalPositionUpdated();
+
     invalidateChildren(TransformBit::POSITION);
 
     if (_eventMask & TRANSFORM_ON) {
@@ -709,6 +725,8 @@ void Node::setWorldRotation(float x, float y, float z, float w) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
 const Quaternion &Node::getWorldRotation() {
@@ -738,6 +756,8 @@ void Node::setWorldScale(float x, float y, float z) {
     } else {
         _localScale = _worldScale;
     }
+
+    notifyLocalScaleUpdated();
 
     invalidateChildren(TransformBit::SCALE);
     if (_eventMask & TRANSFORM_ON) {
@@ -772,6 +792,8 @@ void Node::setAngle(float val) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
 void Node::onSetParent(Node *oldParent, bool keepWorldTransform) {
@@ -794,6 +816,8 @@ void Node::onSetParent(Node *oldParent, bool keepWorldTransform) {
             _localRotation.set(_worldRotation);
             _localScale.set(_worldScale);
         }
+
+        notifyLocalPositionRotationScaleUpdated();
         _eulerDirty = true;
     }
     invalidateChildren(TransformBit::TRS);
@@ -817,6 +841,8 @@ void Node::rotate(const Quaternion &rot, NodeSpace ns) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
 void Node::lookAt(const Vec3 &pos, const Vec3 &up) {
@@ -845,6 +871,8 @@ void Node::inverseTransformPoint(Vec3 &out, const Vec3 &p) {
 
 void Node::setMatrix(const Mat4 &val) {
     val.decompose(&_localScale, &_localRotation, &_localPosition);
+    notifyLocalPositionRotationScaleUpdated();
+
     invalidateChildren(TransformBit::TRS);
     _eulerDirty = true;
     if (_eventMask & TRANSFORM_ON) {
@@ -866,9 +894,11 @@ void Node::setWorldRotationFromEuler(float x, float y, float z) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
-void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
+void Node::setRTSInternal(Quaternion *rot, Vec3 *pos, Vec3 *scale, bool calledFromJS) {
     uint32_t dirtyBit = 0;
     if (rot) {
         dirtyBit |= static_cast<uint32_t>(TransformBit::ROTATION);
@@ -883,6 +913,11 @@ void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
         _localScale = *scale;
         dirtyBit |= static_cast<uint32_t>(TransformBit::SCALE);
     }
+
+    if (!calledFromJS) {
+        notifyLocalPositionRotationScaleUpdated();
+    }
+
     if (dirtyBit) {
         invalidateChildren(static_cast<TransformBit>(dirtyBit));
         if (_eventMask & TRANSFORM_ON) {
@@ -928,6 +963,9 @@ void Node::translate(const Vec3 &trans, NodeSpace ns) {
             _localPosition.z += trans.z;
         }
     }
+
+    notifyLocalPositionUpdated();
+
     invalidateChildren(TransformBit::POSITION);
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::POSITION);

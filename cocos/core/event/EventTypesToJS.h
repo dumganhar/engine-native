@@ -44,6 +44,10 @@ public:
     static const CallbacksInvoker::KeyType NODE_ACTIVE_NODE;
     static const CallbacksInvoker::KeyType NODE_ON_BATCH_CREATED;
     static const CallbacksInvoker::KeyType NODE_SCENE_UPDATED;
+    static const CallbacksInvoker::KeyType NODE_LOCAL_POSITION_UPDATED;
+    static const CallbacksInvoker::KeyType NODE_LOCAL_ROTATION_UPDATED;
+    static const CallbacksInvoker::KeyType NODE_LOCAL_SCALE_UPDATED;
+    static const CallbacksInvoker::KeyType NODE_LOCAL_POSITION_ROTATION_SCALE_UPDATED;
 
     static const CallbacksInvoker::KeyType MODEL_UPDATE_TRANSFORM;
     static const CallbacksInvoker::KeyType MODEL_UPDATE_UBO;

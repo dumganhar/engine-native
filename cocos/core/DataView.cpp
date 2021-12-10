@@ -30,7 +30,7 @@ namespace cc {
 #include "base/Macros.h"
 #include "core/ArrayBuffer.h"
 
-std::unordered_map<std::string, DataView::FunctionVariant> DataView::intReaderMap{
+std::unordered_map<std::string, DataView::ReaderVariant> DataView::intReaderMap{
     {"getUint8", &DataView::getUint8},
     {"getUint16", &DataView::getUint16},
     {"getUint32", &DataView::getUint32},
@@ -48,7 +48,7 @@ std::unordered_map<std::string, DataView::IntWritter> DataView::intWritterMap{
     {"setInt32", reinterpret_cast<DataView::IntWritter>(&DataView::setInt32)},
 };
 
-int32_t DataView::readInt(FunctionVariant &readerVariant, index_t offset)
+int32_t DataView::readInt(ReaderVariant &readerVariant, index_t offset)
 {
     return std::visit([offset, this](auto &reader) {
         return (int32_t)(this->*reader)(offset);

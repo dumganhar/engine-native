@@ -74,9 +74,9 @@ public:
     using UInt16Reader = uint16_t (DataView::*)(index_t) const;
     using Int8Reader = int8_t (DataView::*)(index_t) const;
     using UInt8Reader = uint8_t (DataView::*)(index_t) const;
-    using FunctionVariant       = std::variant<Int32Reader, UInt32Reader, Int16Reader,UInt16Reader, Int8Reader, UInt8Reader>;
-    static std::unordered_map<std::string, FunctionVariant> intReaderMap;
-    int32_t readInt(FunctionVariant &readerVariant, index_t offset);
+    using ReaderVariant       = std::variant<Int32Reader, UInt32Reader, Int16Reader,UInt16Reader, Int8Reader, UInt8Reader>;
+    static std::unordered_map<std::string, ReaderVariant> intReaderMap;
+    int32_t readInt(ReaderVariant &readerVariant, index_t offset);
 
     using IntWritter = void (DataView::*)(index_t, int32_t);
     static std::unordered_map<std::string, IntWritter> intWritterMap;

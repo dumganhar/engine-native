@@ -87,7 +87,7 @@ DataView mapBuffer(DataView&                  target,
         intWritter = DataView::intWritterMap[setPrefix + _getDataViewType(info)];
     }
 
-    DataView::FunctionVariant intReader;
+    DataView::ReaderVariant intReader;
     if (!isFloat) {
         intReader = DataView::intReaderMap[getPrefix + _getDataViewType(info)];
     }

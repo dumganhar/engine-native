@@ -700,7 +700,7 @@ bool obbPoint(const OBB &obb, const Vec3 &point) {
         return std::abs(a.x) < b.x && std::abs(a.y) < b.y && std::abs(a.z) < b.z;
     };
     auto tmp = point - obb.center;
-    Mat3::transpose(m3, obb.orientation);
+    Mat3::transpose(obb.orientation, &m3);
     tmp.transformMat3(tmp, m3);
     return lessThan(tmp, obb.halfExtents);
 };

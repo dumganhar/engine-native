@@ -283,14 +283,14 @@ void Quaternion::squad(const Quaternion &q1, const Quaternion &q2, const Quatern
     slerpForSquad(dstQ, dstS, 2.0f * t * (1.0f - t), dst);
 }
 
-void Quaternion::fromViewUp(Quaternion &out, const Vec3 &view) {
-    fromViewUp(out, view, Vec3(0, 1, 0));
+void Quaternion::fromViewUp(const Vec3 &view, Quaternion *out) {
+    fromViewUp(view, Vec3(0, 1, 0), out);
 }
-void Quaternion::fromViewUp(Quaternion &out, const Vec3 &view, const Vec3 &up) {
+void Quaternion::fromViewUp(const Vec3 &view, const Vec3 &up, Quaternion *out) {
     Mat3 mTemp{Mat3::IDENTITY};
-    Mat3::fromViewUp(mTemp, view, up);
-    Quaternion::fromMat3(out, mTemp);
-    out.normalize();
+    Mat3::fromViewUp(view, up, &mTemp);
+    Quaternion::fromMat3(mTemp, out);
+    out->normalize();
 }
 
 void Quaternion::fromEuler(float x, float y, float z, Quaternion *dst) {
@@ -311,7 +311,7 @@ void Quaternion::fromEuler(float x, float y, float z, Quaternion *dst) {
     dst->w = cx * cy * cz - sx * sy * sz;
 }
 
-void Quaternion::toEuler(Vec3 *out, const Quaternion &q, bool outerZ) {
+void Quaternion::toEuler(const Quaternion &q, bool outerZ, Vec3 *out) {
     float x{q.x};
     float y{q.y};
     float z{q.z};
@@ -347,7 +347,7 @@ void Quaternion::toEuler(Vec3 *out, const Quaternion &q, bool outerZ) {
     out->z = attitude;
 }
 
-void Quaternion::fromMat3(Quaternion &out, const Mat3 &m) {
+void Quaternion::fromMat3(const Mat3 &m, Quaternion *out) {
     float m00   = m.m[0];
     float m03   = m.m[1];
     float m06   = m.m[2];
@@ -360,31 +360,31 @@ void Quaternion::fromMat3(Quaternion &out, const Mat3 &m) {
     float trace = m00 + m04 + m08;
     if (trace > 0) {
         const float s = 0.5F / std::sqrtf(trace + 1.0F);
-        out.w         = 0.25F / s;
-        out.x         = (m05 - m07) * s;
-        out.y         = (m06 - m02) * s;
-        out.z         = (m01 - m03) * s;
+        out->w         = 0.25F / s;
+        out->x         = (m05 - m07) * s;
+        out->y         = (m06 - m02) * s;
+        out->z         = (m01 - m03) * s;
     } else if ((m00 > m04) && (m00 > m08)) {
         const float s = 2.0F * std::sqrtf(1.0F + m04 - m00 - m08);
 
-        out.w = (m05 - m07) / s;
-        out.x = 0.25F * s;
-        out.y = (m03 + m01) / s;
-        out.z = (m06 + m02) / s;
+        out->w = (m05 - m07) / s;
+        out->x = 0.25F * s;
+        out->y = (m03 + m01) / s;
+        out->z = (m06 + m02) / s;
     } else if (m04 > m08) {
         const float s = 2.0F * std::sqrtf(1.0F + m04 - m00 - m08);
 
-        out.w = (m06 - m02) / s;
-        out.x = (m03 + m01) / s;
-        out.y = 0.25F * s;
-        out.z = (m07 + m05) / s;
+        out->w = (m06 - m02) / s;
+        out->x = (m03 + m01) / s;
+        out->y = 0.25F * s;
+        out->z = (m07 + m05) / s;
     } else {
         const float s = 2.0F * std::sqrtf(1.0F + m08 - m00 - m04);
 
-        out.w = (m01 - m03) / s;
-        out.x = (m06 + m02) / s;
-        out.y = (m07 + m05) / s;
-        out.z = 0.25F * s;
+        out->w = (m01 - m03) / s;
+        out->x = (m06 + m02) / s;
+        out->y = (m07 + m05) / s;
+        out->z = 0.25F * s;
     }
 }
 

@@ -86,14 +86,14 @@ void OBB::getBoundary(Vec3 *minPos, Vec3 *maxPos) const {
 void OBB::transform(const Mat4 &m, const Vec3 & /*pos*/, const Quaternion &rot, const Vec3 &scale, OBB *out) const {
     Vec3::transformMat4(center, m, &out->center);
     // parent shape doesn't contain rotations for now
-    Mat3::fromQuat(out->orientation, rot);
+    Mat3::fromQuat(rot, &out->orientation);
     Vec3::multiply(halfExtents, scale, &out->halfExtents);
 }
 
 void OBB::translateAndRotate(const Mat4 &m, const Quaternion &rot, OBB *out) const {
     Vec3::transformMat4(center, m, &out->center);
     // parent shape doesn't contain rotations for now
-    Mat3::fromQuat(out->orientation, rot);
+    Mat3::fromQuat(rot, &out->orientation);
 }
 
 void OBB::setScale(const Vec3 &scale, OBB *out) const {

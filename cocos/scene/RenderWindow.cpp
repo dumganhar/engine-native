@@ -95,10 +95,13 @@ bool RenderWindow::initialize(gfx::Device *device, IRenderWindowInfo &info) {
 void RenderWindow::destroy() {
     clearCameras();
     CC_SAFE_DESTROY_NULL(_depthStencilTexture);
+
     for (auto *colorTexture : _colorTextures) {
-        CC_SAFE_DESTROY_NULL(colorTexture);
+        CC_SAFE_DESTROY(colorTexture);
+        CC_SAFE_RELEASE(colorTexture);
     }
     _colorTextures.clear();
+
     CC_SAFE_DESTROY_NULL(_frameBuffer);
 }
 

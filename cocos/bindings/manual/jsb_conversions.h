@@ -651,14 +651,21 @@ template <typename T, bool is_reference>
 struct HolderType {
     using type       = typename std::remove_const<T>::type;
     using local_type = typename std::conditional_t<is_reference && is_jsb_object_v<T>, std::add_pointer_t<type>, type>;
-    local_type             data;
-    type *                 ptr = nullptr;
+    local_type data;
+    type *     ptr = nullptr;
+    struct alignas(T) EmbedField {
+        uint8_t inlineObject[is_reference && is_jsb_object_v<T> ? sizeof(T) : 0];
+    } inlineObject;
+
     constexpr inline type &value() {
         if (ptr) return *ptr;
         return holder_convert_to<type, local_type>(data);
     }
     ~HolderType() {
-        delete ptr;
+        //delete ptr;
+        if (ptr) {
+            ptr->~T();
+        }
     }
 };
 
@@ -1014,7 +1021,7 @@ inline bool sevalue_to_native(const se::Value &from, HolderType<T, is_reference>
             holder->data = static_cast<T *>(ptr);
             return true;
         }
-        holder->ptr = new T;
+        holder->ptr = new (&holder->inlineObject) T;
         return sevalue_to_native(from, holder->ptr, ctx);
     #else
         void *ptr = from.toObject()->getPrivateData();
@@ -1044,7 +1051,8 @@ inline typename std::enable_if<is_jsb_object_v<T>, bool>::type sevalue_to_native
         holder->data = static_cast<T *>(ptr);
         return true;
     } else {
-        holder->ptr = new T;
+        // holder->ptr = new T;
+        holder->ptr = new (&holder->inlineObject) T;
         return sevalue_to_native(from, holder->ptr, ctx);
     }
 }

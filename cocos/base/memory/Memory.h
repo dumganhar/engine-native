@@ -120,6 +120,12 @@
         (ptr)->destroy();    \
     }
 
+#define CC_SAFE_DESTROY_NULL(ptr) \
+    if (ptr) {                    \
+        (ptr)->destroy();         \
+        (ptr) = nullptr;          \
+    }
+
 #define CC_SAFE_RELEASE_REF(ptr) \
     if (ptr) {                   \
         (ptr)->ReleaseRef();     \

@@ -118,7 +118,7 @@ public:
 
     Pass();
     explicit Pass(Root *root);
-    ~Pass() override;
+    ~Pass() override = default;
 
     /**
      * @en Initialize the pass with given pass info, shader will be compiled in the init process
@@ -309,23 +309,23 @@ protected:
     virtual void syncBatchingScheme();
 
     // internal resources
-    gfx::Buffer *              _rootBuffer{nullptr};
-    std::vector<gfx::Buffer *> _buffers;
-    gfx::DescriptorSet *       _descriptorSet{nullptr};
-    gfx::PipelineLayout *      _pipelineLayout{nullptr};
+    SharedPtr<gfx::Buffer>              _rootBuffer;
+    std::vector<SharedPtr<gfx::Buffer>> _buffers;
+    SharedPtr<gfx::DescriptorSet>       _descriptorSet;
+    SharedPtr<gfx::PipelineLayout>      _pipelineLayout;
     // internal data
     index_t                       _passIndex{0};
     index_t                       _propertyIndex{0};
     std::string                   _programName;
     IPassDynamics                 _dynamics;
     Record<std::string, uint32_t> _propertyHandleMap;
-    ArrayBuffer *                 _rootBlock{nullptr};
+    SharedPtr<ArrayBuffer>        _rootBlock;
     std::vector<IBlockRef>        _blocks; // Point to position in _rootBlock
 
-    IProgramInfo *                     _shaderInfo{nullptr};
+    SharedPtr<IProgramInfo>            _shaderInfo;
     MacroRecord                        _defines;
     Record<std::string, IPropertyInfo> _properties;
-    gfx::Shader *                      _shader{nullptr};
+    SharedPtr<gfx::Shader>             _shader;
     gfx::BlendState                    _blendState{};
     gfx::DepthStencilState             _depthStencilState{};
     gfx::RasterizerState               _rs{};

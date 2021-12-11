@@ -67,6 +67,10 @@ bool RenderWindow::initialize(gfx::Device *device, IRenderWindowInfo &info) {
         } else {
             _hasOnScreenAttachments = true;
         }
+
+        if (colorTex) {
+            colorTex->addRef();
+        }
         _colorTextures.emplace_back(colorTex);
     }
 
@@ -90,14 +94,15 @@ bool RenderWindow::initialize(gfx::Device *device, IRenderWindowInfo &info) {
 
 void RenderWindow::destroy() {
     clearCameras();
-    if (_depthStencilTexture != nullptr) {
-        CC_SAFE_DESTROY(_depthStencilTexture);
-    }
+    CC_SAFE_DESTROY_NULL(_depthStencilTexture);
+
     for (auto *colorTexture : _colorTextures) {
         CC_SAFE_DESTROY(colorTexture);
+        CC_SAFE_RELEASE(colorTexture);
     }
     _colorTextures.clear();
-    CC_SAFE_DESTROY(_frameBuffer);
+
+    CC_SAFE_DESTROY_NULL(_frameBuffer);
 }
 
 void RenderWindow::resize(uint32_t width, uint32_t height) {

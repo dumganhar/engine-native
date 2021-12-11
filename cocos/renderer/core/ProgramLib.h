@@ -159,9 +159,9 @@ public:
                               pipeline::RenderPipeline *pipeline, std::string *key = nullptr);
 
 protected:
-    Record<std::string, IProgramInfo>  _templates; // per shader
-    Record<std::string, gfx::Shader *> _cache;
-    Record<uint64_t, ITemplateInfo>    _templateInfos;
+    Record<std::string, IProgramInfo>           _templates; // per shader
+    Record<std::string, SharedPtr<gfx::Shader>> _cache;
+    Record<uint64_t, ITemplateInfo>             _templateInfos;
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(ProgramLib);

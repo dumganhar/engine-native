@@ -86,9 +86,6 @@ public:
 
     static bool isStatic; // cjh TODO: add getter / setter
 
-    static void  setDirtyNode(const index_t idx, Node *node);
-    static Node *getDirtyNode(const index_t idx);
-
     /**
      * @en Finds a node by hierarchy path, the path is case-sensitive.
      * It will traverse the hierarchy by splitting the path using '/' character.
@@ -633,7 +630,6 @@ protected:
 
     bool onPreDestroyBase();
 
-    static std::vector<Node *> dirtyNodes;
     static uint32_t            clearFrame;
     static uint32_t            clearRound;
 

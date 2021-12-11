@@ -38,7 +38,7 @@
 namespace cc {
 
 // static variables
-std::vector<Node *>              Node::dirtyNodes;
+
 uint32_t                         Node::clearFrame{0};
 uint32_t                         Node::clearRound{1000};
 bool                             Node::isStatic{false};
@@ -54,6 +54,25 @@ namespace {
 CachedArray<Node *> allNodes{128}; //cjh how to clear ?
 const std::string                                      EMPTY_NODE_NAME;
 IDGenerator                                            idGenerator("Node");
+
+std::vector<Node *> dirtyNodes;
+CC_FORCE_INLINE void setDirtyNode(const index_t idx, Node *node) {
+    if (idx >= dirtyNodes.size()) {
+        if (idx >= dirtyNodes.capacity()) {
+            size_t minCapacity = std::max((idx + 1) * 2, 32);
+            if (minCapacity > dirtyNodes.capacity()) {
+                dirtyNodes.reserve(minCapacity); // Make a pre-allocated size for dirtyNode vector for better grow performance.
+            }
+        }
+        dirtyNodes.resize(idx + 1, nullptr);
+    }
+    dirtyNodes[idx] = node;
+}
+
+CC_FORCE_INLINE Node *getDirtyNode(const index_t idx) {
+    return dirtyNodes[idx];
+}
+
 } // namespace
 
 Node::Node() : Node(EMPTY_NODE_NAME) {
@@ -767,20 +786,6 @@ void Node::setWorldScale(float x, float y, float z) {
 const Vec3 &Node::getWorldScale() {
     updateWorldTransform();
     return _worldScale;
-}
-
-void Node::setDirtyNode(const index_t idx, Node *node) {
-    if (idx >= dirtyNodes.size()) {
-        if (dirtyNodes.empty()) {
-            dirtyNodes.reserve(16); // Make a pre-allocated size for dirtyNode vector for better grow performance.
-        }
-        dirtyNodes.resize(idx + 1, nullptr);
-    }
-    dirtyNodes[idx] = node;
-}
-
-Node *Node::getDirtyNode(const index_t idx) {
-    return dirtyNodes[idx];
 }
 
 void Node::setAngle(float val) {

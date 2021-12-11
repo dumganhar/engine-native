@@ -653,8 +653,10 @@ struct HolderType {
     using local_type = typename std::conditional_t<is_reference && is_jsb_object_v<T>, std::add_pointer_t<type>, type>;
     local_type data;
     type *     ptr = nullptr;
-    uint8_t    inlineObject[is_reference && is_jsb_object_v<T> ? sizeof(T) : 0];
-    // uint8_t                inlineObject[ sizeof(T)];
+    struct alignas(T) EmbedField {
+        uint8_t inlineObject[is_reference && is_jsb_object_v<T> ? sizeof(T) : 0];
+    } inlineObject;
+
     constexpr inline type &value() {
         if (ptr) return *ptr;
         return holder_convert_to<type, local_type>(data);

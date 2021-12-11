@@ -26,9 +26,9 @@
 #pragma once
 
 #include "base/Macros.h"
+#include "base/Ptr.h"
 #include "base/TypeDef.h"
 #include "core/assets/Asset.h"
-
 namespace cc {
 
 namespace gfx {
@@ -49,7 +49,7 @@ public:
     template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<Asset, T>::value>>
     T *get(const std::string &uuid) {
         if (auto iter = _resources.find(uuid); iter != _resources.end()) {
-            return static_cast<T *>(iter->second);
+            return static_cast<T *>(iter->second.get());
         }
 
         return nullptr;
@@ -62,10 +62,9 @@ private:
     void initTexture2DWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel);
     void initTextureCubeWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel);
 
-private:
-    gfx::Device *                _device{nullptr};
-    Record<std::string, Asset *> _resources;
-    std::vector<Material *>      _materialsToBeCompiled;
+    gfx::Device *                         _device{nullptr};
+    Record<std::string, SharedPtr<Asset>> _resources;
+    std::vector<SharedPtr<Material>>      _materialsToBeCompiled;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(BuiltinResMgr);
 };

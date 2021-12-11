@@ -33,6 +33,7 @@
 #include "core/scene-graph/NodeUIProperties.h"
 #include "core/scene-graph/Scene.h"
 #include "core/utils/IDGenerator.h"
+#include "base/CachedArray.h"
 
 namespace cc {
 
@@ -50,7 +51,7 @@ std::vector<std::vector<Node *>> Node::stacks;
 //
 
 namespace {
-std::unordered_map<Node *, int32_t /* place_holder */> allNodes; // cjh how to clear ?
+CachedArray<Node *> allNodes{128}; //cjh how to clear ?
 const std::string                                      EMPTY_NODE_NAME;
 IDGenerator                                            idGenerator("Node");
 } // namespace
@@ -65,15 +66,13 @@ Node::Node(const std::string &name) {
     } else {
         _name = name;
     }
-    allNodes.emplace(this, 0);
+    allNodes.push(this);
     _eventProcessor = new NodeEventProcessor(this);
 }
 
 Node::~Node() {
-    auto iter = allNodes.find(this);
-    if (iter != allNodes.end()) {
-        allNodes.erase(iter);
-    }
+    uint32_t index = allNodes.indexOf(this);
+    allNodes.fastRemove(index);
     CC_SAFE_DELETE(_eventProcessor);
 }
 
@@ -927,8 +926,8 @@ void Node::setRTSInternal(Quaternion *rot, Vec3 *pos, Vec3 *scale, bool calledFr
 }
 
 void Node::resetChangedFlags() {
-    for (auto &e : allNodes) {
-        e.first->setChangedFlags(0);
+    for (uint32_t i = 0, len = allNodes.size(); i < len; ++i) {
+        allNodes[i]->setChangedFlags(0);
     }
 }
 

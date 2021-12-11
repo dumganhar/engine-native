@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "base/Ptr.h"
 #include "core/assets/Asset.h"
 #include "core/assets/AssetEnum.h"
 #include "renderer/gfx-base/GFXDef.h"
@@ -238,11 +239,11 @@ public:
     uint32_t _height{1};
 
 protected:
-    std::string      _id;
-    gfx::SamplerInfo _samplerInfo;
-    uint64_t         _samplerHash{0};
-    gfx::Sampler *   _gfxSampler{nullptr};
-    gfx::Device *    _gfxDevice{nullptr};
+    std::string             _id;
+    gfx::SamplerInfo        _samplerInfo;
+    uint64_t                _samplerHash{0};
+    SharedPtr<gfx::Sampler> _gfxSampler;
+    gfx::Device *           _gfxDevice{nullptr};
 
     uint64_t _textureHash{0};
 

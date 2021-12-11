@@ -26,6 +26,7 @@
 #pragma once
 
 #include <variant>
+#include "base/Vector.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "renderer/gfx-base/GFXDef.h"
@@ -116,7 +117,7 @@ public:
      * @en All vertex buffers used by the sub mesh
      * @zh 使用的所有顶点缓冲区。
      */
-    inline const gfx::BufferList &getVertexBuffers() const { return _vertexBuffers; }
+    inline const gfx::BufferList &getVertexBuffers() const { return _vertexBuffers.get(); }
 
     /**
      * @en Index buffer used by the sub mesh
@@ -186,7 +187,8 @@ private:
 
     std::vector<IFlatBuffer> _flatBuffers;
 
-    gfx::BufferList _jointMappedBuffers;
+    // As gfx::InputAssemblerInfo needs the data structure, so manually addRef/release.
+    Vector<gfx::Buffer *> _jointMappedBuffers;
 
     std::vector<uint32_t> _jointMappedBufferIndices;
 
@@ -194,13 +196,14 @@ private:
 
     std::optional<IGeometricInfo> _geometricInfo;
 
-    gfx::BufferList _vertexBuffers;
+    // As gfx::InputAssemblerInfo needs the data structure, so manually addRef/release.
+    Vector<gfx::Buffer *> _vertexBuffers;
 
     gfx::AttributeList _attributes;
 
-    gfx::Buffer *_indexBuffer{nullptr};
+    SharedPtr<gfx::Buffer> _indexBuffer;
 
-    gfx::Buffer *_indirectBuffer{nullptr};
+    SharedPtr<gfx::Buffer> _indirectBuffer;
 
     gfx::PrimitiveMode _primitiveMode{gfx::PrimitiveMode::TRIANGLE_LIST};
 

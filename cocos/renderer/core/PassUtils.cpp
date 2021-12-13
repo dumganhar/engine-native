@@ -24,7 +24,6 @@
  ****************************************************************************/
 
 #include <cstdint>
-#include <variant>
 #include "base/Log.h"
 #include "core/Types.h"
 #include "gfx-base/GFXDef-common.h"

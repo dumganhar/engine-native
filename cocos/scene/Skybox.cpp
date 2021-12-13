@@ -23,8 +23,6 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include <variant>
-
 #include "3d/assets/Mesh.h"
 #include "3d/misc/CreateMesh.h"
 #include "core/Director.h"

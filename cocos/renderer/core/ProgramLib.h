@@ -31,7 +31,6 @@
 #include <sstream>
 #include <string>
 #include <unordered_map>
-#include <variant>
 #include <vector>
 #include "core/Types.h"
 #include "core/assets/EffectAsset.h"

@@ -49,7 +49,7 @@ static MacroRecord jsonToMacroRecord(const rapidjson::Value &embeddedMacrosVal) 
         const auto *name  = macro.name.GetString();
         const auto &value = macro.value;
 
-        // using MacroValue = std::variant<int32_t, float, bool, std::string>;
+        // using MacroValue = boost::variant<int32_t, float, bool, std::string>;
         // MacroValue only support one of int32_t, float, bool, std::string
         if (value.IsInt()) {
             cEmbeddedMacros.emplace(name, value.GetInt());
@@ -539,7 +539,7 @@ static MaterialPropertyVariant jsonToMaterialPropertyVariant(const rapidjson::Va
     MaterialPropertyVariant matPropVariant; //MaterialPropert, std::vector<MaterialProperty>
 
     if (val.IsArray()) { // MaterialPropertyList
-        deserializeArray<MaterialProperty>(val, std::get<MaterialPropertyList>(matPropVariant), deserializeMaterialProperty);
+        deserializeArray<MaterialProperty>(val, boost::get<MaterialPropertyList>(matPropVariant), deserializeMaterialProperty);
     } else { // MaterialProperty
         matPropVariant = jsonToMaterialProperty(val);
     }

@@ -24,9 +24,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <variant>
 #include <vector>
 #include "core/ArrayBuffer.h"
+#include"boost/variant.hpp"
 
 namespace cc {
 
@@ -41,8 +41,8 @@ public:
     ArrayBuffer *getCombined();
 
 private:
-    std::vector<std::variant<ArrayBuffer::Ptr, uint32_t>> _arrayBufferOrPaddings;
-    uint32_t                                              _length{0};
+    std::vector<boost::variant<ArrayBuffer::Ptr, uint32_t>> _arrayBufferOrPaddings;
+    uint32_t                                         _length{0};
 };
 
 } // namespace cc

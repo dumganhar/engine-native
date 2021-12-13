@@ -229,23 +229,29 @@ std::vector<MacroRecord> EffectAsset::doCombine(const std::vector<MacroRecord> &
 
 std::vector<MacroRecord> EffectAsset::generateRecords(const std::string &key, const IPreCompileInfoValueType &value) {
     std::vector<MacroRecord> ret;
-    if (auto *boolValues = std::get_if<std::vector<bool>>(&value)) {
-        for (const bool value : *boolValues) {
-            MacroRecord record;
-            record[key] = value;
-            ret.emplace_back(record);
+    if (value.type() == typeid(std::vector<bool>)) {
+        if (auto *boolValues = boost::get<std::vector<bool>>(&value)) {
+            for (const bool value : *boolValues) {
+                MacroRecord record;
+                record[key] = value;
+                ret.emplace_back(record);
+            }
         }
-    } else if (auto *floatValues = std::get_if<std::vector<float>>(&value)) {
-        for (const bool value : *floatValues) {
-            MacroRecord record;
-            record[key] = value;
-            ret.emplace_back(record);
+    } else if (value.type() == typeid(std::vector<float>)) {
+        if (auto *floatValues = boost::get<std::vector<float>>(&value)) {
+            for (const bool value : *floatValues) {
+                MacroRecord record;
+                record[key] = value;
+                ret.emplace_back(record);
+            }
         }
-    } else if (auto *stringValues = std::get_if<std::vector<std::string>>(&value)) {
-        for (const std::string &value : *stringValues) {
-            MacroRecord record;
-            record[key] = value;
-            ret.emplace_back(record);
+    } else if (value.type() == typeid(std::vector<std::string>)) {
+        if (auto *stringValues = boost::get<std::vector<std::string>>(&value)) {
+            for (const std::string &value : *stringValues) {
+                MacroRecord record;
+                record[key] = value;
+                ret.emplace_back(record);
+            }
         }
     } else {
         CC_ASSERT(false);
@@ -259,24 +265,30 @@ std::vector<MacroRecord> EffectAsset::insertInfoValue(const std::vector<MacroRec
                                                       const IPreCompileInfoValueType &value) {
     std::vector<MacroRecord> ret;
     for (const auto &record : records) {
-        if (auto *boolValues = std::get_if<std::vector<bool>>(&value)) {
-            for (const bool value : *boolValues) {
-                MacroRecord tmpRecord = record;
-                tmpRecord[key]        = value;
-                ret.emplace_back(tmpRecord);
+        if (value.type() == typeid(std::vector<bool>)) {
+            if (auto *boolValues = boost::get<std::vector<bool>>(&value)) {
+                for (const bool value : *boolValues) {
+                    MacroRecord tmpRecord = record;
+                    tmpRecord[key]        = value;
+                    ret.emplace_back(tmpRecord);
+                }
             }
-        } else if (auto *floatValues = std::get_if<std::vector<float>>(&value)) {
-            for (const bool value : *floatValues) {
-                MacroRecord tmpRecord = record;
-                tmpRecord[key]        = value;
-                ret.emplace_back(tmpRecord);
+        } else if (value.type() == typeid(std::vector<float>)) {
+            if (auto *floatValues = boost::get<std::vector<float>>(&value)) {
+                for (const bool value : *floatValues) {
+                    MacroRecord tmpRecord = record;
+                    tmpRecord[key]        = value;
+                    ret.emplace_back(tmpRecord);
+                }
             }
-        } else if (auto *stringValues = std::get_if<std::vector<std::string>>(&value)) {
-            for (const std::string &value : *stringValues) {
-                MacroRecord tmpRecord = record;
-                tmpRecord[key]        = value;
-                ret.emplace_back(tmpRecord);
-            }
+        } else if (value.type() == typeid(std::vector<std::string>)) {
+                if (auto *stringValues = boost::get<std::vector<std::string>>(&value)) {
+                    for (const std::string &value : *stringValues) {
+                        MacroRecord tmpRecord = record;
+                        tmpRecord[key]        = value;
+                        ret.emplace_back(tmpRecord);
+                    }
+                }
         } else {
             CC_ASSERT(false);
         }

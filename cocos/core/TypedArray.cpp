@@ -28,9 +28,11 @@
 namespace cc {
 
 uint32_t getTypedArrayLength(const TypedArray &arr) {
-#define TYPEDARRAY_GET_SIZE(type)                          \
-    if (auto *p = std::get_if<type>(&arr); p != nullptr) { \
-        return p->length();                                \
+#define TYPEDARRAY_GET_SIZE(element_type)                          \
+    if (arr.type() == typeid(element_type)) {                       \
+        if (auto *p = boost::get<element_type>(&arr); p != nullptr) { \
+            return p->length();                                      \
+        }                                                            \
     }
 
     TYPEDARRAY_GET_SIZE(Float32Array)
@@ -47,10 +49,13 @@ uint32_t getTypedArrayLength(const TypedArray &arr) {
 }
 
 uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
-#define TYPEDARRAY_GET_BYTES_PER_ELEMENT(type)             \
-    if (auto *p = std::get_if<type>(&arr); p != nullptr) { \
-        return type::BYTES_PER_ELEMENT;                    \
+#define TYPEDARRAY_GET_BYTES_PER_ELEMENT(element_type)             \
+    if (arr.type() == typeid(element_type)) {                       \
+        if (auto *p = boost::get<element_type>(&arr); p != nullptr) { \
+            return element_type::BYTES_PER_ELEMENT;                    \
+        }                                                       \
     }
+
 
     TYPEDARRAY_GET_BYTES_PER_ELEMENT(Float32Array)
     TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint32Array)
@@ -66,40 +71,42 @@ uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
 }
 
 void setTypedArrayValue(TypedArray &arr, index_t idx, const TypedArrayElementType &value) {
-#define TYPEDARRAY_SET_VALUE(type, elemType)                             \
-    if (auto *p = std::get_if<elemType>(&value); p != nullptr) {         \
-        if (std::holds_alternative<Float32Array>(arr)) {                 \
-            std::get<Float32Array>(arr)[idx] = static_cast<float>(*p);   \
-            return;                                                      \
-        }                                                                \
-        if (std::holds_alternative<Uint16Array>(arr)) {                  \
-            std::get<Uint16Array>(arr)[idx] = static_cast<uint16_t>(*p); \
-            return;                                                      \
-        }                                                                \
-        if (std::holds_alternative<Uint32Array>(arr)) {                  \
-            std::get<Uint32Array>(arr)[idx] = static_cast<uint32_t>(*p); \
-            return;                                                      \
-        }                                                                \
-        if (std::holds_alternative<Uint8Array>(arr)) {                   \
-            std::get<Uint8Array>(arr)[idx] = static_cast<uint8_t>(*p);   \
-            return;                                                      \
-        }                                                                \
-        if (std::holds_alternative<Int32Array>(arr)) {                   \
-            std::get<Int32Array>(arr)[idx] = static_cast<int32_t>(*p);   \
-            return;                                                      \
-        }                                                                \
-        if (std::holds_alternative<Int16Array>(arr)) {                   \
-            std::get<Int16Array>(arr)[idx] = static_cast<int16_t>(*p);   \
-            return;                                                      \
-        }                                                                \
-        if (std::holds_alternative<Int8Array>(arr)) {                    \
-            std::get<Int8Array>(arr)[idx] = static_cast<int8_t>(*p);     \
-            return;                                                      \
-        }                                                                \
-        if (std::holds_alternative<Float64Array>(arr)) {                 \
-            std::get<Float64Array>(arr)[idx] = static_cast<double>(*p);  \
-            return;                                                      \
-        }                                                                \
+#define TYPEDARRAY_SET_VALUE(arr_type, elemType)                             \
+    if (value.type() == typeid(elemType)) {                       \
+        if (auto *p = boost::get<elemType>(&value); p != nullptr) {         \
+            if (arr.type() == typeid(Float32Array)) {                 \
+                boost::get<Float32Array>(arr)[idx] = static_cast<float>(*p);   \
+                return;                                                      \
+            }                                                                \
+            if (arr.type() == typeid(Uint16Array)) {                  \
+                boost::get<Uint16Array>(arr)[idx] = static_cast<uint16_t>(*p); \
+                return;                                                      \
+            }                                                                \
+            if (arr.type() == typeid(Uint32Array)) {                  \
+                boost::get<Uint32Array>(arr)[idx] = static_cast<uint32_t>(*p); \
+                return;                                                      \
+            }                                                                \
+            if (arr.type() == typeid(Uint8Array)) {                   \
+                boost::get<Uint8Array>(arr)[idx] = static_cast<uint8_t>(*p);   \
+                return;                                                      \
+            }                                                                \
+            if (arr.type() == typeid(Int32Array)) {                   \
+                boost::get<Int32Array>(arr)[idx] = static_cast<int32_t>(*p);   \
+                return;                                                      \
+            }                                                                \
+            if (arr.type() == typeid(Int16Array)) {                   \
+                boost::get<Int16Array>(arr)[idx] = static_cast<int16_t>(*p);   \
+                return;                                                      \
+            }                                                                \
+            if (arr.type() == typeid(Int8Array)) {                    \
+                boost::get<Int8Array>(arr)[idx] = static_cast<int8_t>(*p);     \
+                return;                                                      \
+            }                                                                \
+            if (arr.type() == typeid(Float64Array)) {                 \
+                boost::get<Float64Array>(arr)[idx] = static_cast<double>(*p);  \
+                return;                                                      \
+            }                                                                \
+        }                                                                    \
     }
 
     TYPEDARRAY_SET_VALUE(Float32Array, float)

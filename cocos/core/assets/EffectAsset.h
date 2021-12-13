@@ -48,7 +48,7 @@ struct IPropertyInfo {
     int32_t                                                      type;        // auto-extracted from shader
     std::optional<IPropertyHandleInfo>                           handleInfo;  // auto-generated from 'target'
     std::optional<uint64_t>                                      samplerHash; // auto-generated from 'sampler'
-    std::optional<std::variant<std::vector<float>, std::string>> value;
+    std::optional<boost::variant<std::vector<float>, std::string>> value;
 };
 
 struct IPassInfoFull;
@@ -468,7 +468,7 @@ struct IShaderInfo {
     }
 };
 
-using IPreCompileInfoValueType = std::variant<std::vector<bool>, std::vector<float>, std::vector<std::string>>; //cjh number is float?
+using IPreCompileInfoValueType = boost::variant<std::vector<bool>, std::vector<float>, std::vector<std::string>>; //cjh number is float?
 using IPreCompileInfo          = std::unordered_map<std::string, IPreCompileInfoValueType>;
 
 class EffectAsset final : public Asset {

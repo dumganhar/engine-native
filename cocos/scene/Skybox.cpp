@@ -155,9 +155,11 @@ void Skybox::updatePipeline() const {
 
     if (auto iter = pipeline->getMacros().find("CC_USE_IBL"); iter != pipeline->getMacros().end()) {
         const MacroValue &macro    = iter->second;
-        const int32_t *   macroPtr = std::get_if<int32_t>(&macro);
-        if (macroPtr != nullptr && (*macroPtr == value)) {
-            return;
+        if (macro.type() == typeid(int32_t)) {
+            const int32_t *macroPtr = boost::get<int32_t>(&macro);
+            if (macroPtr != nullptr && (*macroPtr == value)) {
+                return;
+            }
         }
     }
 

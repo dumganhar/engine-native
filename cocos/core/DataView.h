@@ -29,6 +29,7 @@
 #include "base/Macros.h"
 #include "base/TypeDef.h"
 #include "core/ArrayBuffer.h"
+#include "boost/variant.hpp"
 
 namespace cc {
 
@@ -67,13 +68,14 @@ public:
         return _byteEndPos - _byteOffset;
     }
 
-    using Int32Reader   = int32_t (DataView::*)(index_t) const;
-    using UInt32Reader  = uint32_t (DataView::*)(index_t) const;
-    using Int16Reader   = int16_t (DataView::*)(index_t) const;
-    using UInt16Reader  = uint16_t (DataView::*)(index_t) const;
-    using Int8Reader    = int8_t (DataView::*)(index_t) const;
-    using UInt8Reader   = uint8_t (DataView::*)(index_t) const;
-    using ReaderVariant = std::variant<Int32Reader, UInt32Reader, Int16Reader, UInt16Reader, Int8Reader, UInt8Reader>;
+    
+    using Int32Reader = int32_t (DataView::*)(index_t) const;
+    using UInt32Reader = uint32_t (DataView::*)(index_t) const;
+    using Int16Reader = int16_t (DataView::*)(index_t) const;
+    using UInt16Reader = uint16_t (DataView::*)(index_t) const;
+    using Int8Reader = int8_t (DataView::*)(index_t) const;
+    using UInt8Reader = uint8_t (DataView::*)(index_t) const;
+    using ReaderVariant       = boost::variant<Int32Reader, UInt32Reader, Int16Reader,UInt16Reader, Int8Reader, UInt8Reader>;
     static std::unordered_map<std::string, ReaderVariant> intReaderMap;
     int32_t                                               readInt(ReaderVariant &readerVariant, index_t offset);
 

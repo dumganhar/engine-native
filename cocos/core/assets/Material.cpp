@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "core/assets/Material.h"
+#include "boost/variant.hpp"
 
 #include "base/Utils.h"
 #include "core/assets/EffectAsset.h"
@@ -347,21 +348,21 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
 
     const auto propertyType = scene::Pass::getPropertyTypeFromHandle(handle);
     if (propertyType == PropertyType::BUFFER) {
-        if (val.index() == MaterialPropertyIndexList) {
-            pass->setUniformArray(handle, std::get<MaterialPropertyList>(val));
-        } else if (val.index() == MaterialPropertyIndexSingle) {
-            pass->setUniform(handle, std::get<MaterialProperty>(val));
+        if (val.which() == MaterialPropertyIndexList) {
+            pass->setUniformArray(handle, boost::get<MaterialPropertyList>(val));
+        } else if (val.which() == MaterialPropertyIndexSingle) {
+            pass->setUniform(handle, boost::get<MaterialProperty>(val));
         } else {
             pass->resetUniform(name);
         }
     } else if (propertyType == PropertyType::TEXTURE) {
-        if (val.index() == MaterialPropertyIndexList) {
-            const auto &textureArray = std::get<MaterialPropertyList>(val);
+        if (val.which() == MaterialPropertyIndexList) {
+            const auto &textureArray = boost::get<MaterialPropertyList>(val);
             for (size_t i = 0; i < textureArray.size(); i++) {
                 bindTexture(pass, handle, textureArray[i], static_cast<index_t>(i));
             }
-        } else if (val.index() == MaterialPropertyIndexSingle) {
-            bindTexture(pass, handle, std::get<MaterialProperty>(val));
+        } else if (val.which() == MaterialPropertyIndexSingle) {
+            bindTexture(pass, handle, boost::get<MaterialProperty>(val));
         } else {
             pass->resetTexture(name);
         }
@@ -375,26 +376,32 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
     }
 
     const uint32_t binding = scene::Pass::getBindingFromHandle(handle);
-    if (const auto *pTexture = std::get_if<gfx::Texture *>(&val)) {
-        pass->bindTexture(binding, const_cast<gfx::Texture *>(*pTexture), index);
-    } else if (const auto *pTextureBase = std::get_if<TextureBase *>(&val)) {
-        auto *        textureBase = *pTextureBase;
-        gfx::Texture *texture     = nullptr;
-        if (textureBase != nullptr) {
-            texture = textureBase->getGFXTexture();
+    if (typeid(gfx::Texture*) == val.type()) {
+        const auto *pTexture = boost::get<gfx::Texture *>(&val);
+        if (pTexture) {
+            pass->bindTexture(binding, const_cast<gfx::Texture *>(*pTexture), index);
         }
+    } else if (typeid(TextureBase*) == val.type()) {
+        const auto *  pTextureBase = boost::get<TextureBase *>(&val);
+        if (pTextureBase) {
+            auto *        textureBase = *pTextureBase;
+            gfx::Texture *texture     = nullptr;
+            if (textureBase != nullptr) {
+                texture = textureBase->getGFXTexture();
+            }
 
-        if (texture == nullptr) {
-            CC_LOG_WARNING("Material(%p, %s)::bindTexture failed, texture is nullptr", this, _uuid.c_str());
-            return;
-        }
+            if (texture == nullptr) {
+                CC_LOG_WARNING("Material(%p, %s)::bindTexture failed, texture is nullptr", this, _uuid.c_str());
+                return;
+            }
 
-        if (texture->getWidth() == 0 || texture->getHeight() == 0) {
-            CC_LOG_WARNING("Material(%p, %s)::bindTexture failed, texture size is 0", this, _uuid.c_str());
-            return;
+            if (texture->getWidth() == 0 || texture->getHeight() == 0) {
+                CC_LOG_WARNING("Material(%p, %s)::bindTexture failed, texture size is 0", this, _uuid.c_str());
+                return;
+            }
+            pass->bindTexture(binding, texture, index);
+            pass->bindSampler(binding, textureBase->getGFXSampler(), index);
         }
-        pass->bindTexture(binding, texture, index);
-        pass->bindSampler(binding, textureBase->getGFXSampler(), index);
     }
 }
 

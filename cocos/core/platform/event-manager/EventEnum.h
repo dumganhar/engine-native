@@ -25,7 +25,7 @@
 
 #pragma once
 #include <string>
-#include <variant>
+#include "boost/variant.hpp"
 
 #include "core/scene-graph/NodeEvent.h"
 
@@ -271,6 +271,6 @@ public:
     static const std::string SIBLING_ORDER_CHANGED;
 };
 
-using SystemEventTypeUnion = std::variant<SystemEventType, NodeEventType>;
+using SystemEventTypeUnion = boost::variant<SystemEventType, NodeEventType>;
 
 } // namespace cc

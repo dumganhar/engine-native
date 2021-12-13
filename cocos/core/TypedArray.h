@@ -27,7 +27,7 @@
 
 #include <memory>
 #include <type_traits>
-#include <variant>
+#include "boost/variant.hpp"
 #include "base/TypeDef.h"
 #include "bindings/jswrapper/Object.h"
 #include "core/ArrayBuffer.h"
@@ -293,18 +293,20 @@ using Uint16Array           = TypedArrayTemp<uint16_t>;
 using Uint32Array           = TypedArrayTemp<uint32_t>;
 using Float32Array          = TypedArrayTemp<float>;
 using Float64Array          = TypedArrayTemp<double>;
-using TypedArray            = std::variant<std::monostate, Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
-using TypedArrayElementType = std::variant<std::monostate, int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, float, double>;
+using TypedArray            = boost::variant<std::monostate, Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
+using TypedArrayElementType = boost::variant<std::monostate, int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, float, double>;
 
 uint32_t getTypedArrayLength(const TypedArray &arr);
 uint32_t getTypedArrayBytesPerElement(const TypedArray &arr);
 
 template <typename T>
 T getTypedArrayValue(const TypedArray &arr, index_t idx) {
-#define TYPEDARRAY_GET_VALUE(type)                         \
-    if (auto *p = std::get_if<type>(&arr); p != nullptr) { \
-        return static_cast<T>((*p)[idx]);                  \
-    }
+#define TYPEDARRAY_GET_VALUE(element_type)                            \
+    if (arr.type() == typeid(element_type)) {                       \
+        if (auto *p = boost::get<element_type>(&arr); p != nullptr) { \
+            return static_cast<T>((*p)[idx]);                  \
+        }                                                      \
+    }                                                 
 
     TYPEDARRAY_GET_VALUE(Float32Array)
     TYPEDARRAY_GET_VALUE(Uint32Array)
@@ -323,10 +325,12 @@ void setTypedArrayValue(TypedArray &arr, index_t idx, const TypedArrayElementTyp
 
 template <typename T>
 T &getTypedArrayValueRef(const TypedArray &arr, index_t idx) {
-#define TYPEDARRAY_GET_VALUE_REF(type)                     \
-    if (auto *p = std::get_if<type>(&arr); p != nullptr) { \
-        return (*p)[idx];                                  \
-    }
+#define TYPEDARRAY_GET_VALUE_REF(element_type)        \
+    if (arr.type() == typeid(element_type)) {                       \
+        if (auto *p = boost::get<element_type>(&arr); p != nullptr) { \
+            return (*p)[idx];                                  \
+        }                                                      \
+    }                                                 
 
     TYPEDARRAY_GET_VALUE_REF(Float32Array)
     TYPEDARRAY_GET_VALUE_REF(Uint32Array)
@@ -341,10 +345,12 @@ T &getTypedArrayValueRef(const TypedArray &arr, index_t idx) {
 
 template <typename T>
 T getTypedArrayElementValue(const TypedArrayElementType &element) {
-#define CAST_TO_T(type)                                        \
-    if (auto *p = std::get_if<type>(&element); p != nullptr) { \
-        return static_cast<T>(*p);                             \
-    }
+#define CAST_TO_T(element_type)                                           \
+    if (element.type() == typeid(element_type)) {                       \
+        if (auto *p = boost::get<element_type>(&element); p != nullptr) { \
+            return static_cast<T>(*p);                             \
+        }                                                          \
+    }                                                    
 
     CAST_TO_T(float)
     CAST_TO_T(uint32_t)

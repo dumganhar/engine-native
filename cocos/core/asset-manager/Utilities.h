@@ -73,13 +73,13 @@ struct ILoadResArgs {
 };
 
 template <typename T>
-IParameters<T> parseParameters(const std::variant<IOptions, ProgressCallback, T> &options,
-                               const std::variant<ProgressCallback, T> &          onProgress,
+IParameters<T> parseParameters(const boost::variant<IOptions, ProgressCallback, T> &options,
+                               const boost::variant<ProgressCallback, T> &          onProgress,
                                const T &                                          onComplete);
 
 template <typename T>
-ILoadResArgs<T> parseLoadResArgs(const std::variant<AssetType, ProgressCallback, T> &type,
-                                 const std::variant<ProgressCallback, T> &           onProgress,
+ILoadResArgs<T> parseLoadResArgs(const boost::variant<AssetType, ProgressCallback, T> &type,
+                                 const boost::variant<ProgressCallback, T> &           onProgress,
                                  const T &                                           onComplete);
 
 bool checkCircleReference(const std::string &owner, const std::string &uuid, const Record<std::string, std::any> &map, const Record<std::string, bool> &checked = {});

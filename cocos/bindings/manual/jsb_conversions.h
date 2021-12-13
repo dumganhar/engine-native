@@ -32,7 +32,7 @@
 #include <optional>
 #include <type_traits>
 #include <utility>
-#include <variant>
+#include "boost/variant.hpp"
 #include "base/Ptr.h"
 #include "base/RefCounted.h"
 #include "bindings/jswrapper/HandleObject.h"
@@ -640,13 +640,13 @@ struct is_optional<std::optional<T>> : std::true_type {}; // NOLINT
 template <typename... Args>
 struct is_variant : std::false_type {}; // NOLINT
 template <typename... Args>
-struct is_variant<std::variant<Args...>> : std::true_type {}; // NOLINT
+struct is_variant<boost::variant<Args...>> : std::true_type {}; // NOLINT
 
 template <typename T>
 inline typename std::enable_if_t<!std::is_enum<T>::value && !std::is_pointer<T>::value, bool>
 sevalue_to_native(const se::Value & /*from*/, T * /*to*/, se::Object * /*unused*/) { // NOLINT(readability-identifier-naming)
     SE_LOGE("Can not convert type ???\n - [[ %s ]]\n", typeid(T).name());
-    CC_STATIC_ASSERT(!is_variant<T>::value, "should not match std::variant");
+    CC_STATIC_ASSERT(!is_variant<T>::value, "should not match boost::variant");
     CC_STATIC_ASSERT(std::is_same<T, void>::value, "sevalue_to_native not implemented for T");
     return false;
 }
@@ -662,9 +662,9 @@ sevalue_to_native(const se::Value &from, T *to, se::Object *ctx) { // NOLINT(rea
 
 //////////////////////////////// forward declaration : sevalue_to_native ////////////////////////////////
 
-// std::variant<...>>ss
+// boost::variant<...>>ss
 template <typename... Args>
-bool sevalue_to_native(const se::Value &from, std::variant<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, boost::variant<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 template <typename T>
 bool sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
@@ -740,7 +740,7 @@ bool sevalue_to_native(const se::Value &from, std::array<uint8_t, CNT> *to, se::
 }
 
 template <typename T>
-bool sevalue_to_native(const se::Value &from, std::variant<T, std::vector<T>> *to, se::Object *ctx) { // NOLINT
+bool sevalue_to_native(const se::Value &from, boost::variant<T, std::vector<T>> *to, se::Object *ctx) { // NOLINT
     se::Object *array = from.toObject();
     if (array->isArray()) {
         std::vector<T> result;
@@ -907,10 +907,10 @@ inline bool sevalue_to_native(const se::Value &from, std::function<R(Args...)> *
     return true;
 }
 
-//////////////////////// std::variant
+//////////////////////// boost::variant
 
 template <typename... Args>
-inline bool sevalue_to_native(const se::Value & /*from*/, std::variant<Args...> * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool sevalue_to_native(const se::Value & /*from*/, boost::variant<Args...> * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     static_assert(sizeof...(Args) == 0);                                                                          //TODO(PatriceJiang): should not pass variant from js -> native
     assert(false);
     return false;
@@ -1127,10 +1127,10 @@ template <typename T>
 inline bool nativevalue_to_se(T &&from, se::Value &to); // NOLINT(readability-identifier-naming)
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx); // NOLINT
+bool nativevalue_to_se(const boost::variant<ARGS...> &from, se::Value &to, se::Object *ctx); // NOLINT
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::variant<ARGS...> *from, se::Value &to, se::Object *ctx) { // NOLINT
+bool nativevalue_to_se(const boost::variant<ARGS...> *from, se::Value &to, se::Object *ctx) { // NOLINT
     return nativevalue_to_se(*from, to, ctx);
 }
 
@@ -1415,13 +1415,16 @@ inline bool nativevalue_to_se(T &&from, se::Value &to) { // NOLINT(readability-i
 }
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se(const boost::variant<ARGS...> &from, se::Value &to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     bool ok = false;
     se_for_each(std::make_index_sequence<sizeof...(ARGS)>{}, [&](auto i) {
-        if (i != from.index()) {
+        if (i != from.which()) {
             return;
         }
-        ok = nativevalue_to_se(std::get<i>(from), to, ctx);
+
+        boost::apply_visitor([&](auto &val) {
+            ok = nativevalue_to_se(val, to, ctx);
+            }, from);
     });
     return ok;
 }

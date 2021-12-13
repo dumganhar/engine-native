@@ -201,7 +201,7 @@ void Pass::setUniformArray(uint32_t handle, const MaterialPropertyList &value) {
     auto &          block   = _blocks[binding];
     uint32_t        ofs     = Pass::getOffsetFromHandle(handle);
     for (size_t i = 0; i < value.size(); i++, ofs += stride) {
-        if (value[i].index() == 0) {
+        if (value[i].which() == 0) {
             continue;
         }
         if (auto iter = type2writer.find(type); iter != type2writer.end()) {
@@ -291,9 +291,11 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
     if (auto iter = _properties.find(name); iter != _properties.end()) {
         if (iter->second.value.has_value()) {
             info                 = &iter->second;
-            std::string *pStrVal = std::get_if<std::string>(&iter->second.value.value());
-            if (pStrVal != nullptr) {
-                texName = (*pStrVal) + "-texture";
+            if (iter->second.value.value().type() == typeid(std::string)) {
+                std::string *pStrVal = boost::get<std::string>(&iter->second.value.value());
+                if (pStrVal != nullptr) {
+                    texName = (*pStrVal) + "-texture";
+                }
             }
         }
     }
@@ -327,7 +329,7 @@ void Pass::resetUBOs() {
         for (auto &cur : u.members) {
             const auto &   info         = _properties[cur.name];
             const auto &   givenDefault = info.value;
-            const auto &   value        = (givenDefault.has_value() ? std::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
+            const auto &   value        = (givenDefault.has_value() ? boost::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
             const uint32_t size         = (gfx::getTypeSize(cur.type) >> 2) * cur.count;
             for (size_t k = 0; (k + value.size()) <= size; k += value.size()) {
                 std::copy(value.begin(), value.end(), block.data + ofs + k);

@@ -49,14 +49,24 @@ ArrayBuffer *BufferBlob::getCombined() {
     Int8Array result(_length);
     uint32_t  counter = 0;
 
-    for (const auto &arrayBufferOrPadding : _arrayBufferOrPaddings) {
-        if (const auto *p = std::get_if<uint32_t>(&arrayBufferOrPadding)) {
-            counter += *p;
-        } else if (const auto *p = std::get_if<ArrayBuffer::Ptr>(&arrayBufferOrPadding)) {
-            result.set(*p, counter);
-            counter += (*p)->byteLength();
-        }
+    void operator()(uint32_t padding) {
+        _counter += padding;
     }
+
+    void operator()(ArrayBuffer::Ptr &ptr) {
+        _result.set(ptr, _counter);
+        _counter += ptr->byteLength();
+    }
+
+private:
+    Int8Array &_result;
+    uint32_t   _counter{0};
+};
+
+ArrayBuffer::Ptr BufferBlob::getCombined() {
+    Int8Array                    result(_length);
+    ArrayBufferOrPadding_Visitor visitor(result);
+    std::for_each(_arrayBufferOrPaddings.begin(), _arrayBufferOrPaddings.end(), boost::apply_visitor(visitor));
 
     return result.buffer();
 }

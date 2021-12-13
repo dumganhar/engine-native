@@ -481,12 +481,12 @@ gfx::DescriptorSetLayout *ProgramLib::getDescriptorSetLayout(gfx::Device *device
     if (tmplInfo.setLayouts.empty()) {
         gfx::DescriptorSetLayoutInfo info;
         tmplInfo.setLayouts.resize(static_cast<size_t>(pipeline::SetIndex::COUNT));
-        info.bindings                                                           = tmplInfo.bindings;
-        tmplInfo.setLayouts[static_cast<index_t>(pipeline::SetIndex::MATERIAL)] = device->createDescriptorSetLayout(info);
-        info.bindings                                                           = pipeline::localDescriptorSetLayout.bindings;
-        tmplInfo.setLayouts[static_cast<index_t>(pipeline::SetIndex::LOCAL)]    = device->createDescriptorSetLayout(info);
+        info.bindings = tmplInfo.bindings;
+        tmplInfo.setLayouts.replace(static_cast<index_t>(pipeline::SetIndex::MATERIAL), device->createDescriptorSetLayout(info));
+        info.bindings = pipeline::localDescriptorSetLayout.bindings;
+        tmplInfo.setLayouts.replace(static_cast<index_t>(pipeline::SetIndex::LOCAL), device->createDescriptorSetLayout(info));
     }
-    return tmplInfo.setLayouts[isLocal ? static_cast<index_t>(pipeline::SetIndex::LOCAL) : static_cast<index_t>(pipeline::SetIndex::MATERIAL)];
+    return tmplInfo.setLayouts.at(isLocal ? static_cast<index_t>(pipeline::SetIndex::LOCAL) : static_cast<index_t>(pipeline::SetIndex::MATERIAL));
 }
 
 std::string ProgramLib::getKey(const std::string &name, const MacroRecord &defines) {
@@ -581,8 +581,8 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     if (!tmplInfo.pipelineLayout) {
         getDescriptorSetLayout(device, name); // ensure set layouts have been created
         insertBuiltinBindings(tmpl, tmplInfo, pipeline::globalDescriptorSetLayout, "globals", nullptr);
-        tmplInfo.setLayouts[static_cast<index_t>(pipeline::SetIndex::GLOBAL)] = pipeline->getDescriptorSetLayout();
-        tmplInfo.pipelineLayout                                               = device->createPipelineLayout(gfx::PipelineLayoutInfo{tmplInfo.setLayouts});
+        tmplInfo.setLayouts.replace(static_cast<index_t>(pipeline::SetIndex::GLOBAL), pipeline->getDescriptorSetLayout());
+        tmplInfo.pipelineLayout = device->createPipelineLayout(gfx::PipelineLayoutInfo{tmplInfo.setLayouts.get()});
     }
 
     std::vector<IMacroInfo> macroArray = prepareDefines(defines, tmpl.defines);

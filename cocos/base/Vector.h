@@ -439,9 +439,9 @@ public:
         CCASSERT(index >= 0 && index < size(), "Invalid index!");
         CCASSERT(object != nullptr, "The object should not be nullptr");
 
-        _data[index]->release();
+        CC_SAFE_RELEASE(_data[index]);
         _data[index] = object;
-        object->addRef();
+        CC_SAFE_ADD_REF(object);
     }
 
     /** Reverses the Vector. */
@@ -456,6 +456,10 @@ public:
 
     const std::vector<T> &get() const {
         return _data;
+    }
+
+    void resize(uint32_t size) {
+        _data.resize(size);
     }
 
 protected:

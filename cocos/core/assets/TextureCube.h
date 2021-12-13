@@ -46,7 +46,7 @@ struct ITextureCubeMipmap {
     cc::SharedPtr<ImageAsset> right;
     cc::SharedPtr<ImageAsset> top;
     cc::SharedPtr<ImageAsset> bottom;
-};//
+};
 
 struct ITextureCubeSerializeMipmapData {
     std::string front;

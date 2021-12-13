@@ -36,7 +36,7 @@
 #include "renderer/gfx-base/GFXDef.h"
 
 #include "renderer/core/PassUtils.h"
-#include "boost/variant/variant_fwd.hpp"
+
 namespace cc {
 
 //NOLINTNEXTLINE

@@ -341,7 +341,7 @@ T &getTypedArrayValueRef(const TypedArray &arr, index_t idx) {
 
 template <typename T>
 T getTypedArrayElementValue(const TypedArrayElementType &element) {
-#define CAST_TO_T(type)                                            \
+#define CAST_TO_T(type)                                                    \
     if (auto *p = boost::variant2::get_if<type>(&element); p != nullptr) { \
         return static_cast<T>(*p);                                         \
     }                                                                      \

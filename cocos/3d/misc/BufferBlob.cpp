@@ -46,8 +46,8 @@ uint32_t BufferBlob::addBuffer(ArrayBuffer *arrayBuffer) {
 }
 
 ArrayBuffer::Ptr BufferBlob::getCombined() {
-    Int8Array                    result(_length);
-    uint32_t                     counter = 0;
+    Int8Array result(_length);
+    uint32_t counter = 0;
 
     for (const auto &arrayBufferOrPadding : _arrayBufferOrPaddings) {
         if (const auto *p = boost::variant2::get_if<uint32_t>(&arrayBufferOrPadding)) {

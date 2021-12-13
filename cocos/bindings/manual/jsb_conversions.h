@@ -1422,9 +1422,7 @@ bool nativevalue_to_se(const boost::variant2::variant<ARGS...> &from, se::Value 
             return;
         }
 
-        boost::variant2::visit([&](auto &val) {
-            ok = nativevalue_to_se(val, to, ctx);
-            }, from);
+        ok = nativevalue_to_se(boost::variant2::get<i>(from), to, ctx);
     });
     return ok;
 }

@@ -620,6 +620,27 @@ It should work same as apples CFSwapInt32LittleToHost(..)
     #define CC_PREDICT_FALSE(x) (x)
 #endif
 
+#if defined(__GNUC__) && __GNUC__ >= 4
+    #define CC_LIKELY(x)   (__builtin_expect((x), 1))
+    #define CC_UNLIKELY(x) (__builtin_expect((x), 0))
+#else
+    #define CC_LIKELY(x)   (x)
+    #define CC_UNLIKELY(x) (x)
+#endif
+
+#if defined(_MSC_VER)
+    #define CC_FORCE_INLINE __forceinline
+#elif defined(__GNUC__) || defined(__clang__)
+    #define CC_FORCE_INLINE inline __attribute__ ((always_inline))
+#else
+    #if defined (__cplusplus) || defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L   /* C99 */
+        #define CC_FORCE_INLINE static inline
+    #elif
+        #define CC_FORCE_INLINE inline
+    #endif
+#endif
+
+
 /// @name namespace cc { namespace event {
 /// @{
 #ifdef __cplusplus

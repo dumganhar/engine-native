@@ -31,11 +31,13 @@
 #include "base/TypeDef.h"
 #include "core/components/Component.h"
 #include "core/event/Event.h"
+#include "core/event/EventTypesToJS.h"
 #include "core/scene-graph/BaseNode.h"
 #include "core/scene-graph/Layers.h"
 #include "core/scene-graph/NodeEnum.h"
 #include "core/scene-graph/NodeEvent.h"
 #include "core/scene-graph/NodeEventProcessor.h"
+
 #include "math/Mat3.h"
 #include "math/Mat4.h"
 #include "math/Quaternion.h"
@@ -83,9 +85,6 @@ public:
     static index_t getIdxOfChild(const std::vector<SharedPtr<Node>> &, Node *);
 
     static bool isStatic; // cjh TODO: add getter / setter
-
-    static void  setDirtyNode(const index_t idx, Node *node);
-    static Node *getDirtyNode(const index_t idx);
 
     /**
      * @en Finds a node by hierarchy path, the path is case-sensitive.
@@ -301,7 +300,9 @@ public:
      */
     inline void setPosition(const Vec3 &pos) { setPosition(pos.x, pos.y, pos.z); }
     inline void setPosition(float x, float y) { setPosition(x, y, _localPosition.z); }
-    void        setPosition(float x, float y, float z);
+    inline void setPosition(float x, float y, float z) { setPositionInternal(x, y, z, false); }
+    inline void setPositionInternal(float x, float y, bool calledFromJS) { setPositionInternal(x, y, _localPosition.z, calledFromJS); }
+    void        setPositionInternal(float x, float y, float z, bool calledFromJS);
     inline void setPositionForJS(float x, float y, float z) { _localPosition.set(x, y, z); }
     /**
      * @en Get position in local coordinate system, please try to pass `out` vector and reuse it to avoid garbage.
@@ -317,11 +318,13 @@ public:
      * @param rotation Rotation in quaternion
      */
     inline void setRotation(const Quaternion &rotation) { setRotation(rotation.x, rotation.y, rotation.z, rotation.w); }
-    void        setRotation(float x, float y, float z, float w);
+    inline void setRotation(float x, float y, float z, float w) { setRotationInternal(x, y, z, w, false); }
+    void        setRotationInternal(float x, float y, float z, float w, bool calledFromJS);
     inline void setRotationForJS(float x, float y, float z, float w) { _localRotation.set(x, y, z, w); }
+
     inline void setEulerAngles(const Vec3 &val) { setRotationFromEuler(val.x, val.y, val.z); }
-    inline void setRotationFromEuler(float x, float y) { setRotationFromEuler(x, y, _euler.z); }
     inline void setRotationFromEuler(const Vec3 &val) { setRotationFromEuler(val.x, val.y, val.z); }
+    inline void setRotationFromEuler(float x, float y) { setRotationFromEuler(x, y, _euler.z); }
     void        setRotationFromEuler(float x, float y, float z);
     inline void setRotationFromEulerForJS(float x, float y, float z) { _euler.set(x, y, z); }
     /**
@@ -339,7 +342,9 @@ public:
      */
     inline void setScale(const Vec3 &scale) { setScale(scale.x, scale.y, scale.z); }
     inline void setScale(float x, float y) { setScale(x, y, _localScale.z); }
-    void        setScale(float x, float y, float z);
+    inline void setScale(float x, float y, float z) { setScaleInternal(x, y, z, false); }
+    inline void setScaleInternal(float x, float y, bool calledFromJS) { setScaleInternal(x, y, _localScale.z, calledFromJS); }
+    void        setScaleInternal(float x, float y, float z, bool calledFromJS);
     inline void setScaleForJS(float x, float y, float z) { _localScale.set(x, y, z); }
     /**
      * @en Get scale in local coordinate system, please try to pass `out` vector and reuse it to avoid garbage.
@@ -451,7 +456,8 @@ public:
      * @param pos The position
      * @param scale The scale
      */
-    void setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale);
+    void        setRTSInternal(Quaternion *rot, Vec3 *pos, Vec3 *scale, bool calledFromJS);
+    inline void setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) { setRTSInternal(rot, pos, scale, false); }
 
     inline void setForward(const Vec3 &dir) {
         const float len    = dir.length();
@@ -624,10 +630,30 @@ protected:
 
     bool onPreDestroyBase();
 
-    static std::vector<Node *> dirtyNodes;
     static uint32_t            clearFrame;
     static uint32_t            clearRound;
 
+private:
+    inline void notifyLocalPositionUpdated() {
+        emit(EventTypesToJS::NODE_LOCAL_POSITION_UPDATED, _localPosition.x, _localPosition.y, _localPosition.z);
+    }
+
+    inline void notifyLocalRotationUpdated() {
+        emit(EventTypesToJS::NODE_LOCAL_ROTATION_UPDATED, _localRotation.x, _localRotation.y, _localRotation.z, _localRotation.w);
+    }
+
+    inline void notifyLocalScaleUpdated() {
+        emit(EventTypesToJS::NODE_LOCAL_SCALE_UPDATED, _localScale.x, _localScale.y, _localScale.z);
+    }
+
+    inline void notifyLocalPositionRotationScaleUpdated() {
+        emit(EventTypesToJS::NODE_LOCAL_POSITION_ROTATION_SCALE_UPDATED,
+             _localPosition.x, _localPosition.y, _localPosition.z,
+             _localRotation.x, _localRotation.y, _localRotation.z, _localRotation.w,
+             _localScale.x, _localScale.y, _localScale.z);
+    }
+
+protected:
     Scene              *_scene{nullptr};
     NodeEventProcessor *_eventProcessor{nullptr};
 
@@ -655,6 +681,7 @@ public:
     Node                        *_parent{nullptr};
     bool                         _active{true};
 
+private:
     // local transform
     cc::Vec3       _localPosition{Vec3::ZERO};
     cc::Quaternion _localRotation{Quaternion::identity()};

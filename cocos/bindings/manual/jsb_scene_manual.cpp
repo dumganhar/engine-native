@@ -198,6 +198,55 @@ static void registerLayerArr(cc::Node *node, se::Object *jsObject) {
     node->setLayerPtr(reinterpret_cast<uint32_t *>(pLayerArrValData));
 }
 
+static void registerLocalPositionRotationScaleUpdated(cc::Node *node, se::Object *jsObject) {
+    node->on(cc::EventTypesToJS::NODE_LOCAL_POSITION_UPDATED, [jsObject](float x, float y, float z) {
+        se::AutoHandleScope      hs;
+        std::array<se::Value, 3> args;
+        nativevalue_to_se(x, args[0]);
+        nativevalue_to_se(y, args[1]);
+        nativevalue_to_se(z, args[2]);
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalPositionUpdated", args.size(), args.data());
+    });
+
+    node->on(cc::EventTypesToJS::NODE_LOCAL_ROTATION_UPDATED, [jsObject](float x, float y, float z, float w) {
+        se::AutoHandleScope      hs;
+        std::array<se::Value, 4> args;
+        nativevalue_to_se(x, args[0]);
+        nativevalue_to_se(y, args[1]);
+        nativevalue_to_se(z, args[2]);
+        nativevalue_to_se(z, args[3]);
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalRotationUpdated", args.size(), args.data());
+    });
+
+    node->on(cc::EventTypesToJS::NODE_LOCAL_SCALE_UPDATED, [jsObject](float x, float y, float z) {
+        se::AutoHandleScope      hs;
+        std::array<se::Value, 3> args;
+        nativevalue_to_se(x, args[0]);
+        nativevalue_to_se(y, args[1]);
+        nativevalue_to_se(z, args[2]);
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalScaleUpdated", args.size(), args.data());
+    });
+
+    node->on(cc::EventTypesToJS::NODE_LOCAL_POSITION_ROTATION_SCALE_UPDATED, [jsObject](float px, float py, float pz, float rx, float ry, float rz, float rw, float sx, float sy, float sz) {
+        se::AutoHandleScope       hs;
+        std::array<se::Value, 10> args;
+        nativevalue_to_se(px, args[0]);
+        nativevalue_to_se(py, args[1]);
+        nativevalue_to_se(pz, args[2]);
+
+        nativevalue_to_se(rx, args[3]);
+        nativevalue_to_se(ry, args[4]);
+        nativevalue_to_se(rz, args[5]);
+        nativevalue_to_se(rw, args[6]);
+
+        nativevalue_to_se(sx, args[7]);
+        nativevalue_to_se(sy, args[8]);
+        nativevalue_to_se(sz, args[9]);
+
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalPositionRotationScaleUpdated", args.size(), args.data());
+    });
+}
+
 static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {
     auto *cobj = SE_THIS_OBJECT<cc::Node>(s);
@@ -246,6 +295,8 @@ static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-
         nativevalue_to_se(scene, arg0);
         se::ScriptEngine::getInstance()->callFunction(jsObject, "_onSceneUpdated", 1, &arg0);
     });
+
+    registerLocalPositionRotationScaleUpdated(cobj, jsObject);
 
     return true;
 }
@@ -477,10 +528,10 @@ static bool js_scene_Node_setPosition(void *s) // NOLINT(readability-identifier-
     auto * cobj = reinterpret_cast<cc::Node *>(s);
     size_t argc = _tempFloatArray[0];
     if (argc == 2) {
-        cobj->setPosition(_tempFloatArray[1], _tempFloatArray[2]);
+        cobj->setPositionInternal(_tempFloatArray[1], _tempFloatArray[2], true);
 
     } else {
-        cobj->setPosition(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3]);
+        cobj->setPositionInternal(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3], true);
     }
     return true;
 }
@@ -489,7 +540,7 @@ SE_BIND_FUNC_FAST(js_scene_Node_setPosition)
 static bool js_scene_Node_setRotation(void *s) // NOLINT(readability-identifier-naming)
 {
     auto *cobj = reinterpret_cast<cc::Node *>(s);
-    cobj->setRotation(_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3]);
+    cobj->setRotationInternal(_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3], true);
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_setRotation)
@@ -507,10 +558,10 @@ static bool js_scene_Node_setScale(void *s) // NOLINT(readability-identifier-nam
     auto * cobj = reinterpret_cast<cc::Node *>(s);
     size_t argc = _tempFloatArray[0];
     if (argc == 2) {
-        cobj->setScale(_tempFloatArray[1], _tempFloatArray[2]);
+        cobj->setScaleInternal(_tempFloatArray[1], _tempFloatArray[2], true);
 
     } else {
-        cobj->setScale(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3]);
+        cobj->setScaleInternal(_tempFloatArray[1], _tempFloatArray[2], _tempFloatArray[3], true);
     }
     return true;
 }
@@ -536,7 +587,7 @@ static bool js_scene_Node_setRTS(void *s) // NOLINT(readability-identifier-namin
     if (scaleSize > 0) {
         scale.set(_tempFloatArray[10], _tempFloatArray[11], _tempFloatArray[12]);
     }
-    cobj->setRTS(rotSize > 0 ? &qt : nullptr, posSize > 0 ? &pos : nullptr, scaleSize > 0 ? &scale : nullptr);
+    cobj->setRTSInternal(rotSize > 0 ? &qt : nullptr, posSize > 0 ? &pos : nullptr, scaleSize > 0 ? &scale : nullptr, true);
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_setRTS)

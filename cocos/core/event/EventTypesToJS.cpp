@@ -58,4 +58,9 @@ const CallbacksInvoker::KeyType EventTypesToJS::NODE_SCENE_UPDATED{118};
 
 const CallbacksInvoker::KeyType EventTypesToJS::MATERIAL_PASSES_UPDATED{119};
 
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_LOCAL_POSITION_UPDATED{120};
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_LOCAL_ROTATION_UPDATED{121};
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_LOCAL_SCALE_UPDATED{122};
+const CallbacksInvoker::KeyType EventTypesToJS::NODE_LOCAL_POSITION_ROTATION_SCALE_UPDATED{123};
+
 } // namespace cc

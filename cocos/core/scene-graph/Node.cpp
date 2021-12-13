@@ -27,18 +27,18 @@
 #include "core/Director.h"
 #include "core/Game.h"
 #include "core/data/Object.h"
-#include "core/event/EventTypesToJS.h"
 #include "core/scene-graph/Find.h"
 #include "core/scene-graph/NodeActivator.h"
 #include "core/scene-graph/NodeEnum.h"
 #include "core/scene-graph/NodeUIProperties.h"
 #include "core/scene-graph/Scene.h"
 #include "core/utils/IDGenerator.h"
+#include "base/CachedArray.h"
 
 namespace cc {
 
 // static variables
-std::vector<Node *>              Node::dirtyNodes;
+
 uint32_t                         Node::clearFrame{0};
 uint32_t                         Node::clearRound{1000};
 bool                             Node::isStatic{false};
@@ -51,9 +51,28 @@ std::vector<std::vector<Node *>> Node::stacks;
 //
 
 namespace {
-std::unordered_map<Node *, int32_t /* place_holder */> allNodes; // cjh how to clear ?
+CachedArray<Node *> allNodes{128}; //cjh how to clear ?
 const std::string                                      EMPTY_NODE_NAME;
 IDGenerator                                            idGenerator("Node");
+
+std::vector<Node *> dirtyNodes;
+CC_FORCE_INLINE void setDirtyNode(const index_t idx, Node *node) {
+    if (idx >= dirtyNodes.size()) {
+        if (idx >= dirtyNodes.capacity()) {
+            size_t minCapacity = std::max((idx + 1) * 2, 32);
+            if (minCapacity > dirtyNodes.capacity()) {
+                dirtyNodes.reserve(minCapacity); // Make a pre-allocated size for dirtyNode vector for better grow performance.
+            }
+        }
+        dirtyNodes.resize(idx + 1, nullptr);
+    }
+    dirtyNodes[idx] = node;
+}
+
+CC_FORCE_INLINE Node *getDirtyNode(const index_t idx) {
+    return dirtyNodes[idx];
+}
+
 } // namespace
 
 Node::Node() : Node(EMPTY_NODE_NAME) {
@@ -66,15 +85,13 @@ Node::Node(const std::string &name) {
     } else {
         _name = name;
     }
-    allNodes.emplace(this, 0);
+    allNodes.push(this);
     _eventProcessor = new NodeEventProcessor(this);
 }
 
 Node::~Node() {
-    auto iter = allNodes.find(this);
-    if (iter != allNodes.end()) {
-        allNodes.erase(iter);
-    }
+    uint32_t index = allNodes.indexOf(this);
+    allNodes.fastRemove(index);
     CC_SAFE_DELETE(_eventProcessor);
 }
 
@@ -523,16 +540,20 @@ Node *Node::getChildByPath(const std::string &path) const {
 
 //
 
-void Node::setPosition(float x, float y, float z) {
+void Node::setPositionInternal(float x, float y, float z, bool calledFromJS) {
     _localPosition.set(x, y, z);
     invalidateChildren(TransformBit::POSITION);
 
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::POSITION);
     }
+
+    if (!calledFromJS) {
+        notifyLocalPositionUpdated();
+    }
 }
 
-void Node::setRotation(float x, float y, float z, float w) {
+void Node::setRotationInternal(float x, float y, float z, float w, bool calledFromJS) {
     _localRotation.set(x, y, z, w);
     _eulerDirty = true;
 
@@ -540,6 +561,10 @@ void Node::setRotation(float x, float y, float z, float w) {
 
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
+    }
+
+    if (!calledFromJS) {
+        notifyLocalRotationUpdated();
     }
 }
 
@@ -551,14 +576,20 @@ void Node::setRotationFromEuler(float x, float y, float z) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
-void Node::setScale(float x, float y, float z) {
+void Node::setScaleInternal(float x, float y, float z, bool calledFromJS) {
     _localScale.set(x, y, z);
 
     invalidateChildren(TransformBit::SCALE);
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::SCALE);
+    }
+
+    if (!calledFromJS) {
+        notifyLocalScaleUpdated();
     }
 }
 
@@ -566,6 +597,7 @@ void Node::updateWorldTransform() {
     if (!getDirtyFlag()) {
         return;
     }
+
     index_t    i    = 0;
     Node      *curr = this;
     Mat3       mat3;
@@ -680,6 +712,8 @@ void Node::setWorldPosition(float x, float y, float z) {
     } else {
         _localPosition.set(_worldPosition);
     }
+    notifyLocalPositionUpdated();
+
     invalidateChildren(TransformBit::POSITION);
 
     if (_eventMask & TRANSFORM_ON) {
@@ -709,6 +743,8 @@ void Node::setWorldRotation(float x, float y, float z, float w) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
 const Quaternion &Node::getWorldRotation() {
@@ -739,6 +775,8 @@ void Node::setWorldScale(float x, float y, float z) {
         _localScale = _worldScale;
     }
 
+    notifyLocalScaleUpdated();
+
     invalidateChildren(TransformBit::SCALE);
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::SCALE);
@@ -750,20 +788,6 @@ const Vec3 &Node::getWorldScale() {
     return _worldScale;
 }
 
-void Node::setDirtyNode(const index_t idx, Node *node) {
-    if (idx >= dirtyNodes.size()) {
-        if (dirtyNodes.empty()) {
-            dirtyNodes.reserve(16); // Make a pre-allocated size for dirtyNode vector for better grow performance.
-        }
-        dirtyNodes.resize(idx + 1, nullptr);
-    }
-    dirtyNodes[idx] = node;
-}
-
-Node *Node::getDirtyNode(const index_t idx) {
-    return dirtyNodes[idx];
-}
-
 void Node::setAngle(float val) {
     _euler.set(0, 0, val);
     Quaternion::createFromAngleZ(val, &_localRotation);
@@ -772,6 +796,8 @@ void Node::setAngle(float val) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
 void Node::onSetParent(Node *oldParent, bool keepWorldTransform) {
@@ -794,6 +820,8 @@ void Node::onSetParent(Node *oldParent, bool keepWorldTransform) {
             _localRotation.set(_worldRotation);
             _localScale.set(_worldScale);
         }
+
+        notifyLocalPositionRotationScaleUpdated();
         _eulerDirty = true;
     }
     invalidateChildren(TransformBit::TRS);
@@ -817,6 +845,8 @@ void Node::rotate(const Quaternion &rot, NodeSpace ns) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
 void Node::lookAt(const Vec3 &pos, const Vec3 &up) {
@@ -845,6 +875,8 @@ void Node::inverseTransformPoint(Vec3 &out, const Vec3 &p) {
 
 void Node::setMatrix(const Mat4 &val) {
     val.decompose(&_localScale, &_localRotation, &_localPosition);
+    notifyLocalPositionRotationScaleUpdated();
+
     invalidateChildren(TransformBit::TRS);
     _eulerDirty = true;
     if (_eventMask & TRANSFORM_ON) {
@@ -866,9 +898,11 @@ void Node::setWorldRotationFromEuler(float x, float y, float z) {
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
+
+    notifyLocalRotationUpdated();
 }
 
-void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
+void Node::setRTSInternal(Quaternion *rot, Vec3 *pos, Vec3 *scale, bool calledFromJS) {
     uint32_t dirtyBit = 0;
     if (rot) {
         dirtyBit |= static_cast<uint32_t>(TransformBit::ROTATION);
@@ -883,6 +917,11 @@ void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
         _localScale = *scale;
         dirtyBit |= static_cast<uint32_t>(TransformBit::SCALE);
     }
+
+    if (!calledFromJS) {
+        notifyLocalPositionRotationScaleUpdated();
+    }
+
     if (dirtyBit) {
         invalidateChildren(static_cast<TransformBit>(dirtyBit));
         if (_eventMask & TRANSFORM_ON) {
@@ -892,8 +931,8 @@ void Node::setRTS(Quaternion *rot, Vec3 *pos, Vec3 *scale) {
 }
 
 void Node::resetChangedFlags() {
-    for (auto &e : allNodes) {
-        e.first->setChangedFlags(0);
+    for (uint32_t i = 0, len = allNodes.size(); i < len; ++i) {
+        allNodes[i]->setChangedFlags(0);
     }
 }
 
@@ -928,6 +967,9 @@ void Node::translate(const Vec3 &trans, NodeSpace ns) {
             _localPosition.z += trans.z;
         }
     }
+
+    notifyLocalPositionUpdated();
+
     invalidateChildren(TransformBit::POSITION);
     if (_eventMask & TRANSFORM_ON) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::POSITION);

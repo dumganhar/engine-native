@@ -91,11 +91,11 @@ using MacroValue = boost::variant2::variant<int32_t, float, bool, std::string>;
  */
 using MacroRecord = Record<std::string, MacroValue>;
 
-using MaterialProperty = boost::variant2::variant<std::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/>;
+using MaterialProperty = boost::variant2::variant<boost::variant2::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/>;
 
 using MaterialPropertyList = std::vector<MaterialProperty>;
 
-using MaterialPropertyVariant = boost::variant2::variant<std::monostate /*0*/, MaterialProperty /*1*/, MaterialPropertyList /*2*/>;
+using MaterialPropertyVariant = boost::variant2::variant<boost::variant2::monostate /*0*/, MaterialProperty /*1*/, MaterialPropertyList /*2*/>;
 
 #define MaterialPropertyIndexSingle (1)
 #define MaterialPropertyIndexList   (2)

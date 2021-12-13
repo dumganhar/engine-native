@@ -314,11 +314,11 @@ bool sevalue_to_native(const se::Value &from, std::vector<bool> *to, se::Object 
 
 bool        sevalue_to_native(const se::Value &from, std::vector<unsigned char> *to, se::Object * /*ctx*/);               // NOLINT(readability-identifier-naming)
 bool        sevalue_to_native(const se::Value &from, boost::variant2::variant<std::vector<float>, std::string> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
-inline bool sevalue_to_native(const se::Value & /*from*/, std::monostate * /*to*/, se::Object * /*ctx*/) {                // NOLINT(readability-identifier-naming)
+inline bool sevalue_to_native(const se::Value & /*from*/, boost::variant2::monostate * /*to*/, se::Object * /*ctx*/) {                // NOLINT(readability-identifier-naming)
     // nothing todo
     return false;
 }
-bool sevalue_to_native(const se::Value &from, boost::variant2::variant<std::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, boost::variant2::variant<boost::variant2::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 //////////////////////// scene info
 bool sevalue_to_native(const se::Value &from, cc::scene::FogInfo *, se::Object * /*ctx*/);     // NOLINT(readability-identifier-naming)
@@ -457,7 +457,7 @@ inline bool nativevalue_to_se(const cc::network::DownloadTask &from, se::Value &
     return DownloadTask_to_seval(from, &to);
 }
 
-inline bool nativevalue_to_se(const std::monostate & /*from*/, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(const boost::variant2::monostate & /*from*/, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUndefined();
     return true;
 }

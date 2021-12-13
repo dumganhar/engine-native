@@ -293,8 +293,8 @@ using Uint16Array           = TypedArrayTemp<uint16_t>;
 using Uint32Array           = TypedArrayTemp<uint32_t>;
 using Float32Array          = TypedArrayTemp<float>;
 using Float64Array          = TypedArrayTemp<double>;
-using TypedArray            = boost::variant2::variant<std::monostate, Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
-using TypedArrayElementType = boost::variant2::variant<std::monostate, int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, float, double>;
+using TypedArray            = boost::variant2::variant<boost::variant2::monostate, Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
+using TypedArrayElementType = boost::variant2::variant<boost::variant2::monostate, int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, float, double>;
 
 uint32_t getTypedArrayLength(const TypedArray &arr);
 uint32_t getTypedArrayBytesPerElement(const TypedArray &arr);

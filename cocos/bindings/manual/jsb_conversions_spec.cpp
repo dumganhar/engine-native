@@ -813,7 +813,7 @@ bool sevalue_to_native(const se::Value &from, std::vector<cc::MacroRecord> *to, 
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Object *ctx) {
     if (from.isNullOrUndefined()) {
-        *to = std::monostate();
+        *to = boost::variant2::monostate();
         return true;
     }
 
@@ -983,7 +983,7 @@ bool sevalue_to_native(const se::Value &from, boost::variant2::variant<std::vect
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
-bool sevalue_to_native(const se::Value &from, boost::variant2::variant<std::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx) {
+bool sevalue_to_native(const se::Value &from, boost::variant2::variant<boost::variant2::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx) {
     bool ok = false;
     if (from.isObject() && from.toObject()->isArray()) {
         cc::MaterialPropertyList propertyList{};
@@ -1119,7 +1119,7 @@ bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /
     boost::variant2::visit(overloaded{[&](auto &typedArray) {
                               typedArray.setJSTypedArray(from.toObject());
                           },
-                          [](std::monostate /*unused*/) {}},
+                          [](boost::variant2::monostate /*unused*/) {}},
                *to);
     return true;
 }

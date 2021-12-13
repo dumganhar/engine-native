@@ -756,7 +756,7 @@ bool sevalue_to_native(const se::Value &from, cc::scene::SkyboxInfo *to, se::Obj
     return true;
 }
 
-// boost::variant<int32_t, float, bool, std::string>;
+// boost::variant2::variant<int32_t, float, bool, std::string>;
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::MacroValue *to, se::Object * /*ctx*/) {
     if (from.isBoolean()) {
@@ -958,7 +958,7 @@ bool sevalue_to_native(const se::Value &from, cc::IPreCompileInfoValueType *to, 
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
-bool sevalue_to_native(const se::Value &from, boost::variant<std::vector<float>, std::string> *to, se::Object * /*ctx*/) {
+bool sevalue_to_native(const se::Value &from, boost::variant2::variant<std::vector<float>, std::string> *to, se::Object * /*ctx*/) {
     if (from.isObject() && from.toObject()->isArray()) {
         uint32_t           len = 0;
         bool               ok  = from.toObject()->getArrayLength(&len);
@@ -983,7 +983,7 @@ bool sevalue_to_native(const se::Value &from, boost::variant<std::vector<float>,
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
-bool sevalue_to_native(const se::Value &from, boost::variant<std::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx) {
+bool sevalue_to_native(const se::Value &from, boost::variant2::variant<std::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx) {
     bool ok = false;
     if (from.isObject() && from.toObject()->isArray()) {
         cc::MaterialPropertyList propertyList{};
@@ -1084,7 +1084,7 @@ bool sevalue_to_native(const se::Value &from, std::vector<unsigned char> *to, se
 bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /*ctx*/) {
     CC_ASSERT(from.isObject());
     CC_ASSERT(from.toObject()->isTypedArray());
-    if (to->which() == 0) {
+    if (to->index() == 0) {
         se::Object::TypedArrayType type = from.toObject()->getTypedArrayType();
         switch (type) {
             case se::Object::TypedArrayType::FLOAT32:
@@ -1116,7 +1116,7 @@ bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /
         }
     }
 
-    boost::apply_visitor(overloaded{[&](auto &typedArray) {
+    boost::variant2::visit(overloaded{[&](auto &typedArray) {
                               typedArray.setJSTypedArray(from.toObject());
                           },
                           [](std::monostate /*unused*/) {}},
@@ -1126,7 +1126,7 @@ bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::IBArray *to, se::Object * /*ctx*/) {
-    boost::apply_visitor([&](auto &typedArray) {
+    boost::variant2::visit([&](auto &typedArray) {
         typedArray.setJSTypedArray(from.toObject());
     }, *to);
 

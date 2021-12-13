@@ -50,15 +50,11 @@ ArrayBuffer::Ptr BufferBlob::getCombined() {
     uint32_t                     counter = 0;
 
     for (const auto &arrayBufferOrPadding : _arrayBufferOrPaddings) {
-        if (arrayBufferOrPadding.type() == typeid(uint32_t)) {
-            if (const auto *p = boost::get<uint32_t>(&arrayBufferOrPadding)) {
-                counter += *p;
-            }
-        } else if (arrayBufferOrPadding.type() == typeid(ArrayBuffer::Ptr)) {
-            if (const auto *p = boost::get<ArrayBuffer::Ptr>(&arrayBufferOrPadding)) {
-                result.set(*p, counter);
-                counter += (*p)->byteLength();
-            }
+        if (const auto *p = boost::variant2::get_if<uint32_t>(&arrayBufferOrPadding)) {
+            counter += *p;
+        } else if (const auto *p = boost::variant2::get_if<ArrayBuffer::Ptr>(&arrayBufferOrPadding)) {
+            result.set(*p, counter);
+            counter += (*p)->byteLength();
         }
     }
 

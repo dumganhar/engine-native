@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include "boost/variant.hpp"
+#include "boost/variant2/variant.hpp"
 #include "base/Vector.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
@@ -39,7 +39,7 @@ class Mesh;
  * @en Array views for index buffer
  * @zh 允许存储索引的数组视图。
  */
-using IBArray = boost::variant<Uint8Array, Uint16Array, Uint32Array>;
+using IBArray = boost::variant2::variant<Uint8Array, Uint16Array, Uint32Array>;
 
 /**
  * @en The interface of geometric information

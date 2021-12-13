@@ -80,58 +80,54 @@ const IGeometricInfo &RenderingSubMesh::geometricInfo() {
     auto index = static_cast<index_t>(_subMeshIdx.value());
 
     const auto &positionsVar = _mesh->readAttribute(index, gfx::ATTR_NAME_POSITION);
-    if (positionsVar.type() == typeid(Float32Array)) {
-        if (const auto *pPositions = boost::get<Float32Array>(&positionsVar); pPositions != nullptr) {
-            const auto &positions  = *pPositions;
-            const auto &indicesVar = _mesh->readIndices(index);
-            if (indicesVar.type() == typeid(Uint16Array)) {
-                if (const auto *pIndices = boost::get<Uint16Array>(&indicesVar); pIndices != nullptr) {
-                    const auto &indices = *pIndices;
+    if (const auto *pPositions = boost::variant2::get_if<Float32Array>(&positionsVar); pPositions != nullptr) {
+        const auto &positions  = *pPositions;
+        const auto &indicesVar = _mesh->readIndices(index);
+        if (const auto *pIndices = boost::variant2::get_if<Uint16Array>(&indicesVar); pIndices != nullptr) {
+            const auto &indices = *pIndices;
 
-                    Vec3 max;
-                    Vec3 min;
+            Vec3 max;
+            Vec3 min;
 
-                    if (auto iter = std::find_if(_attributes.cbegin(), _attributes.cend(), [](const gfx::Attribute &element) -> bool {
-                            return element.name == gfx::ATTR_NAME_POSITION;
-                        });
-                        iter != _attributes.cend()) {
-                        const auto &   attri = *iter;
-                        const uint32_t count = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attri.format)].count;
-                        if (count == 2) {
-                            max.set(positions[0], positions[1], 0);
-                            min.set(positions[0], positions[1], 0);
-                        } else {
-                            max.set(positions[0], positions[1], positions[2]);
-                            min.set(positions[0], positions[1], positions[2]);
-                        }
+            if (auto iter = std::find_if(_attributes.cbegin(), _attributes.cend(), [](const gfx::Attribute &element) -> bool {
+                    return element.name == gfx::ATTR_NAME_POSITION;
+                });
+                iter != _attributes.cend()) {
+                const auto &   attri = *iter;
+                const uint32_t count = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attri.format)].count;
+                if (count == 2) {
+                    max.set(positions[0], positions[1], 0);
+                    min.set(positions[0], positions[1], 0);
+                } else {
+                    max.set(positions[0], positions[1], positions[2]);
+                    min.set(positions[0], positions[1], positions[2]);
+                }
 
-                        for (size_t i = 0; i < positions.length(); i += count) {
-                            if (count == 2) {
-                                max.x = positions[i] > max.x ? positions[i] : max.x;
-                                max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
-                                min.x = positions[i] < min.x ? positions[i] : min.x;
-                                min.y = positions[i + 1] < min.y ? positions[i + 1] : min.y;
-                            } else {
-                                max.x = positions[i] > max.x ? positions[i] : max.x;
-                                max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
-                                max.z = positions[i + 2] > max.z ? positions[i + 2] : max.z;
-                                min.x = positions[i] < min.x ? positions[i] : min.x;
-                                min.y = positions[i + 1] < min.y ? positions[i + 1] : min.y;
-                                min.z = positions[i + 2] < min.z ? positions[i + 2] : min.z;
-                            }
-                        }
+                for (size_t i = 0; i < positions.length(); i += count) {
+                    if (count == 2) {
+                        max.x = positions[i] > max.x ? positions[i] : max.x;
+                        max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
+                        min.x = positions[i] < min.x ? positions[i] : min.x;
+                        min.y = positions[i + 1] < min.y ? positions[i + 1] : min.y;
+                    } else {
+                        max.x = positions[i] > max.x ? positions[i] : max.x;
+                        max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
+                        max.z = positions[i + 2] > max.z ? positions[i + 2] : max.z;
+                        min.x = positions[i] < min.x ? positions[i] : min.x;
+                        min.y = positions[i + 1] < min.y ? positions[i + 1] : min.y;
+                        min.z = positions[i + 2] < min.z ? positions[i + 2] : min.z;
                     }
-
-                    IGeometricInfo info;
-                    info.positions       = positions;
-                    info.indices         = indices;
-                    info.boundingBox.max = max;
-                    info.boundingBox.min = min;
-
-                    _geometricInfo = info;
-                    return _geometricInfo.value();
                 }
             }
+
+            IGeometricInfo info;
+            info.positions       = positions;
+            info.indices         = indices;
+            info.boundingBox.max = max;
+            info.boundingBox.min = min;
+
+            _geometricInfo = info;
+            return _geometricInfo.value();
         }
     }
 
@@ -259,7 +255,7 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
 
             mapBuffer(
                 dataView, [&](const DataVariant &cur, uint32_t idx, const DataView &view) -> DataVariant {
-                    auto iter = std::find(idxMap.begin(), idxMap.end(), boost::get<int32_t>(cur));
+                    auto iter = std::find(idxMap.begin(), idxMap.end(), boost::variant2::get<0>(cur));
                     if (iter != idxMap.end()) {
                         return static_cast<int32_t>(iter - idxMap.begin());
                     }

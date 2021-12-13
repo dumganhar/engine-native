@@ -29,7 +29,7 @@
 
 namespace cc {
 
-using DataVariant       = boost::variant<int32_t, float>;
+using DataVariant       = boost::variant2::variant<int32_t, float>;
 using MapBufferCallback = std::function<DataVariant(const DataVariant& cur, uint32_t idx, const DataView& view)>;
 
 DataView mapBuffer(DataView&                  target,

@@ -225,7 +225,7 @@ void Model::updateUBOs(uint32_t stamp) {
     int         idx = _instMatWorldIdx;
     if (idx >= 0) {
         std::vector<TypedArray> &attrs = getInstancedAttributeBlock()->views;
-        uploadMat4AsVec4x3(worldMatrix, boost::get<Float32Array>(attrs[idx]), boost::get<Float32Array>(attrs[idx + 1]), boost::get<Float32Array>(attrs[idx + 2]));
+        uploadMat4AsVec4x3(worldMatrix, boost::variant2::get<Float32Array>(attrs[idx]), boost::variant2::get<Float32Array>(attrs[idx + 1]), boost::variant2::get<Float32Array>(attrs[idx + 2]));
     } else if (_localBuffer) {
         mat4ToFloat32Array(worldMatrix, _localData, pipeline::UBOLocal::MAT_WORLD_OFFSET);
         Mat4::inverseTranspose(worldMatrix, &mat4);
@@ -421,7 +421,7 @@ void Model::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *de
 }
 
 void Model::_setInstancedAttributesViewData(index_t viewIdx, index_t arrIdx, float value) {
-    boost::get<Float32Array>(_instanceAttributeBlock.views[viewIdx])[arrIdx] = value;
+    boost::variant2::get<Float32Array>(_instanceAttributeBlock.views[viewIdx])[arrIdx] = value;
 }
 
 } // namespace scene

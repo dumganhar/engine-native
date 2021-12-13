@@ -51,33 +51,33 @@ int32_t getBitCount(int32_t cnt) {
 }
 
 bool recordAsBool(const MacroRecord::mapped_type &v) {
-    if (typeid(bool) == v.type()) {
-        return boost::get<bool>(v);
+    if (boost::variant2::holds_alternative<bool>(v)) {
+        return boost::variant2::get<bool>(v);
     }
-    if (typeid(std::string) == v.type()) {
-        return boost::get<std::string>(v) == "true";
+    if (boost::variant2::holds_alternative<std::string>(v)) {
+        return boost::variant2::get<std::string>(v) == "true";
     }
-    if (typeid(int32_t) == v.type()) {
-        return boost::get<int32_t>(v);
+    if (boost::variant2::holds_alternative<int32_t>(v)) {
+        return boost::variant2::get<int32_t>(v);
     }
-    if (typeid(float) == v.type()) {
-        return std::abs(boost::get<float>(v)) > FLT_EPSILON;
+    if (boost::variant2::holds_alternative<float>(v)) {
+        return std::abs(boost::variant2::get<float>(v)) > FLT_EPSILON;
     }
     return false;
 }
 
 std::string recordAsString(const MacroRecord::mapped_type &v) {
-    if (typeid(bool) == v.type()) {
-        return boost::get<bool>(v) ? "1" : "0";
+    if (boost::variant2::holds_alternative<bool>(v)) {
+        return boost::variant2::get<bool>(v) ? "1" : "0";
     }
-    if (typeid(std::string) == v.type()) {
-        return boost::get<std::string>(v);
+    if (boost::variant2::holds_alternative<std::string>(v)) {
+        return boost::variant2::get<std::string>(v);
     }
-    if (typeid(int32_t) == v.type()) {
-        return std::to_string(boost::get<int32_t>(v));
+    if (boost::variant2::holds_alternative<int32_t>(v)) {
+        return std::to_string(boost::variant2::get<int32_t>(v));
     }
-    if (typeid(float) == v.type()) {
-        return std::to_string(boost::get<float>(v));
+    if (boost::variant2::holds_alternative<float>(v)) {
+        return std::to_string(boost::variant2::get<float>(v));
     }
     return "";
 }
@@ -104,7 +104,7 @@ std::vector<IMacroInfo> prepareDefines(const MacroRecord &records, const std::ve
         auto        value = mapDefine(tmp, it == records.end() ? std::nullopt : std::optional(it->second));
         //TODO(PatriceJiang): v === '0' can be bool ?
         
-        bool isDefault = it == records.end() || (it->second.type() == typeid(std::string) && boost::get<std::string>(it->second) == "0");
+        bool isDefault = it == records.end() || (boost::variant2::holds_alternative<std::string>(it->second) && boost::variant2::get<std::string>(it->second) == "0");
         macros.emplace_back(IMacroInfo{.name = name, .value = value, .isDefault = isDefault});
     }
     return macros;
@@ -310,10 +310,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             auto &range = def.range.value();
             cnt         = getBitCount(range[1] - range[0] + 1); // inclusive on both ends
             def.map     = [=](const MacroValue &value) -> int32_t {
-                if (value.type() != typeid(int32_t)) {
-                    CC_ASSERT(false);
-                }
-                const auto *pValue = boost::get<int32_t>(&value);
+                const auto *pValue = boost::variant2::get_if<int32_t>(&value);
                 if (pValue != nullptr) {
                     return *pValue - range[0];
                 }
@@ -323,37 +320,30 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
         } else if (def.type == "string") {
             cnt     = getBitCount(def.options.value().size());
             def.map = [=](const MacroValue &value) -> int32_t {
-                if (value.type() == typeid(std::string)) {
-                    const auto *pValue = boost::get<std::string>(&value);
-                    if (pValue != nullptr) {
-                        int32_t idx = std::find(def.options.value().begin(), def.options.value().end(), *pValue) - def.options.value().begin();
-                        return std::max(0, idx);
-                    }
+                const auto *pValue = boost::variant2::get_if<std::string>(&value);
+                if (pValue != nullptr) {
+                    int32_t idx = std::find(def.options.value().begin(), def.options.value().end(), *pValue) - def.options.value().begin();
+                    return std::max(0, idx);
                 }
                 return 0;
             };
         } else if (def.type == "boolean") {
             def.map = [](const MacroValue &value) -> int32_t {
-                if (value.type() == typeid(bool)) {
-                    const auto *pBool = boost::get<bool>(&value);
-                    if (pBool != nullptr) {
-                        return *pBool ? 1 : 0;
-                    }
-                } else if (value.type() == typeid(float)) {
-                    const auto *pFloat = boost::get<float>(&value);
-                    if (pFloat != nullptr) {
-                        return *pFloat != 0.F ? 1 : 0;
-                    }
-                } else if (value.type() == typeid(int)) {
-                    const auto *pInt = boost::get<int>(&value);
-                    if (pInt != nullptr) {
-                        return *pInt ? 1 : 0;
-                    }
-                } else if (value.type() == typeid(std::string)) {
-                    const auto *pString = boost::get<std::string>(&value);
-                    if (pString != nullptr) {
-                        return *pString != "0" || !(*pString).empty() ? 1 : 0;
-                    }
+                const auto *pBool = boost::variant2::get_if<bool>(&value);
+                if (pBool != nullptr) {
+                    return *pBool ? 1 : 0;
+                }
+                const auto *pFloat = boost::variant2::get_if<float>(&value);
+                if (pFloat != nullptr) {
+                    return *pFloat != 0.F ? 1 : 0;
+                }
+                const auto *pInt = boost::variant2::get_if<int>(&value);
+                if (pInt != nullptr) {
+                    return *pInt ? 1 : 0;
+                }
+                const auto *pString = boost::variant2::get_if<std::string>(&value);
+                if (pString != nullptr) {
+                    return *pString != "0" || !(*pString).empty() ? 1 : 0;
                 }
                 return 0;
             };

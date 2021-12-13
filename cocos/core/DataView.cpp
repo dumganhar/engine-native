@@ -50,7 +50,7 @@ std::unordered_map<std::string, DataView::IntWritter> DataView::intWritterMap{
 
 int32_t DataView::readInt(ReaderVariant &readerVariant, index_t offset)
 {
-    return boost::apply_visitor([offset, this](auto &reader) {
+    return boost::variant2::visit([offset, this](auto &reader) {
         return (int32_t)(this->*reader)(offset);
     },
                       readerVariant);

@@ -124,11 +124,9 @@ void Fog::updatePipeline() {
 
     if (auto iter = pipeline->getMacros().find("CC_USE_FOG"); iter != pipeline->getMacros().end()) {
         const MacroValue &macro    = iter->second;
-        if (macro.type() == typeid(int32_t)) {
-            const int32_t *macroPtr = boost::get<int32_t>(&macro);
-            if (macroPtr != nullptr && *macroPtr == static_cast<int32_t>(value)) {
-                return;
-            }
+        const int32_t *   macroPtr = boost::variant2::get_if<int32_t>(&macro);
+        if (macroPtr != nullptr && *macroPtr == static_cast<int32_t>(value)) {
+            return;
         }
     }
 

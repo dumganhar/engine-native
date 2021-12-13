@@ -25,7 +25,7 @@
 #include <optional>
 #include <unordered_map>
 #include <vector>
-#include "boost/variant.hpp"
+#include "boost/variant2/variant.hpp"
 #include "base/Ptr.h"
 #include "base/Value.h"
 #include "bindings/jswrapper/SeApi.h"
@@ -313,12 +313,12 @@ inline bool sevalue_to_native(const se::Value &from, cc::ValueMap *to, se::Objec
 bool sevalue_to_native(const se::Value &from, std::vector<bool> *to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
 
 bool        sevalue_to_native(const se::Value &from, std::vector<unsigned char> *to, se::Object * /*ctx*/);               // NOLINT(readability-identifier-naming)
-bool        sevalue_to_native(const se::Value &from, boost::variant<std::vector<float>, std::string> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool        sevalue_to_native(const se::Value &from, boost::variant2::variant<std::vector<float>, std::string> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 inline bool sevalue_to_native(const se::Value & /*from*/, std::monostate * /*to*/, se::Object * /*ctx*/) {                // NOLINT(readability-identifier-naming)
     // nothing todo
     return false;
 }
-bool sevalue_to_native(const se::Value &from, boost::variant<std::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, boost::variant2::variant<std::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 //////////////////////// scene info
 bool sevalue_to_native(const se::Value &from, cc::scene::FogInfo *, se::Object * /*ctx*/);     // NOLINT(readability-identifier-naming)

@@ -538,7 +538,7 @@ native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) 
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
         obj->setPrivateData(v);
-        v->addRef(); // TODO(PatriceJiang): reference Count should be greater than 1
+        //        v->addRef(); // TODO(PatriceJiang): reference Count should be greater than 1
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -573,7 +573,7 @@ native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedV
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
         obj->setPrivateData(v);
-        v->addRef(); // TODO(PatriceJiang): reference Count should be greater than 1
+        //        v->addRef(); // TODO(PatriceJiang): reference Count should be greater than 1
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -1413,12 +1413,12 @@ bool nativevalue_to_se_args(se::ValueArray &array, T &x) { // NOLINT(readability
     return nativevalue_to_se(x, array[i], nullptr);
 }
 template <int i, typename T, typename... Args>
-bool nativevalue_to_se_args(se::ValueArray &array, T &x, Args &...args) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se_args(se::ValueArray &array, T &x, Args &... args) { // NOLINT(readability-identifier-naming)
     return nativevalue_to_se_args<i, T>(array, x) && nativevalue_to_se_args<i + 1, Args...>(array, args...);
 }
 
 template <typename... Args>
-bool nativevalue_to_se_args_v(se::ValueArray &array, Args &...args) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se_args_v(se::ValueArray &array, Args &... args) { // NOLINT(readability-identifier-naming)
     return nativevalue_to_se_args<0, Args...>(array, args...);
 }
 

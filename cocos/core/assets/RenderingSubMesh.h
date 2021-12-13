@@ -187,7 +187,7 @@ private:
 
     std::vector<IFlatBuffer> _flatBuffers;
 
-    // As gfx::InputAssemblerInfo needs the data structure, so manually addRef/release.
+    // As gfx::InputAssemblerInfo needs the data structure, so not use SharedPtr.
     Vector<gfx::Buffer *> _jointMappedBuffers;
 
     std::vector<uint32_t> _jointMappedBufferIndices;
@@ -196,7 +196,7 @@ private:
 
     std::optional<IGeometricInfo> _geometricInfo;
 
-    // As gfx::InputAssemblerInfo needs the data structure, so manually addRef/release.
+    // As gfx::InputAssemblerInfo needs the data structure, so not use SharedPtr.
     Vector<gfx::Buffer *> _vertexBuffers;
 
     gfx::AttributeList _attributes;

@@ -38,7 +38,7 @@ namespace cc {
 namespace scene {
 class Model;
 class SubModel;
-}
+} // namespace scene
 
 namespace pipeline {
 
@@ -445,7 +445,7 @@ public:
 protected:
     static uint defaultSamplerHash;
 
-    static unordered_map<uint, gfx::Sampler *> samplerCache;
+    static unordered_map<uint, SharedPtr<gfx::Sampler>> samplerCache;
 };
 
 struct CC_DLL DescriptorSetLayoutInfos {

@@ -60,8 +60,8 @@ struct ITemplateInfo {
     std::vector<gfx::Attribute>                  gfxAttributes;
     std::vector<int32_t>                         blockSizes;
     std::vector<gfx::ShaderStage>                gfxStages;
-    std::vector<gfx::DescriptorSetLayout *>      setLayouts; // TODO(PatriceJiang): pointer / rc
-    gfx::PipelineLayout *                        pipelineLayout{nullptr};
+    Vector<gfx::DescriptorSetLayout *>           setLayouts; // TODO(PatriceJiang): pointer / rc
+    SharedPtr<gfx::PipelineLayout>               pipelineLayout{nullptr};
     Record<std::string, uint32_t>                handleMap;
     std::vector<gfx::DescriptorSetLayoutBinding> bindings;
     int32_t                                      samplerStartBinding{-1};

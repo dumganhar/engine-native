@@ -517,7 +517,7 @@ const gfx::UniformStorageImage REFLECTIONSTORAGE::LAYOUT = {
 
 uint SamplerLib::defaultSamplerHash{genSamplerHash(gfx::SamplerInfo())};
 
-unordered_map<uint, gfx::Sampler *> SamplerLib::samplerCache{};
+unordered_map<uint, SharedPtr<gfx::Sampler>> SamplerLib::samplerCache{};
 
 uint SamplerLib::genSamplerHash(const gfx::SamplerInfo &info) {
     uint hash = 0;

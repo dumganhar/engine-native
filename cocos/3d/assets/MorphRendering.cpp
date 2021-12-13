@@ -26,9 +26,9 @@
 #include "3d/assets/MorphRendering.h"
 
 #include <memory>
-
 #include "3d/assets/Mesh.h"
 #include "3d/assets/Morph.h"
+#include "base/RefCounted.h"
 #include "core/DataView.h"
 #include "core/TypedArray.h"
 #include "core/assets/RenderingSubMesh.h"
@@ -71,7 +71,7 @@ public:
 /**
  * Describes how to render a sub-mesh morph.
  */
-class SubMeshMorphRendering {
+class SubMeshMorphRendering : public RefCounted {
 public:
     virtual ~SubMeshMorphRendering() = default;
     /**

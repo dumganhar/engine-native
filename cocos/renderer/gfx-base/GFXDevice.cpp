@@ -45,6 +45,9 @@ Device::Device() {
 
 Device::~Device() {
     Device::instance = nullptr;
+    CC_SAFE_RELEASE(_cmdBuff);
+    CC_SAFE_RELEASE(_queue);
+    CC_SAFE_RELEASE(_context);
 }
 
 Format Device::getColorFormat() const {
@@ -69,7 +72,12 @@ bool Device::initialize(const DeviceInfo &info) {
         _bindingMappingInfo.samplerOffsets.push_back(0);
     }
 
-    return doInit(info);
+    bool result = doInit(info);
+    _cmdBuff->addRef();
+    _queue->addRef();
+    _context->addRef();
+
+    return result;
 }
 
 void Device::destroy() {

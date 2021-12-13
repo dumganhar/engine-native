@@ -137,7 +137,7 @@ private:
     SharedPtr<gfx::Framebuffer>    _frameBuffer;
     std::vector<SharedPtr<Camera>> _cameras;
     // As it will be used to create gfx::FrameBuffer, and we do not want to modify
-    // gfx classes, so manually invoke retain/release.
+    // gfx classes, so manually invoke addRef/release.
     std::vector<gfx::Texture *> _colorTextures;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderWindow);

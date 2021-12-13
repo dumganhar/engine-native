@@ -56,7 +56,7 @@ RenderingSubMesh::RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
   _indexBuffer(indexBuffer),
   _indirectBuffer(indirectBuffer) {
     _iaInfo.attributes     = attributes;
-    _iaInfo.vertexBuffers  = vertexBuffers; //cjh how to release?
+    _iaInfo.vertexBuffers  = vertexBuffers;
     _iaInfo.indexBuffer    = indexBuffer;
     _iaInfo.indirectBuffer = indirectBuffer;
 }
@@ -182,11 +182,11 @@ void RenderingSubMesh::enableVertexIdChannel(gfx::Device *device) {
     const auto attributeIndex = static_cast<uint32_t>(_attributes.size());
 
     gfx::Buffer *vertexIdBuffer = allocVertexIdBuffer(device);
-    _vertexBuffers.push_back(vertexIdBuffer);
+    _vertexBuffers.pushBack(vertexIdBuffer);
     _attributes.push_back({"a_vertexId", gfx::Format::R32F, false, streamIndex, false, 0});
 
     _iaInfo.attributes    = _attributes;
-    _iaInfo.vertexBuffers = _vertexBuffers;
+    _iaInfo.vertexBuffers = _vertexBuffers.get();
 
     _vertexIdChannel = {
         .stream = streamIndex,
@@ -196,25 +196,27 @@ void RenderingSubMesh::enableVertexIdChannel(gfx::Device *device) {
 
 bool RenderingSubMesh::destroy() {
     for (auto *vertexBuffer : _vertexBuffers) {
-        CC_SAFE_DESTROY(vertexBuffer);
+        vertexBuffer->destroy();
     }
     _vertexBuffers.clear();
 
-    CC_SAFE_DESTROY(_indexBuffer);
+    CC_SAFE_DESTROY_NULL(_indexBuffer);
 
-    for (int index : _jointMappedBufferIndices) {
-        _jointMappedBuffers[index]->destroy();
+    if (!_jointMappedBuffers.empty() && !_jointMappedBufferIndices.empty()) {
+        for (int index : _jointMappedBufferIndices) {
+            _jointMappedBuffers.at(index)->destroy();
+        }
+        _jointMappedBuffers.clear();
+        _jointMappedBufferIndices.clear();
     }
-    _jointMappedBuffers.clear();
-    _jointMappedBufferIndices.clear();
 
-    CC_SAFE_DESTROY(_indirectBuffer);
+    CC_SAFE_DESTROY_NULL(_indirectBuffer);
     return true;
 }
 
 const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
     if (!_jointMappedBuffers.empty()) {
-        return _jointMappedBuffers;
+        return _jointMappedBuffers.get();
     }
 
     auto &buffers = _jointMappedBuffers;
@@ -222,14 +224,14 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
 
     if (!_mesh || !_subMeshIdx.has_value()) {
         _jointMappedBuffers = _vertexBuffers;
-        return _jointMappedBuffers;
+        return _jointMappedBuffers.get();
     }
 
     auto &      structInfo = _mesh->getStruct();
     const auto &prim       = structInfo.primitives[_subMeshIdx.value()];
     if (!structInfo.jointMaps.has_value() || !prim.jointMapIndex.has_value() || structInfo.jointMaps.value()[prim.jointMapIndex.value()].empty()) {
         _jointMappedBuffers = _vertexBuffers;
-        return _jointMappedBuffers;
+        return _jointMappedBuffers.get();
     }
     gfx::Format  jointFormat = gfx::Format::UNKNOWN;
     int32_t      jointOffset = 0;
@@ -269,24 +271,24 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
                 bundle.view.stride});
 
             buffer->update(dataView.buffer()->getData());
-            buffers.emplace_back(buffer);
+            buffers.pushBack(buffer);
             indices.emplace_back(i);
         } else {
-            buffers.emplace_back(_vertexBuffers[prim.vertexBundelIndices[i]]);
+            buffers.pushBack(_vertexBuffers.at(prim.vertexBundelIndices[i]));
         }
     }
 
     if (_vertexIdChannel) {
-        buffers.emplace_back(allocVertexIdBuffer(device));
+        buffers.pushBack(allocVertexIdBuffer(device));
     }
-    return buffers;
+    return buffers.get();
 }
 
 gfx::Buffer *RenderingSubMesh::allocVertexIdBuffer(gfx::Device *device) {
-    const uint32_t vertexCount = (_vertexBuffers.empty() || _vertexBuffers[0]->getStride() == 0)
+    const uint32_t vertexCount = (_vertexBuffers.empty() || _vertexBuffers.at(0)->getStride() == 0)
                                      ? 0
                                      // TODO: This depends on how stride of a vertex buffer is defined; Consider padding problem.
-                                     : _vertexBuffers[0]->getSize() / _vertexBuffers[0]->getStride();
+                                     : _vertexBuffers.at(0)->getSize() / _vertexBuffers.at(0)->getStride();
 
     std::vector<float> vertexIds(vertexCount);
     for (int iVertex = 0; iVertex < vertexCount; ++iVertex) {

@@ -41,8 +41,8 @@ namespace cc {
 
 /*
  * Similar to std::vector, but it will manage reference count automatically internally.
- * Which means it will invoke Ref::retain() when adding an element, and invoke Ref::release() when removing an element.
- * @warn The element should be `Ref` or its sub-class.
+ * Which means it will invoke RefCounted::addRef() when adding an element, and invoke RefCounted::release() when removing an element.
+ * @warn The element should be `RefCounted` or its sub-class.
  */
 template <class T>
 class Vector {
@@ -118,7 +118,7 @@ public:
     explicit Vector<T>(ssize_t capacity)
     : _data() {
         static_assert(std::is_convertible<T, RefCounted *>::value, "Invalid Type for cc::Vector<T>!");
-        CC_LOG_INFO("In the default constructor with capacity of Vector.");
+        //        CC_LOG_INFO("In the default constructor with capacity of Vector.");
         reserve(capacity);
     }
 
@@ -131,29 +131,44 @@ public:
 
     /** Destructor. */
     ~Vector<T>() {
-        CC_LOG_INFO("In the destructor of Vector.");
+        //        CC_LOG_INFO("In the destructor of Vector.");
         clear();
     }
 
     /** Copy constructor. */
     Vector<T>(const Vector<T> &other) {
         static_assert(std::is_convertible<T, RefCounted *>::value, "Invalid Type for cc::Vector<T>!");
-        CC_LOG_INFO("In the copy constructor!");
+        //        CC_LOG_INFO("In the copy constructor!");
         _data = other._data;
+        addRefForAllObjects();
+    }
+
+    /** Copy constructor. */
+    Vector<T>(const std::vector<T> &other) {
+        static_assert(std::is_convertible<T, RefCounted *>::value, "Invalid Type for cc::Vector<T>!");
+        //        CC_LOG_INFO("In the copy constructor!");
+        _data = other;
         addRefForAllObjects();
     }
 
     /** Constructor with std::move semantic. */
     Vector<T>(Vector<T> &&other) noexcept {
         static_assert(std::is_convertible<T, RefCounted *>::value, "Invalid Type for cc::Vector<T>!");
-        CC_LOG_INFO("In the move constructor of Vector!");
+        //        CC_LOG_INFO("In the move constructor of Vector!");
         _data = std::move(other._data);
+    }
+
+    /** Constructor with std::move semantic. */
+    Vector<T>(std::vector<T> &&other) noexcept {
+        static_assert(std::is_convertible<T, RefCounted *>::value, "Invalid Type for cc::Vector<T>!");
+        //        CC_LOG_INFO("In the move constructor of Vector!");
+        _data = std::move(other);
     }
 
     /** Copy assignment operator. */
     Vector<T> &operator=(const Vector<T> &other) {
         if (this != &other) {
-            CC_LOG_INFO("In the copy assignment operator!");
+            //            CC_LOG_INFO("In the copy assignment operator!");
             clear();
             _data = other._data;
             addRefForAllObjects();
@@ -164,7 +179,7 @@ public:
     /** Copy assignment operator with std::move semantic. */
     Vector<T> &operator=(Vector<T> &&other) noexcept {
         if (this != &other) {
-            CC_LOG_INFO("In the move assignment operator!");
+            //            CC_LOG_INFO("In the move assignment operator!");
             clear();
             _data = std::move(other._data);
         }
@@ -302,7 +317,7 @@ public:
     void pushBack(const Vector<T> &other) {
         for (const auto &obj : other) {
             _data.push_back(obj);
-            obj->retain();
+            obj->addRef();
         }
     }
 
@@ -315,7 +330,7 @@ public:
         CCASSERT(index >= 0 && index <= size(), "Invalid index!");
         CCASSERT(object != nullptr, "The object should not be nullptr");
         _data.insert((std::begin(_data) + index), object);
-        object->retain();
+        object->addRef();
     }
 
     // Removes Objects
@@ -426,7 +441,7 @@ public:
 
         _data[index]->release();
         _data[index] = object;
-        object->retain();
+        object->addRef();
     }
 
     /** Reverses the Vector. */
@@ -439,11 +454,15 @@ public:
         _data.shrink_to_fit();
     }
 
+    const std::vector<T> &get() const {
+        return _data;
+    }
+
 protected:
     /** Retains all the objects in the vector */
     void addRefForAllObjects() {
         for (const auto &obj : _data) {
-            obj->retain();
+            obj->addRef();
         }
     }
 

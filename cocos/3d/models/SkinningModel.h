@@ -72,7 +72,7 @@ private:
     void        ensureEnoughBuffers(index_t count);
 
     std::vector<index_t>                                           _bufferIndices;
-    std::vector<gfx::Buffer *>                                     _buffers;
+    std::vector<SharedPtr<gfx::Buffer>>                            _buffers;
     std::vector<JointInfo>                                         _joints;
     std::vector<std::array<float, pipeline::UBOSkinning::COUNT> *> _dataArray;
     CC_DISALLOW_COPY_MOVE_ASSIGN(SkinningModel);

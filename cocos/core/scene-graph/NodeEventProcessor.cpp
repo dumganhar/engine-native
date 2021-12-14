@@ -344,12 +344,12 @@ void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, void *target
         offDispatch(type, target, useCapture);
 
         if (touchEventExist) {
-            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
+            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
                 event::EventManager::getInstance()->removeEventListener(_touchListener);
                 _touchListener = nullptr;
             }
         } else if (mouseEventExist) {
-            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) { // TODO(xwx): why !checkListeners(_node, MOUSE_EVENTS) ???
+            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
                 event::EventManager::getInstance()->removeEventListener(_mouseListener);
                 _mouseListener = nullptr;
             }
@@ -366,12 +366,12 @@ void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, CallbackInfo
         offDispatch(type, cbID, useCapture);
 
         if (touchEventExist) {
-            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) { // TODO(xwx): why !checkListeners(_node, TOUCH_EVENTS) ???
+            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
                 event::EventManager::getInstance()->removeEventListener(_touchListener);
                 _touchListener = nullptr;
             }
         } else if (mouseEventExist) {
-            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) { // TODO(xwx): why !checkListeners(_node, MOUSE_EVENTS) ???
+            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
                 event::EventManager::getInstance()->removeEventListener(_mouseListener);
                 _mouseListener = nullptr;
             }

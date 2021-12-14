@@ -25,24 +25,24 @@
 
 #pragma once
 
+#include <variant>
 #include "base/Macros.h"
 #include "base/TypeDef.h"
 #include "core/ArrayBuffer.h"
-#include <variant>
 
 namespace cc {
 
 class DataView final {
 public:
     DataView() = default;
-    explicit DataView(ArrayBuffer::Ptr buffer);
-    DataView(ArrayBuffer::Ptr buffer, uint32_t byteOffset);
-    DataView(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t byteLength);
+    explicit DataView(ArrayBuffer *buffer);
+    DataView(ArrayBuffer *buffer, uint32_t byteOffset);
+    DataView(ArrayBuffer *buffer, uint32_t byteOffset, uint32_t byteLength);
     ~DataView() = default;
 
-    void assign(ArrayBuffer::Ptr buffer);
-    void assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset);
-    void assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t byteLength);
+    void assign(ArrayBuffer *buffer);
+    void assign(ArrayBuffer *buffer, uint32_t byteOffset);
+    void assign(ArrayBuffer *buffer, uint32_t byteOffset, uint32_t byteLength);
 
     uint8_t  getUint8(index_t offset) const;
     uint16_t getUint16(index_t offset) const;
@@ -60,29 +60,28 @@ public:
     void setInt32(index_t offset, int32_t value);
     void setFloat32(index_t offset, float value);
 
-    inline const ArrayBuffer::Ptr &buffer() const { return _buffer; }
-    inline ArrayBuffer::Ptr &      buffer() { return _buffer; }
-    inline uint32_t                byteOffset() const { return _byteOffset; }
-    inline uint32_t                byteLength() const {
+    inline const ArrayBuffer *buffer() const { return _buffer; }
+    inline ArrayBuffer *      buffer() { return _buffer; }
+    inline uint32_t           byteOffset() const { return _byteOffset; }
+    inline uint32_t           byteLength() const {
         return _byteEndPos - _byteOffset;
     }
 
-    
-    using Int32Reader = int32_t (DataView::*)(index_t) const;
-    using UInt32Reader = uint32_t (DataView::*)(index_t) const;
-    using Int16Reader = int16_t (DataView::*)(index_t) const;
-    using UInt16Reader = uint16_t (DataView::*)(index_t) const;
-    using Int8Reader = int8_t (DataView::*)(index_t) const;
-    using UInt8Reader = uint8_t (DataView::*)(index_t) const;
-    using ReaderVariant       = std::variant<Int32Reader, UInt32Reader, Int16Reader,UInt16Reader, Int8Reader, UInt8Reader>;
+    using Int32Reader   = int32_t (DataView::*)(index_t) const;
+    using UInt32Reader  = uint32_t (DataView::*)(index_t) const;
+    using Int16Reader   = int16_t (DataView::*)(index_t) const;
+    using UInt16Reader  = uint16_t (DataView::*)(index_t) const;
+    using Int8Reader    = int8_t (DataView::*)(index_t) const;
+    using UInt8Reader   = uint8_t (DataView::*)(index_t) const;
+    using ReaderVariant = std::variant<Int32Reader, UInt32Reader, Int16Reader, UInt16Reader, Int8Reader, UInt8Reader>;
     static std::unordered_map<std::string, ReaderVariant> intReaderMap;
-    int32_t readInt(ReaderVariant &readerVariant, index_t offset);
+    int32_t                                               readInt(ReaderVariant &readerVariant, index_t offset);
 
     using IntWritter = void (DataView::*)(index_t, int32_t);
     static std::unordered_map<std::string, IntWritter> intWritterMap;
 
 private:
-    ArrayBuffer::Ptr _buffer{nullptr};
+    ArrayBuffer::Ptr _buffer;
     uint8_t *        _data{nullptr};
     uint32_t         _byteOffset{0};
     uint32_t         _byteEndPos{0};

@@ -333,7 +333,7 @@ struct IPassStates {
     std::optional<int32_t>                   priority;
     std::optional<gfx::PrimitiveMode>        primitive;
     std::optional<pipeline::RenderPassStage> stage;
-    std::optional<RasterizerStateInfo>       rasterizerState; //cjh TODO: need to change to shared_ptr?
+    std::optional<RasterizerStateInfo>       rasterizerState;
     std::optional<DepthStencilStateInfo>     depthStencilState;
     std::optional<BlendStateInfo>            blendState;
     std::optional<gfx::DynamicStateFlags>    dynamicStates;
@@ -342,26 +342,18 @@ struct IPassStates {
     IPassStates() = default;
     IPassStates(const IPassInfoFull &o);
     IPassStates &operator=(const IPassInfoFull &o);
-    void overrides(const IPassInfoFull &o);
+    void         overrides(const IPassInfoFull &o);
 };
 using PassOverrides = IPassStates;
 
 using PassPropertyInfoMap = std::unordered_map<std::string, IPropertyInfo>;
-
-//struct IPassInfo : public IPassStates {
-//    std::string                        program; // auto-generated from 'vert' and 'frag'
-//    std::optional<MacroRecord>         embeddedMacros;
-//    index_t                            propertyIndex{-1};
-//    std::optional<std::string>         switch_;
-//    std::optional<PassPropertyInfoMap> properties;
-//};
 
 struct IPassInfoFull final { //cjh } : public IPassInfo {
     // IPassStates
     std::optional<int32_t>                   priority;
     std::optional<gfx::PrimitiveMode>        primitive;
     std::optional<pipeline::RenderPassStage> stage;
-    std::optional<RasterizerStateInfo>       rasterizerState; //cjh TODO: need to change to shared_ptr?
+    std::optional<RasterizerStateInfo>       rasterizerState;
     std::optional<DepthStencilStateInfo>     depthStencilState;
     std::optional<BlendStateInfo>            blendState;
     std::optional<gfx::DynamicStateFlags>    dynamicStates;
@@ -504,7 +496,7 @@ public:
      */
     static EffectAsset *get(const std::string &name);
 
-    using RegisteredEffectAssetMap = std::unordered_map<std::string, EffectAsset *>;
+    using RegisteredEffectAssetMap = std::unordered_map<std::string, SharedPtr<EffectAsset>>;
     /**
      * @en Get all registered effect assets.
      * @zh 获取所有已注册的 effect 资源。

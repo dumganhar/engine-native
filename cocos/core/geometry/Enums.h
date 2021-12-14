@@ -1,8 +1,11 @@
-
 #pragma once
+
 #include <cassert>
+#include "base/RefCounted.h"
+
 namespace cc {
 namespace geometry {
+
 enum class ShapeEnum {
     SHAPE_RAY              = (1 << 0),
     SHAPE_LINE             = (1 << 1),
@@ -17,7 +20,7 @@ enum class ShapeEnum {
     SHAPE_BAD              = (1 << 10),
 };
 
-class ShapeBase {
+class ShapeBase : public RefCounted {
 public:
     /**
      * @en

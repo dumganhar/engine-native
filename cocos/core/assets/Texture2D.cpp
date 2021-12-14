@@ -181,7 +181,7 @@ gfx::TextureInfo Texture2D::getGfxTextureCreateInfo(gfx::TextureUsageBit usage, 
 
 void Texture2D::initDefault(const std::optional<std::string> &uuid) {
     Super::initDefault(uuid);
-    auto *imageAsset = new ImageAsset(); //cjh HOW TO DELETE?
+    auto *imageAsset = new ImageAsset();
     imageAsset->initDefault(std::nullopt);
     setImage(imageAsset);
 }

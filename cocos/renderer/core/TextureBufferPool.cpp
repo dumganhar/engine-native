@@ -169,7 +169,7 @@ uint32_t TextureBufferPool::createChunk(uint32_t length) {
     return _chunkCount++;
 }
 
-void TextureBufferPool::update(const ITextureBufferHandle &handle, const ArrayBuffer::Ptr &buffer) {
+void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *buffer) {
     // std::vector<ArrayBufferView> buffers;
     gfx::BufferTextureCopyList regions;
     int32_t                    start = handle.start / _formatSize;

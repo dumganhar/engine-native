@@ -25,8 +25,8 @@
 #pragma once
 
 #include <vector>
-#include "core/ArrayBuffer.h"
 #include "cocos/base/Variant.h"
+#include "core/ArrayBuffer.h"
 
 namespace cc {
 
@@ -38,11 +38,11 @@ public:
 
     inline uint32_t getLength() const { return _length; }
 
-    ArrayBuffer::Ptr getCombined();
+    ArrayBuffer *getCombined();
 
 private:
     std::vector<cc::variant<ArrayBuffer::Ptr, uint32_t>> _arrayBufferOrPaddings;
-    uint32_t                                         _length{0};
+    uint32_t                                             _length{0};
 };
 
 } // namespace cc

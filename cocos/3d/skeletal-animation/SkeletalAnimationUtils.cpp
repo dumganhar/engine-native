@@ -125,6 +125,16 @@ cc::Mat4           m41;
 cc::Mat4           m42;
 cc::geometry::AABB ab1;
 
+cc::Mat4 *getWorldTransformUntilRoot(cc::Node *target, cc::Node *root, cc::Mat4 *outMatrix) {
+    outMatrix->setIdentity();
+    while (target != root) {
+        cc::Mat4::fromRTS(target->getRotation(), target->getPosition(), target->getScale(), &m41);
+        cc::Mat4::multiply(*outMatrix, m41, outMatrix);
+        target = target->getParent();
+    }
+    return outMatrix;
+}
+
 } // namespace
 namespace cc {
 JointTexturePool::JointTexturePool(gfx::Device *device) {
@@ -134,7 +144,7 @@ JointTexturePool::JointTexturePool(gfx::Device *device) {
     _pixelsPerJoint    = 48.F / static_cast<float>(_formatSize);
     _pool              = new TextureBufferPool(device);
     _pool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpTextureSize});
-    _customPool = new TextureBufferPool(device); // TODO(xwx): where to destroy?
+    _customPool = new TextureBufferPool(device);
     _customPool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpTextureSize});
 }
 
@@ -171,9 +181,9 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
         uint32_t             bufSize = jointCount * 12;
         ITextureBufferHandle handle;
         if (_chunkIdxMap.find(hash) != _chunkIdxMap.end()) {
-            handle = _customPool->alloc(bufSize * sizeof(Float32Array), _chunkIdxMap[hash]); // TODO(xwx): Float32Array.BYTES_PER_ELEMENT == sizeof(Float32Array) ?
+            handle = _customPool->alloc(bufSize * Float32Array::BYTES_PER_ELEMENT, _chunkIdxMap[hash]);
         } else {
-            handle = _pool->alloc(bufSize * sizeof(Float32Array));
+            handle = _pool->alloc(bufSize * Float32Array::BYTES_PER_ELEMENT);
             return texture;
         }
         texture = IJointTextureHandle{
@@ -194,11 +204,10 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
     auto boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton);
     for (uint32_t j = 0, offset = 0; j < jointCount; ++j, offset += 12) {
         auto *node = skinningRoot->getChildByPath(joints[j]);
-        // Mat4  mat  = node ? getWorldTransformUntilRoot(node, skinningRoot, outMat) : skeleton->getInverseBindposes()[j]; // TODO(xwx): getWorldTransformUntilRoot not implement
-        Mat4 mat;
+        Mat4  mat  = node ? *getWorldTransformUntilRoot(node, skinningRoot, &m41) : skeleton->getInverseBindposes()[j];
         if (j < boneSpaceBounds.size()) {
             auto *bound = boneSpaceBounds[j].get();
-            bound->transform(mat, &ab1); // TODO(xwx): mat not define
+            bound->transform(mat, &ab1);
             ab1.getBoundary(&v33, &v34);
             Vec3::min(v3Min, v33, &v3Min);
             Vec3::max(v3Max, v34, &v3Max);
@@ -214,7 +223,7 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
     texture->bounds[mesh->getHash()] = bounds;
     geometry::AABB::fromPoints(v3Min, v3Max, &bounds[0]);
     if (buildTexture) {
-        // _pool->update(texture->handle, textureBuffer.buffer); // TODO(xwx): ArrayBuffer not implemented
+        _pool->update(texture->handle, textureBuffer.buffer());
         _textureBuffers[hash] = texture.value();
     }
     return texture;
@@ -448,8 +457,8 @@ IAnimInfo JointAnimationInfo::getData(const std::string &nodeID) {
         pipeline::UBOSkinningAnimation::SIZE,
     });
 
-    Float32Array data; // TODO(xwx): not sure same as ts new Float32Array([ 0, 0, 0, 0 ])
-    // buffer.update(data);  //TODO(xwx): C++ Float32Array how to use as buffer para?
+    Float32Array data;
+    buffer->update(data.buffer()->getData());
     IAnimInfo info{
         .buffer = buffer,
         .data   = data,
@@ -468,7 +477,7 @@ void JointAnimationInfo::destroy(const std::string &nodeID) {
 
 const IAnimInfo &JointAnimationInfo::switchClip(IAnimInfo &info /*, AnimationClip *clip */) {
     info.data[0] = 0;
-    // info.buffer->update(info.data); // TODO(xwx): C++ Float32Array how to use as buffer para?
+    info.buffer->update(info.data.buffer()->getData());
     info.dirty = false;
     return info;
 }

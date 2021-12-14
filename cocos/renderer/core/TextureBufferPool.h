@@ -73,7 +73,7 @@ public:
 
     void     free(const ITextureBufferHandle &handle);
     uint32_t createChunk(uint32_t length);
-    void     update(const ITextureBufferHandle &handle, const ArrayBuffer &buffer);
+    void     update(const ITextureBufferHandle &handle, ArrayBuffer *buffer);
 
 private:
     index_t findAvailableSpace(uint32_t size, index_t chunkIdx) const;

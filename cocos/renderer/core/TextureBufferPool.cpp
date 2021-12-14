@@ -26,6 +26,7 @@
 #include "renderer/core/TextureBufferPool.h"
 #include <cmath>
 #include "core/ArrayBuffer.h"
+#include "core/TypedArray.h"
 
 namespace {
 
@@ -168,12 +169,12 @@ uint32_t TextureBufferPool::createChunk(uint32_t length) {
     return _chunkCount++;
 }
 
-void TextureBufferPool::update(const ITextureBufferHandle &handle, const ArrayBuffer &buffer) {
+void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *buffer) {
     // std::vector<ArrayBufferView> buffers;
     gfx::BufferTextureCopyList regions;
     int32_t                    start = handle.start / _formatSize;
 
-    uint32_t remainSize = buffer.byteLength() / _formatSize;
+    uint32_t remainSize = buffer->byteLength() / _formatSize;
     int32_t  offsetX    = start % handle.texture->getWidth();
     int32_t  offsetY    = std::floor(start / handle.texture->getWidth());
     uint32_t copySize   = std::min(handle.texture->getWidth() - offsetX, remainSize);

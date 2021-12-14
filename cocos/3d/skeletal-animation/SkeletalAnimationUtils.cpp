@@ -125,11 +125,11 @@ cc::Mat4           m41;
 cc::Mat4           m42;
 cc::geometry::AABB ab1;
 
-const cc::Mat4 &getWorldTransformUntilRoot(cc::Node *target, cc::Node *root, cc::Mat4 &outMatrix) {
-    outMatrix.setIdentity();
+cc::Mat4 *getWorldTransformUntilRoot(cc::Node *target, cc::Node *root, cc::Mat4 *outMatrix) {
+    outMatrix->setIdentity();
     while (target != root) {
         cc::Mat4::fromRTS(target->getRotation(), target->getPosition(), target->getScale(), &m41);
-        cc::Mat4::multiply(outMatrix, m41, &outMatrix);
+        cc::Mat4::multiply(*outMatrix, m41, outMatrix);
         target = target->getParent();
     }
     return outMatrix;
@@ -204,7 +204,7 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
     auto boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton);
     for (uint32_t j = 0, offset = 0; j < jointCount; ++j, offset += 12) {
         auto *node = skinningRoot->getChildByPath(joints[j]);
-        Mat4  mat  = node ? getWorldTransformUntilRoot(node, skinningRoot, m41) : skeleton->getInverseBindposes()[j];
+        Mat4  mat  = node ? *getWorldTransformUntilRoot(node, skinningRoot, &m41) : skeleton->getInverseBindposes()[j];
         if (j < boneSpaceBounds.size()) {
             auto *bound = boneSpaceBounds[j].get();
             bound->transform(mat, &ab1);

@@ -27,7 +27,7 @@
 
 #include <memory>
 #include <type_traits>
-#include "boost/variant2/variant.hpp"
+#include "cocos/base/Variant.h"
 #include "base/TypeDef.h"
 #include "bindings/jswrapper/Object.h"
 #include "core/ArrayBuffer.h"
@@ -293,8 +293,8 @@ using Uint16Array           = TypedArrayTemp<uint16_t>;
 using Uint32Array           = TypedArrayTemp<uint32_t>;
 using Float32Array          = TypedArrayTemp<float>;
 using Float64Array          = TypedArrayTemp<double>;
-using TypedArray            = boost::variant2::variant<boost::variant2::monostate, Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
-using TypedArrayElementType = boost::variant2::variant<boost::variant2::monostate, int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, float, double>;
+using TypedArray            = cc::variant<cc::monostate, Int8Array, Int16Array, Int32Array, Uint8Array, Uint16Array, Uint32Array, Float32Array, Float64Array>;
+using TypedArrayElementType = cc::variant<cc::monostate, int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, float, double>;
 
 uint32_t getTypedArrayLength(const TypedArray &arr);
 uint32_t getTypedArrayBytesPerElement(const TypedArray &arr);
@@ -302,7 +302,7 @@ uint32_t getTypedArrayBytesPerElement(const TypedArray &arr);
 template <typename T>
 T getTypedArrayValue(const TypedArray &arr, index_t idx) {
 #define TYPEDARRAY_GET_VALUE(type)                                     \
-    if (auto *p = boost::variant2::get_if<type>(&arr); p != nullptr) { \
+    if (auto *p = CC_GET_IF<type>(&arr); p != nullptr) { \
         return static_cast<T>((*p)[idx]);                              \
     }                                                                                                      
 
@@ -324,7 +324,7 @@ void setTypedArrayValue(TypedArray &arr, index_t idx, const TypedArrayElementTyp
 template <typename T>
 T &getTypedArrayValueRef(const TypedArray &arr, index_t idx) {
 #define TYPEDARRAY_GET_VALUE_REF(type)                                 \
-    if (auto *p = boost::variant2::get_if<type>(&arr); p != nullptr) { \
+    if (auto *p = CC_GET_IF<type>(&arr); p != nullptr) { \
         return (*p)[idx];                                              \
     }                                                                                                     
 
@@ -342,7 +342,7 @@ T &getTypedArrayValueRef(const TypedArray &arr, index_t idx) {
 template <typename T>
 T getTypedArrayElementValue(const TypedArrayElementType &element) {
 #define CAST_TO_T(type)                                                    \
-    if (auto *p = boost::variant2::get_if<type>(&element); p != nullptr) { \
+    if (auto *p = CC_GET_IF<type>(&element); p != nullptr) { \
         return static_cast<T>(*p);                                         \
     }                                                                      \
                                                   

@@ -28,7 +28,7 @@
 #include "core/Types.h"
 #include "core/asset-manager/Shared.h"
 #include "core/asset-manager/Task.h"
-#include "boost/variant2/variant.hpp"
+#include "cocos/base/Variant.h"
 
 #include <any>
 #include <functional>
@@ -37,7 +37,7 @@ namespace cc {
 
 using IAsyncPipe = std::function<void(const Task &, CompleteCallbackNoData)>;
 using ISyncPipe  = std::function<const Error *(const Task &task)>;
-using IPipe      = boost::variant2::variant<IAsyncPipe, ISyncPipe>;
+using IPipe      = cc::variant<IAsyncPipe, ISyncPipe>;
 
 /**
  * @en

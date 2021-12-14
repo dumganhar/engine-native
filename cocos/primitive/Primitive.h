@@ -36,12 +36,12 @@
 #include "primitive/Quad.h"
 #include "primitive/Sphere.h"
 #include "primitive/Torus.h"
-#include "boost/variant2/variant.hpp"
+#include "cocos/base/Variant.h"
 
 #include "primitive/PrimitiveDefine.h"
 namespace cc {
 
-using PrimitiveOptions = boost::variant2::variant<IGeometryOptions, IBoxOptions, ICapsuleOptions, ICircleOptions, ICylinderOptions, IConeOptions, IPlaneOptions, ISphereOptions, ITorusOptions>;
+using PrimitiveOptions = cc::variant<IGeometryOptions, IBoxOptions, ICapsuleOptions, ICircleOptions, ICylinderOptions, IConeOptions, IPlaneOptions, ISphereOptions, ITorusOptions>;
 enum class PrimitiveType {
     BOX      = 0,
     SPHERE   = 1,

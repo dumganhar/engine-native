@@ -31,7 +31,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "boost/variant2/variant.hpp"
+#include "cocos/base/Variant.h"
 #include "base/Ptr.h"
 #include "core/Types.h"
 #include "core/assets/EffectAsset.h"
@@ -70,7 +70,7 @@ struct IMaterialInfo {
      */
     std::optional<uint32_t> technique{0};
 
-    using DefinesType = boost::variant2::variant<MacroRecord, std::vector<MacroRecord>>;
+    using DefinesType = cc::variant<MacroRecord, std::vector<MacroRecord>>;
     /**
      * @en
      * The shader macro definitions. Default to 0 or the specified value in [[EffectAsset]].
@@ -79,7 +79,7 @@ struct IMaterialInfo {
      */
     std::optional<DefinesType> defines;
 
-    using PassOverridesType = boost::variant2::variant<PassOverrides, std::vector<PassOverrides>>;
+    using PassOverridesType = cc::variant<PassOverrides, std::vector<PassOverrides>>;
     /**
      * @en
      * The override values on top of the pipeline states specified in [[EffectAsset]].
@@ -313,7 +313,7 @@ protected:
 
     template <typename T1, typename T2>
     void prepareInfo(const T1 &patch, std::vector<T2> &cur) {
-        if (auto *pOneElement = boost::variant2::get_if<T2>(&patch); pOneElement != nullptr) {
+        if (auto *pOneElement = CC_GET_IF<T2>(&patch); pOneElement != nullptr) {
             size_t len = _effectAsset != nullptr ? _effectAsset->_techniques[_techIdx].passes.size() : 1;
 
             std::vector<T2> patchArray;
@@ -327,7 +327,7 @@ protected:
             for (size_t i = 0; i < len; ++i) {
                 cur[i] = patchArray[i];
             }
-        } else if (auto *pPatchArray = boost::variant2::get_if<std::vector<T2>>(&patch); pPatchArray != nullptr) {
+        } else if (auto *pPatchArray = CC_GET_IF<std::vector<T2>>(&patch); pPatchArray != nullptr) {
             const auto &patchArray = *pPatchArray;
             size_t      len        = patchArray.size();
             cur.resize(len);

@@ -80,10 +80,10 @@ const IGeometricInfo &RenderingSubMesh::geometricInfo() {
     auto index = static_cast<index_t>(_subMeshIdx.value());
 
     const auto &positionsVar = _mesh->readAttribute(index, gfx::ATTR_NAME_POSITION);
-    if (const auto *pPositions = boost::variant2::get_if<Float32Array>(&positionsVar); pPositions != nullptr) {
+    if (const auto *pPositions = CC_GET_IF<Float32Array>(&positionsVar); pPositions != nullptr) {
         const auto &positions  = *pPositions;
         const auto &indicesVar = _mesh->readIndices(index);
-        if (const auto *pIndices = boost::variant2::get_if<Uint16Array>(&indicesVar); pIndices != nullptr) {
+        if (const auto *pIndices = CC_GET_IF<Uint16Array>(&indicesVar); pIndices != nullptr) {
             const auto &indices = *pIndices;
 
             Vec3 max;
@@ -255,7 +255,7 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
 
             mapBuffer(
                 dataView, [&](const DataVariant &cur, uint32_t idx, const DataView &view) -> DataVariant {
-                    auto iter = std::find(idxMap.begin(), idxMap.end(), boost::variant2::get<0>(cur));
+                    auto iter = std::find(idxMap.begin(), idxMap.end(), CC_GET<0>(cur));
                     if (iter != idxMap.end()) {
                         return static_cast<int32_t>(iter - idxMap.begin());
                     }

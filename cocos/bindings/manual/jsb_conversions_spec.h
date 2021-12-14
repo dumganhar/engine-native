@@ -25,7 +25,7 @@
 #include <optional>
 #include <unordered_map>
 #include <vector>
-#include "boost/variant2/variant.hpp"
+#include "cocos/base/Variant.h"
 #include "base/Ptr.h"
 #include "base/Value.h"
 #include "bindings/jswrapper/SeApi.h"
@@ -313,12 +313,12 @@ inline bool sevalue_to_native(const se::Value &from, cc::ValueMap *to, se::Objec
 bool sevalue_to_native(const se::Value &from, std::vector<bool> *to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
 
 bool        sevalue_to_native(const se::Value &from, std::vector<unsigned char> *to, se::Object * /*ctx*/);               // NOLINT(readability-identifier-naming)
-bool        sevalue_to_native(const se::Value &from, boost::variant2::variant<std::vector<float>, std::string> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
-inline bool sevalue_to_native(const se::Value & /*from*/, boost::variant2::monostate * /*to*/, se::Object * /*ctx*/) {                // NOLINT(readability-identifier-naming)
+bool        sevalue_to_native(const se::Value &from, cc::variant<std::vector<float>, std::string> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+inline bool sevalue_to_native(const se::Value & /*from*/, cc::monostate * /*to*/, se::Object * /*ctx*/) {                // NOLINT(readability-identifier-naming)
     // nothing todo
     return false;
 }
-bool sevalue_to_native(const se::Value &from, boost::variant2::variant<boost::variant2::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::variant<cc::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 //////////////////////// scene info
 bool sevalue_to_native(const se::Value &from, cc::scene::FogInfo *, se::Object * /*ctx*/);     // NOLINT(readability-identifier-naming)
@@ -457,7 +457,7 @@ inline bool nativevalue_to_se(const cc::network::DownloadTask &from, se::Value &
     return DownloadTask_to_seval(from, &to);
 }
 
-inline bool nativevalue_to_se(const boost::variant2::monostate & /*from*/, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(const cc::monostate & /*from*/, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUndefined();
     return true;
 }

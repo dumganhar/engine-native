@@ -24,7 +24,7 @@
 ****************************************************************************/
 
 #include "3d/misc/Buffer.h"
-#include "boost/variant2/variant.hpp"
+#include "cocos/base/Variant.h"
 
 namespace cc {
 
@@ -53,7 +53,7 @@ std::string _getDataViewType(const gfx::FormatInfo& info) {
 
 } // namespace
 
-using DataVariant       = boost::variant2::variant<int32_t, float>;
+using DataVariant       = cc::variant<int32_t, float>;
 using MapBufferCallback = std::function<DataVariant(const DataVariant& cur, uint32_t idx, const DataView& view)>;
 
 DataView mapBuffer(DataView&                  target,
@@ -102,11 +102,11 @@ DataView mapBuffer(DataView&                  target,
             const uint32_t y = x + componentBytesLength * iComponent;
             if (isFloat) {
                 float cur = target.getFloat32(y);
-                out->setFloat32(y, boost::variant2::get<1>(callback(cur, iComponent, target)));
+                out->setFloat32(y, CC_GET<1>(callback(cur, iComponent, target)));
             } else {
                 int32_t cur = target.readInt(intReader, y);
                 // iComponent is usually more useful than y
-                (target.*intWritter)(y, boost::variant2::get<0>(callback(cur, iComponent, target)));
+                (target.*intWritter)(y, CC_GET<0>(callback(cur, iComponent, target)));
             }
         }
     }

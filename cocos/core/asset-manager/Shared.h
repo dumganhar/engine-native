@@ -29,7 +29,7 @@
 #include "core/asset-manager/Cache.h"
 
 #include <any>
-#include "boost/variant2/variant.hpp"
+#include "cocos/base/Variant.h"
 
 namespace cc {
 
@@ -98,7 +98,7 @@ template <typename T>
 using CompleteCallbackWithData = std::function<void(const Error *err, const T &data)>;
 
 using ProgressCallback = std::function<void(uint32_t finished, uint32_t total, RequestItem *item)>;
-using Request          = boost::variant2::variant<std::string, std::vector<std::string>, IRequest, std::vector<IRequest>>;
+using Request          = cc::variant<std::string, std::vector<std::string>, IRequest, std::vector<IRequest>>;
 
 //cjh TODO: how to implement constructor in C++?     export type AssetType<T = Asset> = Constructor<T>;
 using AssetType = std::function<void()>;

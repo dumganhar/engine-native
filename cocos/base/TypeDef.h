@@ -28,6 +28,8 @@
 #include <cstdint>
 #include <unordered_map>
 
+#define USE_STD_C_PLUS_PLUS_17 0
+
 using uint     = uint32_t;
 using ushort   = uint16_t;
 using ulong    = uint32_t;

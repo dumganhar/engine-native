@@ -756,7 +756,7 @@ bool sevalue_to_native(const se::Value &from, cc::scene::SkyboxInfo *to, se::Obj
     return true;
 }
 
-// boost::variant2::variant<int32_t, float, bool, std::string>;
+// cc::variant<int32_t, float, bool, std::string>;
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::MacroValue *to, se::Object * /*ctx*/) {
     if (from.isBoolean()) {
@@ -813,7 +813,7 @@ bool sevalue_to_native(const se::Value &from, std::vector<cc::MacroRecord> *to, 
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Object *ctx) {
     if (from.isNullOrUndefined()) {
-        *to = boost::variant2::monostate();
+        *to = cc::monostate();
         return true;
     }
 
@@ -958,7 +958,7 @@ bool sevalue_to_native(const se::Value &from, cc::IPreCompileInfoValueType *to, 
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
-bool sevalue_to_native(const se::Value &from, boost::variant2::variant<std::vector<float>, std::string> *to, se::Object * /*ctx*/) {
+bool sevalue_to_native(const se::Value &from, cc::variant<std::vector<float>, std::string> *to, se::Object * /*ctx*/) {
     if (from.isObject() && from.toObject()->isArray()) {
         uint32_t           len = 0;
         bool               ok  = from.toObject()->getArrayLength(&len);
@@ -983,7 +983,7 @@ bool sevalue_to_native(const se::Value &from, boost::variant2::variant<std::vect
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
-bool sevalue_to_native(const se::Value &from, boost::variant2::variant<boost::variant2::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx) {
+bool sevalue_to_native(const se::Value &from, cc::variant<cc::monostate, cc::MaterialProperty, cc::MaterialPropertyList> *to, se::Object *ctx) {
     bool ok = false;
     if (from.isObject() && from.toObject()->isArray()) {
         cc::MaterialPropertyList propertyList{};
@@ -1116,17 +1116,17 @@ bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /
         }
     }
 
-    boost::variant2::visit(overloaded{[&](auto &typedArray) {
+    CC_VISIT(overloaded{[&](auto &typedArray) {
                               typedArray.setJSTypedArray(from.toObject());
                           },
-                          [](boost::variant2::monostate /*unused*/) {}},
+                          [](cc::monostate /*unused*/) {}},
                *to);
     return true;
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::IBArray *to, se::Object * /*ctx*/) {
-    boost::variant2::visit([&](auto &typedArray) {
+    CC_VISIT([&](auto &typedArray) {
         typedArray.setJSTypedArray(from.toObject());
     }, *to);
 

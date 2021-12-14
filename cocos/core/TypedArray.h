@@ -96,13 +96,13 @@ public:
         reset(length);
     }
 
-    explicit TypedArrayTemp(ArrayBuffer::Ptr buffer)
+    explicit TypedArrayTemp(ArrayBuffer *buffer)
     : TypedArrayTemp(buffer, 0) {}
 
-    TypedArrayTemp(ArrayBuffer::Ptr buffer, uint32_t byteOffset)
+    TypedArrayTemp(ArrayBuffer *buffer, uint32_t byteOffset)
     : TypedArrayTemp(buffer, byteOffset, (buffer->byteLength() - byteOffset) / BYTES_PER_ELEMENT) {}
 
-    TypedArrayTemp(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t length)
+    TypedArrayTemp(ArrayBuffer *buffer, uint32_t byteOffset, uint32_t length)
     : _buffer(buffer),
       _byteOffset(byteOffset),
       _byteLength(length * BYTES_PER_ELEMENT),
@@ -121,7 +121,6 @@ public:
     }
 
     ~TypedArrayTemp() {
-        _buffer = nullptr;
         if (_jsTypedArray != nullptr) {
             _jsTypedArray->unroot();
             _jsTypedArray->decRef();
@@ -182,17 +181,17 @@ public:
         CC_ASSERT(end > start);
         CC_ASSERT(start < (_byteLength / BYTES_PER_ELEMENT));
         CC_ASSERT(end <= (_byteLength / BYTES_PER_ELEMENT));
-        uint32_t         newBufByteLength = (end - start) * BYTES_PER_ELEMENT;
-        ArrayBuffer::Ptr buffer           = new ArrayBuffer(newBufByteLength);
+        uint32_t newBufByteLength = (end - start) * BYTES_PER_ELEMENT;
+        auto *   buffer           = new ArrayBuffer(newBufByteLength);
         memcpy(buffer->getData(), _buffer->getData() + start * BYTES_PER_ELEMENT + _byteOffset, newBufByteLength);
         return TypedArrayTemp(buffer);
     }
 
-    void set(const ArrayBuffer::Ptr &buffer) {
+    void set(ArrayBuffer *buffer) {
         set(buffer, 0);
     }
 
-    void set(const ArrayBuffer::Ptr &buffer, uint32_t offset) {
+    void set(ArrayBuffer *buffer, uint32_t offset) {
         CC_ASSERT(buffer->byteLength() + offset <= _byteEndPos);
         CC_ASSERT(_buffer);
         memcpy(_buffer->_data + offset, buffer->_data, buffer->byteLength());
@@ -236,20 +235,13 @@ public:
         _jsTypedArray->root();
     }
 
-    //    void reset(const ArrayBuffer::Ptr &buffer, uint32_t offset = 0, uint32_t length = std::numeric_limits<uint32_t>::max()) {
-    //        _buffer     = buffer;
-    //        _byteOffset = offset;
-    //        _byteEndPos = length == std::numeric_limits<uint32_t>::max() ? buffer->byteLength() : (length * BYTES_PER_ELEMENT);
-    //        _byteLength = buffer->byteLength();
-    //    }
-
-    inline const ArrayBuffer::Ptr &buffer() const { return _buffer; }
-    inline uint32_t                byteLength() const { return _byteLength; }
-    inline uint32_t                length() const { return _byteLength / BYTES_PER_ELEMENT; }
-    inline uint32_t                byteOffset() const { return _byteOffset; }
-    inline bool                    empty() const { return _byteLength == 0; }
-    inline se::Object *            getJSTypedArray() const { return _jsTypedArray; }
-    inline void                    setJSTypedArray(se::Object *typedArray) {
+    inline ArrayBuffer *buffer() const { return _buffer; }
+    inline uint32_t     byteLength() const { return _byteLength; }
+    inline uint32_t     length() const { return _byteLength / BYTES_PER_ELEMENT; }
+    inline uint32_t     byteOffset() const { return _byteOffset; }
+    inline bool         empty() const { return _byteLength == 0; }
+    inline se::Object * getJSTypedArray() const { return _jsTypedArray; }
+    inline void         setJSTypedArray(se::Object *typedArray) {
         if (_jsTypedArray != nullptr) {
             _jsTypedArray->unroot();
             _jsTypedArray->decRef();

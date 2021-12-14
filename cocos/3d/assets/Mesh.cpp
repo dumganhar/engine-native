@@ -174,7 +174,7 @@ std::any Mesh::getNativeAsset() const {
 }
 
 void Mesh::setNativeAsset(const std::any &obj) {
-    if (auto p = std::any_cast<ArrayBuffer::Ptr>(obj); p != nullptr) {
+    if (auto p = std::any_cast<ArrayBuffer *>(obj); p != nullptr) {
         _data = Uint8Array(p);
     }
 }
@@ -223,7 +223,7 @@ void Mesh::initialize() {
     _initialized                                           = true;
     auto &                                   buffer        = _data;
     gfx::Device *                            gfxDevice     = gfx::Device::getInstance();
-    auto                                     vertexBuffers = createVertexBuffers(gfxDevice, buffer.buffer().get());
+    auto                                     vertexBuffers = createVertexBuffers(gfxDevice, buffer.buffer());
     gfx::BufferList                          indexBuffers;
     std::vector<SharedPtr<RenderingSubMesh>> subMeshes;
 
@@ -487,8 +487,8 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
         vertStride = bundle.view.stride;
         vertCount  = bundle.view.count + dstBundle.view.count;
 
-        ArrayBuffer::Ptr vb = new ArrayBuffer(vertCount * vertStride);
-        Uint8Array       vbView(vb);
+        auto       vb = new ArrayBuffer(vertCount * vertStride);
+        Uint8Array vbView(vb);
 
         Uint8Array srcVBView = _data.subarray(srcOffset, srcOffset + bundle.view.length);
         srcOffset += srcVBView.length();
@@ -578,7 +578,7 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
                 idxStride = 4;
             }
 
-            ArrayBuffer::Ptr ib = new ArrayBuffer(idxCount * idxStride);
+            auto ib = new ArrayBuffer(idxCount * idxStride);
 
             TypedArray ibView;
             TypedArray srcIBView;
@@ -781,7 +781,7 @@ TypedArray Mesh::readAttribute(index_t primitiveIndex, const char *attributeName
     return result;
 }
 
-bool Mesh::copyAttribute(index_t primitiveIndex, const char *attributeName, ArrayBuffer::Ptr &buffer, uint32_t stride, uint32_t offset) {
+bool Mesh::copyAttribute(index_t primitiveIndex, const char *attributeName, ArrayBuffer *buffer, uint32_t stride, uint32_t offset) {
     bool written = false;
     accessAttribute(primitiveIndex, attributeName, [&](const IVertexBundle &vertexBundle, uint32_t iAttribute) {
         const uint32_t vertexCount = vertexBundle.view.count;

@@ -38,16 +38,16 @@ void BufferBlob::setNextAlignment(uint32_t align) {
     }
 }
 
-uint32_t BufferBlob::addBuffer(const ArrayBuffer::Ptr &arrayBuffer) {
+uint32_t BufferBlob::addBuffer(ArrayBuffer *arrayBuffer) {
     const uint32_t result = _length;
     _arrayBufferOrPaddings.emplace_back(arrayBuffer);
     _length += arrayBuffer->byteLength();
     return result;
 }
 
-ArrayBuffer::Ptr BufferBlob::getCombined() {
+ArrayBuffer *BufferBlob::getCombined() {
     Int8Array result(_length);
-    uint32_t    counter = 0;
+    uint32_t  counter = 0;
 
     for (const auto &arrayBufferOrPadding : _arrayBufferOrPaddings) {
         if (const auto *p = std::get_if<uint32_t>(&arrayBufferOrPadding)) {

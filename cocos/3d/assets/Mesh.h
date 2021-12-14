@@ -167,7 +167,7 @@ public:
     std::any getNativeAsset() const override;
     void     setNativeAsset(const std::any &obj) override;
 
-    void setAssetData(const cc::ArrayBuffer::Ptr data) {
+    void setAssetData(cc::ArrayBuffer *data) {
         _data = Uint8Array(data);
     }
     const Uint8Array &getAssetData() {
@@ -348,7 +348,7 @@ public:
      * @param offset The offset of the first attribute in the target buffer
      * @returns Return false if failed to access attribute, return true otherwise.
      */
-    bool copyAttribute(index_t primitiveIndex, const char *attributeName, ArrayBuffer::Ptr &buffer, uint32_t stride, uint32_t offset);
+    bool copyAttribute(index_t primitiveIndex, const char *attributeName, ArrayBuffer *buffer, uint32_t stride, uint32_t offset);
 
     /**
      * @en Read the indices data of the given sub mesh

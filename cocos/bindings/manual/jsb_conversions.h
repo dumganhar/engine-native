@@ -33,7 +33,9 @@
 #include <type_traits>
 #include <utility>
 #include <variant>
+#include "PrivateObject.h"
 #include "base/Ptr.h"
+#include "base/RefCounted.h"
 #include "bindings/jswrapper/HandleObject.h"
 #include "bindings/jswrapper/SeApi.h"
 #include "bindings/manual/jsb_classtype.h"
@@ -310,43 +312,9 @@ bool seval_to_Map_string_key(const se::Value &v, cc::Map<std::string, T> *ret) {
     return true;
 }
 
-template <typename T>
-typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, bool>::type
-native_ptr_to_seval(T *v_c, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
-    using DecayT = typename std::decay<typename std::remove_const<T>::type>::type;
-    auto *v      = const_cast<DecayT *>(v_c);
-    assert(ret != nullptr);
-    if (v == nullptr) {
-        ret->setNull();
-        return true;
-    }
-
-    se::Object *obj  = nullptr;
-    auto        iter = se::NativePtrToObjectMap::find(v);
-    if (iter == se::NativePtrToObjectMap::end()) { // If we couldn't find native object in map, then the native object is created from native code. e.g. TMXLayer::getTileAt
-        // CC_LOG_DEBUGWARN("WARNING: non-Ref type: (%s) isn't catched!", typeid(*v).name());
-        se::Class *cls = JSBClassType::findClass(v);
-        assert(cls != nullptr);
-        obj = se::Object::createObjectWithClass(cls);
-        ret->setObject(obj, true);
-        obj->setPrivateObject(se::rawref_private_object(v));
-        if (isReturnCachedValue != nullptr) {
-            *isReturnCachedValue = false;
-        }
-    } else {
-        obj = iter->second;
-        if (isReturnCachedValue != nullptr) {
-            *isReturnCachedValue = true;
-        }
-        ret->setObject(obj);
-    }
-
-    return true;
-}
-
 //handle reference
 template <typename T>
-typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value && !std::is_pointer<T>::value, bool>::type
+typename std::enable_if<!std::is_pointer<T>::value, bool>::type
 native_ptr_to_seval(T &v_ref, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
     using DecayT = typename std::decay<typename std::remove_const<decltype(v_ref)>::type>::type;
     auto *v      = const_cast<DecayT *>(&v_ref);
@@ -365,7 +333,11 @@ native_ptr_to_seval(T &v_ref, se::Value *ret, bool *isReturnCachedValue = nullpt
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateObject(se::rawref_private_object(v));
+        if CC_CONSTEXPR (std::is_base_of<cc::RefCounted, DecayT>::value) {
+            obj->setPrivateData(v);
+        } else {
+            obj->setPrivateObject(se::rawref_private_object(v));
+        }
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -416,8 +388,7 @@ bool native_ptr_to_rooted_seval( // NOLINT(readability-identifier-naming)
 }
 
 template <typename T>
-typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, bool>::type
-native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
+bool native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
     using DecayT = typename std::decay<typename std::remove_const<T>::type>::type;
     auto *v      = const_cast<DecayT *>(vp);
     assert(ret != nullptr);
@@ -433,43 +404,11 @@ native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedV
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateObject(se::rawref_private_object(v));
-        if (isReturnCachedValue != nullptr) {
-            *isReturnCachedValue = false;
+        if CC_CONSTEXPR (std::is_base_of<cc::RefCounted, DecayT>::value) {
+            obj->setPrivateData(v);
+        } else {
+            obj->setPrivateObject(se::rawref_private_object(v));
         }
-    } else {
-        obj = iter->second;
-        if (isReturnCachedValue != nullptr) {
-            *isReturnCachedValue = true;
-        }
-        ret->setObject(obj);
-    }
-
-    return true;
-}
-
-//handle ref
-template <typename T>
-typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, bool>::type
-native_ptr_to_seval(T &v_ref, se::Class *cls, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
-    using DecayT = typename std::decay<typename std::remove_const<decltype(v_ref)>::type>::type;
-    auto *v      = const_cast<DecayT *>(&v_ref);
-
-    assert(ret != nullptr);
-    if (v == nullptr) {
-        ret->setNull();
-        return true;
-    }
-
-    se::Object *obj  = nullptr;
-    auto        iter = se::NativePtrToObjectMap::find(v);
-    if (iter == se::NativePtrToObjectMap::end()) { // If we couldn't find native object in map, then the native object is created from native code. e.g. TMXLayer::getTileAt
-        //        CC_LOG_DEBUGWARN("WARNING: Ref type: (%s) isn't catched!", typeid(*v).name());
-        assert(cls != nullptr);
-        obj = se::Object::createObjectWithClass(cls);
-        ret->setObject(obj, true);
-        obj->setPrivateObject(se::rawref_private_object(v));
-
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -519,8 +458,7 @@ bool native_ptr_to_rooted_seval( // NOLINT(readability-identifier-naming)
 }
 
 template <typename T>
-typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, bool>::type
-native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
+bool native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
     using DecayT = typename std::decay<typename std::remove_const<T>::type>::type;
     auto *v      = const_cast<DecayT *>(vp);
     assert(ret != nullptr);
@@ -537,7 +475,11 @@ native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) 
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        obj->setPrivateData(v);
+        if CC_CONSTEXPR (std::is_base_of<cc::RefCounted, DecayT>::value) {
+            obj->setPrivateData(v);
+        } else {
+            obj->setPrivateObject(se::rawref_private_object(v));
+        }
         //        v->addRef(); // TODO(PatriceJiang): reference Count should be greater than 1
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
@@ -553,41 +495,6 @@ native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) 
 
     return true;
 }
-
-template <typename T>
-typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, bool>::type
-native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedValue = nullptr) { // NOLINT(readability-identifier-naming)
-    using DecayT = typename std::decay<typename std::remove_const<T>::type>::type;
-    auto *v      = const_cast<DecayT *>(vp);
-    assert(ret != nullptr);
-    if (v == nullptr) {
-        ret->setNull();
-        return true;
-    }
-
-    se::Object *obj  = nullptr;
-    auto        iter = se::NativePtrToObjectMap::find(v);
-    if (iter == se::NativePtrToObjectMap::end()) { // If we couldn't find native object in map, then the native object is created from native code. e.g. TMXLayer::getTileAt
-                                                   //        CC_LOG_DEBUGWARN("WARNING: Ref type: (%s) isn't catched!", typeid(*v).name());
-        assert(cls != nullptr);
-        obj = se::Object::createObjectWithClass(cls);
-        ret->setObject(obj, true);
-        obj->setPrivateData(v);
-        //        v->addRef(); // TODO(PatriceJiang): reference Count should be greater than 1
-        if (isReturnCachedValue != nullptr) {
-            *isReturnCachedValue = false;
-        }
-    } else {
-        obj = iter->second;
-        if (isReturnCachedValue != nullptr) {
-            *isReturnCachedValue = true;
-        }
-        ret->setObject(obj);
-    }
-
-    return true;
-}
-
 template <typename T>
 bool std_vector_to_seval(const std::vector<T> &v, se::Value *ret) { // NOLINT(readability-identifier-naming)
     assert(ret != nullptr);
@@ -1413,12 +1320,12 @@ bool nativevalue_to_se_args(se::ValueArray &array, T &x) { // NOLINT(readability
     return nativevalue_to_se(x, array[i], nullptr);
 }
 template <int i, typename T, typename... Args>
-bool nativevalue_to_se_args(se::ValueArray &array, T &x, Args &... args) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se_args(se::ValueArray &array, T &x, Args &...args) { // NOLINT(readability-identifier-naming)
     return nativevalue_to_se_args<i, T>(array, x) && nativevalue_to_se_args<i + 1, Args...>(array, args...);
 }
 
 template <typename... Args>
-bool nativevalue_to_se_args_v(se::ValueArray &array, Args &... args) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se_args_v(se::ValueArray &array, Args &...args) { // NOLINT(readability-identifier-naming)
     return nativevalue_to_se_args<0, Args...>(array, args...);
 }
 

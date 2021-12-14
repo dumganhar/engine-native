@@ -33,7 +33,6 @@
 #include <type_traits>
 #include <utility>
 #include <variant>
-#include "PrivateObject.h"
 #include "base/Ptr.h"
 #include "base/RefCounted.h"
 #include "bindings/jswrapper/HandleObject.h"

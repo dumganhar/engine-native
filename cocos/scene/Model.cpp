@@ -37,7 +37,7 @@
 #include "scene/SubModel.h"
 
 namespace {
-cc::TypedArray getTypedArrayConstructor(const cc::gfx::FormatInfo &info, const cc::ArrayBuffer::Ptr &buffer, uint32_t byteOffset, uint32_t length) {
+cc::TypedArray getTypedArrayConstructor(const cc::gfx::FormatInfo &info, cc::ArrayBuffer *buffer, uint32_t byteOffset, uint32_t length) {
     const uint32_t stride = info.size / info.count;
     switch (info.type) {
         case cc::gfx::FormatType::UNORM:

@@ -24,8 +24,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <vector>
 #include <variant>
+#include <vector>
 #include "core/ArrayBuffer.h"
 
 namespace cc {
@@ -34,15 +34,15 @@ class BufferBlob {
 public:
     void setNextAlignment(uint32_t align);
 
-    uint32_t addBuffer(const ArrayBuffer::Ptr &arrayBuffer);
+    uint32_t addBuffer(ArrayBuffer *arrayBuffer);
 
     inline uint32_t getLength() const { return _length; }
 
-    ArrayBuffer::Ptr getCombined();
+    ArrayBuffer *getCombined();
 
 private:
     std::vector<std::variant<ArrayBuffer::Ptr, uint32_t>> _arrayBufferOrPaddings;
-    uint32_t                                         _length{0};
+    uint32_t                                              _length{0};
 };
 
 } // namespace cc

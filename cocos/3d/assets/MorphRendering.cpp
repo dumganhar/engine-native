@@ -315,7 +315,7 @@ public:
     }
 
     void commit() {
-        const ArrayBuffer::Ptr &buffer = _localBuffer->buffer();
+        ArrayBuffer *buffer = _localBuffer->buffer();
         _remoteBuffer->update(buffer->getData(), buffer->byteLength());
     }
 

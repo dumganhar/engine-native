@@ -235,8 +235,8 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     BufferBlob bufferBlob;
 
     // Fill vertex buffer.
-    ArrayBuffer::Ptr vertexBuffer = new ArrayBuffer(vertCount * stride);
-    DataView         vertexBufferView(vertexBuffer);
+    auto *   vertexBuffer = new ArrayBuffer(vertCount * stride);
+    DataView vertexBufferView(vertexBuffer);
     for (const auto &channel : channels) {
         writeBuffer(vertexBufferView, channel.data, channel.attribute.format, channel.offset, stride);
     }
@@ -251,9 +251,9 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     bufferBlob.addBuffer(vertexBuffer);
 
     // Fill index buffer.
-    ArrayBuffer::Ptr indexBuffer;
-    uint32_t         idxCount  = 0;
-    const uint32_t   idxStride = 2;
+    ArrayBuffer *  indexBuffer{nullptr};
+    uint32_t       idxCount  = 0;
+    const uint32_t idxStride = 2;
     if (geometry.indices.has_value()) {
         const std::vector<uint32_t> &indices = geometry.indices.value();
         idxCount                             = indices.size();

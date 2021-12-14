@@ -26,11 +26,11 @@
 #pragma once
 
 #include <algorithm>
-#include "base/RefCounted.h"
 #include "core/geometry/Enums.h"
 #include "math/Mat3.h"
 #include "math/Quaternion.h"
 #include "math/Vec3.h"
+
 namespace cc {
 namespace geometry {
 
@@ -38,7 +38,7 @@ class Sphere;
 class Frustum;
 class Plane;
 
-class AABB final : public ShapeBase, public RefCounted {
+class AABB final : public ShapeBase {
 public:
     /**
       * @en

@@ -122,7 +122,7 @@ public:
      * 最初事件触发的目标。
      */
     inline CCObject *getTarget() const { return _target.get(); }
-    inline void      setTarget(CCObject *target) { _target = target; } //cjh shared_ptr?
+    inline void      setTarget(CCObject *target) { _target = target; }
 
     /**
      * @en

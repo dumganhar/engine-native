@@ -48,31 +48,31 @@ std::unordered_map<std::string, DataView::IntWritter> DataView::intWritterMap{
     {"setInt32", reinterpret_cast<DataView::IntWritter>(&DataView::setInt32)},
 };
 
-int32_t DataView::readInt(ReaderVariant &readerVariant, index_t offset)
-{
+int32_t DataView::readInt(ReaderVariant &readerVariant, index_t offset) {
     return std::visit([offset, this](auto &reader) {
         return (int32_t)(this->*reader)(offset);
-    }, readerVariant);
+    },
+                      readerVariant);
 }
 
-DataView::DataView(ArrayBuffer::Ptr buffer) : DataView(buffer, 0) {}
+DataView::DataView(ArrayBuffer *buffer) : DataView(buffer, 0) {}
 
-DataView::DataView(ArrayBuffer::Ptr buffer, uint32_t byteOffset)
+DataView::DataView(ArrayBuffer *buffer, uint32_t byteOffset)
 : DataView(buffer, byteOffset, buffer ? (buffer->byteLength() - byteOffset) : 0) {}
 
-DataView::DataView(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t byteLength) {
+DataView::DataView(ArrayBuffer *buffer, uint32_t byteOffset, uint32_t byteLength) {
     assign(buffer, byteOffset, byteLength);
 }
 
-void DataView::assign(ArrayBuffer::Ptr buffer) {
+void DataView::assign(ArrayBuffer *buffer) {
     assign(buffer, 0);
 }
 
-void DataView::assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset) {
+void DataView::assign(ArrayBuffer *buffer, uint32_t byteOffset) {
     assign(buffer, byteOffset, buffer ? buffer->byteLength() : 0);
 }
 
-void DataView::assign(ArrayBuffer::Ptr buffer, uint32_t byteOffset, uint32_t byteLength) {
+void DataView::assign(ArrayBuffer *buffer, uint32_t byteOffset, uint32_t byteLength) {
     CC_ASSERT(buffer != nullptr);
     CC_ASSERT(byteLength > 0);
     _buffer     = buffer;

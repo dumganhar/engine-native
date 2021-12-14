@@ -409,7 +409,7 @@ void BuiltinResMgr::initTexture2DWithUuid(const std::string &uuid, const uint8_t
         texture->setUuid(uuid);
 
         auto *imgAsset = new (std::nothrow) ImageAsset();
-        imgAsset->setNativeAsset(image); //cjh HOW TO RELEASE?
+        imgAsset->setNativeAsset(image);
         texture->setImage(imgAsset);
 
         texture->initialize();
@@ -428,7 +428,7 @@ void BuiltinResMgr::initTextureCubeWithUuid(const std::string &uuid, const uint8
         texture->setMipFilter(TextureCube::Filter::NEAREST);
 
         ITextureCubeMipmap mipmap;
-        mipmap.front = new ImageAsset(); //cjh HOW TO RELEASE?
+        mipmap.front = new ImageAsset();
         mipmap.front->setNativeAsset(image);
         mipmap.back = new ImageAsset();
         mipmap.back->setNativeAsset(image);

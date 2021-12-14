@@ -330,9 +330,9 @@ Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
     const auto &      bindposes = skeleton->getBindposes();
     valid.reserve(bindposes.size());
     for (size_t i = 0; i < bindposes.size(); i++) {
-        bounds.emplace_back(new geometry::AABB{//cjh TODO: Memory leak
-                                               std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
-                                               -std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity()});
+        bounds.emplace_back(new geometry::AABB{
+            std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
+            -std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity()});
         valid.emplace_back(false);
     }
     const auto &primitives = _struct.primitives;

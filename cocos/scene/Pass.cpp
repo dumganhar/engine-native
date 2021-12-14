@@ -259,9 +259,6 @@ void Pass::destroy() {
     }
 
     _descriptorSet->destroy();
-    //cjh    _rs->destroy();
-    //    _dss.destroy();
-    //    _bs->destroy();
 }
 
 void Pass::resetUniform(const std::string &name) {

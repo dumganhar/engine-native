@@ -65,7 +65,7 @@ TextureCube *TextureCube::fromTexture2DArray(const std::vector<Texture2D *> &tex
 
         mipmaps.emplace_back(mipmap);
     }
-    auto *out = new TextureCube(); //cjh TODO: how to delete, shared_ptr?
+    auto *out = new TextureCube();
     out->setMipmaps(mipmaps);
     return out;
 }
@@ -177,7 +177,7 @@ void TextureCube::deserialize(const std::any &serializedData, const std::any &ha
     for (size_t i = 0; i < data->mipmaps.size(); ++i) {
         // Prevent resource load failed
         _mipmaps[i] = {
-            .front  = new ImageAsset(), //cjh TODO: how to release?
+            .front  = new ImageAsset(),
             .back   = new ImageAsset(),
             .left   = new ImageAsset(),
             .right  = new ImageAsset(),
@@ -213,7 +213,7 @@ gfx::TextureInfo TextureCube::getGfxTextureCreateInfo(gfx::TextureUsageBit usage
 void TextureCube::initDefault(const std::optional<std::string> &uuid) {
     Super::initDefault(uuid);
 
-    auto *imageAsset = new ImageAsset(); //cjh HOW TO DELETE?
+    auto *imageAsset = new ImageAsset();
     imageAsset->initDefault(std::nullopt);
 
     ITextureCubeMipmap mipmap;

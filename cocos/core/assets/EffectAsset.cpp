@@ -45,7 +45,7 @@ IPassStates &IPassStates::operator=(const IPassInfoFull &o) {
     return *this;
 }
 
-void IPassStates::overrides(const IPassInfoFull& o) {
+void IPassStates::overrides(const IPassInfoFull &o) {
     if (o.priority.has_value()) {
         this->priority = o.priority.value();
     }
@@ -81,15 +81,13 @@ void EffectAsset::registerAsset(EffectAsset *asset) {
     }
 
     __effects.emplace(asset->getName(), asset);
-    asset->addRef();
 }
 
 /* static */
 void EffectAsset::remove(const std::string &name) {
     auto iter = __effects.find(name);
     if (iter != __effects.end() && iter->second->getName() == name) {
-        __effects.erase(iter); //cjh TODO: need to delete asset here ?
-        iter->second->release();
+        __effects.erase(iter);
         return;
     }
 
@@ -102,7 +100,6 @@ void EffectAsset::remove(const std::string &name) {
 
     if (iter != __effects.end()) {
         __effects.erase(iter);
-        iter->second->release();
     }
 }
 
@@ -114,8 +111,7 @@ void EffectAsset::remove(EffectAsset *asset) {
 
     auto iter = __effects.find(asset->getName());
     if (iter != __effects.end() && iter->second == asset) {
-        iter->second->release();
-        __effects.erase(iter); //cjh TODO: need to delete asset here ?
+        __effects.erase(iter);
     }
 }
 

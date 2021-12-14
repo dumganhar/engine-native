@@ -20,10 +20,10 @@
  This file was modified to fit the cocos2d-x project
  */
 
-#include "math/Math.h"
 #include "math/Vec3.h"
 #include "base/Macros.h"
 #include "math/Mat3.h"
+#include "math/Math.h"
 #include "math/MathUtil.h"
 #include "math/Quaternion.h"
 
@@ -78,9 +78,9 @@ void Vec3::transformInverseRTS(const Vec3 &v, const Quaternion &r, const Vec3 &t
     const float iy = r.w * y - r.z * x + r.x * z;
     const float iz = r.w * z - r.x * y + r.y * x;
     const float iw = r.x * x + r.y * y + r.z * z;
-    out->x          = (ix * r.w + iw * r.x + iy * r.z - iz * r.y) / s.x;
+    out->x         = (ix * r.w + iw * r.x + iy * r.z - iz * r.y) / s.x;
     out->y         = (iy * r.w + iw * r.y + iz * r.x - ix * r.z) / s.y;
-    out->z          = (iz * r.w + iw * r.z + ix * r.y - iy * r.x) / s.z;
+    out->z         = (iz * r.w + iw * r.z + ix * r.y - iy * r.x) / s.z;
 }
 
 float Vec3::angle(const Vec3 &v1, const Vec3 &v2) {
@@ -194,15 +194,12 @@ void Vec3::transformMat3(const Vec3 &v, const Mat3 &m) {
 }
 
 void Vec3::transformMat4(const Vec3 &v, const Mat4 &m) {
-    float ix  = v.x;
-    float iy  = v.y;
-    float iz  = v.z;
-    float rhw = m.m[3] * ix + m.m[7] * iy + m.m[11] * iz + m.m[15];
-    rhw       = math::IsNotEqualF(rhw, 0.0F) ? 1 / rhw : 1;
-
-    x = (m.m[0] * ix + m.m[4] * iy + m.m[8] * iz + m.m[12]) * rhw;
-    y = (m.m[1] * ix + m.m[5] * iy + m.m[9] * iz + m.m[13]) * rhw;
-    z = (m.m[2] * ix + m.m[6] * iy + m.m[10] * iz + m.m[14]) * rhw;
+    alignas(16) float tmp[4] = {v.x, v.y, v.z, 1.0F};
+    MathUtil::transformVec4(m.m, tmp, tmp);
+    float rhw = math::IsNotEqualF(tmp[3], 0.0F) ? 1 / tmp[3] : 1;
+    x         = tmp[0] / rhw;
+    y         = tmp[1] / rhw;
+    z         = tmp[2] / rhw;
 }
 
 void Vec3::transformMat4(const Vec3 &v, const Mat4 &m, Vec3 *dst) {

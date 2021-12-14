@@ -73,7 +73,7 @@ std::vector<SharedPtr<scene::Pass>> MaterialInstance::createPasses() {
     auto &                              parentPasses = _parent->getPasses();
 
     for (size_t k = 0; k < parentPasses.size(); ++k) {
-        passes.emplace_back(new PassInstance(parentPasses[k], this)); //cjh shared_ptr?
+        passes.emplace_back(new PassInstance(parentPasses[k], this));
     }
     return passes;
 }

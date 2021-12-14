@@ -127,14 +127,16 @@ void Model::destroy() {
     for (SubModel *subModel : _subModels) {
         CC_SAFE_DESTROY(subModel);
     }
-    CC_SAFE_DESTROY(_localBuffer);
-    CC_SAFE_DELETE(_worldBounds);
-    CC_SAFE_DELETE(_modelBounds);
     _subModels.clear();
-    _inited           = false;
-    _transformUpdated = true;
-    //    CC_SAFE_DELETE(_transform); //cjh TODO: should not delete
-    //    CC_SAFE_DELETE(_node);      //cjh TODO: should not delete
+
+    CC_SAFE_DESTROY_NULL(_localBuffer);
+
+    _worldBounds       = nullptr;
+    _modelBounds       = nullptr;
+    _inited            = false;
+    _transformUpdated  = true;
+    _transform         = nullptr;
+    _node              = nullptr;
     _isDynamicBatching = false;
 }
 
@@ -237,12 +239,13 @@ void Model::createBoundingShape(const std::optional<Vec3> &minPos, const std::op
     if (!minPos.has_value() || !maxPos.has_value()) {
         return;
     }
+
     _modelBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB());
     _worldBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB()); // AABB.clone(this._modelBounds) in ts
 }
 
 SubModel *Model::createSubModel() const {
-    return new SubModel(); //cjh how to delete?
+    return new SubModel();
 }
 
 void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Material *mat) {

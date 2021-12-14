@@ -154,7 +154,6 @@ public:
         _worldBounds = bounds;
     }
     inline void setModelBounds(geometry::AABB *bounds) {
-        //cjh TODO: how to remove old one
         _modelBounds = bounds;
     }
     inline bool isModelImplementedInJS() const { return (_type != Type::DEFAULT && _type != Type::SKINNING && _type != Type::BAKED_SKINNING); };
@@ -167,13 +166,13 @@ protected:
 
     SubModel *createSubModel() const;
 
-    Type            _type{Type::DEFAULT};
-    bool            _transformUpdated{false};
-    geometry::AABB *_worldBounds{nullptr};
-    geometry::AABB *_modelBounds{nullptr};
-    gfx::Device *   _device{nullptr};
-    bool            _inited{false};
-    uint32_t        _descriptorSetCount{1};
+    Type                      _type{Type::DEFAULT};
+    bool                      _transformUpdated{false};
+    SharedPtr<geometry::AABB> _worldBounds;
+    SharedPtr<geometry::AABB> _modelBounds;
+    gfx::Device *             _device{nullptr};
+    bool                      _inited{false};
+    uint32_t                  _descriptorSetCount{1};
 
     bool _enabled{false};
     bool _castShadow{false};

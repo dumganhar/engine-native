@@ -206,7 +206,7 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
         auto *node = skinningRoot->getChildByPath(joints[j]);
         Mat4  mat  = node ? getWorldTransformUntilRoot(node, skinningRoot, m41) : skeleton->getInverseBindposes()[j];
         if (j < boneSpaceBounds.size()) {
-            auto *bound = boneSpaceBounds[j];
+            auto *bound = boneSpaceBounds[j].get();;
             bound->transform(mat, &ab1);
             ab1.getBoundary(&v33, &v34);
             Vec3::min(v3Min, v33, &v3Min);

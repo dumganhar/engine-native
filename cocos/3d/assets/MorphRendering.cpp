@@ -42,9 +42,9 @@ namespace cc {
 /**
  * The instance of once sub-mesh morph rendering.
  */
-class SubMeshMorphRenderingInstance {
+class SubMeshMorphRenderingInstance : public RefCounted {
 public:
-    virtual ~SubMeshMorphRenderingInstance() = default;
+    ~SubMeshMorphRenderingInstance() override = default;
     /**
      * Set weights of each morph target.
      * @param weights The weights.
@@ -86,11 +86,11 @@ namespace {
  */
 const bool PREFER_CPU_COMPUTING = false;
 
-class MorphTexture final {
+class MorphTexture final : public RefCounted {
 public:
     MorphTexture() = default;
 
-    ~MorphTexture() {
+    ~MorphTexture() override {
         delete _textureAsset;
     }
     /**
@@ -152,18 +152,17 @@ public:
     }
 
 private:
-    Texture2D *      _textureAsset{nullptr};
-    gfx::Sampler *   _sampler{nullptr};
-    ArrayBuffer::Ptr _arrayBuffer{nullptr};
-    Float32Array     _valueView;
-    Uint8Array *     _updateView{nullptr};
+    SharedPtr<Texture2D>    _textureAsset;
+    SharedPtr<gfx::Sampler> _sampler;
+    ArrayBuffer::Ptr        _arrayBuffer;
+    Float32Array            _valueView;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(MorphTexture);
 };
 
 struct GpuMorphAttribute {
-    std::string   attributeName;
-    MorphTexture *morphTexture{nullptr};
+    std::string             attributeName;
+    SharedPtr<MorphTexture> morphTexture;
 };
 
 struct CpuMorphAttributeTarget {
@@ -273,11 +272,11 @@ Vec4TextureFactory createVec4TextureFactory(gfx::Device *gfxDevice, uint32_t vec
 /**
  * Provides the access to morph related uniforms.
  */
-class MorphUniforms final {
+class MorphUniforms final : public RefCounted {
 public:
     MorphUniforms(gfx::Device *gfxDevice, uint32_t targetCount) {
         _targetCount = targetCount;
-        _localBuffer = new DataView(SharedPtr<ArrayBuffer>(new ArrayBuffer(pipeline::UBOMorph::SIZE)));
+        _localBuffer = new DataView(new ArrayBuffer(pipeline::UBOMorph::SIZE));
 
         _remoteBuffer = gfxDevice->createBuffer(gfx::BufferInfo{
             gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST,
@@ -288,7 +287,6 @@ public:
     }
 
     ~MorphUniforms() {
-        delete _remoteBuffer;
         delete _localBuffer;
     }
 
@@ -322,9 +320,9 @@ public:
     }
 
 private:
-    uint32_t     _targetCount{0};
-    DataView *   _localBuffer{nullptr};
-    gfx::Buffer *_remoteBuffer{nullptr};
+    uint32_t               _targetCount{0};
+    DataView *             _localBuffer{nullptr};
+    SharedPtr<gfx::Buffer> _remoteBuffer;
 };
 
 class CpuComputing final : public SubMeshMorphRendering {
@@ -360,8 +358,8 @@ private:
 class CpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance {
 public:
     explicit CpuComputingRenderingInstance(CpuComputing *owner, uint32_t nVertices, gfx::Device *gfxDevice) {
-        _owner         = owner;                                       //cjh TODO: lifecycle, dangerous?
-        _morphUniforms = new MorphUniforms(gfxDevice, 0 /* TODO? */); //cjh TODO: how to release?
+        _owner         = owner; //cjh TODO: lifecycle, dangerous?
+        _morphUniforms = new MorphUniforms(gfxDevice, 0 /* TODO? */);
 
         auto vec4TextureFactory = createVec4TextureFactory(gfxDevice, nVertices);
         _morphUniforms->setMorphTextureInfo(vec4TextureFactory.width, vec4TextureFactory.height);
@@ -440,8 +438,8 @@ public:
 
 private:
     std::vector<GpuMorphAttribute> _attributes;
-    CpuComputing *                 _owner{nullptr};
-    MorphUniforms *                _morphUniforms{nullptr};
+    SharedPtr<CpuComputing>        _owner;
+    SharedPtr<MorphUniforms>       _morphUniforms;
 };
 
 class GpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance {
@@ -452,7 +450,7 @@ public:
         _morphUniforms->setMorphTextureInfo(_owner->_textureWidth, _owner->_textureHeight);
         _morphUniforms->setVerticesCount(_owner->_verticesCount);
         _morphUniforms->commit();
-        _attributes = &_owner->_attributes; // TODO(xwx): should copy one?
+        _attributes = &_owner->_attributes;
     }
 
     void setWeights(const std::vector<float> &weights) override {
@@ -494,8 +492,8 @@ public:
 
 private:
     std::vector<GpuMorphAttribute> *_attributes{nullptr};
-    GpuComputing *                  _owner{nullptr};
-    MorphUniforms *                 _morphUniforms{nullptr};
+    SharedPtr<GpuComputing>         _owner;
+    SharedPtr<MorphUniforms>        _morphUniforms;
 };
 
 CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph, gfx::Device *gfxDevice) {
@@ -632,7 +630,7 @@ public:
     std::vector<scene::IMacroPatch> requiredPatches(index_t subMeshIndex) override {
         CC_ASSERT(_owner->_mesh->getStruct().morph.has_value());
         const auto &subMeshMorphOpt          = _owner->_mesh->getStruct().morph.value().subMeshMorphs[subMeshIndex];
-        auto *      subMeshRenderingInstance = _subMeshInstances[subMeshIndex];
+        auto *      subMeshRenderingInstance = _subMeshInstances[subMeshIndex].get();
         if (subMeshRenderingInstance == nullptr || !subMeshMorphOpt.has_value()) {
             return {};
         }
@@ -680,8 +678,8 @@ public:
     }
 
 private:
-    StdMorphRendering *                          _owner{nullptr};
-    std::vector<SubMeshMorphRenderingInstance *> _subMeshInstances;
+    SharedPtr<StdMorphRendering>                          _owner;
+    std::vector<SharedPtr<SubMeshMorphRenderingInstance>> _subMeshInstances;
 };
 
 //
@@ -722,7 +720,7 @@ StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
 StdMorphRendering::~StdMorphRendering() = default;
 
 MorphRenderingInstance *StdMorphRendering::createInstance() {
-    auto *ret = new StdMorphRenderingInstance(this); //cjh how to release?
+    auto *ret = new StdMorphRenderingInstance(this);
     return ret;
 }
 

@@ -285,8 +285,7 @@ public:
      */
     void reset(const ICreateInfo &info);
 
-    //cjh FIXME: memory leak
-    using BoneSpaceBounds = std::vector<geometry::AABB *>;
+    using BoneSpaceBounds = std::vector<SharedPtr<geometry::AABB>>;
     /**
      * @en Get [[AABB]] bounds in the skeleton's bone space
      * @zh 获取骨骼变换空间内下的 [[AABB]] 包围盒

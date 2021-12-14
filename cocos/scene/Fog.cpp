@@ -99,7 +99,7 @@ void FogInfo::setFogRange(float val) {
 }
 
 void FogInfo::activate(Fog *resource) {
-    _resource = resource; //cjh shared_ptr ?
+    _resource = resource;
     _resource->initialize(*this);
     _resource->activate();
 }

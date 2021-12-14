@@ -358,8 +358,8 @@ private:
 class CpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance {
 public:
     explicit CpuComputingRenderingInstance(CpuComputing *owner, uint32_t nVertices, gfx::Device *gfxDevice) {
-        _owner         = owner;                                       //cjh TODO: lifecycle, dangerous?
-        _morphUniforms = new MorphUniforms(gfxDevice, 0 /* TODO? */); //cjh TODO: how to release?
+        _owner         = owner; //cjh TODO: lifecycle, dangerous?
+        _morphUniforms = new MorphUniforms(gfxDevice, 0 /* TODO? */);
 
         auto vec4TextureFactory = createVec4TextureFactory(gfxDevice, nVertices);
         _morphUniforms->setMorphTextureInfo(vec4TextureFactory.width, vec4TextureFactory.height);

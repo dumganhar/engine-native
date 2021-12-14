@@ -23,35 +23,36 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "TypeDef.h"
+#pragma once
+
+#include "cocos/base/TypeDef.h"
 
 #if USE_STD_C_PLUS_PLUS_17 > 0
-	#include <variant>
+    #include <variant>
 
     #define CC_HOLDS_ALTERNATIVE std::holds_alternative
     #define CC_GET_IF            std::get_if
     #define CC_GET               std::get
     #define CC_VISIT             std::visit
 
-    namespace cc {
-        template <class... T>
-        using variant = std::variant<T...>;
+namespace cc {
+template <class... T>
+using variant = std::variant<T...>;
 
-        using monostate = std::monostate;
-    }; // namespace cc
+using monostate = std::monostate;
+}; // namespace cc
 #else
     #include "boost/variant2/variant.hpp"
-
 
     #define CC_HOLDS_ALTERNATIVE boost::variant2::holds_alternative
     #define CC_GET_IF            boost::variant2::get_if
     #define CC_GET               boost::variant2::get
     #define CC_VISIT             boost::variant2::visit
 
-    namespace cc {
-        template <class... T>
-        using variant = boost::variant2::variant<T...>;
+namespace cc {
+template <class... T>
+using variant = boost::variant2::variant<T...>;
 
-        using monostate = boost::variant2::monostate;
-    }; // namespace cc
+using monostate = boost::variant2::monostate;
+}; // namespace cc
 #endif

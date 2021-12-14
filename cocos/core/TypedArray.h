@@ -27,9 +27,9 @@
 
 #include <memory>
 #include <type_traits>
-#include "cocos/base/Variant.h"
 #include "base/TypeDef.h"
 #include "bindings/jswrapper/Object.h"
+#include "cocos/base/Variant.h"
 #include "core/ArrayBuffer.h"
 
 namespace cc {
@@ -301,10 +301,10 @@ uint32_t getTypedArrayBytesPerElement(const TypedArray &arr);
 
 template <typename T>
 T getTypedArrayValue(const TypedArray &arr, index_t idx) {
-#define TYPEDARRAY_GET_VALUE(type)                                     \
+#define TYPEDARRAY_GET_VALUE(type)                       \
     if (auto *p = CC_GET_IF<type>(&arr); p != nullptr) { \
-        return static_cast<T>((*p)[idx]);                              \
-    }                                                                                                      
+        return static_cast<T>((*p)[idx]);                \
+    }
 
     TYPEDARRAY_GET_VALUE(Float32Array)
     TYPEDARRAY_GET_VALUE(Uint32Array)
@@ -323,10 +323,10 @@ void setTypedArrayValue(TypedArray &arr, index_t idx, const TypedArrayElementTyp
 
 template <typename T>
 T &getTypedArrayValueRef(const TypedArray &arr, index_t idx) {
-#define TYPEDARRAY_GET_VALUE_REF(type)                                 \
+#define TYPEDARRAY_GET_VALUE_REF(type)                   \
     if (auto *p = CC_GET_IF<type>(&arr); p != nullptr) { \
-        return (*p)[idx];                                              \
-    }                                                                                                     
+        return (*p)[idx];                                \
+    }
 
     TYPEDARRAY_GET_VALUE_REF(Float32Array)
     TYPEDARRAY_GET_VALUE_REF(Uint32Array)
@@ -341,11 +341,10 @@ T &getTypedArrayValueRef(const TypedArray &arr, index_t idx) {
 
 template <typename T>
 T getTypedArrayElementValue(const TypedArrayElementType &element) {
-#define CAST_TO_T(type)                                                    \
+#define CAST_TO_T(type)                                      \
     if (auto *p = CC_GET_IF<type>(&element); p != nullptr) { \
-        return static_cast<T>(*p);                                         \
-    }                                                                      \
-                                                  
+        return static_cast<T>(*p);                           \
+    }
 
     CAST_TO_T(float)
     CAST_TO_T(uint32_t)

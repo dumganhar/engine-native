@@ -38,7 +38,7 @@ public:
 
     inline uint32_t getLength() const { return _length; }
 
-    ArrayBuffer *getCombined();
+    ArrayBuffer::Ptr getCombined();
 
 private:
     std::vector<cc::variant<ArrayBuffer::Ptr, uint32_t>> _arrayBufferOrPaddings;

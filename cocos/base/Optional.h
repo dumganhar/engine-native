@@ -23,9 +23,9 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "TypeDef.h"
+#pragma once
 
-#if USE_STD_C_PLUS_PLUS_17 > 0
+#ifdef USE_CXX_17
 	#include <optional>
 
     namespace cc {

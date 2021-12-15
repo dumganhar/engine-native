@@ -334,7 +334,7 @@ std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
             continue;
         }
 
-        SharedPtr<scene::Pass> pass = new scene::Pass(Root::getInstance());
+        auto *pass = new scene::Pass(Root::getInstance());
         pass->initialize(passInfo);
         passes.emplace_back(pass);
     }

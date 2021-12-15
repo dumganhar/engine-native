@@ -365,7 +365,7 @@ public:
         _morphUniforms->setMorphTextureInfo(vec4TextureFactory.width, vec4TextureFactory.height);
         _morphUniforms->commit();
         for (const auto &attributeMorph : _owner->getData()) {
-            SharedPtr<MorphTexture> morphTexture = vec4TextureFactory.create();
+            auto *morphTexture = vec4TextureFactory.create();
             _attributes.emplace_back(GpuMorphAttribute{attributeMorph.name, morphTexture});
         }
     }

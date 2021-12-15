@@ -285,7 +285,7 @@ void Mesh::initialize() {
             }
         }
 
-        SharedPtr<RenderingSubMesh> subMesh = new RenderingSubMesh(vbReference, gfxAttributes, prim.primitiveMode, indexBuffer);
+        auto *subMesh = new RenderingSubMesh(vbReference, gfxAttributes, prim.primitiveMode, indexBuffer);
         subMesh->setMesh(this);
         subMesh->setSubMeshIdx(i);
 

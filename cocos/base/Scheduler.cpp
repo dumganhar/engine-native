@@ -29,11 +29,11 @@
 
 #include "base/Scheduler.h"
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
-#include "base/Macros.h"
 #include "base/Log.h"
+#include "base/Macros.h"
 
 namespace {
 constexpr unsigned CC_REPEAT_FOREVER{UINT_MAX - 1};
@@ -183,7 +183,7 @@ void Scheduler::schedule(const ccSchedulerFunc &callback, void *target, float in
 
     auto *timer = new (std::nothrow) TimerTargetCallback();
     timer->initWithCallback(this, callback, target, key, interval, repeat, delay);
-    element->timers.push_back(timer);
+    element->timers.pushBack(timer);
 }
 
 void Scheduler::unschedule(const std::string &key, void *target) {
@@ -346,7 +346,7 @@ void Scheduler::update(float dt) {
         if (!_currentTarget->paused) {
             // The 'timers' array may change while inside this loop
             for (elt->timerIndex = 0; elt->timerIndex < static_cast<int>(elt->timers.size()); ++(elt->timerIndex)) {
-                elt->currentTimer         = elt->timers[elt->timerIndex];
+                elt->currentTimer         = elt->timers.at(elt->timerIndex);
                 elt->currentTimerSalvaged = false;
 
                 elt->currentTimer->update(dt);

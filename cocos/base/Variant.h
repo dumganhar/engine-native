@@ -25,9 +25,8 @@
 
 #pragma once
 
-#include "cocos/base/TypeDef.h"
 
-#if USE_STD_C_PLUS_PLUS_17 > 0
+#ifdef USE_CXX_17
     #include <variant>
 
     #define CC_HOLDS_ALTERNATIVE std::holds_alternative

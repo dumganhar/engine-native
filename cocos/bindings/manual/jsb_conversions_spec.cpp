@@ -1013,15 +1013,6 @@ bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer **to, se::Object *
     (*to)->setJSArrayBuffer(from.toObject());
     return true;
 }
-// NOLINTNEXTLINE(readability-identifier-naming)
-bool sevalue_to_native(const se::Value &from, cc::SharedPtr<cc::ArrayBuffer> *out, se::Object *ctx) {
-    if (!*out) {
-        *out = new cc::ArrayBuffer();
-    }
-    sevalue_to_native(from, out->get(), ctx);
-    // TODO(PatriceJiang): should not mix smart pointers with raw pointers.
-    return true;
-}
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, std::vector<bool> *to, se::Object * /*ctx*/) {

@@ -27,6 +27,7 @@
 #include "cocos/base/Variant.h"
 
 #include "base/Utils.h"
+#include "core/Root.h"
 #include "core/assets/EffectAsset.h"
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/event/EventTypesToJS.h"
@@ -206,11 +207,11 @@ CC_MATERIAL_SETPROPERTY_ARRAY_IMPL(GFXTexture, gfx::Texture *)
 
 const MaterialPropertyVariant *Material::getProperty(const std::string &name, index_t passIdx) const {
     if (passIdx == CC_INVALID_INDEX) { // try get property in all possible passes
-        auto & propsArray = _props;
-        size_t len        = propsArray.size();
+        const auto &propsArray = _props;
+        size_t      len        = propsArray.size();
         for (size_t i = 0; i < len; i++) {
-            auto &props = propsArray[i];
-            auto  iter  = props.find(name);
+            const auto &props = propsArray[i];
+            auto        iter  = props.find(name);
             if (iter != props.end()) {
                 return &iter->second;
             }
@@ -221,8 +222,8 @@ const MaterialPropertyVariant *Material::getProperty(const std::string &name, in
             return nullptr;
         }
 
-        auto &props = _props[_passes[passIdx]->getPropertyIndex()];
-        auto  iter  = props.find(name);
+        const auto &props = _props[_passes[passIdx]->getPropertyIndex()];
+        auto        iter  = props.find(name);
         if (iter != props.end()) {
             return &iter->second;
         }
@@ -333,7 +334,7 @@ std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
             continue;
         }
 
-        auto *pass = new scene::Pass(/*legacyCC.director.root*/); //cjh how to pass Root ?
+        SharedPtr<scene::Pass> pass = new scene::Pass(Root::getInstance());
         pass->initialize(passInfo);
         passes.emplace_back(pass);
     }

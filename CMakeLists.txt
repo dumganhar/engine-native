@@ -305,6 +305,7 @@ cocos_source_files(
     cocos/base/ThreadPool.h
     cocos/base/TypeDef.h
     cocos/base/Vector.h
+    cocos/base/Variant.h
 )
 
 ############ module log

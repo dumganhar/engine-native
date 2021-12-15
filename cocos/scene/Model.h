@@ -106,7 +106,7 @@ public:
         onMacroPatchesStateChanged();
     }
     inline void setTransform(Node *node) { _transform = node; }
-    inline void setVisFlags(uint32_t flags) { _visFlags = flags; }
+    inline void setVisFlags(Layers::Enum flags) { _visFlags = flags; }
     inline void setBounds(geometry::AABB *world) {
         _worldBounds = world;
         _modelBounds->set(_worldBounds->getCenter(), _worldBounds->getHalfExtents());
@@ -131,7 +131,7 @@ public:
     inline Node *                                  getTransform() const { return _transform.get(); }
     inline bool                                    isTransformUpdated() const { return _transformUpdated; }
     inline uint32_t                                getUpdateStamp() const { return _updateStamp; }
-    inline uint32_t                                getVisFlags() const { return _visFlags; }
+    inline Layers::Enum                            getVisFlags() const { return _visFlags; }
     inline geometry::AABB *                        getWorldBounds() const { return _worldBounds; }
     inline Type                                    getType() const { return _type; };
     inline void                                    setType(Type type) { _type = type; }
@@ -149,14 +149,9 @@ public:
     inline CallbacksInvoker &getEventProcessor() { return _eventProcessor; }
     void                     _setInstancedAttributesViewData(index_t viewIdx, index_t arrIdx, float value);
     inline void              setTransformUpdated(bool v) { _transformUpdated = v; }
-    inline void              setWorldBounds(geometry::AABB *bounds) {
-        //cjh TODO: how to remove old one
-        _worldBounds = bounds;
-    }
-    inline void setModelBounds(geometry::AABB *bounds) {
-        _modelBounds = bounds;
-    }
-    inline bool isModelImplementedInJS() const { return (_type != Type::DEFAULT && _type != Type::SKINNING && _type != Type::BAKED_SKINNING); };
+    inline void              setWorldBounds(geometry::AABB *bounds) { _worldBounds = bounds; }
+    inline void              setModelBounds(geometry::AABB *bounds) { _modelBounds = bounds; }
+    inline bool              isModelImplementedInJS() const { return (_type != Type::DEFAULT && _type != Type::SKINNING && _type != Type::BAKED_SKINNING); };
     //
 
 protected:
@@ -180,7 +175,7 @@ protected:
     bool _isDynamicBatching{false};
 
     int32_t                          _instMatWorldIdx{-1};
-    uint32_t                         _visFlags{static_cast<uint32_t>(Layers::Enum::NONE)};
+    Layers::Enum                     _visFlags{Layers::Enum::NONE};
     uint32_t                         _updateStamp{0};
     SharedPtr<Node>                  _transform;
     SharedPtr<Node>                  _node;

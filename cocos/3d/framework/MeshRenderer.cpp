@@ -206,7 +206,7 @@ void MeshRenderer::createModel() {
         }
     }
 
-    _model->setVisFlags(static_cast<uint32_t>(getVisibility())); //cjh TODO: remove static_cast
+    _model->setVisFlags(getVisibility());
     _model->setNode(_node);
     _model->setTransform(_node);
 
@@ -285,7 +285,7 @@ void MeshRenderer::onVisibilityChange(Layers::Enum val) {
         return;
     }
 
-    _model->setVisFlags(static_cast<uint32_t>(val)); //cjh todo: remove static_cast
+    _model->setVisFlags(val);
 }
 
 void MeshRenderer::updateCastShadow() {

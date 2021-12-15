@@ -285,7 +285,7 @@ void Mesh::initialize() {
             }
         }
 
-        auto *subMesh = new RenderingSubMesh(vbReference, gfxAttributes, prim.primitiveMode, indexBuffer); //cjh how to release?
+        SharedPtr<RenderingSubMesh> subMesh = new RenderingSubMesh(vbReference, gfxAttributes, prim.primitiveMode, indexBuffer);
         subMesh->setMesh(this);
         subMesh->setSubMeshIdx(i);
 
@@ -487,7 +487,7 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
         vertStride = bundle.view.stride;
         vertCount  = bundle.view.count + dstBundle.view.count;
 
-        auto       vb = new ArrayBuffer(vertCount * vertStride);
+        auto *     vb = new ArrayBuffer(vertCount * vertStride);
         Uint8Array vbView(vb);
 
         Uint8Array srcVBView = _data.subarray(srcOffset, srcOffset + bundle.view.length);
@@ -578,7 +578,7 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
                 idxStride = 4;
             }
 
-            auto ib = new ArrayBuffer(idxCount * idxStride);
+            auto *ib = new ArrayBuffer(idxCount * idxStride);
 
             TypedArray ibView;
             TypedArray srcIBView;
@@ -627,10 +627,10 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
             srcOffset += prim.indexView.value().length;
 
             // merge dst indices
-            uint32_t indexViewStrid = dstPrim.indexView.value().stride;
-            if (indexViewStrid == 2) {
+            uint32_t indexViewStride = dstPrim.indexView.value().stride;
+            if (indexViewStride == 2) {
                 dstIBView = Uint16Array(mesh->_data.buffer(), dstOffset, dstPrim.indexView->count);
-            } else if (indexViewStrid == 1) {
+            } else if (indexViewStride == 1) {
                 dstIBView = Uint8Array(mesh->_data.buffer(), dstOffset, dstPrim.indexView->count);
             } else { // Uint32
                 dstIBView = Uint32Array(mesh->_data.buffer(), dstOffset, dstPrim.indexView->count);
@@ -861,8 +861,8 @@ bool Mesh::copyIndices(index_t primitiveIndex, TypedArray &outputArray) {
     const gfx::Format indexFormat = primitive.indexView.value().stride == 1 ? gfx::Format::R8UI
                                                                             : (primitive.indexView.value().stride == 2 ? gfx::Format::R16UI
                                                                                                                        : gfx::Format::R32UI);
-    DataView view(_data.buffer());
-    auto     reader = getReader(view, indexFormat);
+    DataView          view(_data.buffer());
+    auto              reader = getReader(view, indexFormat);
     for (uint32_t i = 0; i < indexCount; ++i) {
         TypedArrayElementType element = reader(primitive.indexView.value().offset + gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(indexFormat)].size * i);
         setTypedArrayValue(outputArray, i, element);

@@ -24,7 +24,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <vector>
 
 #include "renderer/gfx-base/GFXDef.h"
@@ -79,7 +79,7 @@ struct IGeometry {
      * @zh
      * 顶点法线。
      */
-    std::optional<std::vector<float>> normals;
+    cc::optional<std::vector<float>> normals;
 
     /**
      * @en
@@ -87,7 +87,7 @@ struct IGeometry {
      * @zh
      * 纹理坐标。
      */
-    std::optional<std::vector<float>> uvs;
+    cc::optional<std::vector<float>> uvs;
 
     /**
      * @en
@@ -95,7 +95,7 @@ struct IGeometry {
      * @zh
      * 顶点切线。
      */
-    std::optional<std::vector<float>> tangents;
+    cc::optional<std::vector<float>> tangents;
 
     /**
      * @en
@@ -103,7 +103,7 @@ struct IGeometry {
      * @zh
      * 顶点颜色。
      */
-    std::optional<std::vector<float>> colors;
+    cc::optional<std::vector<float>> colors;
 
     /**
      * @en
@@ -111,14 +111,14 @@ struct IGeometry {
      * @zh
      * 顶点属性。
      */
-    std::optional<gfx::AttributeList> attributes;
+    cc::optional<gfx::AttributeList> attributes;
 
     struct CustomAttribute {
         gfx::Attribute     attr;
         std::vector<float> values;
     };
 
-    std::optional<std::vector<CustomAttribute>> customAttributes;
+    cc::optional<std::vector<CustomAttribute>> customAttributes;
 
     /**
      * @en
@@ -126,7 +126,7 @@ struct IGeometry {
      * @zh
      * 包围球半径。
      */
-    std::optional<float> boundingRadius;
+    cc::optional<float> boundingRadius;
 
     /**
      * @en
@@ -134,7 +134,7 @@ struct IGeometry {
      * @zh
      * 最小位置。
      */
-    std::optional<Vec3> minPos;
+    cc::optional<Vec3> minPos;
 
     /**
      * @en
@@ -142,7 +142,7 @@ struct IGeometry {
      * @zh
      * 最大位置。
      */
-    std::optional<Vec3> maxPos;
+    cc::optional<Vec3> maxPos;
 
     /**
      * @en
@@ -150,7 +150,7 @@ struct IGeometry {
      * @zh
      * 几何索引，当使用索引绘制时。
      */
-    std::optional<std::vector<uint32_t>> indices; //cjh uint16_t ?
+    cc::optional<std::vector<uint32_t>> indices; //cjh uint16_t ?
 
     /**
      * @en
@@ -158,7 +158,7 @@ struct IGeometry {
      * @zh
      * 几何顶点的拓扑图元。默认值是TRIANGLE_LIST。
      */
-    std::optional<gfx::PrimitiveMode> primitiveMode;
+    cc::optional<gfx::PrimitiveMode> primitiveMode;
 
     /**
      * @en
@@ -166,7 +166,7 @@ struct IGeometry {
      * @zh
      * 是否是双面，用于判断来自于几何体背面的射线检测。
      */
-    std::optional<bool> doubleSided;
+    cc::optional<bool> doubleSided;
 };
 
 } // namespace cc

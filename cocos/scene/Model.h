@@ -81,7 +81,7 @@ public:
     void                              updateWorldBound();
     void                              updateWorldBoundsForJSSkinningModel(const Vec3 &min, const Vec3 &max);
     void                              updateWorldBoundsForJSBakedSkinningModel(geometry::AABB *aabb);
-    void                              createBoundingShape(const std::optional<Vec3> &minPos, const std::optional<Vec3> &maxPos);
+    void                              createBoundingShape(const cc::optional<Vec3> &minPos, const cc::optional<Vec3> &maxPos);
     virtual void                      initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat);
     void                              setSubModelMesh(index_t idx, RenderingSubMesh *subMesh) const;
     virtual void                      setSubModelMaterial(index_t idx, Material *mat);

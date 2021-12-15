@@ -32,10 +32,10 @@
 namespace cc {
 
 struct IRenderTextureCreateInfo {
-    std::optional<std::string>         name;
+    cc::optional<std::string>         name;
     uint32_t                           width;
     uint32_t                           height;
-    std::optional<gfx::RenderPassInfo> passInfo;
+    cc::optional<gfx::RenderPassInfo> passInfo;
 };
 namespace scene {
 class RenderWindow;
@@ -118,7 +118,7 @@ public:
     void initWindow();
     void initWindow(const IRenderTextureCreateInfo &info);
 
-    void initDefault(const std::optional<std::string> &uuid) override;
+    void initDefault(const cc::optional<std::string> &uuid) override;
 
     bool validate() const override;
 

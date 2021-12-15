@@ -27,7 +27,7 @@
 
 #include "core/assets/Asset.h"
 
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -61,14 +61,14 @@ struct IMaterialInfo {
      * @zh
      * 这个材质将使用的 EffectAsset，通过 effect 名指定，和 `effectAsset` 至少要指定一个。
      */
-    std::optional<std::string> effectName;
+    cc::optional<std::string> effectName;
     /**
      * @en
      * The index of the technique to use.
      * @zh
      * 这个材质将使用第几个 technique，默认为 0。
      */
-    std::optional<uint32_t> technique{0};
+    cc::optional<uint32_t> technique{0};
 
     using DefinesType = cc::variant<MacroRecord, std::vector<MacroRecord>>;
     /**
@@ -77,7 +77,7 @@ struct IMaterialInfo {
      * @zh
      * 这个材质定义的预处理宏，默认全为 0，或 [[EffectAsset]] 中的指定值。
      */
-    std::optional<DefinesType> defines;
+    cc::optional<DefinesType> defines;
 
     using PassOverridesType = cc::variant<PassOverrides, std::vector<PassOverrides>>;
     /**
@@ -87,7 +87,7 @@ struct IMaterialInfo {
      * 这个材质的自定义管线状态，将覆盖 effect 中的属性。<br>
      * 注意在可能的情况下请尽量少的自定义管线状态，以减小对渲染效率的影响。
      */
-    std::optional<PassOverridesType> states;
+    cc::optional<PassOverridesType> states;
 };
 
 class Material : public Asset {
@@ -111,7 +111,7 @@ public:
     void initialize(const IMaterialInfo &info);
     void reset(const IMaterialInfo &info);
 
-    void initDefault(const std::optional<std::string> &uuid) override;
+    void initDefault(const cc::optional<std::string> &uuid) override;
     bool validate() const override;
 
     /**

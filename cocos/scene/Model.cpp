@@ -235,7 +235,7 @@ void Model::updateUBOs(uint32_t stamp) {
     }
 }
 
-void Model::createBoundingShape(const std::optional<Vec3> &minPos, const std::optional<Vec3> &maxPos) {
+void Model::createBoundingShape(const cc::optional<Vec3> &minPos, const cc::optional<Vec3> &maxPos) {
     if (!minPos.has_value() || !maxPos.has_value()) {
         return;
     }

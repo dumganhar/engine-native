@@ -88,7 +88,7 @@ Asset *Asset::decAssetRef(bool autoRelease /* = true*/) {
     return this;
 }
 
-void Asset::initDefault(const std::optional<std::string> &uuid) {
+void Asset::initDefault(const cc::optional<std::string> &uuid) {
     if (uuid.has_value()) {
         _uuid = uuid.value();
     }

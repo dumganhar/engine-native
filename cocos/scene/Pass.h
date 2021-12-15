@@ -247,7 +247,7 @@ public:
      * @zh 尝试编译 shader 并获取相关资源引用。
      */
     virtual bool tryCompile();
-    virtual bool tryCompile(const std::optional<MacroRecord> &defineOverrides) { return Pass::tryCompile(); }
+    virtual bool tryCompile(const cc::optional<MacroRecord> &defineOverrides) { return Pass::tryCompile(); }
 
     /**
      * @en Gets the shader variant of the current pass and given macro patches

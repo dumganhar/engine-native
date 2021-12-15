@@ -26,7 +26,7 @@
 #pragma once
 #include <functional>
 #include <vector>
-#include <optional>
+#include "cocos/base/Optional.h"
 #include "base/TypeDef.h"
 #include "core/components/Component.h"
 #include "core/scene-graph/Node.h"
@@ -34,17 +34,17 @@
 
 namespace cc {
 
-using Invoker = std::function<void(MutableForwardIterator<Component *> &, const std::optional<float> &)>;
+using Invoker = std::function<void(MutableForwardIterator<Component *> &, const cc::optional<float> &)>;
 
-using SingleInvokeCallback = std::function<void(Component *, const std::optional<float> &)>;
+using SingleInvokeCallback = std::function<void(Component *, const cc::optional<float> &)>;
 using FastPathCallback     = Invoker;
 
-Invoker createInvokeImpl(const SingleInvokeCallback &singleInvoke, const FastPathCallback &fastPath, std::optional<CCObject::Flags> ensureFlag);
+Invoker createInvokeImpl(const SingleInvokeCallback &singleInvoke, const FastPathCallback &fastPath, cc::optional<CCObject::Flags> ensureFlag);
 
 class LifeCycleInvoker {
 public:
     // remove disabled and not invoked component from array
-    static void stableRemoveInactive(MutableForwardIterator<Component *> &iterator, const std::optional<CCObject::Flags> &flagToClear);
+    static void stableRemoveInactive(MutableForwardIterator<Component *> &iterator, const cc::optional<CCObject::Flags> &flagToClear);
 
     static Invoker invokeStart();
     static Invoker invokeUpdate();
@@ -112,7 +112,7 @@ public:
      * @param comp The component to be enabled
      * @param invoker The invoker which is responsible to schedule the `onEnable` call
      */
-    void enableComp(Component *comp, std::optional<LifeCycleInvoker *> invoker = std::nullopt);
+    void enableComp(Component *comp, cc::optional<LifeCycleInvoker *> invoker = CC_NULLOPT);
 
     /**
      * @en Disable a component

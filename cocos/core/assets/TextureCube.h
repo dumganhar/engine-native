@@ -170,7 +170,7 @@ public:
 
     gfx::TextureInfo getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 
-    void initDefault(const std::optional<std::string> &uuid) override;
+    void initDefault(const cc::optional<std::string> &uuid) override;
 
     bool validate() const override;
     //

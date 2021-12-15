@@ -66,7 +66,7 @@ void Root::initialize() {
     renderPassInfo.depthStencilAttachment.depthStoreOp   = gfx::StoreOp::DISCARD;
     renderPassInfo.depthStencilAttachment.stencilStoreOp = gfx::StoreOp::DISCARD;
 
-    scene::IRenderWindowInfo info{"rootMainWindow",
+    scene::IRenderWindowInfo info{cc::optional<std::string>("rootMainWindow"),
                                   _device->getWidth(),
                                   _device->getHeight(),
                                   renderPassInfo,

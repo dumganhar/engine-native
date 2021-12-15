@@ -51,6 +51,6 @@ struct ICylinderOptions : public IGeometryOptions {
  * @param options 参数选项。
  */
 
-IGeometry cylinder(float radiusTop = 0.5, float radiusBottom = 0.5, float height = 2, const std::optional<ICylinderOptions> &opts = std::nullopt);
+IGeometry cylinder(float radiusTop = 0.5, float radiusBottom = 0.5, float height = 2, const cc::optional<ICylinderOptions> &opts = CC_NULLOPT);
 
 } // namespace cc

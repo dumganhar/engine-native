@@ -24,7 +24,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <optional>
+#include "cocos/base/Optional.h"
 
 #include "primitive/PrimitiveDefine.h"
 
@@ -33,7 +33,7 @@ namespace cc {
 class Mesh;
 
 struct ICreateMeshOptions {
-    std::optional<bool> calculateBounds;
+    cc::optional<bool> calculateBounds;
 };
 
 Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions &options = {});

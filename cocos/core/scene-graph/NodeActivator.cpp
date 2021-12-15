@@ -56,7 +56,7 @@ public:
     }
 
     inline void cancelInactive() {
-        stableRemoveInactive(_zero, std::nullopt);
+        stableRemoveInactive(_zero, CC_NULLOPT);
     }
 
     inline void cancelInactive(CCObject::Flags flagToClear) {
@@ -64,7 +64,7 @@ public:
     }
 
     inline void invoke() {
-        _invoke(_zero, std::nullopt);
+        _invoke(_zero, CC_NULLOPT);
         _zero.array.clear();
     }
 };
@@ -86,23 +86,23 @@ namespace {
 constexpr int32_t MAX_POOL_SIZE = 4;
 
 Invoker invokePreload = createInvokeImpl(
-    [](Component *c, const std::optional<float> &dt) {
+    [](Component *c, const cc::optional<float> &dt) {
         c->__preload();
     },
-    [](MutableForwardIterator<Component *> &iterator, const std::optional<float> &dt) {
+    [](MutableForwardIterator<Component *> &iterator, const cc::optional<float> &dt) {
         auto &array = iterator.array;
         for (iterator.i = 0; iterator.i < static_cast<int32_t>(array.size()); ++iterator.i) {
             array[iterator.i]->__preload();
         }
     },
-    std::nullopt);
+    CC_NULLOPT);
 
 Invoker invokeOnLoad = createInvokeImpl(
-    [](Component *c, const std::optional<float> &dt) {
+    [](Component *c, const cc::optional<float> &dt) {
         c->onLoad();
         c->_objFlags |= CCObject::Flags::IS_ON_LOAD_CALLED;
     },
-    [](MutableForwardIterator<Component *> &iterator, const std::optional<float> &dt) {
+    [](MutableForwardIterator<Component *> &iterator, const cc::optional<float> &dt) {
         auto &array = iterator.array;
         for (iterator.i = 0; iterator.i < array.size(); ++iterator.i) {
             auto *comp = array[iterator.i];
@@ -112,7 +112,7 @@ Invoker invokeOnLoad = createInvokeImpl(
     },
     CCObject::Flags::IS_ON_LOAD_CALLED);
 
-Invoker invokeOnEnable = [](MutableForwardIterator<Component *> &iterator, const std::optional<float> &dt) {
+Invoker invokeOnEnable = [](MutableForwardIterator<Component *> &iterator, const cc::optional<float> &dt) {
     auto *compScheduler = Director::getInstance()->getCompScheduler();
     auto &array         = iterator.array;
     for (iterator.i = 0; iterator.i < static_cast<int32_t>(array.size()); ++iterator.i) {

@@ -29,7 +29,7 @@
 #include <cassert>
 #include <cstdint>
 #include <functional>
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <type_traits>
 #include <utility>
 #include "cocos/base/Variant.h"
@@ -619,9 +619,9 @@ struct HolderType<std::function<R(ARGS...)>, true> {
 };
 
 //template <typename T>
-//struct HolderType<std::optional<T>, true> {
+//struct HolderType<cc::optional<T>, true> {
 //    using NonconstT  = typename std::remove_const<T>::type;
-//    using type       = std::optional<NonconstT>;
+//    using type       = cc::optional<NonconstT>;
 //    using local_type = NonconstT;
 //    local_type                 data;
 //    std::remove_const_t<type> *ptr = nullptr;
@@ -635,7 +635,7 @@ template <typename T, typename Enable = void>
 struct is_optional : std::false_type {}; // NOLINT
 
 template <typename T>
-struct is_optional<std::optional<T>> : std::true_type {}; // NOLINT
+struct is_optional<cc::optional<T>> : std::true_type {}; // NOLINT
 
 template <typename... Args>
 struct is_variant : std::false_type {}; // NOLINT
@@ -667,7 +667,7 @@ template <typename... Args>
 bool sevalue_to_native(const se::Value &from, cc::variant<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 template <typename T>
-bool sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::optional<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 /// std::unordered_map<std::string, V>
 template <typename V>
 bool sevalue_to_native(const se::Value &from, std::unordered_map<std::string, V> *to, se::Object *ctx); //NOLINT(readability-identifier-naming)
@@ -1096,9 +1096,9 @@ bool sevalue_to_native(const se::Value &from, std::unordered_map<std::string, V>
     return true;
 }
 
-///////////////// std::optional
+///////////////// cc::optional
 template <typename T>
-bool sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx) { //NOLINT
+bool sevalue_to_native(const se::Value &from, cc::optional<T> *to, se::Object *ctx) { //NOLINT
     static_assert(!is_optional<T>::value, "bad match ?");
     if (from.isNullOrUndefined()) {
         to->reset();
@@ -1206,9 +1206,9 @@ inline bool nativevalue_to_se(const std::vector<T, A> &from, se::Value &to, se::
 template <typename K, typename V>
 inline bool nativevalue_to_se(const std::unordered_map<K, V> &from, se::Value &to, se::Object *ctx); // NOLINT
 
-/// nativevalue_to_se std::optional
+/// nativevalue_to_se cc::optional
 template <typename T>
-bool nativevalue_to_se(const std::optional<T> &from, se::Value &to, se::Object *ctx) { // NOLINT
+bool nativevalue_to_se(const cc::optional<T> &from, se::Value &to, se::Object *ctx) { // NOLINT
     if (!from.has_value()) {
         to.setUndefined();
         return true;

@@ -81,7 +81,7 @@ public:
 private:
     std::vector<std::string>         _joints;
     std::vector<Mat4>                _bindposes;
-    std::optional<std::vector<Mat4>> _invBindposes;
+    cc::optional<std::vector<Mat4>> _invBindposes;
     uint64_t                         _hash{0};
 };
 

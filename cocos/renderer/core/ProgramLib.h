@@ -27,7 +27,7 @@
 #include <cmath>
 #include <functional>
 #include <numeric>
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <sstream>
 #include <string>
 #include <unordered_map>

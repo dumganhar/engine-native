@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <optional>
+#include "cocos/base/Optional.h"
 #include "3d/assets/Types.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
@@ -56,7 +56,7 @@ public:
      * 交错排列是指在实际数据的缓冲区中，每个顶点的所有属性总是依次排列，并总是出现在下一个顶点的所有属性之前。
      */
     struct IVertexBundle {
-        std::optional<uint8_t> _padding; // TODO(PatriceJiang): avoid jsb cache map
+        cc::optional<uint8_t> _padding; // TODO(PatriceJiang): avoid jsb cache map
         /**
          * @en The actual value for all vertex attributes.
          * You must use DataView to access the data.
@@ -94,14 +94,14 @@ public:
          * @en The index data of the sub mesh
          * @zh 此子网格使用的索引数据。
          */
-        std::optional<IBufferView> indexView;
+        cc::optional<IBufferView> indexView;
 
         /**
          * @en The joint map index in [[IStruct.jointMaps]]. Could be absent
          * @zh 此子网格使用的关节索引映射表在 [[IStruct.jointMaps]] 中的索引。
          * 如未定义或指向的映射表不存在，则默认 VB 内所有关节索引数据直接对应骨骼资源数据。
          */
-        std::optional<uint32_t> jointMapIndex;
+        cc::optional<uint32_t> jointMapIndex;
     };
 
     /**
@@ -125,26 +125,26 @@ public:
          * @en The minimum position of all vertices in the mesh
          * @zh （各分量都）小于等于此网格任何顶点位置的最大位置。
          */
-        std::optional<Vec3> minPosition;
+        cc::optional<Vec3> minPosition;
 
         /**
          * @en The maximum position of all vertices in the mesh
          * @zh （各分量都）大于等于此网格任何顶点位置的最小位置。
          */
-        std::optional<Vec3> maxPosition;
+        cc::optional<Vec3> maxPosition;
 
         /**
          * @en The joint index map list.
          * @zh 此网格使用的关节索引映射关系列表，数组长度应为子模型中实际使用到的所有关节，
          * 每个元素都对应一个原骨骼资源里的索引，按子模型 VB 内的实际索引排列。
          */
-        std::optional<std::vector<std::vector<index_t>>> jointMaps;
+        cc::optional<std::vector<std::vector<index_t>>> jointMaps;
 
         /**
          * @en The morph information of the mesh
          * @zh 网格的形变数据
          */
-        std::optional<Morph> morph;
+        cc::optional<Morph> morph;
     };
 
     struct ICreateInfo {
@@ -375,7 +375,7 @@ private:
 
     gfx::BufferList createVertexBuffers(gfx::Device *gfxDevice, ArrayBuffer *data);
 
-    void initDefault(const std::optional<std::string> &uuid) override;
+    void initDefault(const cc::optional<std::string> &uuid) override;
     bool validate() const override;
 
     static TypedArray createTypedArrayWithGFXFormat(gfx::Format format, uint32_t count);

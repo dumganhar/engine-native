@@ -745,7 +745,7 @@ void Terrain::exportHeightField(HeightField *hf, float heightScale) const {
             const float x = u * getSize().width;
             const float y = v * getSize().height;
 
-            std::optional<float> h = getHeightAt(x, y);
+            cc::optional<float> h = getHeightAt(x, y);
             if (h.has_value()) {
                 hf->_data[index++] = h.value() * heightScale;
             }
@@ -841,7 +841,7 @@ float Terrain::getHeightClamp(int32_t i, int32_t j) const {
     return getHeight(i, j);
 }
 
-std::optional<float> Terrain::getHeightAt(float x, float y) const {
+cc::optional<float> Terrain::getHeightAt(float x, float y) const {
     const float fx = x / getTileSize();
     const float fy = y / getTileSize();
 
@@ -855,7 +855,7 @@ std::optional<float> Terrain::getHeightAt(float x, float y) const {
     auto vertexCount = getVertexCount();
 
     if (ix0 < 0 || ix0 > vertexCount[0] - 1 || iz0 < 0 || iz0 > vertexCount[1] - 1) {
-        return std::nullopt;
+        return CC_NULLOPT;
     }
 
     ix0 = std::clamp(ix0, 0, vertexCount[0] - 1);
@@ -902,7 +902,7 @@ Vec3 Terrain::getNormal(int32_t i, int32_t j) const {
     return n;
 }
 
-std::optional<Vec3> Terrain::getNormalAt(float x, float y) const {
+cc::optional<Vec3> Terrain::getNormalAt(float x, float y) const {
     const float fx = x / getTileSize();
     const float fy = y / getTileSize();
 
@@ -916,7 +916,7 @@ std::optional<Vec3> Terrain::getNormalAt(float x, float y) const {
     auto vertexCount = getVertexCount();
 
     if (ix0 < 0 || ix0 > vertexCount[0] - 1 || iz0 < 0 || iz0 > vertexCount[1] - 1) {
-        return std::nullopt;
+        return CC_NULLOPT;
     }
 
     ix0 = std::clamp(ix0, 0, vertexCount[0] - 1);
@@ -972,11 +972,11 @@ Vec4 Terrain::getWeight(int32_t i, int32_t j) const {
     return w;
 }
 
-std::optional<Vec4> Terrain::getWeightAt(float x, float y) const {
+cc::optional<Vec4> Terrain::getWeightAt(float x, float y) const {
     const int32_t uWeigthComplexity = getWeightMapSize() * _blockCount[0];
     const int32_t vWeigthComplexity = getWeightMapSize() * _blockCount[1];
     if (uWeigthComplexity == 0 || vWeigthComplexity == 0) {
-        return std::nullopt;
+        return CC_NULLOPT;
     }
 
     const float fx = x / uWeigthComplexity;
@@ -990,7 +990,7 @@ std::optional<Vec4> Terrain::getWeightAt(float x, float y) const {
     const float dz  = fy - iz0;
 
     if (ix0 < 0 || ix0 > uWeigthComplexity - 1 || iz0 < 0 || iz0 > vWeigthComplexity - 1) {
-        return std::nullopt;
+        return CC_NULLOPT;
     }
 
     ix0 = std::clamp(ix0, 0, uWeigthComplexity - 1);
@@ -1063,7 +1063,7 @@ TerrainLayer::Ptr Terrain::getMaxWeightLayerAt(float x, float y) {
     return getLayer(i);
 }
 
-std::optional<Vec3> Terrain::rayCheck(const Vec3 &start, const Vec3 &dir, float step, bool worldSpace /* = true*/) {
+cc::optional<Vec3> Terrain::rayCheck(const Vec3 &start, const Vec3 &dir, float step, bool worldSpace /* = true*/) {
     constexpr int32_t MAX_COUNT = 2000;
 
     auto trace = start;
@@ -1075,15 +1075,15 @@ std::optional<Vec3> Terrain::rayCheck(const Vec3 &start, const Vec3 &dir, float 
     delta.set(dir);
     delta.scale(step);
 
-    std::optional<Vec3> position;
+    cc::optional<Vec3> position;
 
     if (dir == Vec3{0, 1, 0}) {
-        std::optional<float> y = getHeightAt(trace.x, trace.z);
+        cc::optional<float> y = getHeightAt(trace.x, trace.z);
         if (y.has_value() && trace.y <= y) {
             position = Vec3{trace.x, y.value(), trace.z};
         }
     } else if (dir == Vec3{0, -1, 0}) {
-        std::optional<float> y = getHeightAt(trace.x, trace.z);
+        cc::optional<float> y = getHeightAt(trace.x, trace.z);
         if (y.has_value() && trace.y >= y) {
             position = Vec3{trace.x, y.value(), trace.z};
         }
@@ -1092,7 +1092,7 @@ std::optional<Vec3> Terrain::rayCheck(const Vec3 &start, const Vec3 &dir, float 
 
         // 优先大步进查找
         while (i++ < MAX_COUNT) {
-            std::optional<float> y = getHeightAt(trace.x, trace.z);
+            cc::optional<float> y = getHeightAt(trace.x, trace.z);
             if (y.has_value() && trace.y <= y) {
                 break;
             }
@@ -1102,7 +1102,7 @@ std::optional<Vec3> Terrain::rayCheck(const Vec3 &start, const Vec3 &dir, float 
 
         // 穷举法
         while (i++ < MAX_COUNT) {
-            std::optional<float> y = getHeightAt(trace.x, trace.z);
+            cc::optional<float> y = getHeightAt(trace.x, trace.z);
             if (y.has_value() && trace.y <= y) {
                 position = Vec3{trace.x, y.value(), trace.z};
                 break;

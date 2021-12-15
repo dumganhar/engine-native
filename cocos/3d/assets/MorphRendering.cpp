@@ -409,7 +409,7 @@ public:
     void adaptPipelineState(gfx::DescriptorSet *descriptorSet) override {
         for (const auto &attribute : _attributes) {
             const auto &            attributeName = attribute.attributeName;
-            std::optional<uint32_t> binding;
+            cc::optional<uint32_t> binding;
             if (attributeName == gfx::ATTR_NAME_POSITION) {
                 binding = pipeline::POSITIONMORPH::BINDING;
             } else if (attributeName == gfx::ATTR_NAME_NORMAL) {
@@ -467,7 +467,7 @@ public:
     void adaptPipelineState(gfx::DescriptorSet *descriptorSet) override {
         for (const auto &attribute : *_attributes) {
             const auto &            attributeName = attribute.attributeName;
-            std::optional<uint32_t> binding;
+            cc::optional<uint32_t> binding;
             if (attributeName == gfx::ATTR_NAME_POSITION) {
                 binding = pipeline::POSITIONMORPH::BINDING;
             } else if (attributeName == gfx::ATTR_NAME_NORMAL) {

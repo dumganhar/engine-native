@@ -68,21 +68,21 @@ void Material::initialize(const IMaterialInfo &info) {
         _props.clear();
     }
 
-    if (info.technique != std::nullopt) {
+    if (info.technique != CC_NULLOPT) {
         _techIdx = info.technique.value();
     }
 
     if (info.effectAsset != nullptr) {
         _effectAsset = info.effectAsset; //cjh TODO:
-    } else if (info.effectName != std::nullopt) {
+    } else if (info.effectName != CC_NULLOPT) {
         _effectAsset = EffectAsset::get(info.effectName.value());
     }
 
-    if (info.defines != std::nullopt) {
+    if (info.defines != CC_NULLOPT) {
         prepareInfo(info.defines.value(), _defines);
     }
 
-    if (info.states != std::nullopt) {
+    if (info.states != CC_NULLOPT) {
         prepareInfo(info.states.value(), _states);
     }
     update();
@@ -400,12 +400,12 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
     }
 }
 
-void Material::initDefault(const std::optional<std::string> &uuid) {
+void Material::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     MacroRecord   defines{{"USE_COLOR", true}};
     IMaterialInfo info{
-        .effectName = "unlit",
-        .defines    = defines};
+        .effectName = cc::optional<std::string>("unlit"),
+        .defines    = cc::optional<IMaterialInfo::DefinesType>(defines)};
     initialize(info);
     setProperty("mainColor", Color{0xFF, 0x00, 0xFF, 0xFF});
 }

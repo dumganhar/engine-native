@@ -24,7 +24,7 @@
 ****************************************************************************/
 
 #pragma once
-#include <optional>
+#include "cocos/base/Optional.h"
 
 #include "3d/assets/Mesh.h"
 #include "primitive/Box.h"
@@ -94,6 +94,6 @@ private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(Primitive);
 };
 
-IGeometry createGeometry(PrimitiveType type, const std::optional<PrimitiveOptions> &options = std::nullopt);
+IGeometry createGeometry(PrimitiveType type, const cc::optional<PrimitiveOptions> &options = CC_NULLOPT);
 
 } // namespace cc

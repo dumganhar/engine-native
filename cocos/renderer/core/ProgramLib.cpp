@@ -28,7 +28,7 @@
 #include <cmath>
 #include <functional>
 #include <numeric>
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -82,7 +82,7 @@ std::string recordAsString(const MacroRecord::mapped_type &v) {
     return "";
 }
 
-std::string mapDefine(const IDefineInfo &info, const std::optional<MacroRecord::mapped_type> &def) {
+std::string mapDefine(const IDefineInfo &info, const cc::optional<MacroRecord::mapped_type> &def) {
     if (info.type == "boolean") {
         return def.has_value() ? (recordAsBool(def.value()) ? "1" : "0") : "0";
     }
@@ -101,7 +101,7 @@ std::vector<IMacroInfo> prepareDefines(const MacroRecord &records, const std::ve
     for (const auto &tmp : defList) {
         const auto &name  = tmp.name;
         auto        it    = records.find(name);
-        auto        value = mapDefine(tmp, it == records.end() ? std::nullopt : std::optional(it->second));
+        auto        value = mapDefine(tmp, it == records.end() ? CC_NULLOPT : cc::optional<MacroValue>(it->second));
         //TODO(PatriceJiang): v === '0' can be bool ?
         
         bool isDefault = it == records.end() || (CC_HOLDS_ALTERNATIVE<std::string>(it->second) && CC_GET<std::string>(it->second) == "0");

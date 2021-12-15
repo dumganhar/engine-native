@@ -28,7 +28,7 @@
 
 namespace cc {
 
-void SceneAsset::initDefault(const std::optional<std::string> &uuid) {
+void SceneAsset::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     _scene = new Scene("New Scene");
 }

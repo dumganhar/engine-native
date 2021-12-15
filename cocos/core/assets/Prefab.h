@@ -104,7 +104,7 @@ public:
 
     Node *instantiate();
 
-    void         initDefault(const std::optional<std::string> &uuid) override;
+    void         initDefault(const cc::optional<std::string> &uuid) override;
     virtual bool validate() const override { return _data.has_value(); }
 
 private:

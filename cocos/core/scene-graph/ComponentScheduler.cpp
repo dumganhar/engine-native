@@ -34,11 +34,11 @@ namespace cc {
 namespace {
 
 Invoker invokeStart = createInvokeImpl(
-    [](Component *c, const std::optional<float> &dt) {
+    [](Component *c, const cc::optional<float> &dt) {
         c->start();
         c->_objFlags |= CCObject::Flags::IS_START_CALLED;
     },
-    [](MutableForwardIterator<Component *> &iterator, const std::optional<float> &dt) {
+    [](MutableForwardIterator<Component *> &iterator, const cc::optional<float> &dt) {
         auto &array = iterator.array;
         for (iterator.i = 0; iterator.i < static_cast<int32_t>(array.size()); ++iterator.i) {
             Component *comp = array[iterator.i];
@@ -49,35 +49,35 @@ Invoker invokeStart = createInvokeImpl(
     CCObject::Flags::IS_START_CALLED);
 
 Invoker invokeUpdate = createInvokeImpl(
-    [](Component *c, const std::optional<float> &dt) {
+    [](Component *c, const cc::optional<float> &dt) {
         c->update(dt.value());
     },
-    [](MutableForwardIterator<Component *> &iterator, const std::optional<float> &dt) {
+    [](MutableForwardIterator<Component *> &iterator, const cc::optional<float> &dt) {
         auto &array = iterator.array;
         for (iterator.i = 0; iterator.i < static_cast<int32_t>(array.size()); ++iterator.i) {
             Component *comp = array[iterator.i];
             comp->update(dt.value());
         }
     },
-    std::nullopt);
+    CC_NULLOPT);
 
 Invoker invokeLateUpdate = createInvokeImpl(
-    [](Component *c, const std::optional<float> &dt) {
+    [](Component *c, const cc::optional<float> &dt) {
         c->lateUpdate(dt.value());
     },
-    [](MutableForwardIterator<Component *> &iterator, const std::optional<float> &dt) {
+    [](MutableForwardIterator<Component *> &iterator, const cc::optional<float> &dt) {
         auto &array = iterator.array;
         for (iterator.i = 0; iterator.i < static_cast<int32_t>(array.size()); ++iterator.i) {
             Component *comp = array[iterator.i];
             comp->lateUpdate(dt.value());
         }
     },
-    std::nullopt);
+    CC_NULLOPT);
 
 } // namespace
 
-Invoker createInvokeImpl(const SingleInvokeCallback &singleInvoke, const FastPathCallback &fastPath, std::optional<CCObject::Flags> ensureFlag) {
-    return [=](MutableForwardIterator<Component *> iterator, const std::optional<float> &dt) {
+Invoker createInvokeImpl(const SingleInvokeCallback &singleInvoke, const FastPathCallback &fastPath, cc::optional<CCObject::Flags> ensureFlag) {
+    return [=](MutableForwardIterator<Component *> iterator, const cc::optional<float> &dt) {
         //TODO: cjh We don't wanna use c++ exception here, so just invoke fastPath.
         fastPath(iterator, dt);
     };
@@ -88,7 +88,7 @@ LifeCycleInvoker::LifeCycleInvoker(const Invoker &invokeFunc)
 : _invoke(invokeFunc), _zero(_zeroCompArr), _neg(_negCompArr), _pos(_posCompArr) {
 }
 
-void LifeCycleInvoker::stableRemoveInactive(MutableForwardIterator<Component *> &iterator, const std::optional<CCObject::Flags> &flagToClear) {
+void LifeCycleInvoker::stableRemoveInactive(MutableForwardIterator<Component *> &iterator, const cc::optional<CCObject::Flags> &flagToClear) {
     auto &  array = iterator.array;
     int32_t next  = iterator.i + 1;
     while (next < static_cast<int32_t>(array.size())) {
@@ -155,9 +155,9 @@ void OneOffInvoker::remove(Component *comp) {
 }
 
 void OneOffInvoker::cancelInactive() {
-    stableRemoveInactive(_zero, std::nullopt);
-    stableRemoveInactive(_neg, std::nullopt);
-    stableRemoveInactive(_pos, std::nullopt);
+    stableRemoveInactive(_zero, CC_NULLOPT);
+    stableRemoveInactive(_neg, CC_NULLOPT);
+    stableRemoveInactive(_pos, CC_NULLOPT);
 }
 
 void OneOffInvoker::cancelInactive(CCObject::Flags flagToClear) {
@@ -172,17 +172,17 @@ void OneOffInvoker::invoke() {
             return a->getExecutionOrder() < b->getExecutionOrder();
         });
 
-        _invoke(_neg, std::nullopt);
+        _invoke(_neg, CC_NULLOPT);
         _neg.array.clear();
     }
-    _invoke(_zero, std::nullopt);
+    _invoke(_zero, CC_NULLOPT);
     _zero.array.clear();
 
     if (!_pos.array.empty()) {
         std::stable_sort(_pos.array.begin(), _pos.array.end(), [](const Component *a, const Component *b) {
             return a->getExecutionOrder() < b->getExecutionOrder();
         });
-        _invoke(_pos, std::nullopt);
+        _invoke(_pos, CC_NULLOPT);
         _pos.array.clear();
     }
 }
@@ -287,7 +287,7 @@ void ComponentScheduler::onDisabled(Component *comp) {
     // }
 }
 
-void ComponentScheduler::enableComp(Component *comp, std::optional<LifeCycleInvoker *> invoker) {
+void ComponentScheduler::enableComp(Component *comp, cc::optional<LifeCycleInvoker *> invoker) {
     if (!(comp->_objFlags & CCObject::Flags::IS_ON_ENABLE_CALLED)) {
         // if (comp.onEnable) { // TODO(xwx): no prototype attribute
         if (invoker.has_value()) {

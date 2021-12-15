@@ -27,7 +27,7 @@
 
 namespace cc {
 
-IGeometry cone(float radius, float height, const std::optional<IConeOptions> &opts) {
+IGeometry cone(float radius, float height, const cc::optional<IConeOptions> &opts) {
     return cylinder(0, radius, height, opts);
 }
 

@@ -117,19 +117,12 @@ uint32_t jointTextureSamplerHash = cc::pipeline::SamplerLib::genSamplerHash({
     cc::gfx::Address::CLAMP,
 });
 
-cc::Vec3           v33;
-cc::Vec3           v34;
-cc::Vec3           v3Min;
-cc::Vec3           v3Max;
-cc::Mat4           m41;
-cc::Mat4           m42;
-cc::geometry::AABB ab1;
-
 cc::Mat4 *getWorldTransformUntilRoot(cc::Node *target, cc::Node *root, cc::Mat4 *outMatrix) {
     outMatrix->setIdentity();
+    cc::Mat4 mat4;
     while (target != root) {
-        cc::Mat4::fromRTS(target->getRotation(), target->getPosition(), target->getScale(), &m41);
-        cc::Mat4::multiply(*outMatrix, m41, outMatrix);
+        cc::Mat4::fromRTS(target->getRotation(), target->getPosition(), target->getScale(), &mat4);
+        cc::Mat4::multiply(*outMatrix, mat4, outMatrix);
         target = target->getParent();
     }
     return outMatrix;
@@ -167,11 +160,13 @@ void JointTexturePool::registerCustomTextureLayouts(const std::vector<ICustomJoi
 }
 
 std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, Node *skinningRoot) {
-    uint64_t                           hash = skeleton->getHash() ^ 0; // may not equal to skeleton.hash
+    uint64_t hash = skeleton->getHash() ^ 0; // may not equal to skeleton.hash
+
     std::optional<IJointTextureHandle> texture;
     if (_textureBuffers.find(hash) != _textureBuffers.end()) {
         texture = _textureBuffers[hash];
     }
+
     const std::vector<std::string> &joints    = skeleton->getJoints();
     const std::vector<Mat4> &       bindPoses = skeleton->getBindposes();
     Float32Array                    textureBuffer;
@@ -199,12 +194,17 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
     } else {
         texture->refCount++;
     }
-    v3Min.set(-INF, -INF, -INF);
-    v3Max.set(-INF, -INF, -INF);
-    auto boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton);
+
+    geometry::AABB ab1;
+    Mat4           mat4;
+    Vec3           v34;
+    Vec3           v33;
+    Vec3           v3Min(-INF, -INF, -INF);
+    Vec3           v3Max(-INF, -INF, -INF);
+    auto           boneSpaceBounds = mesh->getBoneSpaceBounds(skeleton);
     for (uint32_t j = 0, offset = 0; j < jointCount; ++j, offset += 12) {
         auto *node = skinningRoot->getChildByPath(joints[j]);
-        Mat4  mat  = node ? *getWorldTransformUntilRoot(node, skinningRoot, &m41) : skeleton->getInverseBindposes()[j];
+        Mat4  mat  = node ? *getWorldTransformUntilRoot(node, skinningRoot, &mat4) : skeleton->getInverseBindposes()[j];
         if (j < boneSpaceBounds.size()) {
             auto *bound = boneSpaceBounds[j].get();
             bound->transform(mat, &ab1);
@@ -212,6 +212,7 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
             Vec3::min(v3Min, v33, &v3Min);
             Vec3::max(v3Max, v34, &v3Max);
         }
+
         if (buildTexture) {
             if (node != nullptr) {
                 Mat4::multiply(mat, bindPoses[j], &mat);
@@ -219,6 +220,7 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
             uploadJointDataLBS(textureBuffer, offset, node ? mat : Mat4::IDENTITY, j == 0);
         }
     }
+
     std::vector<geometry::AABB> bounds;
     texture->bounds[mesh->getHash()] = bounds;
     geometry::AABB::fromPoints(v3Min, v3Max, &bounds[0]);
@@ -226,6 +228,7 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
         _pool->update(texture->handle, textureBuffer.buffer());
         _textureBuffers[hash] = texture.value();
     }
+
     return texture;
 }
 

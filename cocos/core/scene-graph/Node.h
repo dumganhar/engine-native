@@ -279,11 +279,8 @@ public:
 
     void invalidateChildren(TransformBit dirtyBit);
 
-    void        translate(const Vec3 &, NodeSpace ns = NodeSpace::LOCAL);
-    void        rotate(const Quaternion &rot, NodeSpace ns = NodeSpace::LOCAL);
-    inline void rotateForJS(float x, float y, float z, float w, NodeSpace ns = NodeSpace::LOCAL) {
-        rotate(Quaternion(x, y, z, w), ns);
-    }
+    void translate(const Vec3 &, NodeSpace ns = NodeSpace::LOCAL);
+    void rotate(const Quaternion &rot, NodeSpace ns = NodeSpace::LOCAL);
     void lookAt(const Vec3 &pos, const Vec3 &up = Vec3::UNIT_Y);
 
     void pauseSystemEvents(bool recursive) {}  // cjh TODO:
@@ -360,7 +357,7 @@ public:
      * @param out The result point in local coordinate system will be stored in this vector
      * @param p A position in world coordinate system
      */
-    void inverseTransformPoint(Vec3 &out, const Vec3 &p);
+    Vec3 inverseTransformPoint(const Vec3 &p);
 
     /**
      * @en Set position in world coordinate system
@@ -466,7 +463,6 @@ public:
         Quaternion::fromViewUp(v3Temp, &qTemp);
         setWorldRotation(qTemp);
     }
-    void setAngle(float);
 
     inline const Vec3 &getEulerAngles() {
         if (_eulerDirty) {
@@ -476,6 +472,7 @@ public:
         return _euler;
     }
 
+    void setAngle(float);
     inline float getAngle() const {
         return _euler.z;
     }
@@ -507,6 +504,7 @@ public:
 
     inline void     setDirtyFlag(uint32_t value) { _dirtyFlag = value; }
     inline uint32_t getDirtyFlag() const { return _dirtyFlag; }
+
     inline void     setLayer(uint32_t layer) {
         _layerArr[0] = layer;
         emit(NodeEventType::LAYER_CHANGED, layer);
@@ -517,6 +515,13 @@ public:
     inline NodeUiProperties *getUIProps() const { return _uiProps.get(); }
 
     inline void setUIPropsTransformDirtyPtr(uint32_t* pDirty) { _uiTransformDirty = pDirty; }
+
+    inline void setWorldMatrixPtr(float* pWorldMatrix) { _worldMatrixFloat32ArrayInJS = pWorldMatrix; }
+    inline void setWorldPositionPtr(float* pWorldPosition) { _worldPositionFloat32ArrayInJS = pWorldPosition; }
+    inline void setWorldRotationPtr(float* pWorldRotation) { _worldRotationFloat32ArrayInJS = pWorldRotation; }
+    inline void setWorldScalePtr(float* pWorldScale) { _worldScaleFloat32ArrayInJS = pWorldScale; }
+
+    static void updateWorldTransformRecursively(Node* node);
 
     // ------------------  Component code start -----------------------------
     // TODO(Lenovo):
@@ -607,11 +612,8 @@ public:
     // ------------------  Component code end -----------------------------
 
     // For deserialization
-    //    void     _setChild(index_t i, Node *child);
-    //    Node *   _getChild(index_t i);
-    //    void     _setChildrenSize(uint32_t size);
-    //    uint32_t _getChildrenSize();
     void _setChildren(std::vector<SharedPtr<Node>> &&children);
+    void _setParent(Node* parent) { _parent = parent; }
     // For JS wrapper.
     inline uint32_t getEventMask() const { return _eventMask; }
     inline void     setEventMask(uint32_t mask) { _eventMask = mask; }
@@ -661,6 +663,10 @@ protected:
 
     Mat4     _rtMat{Mat4::IDENTITY};
     cc::Mat4 _worldMatrix{Mat4::IDENTITY};
+    float* _worldMatrixFloat32ArrayInJS{nullptr};
+    float* _worldPositionFloat32ArrayInJS{nullptr};
+    float* _worldRotationFloat32ArrayInJS{nullptr};
+    float* _worldScaleFloat32ArrayInJS{nullptr};
 
     uint32_t _flagChange{0};
     uint32_t _dirtyFlag{0};
@@ -677,10 +683,11 @@ public:
     index_t                      _siblingIndex{0};
     // For deserialization
     std::string                  _id;
-    std::vector<SharedPtr<Node>> _children;
-    Node                        *_parent{nullptr};
     bool                         _active{true};
 
+protected:
+    std::vector<SharedPtr<Node>> _children;
+    Node                        *_parent{nullptr};
 private:
     // local transform
     cc::Vec3       _localPosition{Vec3::ZERO};

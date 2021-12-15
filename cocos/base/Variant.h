@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
-
+ 
  http://www.cocos.com
-
+ 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
-
+ 
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
-
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,44 +21,37 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
-****************************************************************************/
-#include "3d/misc/BufferBlob.h"
-#include "core/TypedArray.h"
+ ****************************************************************************/
+
+#pragma once
+
+
+#ifdef USE_CXX_17
+    #include <variant>
+
+    #define CC_HOLDS_ALTERNATIVE std::holds_alternative
+    #define CC_GET_IF            std::get_if
+    #define CC_GET               std::get
+    #define CC_VISIT             std::visit
 
 namespace cc {
+template <class... T>
+using variant = std::variant<T...>;
 
-void BufferBlob::setNextAlignment(uint32_t align) {
-    if (align != 0) {
-        const uint32_t remainder = _length % align;
-        if (remainder != 0) {
-            const uint32_t padding = align - remainder;
-            _arrayBufferOrPaddings.emplace_back(padding);
-            _length += padding;
-        }
-    }
-}
+using monostate = std::monostate;
+}; // namespace cc
+#else
+    #include "boost/variant2/variant.hpp"
 
-uint32_t BufferBlob::addBuffer(ArrayBuffer *arrayBuffer) {
-    const uint32_t result = _length;
-    _arrayBufferOrPaddings.emplace_back(arrayBuffer);
-    _length += arrayBuffer->byteLength();
-    return result;
-}
+    #define CC_HOLDS_ALTERNATIVE boost::variant2::holds_alternative
+    #define CC_GET_IF            boost::variant2::get_if
+    #define CC_GET               boost::variant2::get
+    #define CC_VISIT             boost::variant2::visit
 
-ArrayBuffer *BufferBlob::getCombined() {
-    Int8Array result(_length);
-    uint32_t  counter = 0;
+namespace cc {
+template <class... T>
+using variant = boost::variant2::variant<T...>;
 
-    for (const auto &arrayBufferOrPadding : _arrayBufferOrPaddings) {
-        if (const auto *p = CC_GET_IF<uint32_t>(&arrayBufferOrPadding)) {
-            counter += *p;
-        } else if (const auto *p = CC_GET_IF<ArrayBuffer::Ptr>(&arrayBufferOrPadding)) {
-            result.set(*p, counter);
-            counter += (*p)->byteLength();
-        }
-    }
-
-    return result.buffer();
-}
-
-} // namespace cc
+using monostate = boost::variant2::monostate;
+}; // namespace cc
+#endif

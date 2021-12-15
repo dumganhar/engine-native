@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "core/assets/Material.h"
+#include "cocos/base/Variant.h"
 
 #include "base/Utils.h"
 #include "core/assets/EffectAsset.h"
@@ -348,20 +349,20 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
     const auto propertyType = scene::Pass::getPropertyTypeFromHandle(handle);
     if (propertyType == PropertyType::BUFFER) {
         if (val.index() == MaterialPropertyIndexList) {
-            pass->setUniformArray(handle, std::get<MaterialPropertyList>(val));
+            pass->setUniformArray(handle, CC_GET<MaterialPropertyList>(val));
         } else if (val.index() == MaterialPropertyIndexSingle) {
-            pass->setUniform(handle, std::get<MaterialProperty>(val));
+            pass->setUniform(handle, CC_GET<MaterialProperty>(val));
         } else {
             pass->resetUniform(name);
         }
     } else if (propertyType == PropertyType::TEXTURE) {
         if (val.index() == MaterialPropertyIndexList) {
-            const auto &textureArray = std::get<MaterialPropertyList>(val);
+            const auto &textureArray = CC_GET<MaterialPropertyList>(val);
             for (size_t i = 0; i < textureArray.size(); i++) {
                 bindTexture(pass, handle, textureArray[i], static_cast<index_t>(i));
             }
         } else if (val.index() == MaterialPropertyIndexSingle) {
-            bindTexture(pass, handle, std::get<MaterialProperty>(val));
+            bindTexture(pass, handle, CC_GET<MaterialProperty>(val));
         } else {
             pass->resetTexture(name);
         }
@@ -375,9 +376,9 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
     }
 
     const uint32_t binding = scene::Pass::getBindingFromHandle(handle);
-    if (const auto *pTexture = std::get_if<gfx::Texture *>(&val)) {
+    if (const auto *pTexture = CC_GET_IF<gfx::Texture *>(&val)) {
         pass->bindTexture(binding, const_cast<gfx::Texture *>(*pTexture), index);
-    } else if (const auto *pTextureBase = std::get_if<TextureBase *>(&val)) {
+    } else if (const auto *pTextureBase = CC_GET_IF<TextureBase *>(&val)) {
         auto *        textureBase = *pTextureBase;
         gfx::Texture *texture     = nullptr;
         if (textureBase != nullptr) {

@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <variant>
+#include "cocos/base/Variant.h"
 #include "base/Vector.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
@@ -39,7 +39,7 @@ class Mesh;
  * @en Array views for index buffer
  * @zh 允许存储索引的数组视图。
  */
-using IBArray = std::variant<Uint8Array, Uint16Array, Uint32Array>;
+using IBArray = cc::variant<Uint8Array, Uint16Array, Uint32Array>;
 
 /**
  * @en The interface of geometric information

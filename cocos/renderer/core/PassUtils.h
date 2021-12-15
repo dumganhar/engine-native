@@ -26,7 +26,7 @@
 #pragma once
 
 #include <string>
-#include <variant>
+#include "cocos/base/Variant.h"
 #include "base/TypeDef.h"
 #include "core/Types.h"
 #include "core/assets/TextureBase.h"
@@ -83,7 +83,7 @@ constexpr uint32_t     customizeType(uint32_t handle, gfx::Type type) {
     return (handle & ~TYPE_MASK) | ((static_cast<uint32_t>(type) << 22) & TYPE_MASK);
 }
 
-using MacroValue = std::variant<int32_t, float, bool, std::string>;
+using MacroValue = cc::variant<int32_t, float, bool, std::string>;
 
 /**
  * @en Combination of preprocess macros
@@ -91,11 +91,11 @@ using MacroValue = std::variant<int32_t, float, bool, std::string>;
  */
 using MacroRecord = Record<std::string, MacroValue>;
 
-using MaterialProperty = std::variant<std::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/>;
+using MaterialProperty = cc::variant<cc::monostate /*0*/, float /*1*/, int32_t /*2*/, Vec2 /*3*/, Vec3 /*4*/, Vec4 /*5*/, Color, /*6*/ Mat3 /*7*/, Mat4 /*8*/, Quaternion /*9*/, TextureBase * /*10*/, gfx::Texture * /*11*/>;
 
 using MaterialPropertyList = std::vector<MaterialProperty>;
 
-using MaterialPropertyVariant = std::variant<std::monostate /*0*/, MaterialProperty /*1*/, MaterialPropertyList /*2*/>;
+using MaterialPropertyVariant = cc::variant<cc::monostate /*0*/, MaterialProperty /*1*/, MaterialPropertyList /*2*/>;
 
 #define MaterialPropertyIndexSingle (1)
 #define MaterialPropertyIndexList   (2)

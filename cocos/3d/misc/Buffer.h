@@ -24,14 +24,12 @@
 ****************************************************************************/
 #pragma once
 
-#include <variant>
-
 #include "core/DataView.h"
 #include "renderer/gfx-base/GFXDef.h"
 
 namespace cc {
 
-using DataVariant       = std::variant<int32_t, float>;
+using DataVariant       = cc::variant<int32_t, float>;
 using MapBufferCallback = std::function<DataVariant(const DataVariant& cur, uint32_t idx, const DataView& view)>;
 
 DataView mapBuffer(DataView&                  target,

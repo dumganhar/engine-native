@@ -24,8 +24,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <variant>
 #include <vector>
+#include "cocos/base/Variant.h"
 #include "core/ArrayBuffer.h"
 
 namespace cc {
@@ -41,8 +41,8 @@ public:
     ArrayBuffer *getCombined();
 
 private:
-    std::vector<std::variant<ArrayBuffer::Ptr, uint32_t>> _arrayBufferOrPaddings;
-    uint32_t                                              _length{0};
+    std::vector<cc::variant<ArrayBuffer::Ptr, uint32_t>> _arrayBufferOrPaddings;
+    uint32_t                                             _length{0};
 };
 
 } // namespace cc

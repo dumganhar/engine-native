@@ -28,7 +28,6 @@
 #include <any>
 #include <functional>
 #include <string>
-#include <variant>
 #include "core/event/CallbacksInvoker.h"
 #include "core/event/Event.h"
 #include "core/platform/event-manager/EventListeners.h"

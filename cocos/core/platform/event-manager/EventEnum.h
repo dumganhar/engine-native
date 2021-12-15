@@ -25,7 +25,7 @@
 
 #pragma once
 #include <string>
-#include <variant>
+#include "cocos/base/Variant.h"
 
 #include "core/scene-graph/NodeEvent.h"
 
@@ -271,6 +271,6 @@ public:
     static const std::string SIBLING_ORDER_CHANGED;
 };
 
-using SystemEventTypeUnion = std::variant<SystemEventType, NodeEventType>;
+using SystemEventTypeUnion = cc::variant<SystemEventType, NodeEventType>;
 
 } // namespace cc

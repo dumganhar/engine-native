@@ -32,7 +32,7 @@
 #include <optional>
 #include <type_traits>
 #include <utility>
-#include <variant>
+#include "cocos/base/Variant.h"
 #include "base/Ptr.h"
 #include "base/RefCounted.h"
 #include "bindings/jswrapper/HandleObject.h"
@@ -640,13 +640,13 @@ struct is_optional<std::optional<T>> : std::true_type {}; // NOLINT
 template <typename... Args>
 struct is_variant : std::false_type {}; // NOLINT
 template <typename... Args>
-struct is_variant<std::variant<Args...>> : std::true_type {}; // NOLINT
+struct is_variant<cc::variant<Args...>> : std::true_type {}; // NOLINT
 
 template <typename T>
 inline typename std::enable_if_t<!std::is_enum<T>::value && !std::is_pointer<T>::value, bool>
 sevalue_to_native(const se::Value & /*from*/, T * /*to*/, se::Object * /*unused*/) { // NOLINT(readability-identifier-naming)
     SE_LOGE("Can not convert type ???\n - [[ %s ]]\n", typeid(T).name());
-    CC_STATIC_ASSERT(!is_variant<T>::value, "should not match std::variant");
+    CC_STATIC_ASSERT(!is_variant<T>::value, "should not match cc::variant");
     CC_STATIC_ASSERT(std::is_same<T, void>::value, "sevalue_to_native not implemented for T");
     return false;
 }
@@ -662,9 +662,9 @@ sevalue_to_native(const se::Value &from, T *to, se::Object *ctx) { // NOLINT(rea
 
 //////////////////////////////// forward declaration : sevalue_to_native ////////////////////////////////
 
-// std::variant<...>>ss
+// cc::variant<...>>ss
 template <typename... Args>
-bool sevalue_to_native(const se::Value &from, std::variant<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::variant<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 template <typename T>
 bool sevalue_to_native(const se::Value &from, std::optional<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
@@ -740,7 +740,7 @@ bool sevalue_to_native(const se::Value &from, std::array<uint8_t, CNT> *to, se::
 }
 
 template <typename T>
-bool sevalue_to_native(const se::Value &from, std::variant<T, std::vector<T>> *to, se::Object *ctx) { // NOLINT
+bool sevalue_to_native(const se::Value &from, cc::variant<T, std::vector<T>> *to, se::Object *ctx) { // NOLINT
     se::Object *array = from.toObject();
     if (array->isArray()) {
         std::vector<T> result;
@@ -907,10 +907,10 @@ inline bool sevalue_to_native(const se::Value &from, std::function<R(Args...)> *
     return true;
 }
 
-//////////////////////// std::variant
+//////////////////////// cc::variant
 
 template <typename... Args>
-inline bool sevalue_to_native(const se::Value & /*from*/, std::variant<Args...> * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool sevalue_to_native(const se::Value & /*from*/, cc::variant<Args...> * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     static_assert(sizeof...(Args) == 0);                                                                          //TODO(PatriceJiang): should not pass variant from js -> native
     assert(false);
     return false;
@@ -1127,10 +1127,10 @@ template <typename T>
 inline bool nativevalue_to_se(T &&from, se::Value &to); // NOLINT(readability-identifier-naming)
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx); // NOLINT
+bool nativevalue_to_se(const cc::variant<ARGS...> &from, se::Value &to, se::Object *ctx); // NOLINT
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::variant<ARGS...> *from, se::Value &to, se::Object *ctx) { // NOLINT
+bool nativevalue_to_se(const cc::variant<ARGS...> *from, se::Value &to, se::Object *ctx) { // NOLINT
     return nativevalue_to_se(*from, to, ctx);
 }
 
@@ -1415,13 +1415,14 @@ inline bool nativevalue_to_se(T &&from, se::Value &to) { // NOLINT(readability-i
 }
 
 template <typename... ARGS>
-bool nativevalue_to_se(const std::variant<ARGS...> &from, se::Value &to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se(const cc::variant<ARGS...> &from, se::Value &to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     bool ok = false;
     se_for_each(std::make_index_sequence<sizeof...(ARGS)>{}, [&](auto i) {
         if (i != from.index()) {
             return;
         }
-        ok = nativevalue_to_se(std::get<i>(from), to, ctx);
+
+        ok = nativevalue_to_se(CC_GET<i>(from), to, ctx);
     });
     return ok;
 }

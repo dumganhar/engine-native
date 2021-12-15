@@ -119,9 +119,9 @@ DataWritterCallback getWriter(DataView &dataView, gfx::Format format) {
     switch (info.type) {
         case gfx::FormatType::UNORM: {
             switch (stride) {
-                case 1: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint8(offset, std::get<uint8_t>(value)); };
-                case 2: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint16(offset, std::get<uint16_t>(value)); };
-                case 4: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint32(offset, std::get<uint32_t>(value)); };
+                case 1: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint8(offset, CC_GET<uint8_t>(value)); };
+                case 2: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint16(offset, CC_GET<uint16_t>(value)); };
+                case 4: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint32(offset, CC_GET<uint32_t>(value)); };
                 default:
                     break;
             }
@@ -129,9 +129,9 @@ DataWritterCallback getWriter(DataView &dataView, gfx::Format format) {
         }
         case gfx::FormatType::SNORM: {
             switch (stride) {
-                case 1: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt8(offset, std::get<int8_t>(value)); };
-                case 2: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt16(offset, std::get<int8_t>(value)); };
-                case 4: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt32(offset, std::get<int8_t>(value)); };
+                case 1: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt8(offset, CC_GET<int8_t>(value)); };
+                case 2: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt16(offset, CC_GET<int8_t>(value)); };
+                case 4: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt32(offset, CC_GET<int8_t>(value)); };
                 default:
                     break;
             }
@@ -139,9 +139,9 @@ DataWritterCallback getWriter(DataView &dataView, gfx::Format format) {
         }
         case gfx::FormatType::INT: {
             switch (stride) {
-                case 1: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt8(offset, std::get<int8_t>(value)); };
-                case 2: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt16(offset, std::get<int16_t>(value)); };
-                case 4: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt32(offset, std::get<int32_t>(value)); };
+                case 1: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt8(offset, CC_GET<int8_t>(value)); };
+                case 2: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt16(offset, CC_GET<int16_t>(value)); };
+                case 4: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setInt32(offset, CC_GET<int32_t>(value)); };
                 default:
                     break;
             }
@@ -149,16 +149,16 @@ DataWritterCallback getWriter(DataView &dataView, gfx::Format format) {
         }
         case gfx::FormatType::UINT: {
             switch (stride) {
-                case 1: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint8(offset, std::get<uint8_t>(value)); };
-                case 2: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint16(offset, std::get<uint16_t>(value)); };
-                case 4: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint32(offset, std::get<uint32_t>(value)); };
+                case 1: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint8(offset, CC_GET<uint8_t>(value)); };
+                case 2: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint16(offset, CC_GET<uint16_t>(value)); };
+                case 4: return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setUint32(offset, CC_GET<uint32_t>(value)); };
                 default:
                     break;
             }
             break;
         }
         case gfx::FormatType::FLOAT: {
-            return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setFloat32(offset, std::get<float>(value)); };
+            return [&](uint32_t offset, const TypedArrayElementType &value) { dataView.setFloat32(offset, CC_GET<float>(value)); };
         }
         default:
             break;
@@ -604,23 +604,23 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
             if (idxStride == prim.indexView.value().stride) {
                 switch (idxStride) {
                     case 2:
-                        std::get<Uint16Array>(ibView).set(std::get<Uint16Array>(srcIBView));
+                        CC_GET<Uint16Array>(ibView).set(CC_GET<Uint16Array>(srcIBView));
                         break;
                     case 1:
-                        std::get<Uint8Array>(ibView).set(std::get<Uint8Array>(srcIBView));
+                        CC_GET<Uint8Array>(ibView).set(CC_GET<Uint8Array>(srcIBView));
                         break;
                     default:
-                        std::get<Uint32Array>(ibView).set(std::get<Uint32Array>(srcIBView));
+                        CC_GET<Uint32Array>(ibView).set(CC_GET<Uint32Array>(srcIBView));
                         break;
                 }
             } else {
                 for (uint32_t n = 0; n < prim.indexView.value().count; ++n) {
                     if (idxStride == 2) {
-                        std::get<Uint16Array>(ibView)[n] = static_cast<uint16_t>(getTypedArrayValue<uint32_t>(srcIBView, n));
+                        CC_GET<Uint16Array>(ibView)[n] = static_cast<uint16_t>(getTypedArrayValue<uint32_t>(srcIBView, n));
                     } else if (idxStride == 1) {
-                        std::get<Uint8Array>(ibView)[n] = static_cast<uint8_t>(getTypedArrayValue<uint32_t>(srcIBView, n));
+                        CC_GET<Uint8Array>(ibView)[n] = static_cast<uint8_t>(getTypedArrayValue<uint32_t>(srcIBView, n));
                     } else {
-                        std::get<Uint32Array>(ibView)[n] = getTypedArrayValue<uint32_t>(srcIBView, n);
+                        CC_GET<Uint32Array>(ibView)[n] = getTypedArrayValue<uint32_t>(srcIBView, n);
                     }
                 }
             }
@@ -637,13 +637,13 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
             }
             for (uint32_t n = 0; n < dstPrim.indexView.value().count; ++n) {
                 if (idxStride == 2) {
-                    std::get<Uint16Array>(ibView)[prim.indexView->count + n] =
+                    CC_GET<Uint16Array>(ibView)[prim.indexView->count + n] =
                         vertBatchCount + static_cast<uint16_t>(getTypedArrayValue<uint32_t>(dstIBView, n));
                 } else if (idxStride == 1) {
-                    std::get<Uint8Array>(ibView)[prim.indexView->count + n] =
+                    CC_GET<Uint8Array>(ibView)[prim.indexView->count + n] =
                         vertBatchCount + static_cast<uint8_t>(getTypedArrayValue<uint32_t>(dstIBView, n));
                 } else {
-                    std::get<Uint32Array>(ibView)[prim.indexView->count + n] =
+                    CC_GET<Uint32Array>(ibView)[prim.indexView->count + n] =
                         vertBatchCount + getTypedArrayValue<uint32_t>(dstIBView, n);
                 }
             }

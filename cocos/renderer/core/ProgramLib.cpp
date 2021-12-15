@@ -33,7 +33,6 @@
 #include <sstream>
 #include <string>
 #include <unordered_map>
-#include <variant>
 #include <vector>
 #include "base/Log.h"
 #include "core/Types.h"
@@ -52,33 +51,33 @@ int32_t getBitCount(int32_t cnt) {
 }
 
 bool recordAsBool(const MacroRecord::mapped_type &v) {
-    if (std::holds_alternative<bool>(v)) {
-        return std::get<bool>(v);
+    if (CC_HOLDS_ALTERNATIVE<bool>(v)) {
+        return CC_GET<bool>(v);
     }
-    if (std::holds_alternative<std::string>(v)) {
-        return std::get<std::string>(v) == "true";
+    if (CC_HOLDS_ALTERNATIVE<std::string>(v)) {
+        return CC_GET<std::string>(v) == "true";
     }
-    if (std::holds_alternative<int32_t>(v)) {
-        return std::get<int32_t>(v);
+    if (CC_HOLDS_ALTERNATIVE<int32_t>(v)) {
+        return CC_GET<int32_t>(v);
     }
-    if (std::holds_alternative<float>(v)) {
-        return std::abs(std::get<float>(v)) > FLT_EPSILON;
+    if (CC_HOLDS_ALTERNATIVE<float>(v)) {
+        return std::abs(CC_GET<float>(v)) > FLT_EPSILON;
     }
     return false;
 }
 
 std::string recordAsString(const MacroRecord::mapped_type &v) {
-    if (std::holds_alternative<bool>(v)) {
-        return std::get<bool>(v) ? "1" : "0";
+    if (CC_HOLDS_ALTERNATIVE<bool>(v)) {
+        return CC_GET<bool>(v) ? "1" : "0";
     }
-    if (std::holds_alternative<std::string>(v)) {
-        return std::get<std::string>(v);
+    if (CC_HOLDS_ALTERNATIVE<std::string>(v)) {
+        return CC_GET<std::string>(v);
     }
-    if (std::holds_alternative<int32_t>(v)) {
-        return std::to_string(std::get<int32_t>(v));
+    if (CC_HOLDS_ALTERNATIVE<int32_t>(v)) {
+        return std::to_string(CC_GET<int32_t>(v));
     }
-    if (std::holds_alternative<float>(v)) {
-        return std::to_string(std::get<float>(v));
+    if (CC_HOLDS_ALTERNATIVE<float>(v)) {
+        return std::to_string(CC_GET<float>(v));
     }
     return "";
 }
@@ -104,7 +103,8 @@ std::vector<IMacroInfo> prepareDefines(const MacroRecord &records, const std::ve
         auto        it    = records.find(name);
         auto        value = mapDefine(tmp, it == records.end() ? std::nullopt : std::optional(it->second));
         //TODO(PatriceJiang): v === '0' can be bool ?
-        bool isDefault = it == records.end() || (std::holds_alternative<std::string>(it->second) && std::get<std::string>(it->second) == "0");
+        
+        bool isDefault = it == records.end() || (CC_HOLDS_ALTERNATIVE<std::string>(it->second) && CC_GET<std::string>(it->second) == "0");
         macros.emplace_back(IMacroInfo{.name = name, .value = value, .isDefault = isDefault});
     }
     return macros;
@@ -310,7 +310,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             auto &range = def.range.value();
             cnt         = getBitCount(range[1] - range[0] + 1); // inclusive on both ends
             def.map     = [=](const MacroValue &value) -> int32_t {
-                const auto *pValue = std::get_if<int32_t>(&value);
+                const auto *pValue = CC_GET_IF<int32_t>(&value);
                 if (pValue != nullptr) {
                     return *pValue - range[0];
                 }
@@ -320,7 +320,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
         } else if (def.type == "string") {
             cnt     = getBitCount(def.options.value().size());
             def.map = [=](const MacroValue &value) -> int32_t {
-                const auto *pValue = std::get_if<std::string>(&value);
+                const auto *pValue = CC_GET_IF<std::string>(&value);
                 if (pValue != nullptr) {
                     int32_t idx = std::find(def.options.value().begin(), def.options.value().end(), *pValue) - def.options.value().begin();
                     return std::max(0, idx);
@@ -329,19 +329,19 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             };
         } else if (def.type == "boolean") {
             def.map = [](const MacroValue &value) -> int32_t {
-                const auto *pBool = std::get_if<bool>(&value);
+                const auto *pBool = CC_GET_IF<bool>(&value);
                 if (pBool != nullptr) {
                     return *pBool ? 1 : 0;
                 }
-                const auto *pFloat = std::get_if<float>(&value);
+                const auto *pFloat = CC_GET_IF<float>(&value);
                 if (pFloat != nullptr) {
                     return *pFloat != 0.F ? 1 : 0;
                 }
-                const auto *pInt = std::get_if<int>(&value);
+                const auto *pInt = CC_GET_IF<int>(&value);
                 if (pInt != nullptr) {
                     return *pInt ? 1 : 0;
                 }
-                const auto *pString = std::get_if<std::string>(&value);
+                const auto *pString = CC_GET_IF<std::string>(&value);
                 if (pString != nullptr) {
                     return *pString != "0" || !(*pString).empty() ? 1 : 0;
                 }

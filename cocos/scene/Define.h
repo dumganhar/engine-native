@@ -26,7 +26,6 @@
 #pragma once
 
 #include <string>
-#include <variant>
 #include <vector>
 
 #include "renderer/core/PassUtils.h"

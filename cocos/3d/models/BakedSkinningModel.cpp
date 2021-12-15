@@ -209,7 +209,8 @@ void BakedSkinningModel::syncDataForJS(const std::vector<std::optional<geometry:
     _jointMedium.boundsInfo = boundsInfo;
 
     if (modelBound.has_value()) {
-        *_modelBounds = modelBound.value();
+        const geometry::AABB &modelBounldValue = modelBound.value();
+        _modelBounds.get()->set(modelBounldValue.center, modelBounldValue.halfExtents);
     } else {
         _modelBounds = nullptr;
     }

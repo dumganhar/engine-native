@@ -42,7 +42,7 @@ public:
     bool     validate() const override { return _buffer != nullptr; }
 
 private:
-    ArrayBuffer::Ptr _buffer{nullptr};
+    ArrayBuffer::Ptr _buffer;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(BufferAsset);
 };

@@ -186,7 +186,7 @@ protected:
     SharedPtr<Node>                  _node;
     Float32Array                     _localData;
     std::tuple<uint8_t *, uint32_t>  _instancedBuffer{nullptr, 0};
-    gfx::Buffer *                    _localBuffer{nullptr};
+    SharedPtr<gfx::Buffer>           _localBuffer;
     InstancedAttributeBlock          _instanceAttributeBlock{};
     std::vector<SharedPtr<SubModel>> _subModels;
 

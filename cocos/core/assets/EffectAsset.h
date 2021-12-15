@@ -333,7 +333,7 @@ struct IPassStates {
     cc::optional<int32_t>                   priority;
     cc::optional<gfx::PrimitiveMode>        primitive;
     cc::optional<pipeline::RenderPassStage> stage;
-    cc::optional<RasterizerStateInfo>       rasterizerState; //cjh TODO: need to change to shared_ptr?
+    cc::optional<RasterizerStateInfo>       rasterizerState;
     cc::optional<DepthStencilStateInfo>     depthStencilState;
     cc::optional<BlendStateInfo>            blendState;
     cc::optional<gfx::DynamicStateFlags>    dynamicStates;
@@ -353,7 +353,7 @@ struct IPassInfoFull final { //cjh } : public IPassInfo {
     cc::optional<int32_t>                   priority;
     cc::optional<gfx::PrimitiveMode>        primitive;
     cc::optional<pipeline::RenderPassStage> stage;
-    cc::optional<RasterizerStateInfo>       rasterizerState; //cjh TODO: need to change to shared_ptr?
+    cc::optional<RasterizerStateInfo>       rasterizerState;
     cc::optional<DepthStencilStateInfo>     depthStencilState;
     cc::optional<BlendStateInfo>            blendState;
     cc::optional<gfx::DynamicStateFlags>    dynamicStates;

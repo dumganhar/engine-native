@@ -1007,6 +1007,12 @@ bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * 
     to->setJSArrayBuffer(from.toObject());
     return true;
 }
+bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer **to, se::Object * /*ctx*/) {
+    assert(from.isObject());
+    *to = new cc::ArrayBuffer();
+    (*to)->setJSArrayBuffer(from.toObject());
+    return true;
+}
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::SharedPtr<cc::ArrayBuffer> *out, se::Object *ctx) {
     if (!*out) {

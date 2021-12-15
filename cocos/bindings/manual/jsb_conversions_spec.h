@@ -151,7 +151,9 @@ bool sevalue_to_native(const se::Value &from, cc::IPreCompileInfoValueType *to, 
 // std::any
 bool sevalue_to_native(const se::Value &from, std::any *to, se::Object *ctx); //NOLINT(readability-identifier-naming)
 ////////////////// ArrayBuffer
-bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * /*ctx*/);  // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer **to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
+
 ///////////////// std::shared_ptr<cc::ArrayBuffer>
 bool sevalue_to_native(const se::Value &from, cc::SharedPtr<cc::ArrayBuffer> *out, se::Object *ctx); // NOLINT(readability-identifier-naming)
 

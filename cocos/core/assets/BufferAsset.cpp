@@ -32,7 +32,7 @@ std::any BufferAsset::getNativeAsset() const {
 }
 
 void BufferAsset::setNativeAsset(const std::any &obj) {
-    _buffer = std::any_cast<ArrayBuffer::Ptr>(obj);
+    _buffer = std::any_cast<ArrayBuffer *>(obj);
 }
 
 } // namespace cc

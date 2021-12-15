@@ -22,6 +22,7 @@
 #include <sstream>
 #include "jsb_conversions.h"
 
+#include "cocos/base/DeferredReleasePool.h"
 #include "cocos/base/Map.h"
 #include "cocos/base/Vector.h"
 #include "cocos/core/TypedArray.h"
@@ -1010,7 +1011,9 @@ bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * 
 bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer **to, se::Object * /*ctx*/) {
     assert(from.isObject());
     *to = new cc::ArrayBuffer();
+    (*to)->addRef();
     (*to)->setJSArrayBuffer(from.toObject());
+    cc::DeferredReleasePool::add(*to);
     return true;
 }
 

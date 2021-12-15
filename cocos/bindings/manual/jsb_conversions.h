@@ -599,7 +599,6 @@ HOLD_UNBOUND_TYPE(const cc::Mat4 *, false);
 HOLD_UNBOUND_TYPE(cc::Color *, false);
 HOLD_UNBOUND_TYPE(cc::geometry::Frustum *, false);
 HOLD_UNBOUND_TYPE(cc::geometry::AABB *, false);
-HOLD_UNBOUND_TYPE(cc::ArrayBuffer *, false);
 
 template <>
 struct HolderType<cc::ArrayBuffer, true> {
@@ -1319,12 +1318,12 @@ bool nativevalue_to_se_args(se::ValueArray &array, T &x) { // NOLINT(readability
     return nativevalue_to_se(x, array[i], nullptr);
 }
 template <int i, typename T, typename... Args>
-bool nativevalue_to_se_args(se::ValueArray &array, T &x, Args &...args) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se_args(se::ValueArray &array, T &x, Args &... args) { // NOLINT(readability-identifier-naming)
     return nativevalue_to_se_args<i, T>(array, x) && nativevalue_to_se_args<i + 1, Args...>(array, args...);
 }
 
 template <typename... Args>
-bool nativevalue_to_se_args_v(se::ValueArray &array, Args &...args) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se_args_v(se::ValueArray &array, Args &... args) { // NOLINT(readability-identifier-naming)
     return nativevalue_to_se_args<0, Args...>(array, args...);
 }
 

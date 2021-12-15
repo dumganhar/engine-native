@@ -118,7 +118,7 @@ void Model::initialize() {
     _receiveShadow = true;
     _castShadow    = false;
     _enabled       = true;
-    _visFlags      = static_cast<uint32_t>(Layers::Enum::NONE);
+    _visFlags      = Layers::Enum::NONE;
     _inited        = true;
     _localData.reset(pipeline::UBOLocal::COUNT);
 }

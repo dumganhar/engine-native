@@ -73,7 +73,7 @@ public:
  */
 class SubMeshMorphRendering : public RefCounted {
 public:
-    virtual ~SubMeshMorphRendering() = default;
+    ~SubMeshMorphRendering() override = default;
     /**
      * Creates a rendering instance.
      */
@@ -286,7 +286,7 @@ public:
         });
     }
 
-    ~MorphUniforms() {
+    ~MorphUniforms() override {
         delete _localBuffer;
     }
 
@@ -365,7 +365,7 @@ public:
         _morphUniforms->setMorphTextureInfo(vec4TextureFactory.width, vec4TextureFactory.height);
         _morphUniforms->commit();
         for (const auto &attributeMorph : _owner->getData()) {
-            auto *morphTexture = vec4TextureFactory.create(); //cjh how to release?
+            auto *morphTexture = vec4TextureFactory.create();
             _attributes.emplace_back(GpuMorphAttribute{attributeMorph.name, morphTexture});
         }
     }
@@ -588,7 +588,7 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
 }
 
 SubMeshMorphRenderingInstance *GpuComputing::createInstance() {
-    return new GpuComputingRenderingInstance(this, _gfxDevice); //cjh how to release?
+    return new GpuComputingRenderingInstance(this, _gfxDevice);
 }
 
 void GpuComputing::destroy() {
@@ -682,7 +682,6 @@ private:
     std::vector<SharedPtr<SubMeshMorphRenderingInstance>> _subMeshInstances;
 };
 
-//
 StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
     _mesh                  = mesh;
     const auto &structInfo = _mesh->getStruct();

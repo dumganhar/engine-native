@@ -151,7 +151,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
             const auto        visibility = camera->getVisibility();
             const auto *const node       = model->getNode();
             if ((model->getNode() && ((visibility & node->getLayer()) == node->getLayer())) ||
-                (visibility & model->getVisFlags())) {
+                (visibility & static_cast<uint>(model->getVisFlags()))) {
                 // shadow render Object
                 const auto *modelWorldBounds = model->getWorldBounds();
                 if (isShadowMap && model->isCastShadow() && modelWorldBounds) {

@@ -26,22 +26,22 @@
 #pragma once
 
 #ifdef USE_CXX_17
-	#include <optional>
+    #include <optional>
 
-    namespace cc {
-        template <class T>
-        using optional = std::optional<T>;
+namespace cc {
+template <class T>
+using optional = std::optional<T>;
 
-        #define CC_NULLOPT std::nullopt
-    }; // namespace cc
+    #define CC_NULLOPT std::nullopt
+}; // namespace cc
 #else
-    #include "boost/optional.hpp"
     #include "boost/none.hpp"
+    #include "boost/optional.hpp"
 
-    namespace cc {
-        template <class T>
-        using optional = boost::optional<T>;
+namespace cc {
+template <class T>
+using optional = boost::optional<T>;
 
-        #define CC_NULLOPT  boost::none
-    }; // namespace cc
+    #define CC_NULLOPT boost::none
+}; // namespace cc
 #endif

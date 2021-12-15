@@ -26,11 +26,11 @@
 ****************************************************************************/
 
 #include "base/RefCounted.h"
-#include "base/DeferredReleasePool.h"
-#include "base/Macros.h"
 
 #if CC_REF_LEAK_DETECTION
     #include <algorithm> // std::find
+    #include <list>
+    #include "base/Log.h"
 #endif
 
 namespace cc {
@@ -40,8 +40,7 @@ static void trackRef(RefCounted *ref);
 static void untrackRef(RefCounted *ref);
 #endif
 
-RefCounted::RefCounted()
-{
+RefCounted::RefCounted() {
 #if CC_REF_LEAK_DETECTION
     trackRef(this);
 #endif
@@ -49,8 +48,7 @@ RefCounted::RefCounted()
 
 RefCounted::~RefCounted() {
 #if CC_REF_LEAK_DETECTION
-    if (_referenceCount != 0)
-        untrackRef(this);
+    untrackRef(this);
 #endif
 }
 
@@ -59,14 +57,10 @@ void RefCounted::addRef() {
 }
 
 void RefCounted::release() {
-    CCASSERT(_referenceCount > 0, "reference count should be greater than 0");
+    CC_ASSERT(_referenceCount > 0);
     --_referenceCount;
 
     if (_referenceCount == 0) {
-
-#if CC_REF_LEAK_DETECTION
-        untrackRef(this);
-#endif
         delete this;
     }
 }
@@ -82,20 +76,20 @@ static std::list<RefCounted *> __refAllocationList;
 void RefCounted::printLeaks() {
     // Dump Ref object memory leaks
     if (__refAllocationList.empty()) {
-        log("[memory] All Ref objects successfully cleaned up (no leaks detected).\n");
+        CC_LOG_INFO("[memory] All Ref objects successfully cleaned up (no leaks detected).\n");
     } else {
-        log("[memory] WARNING: %d Ref objects still active in memory.\n", (int)__refAllocationList.size());
+        CC_LOG_INFO("[memory] WARNING: %d Ref objects still active in memory.\n", (int)__refAllocationList.size());
 
         for (const auto &ref : __refAllocationList) {
             CC_ASSERT(ref);
             const char *type = typeid(*ref).name();
-            log("[memory] LEAK: Ref object '%s' still active with reference count %d.\n", (type ? type : ""), ref->getReferenceCount());
+            CC_LOG_INFO("[memory] LEAK: Ref object '%s' still active with reference count %d.\n", (type ? type : ""), ref->getRefCount());
         }
     }
 }
 
 static void trackRef(RefCounted *ref) {
-    CCASSERT(ref, "Invalid parameter, ref should not be null!");
+    CC_ASSERT(ref);
 
     // Create memory allocation record.
     __refAllocationList.push_back(ref);
@@ -104,7 +98,7 @@ static void trackRef(RefCounted *ref) {
 static void untrackRef(RefCounted *ref) {
     auto iter = std::find(__refAllocationList.begin(), __refAllocationList.end(), ref);
     if (iter == __refAllocationList.end()) {
-        log("[memory] CORRUPTION: Attempting to free (%s) with invalid ref tracking record.\n", typeid(*ref).name());
+        CC_LOG_INFO("[memory] CORRUPTION: Attempting to free (%s) with invalid ref tracking record.\n", typeid(*ref).name());
         return;
     }
 

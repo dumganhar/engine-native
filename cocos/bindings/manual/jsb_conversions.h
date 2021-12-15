@@ -479,7 +479,6 @@ bool native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = null
         } else {
             obj->setPrivateObject(se::rawref_private_object(v));
         }
-        //        v->addRef(); // TODO(PatriceJiang): reference Count should be greater than 1
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -600,6 +599,7 @@ HOLD_UNBOUND_TYPE(const cc::Mat4 *, false);
 HOLD_UNBOUND_TYPE(cc::Color *, false);
 HOLD_UNBOUND_TYPE(cc::geometry::Frustum *, false);
 HOLD_UNBOUND_TYPE(cc::geometry::AABB *, false);
+HOLD_UNBOUND_TYPE(cc::ArrayBuffer *, false);
 
 template <>
 struct HolderType<cc::ArrayBuffer, true> {

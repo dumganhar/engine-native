@@ -125,12 +125,7 @@ uint64_t Pass::getPassHash(Pass *pass) {
     return murmurhash2::MurmurHash2(str.data(), str.length(), 666);
 }
 
-Pass::Pass() {
-    _device      = gfx::Device::getInstance();
-    _root        = Root::getInstance();
-    _phaseString = "default";
-    _phase       = pipeline::getPhaseID(_phaseString);
-}
+Pass::Pass() : Pass(Root::getInstance()) {}
 
 Pass::Pass(Root *root) {
     _device      = root->getDevice();

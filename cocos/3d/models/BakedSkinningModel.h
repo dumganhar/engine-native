@@ -42,7 +42,7 @@ class Texture;
 class DataPoolManager;
 
 struct BakedJointInfo {
-    gfx::Buffer *                              buffer{nullptr};
+    SharedPtr<gfx::Buffer>                     buffer;
     Float32Array                               jointTextureInfo;
     std::optional<IJointTextureHandle>         texture;
     IAnimInfo                                  animInfo;

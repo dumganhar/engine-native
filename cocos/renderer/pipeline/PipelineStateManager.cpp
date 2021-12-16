@@ -29,7 +29,7 @@
 namespace cc {
 namespace pipeline {
 
-unordered_map<uint, gfx::PipelineState *> PipelineStateManager::psoHashMap;
+unordered_map<uint, SharedPtr<gfx::PipelineState>> PipelineStateManager::psoHashMap;
 
 gfx::PipelineState *PipelineStateManager::getOrCreatePipelineState(const scene::Pass *  pass,
                                                                    gfx::Shader *        shader,
@@ -41,7 +41,7 @@ gfx::PipelineState *PipelineStateManager::getOrCreatePipelineState(const scene::
     const auto shaderID       = shader->getTypedID();
     const auto hash           = passHash ^ renderPassHash ^ iaHash ^ shaderID;
 
-    auto *pso = psoHashMap[hash];
+    auto *pso = psoHashMap[hash].get();
     if (!pso) {
         auto *pipelineLayout = pass->getPipelineLayout();
 

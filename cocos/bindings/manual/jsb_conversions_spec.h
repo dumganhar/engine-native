@@ -25,10 +25,10 @@
 #include "cocos/base/Optional.h"
 #include <unordered_map>
 #include <vector>
-#include "cocos/base/Variant.h"
 #include "base/Ptr.h"
 #include "base/Value.h"
 #include "bindings/jswrapper/SeApi.h"
+#include "cocos/base/Variant.h"
 #include "cocos/core/assets/AssetsModuleHeader.h"
 #include "core/TypedArray.h"
 #include "core/assets/RenderingSubMesh.h"
@@ -312,7 +312,7 @@ inline bool sevalue_to_native(const se::Value &from, cc::ValueMap *to, se::Objec
 
 bool sevalue_to_native(const se::Value &from, std::vector<bool> *to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
 
-bool        sevalue_to_native(const se::Value &from, std::vector<unsigned char> *to, se::Object * /*ctx*/);               // NOLINT(readability-identifier-naming)
+bool        sevalue_to_native(const se::Value &from, std::vector<unsigned char> *to, se::Object * /*ctx*/);              // NOLINT(readability-identifier-naming)
 bool        sevalue_to_native(const se::Value &from, cc::variant<std::vector<float>, std::string> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 inline bool sevalue_to_native(const se::Value & /*from*/, cc::monostate * /*to*/, se::Object * /*ctx*/) {                // NOLINT(readability-identifier-naming)
     // nothing todo
@@ -415,7 +415,7 @@ inline bool nativevalue_to_se(const float &from, se::Value &to, se::Object * /*c
     return true;
 }
 inline bool nativevalue_to_se(const double &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    to.setFloat(static_cast<float>(from));
+    to.setDouble(from);
     return true;
 }
 inline bool nativevalue_to_se(const bool &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)

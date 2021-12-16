@@ -856,6 +856,8 @@ class NativeFunction(object):
         self.comment = self.get_comment(cursor.raw_comment)
         self.current_class = None
         self.should_skip_function = current_class.skip_bind_function({"name":self.func_name})
+        self.name = self.func_name
+        self.export_name = generator.should_rename_function(current_class.class_name, self.name) or self.name
 
         # parse the arguments
         # if self.func_name == "spriteWithFile":
@@ -981,6 +983,8 @@ class NativeOverloadedFunction(object):
         self.implementations = func_array
         self.func_name = func_array[0].func_name
         self.signature_name = func_array[0].signature_name
+        self.name = func_array[0].name
+        self.export_name = func_array[0].export_name
         self.ret_type = func_array[0].ret_type
         self.should_skip_function = func_array[0].should_skip_function
         self.min_args = 100
@@ -1190,12 +1194,13 @@ class NativeClass(object):
     def underlined_class_name(self):
         return self.namespaced_class_name.replace("::", "_")
 
-    def skip_bind_function(self, method_name):
+    def skip_bind_function(self, method):
         if self.class_name in self.generator.shadowed_methods_by_getter_setter:
-            ret = method_name["name"] in self.generator.shadowed_methods_by_getter_setter[self.class_name]
-            # logger.info("??? skip %s contains %s , %s" %(self.generator.shadowed_methods_by_getter_setter[self.class_name], method_name, ret))
+            ret = method["name"] in self.generator.shadowed_methods_by_getter_setter[self.class_name]
+            # logger.info("??? skip %s contains %s , %s" %(self.generator.shadowed_methods_by_getter_setter[self.class_name], method, ret))
             return ret
-        if self.generator.is_reserved_function(self.class_name, method_name["name"]):
+        if self.generator.is_reserved_function(self.class_name, method["name"]):
+            # logger.info("??? %s is reserved for getter/setter " % (method_name))
             return False
         return False
 
@@ -1233,8 +1238,7 @@ class NativeClass(object):
                 if self.generator.should_skip(self.class_name, name):
                     should_skip = True
             if not should_skip:
-                ret.append({"name": self.generator.should_rename_function(
-                    self.class_name, name) or name, "impl": impl})
+                ret.append({"name": impl.name, "impl": impl, "export_name": impl.export_name})
         return sorted(ret, key=lambda fn: fn["name"])
 
     def static_methods_clean(self):
@@ -1243,10 +1247,9 @@ class NativeClass(object):
         '''
         ret = []
         for name, impl in iter(self.static_methods.items()):
-            should_skip = self.generator.should_skip(self.class_name, name)
+            should_skip = self.generator.should_skip(self.class_name, impl.name)
             if not should_skip:
-                ret.append({"name":  self.generator.should_rename_function(
-                    self.class_name, name) or name, "impl": impl})
+                ret.append({"name": impl.export_name, "impl": impl})
         return sorted(ret, key=lambda fn: fn["name"])
 
     def override_methods_clean(self):

@@ -291,6 +291,7 @@ public:
     inline BatchingSchemes               getBatchingScheme() const { return _batchingScheme; }
     inline gfx::DescriptorSet *          getDescriptorSet() const { return _descriptorSet; }
     inline uint64_t                      getHash() const { return _hash; }
+    inline double                        getHashForJS() const { return static_cast<double>(getHash()); }
     inline gfx::PipelineLayout *         getPipelineLayout() const { return _pipelineLayout; }
 
     // Only for UI

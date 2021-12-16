@@ -230,6 +230,10 @@ public:
      */
     uint64_t getHash();
 
+    inline double getHashForJS() {
+        return getHash();
+    }
+
     /**
      * @en Set the hash of the mesh
      * @zh 设置此网格的哈希值。

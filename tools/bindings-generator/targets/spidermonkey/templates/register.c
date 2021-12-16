@@ -68,7 +68,7 @@ bool js_register_${generator.prefix}_${current_class.nested_class_name}(se::Obje
 #for m in methods
     #if not $current_class.skip_bind_function(m)
     #set fn = m['impl']
-    cls->defineFunction("${m['name']}", _SE(${fn.signature_name}));
+    cls->defineFunction("${m['export_name']}", _SE(${fn.signature_name}));
     #end if
 #end for
 #if $generator.in_listed_extend_classed($current_class.class_name) and $has_constructor

@@ -136,9 +136,9 @@ JointTexturePool::JointTexturePool(gfx::Device *device) {
     _formatSize        = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(format)].size;
     _pixelsPerJoint    = 48.F / static_cast<float>(_formatSize);
     _pool              = new TextureBufferPool(device);
-    _pool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = cc::optional<cc::roundUpType>(roundUpTextureSize)});
+    _pool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpTextureSize});
     _customPool = new TextureBufferPool(device);
-    _customPool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = cc::optional<cc::roundUpType>(roundUpTextureSize)});
+    _customPool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpTextureSize});
 }
 
 void JointTexturePool::clear() {

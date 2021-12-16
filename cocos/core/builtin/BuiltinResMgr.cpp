@@ -232,7 +232,7 @@ void BuiltinResMgr::initMaterials() {
     auto *standardMtl = new Material();
     standardMtl->setUuid("standard-material");
     IMaterialInfo standardInfo{
-        .effectName = cc::optional<std::string>("standard"),
+        .effectName = "standard",
     };
     standardMtl->initialize(standardInfo);
     resources[standardMtl->getUuid()] = standardMtl;
@@ -335,7 +335,7 @@ void BuiltinResMgr::initMaterials() {
     // ui graphics material
     auto *defaultGraphicsMtl = new Material();
     defaultGraphicsMtl->setUuid("ui-graphics-material");
-    IMaterialInfo defaultGraphicsInfo{.effectName = cc::optional<std::string>("graphics")};
+    IMaterialInfo defaultGraphicsInfo{.effectName = "graphics"};
     defaultGraphicsMtl->initialize(defaultGraphicsInfo);
     resources[defaultGraphicsMtl->getUuid()] = defaultGraphicsMtl;
     _materialsToBeCompiled.emplace_back(defaultGraphicsMtl);
@@ -343,7 +343,7 @@ void BuiltinResMgr::initMaterials() {
     // default particle material
     auto *defaultParticleMtl = new Material();
     defaultParticleMtl->setUuid("default-particle-material");
-    IMaterialInfo defaultParticleInfo{.effectName = cc::optional<std::string>("particle")};
+    IMaterialInfo defaultParticleInfo{.effectName = "particle"};
     defaultParticleMtl->initialize(defaultParticleInfo);
     resources[defaultParticleMtl->getUuid()] = defaultParticleMtl;
     _materialsToBeCompiled.emplace_back(defaultParticleMtl);
@@ -351,7 +351,7 @@ void BuiltinResMgr::initMaterials() {
     // default particle gpu material
     auto *defaultParticleGPUMtl = new Material();
     defaultParticleGPUMtl->setUuid("default-particle-gpu-material");
-    IMaterialInfo defaultParticleGPUInfo{.effectName = cc::optional<std::string>("particle-gpu")};
+    IMaterialInfo defaultParticleGPUInfo{.effectName = "particle-gpu"};
     defaultParticleGPUMtl->initialize(defaultParticleGPUInfo);
     resources[defaultParticleGPUMtl->getUuid()] = defaultParticleGPUMtl;
     _materialsToBeCompiled.emplace_back(defaultParticleGPUMtl);
@@ -359,7 +359,7 @@ void BuiltinResMgr::initMaterials() {
     // default particle material
     auto *defaultTrailMtl = new Material();
     defaultTrailMtl->setUuid("default-trail-material");
-    IMaterialInfo defaultTrailInfo{.effectName = cc::optional<std::string>("particle-trail")};
+    IMaterialInfo defaultTrailInfo{.effectName = "particle-trail"};
     defaultTrailMtl->initialize(defaultTrailInfo);
     resources[defaultTrailMtl->getUuid()] = defaultTrailMtl;
     _materialsToBeCompiled.emplace_back(defaultTrailMtl);
@@ -367,7 +367,7 @@ void BuiltinResMgr::initMaterials() {
     // default particle material
     auto *defaultBillboardMtl = new Material();
     defaultBillboardMtl->setUuid("default-billboard-material");
-    IMaterialInfo defaultBillboardInfo{.effectName = cc::optional<std::string>("billboard")};
+    IMaterialInfo defaultBillboardInfo{.effectName = "billboard"};
     defaultBillboardMtl->initialize(defaultBillboardInfo);
     resources[defaultBillboardMtl->getUuid()] = defaultBillboardMtl;
     _materialsToBeCompiled.emplace_back(defaultBillboardMtl);

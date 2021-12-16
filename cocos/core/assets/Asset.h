@@ -27,7 +27,7 @@
 
 #include <any>
 #include <functional>
-#include <optional>
+#include "cocos/base/Optional.h"
 
 #include "base/Macros.h"
 #include "core/Types.h"
@@ -99,7 +99,7 @@ public:
 
     virtual void onLoaded() {}
 
-    virtual void initDefault(const std::optional<std::string> &uuid);
+    virtual void initDefault(const cc::optional<std::string> &uuid);
     virtual bool validate() const { return true; }
 
     bool isDefault() const { return _isDefault; }

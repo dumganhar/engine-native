@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <vector>
 #include "base/Macros.h"
 #include "renderer/gfx-base/GFXDef-common.h"
@@ -38,12 +38,12 @@ namespace cc {
 namespace scene {
 
 struct IRenderWindowInfo {
-    std::optional<std::string> title;
+    cc::optional<std::string> title;
     uint32_t                   width{0};
     uint32_t                   height{0};
     gfx::RenderPassInfo        renderPassInfo;
-    std::optional<int32_t>     swapchainBufferIndices;
-    std::optional<bool>        shouldSyncSizeWithSwapchain;
+    cc::optional<int32_t>     swapchainBufferIndices;
+    cc::optional<bool>        shouldSyncSizeWithSwapchain;
 };
 
 /**

@@ -162,7 +162,7 @@ void deserializeSubMeshMorph(const rapidjson::Value &subMeshMorph, SubMeshMorph 
     }
 }
 
-void deserializeMorph(const rapidjson::Value &morph, std::optional<Morph> &cMorph) {
+void deserializeMorph(const rapidjson::Value &morph, cc::optional<Morph> &cMorph) {
     cMorph            = Morph{};
     auto &cMorphValue = cMorph.value();
     if (morph.HasMember("subMeshMorphs")) {
@@ -208,7 +208,7 @@ void deserializeMorph(const rapidjson::Value &morph, std::optional<Morph> &cMorp
    ]
  ]
  */
-void deserializeJointMaps(const rapidjson::Value &jointMaps, std::optional<std::vector<std::vector<index_t>>> &cJointMaps) {
+void deserializeJointMaps(const rapidjson::Value &jointMaps, cc::optional<std::vector<std::vector<index_t>>> &cJointMaps) {
     cJointMaps = std::vector<std::vector<index_t>>{};
     deserializeArray<std::vector<index_t>>(jointMaps, cJointMaps.value(), [](const rapidjson::Value &jointMap, std::vector<index_t> &cJointMap) {
         deserializeArray<index_t>(jointMap, cJointMap, [](const rapidjson::Value &jointIndex, index_t &cJointIndex) {
@@ -231,7 +231,7 @@ void deserializeJointMaps(const rapidjson::Value &jointMaps, std::optional<std::
    "z": 0.009999999776482582
  },
  */
-void deserializePosition(const rapidjson::Value &position, std::optional<Vec3> &cPosition) {
+void deserializePosition(const rapidjson::Value &position, cc::optional<Vec3> &cPosition) {
     cPosition = Vec3{};
     if (position.HasMember("x")) {
         cPosition.value().x = position["x"].GetFloat();

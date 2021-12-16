@@ -203,7 +203,7 @@ protected:
 
     gfx::Format getGFXFormat() const;
 
-    void setGFXFormat(const std::optional<PixelFormat> &format);
+    void setGFXFormat(const cc::optional<PixelFormat> &format);
 
     gfx::Format getGFXPixelFormat(PixelFormat format) const;
 

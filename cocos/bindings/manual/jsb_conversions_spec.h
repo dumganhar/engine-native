@@ -22,7 +22,7 @@
 #pragma once
 
 #include <any>
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <unordered_map>
 #include <vector>
 #include "cocos/base/Variant.h"

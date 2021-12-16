@@ -538,7 +538,7 @@ public:
      * @en get height by point
      * @zh 根据点的坐标获得高度
      */
-    std::optional<float> getHeightAt(float x, float y) const;
+    cc::optional<float> getHeightAt(float x, float y) const;
 
     void setNormal(int32_t i, int32_t j, const Vec3 &n);
     /**
@@ -551,7 +551,7 @@ public:
      * @en get normal by point
      * @zh 根据点的坐标获得法线
      */
-    std::optional<Vec3> getNormalAt(float x, float y) const;
+    cc::optional<Vec3> getNormalAt(float x, float y) const;
 
     /**
      * @en set weight
@@ -569,7 +569,7 @@ public:
      * @en get normal by point
      * @zh 根据点的坐标获得权重
      */
-    std::optional<Vec4> getWeightAt(float x, float y) const;
+    cc::optional<Vec4> getWeightAt(float x, float y) const;
 
     /**
      * @en get max weight layer by point
@@ -585,7 +585,7 @@ public:
      * @param step ray step
      * @param worldSpace is world space
      */
-    std::optional<Vec3> rayCheck(const Vec3 &start, const Vec3 &dir, float step, bool worldSpace = true);
+    cc::optional<Vec3> rayCheck(const Vec3 &start, const Vec3 &dir, float step, bool worldSpace = true);
 
     inline gfx::Buffer *getSharedIndexBuffer() const { return _sharedIndexBuffer; }
 

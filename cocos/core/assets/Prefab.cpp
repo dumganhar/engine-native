@@ -36,7 +36,7 @@ Node *Prefab::instantiate() {
     return nullptr;
 }
 
-void Prefab::initDefault(const std::optional<std::string> &uuid) {
+void Prefab::initDefault(const cc::optional<std::string> &uuid) {
     //cjh TODO:
 }
 

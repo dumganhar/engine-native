@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <optional>
+#include "cocos/base/Optional.h"
 #include "MaterialInstance.h"
 #include "scene/Pass.h"
 
@@ -55,7 +55,7 @@ public:
      */
     void overridePipelineStates(const IPassInfo &original, const PassOverrides &override) override;
 
-    bool tryCompile(const std::optional<MacroRecord> &defineOverrides) override;
+    bool tryCompile(const cc::optional<MacroRecord> &defineOverrides) override;
 
     /**
      * @en Prepare to change states of the pass and do not notify the material to rebuild the pipeline state object

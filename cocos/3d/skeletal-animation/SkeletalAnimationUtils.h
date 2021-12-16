@@ -24,7 +24,7 @@
 ****************************************************************************/
 
 #pragma once
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <unordered_map>
 
 #include "3d/assets/Skeleton.h"
@@ -51,10 +51,10 @@ struct ICustomJointTextureLayout {
 };
 
 struct IInternalJointAnimInfo {
-    std::optional<Mat4>              downstream;         // downstream default pose, if present
-    std::optional<std::vector<Mat4>> curveData;          // the nearest animation curve, if present
+    cc::optional<Mat4>              downstream;         // downstream default pose, if present
+    cc::optional<std::vector<Mat4>> curveData;          // the nearest animation curve, if present
     index_t                          bindposeIdx{0};     // index of the actual bindpose to use
-    std::optional<Mat4>              bindposeCorrection; // correction factor from the original bindpose
+    cc::optional<Mat4>              bindposeCorrection; // correction factor from the original bindpose
 };
 
 struct IJointTextureHandle {
@@ -65,7 +65,7 @@ struct IJointTextureHandle {
     bool                                                      readyToBeDeleted{false};
     ITextureBufferHandle                                      handle;
     std::unordered_map<uint32_t, std::vector<geometry::AABB>> bounds;
-    std::optional<std::vector<IInternalJointAnimInfo>>        animInfos;
+    cc::optional<std::vector<IInternalJointAnimInfo>>        animInfos;
 };
 
 class JointTexturePool : public RefCounted {
@@ -86,7 +86,7 @@ public:
      * @zh
      * 获取默认姿势的骨骼贴图。
      */
-    std::optional<IJointTextureHandle> getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, Node *skinningRoot);
+    cc::optional<IJointTextureHandle> getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, Node *skinningRoot);
 
     /**
      * @en
@@ -94,7 +94,7 @@ public:
      * @zh
      * 获取指定动画片段的骨骼贴图。
      */
-    // std::optional<IJointTextureHandle> getSequencePoseTexture(Skeleton *skeleton, AnimationClip *clip, Mesh *mesh, Node *skinningRoot);
+    // cc::optional<IJointTextureHandle> getSequencePoseTexture(Skeleton *skeleton, AnimationClip *clip, Mesh *mesh, Node *skinningRoot);
 
     void releaseHandle(IJointTextureHandle &handle);
 

@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <optional>
+#include "cocos/base/Optional.h"
 
 #include "core/assets/Material.h"
 

@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <optional>
+#include "cocos/base/Optional.h"
 #include "base/Ptr.h"
 #include "core/assets/Asset.h"
 #include "core/assets/AssetEnum.h"
@@ -61,14 +61,14 @@ struct ITexture2DCreateInfo {
      * @zh 像素格式。
      * @default PixelFormat.RGBA8888
      */
-    std::optional<PixelFormat> format;
+    cc::optional<PixelFormat> format;
 
     /**
      * @en The mipmap level count
      * @zh mipmap 层级。
      * @default 1
      */
-    std::optional<uint32_t> mipmapLevel;
+    cc::optional<uint32_t> mipmapLevel;
 };
 
 /**
@@ -195,7 +195,7 @@ public:
 
     gfx::TextureInfo getGfxTextureCreateInfo(gfx::TextureUsageBit usage, gfx::Format format, uint32_t levelCount, gfx::TextureFlagBit flags) override;
 
-    void initDefault(const std::optional<std::string> &uuid) override;
+    void initDefault(const cc::optional<std::string> &uuid) override;
 
     bool validate() const override;
 

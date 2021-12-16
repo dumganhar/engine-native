@@ -44,9 +44,9 @@ class DataPoolManager;
 struct BakedJointInfo {
     SharedPtr<gfx::Buffer>                     buffer;
     Float32Array                               jointTextureInfo;
-    std::optional<IJointTextureHandle>         texture;
+    cc::optional<IJointTextureHandle>         texture;
     IAnimInfo                                  animInfo;
-    std::vector<std::optional<geometry::AABB>> boundsInfo;
+    std::vector<cc::optional<geometry::AABB>> boundsInfo;
 };
 
 class BakedSkinningModel final : public MorphModel {
@@ -76,8 +76,8 @@ public:
     }
 
     void syncAnimInfoForJS(gfx::Buffer *buffer, const Float32Array &data, Uint8Array &dirty);
-    void syncDataForJS(const std::vector<std::optional<geometry::AABB>> &boundsInfo,
-                       const std::optional<geometry::AABB> &             modelBound,
+    void syncDataForJS(const std::vector<cc::optional<geometry::AABB>> &boundsInfo,
+                       const cc::optional<geometry::AABB> &             modelBound,
                        float                                             jointTextureInfo_0,
                        float                                             jointTextureInfo_1,
                        float                                             jointTextureInfo_2,
@@ -88,7 +88,7 @@ public:
     void setUploadedAnimForJS(bool value) { _isUploadedAnim = value; }
 
 protected:
-    void applyJointTexture(const std::optional<IJointTextureHandle> &texture);
+    void applyJointTexture(const cc::optional<IJointTextureHandle> &texture);
 
 private:
     BakedJointInfo             _jointMedium;

@@ -26,7 +26,7 @@
 #pragma once
 
 #include <cstdint>
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <string>
 #include "base/Macros.h"
 #include "base/RefCounted.h"
@@ -113,10 +113,10 @@ struct ICameraInfo {
     std::string                name;
     Node *                     node{nullptr};
     CameraProjection           projection;
-    std::optional<uint32_t>    targetDisplay;
+    cc::optional<uint32_t>    targetDisplay;
     RenderWindow *             window{nullptr};
     uint32_t                   priority{0};
-    std::optional<std::string> pipeline;
+    cc::optional<std::string> pipeline;
 };
 
 class Camera : public RefCounted {

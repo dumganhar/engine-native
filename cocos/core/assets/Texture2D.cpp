@@ -179,10 +179,10 @@ gfx::TextureInfo Texture2D::getGfxTextureCreateInfo(gfx::TextureUsageBit usage, 
     return texInfo;
 }
 
-void Texture2D::initDefault(const std::optional<std::string> &uuid) {
+void Texture2D::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     auto *imageAsset = new ImageAsset();
-    imageAsset->initDefault(std::nullopt);
+    imageAsset->initDefault(CC_NULLOPT);
     setImage(imageAsset);
 }
 

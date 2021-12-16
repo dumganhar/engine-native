@@ -46,6 +46,6 @@ struct ITorusOptions {
  * @param tube 管形大小。
  * @param opts 参数选项。
  */
-IGeometry torus(float radius = 0.4, float tube = 0.1, const std::optional<ITorusOptions> &opts = std::nullopt);
+IGeometry torus(float radius = 0.4, float tube = 0.1, const cc::optional<ITorusOptions> &opts = CC_NULLOPT);
 
 } // namespace cc

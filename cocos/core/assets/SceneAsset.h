@@ -39,7 +39,7 @@ public:
     SceneAsset()           = default;
     ~SceneAsset() override = default;
 
-    void initDefault(const std::optional<std::string> &uuid) override;
+    void initDefault(const cc::optional<std::string> &uuid) override;
 
     bool validate() const override {
         return _scene.get() != nullptr;

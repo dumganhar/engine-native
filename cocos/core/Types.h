@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <optional>
+#include "cocos/base/Optional.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -39,7 +39,7 @@
 namespace cc {
 
 struct Error {
-     std::optional<std::string> msg;
+     cc::optional<std::string> msg;
 };
 
 using HTMLElement = void *;

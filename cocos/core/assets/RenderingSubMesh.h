@@ -56,13 +56,13 @@ struct IGeometricInfo {
      * @en Indices data
      * @zh 索引数据。
      */
-    std::optional<IBArray> indices;
+    cc::optional<IBArray> indices;
 
     /**
      * @en Whether the geometry is treated as double sided
      * @zh 是否将图元按双面对待。
      */
-    std::optional<bool> doubleSided;
+    cc::optional<bool> doubleSided;
 
     /**
      * @en The bounding box
@@ -176,7 +176,7 @@ public:
     inline Mesh *getMesh() const { return _mesh; }
 
     inline void                           setSubMeshIdx(uint32_t idx) { _subMeshIdx = idx; }
-    inline const std::optional<uint32_t> &getSubMeshIdx() const { return _subMeshIdx; }
+    inline const cc::optional<uint32_t> &getSubMeshIdx() const { return _subMeshIdx; }
 
 private:
     gfx::Buffer *allocVertexIdBuffer(gfx::Device *device);
@@ -184,7 +184,7 @@ private:
 private:
     // Mesh will includes RenderingSubMesh, so use Mesh* here.
     Mesh *                  _mesh{nullptr};
-    std::optional<uint32_t> _subMeshIdx;
+    cc::optional<uint32_t> _subMeshIdx;
 
     std::vector<IFlatBuffer> _flatBuffers;
 
@@ -193,9 +193,9 @@ private:
 
     std::vector<uint32_t> _jointMappedBufferIndices;
 
-    std::optional<VertexIdChannel> _vertexIdChannel;
+    cc::optional<VertexIdChannel> _vertexIdChannel;
 
-    std::optional<IGeometricInfo> _geometricInfo;
+    cc::optional<IGeometricInfo> _geometricInfo;
 
     // As gfx::InputAssemblerInfo needs the data structure, so not use SharedPtr.
     Vector<gfx::Buffer *> _vertexBuffers;

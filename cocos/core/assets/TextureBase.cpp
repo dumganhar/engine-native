@@ -159,7 +159,7 @@ gfx::Format TextureBase::getGFXFormat() const {
     return getGFXPixelFormat(_format);
 }
 
-void TextureBase::setGFXFormat(const std::optional<PixelFormat> &format) {
+void TextureBase::setGFXFormat(const cc::optional<PixelFormat> &format) {
     _format = format.has_value() ? format.value() : PixelFormat::RGBA8888;
 }
 

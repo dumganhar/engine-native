@@ -188,7 +188,7 @@ void RenderingSubMesh::enableVertexIdChannel(gfx::Device *device) {
     _iaInfo.attributes    = _attributes;
     _iaInfo.vertexBuffers = _vertexBuffers.get();
 
-    _vertexIdChannel = {
+    _vertexIdChannel = VertexIdChannel{
         .stream = streamIndex,
         .index  = attributeIndex,
     };

@@ -159,9 +159,9 @@ void JointTexturePool::registerCustomTextureLayouts(const std::vector<ICustomJoi
     }
 }
 
-std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, Node *skinningRoot) {
+cc::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, Node *skinningRoot) {
     uint64_t                           hash = skeleton->getHash() ^ 0; // may not equal to skeleton.hash
-    std::optional<IJointTextureHandle> texture;
+    cc::optional<IJointTextureHandle> texture;
     if (_textureBuffers.find(hash) != _textureBuffers.end()) {
         texture = _textureBuffers[hash];
     }
@@ -232,9 +232,9 @@ std::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skele
 }
 
 // TODO(xwx): need to implement this function after define AnimationClip
-// std::optional<IJointTextureHandle> JointTexturePool::getSequencePoseTexture(Skeleton *skeleton,AnimationClip *clip, Mesh *mesh, Node *skinningRoot) {
+// cc::optional<IJointTextureHandle> JointTexturePool::getSequencePoseTexture(Skeleton *skeleton,AnimationClip *clip, Mesh *mesh, Node *skinningRoot) {
 //     uint64_t                           hash = skeleton->getHash() ^ clip->getHash();
-//     std::optional<IJointTextureHandle> texture;
+//     cc::optional<IJointTextureHandle> texture;
 //     if (_textureBuffers.find(hash) != _textureBuffers.end()) {
 //         texture = _textureBuffers[hash];
 //         if (texture->bounds.find(mesh->getHash()) != texture->bounds.end()) {

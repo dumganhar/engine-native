@@ -275,8 +275,7 @@ void BuiltinResMgr::initMaterials() {
     spriteMtl->setUuid("ui-base-material");
     IMaterialInfo spriteInfo{
         .effectName = "sprite",
-        .defines    = MacroRecord{
-            {"USE_TEXTURE", false}}};
+        .defines    = MacroRecord{{"USE_TEXTURE", false}}};
     spriteMtl->initialize(spriteInfo);
     resources[spriteMtl->getUuid()] = spriteMtl;
     _materialsToBeCompiled.emplace_back(spriteMtl);
@@ -286,8 +285,7 @@ void BuiltinResMgr::initMaterials() {
     spriteColorMtl->setUuid("ui-sprite-material");
     IMaterialInfo spriteColorInfo{
         .effectName = "sprite",
-        .defines    = MacroRecord{
-            {"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}};
+        .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}};
     spriteColorMtl->initialize(spriteColorInfo);
     resources[spriteColorMtl->getUuid()] = spriteColorMtl;
     _materialsToBeCompiled.emplace_back(spriteColorMtl);
@@ -308,8 +306,7 @@ void BuiltinResMgr::initMaterials() {
     spriteGrayMtl->setUuid("ui-sprite-gray-material");
     IMaterialInfo spriteGrayInfo{
         .effectName = "sprite",
-        .defines    = MacroRecord{
-            {"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", true}}};
+        .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", true}}};
     spriteGrayMtl->initialize(spriteGrayInfo);
     resources[spriteGrayMtl->getUuid()] = spriteGrayMtl;
     _materialsToBeCompiled.emplace_back(spriteGrayMtl);
@@ -319,8 +316,7 @@ void BuiltinResMgr::initMaterials() {
     spriteAlphaMtl->setUuid("ui-sprite-alpha-sep-material");
     IMaterialInfo spriteAlphaInfo{
         .effectName = "sprite",
-        .defines    = MacroRecord{
-            {"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", false}}};
+        .defines    = MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", false}}};
     spriteAlphaMtl->initialize(spriteAlphaInfo);
     resources[spriteAlphaMtl->getUuid()] = spriteAlphaMtl;
     _materialsToBeCompiled.emplace_back(spriteAlphaMtl);

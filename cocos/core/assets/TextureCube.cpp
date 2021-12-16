@@ -210,11 +210,11 @@ gfx::TextureInfo TextureCube::getGfxTextureCreateInfo(gfx::TextureUsageBit usage
     return texInfo;
 }
 
-void TextureCube::initDefault(const std::optional<std::string> &uuid) {
+void TextureCube::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
 
     auto *imageAsset = new ImageAsset();
-    imageAsset->initDefault(std::nullopt);
+    imageAsset->initDefault(CC_NULLOPT);
 
     ITextureCubeMipmap mipmap;
 

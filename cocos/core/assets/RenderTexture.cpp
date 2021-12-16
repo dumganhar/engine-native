@@ -125,7 +125,7 @@ void RenderTexture::initWindow(const IRenderTextureCreateInfo &info) {
     }
 }
 
-void RenderTexture::initDefault(const std::optional<std::string> &uuid) {
+void RenderTexture::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     _width  = 1;
     _height = 1;

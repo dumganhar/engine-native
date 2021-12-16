@@ -58,10 +58,10 @@ using MapBufferCallback = std::function<DataVariant(const DataVariant& cur, uint
 
 DataView mapBuffer(DataView&                  target,
                    const MapBufferCallback&   callback,
-                   std::optional<gfx::Format> aFormat,
-                   std::optional<uint32_t>    aOffset,
-                   std::optional<uint32_t>    aLength,
-                   std::optional<uint32_t>    aStride,
+                   cc::optional<gfx::Format> aFormat,
+                   cc::optional<uint32_t>    aOffset,
+                   cc::optional<uint32_t>    aLength,
+                   cc::optional<uint32_t>    aStride,
                    DataView*                  out) {
     gfx::Format format = aFormat.has_value() ? aFormat.value() : gfx::Format::R32F;
     uint32_t    offset = aOffset.has_value() ? aOffset.value() : 0;

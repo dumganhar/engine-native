@@ -41,7 +41,7 @@ struct IBoxOptions : public IGeometryOptions {
      * @zh
      * 立方体宽度。
      */
-    std::optional<float> width;
+    cc::optional<float> width;
 
     /**
      * @en
@@ -49,7 +49,7 @@ struct IBoxOptions : public IGeometryOptions {
      * @zh
      * 立方体高度。
      */
-    std::optional<float> height;
+    cc::optional<float> height;
 
     /**
      * @en
@@ -57,7 +57,7 @@ struct IBoxOptions : public IGeometryOptions {
      * @zh
      * 立方体长度。
      */
-    std::optional<float> length;
+    cc::optional<float> length;
 
     /**
      * @en
@@ -65,7 +65,7 @@ struct IBoxOptions : public IGeometryOptions {
      * @zh
      * 宽度线段数。
      */
-    std::optional<uint32_t> widthSegments;
+    cc::optional<uint32_t> widthSegments;
 
     /**
      * @en
@@ -73,7 +73,7 @@ struct IBoxOptions : public IGeometryOptions {
      * @zh
      * 高度线段数。
      */
-    std::optional<uint32_t> heightSegments;
+    cc::optional<uint32_t> heightSegments;
 
     /**
      * @en
@@ -81,7 +81,7 @@ struct IBoxOptions : public IGeometryOptions {
      * @zh
      * 长度线段数。
      */
-    std::optional<uint32_t> lengthSegments;
+    cc::optional<uint32_t> lengthSegments;
 };
 
 /**
@@ -92,5 +92,5 @@ struct IBoxOptions : public IGeometryOptions {
  * 生成一个立方体，其大小是定义的范围且中心在原点。
  * @param options 参数选项。
  */
-IGeometry box(const std::optional<IBoxOptions> &options = std::nullopt);
+IGeometry box(const cc::optional<IBoxOptions> &options = CC_NULLOPT);
 } // namespace cc

@@ -297,8 +297,8 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
         texName = getDefaultStringFromType(type);
     }
 
-    TextureBase *           textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
-    gfx::Texture *          texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
+    TextureBase *          textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
+    gfx::Texture *         texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
     cc::optional<uint64_t> samplerHash;
     if (info != nullptr && info->samplerHash.has_value()) {
         samplerHash = info->samplerHash.value();
@@ -455,7 +455,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     gfx::Device *device = _device;
     Pass::fillPipelineInfo(this, info);
     if (info.stateOverrides.has_value()) {
-        Pass::fillPipelineInfo(this, info.stateOverrides.value());
+        Pass::fillPipelineInfo(this, IPassInfoFull(info.stateOverrides.value()));
     }
 
     // init descriptor set

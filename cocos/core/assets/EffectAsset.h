@@ -25,10 +25,10 @@
 
 #pragma once
 
-#include "cocos/base/Optional.h"
 #include <string>
 #include <tuple>
 #include <unordered_map>
+#include "cocos/base/Optional.h"
 
 #include "base/Value.h"
 #include "core/Types.h"
@@ -45,9 +45,9 @@ namespace cc {
 using IPropertyHandleInfo = std::tuple<std::string, uint32_t, gfx::Type>;
 
 struct IPropertyInfo {
-    int32_t                                                      type;        // auto-extracted from shader
-    cc::optional<IPropertyHandleInfo>                           handleInfo;  // auto-generated from 'target'
-    cc::optional<uint64_t>                                      samplerHash; // auto-generated from 'sampler'
+    int32_t                                                    type;        // auto-extracted from shader
+    cc::optional<IPropertyHandleInfo>                          handleInfo;  // auto-generated from 'target'
+    cc::optional<uint64_t>                                     samplerHash; // auto-generated from 'sampler'
     cc::optional<cc::variant<std::vector<float>, std::string>> value;
 };
 
@@ -307,7 +307,7 @@ struct BlendStateInfo {
 
     void assignToGFXBlendState(gfx::BlendState &bs) const {
         if (targets.has_value()) {
-            auto &targetsVal = targets.value();
+            const auto &targetsVal = targets.value();
             bs.targets.resize(targetsVal.size());
             for (size_t i = 0, len = targetsVal.size(); i < len; ++i) {
                 targetsVal[i].assignToGFXBlendTarget(bs.targets[i]);
@@ -340,7 +340,7 @@ struct IPassStates {
     cc::optional<std::string>               phase;
 
     IPassStates() = default;
-    IPassStates(const IPassInfoFull &o);
+    explicit IPassStates(const IPassInfoFull &o);
     IPassStates &operator=(const IPassInfoFull &o);
     void         overrides(const IPassInfoFull &o);
 };
@@ -359,20 +359,20 @@ struct IPassInfoFull final { //cjh } : public IPassInfo {
     cc::optional<gfx::DynamicStateFlags>    dynamicStates;
     cc::optional<std::string>               phase;
     // IPassInfo
-    std::string                        program; // auto-generated from 'vert' and 'frag'
+    std::string                       program; // auto-generated from 'vert' and 'frag'
     cc::optional<MacroRecord>         embeddedMacros;
-    index_t                            propertyIndex{-1};
+    index_t                           propertyIndex{-1};
     cc::optional<std::string>         switch_;
     cc::optional<PassPropertyInfoMap> properties;
 
     // IPassInfoFull
     // generated part
-    index_t                      passIndex{0};
-    MacroRecord                  defines;
+    index_t                     passIndex{0};
+    MacroRecord                 defines;
     cc::optional<PassOverrides> stateOverrides;
 
     IPassInfoFull() = default;
-    IPassInfoFull(const IPassStates &o) {
+    explicit IPassInfoFull(const IPassStates &o) {
         *this = o;
     }
     IPassInfoFull &operator=(const IPassStates &o) {
@@ -392,24 +392,24 @@ using IPassInfo = IPassInfoFull;
 
 struct ITechniqueInfo {
     std::vector<IPassInfoFull> passes;
-    cc::optional<std::string> name;
+    cc::optional<std::string>  name;
 };
 
 struct IBlockInfo {
-    int32_t                            binding{-1};
-    std::string                        name;
-    std::vector<gfx::Uniform>          members;
-    uint32_t                           count{0};
-    gfx::ShaderStageFlags              stageFlags{gfx::ShaderStageFlags::NONE};
+    int32_t                           binding{-1};
+    std::string                       name;
+    std::vector<gfx::Uniform>         members;
+    uint32_t                          count{0};
+    gfx::ShaderStageFlags             stageFlags{gfx::ShaderStageFlags::NONE};
     cc::optional<gfx::DescriptorType> descriptorType{};
 };
 
 struct ISamplerTextureInfo {
-    int32_t                            binding{-1}; //cjh : number;
-    std::string                        name;
-    gfx::Type                          type{gfx::Type::UNKNOWN};
-    uint32_t                           count{0};
-    gfx::ShaderStageFlags              stageFlags{gfx::ShaderStageFlags::NONE};
+    int32_t                           binding{-1}; //cjh : number;
+    std::string                       name;
+    gfx::Type                         type{gfx::Type::UNKNOWN};
+    uint32_t                          count{0};
+    gfx::ShaderStageFlags             stageFlags{gfx::ShaderStageFlags::NONE};
     cc::optional<gfx::DescriptorType> descriptorType;
 };
 
@@ -418,8 +418,8 @@ struct IAttributeInfo : public gfx::Attribute {
 };
 
 struct IDefineInfo {
-    std::string                             name;
-    std::string                             type;
+    std::string                            name;
+    std::string                            type;
     cc::optional<std::vector<int32_t>>     range; //cjh number is float?  ?: number[];
     cc::optional<std::vector<std::string>> options;
     cc::optional<std::string>              defaultVal;
@@ -501,7 +501,7 @@ public:
      * @en Get all registered effect assets.
      * @zh 获取所有已注册的 effect 资源。
      */
-    static RegisteredEffectAssetMap &getAll() { return __effects; }
+    static RegisteredEffectAssetMap &getAll() { return EffectAsset::effects; }
 
     inline void setTechniques(const std::vector<ITechniqueInfo> &val) { _techniques = val; }
     inline void setShaders(const std::vector<IShaderInfo> &val) { _shaders = val; }
@@ -562,7 +562,7 @@ public:
     std::vector<IPreCompileInfo> _combinations;
     //
 protected:
-    static RegisteredEffectAssetMap __effects; //cjh TODO: how to clear when game exits.
+    static RegisteredEffectAssetMap effects; //cjh TODO: how to clear when game exits.
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(EffectAsset);
 

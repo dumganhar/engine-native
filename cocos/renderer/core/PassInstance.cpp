@@ -24,6 +24,7 @@
  ****************************************************************************/
 
 #include "renderer/core/PassInstance.h"
+#include <cstdint>
 #include "renderer/core/ProgramLib.h"
 
 namespace cc {
@@ -60,7 +61,7 @@ void PassInstance::overridePipelineStates(const IPassInfo &original, const PassO
     _depthStencilState.reset();
 
     Pass::fillPipelineInfo(this, original);
-    Pass::fillPipelineInfo(this, override);
+    Pass::fillPipelineInfo(this, IPassInfoFull(override));
     onStateChange();
 }
 

@@ -349,20 +349,20 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
 
     const auto propertyType = scene::Pass::getPropertyTypeFromHandle(handle);
     if (propertyType == PropertyType::BUFFER) {
-        if (val.index() == MaterialPropertyIndexList) {
+        if (val.index() == MATERIAL_PROPERTY_INDEX_LIST) {
             pass->setUniformArray(handle, CC_GET<MaterialPropertyList>(val));
-        } else if (val.index() == MaterialPropertyIndexSingle) {
+        } else if (val.index() == MATERIAL_PROPERTY_INDEX_SINGLE) {
             pass->setUniform(handle, CC_GET<MaterialProperty>(val));
         } else {
             pass->resetUniform(name);
         }
     } else if (propertyType == PropertyType::TEXTURE) {
-        if (val.index() == MaterialPropertyIndexList) {
+        if (val.index() == MATERIAL_PROPERTY_INDEX_LIST) {
             const auto &textureArray = CC_GET<MaterialPropertyList>(val);
             for (size_t i = 0; i < textureArray.size(); i++) {
                 bindTexture(pass, handle, textureArray[i], static_cast<index_t>(i));
             }
-        } else if (val.index() == MaterialPropertyIndexSingle) {
+        } else if (val.index() == MATERIAL_PROPERTY_INDEX_SINGLE) {
             bindTexture(pass, handle, CC_GET<MaterialProperty>(val));
         } else {
             pass->resetTexture(name);

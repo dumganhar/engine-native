@@ -23,6 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+#include "renderer/core/PassUtils.h"
 #include <cstdint>
 #include "base/Log.h"
 #include "core/Types.h"
@@ -35,11 +36,8 @@
 #include "math/Vec4.h"
 #include "renderer/gfx-base/GFXDef.h"
 
-#include "renderer/core/PassUtils.h"
-
 namespace cc {
 
-//NOLINTNEXTLINE
 const std::unordered_map<gfx::Type, GFXTypeReaderCallback> type2reader = {
     {gfx::Type::UNKNOWN, [](const float * /*a*/, MaterialProperty & /*v*/, index_t /*idx*/) {
          CC_LOG_ERROR("type2reader unknown type");
@@ -47,7 +45,7 @@ const std::unordered_map<gfx::Type, GFXTypeReaderCallback> type2reader = {
     {gfx::Type::INT, [](const float *a, MaterialProperty &v, index_t idx) {
          auto *p = CC_GET_IF<int32_t>(&v);
          CC_ASSERT(p != nullptr);
-         p[0] = a[idx];
+         p[0] = static_cast<int32_t>(a[idx]);
      }},
     {gfx::Type::INT2, [](const float *a, MaterialProperty &v, index_t idx) {
          auto *p = CC_GET_IF<Vec2>(&v);
@@ -108,7 +106,6 @@ const std::unordered_map<gfx::Type, GFXTypeReaderCallback> type2reader = {
      }},
 };
 
-//NOLINTNEXTLINE
 const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer = {
     {gfx::Type::UNKNOWN, [](float * /*a*/, const MaterialProperty & /*v*/, index_t /*idx*/) {
          CC_LOG_ERROR("type2writer unknown type");
@@ -121,7 +118,7 @@ const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer = {
          } else {
              pFloat = CC_GET_IF<float>(&v);
              if (pFloat != nullptr) {
-                 a[idx] = *p;
+                 a[idx] = static_cast<float>(*p);
              }
          }
          CC_ASSERT(p != nullptr || pFloat != nullptr);
@@ -218,7 +215,7 @@ const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer = {
 };
 
 const std::vector<float> &getDefaultFloatArrayFromType(gfx::Type type) {
-    static const std::vector<float> defaultFloatValues[] = {
+    static const std::vector<float> DEFAULT_FLOAT_VALUES[] = {
         {0},
         {0, 0},
         {0, 0, 0, 0},
@@ -229,35 +226,35 @@ const std::vector<float> &getDefaultFloatArrayFromType(gfx::Type type) {
         case gfx::Type::INT:
         case gfx::Type::UINT:
         case gfx::Type::FLOAT:
-            return defaultFloatValues[0];
+            return DEFAULT_FLOAT_VALUES[0];
         case gfx::Type::BOOL2:
         case gfx::Type::INT2:
         case gfx::Type::UINT2:
         case gfx::Type::FLOAT2:
-            return defaultFloatValues[1];
+            return DEFAULT_FLOAT_VALUES[1];
         case gfx::Type::BOOL4:
         case gfx::Type::INT4:
         case gfx::Type::UINT4:
         case gfx::Type::FLOAT4:
-            return defaultFloatValues[2];
+            return DEFAULT_FLOAT_VALUES[2];
         case gfx::Type::MAT4:
-            return defaultFloatValues[3];
+            return DEFAULT_FLOAT_VALUES[3];
         default:
-            return defaultFloatValues[0];
+            return DEFAULT_FLOAT_VALUES[0];
     }
 }
 
 const std::string &getDefaultStringFromType(gfx::Type type) {
-    static const std::string defaultTextureStr{"default-texture"};
-    static const std::string defaultCubeTextureStr{"default-cube-texture"};
+    static const std::string DEFAULT_TEXTURE_STR{"default-texture"};
+    static const std::string DEFAULT_CUBE_TEXTURE_STR{"default-cube-texture"};
 
     switch (type) {
         case gfx::Type::SAMPLER2D:
-            return defaultTextureStr;
+            return DEFAULT_TEXTURE_STR;
         case gfx::Type::SAMPLER_CUBE:
-            return defaultCubeTextureStr;
+            return DEFAULT_CUBE_TEXTURE_STR;
         default:
-            return defaultTextureStr;
+            return DEFAULT_TEXTURE_STR;
     }
 }
 

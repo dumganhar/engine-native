@@ -72,7 +72,7 @@ void IPassStates::overrides(const IPassInfoFull &o) {
     }
 }
 
-EffectAsset::RegisteredEffectAssetMap EffectAsset::__effects;
+EffectAsset::RegisteredEffectAssetMap EffectAsset::effects;
 
 /* static */
 void EffectAsset::registerAsset(EffectAsset *asset) {
@@ -80,26 +80,26 @@ void EffectAsset::registerAsset(EffectAsset *asset) {
         return;
     }
 
-    __effects.emplace(asset->getName(), asset);
+    effects.emplace(asset->getName(), asset);
 }
 
 /* static */
 void EffectAsset::remove(const std::string &name) {
-    auto iter = __effects.find(name);
-    if (iter != __effects.end() && iter->second->getName() == name) {
-        __effects.erase(iter);
+    auto iter = EffectAsset::effects.find(name);
+    if (iter != EffectAsset::effects.end() && iter->second->getName() == name) {
+        EffectAsset::effects.erase(iter);
         return;
     }
 
-    iter = __effects.begin();
-    for (; iter != __effects.end(); ++iter) {
+    iter = EffectAsset::effects.begin();
+    for (; iter != EffectAsset::effects.end(); ++iter) {
         if (iter->second->getUuid() == name) {
             break;
         }
     }
 
-    if (iter != __effects.end()) {
-        __effects.erase(iter);
+    if (iter != EffectAsset::effects.end()) {
+        EffectAsset::effects.erase(iter);
     }
 }
 
@@ -109,21 +109,21 @@ void EffectAsset::remove(EffectAsset *asset) {
         return;
     }
 
-    auto iter = __effects.find(asset->getName());
-    if (iter != __effects.end() && iter->second == asset) {
-        __effects.erase(iter);
+    auto iter = EffectAsset::effects.find(asset->getName());
+    if (iter != EffectAsset::effects.end() && iter->second == asset) {
+        EffectAsset::effects.erase(iter);
     }
 }
 
 /* static */
 EffectAsset *EffectAsset::get(const std::string &name) {
-    auto iter = __effects.find(name);
-    if (iter != __effects.end()) {
+    auto iter = EffectAsset::effects.find(name);
+    if (iter != EffectAsset::effects.end()) {
         return iter->second;
     }
 
-    iter = __effects.begin();
-    for (; iter != __effects.end(); ++iter) {
+    iter = EffectAsset::effects.begin();
+    for (; iter != EffectAsset::effects.end(); ++iter) {
         if (iter->second->getUuid() == name) {
             return iter->second;
         }
@@ -161,12 +161,16 @@ void EffectAsset::precompile() {
     Root *root = Root::getInstance();
     for (index_t i = 0; i < _shaders.size(); ++i) {
         auto shader = _shaders[i];
-        if (i >= _combinations.size())
+        if (i >= _combinations.size()) {
             continue;
-        auto combination = _combinations[i];
-        if (combination.empty()) continue;
+        }
 
-        //TODO: minggo (do unit test)
+        auto combination = _combinations[i];
+        if (combination.empty()) {
+            continue;
+        }
+
+        // TODO(minggo): do unit test
         std::vector<MacroRecord> defines = EffectAsset::doCombine(std::vector<MacroRecord>(), combination, combination.begin());
         for (auto &define : defines) {
             ProgramLib::getInstance()->getGFXShader(root->getDevice(), shader.name, define, root->getPipeline());
@@ -209,7 +213,7 @@ const defines = [
                  // ... all the combinations (2x4x3 in this case)
                  ];
  */
-std::vector<MacroRecord> EffectAsset::doCombine(const std::vector<MacroRecord> &cur, const IPreCompileInfo &info, IPreCompileInfo::iterator iter) {
+std::vector<MacroRecord> EffectAsset::doCombine(const std::vector<MacroRecord> &cur, const IPreCompileInfo &info, IPreCompileInfo::iterator iter) { //NOLINT(misc-no-recursion)
     if (iter == info.end()) {
         return cur;
     }
@@ -229,19 +233,19 @@ std::vector<MacroRecord> EffectAsset::doCombine(const std::vector<MacroRecord> &
 
 std::vector<MacroRecord> EffectAsset::generateRecords(const std::string &key, const IPreCompileInfoValueType &value) {
     std::vector<MacroRecord> ret;
-    if (auto *boolValues = CC_GET_IF<std::vector<bool>>(&value)) {
+    if (const auto *boolValues = CC_GET_IF<std::vector<bool>>(&value)) {
         for (const bool value : *boolValues) {
             MacroRecord record;
             record[key] = value;
             ret.emplace_back(record);
         }
-    } else if (auto *floatValues = CC_GET_IF<std::vector<float>>(&value)) {
+    } else if (const auto *floatValues = CC_GET_IF<std::vector<float>>(&value)) {
         for (const bool value : *floatValues) {
             MacroRecord record;
             record[key] = value;
             ret.emplace_back(record);
         }
-    } else if (auto *stringValues = CC_GET_IF<std::vector<std::string>>(&value)) {
+    } else if (const auto *stringValues = CC_GET_IF<std::vector<std::string>>(&value)) {
         for (const std::string &value : *stringValues) {
             MacroRecord record;
             record[key] = value;
@@ -259,19 +263,19 @@ std::vector<MacroRecord> EffectAsset::insertInfoValue(const std::vector<MacroRec
                                                       const IPreCompileInfoValueType &value) {
     std::vector<MacroRecord> ret;
     for (const auto &record : records) {
-        if (auto *boolValues = CC_GET_IF<std::vector<bool>>(&value)) {
+        if (const auto *boolValues = CC_GET_IF<std::vector<bool>>(&value)) {
             for (const bool value : *boolValues) {
                 MacroRecord tmpRecord = record;
                 tmpRecord[key]        = value;
                 ret.emplace_back(tmpRecord);
             }
-        } else if (auto *floatValues = CC_GET_IF<std::vector<float>>(&value)) {
-            for (const bool value : *floatValues) {
+        } else if (const auto *floatValues = CC_GET_IF<std::vector<float>>(&value)) {
+            for (const float value : *floatValues) {
                 MacroRecord tmpRecord = record;
                 tmpRecord[key]        = value;
                 ret.emplace_back(tmpRecord);
             }
-        } else if (auto *stringValues = CC_GET_IF<std::vector<std::string>>(&value)) {
+        } else if (const auto *stringValues = CC_GET_IF<std::vector<std::string>>(&value)) {
             for (const std::string &value : *stringValues) {
                 MacroRecord tmpRecord = record;
                 tmpRecord[key]        = value;

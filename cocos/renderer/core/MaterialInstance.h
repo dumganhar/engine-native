@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "base/TypeDef.h"
 #include "cocos/base/Optional.h"
 
 #include "core/assets/Material.h"
@@ -34,7 +35,7 @@ namespace cc {
 struct IMaterialInstanceInfo {
     Material *           parent{nullptr};
     RenderableComponent *owner{nullptr};
-    uint32_t             subModelIdx{0};
+    index_t              subModelIdx{0};
 };
 
 class PassInstance;
@@ -47,7 +48,7 @@ class MaterialInstance final : public Material {
 public:
     using Super = Material;
 
-    MaterialInstance(const IMaterialInstanceInfo &info);
+    explicit MaterialInstance(const IMaterialInstanceInfo &info);
 
     Material *getParent() const override {
         return _parent.get();
@@ -84,7 +85,7 @@ protected:
 private:
     SharedPtr<Material>  _parent;
     RenderableComponent *_owner{nullptr};
-    uint32_t             _subModelIdx{0};
+    index_t              _subModelIdx{0};
 
     RebuildPSOCallback _rebuildPSOCallback{nullptr};
 };

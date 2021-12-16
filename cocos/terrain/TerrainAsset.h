@@ -105,8 +105,8 @@ public:
     TerrainAsset()  = default;
     ~TerrainAsset() = default;
 
-    std::any getNativeAsset() const override;
-    void     setNativeAsset(const std::any &obj) override;
+    cc::any getNativeAsset() const override;
+    void     setNativeAsset(const cc::any &obj) override;
 
     /**
      * @en version

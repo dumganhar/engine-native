@@ -385,10 +385,10 @@ public:
      * cc.assetManager.loadAny({ url: 'http://example.com/my.asset', skin: 'xxx', model: 'xxx', userName: 'xxx', password: 'xxx' });
      *
      */
-    void loadAny(const Request &requests, const IOptions &options, const ProgressCallback &onProgress, const CompleteCallbackWithData<std::any> &onComplete);
-    void loadAny(const Request &requests, const IOptions &options, const CompleteCallbackWithData<std::any> &onComplete);
-    void loadAny(const Request &requests, const ProgressCallback &onProgress, const CompleteCallbackWithData<std::any> &onComplete);
-    void loadAny(const Request &requests, const CompleteCallbackWithData<std::any> &onComplete);
+    void loadAny(const Request &requests, const IOptions &options, const ProgressCallback &onProgress, const CompleteCallbackWithData<cc::any> &onComplete);
+    void loadAny(const Request &requests, const IOptions &options, const CompleteCallbackWithData<cc::any> &onComplete);
+    void loadAny(const Request &requests, const ProgressCallback &onProgress, const CompleteCallbackWithData<cc::any> &onComplete);
+    void loadAny(const Request &requests, const CompleteCallbackWithData<cc::any> &onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
     void loadAny(const std::string &request, const CompleteCallbackWithData<T> &onComplete);
@@ -528,23 +528,23 @@ private:
      * @private
      */
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadWithJson(const Record<std::string, std::any> &json, //cjh TODO: use Rapidjson Value?
+    void loadWithJson(const Record<std::string, cc::any> &json, //cjh TODO: use Rapidjson Value?
                       const IJsonAssetOptions &            options,
                       const ProgressCallback &             onProgress,
                       const CompleteCallbackWithData<T> &  onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadWithJson(const Record<std::string, std::any> &json,
+    void loadWithJson(const Record<std::string, cc::any> &json,
                       const ProgressCallback &             onProgress,
                       const CompleteCallbackWithData<T> &  onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadWithJson(const Record<std::string, std::any> &json,
+    void loadWithJson(const Record<std::string, cc::any> &json,
                       const IJsonAssetOptions &            options,
                       const CompleteCallbackWithData<T> &  onComplete);
 
     template <typename T, typename Enable = std::enable_if_t<std::is_base_of<Asset, T>::value>>
-    void loadWithJson(const Record<std::string, std::any> &json, const CompleteCallbackWithData<T> &onComplete);
+    void loadWithJson(const Record<std::string, cc::any> &json, const CompleteCallbackWithData<T> &onComplete);
 };
 
 } // namespace cc

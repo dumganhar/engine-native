@@ -27,7 +27,7 @@
 
 #include "core/assets/Asset.h"
 
-#include <any>
+#include "cocos/base/Any.h"
 
 namespace cc {
 
@@ -77,7 +77,7 @@ public:
 
     @serializable
     @editable*/
-    std::any _data;
+    cc::any _data;
 
     /**
      * @zh

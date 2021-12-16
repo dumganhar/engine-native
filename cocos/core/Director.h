@@ -33,7 +33,7 @@
  * @module core
  */
 
-#include <any>
+#include "cocos/base/Any.h"
 #include <iostream>
 #include <vector>
 
@@ -76,7 +76,7 @@ class NodeActivator;
  * typedef std::function<void*()> OnUnload;
  * typedef std::function<void*(_exception, SceneAsset*)> OnSceneLoaded;
  * typedef std::function<void*(_exception, SceneAsset*)> OnSceneLaunched;
- * typedef std::function<void*(uint32_t, uint32_t，std::any)> OnLoadSceneProgress;
+ * typedef std::function<void*(uint32_t, uint32_t，cc::any)> OnLoadSceneProgress;
  * @param completedCount - The number of the items that are already completed.
  * @param totalCount - The total number of the items.
  * @param item - The latest item which flow out the pipeline.

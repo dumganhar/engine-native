@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <any>
+#include "cocos/base/Any.h"
 #include <functional>
 #include <string>
 #include <vector>
@@ -53,11 +53,11 @@ class ContentStrategy {
 public:
     ContentStrategy();
     virtual ~ContentStrategy() = default;
-    static std::any EXACT_FIT;
-    static std::any SHOW_ALL;
-    static std::any NO_BORDER;
-    static std::any FIXED_HEIGHT;
-    static std::any FIXED_WIDTH;
+    static cc::any EXACT_FIT;
+    static cc::any SHOW_ALL;
+    static cc::any NO_BORDER;
+    static cc::any FIXED_HEIGHT;
+    static cc::any FIXED_WIDTH;
     std::string     name{"ContainerStrategy"};
 
     /**
@@ -99,8 +99,8 @@ public:
     ContainerStrategy()          = default;
     virtual ~ContainerStrategy() = default;
 
-    static std::any EQUAL_TO_FRAME;
-    static std::any PROPORTION_TO_FRAME;
+    static cc::any EQUAL_TO_FRAME;
+    static cc::any PROPORTION_TO_FRAME;
     std::string     name{"ContainerStrategy"};
 
     /**
@@ -589,7 +589,7 @@ public:
      * @param out - The out object to save the conversion result
      */
 
-    const Vec2 &convertToLocationInView(float tx, float ty, const std::any &relatedPos, const Vec2 &out) const;
+    const Vec2 &convertToLocationInView(float tx, float ty, const cc::any &relatedPos, const Vec2 &out) const;
 
     void convertPointWithScale(Vec2 &point);
 
@@ -616,7 +616,7 @@ private:
     bool             _resizing{false};
     bool             _orientationChanging{true};
     bool             _isRotated{false};
-    std::any         _orientation{0};
+    cc::any         _orientation{0};
     ResolutionPolicy _resolutionPolicy;
     ResolutionPolicy _rpExactFit;
     ResolutionPolicy _rpShowAll;

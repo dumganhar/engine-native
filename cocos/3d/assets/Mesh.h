@@ -164,8 +164,8 @@ public:
     Mesh()           = default;
     ~Mesh() override = default;
 
-    std::any getNativeAsset() const override;
-    void     setNativeAsset(const std::any &obj) override;
+    cc::any getNativeAsset() const override;
+    void     setNativeAsset(const cc::any &obj) override;
 
     void setAssetData(cc::ArrayBuffer *data) {
         _data = Uint8Array(data);

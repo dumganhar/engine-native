@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <any>
+#include "cocos/base/Any.h"
 #include "cocos/base/Optional.h"
 #include <unordered_map>
 #include <vector>
@@ -148,8 +148,8 @@ bool seval_to_DownloaderHints(const se::Value &v, cc::network::DownloaderHints *
 bool sevalue_to_native(const se::Value &from, cc::MacroValue *to, se::Object *ctx);                    // NOLINT(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::IPreCompileInfoValueType *to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
 
-// std::any
-bool sevalue_to_native(const se::Value &from, std::any *to, se::Object *ctx); //NOLINT(readability-identifier-naming)
+// cc::any
+bool sevalue_to_native(const se::Value &from, cc::any *to, se::Object *ctx); //NOLINT(readability-identifier-naming)
 ////////////////// ArrayBuffer
 bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer *to, se::Object * /*ctx*/);  // NOLINT(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::ArrayBuffer **to, se::Object * /*ctx*/); // NOLINT(readability-identifier-naming)
@@ -278,8 +278,8 @@ inline bool sevalue_to_native(const se::Value &from, std::vector<se::Value> *to,
     return true;
 }
 
-//////////////////  std::any
-inline bool sevalue_to_native(const se::Value & /*from*/, std::any * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+//////////////////  cc::any
+inline bool sevalue_to_native(const se::Value & /*from*/, cc::any * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     assert(false);
     //TODO(PatriceJiang): convert any to specific types
     return false;
@@ -462,9 +462,9 @@ inline bool nativevalue_to_se(const cc::monostate & /*from*/, se::Value &to, se:
     return true;
 }
 
-inline bool nativevalue_to_se(const std::any &from, se::Value &to, se::Object *ctx) { //NOLINT
+inline bool nativevalue_to_se(const cc::any &from, se::Value &to, se::Object *ctx) { //NOLINT
     assert(false);
-    //TODO(PatriceJiang): // should not convert std::any
+    //TODO(PatriceJiang): // should not convert cc::any
     return true;
 }
 

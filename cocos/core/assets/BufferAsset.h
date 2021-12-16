@@ -37,8 +37,8 @@ public:
 
     inline ArrayBuffer *getBuffer() const { return _buffer; }
 
-    std::any getNativeAsset() const override;
-    void     setNativeAsset(const std::any &obj) override;
+    cc::any getNativeAsset() const override;
+    void     setNativeAsset(const cc::any &obj) override;
     bool     validate() const override { return _buffer != nullptr; }
 
 private:

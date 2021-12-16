@@ -169,12 +169,12 @@ DataWritterCallback getWriter(DataView &dataView, gfx::Format format) {
 
 } // namespace
 
-std::any Mesh::getNativeAsset() const {
+cc::any Mesh::getNativeAsset() const {
     return _data; //cjh FIXME: need copy? could be _data pointer?
 }
 
-void Mesh::setNativeAsset(const std::any &obj) {
-    if (auto p = std::any_cast<ArrayBuffer *>(obj); p != nullptr) {
+void Mesh::setNativeAsset(const cc::any &obj) {
+    if (auto p = CC_ANY_CAST<ArrayBuffer *>(obj); p != nullptr) {
         _data = Uint8Array(p);
     }
 }

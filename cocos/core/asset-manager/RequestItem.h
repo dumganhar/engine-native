@@ -102,7 +102,7 @@ public:
      * 资源的内容
      *
      */
-    std::any content;
+    cc::any content;
 
     /**
      * @en
@@ -112,7 +112,7 @@ public:
      * 资源的文件
      *
      */
-    std::any file;
+    cc::any file;
 
     /**
      * @en
@@ -144,7 +144,7 @@ public:
      * 自定义参数
      *
      */
-    Record<std::string, std::any> options;
+    Record<std::string, cc::any> options;
 
     /**
      * @en

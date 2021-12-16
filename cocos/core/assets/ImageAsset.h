@@ -58,8 +58,8 @@ public:
     ~ImageAsset() override;
 
     //minggo: do not need it in c++.
-    //    std::any getNativeAsset() const override { return std::any(_nativeData); }
-    void setNativeAsset(const std::any &obj) override;
+    //    cc::any getNativeAsset() const override { return cc::any(_nativeData); }
+    void setNativeAsset(const cc::any &obj) override;
 
     /**
      * @en Image data.

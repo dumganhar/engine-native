@@ -25,7 +25,7 @@ THE SOFTWARE.
 
 #pragma once
 
-#include <any>
+#include "cocos/base/Any.h"
 #include <string>
 
 namespace cc {
@@ -93,7 +93,7 @@ enum class DebugMode {
  */
 
 template <typename... Args>
-void log(std::any message, Args... optionalParams);
+void log(cc::any message, Args... optionalParams);
 
 /**
  * @en
@@ -109,7 +109,7 @@ void log(std::any message, Args... optionalParams);
  * This gives you additional control over the format of the output.
  */
 template <typename... Args>
-void warn(std::any message, Args... optionalParams);
+void warn(cc::any message, Args... optionalParams);
 
 /**
  * @en
@@ -125,7 +125,7 @@ void warn(std::any message, Args... optionalParams);
  * This gives you additional control over the format of the output.
  */
 template <typename... Args>
-void error(std::any message, Args... optionalParams);
+void error(cc::any message, Args... optionalParams);
 
 /**
  * @en
@@ -139,7 +139,7 @@ void error(std::any message, Args... optionalParams);
  */
 
 template <typename... Args>
-void _assert(std::any value, std::string message, Args... optionalParams); //assert is a reserved word
+void _assert(cc::any value, std::string message, Args... optionalParams); //assert is a reserved word
 
 /**
  * @en Outputs a message at the "debug" log level.

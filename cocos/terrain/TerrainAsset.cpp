@@ -204,12 +204,12 @@ std::string TerrainBuffer::readString() {
 
 //
 
-std::any TerrainAsset::getNativeAsset() const {
+cc::any TerrainAsset::getNativeAsset() const {
     return _data.buffer();
 }
 
-void TerrainAsset::setNativeAsset(const std::any &obj) {
-    auto value = std::any_cast<ArrayBuffer::Ptr>(obj);
+void TerrainAsset::setNativeAsset(const cc::any &obj) {
+    auto value = CC_ANY_CAST<ArrayBuffer::Ptr>(obj);
     if (!_data.empty() && _data.byteLength() == value->byteLength()) {
         _data.set(Uint8Array{value});
     } else {

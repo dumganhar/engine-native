@@ -30,7 +30,7 @@
 #include "core/assets/AssetEnum.h"
 #include "renderer/gfx-base/GFXDef.h"
 
-#include <any>
+#include "cocos/base/Any.h"
 
 namespace cc {
 
@@ -188,13 +188,13 @@ public:
     /**
      * @return
      */
-    std::any serialize(const std::any &ctxForExporting) override;
+    cc::any serialize(const cc::any &ctxForExporting) override;
 
     /**
      *
      * @param data
      */
-    void deserialize(const std::any &serializedData, const std::any &handle) override;
+    void deserialize(const cc::any &serializedData, const cc::any &handle) override;
 
 protected:
     explicit TextureBase();

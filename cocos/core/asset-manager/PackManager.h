@@ -35,7 +35,7 @@ struct IUnpackRequest {
     std::string      id;
 };
 
-using Unpacker = std::function<void(const std::string &packUuid, const std::any &data, const IDownloadParseOptions &options, const CompleteCallback &onComplete)>;
+using Unpacker = std::function<void(const std::string &packUuid, const cc::any &data, const IDownloadParseOptions &options, const CompleteCallback &onComplete)>;
 
 /**
  * @en
@@ -70,7 +70,7 @@ public:
      *
      */
     void unpackJson(const std::vector<std::string> &pack,
-                    const std::any &                json,
+                    const cc::any &                json,
                     const IDownloadParseOptions &   options,
                     const CompleteCallback &        onComplete);
 
@@ -123,7 +123,7 @@ public:
      *
      */
     void unpack(const std::vector<std::string> &pack,
-                const std::any &                data,
+                const cc::any &                data,
                 const std::string &             type,
                 const IDownloadParseOptions &   options,
                 const CompleteCallback &        onComplete);

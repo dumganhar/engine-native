@@ -27,6 +27,7 @@
 
 #include "GLES3Std.h"
 #include "gfx-base/GFXDevice.h"
+#include "base/Any.h"
 
 namespace cc {
 namespace gfx {

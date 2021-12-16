@@ -25,24 +25,24 @@
 
 #pragma once
 
-#include <any>
+#include "cocos/base/Any.h"
 #include <functional>
 #include "base/TypeDef.h"
 #include "core/Types.h"
 
 namespace cc {
 
-using TaskCompleteCallback = std::function<void(const Error * /* err */, const std::any & /* data */)>;
-using TaskProgressCallback = std::function<void(const std::vector<std::any> &)>;
-using TaskErrorCallback    = std::function<void(const std::vector<std::any> &)>;
+using TaskCompleteCallback = std::function<void(const Error * /* err */, const cc::any & /* data */)>;
+using TaskProgressCallback = std::function<void(const std::vector<cc::any> &)>;
+using TaskErrorCallback    = std::function<void(const std::vector<cc::any> &)>;
 
 struct ITaskOption {
     TaskCompleteCallback          onComplete{nullptr};
     TaskProgressCallback          onProgress{nullptr};
     TaskErrorCallback             onError{nullptr};
-    std::any                      input;
-    std::any                      progress;
-    Record<std::string, std::any> options;
+    cc::any                      input;
+    cc::any                      progress;
+    Record<std::string, cc::any> options;
 };
 
 /**
@@ -126,7 +126,7 @@ public:
      * 任务的源
      *
      */
-    std::any source = nullptr;
+    cc::any source = nullptr;
 
     /**
      * @en
@@ -135,7 +135,7 @@ public:
      * @zh
      * 任务的输出
      */
-    std::any output = nullptr;
+    cc::any output = nullptr;
 
     /**
      * @en
@@ -145,7 +145,7 @@ public:
      * 任务的输入
      *
      */
-    std::any input = nullptr;
+    cc::any input = nullptr;
 
     /**
      * @en
@@ -155,7 +155,7 @@ public:
      * 任务的进度
      *
      */
-    std::any progress = nullptr;
+    cc::any progress = nullptr;
 
     /**
      * @en
@@ -165,7 +165,7 @@ public:
      * 自定义参数
      *
      */
-    Record<std::string, std::any> options;
+    Record<std::string, cc::any> options;
 
     /**
      * @en
@@ -235,7 +235,7 @@ public:
      * Task.dispatch('complete', 'hello world');
      *
      */
-    void dispatch(const std::string &event, const std::any &param1, const std::any &param2, const std::any &param3, const std::any &param4); //cjh Use enum for event?
+    void dispatch(const std::string &event, const cc::any &param1, const cc::any &param2, const cc::any &param3, const cc::any &param4); //cjh Use enum for event?
 
     /**
      * @en

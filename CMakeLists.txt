@@ -306,6 +306,7 @@ cocos_source_files(
     cocos/base/TypeDef.h
     cocos/base/Vector.h
     cocos/base/Variant.h
+    cocos/base/Optional.h
 )
 
 ############ module log

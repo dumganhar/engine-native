@@ -39,9 +39,24 @@ using optional = std::optional<T>;
     #include "boost/optional.hpp"
 
 namespace cc {
-template <class T>
-using optional = boost::optional<T>;
+
+template <typename T>
+class optional : public boost::optional<T> {
+public:
+    using boost::optional<T>::optional;
+
+    template <typename U, typename = std::enable_if_t<std::is_assignable<T&, U>::value> >
+    optional(U&& val) {
+        this->emplace_assign(val);
+    }
+
+    template <typename U, typename = std::enable_if_t<std::is_assignable<T&, U>::value> >
+    optional(const optional<U>& val) {
+        this->emplace_assign(val);
+    }
+};
 
     #define CC_NULLOPT boost::none
 }; // namespace cc
+
 #endif

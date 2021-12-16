@@ -404,8 +404,8 @@ void Material::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     MacroRecord   defines{{"USE_COLOR", true}};
     IMaterialInfo info{
-        .effectName = cc::optional<std::string>("unlit"),
-        .defines    = cc::optional<IMaterialInfo::DefinesType>(defines)};
+        .effectName = "unlit",
+        .defines    = defines};
     initialize(info);
     setProperty("mainColor", Color{0xFF, 0x00, 0xFF, 0xFF});
 }

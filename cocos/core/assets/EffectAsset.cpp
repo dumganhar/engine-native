@@ -80,7 +80,7 @@ void EffectAsset::registerAsset(EffectAsset *asset) {
         return;
     }
 
-    effects.emplace(asset->getName(), asset);
+    EffectAsset::effects.emplace(asset->getName(), asset);
 }
 
 /* static */

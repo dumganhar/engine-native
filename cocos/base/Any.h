@@ -26,18 +26,11 @@
 #pragma once
 
 #ifdef USE_CXX_17
-    #include <any>
-    #define CC_ANY_CAST std::any_cast
-    #define CC_ANY_OF   std::any_of
-
-    using any = std::any;
-
+    
 #else
     #include "boost/any.hpp"
-    #include "boost/algorithm/cxx11/any_of.hpp"
 
     #define CC_ANY_CAST boost::any_cast
-    #define CC_ANY_OF   boost::algorithm::any_of
 
 namespace cc {
 class any : public boost::any {

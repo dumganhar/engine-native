@@ -247,7 +247,7 @@ bool Scheduler::isScheduled(const std::string &key, void *target) {
     }
 
     const auto &timers = element->timers;
-    return CC_ANY_OF(timers.begin(), timers.end(), [&key](Timer *t) {
+    return std::any_of(timers.begin(), timers.end(), [&key](Timer *t) {
         auto *timer = dynamic_cast<TimerTargetCallback *>(t);
         return (timer && key == timer->getKey());
     });

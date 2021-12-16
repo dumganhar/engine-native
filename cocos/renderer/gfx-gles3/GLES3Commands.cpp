@@ -1657,7 +1657,7 @@ static void doCreateFramebufferInstance(GLES3Device *device, GLES3GPUFramebuffer
 void cmdFuncGLES3CreateFramebuffer(GLES3Device *device, GLES3GPUFramebuffer *gpuFBO) {
     if (gpuFBO->gpuRenderPass->subpasses.size() > 1) {
         gpuFBO->usesFBF = device->constantRegistry()->mFBF != FBFSupportLevel::NONE;
-        gpuFBO->usesPLS = CC_ANY_OF(gpuFBO->gpuColorTextures.begin(), gpuFBO->gpuColorTextures.end(), [](const auto *gpuTexture) {
+        gpuFBO->usesPLS = std::any_of(gpuFBO->gpuColorTextures.begin(), gpuFBO->gpuColorTextures.end(), [](const auto *gpuTexture) {
             return gpuTexture && gpuTexture->memoryless;
         });
     }

@@ -71,7 +71,7 @@ public:
     inline GLES3GPUFramebufferCacheMap *framebufferCacheMap() const { return _gpuFramebufferCacheMap; }
 
     inline bool checkExtension(const String &extension) const {
-        return CC_ANY_OF(_extensions.begin(), _extensions.end(), [&extension](auto &ext) {
+        return std::any_of(_extensions.begin(), _extensions.end(), [&extension](auto &ext) {
             return ext.find(extension) != String::npos;
         });
     }

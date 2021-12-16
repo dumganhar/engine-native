@@ -270,6 +270,7 @@ endif()
 ##### base
 cocos_source_files(
     cocos/base/Agent.h
+    cocos/base/Any.h
     cocos/base/astc.cpp
     cocos/base/astc.h
     cocos/base/base64.cpp
@@ -290,6 +291,7 @@ cocos_source_files(
     cocos/base/Macros.h
     cocos/base/Map.h
     cocos/base/Object.h
+    cocos/base/Optional.h
     cocos/base/Ptr.h
     cocos/base/Random.h
     cocos/base/RefCounted.cpp
@@ -304,10 +306,8 @@ cocos_source_files(
     cocos/base/ThreadPool.cpp
     cocos/base/ThreadPool.h
     cocos/base/TypeDef.h
-    cocos/base/Vector.h
     cocos/base/Variant.h
-    cocos/base/Optional.h
-    cocos/base/Any.h
+    cocos/base/Vector.h
 )
 
 ############ module log
@@ -385,7 +385,7 @@ elseif(USE_JOB_SYSTEM_TBB)
         cocos/base/job-system/job-system-tbb/TBBJobSystem.h
         cocos/base/job-system/job-system-tbb/TBBJobSystem.cpp
     )
-else() 
+else()
     cocos_source_files(
         cocos/base/job-system/job-system-dummy/DummyJobGraph.h
         cocos/base/job-system/job-system-dummy/DummyJobGraph.cpp
@@ -581,7 +581,7 @@ elseif(ANDROID)
         ${CWD}/cocos/platform/java/jni/JniImp.cpp
         ${CWD}/cocos/platform/java/jni/JniImp.h
     )
-    
+
     cocos_source_files(MODULE ccfilesystem
         cocos/platform/android/FileUtils-android.cpp
         cocos/platform/android/FileUtils-android.h
@@ -621,7 +621,7 @@ elseif(APPLE)
                      cocos/platform/ios/Reachability.h
                      cocos/platform/ios/Reachability.cpp
     )
-    
+
     cocos_source_files(MODULE ccfilesystem
         cocos/platform/apple/FileUtils-apple.h
         cocos/platform/apple/FileUtils-apple.mm
@@ -1348,9 +1348,9 @@ cocos_source_files(
     cocos/core/Game.h
     cocos/core/Root.cpp
     cocos/core/Root.h
-    
+
     cocos/core/System.h
-    
+
     cocos/core/Scheduler.cpp
     cocos/core/Scheduler.h
     cocos/core/SplashScreen.cpp
@@ -1507,7 +1507,7 @@ cocos_source_files(
     cocos/core/event/EventTarget.h
     cocos/core/event/EventTargetFactory.cpp
     cocos/core/event/EventTargetFactory.h
-    
+
     cocos/core/scene-graph/Find.cpp
     cocos/core/scene-graph/Find.h
     cocos/core/scene-graph/Layers.h
@@ -2046,7 +2046,7 @@ endif()
         )
     endif()
 
-############# module bindings 
+############# module bindings
 if(USE_SE_V8)
     cocos_source_files(MODULE ccbindings
                      cocos/bindings/jswrapper/v8/Base.h
@@ -2131,9 +2131,9 @@ cocos_source_files(MODULE ccbindings
                  cocos/bindings/jswrapper/State.h
                  cocos/bindings/jswrapper/PrivateObject.h
                  cocos/bindings/jswrapper/Value.cpp
-                 cocos/bindings/jswrapper/Value.h 
+                 cocos/bindings/jswrapper/Value.h
                  cocos/bindings/jswrapper/ValueArrayPool.cpp
-                 cocos/bindings/jswrapper/ValueArrayPool.h 
+                 cocos/bindings/jswrapper/ValueArrayPool.h
 )
 
 cocos_source_files(
@@ -2284,7 +2284,7 @@ macro(generate_glsl ver)
             ${ver}
             ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp.in
             ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp
-        DEPENDS 
+        DEPENDS
             ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
             ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp.in
             ${CWD}/cmake/scripts/glsl_gzip.js
@@ -2294,12 +2294,12 @@ endmacro()
 compile_ts(${CWD}/cocos/core/builtin/effects)
 add_custom_command(
     OUTPUT ${CWD}/cocos/core/builtin/Effects.cpp
-    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/effects_gzip.js 
+    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/effects_gzip.js
         ${CWD}/cocos/core/builtin/effects.js
         effects
         ${CWD}/cocos/core/builtin/Effects.cpp.in
         ${CWD}/cocos/core/builtin/Effects.cpp
-    DEPENDS 
+    DEPENDS
         ${CWD}/cocos/core/builtin/Effects.cpp.in
         ${CWD}/cocos/core/builtin/effects.js
         ${CWD}/cmake/scripts/effects_gzip.js
@@ -2361,18 +2361,18 @@ if(USE_MODULES)
     target_link_libraries(ccunzip PUBLIC
         ${ZLIB}
     )
-    target_link_libraries(ccfilesystem PUBLIC 
-        ccunzip 
+    target_link_libraries(ccfilesystem PUBLIC
+        ccunzip
         ccutils
         cclog
     )
-    target_link_libraries(ccbindings PUBLIC 
+    target_link_libraries(ccbindings PUBLIC
         ccfilesystem
         cclog
         ${se_libs_name}
         uv
     )
-    target_link_libraries(ccgeometry PUBLIC 
+    target_link_libraries(ccgeometry PUBLIC
         ccmath
     )
     if(ANDROID)
@@ -2528,7 +2528,7 @@ target_compile_definitions(cocos2d
         ${CC_EXTERNAL_PRIVATE_DEFINITIONS}
 )
 if(NOT OHOS)
-    target_include_directories(cocos2d PUBLIC 
+    target_include_directories(cocos2d PUBLIC
         ${CWD}/external/sources/EGL
         ${CWD}/external/sources/khronos
     )

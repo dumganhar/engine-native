@@ -179,7 +179,7 @@ bool TextureBase::isCompressed() const {
 }
 
 void TextureBase::notifySamplerUpdated() {
-    emit(EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED, _gfxSampler.get(), _samplerHash);
+    emit(EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED, _gfxSampler.get(), static_cast<double>(_samplerHash));
 }
 
 } // namespace cc

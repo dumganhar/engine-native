@@ -161,6 +161,10 @@ public:
         return _textureHash;
     }
 
+    inline double getHashForJS() const {
+        return static_cast<double>(getHash());
+    }
+
     /**
      * @en Gets the GFX Texture resource
      * @zh 获取此贴图底层的 GFX 贴图对象。
@@ -176,6 +180,10 @@ public:
      */
     virtual uint64_t getSamplerHash() const {
         return _samplerHash;
+    }
+
+    inline double getSamplerHashForJS() const {
+        return static_cast<double>(getSamplerHash());
     }
 
     /**

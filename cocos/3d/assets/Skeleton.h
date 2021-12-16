@@ -75,6 +75,10 @@ public:
     uint64_t getHash();
     void     setHash(uint64_t hash) { _hash = hash; }
 
+    inline double getHashForJS() {
+        return static_cast<double>(getHash());
+    }
+
     bool destroy() override;
     bool validate() const override;
 

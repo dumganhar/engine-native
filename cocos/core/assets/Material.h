@@ -31,8 +31,8 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "cocos/base/Variant.h"
 #include "base/Ptr.h"
+#include "cocos/base/Variant.h"
 #include "core/Types.h"
 #include "core/assets/EffectAsset.h"
 #include "core/assets/TextureBase.h"
@@ -98,7 +98,10 @@ public:
      * @zh 获取一个材质的哈希值
      * @param material
      */
-    static uint64_t getHashForMaterial(Material *material);
+    static uint64_t      getHashForMaterial(Material *material);
+    inline static double getHashForMaterialForJS(Material *material) {
+        return static_cast<double>(getHashForMaterial(material));
+    }
 
     Material()           = default;
     ~Material() override = default;
@@ -287,6 +290,10 @@ public:
      */
     inline uint64_t getHash() const {
         return _hash;
+    }
+
+    inline double getHashForJS() const {
+        return static_cast<double>(getHash());
     }
 
     /**

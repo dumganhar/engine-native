@@ -104,7 +104,7 @@ static bool js_assets_TextureBase_registerGFXSamplerUpdatedListener(se::State &s
     auto *cobj = SE_THIS_OBJECT<cc::SimpleTexture>(s);
     SE_PRECONDITION2(cobj, false, "js_assets_TextureBase_registerGFXSamplerUpdatedListener : Invalid Native Object");
     auto *thisObj = s.thisObject();
-    cobj->on(cc::EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED, [thisObj](cc::gfx::Sampler *sampler, uint64_t samplerHash) {
+    cobj->on(cc::EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED, [thisObj](cc::gfx::Sampler *sampler, double samplerHash) {
         se::AutoHandleScope      hs;
         std::array<se::Value, 2> args;
         nativevalue_to_se(sampler, args[0], nullptr);

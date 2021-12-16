@@ -34,6 +34,7 @@
 
 #include "base/Log.h"
 #include "base/Macros.h"
+#include "base/Any.h"
 
 namespace {
 constexpr unsigned CC_REPEAT_FOREVER{UINT_MAX - 1};
@@ -246,7 +247,7 @@ bool Scheduler::isScheduled(const std::string &key, void *target) {
     }
 
     const auto &timers = element->timers;
-    return std::any_of(timers.begin(), timers.end(), [&key](Timer *t) {
+    return CC_ANY_OF(timers.begin(), timers.end(), [&key](Timer *t) {
         auto *timer = dynamic_cast<TimerTargetCallback *>(t);
         return (timer && key == timer->getKey());
     });

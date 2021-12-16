@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <any>
+#include "cocos/base/Any.h"
 
 #include "core/Types.h"
 #include "core/asset-manager/Shared.h"
@@ -34,11 +34,11 @@ namespace cc {
 
 struct IDependProp {
     std::string uuid;
-    std::any    owner;
+    cc::any    owner;
     std::string prop;
     AssetType   type; //cjh ?: Constructor<Asset>;
 };
 
-Asset *deserializeAsset(const Record<std::string, std::any> &json, const Record<std::string, std::any> &options);
+Asset *deserializeAsset(const Record<std::string, cc::any> &json, const Record<std::string, cc::any> &options);
 
 } // namespace cc

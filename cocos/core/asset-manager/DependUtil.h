@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <any>
+#include "cocos/base/Any.h"
 
 #include "core/Types.h"
 #include "core/asset-manager/Cache.h"
@@ -33,7 +33,7 @@
 namespace cc {
 
 struct IDependencies {
-    Record<std::string, std::any> nativeDep;
+    Record<std::string, cc::any> nativeDep;
     std::vector<std::string>      deps;
     bool                          parsedFromExistAsset{false};
     std::vector<std::string>      persistDeps;
@@ -70,7 +70,7 @@ public:
      * @example
      * var dep = dependUtil.getNativeDep('fcmR3XADNLgJ1ByKhqcC5Z');
      */
-    Record<std::string, std::any> getNativeDep(const std::string &uuid);
+    Record<std::string, cc::any> getNativeDep(const std::string &uuid);
 
     /**
      * @en
@@ -125,14 +125,14 @@ public:
      * });
      *
      */
-    IDependencies *parse(const std::string &uuid, const std::any &json);
+    IDependencies *parse(const std::string &uuid, const cc::any &json);
 
 private:
     IDependencies parseDepsFromAsset(const Asset *asset);
 
-    std::vector<std::string> parseDepsFromJson(const std::vector<std::any> &json);
+    std::vector<std::string> parseDepsFromJson(const std::vector<cc::any> &json);
 
-    void descend(const std::string &uuid, const Record<std::string, std::any> &exclude, const std::vector<std::string> &depends);
+    void descend(const std::string &uuid, const Record<std::string, cc::any> &exclude, const std::vector<std::string> &depends);
 };
 
 } // namespace cc

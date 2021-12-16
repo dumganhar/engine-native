@@ -43,7 +43,7 @@ struct IConfigOption {
     std::string                                   name;
     std::vector<std::string>                      deps;
     std::vector<std::string>                      uuids;
-    Record<std::string, std::vector<std::any>>    paths;
+    Record<std::string, std::vector<cc::any>>    paths;
     Record<std::string, std::string>              scenes;
     Record<std::string, std::vector<std::string>> packs;
     Versions                                      versions;

@@ -27,6 +27,7 @@
 
 #include "GLES3Std.h"
 #include "gfx-base/GFXDevice.h"
+#include "base/Any.h"
 
 namespace cc {
 namespace gfx {
@@ -70,7 +71,7 @@ public:
     inline GLES3GPUFramebufferCacheMap *framebufferCacheMap() const { return _gpuFramebufferCacheMap; }
 
     inline bool checkExtension(const String &extension) const {
-        return std::any_of(_extensions.begin(), _extensions.end(), [&extension](auto &ext) {
+        return CC_ANY_OF(_extensions.begin(), _extensions.end(), [&extension](auto &ext) {
             return ext.find(extension) != String::npos;
         });
     }

@@ -43,12 +43,12 @@ using RetryFunction = std::function<void(uint32_t times, const CompleteCallback 
 
 void retry(const RetryFunction &process, uint32_t times, uint32_t wait, const CompleteCallback &onComplete, uint32_t index = 0);
 
-void getDepends(const std::string &uuid, Asset *data, const Record<std::string, std::any> &exclude, std::vector<Record<std::string, std::any>> &depends, Config *config);
-void getDepends(const std::string &uuid, const Record<std::string, std::any> &data, const Record<std::string, std::any> &exclude, std::vector<Record<std::string, std::any>> &depends, Config *config);
+void getDepends(const std::string &uuid, Asset *data, const Record<std::string, cc::any> &exclude, std::vector<Record<std::string, cc::any>> &depends, Config *config);
+void getDepends(const std::string &uuid, const Record<std::string, cc::any> &data, const Record<std::string, cc::any> &exclude, std::vector<Record<std::string, cc::any>> &depends, Config *config);
 
 void cache(const std::string &id, Asset *asset, bool cacheAsset = false);
 
-void setProperties(const std::string &uuid, Asset *asset, const Record<std::string, std::any> &assetsMap);
+void setProperties(const std::string &uuid, Asset *asset, const Record<std::string, cc::any> &assetsMap);
 
 void gatherAsset(Task &task);
 
@@ -82,9 +82,9 @@ ILoadResArgs<T> parseLoadResArgs(const cc::variant<AssetType, ProgressCallback, 
                                  const cc::variant<ProgressCallback, T> &           onProgress,
                                  const T &                                           onComplete);
 
-bool checkCircleReference(const std::string &owner, const std::string &uuid, const Record<std::string, std::any> &map, const Record<std::string, bool> &checked = {});
+bool checkCircleReference(const std::string &owner, const std::string &uuid, const Record<std::string, cc::any> &map, const Record<std::string, bool> &checked = {});
 
-using AsyncifyFunction = std::function<void(const std::any &p1, const std::any &p2)>;
+using AsyncifyFunction = std::function<void(const cc::any &p1, const cc::any &p2)>;
 AsyncifyFunction asyncify(const AsyncifyFunction &cb);
 
 } // namespace cc

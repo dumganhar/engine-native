@@ -28,7 +28,7 @@
 #include "core/Types.h"
 #include "core/asset-manager/AssetManagerConfig.h"
 
-#include <any>
+#include "cocos/base/Any.h"
 #include <functional>
 
 namespace cc {

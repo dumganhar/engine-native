@@ -27,8 +27,8 @@
 
 namespace cc {
 //ContainerStrategy
-std::any ContainerStrategy::EQUAL_TO_FRAME{nullptr};
-std::any ContainerStrategy::PROPORTION_TO_FRAME{nullptr};
+cc::any ContainerStrategy::EQUAL_TO_FRAME{nullptr};
+cc::any ContainerStrategy::PROPORTION_TO_FRAME{nullptr};
 
 //ContentStrategy
 ContentStrategy::ContentStrategy() {
@@ -36,11 +36,11 @@ ContentStrategy::ContentStrategy() {
     _result.viewport = nullptr;
 }
 
-std::any ContentStrategy::EXACT_FIT{nullptr};
-std::any ContentStrategy::SHOW_ALL{nullptr};
-std::any ContentStrategy::NO_BORDER{nullptr};
-std::any ContentStrategy::FIXED_HEIGHT{nullptr};
-std::any ContentStrategy::FIXED_WIDTH{nullptr};
+cc::any ContentStrategy::EXACT_FIT{nullptr};
+cc::any ContentStrategy::SHOW_ALL{nullptr};
+cc::any ContentStrategy::NO_BORDER{nullptr};
+cc::any ContentStrategy::FIXED_HEIGHT{nullptr};
+cc::any ContentStrategy::FIXED_WIDTH{nullptr};
 
 //ResolutionPolicy
 ResolutionPolicy::ResolutionPolicy(ContainerStrategy *containerStg, ContentStrategy *contentStg) {

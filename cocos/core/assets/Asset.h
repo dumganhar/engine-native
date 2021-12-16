@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <any>
+#include "cocos/base/Any.h"
 #include <functional>
 #include "cocos/base/Optional.h"
 
@@ -70,11 +70,11 @@ public:
      * @default null
      * @private
      */
-    virtual std::any getNativeAsset() const {
+    virtual cc::any getNativeAsset() const {
         return _file;
     }
 
-    virtual void setNativeAsset(const std::any &obj) {
+    virtual void setNativeAsset(const cc::any &obj) {
         _file = obj;
     }
 
@@ -111,13 +111,13 @@ public:
     /**
      * @return
      */
-    virtual std::any serialize(const std::any & /*ctxForExporting*/) { return std::any(); };
+    virtual cc::any serialize(const cc::any & /*ctxForExporting*/) { return cc::any(); };
 
     /**
      *
      * @param data
      */
-    virtual void deserialize(const std::any &serializedData, const std::any &handle){};
+    virtual void deserialize(const cc::any &serializedData, const cc::any &handle){};
 
     std::string toString() const override { return _nativeUrl; }
 
@@ -143,7 +143,7 @@ public:
 protected:
     std::string _uuid;
 
-    std::any _file;
+    cc::any _file;
     uint32_t _ref{0};
 
     bool _loaded{true};

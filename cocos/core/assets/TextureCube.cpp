@@ -140,7 +140,7 @@ bool TextureCube::destroy() {
     return Super::destroy();
 }
 
-std::any TextureCube::serialize(const std::any & /*ctxForExporting*/) {
+cc::any TextureCube::serialize(const cc::any & /*ctxForExporting*/) {
     //cjh TODO:    if (EDITOR || TEST) {
     //        return {
     //            base: super._serialize(ctxForExporting),
@@ -165,8 +165,8 @@ std::any TextureCube::serialize(const std::any & /*ctxForExporting*/) {
     return nullptr;
 }
 
-void TextureCube::deserialize(const std::any &serializedData, const std::any &handle) {
-    const auto *data = std::any_cast<ITextureCubeSerializeData>(&serializedData);
+void TextureCube::deserialize(const cc::any &serializedData, const cc::any &handle) {
+    const auto *data = CC_ANY_CAST<ITextureCubeSerializeData>(&serializedData);
     if (data == nullptr) {
         return;
     }

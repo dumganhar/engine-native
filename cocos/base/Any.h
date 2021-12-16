@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
-
+ 
  http://www.cocos.com
-
+ 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
-
+ 
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
-
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,32 +21,33 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
-****************************************************************************/
+ ****************************************************************************/
 
 #pragma once
 
-#include "cocos/base/Any.h"
+#ifdef USE_CXX_17
+    #include <any>
+    #define CC_ANY_CAST std::any_cast
+    #define CC_ANY_OF   std::any_of
 
-#include "core/Types.h"
-#include "core/asset-manager/Shared.h"
+    using any = std::any;
+
+#else
+    #include "boost/any.hpp"
+    #include "boost/algorithm/cxx11/any_of.hpp"
+
+    #define CC_ANY_CAST boost::any_cast
+    #define CC_ANY_OF   boost::algorithm::any_of
 
 namespace cc {
-
-using CreateHandler = std::function<void(const std::string &id, const cc::any &data, const IDownloadParseOptions &options, const CompleteCallback &onComplete)>;
-
-class Factory final {
+class any : public boost::any {
 public:
-    static Factory *getInstance();
+    using boost::any::any;
 
-    void registerCustomHandlerWithType(const std::string &type, const CreateHandler &handler);
-    void registerCustomHandlerWithMap(const Record<std::string, CreateHandler> &map);
-
-    void create(const std::string &id, const cc::any &data, const std::string &type, const IRemoteOptions &options, const CompleteCallback &onComplete);
-
-private:
-    Record<std::string, CreateHandler> _producers;
-
-    Cache<std::vector<CompleteCallback>> _creating;
+    bool has_value() const noexcept {
+        return !this->empty();
+    }
 };
 
-} // namespace cc
+}; // namespace cc
+#endif

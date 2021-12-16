@@ -128,7 +128,7 @@ void Texture2D::releaseTexture() {
     destroy();
 }
 
-std::any Texture2D::serialize(const std::any & /*ctxForExporting*/) {
+cc::any Texture2D::serialize(const cc::any & /*ctxForExporting*/) {
     //    if (EDITOR || TEST) {
     //        return {
     //            base: super._serialize(ctxForExporting),
@@ -147,8 +147,8 @@ std::any Texture2D::serialize(const std::any & /*ctxForExporting*/) {
     return nullptr;
 }
 
-void Texture2D::deserialize(const std::any &serializedData, const std::any &handle) {
-    const auto *data = std::any_cast<ITexture2DSerializeData>(&serializedData);
+void Texture2D::deserialize(const cc::any &serializedData, const cc::any &handle) {
+    const auto *data = CC_ANY_CAST<ITexture2DSerializeData>(&serializedData);
     if (data == nullptr) {
         CC_LOG_WARNING("serializedData is not ITexture2DSerializeData");
         return;

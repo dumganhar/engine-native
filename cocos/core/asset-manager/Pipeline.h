@@ -30,7 +30,7 @@
 #include "core/asset-manager/Task.h"
 #include "cocos/base/Variant.h"
 
-#include <any>
+#include "cocos/base/Any.h"
 #include <functional>
 
 namespace cc {
@@ -195,7 +195,7 @@ public:
      * console.log(pipeline.sync(task));
      *
      */
-    std::any sync(const Task *task);
+    cc::any sync(const Task *task);
 
     /**
      * @en

@@ -28,7 +28,7 @@
 #include "core/Types.h"
 #include "core/asset-manager/Cache.h"
 
-#include <any>
+#include "cocos/base/Any.h"
 #include "cocos/base/Variant.h"
 
 namespace cc {
@@ -38,7 +38,7 @@ class Asset;
 class Bundle;
 class Pipeline;
 
-struct IXHROptions { //cjh why to inherit from map? } : public Record<std::string, std::any> {
+struct IXHROptions { //cjh why to inherit from map? } : public Record<std::string, cc::any> {
     std::string                      xhrResponseType;
     bool                             xhrWithCredentials{false};
     uint32_t                         xhrTimeout;
@@ -91,7 +91,7 @@ struct IRequest : public IOptions {
     std::string scene;
 };
 
-using CompleteCallback       = std::function<void(const Error *err, const std::any &data)>;
+using CompleteCallback       = std::function<void(const Error *err, const cc::any &data)>;
 using CompleteCallbackNoData = std::function<void(const Error *err)>;
 
 template <typename T>
@@ -106,13 +106,13 @@ using AssetType = std::function<void()>;
 namespace shared {
 
 extern Cache<Asset *>               assets; //cjh EDITOR ? new WeakCache<Asset>() : new Cache<Asset>();
-extern Cache<std::any>              files;
-extern Cache<std::any>              parsed;
+extern Cache<cc::any>              files;
+extern Cache<cc::any>              parsed;
 extern Cache<Bundle *>              bundles;
 extern Pipeline *                   pipeline;          //cjh implement in cpp = new ('normal load', []);
 extern Pipeline *                   fetchPipeline;     //cjh = new Pipeline('fetch', []);
 extern Pipeline *                   transformPipeline; //cjh = new Pipeline('transform url', []);
-extern Cache<std::vector<std::any>> references;        //cjh = EDITOR ? new Cache<any[]>() : null;
+extern Cache<std::vector<cc::any>> references;        //cjh = EDITOR ? new Cache<any[]>() : null;
 
 extern const std::string RequestType_UUID;
 
@@ -124,7 +124,7 @@ extern const std::string RequestType_URL;
 
 extern const std::string RequestType_SCENE;
 
-extern Record<std::string, Record<std::string, std::any>> presets;
+extern Record<std::string, Record<std::string, cc::any>> presets;
 
 /**
  * @en

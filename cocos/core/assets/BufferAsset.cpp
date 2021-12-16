@@ -27,12 +27,12 @@
 
 namespace cc {
 
-std::any BufferAsset::getNativeAsset() const {
+cc::any BufferAsset::getNativeAsset() const {
     return _buffer;
 }
 
-void BufferAsset::setNativeAsset(const std::any &obj) {
-    _buffer = std::any_cast<ArrayBuffer *>(obj);
+void BufferAsset::setNativeAsset(const cc::any &obj) {
+    _buffer = CC_ANY_CAST<ArrayBuffer *>(obj);
 }
 
 } // namespace cc

@@ -120,7 +120,7 @@ gfx::Sampler *TextureBase::getGFXSampler() const {
     return _gfxSampler.get();
 }
 
-std::any TextureBase::serialize(const std::any &ctxForExporting) {
+cc::any TextureBase::serialize(const cc::any &ctxForExporting) {
     //cjh TODO:    if (EDITOR || TEST) {
     //        return `${this._minFilter},${this._magFilter},${
     //            this._wrapS},${this._wrapT},${
@@ -129,8 +129,8 @@ std::any TextureBase::serialize(const std::any &ctxForExporting) {
     return std::string("");
 }
 
-void TextureBase::deserialize(const std::any &serializedData, const std::any &handle) {
-    const std::string *pData = std::any_cast<const std::string>(&serializedData);
+void TextureBase::deserialize(const cc::any &serializedData, const cc::any &handle) {
+    const std::string *pData = CC_ANY_CAST<const std::string>(&serializedData);
     if (pData == nullptr) {
         return;
     }

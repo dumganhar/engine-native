@@ -75,9 +75,10 @@ protected:
     void onStateChange();
 
 private:
-    SharedPtr<scene::Pass>      _parent;
-    SharedPtr<MaterialInstance> _owner;
-    bool                        _dontNotify{false};
+    SharedPtr<scene::Pass> _parent;
+    // Weak reference.
+    MaterialInstance *_owner{nullptr};
+    bool              _dontNotify{false};
 };
 
 } // namespace cc

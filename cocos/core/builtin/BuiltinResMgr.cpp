@@ -215,6 +215,8 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
         effect->hideInEditor = true;
         effect->onLoaded();
 
+        delete effect;
+
         ++effectIndex;
     }
 
@@ -227,7 +229,7 @@ void BuiltinResMgr::initMaterials() {
     auto &resources = _resources;
 
     // standard material
-    SharedPtr<Material> standardMtl = new Material();
+    auto *standardMtl = new Material();
     standardMtl->setUuid("standard-material");
     IMaterialInfo standardInfo{
         .effectName = "standard",
@@ -237,8 +239,8 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(standardMtl);
 
     // material indicating missing effect (yellow)
-    SharedPtr<Material> missingEfxMtl = new Material();
-    IMaterialInfo       missingEfxInfo{.effectName = "unlit",
+    auto *        missingEfxMtl = new Material();
+    IMaterialInfo missingEfxInfo{.effectName = "unlit",
                                  .defines    = MacroRecord{{"USE_COLOR", true}}};
     missingEfxMtl->setUuid("missing-effect-material");
     missingEfxMtl->initialize(missingEfxInfo);
@@ -247,8 +249,8 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(missingEfxMtl);
 
     // material indicating missing material (purple)
-    SharedPtr<Material> missingMtl = new Material();
-    IMaterialInfo       missingInfo{
+    auto *        missingMtl = new Material();
+    IMaterialInfo missingInfo{
         .effectName = "unlit",
         .defines    = MacroRecord{
             {"USE_COLOR", true}}};
@@ -258,8 +260,8 @@ void BuiltinResMgr::initMaterials() {
     resources[missingMtl->getUuid()] = missingMtl;
     _materialsToBeCompiled.emplace_back(missingMtl);
 
-    SharedPtr<Material> clearStencilMtl = new Material();
-    IMaterialInfo       clearStencilInfo{
+    auto *        clearStencilMtl = new Material();
+    IMaterialInfo clearStencilInfo{
         .effectName = "clear-stencil",
         .defines    = MacroRecord{
             {"USE_TEXTURE", false}}};
@@ -269,7 +271,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(clearStencilMtl);
 
     // sprite material
-    SharedPtr<Material> spriteMtl = new Material();
+    auto *spriteMtl = new Material();
     spriteMtl->setUuid("ui-base-material");
     IMaterialInfo spriteInfo{
         .effectName = "sprite",
@@ -280,7 +282,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(spriteMtl);
 
     // sprite material
-    SharedPtr<Material> spriteColorMtl = new Material();
+    auto *spriteColorMtl = new Material();
     spriteColorMtl->setUuid("ui-sprite-material");
     IMaterialInfo spriteColorInfo{
         .effectName = "sprite",
@@ -291,8 +293,8 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(spriteColorMtl);
 
     // sprite alpha test material
-    SharedPtr<Material> alphaTestMaskMtl = new Material();
-    IMaterialInfo       alphaTestMaskInfo{
+    auto *        alphaTestMaskMtl = new Material();
+    IMaterialInfo alphaTestMaskInfo{
         .effectName = "sprite",
         .defines    = MacroRecord{
             {"USE_TEXTURE", true}, {"USE_ALPHA_TEST", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}};
@@ -302,7 +304,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(alphaTestMaskMtl);
 
     // sprite gray material
-    SharedPtr<Material> spriteGrayMtl = new Material();
+    auto *spriteGrayMtl = new Material();
     spriteGrayMtl->setUuid("ui-sprite-gray-material");
     IMaterialInfo spriteGrayInfo{
         .effectName = "sprite",
@@ -313,7 +315,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(spriteGrayMtl);
 
     // sprite alpha material
-    SharedPtr<Material> spriteAlphaMtl = new Material();
+    auto *spriteAlphaMtl = new Material();
     spriteAlphaMtl->setUuid("ui-sprite-alpha-sep-material");
     IMaterialInfo spriteAlphaInfo{
         .effectName = "sprite",
@@ -324,8 +326,8 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(spriteAlphaMtl);
 
     // sprite alpha & gray material
-    SharedPtr<Material> spriteAlphaGrayMtl = new Material();
-    IMaterialInfo       spriteAlphaGrayInfo{
+    auto *        spriteAlphaGrayMtl = new Material();
+    IMaterialInfo spriteAlphaGrayInfo{
         .effectName = "sprite",
         .defines    = MacroRecord{
             {"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", true}}};
@@ -335,7 +337,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(spriteAlphaGrayMtl);
 
     // ui graphics material
-    SharedPtr<Material> defaultGraphicsMtl = new Material();
+    auto *defaultGraphicsMtl = new Material();
     defaultGraphicsMtl->setUuid("ui-graphics-material");
     IMaterialInfo defaultGraphicsInfo{.effectName = "graphics"};
     defaultGraphicsMtl->initialize(defaultGraphicsInfo);
@@ -343,7 +345,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(defaultGraphicsMtl);
 
     // default particle material
-    SharedPtr<Material> defaultParticleMtl = new Material();
+    auto *defaultParticleMtl = new Material();
     defaultParticleMtl->setUuid("default-particle-material");
     IMaterialInfo defaultParticleInfo{.effectName = "particle"};
     defaultParticleMtl->initialize(defaultParticleInfo);
@@ -351,7 +353,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(defaultParticleMtl);
 
     // default particle gpu material
-    SharedPtr<Material> defaultParticleGPUMtl = new Material();
+    auto *defaultParticleGPUMtl = new Material();
     defaultParticleGPUMtl->setUuid("default-particle-gpu-material");
     IMaterialInfo defaultParticleGPUInfo{.effectName = "particle-gpu"};
     defaultParticleGPUMtl->initialize(defaultParticleGPUInfo);
@@ -359,7 +361,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(defaultParticleGPUMtl);
 
     // default particle material
-    SharedPtr<Material> defaultTrailMtl = new Material();
+    auto *defaultTrailMtl = new Material();
     defaultTrailMtl->setUuid("default-trail-material");
     IMaterialInfo defaultTrailInfo{.effectName = "particle-trail"};
     defaultTrailMtl->initialize(defaultTrailInfo);
@@ -367,7 +369,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(defaultTrailMtl);
 
     // default particle material
-    SharedPtr<Material> defaultBillboardMtl = new Material();
+    auto *defaultBillboardMtl = new Material();
     defaultBillboardMtl->setUuid("default-billboard-material");
     IMaterialInfo defaultBillboardInfo{.effectName = "billboard"};
     defaultBillboardMtl->initialize(defaultBillboardInfo);
@@ -375,7 +377,7 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(defaultBillboardMtl);
 
     // ui spine two color material
-    SharedPtr<Material> spineTwoColorMtl = new Material();
+    auto *spineTwoColorMtl = new Material();
     spineTwoColorMtl->setUuid("default-spine-material");
     IMaterialInfo spineTwoColorInfo{
         .effectName = "spine",

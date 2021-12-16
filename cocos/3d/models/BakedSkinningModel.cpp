@@ -133,7 +133,7 @@ void BakedSkinningModel::applyJointTexture(const std::optional<IJointTextureHand
     if (!texture.has_value()) {
         return;
     }
-    auto *buffer           = _jointMedium.buffer;
+    auto *buffer           = _jointMedium.buffer.get();
     auto &jointTextureInfo = _jointMedium.jointTextureInfo;
     jointTextureInfo[0]    = texture->handle.texture->getWidth();
     jointTextureInfo[1]    = _skeleton->getJoints().size();
@@ -228,7 +228,7 @@ void BakedSkinningModel::syncDataForJS(const std::vector<std::optional<geometry:
 
     updateInstancedJointTextureInfo();
 
-    auto *buffer = _jointMedium.buffer;
+    auto *buffer = _jointMedium.buffer.get();
     if (buffer != nullptr) {
         buffer->update(&_jointMedium.jointTextureInfo[0], _jointMedium.jointTextureInfo.byteLength());
     }

@@ -159,7 +159,7 @@ protected:
 
     void updateAttributesAndBinding(index_t subModelIndex);
 
-    SubModel *createSubModel() const;
+    static SubModel *createSubModel();
 
     Type                      _type{Type::DEFAULT};
     bool                      _transformUpdated{false};

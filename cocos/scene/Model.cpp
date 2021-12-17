@@ -244,7 +244,7 @@ void Model::createBoundingShape(const cc::optional<Vec3> &minPos, const cc::opti
     _worldBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB()); // AABB.clone(this._modelBounds) in ts
 }
 
-SubModel *Model::createSubModel() const { //NOLINT(readability-convert-member-functions-to-static)
+SubModel *Model::createSubModel() {
     return new SubModel();
 }
 

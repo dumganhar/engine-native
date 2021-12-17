@@ -26,15 +26,16 @@
 #include "renderer/core/ProgramLib.h"
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <functional>
 #include <numeric>
-#include "cocos/base/Optional.h"
 #include <ostream>
 #include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
 #include "base/Log.h"
+#include "cocos/base/Optional.h"
 #include "core/Types.h"
 #include "core/assets/EffectAsset.h"
 #include "renderer/core/PassUtils.h"
@@ -103,7 +104,7 @@ std::vector<IMacroInfo> prepareDefines(const MacroRecord &records, const std::ve
         auto        it    = records.find(name);
         auto        value = mapDefine(tmp, it == records.end() ? CC_NULLOPT : cc::optional<MacroValue>(it->second));
         //TODO(PatriceJiang): v === '0' can be bool ?
-        
+
         bool isDefault = it == records.end() || (CC_HOLDS_ALTERNATIVE<std::string>(it->second) && CC_GET<std::string>(it->second) == "0");
         macros.emplace_back(IMacroInfo{.name = name, .value = value, .isDefault = isDefault});
     }
@@ -123,7 +124,7 @@ std::string getShaderInstanceName(const std::string &name, const std::vector<IMa
 
 void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, const pipeline::DescriptorSetLayoutInfos &source,
                            const std::string &type, std::vector<gfx::DescriptorSetLayoutBinding> *outBindings) {
-    auto &target = type == "globals" ? tmpl.builtins.globals : tmpl.builtins.locals;
+    const auto &target = type == "globals" ? tmpl.builtins.globals : tmpl.builtins.locals;
 
     // Blocks
     std::vector<gfx::UniformBlock> tempBlocks{};
@@ -181,7 +182,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
 int32_t getSize(const IBlockInfo &block) {
     auto s = 0;
     for (const auto &m : block.members) {
-        s += getTypeSize(m.type) * m.count;
+        s += static_cast<int>(getTypeSize(m.type) * m.count);
     }
     return s;
 }
@@ -191,7 +192,7 @@ auto genHandles(const IProgramInfo &tmpl) {
     // block member handles
     for (const auto &block : tmpl.blocks) {
         const auto members = block.members;
-        auto       offset  = 0;
+        uint32_t   offset  = 0;
         for (const auto &uniform : members) {
             handleMap[uniform.name] = genHandle(PropertyType::BUFFER,
                                                 static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
@@ -212,8 +213,8 @@ auto genHandles(const IProgramInfo &tmpl) {
 }
 
 bool dependencyCheck(const std::vector<std::string> &dependencies, const MacroRecord &defines) {
-    for (const auto &d : dependencies) {
-        if (d[0] == '!') { // negative dependency
+    for (const auto &d : dependencies) { //NOLINT(readability-use-anyofallof)
+        if (d[0] == '!') {               // negative dependency
             if (defines.find(d.substr(1)) != defines.end()) {
                 return false;
             }
@@ -288,7 +289,7 @@ ProgramLib *ProgramLib::getInstance() {
 
 void ProgramLib::registerEffect(EffectAsset *effect) {
     for (auto i = 0; i < effect->_shaders.size(); i++) {
-        auto tmpl        = define(effect->_shaders[i]);
+        auto *tmpl       = define(effect->_shaders[i]);
         tmpl->effectName = effect->getName();
     }
 }
@@ -318,7 +319,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
                 return 0;
             };
         } else if (def.type == "string") {
-            cnt     = getBitCount(def.options.value().size());
+            cnt     = getBitCount(static_cast<int32_t>(def.options.value().size()));
             def.map = [=](const MacroValue &value) -> int32_t {
                 const auto *pValue = CC_GET_IF<std::string>(&value);
                 if (pValue != nullptr) {
@@ -367,7 +368,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
     if (_templateInfos.count(tmpl.hash) == 0) {
         ITemplateInfo tmplInfo{};
         // cache material-specific descriptor set layout
-        tmplInfo.samplerStartBinding = tmpl.blocks.size();
+        tmplInfo.samplerStartBinding = static_cast<int32_t>(tmpl.blocks.size());
         tmplInfo.gfxBlocks           = {};
         tmplInfo.gfxSamplerTextures  = {};
         tmplInfo.bindings            = {};
@@ -501,9 +502,9 @@ std::string ProgramLib::getKey(const std::string &name, const MacroRecord &defin
             if (itDef == defines.end() || !tmplDef.map) {
                 continue;
             }
-            auto &value  = itDef->second;
-            auto  mapped = tmplDef.map(value);
-            auto  offset = tmplDef.offset;
+            const auto &value  = itDef->second;
+            auto        mapped = tmplDef.map(value);
+            auto        offset = tmplDef.offset;
             key << offset << mapped << "|";
         }
         std::string ret{key.str() + std::to_string(tmpl.hash)};
@@ -516,9 +517,9 @@ std::string ProgramLib::getKey(const std::string &name, const MacroRecord &defin
         if (itDef == defines.end() || !tmplDef.map) {
             continue;
         }
-        auto &value  = itDef->second;
-        auto  mapped = tmplDef.map(value);
-        auto  offset = tmplDef.offset;
+        const auto &value  = itDef->second;
+        auto        mapped = tmplDef.map(value);
+        auto        offset = tmplDef.offset;
         key |= (mapped << offset);
     }
     ss << std::hex << key << "|" << std::to_string(tmpl.hash);

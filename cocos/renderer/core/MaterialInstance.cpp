@@ -41,7 +41,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
                 _states.resize(i + 1);
             }
             auto &state = _states[i];
-            state.overrides(overrides);
+            state.overrides(IPassInfoFull(overrides));
             pass->overridePipelineStates(passInfos[pass->getPassIndex()], state);
         }
     } else {
@@ -49,7 +49,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
             _states.resize(passIdx + 1);
         }
         auto &state = _states[passIdx];
-        state.overrides(overrides);
+        state.overrides(IPassInfoFull(overrides));
         _passes[passIdx]->overridePipelineStates(passInfos[passIdx], state);
     }
 }
@@ -72,8 +72,9 @@ std::vector<SharedPtr<scene::Pass>> MaterialInstance::createPasses() {
     std::vector<SharedPtr<scene::Pass>> passes;
     auto &                              parentPasses = _parent->getPasses();
 
-    for (size_t k = 0; k < parentPasses.size(); ++k) {
-        passes.emplace_back(new PassInstance(parentPasses[k], this));
+    passes.reserve(parentPasses.size());
+    for (auto &parentPass : parentPasses) {
+        passes.emplace_back(new PassInstance(parentPass, this));
     }
     return passes;
 }

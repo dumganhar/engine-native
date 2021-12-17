@@ -26,8 +26,8 @@
 #pragma once
 
 #include <string>
-#include "cocos/base/Variant.h"
 #include "base/TypeDef.h"
+#include "cocos/base/Variant.h"
 #include "core/Types.h"
 #include "core/assets/TextureBase.h"
 
@@ -97,17 +97,14 @@ using MaterialPropertyList = std::vector<MaterialProperty>;
 
 using MaterialPropertyVariant = cc::variant<cc::monostate /*0*/, MaterialProperty /*1*/, MaterialPropertyList /*2*/>;
 
-#define MaterialPropertyIndexSingle (1)
-#define MaterialPropertyIndexList   (2)
+#define MATERIAL_PROPERTY_INDEX_SINGLE 1
+#define MATERIAL_PROPERTY_INDEX_LIST   2
 
 using GFXTypeReaderCallback = void (*)(const float *, MaterialProperty &, index_t);
 using GFXTypeWriterCallback = void (*)(float *, const MaterialProperty &, index_t);
 
-//NOLINTNEXTLINE
-extern const std::unordered_map<gfx::Type, GFXTypeReaderCallback> type2reader;
-
-//NOLINTNEXTLINE
-extern const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer;
+extern const std::unordered_map<gfx::Type, GFXTypeReaderCallback> type2reader; //NOLINT(readability-identifier-naming)
+extern const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer; //NOLINT(readability-identifier-naming)
 
 /**
  * @en Gets the default values for the given type of uniform

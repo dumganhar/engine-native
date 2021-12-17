@@ -31,7 +31,7 @@ void Prefab::createNode(const CreateNodeCallback &cb) {
     //cjh TODO:
 }
 
-Node *Prefab::instantiate() {
+Node *Prefab::instantiate() { //NOLINT
     //cjh TODO:
     return nullptr;
 }

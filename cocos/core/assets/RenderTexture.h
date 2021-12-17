@@ -33,8 +33,8 @@ namespace cc {
 
 struct IRenderTextureCreateInfo {
     cc::optional<std::string>         name;
-    uint32_t                           width;
-    uint32_t                           height;
+    uint32_t                          width;
+    uint32_t                          height;
     cc::optional<gfx::RenderPassInfo> passInfo;
 };
 namespace scene {
@@ -88,7 +88,7 @@ public:
      */
     void resize(uint32_t width, uint32_t height);
 
-    // TODO: migration with TextureBase data
+    // TODO(minggo): migration with TextureBase data
     // @ts-expect-error Hack
     //    get _serialize () { return null; }
     // @ts-expect-error Hack

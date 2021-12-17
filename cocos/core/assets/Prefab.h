@@ -69,7 +69,7 @@ public:
         MULTI_INSTANCE = 2,
     };
 
-    static constexpr uint32_t OptimizationPolicyThreshold = 3;
+    static constexpr uint32_t OPTIMIZATION_POLICY_THRESHOLD = 3;
 
     /**
      * @en The main [[Node]] in the prefab
@@ -104,8 +104,8 @@ public:
 
     Node *instantiate();
 
-    void         initDefault(const cc::optional<std::string> &uuid) override;
-    virtual bool validate() const override { return _data.has_value(); }
+    void initDefault(const cc::optional<std::string> &uuid) override;
+    bool validate() const override { return _data.has_value(); }
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(Prefab);

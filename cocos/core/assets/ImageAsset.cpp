@@ -39,7 +39,7 @@ ImageAsset::~ImageAsset() {
 
 void ImageAsset::setNativeAsset(const cc::any &obj) {
     if (obj.has_value()) {
-        if (auto **pImage = const_cast<Image**>(CC_ANY_CAST<Image*>(&obj)); pImage != nullptr) {
+        if (auto **pImage = const_cast<Image **>(CC_ANY_CAST<Image *>(&obj)); pImage != nullptr) {
             Image *image = *pImage;
             image->takeData(&_data);
             _needFreeData = true;
@@ -77,7 +77,7 @@ PixelFormat ImageAsset::getFormat() const {
 }
 
 bool ImageAsset::isCompressed() const {
-    return (_format >= PixelFormat::RGB_ETC1 && _format <= PixelFormat::RGBA_ASTC_12x12) || (_format >= PixelFormat::RGB_A_PVRTC_2BPPV1 && _format <= PixelFormat::RGBA_ETC1);
+    return (_format >= PixelFormat::RGB_ETC1 && _format <= PixelFormat::RGBA_ASTC_12X12) || (_format >= PixelFormat::RGB_A_PVRTC_2BPPV1 && _format <= PixelFormat::RGBA_ETC1);
 }
 
 std::string ImageAsset::getUrl() const {

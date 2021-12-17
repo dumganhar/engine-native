@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include "cocos/base/Variant.h"
 #include "base/Vector.h"
+#include "cocos/base/Variant.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "renderer/gfx-base/GFXDef.h"
@@ -175,15 +175,14 @@ public:
     inline void  setMesh(Mesh *mesh) { _mesh = mesh; }
     inline Mesh *getMesh() const { return _mesh; }
 
-    inline void                           setSubMeshIdx(uint32_t idx) { _subMeshIdx = idx; }
+    inline void                          setSubMeshIdx(uint32_t idx) { _subMeshIdx = idx; }
     inline const cc::optional<uint32_t> &getSubMeshIdx() const { return _subMeshIdx; }
 
 private:
     gfx::Buffer *allocVertexIdBuffer(gfx::Device *device);
 
-private:
     // Mesh will includes RenderingSubMesh, so use Mesh* here.
-    Mesh *                  _mesh{nullptr};
+    Mesh *                 _mesh{nullptr};
     cc::optional<uint32_t> _subMeshIdx;
 
     std::vector<IFlatBuffer> _flatBuffers;

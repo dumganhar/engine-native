@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "core/assets/RenderingSubMesh.h"
+#include <cstdint>
 #include "3d/assets/Mesh.h"
 #include "3d/misc/Buffer.h"
 #include "core/DataView.h"
@@ -103,7 +104,7 @@ const IGeometricInfo &RenderingSubMesh::geometricInfo() {
                     min.set(positions[0], positions[1], positions[2]);
                 }
 
-                for (size_t i = 0; i < positions.length(); i += count) {
+                for (int i = 0; i < positions.length(); i += static_cast<int>(count)) {
                     if (count == 2) {
                         max.x = positions[i] > max.x ? positions[i] : max.x;
                         max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
@@ -159,14 +160,14 @@ void RenderingSubMesh::genFlatBuffers() {
             continue;
         }
 
-        TypedArray ibView = _mesh->readIndices(_subMeshIdx.value());
+        TypedArray ibView = _mesh->readIndices(static_cast<int>(_subMeshIdx.value()));
         // transform to flat buffer
         for (uint32_t n = 0; n < idxCount; ++n) {
-            int32_t  idx       = getTypedArrayValue<int32_t>(ibView, n);
+            auto     idx       = getTypedArrayValue<int32_t>(ibView, static_cast<int>(n));
             uint32_t offset    = n * vbStride;
             uint32_t srcOffset = idx * vbStride;
             for (uint32_t m = 0; m < vbStride; ++m) {
-                sharedView[offset + m] = view[srcOffset + m];
+                sharedView[static_cast<int>(offset + m)] = view[static_cast<int>(srcOffset + m)];
             }
         }
         _flatBuffers.emplace_back(IFlatBuffer{vbStride, vbCount, std::move(sharedView)});
@@ -203,8 +204,8 @@ bool RenderingSubMesh::destroy() {
     CC_SAFE_DESTROY_NULL(_indexBuffer);
 
     if (!_jointMappedBuffers.empty() && !_jointMappedBufferIndices.empty()) {
-        for (int index : _jointMappedBufferIndices) {
-            _jointMappedBuffers.at(index)->destroy();
+        for (uint32_t index : _jointMappedBufferIndices) {
+            _jointMappedBuffers.at(static_cast<int>(index))->destroy();
         }
         _jointMappedBuffers.clear();
         _jointMappedBufferIndices.clear();
@@ -227,7 +228,7 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
         return _jointMappedBuffers.get();
     }
 
-    auto &      structInfo = _mesh->getStruct();
+    const auto &structInfo = _mesh->getStruct();
     const auto &prim       = structInfo.primitives[_subMeshIdx.value()];
     if (!structInfo.jointMaps.has_value() || !prim.jointMapIndex.has_value() || structInfo.jointMaps.value()[prim.jointMapIndex.value()].empty()) {
         _jointMappedBuffers = _vertexBuffers;
@@ -240,13 +241,12 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
         const auto &bundle = structInfo.vertexBundles[prim.vertexBundelIndices[i]];
         jointOffset        = 0;
         jointFormat        = gfx::Format::UNKNOWN;
-        for (size_t j = 0; j < bundle.attributes.size(); j++) {
-            const auto &attr = bundle.attributes[j];
+        for (const auto &attr : bundle.attributes) {
             if (attr.name == gfx::ATTR_NAME_JOINTS) {
                 jointFormat = attr.format;
                 break;
             }
-            jointOffset += gfx::GFX_FORMAT_INFOS[static_cast<int32_t>(attr.format)].size;
+            jointOffset += static_cast<int32_t>(gfx::GFX_FORMAT_INFOS[static_cast<int32_t>(attr.format)].size);
         }
         if (jointFormat != gfx::Format::UNKNOWN) {
             Uint8Array  data{_mesh->getData().buffer(), bundle.view.offset, bundle.view.length};
@@ -254,7 +254,7 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
             const auto &idxMap = structInfo.jointMaps.value()[prim.jointMapIndex.value()];
 
             mapBuffer(
-                dataView, [&](const DataVariant &cur, uint32_t idx, const DataView &view) -> DataVariant {
+                dataView, [&](const DataVariant &cur, uint32_t /*idx*/, const DataView & /*view*/) -> DataVariant {
                     auto iter = std::find(idxMap.begin(), idxMap.end(), CC_GET<0>(cur));
                     if (iter != idxMap.end()) {
                         return static_cast<int32_t>(iter - idxMap.begin());
@@ -274,7 +274,7 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
             buffers.pushBack(buffer);
             indices.emplace_back(i);
         } else {
-            buffers.pushBack(_vertexBuffers.at(prim.vertexBundelIndices[i]));
+            buffers.pushBack(_vertexBuffers.at(static_cast<int32_t>(prim.vertexBundelIndices[i])));
         }
     }
 
@@ -287,14 +287,14 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
 gfx::Buffer *RenderingSubMesh::allocVertexIdBuffer(gfx::Device *device) {
     const uint32_t vertexCount = (_vertexBuffers.empty() || _vertexBuffers.at(0)->getStride() == 0)
                                      ? 0
-                                     // TODO: This depends on how stride of a vertex buffer is defined; Consider padding problem.
+                                     // TODO(minggo): This depends on how stride of a vertex buffer is defined; Consider padding problem.
                                      : _vertexBuffers.at(0)->getSize() / _vertexBuffers.at(0)->getStride();
 
     std::vector<float> vertexIds(vertexCount);
     for (int iVertex = 0; iVertex < vertexCount; ++iVertex) {
         // `+0.5` because on some platforms, the "fetched integer" may have small error.
         // For example `26` may yield `25.99999`, which is convert to `25` instead of `26` using `int()`.
-        vertexIds[iVertex] = iVertex + 0.5F;
+        vertexIds[iVertex] = static_cast<float>(iVertex) + 0.5F;
     }
 
     uint32_t     vertexIdxByteLength = sizeof(float) * vertexCount;

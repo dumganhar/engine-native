@@ -43,7 +43,7 @@ TextureBase::TextureBase() {
     // Id for generate hash in material
     _id          = idGenerator.getNewId();
     _gfxDevice   = getGFXDevice();
-    _textureHash = murmurhash2::MurmurHash2(_id.data(), _id.length(), 666); //cjh TODO: How about using boost hash functionality?
+    _textureHash = murmurhash2::MurmurHash2(_id.data(), static_cast<int>(_id.length()), 666); //cjh TODO: How about using boost hash functionality?
     _samplerHash = pipeline::SamplerLib::genSamplerHash(_samplerInfo);
 }
 
@@ -120,7 +120,7 @@ gfx::Sampler *TextureBase::getGFXSampler() const {
     return _gfxSampler.get();
 }
 
-cc::any TextureBase::serialize(const cc::any &ctxForExporting) {
+cc::any TextureBase::serialize(const cc::any & /*ctxForExporting*/) {
     //cjh TODO:    if (EDITOR || TEST) {
     //        return `${this._minFilter},${this._magFilter},${
     //            this._wrapS},${this._wrapT},${
@@ -129,8 +129,8 @@ cc::any TextureBase::serialize(const cc::any &ctxForExporting) {
     return std::string("");
 }
 
-void TextureBase::deserialize(const cc::any &serializedData, const cc::any &handle) {
-    const std::string *pData = CC_ANY_CAST<const std::string>(&serializedData);
+void TextureBase::deserialize(const cc::any &serializedData, const cc::any & /*handle*/) {
+    const auto *pData = CC_ANY_CAST<const std::string>(&serializedData);
     if (pData == nullptr) {
         return;
     }
@@ -151,7 +151,7 @@ void TextureBase::deserialize(const cc::any &serializedData, const cc::any &hand
     }
 }
 
-gfx::Device *TextureBase::getGFXDevice() const {
+gfx::Device *TextureBase::getGFXDevice() {
     return gfx::Device::getInstance();
 }
 
@@ -163,7 +163,7 @@ void TextureBase::setGFXFormat(const cc::optional<PixelFormat> &format) {
     _format = format.has_value() ? format.value() : PixelFormat::RGBA8888;
 }
 
-gfx::Format TextureBase::getGFXPixelFormat(PixelFormat format) const {
+gfx::Format TextureBase::getGFXPixelFormat(PixelFormat format) {
     if (format == PixelFormat::RGBA_ETC1) {
         format = PixelFormat::RGB_ETC1;
     } else if (format == PixelFormat::RGB_A_PVRTC_4BPPV1) {
@@ -175,7 +175,7 @@ gfx::Format TextureBase::getGFXPixelFormat(PixelFormat format) const {
 }
 
 bool TextureBase::isCompressed() const {
-    return (_format >= PixelFormat::RGB_ETC1 && _format <= PixelFormat::RGBA_ASTC_12x12) || (_format >= PixelFormat::RGB_A_PVRTC_2BPPV1 && _format <= PixelFormat::RGBA_ETC1);
+    return (_format >= PixelFormat::RGB_ETC1 && _format <= PixelFormat::RGBA_ASTC_12X12) || (_format >= PixelFormat::RGB_A_PVRTC_2BPPV1 && _format <= PixelFormat::RGBA_ETC1);
 }
 
 void TextureBase::notifySamplerUpdated() {

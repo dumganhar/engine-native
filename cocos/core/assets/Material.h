@@ -27,11 +27,11 @@
 
 #include "core/assets/Asset.h"
 
-#include "cocos/base/Optional.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
 #include "base/Ptr.h"
+#include "cocos/base/Optional.h"
 #include "cocos/base/Variant.h"
 #include "core/Types.h"
 #include "core/assets/EffectAsset.h"
@@ -256,7 +256,7 @@ public:
      * @en The current [[EffectAsset]].
      * @zh 当前使用的 [[EffectAsset]] 资源。
      */
-    inline const EffectAsset *getEffectAsset() {
+    inline const EffectAsset *getEffectAsset() const {
         return _effectAsset.get();
     }
 
@@ -264,7 +264,7 @@ public:
      * @en Name of the current [[EffectAsset]].
      * @zh 当前使用的 [[EffectAsset]] 资源名。
      */
-    inline std::string getEffectName() {
+    inline std::string getEffectName() const {
         return _effectAsset ? _effectAsset->getName() : "";
     }
 

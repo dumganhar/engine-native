@@ -228,7 +228,7 @@ public:
     }
 
     /** Returns index of a certain object, return UINT_MAX if doesn't contain the object */
-    index_t getIndex(T object) const {
+    uint32_t getIndex(T object) const {
         auto iter = std::find(_data.begin(), _data.end(), object);
         if (iter != _data.end()) {
             return iter - _data.begin();
@@ -256,8 +256,8 @@ public:
     }
 
     /** Returns the element at position 'index' in the Vector. */
-    T at(index_t index) const {
-        CC_ASSERT(index >= 0 && index < size());
+    T at(uint32_t index) const {
+        CC_ASSERT(index < size());
         return _data[index];
     }
 
@@ -330,8 +330,8 @@ public:
      * @param index The index to be inserted at.
      * @param object The object to be inserted.
      */
-    void insert(index_t index, T object) {
-        CC_ASSERT(index >= 0 && index <= size());
+    void insert(uint32_t index, T object) {
+        CC_ASSERT(index <= size());
         CC_ASSERT(object != nullptr);
         _data.insert((std::begin(_data) + index), object);
         object->addRef();
@@ -402,8 +402,8 @@ public:
      *  @param index The index of the element to be removed from the Vector.
      *  @return An iterator pointing to the successor of Vector[index].
      */
-    iterator erase(index_t index) {
-        CC_ASSERT(!_data.empty() && index >= 0 && index < size());
+    iterator erase(uint32_t index) {
+        CC_ASSERT(!_data.empty() && index < size());
         auto it = std::next(begin(), index);
         (*it)->release();
         return _data.erase(it);
@@ -423,24 +423,20 @@ public:
 
     /** Swap the values object1 and object2. */
     void swap(T object1, T object2) {
-        index_t idx1 = getIndex(object1);
-        index_t idx2 = getIndex(object2);
-
-        CC_ASSERT(idx1 >= 0 && idx2 >= 0);
-
+        uint32_t idx1 = getIndex(object1);
+        uint32_t idx2 = getIndex(object2);
         std::swap(_data[idx1], _data[idx2]);
     }
 
     /** Swap two elements by indexes. */
-    void swap(index_t index1, index_t index2) {
-        CC_ASSERT(index1 >= 0 && index1 < size() && index2 >= 0 && index2 < size());
-
+    void swap(uint32_t index1, uint32_t index2) {
+        CC_ASSERT(index1 < size() && index2 < size());
         std::swap(_data[index1], _data[index2]);
     }
 
     /** Replace value at index with given object. */
-    void replace(index_t index, T object) {
-        CC_ASSERT(index >= 0 && index < size());
+    void replace(uint32_t index, T object) {
+        CC_ASSERT(index < size());
         CC_ASSERT(object != nullptr);
 
         CC_SAFE_RELEASE(_data[index]);

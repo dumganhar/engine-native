@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <type_traits>
 #include "base/TypeDef.h"
@@ -42,42 +43,42 @@ se::Object::TypedArrayType toTypedArrayType() {
 }
 
 template <>
-se::Object::TypedArrayType toTypedArrayType<int8_t>() {
+inline se::Object::TypedArrayType toTypedArrayType<int8_t>() {
     return se::Object::TypedArrayType::INT8;
 }
 
 template <>
-se::Object::TypedArrayType toTypedArrayType<int16_t>() {
+inline se::Object::TypedArrayType toTypedArrayType<int16_t>() {
     return se::Object::TypedArrayType::INT16;
 }
 
 template <>
-se::Object::TypedArrayType toTypedArrayType<int32_t>() {
+inline se::Object::TypedArrayType toTypedArrayType<int32_t>() {
     return se::Object::TypedArrayType::INT32;
 }
 
 template <>
-se::Object::TypedArrayType toTypedArrayType<uint8_t>() {
+inline se::Object::TypedArrayType toTypedArrayType<uint8_t>() {
     return se::Object::TypedArrayType::UINT8;
 }
 
 template <>
-se::Object::TypedArrayType toTypedArrayType<uint16_t>() {
+inline se::Object::TypedArrayType toTypedArrayType<uint16_t>() {
     return se::Object::TypedArrayType::UINT16;
 }
 
 template <>
-se::Object::TypedArrayType toTypedArrayType<uint32_t>() {
+inline se::Object::TypedArrayType toTypedArrayType<uint32_t>() {
     return se::Object::TypedArrayType::UINT32;
 }
 
 template <>
-se::Object::TypedArrayType toTypedArrayType<float>() {
+inline se::Object::TypedArrayType toTypedArrayType<float>() {
     return se::Object::TypedArrayType::FLOAT32;
 }
 
 template <>
-se::Object::TypedArrayType toTypedArrayType<double>() {
+inline se::Object::TypedArrayType toTypedArrayType<double>() {
     return se::Object::TypedArrayType::FLOAT64;
 }
 
@@ -89,8 +90,7 @@ public:
     static constexpr uint32_t BYTES_PER_ELEMENT{sizeof(T)};
     using value_type = T;
 
-    TypedArrayTemp() {
-    }
+    TypedArrayTemp() = default;
 
     explicit TypedArrayTemp(uint32_t length) {
         reset(length);
@@ -116,7 +116,7 @@ public:
         *this = o;
     }
 
-    TypedArrayTemp(TypedArrayTemp &&o) {
+    TypedArrayTemp(TypedArrayTemp &&o) noexcept {
         *this = std::move(o);
     }
 
@@ -134,7 +134,7 @@ public:
         return *this;
     }
 
-    TypedArrayTemp &operator=(TypedArrayTemp &&o) {
+    TypedArrayTemp &operator=(TypedArrayTemp &&o) noexcept {
         if (this != &o) {
             _buffer       = o._buffer;
             _byteOffset   = o._byteOffset;
@@ -151,12 +151,12 @@ public:
         return *this;
     }
 
-    T &operator[](index_t idx) {
+    T &operator[](uint32_t idx) {
         CC_ASSERT(idx < length());
         return *((reinterpret_cast<T *>(_buffer->_data + _byteOffset)) + idx);
     }
 
-    const T &operator[](index_t idx) const {
+    const T &operator[](uint32_t idx) const {
         CC_ASSERT(idx < length());
         return *((reinterpret_cast<T *>(_buffer->_data + _byteOffset)) + idx);
     }
@@ -300,7 +300,7 @@ uint32_t getTypedArrayLength(const TypedArray &arr);
 uint32_t getTypedArrayBytesPerElement(const TypedArray &arr);
 
 template <typename T>
-T getTypedArrayValue(const TypedArray &arr, index_t idx) {
+T getTypedArrayValue(const TypedArray &arr, uint32_t idx) {
 #define TYPEDARRAY_GET_VALUE(type)                       \
     if (auto *p = CC_GET_IF<type>(&arr); p != nullptr) { \
         return static_cast<T>((*p)[idx]);                \
@@ -319,10 +319,10 @@ T getTypedArrayValue(const TypedArray &arr, index_t idx) {
     return 0;
 }
 
-void setTypedArrayValue(TypedArray &arr, index_t idx, const TypedArrayElementType &value);
+void setTypedArrayValue(TypedArray &arr, uint32_t idx, const TypedArrayElementType &value);
 
 template <typename T>
-T &getTypedArrayValueRef(const TypedArray &arr, index_t idx) {
+T &getTypedArrayValueRef(const TypedArray &arr, uint32_t idx) {
 #define TYPEDARRAY_GET_VALUE_REF(type)                   \
     if (auto *p = CC_GET_IF<type>(&arr); p != nullptr) { \
         return (*p)[idx];                                \

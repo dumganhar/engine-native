@@ -48,12 +48,11 @@ std::unordered_map<std::string, DataView::IntWritter> DataView::intWritterMap{
     {"setInt32", reinterpret_cast<DataView::IntWritter>(&DataView::setInt32)},
 };
 
-int32_t DataView::readInt(ReaderVariant &readerVariant, index_t offset)
-{
+int32_t DataView::readInt(ReaderVariant &readerVariant, index_t offset) {
     return CC_VISIT([offset, this](auto &reader) {
         return (int32_t)(this->*reader)(offset);
     },
-                      readerVariant);
+                    readerVariant);
 }
 
 DataView::DataView(ArrayBuffer *buffer) : DataView(buffer, 0) {}
@@ -84,98 +83,98 @@ void DataView::assign(ArrayBuffer *buffer, uint32_t byteOffset, uint32_t byteLen
     _data = buffer->_data;
 }
 
-uint8_t DataView::getUint8(index_t offset) const {
+uint8_t DataView::getUint8(uint32_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos);
 
     return _data[offset];
 }
 
-uint16_t DataView::getUint16(index_t offset) const {
+uint16_t DataView::getUint16(uint32_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < (_byteEndPos - 1));
 
     return *reinterpret_cast<uint16_t *>(_data + offset);
 }
 
-uint32_t DataView::getUint32(index_t offset) const {
+uint32_t DataView::getUint32(uint32_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < (_byteEndPos - 3));
 
     return *reinterpret_cast<uint32_t *>(_data + offset);
 }
 
-int8_t DataView::getInt8(index_t offset) const {
+int8_t DataView::getInt8(uint32_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos);
 
     return static_cast<int8_t>(_data[offset]);
 }
 
-int16_t DataView::getInt16(index_t offset) const {
+int16_t DataView::getInt16(uint32_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < (_byteEndPos - 1));
 
     return *reinterpret_cast<int16_t *>(_data + offset);
 }
 
-int32_t DataView::getInt32(index_t offset) const {
+int32_t DataView::getInt32(uint32_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < (_byteEndPos - 3));
 
     return *reinterpret_cast<int32_t *>(_data + offset);
 }
 
-float DataView::getFloat32(index_t offset) const {
+float DataView::getFloat32(uint32_t offset) const {
     offset += _byteOffset;
     CC_ASSERT(offset < (_byteEndPos - 3));
 
     return *reinterpret_cast<float *>(_data + offset);
 }
 
-void DataView::setUint8(index_t offset, uint8_t value) {
+void DataView::setUint8(uint32_t offset, uint8_t value) {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos);
 
     _data[offset] = value;
 }
 
-void DataView::setUint16(index_t offset, uint16_t value) {
+void DataView::setUint16(uint32_t offset, uint16_t value) {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos - 1);
 
     *reinterpret_cast<uint16_t *>(_data + offset) = value;
 }
 
-void DataView::setUint32(index_t offset, uint32_t value) {
+void DataView::setUint32(uint32_t offset, uint32_t value) {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos - 3);
 
     *reinterpret_cast<uint32_t *>(_data + offset) = value;
 }
 
-void DataView::setInt8(index_t offset, int8_t value) {
+void DataView::setInt8(uint32_t offset, int8_t value) {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos);
 
     *reinterpret_cast<int8_t *>(_data + offset) = value;
 }
 
-void DataView::setInt16(index_t offset, int16_t value) {
+void DataView::setInt16(uint32_t offset, int16_t value) {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos - 1);
 
     *reinterpret_cast<int16_t *>(_data + offset) = value;
 }
 
-void DataView::setInt32(index_t offset, int32_t value) {
+void DataView::setInt32(uint32_t offset, int32_t value) {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos - 3);
 
     *reinterpret_cast<int32_t *>(_data + offset) = value;
 }
 
-void DataView::setFloat32(index_t offset, float value) {
+void DataView::setFloat32(uint32_t offset, float value) {
     offset += _byteOffset;
     CC_ASSERT(offset < _byteEndPos - 3);
 

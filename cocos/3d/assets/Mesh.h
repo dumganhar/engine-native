@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include "cocos/base/Optional.h"
 #include "3d/assets/Types.h"
+#include "cocos/base/Optional.h"
 #include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "core/geometry/AABB.h"
@@ -165,7 +165,7 @@ public:
     ~Mesh() override = default;
 
     cc::any getNativeAsset() const override;
-    void     setNativeAsset(const cc::any &obj) override;
+    void    setNativeAsset(const cc::any &obj) override;
 
     void setAssetData(cc::ArrayBuffer *data) {
         _data = Uint8Array(data);
@@ -231,7 +231,7 @@ public:
     uint64_t getHash();
 
     inline double getHashForJS() {
-        return getHash();
+        return static_cast<double>(getHash());
     }
 
     /**

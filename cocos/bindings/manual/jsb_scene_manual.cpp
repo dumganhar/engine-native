@@ -39,36 +39,33 @@
     #define JSB_FREE(ptr) delete ptr
 #endif
 
-
 static float *_tempFloatArray{nullptr};
-static void *nodeCommandArrayBuffers[]{nullptr, nullptr}; //cjh HOW TO RESET?
 
-#define REGISTER_NODE_TYPED_ARRAY(jsPropertyName, cppFuncName, cppPtrType, typedArrayType, dataBytes) \
-do { \
-    se::Value val; \
-    bool ok = jsObject->getProperty(jsPropertyName, &val); \
-    CC_ASSERT(ok && val.isObject() && val.toObject()->isTypedArray() && val.toObject()->getTypedArrayType() == typedArrayType); \
-    uint8_t *ptr{nullptr}; \
-    size_t bytes{0}; \
-    ok = val.toObject()->getTypedArrayData(&ptr, &bytes); \
-    CC_ASSERT(ok && bytes == (dataBytes)); \
-    cobj->cppFuncName(reinterpret_cast<cppPtrType>(ptr)); \
-} while(false)
+#define REGISTER_NODE_TYPED_ARRAY(jsPropertyName, cppFuncName, cppPtrType, typedArrayType, dataBytes)                              \
+    do {                                                                                                                           \
+        se::Value val;                                                                                                             \
+        bool      ok = jsObject->getProperty(jsPropertyName, &val);                                                                \
+        CC_ASSERT(ok &&val.isObject() && val.toObject()->isTypedArray() && val.toObject()->getTypedArrayType() == typedArrayType); \
+        uint8_t *ptr{nullptr};                                                                                                     \
+        size_t   bytes{0};                                                                                                         \
+        ok = val.toObject()->getTypedArrayData(&ptr, &bytes);                                                                      \
+        CC_ASSERT(ok &&bytes == (dataBytes));                                                                                      \
+        cobj->cppFuncName(reinterpret_cast<cppPtrType>(ptr));                                                                      \
+    } while (false)
 
 static void registerOnUiTransformDirty(cc::Node *node, se::Object *jsObject) {
-    se::Value           uiPropsVal;
+    se::Value uiPropsVal;
     jsObject->getProperty("_uiProps", &uiPropsVal, true);
     SE_PRECONDITION2_VOID(uiPropsVal.isObject(), "Not property named _uiProps.");
     se::Value uiTransformDirtyVal;
     uiPropsVal.toObject()->getProperty("_uiTransformDirty", &uiTransformDirtyVal, true);
-    SE_PRECONDITION2_VOID(uiTransformDirtyVal.isObject() && uiTransformDirtyVal.toObject()->isTypedArray()
-                          && uiTransformDirtyVal.toObject()->getTypedArrayType() == se::Object::TypedArrayType::UINT32,
+    SE_PRECONDITION2_VOID(uiTransformDirtyVal.isObject() && uiTransformDirtyVal.toObject()->isTypedArray() && uiTransformDirtyVal.toObject()->getTypedArrayType() == se::Object::TypedArrayType::UINT32,
                           "_uiTransformDirtyVal is not a TypedArray");
-    uint8_t* pDirty{nullptr};
-    size_t dirtyArrBytes{0};
-    bool ok = uiTransformDirtyVal.toObject()->getTypedArrayData(&pDirty, &dirtyArrBytes);
+    uint8_t *pDirty{nullptr};
+    size_t   dirtyArrBytes{0};
+    bool     ok = uiTransformDirtyVal.toObject()->getTypedArrayData(&pDirty, &dirtyArrBytes);
     CC_ASSERT(ok && pDirty != nullptr && dirtyArrBytes == 4);
-    node->setUIPropsTransformDirtyPtr(reinterpret_cast<uint32_t*>(pDirty));
+    node->setUIPropsTransformDirtyPtr(reinterpret_cast<uint32_t *>(pDirty));
 }
 
 static bool js_root_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
@@ -244,12 +241,12 @@ static bool js_scene_Node_registerListeners(se::State &s) // NOLINT(readability-
     auto *jsObject = s.thisObject();
 
     registerOnUiTransformDirty(cobj, jsObject);
-    REGISTER_NODE_TYPED_ARRAY("_activeInHierarchyArr", setActiveInHierarchyPtr, uint8_t*, se::Object::TypedArrayType::UINT8, 1);
-    REGISTER_NODE_TYPED_ARRAY("_layerArr", setLayerPtr, uint32_t*, se::Object::TypedArrayType::UINT32, 4);
-    REGISTER_NODE_TYPED_ARRAY("_worldMatrixArr", setWorldMatrixPtr, float*, se::Object::TypedArrayType::FLOAT32, 4 * 16);
-    REGISTER_NODE_TYPED_ARRAY("_worldPositionArr", setWorldPositionPtr, float*, se::Object::TypedArrayType::FLOAT32, 4 * 3);
-    REGISTER_NODE_TYPED_ARRAY("_worldRotationArr", setWorldRotationPtr, float*, se::Object::TypedArrayType::FLOAT32, 4 * 4);
-    REGISTER_NODE_TYPED_ARRAY("_worldScaleArr", setWorldScalePtr, float*, se::Object::TypedArrayType::FLOAT32, 4 * 3);
+    REGISTER_NODE_TYPED_ARRAY("_activeInHierarchyArr", setActiveInHierarchyPtr, uint8_t *, se::Object::TypedArrayType::UINT8, 1);
+    REGISTER_NODE_TYPED_ARRAY("_layerArr", setLayerPtr, uint32_t *, se::Object::TypedArrayType::UINT32, 4);
+    REGISTER_NODE_TYPED_ARRAY("_worldMatrixArr", setWorldMatrixPtr, float *, se::Object::TypedArrayType::FLOAT32, 4 * 16);
+    REGISTER_NODE_TYPED_ARRAY("_worldPositionArr", setWorldPositionPtr, float *, se::Object::TypedArrayType::FLOAT32, 4 * 3);
+    REGISTER_NODE_TYPED_ARRAY("_worldRotationArr", setWorldRotationPtr, float *, se::Object::TypedArrayType::FLOAT32, 4 * 4);
+    REGISTER_NODE_TYPED_ARRAY("_worldScaleArr", setWorldScalePtr, float *, se::Object::TypedArrayType::FLOAT32, 4 * 3);
 
 #define NODE_DISPATCH_EVENT_TO_JS(eventType, jsFuncName)                                      \
     cobj->on(                                                                                 \
@@ -400,29 +397,10 @@ static bool js_scene_Node__setTempFloatArray(se::State &s) // NOLINT(readability
 }
 SE_BIND_FUNC(js_scene_Node__setTempFloatArray)
 
-static bool js_scene_Node__setCommandArrayBuffer(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getRight(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
-    if (argc == 2) {
-        uint8_t *buffer = nullptr;
-        args[0].toObject()->getArrayBufferData(&buffer, nullptr);
-        nodeCommandArrayBuffers[0] = buffer;
-        buffer = nullptr;
-        args[1].toObject()->getArrayBufferData(&buffer, nullptr);
-        nodeCommandArrayBuffers[1] = buffer;
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC(js_scene_Node__setCommandArrayBuffer)
-
-static bool js_scene_Node_getRight(void* nativeObject) // NOLINT(readability-identifier-naming)
-{
-    auto *cobj = reinterpret_cast<cc::Node*>(nativeObject);
-    cc::Vec3 result = cobj->getRight();
+    auto *   cobj      = reinterpret_cast<cc::Node *>(nativeObject);
+    cc::Vec3 result    = cobj->getRight();
     _tempFloatArray[0] = result.x;
     _tempFloatArray[1] = result.y;
     _tempFloatArray[2] = result.z;
@@ -430,10 +408,10 @@ static bool js_scene_Node_getRight(void* nativeObject) // NOLINT(readability-ide
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getRight)
 
-static bool js_scene_Node_getUp(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getUp(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::Node*>(nativeObject);
-    cc::Vec3 result = cobj->getUp();
+    auto *   cobj      = reinterpret_cast<cc::Node *>(nativeObject);
+    cc::Vec3 result    = cobj->getUp();
     _tempFloatArray[0] = result.x;
     _tempFloatArray[1] = result.y;
     _tempFloatArray[2] = result.z;
@@ -443,92 +421,92 @@ SE_BIND_FUNC_FAST(js_scene_Node_getUp)
 
 static bool js_scene_Node_getWorldMatrix(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj   = reinterpret_cast<cc::Node *>(nativeObject);
+    auto *          cobj   = reinterpret_cast<cc::Node *>(nativeObject);
     const cc::Mat4 &result = cobj->getWorldMatrix();
     memcpy(_tempFloatArray, result.m, sizeof(result.m));
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getWorldMatrix)
 
-static bool js_scene_Node_getWorldPosition(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getWorldPosition(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::Node*>(nativeObject);
+    auto *          cobj   = reinterpret_cast<cc::Node *>(nativeObject);
     const cc::Vec3 &result = cobj->getWorldPosition();
-    _tempFloatArray[0] = result.x;
-    _tempFloatArray[1] = result.y;
-    _tempFloatArray[2] = result.z;
+    _tempFloatArray[0]     = result.x;
+    _tempFloatArray[1]     = result.y;
+    _tempFloatArray[2]     = result.z;
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getWorldPosition)
 
-static bool js_scene_Node_getAngle(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getAngle(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::Node*>(nativeObject);
+    auto *      cobj   = reinterpret_cast<cc::Node *>(nativeObject);
     const float result = cobj->getAngle();
     _tempFloatArray[0] = result;
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getAngle)
 
-static bool js_scene_Node_getWorldRS(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getWorldRS(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj   = reinterpret_cast<cc::Node *>(nativeObject);
+    auto *          cobj   = reinterpret_cast<cc::Node *>(nativeObject);
     const cc::Mat4 &result = cobj->getWorldRS();
     memcpy(_tempFloatArray, result.m, sizeof(result.m));
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getWorldRS)
 
-static bool js_scene_Node_getWorldRT(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getWorldRT(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj   = reinterpret_cast<cc::Node *>(nativeObject);
+    auto *          cobj   = reinterpret_cast<cc::Node *>(nativeObject);
     const cc::Mat4 &result = cobj->getWorldRT();
     memcpy(_tempFloatArray, result.m, sizeof(result.m));
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getWorldRT)
 
-static bool js_scene_Node_getWorldRotation(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getWorldRotation(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::Node*>(nativeObject);
+    auto *                cobj   = reinterpret_cast<cc::Node *>(nativeObject);
     const cc::Quaternion &result = cobj->getWorldRotation();
-    _tempFloatArray[0] = result.x;
-    _tempFloatArray[1] = result.y;
-    _tempFloatArray[2] = result.z;
-    _tempFloatArray[3] = result.w;
+    _tempFloatArray[0]           = result.x;
+    _tempFloatArray[1]           = result.y;
+    _tempFloatArray[2]           = result.z;
+    _tempFloatArray[3]           = result.w;
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getWorldRotation)
 
-static bool js_scene_Node_getWorldScale(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getWorldScale(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::Node*>(nativeObject);
+    auto *          cobj   = reinterpret_cast<cc::Node *>(nativeObject);
     const cc::Vec3 &result = cobj->getWorldScale();
-    _tempFloatArray[0] = result.x;
-    _tempFloatArray[1] = result.y;
-    _tempFloatArray[2] = result.z;
+    _tempFloatArray[0]     = result.x;
+    _tempFloatArray[1]     = result.y;
+    _tempFloatArray[2]     = result.z;
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getWorldScale)
 
-static bool js_scene_Node_getEulerAngles(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getEulerAngles(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::Node*>(nativeObject);
+    auto *          cobj   = reinterpret_cast<cc::Node *>(nativeObject);
     const cc::Vec3 &result = cobj->getEulerAngles();
-    _tempFloatArray[0] = result.x;
-    _tempFloatArray[1] = result.y;
-    _tempFloatArray[2] = result.z;
+    _tempFloatArray[0]     = result.x;
+    _tempFloatArray[1]     = result.y;
+    _tempFloatArray[2]     = result.z;
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getEulerAngles)
 
-static bool js_scene_Node_getForward(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_getForward(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::Node*>(nativeObject);
+    auto *          cobj   = reinterpret_cast<cc::Node *>(nativeObject);
     const cc::Vec3 &result = cobj->getForward();
-    _tempFloatArray[0] = result.x;
-    _tempFloatArray[1] = result.y;
-    _tempFloatArray[2] = result.z;
+    _tempFloatArray[0]     = result.x;
+    _tempFloatArray[1]     = result.y;
+    _tempFloatArray[2]     = result.z;
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_getForward)
@@ -646,11 +624,11 @@ static bool js_assets_MaterialInstance_registerListeners(se::State &s) // NOLINT
 }
 SE_BIND_FUNC(js_assets_MaterialInstance_registerListeners) // NOLINT(readability-identifier-naming)
 
-static bool js_scene_Node_inverseTransformPoint(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Node_inverseTransformPoint(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto* cobj = reinterpret_cast<cc::Node*>(nativeObject);
+    auto *   cobj = reinterpret_cast<cc::Node *>(nativeObject);
     cc::Vec3 p{_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2]};
-    cc::Vec3 ret = cobj->inverseTransformPoint(p);
+    cc::Vec3 ret       = cobj->inverseTransformPoint(p);
     _tempFloatArray[0] = ret.x;
     _tempFloatArray[1] = ret.y;
     _tempFloatArray[2] = ret.z;
@@ -697,10 +675,8 @@ CC_FORCE_INLINE static bool isCommandValid(uint32_t commandID) {
 
 class NodeCommandQueueView final {
 public:
-    NodeCommandQueueView(void* arrayBuffer, uint32_t commandBytes)
-    : _arrayBuffer(reinterpret_cast<uint8_t*>(arrayBuffer))
-    , _commandBytes(commandBytes) {
-
+    NodeCommandQueueView(void *arrayBuffer, uint32_t commandBytes)
+    : _arrayBuffer(reinterpret_cast<uint8_t *>(arrayBuffer)), _commandBytes(commandBytes) {
     }
 
     CC_FORCE_INLINE uint8_t getUint8() {
@@ -716,28 +692,28 @@ public:
 
     CC_FORCE_INLINE uint32_t getUint32() {
         CC_ASSERT(_byteOffset < _commandBytes);
-        uint32_t ret = *reinterpret_cast<uint32_t*>(_arrayBuffer + _byteOffset);
+        uint32_t ret = *reinterpret_cast<uint32_t *>(_arrayBuffer + _byteOffset);
         _byteOffset += 4;
         return ret;
     }
 
     CC_FORCE_INLINE int32_t getInt32() {
         CC_ASSERT(_byteOffset < _commandBytes);
-        int32_t ret = *reinterpret_cast<int32_t*>(_arrayBuffer + _byteOffset);
+        int32_t ret = *reinterpret_cast<int32_t *>(_arrayBuffer + _byteOffset);
         _byteOffset += 4;
         return ret;
     }
 
     CC_FORCE_INLINE uint64_t getBigUint64() {
         CC_ASSERT(_byteOffset < _commandBytes);
-        uint64_t ret = *reinterpret_cast<uint64_t*>(_arrayBuffer + _byteOffset);
+        uint64_t ret = *reinterpret_cast<uint64_t *>(_arrayBuffer + _byteOffset);
         _byteOffset += 8;
         return ret;
     }
 
     CC_FORCE_INLINE float getFloat32() {
         CC_ASSERT(_byteOffset < _commandBytes);
-        float ret = *reinterpret_cast<float*>(_arrayBuffer + _byteOffset);
+        float ret = *reinterpret_cast<float *>(_arrayBuffer + _byteOffset);
         _byteOffset += 4;
         return ret;
     }
@@ -750,35 +726,39 @@ public:
         return _byteOffset >= _commandBytes;
     }
 
-    CC_FORCE_INLINE uint8_t* data() const {
+    CC_FORCE_INLINE uint8_t *data() const {
         return _arrayBuffer + _byteOffset;
     }
 
 private:
-    uint8_t* _arrayBuffer{nullptr};
+    uint8_t *_arrayBuffer{nullptr};
     uint32_t _commandBytes{0};
     uint32_t _byteOffset{0};
 };
 
-static void flushCommandsToNative(void *arrayBuffer, uint32_t commandBytes) {
+static std::stack<uint8_t*> commandQueueStack; // cjh: HOW TO RELEASE?
+
+static void flushCommandsToNative(uint8_t *arrayBuffer) {
     using namespace cc;
-    if (commandBytes == 0) {
+
+    uint32_t* pCommandBytes = reinterpret_cast<uint32_t*>(arrayBuffer);
+    uint32_t commandBytes = *pCommandBytes;
+
+    if (commandBytes <= 4) {
         return;
     }
 
-    NodeCommandQueueView view(arrayBuffer, commandBytes);
+    NodeCommandQueueView view(arrayBuffer + 4, commandBytes - 4);
+
     while (!view.isFinished()) {
         const uint8_t command = view.getUint8();
-        bool ok = isCommandValid(command);
+        bool          ok      = isCommandValid(command);
         CC_ASSERT(ok);
         if (!ok) {
             return;
         }
 
-        Node* node = reinterpret_cast<Node*>(view.getBigUint64());
-        if (node->getName() == "AddLabel") {
-            int a = 0;
-        }
+        Node *node = reinterpret_cast<Node *>(view.getBigUint64());
 
         switch (command) {
             case NODE_COMMAND_ID_SET_POSITION: {
@@ -798,12 +778,12 @@ static void flushCommandsToNative(void *arrayBuffer, uint32_t commandBytes) {
                 break;
             }
             case NODE_COMMAND_SET_RTS: {
-                Vec3 position;
-                Vec3* pPosition{nullptr};
-                Quaternion rotation;
-                Quaternion* pRotation{nullptr};
-                Vec3 scale;
-                Vec3* pScale{nullptr};
+                Vec3        position;
+                Vec3 *      pPosition{nullptr};
+                Quaternion  rotation;
+                Quaternion *pRotation{nullptr};
+                Vec3        scale;
+                Vec3 *      pScale{nullptr};
 
                 // pos
                 if (view.getUint8() != 0) {
@@ -919,8 +899,19 @@ static void flushCommandsToNative(void *arrayBuffer, uint32_t commandBytes) {
             default:
                 CC_ASSERT(false);
                 break;
+        } // switch
+
+        if (!commandQueueStack.empty()) {
+            uint8_t* nextBuffer = commandQueueStack.top();
+            uint32_t* pNextCommandBytes = reinterpret_cast<uint32_t*>(nextBuffer);
+            if (*pNextCommandBytes > 4) {
+                se::ScriptEngine::getInstance()->evalString("jsb.Node.flushCommandsToNative();");
+            }
+            commandQueueStack.pop();
         }
     }
+
+    *pCommandBytes = 4;
 }
 
 static bool js_scene_Node__flushCommandsToNative(se::State &s) // NOLINT(readability-identifier-naming)
@@ -928,14 +919,38 @@ static bool js_scene_Node__flushCommandsToNative(se::State &s) // NOLINT(readabi
     const auto &   args = s.args();
     size_t         argc = args.size();
     CC_UNUSED bool ok   = true;
-    if CC_LIKELY (argc == 2) {
-        flushCommandsToNative(nodeCommandArrayBuffers[args[0].toUint32()], args[1].toUint32());
+    if CC_LIKELY (argc == 1) {
+        uint8_t* buffer{nullptr};
+        args[0].toObject()->getArrayBufferData(&buffer, nullptr);
+        if (buffer != nullptr) {
+            flushCommandsToNative(buffer);
+        }
+
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
     return false;
 }
 SE_BIND_FUNC(js_scene_Node__flushCommandsToNative)
+
+static bool js_scene_Node__genNextCommandQueue(se::State &s) // NOLINT(readability-identifier-naming)
+{
+    const auto &   args = s.args();
+    size_t         argc = args.size();
+    CC_UNUSED bool ok   = true;
+    if CC_LIKELY (argc == 1) {
+        uint8_t* buffer{nullptr};
+        args[0].toObject()->getArrayBufferData(&buffer, nullptr);
+        if (buffer != nullptr) {
+            commandQueueStack.push(buffer);
+        }
+
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_scene_Node__genNextCommandQueue)
 
 bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier-naming)
 {
@@ -967,8 +982,8 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     jsbVal.toObject()->getProperty("Node", &nodeVal);
 
     nodeVal.toObject()->defineFunction("_setTempFloatArray", _SE(js_scene_Node__setTempFloatArray));
-    nodeVal.toObject()->defineFunction("_setCommandArrayBuffer", _SE(js_scene_Node__setCommandArrayBuffer));
     nodeVal.toObject()->defineFunction("_flushCommandsToNative", _SE(js_scene_Node__flushCommandsToNative));
+    nodeVal.toObject()->defineFunction("_genNextCommandQueue", _SE(js_scene_Node__genNextCommandQueue));
 
     __jsb_cc_Node_proto->defineFunction("getEulerAngles", _SE(js_scene_Node_getEulerAngles));
     __jsb_cc_Node_proto->defineFunction("getForward", _SE(js_scene_Node_getForward));

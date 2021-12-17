@@ -16,6 +16,7 @@
 # -readability-implicit-bool-cast: We omit explicit bool conversion for brevity
 # -readability-magic-numbers: There will be lots of constants
 # -bugprone-branch-clone: two branches may only print debug message, then will be treat as the same logic.
+# -bugprone-easily-swappable-parameters: two parameters have the same type is common.
 
 Checks: >
     -*,
@@ -31,6 +32,7 @@ Checks: >
     -misc-non-private-member-variables-in-classes,
     -modernize-avoid-c-arrays,
 
+    -bugprone-easily-swappable-parameters
     -bugprone-macro-parentheses,
     -modernize-concat-nested-namespaces,
     -modernize-use-nodiscard,

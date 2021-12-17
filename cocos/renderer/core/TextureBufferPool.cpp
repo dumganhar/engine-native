@@ -103,7 +103,7 @@ ITextureBufferHandle TextureBufferPool::alloc(uint32_t size) {
     return texHandle;
 }
 
-ITextureBufferHandle TextureBufferPool::alloc(uint32_t size, index_t chunkIdx) { //NOLINT(bugprone-easily-swappable-parameters)
+ITextureBufferHandle TextureBufferPool::alloc(uint32_t size, index_t chunkIdx) {
     size          = roundUp(size, _alignment);
     index_t index = chunkIdx;
     index_t start = findAvailableSpace(size, index);
@@ -228,7 +228,7 @@ void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *
     // _device->copyBuffersToTexture(buffers, handle.texture, regions); // TODO(xwx): buffers not define
 }
 
-index_t TextureBufferPool::findAvailableSpace(uint32_t size, index_t chunkIdx) const { //NOLINT(bugprone-easily-swappable-parameters)
+index_t TextureBufferPool::findAvailableSpace(uint32_t size, index_t chunkIdx) const {
     auto    chunk   = _chunks[chunkIdx];
     bool    isFound = false;
     index_t start   = chunk.start;

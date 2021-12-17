@@ -105,8 +105,8 @@ void Texture2D::updateMipmaps(uint32_t firstLevel, uint32_t count) {
     }
 }
 
-HTMLElement *Texture2D::getHtmlElementObj() {
-    return nullptr; //cjh TODO: remove this?
+HTMLElement *Texture2D::getHtmlElementObj() { //NOLINT
+    return nullptr;                           //cjh TODO: remove this?
 }
 
 bool Texture2D::destroy() {

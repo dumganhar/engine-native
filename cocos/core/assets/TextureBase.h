@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include "base/Ptr.h"
 #include "core/assets/Asset.h"
 #include "core/assets/AssetEnum.h"
@@ -110,7 +111,7 @@ public:
      * @zh 获取各向异性。
      * @returns The anisotropy
      */
-    inline int32_t getAnisotropy() const {
+    inline uint32_t getAnisotropy() const {
         return _anisotropy;
     }
 
@@ -205,15 +206,14 @@ public:
     void deserialize(const cc::any &serializedData, const cc::any &handle) override;
 
 protected:
-    explicit TextureBase();
+    static gfx::Device *getGFXDevice();
+    static gfx::Format  getGFXPixelFormat(PixelFormat format);
 
-    gfx::Device *getGFXDevice() const;
+    TextureBase();
 
     gfx::Format getGFXFormat() const;
 
     void setGFXFormat(const cc::optional<PixelFormat> &format);
-
-    gfx::Format getGFXPixelFormat(PixelFormat format) const;
 
 private:
     void notifySamplerUpdated();

@@ -24,15 +24,15 @@
 ****************************************************************************/
 
 #include "core/assets/Asset.h"
+#include "base/Macros.h"
 #include "core/utils/Path.h"
 
 namespace cc {
 
 //cjh TODO:
-std::string getAssetUrlWithUuid(const std::string &uuid, bool isNative, const std::string &nativeExt, const std::string &nativeName = "") {
+std::string getAssetUrlWithUuid(const std::string &uuid, bool isNative, const std::string &nativeExt, const std::string &nativeName = "") { //NOLINT
     return "";
 }
-//
 
 std::string Asset::getNativeUrl() const {
     if (_nativeUrl.empty()) {

@@ -240,7 +240,7 @@ std::vector<MacroRecord> EffectAsset::generateRecords(const std::string &key, co
             ret.emplace_back(record);
         }
     } else if (const auto *floatValues = CC_GET_IF<std::vector<float>>(&value)) {
-        for (const bool value : *floatValues) {
+        for (const float value : *floatValues) {
             MacroRecord record;
             record[key] = value;
             ret.emplace_back(record);

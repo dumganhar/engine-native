@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include "cocos/base/Any.h"
 #include <functional>
+#include "cocos/base/Any.h"
 #include "cocos/base/Optional.h"
 
 #include "base/Macros.h"
@@ -42,8 +42,8 @@ class Asset : public CCObject, public EventTarget {
 public:
     using Super = CCObject;
 
-    Asset()          = default;
-     ~Asset() override = default;
+    Asset()           = default;
+    ~Asset() override = default;
 
     /**
      * @en
@@ -111,13 +111,13 @@ public:
     /**
      * @return
      */
-    virtual cc::any serialize(const cc::any & /*ctxForExporting*/) { return cc::any(); };
+    virtual cc::any serialize(const cc::any & /*ctxForExporting*/) { return cc::any{}; };
 
     /**
      *
      * @param data
      */
-    virtual void deserialize(const cc::any &serializedData, const cc::any &handle){};
+    virtual void deserialize(const cc::any &serializedData, const cc::any &handle) {}
 
     std::string toString() const override { return _nativeUrl; }
 
@@ -143,7 +143,7 @@ public:
 protected:
     std::string _uuid;
 
-    cc::any _file;
+    cc::any  _file;
     uint32_t _ref{0};
 
     bool _loaded{true};

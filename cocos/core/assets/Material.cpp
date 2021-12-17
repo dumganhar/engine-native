@@ -181,14 +181,14 @@ CC_MATERIAL_SETPROPERTY_IMPL(GFXTexture, gfx::Texture *)
 
 #undef CC_MATERIAL_SETPROPERTY_IMPL
 
-#define CC_MATERIAL_SETPROPERTY_ARRAY_IMPL(funcNameSuffix, type)                                                                                        \
-    void Material::setProperty##funcNameSuffix##Array(const std::string &name, const std::vector<type> &val, index_t passIdx /* = CC_INVALID_INDEX*/) { \
-        MaterialPropertyList propertyArr;                                                                                                               \
-        propertyArr.reserve(val.size());                                                                                                                \
-        for (const auto &e : val) {                                                                                                                     \
-            propertyArr.emplace_back(e);                                                                                                                \
-        }                                                                                                                                               \
-        setProperty(name, propertyArr);                                                                                                                 \
+#define CC_MATERIAL_SETPROPERTY_ARRAY_IMPL(funcNameSuffix, type)                                                                                       \
+    void Material::setProperty##funcNameSuffix##Array(const std::string &name, const std::vector<type> &val, index_t /*passIdx = CC_INVALID_INDEX*/) { \
+        MaterialPropertyList propertyArr;                                                                                                              \
+        propertyArr.reserve(val.size());                                                                                                               \
+        for (const auto &e : val) {                                                                                                                    \
+            propertyArr.emplace_back(e);                                                                                                               \
+        }                                                                                                                                              \
+        setProperty(name, propertyArr);                                                                                                                \
     }
 
 CC_MATERIAL_SETPROPERTY_ARRAY_IMPL(Float32, float)

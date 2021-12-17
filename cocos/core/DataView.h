@@ -28,8 +28,8 @@
 #include <variant>
 #include "base/Macros.h"
 #include "base/TypeDef.h"
-#include "core/ArrayBuffer.h"
 #include "cocos/base/Variant.h"
+#include "core/ArrayBuffer.h"
 
 namespace cc {
 
@@ -45,21 +45,21 @@ public:
     void assign(ArrayBuffer *buffer, uint32_t byteOffset);
     void assign(ArrayBuffer *buffer, uint32_t byteOffset, uint32_t byteLength);
 
-    uint8_t  getUint8(index_t offset) const;
-    uint16_t getUint16(index_t offset) const;
-    uint32_t getUint32(index_t offset) const;
-    int8_t   getInt8(index_t offset) const;
-    int16_t  getInt16(index_t offset) const;
-    int32_t  getInt32(index_t offset) const;
-    float    getFloat32(index_t offset) const;
+    uint8_t  getUint8(uint32_t offset) const;
+    uint16_t getUint16(uint32_t offset) const;
+    uint32_t getUint32(uint32_t offset) const;
+    int8_t   getInt8(uint32_t offset) const;
+    int16_t  getInt16(uint32_t offset) const;
+    int32_t  getInt32(uint32_t offset) const;
+    float    getFloat32(uint32_t offset) const;
 
-    void setUint8(index_t offset, uint8_t value);
-    void setUint16(index_t offset, uint16_t value);
-    void setUint32(index_t offset, uint32_t value);
-    void setInt8(index_t offset, int8_t value);
-    void setInt16(index_t offset, int16_t value);
-    void setInt32(index_t offset, int32_t value);
-    void setFloat32(index_t offset, float value);
+    void setUint8(uint32_t offset, uint8_t value);
+    void setUint16(uint32_t offset, uint16_t value);
+    void setUint32(uint32_t offset, uint32_t value);
+    void setInt8(uint32_t offset, int8_t value);
+    void setInt16(uint32_t offset, int16_t value);
+    void setInt32(uint32_t offset, int32_t value);
+    void setFloat32(uint32_t offset, float value);
 
     inline const ArrayBuffer *buffer() const { return _buffer; }
     inline ArrayBuffer *      buffer() { return _buffer; }
@@ -68,14 +68,13 @@ public:
         return _byteEndPos - _byteOffset;
     }
 
-    
-    using Int32Reader = int32_t (DataView::*)(index_t) const;
-    using UInt32Reader = uint32_t (DataView::*)(index_t) const;
-    using Int16Reader = int16_t (DataView::*)(index_t) const;
-    using UInt16Reader = uint16_t (DataView::*)(index_t) const;
-    using Int8Reader = int8_t (DataView::*)(index_t) const;
-    using UInt8Reader = uint8_t (DataView::*)(index_t) const;
-    using ReaderVariant       = cc::variant<Int32Reader, UInt32Reader, Int16Reader,UInt16Reader, Int8Reader, UInt8Reader>;
+    using Int32Reader   = int32_t (DataView::*)(index_t) const;
+    using UInt32Reader  = uint32_t (DataView::*)(index_t) const;
+    using Int16Reader   = int16_t (DataView::*)(index_t) const;
+    using UInt16Reader  = uint16_t (DataView::*)(index_t) const;
+    using Int8Reader    = int8_t (DataView::*)(index_t) const;
+    using UInt8Reader   = uint8_t (DataView::*)(index_t) const;
+    using ReaderVariant = cc::variant<Int32Reader, UInt32Reader, Int16Reader, UInt16Reader, Int8Reader, UInt8Reader>;
     static std::unordered_map<std::string, ReaderVariant> intReaderMap;
     int32_t                                               readInt(ReaderVariant &readerVariant, index_t offset);
 

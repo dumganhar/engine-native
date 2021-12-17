@@ -25,11 +25,10 @@
 
 #pragma once
 
-#include <stdint.h>
-#include "cocos/base/Optional.h"
+#include <cstdint>
 #include <string>
 #include <vector>
-
+#include "cocos/base/Optional.h"
 namespace cc {
 
 struct IMeshBufferView {

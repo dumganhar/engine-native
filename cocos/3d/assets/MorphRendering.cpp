@@ -131,7 +131,7 @@ public:
         _textureAsset->uploadData(_arrayBuffer->getData());
     }
 
-    void initialize(uint32_t width, uint32_t height, uint32_t pixelBytes, bool useFloat32Array, PixelFormat pixelFormat) {
+    void initialize(uint32_t width, uint32_t height, uint32_t pixelBytes, bool /*useFloat32Array*/, PixelFormat pixelFormat) {
         _arrayBuffer = new ArrayBuffer(width * height * pixelBytes);
         _valueView   = Float32Array(_arrayBuffer);
 
@@ -206,7 +206,7 @@ bool bestSizeToHavePixels(uint32_t nPixels, uint32_t *pWidth, uint32_t *pHeight)
         nPixels = 5;
     }
     const uint32_t aligned = pipeline::nextPow2(nPixels);
-    const uint32_t epxSum  = std::log2(aligned);
+    const auto     epxSum  = static_cast<uint32_t>(std::log2(aligned));
     const uint32_t h       = epxSum >> 1;
     const uint32_t w       = (epxSum & 1) ? (h + 1) : h;
 
@@ -311,7 +311,7 @@ public:
     }
 
     void setVerticesCount(uint32_t count) {
-        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_VERTICES_COUNT, count); //cjh , legacyCC.sys.isLittleEndian);
+        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_VERTICES_COUNT, static_cast<float>(count)); //cjh , legacyCC.sys.isLittleEndian);
     }
 
     void commit() {
@@ -362,7 +362,7 @@ public:
         _morphUniforms = new MorphUniforms(gfxDevice, 0 /* TODO? */);
 
         auto vec4TextureFactory = createVec4TextureFactory(gfxDevice, nVertices);
-        _morphUniforms->setMorphTextureInfo(vec4TextureFactory.width, vec4TextureFactory.height);
+        _morphUniforms->setMorphTextureInfo(static_cast<float>(vec4TextureFactory.width), static_cast<float>(vec4TextureFactory.height));
         _morphUniforms->commit();
         for (const auto &attributeMorph : _owner->getData()) {
             auto *morphTexture = vec4TextureFactory.create();
@@ -408,7 +408,7 @@ public:
 
     void adaptPipelineState(gfx::DescriptorSet *descriptorSet) override {
         for (const auto &attribute : _attributes) {
-            const auto &            attributeName = attribute.attributeName;
+            const auto &           attributeName = attribute.attributeName;
             cc::optional<uint32_t> binding;
             if (attributeName == gfx::ATTR_NAME_POSITION) {
                 binding = pipeline::POSITIONMORPH::BINDING;
@@ -447,7 +447,7 @@ public:
     explicit GpuComputingRenderingInstance(GpuComputing *owner, gfx::Device *gfxDevice) {
         _owner         = owner;
         _morphUniforms = new MorphUniforms(gfxDevice, _owner->_subMeshMorph->targets.size());
-        _morphUniforms->setMorphTextureInfo(_owner->_textureWidth, _owner->_textureHeight);
+        _morphUniforms->setMorphTextureInfo(static_cast<float>(_owner->_textureWidth), static_cast<float>(_owner->_textureHeight));
         _morphUniforms->setVerticesCount(_owner->_verticesCount);
         _morphUniforms->commit();
         _attributes = &_owner->_attributes;
@@ -466,7 +466,7 @@ public:
 
     void adaptPipelineState(gfx::DescriptorSet *descriptorSet) override {
         for (const auto &attribute : *_attributes) {
-            const auto &            attributeName = attribute.attributeName;
+            const auto &           attributeName = attribute.attributeName;
             cc::optional<uint32_t> binding;
             if (attributeName == gfx::ATTR_NAME_POSITION) {
                 binding = pipeline::POSITIONMORPH::BINDING;

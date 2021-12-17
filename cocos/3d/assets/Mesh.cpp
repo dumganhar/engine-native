@@ -174,7 +174,7 @@ cc::any Mesh::getNativeAsset() const {
 }
 
 void Mesh::setNativeAsset(const cc::any &obj) {
-    if (auto p = CC_ANY_CAST<ArrayBuffer *>(obj); p != nullptr) {
+    if (auto *p = CC_ANY_CAST<ArrayBuffer *>(obj); p != nullptr) {
         _data = Uint8Array(p);
     }
 }
@@ -193,7 +193,7 @@ const Vec3 &Mesh::getMaxPosition() const {
 
 uint64_t Mesh::getHash() {
     if (_hash == 0) {
-        _hash = murmurhash2::MurmurHash2(_data.buffer()->getData(), _data.length(), 666);
+        _hash = murmurhash2::MurmurHash2(_data.buffer()->getData(), static_cast<int>(_data.length()), 666);
     }
 
     return _hash;
@@ -355,7 +355,7 @@ Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
 
             for (uint32_t j = 0; j < 4; ++j) {
                 const uint32_t idx   = 4 * i + j;
-                const int32_t  joint = getTypedArrayValue<int32_t>(joints, idx);
+                const auto     joint = getTypedArrayValue<int32_t>(joints, idx);
 
                 if (std::fabs(getTypedArrayValue<float>(weights, idx)) < FLT_EPSILON || joint >= bindposes.size()) {
                     continue;
@@ -387,7 +387,7 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
         }
     }
 
-    Vec3           vec3_temp;
+    Vec3           vec3Temp;
     Quaternion     rotate;
     geometry::AABB boundingBox;
     if (worldMatrix != nullptr) {
@@ -408,7 +408,7 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
                 Vec3::subtract(boundingBox.center, boundingBox.halfExtents, &structInfo.minPosition.value());
             }
             for (auto &vtxBdl : structInfo.vertexBundles) {
-                for (size_t j = 0; j < vtxBdl.attributes.size(); j++) {
+                for (int j = 0; j < vtxBdl.attributes.size(); j++) {
                     if (vtxBdl.attributes[j].name == gfx::ATTR_NAME_POSITION || vtxBdl.attributes[j].name == gfx::ATTR_NAME_NORMAL) {
                         const gfx::Format format = vtxBdl.attributes[j].format;
 
@@ -432,21 +432,21 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
                             const uint32_t xOffset = vtxIdx * vertexStride;
                             const uint32_t yOffset = xOffset + attrComponentByteLength;
                             const uint32_t zOffset = yOffset + attrComponentByteLength;
-                            vec3_temp.set(
+                            vec3Temp.set(
                                 getTypedArrayElementValue<float>(reader(xOffset)),
                                 getTypedArrayElementValue<float>(reader(yOffset)),
                                 getTypedArrayElementValue<float>(reader(zOffset)));
                             const auto &attrName = vtxBdl.attributes[j].name;
 
                             if (attrName == gfx::ATTR_NAME_POSITION) {
-                                vec3_temp.transformMat4(vec3_temp, *worldMatrix);
+                                vec3Temp.transformMat4(vec3Temp, *worldMatrix);
                             } else if (attrName == gfx::ATTR_NAME_NORMAL) {
-                                vec3_temp.transformQuat(rotate);
+                                vec3Temp.transformQuat(rotate);
                             }
 
-                            writer(xOffset, vec3_temp.x);
-                            writer(yOffset, vec3_temp.y);
-                            writer(zOffset, vec3_temp.z);
+                            writer(xOffset, vec3Temp.x);
+                            writer(yOffset, vec3Temp.y);
+                            writer(zOffset, vec3Temp.z);
                         }
                     }
                 }
@@ -759,7 +759,7 @@ TypedArray Mesh::readAttribute(index_t primitiveIndex, const char *attributeName
             return;
         }
 
-        DataView inputView(_data.buffer(), vertexBundle.view.offset + getOffset(vertexBundle.attributes, iAttribute));
+        DataView inputView(_data.buffer(), vertexBundle.view.offset + getOffset(vertexBundle.attributes, static_cast<index_t>(iAttribute)));
 
         const auto &formatInfo = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(format)];
 
@@ -791,7 +791,7 @@ bool Mesh::copyAttribute(index_t primitiveIndex, const char *attributeName, Arra
         }
         const gfx::Format format = vertexBundle.attributes[iAttribute].format;
 
-        DataView inputView(_data.buffer(), vertexBundle.view.offset + getOffset(vertexBundle.attributes, iAttribute));
+        DataView inputView(_data.buffer(), vertexBundle.view.offset + getOffset(vertexBundle.attributes, static_cast<index_t>(iAttribute)));
 
         DataView outputView(buffer, offset);
 
@@ -861,8 +861,8 @@ bool Mesh::copyIndices(index_t primitiveIndex, TypedArray &outputArray) {
     const gfx::Format indexFormat = primitive.indexView.value().stride == 1 ? gfx::Format::R8UI
                                                                             : (primitive.indexView.value().stride == 2 ? gfx::Format::R16UI
                                                                                                                        : gfx::Format::R32UI);
-    DataView          view(_data.buffer());
-    auto              reader = getReader(view, indexFormat);
+    DataView view(_data.buffer());
+    auto     reader = getReader(view, indexFormat);
     for (uint32_t i = 0; i < indexCount; ++i) {
         TypedArrayElementType element = reader(primitive.indexView.value().offset + gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(indexFormat)].size * i);
         setTypedArrayValue(outputArray, i, element);

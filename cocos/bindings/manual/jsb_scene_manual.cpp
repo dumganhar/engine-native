@@ -736,13 +736,13 @@ private:
     uint32_t _byteOffset{0};
 };
 
-static std::stack<uint8_t*> commandQueueStack; // cjh: HOW TO RELEASE?
+static std::stack<uint8_t *> commandQueueStack; // cjh: HOW TO RELEASE?
 
 static void flushCommandsToNative(uint8_t *arrayBuffer) {
     using namespace cc;
 
-    uint32_t* pCommandBytes = reinterpret_cast<uint32_t*>(arrayBuffer);
-    uint32_t commandBytes = *pCommandBytes;
+    uint32_t *pCommandBytes = reinterpret_cast<uint32_t *>(arrayBuffer);
+    uint32_t  commandBytes  = *pCommandBytes;
 
     if (commandBytes <= 4) {
         return;
@@ -902,8 +902,8 @@ static void flushCommandsToNative(uint8_t *arrayBuffer) {
         } // switch
 
         if (!commandQueueStack.empty()) {
-            uint8_t* nextBuffer = commandQueueStack.top();
-            uint32_t* pNextCommandBytes = reinterpret_cast<uint32_t*>(nextBuffer);
+            uint8_t * nextBuffer        = commandQueueStack.top();
+            uint32_t *pNextCommandBytes = reinterpret_cast<uint32_t *>(nextBuffer);
             if (*pNextCommandBytes > 4) {
                 se::ScriptEngine::getInstance()->evalString("jsb.Node.flushCommandsToNative();");
             }
@@ -920,7 +920,7 @@ static bool js_scene_Node__flushCommandsToNative(se::State &s) // NOLINT(readabi
     size_t         argc = args.size();
     CC_UNUSED bool ok   = true;
     if CC_LIKELY (argc == 1) {
-        uint8_t* buffer{nullptr};
+        uint8_t *buffer{nullptr};
         args[0].toObject()->getArrayBufferData(&buffer, nullptr);
         if (buffer != nullptr) {
             flushCommandsToNative(buffer);
@@ -939,7 +939,7 @@ static bool js_scene_Node__genNextCommandQueue(se::State &s) // NOLINT(readabili
     size_t         argc = args.size();
     CC_UNUSED bool ok   = true;
     if CC_LIKELY (argc == 1) {
-        uint8_t* buffer{nullptr};
+        uint8_t *buffer{nullptr};
         args[0].toObject()->getArrayBufferData(&buffer, nullptr);
         if (buffer != nullptr) {
             commandQueueStack.push(buffer);

@@ -26,11 +26,11 @@
 #pragma once
 
 #include <cstdint>
-#include "cocos/base/Optional.h"
 #include <string>
 #include "base/Macros.h"
-#include "base/RefCounted.h"
 #include "base/Ptr.h"
+#include "base/RefCounted.h"
+#include "cocos/base/Optional.h"
 #include "core/geometry/Frustum.h"
 #include "core/geometry/Ray.h"
 #include "core/scene-graph/Node.h"
@@ -110,12 +110,12 @@ enum class CameraShutter {
 };
 
 struct ICameraInfo {
-    std::string                name;
-    Node *                     node{nullptr};
-    CameraProjection           projection;
+    std::string               name;
+    Node *                    node{nullptr};
+    CameraProjection          projection;
     cc::optional<uint32_t>    targetDisplay;
-    RenderWindow *             window{nullptr};
-    uint32_t                   priority{0};
+    RenderWindow *            window{nullptr};
+    uint32_t                  priority{0};
     cc::optional<std::string> pipeline;
 };
 
@@ -332,7 +332,6 @@ private:
     gfx::ClearFlagBit     _clearFlag{gfx::ClearFlagBit::NONE};
     float                 _clearDepth{1.0F};
 
-private:
     static const std::vector<float> FSTOPS;
     static const std::vector<float> SHUTTERS;
     static const std::vector<float> ISOS;

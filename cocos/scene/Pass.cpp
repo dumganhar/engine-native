@@ -122,7 +122,7 @@ uint64_t Pass::getPassHash(Pass *pass) {
     res << serializeRasterizerState(pass->_rs);
 
     std::string str{res.str()};
-    return murmurhash2::MurmurHash2(str.data(), str.length(), 666);
+    return murmurhash2::MurmurHash2(str.data(), static_cast<int>(str.size()), 666);
 }
 
 Pass::Pass() : Pass(Root::getInstance()) {}
@@ -158,7 +158,7 @@ uint32_t Pass::getHandle(const std::string &name, uint32_t offset /* = 0 */, gfx
     return handle + offset;
 }
 
-int32_t Pass::getBinding(const std::string &name) const {
+uint32_t Pass::getBinding(const std::string &name) const {
     uint32_t handle = getHandle(name);
     if (0 == handle) {
         return -1;
@@ -172,7 +172,7 @@ void Pass::setUniform(uint32_t handle, const MaterialProperty &value) {
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
     auto &          block   = _blocks[binding];
     if (auto iter = type2writer.find(type); iter != type2writer.end()) {
-        iter->second(block.data, value, ofs);
+        iter->second(block.data, value, static_cast<int>(ofs));
     }
 
     _rootBufferDirty = true;
@@ -184,7 +184,7 @@ MaterialProperty &Pass::getUniform(uint32_t handle, MaterialProperty &out) const
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
     const auto &    block   = _blocks[binding];
     if (auto iter = type2reader.find(type); iter != type2reader.end()) {
-        iter->second(block.data, out, ofs);
+        iter->second(block.data, out, static_cast<int>(ofs));
     }
     return out;
 }
@@ -200,7 +200,7 @@ void Pass::setUniformArray(uint32_t handle, const MaterialPropertyList &value) {
             continue;
         }
         if (auto iter = type2writer.find(type); iter != type2writer.end()) {
-            iter->second(block.data, value[i], ofs);
+            iter->second(block.data, value[i], static_cast<int>(ofs));
         }
     }
     _rootBufferDirty = true;
@@ -297,7 +297,7 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
         texName = getDefaultStringFromType(type);
     }
 
-    TextureBase *          textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
+    auto *                 textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
     gfx::Texture *         texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
     cc::optional<uint64_t> samplerHash;
     if (info != nullptr && info->samplerHash.has_value()) {
@@ -335,7 +335,7 @@ void Pass::resetUBOs() {
 
 void Pass::resetTextures() {
     for (auto &u : _shaderInfo->samplerTextures) {
-        for (size_t j = 0; j < u.count; j++) {
+        for (int32_t j = 0; j < u.count; j++) {
             resetTexture(u.name, j);
         }
     }
@@ -476,7 +476,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     for (size_t i = 0; i < blocks.size(); i++) {
         const auto &size = blockSizes[i];
         startOffsets.emplace_back(lastOffset);
-        lastOffset += static_cast<int32_t>(std::ceil(1.F * size / alignment)) * alignment;
+        lastOffset += static_cast<int32_t>(std::ceil(static_cast<float>(size) / static_cast<float>(alignment))) * alignment;
         lastSize = size;
     }
 
@@ -484,7 +484,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     uint32_t totalSize = !startOffsets.empty() ? (startOffsets[startOffsets.size() - 1] + lastSize) : 0;
     if (totalSize > 0) {
         // https://bugs.chromium.org/p/chromium/issues/detail?id=988988
-        bufferInfo.size = static_cast<int32_t>(std::ceil(totalSize / 16.F)) * 16;
+        bufferInfo.size = static_cast<int32_t>(std::ceil(static_cast<float>(totalSize) / 16.F)) * 16;
         _rootBuffer     = device->createBuffer(bufferInfo);
         _rootBlock      = new ArrayBuffer(totalSize);
     }
@@ -494,7 +494,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         int32_t size          = blockSizes[i];
         bufferViewInfo.buffer = _rootBuffer;
         bufferViewInfo.offset = startOffsets[count++];
-        bufferViewInfo.range  = static_cast<int32_t>(std::ceil(size / 16.F)) * 16;
+        bufferViewInfo.range  = static_cast<int32_t>(std::ceil(static_cast<float>(size) / 16.F)) * 16;
         if (binding >= _buffers.size()) {
             _buffers.resize(binding + 1);
         }

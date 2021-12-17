@@ -151,7 +151,7 @@ public:
      * @zh 获取指定 uniform 的 binding。
      * @param name The name of target uniform
      */
-    int32_t getBinding(const std::string &name) const;
+    uint32_t getBinding(const std::string &name) const;
 
     /**
      * @en Sets a vector type uniform value, if a uniform requires frequent update, please use this method.
@@ -247,7 +247,7 @@ public:
      * @zh 尝试编译 shader 并获取相关资源引用。
      */
     virtual bool tryCompile();
-    virtual bool tryCompile(const cc::optional<MacroRecord> &defineOverrides) { return Pass::tryCompile(); }
+    virtual bool tryCompile(const cc::optional<MacroRecord> & /*defineOverrides*/) { return Pass::tryCompile(); }
 
     /**
      * @en Gets the shader variant of the current pass and given macro patches
@@ -278,7 +278,7 @@ public:
     // In ts engine, Pass has rootBufferDirty getter and without setter, but it contains a protected function named _setRootBufferDirty.
     // If we remove _ prefix in C++, bindings-generator doesn't support to bind rootBufferDirty property as getter and ignore to bind setRootBufferDirty as setter at the same time.
     // So let's keep the _ prefix temporarily.
-    inline void _setRootBufferDirty(bool val) { _rootBufferDirty = val; }
+    inline void _setRootBufferDirty(bool val) { _rootBufferDirty = val; } // NOLINT(readability-identifier-naming)
     // states
     inline pipeline::RenderPriority      getPriority() const { return _priority; }
     inline gfx::PrimitiveMode            getPrimitive() const { return _primitive; }

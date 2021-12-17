@@ -54,28 +54,28 @@ enum class ShadowSize {
      * @en shadow resolution 256 * 256.
      * @readonly
      */
-    LOW_256x256 = 256,
+    LOW_256X256 = 256,
 
     /**
      * @zh 分辨率 512 * 512。
      * @en shadow resolution 512 * 512.
      * @readonly
      */
-    MEDIUM_512x512 = 512,
+    MEDIUM_512X512 = 512,
 
     /**
      * @zh 分辨率 1024 * 1024。
      * @en shadow resolution 1024 * 1024.
      * @readonly
      */
-    HIGH_1024x1024 = 1024,
+    HIGH_1024X1024 = 1024,
 
     /**
      * @zh 分辨率 2048 * 2048。
      * @en shadow resolution 2048 * 2048.
      * @readonly
      */
-    ULTRA_2048x2048 = 2048
+    ULTRA_2048X2048 = 2048
 };
 
 /**
@@ -281,7 +281,6 @@ public:
 
     void activate(Shadow *resource);
 
-public:
     float      _distance{0.F};
     float      _bias{0.00001F};
     float      _normalBias{0.F};
@@ -354,10 +353,10 @@ public:
     inline const Color &getShadowColor() const { return _shadowColor; }
     inline void         setShadowColor(const Color &color) {
         _shadowColor.set(color);
-        _shadowColor4f[0] = color.r / 255.F;
-        _shadowColor4f[1] = color.g / 255.F;
-        _shadowColor4f[2] = color.b / 255.F;
-        _shadowColor4f[3] = color.a / 255.F;
+        _shadowColor4f[0] = static_cast<float>(color.r) / 255.F;
+        _shadowColor4f[1] = static_cast<float>(color.g) / 255.F;
+        _shadowColor4f[2] = static_cast<float>(color.b) / 255.F;
+        _shadowColor4f[3] = static_cast<float>(color.a) / 255.F;
     }
     inline const std::array<float, 4> &getShadowColor4f() const { return _shadowColor4f; }
 

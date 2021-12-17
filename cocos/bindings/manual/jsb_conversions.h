@@ -32,12 +32,12 @@
 #include "cocos/base/Optional.h"
 #include <type_traits>
 #include <utility>
-#include "cocos/base/Variant.h"
 #include "base/Ptr.h"
 #include "base/RefCounted.h"
 #include "bindings/jswrapper/HandleObject.h"
 #include "bindings/jswrapper/SeApi.h"
 #include "bindings/manual/jsb_classtype.h"
+#include "cocos/base/Variant.h"
 
 #include "jsb_conversions_spec.h"
 
@@ -91,15 +91,6 @@
         break;                                                                                           \
     }
 
-#if CC_ENABLE_CACHE_JSB_FUNC_RESULT
-    #define SE_HOLD_RETURN_VALUE(retCXXValue, thisObject, jsValue)                       \
-        if (is_jsb_object_v<typename std::decay<decltype(retCXXValue)>::type>) {         \
-            (thisObject)->setProperty(std::string("__cache") + __FUNCTION__, (jsValue)); \
-        }
-#else
-    #define SE_HOLD_RETURN_VALUE(...)
-#endif
-
 #if __clang__
     #if defined(__has_feature) && __has_feature(cxx_static_assert) && __has_feature(cxx_relaxed_constexpr)
         #define HAS_CONSTEXPR 1
@@ -118,6 +109,19 @@
 #else
     #define CC_CONSTEXPR
     #define CC_STATIC_ASSERT(cond, msg) assert(cond)
+#endif
+
+#define SE_STR1(x)               #x
+#define SE_STR(x)                SE_STR1(x)
+#define SE_FN_CONCAT(prefix, fn) prefix SE_STR(fn)
+
+#if CC_ENABLE_CACHE_JSB_FUNC_RESULT
+    #define SE_HOLD_RETURN_VALUE(retCXXValue, thisObject, jsValue)                            \
+        if CC_CONSTEXPR (is_jsb_object_v<typename std::decay<decltype(retCXXValue)>::type>) { \
+            (thisObject)->setProperty(SE_FN_CONCAT("__cache", __FUNCTION__), (jsValue));      \
+        }
+#else
+    #define SE_HOLD_RETURN_VALUE(...)
 #endif
 
 #if __clang__
@@ -911,7 +915,7 @@ inline bool sevalue_to_native(const se::Value &from, std::function<R(Args...)> *
 
 template <typename... Args>
 inline bool sevalue_to_native(const se::Value & /*from*/, cc::variant<Args...> * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    static_assert(sizeof...(Args) == 0);                                                                          //TODO(PatriceJiang): should not pass variant from js -> native
+    static_assert(sizeof...(Args) == 0);                                                                         //TODO(PatriceJiang): should not pass variant from js -> native
     assert(false);
     return false;
 }
@@ -1318,12 +1322,12 @@ bool nativevalue_to_se_args(se::ValueArray &array, T &x) { // NOLINT(readability
     return nativevalue_to_se(x, array[i], nullptr);
 }
 template <int i, typename T, typename... Args>
-bool nativevalue_to_se_args(se::ValueArray &array, T &x, Args &... args) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se_args(se::ValueArray &array, T &x, Args &...args) { // NOLINT(readability-identifier-naming)
     return nativevalue_to_se_args<i, T>(array, x) && nativevalue_to_se_args<i + 1, Args...>(array, args...);
 }
 
 template <typename... Args>
-bool nativevalue_to_se_args_v(se::ValueArray &array, Args &... args) { // NOLINT(readability-identifier-naming)
+bool nativevalue_to_se_args_v(se::ValueArray &array, Args &...args) { // NOLINT(readability-identifier-naming)
     return nativevalue_to_se_args<0, Args...>(array, args...);
 }
 

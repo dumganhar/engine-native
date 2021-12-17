@@ -45,7 +45,7 @@ void assignMat4(Mat4 &mat4, float m0, float m1, float m2, float m3, float m4, fl
     mat4.m[5] = m5;
 }
 
-const std::array<std::array<float, 4>, 4> preTransforms = {{
+constexpr std::array<std::array<float, 4>, 4> PRE_TRANSFORMS = {{
     {{1, 0, 0, 1}},   // SurfaceTransform.IDENTITY
     {{0, 1, -1, 0}},  // SurfaceTransform.ROTATE_90
     {{-1, 0, 0, -1}}, // SurfaceTransform.ROTATE_180
@@ -117,14 +117,14 @@ void Camera::resize(uint32_t width, uint32_t height) {
 
     _width       = width;
     _height      = height;
-    _aspect      = (width * _viewport.z) / (height * _viewport.w);
+    _aspect      = (static_cast<float>(width) * _viewport.z) / (static_cast<float>(height) * _viewport.w);
     _isProjDirty = true;
 }
 
 void Camera::setFixedSize(uint32_t width, uint32_t height) {
     _width        = width;
     _height       = height;
-    _aspect       = (width * _viewport.z) / (height * _viewport.w);
+    _aspect       = (static_cast<float>(width) * _viewport.z) / (static_cast<float>(height) * _viewport.w);
     _isWindowSize = false;
 }
 
@@ -191,13 +191,13 @@ geometry::Ray *Camera::screenPointToRay(geometry::Ray *out, float x, float y) {
         return nullptr;
     }
 
-    const float                 cx           = _viewport.x * _width;
-    const float                 cy           = _viewport.y * _height;
-    const float                 cw           = _viewport.z * _width;
-    const float                 ch           = _viewport.w * _height;
+    const float                 cx           = _viewport.x * static_cast<float>(_width);
+    const float                 cy           = _viewport.y * static_cast<float>(_height);
+    const float                 cw           = _viewport.z * static_cast<float>(_width);
+    const float                 ch           = _viewport.w * static_cast<float>(_height);
     const bool                  isProj       = _proj == CameraProjection::PERSPECTIVE;
     const float                 ySign        = _device->getCapabilities().clipSpaceSignY;
-    const std::array<float, 4> &preTransform = preTransforms[static_cast<int>(_curTransform)];
+    const std::array<float, 4> &preTransform = PRE_TRANSFORMS[static_cast<int>(_curTransform)];
 
     Vec3 tmpVec3{
         (x - cx) / cw * 2 - 1.F,
@@ -224,12 +224,12 @@ geometry::Ray *Camera::screenPointToRay(geometry::Ray *out, float x, float y) {
 }
 
 const Vec3 &Camera::screenToWorld(Vec3 &out, const Vec3 &screenPos) {
-    const float                 cx           = _viewport.x * _width;
-    const float                 cy           = _viewport.y * _height;
-    const float                 cw           = _viewport.z * _width;
-    const float                 ch           = _viewport.w * _height;
+    const float                 cx           = _viewport.x * static_cast<float>(_width);
+    const float                 cy           = _viewport.y * static_cast<float>(_height);
+    const float                 cw           = _viewport.z * static_cast<float>(_width);
+    const float                 ch           = _viewport.w * static_cast<float>(_height);
     const float                 ySign        = _device->getCapabilities().clipSpaceSignY;
-    const std::array<float, 4> &preTransform = preTransforms[static_cast<int>(_curTransform)];
+    const std::array<float, 4> &preTransform = PRE_TRANSFORMS[static_cast<int>(_curTransform)];
 
     if (_proj == CameraProjection::PERSPECTIVE) {
         // calculate screen pos in far clip plane
@@ -266,12 +266,12 @@ const Vec3 &Camera::screenToWorld(Vec3 &out, const Vec3 &screenPos) {
 }
 
 const Vec3 &Camera::worldToScreen(Vec3 &out, const Vec3 &worldPos) {
-    const float                 cx           = _viewport.x * _width;
-    const float                 cy           = _viewport.y * _height;
-    const float                 cw           = _viewport.z * _width;
-    const float                 ch           = _viewport.w * _height;
+    const float                 cx           = _viewport.x * static_cast<float>(_width);
+    const float                 cy           = _viewport.y * static_cast<float>(_height);
+    const float                 cw           = _viewport.z * static_cast<float>(_width);
+    const float                 ch           = _viewport.w * static_cast<float>(_height);
     const float                 ySign        = _device->getCapabilities().clipSpaceSignY;
-    const std::array<float, 4> &preTransform = preTransforms[static_cast<int>(_curTransform)];
+    const std::array<float, 4> &preTransform = PRE_TRANSFORMS[static_cast<int>(_curTransform)];
 
     _matViewProj.transformPoint(const_cast<Vec3 *>(&worldPos));
 
@@ -289,8 +289,8 @@ const Mat4 &Camera::worldMatrixToScreen(Mat4 &out, const Mat4 &worldMatrix, uint
     Mat4::multiply(_matViewProj, worldMatrix, &out);
     Mat4::multiply(correctionMatrices[static_cast<int>(_curTransform)], out, &out);
 
-    const float halfWidth  = width / 2;
-    const float halfHeight = height / 2;
+    const float halfWidth  = static_cast<float>(width) / 2;
+    const float halfHeight = static_cast<float>(height) / 2;
     Mat4        tmpMat4(Mat4::IDENTITY);
     tmpMat4.translate(halfWidth, halfHeight, 0);
     tmpMat4.scale(halfWidth, halfHeight, 1);
@@ -305,7 +305,7 @@ void Camera::setExposure(float ev100) {
 }
 
 void Camera::updateExposure() {
-    const float ev100 = std::log2((_apertureValue * _apertureValue) / _shutterValue * 100.0 / _isoValue);
+    const float ev100 = std::log2((_apertureValue * _apertureValue) / _shutterValue * 100.F / _isoValue);
     setExposure(ev100);
 }
 

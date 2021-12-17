@@ -29,7 +29,7 @@
 namespace cc {
 namespace scene {
 
-void FogInfo::setEnabled(bool val) {
+void FogInfo::setEnabled(bool val) const {
     if (_isEnabled == val) {
         return;
     }
@@ -42,7 +42,7 @@ void FogInfo::setEnabled(bool val) {
     }
 }
 
-void FogInfo::setFogColor(Color val) {
+void FogInfo::setFogColor(const Color &val) {
     _fogColor.set(val);
     if (_resource != nullptr) {
         _resource->setFogColor(_fogColor);

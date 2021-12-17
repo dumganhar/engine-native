@@ -72,14 +72,15 @@ IJointTransform* getTransform(Node* node, Node* root) {
         if (iter != pool.end()) {
             joint = iter->second;
             break;
-        } else { // TODO: object reuse
-            joint = pool[id] = new IJointTransform{
-                node,
-                Mat4(),
-                Mat4(),
-                -1,
-                nullptr};
         }
+        // TODO(): object reuse
+        joint = pool[id] = new IJointTransform{
+            node,
+            Mat4(),
+            Mat4(),
+            -1,
+            nullptr};
+
         stack.resize(i + 1);
         stack[i++] = joint;
         node       = node->getParent();

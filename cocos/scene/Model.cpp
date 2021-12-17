@@ -142,7 +142,7 @@ void Model::destroy() {
 
 void Model::uploadMat4AsVec4x3(const Mat4 &mat, Float32Array &v1, Float32Array &v2, Float32Array &v3) {
     uint32_t copyBytes = sizeof(float) * 3;
-    uint8_t *buffer    = const_cast<uint8_t *>(v1.buffer()->getData());
+    auto *   buffer    = const_cast<uint8_t *>(v1.buffer()->getData());
 
     uint8_t *dst = buffer + v1.byteOffset();
     memcpy(dst, mat.m, copyBytes);
@@ -244,7 +244,7 @@ void Model::createBoundingShape(const cc::optional<Vec3> &minPos, const cc::opti
     _worldBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB()); // AABB.clone(this._modelBounds) in ts
 }
 
-SubModel *Model::createSubModel() const {
+SubModel *Model::createSubModel() const { //NOLINT(readability-convert-member-functions-to-static)
     return new SubModel();
 }
 
@@ -383,7 +383,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         attr.location     = attribute.location;
         attrs.attributes.emplace_back(attr);
         const auto &info          = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attribute.format)];
-        auto        buffer        = attrs.buffer.buffer();
+        auto *      buffer        = attrs.buffer.buffer();
         auto        typeViewArray = getTypedArrayConstructor(info, buffer, offset, info.count);
         attrs.views.emplace_back(typeViewArray);
         offset += info.size;
@@ -420,7 +420,7 @@ void Model::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *de
     }
 }
 
-void Model::_setInstancedAttributesViewData(index_t viewIdx, index_t arrIdx, float value) {
+void Model::setInstancedAttributesViewData(index_t viewIdx, index_t arrIdx, float value) {
     CC_GET<Float32Array>(_instanceAttributeBlock.views[viewIdx])[arrIdx] = value;
 }
 

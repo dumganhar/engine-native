@@ -125,7 +125,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
     }
 }
 
-// TODO:
+// TODO():
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowShader() {
@@ -138,7 +138,7 @@ void SubModel::initPlanarShadowShader() {
     }
 }
 
-// TODO:
+// TODO():
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() {

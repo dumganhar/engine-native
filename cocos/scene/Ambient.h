@@ -45,7 +45,7 @@ public:
      * @zh 天空颜色
      */
     void                setSkyColor(const Color &val);
-    inline const Color &getSkyColor() { return _skyColor; }
+    inline const Color &getSkyColor() const { return _skyColor; }
 
     /**
      * @en Sky illuminance
@@ -59,7 +59,7 @@ public:
      * @zh 地面颜色
      */
     void                setGroundAlbedo(const Color &val);
-    inline const Color &getGroundAlbedo() { return _groundAlbedo; }
+    inline const Color &getGroundAlbedo() const { return _groundAlbedo; }
     void                activate(Ambient *resource);
 
     //cjh JSB need to bind the property, so need to make it public
@@ -99,10 +99,10 @@ public:
     inline const Color &getSkyColor() const { return _skyColor; }
     inline void         setSkyColor(const Color &color) {
         _skyColor      = color;
-        _colorArray[0] = color.r / 255.F;
-        _colorArray[1] = color.g / 255.F;
-        _colorArray[2] = color.b / 255.F;
-        _colorArray[3] = color.a / 255.F;
+        _colorArray[0] = static_cast<float>(color.r) / 255.F;
+        _colorArray[1] = static_cast<float>(color.g) / 255.F;
+        _colorArray[2] = static_cast<float>(color.b) / 255.F;
+        _colorArray[3] = static_cast<float>(color.a) / 255.F;
     }
 
     /**
@@ -119,10 +119,10 @@ public:
     inline const Color &getGroundAlbedo() const { return _groundAlbedo; }
     inline void         setGroundAlbedo(const Color &color) {
         _groundAlbedo.set(color);
-        _albedoArray[0] = _groundAlbedo.r / 255.F;
-        _albedoArray[1] = _groundAlbedo.g / 255.F;
-        _albedoArray[2] = _groundAlbedo.b / 255.F;
-        _albedoArray[3] = _groundAlbedo.a / 255.F;
+        _albedoArray[0] = static_cast<float>(_groundAlbedo.r) / 255.F;
+        _albedoArray[1] = static_cast<float>(_groundAlbedo.g) / 255.F;
+        _albedoArray[2] = static_cast<float>(_groundAlbedo.b) / 255.F;
+        _albedoArray[3] = static_cast<float>(_groundAlbedo.a) / 255.F;
     }
 
 protected:

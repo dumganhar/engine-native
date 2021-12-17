@@ -124,7 +124,7 @@ void RenderScene::removeDirectionalLight(DirectionalLight *dl) {
 }
 
 void RenderScene::addSphereLight(SphereLight *light) {
-    _sphereLights.push_back(light);
+    _sphereLights.emplace_back(light);
 }
 
 void RenderScene::removeSphereLight(SphereLight *sphereLight) {
@@ -137,7 +137,7 @@ void RenderScene::removeSphereLight(SphereLight *sphereLight) {
 }
 
 void RenderScene::addSpotLight(SpotLight *spotLight) {
-    _spotLights.push_back(spotLight);
+    _spotLights.emplace_back(spotLight);
 }
 
 void RenderScene::removeSpotLight(SpotLight *spotLight) {
@@ -165,7 +165,7 @@ void RenderScene::removeSpotLights() {
 
 void RenderScene::addModel(Model *model) {
     model->attachToScene(this);
-    _models.push_back(model);
+    _models.emplace_back(model);
 }
 
 void RenderScene::removeModel(index_t idx) {

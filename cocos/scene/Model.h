@@ -147,7 +147,7 @@ public:
     // For JS
     inline void              setCalledFromJS(bool v) { _isCalledFromJS = v; }
     inline CallbacksInvoker &getEventProcessor() { return _eventProcessor; }
-    void                     _setInstancedAttributesViewData(index_t viewIdx, index_t arrIdx, float value);
+    void                     setInstancedAttributesViewData(index_t viewIdx, index_t arrIdx, float value);
     inline void              setTransformUpdated(bool v) { _transformUpdated = v; }
     inline void              setWorldBounds(geometry::AABB *bounds) { _worldBounds = bounds; }
     inline void              setModelBounds(geometry::AABB *bounds) { _modelBounds = bounds; }

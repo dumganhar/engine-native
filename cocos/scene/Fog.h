@@ -79,14 +79,14 @@ public:
      * @zh 是否启用全局雾效
      * @en Enable global fog
      */
-    void        setEnabled(bool val);
+    void        setEnabled(bool val) const;
     inline bool isEnabled() const { return _isEnabled; }
 
     /**
      * @zh 全局雾颜色
      * @en Global fog color
      */
-    void                setFogColor(Color val);
+    void                setFogColor(const Color &val);
     inline const Color &getFogColor() const { return _fogColor; }
 
     /**
@@ -184,10 +184,10 @@ public:
      */
     inline void setFogColor(const Color &val) {
         _fogColor.set(val);
-        _colorArray[0] = val.r / 255.F;
-        _colorArray[1] = val.g / 255.F;
-        _colorArray[2] = val.b / 255.F;
-        _colorArray[3] = val.a / 255.F;
+        _colorArray[0] = static_cast<float>(val.r) / 255.F;
+        _colorArray[1] = static_cast<float>(val.g) / 255.F;
+        _colorArray[2] = static_cast<float>(val.b) / 255.F;
+        _colorArray[3] = static_cast<float>(val.a) / 255.F;
     }
     inline const Color &getFogColor() const { return _fogColor; }
 

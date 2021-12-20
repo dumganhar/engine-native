@@ -26,13 +26,17 @@
 #pragma once
 
 #ifdef USE_CXX_17
-    #include <optional>
+
+#include <optional>
 
 namespace cc {
+
 template <class T>
 using optional = std::optional<T>;
 
-    #define CC_NULLOPT std::nullopt
+using nullopt_t = std::nullopt_t;
+inline constexpr nullopt_t nullopt{nullopt_t::__secret_tag{}, nullopt_t::__secret_tag{}};
+
 }; // namespace cc
 #else
     #include "boost/none.hpp"
@@ -56,7 +60,10 @@ public:
     }
 };
 
-    #define CC_NULLOPT boost::none
+using nullopt_t = boost::none_t;
+
+inline const nullopt_t nullopt ((boost::none_t::init_tag()));
+
 }; // namespace cc
 
 #endif

@@ -112,7 +112,7 @@ public:
      * @param comp The component to be enabled
      * @param invoker The invoker which is responsible to schedule the `onEnable` call
      */
-    void enableComp(Component *comp, cc::optional<LifeCycleInvoker *> invoker = CC_NULLOPT);
+    void enableComp(Component *comp, cc::optional<LifeCycleInvoker *> invoker = cc::nullopt);
 
     /**
      * @en Disable a component

@@ -25,33 +25,216 @@
 
 #pragma once
 
-
 #ifdef USE_CXX_17
-    #include <variant>
 
-    #define CC_HOLDS_ALTERNATIVE std::holds_alternative
-    #define CC_GET_IF            std::get_if
-    #define CC_GET               std::get
-    #define CC_VISIT             std::visit
+#include <variant>
 
 namespace cc {
 template <class... T>
 using variant = std::variant<T...>;
 
 using monostate = std::monostate;
-}; // namespace cc
-#else
-    #include "boost/variant2/variant.hpp"
 
-    #define CC_HOLDS_ALTERNATIVE boost::variant2::holds_alternative
-    #define CC_GET_IF            boost::variant2::get_if
-    #define CC_GET               boost::variant2::get
-    #define CC_VISIT             boost::variant2::visit
+template<class U, class... T>
+inline constexpr bool holds_alternative( variant<T...> const& v ) noexcept
+{
+    return std::holds_alternative<U, T...>(v);
+}
+
+// get_if
+
+template<std::size_t I, class... T>
+inline constexpr typename std::add_pointer<std::variant_alternative_t<I, variant<T...>>>::type get_if(variant<T...>* v) noexcept
+{
+    return std::get_if<I, T...>(v);
+}
+
+template<std::size_t I, class... T>
+inline constexpr typename std::add_pointer<const std::variant_alternative_t<I, variant<T...>>>::type get_if(variant<T...> const * v) noexcept
+{
+    return std::get_if<I, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr typename std::add_pointer<U>::type get_if(variant<T...>* v) noexcept
+{
+    return std::get_if<U, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr typename std::add_pointer<U const>::type get_if(variant<T...> const * v) noexcept
+{
+    return std::get_if<U, T...>(v);
+}
+
+// get (index)
+
+template<std::size_t I, class... T>
+inline constexpr std::variant_alternative_t<I, variant<T...>>& get(variant<T...>& v)
+{
+    return std::get<I, T...>(v);
+}
+
+template<std::size_t I, class... T>
+inline constexpr std::variant_alternative_t<I, variant<T...>>&& get(variant<T...>&& v)
+{
+    return std::get<I, T...>(std::forward<variant<T...>>(v));
+}
+
+template<std::size_t I, class... T>
+inline constexpr std::variant_alternative_t<I, variant<T...>> const& get(variant<T...> const& v)
+{
+    return std::get<I, T...>(v);
+}
+
+template<std::size_t I, class... T>
+inline constexpr std::variant_alternative_t<I, variant<T...>> const&& get(variant<T...> const&& v)
+{
+    return std::get<I, T...>(v);
+}
+
+// get (type)
+
+template<class U, class... T>
+inline constexpr U& get(variant<T...>& v)
+{
+    return std::get<U, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr U&& get(variant<T...>&& v)
+{
+    return std::get<U, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr U const& get(variant<T...> const& v)
+{
+    return std::get<U, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr U const&& get(variant<T...> const&& v)
+{
+    return std::get<U, T...>(v);
+}
+
+// visit
+
+template <class _Visitor, class... _Vs>
+inline constexpr decltype(auto) visit(_Visitor&& __visitor, _Vs&&... __vs) {
+  return std::visit(std::forward<_Visitor>(__visitor), std::forward<_Vs>(__vs)...);
+}
+
+}; // namespace cc
+
+#else
+
+#include "boost/variant2/variant.hpp"
 
 namespace cc {
 template <class... T>
 using variant = boost::variant2::variant<T...>;
 
 using monostate = boost::variant2::monostate;
+
+template<class U, class... T>
+inline constexpr bool holds_alternative( variant<T...> const& v ) noexcept
+{
+    return boost::variant2::holds_alternative<U, T...>(v);
+}
+
+// get_if
+
+template<std::size_t I, class... T>
+inline constexpr typename std::add_pointer<boost::variant2::variant_alternative_t<I, variant<T...>>>::type get_if(variant<T...>* v) noexcept
+{
+    return boost::variant2::get_if<I, T...>(v);
+}
+
+template<std::size_t I, class... T>
+inline constexpr typename std::add_pointer<const boost::variant2::variant_alternative_t<I, variant<T...>>>::type get_if(variant<T...> const * v) noexcept
+{
+    return boost::variant2::get_if<I, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr typename std::add_pointer<U>::type get_if(variant<T...>* v) noexcept
+{
+    return boost::variant2::get_if<U, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr typename std::add_pointer<U const>::type get_if(variant<T...> const * v) noexcept
+{
+    return boost::variant2::get_if<U, T...>(v);
+}
+
+// get (index)
+
+template<std::size_t I, class... T>
+inline constexpr boost::variant2::variant_alternative_t<I, variant<T...>>& get(variant<T...>& v)
+{
+    return boost::variant2::get<I, T...>(v);
+}
+
+template<std::size_t I, class... T>
+inline constexpr boost::variant2::variant_alternative_t<I, variant<T...>>&& get(variant<T...>&& v)
+{
+    return boost::variant2::get<I, T...>(std::forward<variant<T...>>(v));
+}
+
+template<std::size_t I, class... T>
+inline constexpr boost::variant2::variant_alternative_t<I, variant<T...>> const& get(variant<T...> const& v)
+{
+    return boost::variant2::get<I, T...>(v);
+}
+
+template<std::size_t I, class... T>
+inline constexpr boost::variant2::variant_alternative_t<I, variant<T...>> const&& get(variant<T...> const&& v)
+{
+    return boost::variant2::get<I, T...>(v);
+}
+
+// get (type)
+
+template<class U, class... T>
+inline constexpr U& get(variant<T...>& v)
+{
+    return boost::variant2::get<U, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr U&& get(variant<T...>&& v)
+{
+    return boost::variant2::get<U, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr U const& get(variant<T...> const& v)
+{
+    return boost::variant2::get<U, T...>(v);
+}
+
+template<class U, class... T>
+inline constexpr U const&& get(variant<T...> const&& v)
+{
+    return boost::variant2::get<U, T...>(v);
+}
+
+// visit
+
+template<class R = boost::variant2::detail::deduced, class F, class V1>
+inline constexpr auto visit( F&& f, V1&& v1 ) -> boost::variant2::detail::Vret<R, F, V1>
+{
+    return boost::variant2::visit<R, F, V1>(std::forward<F>(f), std::forward<V1>(v1));
+}
+
+template<class R = boost::variant2::detail::deduced, class F, class V1, class V2, class... V>
+inline constexpr auto visit( F&& f, V1&& v1, V2&& v2, V&&... v ) -> boost::variant2::detail::Vret<R, F, V1, V2, V...>
+{
+    return boost::variant2::visit<R, F, V1, V2, V...>(std::forward<F>(f), std::forward<V1>(v1), std::forward<V2>(v2), std::forward<V>(v)... );
+}
+
 }; // namespace cc
 #endif

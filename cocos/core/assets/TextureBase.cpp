@@ -130,7 +130,7 @@ cc::any TextureBase::serialize(const cc::any & /*ctxForExporting*/) {
 }
 
 void TextureBase::deserialize(const cc::any &serializedData, const cc::any & /*handle*/) {
-    const auto *pData = CC_ANY_CAST<const std::string>(&serializedData);
+    const auto *pData = cc::any_cast<const std::string>(&serializedData);
     if (pData == nullptr) {
         return;
     }

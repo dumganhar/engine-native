@@ -539,7 +539,7 @@ static MaterialPropertyVariant jsonToMaterialPropertyVariant(const rapidjson::Va
     MaterialPropertyVariant matPropVariant; //MaterialPropert, std::vector<MaterialProperty>
 
     if (val.IsArray()) { // MaterialPropertyList
-        deserializeArray<MaterialProperty>(val, CC_GET<MaterialPropertyList>(matPropVariant), deserializeMaterialProperty);
+        deserializeArray<MaterialProperty>(val, cc::get<MaterialPropertyList>(matPropVariant), deserializeMaterialProperty);
     } else { // MaterialProperty
         matPropVariant = jsonToMaterialProperty(val);
     }

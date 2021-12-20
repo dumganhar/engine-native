@@ -286,7 +286,7 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
     if (auto iter = _properties.find(name); iter != _properties.end()) {
         if (iter->second.value.has_value()) {
             info                 = &iter->second;
-            std::string *pStrVal = CC_GET_IF<std::string>(&iter->second.value.value());
+            std::string *pStrVal = cc::get_if<std::string>(&iter->second.value.value());
             if (pStrVal != nullptr) {
                 texName = (*pStrVal) + "-texture";
             }
@@ -322,7 +322,7 @@ void Pass::resetUBOs() {
         for (auto &cur : u.members) {
             const auto &   info         = _properties[cur.name];
             const auto &   givenDefault = info.value;
-            const auto &   value        = (givenDefault.has_value() ? CC_GET<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
+            const auto &   value        = (givenDefault.has_value() ? cc::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
             const uint32_t size         = (gfx::getTypeSize(cur.type) >> 2) * cur.count;
             for (size_t k = 0; (k + value.size()) <= size; k += value.size()) {
                 std::copy(value.begin(), value.end(), block.data + ofs + k);

@@ -166,7 +166,7 @@ cc::any TextureCube::serialize(const cc::any & /*ctxForExporting*/) {
 }
 
 void TextureCube::deserialize(const cc::any &serializedData, const cc::any &handle) {
-    const auto *data = CC_ANY_CAST<ITextureCubeSerializeData>(&serializedData);
+    const auto *data = cc::any_cast<ITextureCubeSerializeData>(&serializedData);
     if (data == nullptr) {
         return;
     }
@@ -214,7 +214,7 @@ void TextureCube::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
 
     auto *imageAsset = new ImageAsset();
-    imageAsset->initDefault(CC_NULLOPT);
+    imageAsset->initDefault(cc::nullopt);
 
     ITextureCubeMipmap mipmap;
 

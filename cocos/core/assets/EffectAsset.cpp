@@ -233,19 +233,19 @@ std::vector<MacroRecord> EffectAsset::doCombine(const std::vector<MacroRecord> &
 
 std::vector<MacroRecord> EffectAsset::generateRecords(const std::string &key, const IPreCompileInfoValueType &value) {
     std::vector<MacroRecord> ret;
-    if (const auto *boolValues = CC_GET_IF<std::vector<bool>>(&value)) {
+    if (const auto *boolValues = cc::get_if<std::vector<bool>>(&value)) {
         for (const bool value : *boolValues) {
             MacroRecord record;
             record[key] = value;
             ret.emplace_back(record);
         }
-    } else if (const auto *floatValues = CC_GET_IF<std::vector<float>>(&value)) {
+    } else if (const auto *floatValues = cc::get_if<std::vector<float>>(&value)) {
         for (const float value : *floatValues) {
             MacroRecord record;
             record[key] = value;
             ret.emplace_back(record);
         }
-    } else if (const auto *stringValues = CC_GET_IF<std::vector<std::string>>(&value)) {
+    } else if (const auto *stringValues = cc::get_if<std::vector<std::string>>(&value)) {
         for (const std::string &value : *stringValues) {
             MacroRecord record;
             record[key] = value;
@@ -263,19 +263,19 @@ std::vector<MacroRecord> EffectAsset::insertInfoValue(const std::vector<MacroRec
                                                       const IPreCompileInfoValueType &value) {
     std::vector<MacroRecord> ret;
     for (const auto &record : records) {
-        if (const auto *boolValues = CC_GET_IF<std::vector<bool>>(&value)) {
+        if (const auto *boolValues = cc::get_if<std::vector<bool>>(&value)) {
             for (const bool value : *boolValues) {
                 MacroRecord tmpRecord = record;
                 tmpRecord[key]        = value;
                 ret.emplace_back(tmpRecord);
             }
-        } else if (const auto *floatValues = CC_GET_IF<std::vector<float>>(&value)) {
+        } else if (const auto *floatValues = cc::get_if<std::vector<float>>(&value)) {
             for (const float value : *floatValues) {
                 MacroRecord tmpRecord = record;
                 tmpRecord[key]        = value;
                 ret.emplace_back(tmpRecord);
             }
-        } else if (const auto *stringValues = CC_GET_IF<std::vector<std::string>>(&value)) {
+        } else if (const auto *stringValues = cc::get_if<std::vector<std::string>>(&value)) {
             for (const std::string &value : *stringValues) {
                 MacroRecord tmpRecord = record;
                 tmpRecord[key]        = value;

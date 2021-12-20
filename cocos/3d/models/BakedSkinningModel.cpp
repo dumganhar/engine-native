@@ -63,7 +63,7 @@ void BakedSkinningModel::destroy() {
     if (_jointMedium.buffer != nullptr) {
         CC_SAFE_DESTROY(_jointMedium.buffer);
     }
-    applyJointTexture(CC_NULLOPT);
+    applyJointTexture(cc::nullopt);
     Super::destroy();
 }
 
@@ -183,7 +183,7 @@ void BakedSkinningModel::updateInstancedJointTextureInfo() {
     const IAnimInfo &animInfo         = _jointMedium.animInfo;
     index_t          idx              = _instAnimInfoIdx;
     if (idx >= 0) {
-        auto &view = CC_GET<Float32Array>(getInstancedAttributeBlock()->views[idx]); // TODO(xwx): not sure can get Float32Array or Uint8Array
+        auto &view = cc::get<Float32Array>(getInstancedAttributeBlock()->views[idx]); // TODO(xwx): not sure can get Float32Array or Uint8Array
         view[0]    = *animInfo.curFrame;                                               //NOTE: curFrame is only used in JSB.
                                                                                        //        view[0]           = animInfo.data[0];
         view[1] = jointTextureInfo[1];

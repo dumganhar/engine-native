@@ -148,7 +148,7 @@ cc::any Texture2D::serialize(const cc::any & /*ctxForExporting*/) {
 }
 
 void Texture2D::deserialize(const cc::any &serializedData, const cc::any &handle) {
-    const auto *data = CC_ANY_CAST<ITexture2DSerializeData>(&serializedData);
+    const auto *data = cc::any_cast<ITexture2DSerializeData>(&serializedData);
     if (data == nullptr) {
         CC_LOG_WARNING("serializedData is not ITexture2DSerializeData");
         return;
@@ -182,7 +182,7 @@ gfx::TextureInfo Texture2D::getGfxTextureCreateInfo(gfx::TextureUsageBit usage, 
 void Texture2D::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     auto *imageAsset = new ImageAsset();
-    imageAsset->initDefault(CC_NULLOPT);
+    imageAsset->initDefault(cc::nullopt);
     setImage(imageAsset);
 }
 

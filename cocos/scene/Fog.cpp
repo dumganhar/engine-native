@@ -124,7 +124,7 @@ void Fog::updatePipeline() {
 
     if (auto iter = pipeline->getMacros().find("CC_USE_FOG"); iter != pipeline->getMacros().end()) {
         const MacroValue &macro    = iter->second;
-        const int32_t *   macroPtr = CC_GET_IF<int32_t>(&macro);
+        const int32_t *   macroPtr = cc::get_if<int32_t>(&macro);
         if (macroPtr != nullptr && *macroPtr == static_cast<int32_t>(value)) {
             return;
         }

@@ -1116,7 +1116,7 @@ bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /
         }
     }
 
-    CC_VISIT(overloaded{[&](auto &typedArray) {
+    cc::visit(overloaded{[&](auto &typedArray) {
                               typedArray.setJSTypedArray(from.toObject());
                           },
                           [](cc::monostate /*unused*/) {}},
@@ -1126,7 +1126,7 @@ bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::IBArray *to, se::Object * /*ctx*/) {
-    CC_VISIT([&](auto &typedArray) {
+    cc::visit([&](auto &typedArray) {
         typedArray.setJSTypedArray(from.toObject());
     }, *to);
 

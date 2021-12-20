@@ -102,11 +102,11 @@ DataView mapBuffer(DataView&                  target,
             const uint32_t y = x + componentBytesLength * iComponent;
             if (isFloat) {
                 float cur = target.getFloat32(y);
-                out->setFloat32(y, CC_GET<1>(callback(cur, iComponent, target)));
+                out->setFloat32(y, cc::get<1>(callback(cur, iComponent, target)));
             } else {
                 int32_t cur = target.readInt(intReader, y);
                 // iComponent is usually more useful than y
-                (target.*intWritter)(y, CC_GET<0>(callback(cur, iComponent, target)));
+                (target.*intWritter)(y, cc::get<0>(callback(cur, iComponent, target)));
             }
         }
     }

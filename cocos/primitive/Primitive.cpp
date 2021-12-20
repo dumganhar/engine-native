@@ -38,7 +38,7 @@ void Primitive::onLoaded() {
 IGeometry createGeometry(PrimitiveType type, const cc::optional<PrimitiveOptions> &options) {
     switch (type) {
         case PrimitiveType::BOX: {
-            return options.has_value() ? box(CC_GET<IBoxOptions>(options.value())) : box();
+            return options.has_value() ? box(cc::get<IBoxOptions>(options.value())) : box();
             break;
         }
         case PrimitiveType::SPHERE: {
@@ -62,11 +62,11 @@ IGeometry createGeometry(PrimitiveType type, const cc::optional<PrimitiveOptions
             break;
         }
         case PrimitiveType::PLANE: {
-            return options.has_value() ? quad(CC_GET<IGeometryOptions>(options.value())) : plane();
+            return options.has_value() ? quad(cc::get<IGeometryOptions>(options.value())) : plane();
             break;
         }
         case PrimitiveType::QUAD: {
-            return options.has_value() ? quad(CC_GET<IGeometryOptions>(options.value())) : quad();
+            return options.has_value() ? quad(cc::get<IGeometryOptions>(options.value())) : quad();
             break;
         }
         default:

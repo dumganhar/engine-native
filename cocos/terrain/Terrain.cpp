@@ -855,7 +855,7 @@ cc::optional<float> Terrain::getHeightAt(float x, float y) const {
     auto vertexCount = getVertexCount();
 
     if (ix0 < 0 || ix0 > vertexCount[0] - 1 || iz0 < 0 || iz0 > vertexCount[1] - 1) {
-        return CC_NULLOPT;
+        return cc::nullopt;
     }
 
     ix0 = std::clamp(ix0, 0, vertexCount[0] - 1);
@@ -916,7 +916,7 @@ cc::optional<Vec3> Terrain::getNormalAt(float x, float y) const {
     auto vertexCount = getVertexCount();
 
     if (ix0 < 0 || ix0 > vertexCount[0] - 1 || iz0 < 0 || iz0 > vertexCount[1] - 1) {
-        return CC_NULLOPT;
+        return cc::nullopt;
     }
 
     ix0 = std::clamp(ix0, 0, vertexCount[0] - 1);
@@ -976,7 +976,7 @@ cc::optional<Vec4> Terrain::getWeightAt(float x, float y) const {
     const int32_t uWeigthComplexity = getWeightMapSize() * _blockCount[0];
     const int32_t vWeigthComplexity = getWeightMapSize() * _blockCount[1];
     if (uWeigthComplexity == 0 || vWeigthComplexity == 0) {
-        return CC_NULLOPT;
+        return cc::nullopt;
     }
 
     const float fx = x / uWeigthComplexity;
@@ -990,7 +990,7 @@ cc::optional<Vec4> Terrain::getWeightAt(float x, float y) const {
     const float dz  = fy - iz0;
 
     if (ix0 < 0 || ix0 > uWeigthComplexity - 1 || iz0 < 0 || iz0 > vWeigthComplexity - 1) {
-        return CC_NULLOPT;
+        return cc::nullopt;
     }
 
     ix0 = std::clamp(ix0, 0, uWeigthComplexity - 1);

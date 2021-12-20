@@ -32,7 +32,7 @@ cc::any BufferAsset::getNativeAsset() const {
 }
 
 void BufferAsset::setNativeAsset(const cc::any &obj) {
-    _buffer = CC_ANY_CAST<ArrayBuffer *>(obj);
+    _buffer = cc::any_cast<ArrayBuffer *>(obj);
 }
 
 } // namespace cc

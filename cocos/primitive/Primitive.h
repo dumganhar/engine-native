@@ -94,6 +94,6 @@ private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(Primitive);
 };
 
-IGeometry createGeometry(PrimitiveType type, const cc::optional<PrimitiveOptions> &options = CC_NULLOPT);
+IGeometry createGeometry(PrimitiveType type, const cc::optional<PrimitiveOptions> &options = cc::nullopt);
 
 } // namespace cc

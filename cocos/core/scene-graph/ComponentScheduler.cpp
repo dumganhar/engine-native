@@ -59,7 +59,7 @@ Invoker invokeUpdate = createInvokeImpl(
             comp->update(dt.value());
         }
     },
-    CC_NULLOPT);
+    cc::nullopt);
 
 Invoker invokeLateUpdate = createInvokeImpl(
     [](Component *c, const cc::optional<float> &dt) {
@@ -72,7 +72,7 @@ Invoker invokeLateUpdate = createInvokeImpl(
             comp->lateUpdate(dt.value());
         }
     },
-    CC_NULLOPT);
+    cc::nullopt);
 
 } // namespace
 
@@ -155,9 +155,9 @@ void OneOffInvoker::remove(Component *comp) {
 }
 
 void OneOffInvoker::cancelInactive() {
-    stableRemoveInactive(_zero, CC_NULLOPT);
-    stableRemoveInactive(_neg, CC_NULLOPT);
-    stableRemoveInactive(_pos, CC_NULLOPT);
+    stableRemoveInactive(_zero, cc::nullopt);
+    stableRemoveInactive(_neg, cc::nullopt);
+    stableRemoveInactive(_pos, cc::nullopt);
 }
 
 void OneOffInvoker::cancelInactive(CCObject::Flags flagToClear) {
@@ -172,17 +172,17 @@ void OneOffInvoker::invoke() {
             return a->getExecutionOrder() < b->getExecutionOrder();
         });
 
-        _invoke(_neg, CC_NULLOPT);
+        _invoke(_neg, cc::nullopt);
         _neg.array.clear();
     }
-    _invoke(_zero, CC_NULLOPT);
+    _invoke(_zero, cc::nullopt);
     _zero.array.clear();
 
     if (!_pos.array.empty()) {
         std::stable_sort(_pos.array.begin(), _pos.array.end(), [](const Component *a, const Component *b) {
             return a->getExecutionOrder() < b->getExecutionOrder();
         });
-        _invoke(_pos, CC_NULLOPT);
+        _invoke(_pos, cc::nullopt);
         _pos.array.clear();
     }
 }

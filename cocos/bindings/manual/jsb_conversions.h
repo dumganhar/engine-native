@@ -1426,7 +1426,7 @@ bool nativevalue_to_se(const cc::variant<ARGS...> &from, se::Value &to, se::Obje
             return;
         }
 
-        ok = nativevalue_to_se(CC_GET<i>(from), to, ctx);
+        ok = nativevalue_to_se(cc::get<i>(from), to, ctx);
     });
     return ok;
 }

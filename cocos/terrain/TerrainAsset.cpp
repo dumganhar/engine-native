@@ -209,7 +209,7 @@ cc::any TerrainAsset::getNativeAsset() const {
 }
 
 void TerrainAsset::setNativeAsset(const cc::any &obj) {
-    auto value = CC_ANY_CAST<ArrayBuffer::Ptr>(obj);
+    auto value = cc::any_cast<ArrayBuffer::Ptr>(obj);
     if (!_data.empty() && _data.byteLength() == value->byteLength()) {
         _data.set(Uint8Array{value});
     } else {

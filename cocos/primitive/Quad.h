@@ -35,5 +35,5 @@ namespace cc {
  * @param options 参数选项。
  */
 
-IGeometry quad(cc::optional<IGeometryOptions> options = CC_NULLOPT);
+IGeometry quad(cc::optional<IGeometryOptions> options = cc::nullopt);
 } // namespace cc

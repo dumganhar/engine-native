@@ -68,21 +68,21 @@ void Material::initialize(const IMaterialInfo &info) {
         _props.clear();
     }
 
-    if (info.technique != CC_NULLOPT) {
+    if (info.technique != cc::nullopt) {
         _techIdx = info.technique.value();
     }
 
     if (info.effectAsset != nullptr) {
         _effectAsset = info.effectAsset; //cjh TODO:
-    } else if (info.effectName != CC_NULLOPT) {
+    } else if (info.effectName != cc::nullopt) {
         _effectAsset = EffectAsset::get(info.effectName.value());
     }
 
-    if (info.defines != CC_NULLOPT) {
+    if (info.defines != cc::nullopt) {
         prepareInfo(info.defines.value(), _defines);
     }
 
-    if (info.states != CC_NULLOPT) {
+    if (info.states != cc::nullopt) {
         prepareInfo(info.states.value(), _states);
     }
     update();
@@ -350,20 +350,20 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
     const auto propertyType = scene::Pass::getPropertyTypeFromHandle(handle);
     if (propertyType == PropertyType::BUFFER) {
         if (val.index() == MATERIAL_PROPERTY_INDEX_LIST) {
-            pass->setUniformArray(handle, CC_GET<MaterialPropertyList>(val));
+            pass->setUniformArray(handle, cc::get<MaterialPropertyList>(val));
         } else if (val.index() == MATERIAL_PROPERTY_INDEX_SINGLE) {
-            pass->setUniform(handle, CC_GET<MaterialProperty>(val));
+            pass->setUniform(handle, cc::get<MaterialProperty>(val));
         } else {
             pass->resetUniform(name);
         }
     } else if (propertyType == PropertyType::TEXTURE) {
         if (val.index() == MATERIAL_PROPERTY_INDEX_LIST) {
-            const auto &textureArray = CC_GET<MaterialPropertyList>(val);
+            const auto &textureArray = cc::get<MaterialPropertyList>(val);
             for (size_t i = 0; i < textureArray.size(); i++) {
                 bindTexture(pass, handle, textureArray[i], static_cast<index_t>(i));
             }
         } else if (val.index() == MATERIAL_PROPERTY_INDEX_SINGLE) {
-            bindTexture(pass, handle, CC_GET<MaterialProperty>(val));
+            bindTexture(pass, handle, cc::get<MaterialProperty>(val));
         } else {
             pass->resetTexture(name);
         }
@@ -377,9 +377,9 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
     }
 
     const uint32_t binding = scene::Pass::getBindingFromHandle(handle);
-    if (const auto *pTexture = CC_GET_IF<gfx::Texture *>(&val)) {
+    if (const auto *pTexture = cc::get_if<gfx::Texture *>(&val)) {
         pass->bindTexture(binding, const_cast<gfx::Texture *>(*pTexture), index);
-    } else if (const auto *pTextureBase = CC_GET_IF<TextureBase *>(&val)) {
+    } else if (const auto *pTextureBase = cc::get_if<TextureBase *>(&val)) {
         auto *        textureBase = *pTextureBase;
         gfx::Texture *texture     = nullptr;
         if (textureBase != nullptr) {

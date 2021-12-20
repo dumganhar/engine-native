@@ -516,16 +516,16 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
                     vbView.set(dstAttrView, srcVBOffset);
                     if ((attr.name == gfx::ATTR_NAME_POSITION || attr.name == gfx::ATTR_NAME_NORMAL) && worldMatrix != nullptr) {
                         Float32Array f32Temp(vbView.buffer(), srcVBOffset, 3);
-                        vec3_temp.set(f32Temp[0], f32Temp[1], f32Temp[2]);
+                        vec3Temp.set(f32Temp[0], f32Temp[1], f32Temp[2]);
                         if (attr.name == gfx::ATTR_NAME_POSITION) {
-                            vec3_temp.transformMat4(vec3_temp, *worldMatrix);
+                            vec3Temp.transformMat4(vec3Temp, *worldMatrix);
                         } else if (attr.name == gfx::ATTR_NAME_NORMAL) {
-                            vec3_temp.transformQuat(rotate);
+                            vec3Temp.transformQuat(rotate);
                         }
 
-                        f32Temp[0] = vec3_temp.x;
-                        f32Temp[1] = vec3_temp.y;
-                        f32Temp[2] = vec3_temp.z;
+                        f32Temp[0] = vec3Temp.x;
+                        f32Temp[1] = vec3Temp.y;
+                        f32Temp[2] = vec3Temp.z;
                     }
                     srcVBOffset += bundle.view.stride;
                     dstVBOffset += dstBundle.view.stride;
@@ -680,10 +680,10 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
             boundingBox.halfExtents.scale(0.5F);
             boundingBox.transform(*worldMatrix, &boundingBox);
 
-            Vec3::add(boundingBox.center, boundingBox.halfExtents, &vec3_temp);
-            Vec3::max(meshStruct.maxPosition.value(), vec3_temp, &meshStruct.maxPosition.value());
-            Vec3::subtract(boundingBox.center, boundingBox.halfExtents, &vec3_temp);
-            Vec3::min(meshStruct.minPosition.value(), vec3_temp, &meshStruct.minPosition.value());
+            Vec3::add(boundingBox.center, boundingBox.halfExtents, &vec3Temp);
+            Vec3::max(meshStruct.maxPosition.value(), vec3Temp, &meshStruct.maxPosition.value());
+            Vec3::subtract(boundingBox.center, boundingBox.halfExtents, &vec3Temp);
+            Vec3::min(meshStruct.minPosition.value(), vec3Temp, &meshStruct.minPosition.value());
         } else {
             Vec3::min(meshStruct.minPosition.value(), mesh->_struct.minPosition.value(), &meshStruct.minPosition.value());
             Vec3::max(meshStruct.maxPosition.value(), mesh->_struct.maxPosition.value(), &meshStruct.maxPosition.value());

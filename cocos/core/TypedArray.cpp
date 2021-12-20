@@ -65,7 +65,7 @@ uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
     return 0;
 }
 
-void setTypedArrayValue(TypedArray &arr, index_t idx, const TypedArrayElementType &value) {
+void setTypedArrayValue(TypedArray &arr, uint32_t idx, const TypedArrayElementType &value) {
 #define TYPEDARRAY_SET_VALUE(type, elemType)                            \
     if (auto *p = cc::get_if<elemType>(&value); p != nullptr) {         \
         if (cc::holds_alternative<Float32Array>(arr)) {                 \

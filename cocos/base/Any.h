@@ -27,47 +27,42 @@
 
 #ifdef USE_CXX_17
 
-#include <any>
+    #include <any>
 
 namespace cc {
 
 using any = std::any;
 
-template<typename ValueType>
-inline ValueType * any_cast(any * operand) noexcept
-{
+template <typename ValueType>
+inline ValueType* any_cast(any* operand) noexcept {
     return std::any_cast<ValueType>(operand);
 }
 
-template<typename ValueType>
-inline const ValueType * any_cast(const any * operand) noexcept
-{
+template <typename ValueType>
+inline const ValueType* any_cast(const any* operand) noexcept {
     return std::any_cast<ValueType>(operand);
 }
 
-template<typename ValueType>
-inline ValueType any_cast(any & operand)
-{
+template <typename ValueType>
+inline ValueType any_cast(any& operand) {
     return std::any_cast<ValueType>(operand);
 }
 
-template<typename ValueType>
-inline ValueType any_cast(const any & operand)
-{
+template <typename ValueType>
+inline ValueType any_cast(const any& operand) {
     return std::any_cast<ValueType>(operand);
 }
 
-template<typename ValueType>
-inline ValueType any_cast(any&& operand)
-{
+template <typename ValueType>
+inline ValueType any_cast(any&& operand) {
     return std::any_cast<ValueType>(operand);
 }
 
-}
-    
+} // namespace cc
+
 #else
 
-#include "boost/any.hpp"
+    #include "boost/any.hpp"
 
 namespace cc {
 class any : public boost::any {
@@ -79,33 +74,28 @@ public:
     }
 };
 
-template<typename ValueType>
-inline ValueType * any_cast(any * operand) noexcept
-{
+template <typename ValueType>
+inline ValueType* any_cast(any* operand) noexcept {
     return boost::any_cast<ValueType>(operand);
 }
 
-template<typename ValueType>
-inline const ValueType * any_cast(const any * operand) noexcept
-{
+template <typename ValueType>
+inline const ValueType* any_cast(const any* operand) noexcept {
     return boost::any_cast<ValueType>(operand);
 }
 
-template<typename ValueType>
-inline ValueType any_cast(any & operand)
-{
+template <typename ValueType>
+inline ValueType any_cast(any& operand) {
     return boost::any_cast<ValueType>(operand);
 }
 
-template<typename ValueType>
-inline ValueType any_cast(const any & operand)
-{
+template <typename ValueType>
+inline ValueType any_cast(const any& operand) {
     return boost::any_cast<ValueType>(operand);
 }
 
-template<typename ValueType>
-inline ValueType any_cast(any&& operand)
-{
+template <typename ValueType>
+inline ValueType any_cast(any&& operand) {
     return boost::any_cast<ValueType>(operand);
 }
 

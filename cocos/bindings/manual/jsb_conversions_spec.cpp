@@ -1117,10 +1117,10 @@ bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /
     }
 
     cc::visit(overloaded{[&](auto &typedArray) {
-                              typedArray.setJSTypedArray(from.toObject());
-                          },
-                          [](cc::monostate /*unused*/) {}},
-               *to);
+                             typedArray.setJSTypedArray(from.toObject());
+                         },
+                         [](cc::monostate /*unused*/) {}},
+              *to);
     return true;
 }
 
@@ -1128,7 +1128,8 @@ bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /
 bool sevalue_to_native(const se::Value &from, cc::IBArray *to, se::Object * /*ctx*/) {
     cc::visit([&](auto &typedArray) {
         typedArray.setJSTypedArray(from.toObject());
-    }, *to);
+    },
+              *to);
 
     return true;
 }

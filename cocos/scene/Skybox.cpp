@@ -23,6 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+#include "scene/Skybox.h"
 #include "3d/assets/Mesh.h"
 #include "3d/misc/CreateMesh.h"
 #include "core/Director.h"
@@ -32,7 +33,6 @@
 #include "renderer/core/MaterialInstance.h"
 #include "renderer/core/PassUtils.h"
 #include "scene/Model.h"
-#include "scene/Skybox.h"
 
 namespace {
 cc::Mesh *    skyboxMesh{nullptr};

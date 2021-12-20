@@ -27,6 +27,7 @@
 #include "cocos/base/Optional.h"
 
 #include "3d/assets/Mesh.h"
+#include "cocos/base/Variant.h"
 #include "primitive/Box.h"
 #include "primitive/Capsule.h"
 #include "primitive/Circle.h"
@@ -36,7 +37,6 @@
 #include "primitive/Quad.h"
 #include "primitive/Sphere.h"
 #include "primitive/Torus.h"
-#include "cocos/base/Variant.h"
 
 #include "primitive/PrimitiveDefine.h"
 namespace cc {

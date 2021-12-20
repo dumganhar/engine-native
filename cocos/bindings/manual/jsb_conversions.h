@@ -25,11 +25,9 @@
 
 #pragma once
 
-#include "cocos/base/Any.h"
 #include <cassert>
 #include <cstdint>
 #include <functional>
-#include "cocos/base/Optional.h"
 #include <type_traits>
 #include <utility>
 #include "base/Ptr.h"
@@ -37,6 +35,8 @@
 #include "bindings/jswrapper/HandleObject.h"
 #include "bindings/jswrapper/SeApi.h"
 #include "bindings/manual/jsb_classtype.h"
+#include "cocos/base/Any.h"
+#include "cocos/base/Optional.h"
 #include "cocos/base/Variant.h"
 
 #include "jsb_conversions_spec.h"

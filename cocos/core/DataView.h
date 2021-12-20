@@ -68,17 +68,17 @@ public:
         return _byteEndPos - _byteOffset;
     }
 
-    using Int32Reader   = int32_t (DataView::*)(index_t) const;
-    using UInt32Reader  = uint32_t (DataView::*)(index_t) const;
-    using Int16Reader   = int16_t (DataView::*)(index_t) const;
-    using UInt16Reader  = uint16_t (DataView::*)(index_t) const;
-    using Int8Reader    = int8_t (DataView::*)(index_t) const;
-    using UInt8Reader   = uint8_t (DataView::*)(index_t) const;
+    using Int32Reader   = int32_t (DataView::*)(uint32_t) const;
+    using UInt32Reader  = uint32_t (DataView::*)(uint32_t) const;
+    using Int16Reader   = int16_t (DataView::*)(uint32_t) const;
+    using UInt16Reader  = uint16_t (DataView::*)(uint32_t) const;
+    using Int8Reader    = int8_t (DataView::*)(uint32_t) const;
+    using UInt8Reader   = uint8_t (DataView::*)(uint32_t) const;
     using ReaderVariant = cc::variant<Int32Reader, UInt32Reader, Int16Reader, UInt16Reader, Int8Reader, UInt8Reader>;
     static std::unordered_map<std::string, ReaderVariant> intReaderMap;
-    int32_t                                               readInt(ReaderVariant &readerVariant, index_t offset);
+    int32_t                                               readInt(ReaderVariant &readerVariant, uint32_t offset);
 
-    using IntWritter = void (DataView::*)(index_t, int32_t);
+    using IntWritter = void (DataView::*)(uint32_t, uint32_t);
     static std::unordered_map<std::string, IntWritter> intWritterMap;
 
 private:

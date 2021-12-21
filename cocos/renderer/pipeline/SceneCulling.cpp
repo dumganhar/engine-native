@@ -29,6 +29,9 @@
 #include "Define.h"
 #include "RenderPipeline.h"
 #include "SceneCulling.h"
+#include "core/geometry/AABB.h"
+#include "core/geometry/Sphere.h"
+#include "core/scene-graph/Node.h"
 #include "gfx-base/GFXDevice.h"
 #include "math/Quaternion.h"
 #include "platform/Application.h"
@@ -39,6 +42,7 @@
 #include "scene/RenderScene.h"
 #include "scene/Sphere.h"
 #include "scene/SpotLight.h"
+#include "scene/DirectionalLight.h"
 
 namespace cc {
 namespace pipeline {
@@ -48,14 +52,14 @@ RenderObject genRenderObject(const scene::Model *model, const scene::Camera *cam
     if (model->getNode()) {
         const auto *node = model->getTransform();
         cc::Vec3    position;
-        cc::Vec3::subtract(node->getWorldPosition(), camera->position, &position);
-        depth = position.dot(camera->forward);
+        cc::Vec3::subtract(node->getWorldPosition(), camera->getPosition(), &position);
+        depth = position.dot(camera->getForward());
     }
 
     return {depth, model};
 }
 
-void getShadowWorldMatrix(const scene::Sphere *sphere, const cc::Quaternion &rotation, const cc::Vec3 &dir, cc::Mat4 *shadowWorldMat, cc::Vec3 *out) {
+void getShadowWorldMatrix(const geometry::Sphere *sphere, const cc::Quaternion &rotation, const cc::Vec3 &dir, cc::Mat4 *shadowWorldMat, cc::Vec3 *out) {
     Vec3 translation(dir);
     translation.negate();
     const auto distance = sphere->getRadius() * COEFFICIENT_OF_EXPANSION;
@@ -110,8 +114,8 @@ void updateDirLight(scene::Shadow *shadows, const scene::Light *light, std::arra
     const Quaternion qt(rotation.x, rotation.y, rotation.z, rotation.w);
     Vec3             forward(0, 0, -1.0F);
     forward.transformQuat(qt);
-    const auto &normal   = shadows->normal;
-    const auto  distance = shadows->distance + 0.001F; // avoid z-fighting
+    const auto &normal   = shadows->getNormal();
+    const auto  distance = shadows->getDistance() + 0.001F; // avoid z-fighting
     const auto  ndL      = normal.dot(forward);
     const auto  scale    = 1.0F / ndL;
     const auto  lx       = forward.x * scale;
@@ -120,31 +124,31 @@ void updateDirLight(scene::Shadow *shadows, const scene::Light *light, std::arra
     const auto  nx       = normal.x;
     const auto  ny       = normal.y;
     const auto  nz       = normal.z;
-    auto &      matLight = shadows->matLight;
-    matLight.m[0]        = 1 - nx * lx;
-    matLight.m[1]        = -nx * ly;
-    matLight.m[2]        = -nx * lz;
-    matLight.m[3]        = 0;
-    matLight.m[4]        = -ny * lx;
-    matLight.m[5]        = 1 - ny * ly;
-    matLight.m[6]        = -ny * lz;
-    matLight.m[7]        = 0;
-    matLight.m[8]        = -nz * lx;
-    matLight.m[9]        = -nz * ly;
-    matLight.m[10]       = 1 - nz * lz;
-    matLight.m[11]       = 0;
-    matLight.m[12]       = lx * distance;
-    matLight.m[13]       = ly * distance;
-    matLight.m[14]       = lz * distance;
-    matLight.m[15]       = 1;
+    //TODO: how to avoid create Mat4 every time?
+    auto matLight  = shadow->getMatLight();
+    matLight.m[0]  = 1 - nx * lx;
+    matLight.m[1]  = -nx * ly;
+    matLight.m[2]  = -nx * lz;
+    matLight.m[3]  = 0;
+    matLight.m[4]  = -ny * lx;
+    matLight.m[5]  = 1 - ny * ly;
+    matLight.m[6]  = -ny * lz;
+    matLight.m[7]  = 0;
+    matLight.m[8]  = -nz * lx;
+    matLight.m[9]  = -nz * ly;
+    matLight.m[10] = 1 - nz * lz;
+    matLight.m[11] = 0;
+    matLight.m[12] = lx * distance;
+    matLight.m[13] = ly * distance;
+    matLight.m[14] = lz * distance;
+    matLight.m[15] = 1;
 
     memcpy(shadowUBO->data() + UBOShadow::MAT_LIGHT_PLANE_PROJ_OFFSET, matLight.m, sizeof(matLight));
-    const float color[4] = {shadows->color.x, shadows->color.y, shadows->color.z, shadows->color.w};
-    memcpy(shadowUBO->data() + UBOShadow::SHADOW_COLOR_OFFSET, &color, sizeof(color));
+    memcpy(shadowUBO->data() + UBOShadow::SHADOW_COLOR_OFFSET, shadows->getShadowColor4f().data(), sizeof(float) * 4);
 }
 
 void validPunctualLightsCulling(RenderPipeline *pipeline, scene::Camera *camera) {
-    const auto *const            scene               = camera->scene;
+    const auto *const            scene               = camera->getScene();
     PipelineSceneData *          sceneData           = pipeline->getPipelineSceneData();
     vector<const scene::Light *> validPunctualLights = sceneData->getValidPunctualLights();
     validPunctualLights.clear();
@@ -300,16 +304,15 @@ void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera 
 }
 void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
     PipelineSceneData *const              sceneData  = pipeline->getPipelineSceneData();
-    const scene::PipelineSharedSceneData *sharedData = sceneData->getSharedData();
-    const scene::Shadow *                 shadowInfo = sharedData->shadow;
-    const scene::Skybox *                 skyBox     = sharedData->skybox;
-    const scene::RenderScene *const       scene      = camera->scene;
+    const scene::Shadow *                 shadowInfo = sharedData->getShadow();
+    const scene::Skybox *                 skyBox     = sharedData->getSkybox();
+    const scene::RenderScene *const       scene      = camera->getScene();
     const scene::DirectionalLight *       mainLight  = scene->getMainLight();
     scene::Frustum                        dirLightFrustum;
 
     RenderObjectList dirShadowObjects;
     bool             isShadowMap = false;
-    if (shadowInfo->enabled && shadowInfo->shadowType == scene::ShadowType::SHADOWMAP) {
+    if (shadowInfo != nullptr && shadowInfo->isEnabled() && shadowInfo->getType() == scene::ShadowType::SHADOWMAP) {
         isShadowMap = true;
 
         // update dirLightFrustum
@@ -326,15 +329,15 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
     RenderObjectList renderObjects;
     RenderObjectList castShadowObject;
 
-    if (skyBox->enabled && skyBox->model && (camera->clearFlag & skyboxFlag)) {
-        renderObjects.emplace_back(genRenderObject(skyBox->model, camera));
+    if (skyBox != nullptr && skyBox->isEnabled() && skyBox->getModel() && (static_cast<uint32_t>(camera->getClearFlag()) & skyboxFlag)) {
+        renderObjects.emplace_back(genRenderObject(skyBox->getModel(), camera));
     }
 
     const scene::Octree *octree = scene->getOctree();
     if (octree) {
-        for (const auto *model : scene->getModels()) {
+        for (const auto &model : scene->getModels()) {
             // filter model by view visibility
-            if (model->getEnabled()) {
+            if (model->isEnabled()) {
                 if (model->getCastShadow()) {
                     castShadowObject.emplace_back(genRenderObject(model, camera));
                 }

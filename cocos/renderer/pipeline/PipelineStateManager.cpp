@@ -30,7 +30,7 @@
 namespace cc {
 namespace pipeline {
 
-unordered_map<size_t, gfx::PipelineState *> PipelineStateManager::psoHashMap;
+unordered_map<size_t, SharedPtr<gfx::PipelineState>> PipelineStateManager::psoHashMap;
 
 gfx::PipelineState *PipelineStateManager::getOrCreatePipelineState(const scene::Pass *  pass,
                                                                    gfx::Shader *        shader,
@@ -46,7 +46,7 @@ gfx::PipelineState *PipelineStateManager::getOrCreatePipelineState(const scene::
         hash = hash << subpass;
     }
 
-    auto *pso = psoHashMap[hash];
+    auto *pso = psoHashMap[hash].get();
     if (!pso) {
         auto *pipelineLayout = pass->getPipelineLayout();
 
@@ -58,7 +58,7 @@ gfx::PipelineState *PipelineStateManager::getOrCreatePipelineState(const scene::
                                                                *(pass->getDepthStencilState()),
                                                                *(pass->getBlendState()),
                                                                pass->getPrimitive(),
-                                                               pass->getDynamicState(),
+                                                               pass->getDynamicStates(),
                                                                gfx::PipelineBindPoint::GRAPHICS,
                                                                subpass});
 

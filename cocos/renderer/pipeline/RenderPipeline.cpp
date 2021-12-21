@@ -58,7 +58,6 @@ RenderPipeline::RenderPipeline()
 
     _globalDSManager   = new GlobalDSManager();
     _pipelineUBO       = new PipelineUBO();
-    _pipelineSceneData = new PipelineSceneData();
 }
 
 RenderPipeline::~RenderPipeline() {
@@ -117,7 +116,7 @@ void RenderPipeline::destroyQuadInputAssembler() {
     _quadIA.clear();
 }
 
-void RenderPipeline::destroy() {
+bool RenderPipeline::destroy() {
     for (auto *flow : _flows) {
         flow->destroy();
     }
@@ -142,6 +141,8 @@ void RenderPipeline::destroy() {
     BatchedBuffer::destroyBatchedBuffer();
     InstancedBuffer::destroyInstancedBuffer();
     framegraph::FrameGraph::gc(0);
+    
+    return Super::destroy();
 }
 
 gfx::Color RenderPipeline::getClearcolor(scene::Camera *camera) const {

@@ -26,9 +26,12 @@
 #pragma once
 
 #include "Define.h"
-#include "scene/Define.h"
+#include "core/geometry/Sphere.h"
+#include "scene/Ambient.h"
+#include "scene/Fog.h"
 #include "scene/Light.h"
-#include "scene/Sphere.h"
+#include "scene/Shadow.h"
+#include "scene/Skybox.h"
 
 namespace cc {
 
@@ -42,10 +45,9 @@ class RenderPipeline;
 
 class CC_DLL PipelineSceneData : public Object {
 public:
-    PipelineSceneData()           = default;
-    ~PipelineSceneData() override = default;
-    void activate(gfx::Device *device, RenderPipeline *pipeline);
-    void setPipelineSharedSceneData(scene::PipelineSharedSceneData *data);
+    PipelineSceneData();
+    ~PipelineSceneData();
+    virtual void activate(gfx::Device *device, RenderPipeline *pipeline);
     void destroy();
 
     inline void                                                                setShadowFramebuffer(const scene::Light *light, gfx::Framebuffer *framebuffer) { _shadowFrameBufferMap.emplace(light, framebuffer); }
@@ -81,6 +83,15 @@ private:
     Mat4                            _matShadowView;
     Mat4                            _matShadowProj;
     Mat4                            _matShadowViewProj;
+    
+    geometry::Sphere *_sphere{nullptr};
+    scene::Fog *      _fog{nullptr};
+    scene::Ambient *  _ambient{nullptr};
+    scene::Skybox *   _skybox{nullptr};
+    scene::Shadow *   _shadow{nullptr};
+    bool              _isHDR{false};
+    float             _shadingScale{1.0F};
+    float             _fpScale{1.0F / 1024.F};
 
     std::unordered_map<const scene::Light *, gfx::Framebuffer *> _shadowFrameBufferMap;
 };

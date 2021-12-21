@@ -46,6 +46,10 @@ namespace {
     (dst)[(offset) + 3] = (src).w;
 } // namespace
 
+ForwardPipeline::ForwardPipeline() {
+    _pipelineSceneData = new PipelineSceneData();
+}
+
 framegraph::StringHandle ForwardPipeline::fgStrHandleForwardColorTexture = framegraph::FrameGraph::stringToHandle("forwardColorTexture");
 framegraph::StringHandle ForwardPipeline::fgStrHandleForwardDepthTexture = framegraph::FrameGraph::stringToHandle("forwardDepthTexture");
 framegraph::StringHandle ForwardPipeline::fgStrHandleForwardPass         = framegraph::FrameGraph::stringToHandle("forwardPass");
@@ -136,7 +140,7 @@ bool ForwardPipeline::activeRenderer(gfx::Swapchain *swapchain) {
     _descriptorSet->update();
 
     // update global defines when all states initialized.
-    _macros.setValue("CC_USE_HDR", static_cast<bool>(sharedData->isHDR));
+    _macros.setValue("CC_USE_HDR", static_cast<bool>(_pipelineSceneData->isHDR()));
     _macros.setValue("CC_SUPPORT_FLOAT_TEXTURE", _device->hasFeature(gfx::Feature::TEXTURE_FLOAT));
 
     // step 2 create index buffer
@@ -159,7 +163,7 @@ bool ForwardPipeline::activeRenderer(gfx::Swapchain *swapchain) {
     return true;
 }
 
-void ForwardPipeline::destroy() {
+bool ForwardPipeline::destroy() {
     destroyQuadInputAssembler();
     for (auto &it : _renderPasses) {
         CC_SAFE_DESTROY(it.second);
@@ -169,7 +173,7 @@ void ForwardPipeline::destroy() {
     _queryPools.clear();
     _commandBuffers.clear();
 
-    RenderPipeline::destroy();
+    return RenderPipeline::destroy();
 }
 
 } // namespace pipeline

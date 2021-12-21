@@ -36,6 +36,7 @@
 #include "gfx-base/GFXCommandBuffer.h"
 #include "gfx-base/GFXFramebuffer.h"
 #include "pipeline/UIPhase.h"
+#include "scene/RenderWindow.h"
 
 namespace cc {
 namespace pipeline {
@@ -98,7 +99,7 @@ void ForwardStage::dispenseRenderObject2Queues() {
         queue->clear();
     }
 
-    for (auto ro : renderObjects) {
+    for (const auto &ro : renderObjects) {
         const auto *const model         = ro.model;
         const auto &      subModels     = model->getSubModels();
         const auto        subModelCount = subModels.size();

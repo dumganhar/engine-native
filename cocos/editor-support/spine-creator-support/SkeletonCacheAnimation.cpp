@@ -52,8 +52,6 @@ SkeletonCacheAnimation::SkeletonCacheAnimation(const std::string &uuid, bool isS
     } else {
         _skeletonCache = new SkeletonCache();
         _skeletonCache->initWithUUID(uuid);
-        _skeletonCache->addRef();
-        _skeletonCache->autorelease();
     }
 
     // store global TypedArray begin and end offset

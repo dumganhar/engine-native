@@ -25,7 +25,7 @@
 
 #include "Reachability.h"
 #include "base/Macros.h"
-
+#include "base/DeferredReleasePool.h"
 #include <SystemConfiguration/SystemConfiguration.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -110,7 +110,7 @@ Reachability *Reachability::createWithHostName(const std::string &hostName) {
     if (reachability != nullptr) {
         returnValue = new (std::nothrow) Reachability();
         if (returnValue != nullptr) {
-            returnValue->autorelease();
+            cc::DeferredReleasePool::add(returnValue);
             returnValue->_reachabilityRef = reachability;
         } else {
             CFRelease(reachability);
@@ -127,7 +127,7 @@ Reachability *Reachability::createWithAddress(const struct sockaddr *hostAddress
     if (reachability != nullptr) {
         returnValue = new (std::nothrow) Reachability();
         if (returnValue != nullptr) {
-            returnValue->autorelease();
+            cc::DeferredReleasePool::add(returnValue);
             returnValue->_reachabilityRef = reachability;
         } else {
             CFRelease(reachability);

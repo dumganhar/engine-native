@@ -51,8 +51,6 @@ CCArmatureCacheDisplay::CCArmatureCacheDisplay(const std::string &armatureName, 
         _armatureCache->addRef();
     } else {
         _armatureCache = new ArmatureCache(armatureName, armatureKey, atlasUUID);
-        _armatureCache->addRef();
-        _armatureCache->autorelease();
     }
 
     // store global TypedArray begin and end offset

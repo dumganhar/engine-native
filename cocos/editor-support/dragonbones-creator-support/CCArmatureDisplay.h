@@ -161,7 +161,7 @@ public:
      * @param[in] pos Component position
      * @return Global position
      */
-    cc::Vec2 convertToRootSpace(float x, float y) const;
+    const cc::Vec2 &convertToRootSpace(float x, float y) const;
 
     /**
      * @return root display,if this diplay is root,then return itself.
@@ -185,6 +185,11 @@ private:
     bool _batch = true;
     bool _useAttach = false;
     bool _premultipliedAlpha = false;
+
+    // NOTE: We bind Vec2 to make JS deserialization works, we need to return const reference in convertToRootSpace method,
+    // because returning Vec2 JSB object on stack to JS will let JS get mess data.
+    mutable cc::Vec2 _tmpVec2;
+
     cc::middleware::Color4F _nodeColor = cc::middleware::Color4F::WHITE;
     dbEventCallback _dbEventCallback = nullptr;
 

@@ -33,21 +33,22 @@
 #include "renderer/pipeline/PipelineStateManager.h"
 #include "renderer/pipeline/RenderPipeline.h"
 
-static bool js_pipeline_RenderPipeline_getMacros(se::State &s) {
-    auto *cobj = static_cast<cc::pipeline::RenderPipeline *>(s.nativeThisObject());
-    SE_PRECONDITION2(cobj, false, "js_pipeline_RenderPipeline_getMacros : Invalid Native Object.");
-    const auto &   args = s.args();
-    size_t         argc = args.size();
-    CC_UNUSED bool ok   = true;
-    if (argc == 0) {
-        s.rval().setObject(cobj->getMacros().getObject());
-        SE_PRECONDITION2(ok, false, "js_pipeline_RenderPipeline_getMacros : Error processing arguments.");
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getMacros)
+//TODO(PatriceJiang): remove this, use genbindings.py to generate this attribute.
+// static bool js_pipeline_RenderPipeline_getMacros(se::State &s) {
+//     auto *cobj = static_cast<cc::pipeline::RenderPipeline *>(s.nativeThisObject());
+//     SE_PRECONDITION2(cobj, false, "js_pipeline_RenderPipeline_getMacros : Invalid Native Object.");
+//     const auto &   args = s.args();
+//     size_t         argc = args.size();
+//     CC_UNUSED bool ok   = true;
+//     if (argc == 0) {
+//         s.rval().setObject(cobj->getMacros().getObject());
+//         SE_PRECONDITION2(ok, false, "js_pipeline_RenderPipeline_getMacros : Error processing arguments.");
+//         return true;
+//     }
+//     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+//     return false;
+// }
+// SE_BIND_PROP_GET(js_pipeline_RenderPipeline_getMacros)
 
 static bool JSB_getOrCreatePipelineState(se::State &s) {
     const auto &args = s.args();
@@ -82,6 +83,6 @@ bool register_all_pipeline_manual(se::Object *obj) {
     nr->setProperty("PipelineStateManager", psmVal);
     psmVal.toObject()->defineFunction("getOrCreatePipelineState", _SE(JSB_getOrCreatePipelineState));
 
-    __jsb_cc_pipeline_RenderPipeline_proto->defineProperty("macros", _SE(js_pipeline_RenderPipeline_getMacros), nullptr);
+    // __jsb_cc_pipeline_RenderPipeline_proto->defineProperty("macros", _SE(js_pipeline_RenderPipeline_getMacros), nullptr);
     return true;
 }

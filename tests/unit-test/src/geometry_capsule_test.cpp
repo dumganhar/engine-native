@@ -21,20 +21,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#pragma once
-
-#include <string>
-
+#include <cmath>
+#include "cocos/core/geometry/Capsule.h"
+#include "cocos/math/Mat3.h"
+#include "cocos/math/Mat4.h"
 #include "cocos/math/Math.h"
+#include "cocos/math/Quaternion.h"
+#include "cocos/math/Vec3.h"
+#include "cocos/math/Vec4.h"
 #include "gtest/gtest.h"
+#include "utils.h"
 
-static std::string logLabel;
-static bool        IsEqualF(float l, float r) {
-    return cc::math::IsEqualF(l, r);
-};
-static void ExpectEq(bool lf, bool rt) {
-    EXPECT_EQ(lf, rt) << "ERROR in: " << logLabel;
+TEST(geometryCapsuleTest, testTransform) {
+    cc::geometry::Capsule capsule{1.0, 2.0};
+    cc::geometry::Capsule capsuleNew{};
+    cc::Mat4              trans;
+    cc::Quaternion        quat{};
+    cc::Vec3              scale{1.0F, 2.0F, 3.0F};
+    {
+        cc::Vec3 axis  = {1.0, 0.0, 0.0};
+        float    angle = M_PI;
+        cc::Quaternion::createFromAxisAngle(axis, angle, &quat);
+        trans.translate(0, 1, 0);
+    }
+    capsule.transform(trans, {}, quat, scale, &capsuleNew);
+    EXPECT_TRUE(capsuleNew.center == cc::Vec3(0.0F, 1.0F, 0.0F));
+    EXPECT_FLOAT_EQ(capsule.ellipseCenter0.y, 2.0F);
+    EXPECT_FLOAT_EQ(capsule.ellipseCenter1.y, -2.0F);
+    EXPECT_FLOAT_EQ(capsuleNew.ellipseCenter0.y, -2.0F);
+    EXPECT_FLOAT_EQ(capsuleNew.ellipseCenter1.y, 4.0F);
 }
-
-void initCocos(int width, int height);
-void destroyCocos();

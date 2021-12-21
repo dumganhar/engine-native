@@ -479,8 +479,6 @@ bool JavaScriptJavaBridge::convertReturnValue(ReturnValue retValue, ValueType ty
 se::Class *__jsb_JavaScriptJavaBridge_class = nullptr; // NOLINT
 
 static bool JavaScriptJavaBridge_finalize(se::State &s) { //NOLINT(readability-identifier-naming)
-    auto *cobj = static_cast<JavaScriptJavaBridge *>(s.nativeThisObject());
-    delete cobj;
     return true;
 }
 SE_BIND_FINALIZE_FUNC(JavaScriptJavaBridge_finalize)
@@ -501,13 +499,13 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State &s) { //NOLINT(reada
         std::string clsName;
         std::string methodName;
         std::string methodSig;
-        ok = seval_to_std_string(args[0], &clsName);
+        ok = sevalue_to_native(args[0], &clsName);
         SE_PRECONDITION2(ok, false, "Converting class name failed!");
 
-        ok = seval_to_std_string(args[1], &methodName);
+        ok = sevalue_to_native(args[1], &methodName);
         SE_PRECONDITION2(ok, false, "Converting method name failed!");
 
-        ok = seval_to_std_string(args[2], &methodSig);
+        ok = sevalue_to_native(args[2], &methodSig);
         SE_PRECONDITION2(ok, false, "Converting method signature failed!");
 
         JavaScriptJavaBridge::CallInfo call(clsName.c_str(), methodName.c_str(), methodSig.c_str());
@@ -532,13 +530,13 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State &s) { //NOLINT(reada
         std::string clsName;
         std::string methodName;
         std::string methodSig;
-        ok = seval_to_std_string(args[0], &clsName);
+        ok = sevalue_to_native(args[0], &clsName);
         SE_PRECONDITION2(ok, false, "Converting class name failed!");
 
-        ok = seval_to_std_string(args[1], &methodName);
+        ok = sevalue_to_native(args[1], &methodName);
         SE_PRECONDITION2(ok, false, "Converting method name failed!");
 
-        ok = seval_to_std_string(args[2], &methodSig);
+        ok = sevalue_to_native(args[2], &methodSig);
         SE_PRECONDITION2(ok, false, "Converting method signature failed!");
 
         JavaScriptJavaBridge::CallInfo call(clsName.c_str(), methodName.c_str(), methodSig.c_str());
@@ -551,7 +549,7 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State &s) { //NOLINT(reada
                 switch (call.argumentTypeAtIndex(i)) {
                     case JavaScriptJavaBridge::ValueType::INTEGER: {
                         int integer = 0;
-                        seval_to_int32(args[index], &integer);
+                        sevalue_to_native(args[index], &integer);
                         jargs[i].i = integer;
                         break;
                     }
@@ -563,7 +561,7 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State &s) { //NOLINT(reada
                     }
                     case JavaScriptJavaBridge::ValueType::FLOAT: {
                         float floatNumber = 0.0F;
-                        seval_to_float(args[index], &floatNumber);
+                        sevalue_to_native(args[index], &floatNumber);
                         jargs[i].f = floatNumber;
                         break;
                     }
@@ -577,7 +575,7 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State &s) { //NOLINT(reada
                             jargs[i].l = nullptr;
                         } else {
                             std::string str;
-                            seval_to_std_string(args[index], &str);
+                            sevalue_to_native(args[index], &str);
                             jargs[i].l = call.getEnv()->NewStringUTF(str.c_str());
                             toReleaseObjects.push_back(jargs[i].l);
                         }

@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2020-2021 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
 
  http://www.cocos.com
 
@@ -21,40 +21,55 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
-****************************************************************************/
+ ****************************************************************************/
+#include "core/memop/Pool.h"
+#include "gtest/gtest.h"
 
-#pragma once
+#include "utils.h"
 
-#include <cstdint>
-#include "core/scene-graph/Node.h"
-#include "physics/spec/ILifecycle.h"
+using namespace cc;
+using namespace memop;
 
-namespace cc {
-namespace physics {
-
-class IBaseJoint : virtual public ILifecycle {
+namespace {
+class PoolTest {
 public:
-    ~IBaseJoint() override                          = default;
-    virtual void      initialize(Node *node)        = 0;
-    virtual uintptr_t getImpl()                     = 0;
-    virtual void      setEnableCollision(bool v)    = 0;
-    virtual void      setConnectedBody(uintptr_t v) = 0;
+    int32_t tag{0};
+    explicit PoolTest(int32_t num) : tag(num) {}
 };
+int32_t tagValue = 0;
 
-class IDistanceJoint : virtual public IBaseJoint {
-public:
-    ~IDistanceJoint() override                        = default;
-    virtual void setPivotA(float x, float y, float z) = 0;
-    virtual void setPivotB(float x, float y, float z) = 0;
-};
+PoolTest *createTest() {
+    return new PoolTest(tagValue++);
+}
 
-class IRevoluteJoint : virtual public IBaseJoint {
-public:
-    ~IRevoluteJoint() override                        = default;
-    virtual void setPivotA(float x, float y, float z) = 0;
-    virtual void setPivotB(float x, float y, float z) = 0;
-    virtual void setAxis(float x, float y, float z)   = 0;
-};
+const int32_t ARRAY_SIZE = 10;
+auto *        pool       = new memop::Pool<PoolTest>(createTest, ARRAY_SIZE);
 
-} // namespace physics
-} // namespace cc
+} // namespace
+
+TEST(PoolTest, alloc) {
+    for (int32_t i = 0; i < ARRAY_SIZE + 2; ++i) {
+        auto *obj = pool->alloc();
+        EXPECT_NE(obj, nullptr);
+    }
+}
+
+TEST(PoolTest, free) {
+    auto *tmp = createTest();
+    pool->free(tmp);
+    auto *newElement = pool->alloc();
+    EXPECT_EQ(newElement, tmp);
+}
+
+TEST(PoolTest, freeArray) {
+    const int32_t           TEST_SIZE = 5;
+    std::vector<PoolTest *> tmpArr(TEST_SIZE);
+    for (int32_t i = 0; i < TEST_SIZE; ++i) {
+        PoolTest *a = createTest();
+    }
+    pool->freeArray(tmpArr);
+    for (int32_t i = 0; i < TEST_SIZE; ++i) {
+        auto *tmpObj = pool->alloc();
+        EXPECT_EQ(tmpArr[TEST_SIZE - i - 1], tmpObj);
+    }
+}

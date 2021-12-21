@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2020-2021 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
 
  http://www.cocos.com
 
@@ -21,40 +21,14 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
-****************************************************************************/
+ ****************************************************************************/
 
 #pragma once
 
-#include <cstdint>
-#include "core/scene-graph/Node.h"
-#include "physics/spec/ILifecycle.h"
+#include "cocos/bindings/jswrapper/SeApi.h"
 
-namespace cc {
-namespace physics {
+namespace se {
+class Object;
+}
 
-class IBaseJoint : virtual public ILifecycle {
-public:
-    ~IBaseJoint() override                          = default;
-    virtual void      initialize(Node *node)        = 0;
-    virtual uintptr_t getImpl()                     = 0;
-    virtual void      setEnableCollision(bool v)    = 0;
-    virtual void      setConnectedBody(uintptr_t v) = 0;
-};
-
-class IDistanceJoint : virtual public IBaseJoint {
-public:
-    ~IDistanceJoint() override                        = default;
-    virtual void setPivotA(float x, float y, float z) = 0;
-    virtual void setPivotB(float x, float y, float z) = 0;
-};
-
-class IRevoluteJoint : virtual public IBaseJoint {
-public:
-    ~IRevoluteJoint() override                        = default;
-    virtual void setPivotA(float x, float y, float z) = 0;
-    virtual void setPivotB(float x, float y, float z) = 0;
-    virtual void setAxis(float x, float y, float z)   = 0;
-};
-
-} // namespace physics
-} // namespace cc
+bool register_all_assets_manual(se::Object *obj);

@@ -30,6 +30,7 @@
 #include <string>
 #include <thread> // // std::this_thread::sleep_for
 #include "base/Macros.h"
+
 #include "base/Scheduler.h"
 #include "base/TypeDef.h"
 #include "bindings/event/EventDispatcher.h"

@@ -36,7 +36,7 @@
 #include <vector>
 
 #include "base/RefCounted.h"
-//#include "base/Vector.h"
+#include "base/Vector.h"
 
 namespace cc {
 
@@ -276,7 +276,7 @@ public:
 private:
     // Hash Element used for "selectors with interval"
     struct HashTimerEntry {
-        std::vector<Timer *> timers;
+        Vector<Timer *>      timers;
         void *               target;
         int                  timerIndex;
         Timer *              currentTimer;

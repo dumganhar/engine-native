@@ -1,3 +1,4 @@
+// clang-format off
 #pragma once
 \#include "base/Config.h"
 #if $macro_judgement

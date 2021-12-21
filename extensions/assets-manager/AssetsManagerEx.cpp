@@ -31,6 +31,7 @@
 #include "base/UTF8.h"
 #include "AsyncTaskPool.h"
 #include "base/Log.h"
+#include "base/DeferredReleasePool.h"
 
 #ifdef MINIZIP_FROM_SYSTEM
     #include <minizip/unzip.h>
@@ -112,7 +113,7 @@ AssetsManagerEx::~AssetsManagerEx() {
 AssetsManagerEx *AssetsManagerEx::create(const std::string &manifestUrl, const std::string &storagePath) {
     AssetsManagerEx *ret = new (std::nothrow) AssetsManagerEx(manifestUrl, storagePath);
     if (ret) {
-        ret->autorelease();
+        cc::DeferredReleasePool::add(ret);
     } else {
         CC_SAFE_DELETE(ret);
     }

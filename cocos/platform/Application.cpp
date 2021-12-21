@@ -27,6 +27,7 @@
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "pipeline/RenderPipeline.h"
 #include "cocos/renderer/GFXDeviceManager.h"
+#include "cocos/base/DeferredReleasePool.h"
 
 #if USE_AUDIO
     #include "cocos/audio/include/AudioEngine.h"
@@ -46,7 +47,7 @@ void Application::restartVM() {
 
     auto *scriptEngine = se::ScriptEngine::getInstance();
 
-    cc::PoolManager::getInstance()->getCurrentPool()->clear();
+    cc::DeferredReleasePool::clear();
 #if USE_AUDIO
     cc::AudioEngine::stopAll();
 #endif
@@ -72,7 +73,7 @@ void Application::close() { // NOLINT
 
     auto *scriptEngine = se::ScriptEngine::getInstance();
 
-    cc::PoolManager::getInstance()->getCurrentPool()->clear();
+    cc::DeferredReleasePool::clear();
 #if USE_AUDIO
     cc::AudioEngine::stopAll();
 #endif
@@ -119,10 +120,7 @@ void Application::tick() {
     scheduler->update(dt);
     cc::EventDispatcher::dispatchTickEvent(dt);
 
-    LegacyAutoreleasePool *currentPool = PoolManager::getInstance()->getCurrentPool();
-    if (currentPool) {
-        currentPool->clear();
-    }
+    cc::DeferredReleasePool::clear();
 
     now  = std::chrono::steady_clock::now();
     dtNS = dtNS * 0.1 + 0.9 * static_cast<double>(std::chrono::duration_cast<std::chrono::nanoseconds>(now - prevTime).count());

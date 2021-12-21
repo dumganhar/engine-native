@@ -33,6 +33,7 @@
 #include "SkeletonDataMgr.h"
 #include "base/TypeDef.h"
 #include "base/memory/Memory.h"
+#include "base/DeferredReleasePool.h"
 #include "math/Math.h"
 #include "math/Vec3.h"
 #include "gfx-base/GFXDef.h"

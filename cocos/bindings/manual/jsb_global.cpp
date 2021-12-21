@@ -31,11 +31,13 @@
 #include "base/base64.h"
 #include "gfx-base/GFXDef.h"
 #include "jsb_conversions.h"
+#include "network/Downloader.h"
 #include "network/HttpClient.h"
 #include "platform/Application.h"
 #include "platform/Image.h"
 #include "ui/edit-box/EditBox.h"
 #include "xxtea/xxtea.h"
+#include "base/DeferredReleasePool.h"
 
 #if CC_PLATFORM == CC_PLATFORM_ANDROID
     #include "platform/java/jni/JniImp.h"
@@ -296,7 +298,7 @@ static bool jsc_dumpNativePtrToSeObjectMap(se::State &s) { //NOLINT
     for (const auto &e : namePtrArray) {
         CC_LOG_DEBUG("%s: %p", e.name, e.ptr);
     }
-    CC_LOG_DEBUG(">>> total: %d, nonRefMap: %d, Dump (native -> jsobj) map end", (int)se::NativePtrToObjectMap::size(), (int)se::NonRefNativePtrCreatedByCtorMap::size());
+    CC_LOG_DEBUG(">>> total: %d, Dump (native -> jsobj) map end", (int)se::NativePtrToObjectMap::size());
     return true;
 }
 SE_BIND_FUNC(jsc_dumpNativePtrToSeObjectMap)
@@ -455,7 +457,7 @@ static bool JSB_setCursorEnabled(se::State &s) { //NOLINT
     SE_PRECONDITION2(argc == 1, false, "Invalid number of arguments");
     bool ok    = true;
     bool value = true;
-    ok &= seval_to_boolean(args[0], &value);
+    ok &= sevalue_to_native(args[0], &value);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
 
     Application::getInstance()->setCursorEnabled(value);
@@ -470,8 +472,8 @@ static bool JSB_saveByteCode(se::State &s) { //NOLINT
     bool        ok = true;
     std::string srcfile;
     std::string dstfile;
-    ok &= seval_to_std_string(args[0], &srcfile);
-    ok &= seval_to_std_string(args[1], &dstfile);
+    ok &= sevalue_to_native(args[0], &srcfile);
+    ok &= sevalue_to_native(args[1], &dstfile);
     SE_PRECONDITION2(ok, false, "Error processing arguments");
     ok = se::ScriptEngine::getInstance()->saveByteCodeToFile(srcfile, dstfile);
     s.rval().setBoolean(ok);
@@ -619,7 +621,7 @@ bool jsb_global_load_image(const std::string &path, const se::Value &callbackVal
                 loadSucceed = img->initWithImageFile(fullPath);
             }
 
-            struct ImageInfo *imgInfo = nullptr;
+            ImageInfo *imgInfo = nullptr;
             if (loadSucceed) {
                 imgInfo = createImageInfo(img);
             }
@@ -643,7 +645,7 @@ bool jsb_global_load_image(const std::string &path, const se::Value &callbackVal
                     SE_REPORT_ERROR("initWithImageFile: %s failed!", path.c_str());
                 }
                 callbackPtr->toObject()->call(seArgs, nullptr);
-                img->release();
+                delete img;
             });
         });
     };
@@ -684,7 +686,7 @@ static bool js_loadImage(se::State &s) { //NOLINT
     CC_UNUSED bool ok   = true;
     if (argc == 2) {
         std::string path;
-        ok &= seval_to_std_string(args[0], &path);
+        ok &= sevalue_to_native(args[0], &path);
         SE_PRECONDITION2(ok, false, "js_loadImage : Error processing arguments");
 
         se::Value callbackVal = args[1];
@@ -719,7 +721,7 @@ static bool JSB_openURL(se::State &s) { //NOLINT
     CC_UNUSED bool ok   = true;
     if (argc > 0) {
         std::string url;
-        ok = seval_to_std_string(args[0], &url);
+        ok = sevalue_to_native(args[0], &url);
         SE_PRECONDITION2(ok, false, "url is invalid!");
         Application::getInstance()->openURL(url);
         return true;
@@ -736,7 +738,7 @@ static bool JSB_copyTextToClipboard(se::State &s) { //NOLINT
     CC_UNUSED bool ok   = true;
     if (argc > 0) {
         std::string text;
-        ok = seval_to_std_string(args[0], &text);
+        ok = sevalue_to_native(args[0], &text);
         SE_PRECONDITION2(ok, false, "text is invalid!");
         Application::getInstance()->copyTextToClipboard(text);
         return true;
@@ -753,7 +755,7 @@ static bool JSB_setPreferredFramesPerSecond(se::State &s) { //NOLINT
     CC_UNUSED bool ok   = true;
     if (argc > 0) {
         int32_t fps;
-        ok = seval_to_int32(args[0], &fps);
+        ok = sevalue_to_native(args[0], &fps);
         SE_PRECONDITION2(ok, false, "fps is invalid!");
         // cc::log("EMPTY IMPLEMENTATION OF jsb.setPreferredFramesPerSecond");
         Application::getInstance()->setPreferredFramesPerSecond(fps);
@@ -899,11 +901,11 @@ bool jsb_register_global_variables(se::Object *global) { //NOLINT
         delete gThreadPool;
         gThreadPool = nullptr;
 
-        PoolManager::getInstance()->getCurrentPool()->clear();
+        DeferredReleasePool::clear();
     });
 
     se::ScriptEngine::getInstance()->addAfterCleanupHook([]() {
-        PoolManager::getInstance()->getCurrentPool()->clear();
+        DeferredReleasePool::clear();
 
         gModuleCache.clear();
 

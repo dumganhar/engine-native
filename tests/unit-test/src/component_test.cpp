@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2020-2021 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
 
  http://www.cocos.com
 
@@ -21,40 +21,38 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
-****************************************************************************/
+ ****************************************************************************/
+#include "base/Log.h"
+#include "core/Director.h"
+#include "core/Root.h"
+#include "core/scene-graph/SceneGraphModuleHeader.h"
+#include "gtest/gtest.h"
+#include "renderer/GFXDeviceManager.h"
+#include "renderer/gfx-base/GFXDef.h"
+#include "utils.h"
 
-#pragma once
+using namespace cc;
+using namespace cc::gfx;
 
-#include <cstdint>
-#include "core/scene-graph/Node.h"
-#include "physics/spec/ILifecycle.h"
-
-namespace cc {
-namespace physics {
-
-class IBaseJoint : virtual public ILifecycle {
+class MyComponent : public Component {
 public:
-    ~IBaseJoint() override                          = default;
-    virtual void      initialize(Node *node)        = 0;
-    virtual uintptr_t getImpl()                     = 0;
-    virtual void      setEnableCollision(bool v)    = 0;
-    virtual void      setConnectedBody(uintptr_t v) = 0;
+    void onLoad() override {
+        CC_LOG_INFO("MyComponent.onLoad");
+    }
 };
 
-class IDistanceJoint : virtual public IBaseJoint {
-public:
-    ~IDistanceJoint() override                        = default;
-    virtual void setPivotA(float x, float y, float z) = 0;
-    virtual void setPivotB(float x, float y, float z) = 0;
-};
+TEST(ComponentTest, isOnLoadCalled) {
+    initCocos(100, 100);
 
-class IRevoluteJoint : virtual public IBaseJoint {
-public:
-    ~IRevoluteJoint() override                        = default;
-    virtual void setPivotA(float x, float y, float z) = 0;
-    virtual void setPivotB(float x, float y, float z) = 0;
-    virtual void setAxis(float x, float y, float z)   = 0;
-};
+    auto *director = Director::getInstance();
+    auto *scene    = director->getScene();
 
-} // namespace physics
-} // namespace cc
+    auto *node = new Node();
+    auto *comp = node->addComponent<MyComponent>();
+    director->getScene()->addChild(node);
+    EXPECT_TRUE(comp->isEnabledInHierarchy());
+    EXPECT_TRUE(comp->isOnLoadCalled());
+
+    //xwx FIXME: gfx-validator Assert
+    destroyCocos();
+}

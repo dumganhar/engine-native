@@ -31,6 +31,7 @@
 #if SCRIPT_ENGINE_TYPE == SCRIPT_ENGINE_V8
 
     #include "Base.h"
+    #include <vector>
 
 namespace se {
 
@@ -52,6 +53,9 @@ public:
          */
     static Class *create(const std::string &className, Object *obj, Object *parentProto, v8::FunctionCallback ctor);
 
+    static Class *create(const std::initializer_list<const char *> &classPath, Object *obj, Object *parentProto, v8::FunctionCallback ctor);
+
+
     /**
          *  @brief Defines a member function with a callback. Each objects created by class will have this function property.
          *  @param[in] name A null-terminated UTF8 string containing the function name.
@@ -68,6 +72,9 @@ public:
          *  @return true if succeed, otherwise false.
          */
     bool defineProperty(const char *name, v8::AccessorNameGetterCallback getter, v8::AccessorNameSetterCallback setter);
+
+    bool defineProperty(const std::initializer_list<const char *> &names, v8::AccessorNameGetterCallback getter, v8::AccessorNameSetterCallback setter);
+
 
     /**
          *  @brief Defines a static function with a callback. Only JavaScript constructor object will have this function.

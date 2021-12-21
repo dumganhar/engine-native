@@ -26,26 +26,45 @@
 
 #pragma once
 
-#include "libplatform/libplatform.h"
-
-//#define V8_DEPRECATION_WARNINGS 1
-//#define V8_IMMINENT_DEPRECATION_WARNINGS 1
-//#define V8_HAS_ATTRIBUTE_DEPRECATED_MESSAGE 1
-
-#include "v8.h"
-
-#include <assert.h>
-#include <string.h>  // Resolves that memset, memcpy aren't found while APP_PLATFORM >= 22 on Android
-#include <algorithm> // for std::find
-#include <chrono>
-#include <functional>
-#include <string>
-#include <unordered_map>
-#include <vector>
-#include "../PrivateObject.h"
-
-#include "HelperMacros.h"
+#include <array>
+#include "Value.h"
 
 namespace se {
-using V8FinalizeFunc = void (*)(PrivateObjectBase *nativeObj);
+
+class CallbackDepthGuard final {
+public:
+    CallbackDepthGuard(ValueArray& arr, uint32_t& depth)
+    : _arr(arr), _depth(depth) {
+        ++_depth;
+    }
+
+    ~CallbackDepthGuard() {
+        --_depth;
+        for (auto& e : _arr) {
+            e.setUndefined();
+        }
+    }
+
+private:
+    ValueArray& _arr;
+    uint32_t&   _depth;
+};
+
+class ValueArrayPool final {
+public:
+    static const uint32_t MAX_ARGS = 20;
+
+    ValueArrayPool();
+
+    ValueArray& get(uint32_t argc);
+
+    uint32_t _depth{0};
+
+private:
+    void                                              initPool(uint32_t index);
+    std::vector<std::array<ValueArray, MAX_ARGS + 1>> _pools;
+};
+
+extern ValueArrayPool gValueArrayPool;
+
 } // namespace se

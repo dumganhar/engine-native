@@ -69,6 +69,7 @@
     #define USING_NS_CC_MATH
 #endif
 
+
 NS_CC_MATH_BEGIN
 
 template <typename T, typename Enable = std::enable_if_t<std::is_class<T>::value>>

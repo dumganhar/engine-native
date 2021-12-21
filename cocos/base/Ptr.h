@@ -90,7 +90,7 @@ public:
     SharedPtr() = default;
 
     SharedPtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)
-        static_assert(std::is_base_of<RefCounted, T>::value);
+        static_assert(std::is_base_of<RefCounted, T>::value, "");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }

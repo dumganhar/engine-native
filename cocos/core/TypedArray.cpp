@@ -29,18 +29,21 @@ namespace cc {
 
 uint32_t getTypedArrayLength(const TypedArray &arr) {
 #define TYPEDARRAY_GET_SIZE(type)                         \
-    if (auto *p = cc::get_if<type>(&arr); p != nullptr) { \
-        return p->length();                               \
-    }
+    do { \
+        auto *p = cc::get_if<type>(&arr); \
+        if (p != nullptr) { \
+            return p->length();                               \
+        } \
+    } while(false)
 
-    TYPEDARRAY_GET_SIZE(Float32Array)
-    TYPEDARRAY_GET_SIZE(Uint32Array)
-    TYPEDARRAY_GET_SIZE(Uint16Array)
-    TYPEDARRAY_GET_SIZE(Uint8Array)
-    TYPEDARRAY_GET_SIZE(Int32Array)
-    TYPEDARRAY_GET_SIZE(Int16Array)
-    TYPEDARRAY_GET_SIZE(Int8Array)
-    TYPEDARRAY_GET_SIZE(Float64Array)
+    TYPEDARRAY_GET_SIZE(Float32Array);
+    TYPEDARRAY_GET_SIZE(Uint32Array);
+    TYPEDARRAY_GET_SIZE(Uint16Array);
+    TYPEDARRAY_GET_SIZE(Uint8Array);
+    TYPEDARRAY_GET_SIZE(Int32Array);
+    TYPEDARRAY_GET_SIZE(Int16Array);
+    TYPEDARRAY_GET_SIZE(Int8Array);
+    TYPEDARRAY_GET_SIZE(Float64Array);
 
 #undef TYPEDARRAY_GET_SIZE
     return 0;
@@ -48,18 +51,21 @@ uint32_t getTypedArrayLength(const TypedArray &arr) {
 
 uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
 #define TYPEDARRAY_GET_BYTES_PER_ELEMENT(type)            \
-    if (auto *p = cc::get_if<type>(&arr); p != nullptr) { \
-        return type::BYTES_PER_ELEMENT;                   \
-    }
+    do { \
+        auto *p = cc::get_if<type>(&arr);  \
+        if (p != nullptr) { \
+            return type::BYTES_PER_ELEMENT;                   \
+        } \
+    } while(false)
 
-    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Float32Array)
-    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint32Array)
-    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint16Array)
-    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint8Array)
-    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Int32Array)
-    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Int16Array)
-    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Int8Array)
-    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Float64Array)
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Float32Array);
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint32Array);
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint16Array);
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint8Array);
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Int32Array);
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Int16Array);
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Int8Array);
+    TYPEDARRAY_GET_BYTES_PER_ELEMENT(Float64Array);
 
 #undef TYPEDARRAY_GET_BYPES_PER_ELEMENT
     return 0;
@@ -67,49 +73,52 @@ uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
 
 void setTypedArrayValue(TypedArray &arr, uint32_t idx, const TypedArrayElementType &value) {
 #define TYPEDARRAY_SET_VALUE(type, elemType)                            \
-    if (auto *p = cc::get_if<elemType>(&value); p != nullptr) {         \
-        if (cc::holds_alternative<Float32Array>(arr)) {                 \
-            cc::get<Float32Array>(arr)[idx] = static_cast<float>(*p);   \
-            return;                                                     \
-        }                                                               \
-        if (cc::holds_alternative<Uint16Array>(arr)) {                  \
-            cc::get<Uint16Array>(arr)[idx] = static_cast<uint16_t>(*p); \
-            return;                                                     \
-        }                                                               \
-        if (cc::holds_alternative<Uint32Array>(arr)) {                  \
-            cc::get<Uint32Array>(arr)[idx] = static_cast<uint32_t>(*p); \
-            return;                                                     \
-        }                                                               \
-        if (cc::holds_alternative<Uint8Array>(arr)) {                   \
-            cc::get<Uint8Array>(arr)[idx] = static_cast<uint8_t>(*p);   \
-            return;                                                     \
-        }                                                               \
-        if (cc::holds_alternative<Int32Array>(arr)) {                   \
-            cc::get<Int32Array>(arr)[idx] = static_cast<int32_t>(*p);   \
-            return;                                                     \
-        }                                                               \
-        if (cc::holds_alternative<Int16Array>(arr)) {                   \
-            cc::get<Int16Array>(arr)[idx] = static_cast<int16_t>(*p);   \
-            return;                                                     \
-        }                                                               \
-        if (cc::holds_alternative<Int8Array>(arr)) {                    \
-            cc::get<Int8Array>(arr)[idx] = static_cast<int8_t>(*p);     \
-            return;                                                     \
-        }                                                               \
-        if (cc::holds_alternative<Float64Array>(arr)) {                 \
-            cc::get<Float64Array>(arr)[idx] = static_cast<double>(*p);  \
-            return;                                                     \
-        }                                                               \
-    }
+    do { \
+        auto *p = cc::get_if<elemType>(&value); \
+        if (p != nullptr) {         \
+            if (cc::holds_alternative<Float32Array>(arr)) {                 \
+                cc::get<Float32Array>(arr)[idx] = static_cast<float>(*p);   \
+                return;                                                     \
+            }                                                               \
+            if (cc::holds_alternative<Uint16Array>(arr)) {                  \
+                cc::get<Uint16Array>(arr)[idx] = static_cast<uint16_t>(*p); \
+                return;                                                     \
+            }                                                               \
+            if (cc::holds_alternative<Uint32Array>(arr)) {                  \
+                cc::get<Uint32Array>(arr)[idx] = static_cast<uint32_t>(*p); \
+                return;                                                     \
+            }                                                               \
+            if (cc::holds_alternative<Uint8Array>(arr)) {                   \
+                cc::get<Uint8Array>(arr)[idx] = static_cast<uint8_t>(*p);   \
+                return;                                                     \
+            }                                                               \
+            if (cc::holds_alternative<Int32Array>(arr)) {                   \
+                cc::get<Int32Array>(arr)[idx] = static_cast<int32_t>(*p);   \
+                return;                                                     \
+            }                                                               \
+            if (cc::holds_alternative<Int16Array>(arr)) {                   \
+                cc::get<Int16Array>(arr)[idx] = static_cast<int16_t>(*p);   \
+                return;                                                     \
+            }                                                               \
+            if (cc::holds_alternative<Int8Array>(arr)) {                    \
+                cc::get<Int8Array>(arr)[idx] = static_cast<int8_t>(*p);     \
+                return;                                                     \
+            }                                                               \
+            if (cc::holds_alternative<Float64Array>(arr)) {                 \
+                cc::get<Float64Array>(arr)[idx] = static_cast<double>(*p);  \
+                return;                                                     \
+            }                                                               \
+        } \
+    } while(false)
 
-    TYPEDARRAY_SET_VALUE(Float32Array, float)
-    TYPEDARRAY_SET_VALUE(Uint32Array, uint32_t)
-    TYPEDARRAY_SET_VALUE(Uint16Array, uint16_t)
-    TYPEDARRAY_SET_VALUE(Uint8Array, uint8_t)
-    TYPEDARRAY_SET_VALUE(Int32Array, int32_t)
-    TYPEDARRAY_SET_VALUE(Int16Array, int16_t)
-    TYPEDARRAY_SET_VALUE(Int8Array, int8_t)
-    TYPEDARRAY_SET_VALUE(Float64Array, double)
+    TYPEDARRAY_SET_VALUE(Float32Array, float);
+    TYPEDARRAY_SET_VALUE(Uint32Array, uint32_t);
+    TYPEDARRAY_SET_VALUE(Uint16Array, uint16_t);
+    TYPEDARRAY_SET_VALUE(Uint8Array, uint8_t);
+    TYPEDARRAY_SET_VALUE(Int32Array, int32_t);
+    TYPEDARRAY_SET_VALUE(Int16Array, int16_t);
+    TYPEDARRAY_SET_VALUE(Int8Array, int8_t);
+    TYPEDARRAY_SET_VALUE(Float64Array, double);
 #undef TYPEDARRAY_SET_VALUE
 }
 

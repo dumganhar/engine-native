@@ -203,22 +203,12 @@ public:
     }
 
     template <typename SrcType>
-    void set(const TypedArrayTemp<SrcType> &array, uint32_t offset) {
-        CC_ASSERT(_buffer);
-        uint32_t dstByteOffset = offset * BYTES_PER_ELEMENT;
-        uint32_t srcByteOffset = array.byteOffset();
-        uint32_t srcCount      = array.length();
-        if constexpr (std::is_same_v<T, SrcType>) {
-            CC_ASSERT(dstByteOffset + srcCount * TypedArrayTemp<SrcType>::BYTES_PER_ELEMENT <= _byteEndPos);
-            memcpy(_buffer->_data + dstByteOffset, array._buffer->_data + srcByteOffset, array.byteLength());
-        } else {
-            uint32_t remainCount = (_byteEndPos - dstByteOffset) / BYTES_PER_ELEMENT;
-            CC_ASSERT(srcCount <= remainCount);
-            for (uint32_t i = 0; i < srcCount; ++i) {
-                (*this)[offset + i] = reinterpret_cast<T>(array[i]);
-            }
-        }
-    }
+    typename std::enable_if_t<std::is_same<T, SrcType>::value, void>
+    set(const TypedArrayTemp<SrcType> &array, uint32_t offset);
+
+    template <typename SrcType>
+    typename std::enable_if_t<!std::is_same<T, SrcType>::value, void>
+    set(const TypedArrayTemp<SrcType> &array, uint32_t offset);
 
     void reset(uint32_t length) {
         if (_jsTypedArray != nullptr) {
@@ -285,6 +275,31 @@ private:
     se::Object *     _jsTypedArray{nullptr};
 };
 
+template <typename T>
+template <typename SrcType>
+typename std::enable_if_t<std::is_same<T, SrcType>::value, void> TypedArrayTemp<T>::set(const TypedArrayTemp<SrcType> &array, uint32_t offset) {
+    CC_ASSERT(_buffer);
+    uint32_t dstByteOffset = offset * BYTES_PER_ELEMENT;
+    uint32_t srcByteOffset = array.byteOffset();
+    uint32_t srcCount      = array.length();
+    CC_ASSERT(dstByteOffset + srcCount * TypedArrayTemp<SrcType>::BYTES_PER_ELEMENT <= _byteEndPos);
+    memcpy(_buffer->_data + dstByteOffset, array._buffer->_data + srcByteOffset, array.byteLength());
+}
+
+template <typename T>
+template <typename SrcType>
+typename std::enable_if_t<!std::is_same<T, SrcType>::value, void> TypedArrayTemp<T>::set(const TypedArrayTemp<SrcType> &array, uint32_t offset) {
+    CC_ASSERT(_buffer);
+    uint32_t dstByteOffset = offset * BYTES_PER_ELEMENT;
+    uint32_t srcByteOffset = array.byteOffset();
+    uint32_t srcCount      = array.length();
+    uint32_t remainCount = (_byteEndPos - dstByteOffset) / BYTES_PER_ELEMENT;
+    CC_ASSERT(srcCount <= remainCount);
+    for (uint32_t i = 0; i < srcCount; ++i) {
+        (*this)[offset + i] = reinterpret_cast<T>(array[i]);
+    }
+}
+
 using Int8Array             = TypedArrayTemp<int8_t>;
 using Int16Array            = TypedArrayTemp<int16_t>;
 using Int32Array            = TypedArrayTemp<int32_t>;
@@ -302,18 +317,21 @@ uint32_t getTypedArrayBytesPerElement(const TypedArray &arr);
 template <typename T>
 T getTypedArrayValue(const TypedArray &arr, uint32_t idx) {
 #define TYPEDARRAY_GET_VALUE(type)                        \
-    if (auto *p = cc::get_if<type>(&arr); p != nullptr) { \
-        return static_cast<T>((*p)[idx]);                 \
-    }
+    do {\
+        auto *p = cc::get_if<type>(&arr); \
+        if (p != nullptr) { \
+            return static_cast<T>((*p)[idx]);                 \
+        } \
+    } while(false)
 
-    TYPEDARRAY_GET_VALUE(Float32Array)
-    TYPEDARRAY_GET_VALUE(Uint32Array)
-    TYPEDARRAY_GET_VALUE(Uint16Array)
-    TYPEDARRAY_GET_VALUE(Uint8Array)
-    TYPEDARRAY_GET_VALUE(Int32Array)
-    TYPEDARRAY_GET_VALUE(Int16Array)
-    TYPEDARRAY_GET_VALUE(Int8Array)
-    TYPEDARRAY_GET_VALUE(Float64Array)
+    TYPEDARRAY_GET_VALUE(Float32Array);
+    TYPEDARRAY_GET_VALUE(Uint32Array);
+    TYPEDARRAY_GET_VALUE(Uint16Array);
+    TYPEDARRAY_GET_VALUE(Uint8Array);
+    TYPEDARRAY_GET_VALUE(Int32Array);
+    TYPEDARRAY_GET_VALUE(Int16Array);
+    TYPEDARRAY_GET_VALUE(Int8Array);
+    TYPEDARRAY_GET_VALUE(Float64Array);
 #undef TYPEDARRAY_GET_VALUE
 
     return 0;
@@ -324,36 +342,42 @@ void setTypedArrayValue(TypedArray &arr, uint32_t idx, const TypedArrayElementTy
 template <typename T>
 T &getTypedArrayValueRef(const TypedArray &arr, uint32_t idx) {
 #define TYPEDARRAY_GET_VALUE_REF(type)                    \
-    if (auto *p = cc::get_if<type>(&arr); p != nullptr) { \
-        return (*p)[idx];                                 \
-    }
+    do {\
+        auto *p = cc::get_if<type>(&arr); \
+        if (p != nullptr) { \
+            return (*p)[idx];                                 \
+        } \
+    } while(false)
 
-    TYPEDARRAY_GET_VALUE_REF(Float32Array)
-    TYPEDARRAY_GET_VALUE_REF(Uint32Array)
-    TYPEDARRAY_GET_VALUE_REF(Uint16Array)
-    TYPEDARRAY_GET_VALUE_REF(Uint8Array)
-    TYPEDARRAY_GET_VALUE_REF(Int32Array)
-    TYPEDARRAY_GET_VALUE_REF(Int16Array)
-    TYPEDARRAY_GET_VALUE_REF(Int8Array)
-    TYPEDARRAY_GET_VALUE_REF(Float64Array)
+    TYPEDARRAY_GET_VALUE_REF(Float32Array);
+    TYPEDARRAY_GET_VALUE_REF(Uint32Array);
+    TYPEDARRAY_GET_VALUE_REF(Uint16Array);
+    TYPEDARRAY_GET_VALUE_REF(Uint8Array);
+    TYPEDARRAY_GET_VALUE_REF(Int32Array);
+    TYPEDARRAY_GET_VALUE_REF(Int16Array);
+    TYPEDARRAY_GET_VALUE_REF(Int8Array);
+    TYPEDARRAY_GET_VALUE_REF(Float64Array);
 #undef TYPEDARRAY_GET_VALUE_REF
 }
 
 template <typename T>
 T getTypedArrayElementValue(const TypedArrayElementType &element) {
 #define CAST_TO_T(type)                                       \
-    if (auto *p = cc::get_if<type>(&element); p != nullptr) { \
-        return static_cast<T>(*p);                            \
-    }
+    do { \
+        auto *p = cc::get_if<type>(&element); \
+        if (p != nullptr) { \
+            return static_cast<T>(*p);                            \
+        } \
+    } while(false)
 
-    CAST_TO_T(float)
-    CAST_TO_T(uint32_t)
-    CAST_TO_T(uint16_t)
-    CAST_TO_T(uint8_t)
-    CAST_TO_T(int32_t)
-    CAST_TO_T(int16_t)
-    CAST_TO_T(int8_t)
-    CAST_TO_T(double)
+    CAST_TO_T(float);
+    CAST_TO_T(uint32_t);
+    CAST_TO_T(uint16_t);
+    CAST_TO_T(uint8_t);
+    CAST_TO_T(int32_t);
+    CAST_TO_T(int16_t);
+    CAST_TO_T(int8_t);
+    CAST_TO_T(double);
 #undef CAST_TO_T
 
     return 0;

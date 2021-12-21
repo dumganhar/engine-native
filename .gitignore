@@ -55,6 +55,8 @@ bin/
 obj/
 gen/
 assets/
+!/cocos/core/assets
+!/cocos/3d/assets
 local.properties
 
 # Ignore python compiled files
@@ -184,3 +186,7 @@ cocos/platform/ohos/libcocos/build
 
 
 **/*~
+
+/cocos/bindings/auto/*.h
+/cocos/bindings/auto/*.cpp
+/cocos/bindings/auto/*.json

@@ -36,9 +36,12 @@
 #include "gfx-base/states/GFXTextureBarrier.h"
 #include "platform/Application.h"
 #include "../helper/Utils.h"
+#include "DeferredPipelineSceneData.h"
+#include "scene/RenderWindow.h"
 
 namespace cc {
 namespace pipeline {
+
 #define TO_VEC3(dst, src, offset)  \
     dst[offset]         = (src).x; \
     (dst)[(offset) + 1] = (src).y; \
@@ -48,6 +51,11 @@ namespace pipeline {
     (dst)[(offset) + 1] = (src).y; \
     (dst)[(offset) + 2] = (src).z; \
     (dst)[(offset) + 3] = (src).w;
+
+
+DeferredPipeline::DeferredPipeline() {
+    _pipelineSceneData = new DeferredPipelineSceneData();
+}
 
 framegraph::StringHandle DeferredPipeline::fgStrHandleGbufferTexture[GBUFFER_COUNT] = {
     framegraph::FrameGraph::stringToHandle("gbufferAlbedoTexture"),
@@ -193,7 +201,7 @@ void DeferredPipeline::destroy() {
 
     CC_SAFE_DELETE(_clusterComp);
 
-    RenderPipeline::destroy();
+    return RenderPipeline::destroy();
 }
 
 } // namespace pipeline

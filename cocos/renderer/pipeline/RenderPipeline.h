@@ -26,6 +26,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <string>
 #include "Define.h"
 #include "GlobalDescriptorSetManager.h"
 #include "PipelineSceneData.h"
@@ -36,6 +37,8 @@
 #include "helper/DefineMap.h"
 #include "scene/Camera.h"
 #include "scene/Model.h"
+#include "renderer/core/PassUtils.h"
+#include "core/assets/Asset.h"
 
 namespace cc {
 namespace gfx {
@@ -47,7 +50,7 @@ namespace scene {
 class SubModel;
 } // namespace scene
 namespace pipeline {
-class DefineMap;
+
 class GlobalDSManager;
 class RenderStage;
 
@@ -56,8 +59,9 @@ struct CC_DLL RenderPipelineInfo {
     RenderFlowList flows;
 };
 
-class CC_DLL RenderPipeline : public Object {
+class CC_DLL RenderPipeline : public Asset {
 public:
+    using Super = Asset;
     static RenderPipeline *         getInstance();
     static framegraph::StringHandle fgStrHandleOutDepthTexture;
     static framegraph::StringHandle fgStrHandleOutColorTexture;
@@ -69,17 +73,18 @@ public:
     ~RenderPipeline() override;
 
     virtual bool activate(gfx::Swapchain *swapchain);
-    virtual void destroy();
+    bool destroy() override;
     virtual bool initialize(const RenderPipelineInfo &info);
     virtual void render(const vector<scene::Camera *> &cameras);
-
-    void setPipelineSharedSceneData(scene::PipelineSharedSceneData *data);
 
     inline const RenderFlowList &                  getFlows() const { return _flows; }
     inline uint                                    getTag() const { return _tag; }
     inline const map<String, InternalBindingInst> &getGlobalBindings() const { return _globalBindings; }
-    inline const DefineMap &                       getMacros() const { return _macros; }
-    inline void                                    setValue(const String &name, bool value) { _macros.setValue(name, value); }
+    inline const MacroRecord &                     getMacros() const { return _macros; }
+    inline void                                    setValue(const String &name, int32_t value) { _macros[name] = value; }
+    inline void                                    setValue(const String &name, bool value) { _macros[name] = value; }
+    inline void                                    setValue(const String &name, const std::string &value) { _macros[name] = value; }
+    inline void                                    setValue(const String &name, float value) { _macros[name] = value; }
     inline GlobalDSManager *                       getGlobalDSManager() const { return _globalDSManager; }
     inline gfx::DescriptorSet *                    getDescriptorSet() const { return _descriptorSet; }
     inline gfx::DescriptorSetLayout *              getDescriptorSetLayout() const { return _globalDSManager->getDescriptorSetLayout(); }
@@ -128,7 +133,7 @@ protected:
     gfx::QueryPoolList               _queryPools;
     RenderFlowList                   _flows;
     map<String, InternalBindingInst> _globalBindings;
-    DefineMap                        _macros;
+    MacroRecord                      _macros;
     uint                             _tag = 0;
     String                           _constantMacros;
 

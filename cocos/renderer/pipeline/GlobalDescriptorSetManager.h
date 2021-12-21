@@ -58,7 +58,7 @@ public:
     gfx::DescriptorSet *getOrCreateDescriptorSet(uint idx);
     void                destroy();
 
-protected:
+public:
     static void setDescriptorSetLayout();
 
 private:

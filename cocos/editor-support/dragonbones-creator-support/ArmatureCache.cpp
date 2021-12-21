@@ -155,7 +155,7 @@ std::size_t ArmatureCache::AnimationData::getFrameCount() const {
 ArmatureCache::ArmatureCache(const std::string &armatureName, const std::string &armatureKey, const std::string &atlasUUID) {
     _armatureDisplay = dragonBones::CCFactory::getFactory()->buildArmatureDisplay(armatureName, armatureKey, "", atlasUUID);
     if (_armatureDisplay) {
-        _armatureDisplay->retain();
+        _armatureDisplay->addRef();
     }
 }
 

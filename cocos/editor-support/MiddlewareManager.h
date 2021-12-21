@@ -28,7 +28,7 @@
 #include "MeshBuffer.h"
 #include "MiddlewareMacro.h"
 #include "SharedBufferManager.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include <map>
 #include <vector>
 

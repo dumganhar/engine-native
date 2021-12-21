@@ -48,11 +48,11 @@ namespace spine {
 SkeletonCacheAnimation::SkeletonCacheAnimation(const std::string &uuid, bool isShare) {
     if (isShare) {
         _skeletonCache = SkeletonCacheMgr::getInstance()->buildSkeletonCache(uuid);
-        _skeletonCache->retain();
+        _skeletonCache->addRef();
     } else {
         _skeletonCache = new SkeletonCache();
         _skeletonCache->initWithUUID(uuid);
-        _skeletonCache->retain();
+        _skeletonCache->addRef();
         _skeletonCache->autorelease();
     }
 

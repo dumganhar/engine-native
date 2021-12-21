@@ -32,6 +32,7 @@
 #include "gfx-base/GFXDevice.h"
 #include "gfx-base/GFXShader.h"
 #include "scene/SubModel.h"
+#include "scene/Model.h"
 
 namespace cc {
 namespace pipeline {
@@ -45,7 +46,7 @@ void RenderQueue::clear() {
 }
 
 bool RenderQueue::insertRenderPass(const RenderObject &renderObj, uint subModelIdx, uint passIdx) {
-    const auto *const subModel      = renderObj.model->getSubModels()[subModelIdx];
+    const auto *      subModel      = renderObj.model->getSubModels()[subModelIdx].get();
     const auto *const pass          = subModel->getPass(passIdx);
     const bool        isTransparent = pass->getBlendState()->targets[0].blend;
 

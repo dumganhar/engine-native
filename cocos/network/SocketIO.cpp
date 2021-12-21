@@ -296,7 +296,7 @@ SocketIOPacket *SocketIOPacket::createPacketWithTypeIndex(int type, SocketIOPack
  *  @brief The implementation of the socket.io connection
  *         Clients/endpoints may share the same impl to accomplish multiplexing on the same websocket
  */
-class SIOClientImpl : public cc::Ref,
+class SIOClientImpl : public cc::RefCounted,
                       public WebSocket::Delegate {
 private:
     int                             _heartbeat, _timeout;

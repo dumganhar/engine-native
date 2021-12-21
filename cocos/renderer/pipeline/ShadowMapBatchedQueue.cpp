@@ -52,10 +52,10 @@ void ShadowMapBatchedQueue::gatherLightPasses(const scene::Camera *camera, const
     clear();
 
     const PipelineSceneData *sceneData         = _pipeline->getPipelineSceneData();
-    const scene::Shadow *    shadowInfo        = sceneData->getSharedData()->shadow;
+    const scene::Shadow *    shadowInfo        = sceneData->getShadow();
     const RenderObjectList & dirShadowObjects  = sceneData->getDirShadowObjects();
     const RenderObjectList & castShadowObjects = sceneData->getCastShadowObjects();
-    if (light && shadowInfo->enabled && shadowInfo->shadowType == scene::ShadowType::SHADOWMAP) {
+    if (light && shadowInfo->isEnabled() && shadowInfo->getType() == scene::ShadowType::SHADOWMAP) {
         switch (light->getType()) {
             case scene::LightType::DIRECTIONAL: {
                 for (const auto ro : dirShadowObjects) {
@@ -113,7 +113,7 @@ void ShadowMapBatchedQueue::add(const scene::Model *model, gfx::CommandBuffer *c
         return;
     }
 
-    for (auto *subModel : model->getSubModels()) {
+    for (const auto &subModel : model->getSubModels()) {
         const auto *pass           = subModel->getPass(shadowPassIdx);
         const auto  batchingScheme = pass->getBatchingScheme();
 
@@ -164,9 +164,9 @@ void ShadowMapBatchedQueue::destroy() {
 }
 
 int ShadowMapBatchedQueue::getShadowPassIndex(const scene::Model *model) const {
-    for (const scene::SubModel *subModel : model->getSubModels()) {
+    for (const auto &subModel : model->getSubModels()) {
         int i = 0;
-        for (const scene::Pass *pass : subModel->getPasses()) {
+        for (const auto &pass : subModel->getPasses()) {
             if (pass->getPhase() == _phaseID) {
                 return i;
             }

@@ -26,7 +26,7 @@
 #pragma once
 
 #include "MiddlewareMacro.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "math/Geometry.h"
 #include "math/Vec3.h"
 #include <functional>
@@ -127,7 +127,7 @@ struct TwoColorTriangles {
 ///////////////////////////////////////////////////////////////////////
 // adapt to editor texture,this is a texture delegate,not real texture
 ///////////////////////////////////////////////////////////////////////
-class Texture2D : public cc::Ref {
+class Texture2D : public cc::RefCounted {
 public:
     Texture2D();
     virtual ~Texture2D();
@@ -197,7 +197,7 @@ private:
 ///////////////////////////////////////////////////////////////////////
 // adapt to editor sprite frame
 ///////////////////////////////////////////////////////////////////////
-class SpriteFrame : public cc::Ref {
+class SpriteFrame : public cc::RefCounted {
 public:
     static SpriteFrame *createWithTexture(Texture2D *pobTexture, const cc::Rect &rect);
     static SpriteFrame *createWithTexture(Texture2D *pobTexture, const cc::Rect &rect, bool rotated, const cc::Vec2 &offset, const cc::Size &originalSize);

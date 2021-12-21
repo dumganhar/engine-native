@@ -29,12 +29,12 @@
 
 #include <map>
 #include <string>
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "gfx-base/GFXDef.h"
 
 namespace cc {
 
-class Image : public Ref {
+class Image : public RefCounted {
 public:
     Image();
 

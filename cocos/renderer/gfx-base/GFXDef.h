@@ -87,18 +87,33 @@ constexpr DescriptorType DESCRIPTOR_TEXTURE_TYPE = static_cast<DescriptorType>(
     static_cast<uint32_t>(DescriptorType::STORAGE_IMAGE) |
     static_cast<uint32_t>(DescriptorType::INPUT_ATTACHMENT));
 
+constexpr DescriptorType DESCRIPTOR_SAMPLER_TYPE = static_cast<DescriptorType>(
+    static_cast<uint32_t>(DescriptorType::SAMPLER_TEXTURE) |
+    static_cast<uint32_t>(DescriptorType::SAMPLER) |
+    static_cast<uint32_t>(DescriptorType::TEXTURE) |
+    static_cast<uint32_t>(DescriptorType::STORAGE_IMAGE) |
+    static_cast<uint32_t>(DescriptorType::INPUT_ATTACHMENT));
+
 constexpr DescriptorType DESCRIPTOR_DYNAMIC_TYPE = static_cast<DescriptorType>(
     static_cast<uint32_t>(DescriptorType::DYNAMIC_STORAGE_BUFFER) |
     static_cast<uint32_t>(DescriptorType::DYNAMIC_UNIFORM_BUFFER));
 
 extern const FormatInfo GFX_FORMAT_INFOS[];
-extern const uint32_t   GFX_TYPE_SIZES[];
 
 std::pair<uint32_t, uint32_t> formatAlignment(Format format);
 
 uint32_t formatSize(Format format, uint32_t width, uint32_t height, uint32_t depth);
 
 uint32_t formatSurfaceSize(Format format, uint32_t width, uint32_t height, uint32_t depth, uint32_t mips);
+
+extern std::array<uint, 32> GFX_TYPE_SIZES;
+
+/**
+ * @en Get the memory size of the specified type.
+ * @zh 得到 GFX 数据类型的大小。
+ * @param type The target type.
+ */
+extern uint32_t getTypeSize(gfx::Type type);
 
 } // namespace gfx
 } // namespace cc

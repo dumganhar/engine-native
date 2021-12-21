@@ -24,7 +24,7 @@
 ****************************************************************************/
 
 #include <boost/functional/hash.hpp>
-
+#include <array>
 #include "base/CoreStd.h"
 #include "base/Utils.h"
 
@@ -511,7 +511,6 @@ uint32_t formatSize(Format format, uint32_t width, uint32_t height, uint32_t dep
             return 0;
     }
 }
-
 std::pair<uint32_t, uint32_t> formatAlignment(Format format) {
     switch (format) {
         case Format::BC1:
@@ -597,7 +596,7 @@ std::pair<uint32_t, uint32_t> formatAlignment(Format format) {
     }
 }
 
-const uint32_t GFX_TYPE_SIZES[] = {
+std::array<uint32_t, 32> GFX_TYPE_SIZES = {
     0,  // UNKNOWN
     4,  // BOOL
     8,  // BOOL2
@@ -631,6 +630,20 @@ const uint32_t GFX_TYPE_SIZES[] = {
     4,  // SAMPLER3D
     4,  // SAMPLER_CUBE
 };
+
+/**
+ * @en Get the memory size of the specified type.
+ * @zh 得到 GFX 数据类型的大小。
+ * @param type The target type.
+ */
+uint32_t getTypeSize(gfx::Type type) {
+    if (static_cast<int>(type) < GFX_TYPE_SIZES.size()) {
+        return GFX_TYPE_SIZES[static_cast<int>(type)];
+    }
+
+    CC_LOG_WARNING("getTypeSize: wrong type: %d", static_cast<int>(type));
+    return 0;
+}
 
 uint32_t formatSurfaceSize(Format format, uint32_t width, uint32_t height, uint32_t depth, uint32_t mips) {
     uint32_t size = 0;

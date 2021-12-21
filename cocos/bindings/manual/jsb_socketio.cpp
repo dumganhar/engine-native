@@ -291,8 +291,8 @@ static bool SocketIO_connect(se::State &s) {
         CC_LOG_DEBUG("Calling native SocketIO.connect method");
         SIOClient *ret = SocketIO::connect(url, *siodelegate, caFilePath);
         if (ret != nullptr) {
-            ret->retain();
-            siodelegate->retain();
+            ret->addRef();
+            siodelegate->addRef();
 
             se::Object *obj = se::Object::createObjectWithClass(__jsb_SocketIO_class);
             obj->setPrivateData(ret);

@@ -46,8 +46,8 @@ void EmptySwapchain::doInit(const SwapchainInfo &info) {
 }
 
 void EmptySwapchain::doDestroy() {
-    CC_SAFE_DESTROY(_depthStencilTexture);
-    CC_SAFE_DESTROY(_colorTexture);
+    CC_SAFE_DESTROY_AND_DELETE(_depthStencilTexture);
+    CC_SAFE_DESTROY_AND_DELETE(_colorTexture);
 }
 
 void EmptySwapchain::doResize(uint32_t width, uint32_t height, SurfaceTransform /*transform*/) {

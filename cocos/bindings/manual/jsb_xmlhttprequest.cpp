@@ -114,7 +114,7 @@ std::unordered_map<int, std::string> _httpStatusCodeMap = {
     {599, "Network Connect Timeout Error"}};
 } // namespace
 
-class XMLHttpRequest : public Ref {
+class XMLHttpRequest : public RefCounted {
 public:
     // Ready States: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
     enum class ReadyState : char {

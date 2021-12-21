@@ -25,12 +25,12 @@
 
 #include "ArmatureCache.h"
 #include "CCArmatureDisplay.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "dragonbones/DragonBonesHeaders.h"
 
 DRAGONBONES_NAMESPACE_BEGIN
 
-class CCArmatureCacheDisplay : public cc::middleware::IMiddleware, public cc::Ref {
+class CCArmatureCacheDisplay : public cc::middleware::IMiddleware, public cc::RefCounted {
 public:
     CCArmatureCacheDisplay(const std::string &armatureName, const std::string &armatureKey, const std::string &atlasUUID, bool isShare);
     virtual ~CCArmatureCacheDisplay();

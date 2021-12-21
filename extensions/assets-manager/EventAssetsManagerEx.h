@@ -27,7 +27,7 @@
 #define __cocos2d_libs__CCEventAssetsManagerEx__
 
 #include <string>
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "extensions/ExtensionMacros.h"
 #include "extensions/ExtensionExport.h"
 
@@ -35,7 +35,7 @@ NS_CC_EXT_BEGIN
 
 class AssetsManagerEx;
 
-class CC_EX_DLL EventAssetsManagerEx : public cc::Ref {
+class CC_EX_DLL EventAssetsManagerEx : public cc::RefCounted {
 public:
     //! Update events code
     enum class EventCode {

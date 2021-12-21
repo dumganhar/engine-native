@@ -28,7 +28,7 @@
 #ifndef __HTTP_REQUEST_H__
 #define __HTTP_REQUEST_H__
 
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "base/Macros.h"
 
 #include <string>
@@ -63,7 +63,7 @@ typedef std::function<void(HttpClient *, HttpResponse *)> ccHttpRequestCallback;
     #endif
 #endif
 
-class CC_DLL HttpRequest : public Ref {
+class CC_DLL HttpRequest : public RefCounted {
 public:
     /**
      * The HttpRequest type enum used in the HttpRequest::setRequestType.
@@ -101,7 +101,7 @@ public:
      *
      * @return Ref* always return nullptr.
      */
-    Ref *autorelease() {
+    RefCounted *autorelease() {
         CCASSERT(false, "HttpResponse is used between network thread and ui thread \
                  therefore, autorelease is forbidden here");
         return nullptr;

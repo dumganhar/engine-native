@@ -30,14 +30,14 @@
 #pragma once
 #include "MiddlewareManager.h"
 #include "SkeletonCache.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "middleware-adapter.h"
 #include "spine/spine.h"
 #include <queue>
 
 namespace spine {
 
-class SkeletonCacheAnimation : public cc::middleware::IMiddleware, public cc::Ref {
+class SkeletonCacheAnimation : public cc::middleware::IMiddleware, public cc::RefCounted {
 public:
     SkeletonCacheAnimation(const std::string &uuid, bool isShare);
     virtual ~SkeletonCacheAnimation();

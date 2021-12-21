@@ -25,6 +25,7 @@
 
 #include "middleware-adapter.h"
 #include "base/Macros.h"
+#include "base/DeferredReleasePool.h"
 
 MIDDLEWARE_BEGIN
 
@@ -115,7 +116,6 @@ void Texture2D::setTexParameters(const TexParams &texParams) {
 SpriteFrame *SpriteFrame::createWithTexture(Texture2D *texture, const cc::Rect &rect) {
     SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
     spriteFrame->initWithTexture(texture, rect);
-    spriteFrame->autorelease();
 
     return spriteFrame;
 }
@@ -123,7 +123,6 @@ SpriteFrame *SpriteFrame::createWithTexture(Texture2D *texture, const cc::Rect &
 SpriteFrame *SpriteFrame::createWithTexture(Texture2D *texture, const cc::Rect &rect, bool rotated, const cc::Vec2 &offset, const cc::Size &originalSize) {
     SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
     spriteFrame->initWithTexture(texture, rect, rotated, offset, originalSize);
-    spriteFrame->autorelease();
 
     return spriteFrame;
 }
@@ -136,7 +135,7 @@ bool SpriteFrame::initWithTexture(Texture2D *texture, const cc::Rect &rect, bool
     _texture = texture;
 
     if (texture) {
-        texture->retain();
+        texture->addRef();
     }
 
     _rectInPixels = rect;
@@ -158,7 +157,7 @@ SpriteFrame::~SpriteFrame() {
 void SpriteFrame::setTexture(Texture2D *texture) {
     if (_texture != texture) {
         CC_SAFE_RELEASE(_texture);
-        CC_SAFE_RETAIN(texture);
+        CC_SAFE_ADD_REF(texture);
         _texture = texture;
     }
 }

@@ -46,7 +46,6 @@ Device::~Device() {
     Device::instance = nullptr;
     CC_SAFE_RELEASE(_cmdBuff);
     CC_SAFE_RELEASE(_queue);
-    CC_SAFE_RELEASE(_context);
 }
 
 bool Device::initialize(const DeviceInfo &info) {
@@ -67,7 +66,6 @@ bool Device::initialize(const DeviceInfo &info) {
     bool result = doInit(info);
     _cmdBuff->addRef();
     _queue->addRef();
-    _context->addRef();
 
     return result;
 }

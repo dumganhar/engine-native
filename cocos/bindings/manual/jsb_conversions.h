@@ -653,7 +653,7 @@ native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = nullptr) 
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
         obj->setPrivateData(v);
-        v->retain(); // Retain the native object to unify the logic in finalize method of js object.
+        v->addRef(); // Retain the native object to unify the logic in finalize method of js object.
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -688,7 +688,7 @@ native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCachedV
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
         obj->setPrivateData(v);
-        v->retain(); // Retain the native object to unify the logic in finalize method of js object.
+        v->addRef(); // Retain the native object to unify the logic in finalize method of js object.
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }

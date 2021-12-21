@@ -25,11 +25,11 @@
 
 #include "CCArmatureDisplay.h"
 #include "IOBuffer.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 
 DRAGONBONES_NAMESPACE_BEGIN
 
-class ArmatureCache : public cc::Ref {
+class ArmatureCache : public cc::RefCounted {
 public:
     struct SegmentData {
         friend class ArmatureCache;

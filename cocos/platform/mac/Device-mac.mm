@@ -84,7 +84,7 @@ Device::NetworkType Device::getNetworkType() {
     static Reachability *__reachability = nullptr;
     if (__reachability == nullptr) {
         __reachability = Reachability::createForInternetConnection();
-        __reachability->retain();
+        __reachability->addRef();
     }
 
     NetworkType ret = NetworkType::NONE;

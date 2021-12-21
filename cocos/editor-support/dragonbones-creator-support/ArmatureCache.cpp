@@ -42,7 +42,7 @@ ArmatureCache::SegmentData::~SegmentData() {
 }
 
 void ArmatureCache::SegmentData::setTexture(cc::middleware::Texture2D *value) {
-    CC_SAFE_RETAIN(value);
+    CC_SAFE_ADD_REF(value);
     CC_SAFE_RELEASE(_texture);
     _texture = value;
 }

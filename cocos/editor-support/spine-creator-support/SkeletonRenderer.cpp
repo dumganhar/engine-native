@@ -60,27 +60,19 @@ enum DebugType {
     BONES
 };
 SkeletonRenderer *SkeletonRenderer::create() {
-    auto *skeleton = new SkeletonRenderer();
-    skeleton->autorelease();
-    return skeleton;
+    return new SkeletonRenderer();
 }
 
 SkeletonRenderer *SkeletonRenderer::createWithSkeleton(Skeleton *skeleton, bool ownsSkeleton, bool ownsSkeletonData) {
-    auto *node = new SkeletonRenderer(skeleton, ownsSkeleton, ownsSkeletonData);
-    node->autorelease();
-    return node;
+    return new SkeletonRenderer(skeleton, ownsSkeleton, ownsSkeletonData);
 }
 
 SkeletonRenderer *SkeletonRenderer::createWithData(SkeletonData *skeletonData, bool ownsSkeletonData) {
-    auto *node = new SkeletonRenderer(skeletonData, ownsSkeletonData);
-    node->autorelease();
-    return node;
+    return new SkeletonRenderer(skeletonData, ownsSkeletonData);
 }
 
 SkeletonRenderer *SkeletonRenderer::createWithFile(const std::string &skeletonDataFile, const std::string &atlasFile, float scale) {
-    auto *node = new SkeletonRenderer(skeletonDataFile, atlasFile, scale);
-    node->autorelease();
-    return node;
+    return new SkeletonRenderer(skeletonDataFile, atlasFile, scale);
 }
 
 void SkeletonRenderer::initialize() {
@@ -1032,7 +1024,7 @@ void SkeletonRenderer::setVertexEffectDelegate(VertexEffectDelegate *effectDeleg
     }
     CC_SAFE_RELEASE(_effectDelegate);
     _effectDelegate = effectDelegate;
-    CC_SAFE_RETAIN(_effectDelegate);
+    CC_SAFE_ADD_REF(_effectDelegate);
 }
 
 void SkeletonRenderer::setSlotsRange(int startSlotIndex, int endSlotIndex) {

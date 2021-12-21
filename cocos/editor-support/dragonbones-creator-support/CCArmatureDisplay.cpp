@@ -26,6 +26,7 @@
 #include "SharedBufferManager.h"
 #include "base/TypeDef.h"
 #include "base/memory/Memory.h"
+#include "base/DeferredReleasePool.h"
 #include "dragonbones-creator-support/CCSlot.h"
 #include "math/Math.h"
 #include "math/Vec3.h"
@@ -41,13 +42,7 @@ static const std::string textureKey = "texture";
 DRAGONBONES_NAMESPACE_BEGIN
 
 CCArmatureDisplay *CCArmatureDisplay::create() {
-    CCArmatureDisplay *displayContainer = new (std::nothrow) CCArmatureDisplay();
-    if (displayContainer) {
-        displayContainer->autorelease();
-    } else {
-        CC_SAFE_DELETE(displayContainer);
-    }
-    return displayContainer;
+    return new (std::nothrow) CCArmatureDisplay();
 }
 
 CCArmatureDisplay::CCArmatureDisplay() {
@@ -206,17 +201,18 @@ void CCArmatureDisplay::dbRender() {
     }
 }
 
-cc::Vec2 CCArmatureDisplay::convertToRootSpace(float x, float y) const {
+const cc::Vec2 &CCArmatureDisplay::convertToRootSpace(float x, float y) const {
     CCSlot *slot = (CCSlot *)_armature->getParent();
     if (!slot) {
-        return cc::Vec2(x, y);
+        _tmpVec2.set(x, y);
+        return _tmpVec2;
     }
-    cc::Vec2 newPos;
+
     slot->updateWorldMatrix();
     cc::Mat4 &worldMatrix = slot->worldMatrix;
-    newPos.x = x * worldMatrix.m[0] + y * worldMatrix.m[4] + worldMatrix.m[12];
-    newPos.y = x * worldMatrix.m[1] + y * worldMatrix.m[5] + worldMatrix.m[13];
-    return newPos;
+    _tmpVec2.x            = x * worldMatrix.m[0] + y * worldMatrix.m[4] + worldMatrix.m[12];
+    _tmpVec2.y            = x * worldMatrix.m[1] + y * worldMatrix.m[5] + worldMatrix.m[13];
+    return _tmpVec2;
 }
 
 CCArmatureDisplay *CCArmatureDisplay::getRootDisplay() {

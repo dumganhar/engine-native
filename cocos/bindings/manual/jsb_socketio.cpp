@@ -25,6 +25,7 @@
 
 #include "jsb_socketio.h"
 
+#include "cocos/base/DeferredReleasePool.h"
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/bindings/manual/jsb_global.h"
@@ -38,7 +39,7 @@ using namespace cc::network;
 
 se::Class *__jsb_SocketIO_class = nullptr;
 
-class JSB_SocketIODelegate : public Ref, public SocketIO::SIODelegate {
+class JSB_SocketIODelegate : public RefCounted, public SocketIO::SIODelegate {
 public:
     //c++11 map to callbacks
     typedef std::unordered_map<std::string /* eventName */, se::ValueArray /* 0:callbackFunc, 1:target */> JSB_SIOCallbackRegistry;
@@ -66,7 +67,7 @@ public:
         }
 
         if (getReferenceCount() == 1) {
-            autorelease();
+            cc::DeferredReleasePool::add(this);
         } else {
             release();
         }
@@ -140,11 +141,10 @@ static bool SocketIO_finalize(se::State &s) {
     cobj->disconnect();
     JSB_SocketIODelegate *delegate = static_cast<JSB_SocketIODelegate *>(cobj->getDelegate());
     if (delegate->getReferenceCount() == 1) {
-        delegate->autorelease();
+        cc::DeferredReleasePool::add(delegate);
     } else {
         delegate->release();
     }
-    cobj->release();
     return true;
 }
 SE_BIND_FINALIZE_FUNC(SocketIO_finalize)
@@ -170,7 +170,7 @@ static bool SocketIO_send(se::State &s) {
 
     if (argc == 1) {
         std::string payload;
-        bool ok = seval_to_std_string(args[0], &payload);
+        bool ok = sevalue_to_native(args[0], &payload);
         SE_PRECONDITION2(ok, false, "Converting payload failed!");
 
         cobj->send(payload);
@@ -190,7 +190,7 @@ static bool SocketIO_emit(se::State &s) {
     if (argc >= 1) {
         bool ok = false;
         std::string eventName;
-        ok = seval_to_std_string(args[0], &eventName);
+        ok = sevalue_to_native(args[0], &eventName);
         SE_PRECONDITION2(ok, false, "Converting eventName failed!");
 
         std::string payload;
@@ -198,10 +198,10 @@ static bool SocketIO_emit(se::State &s) {
             const auto &arg1 = args[1];
             // Add this check to make it compatible with old version.
             // jsval_to_std_string in v1.6 returns empty string if arg1 is null or undefined
-            // while seval_to_std_string since 1.7.2 follows JS standard to return "null" or "undefined".
+            // while sevalue_to_native since 1.7.2 follows JS standard to return "null" or "undefined".
             // Therefore, we need a workaround to make it be compatible with versions lower than v1.7.
             if (!arg1.isNullOrUndefined()) {
-                ok = seval_to_std_string(arg1, &payload);
+                ok = sevalue_to_native(arg1, &payload);
                 SE_PRECONDITION2(ok, false, "Converting payload failed!");
             }
         }
@@ -238,7 +238,7 @@ static bool SocketIO_on(se::State &s) {
     if (argc == 2) {
         bool ok = false;
         std::string eventName;
-        ok = seval_to_std_string(args[0], &eventName);
+        ok = sevalue_to_native(args[0], &eventName);
         SE_PRECONDITION2(ok, false, "Converting eventName failed!");
 
         CC_LOG_DEBUG("JSB SocketIO eventName to: '%s'", eventName.c_str());
@@ -263,7 +263,7 @@ static bool SocketIO_connect(se::State &s) {
         std::string caFilePath;
         bool ok = false;
 
-        ok = seval_to_std_string(args[0], &url);
+        ok = sevalue_to_native(args[0], &url);
         SE_PRECONDITION2(ok, false, "Error processing arguments");
 
         if (argc == 2) {
@@ -271,7 +271,7 @@ static bool SocketIO_connect(se::State &s) {
                 // Just ignore the option argument
             } else if (args[1].isString()) {
                 // Assume it's CA root file path
-                ok = seval_to_std_string(args[1], &caFilePath);
+                ok = sevalue_to_native(args[1], &caFilePath);
                 SE_PRECONDITION2(ok, false, "Error processing arguments");
             }
         }
@@ -281,7 +281,7 @@ static bool SocketIO_connect(se::State &s) {
 
             if (args[2].isString()) {
                 // Assume it's CA root file path
-                ok = seval_to_std_string(args[2], &caFilePath);
+                ok = sevalue_to_native(args[2], &caFilePath);
                 SE_PRECONDITION2(ok, false, "Error processing arguments");
             }
         }

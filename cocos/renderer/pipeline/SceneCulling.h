@@ -30,7 +30,7 @@
 #include "scene/Define.h"
 #include "scene/Light.h"
 #include "scene/Shadow.h"
-#include "scene/Frustum.h"
+#include "core/geometry/Frustum.h"
 
 namespace cc {
 class Mat4;

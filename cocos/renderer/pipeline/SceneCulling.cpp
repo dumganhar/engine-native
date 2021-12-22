@@ -37,10 +37,11 @@
 #include "platform/Application.h"
 #include "core/geometry/AABB.h"
 #include "scene/Frustum.h"
+#include "core/geometry/Frustum.h"
 #include "scene/Light.h"
 #include "scene/Octree.h"
 #include "scene/RenderScene.h"
-#include "scene/Sphere.h"
+#include "core/geometry/Sphere.h"
 #include "scene/SpotLight.h"
 #include "scene/DirectionalLight.h"
 

@@ -188,13 +188,19 @@ int Sphere::spherePlane(const Plane &plane) {
     return 1;
 }
 
-bool Sphere::sphereFrustum(const Frustum &frustum) {
+bool Sphere::sphereFrustum(const Frustum &frustum) const {
     const auto &planes = frustum.planes;
     const auto *self   = this;
     return std::all_of(planes.begin(),
                        planes.end(),
                        // frustum plane normal points to the inside
                        [self](const Plane &plane) { return self->interset(plane) != -1; });
+}
+void Sphere::mergeFrustum(const Frustum &frustum) {
+    const std::array<Vec3, 8> &vertices = frustum.vertices;
+    for (uint i = 0; i < vertices.max_size(); ++i) {
+        merge(vertices[i]);
+    }
 }
 
 } // namespace geometry

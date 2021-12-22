@@ -115,5 +115,43 @@ void Frustum::transform(const Mat4 &mat) {
     Plane::fromPoints(&planes[5], vertices[7], vertices[6], vertices[5]);
 }
 
-} // namespace geometry
-} // namespace cc
+void Frustum::createOrtho(const float width, const float height, const float near, const float far, const Mat4 &transform){
+    createOrtho(this, width, height, near, far, transform);
+}
+
+void Frustum::split(float start, float end, float aspect, float fov, const Mat4 &transform) {
+    const float h = tanf(fov * 0.5F);
+    const float w = h * aspect;
+    const Vec3  nearTemp(start * w, start * h, start);
+    const Vec3  farTemp(end * w, end * h, end);
+
+    vertices[0].transformMat4(Vec3(nearTemp.x, nearTemp.y, nearTemp.z), transform);
+    vertices[1].transformMat4(Vec3(-nearTemp.x, nearTemp.y, nearTemp.z), transform);
+    vertices[2].transformMat4(Vec3(-nearTemp.x, -nearTemp.y, nearTemp.z), transform);
+    vertices[3].transformMat4(Vec3(nearTemp.x, -nearTemp.y, nearTemp.z), transform);
+    vertices[4].transformMat4(Vec3(farTemp.x, farTemp.y, farTemp.z), transform);
+    vertices[5].transformMat4(Vec3(-farTemp.x, farTemp.y, farTemp.z), transform);
+    vertices[6].transformMat4(Vec3(-farTemp.x, -farTemp.y, farTemp.z), transform);
+    vertices[7].transformMat4(Vec3(farTemp.x, -farTemp.y, farTemp.z), transform);
+
+    updatePlanes();
+}
+
+void Frustum::updatePlanes() {
+    // left plane
+    planes[0].define(vertices[1], vertices[6], vertices[5]);
+    // right plane
+    planes[1].define(vertices[3], vertices[4], vertices[7]);
+    // bottom plane
+    planes[2].define(vertices[6], vertices[3], vertices[7]);
+    // top plane
+    planes[3].define(vertices[0], vertices[5], vertices[4]);
+    // near plane
+    planes[4].define(vertices[2], vertices[0], vertices[3]);
+    // far plane
+    planes[5].define(vertices[7], vertices[5], vertices[6]);
+}
+
+
+}
+}

@@ -23,6 +23,7 @@ fileName = path.normalize(fileName);
 for(let item of db) {
     let up = path.normalize(item.file);
     if(up.indexOf(fileName) > -1) {
+        console.log(`compiling file ${up}`);
         let result = child_process.execSync(item.command, {cwd: item.directory, shell: true}); 
         console.log(result.toString('utf-8'));
         process.exit(-1);

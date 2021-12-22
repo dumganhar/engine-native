@@ -29,7 +29,7 @@
 #include <vector>
 #include "base/Macros.h"
 #include "math/Vec3.h"
-#include "scene/AABB.h"
+#include "core/geometry/AABB.h"
 
 namespace cc {
 namespace scene {

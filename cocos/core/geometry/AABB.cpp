@@ -55,6 +55,41 @@ AABB *AABB::merge(AABB *out, const AABB &a, const AABB &b) {
     return AABB::fromPoints(minCornor, maxCorner, out);
 }
 
+
+void AABB::merge(const cc::Vec3 &point) {
+    cc::Vec3 minPos = getCenter() - getHalfExtents();
+    cc::Vec3 maxPos = getCenter() + getHalfExtents();
+    if (point.x < minPos.x) {
+        minPos.x = point.x;
+    }
+    if (point.y < minPos.y) {
+        minPos.y = point.y;
+    }
+    if (point.z < minPos.z) {
+        minPos.z = point.z;
+    }
+    if (point.x > maxPos.x) {
+        maxPos.x = point.x;
+    }
+    if (point.y > maxPos.y) {
+        maxPos.y = point.y;
+    }
+    if (point.z > maxPos.z) {
+        maxPos.z = point.z;
+    }
+
+    const Vec3 center = (minPos + maxPos) * 0.5F;
+    setCenter(center);
+    setHalfExtents(maxPos.x - center.x, maxPos.y - center.y, maxPos.z - center.z);
+}
+
+void AABB::merge(const Frustum &frustum) {
+    const std::array<Vec3, 8> &vertices = frustum.vertices;
+    for (uint i = 0; i < vertices.max_size(); ++i) {
+        merge(vertices[i]);
+    }
+}
+
 bool AABB::aabbAabb(const AABB &aabb) const {
     Vec3 aMin;
     Vec3 aMax;
@@ -109,6 +144,15 @@ void AABB::set(const cc::Vec3 &centerVal, const cc::Vec3 &halfExtentVal) {
 void AABB::transform(const Mat4 &m, AABB *out) const {
     Vec3::transformMat4(center, m, &out->center);
     transformExtentM4(&out->halfExtents, getHalfExtents(), m);
+}
+
+bool AABB::contain(const cc::Vec3 &point) const {
+    cc::Vec3 minPos = getCenter() - getHalfExtents();
+    cc::Vec3 maxPos = getCenter() + getHalfExtents();
+
+    return !(point.x > maxPos.x || point.x < minPos.x ||
+             point.y > maxPos.y || point.y < minPos.y ||
+             point.z > maxPos.z || point.z < minPos.z);
 }
 
 // https://zeuxcg.org/2010/10/17/aabb-from-obb-with-component-wise-abs/

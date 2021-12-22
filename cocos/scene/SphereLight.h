@@ -26,7 +26,7 @@
 #pragma once
 
 #include "math/Vec3.h"
-#include "scene/AABB.h"
+#include "core/geometry/AABB.h"
 #include "scene/Light.h"
 
 namespace cc {

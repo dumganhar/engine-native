@@ -36,7 +36,7 @@
 #include "gfx-base/GFXShader.h"
 #include "scene/Model.h"
 #include "scene/RenderScene.h"
-#include "scene/AABB.h"
+#include "core/geometry/AABB.h"
 
 namespace cc {
 namespace pipeline {

@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include "scene/AABB.h"
+#include "core/geometry/AABB.h"
 #include "scene/Frustum.h"
 #include "scene/Light.h"
 

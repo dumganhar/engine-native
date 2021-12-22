@@ -31,7 +31,6 @@
 #include <sstream>
 
 #include "audio/include/AudioEngine.h"
-#include "base/AutoreleasePool.h"
 #include "base/Scheduler.h"
 #include "bindings/event/EventDispatcher.h"
 #include "bindings/jswrapper/SeApi.h"
@@ -108,10 +107,10 @@ bool setCanvasCallback(se::Object *global) {
            << "; window.nativeWidth= " << nativeWidth
            << "; window.nativeHeight = " << nativeHeight
            << "; window.windowHandler = ";
-        if (sizeof(windowHandle) == 8) { // use bigint
+        if constexpr (sizeof(windowHandle) == 8) { // use bigint
             ss << static_cast<uint64_t>(windowHandle) << "n;";
         }
-        if (sizeof(windowHandle) == 4) {
+        if constexpr (sizeof(windowHandle) == 4) {
             ss << static_cast<uint32_t>(windowHandle) << ";";
         }
     }

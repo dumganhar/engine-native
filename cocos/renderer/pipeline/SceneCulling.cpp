@@ -35,7 +35,7 @@
 #include "gfx-base/GFXDevice.h"
 #include "math/Quaternion.h"
 #include "platform/Application.h"
-#include "scene/AABB.h"
+#include "core/geometry/AABB.h"
 #include "scene/Frustum.h"
 #include "scene/Light.h"
 #include "scene/Octree.h"

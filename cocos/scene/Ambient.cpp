@@ -26,7 +26,6 @@
 #include "scene/Ambient.h"
 
 namespace {
-cc::Vec4  v4;
 cc::Color col;
 
 // Normalize HDR color
@@ -44,7 +43,7 @@ namespace cc {
 namespace scene {
 
 void AmbientInfo::setSkyLightingColor(const Color &val) {
-    v4.set(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
+    Vec4 v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
     const bool isHDR = true;
     // TODO(xwx): use below after implement
     // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
@@ -62,7 +61,7 @@ const Color &AmbientInfo::getSkyLightingColor() const {
     const bool isHDR = true;
     // TODO(xwx): use below after implement
     // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
-    v4.set(isHDR ? _skyColorHDR : _skyColorLDR);
+    Vec4 v4(isHDR ? _skyColorHDR : _skyColorLDR);
     normalizeHDRColor(v4);
     col.set(static_cast<uint8_t>(v4.x) * 255, static_cast<uint8_t>(v4.y) * 255, static_cast<uint8_t>(v4.z) * 255, 255);
     return col;
@@ -99,7 +98,7 @@ void AmbientInfo::setSkyIllum(float val) {
 }
 
 void AmbientInfo::setGroundLightingColor(const Color &val) {
-    v4.set(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
+    Vec4 v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
     const bool isHDR = true;
     // TODO(xwx): use below after implement
     // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
@@ -118,7 +117,7 @@ const Color &AmbientInfo::getGroundLightingColor() const {
     const bool isHDR = true;
     // TODO(xwx): use below after implement
     // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
-    v4.set(isHDR ? _groundAlbedoHDR : _groundAlbedoLDR);
+    Vec4 v4(isHDR ? _groundAlbedoHDR : _groundAlbedoLDR);
     normalizeHDRColor(v4);
     col.set(static_cast<uint8_t>(v4.x) * 255, static_cast<uint8_t>(v4.y) * 255, static_cast<uint8_t>(v4.z) * 255, 255);
     return col;
@@ -152,15 +151,15 @@ void Ambient::initialize(AmbientInfo *info) {
 
     // Init HDR/LDR from serialized data on load
     _skyColorHDR       = info->getSkyColorHDR();
-    _groundAlbedoHDR.x = info->groundAlbedoHDR.x;
-    _groundAlbedoHDR.y = info->groundAlbedoHDR.y;
-    _groundAlbedoHDR.z = info->groundAlbedoHDR.z;
-    _skyIllumHDR       = info->skyIllum;
-    _skyColorLDR       = info->skyColorLDR;
-    _groundAlbedoLDR.x = info->groundAlbedoLDR.x;
-    _groundAlbedoLDR.y = info->groundAlbedoLDR.y;
-    _groundAlbedoLDR.z = info->groundAlbedoLDR.z;
-    _skyIllumLDR       = info->skyIllumLDR;
+    _groundAlbedoHDR.x = info->getGroundAlbedoHDR().x;
+    _groundAlbedoHDR.y = info->getGroundAlbedoHDR().y;
+    _groundAlbedoHDR.z = info->getGroundAlbedoHDR().z;
+    _skyIllumHDR       = info->getSkyIllumHDR();
+    _skyColorLDR       = info->getSkyColorLDR();
+    _groundAlbedoLDR.x = info->getGroundAlbedoLDR().x;
+    _groundAlbedoLDR.y = info->getGroundAlbedoLDR().y;
+    _groundAlbedoLDR.z = info->getGroundAlbedoLDR().z;
+    _skyIllumLDR       = info->getSkyIllumLDR();
 }
 
 } // namespace scene

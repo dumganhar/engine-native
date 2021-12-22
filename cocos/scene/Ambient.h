@@ -129,8 +129,8 @@ public:
     }
 
 protected:
-    Vec4  _groundAlbedoHDR{51.F, 51.F, 51.F, 255.F};
-    Vec4  _skyColorHDR{51.F, 128.F, 204.F, 1.F};
+    Vec4  _groundAlbedoHDR{0.2F, 0.2F, 0.2F, 1.F};
+    Vec4  _skyColorHDR{0.2F, 0.5F, 0.8F, 1.F};
     float _skyIllumHDR{0.F};
 
     Vec4  _groundAlbedoLDR{0.2F, 0.2F, 0.2F, 1.F};

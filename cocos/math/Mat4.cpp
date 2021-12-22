@@ -23,11 +23,23 @@
 #include "math/Mat4.h"
 
 #include <cmath>
+#include <array>
 #include "base/Log.h"
 #include "math/MathUtil.h"
 #include "math/Quaternion.h"
 
 NS_CC_MATH_BEGIN
+
+namespace  {
+
+const std::array<std::array<float, 4>, 4> preTransforms = {{
+    {{1,  0,  0,  1}}, // SurfaceTransform.IDENTITY
+    {{0,  1, -1,  0}}, // SurfaceTransform.ROTATE_90
+    {{-1,  0,  0, -1}}, // SurfaceTransform.ROTATE_180
+    {{0, -1,  1,  0}} // SurfaceTransform.ROTATE_270
+}};
+
+}
 
 Mat4::Mat4() {
     // As JS defautl mat4 is zero, so change it to zero.
@@ -95,22 +107,19 @@ void Mat4::createLookAt(float eyePositionX, float eyePositionY, float eyePositio
     dst->m[15] = 1.0F;
 }
 
-void Mat4::createPerspective(float fieldOfView, float aspectRatio,
-                             float zNearPlane, float zFarPlane, Mat4 *dst) {
+void Mat4::createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane,
+                             bool isFieldOfViewY, float minClipZ, float projectionSignY, int orientation, Mat4 *dst) {
     GP_ASSERT(dst);
     GP_ASSERT(zFarPlane != zNearPlane);
-    GP_ASSERT(fieldOfView != 0.0F);
-
-    const float minClipZ        = -1.0F;
-    const float projectionSignY = 1.0F;
+    GP_ASSERT(fieldOfView != 0.0f);
 
     const float f  = 1.0F / std::tanf(fieldOfView / 2.0F);
     const float nf = 1.0F / (zNearPlane - zFarPlane);
 
-    const float x = f / aspectRatio;
-    const float y = f * projectionSignY;
+    const float x = isFieldOfViewY ? f / aspectRatio : f;
+    const float y = (isFieldOfViewY ? f : f * aspectRatio) * projectionSignY;
 
-    float const preTransform[] = {1.0, 0.0F, 0.0F, 1.0F};
+    const std::array<float, 4> &preTransform = preTransforms[orientation];
 
     dst->m[0]  = x * preTransform[0];
     dst->m[1]  = x * preTransform[1];
@@ -136,23 +145,41 @@ void Mat4::createOrthographic(float left, float right, float bottom, float top, 
 
 void Mat4::createOrthographicOffCenter(float left, float right, float bottom, float top,
                                        float zNearPlane, float zFarPlane, Mat4 *dst) {
-    createOrthographicOffCenter(left, right, bottom, top, zNearPlane, zFarPlane, -1.0F, 1.0F, dst);
+    createOrthographicOffCenter(left, right, bottom, top, zNearPlane, zFarPlane, -1.0F, 1.0F, 0, dst);
 }
 
-void Mat4::createOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane, float minClipZ, float projectionSignY, Mat4 *dst) {
+void Mat4::createOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane, float minClipZ, float projectionSignY, int orientation, Mat4 *dst) {
     GP_ASSERT(dst);
     GP_ASSERT(right != left);
     GP_ASSERT(top != bottom);
     GP_ASSERT(zFarPlane != zNearPlane);
 
-    memset(dst->m, 0, MATRIX_SIZE);
-    dst->m[0]  = 2.0F / (right - left);
-    dst->m[5]  = 2.0F / (top - bottom) * projectionSignY;
-    dst->m[10] = (1.0F - minClipZ) / (zNearPlane - zFarPlane);
-    dst->m[12] = (left + right) / (left - right);
-    dst->m[13] = (top + bottom) / (bottom - top);
-    dst->m[14] = (zNearPlane - minClipZ * zFarPlane) / (zNearPlane - zFarPlane);
-    dst->m[15] = 1.0F;
+    const std::array<float, 4> &preTransform = preTransforms[orientation];
+    const float lr = 1.F / (left - right);
+    const float bt = 1.F / (bottom - top) * projectionSignY;
+    const float nf = 1.F / (zNearPlane - zFarPlane);
+    
+    const float x = -2 * lr;
+    const float y = -2 * bt;
+    const float dx = (left + right) * lr;
+    const float dy = (top + bottom) * bt;
+    
+    dst->m[0] = x * preTransform[0];
+    dst->m[1] = x * preTransform[1];
+    dst->m[2] = 0;
+    dst->m[3] = 0;
+    dst->m[4] = y * preTransform[2];
+    dst->m[5] = y * preTransform[3];
+    dst->m[6] = 0;
+    dst->m[7] = 0;
+    dst->m[8] = 0;
+    dst->m[9] = 0;
+    dst->m[10] = nf * (1 - minClipZ);
+    dst->m[11] = 0;
+    dst->m[12] = dx * preTransform[0] + dy * preTransform[2];
+    dst->m[13] = dx * preTransform[1] + dy * preTransform[3];
+    dst->m[14] = (zNearPlane - minClipZ * zFarPlane) * nf;
+    dst->m[15] = 1.F;
 }
 
 void Mat4::createBillboard(const Vec3 &objectPosition, const Vec3 &cameraPosition,

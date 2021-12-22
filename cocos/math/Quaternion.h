@@ -23,8 +23,8 @@
 #ifndef QUATERNION_H_
 #define QUATERNION_H_
 
-#include "math/Vec3.h"
 #include "math/Mat4.h"
+#include "math/Vec3.h"
 //#include "Plane.h"
 
 /**
@@ -35,7 +35,7 @@
 NS_CC_MATH_BEGIN
 
 class Mat4;
-
+class Mat3;
 /**
  * Defines a 4-element quaternion that represents the orientation of an object in space.
  *
@@ -164,6 +164,16 @@ public:
     bool isZero() const;
 
     /**
+     * Calculates the quaternion with Euler angles, the rotation order is YZX
+     */
+    static void fromEuler(float x, float y, float z, Quaternion *dst);
+
+    /**
+     * Converts the quaternion to angles, result angle x, y in the range of [-180, 180], z in the range of [-90, 90] interval, the rotation order is YZX
+     */
+    static void toEuler(const Quaternion &q, bool outerZ, Vec3 *out);
+
+    /**
      * Creates a quaternion equal to the rotational part of the specified matrix
      * and stores the result in dst.
      *
@@ -181,6 +191,15 @@ public:
      * @param dst A quaternion to store the conjugate in.
      */
     static void createFromAxisAngle(const Vec3 &axis, float angle, Quaternion *dst);
+
+    /**
+     * @en Calculates the quaternion with given 2D angle (0, 0, z).
+     * @zh 根据 2D 角度（0, 0, z）计算四元数
+     *
+     * @param out Output quaternion
+     * @param z Angle to rotate around Z axis in degrees.
+     */
+    static void createFromAngleZ(float z, Quaternion *dst);
 
     /**
      * Sets this quaternion to the conjugate of itself.
@@ -313,6 +332,17 @@ public:
      * @param dst A quaternion to store the result in.
      */
     static void lerp(const Quaternion &q1, const Quaternion &q2, float t, Quaternion *dst);
+
+    /**
+     * Calculates the quaternion with the three-dimensional transform matrix, considering no scale included in the matrix
+     */
+    static void fromMat3(const Mat3 &m, Quaternion *out);
+
+    /**
+     * Calculates the quaternion with the up direction and the direction of the viewport
+     */
+    static void fromViewUp(const Vec3 &view, Quaternion *out);
+    static void fromViewUp(const Vec3 &view, const Vec3 &up, Quaternion *out);
 
     /**
      * Interpolates between two quaternions using spherical linear interpolation.

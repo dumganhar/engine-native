@@ -72,7 +72,7 @@ void SkyboxInfo::setEnvmap(TextureCube *val) {
         _envmapLDR = val;
     }
 
-    if (_envmapHDR == nullptr) {
+    if (!_envmapHDR) {
         _diffuseMapHDR   = nullptr;
         _applyDiffuseMap = false;
         setUseIBL(false);
@@ -159,7 +159,7 @@ void Skybox::activate() {
     _globalDSManager = pipeline->getGlobalDSManager();
     _default         = BuiltinResMgr::getInstance()->get<TextureCube>("default-cube-texture");
 
-    if (_model == nullptr) {
+    if (!_model) {
         _model = Root::getInstance()->createModel<scene::Model>();
         _model->initLocalDescriptors(CC_INVALID_INDEX);
         // _model->initWorldBoundDescriptors(CC_INVALID_INDEX); // TODO(xwx): initWorldBoundDescriptors not implement yet
@@ -167,7 +167,7 @@ void Skybox::activate() {
     auto *envmap = getEnvmap();
     bool  isRGBE = envmap != nullptr ? envmap->isRGBE : _default->isRGBE;
 
-    if (skyboxMaterial == nullptr) {
+    if (!skyboxMaterial) {
         auto *        mat = new Material();
         MacroRecord   defines{{"USE_RGBE_CUBEMAP", isRGBE}};
         IMaterialInfo matInfo{
@@ -180,17 +180,17 @@ void Skybox::activate() {
     }
 
     if (_enabled) {
-        if (skyboxMesh == nullptr) {
+        if (!skyboxMesh) {
             skyboxMesh = createMesh(createGeometry(PrimitiveType::BOX, IBoxOptions({.width = 2, .height = 2, .length = 2})), skyboxMesh);
-            _model->initSubModel(0, skyboxMesh->getRenderingSubMeshes()[0], skyboxMaterial);
         }
+        _model->initSubModel(0, skyboxMesh->getRenderingSubMeshes()[0], skyboxMaterial);
     }
 
-    if (getEnvmap() == nullptr) {
+    if (!getEnvmap()) {
         setEnvmap(_default.get());
     }
 
-    if (getDiffuseMap() == nullptr) {
+    if (!getDiffuseMap()) {
         setDiffuseMap(_default.get());
     }
 
@@ -246,7 +246,7 @@ void Skybox::updateGlobalBinding() {
     if (_globalDSManager != nullptr) {
         const auto *device = Root::getInstance()->getDevice();
         auto *      envmap = getEnvmap();
-        if (envmap == nullptr) {
+        if (!envmap) {
             envmap = _default.get();
         }
         if (envmap != nullptr) {
@@ -257,7 +257,7 @@ void Skybox::updateGlobalBinding() {
         }
 
         auto *diffuseMap = getDiffuseMap();
-        if (diffuseMap == nullptr) {
+        if (!diffuseMap) {
             diffuseMap = _default.get();
         }
         if (diffuseMap != nullptr) {

@@ -256,6 +256,10 @@ public:
         return _renderingSubMeshes;
     }
 
+    void onLoaded() override {
+        initialize();
+    }
+
     void initialize();
 
     /**

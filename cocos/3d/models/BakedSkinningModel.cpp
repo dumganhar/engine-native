@@ -79,7 +79,7 @@ void BakedSkinningModel::bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Me
     if (_jointMedium.buffer == nullptr) {
         _jointMedium.buffer = _device->createBuffer({
             gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST,
-            gfx::MemoryUsageBit::HOST | gfx::MemoryUsageBit::DEVICE,
+            gfx::MemoryUsageBit::DEVICE,
             pipeline::UBOSkinning::SIZE,
             pipeline::UBOSkinning::SIZE,
         });
@@ -166,7 +166,7 @@ void BakedSkinningModel::updateLocalDescriptors(index_t subModelIndex, gfx::Desc
     descriptorSet->bindBuffer(pipeline::UBOSkinningTexture::BINDING, buffer);
     descriptorSet->bindBuffer(pipeline::UBOSkinningAnimation::BINDING, animInfo.buffer);
     if (texture.has_value()) {
-        auto *sampler = pipeline::SamplerLib::getSampler(JOINT_TEXTURE_SAMPLER_HASH);
+        auto *sampler = _device->getSampler(JOINT_TEXTURE_SAMPLER_INFO);
         descriptorSet->bindTexture(pipeline::JOINTTEXTURE::BINDING, texture->handle.texture);
         descriptorSet->bindSampler(pipeline::JOINTTEXTURE::BINDING, sampler);
     }

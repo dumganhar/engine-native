@@ -131,7 +131,7 @@ public:
         _textureAsset->uploadData(_arrayBuffer->getData());
     }
 
-    void initialize(uint32_t width, uint32_t height, uint32_t pixelBytes, bool /*useFloat32Array*/, PixelFormat pixelFormat) {
+    void initialize(gfx::Device *gfxDevice, uint32_t width, uint32_t height, uint32_t pixelBytes, bool /*useFloat32Array*/, PixelFormat pixelFormat) {
         _arrayBuffer = new ArrayBuffer(width * height * pixelBytes);
         _valueView   = Float32Array(_arrayBuffer);
 
@@ -148,7 +148,7 @@ public:
         if (nullptr == _textureAsset->getGFXTexture()) {
             CC_LOG_WARNING("Unexpected: failed to create morph texture?");
         }
-        _sampler = pipeline::SamplerLib::getSampler(_textureAsset->getSamplerHash());
+        _sampler = gfxDevice->getSampler(_textureAsset->getSamplerInfo());
     }
 
 private:
@@ -262,7 +262,7 @@ Vec4TextureFactory createVec4TextureFactory(gfx::Device *gfxDevice, uint32_t vec
     ret.height = height;
     ret.create = [=]() -> MorphTexture * {
         auto *texture = new MorphTexture(); //cjh how to release?
-        texture->initialize(width, height, pixelBytes, useFloat32Array, pixelFormat);
+        texture->initialize(gfxDevice, width, height, pixelBytes, useFloat32Array, pixelFormat);
         return texture;
     };
 

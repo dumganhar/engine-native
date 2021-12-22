@@ -64,6 +64,7 @@ public:
 
     void                             initSubModel(index_t idx, RenderingSubMesh *subMeshData, Material *mat) override;
     std::vector<scene::IMacroPatch> &getMacroPatches(index_t subModelIndex) override;
+    void                             updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass) override;
 
     void bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *mesh);
 

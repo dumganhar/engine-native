@@ -25,31 +25,52 @@
 
 #pragma once
 
+#include <string>
 #include <vector>
-#include "scene/BakedSkinningModel.h"
+#include "base/Macros.h"
+#include "base/Ptr.h"
+#include "base/TypeDef.h"
+#include "scene/Camera.h"
 #include "scene/DirectionalLight.h"
-#include "scene/DrawBatch2D.h"
 #include "scene/Model.h"
-#include "scene/SkinningModel.h"
 #include "scene/SphereLight.h"
 #include "scene/SpotLight.h"
 
 namespace cc {
+
+class Node;
+class SkinningModel;
+class BakedSkinningModel;
+
 namespace scene {
 
-class Octree;
+class DrawBatch2D;
 
-class RenderScene final {
+struct IRaycastResult {
+    Node *node{nullptr};
+    float distance{0.F};
+};
+
+struct IRenderSceneInfo {
+    std::string name;
+};
+
+class RenderScene : public RefCounted {
 public:
-    RenderScene()                    = default;
-    RenderScene(const RenderScene &) = delete;
-    RenderScene(RenderScene &&)      = delete;
-    ~RenderScene();
-    RenderScene &operator=(const RenderScene &) = delete;
-    RenderScene &operator=(RenderScene &&) = delete;
+    RenderScene()  = default;
+    ~RenderScene() override = default;
 
-    void activate();
+    bool initialize(const IRenderSceneInfo &info);
     void update(uint32_t stamp);
+    void destroy();
+
+    void addCamera(Camera *camera);
+    void removeCamera(Camera *camera);
+    void removeCameras();
+
+    void unsetMainLight(DirectionalLight *dl);
+    void addDirectionalLight(DirectionalLight *dl);
+    void removeDirectionalLight(DirectionalLight *dl);
 
     void addSphereLight(SphereLight *);
     void removeSphereLight(SphereLight *);
@@ -60,34 +81,41 @@ public:
     void removeSpotLights();
 
     void addModel(Model *);
-    void addSkinningModel(SkinningModel *);
-    void addBakedSkinningModel(BakedSkinningModel *);
-    void removeModel(uint32_t);
+    void removeModel(index_t idx);
+    void removeModel(Model *model);
     void removeModels();
 
-    void updateBatches(std::vector<DrawBatch2D *> &&);
     void addBatch(DrawBatch2D *);
     void removeBatch(DrawBatch2D *);
-    void removeBatch(uint32_t index);
     void removeBatches();
 
-    inline void setMainLight(DirectionalLight *light) { _directionalLight = light; }
+    void onGlobalPipelineStateChanged();
 
-    inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _drawBatch2Ds; }
-    inline DirectionalLight *                getMainLight() const { return _directionalLight; }
-    inline const std::vector<Model *> &      getModels() const { return _models; }
-    inline const std::vector<SphereLight *> &getSphereLights() const { return _sphereLights; }
-    inline const std::vector<SpotLight *> &  getSpotLights() const { return _spotLights; }
-    inline Octree *                          getOctree() const { return _octree; }
-    void                                     updateOctree(Model *model);
+    inline DirectionalLight *getMainLight() const { return _mainLight.get(); }
+    inline void              setMainLight(DirectionalLight *dl) { _mainLight = dl; }
+
+    inline uint64_t                                   generateModelId() { return _modelId++; }
+    inline const std::string &                        getName() const { return _name; }
+    inline const std::vector<SharedPtr<Camera>> &     getCameras() const { return _cameras; }
+    inline const std::vector<SharedPtr<SphereLight>> &getSphereLights() const { return _sphereLights; }
+    inline const std::vector<SharedPtr<SpotLight>> &  getSpotLights() const { return _spotLights; }
+    inline const std::vector<SharedPtr<Model>> &      getModels() const { return _models; }
+    //FIXME: remove getDrawBatch2Ds
+    inline const std::vector<DrawBatch2D *> &getBatches() const { return _batches; }
+    inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _batches; }
 
 private:
-    DirectionalLight *         _directionalLight{nullptr};
-    std::vector<Model *>       _models;
-    std::vector<SphereLight *> _sphereLights;
-    std::vector<SpotLight *>   _spotLights;
-    std::vector<DrawBatch2D *> _drawBatch2Ds;
-    Octree *                   _octree{nullptr};
+    std::string                              _name;
+    uint64_t                                 _modelId{0};
+    SharedPtr<DirectionalLight>              _mainLight{nullptr};
+    std::vector<SharedPtr<Model>>            _models;
+    std::vector<SharedPtr<Camera>>           _cameras;
+    std::vector<SharedPtr<DirectionalLight>> _directionalLights;
+    std::vector<SharedPtr<SphereLight>>      _sphereLights;
+    std::vector<SharedPtr<SpotLight>>        _spotLights;
+    std::vector<DrawBatch2D *>               _batches;
+
+    CC_DISALLOW_COPY_MOVE_ASSIGN(RenderScene);
 };
 
 } // namespace scene

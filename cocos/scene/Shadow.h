@@ -237,12 +237,12 @@ public:
     }
 
     /**
-     * @en get or set shadow Map sampler auto adapt
-     * @zh 阴影纹理生成是否自适应
+     * @en get or set fixed area shadow
+     * @zh 是否是固定区域阴影
      */
-    void        setAutoAdapt(bool val);
-    inline bool isAutoAdapt() const {
-        return _autoAdapt;
+    void        setFixedArea(bool val);
+    inline bool isFixedArea() const {
+        return _fixedArea;
     }
 
     /**
@@ -261,6 +261,25 @@ public:
     void         setFar(float val);
     inline float getFar() const {
         return _far;
+    }
+
+    /**
+     * @en get or set shadow camera far
+     * @zh 获取或者设置潜在阴影产生的范围
+     */
+    void setInvisibleOcclusionRange(float val);
+    inline float getInvisibleOcclusionRange() const {
+        return _invisibleOcclusionRange;
+    }
+
+    /**
+     * @en get or set shadow camera far
+     * @zh 获取或者设置潜在阴影产生的范围
+     */
+    void setShadowDistance(float val);
+
+    inline float shadowDistance() const {
+        return _shadowDistance;
     }
 
     /**
@@ -284,8 +303,10 @@ public:
     float      _distance{0.F};
     float      _bias{0.00001F};
     float      _normalBias{0.F};
-    float      _near{1.0F};
-    float      _far{30.F};
+    float      _near{0.1F};
+    float      _far{10.F};
+    float      _shadowDistance{100.F};
+    float      _invisibleOcclusionRange{200.F};
     float      _orthoSize{5.F};
     float      _saturation{0.75};
     uint32_t   _maxReceived{4};
@@ -295,11 +316,12 @@ public:
     Color      _shadowColor{0, 0, 0, 76};
     Vec3       _normal{0.F, 1.F, 0.F};
     Vec2       _size{512.F, 512.F};
-    bool       _autoAdapt{true};
+    bool       _firstSetCSM{false};
+    bool       _fixedArea{false};
     bool       _enabled{false};
 };
 
-class Shadow final {
+class Shadows final {
 public:
     /**
      * @en MAX_FAR. This is shadow camera max far.
@@ -313,8 +335,8 @@ public:
      */
     static const float COEFFICIENT_OF_EXPANSION;
 
-    Shadow()  = default;
-    ~Shadow() = default;
+    Shadows()  = default;
+    ~Shadows() = default;
 
     void         initialize(const ShadowsInfo &shadowsInfo);
     void         destroy();
@@ -359,6 +381,30 @@ public:
         _shadowColor4f[3] = static_cast<float>(color.a) / 255.F;
     }
     inline const std::array<float, 4> &getShadowColor4f() const { return _shadowColor4f; }
+
+    /**
+     * @en get or set shadow invisible Occlusion Range.
+     * @zh 控制潜在遮挡体产生的范围。
+     */
+    inline float getInvisibleOcclusionRange() const {
+        return _invisibleOcclusionRange;
+    }
+
+    inline void setInvisibleOcclusionRange(float val) {
+        _invisibleOcclusionRange = val;
+    }
+
+    /**
+     * @en get or set shadow distance.
+     * @zh 控制阴影的可视范围。
+     */
+    inline float getShadowDistance() const {
+        return _shadowDistance;
+    }
+
+    inline void setShadowDistance(float val) {
+        _shadowDistance = val;
+    }
 
     /**
      * @en Shadow type.
@@ -440,11 +486,11 @@ public:
     inline void  setSaturation(float val) { _saturation = val; }
 
     /**
-     * @en get or set shadow auto control.
-     * @zh 获取或者设置阴影是否自动控制。
+     * @en get or set fixed area shadow
+     * @zh 是否是固定区域阴影
      */
-    inline bool isAutoAdapt() const { return _autoAdapt; }
-    inline void setAutoAdapt(bool val) { _autoAdapt = val; }
+    inline bool isFixedArea() const { return _fixedArea; }
+    inline void setFixedArea(bool val) { _fixedArea = val; }
 
     inline const Mat4 &getMatLight() const { return _matLight; }
     inline Material *  getMaterial() const { return _material.get(); }
@@ -470,15 +516,22 @@ private:
 
     /**
      * @en The bounding sphere of the shadow map.
-     * @zh 用于计算阴影 Shadow map 的场景包围球.
+     * @zh 用于计算固定区域阴影 Shadow map 的场景包围球.
      */
-    geometry::Sphere _sphere{0.0F, 0.0F, 0.0F, 0.01F};
+    geometry::Sphere _fixedSphere{0.0F, 0.0F, 0.0F, 0.01F};
 
     /**
      * @en get or set shadow max received.
      * @zh 阴影接收的最大灯光数量。
      */
     uint32_t _maxReceived{4};
+
+    // local set
+    bool _firstSetCSM{false};
+    float _shadowCameraFar{0.F};
+    Mat4 _matShadowView;
+    Mat4 _matShadowProj;
+    Mat4 _matShadowViewProj;
 
     Vec3                 _normal{0.F, 1.F, 0.F};
     Color                _shadowColor{0, 0, 0, 76};
@@ -490,14 +543,16 @@ private:
     bool                 _enabled{false};
     float                _distance{0.F};
     ShadowType           _type{ShadowType::NONE};
-    float                _near{0.F};
-    float                _far{0.F};
+    float                _near{0.1F};
+    float                _far{10.F};
+    float                _invisibleOcclusionRange{200.F};
+    float                _shadowDistance{100.F};
     float                _orthoSize{1.F};
     PCFType              _pcf{PCFType::HARD};
     bool                 _shadowMapDirty{false};
     float                _bias{0.F};
     float                _normalBias{0.F};
-    bool                 _autoAdapt{true};
+    bool                 _fixedArea{false};
     float                _saturation{0.75F};
 };
 

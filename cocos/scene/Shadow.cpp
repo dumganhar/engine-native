@@ -126,10 +126,10 @@ void ShadowsInfo::setShadowMapSize(float value) {
     }
 }
 
-void ShadowsInfo::setAutoAdapt(bool val) {
-    _autoAdapt = val;
+void ShadowsInfo::setFixedArea(bool val) {
+    _fixedArea = val;
     if (_resource != nullptr) {
-        _resource->setAutoAdapt(val);
+        _resource->setFixedArea(val);
     }
 }
 
@@ -141,9 +141,23 @@ void ShadowsInfo::setNear(float val) {
 }
 
 void ShadowsInfo::setFar(float val) {
-    _far = val;
+    _far = std::min(val, Shadows::MAX_FAR);
     if (_resource != nullptr) {
         _resource->setFar(val);
+    }
+}
+
+void ShadowsInfo::setInvisibleOcclusionRange(float val) {
+    _invisibleOcclusionRange = std::min(val, Shadows::MAX_FAR);
+    if (_resource) {
+        _resource->setInvisibleOcclusionRange(_invisibleOcclusionRange);
+    }
+}
+
+void ShadowsInfo::setShadowDistance(float val) {
+    _shadowDistance = std::min(val, Shadows::MAX_FAR);
+    if (_resource) {
+        _resource->setShadowDistance(_shadowDistance);
     }
 }
 
@@ -168,11 +182,13 @@ void ShadowsInfo::activate(Shadow *resource) {
 }
 
 //
-const float Shadow::COEFFICIENT_OF_EXPANSION{2.0F * std::sqrt(3.0F)};
+const float Shadows::COEFFICIENT_OF_EXPANSION{2.0F * std::sqrt(3.0F)};
 
-void Shadow::initialize(const ShadowsInfo &shadowsInfo) {
+void Shadows::initialize(const ShadowsInfo &shadowsInfo) {
     _near      = shadowsInfo.getNear();
     _far       = shadowsInfo.getFar();
+    setInvisibleOcclusionRange(shadowsInfo.getInvisibleOcclusionRange());
+    setShadowDistance(shadowsInfo.getShadowDistance());
     _orthoSize = shadowsInfo.getOrthoSize();
     _size      = shadowsInfo.getSize();
     _pcf       = shadowsInfo.getPcf();
@@ -182,13 +198,13 @@ void Shadow::initialize(const ShadowsInfo &shadowsInfo) {
     _bias        = shadowsInfo.getBias();
     _normalBias  = shadowsInfo.getNormalBias();
     _maxReceived = shadowsInfo.getMaxReceived();
-    _autoAdapt   = shadowsInfo.isAutoAdapt();
+    _fixedArea   = shadowsInfo.isFixedArea();
     setEnabled(shadowsInfo.isEnabled());
     _type       = shadowsInfo.getType();
     _saturation = shadowsInfo.getSaturation();
 }
 
-void Shadow::destroy() {
+void Shadows::destroy() {
     if (_material) {
         _material->destroy();
         _material = nullptr;
@@ -200,7 +216,7 @@ void Shadow::destroy() {
     }
 }
 
-gfx::Shader *Shadow::getPlanarShader(const std::vector<IMacroPatch> &patches) {
+gfx::Shader *Shadows::getPlanarShader(const std::vector<IMacroPatch> &patches) {
     if (!_material) {
         createMaterial();
     }
@@ -208,7 +224,7 @@ gfx::Shader *Shadow::getPlanarShader(const std::vector<IMacroPatch> &patches) {
     return _material->getPasses()[0]->getShaderVariant(patches);
 }
 
-gfx::Shader *Shadow::getPlanarInstanceShader(const std::vector<IMacroPatch> &patches) {
+gfx::Shader *Shadows::getPlanarInstanceShader(const std::vector<IMacroPatch> &patches) {
     if (!_instancingMaterial) {
         createInstanceMaterial();
     }
@@ -216,7 +232,7 @@ gfx::Shader *Shadow::getPlanarInstanceShader(const std::vector<IMacroPatch> &pat
     return _instancingMaterial->getPasses()[0]->getShaderVariant(patches);
 }
 
-void Shadow::activate() {
+void Shadows::activate() {
     if (_enabled) {
         if (_type == ShadowType::SHADOW_MAP) {
             updatePipeline();
@@ -226,12 +242,12 @@ void Shadow::activate() {
     } else {
         auto *root     = Root::getInstance();
         auto *pipeline = root->getPipeline();
-        pipeline->setValue("CC_RECEIVE_SHADOW", 0.F);
+        pipeline->setValue("CC_ENABLE_DIR_SHADOW", 0);
         root->onGlobalPipelineStateChanged();
     }
 }
 
-void Shadow::updatePlanarInfo() {
+void Shadows::updatePlanarInfo() {
     if (!_material) {
         createMaterial();
     }
@@ -241,18 +257,18 @@ void Shadow::updatePlanarInfo() {
 
     auto *root     = Root::getInstance();
     auto *pipeline = root->getPipeline();
-    pipeline->setValue("CC_RECEIVE_SHADOW", 0.F);
+    pipeline->setValue("CC_ENABLE_DIR_SHADOW", 0);
     root->onGlobalPipelineStateChanged();
 }
 
-void Shadow::updatePipeline() {
+void Shadows::updatePipeline() {
     auto *root     = Root::getInstance();
     auto *pipeline = root->getPipeline();
-    pipeline->setValue("CC_RECEIVE_SHADOW", 1.F);
+    pipeline->setValue("CC_ENABLE_DIR_SHADOW", 1);
     root->onGlobalPipelineStateChanged();
 }
 
-void Shadow::createInstanceMaterial() {
+void Shadows::createInstanceMaterial() {
     _instancingMaterial = new Material();
 
     IMaterialInfo materialInfo;
@@ -262,7 +278,7 @@ void Shadow::createInstanceMaterial() {
     _instancingMaterial->initialize(materialInfo);
 }
 
-void Shadow::createMaterial() {
+void Shadows::createMaterial() {
     _material = new Material();
 
     IMaterialInfo materialInfo;

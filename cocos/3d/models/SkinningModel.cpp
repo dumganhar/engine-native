@@ -119,7 +119,7 @@ void SkinningModel::updateTransform(uint32_t stamp) {
     auto *root = getTransform();
     if (root->getChangedFlags() || root->getDirtyFlag()) {
         root->updateWorldTransform();
-        _transformUpdated = true;
+        _localDataUpdated = true;
     }
     Vec3           v3Min{INFINITY, INFINITY, INFINITY};
     Vec3           v3Max{-INFINITY, -INFINITY, -INFINITY};
@@ -189,6 +189,16 @@ void SkinningModel::updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorS
         descriptorset->bindBuffer(pipeline::UBOSkinning::BINDING, buffer);
     }
 }
+
+void SkinningModel::updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass) {
+    if (pass->getBatchingScheme() !== BatchingSchemes::NONE) {
+        // TODO(holycanvas): #9203 better to print the complete path instead of only the current node
+        // warnID(3936, this.node.name);
+        CC_LOG_WARNING("pass batchingScheme is none, %s", getNode()->getName().c_str());
+    }
+    Super::updateInstancedAttributes(attributes, pass);
+}
+
 
 void SkinningModel::ensureEnoughBuffers(index_t count) {
     for (index_t i = 0; i < count; i++) {

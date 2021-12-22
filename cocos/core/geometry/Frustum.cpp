@@ -115,7 +115,7 @@ void Frustum::transform(const Mat4 &mat) {
     Plane::fromPoints(&planes[5], vertices[7], vertices[6], vertices[5]);
 }
 
-void Frustum::createOrtho(const float width, const float height, const float near, const float far, const Mat4 &transform){
+void Frustum::createOrtho(const float width, const float height, const float near, const float far, const Mat4 &transform) {
     createOrtho(this, width, height, near, far, transform);
 }
 
@@ -152,6 +152,5 @@ void Frustum::updatePlanes() {
     planes[5].define(vertices[7], vertices[5], vertices[6]);
 }
 
-
-}
-}
+} // namespace geometry
+} // namespace cc

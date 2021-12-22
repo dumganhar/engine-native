@@ -157,9 +157,9 @@ public:
      */
     float d{0.0F};
 
-    void  define(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2);
-    void  define(const Vec3 &normal, const Vec3 &point);
-    float distance(const Vec3 &point) const;
+    void  define(const Vec3& v0, const Vec3& v1, const Vec3& v2);
+    void  define(const Vec3& normal, const Vec3& point);
+    float distance(const Vec3& point) const;
     Plane clone() const;
 };
 

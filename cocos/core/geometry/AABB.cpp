@@ -55,7 +55,6 @@ AABB *AABB::merge(AABB *out, const AABB &a, const AABB &b) {
     return AABB::fromPoints(minCornor, maxCorner, out);
 }
 
-
 void AABB::merge(const cc::Vec3 &point) {
     cc::Vec3 minPos = getCenter() - getHalfExtents();
     cc::Vec3 maxPos = getCenter() + getHalfExtents();

@@ -163,7 +163,7 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
     //        texture.image = image;
     //        spriteFrame.texture = texture;
     //        spriteFrame._uuid = 'default-spriteframe";
-    //        resources[spriteFrame._uuid] = spriteFrame;
+    //        resources[spriteFrame->getUuid()] = spriteFrame;
     //    }
     //
     const char *shaderVersionKey = getDeviceShaderVersion(device);
@@ -339,6 +339,63 @@ void BuiltinResMgr::initMaterials() {
     defaultGraphicsMtl->initialize(defaultGraphicsInfo);
     resources[defaultGraphicsMtl->getUuid()] = defaultGraphicsMtl;
     _materialsToBeCompiled.emplace_back(defaultGraphicsMtl);
+
+#if UI_GPU_DRIVEN
+    // sprite material
+    auto* spriteGPUMtl = new Material();
+    spriteGPUMtl->setUuid("ui-base-gpu-material");
+    IMaterialInfo spriteGPUMtlInfo { 
+        .defines = MacroRecord{ { "USE_TEXTURE", false } }, 
+        .effectName = "sprite-gpu"
+    };
+    spriteGPUMtl->initialize(spriteGPUMtlInfo);
+    resources[spriteGPUMtl->getUuid()] = spriteGPUMtl;
+    materialsToBeCompiled.emplace_back(spriteGPUMtl);
+
+    // sprite material
+    auto* spriteColorGPUMtl = new Material();
+    spriteColorGPUMtl._uuid = "ui-sprite-gpu-material";
+    IMaterialInfo spriteColorGPUMtlInfo {
+        .defines = MacroRecord{ { "USE_TEXTURE", true}, { "CC_USE_EMBEDDED_ALPHA", false }, { "IS_GRAY", false } },
+        .effectName = "sprite-gpu"
+    };
+    spriteColorGPUMtl->initialize(spriteColorGPUMtlInfo);
+    resources[spriteColorGPUMtl->getUuid()] = spriteColorGPUMtl;
+    materialsToBeCompiled.emplace_back(spriteColorGPUMtl);
+
+    // sprite gray material
+    auto* spriteGrayGPUMtl = new Material();
+    spriteGrayGPUMtl._uuid = "ui-sprite-gray-gpu-material";
+    IMaterialInfo spriteGrayGPUMtlInfo{
+        .defines = MacroRecord{ { "USE_TEXTURE", true} , { "CC_USE_EMBEDDED_ALPHA", false }, { "IS_GRAY", true } },
+        .effectName = "sprite-gpu"
+    }
+    spriteGrayGPUMtl->initialize(spriteGrayGPUMtlInfo);
+    resources[spriteGrayGPUMtl->getUuid()] = spriteGrayGPUMtl;
+    materialsToBeCompiled.emplace_back(spriteGrayGPUMtl);
+
+    // sprite alpha material
+    auto* spriteAlphaGPUMtl = new Material();
+    spriteAlphaGPUMtl._uuid = "ui-sprite-alpha-sep-gpu-material";
+
+    IMaterialInfo spriteAlphaGPUMtlInfo {
+        .defines = MacroRecord{ { "USE_TEXTURE", true }, { "CC_USE_EMBEDDED_ALPHA", true }, { "IS_GRAY", false } },
+        .effectName = "sprite-gpu"
+    }
+    spriteAlphaGPUMtl->initialize(spriteAlphaGPUMtlInfo);
+    resources[spriteAlphaGPUMtl->getUuid()] = spriteAlphaGPUMtl;
+    materialsToBeCompiled.emplace_back(spriteAlphaGPUMtl);
+
+    // sprite alpha & gray material
+    auto* spriteAlphaGrayGPUMtl = new Material();
+    spriteAlphaGrayGPUMtl._uuid = "ui-sprite-gray-alpha-sep-gpu-material";
+    spriteAlphaGrayGPUMtl->initialize({
+        .defines = { { "USE_TEXTURE", true }, { "CC_USE_EMBEDDED_ALPHA", true }, { "IS_GRAY", true } },
+        .effectName = "sprite-gpu"
+    });
+    resources[spriteAlphaGrayGPUMtl->getUuid()] = spriteAlphaGrayGPUMtl;
+    materialsToBeCompiled.emplace_back(spriteAlphaGrayGPUMtl);
+#endif
 
     // default particle material
     auto *defaultParticleMtl = new Material();

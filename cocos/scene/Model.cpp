@@ -84,7 +84,7 @@ cc::Float32Array &mat4ToFloat32Array(const cc::Mat4 &mat, cc::Float32Array &out,
     return out;
 }
 
-const uint32_t LIGHTMAP_SAMPLER_HASH = cc::pipeline::SamplerLib::genSamplerHash({
+const uint32_t LIGHTMAP_SAMPLER_HASH = cc::pipeline::SamplerLib::genSamplerHash({ //TODO(xwx): TS use new SamplerInfo() which is not implemented yet
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::NONE,
@@ -93,7 +93,7 @@ const uint32_t LIGHTMAP_SAMPLER_HASH = cc::pipeline::SamplerLib::genSamplerHash(
     cc::gfx::Address::CLAMP,
 });
 
-const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = cc::pipeline::SamplerLib::genSamplerHash({
+const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = cc::pipeline::SamplerLib::genSamplerHash({ //TODO(xwx): TS use new SamplerInfo() which is not implemented yet
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,

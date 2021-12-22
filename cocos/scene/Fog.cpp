@@ -26,6 +26,13 @@
 #include "scene/Fog.h"
 #include "core/Root.h"
 
+namespace {
+void srgbToLinear(cc::Vec4 *out, const cc::Vec4 &gamma) {
+    out->x = gamma.x * gamma.x;
+    out->y = gamma.y * gamma.y;
+    out->z = gamma.z * gamma.z;
+}
+} // namespace
 namespace cc {
 namespace scene {
 
@@ -108,7 +115,7 @@ void FogInfo::activate(Fog *resource) {
 void Fog::initialize(const FogInfo &fogInfo) {
     setFogColor(fogInfo.getFogColor());
     _enabled = fogInfo.isEnabled();
-    // _accurate   = fogInfo.isAccurate(); //TODO(xwx)
+    _accurate   = fogInfo.isAccurate();
     _type       = _enabled ? fogInfo.getType() : FogType::NONE;
     _fogDensity = fogInfo.getFogDensity();
     _fogStart   = fogInfo.getFogStart();
@@ -138,6 +145,12 @@ void Fog::updatePipeline() {
     pipeline->setValue("CC_USE_FOG", static_cast<int32_t>(value));
     pipeline->setValue("CC_USE_ACCURATE_FOG", accurateValue);
     root->onGlobalPipelineStateChanged();
+}
+
+void Fog::setFogColor(const Color &val) {
+    _fogColor.set(val);
+    Vec4 v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
+    srgbToLinear(&_colorArray, v4);
 }
 
 } // namespace scene

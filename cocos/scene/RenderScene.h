@@ -44,6 +44,7 @@ class BakedSkinningModel;
 
 namespace scene {
 
+class Octree;
 class DrawBatch2D;
 
 struct IRaycastResult {
@@ -58,11 +59,13 @@ struct IRenderSceneInfo {
 class RenderScene : public RefCounted {
 public:
     RenderScene()  = default;
-    ~RenderScene() override = default;
+    ~RenderScene() override;
 
     bool initialize(const IRenderSceneInfo &info);
     void update(uint32_t stamp);
     void destroy();
+
+    void activate();
 
     void addCamera(Camera *camera);
     void removeCamera(Camera *camera);
@@ -100,6 +103,8 @@ public:
     inline const std::vector<SharedPtr<SphereLight>> &getSphereLights() const { return _sphereLights; }
     inline const std::vector<SharedPtr<SpotLight>> &  getSpotLights() const { return _spotLights; }
     inline const std::vector<SharedPtr<Model>> &      getModels() const { return _models; }
+    inline Octree *                          getOctree() const { return _octree; }
+    void                                     updateOctree(Model *model);
     //FIXME: remove getDrawBatch2Ds
     inline const std::vector<DrawBatch2D *> &getBatches() const { return _batches; }
     inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _batches; }
@@ -114,6 +119,7 @@ private:
     std::vector<SharedPtr<SphereLight>>      _sphereLights;
     std::vector<SharedPtr<SpotLight>>        _spotLights;
     std::vector<DrawBatch2D *>               _batches;
+    Octree *                   _octree{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderScene);
 };

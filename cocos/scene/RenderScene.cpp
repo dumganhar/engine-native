@@ -37,11 +37,25 @@
 #include "scene/Model.h"
 #include "scene/SphereLight.h"
 #include "scene/SpotLight.h"
-
-//extern void jsbFlushFastMQ();
+#include "scene/Octree.h"
+#include "renderer/pipeline/RenderPipeline.h"
 
 namespace cc {
 namespace scene {
+
+RenderScene::~RenderScene() {
+    CC_SAFE_DELETE(_octree);
+}
+
+void RenderScene::activate() {
+    const auto *sceneData  = pipeline::RenderPipeline::getInstance()->getPipelineSceneData();
+    const auto *sharedData = sceneData->getSharedData();
+    const auto *info       = sharedData->octree;
+
+    if (info->enabled) {
+        _octree = new Octree(info->minPos, info->maxPos, info->depth);
+    }
+}
 
 bool RenderScene::initialize(const IRenderSceneInfo &info) {
     _name = info.name;
@@ -49,8 +63,6 @@ bool RenderScene::initialize(const IRenderSceneInfo &info) {
 }
 
 void RenderScene::update(uint32_t stamp) {
-    //    jsbFlushFastMQ();
-
     if (_mainLight) {
         _mainLight->update();
     }
@@ -166,6 +178,9 @@ void RenderScene::removeSpotLights() {
 void RenderScene::addModel(Model *model) {
     model->attachToScene(this);
     _models.emplace_back(model);
+    if (_octree) {
+        _octree->insert(model);
+    }
 }
 
 void RenderScene::removeModel(index_t idx) {
@@ -179,6 +194,9 @@ void RenderScene::removeModel(index_t idx) {
 void RenderScene::removeModel(Model *model) {
     auto iter = std::find(_models.begin(), _models.end(), model);
     if (iter != _models.end()) {
+        if (_octree) {
+            _octree->remove(*iter);
+        }
         model->detachFromScene();
         _models.erase(iter);
     } else {
@@ -188,6 +206,9 @@ void RenderScene::removeModel(Model *model) {
 
 void RenderScene::removeModels() {
     for (const auto &model : _models) {
+        if (_octree) {
+            _octree->remove(model);
+        }
         model->detachFromScene();
         CC_SAFE_DESTROY(model);
     }
@@ -208,6 +229,12 @@ void RenderScene::removeBatch(DrawBatch2D *drawBatch2D) {
 
 void RenderScene::removeBatches() {
     _batches.clear();
+}
+
+void RenderScene::updateOctree(Model *model) {
+    if (_octree) {
+        _octree->update(model);
+    }
 }
 
 void RenderScene::onGlobalPipelineStateChanged() {

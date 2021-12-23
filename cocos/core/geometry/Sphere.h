@@ -128,13 +128,17 @@ public:
         return Sphere::copy(out, *this);
     }
 
-    void define(const AABB &aabb);
-    void mergeAABB(const AABB *aabb);
-    void mergePoint(const Vec3 &point);
-    bool interset(const Frustum &frustum) const;
-    int  interset(const Plane &plane) const;
-    int  spherePlane(const Plane &plane);
-    bool sphereFrustum(const Frustum &frustum);
+    void        define(const AABB &aabb);
+    void        mergeAABB(const AABB *aabb);
+    void        mergePoint(const Vec3 &point);
+    void        mergeFrustum(const Frustum &frustum);
+    inline void merge(const AABB *aabb) { mergeAABB(aabb); }
+    inline void merge(const Vec3 &point) { mergePoint(point); }
+    inline void merge(const Frustum &frustum) { mergeFrustum(frustum); }
+    bool        interset(const Frustum &frustum) const;
+    int         interset(const Plane &plane) const;
+    int         spherePlane(const Plane &plane);
+    bool        sphereFrustum(const Frustum &frustum) const;
 
     /**
      * @en
@@ -189,7 +193,7 @@ public:
     }
 
 private:
-    float _radius{0};
+    float _radius{-1.0};
     Vec3  _center;
 };
 

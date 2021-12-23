@@ -62,5 +62,33 @@ void Plane::transform(const Mat4& mat) {
     d = tempVec4.w;
 }
 
+// Define from 3 vertices.
+void Plane::define(const Vec3& v0, const Vec3& v1, const Vec3& v2) {
+    const Vec3 dist1 = v1 - v0;
+    const Vec3 dist2 = v2 - v0;
+
+    Vec3 dist;
+    Vec3::crossProduct(dist1, dist2, &dist);
+    define(dist, v0);
+}
+// Define from a normal vector and a point on the plane.
+void Plane::define(const Vec3& normal, const Vec3& point) {
+    n = normal.getNormalized();
+    d = n.dot(point);
+}
+
+// Return signed distance to a point.
+float Plane::distance(const Vec3& point) const {
+    return n.dot(point) - d;
+}
+
+Plane Plane::clone() const {
+    Plane plane;
+    plane.n.set(n);
+    plane.d = d;
+
+    return plane;
+}
+
 } // namespace geometry
 } // namespace cc

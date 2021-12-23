@@ -175,7 +175,7 @@ void ShadowsInfo::setPlaneFromNode(Node *node) {
     _distance = _normal.dot(node->getWorldPosition());
 }
 
-void ShadowsInfo::activate(Shadow *resource) {
+void ShadowsInfo::activate(Shadows *resource) {
     _resource = resource; //cjh shared_ptr
     _resource->initialize(*this);
     _resource->activate();
@@ -188,7 +188,7 @@ void Shadows::initialize(const ShadowsInfo &shadowsInfo) {
     _near      = shadowsInfo.getNear();
     _far       = shadowsInfo.getFar();
     setInvisibleOcclusionRange(shadowsInfo.getInvisibleOcclusionRange());
-    setShadowDistance(shadowsInfo.getShadowDistance());
+    setShadowDistance(shadowsInfo.shadowDistance());
     _orthoSize = shadowsInfo.getOrthoSize();
     _size      = shadowsInfo.getSize();
     _pcf       = shadowsInfo.getPcf();

@@ -44,43 +44,25 @@
 
 namespace cc {
 
-constexpr uint32_t DT_MASK      = 0xf0000000; //  4 bits => 16 property types
-constexpr uint32_t TYPE_MASK    = 0x0fc00000; //  6 bits => 64 types
-constexpr uint32_t SET_MASK     = 0x00300000; //  2 bits => 4 sets
-constexpr uint32_t BINDING_MASK = 0x000fc000; //  6 bits => 64 bindings
-constexpr uint32_t OFFSET_MASK  = 0x00003fff; // 14 bits => 4096 vectors
+constexpr uint32_t TYPE_MASK    = 0xfc000000; //  6 bits => 64 types
+constexpr uint32_t BINDING_MASK = 0x03f00000; //  6 bits => 64 bindings
+constexpr uint32_t COUNT_MASK   = 0x000ff000; //  8 bits => 256 vectors
+constexpr uint32_t OFFSET_MASK  = 0x00000fff; // 12 bits => 1024 vectors
 
-/**
- * @en The type enums of the property
- * @zh Uniform 的绑定类型（UBO 或贴图等）
- */
-enum class PropertyType : uint32_t {
-    /**
-     * Uniform buffer object
-     */
-    BUFFER,
-    /**
-     * Texture sampler
-     */
-    TEXTURE,
-};
-CC_ENUM_CONVERSION_OPERATOR(PropertyType);
 
-constexpr uint32_t genHandle(PropertyType pt, uint32_t set, uint32_t binding, gfx::Type type, uint32_t offset = 0) {
-    return ((static_cast<uint32_t>(pt) << 28) & DT_MASK) |
-           ((static_cast<uint32_t>(type) << 22U) & TYPE_MASK) |
-           ((set << 20U) & SET_MASK) |
-           ((binding << 14U) & BINDING_MASK) |
-           (offset & OFFSET_MASK);
+constexpr uint32_t genHandle(uint32_t binding, gfx::Type type, uint32_t count, uint32_t offset = 0) {
+    return ((static_cast<uint32_t>(type) << 26) & TYPE_MASK) |
+             ((binding << 20) & BINDING_MASK) |
+             ((count << 12) & COUNT_MASK) |
+             (offset & OFFSET_MASK);
 }
 
-constexpr PropertyType getPropertyTypeFromHandle(uint32_t handle) { return static_cast<PropertyType>((handle & DT_MASK) >> 28); }
-constexpr gfx::Type    getTypeFromHandle(uint32_t handle) { return static_cast<gfx::Type>((handle & TYPE_MASK) >> 22); }
-constexpr uint32_t     getSetIndexFromHandle(uint32_t handle) { return (handle & SET_MASK) >> 20; }
-constexpr uint32_t     getBindingFromHandle(uint32_t handle) { return (handle & BINDING_MASK) >> 14; }
+constexpr gfx::Type    getTypeFromHandle(uint32_t handle) { return static_cast<gfx::Type>((handle & TYPE_MASK) >> 26); }
+constexpr uint32_t     getBindingFromHandle(uint32_t handle) { return (handle & BINDING_MASK) >> 20; }
+constexpr uint32_t     getCountFromHandle(uint32_t handle) { return (handle & COUNT_MASK) >> 12; }
 constexpr uint32_t     getOffsetFromHandle(uint32_t handle) { return (handle & OFFSET_MASK); }
 constexpr uint32_t     customizeType(uint32_t handle, gfx::Type type) {
-    return (handle & ~TYPE_MASK) | ((static_cast<uint32_t>(type) << 22) & TYPE_MASK);
+    return (handle & ~TYPE_MASK) | ((static_cast<uint32_t>(type) << 26) & TYPE_MASK);
 }
 
 using MacroValue = cc::variant<int32_t, float, bool, std::string>;
@@ -100,8 +82,8 @@ using MaterialPropertyVariant = cc::variant<cc::monostate /*0*/, MaterialPropert
 #define MATERIAL_PROPERTY_INDEX_SINGLE 1
 #define MATERIAL_PROPERTY_INDEX_LIST   2
 
-using GFXTypeReaderCallback = void (*)(const float *, MaterialProperty &, index_t);
-using GFXTypeWriterCallback = void (*)(float *, const MaterialProperty &, index_t);
+using GFXTypeReaderCallback = void (*)(const void *, MaterialProperty &, index_t);
+using GFXTypeWriterCallback = void (*)(void *, const MaterialProperty &, index_t);
 
 extern const std::unordered_map<gfx::Type, GFXTypeReaderCallback> type2reader; //NOLINT(readability-identifier-naming)
 extern const std::unordered_map<gfx::Type, GFXTypeWriterCallback> type2writer; //NOLINT(readability-identifier-naming)

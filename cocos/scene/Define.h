@@ -56,7 +56,7 @@ struct PipelineSharedSceneData {
     bool                 isHDR{true};
     float                shadingScale{1.0F};
     Ambient *            ambient{nullptr};
-    Shadow *             shadow{nullptr};
+    Shadows *             shadow{nullptr};
     Skybox *             skybox{nullptr};
     Fog *                fog{nullptr};
     OctreeInfo *         octree{nullptr};

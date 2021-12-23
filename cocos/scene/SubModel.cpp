@@ -215,12 +215,12 @@ void SubModel::flushPassInfo() {
 }
 
 void SubModel::setSubMesh(RenderingSubMesh *subMesh) {
-    _subMesh = subMesh;
     _inputAssembler->destroy();
     _inputAssembler->initialize(subMesh->getIaInfo());
     if (_passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
         subMesh->genFlatBuffers();
     }
+    _subMesh = subMesh;
 }
 
 } // namespace scene

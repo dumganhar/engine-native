@@ -298,7 +298,7 @@ public:
      */
     void setPlaneFromNode(Node *node);
 
-    void activate(Shadow *resource);
+    void activate(Shadows *resource);
 
     float      _distance{0.F};
     float      _bias{0.00001F};
@@ -312,7 +312,7 @@ public:
     uint32_t   _maxReceived{4};
     PCFType    _pcf{PCFType::HARD};
     ShadowType _type{ShadowType::PLANAR};
-    Shadow *   _resource{nullptr};
+    Shadows *   _resource{nullptr};
     Color      _shadowColor{0, 0, 0, 76};
     Vec3       _normal{0.F, 1.F, 0.F};
     Vec2       _size{512.F, 512.F};

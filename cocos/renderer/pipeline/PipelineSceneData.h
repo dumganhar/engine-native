@@ -100,7 +100,6 @@ private:
     Mat4                            _matShadowProj;
     Mat4                            _matShadowViewProj;
 
-    geometry::Sphere *_sphere{nullptr};
     scene::Fog *      _fog{nullptr};
     scene::Ambient *  _ambient{nullptr};
     scene::Skybox *   _skybox{nullptr};

@@ -40,7 +40,7 @@ namespace scene {
 class Pass;
 class SubModel : public RefCounted {
 public:
-    SubModel()           = default;
+    SubModel();
     ~SubModel() override = default;
 
     void update();
@@ -86,7 +86,7 @@ protected:
     std::vector<IMacroPatch>       _patches;
     SharedPtr<gfx::InputAssembler> _inputAssembler;
     SharedPtr<gfx::DescriptorSet>  _descriptorSet;
-    gfx::DescriptorSet *           _worldBoundDescriptorSet{nullptr};
+    SharedPtr<gfx::DescriptorSet>  _worldBoundDescriptorSet;
 
     SharedPtr<gfx::Texture>             _reflectionTex;
     SharedPtr<gfx::Sampler>             _reflectionSampler;
@@ -97,7 +97,7 @@ protected:
     std::vector<SharedPtr<Pass>>        _passes;
     std::vector<SharedPtr<gfx::Shader>> _shaders;
     Model *                             _owner{nullptr};
-    uint32_t                            _id{-1};
+    int32_t                            _id{-1};
 
 private:
     static inline uint32_t generateId() {

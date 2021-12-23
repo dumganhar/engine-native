@@ -287,15 +287,13 @@ ProgramLib *ProgramLib::getInstance() {
 }
 
 void ProgramLib::registerEffect(EffectAsset *effect) {
-    for (size_t i = 0; i < effect->_shaders.size(); i++) {
-        auto *tmpl       = define(effect->_shaders[i]);
+    for (auto& shader : effect->_shaders) {
+        auto *tmpl       = define(shader);
         tmpl->effectName = effect->getName();
     }
 
-    for (size_t i = 0; i < effect->_techniques.size(); i++) {
-        auto& tech = effect->_techniques[i];
-        for (size_t j = 0; j < tech.passes.size(); j++) {
-            auto& pass = tech.passes[j];
+    for (auto& tech : effect->_techniques) {
+        for (auto& pass : tech.passes) {
             // grab default property declaration if there is none
             if (pass.propertyIndex != CC_INVALID_INDEX && !pass.properties.has_value()) {
                 pass.properties = tech.passes[pass.propertyIndex].properties;

@@ -36,7 +36,7 @@ namespace scene {
 
 class Pass;
 class Ambient;
-class Shadow;
+class Shadows;
 class Skybox;
 class Fog;
 

@@ -131,7 +131,7 @@ enum class PCFType {
     SOFT_2X = 2
 };
 
-class Shadow;
+class Shadows;
 
 class ShadowsInfo : public RefCounted {
 public:

@@ -83,11 +83,16 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
     if (!passes.empty()) {
         dsInfo.layout = passes[0]->getLocalSetLayout();
     }
-    _inputAssembler = _device->createInputAssembler(subMesh->getIaInfo());
-    _descriptorSet  = _device->createDescriptorSet(dsInfo);
-    _subMesh        = subMesh;
-    _patches        = patches;
-    _passes         = passes;
+    _inputAssembler                          = _device->createInputAssembler(subMesh->getIaInfo());
+    _descriptorSet                           = _device->createDescriptorSet(dsInfo);
+    auto *                     pipeline      = Root::getInstance()->getPipeline();
+    auto *                     occlusionPass = pipeline->getPipelineSceneData()->getOcclusionQueryPass();
+    cc::gfx::DescriptorSetInfo occlusionDSInfo;
+    occlusionDSInfo.layout   = occlusionPass->getLocalSetLayout();
+    _worldBoundDescriptorSet = _device->createDescriptorSet(occlusionDSInfo);
+    _subMesh                 = subMesh;
+    _patches                 = patches;
+    _passes                  = passes;
 
     flushPassInfo();
     if (passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
@@ -97,8 +102,9 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
 
     // initialize resources for reflection material
     if (passes[0]->getPhase() == pipeline::getPhaseID("reflection")) {
-        uint32_t       texWidth  = _device->getWidth();
-        uint32_t       texHeight = _device->getHeight();
+        auto *         mainWindow = Root::getInstance()->getMainWindow();
+        uint32_t       texWidth   = mainWindow->getWidth();
+        uint32_t       texHeight  = mainWindow->getHeight();
         const uint32_t minSize   = 512;
         if (texHeight < texWidth) {
             texWidth  = minSize * texWidth / texHeight;
@@ -107,7 +113,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
             texWidth  = minSize;
             texHeight = minSize * texHeight / texWidth;
         }
-        _reflectionTex = _device->createTexture({
+        _reflectionTex = _device->createTexture(gfx::TextureInfo{
             gfx::TextureType::TEX2D,
             gfx::TextureUsageBit::STORAGE | gfx::TextureUsageBit::TRANSFER_SRC | gfx::TextureUsageBit::SAMPLED,
             gfx::Format::RGBA8,
@@ -117,15 +123,15 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
         });
         _descriptorSet->bindTexture(pipeline::REFLECTIONTEXTURE::BINDING, _reflectionTex);
 
-        uint32_t samplerHash = pipeline::SamplerLib::genSamplerHash({
+        auto& samplerInfo = gfx::SamplerInfo{
             gfx::Filter::LINEAR,
             gfx::Filter::LINEAR,
             gfx::Filter::NONE,
             gfx::Address::CLAMP,
             gfx::Address::CLAMP,
             gfx::Address::CLAMP,
-        });
-        _reflectionSampler   = pipeline::SamplerLib::getSampler(samplerHash);
+        };
+        _reflectionSampler = _device->getSampler(samplerInfo);
         _descriptorSet->bindSampler(pipeline::REFLECTIONTEXTURE::BINDING, _reflectionSampler);
         _descriptorSet->bindTexture(pipeline::REFLECTIONTEXTURE::BINDING, _reflectionTex);
     }
@@ -136,7 +142,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowShader() {
     auto *  pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
-    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
+    Shadows *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     if (shadowInfo != nullptr) {
         _planarShader = shadowInfo->getPlanarShader(_patches);
     } else {
@@ -149,7 +155,7 @@ void SubModel::initPlanarShadowShader() {
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() {
     auto *  pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
-    Shadow *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
+    Shadows *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     if (shadowInfo != nullptr) {
         _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches);
     } else {
@@ -160,6 +166,7 @@ void SubModel::initPlanarShadowInstanceShader() {
 void SubModel::destroy() {
     CC_SAFE_DESTROY_NULL(_descriptorSet);
     CC_SAFE_DESTROY_NULL(_inputAssembler);
+    CC_SAFE_DESTROY_NULL(_worldBoundDescriptorSet);
 
     _priority = pipeline::RenderPriority::DEFAULT;
 
@@ -167,10 +174,9 @@ void SubModel::destroy() {
     _subMesh = nullptr;
     _passes.clear();
     _shaders.clear();
-
-    CC_SAFE_DESTROY_NULL(_worldBoundDescriptorSet);
+    
     CC_SAFE_DESTROY_NULL(_reflectionTex);
-    CC_SAFE_DESTROY_NULL(_reflectionSampler);
+    _reflectionSampler = nullptr;
 }
 
 void SubModel::onPipelineStateChanged() {

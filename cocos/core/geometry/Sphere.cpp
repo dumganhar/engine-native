@@ -26,6 +26,7 @@
 #include "core/geometry/Sphere.h"
 #include <algorithm>
 #include "core/geometry/AABB.h"
+#include "math/Vec3.h"
 
 namespace cc {
 namespace geometry {
@@ -77,6 +78,14 @@ Sphere *Sphere::mergePoint(Sphere *out, const Sphere &s, const Vec3 &point) {
     }
 
     return out;
+}
+
+void Sphere::merge(const std::vector<cc::Vec3> &points) {
+    if (points.empty()) return;
+    _radius = -1.0F;
+    for (auto &p : points) {
+        merge(p);
+    }
 }
 
 Sphere *Sphere::mergeAABB(Sphere *out, const Sphere &s, const AABB &a) {

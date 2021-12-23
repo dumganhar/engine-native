@@ -92,9 +92,9 @@ private:
     cc::Material *_occlusionQueryMaterial{nullptr};
     gfx::Shader * _occlusionQueryShader{nullptr};
 
-    scene::PipelineSharedSceneData *_sharedSceneData = nullptr;
-    RenderPipeline *                _pipeline        = nullptr;
-    gfx::Device *                   _device          = nullptr;
+    scene::PipelineSharedSceneData *_sharedSceneData{nullptr};
+    RenderPipeline *                _pipeline{nullptr};
+    gfx::Device *                   _device{nullptr};
     float                           _shadowCameraFar = 0.0F;
     Mat4                            _matShadowView;
     Mat4                            _matShadowProj;

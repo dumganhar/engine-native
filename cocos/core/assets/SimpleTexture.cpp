@@ -156,7 +156,7 @@ void SimpleTexture::createTexture(gfx::Device *device) {
         gfx::TextureUsageBit::SAMPLED | gfx::TextureUsageBit::TRANSFER_DST,
         getGFXFormat(),
         _mipmapLevel,
-        flags | gfx::TextureFlagBit::IMMUTABLE);
+        flags);
 
     //cjh    if (!textureCreateInfo) {
     //        return;

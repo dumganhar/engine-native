@@ -57,17 +57,6 @@ public:
 
     explicit RenderTexture()  = default;
     ~RenderTexture() override = default;
-    /**
-     * @en The pixel width of the render texture
-     * @zh 渲染贴图的像素宽度
-     */
-    inline uint32_t getWidth() const { return _width; }
-
-    /**
-     * @en The pixel height of the render texture
-     * @zh 渲染贴图的像素高度
-     */
-    inline uint32_t getHeight() const { return _height; }
 
     /**
      * @en The render window for the render pipeline, it's created internally and cannot be modified.
@@ -101,18 +90,6 @@ public:
      */
     gfx::Texture *getGFXTexture() const override;
 
-    /**
-     * @en Gets the sampler resource for the render texture
-     * @zh 获取渲染贴图的采样器
-     */
-    gfx::Sampler *getGFXSampler() const override;
-
-    /**
-     * @en Gets the sampler hash for the render texture
-     * @zh 获取渲染贴图的采样器哈希值
-     */
-    uint64_t getSamplerHash() const override;
-
     void onLoaded() override;
 
     void initWindow();
@@ -121,6 +98,20 @@ public:
     void initDefault(const cc::optional<std::string> &uuid) override;
 
     bool validate() const override;
+
+    /**
+     * @en Read pixel buffer from render texture
+     * @param x The location on x axis
+     * @param y The location on y axis
+     * @param width The pixel width
+     * @param height The pixel height
+     * @zh 从 render texture 读取像素数据
+     * @param x 起始位置X轴坐标
+     * @param y 起始位置Y轴坐标
+     * @param width 像素宽度
+     * @param height 像素高度
+     */
+    std::vector<uint8_t> readPixels(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 
     // Functions for TS deserialization.
     inline void setWidth(uint32_t width) { _width = width; }

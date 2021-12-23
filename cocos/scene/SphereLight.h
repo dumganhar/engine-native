@@ -31,9 +31,8 @@
 
 namespace cc {
 namespace scene {
-
+using namespace geometry;
 class SphereLight final : public Light {
-    using namespace geometry;
 
 public:
     SphereLight();

@@ -27,9 +27,11 @@
 
 #include "Define.h"
 #include "core/geometry/Sphere.h"
+#include "gfx-base/GFXBuffer.h"
 #include "scene/Ambient.h"
 #include "scene/Fog.h"
 #include "scene/Light.h"
+#include "scene/Pass.h"
 #include "scene/Shadow.h"
 #include "scene/Skybox.h"
 
@@ -70,26 +72,38 @@ public:
     inline Mat4                                                                getMatShadowViewProj() const { return _matShadowViewProj; }
     inline void                                                                setMatShadowViewProj(const Mat4 &matShadowViewProj) { _matShadowViewProj = matShadowViewProj; }
     inline bool                                                                isHDR() const { return _isHDR; }
+    inline scene::Shadows *                                                    getShadow() { return _shadow; }
+
+    inline scene::Pass *getOcclusionQueryPass();
+
+private:
+    void                 initOcclusionQuery();
+    gfx::InputAssembler *createOcclusionQueryIA();
 
 private:
     RenderObjectList             _renderObjects;
     RenderObjectList             _dirShadowObjects;
     RenderObjectList             _castShadowObjects;
     vector<const scene::Light *> _validPunctualLights;
+    gfx::Buffer *                _occlusionQueryVertexBuffer{nullptr};
+    gfx::Buffer *                _occlusionQueryIndicesBuffer{nullptr};
+    gfx::InputAssembler *        _occlusionQueryInputAssembler{nullptr};
 
-    scene::PipelineSharedSceneData *_sharedSceneData = nullptr;
-    RenderPipeline *                _pipeline        = nullptr;
-    gfx::Device *                   _device          = nullptr;
-    float                           _shadowCameraFar = 0.0F;
+    cc::Material *_occlusionQueryMaterial{nullptr};
+    gfx::Shader * _occlusionQueryShader{nullptr};
+
+    scene::PipelineSharedSceneData *_sharedSceneData{nullptr};
+    RenderPipeline *                _pipeline{nullptr};
+    gfx::Device *                   _device{nullptr};
+    float                           _shadowCameraFar{0.0F};
     Mat4                            _matShadowView;
     Mat4                            _matShadowProj;
     Mat4                            _matShadowViewProj;
 
-    geometry::Sphere *_sphere{nullptr};
     scene::Fog *      _fog{nullptr};
     scene::Ambient *  _ambient{nullptr};
     scene::Skybox *   _skybox{nullptr};
-    scene::Shadow *   _shadow{nullptr};
+    scene::Shadows *  _shadow{nullptr};
     bool              _isHDR{false};
     float             _shadingScale{1.0F};
     float             _fpScale{1.0F / 1024.F};

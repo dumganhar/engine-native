@@ -341,7 +341,7 @@ void BuiltinResMgr::initMaterials() {
     resources[defaultGraphicsMtl->getUuid()] = defaultGraphicsMtl;
     _materialsToBeCompiled.emplace_back(defaultGraphicsMtl);
 
-#if 1 //cjh UI_GPU_DRIVEN
+#if UI_GPU_DRIVEN
     // sprite material
     auto* spriteGPUMtl = new Material();
     spriteGPUMtl->setUuid("ui-base-gpu-material");

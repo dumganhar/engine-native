@@ -31,14 +31,14 @@
 #include "scene/SubModel.h"
 
 namespace {
-const uint32_t JOINT_TEXTURE_SAMPLER_HASH = cc::pipeline::SamplerLib::genSamplerHash({
+const cc::gfx::SamplerInfo JOINT_TEXTURE_SAMPLER_INFO {
     cc::gfx::Filter::POINT,
     cc::gfx::Filter::POINT,
     cc::gfx::Filter::NONE,
     cc::gfx::Address::CLAMP,
     cc::gfx::Address::CLAMP,
     cc::gfx::Address::CLAMP,
-});
+};
 
 std::vector<cc::scene::IMacroPatch> myPatches{
     {"CC_USE_SKINNING", true},

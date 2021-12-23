@@ -870,8 +870,6 @@ cocos_source_files(
                  cocos/renderer/pipeline/UIPhase.cpp
                  cocos/renderer/pipeline/UIPhase.h
 
-                 cocos/renderer/pipeline/helper/DefineMap.h
-                 cocos/renderer/pipeline/helper/DefineMap.cpp
                  cocos/renderer/pipeline/helper/Utils.h
 )
 

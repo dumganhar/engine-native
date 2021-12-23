@@ -124,7 +124,8 @@ public:
      * @param wrapT T(V) coordinate wrap mode
      * @param wrapR R(W) coordinate wrap mode
      */
-    void setWrapMode(WrapMode wrapS, WrapMode wrapT, WrapMode wrapR = WrapMode::REPEAT);
+    void setWrapMode(WrapMode wrapS, WrapMode wrapT, WrapMode wrapR);
+    void setWrapMode(WrapMode wrapS, WrapMode wrapT);
 
     /**
      * @en Sets the texture's filter mode
@@ -179,12 +180,8 @@ public:
      * @zh 获取此贴图内部使用的 GFX 采样器信息。
      * @private
      */
-    virtual uint64_t getSamplerHash() const {
-        return _samplerHash;
-    }
-
-    inline double getSamplerHashForJS() const {
-        return static_cast<double>(getSamplerHash());
+    virtual gfx::SamplerInfo getSamplerInfo() const {
+        return _samplerInfo;
     }
 
     /**
@@ -249,7 +246,6 @@ public:
 protected:
     std::string             _id;
     gfx::SamplerInfo        _samplerInfo;
-    uint64_t                _samplerHash{0};
     SharedPtr<gfx::Sampler> _gfxSampler;
     gfx::Device *           _gfxDevice{nullptr};
 

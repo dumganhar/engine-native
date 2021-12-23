@@ -30,6 +30,7 @@
 #include <vector>
 #include "base/RefCounted.h"
 #include "base/TypeDef.h"
+#include "base/Ptr.h"
 #include "core/ArrayBuffer.h"
 #include "core/TypedArray.h"
 #include "core/assets/EffectAsset.h"
@@ -71,6 +72,7 @@ struct IBlockRef {
 
 class Pass : public RefCounted {
 public:
+
     /**
      * @en Get the type of member in uniform buffer object with the handle
      * @zh 根据 handle 获取 uniform 的具体类型。
@@ -205,12 +207,12 @@ public:
      * @param original The original pass info
      * @param value The override pipeline state info
      */
-    virtual void overridePipelineStates(const EffectAsset::IPassInfo &original, const PassOverrides &overrides);
+    virtual void overridePipelineStates(const IPassInfo &original, const PassOverrides &overrides);
 
     void update();
 
-    pipeline::InstancedBuffer getInstancedBuffer(float extraKey = 0.F);
-    pipeline::BatchedBuffer   getBatchedBuffer(float extraKey = 0.F);
+    pipeline::InstancedBuffer* getInstancedBuffer(int32_t extraKey = 0);
+    pipeline::BatchedBuffer*   getBatchedBuffer(int32_t extraKey = 0);
 
     /**
      * @en Destroy the current pass.
@@ -266,14 +268,13 @@ public:
     inline IProgramInfo *                                         getShaderInfo() const { return _shaderInfo; }
     gfx::DescriptorSetLayout *                                    getLocalSetLayout() const;
     inline const std::string &                                    getProgram() const { return _programName; }
-    inline const Record<std::string, EffectAsset::IPropertyInfo> &getProperties() const { return _properties; }
+    inline const Record<std::string, IPropertyInfo> &getProperties() const { return _properties; }
     inline const MacroRecord &                                    getDefines() const { return _defines; }
     inline index_t                                                getPassIndex() const { return _passIndex; }
     inline index_t                                                getPropertyIndex() const { return _propertyIndex; }
     // data
     inline const IPassDynamics &          getDynamics() const { return _dynamics; }
     inline const std::vector<IBlockRef> & getBlocks() const { return _blocks; }
-    inline const std::vector<Int32Array> &getBlocksInt() const { return _blocksInt; }
     inline ArrayBuffer *                  getRootBlock() { return _rootBlock; }
     inline bool                           isRootBufferDirty() const { return _rootBufferDirty; }
     //NOTE: _setRootBufferDirty must contain a _ prefix to make bindings-generator work correctly.
@@ -310,7 +311,6 @@ protected:
     void                                  setState(const gfx::BlendState &bs, const gfx::DepthStencilState &dss, const gfx::RasterizerState &rs, gfx::DescriptorSet *ds);
     void                                  doInit(const IPassInfoFull &info, bool copyDefines = false);
     virtual void                          syncBatchingScheme();
-    cc::variant<Int32Array, Float32Array> getBlockView(gfx::Type type, uint32_t binding) const;
 
     // internal resources
     SharedPtr<gfx::Buffer>              _rootBuffer;
@@ -324,12 +324,11 @@ protected:
     IPassDynamics                 _dynamics;
     Record<std::string, uint32_t> _propertyHandleMap;
     SharedPtr<ArrayBuffer>        _rootBlock;
-    std::vector<Int32Array>       _blocksInt;
-    std::vector<IBlockRef>        _blocks; // Point to position in _rootBlock
+    std::vector<IBlockRef>    _blocks; // Point to position in _rootBlock
 
     SharedPtr<IProgramInfo>                         _shaderInfo;
     MacroRecord                                     _defines;
-    Record<std::string, EffectAsset::IPropertyInfo> _properties;
+    Record<std::string, IPropertyInfo> _properties;
     SharedPtr<gfx::Shader>                          _shader;
     gfx::BlendState                                 _blendState{};
     gfx::DepthStencilState                          _depthStencilState{};
@@ -341,8 +340,8 @@ protected:
     gfx::PrimitiveMode                              _primitive{gfx::PrimitiveMode::TRIANGLE_LIST};
     BatchingSchemes                                 _batchingScheme{BatchingSchemes::NONE};
     gfx::DynamicStateFlagBit                        _dynamicStates{gfx::DynamicStateFlagBit::NONE};
-    Record<float, pipeline::InstancedBuffer>        _instancedBuffers;
-    Record<float, pipeline::BatchedBuffer>          _batchedBuffers;
+    Record<int32_t, SharedPtr<pipeline::InstancedBuffer>>     _instancedBuffers;
+    Record<int32_t, SharedPtr<pipeline::BatchedBuffer>>       _batchedBuffers;
 
     uint64_t _hash{0};
     // external references

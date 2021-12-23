@@ -54,6 +54,9 @@ void SubModel::setPasses(const std::vector<SharedPtr<Pass>> &passes) {
     }
     _passes = passes;
     flushPassInfo();
+    if (_passes[0].get()->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
+        _subMesh->genFlatBuffers();
+    }
     // DS layout might change too
     if (_descriptorSet) {
         _descriptorSet->destroy();
@@ -105,7 +108,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
         auto *         mainWindow = Root::getInstance()->getMainWindow();
         uint32_t       texWidth   = mainWindow->getWidth();
         uint32_t       texHeight  = mainWindow->getHeight();
-        const uint32_t minSize   = 512;
+        const uint32_t minSize    = 512;
         if (texHeight < texWidth) {
             texWidth  = minSize * texWidth / texHeight;
             texHeight = minSize;
@@ -122,7 +125,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
         });
         _descriptorSet->bindTexture(pipeline::REFLECTIONTEXTURE::BINDING, _reflectionTex);
 
-        auto& samplerInfo = gfx::SamplerInfo{
+        auto &samplerInfo = gfx::SamplerInfo{
             gfx::Filter::LINEAR,
             gfx::Filter::LINEAR,
             gfx::Filter::NONE,
@@ -140,7 +143,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowShader() {
-    auto *  pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
+    auto *   pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
     Shadows *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     if (shadowInfo != nullptr) {
         _planarShader = shadowInfo->getPlanarShader(_patches);
@@ -153,7 +156,7 @@ void SubModel::initPlanarShadowShader() {
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() {
-    auto *  pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
+    auto *   pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
     Shadows *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
     if (shadowInfo != nullptr) {
         _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches);
@@ -173,7 +176,7 @@ void SubModel::destroy() {
     _subMesh = nullptr;
     _passes.clear();
     _shaders.clear();
-    
+
     CC_SAFE_DESTROY_NULL(_reflectionTex);
     _reflectionSampler = nullptr;
 }

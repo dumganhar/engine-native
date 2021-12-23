@@ -77,8 +77,8 @@ public:
     inline scene::Pass *getOcclusionQueryPass();
 
 private:
-    void                 _initOcclusionQuery();
-    gfx::InputAssembler *_createOcclusionQueryIA();
+    void                 initOcclusionQuery();
+    gfx::InputAssembler *createOcclusionQueryIA();
 
 private:
     RenderObjectList             _renderObjects;

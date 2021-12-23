@@ -50,7 +50,7 @@ void PipelineSceneData::activate(gfx::Device *device, RenderPipeline *pipeline) 
     _device   = device;
     _pipeline = pipeline;
     _sphere   = CC_NEW(geometry::Sphere);
-    _initOcclusionQuery();
+    initOcclusionQuery();
 }
 
 void PipelineSceneData::destroy() {
@@ -67,9 +67,9 @@ void PipelineSceneData::destroy() {
     CC_SAFE_DESTROY_NULL(_occlusionQueryIndicesBuffer);
 }
 
-void PipelineSceneData::_initOcclusionQuery() {
+void PipelineSceneData::initOcclusionQuery() {
     if (!_occlusionQueryInputAssembler) {
-        _occlusionQueryInputAssembler = _createOcclusionQueryIA();
+        _occlusionQueryInputAssembler = createOcclusionQueryIA();
     }
 
     if (!_occlusionQueryMaterial) {
@@ -93,7 +93,7 @@ scene::Pass *PipelineSceneData::getOcclusionQueryPass() {
     return nullptr;
 }
 
-gfx::InputAssembler *PipelineSceneData::_createOcclusionQueryIA() {
+gfx::InputAssembler *PipelineSceneData::createOcclusionQueryIA() {
     // create vertex buffer
     const int8_t vertexData[] = {-1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1};
     auto *       arrayBuffer  = new cc::ArrayBuffer((const uint8_t *)vertexData, sizeof(vertexData));

@@ -26,8 +26,8 @@
 #pragma once
 
 #include "cocos/base/Optional.h"
-#include <vector>
 #include "base/Macros.h"
+#include "base/Vector.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/gfx-base/GFXFramebuffer.h"
@@ -130,9 +130,7 @@ private:
     SharedPtr<gfx::Texture>        _depthStencilTexture;
     SharedPtr<gfx::Framebuffer>    _frameBuffer;
     std::vector<SharedPtr<Camera>> _cameras;
-    // As it will be used to create gfx::FrameBuffer, and we do not want to modify
-    // gfx classes, so manually invoke addRef/release.
-    std::vector<gfx::Texture *> _colorTextures;
+    Vector<gfx::Texture *> _colorTextures;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderWindow);
 };

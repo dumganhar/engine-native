@@ -45,24 +45,17 @@ bool RenderWindow::initialize(gfx::Device *device, IRenderWindowInfo &info) {
 
     if (info.swapchain != nullptr) {
         _swapchain = info.swapchain;
-        _colorTextures.emplace_back(info.swapchain->getColorTexture());
+        _colorTextures.pushBack(info.swapchain->getColorTexture());
         _depthStencilTexture = info.swapchain->getDepthStencilTexture();
     } else {
         for (uint32_t i = 0; i < info.renderPassInfo.colorAttachments.size(); ++i) {
-            gfx::Texture *colorTex = nullptr;
-
-            _colorTextures.emplace_back(
+            _colorTextures.pushBack(
                     device->createTexture({gfx::TextureType::TEX2D,
                               gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED | gfx::TextureUsageBit::TRANSFER_SRC,
                               info.renderPassInfo.colorAttachments[i].format,
                               _width,
                               _height})
             );
-
-            if (colorTex) {
-                colorTex->addRef();
-            }
-            _colorTextures.emplace_back(colorTex);
         }
     }
 
@@ -77,7 +70,7 @@ bool RenderWindow::initialize(gfx::Device *device, IRenderWindowInfo &info) {
 
     _frameBuffer = device->createFramebuffer(gfx::FramebufferInfo{
                 _renderPass,
-                _colorTextures,
+                _colorTextures.get(),
                 _depthStencilTexture
     });
     return true;
@@ -104,7 +97,7 @@ void RenderWindow::resize(uint32_t width, uint32_t height, gfx::SurfaceTransform
         _height = _swapchain->getHeight();
     } else {
         for (size_t i = 0; i < _colorTextures.size(); i++) {
-            _colorTextures[i]->resize(width, height);
+            _colorTextures.at(i)->resize(width, height);
         }
         if (_depthStencilTexture != nullptr) {
             _depthStencilTexture->resize(width, height);
@@ -118,7 +111,7 @@ void RenderWindow::resize(uint32_t width, uint32_t height, gfx::SurfaceTransform
         _frameBuffer->destroy();
         _frameBuffer->initialize({
             _renderPass,
-            _colorTextures,
+            _colorTextures.get(),
             _depthStencilTexture,
         });
     }

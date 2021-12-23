@@ -168,6 +168,7 @@ void SubModel::destroy() {
     _passes.clear();
     _shaders.clear();
 
+    CC_SAFE_DESTROY_NULL(_worldBoundDescriptorSet);
     CC_SAFE_DESTROY_NULL(_reflectionTex);
     CC_SAFE_DESTROY_NULL(_reflectionSampler);
 }

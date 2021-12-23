@@ -95,7 +95,7 @@ private:
     scene::PipelineSharedSceneData *_sharedSceneData{nullptr};
     RenderPipeline *                _pipeline{nullptr};
     gfx::Device *                   _device{nullptr};
-    float                           _shadowCameraFar = 0.0F;
+    float                           _shadowCameraFar{0.0F};
     Mat4                            _matShadowView;
     Mat4                            _matShadowProj;
     Mat4                            _matShadowViewProj;

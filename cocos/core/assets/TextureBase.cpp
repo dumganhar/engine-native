@@ -44,10 +44,9 @@ TextureBase::TextureBase() {
     _id          = idGenerator.getNewId();
     _gfxDevice   = getGFXDevice();
     _textureHash = murmurhash2::MurmurHash2(_id.data(), static_cast<int>(_id.length()), 666); //cjh TODO: How about using boost hash functionality?
-    _samplerHash = pipeline::SamplerLib::genSamplerHash(_samplerInfo);
 }
 
-void TextureBase::setWrapMode(WrapMode wrapS, WrapMode wrapT, WrapMode wrapR /* = WrapMode::REPEAT*/) {
+void TextureBase::setWrapMode(WrapMode wrapS, WrapMode wrapT, WrapMode wrapR) {
     _wrapS                = wrapS;
     _samplerInfo.addressU = static_cast<gfx::Address>(wrapS),
 
@@ -57,13 +56,15 @@ void TextureBase::setWrapMode(WrapMode wrapS, WrapMode wrapT, WrapMode wrapR /* 
     _wrapR                = wrapR;
     _samplerInfo.addressW = static_cast<gfx::Address>(wrapR);
 
-    _samplerHash = pipeline::SamplerLib::genSamplerHash(_samplerInfo);
-    // for editor assetDB
     if (_gfxDevice != nullptr) {
-        _gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
+        _gfxSampler = _gfxDevice->getSampler(_samplerInfo);
     }
 
     notifySamplerUpdated();
+}
+
+void TextureBase::setWrapMode(WrapMode wrapS, WrapMode wrapT) {
+    setWrapMode(wrapS, wrapT, wrapS); // wrap modes should be as consistent as possible for performance
 }
 
 void TextureBase::setFilters(Filter minFilter, Filter magFilter) {
@@ -71,9 +72,9 @@ void TextureBase::setFilters(Filter minFilter, Filter magFilter) {
     _samplerInfo.minFilter = static_cast<gfx::Filter>(minFilter);
     _magFilter             = magFilter;
     _samplerInfo.magFilter = static_cast<gfx::Filter>(magFilter);
-    _samplerHash           = pipeline::SamplerLib::genSamplerHash(_samplerInfo);
+
     if (_gfxDevice != nullptr) {
-        _gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
+        _gfxSampler = _gfxDevice->getSampler(_samplerInfo);
     }
 
     notifySamplerUpdated();
@@ -82,9 +83,9 @@ void TextureBase::setFilters(Filter minFilter, Filter magFilter) {
 void TextureBase::setMipFilter(Filter mipFilter) {
     _mipFilter             = mipFilter;
     _samplerInfo.mipFilter = static_cast<gfx::Filter>(mipFilter);
-    _samplerHash           = pipeline::SamplerLib::genSamplerHash(_samplerInfo);
-    if (_gfxDevice) {
-        _gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
+
+    if (_gfxDevice != nullptr) {
+        _gfxSampler = _gfxDevice->getSampler(_samplerInfo);
     }
 
     notifySamplerUpdated();
@@ -93,9 +94,9 @@ void TextureBase::setMipFilter(Filter mipFilter) {
 void TextureBase::setAnisotropy(uint32_t anisotropy) {
     _anisotropy                = anisotropy;
     _samplerInfo.maxAnisotropy = anisotropy;
-    _samplerHash               = pipeline::SamplerLib::genSamplerHash(_samplerInfo);
+
     if (_gfxDevice != nullptr) {
-        _gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
+        _gfxSampler = _gfxDevice->getSampler(_samplerInfo);
     }
 
     notifySamplerUpdated();
@@ -112,7 +113,7 @@ bool TextureBase::destroy() {
 gfx::Sampler *TextureBase::getGFXSampler() const {
     if (_gfxSampler == nullptr) {
         if (_gfxDevice != nullptr) {
-            const_cast<TextureBase *>(this)->_gfxSampler = pipeline::SamplerLib::getSampler(_samplerHash);
+            const_cast<TextureBase *>(this)->_gfxSampler = _gfxDevice->getSampler(_samplerInfo);
         } else {
             //cjh            errorID(9302);
         }
@@ -179,7 +180,7 @@ bool TextureBase::isCompressed() const {
 }
 
 void TextureBase::notifySamplerUpdated() {
-    emit(EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED, _gfxSampler.get(), static_cast<double>(_samplerHash));
+    emit(EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED, _gfxSampler.get());
 }
 
 } // namespace cc

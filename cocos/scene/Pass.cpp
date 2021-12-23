@@ -34,6 +34,7 @@
 #include "renderer/core/PassUtils.h"
 #include "renderer/core/ProgramLib.h"
 #include "renderer/gfx-base/GFXDef.h"
+#include "renderer/gfx-base/states/GFXSampler.h"
 #include "renderer/pipeline/BatchedBuffer.h"
 #include "renderer/pipeline/Define.h"
 #include "renderer/pipeline/InstancedBuffer.h"
@@ -172,7 +173,7 @@ void Pass::setUniform(uint32_t handle, const MaterialProperty &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    const auto &    block   = getBlockView(type, binding);
+    auto&    block   = _blocks[binding];
     if (auto iter = type2writer.find(type); iter != type2writer.end()) {
         iter->second(block.data, value, static_cast<int>(ofs));
     }
@@ -184,7 +185,7 @@ MaterialProperty &Pass::getUniform(uint32_t handle, MaterialProperty &out) const
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    const auto &    block   = getBlockView(type, binding);
+    const auto &    block   = _blocks[binding];
     if (auto iter = type2reader.find(type); iter != type2reader.end()) {
         iter->second(block.data, out, static_cast<int>(ofs));
     }
@@ -195,7 +196,7 @@ void Pass::setUniformArray(uint32_t handle, const MaterialPropertyList &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  stride  = gfx::getTypeSize(type) >> 2;
-    const auto &    block   = getBlockView(type, binding);
+    auto &    block   = _blocks[binding];
     uint32_t        ofs     = Pass::getOffsetFromHandle(handle);
     for (size_t i = 0; i < value.size(); i++, ofs += stride) {
         if (value[i].index() == 0) {
@@ -243,21 +244,24 @@ void Pass::update() {
     _descriptorSet->update();
 }
 
-pipeline::InstancedBuffer Pass::getInstancedBuffer(float extraKey) {
+pipeline::InstancedBuffer* Pass::getInstancedBuffer(int32_t extraKey) {
     auto iter = _instancedBuffers.find(extraKey);
     if (iter != _instancedBuffers.end()) {
-        return _instancedBuffers[extraKey];
+        return iter->second.get();
     }
-    _instancedBuffers[extraKey] = pipeline::InstancedBuffer(this);
-    return _instancedBuffers[extraKey];
+    auto *instancedBuffer = new pipeline::InstancedBuffer(this);
+    _instancedBuffers[extraKey] = instancedBuffer;
+    return instancedBuffer;
 }
-pipeline::BatchedBuffer Pass::getBatchedBuffer(float extraKey) {
+
+pipeline::BatchedBuffer* Pass::getBatchedBuffer(int32_t extraKey) {
     auto iter = _batchedBuffers.find(extraKey);
     if (iter != _batchedBuffers.end()) {
-        return _batchedBuffers[extraKey];
+        return iter->second.get();
     }
-    _batchedBuffers[extraKey] = pipeline::BatchedBuffer(this);
-    return _batchedBuffers[extraKey];
+    auto *batchedBuffers = new pipeline::BatchedBuffer(this);
+    _batchedBuffers[extraKey] = batchedBuffers;
+    return batchedBuffers;
 }
 
 void Pass::destroy() {
@@ -273,12 +277,15 @@ void Pass::destroy() {
     }
 
     for (auto &ib : _instancedBuffers) {
-        ib.second.destroy();
+        ib.second->destroy();
     }
+    _instancedBuffers.clear();
 
     for (auto &bb : _batchedBuffers) {
-        bb.second.destroy();
+        bb.second->destroy();
     }
+    _batchedBuffers.clear();
+
     _descriptorSet->destroy();
 }
 
@@ -291,14 +298,22 @@ void Pass::resetUniform(const std::string &name) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
     const uint32_t  count   = Pass::getCountFromHandle(handle);
-    const auto &    block   = getBlockView(type, binding);
-    const auto &    info    = _properties[name];
-    //cjh todo: https://github.com/cocos-creator/3d-tasks/issues/8907
-    // const value = (givenDefault || getDefaultFromType(type)) as number[];
-    // const auto size = (gfx::getTypeSize(type) >> 2) * count;
-    // for (let k = 0; k + value.length <= size; k += value.length) {
-    //     block.set(value, ofs + k);
-    // }
+    auto &block = _blocks[binding];
+    cc::optional<cc::variant<std::vector<float>, std::vector<int32_t>, std::string>> givenDefaultOpt;
+    auto iter = _properties.find(name);
+    if (iter != _properties.end()) {
+        givenDefaultOpt = iter->second.value;
+    }
+
+    if (givenDefaultOpt.has_value()) {
+        const auto& value = givenDefaultOpt.value();
+        if (cc::holds_alternative<std::vector<float>>(value)) {
+            const auto& floatArr = cc::get<std::vector<float>>(value);
+            if (auto iter = type2writer.find(type); iter != type2writer.end()) {
+                iter->second(block.data, floatArr.data(), ofs);
+            }
+        }
+    }
 
     _rootBufferDirty = true;
 }
@@ -328,15 +343,15 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
 
     auto *                 textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
     gfx::Texture *         texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
-    cc::optional<uint64_t> samplerInfo;
+    cc::optional<gfx::SamplerInfo> samplerInfo;
     if (info != nullptr && info->samplerHash.has_value()) {
-        // samplerInfo = Sampler::unpackFromHash(info->samplerHash); // TODO(xwx):  Sampler::unpackFromHash not implement yet
+        samplerInfo = gfx::Sampler::unpackFromHash(info->samplerHash.value());
     } else if (textureBase != nullptr) {
-        // samplerHash = textureBase->getSamplerInfo(); // TODO(xwx): getSamplerInfo not implement yet
+        samplerInfo = textureBase->getSamplerInfo(); // TODO(xwx): getSamplerInfo not implement yet
     }
 
     if (samplerInfo.has_value()) {
-        auto *sampler = pipeline::SamplerLib::getSampler(samplerInfo.value());
+        auto *sampler = _device->getSampler(samplerInfo.value());
         _descriptorSet->bindSampler(binding, sampler, index);
         _descriptorSet->bindTexture(binding, texture, index);
     } else {
@@ -348,7 +363,7 @@ void Pass::resetUBOs() {
     for (auto &u : _shaderInfo->blocks) {
         uint32_t ofs = 0;
         for (auto &cur : u.members) {
-            const auto &   block        = getBlockView(cur.type, u.binding);
+            const auto &   block        = _blocks[u.binding];
             const auto &   info         = _properties[cur.name];
             const auto &   givenDefault = info.value;
             const auto &   value        = (givenDefault.has_value() ? cc::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
@@ -381,7 +396,7 @@ bool Pass::tryCompile() {
         CC_LOG_WARNING("create shader %s failed", _programName.c_str());
         return false;
     }
-    _shader         = shader; //cjh
+    _shader         = shader;
     _pipelineLayout = ProgramLib::getInstance()->getTemplateInfo(_programName)->pipelineLayout;
     _hash           = Pass::getPassHash(this);
     return true;
@@ -571,11 +586,6 @@ void Pass::syncBatchingScheme() {
     }
 }
 
-cc::variant<Int32Array, Float32Array> Pass::getBlockView(gfx::Type type, uint32_t binding) const {
-    // return type < gfx::Type::FLOAT ? _blocksInt[binding] : _blocks[binding]; // TODO(xwx): _blocks[binding] is not same as ts, need to fix it
-    return _blocksInt[binding]; // TODO(xwx): remove it after fix above
-}
-
 void Pass::initPassFromTarget(Pass *target, const gfx::DepthStencilState &dss, const gfx::BlendState &bs, uint64_t hashFactor) {
     _priority          = target->_priority;
     _stage             = target->_stage;
@@ -595,7 +605,6 @@ void Pass::initPassFromTarget(Pass *target, const gfx::DepthStencilState &dss, c
     _properties        = target->_properties;
 
     _blocks    = target->_blocks;
-    _blocksInt = target->_blocksInt;
     _dynamics  = target->_dynamics;
 
     _shader = target->_shader;

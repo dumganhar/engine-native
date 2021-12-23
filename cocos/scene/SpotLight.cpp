@@ -24,22 +24,42 @@
  ****************************************************************************/
 
 #include "scene/SpotLight.h"
+#include <cmath>
+#include "core/scene-graph/Node.h"
+#include "math/Math.h"
 
 namespace cc {
 namespace scene {
+SpotLight::SpotLight() {
+    _type = LightType::SPOT;
+}
+void SpotLight::initialize() {
+    Light::initialize();
+
+    _size   = 0.15F;
+    _aspect = 1.0F;
+    setLuminance(1700 / Light::nt2lm(_size));
+    setLuminanceLDR(1.F);
+    _range = cos(math::PI / 6);
+    _dir.set(1.0, -1.0, -1.0);
+}
+
 void SpotLight::update() {
-    if (_node && (_node->getFlagsChanged() || _needUpdate)) {
+    if (_node && (_node->getChangedFlags() || _needUpdate)) {
+        _pos = _node->getWorldPosition();
+
         Mat4 matView;
         Mat4 matProj;
         Mat4 matViewProj;
         Mat4 matViewProjInv;
-        _node->updateWorldRTMatrix();
-        _pos = _node->getWorldPosition();
+
         _dir = _forward;
         _dir.transformQuat(_node->getWorldRotation());
         _dir.normalize();
-        _aabb->set(_pos, {_range, _range, _range});
-        matView = _node->getWorldRTMatrix();
+        _aabb.set(_pos, {_range, _range, _range});
+
+        // view matrix
+        matView = _node->getWorldRT();
         matView.inverse();
 
         Mat4::createPerspective(_angle, 1.0F, 0.001F, _range, &matProj);
@@ -51,5 +71,6 @@ void SpotLight::update() {
         _needUpdate = false;
     }
 }
+
 } // namespace scene
 } // namespace cc

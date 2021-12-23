@@ -239,11 +239,12 @@ gfx::Rect RenderPipeline::getRenderArea(scene::Camera *camera) {
     float w{static_cast<float>(camera->getWindow()->getWidth())};
     float h{static_cast<float>(camera->getWindow()->getHeight())};
 
+    const auto& vp = camera->getViewport();
     return {
-        static_cast<int>(camera->getViewport().x * w),
-        static_cast<int>(camera->getViewport().y * h),
-        static_cast<uint>(camera->getViewport().z * w),
-        static_cast<uint>(camera->getViewport().w * h),
+        static_cast<int32_t>(vp.x * w),
+        static_cast<int32_t>(vp.y * h),
+        static_cast<uint32_t>(vp.z * w),
+        static_cast<uint32_t>(vp.w * h),
     };
 }
 
@@ -256,20 +257,20 @@ void RenderPipeline::genQuadVertexData(const Vec4 &viewport, float *vbData) {
         std::swap(minY, maxY);
     }
     int n       = 0;
-    vbData[n++] = -1.0;
-    vbData[n++] = -1.0;
+    vbData[n++] = -1.0F;
+    vbData[n++] = -1.0F;
     vbData[n++] = minX; // uv
     vbData[n++] = maxY;
-    vbData[n++] = 1.0;
-    vbData[n++] = -1.0;
+    vbData[n++] = 1.0F;
+    vbData[n++] = -1.0F;
     vbData[n++] = maxX;
     vbData[n++] = maxY;
-    vbData[n++] = -1.0;
-    vbData[n++] = 1.0;
+    vbData[n++] = -1.0F;
+    vbData[n++] = 1.0F;
     vbData[n++] = minX;
     vbData[n++] = minY;
-    vbData[n++] = 1.0;
-    vbData[n++] = 1.0;
+    vbData[n++] = 1.0F;
+    vbData[n++] = 1.0F;
     vbData[n++] = maxX;
     vbData[n++] = minY;
 }

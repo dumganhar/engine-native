@@ -727,7 +727,7 @@ bool sevalue_to_native(const se::Value &from, cc::scene::ShadowsInfo *to, se::Ob
     set_member_field<cc::Vec3>(obj, to, "normal", &cc::scene::ShadowsInfo::setNormal, tmp);
     set_member_field<float>(obj, to, "distance", &cc::scene::ShadowsInfo::setDistance, tmp);
     set_member_field<cc::Color>(obj, to, "shadowColor", &cc::scene::ShadowsInfo::setShadowColor, tmp);
-    set_member_field<bool>(obj, to, "autoAdapt", &cc::scene::ShadowsInfo::setAutoAdapt, tmp);
+    set_member_field<bool>(obj, to, "fixedArea", &cc::scene::ShadowsInfo::setFixedArea, tmp);
     set_member_field<cc::scene::PCFType>(obj, to, "pcf", &cc::scene::ShadowsInfo::setPcf, tmp);
     set_member_field<float>(obj, to, "bias", &cc::scene::ShadowsInfo::setBias, tmp);
     set_member_field<float>(obj, to, "normalBias", &cc::scene::ShadowsInfo::setNormalBias, tmp);

@@ -48,7 +48,7 @@ public:
     PipelineSceneData();
     ~PipelineSceneData();
     virtual void activate(gfx::Device *device, RenderPipeline *pipeline);
-    void destroy();
+    void         destroy();
 
     inline void                                                                setShadowFramebuffer(const scene::Light *light, gfx::Framebuffer *framebuffer) { _shadowFrameBufferMap.emplace(light, framebuffer); }
     inline const std::unordered_map<const scene::Light *, gfx::Framebuffer *> &getShadowFramebufferMap() const { return _shadowFrameBufferMap; }
@@ -59,8 +59,8 @@ public:
     inline void                                                                setDirShadowObjects(RenderObjectList &&ro) { _dirShadowObjects = std::forward<RenderObjectList>(ro); }
     inline const RenderObjectList &                                            getCastShadowObjects() const { return _castShadowObjects; }
     inline void                                                                setCastShadowObjects(RenderObjectList &&ro) { _castShadowObjects = std::forward<RenderObjectList>(ro); }
-    inline const vector<const scene::Light*> &                                 getValidPunctualLights() const { return _validPunctualLights; }
-    inline void                                                                setValidPunctualLights(vector<const scene::Light*> &&validPunctualLights) { _validPunctualLights = std::forward<vector<const scene::Light*>>(validPunctualLights); }
+    inline const vector<const scene::Light *> &                                getValidPunctualLights() const { return _validPunctualLights; }
+    inline void                                                                setValidPunctualLights(vector<const scene::Light *> &&validPunctualLights) { _validPunctualLights = std::forward<vector<const scene::Light *>>(validPunctualLights); }
     inline float                                                               getShadowCameraFar() const { return _shadowCameraFar; }
     inline void                                                                setShadowCameraFar(float shadowDistance) { _shadowCameraFar = shadowDistance; }
     inline Mat4                                                                getMatShadowView() const { return _matShadowView; }
@@ -69,21 +69,22 @@ public:
     inline void                                                                setMatShadowProj(const Mat4 &matShadowProj) { _matShadowProj = matShadowProj; }
     inline Mat4                                                                getMatShadowViewProj() const { return _matShadowViewProj; }
     inline void                                                                setMatShadowViewProj(const Mat4 &matShadowViewProj) { _matShadowViewProj = matShadowViewProj; }
+    inline bool                                                                isHDR() const { return _isHDR; }
 
 private:
-    RenderObjectList     _renderObjects;
-    RenderObjectList     _dirShadowObjects;
-    RenderObjectList     _castShadowObjects;
-    vector<const scene::Light*> _validPunctualLights;
+    RenderObjectList             _renderObjects;
+    RenderObjectList             _dirShadowObjects;
+    RenderObjectList             _castShadowObjects;
+    vector<const scene::Light *> _validPunctualLights;
 
-    scene::PipelineSharedSceneData *_sharedSceneData      = nullptr;
-    RenderPipeline *                _pipeline             = nullptr;
-    gfx::Device *                   _device               = nullptr;
-    float                           _shadowCameraFar       = 0.0F;
+    scene::PipelineSharedSceneData *_sharedSceneData = nullptr;
+    RenderPipeline *                _pipeline        = nullptr;
+    gfx::Device *                   _device          = nullptr;
+    float                           _shadowCameraFar = 0.0F;
     Mat4                            _matShadowView;
     Mat4                            _matShadowProj;
     Mat4                            _matShadowViewProj;
-    
+
     geometry::Sphere *_sphere{nullptr};
     scene::Fog *      _fog{nullptr};
     scene::Ambient *  _ambient{nullptr};

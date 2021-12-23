@@ -99,6 +99,12 @@ protected:
     Model *                             _owner{nullptr};
     uint32_t                            _id = -1;
 
+private:
+    static inline uint32_t generateId() {
+        static uint32_t generator = 0;
+        return generator++;
+    }
+
     CC_DISALLOW_COPY_MOVE_ASSIGN(SubModel);
 };
 

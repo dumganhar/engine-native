@@ -36,7 +36,7 @@ namespace scene {
 
 class Pass;
 class Ambient;
-class Shadow;
+class Shadows;
 class Skybox;
 class Fog;
 
@@ -56,7 +56,7 @@ struct PipelineSharedSceneData {
     bool                 isHDR{true};
     float                shadingScale{1.0F};
     Ambient *            ambient{nullptr};
-    Shadow *             shadow{nullptr};
+    Shadows *             shadow{nullptr};
     Skybox *             skybox{nullptr};
     Fog *                fog{nullptr};
     OctreeInfo *         octree{nullptr};

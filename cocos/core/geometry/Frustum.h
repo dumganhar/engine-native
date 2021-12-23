@@ -26,12 +26,16 @@
 #pragma once
 
 #include <array>
+#include "core/geometry/AABB.h"
 #include "core/geometry/Enums.h"
 #include "core/geometry/Plane.h"
 #include "math/Mat4.h"
 #include "math/Vec3.h"
 
 namespace cc {
+namespace scene {
+class Camera;
+}
 namespace geometry {
 
 class Frustum final : public ShapeBase {
@@ -54,6 +58,26 @@ public:
                             float       near,
                             float       far,
                             const Mat4 &transform);
+    /**
+     * @en Create a frustum from an AABB box.
+     * @zh 从 AABB 包围盒中创建一个视锥体。
+     * @param out 视锥体。
+     * @param aabb AABB 包围盒。
+     * @return {Frustum} frustum.
+     */
+    static Frustum *createFromAABB(Frustum *out, const AABB &aabb);
+
+    /**
+     * @en create a new frustum.
+     * @zh 创建一个新的截锥体。
+     * @param out 返回新截锥体
+     * @param camera 相机参数
+     * @param m 变换矩阵
+     * @param start 分割开始位置
+     * @param end 分割末尾位置
+     * @return {Frustum} 返回新截锥体.
+     */
+    static Frustum *split(Frustum *out, const scene::Camera &camera, const Mat4 &m, float start, float end);
 
     /**
      * @en

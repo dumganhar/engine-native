@@ -97,7 +97,7 @@ protected:
     std::vector<SharedPtr<Pass>>        _passes;
     std::vector<SharedPtr<gfx::Shader>> _shaders;
     Model *                             _owner{nullptr};
-    uint32_t                            _id = -1;
+    uint32_t                            _id{-1};
 
 private:
     static inline uint32_t generateId() {

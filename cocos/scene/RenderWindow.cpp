@@ -28,72 +28,59 @@
 
 namespace cc {
 namespace scene {
+
 bool RenderWindow::initialize(gfx::Device *device, IRenderWindowInfo &info) {
     if (info.title.has_value() && !info.title.value().empty()) {
         _title = info.title.value();
     }
-    if (info.swapchainBufferIndices.has_value()) {
-        _swapchainBufferIndices = info.swapchainBufferIndices.value();
+
+    if (info.swapchain != nullptr) {
+        _swapchain = info.swapchain;
     }
 
-    if (info.shouldSyncSizeWithSwapchain.has_value()) {
-        _swapchainBufferIndices = info.swapchainBufferIndices.value();
-    }
     _width  = info.width;
     _height = info.height;
 
-    gfx::ColorAttachmentList &   colorAttachments       = info.renderPassInfo.colorAttachments;
-    gfx::DepthStencilAttachment &depthStencilAttachment = info.renderPassInfo.depthStencilAttachment;
-    for (auto &colorAttachment : colorAttachments) {
-        if (colorAttachment.format == gfx::Format::UNKNOWN) {
-            colorAttachment.format = device->getColorFormat();
-        }
-    }
-    if (depthStencilAttachment.format == gfx::Format::UNKNOWN) {
-        depthStencilAttachment.format = device->getDepthStencilFormat();
-    }
-
     _renderPass = device->createRenderPass(info.renderPassInfo);
 
-    for (uint32_t i = 0; i < colorAttachments.size(); ++i) {
-        gfx::Texture *colorTex = nullptr;
-        if (!(_swapchainBufferIndices & (1 << i))) {
-            colorTex                 = device->createTexture({gfx::TextureType::TEX2D,
-                                              gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED,
-                                              colorAttachments[i].format,
-                                              _width,
-                                              _height});
-            _hasOffScreenAttachments = true;
-        } else {
-            _hasOnScreenAttachments = true;
+    if (info.swapchain != nullptr) {
+        _swapchain = info.swapchain;
+        _colorTextures.pushBack(info.swapchain->getColorTexture());
+        _depthStencilTexture = info.swapchain->getDepthStencilTexture();
+    } else {
+        for (uint32_t i = 0; i < info.renderPassInfo.colorAttachments.size(); ++i) {
+            _colorTextures.pushBack(
+                    device->createTexture({gfx::TextureType::TEX2D,
+                              gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED | gfx::TextureUsageBit::TRANSFER_SRC,
+                              info.renderPassInfo.colorAttachments[i].format,
+                              _width,
+                              _height})
+            );
         }
-
-        if (colorTex) {
-            colorTex->addRef();
-        }
-        _colorTextures.emplace_back(colorTex);
     }
 
     // Use the sign bit to indicate depth attachment
-    if (depthStencilAttachment.format != gfx::Format::UNKNOWN) {
-        if (_swapchainBufferIndices >= 0) {
-            _depthStencilTexture     = device->createTexture({gfx::TextureType::TEX2D,
+    if (info.renderPassInfo.depthStencilAttachment.format != gfx::Format::UNKNOWN) {
+            _depthStencilTexture = device->createTexture({gfx::TextureType::TEX2D,
                                                           gfx::TextureUsageBit::DEPTH_STENCIL_ATTACHMENT | gfx::TextureUsageBit::SAMPLED,
-                                                          depthStencilAttachment.format,
+                                                          info.renderPassInfo.depthStencilAttachment.format,
                                                           _width,
                                                           _height});
-            _hasOffScreenAttachments = true;
-        }
-    } else {
-        _hasOnScreenAttachments = true;
     }
 
-    _frameBuffer = device->createFramebuffer({_renderPass, _colorTextures, _depthStencilTexture});
+    _frameBuffer = device->createFramebuffer(gfx::FramebufferInfo{
+                _renderPass,
+                _colorTextures.get(),
+                _depthStencilTexture
+    });
     return true;
 }
 
 void RenderWindow::destroy() {
     clearCameras();
+
+    CC_SAFE_DESTROY_NULL(_frameBuffer);
+
     CC_SAFE_DESTROY_NULL(_depthStencilTexture);
 
     for (auto *colorTexture : _colorTextures) {
@@ -101,41 +88,36 @@ void RenderWindow::destroy() {
         CC_SAFE_RELEASE(colorTexture);
     }
     _colorTextures.clear();
-
-    CC_SAFE_DESTROY_NULL(_frameBuffer);
 }
 
-void RenderWindow::resize(uint32_t width, uint32_t height) {
-    _width  = width;
-    _height = height;
-
-    bool needRebuild = false;
-
-    if (_depthStencilTexture != nullptr) {
-        _depthStencilTexture->resize(width, height);
-        needRebuild = true;
-    }
-
-    for (gfx::Texture *colorTexture : _colorTextures) {
-        if (colorTexture != nullptr) {
-            colorTexture->resize(width, height);
-            needRebuild = true;
+void RenderWindow::resize(uint32_t width, uint32_t height, gfx::SurfaceTransform surfaceTransform) {
+    if (_swapchain != nullptr) {
+        _swapchain->resize(width, height, surfaceTransform);
+        _width = _swapchain->getWidth();
+        _height = _swapchain->getHeight();
+    } else {
+        for (size_t i = 0; i < _colorTextures.size(); i++) {
+            _colorTextures.at(i)->resize(width, height);
         }
+        if (_depthStencilTexture != nullptr) {
+            _depthStencilTexture->resize(width, height);
+        }
+        _width = width;
+        _height = height;
     }
 
-    if (needRebuild && _frameBuffer != nullptr) {
+
+    if (_frameBuffer != nullptr) {
         _frameBuffer->destroy();
         _frameBuffer->initialize({
             _renderPass,
-            _colorTextures,
+            _colorTextures.get(),
             _depthStencilTexture,
         });
     }
 
     for (Camera *camera : _cameras) {
-        if (camera->isWindowSize()) {
-            camera->resize(width, height);
-        }
+        camera->resize(width, height);
     }
 }
 

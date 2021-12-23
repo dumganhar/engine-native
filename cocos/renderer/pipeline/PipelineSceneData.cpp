@@ -95,23 +95,23 @@ scene::Pass *PipelineSceneData::getOcclusionQueryPass() {
 
 gfx::InputAssembler *PipelineSceneData::createOcclusionQueryIA() {
     // create vertex buffer
-    const int8_t vertexData[] = {-1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1};
+    const int8_t vertices[]   = {-1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1};
     auto         vbStride     = Float32Array::BYTES_PER_ELEMENT * 3;
     auto         vbSize       = vbStride * 8;
 
     _occlusionQueryVertexBuffer = _device->createBuffer(gfx::BufferInfo{
         gfx::BufferUsageBit::VERTEX | gfx::BufferUsageBit::TRANSFER_DST,
         gfx::MemoryUsageBit::DEVICE, vbSize, vbStride});
-    _occlusionQueryVertexBuffer->update(vertexData);
+    _occlusionQueryVertexBuffer->update(vertices);
 
     // create index buffer
-    uint8_t indicesData[]        = {0, 2, 1, 1, 2, 3, 4, 5, 6, 5, 7, 6, 1, 3, 7, 1, 7, 5, 0, 4, 6, 0, 6, 2, 0, 1, 5, 0, 5, 4, 2, 6, 7, 2, 7, 3};
+    uint8_t indices[]            = {0, 2, 1, 1, 2, 3, 4, 5, 6, 5, 7, 6, 1, 3, 7, 1, 7, 5, 0, 4, 6, 0, 6, 2, 0, 1, 5, 0, 5, 4, 2, 6, 7, 2, 7, 3};
     auto    ibStride             = Uint16Array::BYTES_PER_ELEMENT;
     auto    ibSize               = ibStride * 36;
     _occlusionQueryIndicesBuffer = _device->createBuffer(gfx::BufferInfo{
         gfx::BufferUsageBit::INDEX | gfx::BufferUsageBit::TRANSFER_DST,
         gfx::MemoryUsageBit::DEVICE, ibSize, ibStride});
-    _occlusionQueryIndicesBuffer->update(indicesData);
+    _occlusionQueryIndicesBuffer->update(indices);
 
     gfx::AttributeList attributes{gfx::Attribute{gfx::ATTR_NAME_POSITION, gfx::Format::RGB32F}};
 

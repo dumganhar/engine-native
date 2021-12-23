@@ -54,11 +54,9 @@ struct IMacroInfo {
 };
 
 struct ITemplateInfo {
-    std::vector<gfx::UniformBlock>               gfxBlocks;
-    std::vector<gfx::UniformSamplerTexture>      gfxSamplerTextures;
     std::vector<gfx::Attribute>                  gfxAttributes;
+    gfx::ShaderInfo shaderInfo;
     std::vector<int32_t>                         blockSizes;
-    std::vector<gfx::ShaderStage>                gfxStages;
     Vector<gfx::DescriptorSetLayout *>           setLayouts; // TODO(PatriceJiang): pointer / rc
     SharedPtr<gfx::PipelineLayout>               pipelineLayout{nullptr};
     Record<std::string, uint32_t>                handleMap;

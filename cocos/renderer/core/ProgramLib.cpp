@@ -124,6 +124,7 @@ std::string getShaderInstanceName(const std::string &name, const std::vector<IMa
 
 void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, const pipeline::DescriptorSetLayoutInfos &source,
                            const std::string &type, std::vector<gfx::DescriptorSetLayoutBinding> *outBindings) {
+    CC_ASSERT(type == "locals" && type == "globals");
     const auto &target = type == "globals" ? tmpl.builtins.globals : tmpl.builtins.locals;
 
     // Blocks
@@ -147,7 +148,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
             outBindings->emplace_back(*bindingsIter);
         }
     }
-    tmplInfo.gfxBlocks.insert(tmplInfo.gfxBlocks.begin(), tempBlocks.begin(), tempBlocks.end());
+    tmplInfo.shaderInfo.blocks.insert(tmplInfo.shaderInfo.blocks.begin(), tempBlocks.begin(), tempBlocks.end());
 
     // SamplerTextures
     std::vector<gfx::UniformSamplerTexture> tempSamplerTextures;
@@ -171,7 +172,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
         }
     }
 
-    tmplInfo.gfxSamplerTextures.insert(tmplInfo.gfxSamplerTextures.begin(), tempSamplerTextures.begin(), tempSamplerTextures.end());
+    tmplInfo.shaderInfo.samplerTextures.insert(tmplInfo.shaderInfo.samplerTextures.begin(), tempSamplerTextures.begin(), tempSamplerTextures.end());
     if (outBindings != nullptr) {
         std::stable_sort(outBindings->begin(), outBindings->end(), [](const auto &a, const auto &b) {
             return a.binding < b.binding;
@@ -194,20 +195,18 @@ auto genHandles(const IProgramInfo &tmpl) {
         const auto members = block.members;
         uint32_t   offset  = 0;
         for (const auto &uniform : members) {
-            handleMap[uniform.name] = genHandle(PropertyType::BUFFER,
-                                                static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
-                                                block.binding,
+            handleMap[uniform.name] = genHandle(block.binding,
                                                 uniform.type,
+                                                uniform.count,
                                                 offset);
-            offset += (getTypeSize(uniform.type) >> 2) * uniform.count;
+            offset += (getTypeSize(uniform.type) >> 2) * uniform.count; // assumes no implicit padding, which is guaranteed by effect compiler
         }
     }
     // samplerTexture handles
     for (const auto &samplerTexture : tmpl.samplerTextures) {
-        handleMap[samplerTexture.name] = genHandle(PropertyType::TEXTURE,
-                                                   static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
-                                                   samplerTexture.binding,
-                                                   samplerTexture.type);
+        handleMap[samplerTexture.name] = genHandle(samplerTexture.binding,
+                                                   samplerTexture.type,
+                                                   samplerTexture.count);
     }
     return handleMap;
 }
@@ -288,9 +287,18 @@ ProgramLib *ProgramLib::getInstance() {
 }
 
 void ProgramLib::registerEffect(EffectAsset *effect) {
-    for (auto i = 0; i < effect->_shaders.size(); i++) {
-        auto *tmpl       = define(effect->_shaders[i]);
+    for (auto& shader : effect->_shaders) {
+        auto *tmpl       = define(shader);
         tmpl->effectName = effect->getName();
+    }
+
+    for (auto& tech : effect->_techniques) {
+        for (auto& pass : tech.passes) {
+            // grab default property declaration if there is none
+            if (pass.propertyIndex != CC_INVALID_INDEX && !pass.properties.has_value()) {
+                pass.properties = tech.passes[pass.propertyIndex].properties;
+            }
+        }
     }
 }
 
@@ -369,15 +377,13 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
         ITemplateInfo tmplInfo{};
         // cache material-specific descriptor set layout
         tmplInfo.samplerStartBinding = static_cast<int32_t>(tmpl.blocks.size());
-        tmplInfo.gfxBlocks           = {};
-        tmplInfo.gfxSamplerTextures  = {};
         tmplInfo.bindings            = {};
         tmplInfo.blockSizes          = {};
-        for (auto &block : tmpl.blocks) {
+        for (const auto &block : tmpl.blocks) {
             tmplInfo.blockSizes.emplace_back(getSize(block));
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 .binding        = static_cast<uint>(block.binding),
-                .descriptorType = block.descriptorType.value_or(gfx::DescriptorType::UNIFORM_BUFFER),
+                .descriptorType = gfx::DescriptorType::UNIFORM_BUFFER,
                 .count          = 1,
                 .stageFlags     = block.stageFlags});
             std::vector<gfx::Uniform> uniforms;
@@ -392,26 +398,111 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
                     };
                 }
             }
-            tmplInfo.gfxBlocks.emplace_back(gfx::UniformBlock{
+            tmplInfo.shaderInfo.blocks.emplace_back(gfx::UniformBlock{
                 .set     = static_cast<uint>(pipeline::SetIndex::MATERIAL),
                 .binding = static_cast<uint>(block.binding),
                 .name    = block.name,
                 .members = uniforms,
                 .count   = 1}); // effect compiler guarantees block count = 1
         }
-        for (auto &samplerTexture : tmpl.samplerTextures) {
+        for (const auto &samplerTexture : tmpl.samplerTextures) {
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 .binding        = static_cast<uint>(samplerTexture.binding),
-                .descriptorType = samplerTexture.descriptorType.value_or(gfx::DescriptorType::SAMPLER_TEXTURE),
+                .descriptorType = gfx::DescriptorType::SAMPLER_TEXTURE,
                 .count          = samplerTexture.count,
                 .stageFlags     = samplerTexture.stageFlags});
-            tmplInfo.gfxSamplerTextures.emplace_back(gfx::UniformSamplerTexture{
+
+            tmplInfo.shaderInfo.samplerTextures.emplace_back(gfx::UniformSamplerTexture{
                 .set     = static_cast<uint>(pipeline::SetIndex::MATERIAL),
                 .binding = static_cast<uint>(samplerTexture.binding),
                 .name    = samplerTexture.name,
                 .type    = samplerTexture.type,
                 .count   = samplerTexture.count});
         }
+
+        for (const auto& sampler : tmpl.samplers) {
+            tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
+                static_cast<uint32_t>(sampler.binding),
+                gfx::DescriptorType::SAMPLER,
+                sampler.count,
+                sampler.stageFlags}
+            );
+
+            tmplInfo.shaderInfo.samplers.emplace_back(gfx::UniformSampler{
+                static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
+                static_cast<uint32_t>(sampler.binding),
+                sampler.name,
+                sampler.count,
+            });
+        }
+
+        for (const auto& texture : tmpl.textures) {
+            tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
+                static_cast<uint32_t>(texture.binding),
+                gfx::DescriptorType::TEXTURE,
+                texture.count,
+                texture.stageFlags});
+
+            tmplInfo.shaderInfo.textures.emplace_back(gfx::UniformTexture{
+                static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
+                static_cast<uint32_t>(texture.binding),
+                texture.name,
+                texture.type,
+                texture.count,
+            });
+        }
+
+        for (const auto& buffer : tmpl.buffers) {
+            tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
+                static_cast<uint32_t>(buffer.binding),
+                gfx::DescriptorType::STORAGE_BUFFER,
+                1,
+                buffer.stageFlags
+            });
+
+            tmplInfo.shaderInfo.buffers.emplace_back(gfx::UniformStorageBuffer{
+                static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
+                static_cast<uint32_t>(buffer.binding),
+                buffer.name,
+                1,
+                buffer.memoryAccess
+            }); // effect compiler guarantees buffer count = 1
+        }
+
+        for (const auto& image : tmpl.images) {
+            tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
+                static_cast<uint32_t>(image.binding),
+                gfx::DescriptorType::STORAGE_IMAGE,
+                image.count,
+                image.stageFlags
+            });
+
+            tmplInfo.shaderInfo.images.emplace_back(gfx::UniformStorageImage{
+                static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
+                static_cast<uint32_t>(image.binding),
+                image.name,
+                image.type,
+                image.count,
+                image.memoryAccess
+            });
+        }
+
+        for (const auto& subpassInput :tmpl.subpassInputs) {
+            tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
+                static_cast<uint32_t>(subpassInput.binding),
+                gfx::DescriptorType::INPUT_ATTACHMENT,
+                subpassInput.count,
+                subpassInput.stageFlags
+            });
+
+            tmplInfo.shaderInfo.subpassInputs.emplace_back(gfx::UniformInputAttachment{
+                static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
+                static_cast<uint32_t>(subpassInput.binding),
+                subpassInput.name,
+                subpassInput.count
+            });
+        }
+
         tmplInfo.gfxAttributes = {};
         for (auto &attr : tmpl.attributes) {
             tmplInfo.gfxAttributes.emplace_back(gfx::Attribute{
@@ -424,11 +515,10 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
         }
         insertBuiltinBindings(tmpl, tmplInfo, pipeline::localDescriptorSetLayout, "locals", nullptr);
 
-        tmplInfo.gfxStages = {};
-        tmplInfo.gfxStages.emplace_back(gfx::ShaderStage{
+        tmplInfo.shaderInfo.stages.emplace_back(gfx::ShaderStage{
             .stage  = gfx::ShaderStageFlagBit::VERTEX,
             .source = ""});
-        tmplInfo.gfxStages.emplace_back(gfx::ShaderStage{
+        tmplInfo.shaderInfo.stages.emplace_back(gfx::ShaderStage{
             .stage  = gfx::ShaderStageFlagBit::FRAGMENT,
             .source = ""});
         tmplInfo.handleMap  = genHandles(tmpl);
@@ -601,21 +691,17 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     } else {
         CC_LOG_ERROR("Invalid GFX API!");
     }
-    tmplInfo.gfxStages[0].source = prefix + src->vert;
-    tmplInfo.gfxStages[1].source = prefix + src->frag;
+    tmplInfo.shaderInfo.stages[0].source = prefix + src->vert;
+    tmplInfo.shaderInfo.stages[1].source = prefix + src->frag;
 
     // strip out the active attributes only, instancing depend on this
-    auto attributes = getActiveAttributes(tmpl, tmplInfo, defines);
+    tmplInfo.shaderInfo.attributes = getActiveAttributes(tmpl, tmplInfo, defines);
 
-    auto instanceName          = getShaderInstanceName(name, macroArray);
-    auto shaderInfo            = gfx::ShaderInfo{instanceName, tmplInfo.gfxStages, attributes, tmplInfo.gfxBlocks};
-    shaderInfo.samplerTextures = tmplInfo.gfxSamplerTextures;
-    auto *shader               = device->createShader(shaderInfo);
+    tmplInfo.shaderInfo.name = getShaderInstanceName(name, macroArray);
+
+    auto *shader               = device->createShader(tmplInfo.shaderInfo);
     _cache[key]                = shader;
     CC_LOG_DEBUG("ProgramLib::_cache[%s]=%p, defines: %d", key.c_str(), shader, defines.size());
-    if (key.substr(0, 5) == "40000") {
-        CC_LOG_DEBUG("found");
-    }
     return shader;
 }
 

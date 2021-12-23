@@ -658,8 +658,8 @@ void Node::updateWorldTransform() {
     }
 }
 
-const Mat4 &Node::getWorldMatrix() {
-    updateWorldTransform();
+const Mat4 &Node::getWorldMatrix() const {
+    const_cast<Node*>(this)->updateWorldTransform();
     return _worldMatrix;
 }
 
@@ -721,8 +721,8 @@ void Node::setWorldPosition(float x, float y, float z) {
     }
 }
 
-const Vec3 &Node::getWorldPosition() {
-    updateWorldTransform();
+const Vec3 &Node::getWorldPosition() const {
+    const_cast<Node*>(this)->updateWorldTransform();
     return _worldPosition;
 }
 
@@ -747,8 +747,8 @@ void Node::setWorldRotation(float x, float y, float z, float w) {
     notifyLocalRotationUpdated();
 }
 
-const Quaternion &Node::getWorldRotation() {
-    updateWorldTransform();
+const Quaternion &Node::getWorldRotation() const {
+    const_cast<Node*>(this)->updateWorldTransform();
     return _worldRotation;
 }
 
@@ -783,8 +783,8 @@ void Node::setWorldScale(float x, float y, float z) {
     }
 }
 
-const Vec3 &Node::getWorldScale() {
-    updateWorldTransform();
+const Vec3 &Node::getWorldScale() const {
+    const_cast<Node*>(this)->updateWorldTransform();
     return _worldScale;
 }
 

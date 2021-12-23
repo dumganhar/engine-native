@@ -158,7 +158,7 @@ uint32_t TextureBufferPool::createChunk(uint32_t length) {
                                             gfx::TextureUsageBit::SAMPLED | gfx::TextureUsageBit::TRANSFER_DST,
                                             _format,
                                             length,
-                                            length, gfx::TextureFlagBit::IMMUTABLE});
+                                            length});
 
     ITextureBuffer chunk{
         .texture = texture,

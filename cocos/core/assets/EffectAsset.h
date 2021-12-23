@@ -362,7 +362,7 @@ struct IPassInfoFull final { //cjh } : public IPassInfo {
     // IPassInfo
     std::string                       program; // auto-generated from 'vert' and 'frag'
     cc::optional<MacroRecord>         embeddedMacros;
-    index_t                           propertyIndex{-1};
+    index_t                           propertyIndex{CC_INVALID_INDEX};
     cc::optional<std::string>         switch_;
     cc::optional<PassPropertyInfoMap> properties;
 
@@ -412,7 +412,7 @@ struct ISamplerTextureInfo {
 };
 
 struct ITextureInfo {
-    float set{0.F};
+    uint32_t set{0};
     int32_t binding{-1};;
     std::string name;
     gfx::Type type{gfx::Type::UNKNOWN};
@@ -421,7 +421,7 @@ struct ITextureInfo {
 };
 
 struct ISamplerInfo {
-    float set{0.F};
+    uint32_t set{0};
     int32_t binding{-1};;
     std::string name;
     uint32_t count{0};
@@ -445,7 +445,7 @@ struct IImageInfo {
 };
 
 struct IInputAttachmentInfo {
-    float set{0.F};
+    uint32_t set{0};
     int32_t binding{-1};
     std::string name;
     uint32_t count{0};

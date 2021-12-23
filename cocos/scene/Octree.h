@@ -50,7 +50,7 @@ struct CC_DLL BBox {
     cc::Vec3 min;
     cc::Vec3 max;
 
-    explicit BBox(const AABB& aabb)
+    explicit BBox(const geometry::AABB& aabb)
     : min(aabb.getCenter() - aabb.getHalfExtents()), max(aabb.getCenter() + aabb.getHalfExtents()) {
     }
 
@@ -95,9 +95,9 @@ private:
     void               remove(Model* model);
     void               onRemoved();
     void               gatherModels(std::vector<Model*>& results) const;
-    void               doQueryVisibility(const Camera* camera, const Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
-    void               queryVisibilityParallelly(const Camera* camera, const Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
-    void               queryVisibilitySequentially(const Camera* camera, const Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
+    void               doQueryVisibility(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
+    void               queryVisibilityParallelly(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
+    void               queryVisibilitySequentially(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
 
     Octree*                                      _owner{nullptr};
     OctreeNode*                                  _parent{nullptr};
@@ -134,7 +134,7 @@ public:
     inline uint32_t getMaxDepth() const { return _maxDepth; }
 
     // view frustum culling
-    void queryVisibility(const Camera* camera, const Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
+    void queryVisibility(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
 
 private:
     bool isInside(Model* model) const;

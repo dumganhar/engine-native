@@ -34,7 +34,6 @@
 #include "base/CoreStd.h"
 #include "frame-graph/FrameGraph.h"
 #include "frame-graph/Handle.h"
-#include "helper/DefineMap.h"
 #include "scene/Camera.h"
 #include "scene/Model.h"
 #include "renderer/core/PassUtils.h"

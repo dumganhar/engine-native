@@ -139,9 +139,8 @@ void ForwardStage::render(scene::Camera *camera) {
     };
     auto *      pipeline   = static_cast<ForwardPipeline *>(_pipeline);
     auto *const sceneData  = _pipeline->getPipelineSceneData();
-    auto *const sharedData = sceneData->getSharedData();
 
-    float shadingScale{_pipeline->getPipelineSceneData()->getSharedData()->shadingScale};
+    float shadingScale{sceneData->getShadingScale()};
     _renderArea = RenderPipeline::getRenderArea(camera);
     // Command 'updateBuffer' must be recorded outside render passes, cannot put them in execute lambda
     dispenseRenderObject2Queues();
@@ -153,15 +152,15 @@ void ForwardStage::render(scene::Camera *camera) {
     _additiveLightQueue->gatherLightPasses(camera, cmdBuff);
     _planarShadowQueue->gatherShadowPasses(camera, cmdBuff);
     auto forwardSetup = [&](framegraph::PassNodeBuilder &builder, RenderData &data) {
-        if (hasFlag(static_cast<gfx::ClearFlags>(camera->clearFlag), gfx::ClearFlagBit::COLOR)) {
-            _clearColors[0].x = camera->clearColor.x;
-            _clearColors[0].y = camera->clearColor.y;
-            _clearColors[0].z = camera->clearColor.z;
+        if (hasFlag(static_cast<gfx::ClearFlags>(camera->getClearFlag()), gfx::ClearFlagBit::COLOR)) {
+            _clearColors[0].x = camera->getClearColor().x;
+            _clearColors[0].y = camera->getClearColor().y;
+            _clearColors[0].z = camera->getClearColor().z;
         }
-        _clearColors[0].w = camera->clearColor.w;
+        _clearColors[0].w = camera->getClearColor().w;
         // color
         framegraph::Texture::Descriptor colorTexInfo;
-        colorTexInfo.format = sharedData->isHDR ? gfx::Format::RGBA16F : gfx::Format::RGBA8;
+        colorTexInfo.format = sceneData->isHDR() ? gfx::Format::RGBA16F : gfx::Format::RGBA8;
         colorTexInfo.usage  = gfx::TextureUsageBit::COLOR_ATTACHMENT;
         colorTexInfo.width  = static_cast<uint>(pipeline->getWidth() * shadingScale);
         colorTexInfo.height = static_cast<uint>(pipeline->getHeight() * shadingScale);
@@ -173,8 +172,8 @@ void ForwardStage::render(scene::Camera *camera) {
         colorAttachmentInfo.usage      = framegraph::RenderTargetAttachment::Usage::COLOR;
         colorAttachmentInfo.clearColor = _clearColors[0];
         colorAttachmentInfo.loadOp     = gfx::LoadOp::CLEAR;
-        auto clearFlags                = static_cast<gfx::ClearFlagBit>(camera->clearFlag);
-        bool isSwapchain = !!camera->window->swapchain;
+        auto clearFlags                = static_cast<gfx::ClearFlagBit>(camera->getClearFlag());
+        bool isSwapchain = !!camera->getWindow()->getSwapchain();
         if (isSwapchain && !hasFlag(clearFlags, gfx::ClearFlagBit::COLOR)) {
             if (hasFlag(clearFlags, static_cast<gfx::ClearFlagBit>(skyboxFlag))) {
                 colorAttachmentInfo.loadOp = gfx::LoadOp::DISCARD;
@@ -198,8 +197,8 @@ void ForwardStage::render(scene::Camera *camera) {
         framegraph::RenderTargetAttachment::Descriptor depthAttachmentInfo;
         depthAttachmentInfo.usage        = framegraph::RenderTargetAttachment::Usage::DEPTH_STENCIL;
         depthAttachmentInfo.loadOp       = gfx::LoadOp::CLEAR;
-        depthAttachmentInfo.clearDepth   = camera->clearDepth;
-        depthAttachmentInfo.clearStencil = camera->clearStencil;
+        depthAttachmentInfo.clearDepth   = camera->getClearDepth();
+        depthAttachmentInfo.clearStencil = camera->getClearStencil();
         depthAttachmentInfo.beginAccesses  = {gfx::AccessType::DEPTH_STENCIL_ATTACHMENT_WRITE};
         depthAttachmentInfo.endAccesses  = {gfx::AccessType::DEPTH_STENCIL_ATTACHMENT_WRITE};
         if (isSwapchain && static_cast<gfx::ClearFlagBit>(clearFlags & gfx::ClearFlagBit::DEPTH_STENCIL) != gfx::ClearFlagBit::DEPTH_STENCIL
@@ -234,7 +233,7 @@ void ForwardStage::render(scene::Camera *camera) {
 
     // add pass
     pipeline->getFrameGraph().addPass<RenderData>(static_cast<uint>(ForwardInsertPoint::IP_FORWARD), ForwardPipeline::fgStrHandleForwardPass, forwardSetup, forwardExec);
-    pipeline->getFrameGraph().presentFromBlackboard(RenderPipeline::fgStrHandleOutColorTexture, camera->window->frameBuffer->getColorTextures()[0], true);
+    pipeline->getFrameGraph().presentFromBlackboard(RenderPipeline::fgStrHandleOutColorTexture, camera->getWindow()->getFramebuffer()->getColorTextures()[0], true);
 }
 
 } // namespace pipeline

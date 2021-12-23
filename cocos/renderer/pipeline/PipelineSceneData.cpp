@@ -74,7 +74,7 @@ void PipelineSceneData::initOcclusionQuery() {
 
     if (!_occlusionQueryMaterial) {
         Material *mat = new Material();
-        mat->initDefault("default-occlusion-query-material");
+        mat->initDefault(std::string{"default-occlusion-query-material"});
         IMaterialInfo info;
         info.effectName = "occlusion-query";
         mat->initialize(info);

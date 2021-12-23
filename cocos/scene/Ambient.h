@@ -59,74 +59,22 @@ public:
      * @zh 天空颜色
      */
 
-    inline const Vec4 &getSkyColor() const {
-        // TODO(xwx): not implemented
-        // const isHDR = (legacyCC.director.root).pipeline.pipelineSceneData.isHDR;
-        const bool isHDR = true;
-        return isHDR ? _skyColorHDR : _skyColorLDR;
-    }
-
-    inline void setSkyColor(const Vec4 &color) {
-        // TODO(xwx): not implemented
-        // const isHDR = (legacyCC.director.root).pipeline.pipelineSceneData.isHDR;
-        const bool isHDR = true;
-        if (isHDR) {
-            _skyColorHDR.x = color.x;
-            _skyColorHDR.y = color.y;
-            _skyColorHDR.z = color.z;
-        } else {
-            _skyColorLDR.x = color.x;
-            _skyColorLDR.y = color.y;
-            _skyColorLDR.z = color.z;
-        }
-    }
+    Vec4 &getSkyColor();
+    void setSkyColor(const Vec4 &color);
 
     /**
      * @en Sky illuminance
      * @zh 天空亮度
      */
-    inline float getSkyIllum() const {
-        // TODO(xwx): not implemented
-        // const isHDR = (legacyCC.director.root).pipeline.pipelineSceneData.isHDR;
-        const bool isHDR = true;
-        return isHDR ? _skyIllumHDR : _skyIllumLDR;
-    }
-    inline void setSkyIllum(float illum) {
-        // TODO(xwx): not implemented
-        // const isHDR = (legacyCC.director.root).pipeline.pipelineSceneData.isHDR;
-        const bool isHDR = true;
-        if (isHDR) {
-            _skyIllumHDR = illum;
-        } else {
-            _skyIllumLDR = illum;
-        }
-    }
+    float getSkyIllum() const;
+    void setSkyIllum(float illum);
 
     /**
      * @en Ground color
      * @zh 地面颜色
      */
-    inline Vec4 &getGroundAlbedo() { //TODO(xwx): temporary remove const. need jk20012001 refactor in v3.5
-        // TODO(xwx): not implemented
-        // const isHDR = (legacyCC.director.root).pipeline.pipelineSceneData.isHDR;
-        const bool isHDR = true;
-        return isHDR ? _groundAlbedoHDR : _groundAlbedoLDR;
-    }
-
-    inline void setGroundAlbedo(const Vec4 &color) {
-        // TODO(xwx): not implemented
-        // const isHDR = (legacyCC.director.root).pipeline.pipelineSceneData.isHDR;
-        const bool isHDR = true;
-        if (isHDR) {
-            _groundAlbedoHDR.x = color.x;
-            _groundAlbedoHDR.y = color.y;
-            _groundAlbedoHDR.z = color.z;
-        } else {
-            _groundAlbedoLDR.x = color.x;
-            _groundAlbedoLDR.y = color.y;
-            _groundAlbedoLDR.z = color.z;
-        }
-    }
+    Vec4 &getGroundAlbedo();
+    void setGroundAlbedo(const Vec4 &color);
 
 protected:
     Vec4  _groundAlbedoHDR{0.2F, 0.2F, 0.2F, 1.F};

@@ -24,6 +24,7 @@
  ****************************************************************************/
 
 #include "scene/Ambient.h"
+#include "core/Root.h"
 
 namespace {
 cc::Color col;
@@ -44,9 +45,7 @@ namespace scene {
 
 void AmbientInfo::setSkyLightingColor(const Color &val) {
     Vec4 v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         _skyColorHDR.set(v4);
     } else {
@@ -58,9 +57,7 @@ void AmbientInfo::setSkyLightingColor(const Color &val) {
 }
 
 const Color &AmbientInfo::getSkyLightingColor() const {
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     Vec4 v4(isHDR ? _skyColorHDR : _skyColorLDR);
     normalizeHDRColor(v4);
     col.set(static_cast<uint8_t>(v4.x) * 255, static_cast<uint8_t>(v4.y) * 255, static_cast<uint8_t>(v4.z) * 255, 255);
@@ -68,9 +65,7 @@ const Color &AmbientInfo::getSkyLightingColor() const {
 }
 
 void AmbientInfo::setSkyColor(const Vec4 &val) {
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         _skyColorHDR.set(val);
     } else {
@@ -82,9 +77,7 @@ void AmbientInfo::setSkyColor(const Vec4 &val) {
 }
 
 void AmbientInfo::setSkyIllum(float val) {
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         _skyIllumHDR = val;
 
@@ -99,9 +92,7 @@ void AmbientInfo::setSkyIllum(float val) {
 
 void AmbientInfo::setGroundLightingColor(const Color &val) {
     Vec4 v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         _groundAlbedoHDR.set(v4);
     } else {
@@ -114,9 +105,7 @@ void AmbientInfo::setGroundLightingColor(const Color &val) {
 }
 
 const Color &AmbientInfo::getGroundLightingColor() const {
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     Vec4 v4(isHDR ? _groundAlbedoHDR : _groundAlbedoLDR);
     normalizeHDRColor(v4);
     col.set(static_cast<uint8_t>(v4.x) * 255, static_cast<uint8_t>(v4.y) * 255, static_cast<uint8_t>(v4.z) * 255, 255);
@@ -124,9 +113,7 @@ const Color &AmbientInfo::getGroundLightingColor() const {
 }
 
 void AmbientInfo::setGroundAlbedo(const Vec4 &val) {
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         _groundAlbedoHDR.set(val);
     } else {
@@ -160,6 +147,63 @@ void Ambient::initialize(AmbientInfo *info) {
     _groundAlbedoLDR.y = info->getGroundAlbedoLDR().y;
     _groundAlbedoLDR.z = info->getGroundAlbedoLDR().z;
     _skyIllumLDR       = info->getSkyIllumLDR();
+}
+
+Vec4 &Ambient::getSkyColor() {
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
+    return isHDR ? _skyColorHDR : _skyColorLDR;
+}
+
+void Ambient::setSkyColor(const Vec4 &color) {
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
+    if (isHDR) {
+        _skyColorHDR.x = color.x;
+        _skyColorHDR.y = color.y;
+        _skyColorHDR.z = color.z;
+    } else {
+        _skyColorLDR.x = color.x;
+        _skyColorLDR.y = color.y;
+        _skyColorLDR.z = color.z;
+    }
+}
+
+/**
+ * @en Sky illuminance
+ * @zh 天空亮度
+ */
+float Ambient::getSkyIllum() const {
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
+    return isHDR ? _skyIllumHDR : _skyIllumLDR;
+}
+void Ambient::setSkyIllum(float illum) {
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
+    if (isHDR) {
+        _skyIllumHDR = illum;
+    } else {
+        _skyIllumLDR = illum;
+    }
+}
+
+/**
+ * @en Ground color
+ * @zh 地面颜色
+ */
+Vec4 &Ambient::getGroundAlbedo() { //TODO(xwx): temporary remove const. need jk20012001 refactor in v3.5
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
+    return isHDR ? _groundAlbedoHDR : _groundAlbedoLDR;
+}
+
+void Ambient::setGroundAlbedo(const Vec4 &color) {
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
+    if (isHDR) {
+        _groundAlbedoHDR.x = color.x;
+        _groundAlbedoHDR.y = color.y;
+        _groundAlbedoHDR.z = color.z;
+    } else {
+        _groundAlbedoLDR.x = color.x;
+        _groundAlbedoLDR.y = color.y;
+        _groundAlbedoLDR.z = color.z;
+    }
 }
 
 } // namespace scene

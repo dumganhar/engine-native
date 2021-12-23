@@ -31,6 +31,7 @@
 #include "core/scene-graph/Node.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "scene/RenderScene.h"
+#include "scene/Pass.h"
 
 namespace {
 void getRelevantBuffers(std::vector<index_t> &outIndices, std::vector<int32_t> &outBuffers, const std::vector<std::vector<int32_t>> &jointMaps, int32_t targetJoint) {
@@ -190,8 +191,8 @@ void SkinningModel::updateLocalDescriptors(index_t submodelIdx, gfx::DescriptorS
     }
 }
 
-void SkinningModel::updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, Pass *pass) {
-    if (pass->getBatchingScheme() !== BatchingSchemes::NONE) {
+void SkinningModel::updateInstancedAttributes(const std::vector<gfx::Attribute> &attributes, scene::Pass *pass) {
+    if (pass->getBatchingScheme() != scene::BatchingSchemes::NONE) {
         // TODO(holycanvas): #9203 better to print the complete path instead of only the current node
         // warnID(3936, this.node.name);
         CC_LOG_WARNING("pass batchingScheme is none, %s", getNode()->getName().c_str());

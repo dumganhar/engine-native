@@ -108,14 +108,14 @@ uint32_t roundUpTextureSize(uint32_t targetLength, uint32_t formatSize) {
     return static_cast<uint32_t>(std::ceil(std::max(MINIMUM_JOINT_TEXTURE_SIZE * formatScale, static_cast<double>(targetLength)) / 12) * 12);
 }
 
-uint32_t jointTextureSamplerHash = cc::pipeline::SamplerLib::genSamplerHash({
+const cc::gfx::SamplerInfo jointTextureSamplerInfo{
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::NONE,
     cc::gfx::Address::CLAMP,
     cc::gfx::Address::CLAMP,
     cc::gfx::Address::CLAMP,
-});
+};
 
 cc::Mat4 *getWorldTransformUntilRoot(cc::Node *target, cc::Node *root, cc::Mat4 *outMatrix) {
     outMatrix->setIdentity();
@@ -136,9 +136,9 @@ JointTexturePool::JointTexturePool(gfx::Device *device) {
     _formatSize        = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(format)].size;
     _pixelsPerJoint    = 48.F / static_cast<float>(_formatSize);
     _pool              = new TextureBufferPool(device);
-    _pool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpTextureSize});
+    _pool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpType{roundUpTextureSize}});
     _customPool = new TextureBufferPool(device);
-    _customPool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpTextureSize});
+    _customPool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpType{roundUpTextureSize}});
 }
 
 void JointTexturePool::clear() {

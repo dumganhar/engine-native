@@ -157,10 +157,9 @@ void Camera::update(bool forceUpdate /*false*/) {
     }
 
     // projection matrix
-    // TODO(xwx): remove old orientation when swapchain apply
-    // const swapchain = this.window?.swapchain;
-    // const orientation                        = swapchain && swapchain.surfaceTransform || SurfaceTransform.IDENTITY;
-    const gfx::SurfaceTransform &orientation = _device->getSurfaceTransform();
+    auto* swapchain = _window->getSwapchain();
+    const auto& orientation = swapchain ? swapchain->getSurfaceTransform() : gfx::SurfaceTransform::IDENTITY;
+
     if (_isProjDirty || _curTransform != orientation) {
         _curTransform               = orientation;
         const float projectionSignY = _device->getCapabilities().clipSpaceSignY;
@@ -342,7 +341,7 @@ void Camera::updateAspect(bool oriented) {
     // window size/viewport is pre-rotated, but aspect should be oriented to acquire the correct projection
     if (oriented) {
         // TODO(xwx):
-        // const swapchain   = getWindow()->swapchain;
+        // const swapchain   = getWindow()->getSwapchain();
         // const orientation = swapchain && swapchain.surfaceTransform || SurfaceTransform.IDENTITY;
         // if (orientation % 2) _aspect = 1 / _aspect;
     }

@@ -366,6 +366,7 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
                 auto& srgb = cc::get<Vec4>(val);
                 Vec4 linear;
                 srgbToLinear(&linear, srgb);
+                linear.w = srgb.w;
                 pass->setUniform(handle, linear);
             } else {
                 pass->setUniform(handle, cc::get<MaterialProperty>(val));

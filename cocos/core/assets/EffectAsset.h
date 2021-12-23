@@ -48,7 +48,8 @@ struct IPropertyInfo {
     int32_t                                                    type;        // auto-extracted from shader
     cc::optional<IPropertyHandleInfo>                          handleInfo;  // auto-generated from 'target'
     cc::optional<uint64_t>                                     samplerHash; // auto-generated from 'sampler'
-    cc::optional<cc::variant<std::vector<float>, std::string>> value;
+    cc::optional<cc::variant<std::vector<float>, std::string>> value; // default value
+    cc::optional<bool> linear; // whether to convert the input to linear space first before applying
 };
 
 struct IPassInfoFull;
@@ -399,21 +400,66 @@ struct IBlockInfo {
     int32_t                           binding{-1};
     std::string                       name;
     std::vector<gfx::Uniform>         members;
-    uint32_t                          count{0};
     gfx::ShaderStageFlags             stageFlags{gfx::ShaderStageFlags::NONE};
-    cc::optional<gfx::DescriptorType> descriptorType{};
 };
 
 struct ISamplerTextureInfo {
-    int32_t                           binding{-1}; //cjh : number;
-    std::string                       name;
-    gfx::Type                         type{gfx::Type::UNKNOWN};
-    uint32_t                          count{0};
-    gfx::ShaderStageFlags             stageFlags{gfx::ShaderStageFlags::NONE};
-    cc::optional<gfx::DescriptorType> descriptorType;
+    int32_t binding{-1};
+    std::string name;
+    gfx::Type type{gfx::Type::UNKNOWN};
+    uint32_t count{0};
+    gfx::ShaderStageFlags stageFlags{gfx::ShaderStageFlags::NONE};
 };
 
-struct IAttributeInfo : public gfx::Attribute {
+struct ITextureInfo {
+    float set{0.F};
+    int32_t binding{-1};;
+    std::string name;
+    gfx::Type type{gfx::Type::UNKNOWN};
+    uint32_t count{0};
+    gfx::ShaderStageFlags stageFlags{gfx::ShaderStageFlags::NONE};
+};
+
+struct ISamplerInfo {
+    float set{0.F};
+    int32_t binding{-1};;
+    std::string name;
+    uint32_t count{0};
+    gfx::ShaderStageFlags stageFlags{gfx::ShaderStageFlags::NONE};
+};
+
+struct IBufferInfo {
+    int32_t binding{-1};
+    std::string name;
+    gfx::MemoryAccess memoryAccess{gfx::MemoryAccess::NONE};
+    gfx::ShaderStageFlags stageFlags{gfx::ShaderStageFlags::NONE};
+};
+
+struct IImageInfo {
+    int32_t binding{-1};
+    std::string name;
+    gfx::Type type{gfx::Type::UNKNOWN};
+    uint32_t count{0};
+    gfx::MemoryAccess memoryAccess{gfx::MemoryAccess::NONE};
+    gfx::ShaderStageFlags stageFlags{gfx::ShaderStageFlags::NONE};
+};
+
+struct IInputAttachmentInfo {
+    float set{0.F};
+    int32_t binding{-1};
+    std::string name;
+    uint32_t count{0};
+    gfx::ShaderStageFlags stageFlags{gfx::ShaderStageFlags::NONE};
+};
+
+struct IAttributeInfo {
+    std::string   name;
+    gfx::Format   format{gfx::Format::UNKNOWN};
+    bool     isNormalized{false};
+    uint32_t stream{0U};
+    bool     isInstanced{false};
+    uint32_t location{0U};
+
     std::vector<std::string> defines;
 };
 
@@ -431,8 +477,10 @@ struct IBuiltin {
 };
 
 struct IBuiltinInfo {
+    std::vector<IBuiltin> buffers;
     std::vector<IBuiltin> blocks;
     std::vector<IBuiltin> samplerTextures;
+    std::vector<IBuiltin> images;
 };
 
 using BuiltinsStatisticsType = std::unordered_map<std::string, int32_t>;
@@ -456,9 +504,14 @@ struct IShaderInfo {
     IShaderSource                    glsl1;
     IBuiltins                        builtins;
     std::vector<IDefineInfo>         defines;
+    std::vector<IAttributeInfo>      attributes;
     std::vector<IBlockInfo>          blocks;
     std::vector<ISamplerTextureInfo> samplerTextures;
-    std::vector<IAttributeInfo>      attributes;
+    std::vector<ISamplerInfo> samplers;
+    std::vector<ITextureInfo> textures;
+    std::vector<IBufferInfo> buffers;
+    std::vector<IImageInfo> images;
+    std::vector<IInputAttachmentInfo> subpassInputs;
 
     const IShaderSource *getSource(const std::string &version) const {
         if (version == "glsl1") return &glsl1;

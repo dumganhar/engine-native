@@ -36,6 +36,15 @@
 
 namespace cc {
 
+namespace {
+
+void srgbToLinear(cc::Vec4 *out, const cc::Vec4 &gamma) { // TODO(cjh): Move to utils
+    out->x = gamma.x * gamma.x;
+    out->y = gamma.y * gamma.y;
+    out->z = gamma.z * gamma.z;
+}
+} // namespace
+
 /* static */
 uint64_t Material::getHashForMaterial(Material *material) {
     if (material == nullptr) {
@@ -319,11 +328,9 @@ std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
             _states.resize(propIdx + 1);
         }
         passInfo.stateOverrides = _states[propIdx]; //cjh same question as described above
-        auto &states            = passInfo.stateOverrides.value();
 
         if (passInfo.propertyIndex != CC_INVALID_INDEX) {
             utils::mergeToMap(defines, _defines[passInfo.propertyIndex]);
-            states = _states[passInfo.propertyIndex];
         }
 
         if (passInfo.embeddedMacros.has_value()) {
@@ -347,26 +354,35 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
         return false;
     }
 
-    const auto propertyType = scene::Pass::getPropertyTypeFromHandle(handle);
-    if (propertyType == PropertyType::BUFFER) {
+    const auto type = scene::Pass::getTypeFromHandle(handle);
+    if (type < gfx::Type::SAMPLER1D) {
         if (val.index() == MATERIAL_PROPERTY_INDEX_LIST) {
             pass->setUniformArray(handle, cc::get<MaterialPropertyList>(val));
         } else if (val.index() == MATERIAL_PROPERTY_INDEX_SINGLE) {
-            pass->setUniform(handle, cc::get<MaterialProperty>(val));
+            auto& passProps = pass->getProperties();
+            auto iter = passProps.find(name);
+            if (iter != passProps.end() && iter->second.linear.has_value()) {
+                CC_ASSERT(cc::holds_alternative<Vec4>(val));
+                auto& srgb = cc::get<Vec4>(val);
+                Vec4 linear;
+                srgbToLinear(&linear, srgb);
+                linear.w = srgb.w;
+                pass->setUniform(handle, linear);
+            } else {
+                pass->setUniform(handle, cc::get<MaterialProperty>(val));
+            }
         } else {
             pass->resetUniform(name);
         }
-    } else if (propertyType == PropertyType::TEXTURE) {
-        if (val.index() == MATERIAL_PROPERTY_INDEX_LIST) {
-            const auto &textureArray = cc::get<MaterialPropertyList>(val);
-            for (size_t i = 0; i < textureArray.size(); i++) {
-                bindTexture(pass, handle, textureArray[i], static_cast<index_t>(i));
-            }
-        } else if (val.index() == MATERIAL_PROPERTY_INDEX_SINGLE) {
-            bindTexture(pass, handle, cc::get<MaterialProperty>(val));
-        } else {
-            pass->resetTexture(name);
+    } else if (val.index() == MATERIAL_PROPERTY_INDEX_LIST) {
+        const auto &textureArray = cc::get<MaterialPropertyList>(val);
+        for (size_t i = 0; i < textureArray.size(); i++) {
+            bindTexture(pass, handle, textureArray[i], static_cast<index_t>(i));
         }
+    } else if (val.index() == MATERIAL_PROPERTY_INDEX_SINGLE) {
+        bindTexture(pass, handle, cc::get<MaterialProperty>(val));
+    } else {
+        pass->resetTexture(name);
     }
     return true;
 }

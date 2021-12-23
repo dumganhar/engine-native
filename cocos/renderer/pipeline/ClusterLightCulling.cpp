@@ -110,17 +110,16 @@ void ClusterLightCulling::update() {
     if (!_initialized) return;
 
     auto* const sceneData  = _pipeline->getPipelineSceneData();
-    auto* const sharedData = sceneData->getSharedData();
 
-    _constants[NEAR_FAR_OFFSET + 0]  = static_cast<float>(_camera->nearClip);
-    _constants[NEAR_FAR_OFFSET + 1]  = static_cast<float>(_camera->farClip);
-    _constants[VIEW_PORT_OFFSET + 0] = _camera->viewPort.x * static_cast<float>(_camera->width) * sharedData->shadingScale;
-    _constants[VIEW_PORT_OFFSET + 1] = _camera->viewPort.y * static_cast<float>(_camera->height) * sharedData->shadingScale;
-    _constants[VIEW_PORT_OFFSET + 2] = _camera->viewPort.z * static_cast<float>(_camera->width) * sharedData->shadingScale;
-    _constants[VIEW_PORT_OFFSET + 3] = _camera->viewPort.w * static_cast<float>(_camera->height) * sharedData->shadingScale;
+    _constants[NEAR_FAR_OFFSET + 0]  = static_cast<float>(_camera->getNearClip());
+    _constants[NEAR_FAR_OFFSET + 1]  = static_cast<float>(_camera->getFarClip());
+    _constants[VIEW_PORT_OFFSET + 0] = _camera->getViewport().x * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
+    _constants[VIEW_PORT_OFFSET + 1] = _camera->getViewport().y * static_cast<float>(_camera->getHeight()) * sceneData->getShadingScale();
+    _constants[VIEW_PORT_OFFSET + 2] = _camera->getViewport().z * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
+    _constants[VIEW_PORT_OFFSET + 3] = _camera->getViewport().w * static_cast<float>(_camera->getHeight()) * sceneData->getShadingScale();
 
-    memcpy(_constants.data() + MAT_VIEW_OFFSET, _camera->matView.m, sizeof(cc::Mat4));
-    memcpy(_constants.data() + MAT_PROJ_INV_OFFSET, _camera->matProjInv.m, sizeof(cc::Mat4));
+    memcpy(_constants.data() + MAT_VIEW_OFFSET, _camera->getMatView().m, sizeof(cc::Mat4));
+    memcpy(_constants.data() + MAT_PROJ_INV_OFFSET, _camera->getMatProjInv().m, sizeof(cc::Mat4));
 
     _constantsBuffer->update(_constants.data(), 2 * sizeof(Vec4) + 2 * sizeof(Mat4));
     updateLights();
@@ -130,10 +129,10 @@ void ClusterLightCulling::update() {
         _rebuildClusters = true;
         uint nextLength  = std::max(nextPow2(static_cast<uint>(cameraIndex)), uint(1));
         _oldCamProjMats.resize(nextLength, Mat4::ZERO);
-        _oldCamProjMats[cameraIndex] = _camera->matProj;
+        _oldCamProjMats[cameraIndex] = _camera->getMatProj();
     } else {
-        _rebuildClusters             = ClusterLightCulling::isProjMatChange(_camera->matProj, _oldCamProjMats[cameraIndex]);
-        _oldCamProjMats[cameraIndex] = _camera->matProj;
+        _rebuildClusters             = ClusterLightCulling::isProjMatChange(_camera->getMatProj(), _oldCamProjMats[cameraIndex]);
+        _oldCamProjMats[cameraIndex] = _camera->getMatProj();
     }
 }
 
@@ -145,27 +144,26 @@ void ClusterLightCulling::updateLights() {
     _validLights.clear();
 
     scene::Sphere     sphere;
-    const auto* const scene = _camera->scene;
-    for (auto* light : scene->getSphereLights()) {
+    const auto* const scene = _camera->getScene();
+    for (const auto& light : scene->getSphereLights()) {
         sphere.setCenter(light->getPosition());
         sphere.setRadius(light->getRange());
-        if (sphere.sphereFrustum(_camera->frustum)) {
+        if (sphere.sphereFrustum(_camera->getFrustum())) {
             _validLights.emplace_back(static_cast<scene::Light*>(light));
         }
     }
 
-    for (auto* light : scene->getSpotLights()) {
+    for (const auto& light : scene->getSpotLights()) {
         sphere.setCenter(light->getPosition());
         sphere.setRadius(light->getRange());
-        if (sphere.sphereFrustum(_camera->frustum)) {
+        if (sphere.sphereFrustum(_camera->getFrustum())) {
             _validLights.emplace_back(static_cast<scene::Light*>(light));
         }
     }
 
-    const auto  exposure        = _camera->exposure;
+    const auto  exposure        = _camera->getExposure();
     const auto  validLightCount = _validLights.size();
     auto* const sceneData       = _pipeline->getPipelineSceneData();
-    auto* const sharedData      = sceneData->getSharedData();
 
     if (validLightCount > _lightBufferCount) {
         _lightBufferResized = true;
@@ -191,7 +189,7 @@ void ClusterLightCulling::updateLights() {
 
         index             = offset + UBOForwardLight::LIGHT_COLOR_OFFSET;
         const auto& color = light->getColor();
-        if (light->getUseColorTemperature()) {
+        if (light->isUseColorTemperature()) {
             const auto& tempRGB       = light->getColorTemperatureRGB();
             _lightBufferData[index++] = color.x * tempRGB.x;
             _lightBufferData[index++] = color.y * tempRGB.y;
@@ -204,7 +202,7 @@ void ClusterLightCulling::updateLights() {
 
         float luminanceHDR = isSpotLight ? spotLight->getLuminanceHDR() : sphereLight->getLuminanceHDR();
         float luminanceLDR = isSpotLight ? spotLight->getLuminanceLDR() : sphereLight->getLuminanceLDR();
-        if (sharedData->isHDR) {
+        if (sceneData->isHDR()) {
             _lightBufferData[index] = luminanceHDR * exposure * _lightMeterScale;
         } else {
             _lightBufferData[index] = luminanceLDR;

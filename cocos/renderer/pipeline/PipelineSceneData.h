@@ -52,14 +52,15 @@ public:
     virtual void activate(gfx::Device *device, RenderPipeline *pipeline);
     void         destroy();
 
+    virtual void onGlobalPipelineStateChanged() {}
+
     inline void                                                                setShadowFramebuffer(const scene::Light *light, gfx::Framebuffer *framebuffer) { _shadowFrameBufferMap.emplace(light, framebuffer); }
     inline const std::unordered_map<const scene::Light *, gfx::Framebuffer *> &getShadowFramebufferMap() const { return _shadowFrameBufferMap; }
-    inline scene::PipelineSharedSceneData *                                    getSharedData() const { return _sharedSceneData; }
     inline const RenderObjectList &                                            getRenderObjects() const { return _renderObjects; }
     inline const RenderObjectList &                                            getDirShadowObjects() const { return _dirShadowObjects; }
     inline void                                                                setRenderObjects(RenderObjectList &&ro) { _renderObjects = std::forward<RenderObjectList>(ro); }
     inline void                                                                setDirShadowObjects(RenderObjectList &&ro) { _dirShadowObjects = std::forward<RenderObjectList>(ro); }
-    inline const RenderObjectList &                                            getCastShadowObjects() const { return _castShadowObjects; }
+    inline const RenderObjectList &                                            isCastShadowObjects() const { return _castShadowObjects; }
     inline void                                                                setCastShadowObjects(RenderObjectList &&ro) { _castShadowObjects = std::forward<RenderObjectList>(ro); }
     inline const vector<const scene::Light *> &                                getValidPunctualLights() const { return _validPunctualLights; }
     inline void                                                                setValidPunctualLights(vector<const scene::Light *> &&validPunctualLights) { _validPunctualLights = std::forward<vector<const scene::Light *>>(validPunctualLights); }
@@ -72,7 +73,13 @@ public:
     inline Mat4                                                                getMatShadowViewProj() const { return _matShadowViewProj; }
     inline void                                                                setMatShadowViewProj(const Mat4 &matShadowViewProj) { _matShadowViewProj = matShadowViewProj; }
     inline bool                                                                isHDR() const { return _isHDR; }
-    inline scene::Shadows *                                                    getShadow() { return _shadow; }
+    inline const scene::Shadows *                                                    getShadow() const { return _shadow; }
+    inline const scene::Ambient * getAmbient() const { return _ambient; }
+    inline const scene::Skybox * getSkybox() const { return _skybox; }
+    inline const scene::Fog * getFog() const { return _fog; }
+    
+
+    inline float getShadingScale() const { return _shadingScale; }
 
     inline scene::Pass *getOcclusionQueryPass();
 
@@ -92,7 +99,6 @@ private:
     cc::Material *_occlusionQueryMaterial{nullptr};
     gfx::Shader * _occlusionQueryShader{nullptr};
 
-    scene::PipelineSharedSceneData *_sharedSceneData{nullptr};
     RenderPipeline *                _pipeline{nullptr};
     gfx::Device *                   _device{nullptr};
     float                           _shadowCameraFar{0.0F};
@@ -106,7 +112,6 @@ private:
     scene::Shadows *  _shadow{nullptr};
     bool              _isHDR{false};
     float             _shadingScale{1.0F};
-    float             _fpScale{1.0F / 1024.F};
 
     std::unordered_map<const scene::Light *, gfx::Framebuffer *> _shadowFrameBufferMap;
 };

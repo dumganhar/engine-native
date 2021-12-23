@@ -493,6 +493,8 @@ public:
     inline void setFixedArea(bool val) { _fixedArea = val; }
 
     inline const Mat4 &getMatLight() const { return _matLight; }
+    inline Mat4 &getMatLight() { return _matLight; }
+
     inline Material *  getMaterial() const { return _material.get(); }
     inline Material *  getInstancingMaterial() const { return _instancingMaterial.get(); }
 

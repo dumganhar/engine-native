@@ -39,27 +39,15 @@ inline constexpr nullopt_t nullopt{nullopt_t::__secret_tag{}, nullopt_t::__secre
 
 }; // namespace cc
 #else
+    #include <string>
     #include "boost/none.hpp"
     #include "boost/optional.hpp"
 
 namespace cc {
 
 template <typename T>
-class optional : public boost::optional<T> {
-public:
-    using boost::optional<T>::optional;
 
-    template <typename U, typename = std::enable_if_t<std::is_assignable<T&, U>::value> >
-    optional(U&& val) {
-        this->emplace_assign(val);
-    }
-
-    template <typename U, typename = std::enable_if_t<std::is_assignable<T&, U>::value> >
-    optional(const optional<U>& val) {
-        this->emplace_assign(val);
-    }
-};
-
+using optional = boost::optional<T>;
 using nullopt_t = boost::none_t;
 
 inline const nullopt_t nullopt((boost::none_t::init_tag()));

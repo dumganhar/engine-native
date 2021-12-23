@@ -70,7 +70,6 @@ void RenderQueue::sort() {
 
 void RenderQueue::recordCommandBuffer(gfx::Device * /*device*/, scene::Camera *camera, gfx::RenderPass *renderPass, gfx::CommandBuffer *cmdBuff, uint32_t subpassIndex) {
     PipelineSceneData *const              sceneData            = _pipeline->getPipelineSceneData();
-    const scene::PipelineSharedSceneData *sharedData           = sceneData->getSharedData();
     bool                                  enableOcclusionQuery = _pipeline->getOcclusionQueryEnabled() && _useOcclusionQuery;
     auto *                                queryPool            = _pipeline->getQueryPools()[0];
     for (auto &i : _queue) {
@@ -80,9 +79,9 @@ void RenderQueue::recordCommandBuffer(gfx::Device * /*device*/, scene::Camera *c
         }
 
         if (enableOcclusionQuery && _pipeline->isOccluded(camera, subModel)) {
-            auto *      inputAssembler = sharedData->occlusionQueryInputAssembler;
-            const auto *pass           = sharedData->occlusionQueryPass;
-            auto *      shader         = sharedData->occlusionQueryShader;
+            gfx::InputAssembler *      inputAssembler = nullptr; // TODO(cjh): sharedData->occlusionQueryInputAssembler;
+            const scene::Pass *pass           = nullptr; // TODO(cjh): sharedData->occlusionQueryPass;
+            gfx::Shader *      shader         = nullptr; // TODO(cjh): sharedData->occlusionQueryShader;
             auto *      pso            = PipelineStateManager::getOrCreatePipelineState(pass, shader, inputAssembler, renderPass, subpassIndex);
 
             cmdBuff->bindPipelineState(pso);

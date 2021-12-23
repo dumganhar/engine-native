@@ -148,7 +148,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
             outBindings->emplace_back(*bindingsIter);
         }
     }
-    tmplInfo.shaderInfo.blocks.insert(tmplInfo.gfxBlocks.begin(), tempBlocks.begin(), tempBlocks.end());
+    tmplInfo.shaderInfo.blocks.insert(tmplInfo.shaderInfo.blocks.begin(), tempBlocks.begin(), tempBlocks.end());
 
     // SamplerTextures
     std::vector<gfx::UniformSamplerTexture> tempSamplerTextures;
@@ -172,7 +172,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
         }
     }
 
-    tmplInfo.shaderInfo.samplerTextures.insert(tmplInfo.gfxSamplerTextures.begin(), tempSamplerTextures.begin(), tempSamplerTextures.end());
+    tmplInfo.shaderInfo.samplerTextures.insert(tmplInfo.shaderInfo.samplerTextures.begin(), tempSamplerTextures.begin(), tempSamplerTextures.end());
     if (outBindings != nullptr) {
         std::stable_sort(outBindings->begin(), outBindings->end(), [](const auto &a, const auto &b) {
             return a.binding < b.binding;
@@ -293,9 +293,9 @@ void ProgramLib::registerEffect(EffectAsset *effect) {
     }
 
     for (size_t i = 0; i < effect->_techniques.size(); i++) {
-        const auto& tech = effect->_techniques[i];
+        auto& tech = effect->_techniques[i];
         for (size_t j = 0; j < tech.passes.size(); j++) {
-            const auto& pass = tech.passes[j];
+            auto& pass = tech.passes[j];
             // grab default property declaration if there is none
             if (pass.propertyIndex != CC_INVALID_INDEX && !pass.properties.has_value()) {
                 pass.properties = tech.passes[pass.propertyIndex].properties;

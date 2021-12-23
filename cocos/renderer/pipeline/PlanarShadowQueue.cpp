@@ -50,9 +50,8 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
     clear();
 
     const PipelineSceneData *             sceneData  = _pipeline->getPipelineSceneData();
-    const scene::PipelineSharedSceneData *sharedData = sceneData->getSharedData();
-    const scene::Shadow *                 shadowInfo = sharedData->getShadow();
-    if (shadow == nullptr || !shadow->isEnabled() || shadow->getType() != scene::ShadowType::PLANAR) {
+    const scene::Shadows *                 shadowInfo = sceneData->getShadow();
+    if (shadowInfo == nullptr || !shadowInfo->isEnabled() || shadowInfo->getType() != scene::ShadowType::PLANAR) {
         return;
     }
 
@@ -69,14 +68,14 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
             continue;
         }
 
-        if (model->getWorldBounds() && model->getCastShadow()) {
+        if (model->getWorldBounds() && model->isCastShadow()) {
             _castModels.emplace_back(model);
         }
     }
 
-    auto *instancedBuffer = InstancedBuffer::get(shadowInfo->instancePass);
+    InstancedBuffer *instancedBuffer = nullptr;// TODO(cjh): InstancedBuffer::get(shadowInfo->isInstancePass());
 
-    scene::AABB ab;
+    geometry::AABB ab;
     for (const auto *model : _castModels) {
         // frustum culling
         model->getWorldBounds()->transform(shadowInfo->getMatLight(), &ab);
@@ -118,7 +117,7 @@ void PlanarShadowQueue::recordCommandBuffer(gfx::Device *device, gfx::RenderPass
         return;
     }
 
-    const auto *pass = shadowInfo->getPlanarPass();
+    const scene::Pass *pass = nullptr; // TODO(cjh): shadowInfo->getPlanarPass();
     cmdBuffer->bindDescriptorSet(materialSet, pass->getDescriptorSet());
 
     for (const auto *model : _pendingModels) {

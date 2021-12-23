@@ -376,7 +376,7 @@ public:
      * @param out Set the result to out vector
      * @return If `out` given, the return value equals to `out`, otherwise a new vector will be generated and return
      */
-    const Vec3 &getWorldPosition();
+    const Vec3 &getWorldPosition() const;
 
     /**
      * @en Set rotation in world coordinate system with a quaternion representing the rotation
@@ -391,7 +391,7 @@ public:
      * @param out Set the result to out quaternion
      * @return If `out` given, the return value equals to `out`, otherwise a new quaternion will be generated and return
      */
-    const Quaternion &getWorldRotation();
+    const Quaternion &getWorldRotation() const;
 
     /**
      * @en Set rotation in world coordinate system with euler angles
@@ -409,7 +409,7 @@ public:
      * @param out Set the result to out vector
      * @return If `out` given, the return value equals to `out`, otherwise a new vector will be generated and return
      */
-    const Vec3 &getWorldScale();
+    const Vec3 &getWorldScale() const;
 
     void setWorldRotationFromEuler(float x, float y, float z);
 
@@ -431,7 +431,7 @@ public:
      * @param out Set the result to out matrix
      * @return If `out` given, the return value equals to `out`, otherwise a new matrix will be generated and return
      */
-    const Mat4 &getWorldMatrix();
+    const Mat4 &getWorldMatrix() const;
 
     /**
      * @en Get a world transform matrix with only rotation and scale

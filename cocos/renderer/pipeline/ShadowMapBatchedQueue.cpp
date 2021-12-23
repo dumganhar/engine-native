@@ -52,10 +52,10 @@ void ShadowMapBatchedQueue::gatherLightPasses(const scene::Camera *camera, const
     clear();
 
     const PipelineSceneData *sceneData         = _pipeline->getPipelineSceneData();
-    const scene::Shadow *    shadowInfo        = sceneData->getShadow();
+    const scene::Shadows *    shadowInfo        = sceneData->getShadow();
     const RenderObjectList & dirShadowObjects  = sceneData->getDirShadowObjects();
-    const RenderObjectList & castShadowObjects = sceneData->getCastShadowObjects();
-    if (light && shadowInfo->isEnabled() && shadowInfo->getType() == scene::ShadowType::SHADOWMAP) {
+    const RenderObjectList & castShadowObjects = sceneData->isCastShadowObjects();
+    if (light && shadowInfo->isEnabled() && shadowInfo->getType() == scene::ShadowType::SHADOW_MAP) {
         switch (light->getType()) {
             case scene::LightType::DIRECTIONAL: {
                 for (const auto ro : dirShadowObjects) {
@@ -70,16 +70,16 @@ void ShadowMapBatchedQueue::gatherLightPasses(const scene::Camera *camera, const
                 Mat4        matShadowProj;
                 Mat4::createPerspective(spotLight->getSpotAngle(), spotLight->getAspect(), 0.001F, spotLight->getRange(), &matShadowProj);
                 const Mat4  matShadowViewProj = matShadowProj * matShadowView;
-                scene::AABB ab;
+                geometry::AABB ab;
                 for (const auto ro : castShadowObjects) {
                     const auto *model = ro.model;
-                    if (!model->getEnabled() || !model->getCastShadow() || !model->getNode()) {
+                    if (!model->isEnabled() || !model->isCastShadow() || !model->getNode()) {
                         continue;
                     }
 
                     if (model->getWorldBounds()) {
                         model->getWorldBounds()->transform(matShadowViewProj, &ab);
-                        if (ab.aabbFrustum(camera->frustum)) {
+                        if (ab.aabbFrustum(camera->getFrustum())) {
                             add(model, cmdBuffer);
                         }
                     }

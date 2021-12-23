@@ -71,7 +71,7 @@ bool ForwardPipeline::initialize(const RenderPipelineInfo &info) {
 }
 
 bool ForwardPipeline::activate(gfx::Swapchain *swapchain) {
-    _macros.setValue("CC_PIPELINE_TYPE", 0.F);
+    _macros["CC_PIPELINE_TYPE"] = int32_t(0);
 
     if (!RenderPipeline::activate(swapchain)) {
         CC_LOG_ERROR("RenderPipeline active failed.");
@@ -130,7 +130,6 @@ void ForwardPipeline::render(const vector<scene::Camera *> &cameras) {
 bool ForwardPipeline::activeRenderer(gfx::Swapchain *swapchain) {
     _commandBuffers.push_back(_device->getCommandBuffer());
     _queryPools.push_back(_device->getQueryPool());
-    const auto *sharedData = _pipelineSceneData->getSharedData();
 
     gfx::Sampler *const sampler = getGlobalDSManager()->getPointSampler();
 
@@ -140,8 +139,8 @@ bool ForwardPipeline::activeRenderer(gfx::Swapchain *swapchain) {
     _descriptorSet->update();
 
     // update global defines when all states initialized.
-    _macros.setValue("CC_USE_HDR", static_cast<bool>(_pipelineSceneData->isHDR()));
-    _macros.setValue("CC_SUPPORT_FLOAT_TEXTURE", _device->hasFeature(gfx::Feature::TEXTURE_FLOAT));
+    _macros["CC_USE_HDR"] = static_cast<bool>(_pipelineSceneData->isHDR());
+    _macros["CC_SUPPORT_FLOAT_TEXTURE"] = _device->hasFeature(gfx::Feature::TEXTURE_FLOAT);
 
     // step 2 create index buffer
     uint ibStride = 4;

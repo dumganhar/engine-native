@@ -71,7 +71,7 @@ bool RenderPipeline::initialize(const RenderPipelineInfo &info) {
 }
 
 bool RenderPipeline::isEnvmapEnabled() const {
-    return _pipelineSceneData->getSharedData()->skybox->useIBL;
+    return _pipelineSceneData->getSkybox()->isUseIBL();
 }
 
 bool RenderPipeline::activate(gfx::Swapchain * /*swapchain*/) {
@@ -147,18 +147,17 @@ bool RenderPipeline::destroy() {
 
 gfx::Color RenderPipeline::getClearcolor(scene::Camera *camera) const {
     auto *const sceneData  = getPipelineSceneData();
-    auto *const sharedData = sceneData->getSharedData();
-    gfx::Color  clearColor{0.0, 0.0, 0.0, 1.0F};
-    if (camera->clearFlag & static_cast<uint>(gfx::ClearFlagBit::COLOR)) {
-        clearColor = camera->clearColor;
+    gfx::Color  clearColor{0.0F, 0.0F, 0.0F, 1.0F};
+    if (static_cast<uint32_t>(camera->getClearFlag()) & static_cast<uint32_t>(gfx::ClearFlagBit::COLOR)) {
+        clearColor = camera->getClearColor();
     }
 
-    clearColor.w = 0;
+    clearColor.w = 0.F;
     return clearColor;
 }
 
 void RenderPipeline::updateQuadVertexData(const Vec4 &viewport, gfx::Buffer *buffer) {
-    float vbData[16] = {0};
+    float vbData[16] = {0.F};
     genQuadVertexData(viewport, vbData);
     buffer->update(vbData, sizeof(vbData));
 }
@@ -211,13 +210,13 @@ bool RenderPipeline::createQuadInputAssembler(gfx::Buffer *quadIB, gfx::Buffer *
 
 void RenderPipeline::ensureEnoughSize(const vector<scene::Camera *> &cameras) {
     for (auto *camera : cameras) {
-        _width  = std::max(camera->window->getWidth(), _width);
-        _height = std::max(camera->window->getHeight(), _height);
+        _width  = std::max(camera->getWindow()->getWidth(), _width);
+        _height = std::max(camera->getWindow()->getHeight(), _height);
     }
 }
 
 gfx::Viewport RenderPipeline::getViewport(scene::Camera *camera) {
-    auto             scale{_pipelineSceneData->getSharedData()->shadingScale};
+    auto             scale{_pipelineSceneData->getShadingScale()};
     const gfx::Rect &rect = getRenderArea(camera);
     return {
         static_cast<int>(rect.x * scale),
@@ -227,7 +226,7 @@ gfx::Viewport RenderPipeline::getViewport(scene::Camera *camera) {
 }
 
 gfx::Rect RenderPipeline::getScissor(scene::Camera *camera) {
-    auto             scale{_pipelineSceneData->getSharedData()->shadingScale};
+    auto             scale{_pipelineSceneData->getShadingScale()};
     const gfx::Rect &rect = getRenderArea(camera);
     return {
         static_cast<int>(rect.x * scale),
@@ -237,14 +236,14 @@ gfx::Rect RenderPipeline::getScissor(scene::Camera *camera) {
 }
 
 gfx::Rect RenderPipeline::getRenderArea(scene::Camera *camera) {
-    float w{static_cast<float>(camera->window->getWidth())};
-    float h{static_cast<float>(camera->window->getHeight())};
+    float w{static_cast<float>(camera->getWindow()->getWidth())};
+    float h{static_cast<float>(camera->getWindow()->getHeight())};
 
     return {
-        static_cast<int>(camera->viewPort.x * w),
-        static_cast<int>(camera->viewPort.y * h),
-        static_cast<uint>(camera->viewPort.z * w),
-        static_cast<uint>(camera->viewPort.w * h),
+        static_cast<int>(camera->getViewport().x * w),
+        static_cast<int>(camera->getViewport().y * h),
+        static_cast<uint>(camera->getViewport().z * w),
+        static_cast<uint>(camera->getViewport().w * h),
     };
 }
 
@@ -273,10 +272,6 @@ void RenderPipeline::genQuadVertexData(const Vec4 &viewport, float *vbData) {
     vbData[n++] = 1.0;
     vbData[n++] = maxX;
     vbData[n++] = minY;
-}
-
-void RenderPipeline::setPipelineSharedSceneData(scene::PipelineSharedSceneData *data) {
-    _pipelineSceneData->setPipelineSharedSceneData(data);
 }
 
 void RenderPipeline::generateConstantMacros() {
@@ -315,7 +310,7 @@ bool RenderPipeline::isOccluded(const scene::Camera *camera, const scene::SubMod
     }
 
     // assume visible if camera is inside of worldBound.
-    if (worldBound->contain(camera->position)) {
+    if (worldBound->contain(camera->getPosition())) {
         return false;
     }
 

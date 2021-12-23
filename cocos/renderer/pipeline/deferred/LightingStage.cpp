@@ -397,8 +397,8 @@ void LightingStage::fgLightingPass(scene::Camera *camera) {
         const std::array<uint, 1> globalOffsets = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
         cmdBuff->bindDescriptorSet(globalSet, pipeline->getDescriptorSet(), utils::toUint(globalOffsets.size()), globalOffsets.data());
         // get PSO and draw quad
-        scene::Pass *        pass           = sceneData->getSharedData()->deferredLightPass;
-        gfx::Shader *        shader         = sceneData->getSharedData()->deferredLightPassShader;
+        scene::Pass *        pass           = nullptr;// TODO(cjh): sceneData->getSharedData()->deferredLightPass;
+        gfx::Shader *        shader         = nullptr;// TODO(cjh): sceneData->getSharedData()->deferredLightPassShader;
         gfx::PipelineState * pso            = PipelineStateManager::getOrCreatePipelineState(pass, shader, _inputAssembler, table.getRenderPass(), table.getSubpassIndex());
 
         for (uint i = 0; i < DeferredPipeline::GBUFFER_COUNT; ++i) {
@@ -434,7 +434,7 @@ void LightingStage::fgTransparent(scene::Camera *camera) {
 
     auto *     pipeline   = static_cast<DeferredPipeline *>(_pipeline);
     gfx::Color clearColor = pipeline->getClearcolor(camera);
-    float      shadingScale{_pipeline->getPipelineSceneData()->getSharedData()->shadingScale};
+    float      shadingScale{_pipeline->getPipelineSceneData()->getShadingScale()};
     auto transparentSetup = [&](framegraph::PassNodeBuilder &builder, RenderData &data) {
         // write to lighting output
         framegraph::RenderTargetAttachment::Descriptor colorAttachmentInfo;
@@ -555,7 +555,7 @@ void LightingStage::fgSsprPass(scene::Camera *camera) {
     auto *pipeline = static_cast<DeferredPipeline *>(_pipeline);
 
     _denoiseIndex = 0;
-    _matViewProj  = camera->matViewProj;
+    _matViewProj  = camera->getMatViewProj();
     _reflectionElems.clear();
 
     // step 1 prepare clear model's reflection texture pass. should switch to image clear command after available
@@ -646,8 +646,8 @@ void LightingStage::fgSsprPass(scene::Camera *camera) {
         gfx::Viewport vp = pipeline->getViewport(camera);
         Vec4 value = Vec4(static_cast<float>(vp.left), static_cast<float>(vp.top),
                           static_cast<float>(vp.width), static_cast<float>(vp.height));
-        _reflectionComp->applyTexSize(_ssprTexWidth, _ssprTexHeight, camera->matView, camera->matViewProj,
-                                      camera->matViewProjInv, camera->matProjInv, value);
+        _reflectionComp->applyTexSize(_ssprTexWidth, _ssprTexHeight, camera->getMatView(), camera->getMatViewProj(),
+                                      camera->getMatViewProjInv(), camera->getMatProjInv(), value);
 
         auto *texReflection  = static_cast<gfx::Texture *>(table.getWrite(data.reflection));
         auto *texLightingOut = static_cast<gfx::Texture *>(table.getRead(data.lightingOut));
@@ -827,7 +827,7 @@ void LightingStage::fgSsprPass(scene::Camera *camera) {
             const auto &passes    = subModel->getPasses();
             auto        passCount = passes.size();
             for (p = 0; p < passCount; ++p) {
-                auto *pass = passes[p];
+                const auto &pass = passes[p];
                 if (pass->getPhase() == _reflectionPhaseID) {
                     RenderElem elem = {ro, subModel->getDescriptorSet(), m, p};
                     _reflectionElems.push_back(elem);

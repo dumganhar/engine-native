@@ -183,23 +183,23 @@ void OctreeNode::gatherModels(std::vector<Model*>& results) const { // NOLINT(mi
     }
 }
 
-void OctreeNode::doQueryVisibility(const Camera* camera, const Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
-    const auto visibility = camera->visibility;
+void OctreeNode::doQueryVisibility(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
+    const auto visibility = camera->getVisibility();
     for (auto* model : _models) {
-        if (!model->getEnabled()) {
+        if (!model->isEnabled()) {
             continue;
         }
 
         const Node* node = model->getNode();
         if ((node && ((visibility & node->getLayer()) == node->getLayer())) ||
-            (visibility & model->getVisFlags())) {
-            const AABB* modelWorldBounds = model->getWorldBounds();
+            (visibility & static_cast<uint32_t>(model->getVisFlags()))) {
+            const geometry::AABB* modelWorldBounds = model->getWorldBounds();
             if (!modelWorldBounds) {
                 continue;
             }
 
             if (isShadow) {
-                if (model->getCastShadow() && modelWorldBounds->aabbFrustum(frustum)) {
+                if (model->isCastShadow() && modelWorldBounds->aabbFrustum(frustum)) {
                     results.push_back(model);
                 }
             } else {
@@ -211,9 +211,9 @@ void OctreeNode::doQueryVisibility(const Camera* camera, const Frustum& frustum,
     }
 }
 
-void OctreeNode::queryVisibilityParallelly(const Camera* camera, const Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
-    AABB box;
-    AABB::fromPoints(_aabb.min, _aabb.max, &box);
+void OctreeNode::queryVisibilityParallelly(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
+    geometry::AABB box;
+    geometry::AABB::fromPoints(_aabb.min, _aabb.max, &box);
     if (!box.aabbFrustum(frustum)) {
         return;
     }
@@ -239,9 +239,9 @@ void OctreeNode::queryVisibilityParallelly(const Camera* camera, const Frustum& 
     }
 }
 
-void OctreeNode::queryVisibilitySequentially(const Camera* camera, const Frustum& frustum, bool isShadow, std::vector<Model*>& results) const { // NOLINT(misc-no-recursion)
-    AABB box;
-    AABB::fromPoints(_aabb.min, _aabb.max, &box);
+void OctreeNode::queryVisibilitySequentially(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const { // NOLINT(misc-no-recursion)
+    geometry::AABB box;
+    geometry::AABB::fromPoints(_aabb.min, _aabb.max, &box);
     if (!box.aabbFrustum(frustum)) {
         return;
     }
@@ -324,7 +324,7 @@ void Octree::update(Model* model) {
     insert(model);
 }
 
-void Octree::queryVisibility(const Camera* camera, const Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
+void Octree::queryVisibility(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
     if (_totalCount > USE_MULTI_THRESHOLD) {
         _root->queryVisibilityParallelly(camera, frustum, isShadow, results);
     } else {

@@ -148,7 +148,6 @@ void DeferredPipeline::render(const vector<scene::Camera *> &cameras) {
 bool DeferredPipeline::activeRenderer(gfx::Swapchain *swapchain) {
     _commandBuffers.push_back(_device->getCommandBuffer());
     _queryPools.push_back(_device->getQueryPool());
-    auto *const sharedData = _pipelineSceneData->getSharedData();
 
     gfx::Sampler *const sampler = getGlobalDSManager()->getPointSampler();
 
@@ -158,8 +157,8 @@ bool DeferredPipeline::activeRenderer(gfx::Swapchain *swapchain) {
     _descriptorSet->update();
 
     // update global defines when all states initialized.
-    _macros.setValue("CC_USE_HDR", static_cast<bool>(sharedData->isHDR));
-    _macros.setValue("CC_SUPPORT_FLOAT_TEXTURE", _device->hasFeature(gfx::Feature::TEXTURE_FLOAT));
+    _macros["CC_USE_HDR"] = static_cast<bool>(_pipelineSceneData->isHDR());
+    _macros["CC_SUPPORT_FLOAT_TEXTURE"] = _device->hasFeature(gfx::Feature::TEXTURE_FLOAT);
 
     // step 2 create index buffer
     uint ibStride = 4;
@@ -188,7 +187,7 @@ bool DeferredPipeline::activeRenderer(gfx::Swapchain *swapchain) {
     return true;
 }
 
-void DeferredPipeline::destroy() {
+bool DeferredPipeline::destroy() {
     destroyQuadInputAssembler();
 
     for (auto &it : _renderPasses) {

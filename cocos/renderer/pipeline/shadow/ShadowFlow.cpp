@@ -83,7 +83,7 @@ void ShadowFlow::render(scene::Camera *camera) {
     }
 
     const auto &                   shadowFramebufferMap = sceneData->getShadowFramebufferMap();
-    const scene::DirectionalLight *mainLight            = camera->scene->getMainLight();
+    const scene::DirectionalLight *mainLight            = camera->getScene()->getMainLight();
     if (mainLight) {
         gfx::DescriptorSet *globalDS = _pipeline->getDescriptorSet();
         if (!shadowFramebufferMap.count(mainLight)) {
@@ -130,7 +130,7 @@ void ShadowFlow::lightCollecting() {
 void ShadowFlow::clearShadowMap(scene::Camera *camera) {
     const auto *                   sceneData            = _pipeline->getPipelineSceneData();
     const auto &                   shadowFramebufferMap = sceneData->getShadowFramebufferMap();
-    const scene::DirectionalLight *mainLight            = camera->scene->getMainLight();
+    const scene::DirectionalLight *mainLight            = camera->getScene()->getMainLight();
 
     if (mainLight) {
         gfx::DescriptorSet *globalDS = _pipeline->getDescriptorSet();
@@ -213,7 +213,7 @@ void ShadowFlow::resizeShadowMap() {
         });
     }
 
-    shadow->setShadowMapDirty(false);
+    const_cast<scene::Shadows *>(shadow)->setShadowMapDirty(false);
 }
 
 void ShadowFlow::initShadowFrameBuffer(RenderPipeline *pipeline, const scene::Light *light) {

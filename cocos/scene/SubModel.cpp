@@ -119,7 +119,6 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
             gfx::Format::RGBA8,
             texWidth,
             texHeight,
-            gfx::TextureFlagBit::IMMUTABLE,
         });
         _descriptorSet->bindTexture(pipeline::REFLECTIONTEXTURE::BINDING, _reflectionTex);
 

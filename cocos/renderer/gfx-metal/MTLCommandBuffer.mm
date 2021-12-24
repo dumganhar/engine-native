@@ -159,7 +159,7 @@ void CCMTLCommandBuffer::beginRenderPass(RenderPass *renderPass, Framebuffer *fb
     MTLRenderPassDescriptor *mtlRenderPassDescriptor = static_cast<CCMTLRenderPass *>(renderPass)->getMTLRenderPassDescriptor();
     const TextureList &      colorTextures           = fbo->getColorTextures();
     Texture *                dsTexture               = fbo->getDepthStencilTexture();
-    auto *                   swapchain               = static_cast<CCMTLSwapchain *>(_gpuCommandBufferObj->fbo->getSwapchain()());
+    auto *                   swapchain               = static_cast<CCMTLSwapchain *>(_gpuCommandBufferObj->fbo->swapChain());
 
     // if not rendering to full framebuffer(eg. left top area), draw a quad to pretend viewport clear.
     bool renderingFullFramebuffer   = isRenderingEntireDrawable(renderArea, static_cast<CCMTLFramebuffer *>(fbo));
@@ -773,15 +773,15 @@ void CCMTLCommandBuffer::blitTexture(Texture *srcTexture, Texture *dstTexture, c
         auto *ccDstTex = static_cast<CCMTLTexture *>(dstTexture);
 
         id<MTLTexture> src = nil;
-        if (ccSrcTex->getSwapchain()()) {
-            src = ccSrcTex->getSwapchain()()->currentDrawable().texture;
+        if (ccSrcTex->swapChain()) {
+            src = ccSrcTex->swapChain()->currentDrawable().texture;
         } else {
             src = ccSrcTex->getMTLTexture();
         }
 
         id<MTLTexture> dst = nil;
-        if (ccDstTex->getSwapchain()()) {
-            dst = ccDstTex->getSwapchain()()->currentDrawable().texture;
+        if (ccDstTex->swapChain()) {
+            dst = ccDstTex->swapChain()->currentDrawable().texture;
         } else {
             dst = ccDstTex->getMTLTexture();
         }

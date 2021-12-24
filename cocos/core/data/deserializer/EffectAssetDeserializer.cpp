@@ -588,17 +588,17 @@ static void deserializeShaderBlock(const rapidjson::Value &blockVal, IBlockInfo 
         deserializeArray<gfx::Uniform>(blockVal["members"], cBlock.members, deserializeMember);
     }
 
-    if (blockVal.HasMember("count")) {
-        cBlock.count = blockVal["count"].GetUint();
-    }
-
-    if (blockVal.HasMember("stageFlags")) {
-        cBlock.stageFlags = static_cast<gfx::ShaderStageFlags>(blockVal["stageFlags"].GetInt());
-    }
-
-    if (blockVal.HasMember("descriptorType")) {
-        cBlock.descriptorType = static_cast<gfx::DescriptorType>(blockVal["descriptorType"].GetInt());
-    }
+// TODO(cjh):    if (blockVal.HasMember("count")) {
+//        cBlock.count = blockVal["count"].GetUint();
+//    }
+//
+//    if (blockVal.HasMember("stageFlags")) {
+//        cBlock.stageFlags = static_cast<gfx::ShaderStageFlags>(blockVal["stageFlags"].GetInt());
+//    }
+//
+//    if (blockVal.HasMember("descriptorType")) {
+//        cBlock.descriptorType = static_cast<gfx::DescriptorType>(blockVal["descriptorType"].GetInt());
+//    }
 }
 
 static void deserializeShaderSamplerTexture(const rapidjson::Value &samplerTextureVal, ISamplerTextureInfo &cSamplerTexture) {
@@ -624,9 +624,9 @@ static void deserializeShaderSamplerTexture(const rapidjson::Value &samplerTextu
         cSamplerTexture.stageFlags = static_cast<gfx::ShaderStageFlags>(samplerTextureVal["stageFlags"].GetInt());
     }
 
-    if (samplerTextureVal.HasMember("descriptorType")) {
-        cSamplerTexture.descriptorType = static_cast<gfx::DescriptorType>(samplerTextureVal["descriptorType"].GetInt());
-    }
+// TODO(cjh):    if (samplerTextureVal.HasMember("descriptorType")) {
+//        cSamplerTexture.descriptorType = static_cast<gfx::DescriptorType>(samplerTextureVal["descriptorType"].GetInt());
+//    }
 }
 
 static void deserializeShaderGfxAttribute(const rapidjson::Value &gfxAttributeVal, gfx::Attribute &cAttribute) {
@@ -650,7 +650,7 @@ static void deserializeShaderGfxAttribute(const rapidjson::Value &gfxAttributeVa
 static void deserializeShaderAttributeInfo(const rapidjson::Value &attributeVal, IAttributeInfo &cAttributeInfo) {
     CC_ASSERT(attributeVal.IsObject());
 
-    deserializeShaderGfxAttribute(attributeVal, cAttributeInfo);
+// TODO(cjh):    deserializeShaderGfxAttribute(attributeVal, cAttributeInfo);
 
     if (attributeVal.HasMember("defines")) {
         deserializeArray(attributeVal["defines"], cAttributeInfo.defines);

@@ -44,8 +44,8 @@ void CCMTLFramebuffer::doInit(const FramebufferInfo &) {
     _isOffscreen = true;
     for (Texture* tex : _colorTextures) {
         auto* ccTex = static_cast<CCMTLTexture*>(tex);
-        if(ccTex->getSwapchain()()) {
-            _swapChain = ccTex->getSwapchain()();
+        if(ccTex->swapChain()) {
+            _swapChain = ccTex->swapChain();
             _isOffscreen = false;
             break;
         }
@@ -53,8 +53,8 @@ void CCMTLFramebuffer::doInit(const FramebufferInfo &) {
     
     if(_depthStencilTexture) {
         auto* ccTex = static_cast<CCMTLTexture*>(_depthStencilTexture);
-        if(ccTex->getSwapchain()()) {
-            _swapChain = ccTex->getSwapchain()();
+        if(ccTex->swapChain()) {
+            _swapChain = ccTex->swapChain();
             _isOffscreen = false;
         }
     }

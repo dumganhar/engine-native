@@ -26,21 +26,23 @@
 #pragma once
 
 #include "Define.h"
+#include "core/assets/Material.h"
 #include "core/geometry/Sphere.h"
 #include "gfx-base/GFXBuffer.h"
-#include "scene/Ambient.h"
-#include "scene/Fog.h"
 #include "scene/Light.h"
 #include "scene/Pass.h"
-#include "scene/Shadow.h"
-#include "scene/Skybox.h"
 
 namespace cc {
 
 namespace gfx {
 class Framebuffer;
 }
-
+namespace scene {
+class Ambient;
+class Shadows;
+class Skybox;
+class Fog;
+} // namespace scene
 namespace pipeline {
 
 class RenderPipeline;
@@ -48,7 +50,7 @@ class RenderPipeline;
 class CC_DLL PipelineSceneData : public Object {
 public:
     PipelineSceneData();
-    ~PipelineSceneData();
+    ~PipelineSceneData() override;
     virtual void activate(gfx::Device *device, RenderPipeline *pipeline);
     void         destroy();
 
@@ -74,10 +76,9 @@ public:
     inline void                                                                setMatShadowViewProj(const Mat4 &matShadowViewProj) { _matShadowViewProj = matShadowViewProj; }
     inline bool                                                                isHDR() const { return _isHDR; }
     inline scene::Shadows *                                                    getShadow() const { return _shadow; }
-    inline scene::Ambient * getAmbient() const { return _ambient; }
-    inline scene::Skybox * getSkybox() const { return _skybox; }
-    inline scene::Fog * getFog() const { return _fog; }
-    
+    inline scene::Ambient *                                                    getAmbient() const { return _ambient; }
+    inline scene::Skybox *                                                     getSkybox() const { return _skybox; }
+    inline scene::Fog *                                                        getFog() const { return _fog; }
 
     inline float getShadingScale() const { return _shadingScale; }
 
@@ -87,7 +88,6 @@ private:
     void                 initOcclusionQuery();
     gfx::InputAssembler *createOcclusionQueryIA();
 
-private:
     RenderObjectList             _renderObjects;
     RenderObjectList             _dirShadowObjects;
     RenderObjectList             _castShadowObjects;
@@ -96,22 +96,22 @@ private:
     gfx::Buffer *                _occlusionQueryIndicesBuffer{nullptr};
     gfx::InputAssembler *        _occlusionQueryInputAssembler{nullptr};
 
-    cc::Material *_occlusionQueryMaterial{nullptr};
-    gfx::Shader * _occlusionQueryShader{nullptr};
+    Material *   _occlusionQueryMaterial{nullptr};
+    gfx::Shader *_occlusionQueryShader{nullptr};
 
-    RenderPipeline *                _pipeline{nullptr};
-    gfx::Device *                   _device{nullptr};
-    float                           _shadowCameraFar{0.0F};
-    Mat4                            _matShadowView;
-    Mat4                            _matShadowProj;
-    Mat4                            _matShadowViewProj;
+    RenderPipeline *_pipeline{nullptr};
+    gfx::Device *   _device{nullptr};
+    float           _shadowCameraFar{0.0F};
+    Mat4            _matShadowView;
+    Mat4            _matShadowProj;
+    Mat4            _matShadowViewProj;
 
-    scene::Fog *      _fog{nullptr};
-    scene::Ambient *  _ambient{nullptr};
-    scene::Skybox *   _skybox{nullptr};
-    scene::Shadows *  _shadow{nullptr};
-    bool              _isHDR{false};
-    float             _shadingScale{1.0F};
+    scene::Fog *    _fog{nullptr};
+    scene::Ambient *_ambient{nullptr};
+    scene::Skybox * _skybox{nullptr};
+    scene::Shadows *_shadow{nullptr};
+    bool            _isHDR{false};
+    float           _shadingScale{1.0F};
 
     std::unordered_map<const scene::Light *, gfx::Framebuffer *> _shadowFrameBufferMap;
 };

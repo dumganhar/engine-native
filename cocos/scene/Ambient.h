@@ -28,6 +28,7 @@
 #include <array>
 #include "base/Macros.h"
 #include "base/RefCounted.h"
+#include "core/Root.h"
 #include "math/Color.h"
 
 namespace cc {
@@ -60,21 +61,21 @@ public:
      */
 
     Vec4 &getSkyColor();
-    void setSkyColor(const Vec4 &color);
+    void  setSkyColor(const Vec4 &color);
 
     /**
      * @en Sky illuminance
      * @zh 天空亮度
      */
     float getSkyIllum() const;
-    void setSkyIllum(float illum);
+    void  setSkyIllum(float illum);
 
     /**
      * @en Ground color
      * @zh 地面颜色
      */
     Vec4 &getGroundAlbedo();
-    void setGroundAlbedo(const Vec4 &color);
+    void  setGroundAlbedo(const Vec4 &color);
 
 protected:
     Vec4  _groundAlbedoHDR{0.2F, 0.2F, 0.2F, 1.F};
@@ -139,9 +140,7 @@ public:
     // @tooltip('i18n:ambient.skyIllum')
     void         setSkyIllum(float val);
     inline float getSkyIllum() const {
-        const bool isHDR = true;
-        // TODO(xwx): use above after implement
-        // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
         return isHDR ? _skyIllumHDR : _skyIllumLDR;
     }
 
@@ -164,7 +163,7 @@ public:
     const Color &getGroundLightingColor() const;
 
     void setGroundAlbedo(const Vec4 &val);
-    
+
     void activate(Ambient *resource);
 
     //cjh JSB need to bind the property, so need to make it public

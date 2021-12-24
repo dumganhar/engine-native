@@ -31,6 +31,7 @@
 #include "renderer/gfx-base/GFXSwapchain.h"
 #include "renderer/pipeline/deferred/DeferredPipeline.h"
 #include "renderer/pipeline/forward/ForwardPipeline.h"
+#include "scene/DirectionalLight.h"
 
 namespace cc {
 
@@ -61,13 +62,13 @@ Root::~Root() {
     CC_SAFE_DELETE(_eventProcessor);
 }
 
-void Root::initialize(gfx::Swapchain* swapchain) {
+void Root::initialize(gfx::Swapchain *swapchain) {
     _swapchain = swapchain;
     gfx::ColorAttachment colorAttachment;
     colorAttachment.format = swapchain->getColorTexture()->getFormat();
     gfx::DepthStencilAttachment depthStencilAttachment;
     depthStencilAttachment.format = swapchain->getDepthStencilTexture()->getFormat();
-    gfx::RenderPassInfo         renderPassInfo;
+    gfx::RenderPassInfo renderPassInfo;
     renderPassInfo.colorAttachments.emplace_back(colorAttachment);
     renderPassInfo.depthStencilAttachment.depthStoreOp   = gfx::StoreOp::DISCARD;
     renderPassInfo.depthStencilAttachment.stencilStoreOp = gfx::StoreOp::DISCARD;
@@ -77,8 +78,7 @@ void Root::initialize(gfx::Swapchain* swapchain) {
         swapchain->getWidth(),
         swapchain->getHeight(),
         renderPassInfo,
-        swapchain
-    };
+        swapchain};
     _mainWindow = createWindow(info);
 
     _curWindow = _mainWindow;
@@ -266,6 +266,39 @@ void Root::destroyScene(scene::RenderScene *scene) {
     if (it != _scenes.end()) {
         CC_SAFE_DESTROY(*it);
         _scenes.erase(it);
+    }
+}
+
+void Root::destroyModel(scene::Model *model) {
+    if (model == nullptr) {
+        return;
+    }
+    model->destroy();
+    if (model->getScene() != nullptr) {
+        model->getScene()->removeModel(model);
+    }
+}
+
+void Root::destroyLight(scene::Light *light) {
+    if (light == nullptr) {
+        return;
+    }
+    light->destroy();
+    if (light->getScene() != nullptr) {
+        auto *directionalLightPtr = dynamic_cast<scene::DirectionalLight *>(light);
+        if (directionalLightPtr != nullptr) {
+            light->getScene()->removeDirectionalLight(directionalLightPtr);
+            return;
+        }
+        auto *sphereLightPtr = dynamic_cast<scene::SphereLight *>(light);
+        if (sphereLightPtr != nullptr) {
+            light->getScene()->removeSphereLight(sphereLightPtr);
+            return;
+        }
+        auto *spotLightPtr = dynamic_cast<scene::SpotLight *>(light);
+        if (spotLightPtr != nullptr) {
+            light->getScene()->removeSpotLight(spotLightPtr);
+        }
     }
 }
 

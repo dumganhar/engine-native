@@ -26,19 +26,18 @@
 #include "scene/RenderScene.h"
 
 #include <utility>
-
+#include "scene/Model.h"
 #include "3d/models/BakedSkinningModel.h"
 #include "3d/models/SkinningModel.h"
 #include "base/Log.h"
 #include "core/scene-graph/Node.h"
+#include "renderer/pipeline/RenderPipeline.h"
 #include "scene/Camera.h"
 #include "scene/DirectionalLight.h"
 #include "scene/DrawBatch2D.h"
-#include "scene/Model.h"
+#include "scene/Octree.h"
 #include "scene/SphereLight.h"
 #include "scene/SpotLight.h"
-#include "scene/Octree.h"
-#include "renderer/pipeline/RenderPipeline.h"
 
 namespace cc {
 namespace scene {

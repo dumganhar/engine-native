@@ -64,9 +64,7 @@ void SkyboxInfo::setApplyDiffuseMap(bool val) {
 }
 
 void SkyboxInfo::setEnvmap(TextureCube *val) {
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         _envmapHDR = val;
     } else {
@@ -88,9 +86,7 @@ void SkyboxInfo::setEnvmap(TextureCube *val) {
 }
 
 void SkyboxInfo::setDiffuseMap(TextureCube *val) {
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         _diffuseMapHDR = val;
     } else {
@@ -113,9 +109,7 @@ void SkyboxInfo::activate(Skybox *resource) {
 }
 
 void Skybox::setEnvmap(TextureCube *val) {
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         setEnvMaps(val, _envmapLDR);
     } else {
@@ -133,9 +127,7 @@ void Skybox::initialize(const SkyboxInfo &skyboxInfo) {
 void Skybox::setEnvMaps(TextureCube *envmapHDR, TextureCube *envmapLDR) {
     _envmapHDR       = envmapHDR;
     _envmapLDR       = envmapLDR;
-    const bool isHDR = true;
-    // TODO(xwx): use below after implement
-    // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         if (envmapHDR) {
             Root::getInstance()->getPipeline()->getPipelineSceneData()->getAmbient()->getGroundAlbedo().w = static_cast<float>(envmapHDR->mipmapLevel());
@@ -163,7 +155,7 @@ void Skybox::activate() {
     if (!_model) {
         _model = Root::getInstance()->createModel<scene::Model>();
         _model->initLocalDescriptors(CC_INVALID_INDEX);
-        // _model->initWorldBoundDescriptors(CC_INVALID_INDEX); // TODO(xwx): initWorldBoundDescriptors not implement yet
+        _model->initWorldBoundDescriptors(CC_INVALID_INDEX);
     }
     auto *envmap = getEnvmap();
     bool  isRGBE = envmap != nullptr ? envmap->isRGBE : _default->isRGBE;

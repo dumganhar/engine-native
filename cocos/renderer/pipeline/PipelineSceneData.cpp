@@ -28,6 +28,10 @@
 #include "gfx-base/GFXDef-common.h"
 #include "gfx-base/GFXDevice.h"
 #include "gfx-base/GFXFramebuffer.h"
+#include "scene/Ambient.h"
+#include "scene/Fog.h"
+#include "scene/Shadow.h"
+#include "scene/Skybox.h"
 
 namespace cc {
 namespace pipeline {
@@ -61,7 +65,6 @@ void PipelineSceneData::destroy() {
     _shadowFrameBufferMap.clear();
     _validPunctualLights.clear();
 
-
     CC_SAFE_DESTROY_NULL(_occlusionQueryInputAssembler);
     CC_SAFE_DESTROY_NULL(_occlusionQueryVertexBuffer);
     CC_SAFE_DESTROY_NULL(_occlusionQueryIndicesBuffer);
@@ -73,7 +76,7 @@ void PipelineSceneData::initOcclusionQuery() {
     }
 
     if (!_occlusionQueryMaterial) {
-        Material *mat = new Material();
+        auto *mat = new Material();
         mat->initDefault(std::string{"default-occlusion-query-material"});
         IMaterialInfo info;
         info.effectName = "occlusion-query";
@@ -95,9 +98,9 @@ scene::Pass *PipelineSceneData::getOcclusionQueryPass() {
 
 gfx::InputAssembler *PipelineSceneData::createOcclusionQueryIA() {
     // create vertex buffer
-    const int8_t vertices[]   = {-1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1};
-    auto         vbStride     = Float32Array::BYTES_PER_ELEMENT * 3;
-    auto         vbSize       = vbStride * 8;
+    const int8_t vertices[] = {-1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1};
+    auto         vbStride   = Float32Array::BYTES_PER_ELEMENT * 3;
+    auto         vbSize     = vbStride * 8;
 
     _occlusionQueryVertexBuffer = _device->createBuffer(gfx::BufferInfo{
         gfx::BufferUsageBit::VERTEX | gfx::BufferUsageBit::TRANSFER_DST,

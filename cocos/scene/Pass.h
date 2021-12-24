@@ -28,9 +28,9 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include "base/Ptr.h"
 #include "base/RefCounted.h"
 #include "base/TypeDef.h"
-#include "base/Ptr.h"
 #include "core/ArrayBuffer.h"
 #include "core/TypedArray.h"
 #include "core/assets/EffectAsset.h"
@@ -40,7 +40,6 @@
 #include "renderer/gfx-base/GFXDescriptorSet.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/Define.h"
-#include "scene/Define.h"
 
 namespace cc {
 
@@ -51,6 +50,7 @@ class InstancedBuffer;
 class BatchedBuffer;
 } // namespace pipeline
 namespace scene {
+struct IMacroPatch;
 
 struct PassDynamicsValue {
     bool  dirty{false};
@@ -72,7 +72,6 @@ struct IBlockRef {
 
 class Pass : public RefCounted {
 public:
-
     /**
      * @en Get the type of member in uniform buffer object with the handle
      * @zh 根据 handle 获取 uniform 的具体类型。
@@ -211,8 +210,8 @@ public:
 
     void update();
 
-    pipeline::InstancedBuffer* getInstancedBuffer(int32_t extraKey = 0);
-    pipeline::BatchedBuffer*   getBatchedBuffer(int32_t extraKey = 0);
+    pipeline::InstancedBuffer *getInstancedBuffer(int32_t extraKey = 0);
+    pipeline::BatchedBuffer *  getBatchedBuffer(int32_t extraKey = 0);
 
     /**
      * @en Destroy the current pass.
@@ -263,20 +262,20 @@ public:
     IPassInfoFull getPassInfoFull() const;
 
     // infos
-    inline Root *                                                 getRoot() const { return _root; }
-    inline gfx::Device *                                          getDevice() const { return _device; }
-    inline IProgramInfo *                                         getShaderInfo() const { return _shaderInfo; }
-    gfx::DescriptorSetLayout *                                    getLocalSetLayout() const;
-    inline const std::string &                                    getProgram() const { return _programName; }
+    inline Root *                                    getRoot() const { return _root; }
+    inline gfx::Device *                             getDevice() const { return _device; }
+    inline IProgramInfo *                            getShaderInfo() const { return _shaderInfo; }
+    gfx::DescriptorSetLayout *                       getLocalSetLayout() const;
+    inline const std::string &                       getProgram() const { return _programName; }
     inline const Record<std::string, IPropertyInfo> &getProperties() const { return _properties; }
-    inline const MacroRecord &                                    getDefines() const { return _defines; }
-    inline index_t                                                getPassIndex() const { return _passIndex; }
-    inline index_t                                                getPropertyIndex() const { return _propertyIndex; }
+    inline const MacroRecord &                       getDefines() const { return _defines; }
+    inline index_t                                   getPassIndex() const { return _passIndex; }
+    inline index_t                                   getPropertyIndex() const { return _propertyIndex; }
     // data
-    inline const IPassDynamics &          getDynamics() const { return _dynamics; }
-    inline const std::vector<IBlockRef> & getBlocks() const { return _blocks; }
-    inline ArrayBuffer *                  getRootBlock() { return _rootBlock; }
-    inline bool                           isRootBufferDirty() const { return _rootBufferDirty; }
+    inline const IPassDynamics &         getDynamics() const { return _dynamics; }
+    inline const std::vector<IBlockRef> &getBlocks() const { return _blocks; }
+    inline ArrayBuffer *                 getRootBlock() { return _rootBlock; }
+    inline bool                          isRootBufferDirty() const { return _rootBufferDirty; }
     //NOTE: _setRootBufferDirty must contain a _ prefix to make bindings-generator work correctly.
     // In ts engine, Pass has rootBufferDirty getter and without setter, but it contains a protected function named _setRootBufferDirty.
     // If we remove _ prefix in C++, bindings-generator doesn't support to bind rootBufferDirty property as getter and ignore to bind setRootBufferDirty as setter at the same time.
@@ -308,9 +307,9 @@ public:
     virtual void endChangeStatesSilently() {}
 
 protected:
-    void                                  setState(const gfx::BlendState &bs, const gfx::DepthStencilState &dss, const gfx::RasterizerState &rs, gfx::DescriptorSet *ds);
-    void                                  doInit(const IPassInfoFull &info, bool copyDefines = false);
-    virtual void                          syncBatchingScheme();
+    void         setState(const gfx::BlendState &bs, const gfx::DepthStencilState &dss, const gfx::RasterizerState &rs, gfx::DescriptorSet *ds);
+    void         doInit(const IPassInfoFull &info, bool copyDefines = false);
+    virtual void syncBatchingScheme();
 
     // internal resources
     SharedPtr<gfx::Buffer>              _rootBuffer;
@@ -324,24 +323,24 @@ protected:
     IPassDynamics                 _dynamics;
     Record<std::string, uint32_t> _propertyHandleMap;
     SharedPtr<ArrayBuffer>        _rootBlock;
-    std::vector<IBlockRef>    _blocks; // Point to position in _rootBlock
+    std::vector<IBlockRef>        _blocks; // Point to position in _rootBlock
 
-    SharedPtr<IProgramInfo>                         _shaderInfo;
-    MacroRecord                                     _defines;
-    Record<std::string, IPropertyInfo> _properties;
-    SharedPtr<gfx::Shader>                          _shader;
-    gfx::BlendState                                 _blendState{};
-    gfx::DepthStencilState                          _depthStencilState{};
-    gfx::RasterizerState                            _rs{};
-    pipeline::RenderPriority                        _priority{pipeline::RenderPriority::DEFAULT};
-    pipeline::RenderPassStage                       _stage{pipeline::RenderPassStage::DEFAULT};
-    uint32_t                                        _phase{0};
-    std::string                                     _phaseString;
-    gfx::PrimitiveMode                              _primitive{gfx::PrimitiveMode::TRIANGLE_LIST};
-    BatchingSchemes                                 _batchingScheme{BatchingSchemes::NONE};
-    gfx::DynamicStateFlagBit                        _dynamicStates{gfx::DynamicStateFlagBit::NONE};
-    Record<int32_t, SharedPtr<pipeline::InstancedBuffer>>     _instancedBuffers;
-    Record<int32_t, SharedPtr<pipeline::BatchedBuffer>>       _batchedBuffers;
+    SharedPtr<IProgramInfo>                               _shaderInfo;
+    MacroRecord                                           _defines;
+    Record<std::string, IPropertyInfo>                    _properties;
+    SharedPtr<gfx::Shader>                                _shader;
+    gfx::BlendState                                       _blendState{};
+    gfx::DepthStencilState                                _depthStencilState{};
+    gfx::RasterizerState                                  _rs{};
+    pipeline::RenderPriority                              _priority{pipeline::RenderPriority::DEFAULT};
+    pipeline::RenderPassStage                             _stage{pipeline::RenderPassStage::DEFAULT};
+    uint32_t                                              _phase{0};
+    std::string                                           _phaseString;
+    gfx::PrimitiveMode                                    _primitive{gfx::PrimitiveMode::TRIANGLE_LIST};
+    BatchingSchemes                                       _batchingScheme{BatchingSchemes::NONE};
+    gfx::DynamicStateFlagBit                              _dynamicStates{gfx::DynamicStateFlagBit::NONE};
+    Record<int32_t, SharedPtr<pipeline::InstancedBuffer>> _instancedBuffers;
+    Record<int32_t, SharedPtr<pipeline::BatchedBuffer>>   _batchedBuffers;
 
     uint64_t _hash{0};
     // external references

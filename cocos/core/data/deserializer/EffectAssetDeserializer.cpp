@@ -364,6 +364,26 @@ static void jsonToBlendTarget(const rapidjson::Value &val, BlendTargetInfo *outB
     }
 }
 
+static void deserializeGfxColor(const rapidjson::Value &color, cc::optional<gfx::Color> &gfxColor) {
+    if (gfxColor.has_value()) {
+        if (color.HasMember("x")) {
+            gfxColor->x = color["x"].GetFloat();
+        }
+
+        if (color.HasMember("y")) {
+            gfxColor->y = color["y"].GetFloat();
+        }
+
+        if (color.HasMember("z")) {
+            gfxColor->z = color["z"].GetFloat();
+        }
+
+        if (color.HasMember("w")) {
+            gfxColor->w = color["w"].GetFloat();
+        }
+    }
+}
+
 static BlendStateInfo jsonToBlendState(const rapidjson::Value &val) {
     CC_ASSERT(val.IsObject());
 
@@ -378,7 +398,7 @@ static BlendStateInfo jsonToBlendState(const rapidjson::Value &val) {
     }
 
     if (val.HasMember("blendColor")) {
-        //cjh TODO:
+        deserializeGfxColor(val["blendColor"], bs.blendColor);
     }
 
     if (val.HasMember("targets")) {
@@ -588,17 +608,9 @@ static void deserializeShaderBlock(const rapidjson::Value &blockVal, IBlockInfo 
         deserializeArray<gfx::Uniform>(blockVal["members"], cBlock.members, deserializeMember);
     }
 
-// TODO(cjh):    if (blockVal.HasMember("count")) {
-//        cBlock.count = blockVal["count"].GetUint();
-//    }
-//
-//    if (blockVal.HasMember("stageFlags")) {
-//        cBlock.stageFlags = static_cast<gfx::ShaderStageFlags>(blockVal["stageFlags"].GetInt());
-//    }
-//
-//    if (blockVal.HasMember("descriptorType")) {
-//        cBlock.descriptorType = static_cast<gfx::DescriptorType>(blockVal["descriptorType"].GetInt());
-//    }
+    if (blockVal.HasMember("stageFlags")) {
+        cBlock.stageFlags = static_cast<gfx::ShaderStageFlags>(blockVal["stageFlags"].GetInt());
+    }
 }
 
 static void deserializeShaderSamplerTexture(const rapidjson::Value &samplerTextureVal, ISamplerTextureInfo &cSamplerTexture) {
@@ -623,13 +635,133 @@ static void deserializeShaderSamplerTexture(const rapidjson::Value &samplerTextu
     if (samplerTextureVal.HasMember("stageFlags")) {
         cSamplerTexture.stageFlags = static_cast<gfx::ShaderStageFlags>(samplerTextureVal["stageFlags"].GetInt());
     }
-
-// TODO(cjh):    if (samplerTextureVal.HasMember("descriptorType")) {
-//        cSamplerTexture.descriptorType = static_cast<gfx::DescriptorType>(samplerTextureVal["descriptorType"].GetInt());
-//    }
 }
 
-static void deserializeShaderGfxAttribute(const rapidjson::Value &gfxAttributeVal, gfx::Attribute &cAttribute) {
+static void deserializeShaderSampler(const rapidjson::Value &samplerVal, ISamplerInfo &cSampler) {
+    CC_ASSERT(samplerVal.IsObject());
+
+    if (samplerVal.HasMember("set")) {
+        cSampler.set = samplerVal["set"].GetUint();
+    }
+
+    if (samplerVal.HasMember("binding")) {
+        cSampler.binding = samplerVal["binding"].GetInt();
+    }
+
+    if (samplerVal.HasMember("name")) {
+        cSampler.name = samplerVal["name"].GetString();
+    }
+
+    if (samplerVal.HasMember("count")) {
+        cSampler.count = samplerVal["count"].GetUint();
+    }
+
+    if (samplerVal.HasMember("stageFlags")) {
+        cSampler.stageFlags = static_cast<gfx::ShaderStageFlags>(samplerVal["stageFlags"].GetInt());
+    }
+}
+
+static void deserializeShaderTexture(const rapidjson::Value &textureVal, ITextureInfo &cTexture) {
+    CC_ASSERT(textureVal.IsObject());
+
+    if (textureVal.HasMember("set")) {
+        cTexture.set = textureVal["set"].GetUint();
+    }
+
+    if (textureVal.HasMember("binding")) {
+        cTexture.binding = textureVal["binding"].GetInt();
+    }
+
+    if (textureVal.HasMember("name")) {
+        cTexture.name = textureVal["name"].GetString();
+    }
+
+    if (textureVal.HasMember("type")) {
+        cTexture.type = static_cast<gfx::Type>(textureVal["type"].GetInt());
+    }
+
+    if (textureVal.HasMember("count")) {
+        cTexture.count = textureVal["count"].GetUint();
+    }
+
+    if (textureVal.HasMember("stageFlags")) {
+        cTexture.stageFlags = static_cast<gfx::ShaderStageFlags>(textureVal["stageFlags"].GetInt());
+    }
+}
+
+static void deserializeShaderBuffer(const rapidjson::Value &bufferVal, IBufferInfo &cBuffer) {
+    CC_ASSERT(bufferVal.IsObject());
+
+    if (bufferVal.HasMember("binding")) {
+        cBuffer.binding = bufferVal["binding"].GetInt();
+    }
+
+    if (bufferVal.HasMember("name")) {
+        cBuffer.name = bufferVal["name"].GetString();
+    }
+
+    if (bufferVal.HasMember("memoryAccess")) {
+        cBuffer.memoryAccess = static_cast<gfx::MemoryAccess>(bufferVal["memoryAccess"].GetInt());
+    }
+
+    if (bufferVal.HasMember("stageFlags")) {
+        cBuffer.stageFlags = static_cast<gfx::ShaderStageFlags>(bufferVal["stageFlags"].GetInt());
+    }
+}
+
+static void deserializeShaderImage(const rapidjson::Value &imageVal, IImageInfo &cImage) {
+    CC_ASSERT(imageVal.IsObject());
+
+    if (imageVal.HasMember("binding")) {
+        cImage.binding = imageVal["binding"].GetInt();
+    }
+
+    if (imageVal.HasMember("name")) {
+        cImage.name = imageVal["name"].GetString();
+    }
+
+    if (imageVal.HasMember("type")) {
+        cImage.type = static_cast<gfx::Type>(imageVal["type"].GetInt());
+    }
+
+    if (imageVal.HasMember("count")) {
+        cImage.count = imageVal["count"].GetUint();
+    }
+
+    if (imageVal.HasMember("memoryAccess")) {
+        cImage.memoryAccess = static_cast<gfx::MemoryAccess>(imageVal["memoryAccess"].GetInt());
+    }
+
+    if (imageVal.HasMember("stageFlags")) {
+        cImage.stageFlags = static_cast<gfx::ShaderStageFlags>(imageVal["stageFlags"].GetInt());
+    }
+}
+
+static void deserializeShaderInputAttachment(const rapidjson::Value &inputAttachmentVal, IInputAttachmentInfo &cInputAttachment) {
+    CC_ASSERT(inputAttachmentVal.IsObject());
+
+    if (inputAttachmentVal.HasMember("set")) {
+        cInputAttachment.set = inputAttachmentVal["set"].GetUint();
+    }
+
+    if (inputAttachmentVal.HasMember("binding")) {
+        cInputAttachment.binding = inputAttachmentVal["binding"].GetInt();
+    }
+
+    if (inputAttachmentVal.HasMember("name")) {
+        cInputAttachment.name = inputAttachmentVal["name"].GetString();
+    }
+
+    if (inputAttachmentVal.HasMember("count")) {
+        cInputAttachment.count = inputAttachmentVal["count"].GetUint();
+    }
+
+    if (inputAttachmentVal.HasMember("stageFlags")) {
+        cInputAttachment.stageFlags = static_cast<gfx::ShaderStageFlags>(inputAttachmentVal["stageFlags"].GetInt());
+    }
+}
+
+static void deserializeShaderAttribute(const rapidjson::Value &gfxAttributeVal, IAttributeInfo &cAttribute) {
     CC_ASSERT(gfxAttributeVal.IsObject());
 
     if (gfxAttributeVal.HasMember("name")) {
@@ -640,7 +772,17 @@ static void deserializeShaderGfxAttribute(const rapidjson::Value &gfxAttributeVa
         cAttribute.format = static_cast<gfx::Format>(gfxAttributeVal["format"].GetInt());
     }
 
-    //cjh TODO: Does isNormailzed, stream, isInstanced need to be deserialized?
+    if (gfxAttributeVal.HasMember("isNormalized")) {
+        cAttribute.isNormalized = gfxAttributeVal["isNormalized"].GetBool();
+    }
+
+    if (gfxAttributeVal.HasMember("stream")) {
+        cAttribute.stream = gfxAttributeVal["stream"].GetUint();
+    }
+
+    if (gfxAttributeVal.HasMember("isInstanced")) {
+        cAttribute.isNormalized = gfxAttributeVal["isInstanced"].GetBool();
+    }
 
     if (gfxAttributeVal.HasMember("location")) {
         cAttribute.location = gfxAttributeVal["location"].GetUint();
@@ -650,8 +792,7 @@ static void deserializeShaderGfxAttribute(const rapidjson::Value &gfxAttributeVa
 static void deserializeShaderAttributeInfo(const rapidjson::Value &attributeVal, IAttributeInfo &cAttributeInfo) {
     CC_ASSERT(attributeVal.IsObject());
 
-// TODO(cjh):    deserializeShaderGfxAttribute(attributeVal, cAttributeInfo);
-
+    deserializeShaderAttribute(attributeVal, cAttributeInfo);
     if (attributeVal.HasMember("defines")) {
         deserializeArray(attributeVal["defines"], cAttributeInfo.defines);
     }
@@ -666,9 +807,14 @@ static void deserializeShader(const rapidjson::Value &shaderVal, IShaderInfo &cS
 
     deserializeShaderBuiltins(shaderVal["builtins"], cShader.builtins);
     deserializeArray<IDefineInfo>(shaderVal["defines"], cShader.defines, deserializeShaderDefine);
+    deserializeArray<IAttributeInfo>(shaderVal["attributes"], cShader.attributes, deserializeShaderAttributeInfo);
     deserializeArray<IBlockInfo>(shaderVal["blocks"], cShader.blocks, deserializeShaderBlock);
     deserializeArray<ISamplerTextureInfo>(shaderVal["samplerTextures"], cShader.samplerTextures, deserializeShaderSamplerTexture);
-    deserializeArray<IAttributeInfo>(shaderVal["attributes"], cShader.attributes, deserializeShaderAttributeInfo);
+    deserializeArray<ISamplerInfo>(shaderVal["samplers"], cShader.samplers, deserializeShaderSampler);
+    deserializeArray<ITextureInfo>(shaderVal["textures"], cShader.textures, deserializeShaderTexture);
+    deserializeArray<IBufferInfo>(shaderVal["buffers"], cShader.buffers, deserializeShaderBuffer);
+    deserializeArray<IImageInfo>(shaderVal["images"], cShader.images, deserializeShaderImage);
+    deserializeArray<IInputAttachmentInfo>(shaderVal["subpassInputs"], cShader.subpassInputs, deserializeShaderInputAttachment);
 }
 
 static void deserializePreCompileInfoValue(const rapidjson::Value &infoVal, IPreCompileInfoValueType &cInfo) {

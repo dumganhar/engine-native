@@ -79,8 +79,8 @@ void CCMTLRenderPass::setColorAttachment(size_t slot, CCMTLTexture* cctex, int l
     }
 
     id<MTLTexture> texture = nil;
-    if(cctex->getSwapchain()()) {
-        auto* swapchain = static_cast<CCMTLSwapchain*>(cctex->getSwapchain()());
+    if(cctex->swapChain()) {
+        auto* swapchain = static_cast<CCMTLSwapchain*>(cctex->swapChain());
         texture = swapchain->colorTexture()->getMTLTexture();
     } else {
         texture = cctex->getMTLTexture();
@@ -98,8 +98,8 @@ void CCMTLRenderPass::setDepthStencilAttachment(CCMTLTexture* cctex, int level) 
     }
     
     id<MTLTexture> texture = nil;
-    if(cctex->getSwapchain()()) {
-        auto* swapchain = static_cast<CCMTLSwapchain*>(cctex->getSwapchain()());
+    if(cctex->swapChain()) {
+        auto* swapchain = static_cast<CCMTLSwapchain*>(cctex->swapChain());
         texture = swapchain->depthStencilTexture()->getMTLTexture();
     } else {
         texture = cctex->getMTLTexture();

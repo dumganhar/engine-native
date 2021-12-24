@@ -97,7 +97,7 @@ void CCMTLBuffer::doInit(const BufferViewInfo &info) {
 
 bool CCMTLBuffer::createMTLBuffer(uint size, MemoryUsage usage) {
     if(!size) {
-        return;
+        return false;
     }
     
     _mtlResourceOptions = mu::toMTLResourceOption(usage);

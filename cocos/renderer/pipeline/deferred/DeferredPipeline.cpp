@@ -84,7 +84,7 @@ bool DeferredPipeline::initialize(const RenderPipelineInfo &info) {
 }
 
 bool DeferredPipeline::activate(gfx::Swapchain *swapchain) {
-    _macros.setValue("CC_PIPELINE_TYPE", static_cast<float>(1.0));
+    _macros["CC_PIPELINE_TYPE"] = static_cast<float>(1.0F);
 
     if (!RenderPipeline::activate(swapchain)) {
         CC_LOG_ERROR("RenderPipeline active failed.");

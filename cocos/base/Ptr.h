@@ -97,6 +97,7 @@ public:
     }
 
     SharedPtr(const SharedPtr<T> &r) : _ptr(r._ptr) {
+        static_assert(std::is_base_of<RefCounted, T>::value, "");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
@@ -104,16 +105,21 @@ public:
 
     template <typename U>
     SharedPtr(const SharedPtr<U> &r) : _ptr(r.get()) {
+        static_assert(std::is_base_of<RefCounted, T>::value, "");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
     }
 
     // Move constructors.
-    SharedPtr(SharedPtr<T> &&r) noexcept : _ptr(r.release()) {}
+    SharedPtr(SharedPtr<T> &&r) noexcept : _ptr(r.release()) {
+        static_assert(std::is_base_of<RefCounted, T>::value, "");
+    }
 
     template <typename U>
-    SharedPtr(SharedPtr<U> &&r) noexcept : _ptr(r.release()) {}
+    SharedPtr(SharedPtr<U> &&r) noexcept : _ptr(r.release()) {
+        static_assert(std::is_base_of<RefCounted, T>::value, "");
+    }
 
     ~SharedPtr() {
         if (_ptr) {

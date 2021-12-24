@@ -111,7 +111,7 @@ public:
 private:
     std::string                              _name;
     uint64_t                                 _modelId{0};
-    SharedPtr<DirectionalLight>              _mainLight{nullptr};
+    SharedPtr<DirectionalLight>              _mainLight;
     std::vector<SharedPtr<Model>>            _models;
     std::vector<SharedPtr<Camera>>           _cameras;
     std::vector<SharedPtr<DirectionalLight>> _directionalLights;

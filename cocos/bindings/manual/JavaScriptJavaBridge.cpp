@@ -653,11 +653,11 @@ static bool ScriptNativeBridge_sendToNative(se::State &s) { //NOLINT(readability
     if (argc >= 1 && argc < 3) {
         bool        ok = false;
         std::string arg0;
-        ok = seval_to_std_string(args[0], &arg0);
+        ok = sevalue_to_native(args[0], &arg0);
         SE_PRECONDITION2(ok, false, "Converting arg0 failed!");
         std::string arg1;
         if (argc == 2) {
-            ok = seval_to_std_string(args[1], &arg1);
+            ok = sevalue_to_native(args[1], &arg1);
             SE_PRECONDITION2(ok, false, "Converting arg1 failed!");
         }
         callPlatformStringMethod(arg0, arg1);

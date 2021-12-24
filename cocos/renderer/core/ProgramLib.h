@@ -27,11 +27,11 @@
 #include <cmath>
 #include <functional>
 #include <numeric>
-#include "cocos/base/Optional.h"
 #include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "cocos/base/Optional.h"
 #include "core/Types.h"
 #include "core/assets/EffectAsset.h"
 #include "renderer/core/PassUtils.h"
@@ -55,9 +55,9 @@ struct IMacroInfo {
 
 struct ITemplateInfo {
     std::vector<gfx::Attribute>                  gfxAttributes;
-    gfx::ShaderInfo shaderInfo;
+    gfx::ShaderInfo                              shaderInfo;
     std::vector<int32_t>                         blockSizes;
-    Vector<gfx::DescriptorSetLayout *>           setLayouts; // TODO(PatriceJiang): pointer / rc
+    Vector<gfx::DescriptorSetLayout *>           setLayouts;
     SharedPtr<gfx::PipelineLayout>               pipelineLayout{nullptr};
     Record<std::string, uint32_t>                handleMap;
     std::vector<gfx::DescriptorSetLayoutBinding> bindings;

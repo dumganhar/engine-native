@@ -33,9 +33,8 @@
 #include "gfx-base/GFXFramebuffer.h"
 #include "gfx-base/GFXRenderPass.h"
 #include "gfx-base/GFXTexture.h"
-#include "scene/RenderScene.h"
 #include "scene/DirectionalLight.h"
-#include "renderer/pipeline/PipelineSceneData.h"
+#include "scene/RenderScene.h"
 
 namespace cc {
 namespace pipeline {
@@ -68,7 +67,7 @@ void ShadowFlow::activate(RenderPipeline *pipeline) {
 
 void ShadowFlow::render(scene::Camera *camera) {
     const auto *sceneData = _pipeline->getPipelineSceneData();
-    auto *      shadow    = sceneData->getShadow();
+    auto       *shadow    = sceneData->getShadow();
     if (shadow == nullptr || !shadow->isEnabled() || shadow->getType() != scene::ShadowType::SHADOW_MAP) {
         return;
     }
@@ -84,7 +83,7 @@ void ShadowFlow::render(scene::Camera *camera) {
         resizeShadowMap();
     }
 
-    const auto &                   shadowFramebufferMap = sceneData->getShadowFramebufferMap();
+    const auto                    &shadowFramebufferMap = sceneData->getShadowFramebufferMap();
     const scene::DirectionalLight *mainLight            = camera->getScene()->getMainLight();
     if (mainLight) {
         gfx::DescriptorSet *globalDS = _pipeline->getDescriptorSet();
@@ -101,8 +100,8 @@ void ShadowFlow::render(scene::Camera *camera) {
     }
 
     for (uint l = 0; l < _validLights.size(); ++l) {
-        const scene::Light *light      = _validLights[l];
-        gfx::DescriptorSet *globalDS   = _pipeline->getGlobalDSManager()->getOrCreateDescriptorSet(l);
+        const scene::Light *light    = _validLights[l];
+        gfx::DescriptorSet *globalDS = _pipeline->getGlobalDSManager()->getOrCreateDescriptorSet(l);
 
         if (!shadowFramebufferMap.count(light)) {
             initShadowFrameBuffer(_pipeline, light);
@@ -121,7 +120,7 @@ void ShadowFlow::render(scene::Camera *camera) {
 void ShadowFlow::lightCollecting() {
     _validLights.clear();
 
-    const vector<const scene::Light*> validPunctualLights = _pipeline->getPipelineSceneData()->getValidPunctualLights();
+    const vector<const scene::Light *> validPunctualLights = _pipeline->getPipelineSceneData()->getValidPunctualLights();
     for (const scene::Light *light : validPunctualLights) {
         if (light->getType() == scene::LightType::SPOT) {
             _validLights.emplace_back(light);
@@ -130,8 +129,8 @@ void ShadowFlow::lightCollecting() {
 }
 
 void ShadowFlow::clearShadowMap(scene::Camera *camera) {
-    const auto *                   sceneData            = _pipeline->getPipelineSceneData();
-    const auto &                   shadowFramebufferMap = sceneData->getShadowFramebufferMap();
+    const auto                    *sceneData            = _pipeline->getPipelineSceneData();
+    const auto                    &shadowFramebufferMap = sceneData->getShadowFramebufferMap();
     const scene::DirectionalLight *mainLight            = camera->getScene()->getMainLight();
 
     if (mainLight) {
@@ -149,8 +148,8 @@ void ShadowFlow::clearShadowMap(scene::Camera *camera) {
     }
 
     for (uint l = 0; l < _validLights.size(); ++l) {
-        const scene::Light *light      = _validLights[l];
-        gfx::DescriptorSet *globalDS   = _pipeline->getGlobalDSManager()->getOrCreateDescriptorSet(l);
+        const scene::Light *light    = _validLights[l];
+        gfx::DescriptorSet *globalDS = _pipeline->getGlobalDSManager()->getOrCreateDescriptorSet(l);
 
         if (!shadowFramebufferMap.count(light)) {
             continue;
@@ -166,12 +165,12 @@ void ShadowFlow::clearShadowMap(scene::Camera *camera) {
 }
 
 void ShadowFlow::resizeShadowMap() {
-    auto *sceneData = _pipeline->getPipelineSceneData();
-    auto *     shadow    = sceneData->getShadow();
-    auto *      device    = gfx::Device::getInstance();
+    auto      *sceneData = _pipeline->getPipelineSceneData();
+    auto      *shadow    = sceneData->getShadow();
+    auto      *device    = gfx::Device::getInstance();
     const auto width     = static_cast<uint>(shadow->getSize().x);
     const auto height    = static_cast<uint>(shadow->getSize().y);
-    const auto  format    = supportsFloatTexture(device) ? gfx::Format::R32F : gfx::Format::RGBA8;
+    const auto format    = supportsFloatTexture(device) ? gfx::Format::R32F : gfx::Format::RGBA8;
 
     for (const auto &pair : sceneData->getShadowFramebufferMap()) {
         gfx::Framebuffer *framebuffer = pair.second;
@@ -219,7 +218,7 @@ void ShadowFlow::resizeShadowMap() {
 }
 
 void ShadowFlow::initShadowFrameBuffer(RenderPipeline *pipeline, const scene::Light *light) {
-    auto *      device        = gfx::Device::getInstance();
+    auto       *device        = gfx::Device::getInstance();
     const auto *sceneData     = _pipeline->getPipelineSceneData();
     const auto *shadowInfo    = sceneData->getShadow();
     const auto  shadowMapSize = shadowInfo->getSize();
@@ -252,7 +251,7 @@ void ShadowFlow::initShadowFrameBuffer(RenderPipeline *pipeline, const scene::Li
     rpInfo.depthStencilAttachment = depthStencilAttachment;
 
     size_t rpHash = cc::gfx::RenderPass::computeHash(rpInfo);
-    auto iter   = renderPassHashMap.find(rpHash);
+    auto   iter   = renderPassHashMap.find(rpHash);
     if (iter != renderPassHashMap.end()) {
         _renderPass = iter->second;
     } else {

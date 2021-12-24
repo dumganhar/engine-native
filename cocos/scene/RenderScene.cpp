@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,7 +26,6 @@
 #include "scene/RenderScene.h"
 
 #include <utility>
-#include "scene/Model.h"
 #include "3d/models/BakedSkinningModel.h"
 #include "3d/models/SkinningModel.h"
 #include "base/Log.h"
@@ -35,6 +34,7 @@
 #include "scene/Camera.h"
 #include "scene/DirectionalLight.h"
 #include "scene/DrawBatch2D.h"
+#include "scene/Model.h"
 #include "scene/Octree.h"
 #include "scene/SphereLight.h"
 #include "scene/SpotLight.h"
@@ -43,21 +43,20 @@ namespace cc {
 namespace scene {
 
 RenderScene::~RenderScene() {
-    CC_SAFE_DELETE(_octree);
 }
 
 void RenderScene::activate() {
-    const auto *sceneData  = pipeline::RenderPipeline::getInstance()->getPipelineSceneData();
-    const OctreeInfo *info       = nullptr; // TODO(cjh): sceneData->getOctree();
-
-//cjh    if (info->isEnabled()) {
-//        _octree = new Octree(info->minPos, info->maxPos, info->depth);
-//    }
+    const auto *sceneData = pipeline::RenderPipeline::getInstance()->getPipelineSceneData();
+    _octree               = sceneData->getOctree();
 }
 
 bool RenderScene::initialize(const IRenderSceneInfo &info) {
     _name = info.name;
     return true;
+}
+
+void RenderScene::setMainLight(DirectionalLight *dl) {
+    _mainLight = dl;
 }
 
 void RenderScene::update(uint32_t stamp) {
@@ -176,7 +175,7 @@ void RenderScene::removeSpotLights() {
 void RenderScene::addModel(Model *model) {
     model->attachToScene(this);
     _models.emplace_back(model);
-    if (_octree) {
+    if (_octree && _octree->isEnabled()) {
         _octree->insert(model);
     }
 }
@@ -192,7 +191,7 @@ void RenderScene::removeModel(index_t idx) {
 void RenderScene::removeModel(Model *model) {
     auto iter = std::find(_models.begin(), _models.end(), model);
     if (iter != _models.end()) {
-        if (_octree) {
+        if (_octree && _octree->isEnabled()) {
             _octree->remove(*iter);
         }
         model->detachFromScene();
@@ -204,7 +203,7 @@ void RenderScene::removeModel(Model *model) {
 
 void RenderScene::removeModels() {
     for (const auto &model : _models) {
-        if (_octree) {
+        if (_octree && _octree->isEnabled()) {
             _octree->remove(model);
         }
         model->detachFromScene();
@@ -230,7 +229,7 @@ void RenderScene::removeBatches() {
 }
 
 void RenderScene::updateOctree(Model *model) {
-    if (_octree) {
+    if (_octree && _octree->isEnabled()) {
         _octree->update(model);
     }
 }

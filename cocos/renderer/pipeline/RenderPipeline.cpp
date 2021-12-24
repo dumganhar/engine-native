@@ -25,8 +25,8 @@
 
 #include <boost/functional/hash.hpp>
 
-#include "InstancedBuffer.h"
 #include "BatchedBuffer.h"
+#include "InstancedBuffer.h"
 #include "PipelineStateManager.h"
 #include "RenderFlow.h"
 #include "RenderPipeline.h"
@@ -57,8 +57,8 @@ RenderPipeline::RenderPipeline()
 : _device(gfx::Device::getInstance()) {
     RenderPipeline::instance = this;
 
-    _globalDSManager   = new GlobalDSManager();
-    _pipelineUBO       = new PipelineUBO();
+    _globalDSManager = new GlobalDSManager();
+    _pipelineUBO     = new PipelineUBO();
 }
 
 RenderPipeline::~RenderPipeline() {
@@ -142,12 +142,12 @@ bool RenderPipeline::destroy() {
     BatchedBuffer::destroyBatchedBuffer();
     InstancedBuffer::destroyInstancedBuffer();
     framegraph::FrameGraph::gc(0);
-    
+
     return Super::destroy();
 }
 
 gfx::Color RenderPipeline::getClearcolor(scene::Camera *camera) const {
-    auto *const sceneData  = getPipelineSceneData();
+    auto *const sceneData = getPipelineSceneData();
     gfx::Color  clearColor{0.0F, 0.0F, 0.0F, 1.0F};
     if (static_cast<uint32_t>(camera->getClearFlag()) & static_cast<uint32_t>(gfx::ClearFlagBit::COLOR)) {
         clearColor = camera->getClearColor();
@@ -178,7 +178,7 @@ gfx::InputAssembler *RenderPipeline::getIAByRenderArea(const gfx::Rect &renderAr
         return iter->second;
     }
 
-    gfx::Buffer *        vb = nullptr;
+    gfx::Buffer         *vb = nullptr;
     gfx::InputAssembler *ia = nullptr;
     createQuadInputAssembler(_quadIB, &vb, &ia);
     _quadVB.push_back(vb);
@@ -240,7 +240,7 @@ gfx::Rect RenderPipeline::getRenderArea(scene::Camera *camera) {
     float w{static_cast<float>(camera->getWindow()->getWidth())};
     float h{static_cast<float>(camera->getWindow()->getHeight())};
 
-    const auto& vp = camera->getViewport();
+    const auto &vp = camera->getViewport();
     return {
         static_cast<int32_t>(vp.x * w),
         static_cast<int32_t>(vp.y * h),
@@ -327,7 +327,7 @@ bool RenderPipeline::isOccluded(const scene::Camera *camera, const scene::SubMod
 }
 
 void RenderPipeline::framegraphGC() {
-    static uint64_t frameCount{0U};
+    static uint64_t           frameCount{0U};
     static constexpr uint32_t INTERVAL_IN_SECONDS = 30;
     if (++frameCount % (INTERVAL_IN_SECONDS * 60) == 0) {
         framegraph::FrameGraph::gc(INTERVAL_IN_SECONDS * 60);

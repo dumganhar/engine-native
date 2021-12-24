@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2020-2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,6 +31,41 @@
 
 namespace cc {
 namespace scene {
+
+void OctreeInfo::setEnabled(bool val) {
+    if (_enabled == val)
+        return;
+    _enabled = val;
+    if (_resource) {
+        _resource->setEnabled(val);
+    }
+}
+
+void OctreeInfo::setMinPos(const Vec3& val) {
+    _minPos = val;
+    if (_resource) {
+        _resource->setMinPos(val);
+    }
+}
+
+void OctreeInfo::setMaxPos(const Vec3& val) {
+    _maxPos = val;
+    if (_resource) {
+        _resource->setMaxPos(val);
+    }
+}
+
+void OctreeInfo::setDepth(uint32_t val) {
+    _depth = val;
+    if (_resource) {
+        _resource->setMaxDepth(val);
+    }
+}
+
+void OctreeInfo::activate(Octree* resource) {
+    _resource = resource;
+    _resource->initialize(*this);
+}
 
 /* children layout
         y
@@ -51,8 +86,8 @@ namespace scene {
 /**
  * OctreeNode class
  */
-OctreeNode::OctreeNode(Octree* owner, OctreeNode* parent, BBox aabb, uint32_t depth, uint32_t index)
-: _owner(owner), _parent(parent), _aabb(std::move(aabb)), _depth(depth), _index(index) {
+OctreeNode::OctreeNode(Octree* owner, OctreeNode* parent)
+: _owner(owner), _parent(parent) {
 }
 
 OctreeNode::~OctreeNode() {
@@ -89,8 +124,11 @@ BBox OctreeNode::getChildBox(uint32_t index) const {
 
 OctreeNode* OctreeNode::getOrCreateChild(uint32_t index) {
     if (!_children[index]) {
-        BBox childBox    = getChildBox(index);
-        _children[index] = new OctreeNode(_owner, this, childBox, _depth + 1, index);
+        BBox  childBox = getChildBox(index);
+        auto* child = _children[index] = new OctreeNode(_owner, this);
+        child->setBox(childBox);
+        child->setDepth(_depth + 1);
+        child->setIndex(index);
     }
 
     return _children[index];
@@ -259,14 +297,41 @@ void OctreeNode::queryVisibilitySequentially(const Camera* camera, const geometr
 /**
  * Octree class
  */
-Octree::Octree(const Vec3& minPos, const Vec3& maxPos, uint32_t maxDepth) {
-    const Vec3 expand{OCTREE_BOX_EXPAND_SIZE, OCTREE_BOX_EXPAND_SIZE, OCTREE_BOX_EXPAND_SIZE};
-    _root     = new OctreeNode(this, nullptr, BBox(minPos - expand, maxPos), 0, 0);
-    _maxDepth = std::max(maxDepth, 1U);
+Octree::Octree() {
+    _root = new OctreeNode(this, nullptr);
 }
 
 Octree::~Octree() {
     delete _root;
+}
+
+void Octree::initialize(const OctreeInfo& info) {
+    const Vec3 expand{OCTREE_BOX_EXPAND_SIZE, OCTREE_BOX_EXPAND_SIZE, OCTREE_BOX_EXPAND_SIZE};
+    _minPos   = info.getMinPos();
+    _maxPos   = info.getMaxPos();
+    _maxDepth = std::max(info.getDepth(), 1U);
+    setEnabled(info.isEnabled());
+    _root->setBox(BBox{_minPos - expand, _maxPos});
+    _root->setDepth(0);
+    _root->setIndex(0);
+}
+
+void Octree::setEnabled(bool val) {
+    if (_enabled == val)
+        return;
+    _enabled = val;
+}
+
+void Octree::setMinPos(const Vec3& val) {
+    _minPos = val;
+}
+
+void Octree::setMaxPos(const Vec3& val) {
+    _maxPos = val;
+}
+
+void Octree::setMaxDepth(uint32_t val) {
+    _maxDepth = val;
 }
 
 void Octree::resize(const Vec3& minPos, const Vec3& maxPos, uint32_t maxDepth) {
@@ -280,7 +345,11 @@ void Octree::resize(const Vec3& minPos, const Vec3& maxPos, uint32_t maxDepth) {
     _root->gatherModels(models);
 
     delete _root;
-    _root     = new OctreeNode(this, nullptr, BBox(minPos - expand, maxPos), 0, 0);
+    _root = new OctreeNode(this, nullptr);
+    _root->setBox(BBox{minPos - expand, maxPos});
+    _root->setDepth(0);
+    _root->setIndex(0);
+
     _maxDepth = std::max(maxDepth, 1U);
 
     for (auto* model : models) {

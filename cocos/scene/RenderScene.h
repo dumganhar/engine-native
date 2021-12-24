@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -94,17 +94,17 @@ public:
     void onGlobalPipelineStateChanged();
 
     inline DirectionalLight *getMainLight() const { return _mainLight.get(); }
-    inline void              setMainLight(DirectionalLight *dl) { _mainLight = dl; }
+    void                     setMainLight(DirectionalLight *dl);
 
     inline uint64_t                                   generateModelId() { return _modelId++; }
-    inline const std::string &                        getName() const { return _name; }
-    inline const std::vector<SharedPtr<Camera>> &     getCameras() const { return _cameras; }
+    inline const std::string                         &getName() const { return _name; }
+    inline const std::vector<SharedPtr<Camera>>      &getCameras() const { return _cameras; }
     inline const std::vector<SharedPtr<SphereLight>> &getSphereLights() const { return _sphereLights; }
-    inline const std::vector<SharedPtr<SpotLight>> &  getSpotLights() const { return _spotLights; }
-    inline const std::vector<SharedPtr<Model>> &      getModels() const { return _models; }
-    inline Octree *                                   getOctree() const { return _octree; }
+    inline const std::vector<SharedPtr<SpotLight>>   &getSpotLights() const { return _spotLights; }
+    inline const std::vector<SharedPtr<Model>>       &getModels() const { return _models; }
+    inline Octree                                    *getOctree() const { return _octree; }
     void                                              updateOctree(Model *model);
-    //FIXME: remove getDrawBatch2Ds
+    // FIXME: remove getDrawBatch2Ds
     inline const std::vector<DrawBatch2D *> &getBatches() const { return _batches; }
     inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _batches; }
 
@@ -118,7 +118,7 @@ private:
     std::vector<SharedPtr<SphereLight>>      _sphereLights;
     std::vector<SharedPtr<SpotLight>>        _spotLights;
     std::vector<DrawBatch2D *>               _batches;
-    Octree *                                 _octree{nullptr};
+    Octree                                  *_octree{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderScene);
 };

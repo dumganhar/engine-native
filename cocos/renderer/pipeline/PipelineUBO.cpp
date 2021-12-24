@@ -27,13 +27,13 @@
 #include "RenderPipeline.h"
 #include "SceneCulling.h"
 #include "core/Root.h"
+#include "forward/ForwardPipeline.h"
 #include "gfx-base/GFXDevice.h"
 #include "platform/Application.h"
 #include "scene/DirectionalLight.h"
+#include "scene/Fog.h"
 #include "scene/RenderScene.h"
 #include "scene/SpotLight.h"
-#include "scene/Fog.h"
-#include "forward/ForwardPipeline.h"
 
 namespace cc {
 
@@ -52,8 +52,8 @@ namespace pipeline {
 Mat4 matShadowViewProj;
 
 void PipelineUBO::updateGlobalUBOView(const scene::Camera *camera, std::array<float, UBOGlobal::COUNT> *bufferView) {
-    auto *const root          = Root::getInstance();
-    const gfx::Device *                  device        = gfx::Device::getInstance();
+    auto *const                          root          = Root::getInstance();
+    const gfx::Device                   *device        = gfx::Device::getInstance();
     std::array<float, UBOGlobal::COUNT> &uboGlobalView = *bufferView;
 
     const auto shadingWidth  = std::floor(camera->getWindow()->getWidth());
@@ -78,10 +78,10 @@ void PipelineUBO::updateGlobalUBOView(const scene::Camera *camera, std::array<fl
 void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *output, const scene::Camera *camera) {
     const auto *const              scene         = camera->getScene();
     const scene::DirectionalLight *mainLight     = scene->getMainLight();
-    const auto *                   sceneData     = pipeline->getPipelineSceneData();
+    const auto                    *sceneData     = pipeline->getPipelineSceneData();
     auto *const                    descriptorSet = pipeline->getDescriptorSet();
-    const auto *                   ambient       = sceneData->getAmbient();
-    auto *                         fog           = sceneData->getFog();
+    const auto                    *ambient       = sceneData->getAmbient();
+    auto                          *fog           = sceneData->getFog();
     const auto                     isHDR         = sceneData->isHDR();
 
     auto *device = gfx::Device::getInstance();
@@ -112,8 +112,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
 
         if (isHDR) {
             output[UBOCamera::MAIN_LIT_COLOR_OFFSET + 3] = mainLight->getIlluminanceHDR() * exposure;
-        }
-        else {
+        } else {
             output[UBOCamera::MAIN_LIT_COLOR_OFFSET + 3] = mainLight->getIlluminanceLDR();
         }
     } else {
@@ -122,8 +121,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     }
 
     if (ambient != nullptr) {
-
-        auto& skyColor = const_cast<scene::Ambient*>(ambient)->getSkyColor();
+        auto &skyColor = const_cast<scene::Ambient *>(ambient)->getSkyColor();
         if (isHDR) {
             skyColor.w = ambient->getSkyIllum() * exposure;
         } else {
@@ -135,7 +133,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
         output[UBOCamera::AMBIENT_SKY_OFFSET + 2] = skyColor.z;
         output[UBOCamera::AMBIENT_SKY_OFFSET + 3] = skyColor.w;
 
-        auto &groundAlbedo                     = const_cast<scene::Ambient*>(ambient)->getGroundAlbedo();
+        auto &groundAlbedo                           = const_cast<scene::Ambient *>(ambient)->getGroundAlbedo();
         output[UBOCamera::AMBIENT_GROUND_OFFSET + 0] = groundAlbedo.x;
         output[UBOCamera::AMBIENT_GROUND_OFFSET + 1] = groundAlbedo.y;
         output[UBOCamera::AMBIENT_GROUND_OFFSET + 2] = groundAlbedo.z;
@@ -143,10 +141,10 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
         //
     }
 
-    //cjh TS doesn't have this logic ?    auto *const envmap = descriptorSet->getTexture(static_cast<uint>(PipelineGlobalBindings::SAMPLER_ENVIRONMENT));
-    //    if (envmap != nullptr) {
-    //        output[UBOCamera::AMBIENT_GROUND_OFFSET + 3] = static_cast<float>(envmap->getLevelCount());
-    //    }
+    // cjh TS doesn't have this logic ?    auto *const envmap = descriptorSet->getTexture(static_cast<uint>(PipelineGlobalBindings::SAMPLER_ENVIRONMENT));
+    //     if (envmap != nullptr) {
+    //         output[UBOCamera::AMBIENT_GROUND_OFFSET + 3] = static_cast<float>(envmap->getLevelCount());
+    //     }
 
     memcpy(output + UBOCamera::MAT_VIEW_OFFSET, camera->getMatView().m, sizeof(cc::Mat4));
     memcpy(output + UBOCamera::MAT_VIEW_INV_OFFSET, camera->getNode()->getWorldMatrix().m, sizeof(cc::Mat4));
@@ -159,12 +157,11 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     output[UBOCamera::CAMERA_POS_OFFSET + 3] = getCombineSignY();
 
     if (fog != nullptr) {
-        const auto &colorTempRGB = fog->getColorArray();
-        output[UBOCamera::GLOBAL_FOG_COLOR_OFFSET] = colorTempRGB.x;
+        const auto &colorTempRGB                       = fog->getColorArray();
+        output[UBOCamera::GLOBAL_FOG_COLOR_OFFSET]     = colorTempRGB.x;
         output[UBOCamera::GLOBAL_FOG_COLOR_OFFSET + 1] = colorTempRGB.y;
         output[UBOCamera::GLOBAL_FOG_COLOR_OFFSET + 2] = colorTempRGB.z;
         output[UBOCamera::GLOBAL_FOG_COLOR_OFFSET + 3] = colorTempRGB.z;
-
 
         output[UBOCamera::GLOBAL_FOG_BASE_OFFSET + 0] = fog->getFogStart();
         output[UBOCamera::GLOBAL_FOG_BASE_OFFSET + 1] = fog->getFogEnd();
@@ -177,7 +174,7 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
     output[UBOCamera::GLOBAL_NEAR_FAR_OFFSET + 0] = static_cast<float>(camera->getNearClip());
     output[UBOCamera::GLOBAL_NEAR_FAR_OFFSET + 1] = static_cast<float>(camera->getFarClip());
 
-    const auto& vp = camera->getViewport();
+    const auto &vp                                 = camera->getViewport();
     output[UBOCamera::GLOBAL_VIEW_PORT_OFFSET + 0] = vp.x;
     output[UBOCamera::GLOBAL_VIEW_PORT_OFFSET + 1] = vp.y;
     output[UBOCamera::GLOBAL_VIEW_PORT_OFFSET + 2] = vp.z;
@@ -185,11 +182,11 @@ void PipelineUBO::updateCameraUBOView(const RenderPipeline *pipeline, float *out
 }
 
 void PipelineUBO::updateShadowUBOView(const RenderPipeline *pipeline, std::array<float, UBOShadow::COUNT> *bufferView, const scene::Camera *camera) {
-    const auto *const              scene     = camera->getScene();
-    const scene::DirectionalLight *      mainLight  = scene->getMainLight();
-    gfx::Device *                        device     = gfx::Device::getInstance();
-    const PipelineSceneData *            sceneData  = pipeline->getPipelineSceneData();
-    auto *shadowInfo    = sceneData->getShadow();
+    const auto *const                    scene      = camera->getScene();
+    const scene::DirectionalLight       *mainLight  = scene->getMainLight();
+    gfx::Device                         *device     = gfx::Device::getInstance();
+    const PipelineSceneData             *sceneData  = pipeline->getPipelineSceneData();
+    auto                                *shadowInfo = sceneData->getShadow();
     std::array<float, UBOShadow::COUNT> &shadowUBO  = *bufferView;
     const bool                           hFTexture  = supportsFloatTexture(device);
 
@@ -197,9 +194,9 @@ void PipelineUBO::updateShadowUBOView(const RenderPipeline *pipeline, std::array
         if (mainLight && shadowInfo->getType() == scene::ShadowType::SHADOW_MAP) {
             float nearClamp;
             float farClamp;
-            Mat4 matShadowView;
-            Mat4 matShadowProj;
-            Mat4 matShadowViewProj;
+            Mat4  matShadowView;
+            Mat4  matShadowProj;
+            Mat4  matShadowViewProj;
             if (!shadowInfo->isFixedArea()) {
                 nearClamp         = shadowInfo->getNear();
                 farClamp          = sceneData->getShadowCameraFar();
@@ -250,11 +247,11 @@ void PipelineUBO::updateShadowUBOView(const RenderPipeline *pipeline, std::array
 }
 
 void PipelineUBO::updateShadowUBOLightView(const RenderPipeline *pipeline, std::array<float, UBOShadow::COUNT> *bufferView,
-    const scene::Light *light) {
+                                           const scene::Light *light) {
     const auto *sceneData  = pipeline->getPipelineSceneData();
     const auto *shadowInfo = sceneData->getShadow();
-    auto *      device     = gfx::Device::getInstance();
-    auto &      shadowUBO  = *bufferView;
+    auto       *device     = gfx::Device::getInstance();
+    auto       &shadowUBO  = *bufferView;
     const bool  hFTexture  = supportsFloatTexture(device);
     const float linear     = 0.0F;
     const float packing    = hFTexture ? 0.0F : 1.0F;
@@ -325,7 +322,7 @@ void PipelineUBO::updateShadowUBOLightView(const RenderPipeline *pipeline, std::
     }
 
     const auto &shadowSize         = shadowInfo->getSize();
-    const float       shadowWHPBInfos[4] = {shadowSize.x, shadowSize.y, static_cast<float>(shadowInfo->getPcf()), shadowInfo->getBias()};
+    const float shadowWHPBInfos[4] = {shadowSize.x, shadowSize.y, static_cast<float>(shadowInfo->getPcf()), shadowInfo->getBias()};
     memcpy(shadowUBO.data() + UBOShadow::SHADOW_WIDTH_HEIGHT_PCF_BIAS_INFO_OFFSET, &shadowWHPBInfos, sizeof(shadowWHPBInfos));
 
     memcpy(shadowUBO.data() + UBOShadow::SHADOW_COLOR_OFFSET, shadowInfo->getShadowColor4f().data(), sizeof(float) * 4);
@@ -407,14 +404,14 @@ void PipelineUBO::updateGlobalUBO(const scene::Camera *camera) {
 }
 
 void PipelineUBO::updateCameraUBO(const scene::Camera *camera) {
-    auto *const cmdBuffer       = _pipeline->getCommandBuffers()[0];
+    auto *const cmdBuffer = _pipeline->getCommandBuffers()[0];
     PipelineUBO::updateCameraUBOView(_pipeline, _cameraUBOs.data(), camera);
     cmdBuffer->updateBuffer(_cameraBuffer, _cameraUBOs.data());
 }
 
 void PipelineUBO::updateMultiCameraUBO(const vector<scene::Camera *> &cameras) {
     const auto cameraCount  = cameras.size();
-    const auto  totalUboSize = static_cast<uint>(_alignedCameraUBOSize * cameraCount);
+    const auto totalUboSize = static_cast<uint>(_alignedCameraUBOSize * cameraCount);
 
     if (_cameraBuffer->getSize() < totalUboSize) {
         _cameraBuffer->resize(totalUboSize);
@@ -434,14 +431,14 @@ void PipelineUBO::updateMultiCameraUBO(const vector<scene::Camera *> &cameras) {
 void PipelineUBO::updateShadowUBO(const scene::Camera *camera) {
     auto *const       ds         = _pipeline->getDescriptorSet();
     auto *const       cmdBuffer  = _pipeline->getCommandBuffers()[0];
-    const auto *      sceneData  = _pipeline->getPipelineSceneData();
-    const auto *      shadowInfo = sceneData->getShadow();
+    const auto       *sceneData  = _pipeline->getPipelineSceneData();
+    const auto       *shadowInfo = sceneData->getShadow();
     const auto *const scene      = camera->getScene();
     if (shadowInfo == nullptr || !shadowInfo->isEnabled()) {
         return;
     }
 
-    const auto &                   shadowFrameBufferMap = sceneData->getShadowFramebufferMap();
+    const auto                    &shadowFrameBufferMap = sceneData->getShadowFramebufferMap();
     const scene::DirectionalLight *mainLight            = scene->getMainLight();
     if (mainLight && shadowInfo->getType() == scene::ShadowType::SHADOW_MAP) {
         if (shadowFrameBufferMap.count(mainLight) > 0) {

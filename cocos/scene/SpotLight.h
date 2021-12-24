@@ -29,6 +29,7 @@
 #include "core/geometry/AABB.h"
 #include "core/geometry/Frustum.h"
 #include "scene/Light.h"
+#include "renderer/pipeline/RenderPipeline.h"
 
 namespace cc {
 namespace scene {

@@ -29,7 +29,7 @@
 #include <vector>
 
 #include "renderer/core/PassUtils.h"
-#include "scene/Ambient.h"
+//#include "scene/Ambient.h"
 
 namespace cc {
 namespace scene {

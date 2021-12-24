@@ -32,6 +32,7 @@
 #include "scene/DirectionalLight.h"
 #include "scene/RenderScene.h"
 #include "scene/SpotLight.h"
+#include "scene/Fog.h"
 #include "forward/ForwardPipeline.h"
 
 namespace cc {

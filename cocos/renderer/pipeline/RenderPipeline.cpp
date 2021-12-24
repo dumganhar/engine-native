@@ -37,6 +37,7 @@
 #include "gfx-base/GFXDevice.h"
 #include "gfx-base/GFXTexture.h"
 #include "helper/Utils.h"
+#include "scene/Skybox.h"
 
 namespace cc {
 namespace pipeline {

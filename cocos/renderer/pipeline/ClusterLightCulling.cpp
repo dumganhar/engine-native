@@ -27,6 +27,8 @@
 #include "Define.h"
 #include "deferred/DeferredPipeline.h"
 #include "frame-graph/FrameGraph.h"
+#include "scene/SphereLight.h"
+#include "scene/SpotLight.h"
 
 namespace cc {
 namespace pipeline {

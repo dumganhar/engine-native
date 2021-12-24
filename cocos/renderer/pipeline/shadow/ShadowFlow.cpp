@@ -34,6 +34,8 @@
 #include "gfx-base/GFXRenderPass.h"
 #include "gfx-base/GFXTexture.h"
 #include "scene/RenderScene.h"
+#include "scene/DirectionalLight.h"
+#include "renderer/pipeline/PipelineSceneData.h"
 
 namespace cc {
 namespace pipeline {

@@ -28,6 +28,7 @@
 #include "renderer/pipeline/forward/ForwardPipeline.h"
 #include "scene/Model.h"
 #include "scene/Pass.h"
+#include "scene/Shadow.h"
 
 namespace cc {
 namespace scene {

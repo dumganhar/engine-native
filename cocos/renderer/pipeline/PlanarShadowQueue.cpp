@@ -37,6 +37,7 @@
 #include "scene/Model.h"
 #include "scene/RenderScene.h"
 #include "core/geometry/AABB.h"
+#include "cocos/scene/Shadow.h"
 
 namespace cc {
 namespace pipeline {

@@ -44,6 +44,7 @@
 #include "pipeline/Define.h"
 #include "scene/RenderScene.h"
 #include "scene/SphereLight.h"
+#include "scene/SpotLight.h"
 #include "DeferredPipelineSceneData.h"
 
 namespace cc {

@@ -43,6 +43,7 @@
 #include "core/geometry/Sphere.h"
 #include "scene/SpotLight.h"
 #include "scene/DirectionalLight.h"
+#include "scene/Skybox.h"
 
 namespace cc {
 namespace pipeline {

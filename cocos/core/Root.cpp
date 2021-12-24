@@ -32,6 +32,7 @@
 #include "renderer/pipeline/deferred/DeferredPipeline.h"
 #include "renderer/pipeline/forward/ForwardPipeline.h"
 #include "scene/DirectionalLight.h"
+#include "scene/SpotLight.h"
 
 namespace cc {
 

@@ -25,10 +25,10 @@
 
 #pragma once
 
+#include "core/Root.h"
 #include "math/Vec3.h"
 #include "scene/Ambient.h"
 #include "scene/Light.h"
-#include "core/Root.h"
 
 namespace cc {
 namespace scene {

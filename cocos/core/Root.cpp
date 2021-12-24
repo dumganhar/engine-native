@@ -285,19 +285,12 @@ void Root::destroyLight(scene::Light *light) {
     }
     light->destroy();
     if (light->getScene() != nullptr) {
-        auto *directionalLightPtr = dynamic_cast<scene::DirectionalLight *>(light);
-        if (directionalLightPtr != nullptr) {
-            light->getScene()->removeDirectionalLight(directionalLightPtr);
-            return;
-        }
-        auto *sphereLightPtr = dynamic_cast<scene::SphereLight *>(light);
-        if (sphereLightPtr != nullptr) {
-            light->getScene()->removeSphereLight(sphereLightPtr);
-            return;
-        }
-        auto *spotLightPtr = dynamic_cast<scene::SpotLight *>(light);
-        if (spotLightPtr != nullptr) {
-            light->getScene()->removeSpotLight(spotLightPtr);
+        if (light->getType() == scene::LightType::DIRECTIONAL) {
+            light->getScene()->removeDirectionalLight(static_cast<scene::DirectionalLight *>(light));
+        } else if (light->getType() == scene::LightType::SPHERE) {
+            light->getScene()->removeSphereLight(static_cast<scene::SphereLight *>(light));
+        } else if (light->getType() == scene::LightType::SPOT) {
+            light->getScene()->removeSpotLight(static_cast<scene::SpotLight *>(light));
         }
     }
 }

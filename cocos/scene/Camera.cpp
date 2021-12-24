@@ -364,7 +364,9 @@ void Camera::setViewportInOrientedSpace(const Vec4 &val) {
     // const swapchain   = this.window ?.swapchain;
     // const orientation = swapchain && swapchain.surfaceTransform || SurfaceTransform.IDENTITY;
 
-    switch (_device->getSurfaceTransform()) { //TODO(xwx): use switch (orientation) {}
+    auto *swapchain = this->_window->getSwapchain();
+    auto  orientation = swapchain ? swapchain->getSurfaceTransform() : gfx::SurfaceTransform::IDENTITY;
+    switch (orientation) { 
         case gfx::SurfaceTransform::ROTATE_90:
             _viewport.x = 1 - y - height;
             _viewport.y = x;

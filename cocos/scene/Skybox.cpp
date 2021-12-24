@@ -32,6 +32,7 @@
 #include "primitive/Primitive.h"
 #include "renderer/core/MaterialInstance.h"
 #include "renderer/core/PassUtils.h"
+#include "renderer/gfx-base/GFXDevice.h"
 #include "scene/Model.h"
 
 namespace {
@@ -170,28 +171,25 @@ void Skybox::activate() {
     if (!skyboxMaterial) {
         auto *        mat = new Material();
         MacroRecord   defines{{"USE_RGBE_CUBEMAP", isRGBE}};
-        IMaterialInfo matInfo{
-            .effectName = std::string{"skybox"},
-            .defines    = IMaterialInfo::DefinesType{defines}
-        };
+        IMaterialInfo matInfo;
+        matInfo.effectName = std::string{"skybox"};
+        matInfo.defines    = IMaterialInfo::DefinesType{defines};
         mat->initialize({matInfo});
-        IMaterialInstanceInfo matInstInfo{
-            .parent = mat};
-        skyboxMaterial = new MaterialInstance(matInstInfo);
+        IMaterialInstanceInfo matInstInfo;
+        matInstInfo.parent = mat;
+        skyboxMaterial     = new MaterialInstance(matInstInfo);
     }
 
     if (_enabled) {
         if (!skyboxMesh) {
+            IBoxOptions options;
+            options.width  = 2;
+            options.height = 2;
+            options.length = 2;
             skyboxMesh = createMesh(
                 createGeometry(
                        PrimitiveType::BOX,
-                       PrimitiveOptions{
-                           IBoxOptions{
-                               .width = 2,
-                               .height = 2,
-                               .length = 2
-                           }
-                       }
+                       PrimitiveOptions{options}
                 )
             );
         }
@@ -256,14 +254,14 @@ void Skybox::updatePipeline() const {
 
 void Skybox::updateGlobalBinding() {
     if (_globalDSManager != nullptr) {
-        const auto *device = Root::getInstance()->getDevice();
-        auto *      envmap = getEnvmap();
+        auto *device = Root::getInstance()->getDevice();
+        auto *envmap = getEnvmap();
         if (!envmap) {
             envmap = _default.get();
         }
         if (envmap != nullptr) {
             auto *texture = envmap->getGFXTexture();
-            auto *sampler = gfx::Device::getInstance()->getSampler(envmap->getSamplerInfo());
+            auto *sampler = device->getSampler(envmap->getSamplerInfo());
             _globalDSManager->bindSampler(pipeline::ENVIRONMENT::BINDING, sampler);
             _globalDSManager->bindTexture(pipeline::ENVIRONMENT::BINDING, texture);
         }
@@ -274,7 +272,7 @@ void Skybox::updateGlobalBinding() {
         }
         if (diffuseMap != nullptr) {
             auto *texture = diffuseMap->getGFXTexture();
-            auto *sampler = gfx::Device::getInstance()->getSampler(envmap->getSamplerInfo());
+            auto *sampler = device->getSampler(envmap->getSamplerInfo());
              _globalDSManager->bindSampler(pipeline::DIFFUSEMAP::BINDING, sampler);
              _globalDSManager->bindTexture(pipeline::DIFFUSEMAP::BINDING, texture);
         }

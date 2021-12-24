@@ -84,23 +84,25 @@ cc::Float32Array &mat4ToFloat32Array(const cc::Mat4 &mat, cc::Float32Array &out,
     return out;
 }
 
-const uint32_t LIGHTMAP_SAMPLER_HASH = cc::pipeline::SamplerLib::genSamplerHash({ //TODO(xwx): TS use new SamplerInfo() which is not implemented yet
+const cc::gfx::SamplerInfo LIGHTMAP_SAMPLER_HASH {
+    //TODO(xwx): TS use new SamplerInfo() which is not implemented yet
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::NONE,
     cc::gfx::Address::CLAMP,
     cc::gfx::Address::CLAMP,
     cc::gfx::Address::CLAMP,
-});
+};
 
-const uint32_t LIGHTMAP_SAMPLER_WITH_MIP_HASH = cc::pipeline::SamplerLib::genSamplerHash({ //TODO(xwx): TS use new SamplerInfo() which is not implemented yet
+const cc::gfx::SamplerInfo LIGHTMAP_SAMPLER_WITH_MIP_HASH{
+    //TODO(xwx): TS use new SamplerInfo() which is not implemented yet
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
     cc::gfx::Address::CLAMP,
     cc::gfx::Address::CLAMP,
     cc::gfx::Address::CLAMP,
-});
+};
 
 const std::vector<cc::scene::IMacroPatch> SHADOW_MAP_PATCHES{{"CC_ENABLE_DIR_SHADOW", true}, {"CC_RECEIVE_SHADOW", true}};
 const std::string                         INST_MAT_WORLD = "a_matWorld0";
@@ -327,14 +329,13 @@ void Model::updateLightingmap(Texture2D *texture, const Vec4 &uvParam) {
     }
     gfx::Texture *gfxTexture = texture->getGFXTexture();
     if (gfxTexture) {
-        //TODO(xwx): _device->getSampler not implement
-        // auto *sampler = _device->getSampler(texture->getMipmaps().size() > 1 ? LIGHTMAP_SAMPLER_WITH_MIP_HASH : LIGHTMAP_SAMPLER_HASH);
+        auto *sampler = _device->getSampler(texture->getMipmaps().size() > 1 ? LIGHTMAP_SAMPLER_WITH_MIP_HASH : LIGHTMAP_SAMPLER_HASH);
         for (SubModel *subModel : _subModels) {
             gfx::DescriptorSet *descriptorSet = subModel->getDescriptorSet();
             // // TODO(Yun Hsiao Wu): should manage lightmap macro switches automatically
             // // USE_LIGHTMAP -> CC_USE_LIGHTMAP
             descriptorSet->bindTexture(pipeline::LIGHTMAPTEXTURE::BINDING, gfxTexture);
-            // descriptorSet->bindSampler(pipeline::LIGHTMAPTEXTURE::BINDING, sampler); // TODO(xwx)
+            descriptorSet->bindSampler(pipeline::LIGHTMAPTEXTURE::BINDING, sampler); 
             descriptorSet->update();
         }
     }

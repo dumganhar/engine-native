@@ -188,7 +188,7 @@ void Shadows::initialize(const ShadowsInfo &shadowsInfo) {
     _near      = shadowsInfo.getNear();
     _far       = shadowsInfo.getFar();
     setInvisibleOcclusionRange(shadowsInfo.getInvisibleOcclusionRange());
-    setShadowDistance(shadowsInfo.getShadowDistance());
+    setShadowDistance(shadowsInfo.shadowDistance());
     _orthoSize = shadowsInfo.getOrthoSize();
     _size      = shadowsInfo.getSize();
     _pcf       = shadowsInfo.getPcf();

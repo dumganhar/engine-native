@@ -10,4 +10,3 @@ bool register_all_${generator.prefix}(se::Object *obj);                   // NOL
 template <>
 bool sevalue_to_native(const se::Value &, ${current_class.namespaced_class_name} *, se::Object *ctx);
     #end if
-JSB_REGISTER_OBJECT_TYPE(${current_class.namespaced_class_name});

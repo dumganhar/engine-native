@@ -1305,9 +1305,13 @@ class NativeClass(object):
                              searchList=[{"current_class": self}])
         prelude_c = Template(file=os.path.join(self.generator.target, "templates", "prelude.c"),
                              searchList=[{"current_class": self}])
+        regtype_h = Template(file=os.path.join(self.generator.target, "templates", "reg_types.h"),
+                             searchList=[{"current_class": self}])
 
         self.generator.head_file.write(unicode(prelude_h))
         self.generator.impl_file.write(unicode(prelude_c))
+        self.generator.regi_file.write(unicode(regtype_h))
+        
         for m in self.methods_clean():
             m['impl'].generate_code(self)
         for m in self.static_methods_clean():
@@ -1944,6 +1948,7 @@ class Generator(object):
         implfilepath = os.path.join(self.outdir, self.out_file + ".cpp")
         headfilepath = os.path.join(self.outdir, self.out_file + ".h")
         jsonfilepath = os.path.join(self.outdir, self.out_file + ".json")
+        reg_typepath = os.path.join(self.outdir, self.out_file + ".inl")
 
         headLicense = ''
         implLicense = ''
@@ -1961,6 +1966,7 @@ class Generator(object):
         self.head_file = io.open(headfilepath, "w+", newline="\n")
         self.impl_file = io.open(implfilepath, "w+", newline="\n")
         self.json_file = io.open(jsonfilepath, "w+", newline="\n")
+        self.regi_file = io.open(reg_typepath, "w+", newline="\n")
 
         self.class_json_list = []
 
@@ -1987,6 +1993,7 @@ class Generator(object):
         self.impl_file.close()
         self.head_file.close()
         self.json_file.close()
+        self.regi_file.close()
 
     def _pretty_print(self, diagnostics):
         errors = []

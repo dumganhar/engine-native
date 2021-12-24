@@ -170,7 +170,8 @@ uint32_t TextureBufferPool::createChunk(uint32_t length) {
 }
 
 void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *buffer) {
-    // std::vector<ArrayBufferView> buffers;
+    gfx::BufferDataList        buffers;
+    uint8_t *                  bufferData = buffer->getData();
     gfx::BufferTextureCopyList regions;
     auto                       start = static_cast<int32_t>(handle.start / _formatSize);
 
@@ -185,7 +186,7 @@ void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *
         _region0.texOffset.y      = offsetY;
         _region0.texExtent.width  = copySize;
         _region0.texExtent.height = 1;
-        // buffers.push(new _bufferViewCtor(buffer, begin * _formatSize, copySize * _channels)); // TODO(xwx): _bufferViewCtor not implement
+        buffers.emplace_back(bufferData + begin * _formatSize);
         regions.emplace_back(_region0);
         offsetX = 0;
         offsetY += 1;
@@ -199,7 +200,7 @@ void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *
 
         if (remainSize > handle.texture->getWidth()) {
             _region1.texExtent.width  = handle.texture->getWidth();
-            _region1.texExtent.height = std::floor(remainSize / handle.texture->getWidth()); // TODO(xwx): height? width in ts, not sure
+            _region1.texExtent.height = std::floor(remainSize / handle.texture->getWidth());
             copySize                  = _region1.texExtent.width * _region1.texExtent.height;
         } else {
             copySize                  = remainSize;
@@ -207,7 +208,7 @@ void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *
             _region1.texExtent.height = 1;
         }
 
-        // buffers.push(new _bufferViewCtor(buffer, begin * _formatSize, copySize * _channels)); // TODO(xwx): _bufferViewCtor not implement
+        buffers.emplace_back(bufferData + begin * _formatSize);
         regions.emplace_back(_region1);
 
         offsetX = 0;
@@ -222,10 +223,10 @@ void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *
         _region2.texExtent.width  = remainSize;
         _region2.texExtent.height = 1;
 
-        // buffers.push(new _bufferViewCtor(buffer, begin * _formatSize, remainSize * _channels)); // TODO(xwx): _bufferViewCtor not implement
+        buffers.emplace_back(bufferData + begin * _formatSize);
         regions.emplace_back(_region2);
     }
-    // _device->copyBuffersToTexture(buffers, handle.texture, regions); // TODO(xwx): buffers not define
+    _device->copyBuffersToTexture(buffers, handle.texture, regions);
 }
 
 index_t TextureBufferPool::findAvailableSpace(uint32_t size, index_t chunkIdx) const {

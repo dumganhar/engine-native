@@ -27,9 +27,6 @@
 #include "core/Root.h"
 #include "renderer/pipeline/helper/Utils.h"
 
-namespace {
-
-} // namespace
 namespace cc {
 namespace scene {
 

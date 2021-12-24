@@ -34,6 +34,7 @@
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "scene/Model.h"
+#include "scene/Ambient.h"
 
 namespace {
 cc::Mesh *    skyboxMesh{nullptr}; // TODO(cjh): How to release ?

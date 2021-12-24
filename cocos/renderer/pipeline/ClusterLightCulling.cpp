@@ -146,7 +146,7 @@ void ClusterLightCulling::updateLights() {
 
     _validLights.clear();
 
-    scene::Sphere     sphere;
+    geometry::Sphere     sphere;
     const auto* const scene = _camera->getScene();
     for (const auto& light : scene->getSphereLights()) {
         sphere.setCenter(light->getPosition());

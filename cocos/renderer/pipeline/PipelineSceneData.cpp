@@ -32,6 +32,7 @@
 #include "scene/Fog.h"
 #include "scene/Shadow.h"
 #include "scene/Skybox.h"
+#include "scene/Octree.h"
 
 namespace cc {
 namespace pipeline {
@@ -41,6 +42,7 @@ PipelineSceneData::PipelineSceneData() {
     _ambient = new scene::Ambient();
     _skybox  = new scene::Skybox();
     _shadow  = new scene::Shadows();
+    _octree = new scene::Octree();
 }
 
 PipelineSceneData::~PipelineSceneData() {
@@ -48,6 +50,7 @@ PipelineSceneData::~PipelineSceneData() {
     CC_SAFE_DELETE(_ambient);
     CC_SAFE_DELETE(_skybox);
     CC_SAFE_DELETE(_shadow);
+    CC_SAFE_DELETE(_octree);
 }
 
 void PipelineSceneData::activate(gfx::Device *device, RenderPipeline *pipeline) {

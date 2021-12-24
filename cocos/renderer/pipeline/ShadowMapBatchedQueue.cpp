@@ -37,7 +37,7 @@
 #include "gfx-base/GFXDescriptorSet.h"
 #include "gfx-base/GFXDevice.h"
 #include "scene/SpotLight.h"
-#include "cocos/scene/Shadow.h"
+#include "scene/Shadow.h"
 
 namespace cc {
 namespace pipeline {

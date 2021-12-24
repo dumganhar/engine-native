@@ -45,10 +45,53 @@ const Vec3    DEFAULT_WORLD_MAX_POS  = {1024.0F, 1024.0F, 1024.0F};
 const float   OCTREE_BOX_EXPAND_SIZE = 10.0F;
 constexpr int USE_MULTI_THRESHOLD    = 1024; // use parallel culling if greater than this value
 
+class CC_DLL OctreeInfo final {
+public:
+    /**
+     * @en Whether activate octree
+     * @zh 是否启用八叉树加速剔除？
+     */
+    void setEnabled(bool val);
+    inline bool isEnabled() const { return _enabled; }
+
+    /**
+     * @en min pos of scene bounding box
+     * @zh 场景包围盒最小值
+     */
+    void setMinPos(const Vec3& val);
+    inline const Vec3& getMinPos() const { return _minPos; }
+
+    /**
+     * @en max pos of scene bounding box
+     * @zh 场景包围盒最大值
+     */
+    void setMaxPos(const Vec3& val);
+    inline const Vec3& getMaxPos() const { return _maxPos; }
+
+    /**
+     * @en depth of octree
+     * @zh 八叉树深度
+     */
+    void setDepth(uint32_t val);
+    inline uint32_t getDepth() const { return _depth; }
+
+    void activate(Octree* resource);
+
+private:
+    bool     _enabled{false};
+    Vec3     _minPos;
+    Vec3     _maxPos;
+    uint32_t _depth{0};
+
+    Octree* _resource{nullptr};
+};
+
 // Axis aligned bounding box
-struct CC_DLL BBox {
+struct CC_DLL BBox final {
     cc::Vec3 min;
     cc::Vec3 max;
+
+    BBox() = default;
 
     explicit BBox(const geometry::AABB& aabb)
     : min(aabb.getCenter() - aabb.getHalfExtents()), max(aabb.getCenter() + aabb.getHalfExtents()) {
@@ -80,10 +123,14 @@ struct CC_DLL BBox {
 /**
  * OctreeNode class
  */
-class CC_DLL OctreeNode {
+class CC_DLL OctreeNode final {
 private:
-    OctreeNode(Octree* owner, OctreeNode* parent, BBox aabb, uint32_t depth, uint32_t index);
+    OctreeNode(Octree* owner, OctreeNode* parent);
     ~OctreeNode();
+
+    inline void setBox(const BBox& aabb) { _aabb = aabb; }
+    inline void setDepth(uint32_t depth) { _depth = depth; }
+    inline void setIndex(uint32_t index) { _index = index; }
 
     inline Octree*     getOwner() const { return _owner; }
     inline const BBox& getBox() const { return _aabb; }
@@ -103,7 +150,7 @@ private:
     OctreeNode*                                  _parent{nullptr};
     std::array<OctreeNode*, OCTREE_CHILDREN_NUM> _children{};
     std::vector<Model*>                          _models;
-    BBox                                         _aabb;
+    BBox                                         _aabb{};
     uint32_t                                     _depth{0};
     uint32_t                                     _index{0};
 
@@ -113,10 +160,33 @@ private:
 /**
  * Octree class
  */
-class CC_DLL Octree {
+class CC_DLL Octree final {
 public:
-    explicit Octree(const Vec3& minPos = DEFAULT_WORLD_MIN_POS, const Vec3& maxPos = DEFAULT_WORLD_MAX_POS, uint32_t maxDepth = DEFAULT_OCTREE_DEPTH);
+    Octree();
     ~Octree();
+
+    void initialize(const OctreeInfo& info);
+
+    /**
+     * @en Whether activate octree
+     * @zh 是否启用八叉树加速剔除？
+     */
+    void setEnabled(bool val);
+    inline bool isEnabled() const { return _enabled; }
+
+    /**
+     * @en min pos of scene bounding box
+     * @zh 场景包围盒最小值
+     */
+    void setMinPos(const Vec3& val);
+    inline const Vec3& getMinPos() const { return _minPos; }
+
+    /**
+     * @en max pos of scene bounding box
+     * @zh 场景包围盒最大值
+     */
+    void setMaxPos(const Vec3& val);
+    inline const Vec3& getMaxPos() const { return _maxPos; }
 
     // reinsert all models in the tree when you change the aabb or max depth in editor
     void resize(const Vec3& minPos, const Vec3& maxPos, uint32_t maxDepth);
@@ -130,6 +200,11 @@ public:
     // update model's location in the tree.
     void update(Model* model);
 
+    /**
+     * @en depth of octree
+     * @zh 八叉树深度
+     */
+    void setMaxDepth(uint32_t val);
     // return octree depth
     inline uint32_t getMaxDepth() const { return _maxDepth; }
 
@@ -142,6 +217,10 @@ private:
     OctreeNode* _root{nullptr};
     uint32_t    _maxDepth{DEFAULT_OCTREE_DEPTH};
     uint32_t    _totalCount{0};
+
+    bool     _enabled{false};
+    Vec3     _minPos;
+    Vec3     _maxPos;
 };
 
 } // namespace scene

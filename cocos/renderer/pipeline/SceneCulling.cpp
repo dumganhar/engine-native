@@ -39,6 +39,7 @@
 #include "core/geometry/Frustum.h"
 #include "scene/Light.h"
 #include "scene/Octree.h"
+#include "scene/Skybox.h"
 #include "scene/RenderScene.h"
 #include "core/geometry/Sphere.h"
 #include "scene/SpotLight.h"
@@ -154,7 +155,7 @@ void validPunctualLightsCulling(RenderPipeline *pipeline, scene::Camera *camera)
     vector<const scene::Light *> validPunctualLights = sceneData->getValidPunctualLights();
     validPunctualLights.clear();
 
-    scene::Sphere sphere;
+    geometry::Sphere sphere;
     for (const auto &light : scene->getSpotLights()) {
         if (light->isBaked()) {
             continue;
@@ -200,7 +201,7 @@ Mat4 getCameraWorldMatrix(const scene::Camera *camera) {
     return out;
 }
 
-void updateDirFrustum(const scene::Sphere *cameraBoundingSphere, const Quaternion &rotation, float range, scene::Frustum *dirLightFrustum) {
+void updateDirFrustum(const geometry::Sphere *cameraBoundingSphere, const Quaternion &rotation, float range, scene::Frustum *dirLightFrustum) {
     const float radius   = cameraBoundingSphere->getRadius();
     const Vec3 &position = cameraBoundingSphere->getCenter();
     Mat4        matWorldTrans;
@@ -256,7 +257,7 @@ void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera 
     // min value may lead to some shadow leaks.
     const float orthoSizeMin = validFrustum.vertices[0].distance(validFrustum.vertices[6]);
     // max value is accurate but poor usage for shadowMap
-    scene::Sphere cameraBoundingSphere;
+    geometry::Sphere cameraBoundingSphere;
     cameraBoundingSphere.setCenter(Vec3(0.0F, 0.0F, 0.0F));
     cameraBoundingSphere.setRadius(-1.0F);
     cameraBoundingSphere.merge(validFrustum);

@@ -29,29 +29,14 @@
 #include <vector>
 
 #include "renderer/core/PassUtils.h"
-//#include "scene/Ambient.h"
 
 namespace cc {
 namespace scene {
-
-class Pass;
-class Ambient;
-class Shadows;
-class Skybox;
-class Fog;
 
 struct IMacroPatch {
     std::string name;
     MacroValue  value;
 };
-
-struct OctreeInfo {
-    bool     enabled{false};
-    Vec3     minPos;
-    Vec3     maxPos;
-    uint32_t depth{0};
-};
-
 
 } // namespace scene
 } // namespace cc

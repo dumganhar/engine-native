@@ -29,6 +29,7 @@
 #include "scene/Fog.h"
 #include "scene/Shadow.h"
 #include "scene/Skybox.h"
+#include "scene/Octree.h"
 
 namespace cc {
 
@@ -37,6 +38,7 @@ SceneGlobals::SceneGlobals() {
     _shadowInfo  = new scene::ShadowsInfo();
     _skyboxInfo  = new scene::SkyboxInfo();
     _fogInfo     = new scene::FogInfo();
+    _octreeInfo = new scene::OctreeInfo();
 }
 
 void SceneGlobals::activate() {
@@ -55,6 +57,10 @@ void SceneGlobals::activate() {
 
     if (_fogInfo != nullptr) {
         _fogInfo->activate(sceneData->getFog());
+    }
+
+    if (_octreeInfo != nullptr) {
+        _octreeInfo->activate(sceneData->getOctree());
     }
 }
 

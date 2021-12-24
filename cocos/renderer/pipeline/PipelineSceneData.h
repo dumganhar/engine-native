@@ -42,6 +42,7 @@ class Ambient;
 class Shadows;
 class Skybox;
 class Fog;
+class Octree;
 } // namespace scene
 namespace pipeline {
 
@@ -79,6 +80,7 @@ public:
     inline scene::Ambient *                                                    getAmbient() const { return _ambient; }
     inline scene::Skybox *                                                     getSkybox() const { return _skybox; }
     inline scene::Fog *                                                        getFog() const { return _fog; }
+    inline scene::Octree *                                                     getOctree() const { return _octree; }
 
     inline float getShadingScale() const { return _shadingScale; }
 
@@ -110,6 +112,7 @@ private:
     scene::Ambient *_ambient{nullptr};
     scene::Skybox * _skybox{nullptr};
     scene::Shadows *_shadow{nullptr};
+    scene::Octree *_octree{nullptr};
     bool            _isHDR{false};
     float           _shadingScale{1.0F};
 

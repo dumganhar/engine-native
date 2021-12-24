@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include "core/Root.h"
+
 #include "core/geometry/AABB.h"
 #include "core/geometry/Frustum.h"
 #include "scene/Light.h"
@@ -56,18 +56,8 @@ public:
     inline void setLuminanceHDR(float value) { _luminanceHDR = value; }
     inline void setLuminanceLDR(float value) { _luminanceLDR = value; }
 
-    inline float getLuminance() const {
-        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
-        return isHDR ? _luminanceHDR : _luminanceLDR;
-    }
-    inline void setLuminance(float value) {
-        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
-        if (isHDR) {
-            setLuminanceHDR(value);
-        } else {
-            setLuminanceLDR(value);
-        }
-    }
+    float getLuminance() const;
+    void setLuminance(float value);
 
     inline const Vec3 &getDirection() const { return _dir; }
 

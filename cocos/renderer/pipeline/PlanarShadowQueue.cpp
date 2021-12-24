@@ -36,6 +36,7 @@
 #include "gfx-base/GFXShader.h"
 #include "scene/Model.h"
 #include "scene/RenderScene.h"
+#include "scene/Shadow.h"
 #include "core/geometry/AABB.h"
 #include "cocos/scene/Shadow.h"
 

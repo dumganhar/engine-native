@@ -38,26 +38,27 @@
 #include "scene/Octree.h"
 #include "scene/SphereLight.h"
 #include "scene/SpotLight.h"
+#include "scene/DirectionalLight.h"
 
 namespace cc {
 namespace scene {
 
 RenderScene::~RenderScene() {
-    CC_SAFE_DELETE(_octree);
+
 }
 
 void RenderScene::activate() {
     const auto *sceneData  = pipeline::RenderPipeline::getInstance()->getPipelineSceneData();
-    const OctreeInfo *info       = nullptr; // TODO(cjh): sceneData->getOctree();
-
-//cjh    if (info->isEnabled()) {
-//        _octree = new Octree(info->minPos, info->maxPos, info->depth);
-//    }
+    _octree = sceneData->getOctree();
 }
 
 bool RenderScene::initialize(const IRenderSceneInfo &info) {
     _name = info.name;
     return true;
+}
+
+void RenderScene::setMainLight(DirectionalLight *dl) {
+    _mainLight = dl;
 }
 
 void RenderScene::update(uint32_t stamp) {
@@ -176,7 +177,7 @@ void RenderScene::removeSpotLights() {
 void RenderScene::addModel(Model *model) {
     model->attachToScene(this);
     _models.emplace_back(model);
-    if (_octree) {
+    if (_octree && _octree->isEnabled()) {
         _octree->insert(model);
     }
 }
@@ -192,7 +193,7 @@ void RenderScene::removeModel(index_t idx) {
 void RenderScene::removeModel(Model *model) {
     auto iter = std::find(_models.begin(), _models.end(), model);
     if (iter != _models.end()) {
-        if (_octree) {
+        if (_octree && _octree->isEnabled()) {
             _octree->remove(*iter);
         }
         model->detachFromScene();
@@ -204,7 +205,7 @@ void RenderScene::removeModel(Model *model) {
 
 void RenderScene::removeModels() {
     for (const auto &model : _models) {
-        if (_octree) {
+        if (_octree && _octree->isEnabled()) {
             _octree->remove(model);
         }
         model->detachFromScene();
@@ -230,7 +231,7 @@ void RenderScene::removeBatches() {
 }
 
 void RenderScene::updateOctree(Model *model) {
-    if (_octree) {
+    if (_octree && _octree->isEnabled()) {
         _octree->update(model);
     }
 }

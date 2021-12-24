@@ -27,6 +27,7 @@
 #include <cmath>
 #include "core/scene-graph/Node.h"
 #include "math/Math.h"
+#include "core/Root.h"
 
 namespace cc {
 namespace scene {
@@ -42,6 +43,20 @@ void SpotLight::initialize() {
     setLuminanceLDR(1.F);
     _range = cos(math::PI / 6);
     _dir.set(1.0, -1.0, -1.0);
+}
+
+float SpotLight::getLuminance() const {
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
+    return isHDR ? _luminanceHDR : _luminanceLDR;
+}
+
+void SpotLight::setLuminance(float value) {
+    const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
+    if (isHDR) {
+        setLuminanceHDR(value);
+    } else {
+        setLuminanceLDR(value);
+    }
 }
 
 void SpotLight::update() {

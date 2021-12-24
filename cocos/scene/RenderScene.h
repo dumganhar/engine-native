@@ -94,7 +94,7 @@ public:
     void onGlobalPipelineStateChanged();
 
     inline DirectionalLight *getMainLight() const { return _mainLight.get(); }
-    inline void              setMainLight(DirectionalLight *dl) { _mainLight = dl; }
+    void              setMainLight(DirectionalLight *dl);
 
     inline uint64_t                                   generateModelId() { return _modelId++; }
     inline const std::string &                        getName() const { return _name; }
@@ -118,7 +118,7 @@ private:
     std::vector<SharedPtr<SphereLight>>      _sphereLights;
     std::vector<SharedPtr<SpotLight>>        _spotLights;
     std::vector<DrawBatch2D *>               _batches;
-    Octree *                                 _octree{nullptr};
+    Octree*                        _octree{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderScene);
 };

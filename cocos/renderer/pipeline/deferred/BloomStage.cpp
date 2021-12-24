@@ -113,7 +113,7 @@ void BloomStage::destroy() {
 void BloomStage::render(scene::Camera *camera) {
     auto *pipeline = _pipeline;
     CC_ASSERT(pipeline != nullptr);
-    if (!pipeline->getBloomEnabled() || pipeline->getPipelineSceneData()->getRenderObjects().empty()) return;
+    if (!pipeline->isBloomEnabled() || pipeline->getPipelineSceneData()->getRenderObjects().empty()) return;
 
     if (_prefilterUBO == nullptr) {
         _prefilterUBO = _device->createBuffer({gfx::BufferUsage::UNIFORM, gfx::MemoryUsage::DEVICE | gfx::MemoryUsage::HOST, UBOBloom::SIZE});

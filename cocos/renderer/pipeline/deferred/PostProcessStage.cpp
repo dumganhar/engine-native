@@ -114,7 +114,7 @@ void PostProcessStage::render(scene::Camera *camera) {
     auto *pipeline = _pipeline;
     float shadingScale{_pipeline->getPipelineSceneData()->getShadingScale()};
     auto  postSetup = [&](framegraph::PassNodeBuilder &builder, RenderData &data) {
-        if (pipeline->getBloomEnabled()) {
+        if (pipeline->isBloomEnabled()) {
             data.outColorTex = framegraph::TextureHandle(builder.readFromBlackboard(RenderPipeline::fgStrHandleBloomOutTexture));
         } else {
             data.outColorTex = framegraph::TextureHandle(builder.readFromBlackboard(RenderPipeline::fgStrHandleOutColorTexture));

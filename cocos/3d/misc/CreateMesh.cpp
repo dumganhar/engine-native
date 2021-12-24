@@ -309,7 +309,7 @@ Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options /*
     auto* out = new Mesh();
     out->reset(
         Mesh::ICreateInfo({
-            .structInfo = meshStruct,
+            .structInfo = std::move(meshStruct),
             .data       = Uint8Array(bufferBlob.getCombined())
         }));
 

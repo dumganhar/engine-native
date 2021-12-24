@@ -96,8 +96,8 @@ void RenderWindow::resize(uint32_t width, uint32_t height, gfx::SurfaceTransform
         _width = _swapchain->getWidth();
         _height = _swapchain->getHeight();
     } else {
-        for (size_t i = 0; i < _colorTextures.size(); i++) {
-            _colorTextures.at(i)->resize(width, height);
+        for (auto *colorTexture : _colorTextures) {
+            colorTexture->resize(width, height);
         }
         if (_depthStencilTexture != nullptr) {
             _depthStencilTexture->resize(width, height);

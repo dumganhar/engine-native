@@ -72,8 +72,8 @@ public:
     /**
      * @en Resize the render texture
      * @zh 修改渲染贴图的尺寸
-     * @param width The pixel width
-     * @param height The pixel height
+     * @param width The pixel width, the range is from 1 to 2048
+     * @param height The pixel height, the range is from 1 to 2048
      */
     void resize(uint32_t width, uint32_t height);
 
@@ -111,23 +111,13 @@ public:
      * @param width 像素宽度
      * @param height 像素高度
      */
-    std::vector<uint8_t> readPixels(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
+    std::vector<uint8_t> readPixels(uint32_t x, uint32_t y, uint32_t width, uint32_t height) const;
 
     // Functions for TS deserialization.
     inline void setWidth(uint32_t width) { _width = width; }
     inline void setHeight(uint32_t height) { _height = height; }
 
 private:
-    /*    @serializable
-    @rangeMin(1)
-    @rangeMax(2048)*/
-    uint32_t _width{1};
-
-    /*    @serializable
-    @rangeMin(1)
-    @rangeMax(2048)*/
-    uint32_t _height{1};
-
     scene::RenderWindow *_window{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderTexture);

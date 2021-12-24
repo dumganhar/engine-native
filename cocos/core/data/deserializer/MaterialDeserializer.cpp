@@ -261,6 +261,26 @@ static void jsonToBlendTarget(const rapidjson::Value &val, BlendTargetInfo *outB
     }
 }
 
+static void deserializeGfxColor(const rapidjson::Value &color, cc::optional<gfx::Color> &gfxColor) {
+    if (gfxColor.has_value()) {
+        if (color.HasMember("x")) {
+            gfxColor->x = color["x"].GetFloat();
+        }
+
+        if (color.HasMember("y")) {
+            gfxColor->y = color["y"].GetFloat();
+        }
+
+        if (color.HasMember("z")) {
+            gfxColor->z = color["z"].GetFloat();
+        }
+
+        if (color.HasMember("w")) {
+            gfxColor->w = color["w"].GetFloat();
+        }
+    }
+}
+
 //TODO(xwx): Copied from EffectAssetDeserializer.cpp, need to make it as common functions
 static BlendStateInfo jsonToBlendState(const rapidjson::Value &val) {
     CC_ASSERT(val.IsObject());
@@ -276,7 +296,7 @@ static BlendStateInfo jsonToBlendState(const rapidjson::Value &val) {
     }
 
     if (val.HasMember("blendColor")) {
-        //cjh TODO:
+        deserializeGfxColor(val["blendColor"], bs.blendColor);
     }
 
     if (val.HasMember("targets")) {

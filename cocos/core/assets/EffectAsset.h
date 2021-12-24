@@ -413,7 +413,7 @@ struct ISamplerTextureInfo {
 
 struct ITextureInfo {
     uint32_t set{0};
-    int32_t binding{-1};;
+    int32_t binding{-1};
     std::string name;
     gfx::Type type{gfx::Type::UNKNOWN};
     uint32_t count{0};
@@ -422,7 +422,7 @@ struct ITextureInfo {
 
 struct ISamplerInfo {
     uint32_t set{0};
-    int32_t binding{-1};;
+    int32_t binding{-1};
     std::string name;
     uint32_t count{0};
     gfx::ShaderStageFlags stageFlags{gfx::ShaderStageFlags::NONE};

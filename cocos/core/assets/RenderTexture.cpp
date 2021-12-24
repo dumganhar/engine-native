@@ -33,23 +33,19 @@ namespace cc {
 namespace {
 
 gfx::ColorAttachment colorAttachment{
-    .format = gfx::Format::RGBA8,
+    .format        = gfx::Format::RGBA8,
     .beginAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE},
-    .endAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}
-};
+    .endAccesses   = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}};
 
 gfx::RenderPassInfo passInfo{
     std::vector<gfx::ColorAttachment>{colorAttachment},
     gfx::DepthStencilAttachment{
-        .format = gfx::Format::DEPTH_STENCIL
-    }
-};
+        .format = gfx::Format::DEPTH_STENCIL}};
 
 cc::scene::IRenderWindowInfo windowInfo{
     .width          = 1,
     .height         = 1,
-    .renderPassInfo = passInfo
-};
+    .renderPassInfo = passInfo};
 
 } // namespace
 
@@ -73,8 +69,8 @@ bool RenderTexture::destroy() {
 }
 
 void RenderTexture::resize(uint32_t width, uint32_t height) {
-    _width  = std::floor(clampf(width, 1.F, 2048.F));
-    _height = std::floor(clampf(height, 1.F, 2048.F));
+    _width  = std::floor(clampf(static_cast<float>(width), 1.F, 2048.F));
+    _height = std::floor(clampf(static_cast<float>(height), 1.F, 2048.F));
     if (_window != nullptr) {
         _window->resize(_width, _height, gfx::SurfaceTransform::IDENTITY); //TODO(cjh): don't hardcode transform here.
     }
@@ -127,23 +123,23 @@ bool RenderTexture::validate() const {
     return _width >= 1 && _width <= 2048 && _height >= 1 && _height <= 2048;
 }
 
-std::vector<uint8_t> RenderTexture::readPixels(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
-    auto* gfxTexture = getGFXTexture();
+std::vector<uint8_t> RenderTexture::readPixels(uint32_t x, uint32_t y, uint32_t width, uint32_t height) const {
+    auto *gfxTexture = getGFXTexture();
     if (!gfxTexture) {
         return {};
     }
 
-    auto* gfxDevice = getGFXDevice();
+    auto *gfxDevice = getGFXDevice();
 
     gfx::BufferTextureCopy region0{};
-    region0.texOffset.x = x;
-    region0.texOffset.y = y;
-    region0.texExtent.width = width;
+    region0.texOffset.x      = static_cast<int32_t>(x);
+    region0.texOffset.y      = static_cast<int32_t>(y);
+    region0.texExtent.width  = width;
     region0.texExtent.height = height;
 
     std::vector<uint8_t> buffer;
     buffer.resize(width * height * 4);
-    uint8_t * pBuffer = buffer.data();
+    uint8_t *pBuffer = buffer.data();
     gfxDevice->copyTextureToBuffers(gfxTexture, &pBuffer, &region0, 1);
 
     return buffer;

@@ -125,7 +125,7 @@ void Fog::updatePipeline() {
     const int32_t accurateValue        = isAccurate() ? 1 : 0;
     auto *        pipeline             = root->getPipeline();
     auto          iterMacroFog         = pipeline->getMacros().find("CC_USE_FOG");
-    auto          iterMacroAccurateFog = pipeline->getMacros().find("CC_USE_FOG");
+    auto          iterMacroAccurateFog = pipeline->getMacros().find("CC_USE_ACCURATE_FOG");
     if (iterMacroFog != pipeline->getMacros().end() && iterMacroAccurateFog != pipeline->getMacros().end()) {
         const MacroValue &macroFog            = iterMacroFog->second;
         const MacroValue &macroAccurateFog    = iterMacroAccurateFog->second;

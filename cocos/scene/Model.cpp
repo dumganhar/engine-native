@@ -84,8 +84,7 @@ cc::Float32Array &mat4ToFloat32Array(const cc::Mat4 &mat, cc::Float32Array &out,
     return out;
 }
 
-const cc::gfx::SamplerInfo LIGHTMAP_SAMPLER_HASH {
-    //TODO(xwx): TS use new SamplerInfo() which is not implemented yet
+const cc::gfx::SamplerInfo LIGHTMAP_SAMPLER_HASH{
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::NONE,
@@ -95,7 +94,6 @@ const cc::gfx::SamplerInfo LIGHTMAP_SAMPLER_HASH {
 };
 
 const cc::gfx::SamplerInfo LIGHTMAP_SAMPLER_WITH_MIP_HASH{
-    //TODO(xwx): TS use new SamplerInfo() which is not implemented yet
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
     cc::gfx::Filter::LINEAR,
@@ -177,7 +175,7 @@ void Model::updateTransform(uint32_t stamp) {
             _modelBounds->transform(node->getWorldMatrix(), _worldBounds);
         }
         if (_scene) {
-            // _scene->updateOctree(this); // TODO(xwx): updateOctree not implement yet
+            _scene->updateOctree(this);
         }
     }
 }
@@ -238,26 +236,23 @@ void Model::updateUBOs(uint32_t stamp) {
 
         mat4ToFloat32Array(mat4, _localData, pipeline::UBOLocal::MAT_WORLD_IT_OFFSET);
         _localBuffer->update(_localData.buffer()->getData());
-        // TODO(xwx): isOcclusionQueryEnabled not implemented
-        // const bool enableOcclusionQuery = pipeline::RenderPipeline::getInstance()->isOcclusionQueryEnabled();
-        // if (enableOcclusionQuery) {
-        //     updateWorldBoundUBOs();
-        // }
+        const bool enableOcclusionQuery = pipeline::RenderPipeline::getInstance()->isOcclusionQueryEnabled();
+        if (enableOcclusionQuery) {
+            updateWorldBoundUBOs();
+        }
     }
 }
 
 void Model::updateWorldBoundUBOs() {
     if (_worldBoundBuffer) {
-        // TODO(xwx): pipeline::UBOWorldBound not implemented
-        // std::array<float, pipeline::UBOWorldBound::COUNT> worldBoundBufferView;
-        const Vec3 &center      = _worldBounds ? _worldBounds->getCenter() : Vec3{0.0F, 0.0F, 0.0F};
-        const Vec3 &halfExtents = _worldBounds ? _worldBounds->getHalfExtents() : Vec3{1.0F, 1.0F, 1.0F};
-        const Vec4  worldBoundCenter{center.x, center.y, center.z, 0.0F};
-        const Vec4  worldBoundHalfExtents{halfExtents.x, halfExtents.y, halfExtents.z, 1.0F};
-        // TODO(xwx): pipeline::UBOWorldBound not implemented
-        // memcpy(worldBoundBufferView.data() + pipeline::UBOWorldBound::WORLD_BOUND_CENTER, &worldBoundCenter.x, sizeof(Vec4));
-        // memcpy(worldBoundBufferView.data() + pipeline::UBOWorldBound::WORLD_BOUND_HALF_EXTENTS, &worldBoundHalfExtents.x, sizeof(Vec4));
-        // _worldBoundBuffer->update(worldBoundBufferView.data(), pipeline::UBOWorldBound::SIZE);
+        std::array<float, pipeline::UBOWorldBound::COUNT> worldBoundBufferView;
+        const Vec3 &                                      center      = _worldBounds ? _worldBounds->getCenter() : Vec3{0.0F, 0.0F, 0.0F};
+        const Vec3 &                                      halfExtents = _worldBounds ? _worldBounds->getHalfExtents() : Vec3{1.0F, 1.0F, 1.0F};
+        const Vec4                                        worldBoundCenter{center.x, center.y, center.z, 0.0F};
+        const Vec4                                        worldBoundHalfExtents{halfExtents.x, halfExtents.y, halfExtents.z, 1.0F};
+        memcpy(worldBoundBufferView.data() + pipeline::UBOWorldBound::WORLD_BOUND_CENTER, &worldBoundCenter.x, sizeof(Vec4));
+        memcpy(worldBoundBufferView.data() + pipeline::UBOWorldBound::WORLD_BOUND_HALF_EXTENTS, &worldBoundHalfExtents.x, sizeof(Vec4));
+        _worldBoundBuffer->update(worldBoundBufferView.data(), pipeline::UBOWorldBound::SIZE);
     }
 }
 
@@ -267,7 +262,7 @@ void Model::createBoundingShape(const cc::optional<Vec3> &minPos, const cc::opti
     }
 
     _modelBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB());
-    _worldBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB()); // AABB.clone(this._modelBounds) in ts
+    _worldBounds = geometry::AABB::fromPoints(minPos.value(), maxPos.value(), new geometry::AABB());
 }
 
 SubModel *Model::createSubModel() {
@@ -335,7 +330,7 @@ void Model::updateLightingmap(Texture2D *texture, const Vec4 &uvParam) {
             // // TODO(Yun Hsiao Wu): should manage lightmap macro switches automatically
             // // USE_LIGHTMAP -> CC_USE_LIGHTMAP
             descriptorSet->bindTexture(pipeline::LIGHTMAPTEXTURE::BINDING, gfxTexture);
-            descriptorSet->bindSampler(pipeline::LIGHTMAPTEXTURE::BINDING, sampler); 
+            descriptorSet->bindSampler(pipeline::LIGHTMAPTEXTURE::BINDING, sampler);
             descriptorSet->update();
         }
     }
@@ -368,7 +363,7 @@ void Model::updateAttributesAndBinding(index_t subModelIndex) {
     updateLocalDescriptors(subModelIndex, subModel->getDescriptorSet());
 
     initWorldBoundDescriptors(subModelIndex);
-    // updateWorldBoundDescriptors(subModelIndex, subModel->getWorldBoundDescriptorSet()); // TODO(xwx)
+    updateWorldBoundDescriptors(subModelIndex, subModel->getWorldBoundDescriptorSet());
 
     gfx::Shader *shader = subModel->getPasses()[0]->getShaderVariant(subModel->getPatches());
     updateInstancedAttributes(shader->getAttributes(), subModel->getPasses()[0]);
@@ -392,7 +387,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
             return;
         }
     }
-    
+
     if (!pass->getDevice()->hasFeature(gfx::Feature::INSTANCED_ARRAYS)) return;
     // free old data
 
@@ -422,7 +417,7 @@ void Model::updateInstancedAttributes(const std::vector<gfx::Attribute> &attribu
         offset += info.size;
     }
     if (pass->getBatchingScheme() == BatchingSchemes::INSTANCING) {
-        // pass->getInstancedBuffer()->destroy(); //TODO(xwx)
+        pass->getInstancedBuffer()->destroy();
     }
     setInstMatWorldIdx(getInstancedAttributeIndex(INST_MAT_WORLD));
     _localDataUpdated = true;
@@ -467,7 +462,7 @@ void Model::updateLocalDescriptors(index_t subModelIndex, gfx::DescriptorSet *de
 void Model::updateWorldBoundDescriptors(index_t subModelIndex, gfx::DescriptorSet *descriptorSet) {
     if (isModelImplementedInJS()) {
         if (!_isCalledFromJS) {
-            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, subModelIndex, descriptorSet); // TODO(xwx): not sure use MODEL_UPDATE_LOCAL_DESCRIPTORS
+            _eventProcessor.emit(EventTypesToJS::MODEL_UPDATE_LOCAL_DESCRIPTORS, subModelIndex, descriptorSet);
             _isCalledFromJS = false;
             return;
         }

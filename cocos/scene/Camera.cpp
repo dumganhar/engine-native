@@ -66,7 +66,7 @@ Camera::Camera(gfx::Device *device)
     _isoValue      = Camera::ISOS[static_cast<int>(_iso)];
 
     _aspect = _screenScale = 1.F;
-    // this._frustum.accurate = true; // TODO(xwx)
+    _frustum.setAccurate(true);
 
     if (correctionMatrices.empty()) {
         float ySign = _device->getCapabilities().clipSpaceSignY;
@@ -157,8 +157,8 @@ void Camera::update(bool forceUpdate /*false*/) {
     }
 
     // projection matrix
-    auto* swapchain = _window->getSwapchain();
-    const auto& orientation = swapchain ? swapchain->getSurfaceTransform() : gfx::SurfaceTransform::IDENTITY;
+    auto *      swapchain   = _window->getSwapchain();
+    const auto &orientation = swapchain ? swapchain->getSurfaceTransform() : gfx::SurfaceTransform::IDENTITY;
 
     if (_isProjDirty || _curTransform != orientation) {
         _curTransform               = orientation;
@@ -195,14 +195,14 @@ void Camera::changeTargetWindow(RenderWindow *window) {
         win->attachCamera(this);
         _window = win;
 
-        // TODO(xwx): swapchain not implemented
         // window size is pre-rotated
-        // const swapchain   = win.swapchain;
-        // const orientation = swapchain && swapchain.surfaceTransform || SurfaceTransform.IDENTITY;
-        // if (orientation % 2)
-        resize(win->getHeight(), win->getWidth());
-        // else
-        //     resize(win->getWidth(), win->getHeight());
+        auto *     swapchain   = win->getSwapchain();
+        const auto orientation = swapchain ? swapchain->getSurfaceTransform() : gfx::SurfaceTransform::IDENTITY;
+        if (static_cast<int32_t>(orientation) % 2) {
+            resize(win->getHeight(), win->getWidth());
+        } else {
+            resize(win->getWidth(), win->getHeight());
+        }
     }
 }
 
@@ -340,10 +340,9 @@ void Camera::updateAspect(bool oriented) {
     _aspect = (static_cast<float>(getWindow()->getWidth()) * _viewport.z) / (static_cast<float>(getWindow()->getHeight()) * _viewport.w);
     // window size/viewport is pre-rotated, but aspect should be oriented to acquire the correct projection
     if (oriented) {
-        // TODO(xwx):
-        // const swapchain   = getWindow()->getSwapchain();
-        // const orientation = swapchain && swapchain.surfaceTransform || SurfaceTransform.IDENTITY;
-        // if (orientation % 2) _aspect = 1 / _aspect;
+        auto *     swapchain   = getWindow()->getSwapchain();
+        const auto orientation = swapchain ? swapchain->getSurfaceTransform() : gfx::SurfaceTransform::IDENTITY;
+        if (static_cast<int32_t>(orientation) % 2) _aspect = 1 / _aspect;
     }
     _isProjDirty = true;
 }
@@ -360,13 +359,9 @@ void Camera::setViewportInOrientedSpace(const Vec4 &val) {
 
     const float y = _device->getCapabilities().screenSpaceSignY < 0 ? 1 - val.y - height : val.y;
 
-    // TODO(xwx): swapchain not implemented
-    // const swapchain   = this.window ?.swapchain;
-    // const orientation = swapchain && swapchain.surfaceTransform || SurfaceTransform.IDENTITY;
-
-    auto *swapchain = this->_window->getSwapchain();
-    auto  orientation = swapchain ? swapchain->getSurfaceTransform() : gfx::SurfaceTransform::IDENTITY;
-    switch (orientation) { 
+    auto *     swapchain   = getWindow()->getSwapchain();
+    const auto orientation = swapchain ? swapchain->getSurfaceTransform() : gfx::SurfaceTransform::IDENTITY;
+    switch (orientation) {
         case gfx::SurfaceTransform::ROTATE_90:
             _viewport.x = 1 - y - height;
             _viewport.y = x;

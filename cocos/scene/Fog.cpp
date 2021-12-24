@@ -25,14 +25,8 @@
 
 #include "scene/Fog.h"
 #include "core/Root.h"
+#include "renderer/pipeline/helper/Utils.h"
 
-namespace {
-void srgbToLinear(cc::Vec4 *out, const cc::Vec4 &gamma) {
-    out->x = gamma.x * gamma.x;
-    out->y = gamma.y * gamma.y;
-    out->z = gamma.z * gamma.z;
-}
-} // namespace
 namespace cc {
 namespace scene {
 
@@ -114,7 +108,7 @@ void FogInfo::activate(Fog *resource) {
 //
 void Fog::initialize(const FogInfo &fogInfo) {
     setFogColor(fogInfo.getFogColor());
-    _enabled = fogInfo.isEnabled();
+    _enabled    = fogInfo.isEnabled();
     _accurate   = fogInfo.isAccurate();
     _type       = _enabled ? fogInfo.getType() : FogType::NONE;
     _fogDensity = fogInfo.getFogDensity();
@@ -126,20 +120,18 @@ void Fog::initialize(const FogInfo &fogInfo) {
 }
 
 void Fog::updatePipeline() {
-    auto *        root          = Root::getInstance();
-    const FogType value         = _enabled ? _type : FogType::NONE;
-    const int32_t accurateValue = isAccurate() ? 1 : 0;
-    auto *        pipeline      = root->getPipeline();
-    // TODO(xwx):
-    // if (pipeline.macros.CC_USE_FOG == = value &&pipeline.macros.CC_USE_ACCURATE_FOG == = accurateValue) {
-    //     return;
-    // }
-    if (auto iter = pipeline->getMacros().find("CC_USE_FOG"); iter != pipeline->getMacros().end()) {
-        const MacroValue &macro    = iter->second;
-        const int32_t *   macroPtr = cc::get_if<int32_t>(&macro);
-        if (macroPtr != nullptr && *macroPtr == static_cast<int32_t>(value)) {
-            return;
-        }
+    auto *        root                 = Root::getInstance();
+    const FogType value                = _enabled ? _type : FogType::NONE;
+    const int32_t accurateValue        = isAccurate() ? 1 : 0;
+    auto *        pipeline             = root->getPipeline();
+    auto          iterMacroFog         = pipeline->getMacros().find("CC_USE_FOG");
+    auto          iterMacroAccurateFog = pipeline->getMacros().find("CC_USE_FOG");
+    if (iterMacroFog != pipeline->getMacros().end() && iterMacroAccurateFog != pipeline->getMacros().end()) {
+        const MacroValue &macroFog            = iterMacroFog->second;
+        const MacroValue &macroAccurateFog    = iterMacroAccurateFog->second;
+        const int32_t *   macroFogPtr         = cc::get_if<int32_t>(&macroFog);
+        const int32_t *   macroAccurateFogPtr = cc::get_if<int32_t>(&macroAccurateFog);
+        if (macroFogPtr != nullptr && *macroFogPtr == static_cast<int32_t>(value) && macroAccurateFogPtr != nullptr && *macroAccurateFogPtr == accurateValue) return;
     }
 
     pipeline->setValue("CC_USE_FOG", static_cast<int32_t>(value));
@@ -150,7 +142,7 @@ void Fog::updatePipeline() {
 void Fog::setFogColor(const Color &val) {
     _fogColor.set(val);
     Vec4 v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
-    srgbToLinear(&_colorArray, v4);
+    pipeline::srgbToLinear(&_colorArray, v4);
 }
 
 } // namespace scene

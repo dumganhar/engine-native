@@ -38,6 +38,7 @@
 #include "renderer/pipeline/BatchedBuffer.h"
 #include "renderer/pipeline/Define.h"
 #include "renderer/pipeline/InstancedBuffer.h"
+#include "scene/Define.h"
 
 namespace cc {
 namespace scene {
@@ -173,7 +174,7 @@ void Pass::setUniform(uint32_t handle, const MaterialProperty &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    auto&    block   = _blocks[binding];
+    auto &          block   = _blocks[binding];
     if (auto iter = type2writer.find(type); iter != type2writer.end()) {
         iter->second(block.data, value, static_cast<int>(ofs));
     }
@@ -196,7 +197,7 @@ void Pass::setUniformArray(uint32_t handle, const MaterialPropertyList &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  stride  = gfx::getTypeSize(type) >> 2;
-    auto &    block   = _blocks[binding];
+    auto &          block   = _blocks[binding];
     uint32_t        ofs     = Pass::getOffsetFromHandle(handle);
     for (size_t i = 0; i < value.size(); i++, ofs += stride) {
         if (value[i].index() == 0) {
@@ -244,22 +245,22 @@ void Pass::update() {
     _descriptorSet->update();
 }
 
-pipeline::InstancedBuffer* Pass::getInstancedBuffer(int32_t extraKey) {
+pipeline::InstancedBuffer *Pass::getInstancedBuffer(int32_t extraKey) {
     auto iter = _instancedBuffers.find(extraKey);
     if (iter != _instancedBuffers.end()) {
         return iter->second.get();
     }
-    auto *instancedBuffer = new pipeline::InstancedBuffer(this);
+    auto *instancedBuffer       = new pipeline::InstancedBuffer(this);
     _instancedBuffers[extraKey] = instancedBuffer;
     return instancedBuffer;
 }
 
-pipeline::BatchedBuffer* Pass::getBatchedBuffer(int32_t extraKey) {
+pipeline::BatchedBuffer *Pass::getBatchedBuffer(int32_t extraKey) {
     auto iter = _batchedBuffers.find(extraKey);
     if (iter != _batchedBuffers.end()) {
         return iter->second.get();
     }
-    auto *batchedBuffers = new pipeline::BatchedBuffer(this);
+    auto *batchedBuffers      = new pipeline::BatchedBuffer(this);
     _batchedBuffers[extraKey] = batchedBuffers;
     return batchedBuffers;
 }
@@ -294,21 +295,21 @@ void Pass::resetUniform(const std::string &name) {
     if (0 == handle) {
         return;
     }
-    const gfx::Type type    = Pass::getTypeFromHandle(handle);
-    const uint32_t  binding = Pass::getBindingFromHandle(handle);
-    const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    const uint32_t  count   = Pass::getCountFromHandle(handle);
-    auto &block = _blocks[binding];
+    const gfx::Type                                                                  type    = Pass::getTypeFromHandle(handle);
+    const uint32_t                                                                   binding = Pass::getBindingFromHandle(handle);
+    const uint32_t                                                                   ofs     = Pass::getOffsetFromHandle(handle);
+    const uint32_t                                                                   count   = Pass::getCountFromHandle(handle);
+    auto &                                                                           block   = _blocks[binding];
     cc::optional<cc::variant<std::vector<float>, std::vector<int32_t>, std::string>> givenDefaultOpt;
-    auto iter = _properties.find(name);
+    auto                                                                             iter = _properties.find(name);
     if (iter != _properties.end()) {
         givenDefaultOpt = iter->second.value;
     }
 
     if (givenDefaultOpt.has_value()) {
-        const auto& value = givenDefaultOpt.value();
+        const auto &value = givenDefaultOpt.value();
         if (cc::holds_alternative<std::vector<float>>(value)) {
-            const auto& floatArr = cc::get<std::vector<float>>(value);
+            const auto &floatArr = cc::get<std::vector<float>>(value);
             if (auto iter = type2writer.find(type); iter != type2writer.end()) {
                 iter->second(block.data, floatArr.data(), ofs);
             }
@@ -341,13 +342,13 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
         texName = getDefaultStringFromType(type);
     }
 
-    auto *                 textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
-    gfx::Texture *         texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
+    auto *                         textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
+    gfx::Texture *                 texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
     cc::optional<gfx::SamplerInfo> samplerInfo;
     if (info != nullptr && info->samplerHash.has_value()) {
         samplerInfo = gfx::Sampler::unpackFromHash(info->samplerHash.value());
     } else if (textureBase != nullptr) {
-        samplerInfo = textureBase->getSamplerInfo(); // TODO(xwx): getSamplerInfo not implement yet
+        samplerInfo = textureBase->getSamplerInfo();
     }
 
     if (samplerInfo.has_value()) {
@@ -604,8 +605,8 @@ void Pass::initPassFromTarget(Pass *target, const gfx::DepthStencilState &dss, c
     _shaderInfo        = target->_shaderInfo; //cjh how to release?
     _properties        = target->_properties;
 
-    _blocks    = target->_blocks;
-    _dynamics  = target->_dynamics;
+    _blocks   = target->_blocks;
+    _dynamics = target->_dynamics;
 
     _shader = target->_shader;
 

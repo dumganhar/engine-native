@@ -45,14 +45,16 @@ Scene::~Scene() = default;
 void Scene::load() {
     if (!_inited) {
         //cjh        if (TEST) {
-        //            assert(!_activeInHierarchy, 'Should deactivate ActionManager and EventManager by default');
+        //            assert(!_activeInHierarchy, 'Should deactivate ActionManager by default');
         //        }
+        // expandNestedPrefabInstanceNode(this); // TODO(xwx): expandNestedPrefabInstanceNode not implement yet
+        // applyTargetOverrides(this); // TODO(xwx): applyTargetOverrides not implement yet
         //cjh _onBatchCreated is implemented in TS now, so comment the following line
         //        onBatchCreated(false); //cjh EDITOR && _prefabSyncedInLiveReload);
         _inited = true;
     }
     _scene = this;
-    // static methode can't use this as parameter type
+    // static method can't use this as parameter type
     walk(Node::setScene);
 }
 
@@ -65,6 +67,9 @@ void Scene::activate(bool active /* = true */) {
     //     The test environment does not currently support the renderer
     //        if (!TEST) {
     _globals->activate();
+    if (_renderScene) {
+        _renderScene->activate();
+    }
     //        }
 }
 
@@ -83,8 +88,6 @@ void Scene::onBatchCreated(bool dontSyncChildPrefab) {
         _children[i]->setSiblingIndex(i);
         _children[i]->onBatchCreated(dontSyncChildPrefab);
     }
-
-    //cjh    applyTargetOverrides(this);
 }
 
 bool Scene::destroy() {

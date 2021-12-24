@@ -31,6 +31,7 @@
 #include "renderer/gfx-base/GFXSwapchain.h"
 #include "renderer/pipeline/deferred/DeferredPipeline.h"
 #include "renderer/pipeline/forward/ForwardPipeline.h"
+#include "scene/DirectionalLight.h"
 
 namespace cc {
 
@@ -61,13 +62,13 @@ Root::~Root() {
     CC_SAFE_DELETE(_eventProcessor);
 }
 
-void Root::initialize(gfx::Swapchain* swapchain) {
+void Root::initialize(gfx::Swapchain *swapchain) {
     _swapchain = swapchain;
     gfx::ColorAttachment colorAttachment;
     colorAttachment.format = swapchain->getColorTexture()->getFormat();
     gfx::DepthStencilAttachment depthStencilAttachment;
     depthStencilAttachment.format = swapchain->getDepthStencilTexture()->getFormat();
-    gfx::RenderPassInfo         renderPassInfo;
+    gfx::RenderPassInfo renderPassInfo;
     renderPassInfo.colorAttachments.emplace_back(colorAttachment);
     renderPassInfo.depthStencilAttachment.depthStoreOp   = gfx::StoreOp::DISCARD;
     renderPassInfo.depthStencilAttachment.stencilStoreOp = gfx::StoreOp::DISCARD;
@@ -77,8 +78,7 @@ void Root::initialize(gfx::Swapchain* swapchain) {
         swapchain->getWidth(),
         swapchain->getHeight(),
         renderPassInfo,
-        swapchain
-    };
+        swapchain};
     _mainWindow = createWindow(info);
 
     _curWindow = _mainWindow;
@@ -266,6 +266,32 @@ void Root::destroyScene(scene::RenderScene *scene) {
     if (it != _scenes.end()) {
         CC_SAFE_DESTROY(*it);
         _scenes.erase(it);
+    }
+}
+
+void Root::destroyModel(scene::Model *model) {
+    if (model == nullptr) {
+        return;
+    }
+    model->destroy();
+    if (model->getScene() != nullptr) {
+        model->getScene()->removeModel(model);
+    }
+}
+
+void Root::destroyLight(scene::Light *light) {
+    if (light == nullptr) {
+        return;
+    }
+    light->destroy();
+    if (light->getScene() != nullptr) {
+        if (light->getType() == scene::LightType::DIRECTIONAL) {
+            light->getScene()->removeDirectionalLight(static_cast<scene::DirectionalLight *>(light));
+        } else if (light->getType() == scene::LightType::SPHERE) {
+            light->getScene()->removeSphereLight(static_cast<scene::SphereLight *>(light));
+        } else if (light->getType() == scene::LightType::SPOT) {
+            light->getScene()->removeSpotLight(static_cast<scene::SpotLight *>(light));
+        }
     }
 }
 

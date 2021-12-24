@@ -27,6 +27,7 @@
 
 #include "base/Macros.h"
 #include "base/RefCounted.h"
+#include "core/Root.h"
 #include "core/assets/TextureCube.h"
 #include "pipeline/GlobalDescriptorSetManager.h"
 #include "renderer/gfx-base/GFXTexture.h"
@@ -90,8 +91,7 @@ public:
     // @tooltip('i18n:skybox.useHDR')
     void        setUseHDR(bool val);
     inline bool isUseHDR() const {
-        // TODO(xwx): use below after implement
-        // (legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR = _useHDR;
+        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
         return _useHDR;
     }
 
@@ -104,9 +104,7 @@ public:
     // @tooltip('i18n:skybox.envmap')
     void                setEnvmap(TextureCube *val);
     inline TextureCube *getEnvamp() const {
-        const bool isHDR = true;
-        // TODO(xwx): use below after implement
-        // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
         return isHDR ? _envmapHDR : _envmapLDR;
     }
 
@@ -125,9 +123,7 @@ public:
     // @type(TextureCube)
     void                setDiffuseMap(TextureCube *val);
     inline TextureCube *getDiffuseMap() const {
-        const bool isHDR = true;
-        // TODO(xwx): use below after implement
-        // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
         return isHDR ? _diffuseMapHDR : _diffuseMapLDR;
     }
 
@@ -231,9 +227,7 @@ public:
      * @zh 使用的立方体贴图
      */
     inline TextureCube *getEnvmap() const {
-        const bool isHDR = true;
-        // TODO(xwx): use below after implement
-        // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
         return isHDR ? _envmapHDR : _envmapLDR;
     }
     void setEnvmap(TextureCube *val);
@@ -252,15 +246,11 @@ public:
      * @zh 使用的漫反射卷积图
      */
     inline TextureCube *getDiffuseMap() const {
-        const bool isHDR = true;
-        // TODO(xwx): use below after implement
-        // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
         return isHDR ? _diffuseMapHDR.get() : _diffuseMapLDR.get();
     }
-    inline void setDiffuseMap(TextureCube* val) {
-        const bool isHDR = true;
-        // TODO(xwx): use below after implement
-        // legacyCC.director.root as Root).pipeline.pipelineSceneData.isHDR
+    inline void setDiffuseMap(TextureCube *val) {
+        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
         if (isHDR) {
             setDiffuseMaps(val, _envmapLDR);
         } else {

@@ -31,7 +31,6 @@
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/pipeline/RenderPipeline.h"
 #include "scene/Camera.h"
-#include "scene/DirectionalLight.h"
 #include "scene/DrawBatch2D.h"
 #include "scene/Light.h"
 #include "scene/Model.h"
@@ -55,7 +54,7 @@ public:
     ~Root();
 
     // @minggo IRootInfo seems is not use, and how to return Promise?
-    void initialize(gfx::Swapchain* swapchain);
+    void initialize(gfx::Swapchain *swapchain);
     void destroy();
 
     /**
@@ -87,7 +86,7 @@ public:
      * 每帧执行函数
      * @param deltaTime 间隔时间
      */
-    void frameMove(float deltaTime, int32_t totalFrames); // TODO: c++ doesn't have a Director, so totalFrames need to be set from JS
+    void frameMove(float deltaTime, int32_t totalFrames); // TODO(): c++ doesn't have a Director, so totalFrames need to be set from JS
 
     /**
      * @zh
@@ -137,15 +136,7 @@ public:
         return model;
     }
 
-    void destroyModel(scene::Model *model) {
-        if (model == nullptr) {
-            return;
-        }
-        model->destroy();
-        if (model->getScene() != nullptr) {
-            model->getScene()->removeModel(model);
-        }
-    }
+    void destroyModel(scene::Model *model);
 
     template <typename T, typename = std::enable_if_t<std::is_base_of<scene::Light, T>::value>>
     T *createLight() {
@@ -155,28 +146,7 @@ public:
         return light;
     }
 
-    void destroyLight(scene::Light *light) {
-        if (light == nullptr) {
-            return;
-        }
-        light->destroy();
-        if (light->getScene() != nullptr) {
-            auto *directionalLightPtr = dynamic_cast<scene::DirectionalLight *>(light);
-            if (directionalLightPtr != nullptr) {
-                light->getScene()->removeDirectionalLight(directionalLightPtr);
-                return;
-            }
-            auto *sphereLightPtr = dynamic_cast<scene::SphereLight *>(light);
-            if (sphereLightPtr != nullptr) {
-                light->getScene()->removeSphereLight(sphereLightPtr);
-                return;
-            }
-            auto *spotLightPtr = dynamic_cast<scene::SpotLight *>(light);
-            if (spotLightPtr != nullptr) {
-                light->getScene()->removeSpotLight(spotLightPtr);
-            }
-        }
-    }
+    void destroyLight(scene::Light *light);
 
     inline scene::Camera *createCamera() const {
         return new scene::Camera(_device);
@@ -275,7 +245,7 @@ public:
 
 private:
     gfx::Device *                               _device{nullptr};
-    gfx::Swapchain* _swapchain{nullptr};
+    gfx::Swapchain *                            _swapchain{nullptr};
     SharedPtr<scene::RenderWindow>              _mainWindow;
     SharedPtr<scene::RenderWindow>              _curWindow;
     SharedPtr<scene::RenderWindow>              _tempWindow;
@@ -295,7 +265,7 @@ private:
     CallbacksInvoker *                          _eventProcessor{nullptr};
 
     // Cache std::vector to avoid allocate every frame in frameMove
-    std::vector<scene::Camera *> _cameraList;
+    std::vector<scene::Camera *>  _cameraList;
     std::vector<gfx::Swapchain *> _swapchains;
     //
 };

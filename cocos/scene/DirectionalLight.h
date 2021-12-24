@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "core/Root.h"
 #include "math/Vec3.h"
 #include "scene/Ambient.h"
 #include "scene/Light.h"
@@ -47,18 +48,14 @@ public:
     inline float       getIlluminanceHDR() const { return _illuminanceHDR; }
     inline float       getIlluminanceLDR() const { return _illuminanceLDR; }
     inline float       getIlluminance() const {
-        // TODO(xwx):
-        // const isHDR = (legacyCC.director.root).pipeline.pipelineSceneData.isHDR;
-        bool isHDR = true;
+        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
         if (isHDR) {
             return _illuminanceHDR;
         }
         return _illuminanceLDR;
     }
     inline void setIlluminance(float value) {
-        // TODO(xwx):
-        // const isHDR = (legacyCC.director.root).pipeline.pipelineSceneData.isHDR;
-        bool isHDR = true;
+        const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
         if (isHDR) {
             _illuminanceHDR = value;
         } else {

@@ -28,6 +28,7 @@
 #include "core/event/CallbacksInvoker.h"
 #include "core/event/EventTypesToJS.h"
 #include "renderer/gfx-base/GFXDef.h"
+#include "renderer/gfx-base/GFXSwapchain.h"
 #include "renderer/pipeline/deferred/DeferredPipeline.h"
 #include "renderer/pipeline/forward/ForwardPipeline.h"
 
@@ -49,6 +50,9 @@ Root::Root(gfx::Device *device)
     //    this._dataPoolMgr = legacyCC.internal.DataPoolManager && new legacyCC.internal.DataPoolManager(device) as DataPoolManager;
     _cameraPool = new memop::Pool<scene::Camera>([this]() { return new scene::Camera(_device); },
                                                  4);
+
+    _cameraList.reserve(6);
+    _swapchains.reserve(2);
 }
 
 Root::~Root() {
@@ -57,33 +61,30 @@ Root::~Root() {
     CC_SAFE_DELETE(_eventProcessor);
 }
 
-void Root::initialize() {
+void Root::initialize(gfx::Swapchain* swapchain) {
+    _swapchain = swapchain;
     gfx::ColorAttachment colorAttachment;
-
+    colorAttachment.format = swapchain->getColorTexture()->getFormat();
     gfx::DepthStencilAttachment depthStencilAttachment;
+    depthStencilAttachment.format = swapchain->getDepthStencilTexture()->getFormat();
     gfx::RenderPassInfo         renderPassInfo;
     renderPassInfo.colorAttachments.emplace_back(colorAttachment);
     renderPassInfo.depthStencilAttachment.depthStoreOp   = gfx::StoreOp::DISCARD;
     renderPassInfo.depthStencilAttachment.stencilStoreOp = gfx::StoreOp::DISCARD;
 
-    scene::IRenderWindowInfo info{"rootMainWindow",
-                                  _device->getWidth(),
-                                  _device->getHeight(),
-                                  renderPassInfo,
-                                  -1, // always on screen
-                                  false};
+    scene::IRenderWindowInfo info{
+        std::string{"rootMainWindow"},
+        swapchain->getWidth(),
+        swapchain->getHeight(),
+        renderPassInfo,
+        swapchain
+    };
     _mainWindow = createWindow(info);
 
     _curWindow = _mainWindow;
 
     // TODO(minggo):
-    //    return Promise.resolve(builtinResMgr.initBuiltinRes(this._device)).then(() => {
-    //        legacyCC.view.on('design-resolution-changed', () => {
-    //            const width = legacyCC.game.canvas.width;
-    //            const height = legacyCC.game.canvas.height;
-    //            this.resize(width, height);
-    //        }, this);
-    //    });
+    //return Promise.resolve(builtinResMgr.initBuiltinRes(this._device));
 }
 
 void Root::destroy() {
@@ -98,15 +99,10 @@ void Root::destroy() {
 }
 
 void Root::resize(uint32_t width, uint32_t height) {
-    _device->resize(width, height);
-    _mainWindow->resize(width, height);
     for (const auto &window : _windows) {
-        if (window->shouldSyncSizeWithSwapchain()) {
-            window->resize(width, height);
+        if (window->getSwapchain()) {
+            window->resize(width, height, gfx::SurfaceTransform::IDENTITY); // TODO(cjh): don't hardcode surfaceTransform
         }
-    }
-    if (_pipeline) {
-        _pipeline->resize(width, height);
     }
 }
 
@@ -115,14 +111,28 @@ bool Root::setRenderPipeline(pipeline::RenderPipeline *rppl /* = nullptr*/) {
         _useDeferredPipeline = true;
     }
 
+    bool isCreateDefaultPipeline{false};
     if (!rppl) {
         rppl = new pipeline::ForwardPipeline();
         rppl->initialize({});
+        isCreateDefaultPipeline = true;
     }
 
     _pipeline = rppl;
-    if (!_pipeline->activate()) {
-        CC_SAFE_DESTROY(_pipeline);
+
+    // now cluster just enabled in deferred pipeline
+    if (!_useDeferredPipeline || !_device->hasFeature(gfx::Feature::COMPUTE_SHADER)) {
+        // disable cluster
+        _pipeline->setClusterEnabled(false);
+    }
+    _pipeline->setBloomEnabled(false);
+
+    if (!_pipeline->activate(_mainWindow->getSwapchain())) {
+        if (isCreateDefaultPipeline) {
+            CC_SAFE_DESTROY(_pipeline);
+        }
+
+        _pipeline = nullptr;
         return false;
     }
 
@@ -187,13 +197,15 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
     //    }
 
     //
-    std::vector<scene::Camera *> cameraList;
+    _cameraList.clear();
     for (const auto &window : _windows) {
-        window->extractRenderCameras(cameraList);
+        window->extractRenderCameras(_cameraList);
     }
 
-    if (_pipeline != nullptr && !cameraList.empty()) {
-        _device->acquire();
+    if (_pipeline != nullptr && !_cameraList.empty()) {
+        _swapchains.clear();
+        _swapchains.emplace_back(_swapchain);
+        _device->acquire(_swapchains);
         //cjh TODO:        const stamp = legacyCC.director.getTotalFrames();
         uint32_t stamp = totalFrames;
 
@@ -208,10 +220,10 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
 
         _eventProcessor->emit(EventTypesToJS::DIRECTOR_BEFORE_COMMIT, this);
 
-        std::stable_sort(cameraList.begin(), cameraList.end(), [](const auto *a, const auto *b) {
+        std::stable_sort(_cameraList.begin(), _cameraList.end(), [](const auto *a, const auto *b) {
             return a->getPriority() < b->getPriority();
         });
-        _pipeline->render(cameraList);
+        _pipeline->render(_cameraList);
         _device->present();
     }
 

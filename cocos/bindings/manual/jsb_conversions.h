@@ -1128,8 +1128,8 @@ bool sevalue_to_native(const se::Value &from, cc::optional<T> *to, se::Object *c
 }
 //////////////////////  shoter form
 template <typename T>
-inline bool sevalue_to_native(const se::Value &from, T to) { // NOLINT(readability-identifier-naming)
-    return sevalue_to_native(from, to, static_cast<se::Object *>(nullptr));
+inline bool sevalue_to_native(const se::Value &from, T&& to) { // NOLINT(readability-identifier-naming)
+    return sevalue_to_native(from, std::forward<T>(to), static_cast<se::Object *>(nullptr));
 }
 
 ///////////////////////////////////////////////////////////////////

@@ -42,6 +42,10 @@
 
 namespace cc {
 
+namespace gfx {
+class SwapChain;
+}
+
 class CallbacksInvoker;
 
 class Root final {
@@ -51,7 +55,7 @@ public:
     ~Root();
 
     // @minggo IRootInfo seems is not use, and how to return Promise?
-    void initialize();
+    void initialize(gfx::Swapchain* swapchain);
     void destroy();
 
     /**
@@ -271,6 +275,7 @@ public:
 
 private:
     gfx::Device *                               _device{nullptr};
+    gfx::Swapchain* _swapchain{nullptr};
     SharedPtr<scene::RenderWindow>              _mainWindow;
     SharedPtr<scene::RenderWindow>              _curWindow;
     SharedPtr<scene::RenderWindow>              _tempWindow;
@@ -288,6 +293,11 @@ private:
     uint32_t                                    _fixedFPS{0};
     bool                                        _useDeferredPipeline{false};
     CallbacksInvoker *                          _eventProcessor{nullptr};
+
+    // Cache std::vector to avoid allocate every frame in frameMove
+    std::vector<scene::Camera *> _cameraList;
+    std::vector<gfx::Swapchain *> _swapchains;
+    //
 };
 
 } // namespace cc

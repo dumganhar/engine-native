@@ -291,7 +291,7 @@ public:
      * @zh 重置此网格。
      * @param info Mesh creation information including struct and data
      */
-    void reset(const ICreateInfo &info);
+    void reset(ICreateInfo &&info);
 
     using BoneSpaceBounds = std::vector<SharedPtr<geometry::AABB>>;
     /**

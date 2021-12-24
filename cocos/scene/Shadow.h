@@ -278,7 +278,7 @@ public:
      */
     void setShadowDistance(float val);
 
-    inline float shadowDistance() const {
+    inline float getShadowDistance() const {
         return _shadowDistance;
     }
 

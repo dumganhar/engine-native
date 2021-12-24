@@ -175,8 +175,8 @@ void ShadowsInfo::setPlaneFromNode(Node *node) {
     _distance = _normal.dot(node->getWorldPosition());
 }
 
-void ShadowsInfo::activate(Shadow *resource) {
-    _resource = resource; //cjh shared_ptr
+void ShadowsInfo::activate(Shadows *resource) {
+    _resource = resource;
     _resource->initialize(*this);
     _resource->activate();
 }

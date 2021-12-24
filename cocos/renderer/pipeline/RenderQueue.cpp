@@ -70,7 +70,7 @@ void RenderQueue::sort() {
 
 void RenderQueue::recordCommandBuffer(gfx::Device * /*device*/, scene::Camera *camera, gfx::RenderPass *renderPass, gfx::CommandBuffer *cmdBuff, uint32_t subpassIndex) {
     PipelineSceneData *const              sceneData            = _pipeline->getPipelineSceneData();
-    bool                                  enableOcclusionQuery = _pipeline->getOcclusionQueryEnabled() && _useOcclusionQuery;
+    bool                                  enableOcclusionQuery = _pipeline->isOcclusionQueryEnabled() && _useOcclusionQuery;
     auto *                                queryPool            = _pipeline->getQueryPools()[0];
     for (auto &i : _queue) {
         const auto *subModel = i.subModel;

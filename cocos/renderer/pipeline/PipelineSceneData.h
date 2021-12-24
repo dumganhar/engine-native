@@ -81,7 +81,7 @@ public:
 
     inline float getShadingScale() const { return _shadingScale; }
 
-    inline scene::Pass *getOcclusionQueryPass();
+    scene::Pass *getOcclusionQueryPass();
 
 private:
     void                 initOcclusionQuery();

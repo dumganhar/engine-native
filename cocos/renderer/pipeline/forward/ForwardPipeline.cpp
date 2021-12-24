@@ -88,7 +88,7 @@ bool ForwardPipeline::activate(gfx::Swapchain *swapchain) {
 
 void ForwardPipeline::render(const vector<scene::Camera *> &cameras) {
     auto *     device               = gfx::Device::getInstance();
-    const bool enableOcclusionQuery = getOcclusionQueryEnabled();
+    const bool enableOcclusionQuery = isOcclusionQueryEnabled();
     if (enableOcclusionQuery) {
         device->getQueryPoolResults(_queryPools[0]);
     }

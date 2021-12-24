@@ -27,15 +27,15 @@
 #include "cocos/base/Optional.h"
 
 #include "primitive/PrimitiveDefine.h"
+#include "3d/assets/Mesh.h"
 
 namespace cc {
-
-class Mesh;
 
 struct ICreateMeshOptions {
     cc::optional<bool> calculateBounds;
 };
 
 Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options = {});
+Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOptions &options = {});
 
 } // namespace cc

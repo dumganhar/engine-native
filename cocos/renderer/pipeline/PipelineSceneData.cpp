@@ -30,23 +30,23 @@
 #include "gfx-base/GFXFramebuffer.h"
 #include "scene/Ambient.h"
 #include "scene/Fog.h"
+#include "scene/Octree.h"
 #include "scene/Shadow.h"
 #include "scene/Skybox.h"
-#include "scene/Octree.h"
 
 namespace cc {
 namespace pipeline {
 
 PipelineSceneData::PipelineSceneData() {
-    _fog     = new scene::Fog(); //cjh how to delete?
+    _fog     = new scene::Fog(); // cjh how to delete?
     _ambient = new scene::Ambient();
     _skybox  = new scene::Skybox();
     _shadow  = new scene::Shadows();
-    _octree = new scene::Octree();
+    _octree  = new scene::Octree();
 }
 
 PipelineSceneData::~PipelineSceneData() {
-    CC_SAFE_DELETE(_fog); //cjh correct ?
+    CC_SAFE_DELETE(_fog); // cjh correct ?
     CC_SAFE_DELETE(_ambient);
     CC_SAFE_DELETE(_skybox);
     CC_SAFE_DELETE(_shadow);

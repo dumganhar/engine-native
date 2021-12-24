@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2020-2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,8 +28,8 @@
 #include <array>
 #include <vector>
 #include "base/Macros.h"
-#include "math/Vec3.h"
 #include "core/geometry/AABB.h"
+#include "math/Vec3.h"
 
 namespace cc {
 namespace scene {
@@ -51,28 +51,28 @@ public:
      * @en Whether activate octree
      * @zh 是否启用八叉树加速剔除？
      */
-    void setEnabled(bool val);
+    void        setEnabled(bool val);
     inline bool isEnabled() const { return _enabled; }
 
     /**
      * @en min pos of scene bounding box
      * @zh 场景包围盒最小值
      */
-    void setMinPos(const Vec3& val);
+    void               setMinPos(const Vec3& val);
     inline const Vec3& getMinPos() const { return _minPos; }
 
     /**
      * @en max pos of scene bounding box
      * @zh 场景包围盒最大值
      */
-    void setMaxPos(const Vec3& val);
+    void               setMaxPos(const Vec3& val);
     inline const Vec3& getMaxPos() const { return _maxPos; }
 
     /**
      * @en depth of octree
      * @zh 八叉树深度
      */
-    void setDepth(uint32_t val);
+    void            setDepth(uint32_t val);
     inline uint32_t getDepth() const { return _depth; }
 
     void activate(Octree* resource);
@@ -171,21 +171,21 @@ public:
      * @en Whether activate octree
      * @zh 是否启用八叉树加速剔除？
      */
-    void setEnabled(bool val);
+    void        setEnabled(bool val);
     inline bool isEnabled() const { return _enabled; }
 
     /**
      * @en min pos of scene bounding box
      * @zh 场景包围盒最小值
      */
-    void setMinPos(const Vec3& val);
+    void               setMinPos(const Vec3& val);
     inline const Vec3& getMinPos() const { return _minPos; }
 
     /**
      * @en max pos of scene bounding box
      * @zh 场景包围盒最大值
      */
-    void setMaxPos(const Vec3& val);
+    void               setMaxPos(const Vec3& val);
     inline const Vec3& getMaxPos() const { return _maxPos; }
 
     // reinsert all models in the tree when you change the aabb or max depth in editor
@@ -218,9 +218,9 @@ private:
     uint32_t    _maxDepth{DEFAULT_OCTREE_DEPTH};
     uint32_t    _totalCount{0};
 
-    bool     _enabled{false};
-    Vec3     _minPos;
-    Vec3     _maxPos;
+    bool _enabled{false};
+    Vec3 _minPos;
+    Vec3 _maxPos;
 };
 
 } // namespace scene

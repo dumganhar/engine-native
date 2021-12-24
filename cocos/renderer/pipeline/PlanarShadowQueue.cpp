@@ -31,14 +31,13 @@
 #include "PlanarShadowQueue.h"
 #include "RenderInstancedQueue.h"
 #include "RenderPipeline.h"
+#include "core/geometry/AABB.h"
 #include "gfx-base/GFXCommandBuffer.h"
 #include "gfx-base/GFXDevice.h"
 #include "gfx-base/GFXShader.h"
 #include "scene/Model.h"
 #include "scene/RenderScene.h"
 #include "scene/Shadow.h"
-#include "core/geometry/AABB.h"
-#include "cocos/scene/Shadow.h"
 
 namespace cc {
 namespace pipeline {
@@ -51,8 +50,8 @@ PlanarShadowQueue::PlanarShadowQueue(RenderPipeline *pipeline)
 void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBuffer *cmdBuffer) {
     clear();
 
-    const PipelineSceneData *             sceneData  = _pipeline->getPipelineSceneData();
-    const scene::Shadows *                 shadowInfo = sceneData->getShadow();
+    const PipelineSceneData *sceneData  = _pipeline->getPipelineSceneData();
+    const scene::Shadows    *shadowInfo = sceneData->getShadow();
     if (shadowInfo == nullptr || !shadowInfo->isEnabled() || shadowInfo->getType() != scene::ShadowType::PLANAR) {
         return;
     }
@@ -75,7 +74,7 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
         }
     }
 
-    InstancedBuffer *instancedBuffer = nullptr;// TODO(cjh): InstancedBuffer::get(shadowInfo->isInstancePass());
+    InstancedBuffer *instancedBuffer = nullptr; // TODO(cjh): InstancedBuffer::get(shadowInfo->isInstancePass());
 
     geometry::AABB ab;
     for (const auto *model : _castModels) {
@@ -107,8 +106,8 @@ void PlanarShadowQueue::clear() {
 }
 
 void PlanarShadowQueue::recordCommandBuffer(gfx::Device *device, gfx::RenderPass *renderPass, gfx::CommandBuffer *cmdBuffer) {
-    const PipelineSceneData *             sceneData  = _pipeline->getPipelineSceneData();
-    const auto *shadowInfo = sceneData->getShadow();
+    const PipelineSceneData *sceneData  = _pipeline->getPipelineSceneData();
+    const auto              *shadowInfo = sceneData->getShadow();
     if (shadowInfo == nullptr || !shadowInfo->isEnabled() || shadowInfo->getType() != scene::ShadowType::PLANAR) {
         return;
     }

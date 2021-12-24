@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,11 +33,11 @@
 #include "renderer/core/MaterialInstance.h"
 #include "renderer/core/PassUtils.h"
 #include "renderer/gfx-base/GFXDevice.h"
-#include "scene/Model.h"
 #include "scene/Ambient.h"
+#include "scene/Model.h"
 
 namespace {
-cc::Mesh *    skyboxMesh{nullptr}; // TODO(cjh): How to release ?
+cc::Mesh     *skyboxMesh{nullptr}; // TODO(cjh): How to release ?
 cc::Material *skyboxMaterial{nullptr};
 } // namespace
 namespace cc {
@@ -100,7 +100,7 @@ void SkyboxInfo::setDiffuseMap(TextureCube *val) {
 }
 
 void SkyboxInfo::activate(Skybox *resource) {
-    _resource = resource; //cjh shared_ptr?
+    _resource = resource; // cjh shared_ptr?
     if (_resource != nullptr) {
         _resource->initialize(*this);
         _resource->setEnvMaps(_envmapHDR, _envmapLDR);
@@ -162,7 +162,7 @@ void Skybox::activate() {
     bool  isRGBE = envmap != nullptr ? envmap->isRGBE : _default->isRGBE;
 
     if (!skyboxMaterial) {
-        auto *        mat = new Material();
+        auto         *mat = new Material();
         MacroRecord   defines{{"USE_RGBE_CUBEMAP", isRGBE}};
         IMaterialInfo matInfo;
         matInfo.effectName = std::string{"skybox"};
@@ -179,12 +179,10 @@ void Skybox::activate() {
             options.width  = 2;
             options.height = 2;
             options.length = 2;
-            skyboxMesh = createMesh(
-                createGeometry(
-                       PrimitiveType::BOX,
-                       PrimitiveOptions{options}
-                )
-            );
+            skyboxMesh     = createMesh(
+                    createGeometry(
+                        PrimitiveType::BOX,
+                        PrimitiveOptions{options}));
         }
         _model->initSubModel(0, skyboxMesh->getRenderingSubMeshes()[0], skyboxMaterial);
     }
@@ -210,7 +208,7 @@ void Skybox::updatePipeline() const {
         _model->setSubModelMaterial(0, skyboxMaterial);
     }
 
-    Root *                    root     = Root::getInstance();
+    Root                     *root     = Root::getInstance();
     pipeline::RenderPipeline *pipeline = root->getPipeline();
 
     const bool    useRGBE            = isRGBE();
@@ -220,16 +218,16 @@ void Skybox::updatePipeline() const {
 
     if (auto iter = pipeline->getMacros().find("CC_USE_IBL"); iter != pipeline->getMacros().end()) {
         const MacroValue &macroIBL    = iter->second;
-        const int32_t *   macroIBLPtr = cc::get_if<int32_t>(&macroIBL);
+        const int32_t    *macroIBLPtr = cc::get_if<int32_t>(&macroIBL);
         if (macroIBLPtr != nullptr && (*macroIBLPtr == useIBLValue)) {
             auto iter = pipeline->getMacros().find("CC_USE_DIFFUSEMAP");
             if (iter != pipeline->getMacros().end()) {
                 const MacroValue &macroDIFFUSEMAP    = iter->second;
-                const int32_t *   macroDIFFUSEMAPPtr = cc::get_if<int32_t>(&macroDIFFUSEMAP);
+                const int32_t    *macroDIFFUSEMAPPtr = cc::get_if<int32_t>(&macroDIFFUSEMAP);
                 if (macroDIFFUSEMAPPtr != nullptr && (*macroDIFFUSEMAPPtr == useDiffuseMapValue)) {
                     if (auto iter = pipeline->getMacros().find("CC_USE_HDR"); iter != pipeline->getMacros().end()) {
                         const MacroValue &macroHDR    = iter->second;
-                        const int32_t *   macroHDRPtr = cc::get_if<int32_t>(&macroHDR);
+                        const int32_t    *macroHDRPtr = cc::get_if<int32_t>(&macroHDR);
                         if (macroHDRPtr != nullptr && (*macroHDRPtr == useHDRValue)) {
                             return;
                         }
@@ -266,8 +264,8 @@ void Skybox::updateGlobalBinding() {
         if (diffuseMap != nullptr) {
             auto *texture = diffuseMap->getGFXTexture();
             auto *sampler = device->getSampler(envmap->getSamplerInfo());
-             _globalDSManager->bindSampler(pipeline::DIFFUSEMAP::BINDING, sampler);
-             _globalDSManager->bindTexture(pipeline::DIFFUSEMAP::BINDING, texture);
+            _globalDSManager->bindSampler(pipeline::DIFFUSEMAP::BINDING, sampler);
+            _globalDSManager->bindTexture(pipeline::DIFFUSEMAP::BINDING, texture);
         }
         _globalDSManager->update();
     }

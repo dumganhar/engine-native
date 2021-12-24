@@ -111,11 +111,11 @@ void ClusterLightCulling::initialize(gfx::Device* dev) {
 void ClusterLightCulling::update() {
     if (!_initialized) return;
 
-    auto* const sceneData  = _pipeline->getPipelineSceneData();
+    auto* const sceneData = _pipeline->getPipelineSceneData();
 
     _constants[NEAR_FAR_OFFSET + 0]  = static_cast<float>(_camera->getNearClip());
     _constants[NEAR_FAR_OFFSET + 1]  = static_cast<float>(_camera->getFarClip());
-    const auto &viewport      = _camera->getViewport();
+    const auto& viewport             = _camera->getViewport();
     _constants[VIEW_PORT_OFFSET + 0] = viewport.x * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
     _constants[VIEW_PORT_OFFSET + 1] = viewport.y * static_cast<float>(_camera->getHeight()) * sceneData->getShadingScale();
     _constants[VIEW_PORT_OFFSET + 2] = viewport.z * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
@@ -146,7 +146,7 @@ void ClusterLightCulling::updateLights() {
 
     _validLights.clear();
 
-    geometry::Sphere     sphere;
+    geometry::Sphere  sphere;
     const auto* const scene = _camera->getScene();
     for (const auto& light : scene->getSphereLights()) {
         sphere.setCenter(light->getPosition());

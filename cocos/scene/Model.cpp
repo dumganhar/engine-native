@@ -238,8 +238,8 @@ void Model::updateUBOs(uint32_t stamp) {
 
         mat4ToFloat32Array(mat4, _localData, pipeline::UBOLocal::MAT_WORLD_IT_OFFSET);
         _localBuffer->update(_localData.buffer()->getData());
-        // TODO(xwx): getOcclusionQueryEnabled not implemented
-        // const bool enableOcclusionQuery = pipeline::RenderPipeline::getInstance()->getOcclusionQueryEnabled();
+        // TODO(xwx): isOcclusionQueryEnabled not implemented
+        // const bool enableOcclusionQuery = pipeline::RenderPipeline::getInstance()->isOcclusionQueryEnabled();
         // if (enableOcclusionQuery) {
         //     updateWorldBoundUBOs();
         // }

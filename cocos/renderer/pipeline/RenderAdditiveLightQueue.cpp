@@ -75,7 +75,7 @@ RenderAdditiveLightQueue ::~RenderAdditiveLightQueue() {
 void RenderAdditiveLightQueue::recordCommandBuffer(gfx::Device *device, scene::Camera *camera, gfx::RenderPass *renderPass, gfx::CommandBuffer *cmdBuffer) {
     _instancedQueue->recordCommandBuffer(device, renderPass, cmdBuffer);
     _batchedQueue->recordCommandBuffer(device, renderPass, cmdBuffer);
-    const bool enableOcclusionQuery = _pipeline->getOcclusionQueryEnabled();
+    const bool enableOcclusionQuery = _pipeline->isOcclusionQueryEnabled();
     const auto offset               = _pipeline->getPipelineUBO()->getCurrentCameraUBOOffset();
 
     for (const auto &lightPass : _lightPasses) {

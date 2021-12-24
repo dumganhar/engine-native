@@ -274,7 +274,7 @@ void LightingStage::activate(RenderPipeline *pipeline, RenderFlow *flow) {
     }
 
     // not use cluster shading, go normal deferred render path
-    if (!pipeline->getClusterEnabled()) {
+    if (!pipeline->isClusterEnabled()) {
         // create descriptor set/layout
         gfx::DescriptorSetLayoutInfo layoutInfo = {localDescriptorSetLayout.bindings};
         _descLayout                             = device->createDescriptorSetLayout(layoutInfo);
@@ -311,7 +311,7 @@ void LightingStage::destroy() {
 void LightingStage::fgLightingPass(scene::Camera *camera) {
     // lights info and ubo are updated in ClusterLightCulling::update()
     // if using cluster lighting.
-    if (!_pipeline->getClusterEnabled()) {
+    if (!_pipeline->isClusterEnabled()) {
         // lighting info, ubo
         gatherLights(camera);
         _descriptorSet->update();
@@ -352,7 +352,7 @@ void LightingStage::fgLightingPass(scene::Camera *camera) {
         data.depth = builder.write(data.depth, depthAttachmentInfo);
         builder.writeToBlackboard(RenderPipeline::fgStrHandleOutDepthTexture, data.depth);
 
-        if (_pipeline->getClusterEnabled()) {
+        if (_pipeline->isClusterEnabled()) {
             // read cluster and light info
             data.lightBuffer = framegraph::BufferHandle(builder.readFromBlackboard(fgStrHandleClusterLightBuffer));
             builder.read(data.lightBuffer);
@@ -389,7 +389,7 @@ void LightingStage::fgLightingPass(scene::Camera *camera) {
         auto *cmdBuff = pipeline->getCommandBuffers()[0];
 
         // no need to bind localSet in cluster
-        if (!_pipeline->getClusterEnabled()) {
+        if (!_pipeline->isClusterEnabled()) {
             vector<uint> dynamicOffsets = {0};
             cmdBuff->bindDescriptorSet(localSet, _descriptorSet, dynamicOffsets);
         }
@@ -406,7 +406,7 @@ void LightingStage::fgLightingPass(scene::Camera *camera) {
             pass->getDescriptorSet()->bindSampler(i, _defaultSampler);
         }
 
-        if (_pipeline->getClusterEnabled()) {
+        if (_pipeline->isClusterEnabled()) {
             // cluster buffer bind
             pass->getDescriptorSet()->bindBuffer(CLUSTER_LIGHT_BINDING, table.getRead(data.lightBuffer));
             pass->getDescriptorSet()->bindBuffer(CLUSTER_LIGHT_INDEX_BINDING, table.getRead(data.lightIndexBuffer));

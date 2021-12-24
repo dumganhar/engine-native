@@ -49,12 +49,11 @@ RenderScene::~RenderScene() {
 
 void RenderScene::activate() {
     const auto *sceneData  = pipeline::RenderPipeline::getInstance()->getPipelineSceneData();
-    const auto *sharedData = sceneData->getSharedData();
-    const auto *info       = sharedData->octree;
+    const OctreeInfo *info       = nullptr; // TODO(cjh): sceneData->getOctree();
 
-    if (info->enabled) {
-        _octree = new Octree(info->minPos, info->maxPos, info->depth);
-    }
+//cjh    if (info->isEnabled()) {
+//        _octree = new Octree(info->minPos, info->maxPos, info->depth);
+//    }
 }
 
 bool RenderScene::initialize(const IRenderSceneInfo &info) {

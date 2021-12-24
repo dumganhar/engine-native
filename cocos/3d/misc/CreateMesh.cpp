@@ -95,7 +95,7 @@ void writeBuffer(DataView &target, const std::vector<T> &data, const gfx::Format
 }
 } // namespace
 
-Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options /* = {}*/) {
+Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOptions &options /* = {}*/) {
     // Collect attributes and calculate length of result vertex buffer.
     gfx::AttributeList attributes;
     uint32_t           stride = 0;
@@ -305,14 +305,15 @@ Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options /*
         meshStruct.maxPosition = maxPosition.value();
     }
 
-    // Create mesh.
-    auto* out = new Mesh();
-    out->reset(
-        Mesh::ICreateInfo({
-            .structInfo = std::move(meshStruct),
-            .data       = Uint8Array(bufferBlob.getCombined())
-        }));
+    Mesh::ICreateInfo createInfo;
+    createInfo.structInfo = std::move(meshStruct);
+    createInfo.data       = Uint8Array(bufferBlob.getCombined());
+    return createInfo;
+}
 
+Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options/* = {}*/) {
+    auto* out = new Mesh();
+    out->reset(createMeshInfo(geometry, options));
     return out;
 }
 

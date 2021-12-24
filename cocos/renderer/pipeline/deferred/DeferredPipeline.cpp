@@ -101,7 +101,7 @@ bool DeferredPipeline::activate(gfx::Swapchain *swapchain) {
 
 void DeferredPipeline::render(const vector<scene::Camera *> &cameras) {
     auto *device               = gfx::Device::getInstance();
-    bool  enableOcclusionQuery = getOcclusionQueryEnabled();
+    bool  enableOcclusionQuery = isOcclusionQueryEnabled();
     if (enableOcclusionQuery) {
         device->getQueryPoolResults(_queryPools[0]);
     }

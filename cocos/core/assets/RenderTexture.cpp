@@ -28,32 +28,30 @@
 #include "core/utils/IDGenerator.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 
+namespace cc {
+
 namespace {
-// TODO(xwx): ts is to define a global value in sampler-lib.ts
-uint64_t getDefaultSamlerHash() {
-    auto defaultInfo            = cc::gfx::SamplerInfo();
-    defaultInfo.cmpFunc         = cc::gfx::ComparisonFunc::NEVER; //defaultInfo.cmpFunc seems diffent between ts and cpp
-    uint64_t defaultSamplerHash = cc::pipeline::SamplerLib::genSamplerHash(defaultInfo);
-    return defaultSamplerHash;
-}
 
-cc::gfx::ColorAttachment colorAttachment{
+gfx::ColorAttachment colorAttachment{
     .format = gfx::Format::RGBA8,
-    .beginAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}};
-    .endAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}};
+    .beginAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE},
+    .endAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}
+};
 
-cc::gfx::RenderPassInfo passInfo{std::vector<cc::gfx::ColorAttachment>{colorAttachment}, cc::gfx::DepthStencilAttachment{
-    .format = gfx::Format::DEPTH_STENCIL
-}};
+gfx::RenderPassInfo passInfo{
+    std::vector<gfx::ColorAttachment>{colorAttachment},
+    gfx::DepthStencilAttachment{
+        .format = gfx::Format::DEPTH_STENCIL
+    }
+};
 
 cc::scene::IRenderWindowInfo windowInfo{
     .width          = 1,
     .height         = 1,
-    .renderPassInfo = passInfo};
-} // namespace
-namespace cc {
+    .renderPassInfo = passInfo
+};
 
-static IDGenerator idGenerator("RenderTex");
+} // namespace
 
 void RenderTexture::initialize(const IRenderTextureCreateInfo &info) {
     _name   = info.name.has_value() ? info.name.value() : "";
@@ -81,10 +79,6 @@ void RenderTexture::resize(uint32_t width, uint32_t height) {
         _window->resize(_width, _height, gfx::SurfaceTransform::IDENTITY); //TODO(cjh): don't hardcode transform here.
     }
     // emit(std::string("resize"), _window); //TODO(xwx): not inherit form Eventify in Asset base class
-}
-
-uint64_t RenderTexture::getSamplerHash() const {
-    return getDefaultSamlerHash();
 }
 
 void RenderTexture::onLoaded() {

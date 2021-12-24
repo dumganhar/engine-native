@@ -95,7 +95,7 @@ public:
     inline gfx::Device *                           getDevice() const { return _device; }
     RenderStage *                                  getRenderstageByName(const String &name) const;
     bool                                           isOccluded(const scene::Camera *camera, const scene::SubModel *subModel);
-    bool                                           getOcclusionQueryEnabled() const { return _occlusionQueryEnabled && _device->getCapabilities().supportQuery; }
+    bool                                           isOcclusionQueryEnabled() const { return _occlusionQueryEnabled && _device->getCapabilities().supportQuery; }
     void                                           setOcclusionQueryEnabled(bool enable) { _occlusionQueryEnabled = enable; }
     bool                                           isEnvmapEnabled() const;
 
@@ -114,10 +114,10 @@ public:
     inline scene::Model *getProfiler() const { return _profiler; }
     inline void          setProfiler(scene::Model *value) { _profiler = value; }
 
-    inline bool getClusterEnabled() const { return _clusterEnabled; }
+    inline bool isClusterEnabled() const { return _clusterEnabled; }
     inline void setClusterEnabled(bool enable) { _clusterEnabled = enable; }
 
-    inline bool getBloomEnabled() const { return _bloomEnabled; }
+    inline bool isBloomEnabled() const { return _bloomEnabled; }
     inline void setBloomEnabled(bool enable) { _bloomEnabled = enable; }
 
 protected:

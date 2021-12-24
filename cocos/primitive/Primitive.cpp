@@ -32,7 +32,7 @@ Primitive::Primitive(PrimitiveType type)
 }
 
 void Primitive::onLoaded() {
-    createMesh(createGeometry(type), this);
+    reset(createMeshInfo(createGeometry(type)));
 }
 
 IGeometry createGeometry(PrimitiveType type, const cc::optional<PrimitiveOptions> &options) {

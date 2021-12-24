@@ -656,12 +656,24 @@ template <typename... Args>
 struct is_variant<cc::variant<Args...>> : std::true_type {}; // NOLINT
 
 template <typename T>
-inline typename std::enable_if_t<!std::is_enum<T>::value && !std::is_pointer<T>::value, bool>
+inline typename std::enable_if_t<!std::is_enum<T>::value && !std::is_pointer<T>::value && !is_jsb_object_v<T>, bool>
 sevalue_to_native(const se::Value & /*from*/, T * /*to*/, se::Object * /*unused*/) { // NOLINT(readability-identifier-naming)
     SE_LOGE("Can not convert type ???\n - [[ %s ]]\n", typeid(T).name());
     CC_STATIC_ASSERT(!is_variant<T>::value, "should not match cc::variant");
     CC_STATIC_ASSERT(std::is_same<T, void>::value, "sevalue_to_native not implemented for T");
     return false;
+}
+
+template <typename T>
+inline typename std::enable_if_t<!std::is_enum<T>::value && !std::is_pointer<T>::value && is_jsb_object_v<T>, bool>
+sevalue_to_native(const se::Value &from, T *to, se::Object * /*unused*/) { // NOLINT(readability-identifier-naming)
+    auto *obj = from.toObject();
+    if CC_CONSTEXPR (std::is_copy_assignable<T>::value) {
+        *to = *static_cast<T *>(obj->getPrivateData());
+    } else {
+        assert(false); // can not copy
+    }
+    return true;
 }
 
 template <typename T>
@@ -779,53 +791,6 @@ sevalue_to_native(const se::Value &from, cc::TypedArrayTemp<T> *to, se::Object *
 ////////////////// pointer types
 
 template <typename T>
-typename std::enable_if_t<std::is_pointer<T>::value && !std::is_pointer<typename std::remove_pointer<T>::type>::value, bool>
-sevalue_to_native(const se::Value &from, T to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    CC_STATIC_ASSERT(is_jsb_object_v<std::remove_pointer_t<T>>, "Only JSB object are accepted!");
-    if (from.isNullOrUndefined()) {
-        //const std::string stack = se::ScriptEngine::getInstance()->getCurrentStackTrace();
-        //SE_LOGE("[ERROR] sevalue_to_native jsval is null/undefined: %s\nstack: %s", typeid(T).name(), stack.c_str());
-        *to = nullptr;
-        return true;
-    }
-    *to = static_cast<T *>(from.toObject()->getPrivateData());
-    return true;
-}
-
-template <typename T>
-typename std::enable_if_t<std::is_pointer<T>::value && std::is_pointer<typename std::remove_pointer<T>::type>::value, bool>
-sevalue_to_native(const se::Value &from, T to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    using Value = typename std::remove_pointer<typename std::remove_pointer<T>::type>::type;
-    CC_STATIC_ASSERT(is_jsb_object_v<Value> || std::is_arithmetic<Value>::value, "Only JSB object or arithmetic types are supported");
-
-    if CC_CONSTEXPR (is_jsb_object_v<Value>) {
-        if (from.isNullOrUndefined()) {
-            //const std::string stack = se::ScriptEngine::getInstance()->getCurrentStackTrace();
-            //SE_LOGE("[ERROR] sevalue_to_native jsval is null/undefined: %s\nstack: %s", typeid(T).name(), stack.c_str());
-            *to = nullptr;
-            return true;
-        }
-        *to = static_cast<typename std::remove_pointer<T>::type>(from.toObject()->getPrivateData());
-        return true;
-    } else if CC_CONSTEXPR (std::is_arithmetic<Value>::value) {
-        se::Object *array = from.toObject();
-        if (array->isTypedArray()) {
-            uint8_t *data = nullptr;
-            array->getTypedArrayData(&data, nullptr);
-            *to = reinterpret_cast<Value *>(data);
-        } else if (array->isArrayBuffer()) {
-            uint8_t *data = nullptr;
-            array->getArrayBufferData(&data, nullptr);
-            *to = reinterpret_cast<Value *>(data);
-        } else {
-            assert(false);
-            return false;
-        }
-        return true;
-    }
-}
-
-template <typename T>
 typename std::enable_if_t<!std::is_pointer<T>::value && is_jsb_object_v<T>, bool>
 sevalue_to_native(const se::Value &from, T **to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     if (from.isNullOrUndefined()) {
@@ -933,20 +898,17 @@ inline bool sevalue_to_native(const se::Value & /*from*/, cc::variant<Args...> *
 template <typename T, bool is_reference>
 inline bool sevalue_to_native(const se::Value &from, HolderType<T, is_reference> *holder, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     if CC_CONSTEXPR (is_reference && is_jsb_object_v<T>) {
-    #if 1 // TODO(PatriceJiang): allow pure js value to struct
         void *ptr = from.toObject()->getPrivateData();
         if (ptr) {
             holder->data = static_cast<T *>(ptr);
             return true;
         }
-        holder->ptr = new (&holder->inlineObject) T;
+        if CC_CONSTEXPR (std::is_constructible<T>::value) {
+            holder->ptr = new (&holder->inlineObject) T;
+        } else {
+            assert(false); // default construtor not provided
+        }
         return sevalue_to_native(from, holder->ptr, ctx);
-    #else
-        void *ptr = from.toObject()->getPrivateData();
-        assert(ptr); // pure js object is not acceptable
-        holder->data = static_cast<T *>(ptr);
-        return true;
-    #endif
 
     } else if CC_CONSTEXPR (is_jsb_object_v<T>) {
         void *ptr = from.toObject()->getPrivateData();
@@ -1128,7 +1090,7 @@ bool sevalue_to_native(const se::Value &from, cc::optional<T> *to, se::Object *c
 }
 //////////////////////  shoter form
 template <typename T>
-inline bool sevalue_to_native(const se::Value &from, T&& to) { // NOLINT(readability-identifier-naming)
+inline bool sevalue_to_native(const se::Value &from, T &&to) { // NOLINT(readability-identifier-naming)
     return sevalue_to_native(from, std::forward<T>(to), static_cast<se::Object *>(nullptr));
 }
 

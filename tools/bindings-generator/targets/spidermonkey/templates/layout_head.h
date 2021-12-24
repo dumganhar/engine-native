@@ -12,3 +12,5 @@ $macro_judgement
 \#include "${header}"
 #end for
 #end if
+
+\#include "${out_file}.inl"

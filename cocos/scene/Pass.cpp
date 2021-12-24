@@ -553,7 +553,6 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         _blocks[binding].data   = reinterpret_cast<float *>(const_cast<uint8_t *>(_rootBlock->getData()) + bufferViewInfo.offset);
         _blocks[binding].count  = size / 4;
         _blocks[binding].offset = bufferViewInfo.offset / 4;
-        // _blocksInt[binding] = Int32Array(this._blocks[binding].buffer, this._blocks[binding].byteOffset, this._blocks[binding].length); //TODO(xwx): _blocks struct is different between ts and cpp
         _descriptorSet->bindBuffer(binding, bufferView);
     }
     // store handles

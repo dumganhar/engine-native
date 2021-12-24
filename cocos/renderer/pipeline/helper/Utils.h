@@ -31,18 +31,29 @@
 #include "gfx-base/GFXDef.h"
 #include "gfx-base/GFXSwapchain.h"
 #include "pipeline/Define.h"
-#include "scene/Model.h"
-#include "scene/SubModel.h"
 #include "scene/Camera.h"
+#include "scene/Model.h"
 #include "scene/RenderWindow.h"
+#include "scene/SubModel.h"
 
 namespace cc {
 namespace pipeline {
+inline void srgbToLinear(cc::Vec4 *out, const cc::Vec4 &gamma) {
+    out->x = gamma.x * gamma.x;
+    out->y = gamma.y * gamma.y;
+    out->z = gamma.z * gamma.z;
+}
 
 inline void srgbToLinear(gfx::Color *out, const gfx::Color &gamma) {
     out->x = gamma.x * gamma.x;
     out->y = gamma.y * gamma.y;
     out->z = gamma.z * gamma.z;
+}
+
+inline void linearToSrgb(cc::Vec4 *out, const cc::Vec4 &linear) {
+    out->x = std::sqrt(linear.x);
+    out->y = std::sqrt(linear.y);
+    out->z = std::sqrt(linear.z);
 }
 
 inline void linearToSrgb(gfx::Color *out, const gfx::Color &linear) {
@@ -65,7 +76,7 @@ inline void decideProfilerCamera(const vector<scene::Camera *> &cameras) {
 
 inline void renderProfiler(gfx::RenderPass *renderPass, gfx::CommandBuffer *cmdBuff, scene::Model *profiler, const scene::Camera *camera) {
     if (profiler && profiler->isEnabled() && camera == profilerCamera) {
-        auto &submodel = profiler->getSubModels()[0];
+        const auto &submodel = profiler->getSubModels()[0];
         auto *pass     = submodel->getPass(0);
         auto *ia       = submodel->getInputAssembler();
         auto *pso      = PipelineStateManager::getOrCreatePipelineState(pass, submodel->getShader(0), ia, renderPass);

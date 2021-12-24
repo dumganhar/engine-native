@@ -32,18 +32,10 @@
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/event/EventTypesToJS.h"
 #include "math/Color.h"
+#include "renderer/pipeline/helper/Utils.h"
 #include "scene/Pass.h"
 
 namespace cc {
-
-namespace {
-
-void srgbToLinear(cc::Vec4 *out, const cc::Vec4 &gamma) { // TODO(cjh): Move to utils
-    out->x = gamma.x * gamma.x;
-    out->y = gamma.y * gamma.y;
-    out->z = gamma.z * gamma.z;
-}
-} // namespace
 
 /* static */
 uint64_t Material::getHashForMaterial(Material *material) {
@@ -359,15 +351,15 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
         if (val.index() == MATERIAL_PROPERTY_INDEX_LIST) {
             pass->setUniformArray(handle, cc::get<MaterialPropertyList>(val));
         } else if (val.index() == MATERIAL_PROPERTY_INDEX_SINGLE) {
-            auto& passProps = pass->getProperties();
-            auto iter = passProps.find(name);
+            const auto &passProps = pass->getProperties();
+            auto        iter      = passProps.find(name);
             if (iter != passProps.end() && iter->second.linear.has_value()) {
                 CC_ASSERT(cc::holds_alternative<MaterialProperty>(val));
-                auto& prop = cc::get<MaterialProperty>(val);
+                const auto &prop = cc::get<MaterialProperty>(val);
                 CC_ASSERT(cc::holds_alternative<Vec4>(prop));
-                auto& srgb = cc::get<Vec4>(prop);
-                Vec4 linear;
-                srgbToLinear(&linear, srgb);
+                const auto &srgb = cc::get<Vec4>(prop);
+                Vec4        linear;
+                pipeline::srgbToLinear(&linear, srgb);
                 linear.w = srgb.w;
                 pass->setUniform(handle, linear);
             } else {

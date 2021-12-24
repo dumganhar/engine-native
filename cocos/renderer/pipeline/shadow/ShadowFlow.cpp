@@ -164,7 +164,7 @@ void ShadowFlow::clearShadowMap(scene::Camera *camera) {
 }
 
 void ShadowFlow::resizeShadowMap() {
-    const auto *sceneData = _pipeline->getPipelineSceneData();
+    auto *sceneData = _pipeline->getPipelineSceneData();
     auto *     shadow    = sceneData->getShadow();
     auto *      device    = gfx::Device::getInstance();
     const auto width     = static_cast<uint>(shadow->getSize().x);
@@ -213,7 +213,7 @@ void ShadowFlow::resizeShadowMap() {
         });
     }
 
-    const_cast<scene::Shadows *>(shadow)->setShadowMapDirty(false);
+    shadow->setShadowMapDirty(false);
 }
 
 void ShadowFlow::initShadowFrameBuffer(RenderPipeline *pipeline, const scene::Light *light) {

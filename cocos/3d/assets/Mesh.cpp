@@ -313,10 +313,10 @@ void Mesh::assign(const IStruct &structInfo, const Uint8Array &data) {
     reset({structInfo, data});
 }
 
-void Mesh::reset(const ICreateInfo &info) {
+void Mesh::reset(ICreateInfo &&info) {
     destroyRenderingMesh();
-    _struct = info.structInfo;
-    _data   = info.data;
+    _struct = std::move(info.structInfo);
+    _data   = std::move(info.data);
     _hash   = 0;
 }
 
@@ -691,10 +691,10 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
     }
 
     // Create mesh.
-    Mesh::ICreateInfo createInfo;
-    createInfo.structInfo = meshStruct;
-    createInfo.data       = Uint8Array(bufferBlob.getCombined());
-    reset(createInfo);
+    reset({
+        std::move(meshStruct),
+        std::move(Uint8Array(bufferBlob.getCombined()))
+    });
     initialize();
     return true;
 }
@@ -904,8 +904,7 @@ gfx::BufferList Mesh::createVertexBuffers(gfx::Device *gfxDevice, ArrayBuffer *d
 
 void Mesh::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
-    ICreateInfo info;
-    reset(info);
+    reset({});
 }
 
 bool Mesh::validate() const {

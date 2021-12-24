@@ -113,10 +113,11 @@ void ClusterLightCulling::update() {
 
     _constants[NEAR_FAR_OFFSET + 0]  = static_cast<float>(_camera->getNearClip());
     _constants[NEAR_FAR_OFFSET + 1]  = static_cast<float>(_camera->getFarClip());
-    _constants[VIEW_PORT_OFFSET + 0] = _camera->getViewport().x * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
-    _constants[VIEW_PORT_OFFSET + 1] = _camera->getViewport().y * static_cast<float>(_camera->getHeight()) * sceneData->getShadingScale();
-    _constants[VIEW_PORT_OFFSET + 2] = _camera->getViewport().z * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
-    _constants[VIEW_PORT_OFFSET + 3] = _camera->getViewport().w * static_cast<float>(_camera->getHeight()) * sceneData->getShadingScale();
+    const auto &viewport      = _camera->getViewport();
+    _constants[VIEW_PORT_OFFSET + 0] = viewport.x * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
+    _constants[VIEW_PORT_OFFSET + 1] = viewport.y * static_cast<float>(_camera->getHeight()) * sceneData->getShadingScale();
+    _constants[VIEW_PORT_OFFSET + 2] = viewport.z * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
+    _constants[VIEW_PORT_OFFSET + 3] = viewport.w * static_cast<float>(_camera->getHeight()) * sceneData->getShadingScale();
 
     memcpy(_constants.data() + MAT_VIEW_OFFSET, _camera->getMatView().m, sizeof(cc::Mat4));
     memcpy(_constants.data() + MAT_PROJ_INV_OFFSET, _camera->getMatProjInv().m, sizeof(cc::Mat4));

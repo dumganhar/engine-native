@@ -71,7 +71,7 @@ bool ForwardPipeline::initialize(const RenderPipelineInfo &info) {
 }
 
 bool ForwardPipeline::activate(gfx::Swapchain *swapchain) {
-    _macros["CC_PIPELINE_TYPE"] = int32_t(0);
+    _macros["CC_PIPELINE_TYPE"] = 0;
 
     if (!RenderPipeline::activate(swapchain)) {
         CC_LOG_ERROR("RenderPipeline active failed.");

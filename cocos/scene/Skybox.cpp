@@ -36,7 +36,7 @@
 #include "scene/Model.h"
 
 namespace {
-cc::Mesh *    skyboxMesh{nullptr};
+cc::Mesh *    skyboxMesh{nullptr}; // TODO(cjh): How to release ?
 cc::Material *skyboxMaterial{nullptr};
 } // namespace
 namespace cc {
@@ -172,8 +172,8 @@ void Skybox::activate() {
         auto *        mat = new Material();
         MacroRecord   defines{{"USE_RGBE_CUBEMAP", isRGBE}};
         IMaterialInfo matInfo;
-        matInfo.effectName = "skybox";
-        matInfo.defines    = defines;
+        matInfo.effectName = std::string{"skybox"};
+        matInfo.defines    = IMaterialInfo::DefinesType{defines};
         mat->initialize({matInfo});
         IMaterialInstanceInfo matInstInfo;
         matInstInfo.parent = mat;
@@ -186,7 +186,12 @@ void Skybox::activate() {
             options.width  = 2;
             options.height = 2;
             options.length = 2;
-            skyboxMesh     = createMesh(createGeometry(PrimitiveType::BOX, options), skyboxMesh);
+            skyboxMesh = createMesh(
+                createGeometry(
+                       PrimitiveType::BOX,
+                       PrimitiveOptions{options}
+                )
+            );
         }
         _model->initSubModel(0, skyboxMesh->getRenderingSubMeshes()[0], skyboxMaterial);
     }
@@ -268,9 +273,8 @@ void Skybox::updateGlobalBinding() {
         if (diffuseMap != nullptr) {
             auto *texture = diffuseMap->getGFXTexture();
             auto *sampler = device->getSampler(envmap->getSamplerInfo());
-            // TODO(xwx): pipeline::DIFFUSEMAP::BINDING not implemented yet;
-            // _globalDSManager->bindSampler(pipeline::DIFFUSEMAP::BINDING, sampler);
-            // _globalDSManager->bindTexture(pipeline::DIFFUSEMAP::BINDING, texture);
+             _globalDSManager->bindSampler(pipeline::DIFFUSEMAP::BINDING, sampler);
+             _globalDSManager->bindTexture(pipeline::DIFFUSEMAP::BINDING, texture);
         }
         _globalDSManager->update();
     }

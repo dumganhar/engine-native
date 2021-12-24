@@ -36,6 +36,6 @@ struct ICreateMeshOptions {
     cc::optional<bool> calculateBounds;
 };
 
-Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions &options = {});
+Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options = {});
 
 } // namespace cc

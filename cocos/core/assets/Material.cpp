@@ -362,8 +362,10 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
             auto& passProps = pass->getProperties();
             auto iter = passProps.find(name);
             if (iter != passProps.end() && iter->second.linear.has_value()) {
-                CC_ASSERT(cc::holds_alternative<Vec4>(val));
-                auto& srgb = cc::get<Vec4>(val);
+                CC_ASSERT(cc::holds_alternative<MaterialProperty>(val));
+                auto& prop = cc::get<MaterialProperty>(val);
+                CC_ASSERT(cc::holds_alternative<Vec4>(prop));
+                auto& srgb = cc::get<Vec4>(prop);
                 Vec4 linear;
                 srgbToLinear(&linear, srgb);
                 linear.w = srgb.w;
@@ -420,8 +422,8 @@ void Material::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     MacroRecord   defines{{"USE_COLOR", true}};
     IMaterialInfo info{
-        .effectName = "unlit",
-        .defines    = defines};
+        .effectName = std::string{"unlit"},
+        .defines    = IMaterialInfo::DefinesType{defines}};
     initialize(info);
     setProperty("mainColor", Color{0xFF, 0x00, 0xFF, 0xFF});
 }

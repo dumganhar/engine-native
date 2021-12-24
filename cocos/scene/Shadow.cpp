@@ -176,7 +176,7 @@ void ShadowsInfo::setPlaneFromNode(Node *node) {
 }
 
 void ShadowsInfo::activate(Shadows *resource) {
-    _resource = resource; //cjh shared_ptr
+    _resource = resource;
     _resource->initialize(*this);
     _resource->activate();
 }

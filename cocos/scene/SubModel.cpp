@@ -125,7 +125,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
         });
         _descriptorSet->bindTexture(pipeline::REFLECTIONTEXTURE::BINDING, _reflectionTex);
 
-        auto &samplerInfo = gfx::SamplerInfo{
+        const gfx::SamplerInfo samplerInfo{
             gfx::Filter::LINEAR,
             gfx::Filter::LINEAR,
             gfx::Filter::NONE,

@@ -95,7 +95,7 @@ void writeBuffer(DataView &target, const std::vector<T> &data, const gfx::Format
 }
 } // namespace
 
-Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions &options /* = {}*/) {
+Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options /* = {}*/) {
     // Collect attributes and calculate length of result vertex buffer.
     gfx::AttributeList attributes;
     uint32_t           stride = 0;
@@ -306,12 +306,12 @@ Mesh *createMesh(const IGeometry &geometry, Mesh *out, const ICreateMeshOptions 
     }
 
     // Create mesh.
-    if (out == nullptr) {
-        out = new Mesh();
-    }
+    auto* out = new Mesh();
     out->reset(
-        Mesh::ICreateInfo({.structInfo = meshStruct,
-                           .data       = Uint8Array(bufferBlob.getCombined())}));
+        Mesh::ICreateInfo({
+            .structInfo = std::move(meshStruct),
+            .data       = Uint8Array(bufferBlob.getCombined())
+        }));
 
     return out;
 }

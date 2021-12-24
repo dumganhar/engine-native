@@ -107,7 +107,7 @@ static bool js_assets_TextureBase_registerGFXSamplerUpdatedListener(se::State &s
     cobj->on(cc::EventTypesToJS::TEXTURE_BASE_GFX_SAMPLER_UPDATED, [thisObj](cc::gfx::Sampler *sampler) {
         se::AutoHandleScope      hs;
         se::Value arg0;
-        nativevalue_to_se(sampler, args0, nullptr);
+        nativevalue_to_se(sampler, arg0, nullptr);
         se::ScriptEngine::getInstance()->callFunction(thisObj, "_onGFXSamplerUpdated", 1, &arg0);
     });
 

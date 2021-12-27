@@ -103,7 +103,7 @@ std::vector<IMacroInfo> prepareDefines(const MacroRecord &records, const std::ve
         const auto &name  = tmp.name;
         auto        it    = records.find(name);
         auto        value = mapDefine(tmp, it == records.end() ? cc::nullopt : cc::optional<MacroValue>(it->second));
-        //TODO(PatriceJiang): v === '0' can be bool ?
+        // TODO(PatriceJiang): v === '0' can be bool ?
 
         bool isDefault = it == records.end() || (cc::holds_alternative<std::string>(it->second) && cc::get<std::string>(it->second) == "0");
         macros.emplace_back(IMacroInfo{.name = name, .value = value, .isDefault = isDefault});
@@ -124,7 +124,7 @@ std::string getShaderInstanceName(const std::string &name, const std::vector<IMa
 
 void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, const pipeline::DescriptorSetLayoutInfos &source,
                            const std::string &type, std::vector<gfx::DescriptorSetLayoutBinding> *outBindings) {
-    CC_ASSERT(type == "locals" && type == "globals");
+    CC_ASSERT(type == "locals" || type == "globals");
     const auto &target = type == "globals" ? tmpl.builtins.globals : tmpl.builtins.locals;
 
     // Blocks
@@ -161,7 +161,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
         const auto &info    = infoIt->second;
         const auto  binding = std::find_if(source.bindings.begin(), source.bindings.end(), [&info](const auto &bd) {
             return bd.binding == info.binding;
-        });
+         });
         if (binding == source.bindings.end() || !(binding->descriptorType & gfx::DESCRIPTOR_SAMPLER_TYPE)) {
             CC_LOG_WARNING("builtin samplerTexture '%s' not available !", s.name.c_str());
             continue;
@@ -212,7 +212,7 @@ auto genHandles(const IProgramInfo &tmpl) {
 }
 
 bool dependencyCheck(const std::vector<std::string> &dependencies, const MacroRecord &defines) {
-    for (const auto &d : dependencies) { //NOLINT(readability-use-anyofallof)
+    for (const auto &d : dependencies) { // NOLINT(readability-use-anyofallof)
         if (d[0] == '!') {               // negative dependency
             if (defines.find(d.substr(1)) != defines.end()) {
                 return false;
@@ -227,8 +227,8 @@ bool dependencyCheck(const std::vector<std::string> &dependencies, const MacroRe
 
 std::vector<gfx::Attribute> getActiveAttributes(const IProgramInfo &tmpl, const ITemplateInfo &tmplInfo, const MacroRecord &defines) {
     std::vector<gfx::Attribute> out{};
-    const auto &                attributes    = tmpl.attributes;
-    const auto &                gfxAttributes = tmplInfo.gfxAttributes;
+    const auto                 &attributes    = tmpl.attributes;
+    const auto                 &gfxAttributes = tmplInfo.gfxAttributes;
     for (auto i = 0; i < attributes.size(); i++) {
         if (!dependencyCheck(attributes[i].defines, defines)) {
             continue;
@@ -283,17 +283,17 @@ void IProgramInfo::copyFrom(const IShaderInfo &o) {
 /*static*/
 ProgramLib *ProgramLib::getInstance() {
     static ProgramLib instance;
-    return &instance; //cjh TODO: how to release it ?
+    return &instance; // cjh TODO: how to release it ?
 }
 
 void ProgramLib::registerEffect(EffectAsset *effect) {
-    for (auto& shader : effect->_shaders) {
+    for (auto &shader : effect->_shaders) {
         auto *tmpl       = define(shader);
         tmpl->effectName = effect->getName();
     }
 
-    for (auto& tech : effect->_techniques) {
-        for (auto& pass : tech.passes) {
+    for (auto &tech : effect->_techniques) {
+        for (auto &pass : tech.passes) {
             // grab default property declaration if there is none
             if (pass.propertyIndex != CC_INVALID_INDEX && !pass.properties.has_value()) {
                 pass.properties = tech.passes[pass.propertyIndex].properties;
@@ -323,7 +323,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
                 if (pValue != nullptr) {
                     return *pValue - range[0];
                 }
-                CC_ASSERT(false); //We only support macro with int32_t type now.
+                CC_ASSERT(false); // We only support macro with int32_t type now.
                 return 0;
             };
         } else if (def.type == "string") {
@@ -420,13 +420,12 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
                 .count   = samplerTexture.count});
         }
 
-        for (const auto& sampler : tmpl.samplers) {
+        for (const auto &sampler : tmpl.samplers) {
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 static_cast<uint32_t>(sampler.binding),
                 gfx::DescriptorType::SAMPLER,
                 sampler.count,
-                sampler.stageFlags}
-            );
+                sampler.stageFlags});
 
             tmplInfo.shaderInfo.samplers.emplace_back(gfx::UniformSampler{
                 static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
@@ -436,7 +435,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             });
         }
 
-        for (const auto& texture : tmpl.textures) {
+        for (const auto &texture : tmpl.textures) {
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 static_cast<uint32_t>(texture.binding),
                 gfx::DescriptorType::TEXTURE,
@@ -452,30 +451,27 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             });
         }
 
-        for (const auto& buffer : tmpl.buffers) {
+        for (const auto &buffer : tmpl.buffers) {
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 static_cast<uint32_t>(buffer.binding),
                 gfx::DescriptorType::STORAGE_BUFFER,
                 1,
-                buffer.stageFlags
-            });
+                buffer.stageFlags});
 
             tmplInfo.shaderInfo.buffers.emplace_back(gfx::UniformStorageBuffer{
                 static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
                 static_cast<uint32_t>(buffer.binding),
                 buffer.name,
                 1,
-                buffer.memoryAccess
-            }); // effect compiler guarantees buffer count = 1
+                buffer.memoryAccess}); // effect compiler guarantees buffer count = 1
         }
 
-        for (const auto& image : tmpl.images) {
+        for (const auto &image : tmpl.images) {
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 static_cast<uint32_t>(image.binding),
                 gfx::DescriptorType::STORAGE_IMAGE,
                 image.count,
-                image.stageFlags
-            });
+                image.stageFlags});
 
             tmplInfo.shaderInfo.images.emplace_back(gfx::UniformStorageImage{
                 static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
@@ -483,24 +479,21 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
                 image.name,
                 image.type,
                 image.count,
-                image.memoryAccess
-            });
+                image.memoryAccess});
         }
 
-        for (const auto& subpassInput :tmpl.subpassInputs) {
+        for (const auto &subpassInput : tmpl.subpassInputs) {
             tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
                 static_cast<uint32_t>(subpassInput.binding),
                 gfx::DescriptorType::INPUT_ATTACHMENT,
                 subpassInput.count,
-                subpassInput.stageFlags
-            });
+                subpassInput.stageFlags});
 
             tmplInfo.shaderInfo.subpassInputs.emplace_back(gfx::UniformInputAttachment{
                 static_cast<uint32_t>(pipeline::SetIndex::MATERIAL),
                 static_cast<uint32_t>(subpassInput.binding),
                 subpassInput.name,
-                subpassInput.count
-            });
+                subpassInput.count});
         }
 
         tmplInfo.gfxAttributes = {};
@@ -530,10 +523,10 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
 }
 
 /**
-     * @en Gets the shader template with its name
-     * @zh 通过名字获取 Shader 模板
-     * @param name Target shader name
-     */
+ * @en Gets the shader template with its name
+ * @zh 通过名字获取 Shader 模板
+ * @param name Target shader name
+ */
 
 IProgramInfo *ProgramLib::getTemplate(const std::string &name) {
     auto it = _templates.find(name);
@@ -541,10 +534,10 @@ IProgramInfo *ProgramLib::getTemplate(const std::string &name) {
 }
 
 /**
-     * @en Gets the shader template info with its name
-     * @zh 通过名字获取 Shader 模版信息
-     * @param name Target shader name
-     */
+ * @en Gets the shader template info with its name
+ * @zh 通过名字获取 Shader 模版信息
+ * @param name Target shader name
+ */
 
 ITemplateInfo *ProgramLib::getTemplateInfo(const std::string &name) {
     auto it = _templates.find(name);
@@ -555,10 +548,10 @@ ITemplateInfo *ProgramLib::getTemplateInfo(const std::string &name) {
 }
 
 /**
-     * @en Gets the pipeline layout of the shader template given its name
-     * @zh 通过名字获取 Shader 模板相关联的管线布局
-     * @param name Target shader name
-     */
+ * @en Gets the pipeline layout of the shader template given its name
+ * @zh 通过名字获取 Shader 模板相关联的管线布局
+ * @param name Target shader name
+ */
 gfx::DescriptorSetLayout *ProgramLib::getDescriptorSetLayout(gfx::Device *device, const std::string &name, bool isLocal) {
     auto itTmpl = _templates.find(name);
     assert(itTmpl != _templates.end());
@@ -685,7 +678,7 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     auto prefix = pipeline->getConstantMacros() + tmpl.constantMacros + ss.str();
 
     const IShaderSource *src                 = &tmpl.glsl3;
-    const auto *         deviceShaderVersion = getDeviceShaderVersion(device);
+    const auto          *deviceShaderVersion = getDeviceShaderVersion(device);
     if (deviceShaderVersion) {
         src = tmpl.getSource(deviceShaderVersion);
     } else {
@@ -699,8 +692,8 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
 
     tmplInfo.shaderInfo.name = getShaderInstanceName(name, macroArray);
 
-    auto *shader               = device->createShader(tmplInfo.shaderInfo);
-    _cache[key]                = shader;
+    auto *shader = device->createShader(tmplInfo.shaderInfo);
+    _cache[key]  = shader;
     CC_LOG_DEBUG("ProgramLib::_cache[%s]=%p, defines: %d", key.c_str(), shader, defines.size());
     return shader;
 }

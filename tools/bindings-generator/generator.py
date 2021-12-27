@@ -1310,7 +1310,7 @@ class NativeClass(object):
 
         self.generator.head_file.write(unicode(prelude_h))
         self.generator.impl_file.write(unicode(prelude_c))
-        self.generator.regi_file.write(unicode(regtype_h))
+        self.generator.regi_file_lines.append(unicode(regtype_h))
         
         for m in self.methods_clean():
             m['impl'].generate_code(self)
@@ -1966,7 +1966,7 @@ class Generator(object):
         self.head_file = io.open(headfilepath, "w+", newline="\n")
         self.impl_file = io.open(implfilepath, "w+", newline="\n")
         self.json_file = io.open(jsonfilepath, "w+", newline="\n")
-        self.regi_file = io.open(reg_typepath, "w+", newline="\n")
+        self.regi_file_lines = []
 
         self.class_json_list = []
 
@@ -1993,7 +1993,19 @@ class Generator(object):
         self.impl_file.close()
         self.head_file.close()
         self.json_file.close()
-        self.regi_file.close()
+        # post parse actions
+        self.inplace_change(headfilepath, "// placeholder for jsb_register_types", "".join(self.regi_file_lines))
+
+    def inplace_change(self, filename, old_string, new_string):
+        logger.info("replace file %s" % filename)
+        with open(filename) as f:
+            s = f.read()
+            if old_string not in s:
+                print('"{old_string}" not found in {filename}.'.format(**locals()))
+                return
+        with open(filename, 'w') as f:
+            s = s.replace(old_string, new_string)
+            f.write(s)
 
     def _pretty_print(self, diagnostics):
         errors = []

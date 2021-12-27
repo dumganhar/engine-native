@@ -13,4 +13,6 @@ $macro_judgement
 #end for
 #end if
 
-\#include "${out_file}.inl"
+bool register_all_${prefix}(se::Object *obj);                   // NOLINT
+
+// placeholder for jsb_register_types

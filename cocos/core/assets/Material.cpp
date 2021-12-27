@@ -51,11 +51,11 @@ uint64_t Material::getHashForMaterial(Material *material) {
 }
 
 void Material::initialize(const IMaterialInfo &info) {
-    //cjh FIXME: remove hacking code here
+    // cjh FIXME: remove hacking code here
     BuiltinResMgr::getInstance();
     //
     if (!_passes.empty()) {
-        //cjh TODO:        warnID(12005);
+        // cjh TODO:        warnID(12005);
         return;
     }
 
@@ -74,7 +74,7 @@ void Material::initialize(const IMaterialInfo &info) {
     }
 
     if (info.effectAsset != nullptr) {
-        _effectAsset = info.effectAsset; //cjh TODO:
+        _effectAsset = info.effectAsset; // cjh TODO:
     } else if (info.effectName != cc::nullopt) {
         _effectAsset = EffectAsset::get(info.effectName.value());
     }
@@ -250,7 +250,7 @@ void Material::copy(const Material *mat) {
     for (size_t i = 0, len = mat->_states.size(); i < len; ++i) {
         _states[i] = mat->_states[i];
     }
-    _effectAsset = mat->_effectAsset; //cjh TODO: lifecycle
+    _effectAsset = mat->_effectAsset; // cjh TODO: lifecycle
     update();
 }
 
@@ -282,12 +282,12 @@ void Material::update(bool keepProps /* = true*/) {
                 cb(_passes[i].get(), i);
             }
         }
-        //cjh FIXME: no need since we resize _props?
-        //        else {
-        //            for (size_t i = 0; i < _props.size(); i++) {
-        //                _props[i] = {};
-        //            }
-        //        }
+        // cjh FIXME: no need since we resize _props?
+        //         else {
+        //             for (size_t i = 0; i < _props.size(); i++) {
+        //                 _props[i] = {};
+        //             }
+        //         }
 
         emit(EventTypesToJS::MATERIAL_PASSES_UPDATED);
     }
@@ -296,7 +296,7 @@ void Material::update(bool keepProps /* = true*/) {
 
 std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
     std::vector<SharedPtr<scene::Pass>> passes;
-    ITechniqueInfo *                    tech = nullptr;
+    ITechniqueInfo                     *tech = nullptr;
     if (_techIdx < _effectAsset->_techniques.size()) {
         tech = &_effectAsset->_techniques[_techIdx];
     }
@@ -307,19 +307,19 @@ std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
 
     size_t passNum = tech->passes.size();
     for (size_t k = 0; k < passNum; ++k) {
-        auto &  passInfo = tech->passes[k];
+        auto   &passInfo = tech->passes[k];
         index_t propIdx = passInfo.passIndex = static_cast<index_t>(k);
 
         if (propIdx >= _defines.size()) {
             _defines.resize(propIdx + 1);
         }
-        passInfo.defines = _defines[propIdx]; //cjh JS object assignment is weak reference but c++ container assignment is strong copy operation  // const defines = passInfo.defines = this._defines[propIdx] || (this._defines[propIdx] = {});
+        passInfo.defines = _defines[propIdx]; // cjh JS object assignment is weak reference but c++ container assignment is strong copy operation  // const defines = passInfo.defines = this._defines[propIdx] || (this._defines[propIdx] = {});
         auto &defines    = passInfo.defines;
 
         if (propIdx >= _states.size()) {
             _states.resize(propIdx + 1);
         }
-        passInfo.stateOverrides = _states[propIdx]; //cjh same question as described above
+        passInfo.stateOverrides = _states[propIdx]; // cjh same question as described above
 
         if (passInfo.propertyIndex != CC_INVALID_INDEX) {
             utils::mergeToMap(defines, _defines[passInfo.propertyIndex]);
@@ -356,7 +356,7 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
             if (iter != passProps.end() && iter->second.linear.has_value()) {
                 CC_ASSERT(cc::holds_alternative<MaterialProperty>(val));
                 const auto &prop = cc::get<MaterialProperty>(val);
-                Vec4 srgb;
+                Vec4        srgb;
                 if (cc::holds_alternative<cc::Color>(prop)) {
                     srgb = cc::get<cc::Color>(prop).toVec4();
                 } else if (cc::holds_alternative<Vec4>(prop)) {
@@ -397,7 +397,7 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
     if (const auto *pTexture = cc::get_if<gfx::Texture *>(&val)) {
         pass->bindTexture(binding, const_cast<gfx::Texture *>(*pTexture), index);
     } else if (const auto *pTextureBase = cc::get_if<TextureBase *>(&val)) {
-        auto *        textureBase = *pTextureBase;
+        auto         *textureBase = *pTextureBase;
         gfx::Texture *texture     = nullptr;
         if (textureBase != nullptr) {
             texture = textureBase->getGFXTexture();

@@ -79,7 +79,7 @@ public:
     void activate(Octree* resource);
 
     // JS deserialization require the properties to be public
-//private:
+    // private:
     bool     _enabled{false};
     Vec3     _minPos;
     Vec3     _maxPos;

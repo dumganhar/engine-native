@@ -393,7 +393,7 @@ void Octree::update(Model* model) {
     insert(model);
 }
 
-void Octree::queryVisibility(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
+void Octree::queryVisibility(Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
     if (_totalCount > USE_MULTI_THRESHOLD) {
         _root->queryVisibilityParallelly(camera, frustum, isShadow, results);
     } else {

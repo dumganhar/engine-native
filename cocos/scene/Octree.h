@@ -209,7 +209,7 @@ public:
     inline uint32_t getMaxDepth() const { return _maxDepth; }
 
     // view frustum culling
-    void queryVisibility(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
+    void queryVisibility(Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const;
 
 private:
     bool isInside(Model* model) const;

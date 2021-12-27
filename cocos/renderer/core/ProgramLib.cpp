@@ -124,7 +124,7 @@ std::string getShaderInstanceName(const std::string &name, const std::vector<IMa
 
 void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, const pipeline::DescriptorSetLayoutInfos &source,
                            const std::string &type, std::vector<gfx::DescriptorSetLayoutBinding> *outBindings) {
-    CC_ASSERT(type == "locals" && type == "globals");
+    CC_ASSERT(type == "locals" || type == "globals");
     const auto &target = type == "globals" ? tmpl.builtins.globals : tmpl.builtins.locals;
 
     // Blocks

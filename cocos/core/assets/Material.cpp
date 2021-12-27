@@ -356,9 +356,16 @@ bool Material::uploadProperty(scene::Pass *pass, const std::string &name, const 
             if (iter != passProps.end() && iter->second.linear.has_value()) {
                 CC_ASSERT(cc::holds_alternative<MaterialProperty>(val));
                 const auto &prop = cc::get<MaterialProperty>(val);
-                CC_ASSERT(cc::holds_alternative<Vec4>(prop));
-                const auto &srgb = cc::get<Vec4>(prop);
-                Vec4        linear;
+                Vec4 srgb;
+                if (cc::holds_alternative<cc::Color>(prop)) {
+                    srgb = cc::get<cc::Color>(prop).toVec4();
+                } else if (cc::holds_alternative<Vec4>(prop)) {
+                    srgb = cc::get<Vec4>(prop);
+                } else {
+                    CC_ASSERT(false);
+                }
+
+                Vec4 linear;
                 pipeline::srgbToLinear(&linear, srgb);
                 linear.w = srgb.w;
                 pass->setUniform(handle, linear);

@@ -45,17 +45,6 @@ namespace scene {
 
 namespace {
 
-gfx::BufferInfo bufferInfo{
-    (gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST),
-    gfx::MemoryUsageBit::DEVICE,
-    0U,
-    0U,
-    gfx::BufferFlagBit::NONE};
-
-gfx::BufferViewInfo bufferViewInfo;
-
-gfx::DescriptorSetInfo dsInfo;
-
 std::string serializeBlendState(const gfx::BlendState &bs) {
     std::stringstream res;
     res << ",bs," << bs.isA2C;
@@ -504,6 +493,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     }
 
     // init descriptor set
+    gfx::DescriptorSetInfo dsInfo;
     dsInfo.layout  = programLib->getDescriptorSetLayout(_device, info.program);
     _descriptorSet = _device->createDescriptorSet(dsInfo);
 
@@ -528,11 +518,17 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     // create gfx buffer resource
     uint32_t totalSize = !startOffsets.empty() ? (startOffsets[startOffsets.size() - 1] + lastSize) : 0;
     if (totalSize > 0) {
+        gfx::BufferInfo bufferInfo;
+        bufferInfo.usage = gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST;
+        bufferInfo.memUsage = gfx::MemoryUsageBit::DEVICE;
         // https://bugs.chromium.org/p/chromium/issues/detail?id=988988
         bufferInfo.size = static_cast<int32_t>(std::ceil(static_cast<float>(totalSize) / 16.F)) * 16;
         _rootBuffer     = device->createBuffer(bufferInfo);
         _rootBlock      = new ArrayBuffer(totalSize);
     }
+
+    gfx::BufferViewInfo bufferViewInfo;
+
     // create buffer views
     for (size_t i = 0, count = 0; i < blocks.size(); i++) {
         int32_t binding       = blocks[i].binding;

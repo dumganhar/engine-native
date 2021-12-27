@@ -28,6 +28,7 @@
 #include <array>
 #include <vector>
 #include "base/Macros.h"
+#include "base/RefCounted.h"
 #include "core/geometry/AABB.h"
 #include "math/Vec3.h"
 
@@ -45,7 +46,7 @@ const Vec3    DEFAULT_WORLD_MAX_POS  = {1024.0F, 1024.0F, 1024.0F};
 const float   OCTREE_BOX_EXPAND_SIZE = 10.0F;
 constexpr int USE_MULTI_THRESHOLD    = 1024; // use parallel culling if greater than this value
 
-class CC_DLL OctreeInfo final {
+class CC_DLL OctreeInfo final : public RefCounted {
 public:
     /**
      * @en Whether activate octree
@@ -77,7 +78,8 @@ public:
 
     void activate(Octree* resource);
 
-private:
+    // JS deserialization require the properties to be public
+//private:
     bool     _enabled{false};
     Vec3     _minPos;
     Vec3     _maxPos;

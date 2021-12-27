@@ -87,7 +87,7 @@ public:
 
     scene::Pass *getOcclusionQueryPass();
 
-private:
+protected:
     void                 initOcclusionQuery();
     gfx::InputAssembler *createOcclusionQueryIA();
 

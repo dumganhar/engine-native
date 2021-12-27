@@ -269,6 +269,7 @@ public:
     inline const std::string &                       getProgram() const { return _programName; }
     inline const Record<std::string, IPropertyInfo> &getProperties() const { return _properties; }
     inline const MacroRecord &                       getDefines() const { return _defines; }
+    inline MacroRecord &                             getDefines() { return _defines; }
     inline index_t                                   getPassIndex() const { return _passIndex; }
     inline index_t                                   getPropertyIndex() const { return _propertyIndex; }
     // data

@@ -25,8 +25,8 @@
 #pragma once
 
 #include <functional>
-#include "cocos/base/Optional.h"
 #include "audio/android/PcmBufferProvider.h"
+#include "cocos/base/Optional.h"
 #include "core/ArrayBuffer.h"
 #include "gfx-base/GFXTexture.h"
 #include "renderer/gfx-base/GFXDef.h"
@@ -54,7 +54,7 @@ struct ITextureBufferHandle {
 };
 
 struct ITextureBufferPoolInfo {
-    gfx::Format                format{gfx::Format::UNKNOWN}; // target texture format
+    gfx::Format               format{gfx::Format::UNKNOWN}; // target texture format
     cc::optional<bool>        inOrderFree;                  // will the handles be freed exactly in the order of their allocation?
     cc::optional<uint32_t>    alignment;                    // the data alignment for each handle allocated, in bytes
     cc::optional<roundUpType> roundUpFn;                    // given a target size, how will the actual texture size round up?
@@ -91,10 +91,9 @@ private:
     gfx::BufferTextureCopy            _region1;
     gfx::BufferTextureCopy            _region2;
     roundUpType                       _roundUpFn{nullptr};
-    // private _bufferViewCtor: TypedArrayConstructor = Uint8Array; // TODO(xwx)
-    bool     _useMcDonaldAlloc{false};
-    uint32_t _channels{4};
-    uint32_t _alignment{1};
+    bool                              _useMcDonaldAlloc{false};
+    uint32_t                          _channels{4};
+    uint32_t                          _alignment{1};
     CC_DISALLOW_COPY_MOVE_ASSIGN(TextureBufferPool);
 };
 

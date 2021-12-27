@@ -256,7 +256,7 @@ public:
      * @en The current [[EffectAsset]].
      * @zh 当前使用的 [[EffectAsset]] 资源。
      */
-    inline const EffectAsset *getEffectAsset() const {
+    inline EffectAsset *getEffectAsset() const {
         return _effectAsset.get();
     }
 

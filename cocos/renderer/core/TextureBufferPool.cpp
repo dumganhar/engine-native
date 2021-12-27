@@ -46,10 +46,9 @@ void TextureBufferPool::initialize(const ITextureBufferPoolInfo &info) {
     _format                = info.format;
     _formatSize            = formatInfo.size;
     _channels              = formatInfo.count;
-    // _bufferViewCtor = getTypedArrayConstructor(formatInfo); // TODO(xwx): getTypedArrayConstructor not define
-    _roundUpFn        = info.roundUpFn.has_value() ? info.roundUpFn.value() : nullptr;
-    _alignment        = info.alignment.has_value() ? info.alignment.value() : 1;
-    _useMcDonaldAlloc = info.alignment.has_value() && info.alignment.value();
+    _roundUpFn             = info.roundUpFn.has_value() ? info.roundUpFn.value() : nullptr;
+    _alignment             = info.alignment.has_value() ? info.alignment.value() : 1;
+    _useMcDonaldAlloc      = info.alignment.has_value() && info.alignment.value();
 }
 
 void TextureBufferPool::destroy() {

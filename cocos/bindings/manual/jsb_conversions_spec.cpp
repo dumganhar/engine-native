@@ -750,7 +750,6 @@ bool sevalue_to_native(const se::Value &from, cc::scene::SkyboxInfo *to, se::Obj
     se::Value   tmp;
     // TODO(PatriceJiang): export TextureCube
     //  set_member_field<cc::TextureCube*>(obj, to, "envmap", &cc::scene::SkyboxInfo::setEnvmap, tmp);
-    set_member_field<bool>(obj, to, "isRGBE", &cc::scene::SkyboxInfo::setRGBE, tmp);
     set_member_field<bool>(obj, to, "enabled", &cc::scene::SkyboxInfo::setEnabled, tmp);
     set_member_field<bool>(obj, to, "useIBL", &cc::scene::SkyboxInfo::setUseIBL, tmp);
     return true;

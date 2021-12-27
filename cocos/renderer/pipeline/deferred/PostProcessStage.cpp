@@ -24,11 +24,11 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "PostProcessStage.h"
-#include "../PipelineStateManager.h"
-#include "../RenderPipeline.h"
-#include "../RenderQueue.h"
-#include "pipeline/UIPhase.h"
+#include "renderer/pipeline/deferred/PostProcessStage.h"
+#include "renderer/pipeline/PipelineStateManager.h"
+#include "renderer/pipeline/RenderPipeline.h"
+#include "renderer/pipeline/RenderQueue.h"
+#include "renderer/pipeline/UIPhase.h"
 #include "frame-graph/DevicePass.h"
 #include "frame-graph/PassNodeBuilder.h"
 #include "frame-graph/Resource.h"
@@ -38,6 +38,7 @@
 #include "pipeline/Define.h"
 #include "pipeline/helper/Utils.h"
 #include "scene/SubModel.h"
+#include "scene/RenderWindow.h"
 
 namespace cc {
 namespace pipeline {

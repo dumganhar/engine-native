@@ -127,12 +127,6 @@ public:
         return isHDR ? _diffuseMapHDR : _diffuseMapLDR;
     }
 
-    /**
-     * @en Whether enable RGBE data support in skybox shader
-     * @zh 是否需要开启 shader 内的 RGBE 数据支持？
-     */
-    void setRGBE(bool val);
-
     void activate(Skybox *resource);
 
     //cjh JSB need to bind the property, so need to make it public

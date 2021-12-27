@@ -77,6 +77,10 @@ void RenderTexture::resize(uint32_t width, uint32_t height) {
     // emit(std::string("resize"), _window); //TODO(xwx): not inherit form Eventify in Asset base class
 }
 
+gfx::Texture *RenderTexture::getGFXTexture() const {
+    return _window ? _window->getFramebuffer()->getColorTextures()[0] : nullptr;
+}
+
 void RenderTexture::onLoaded() {
     initWindow();
 }

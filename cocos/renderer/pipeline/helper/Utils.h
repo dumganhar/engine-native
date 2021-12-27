@@ -33,12 +33,12 @@ namespace cc {
 namespace scene {
 class Camera;
 class Model;
-}
+} // namespace scene
 
 namespace gfx {
 class CommandBuffer;
 class RenderPass;
-}
+} // namespace gfx
 
 namespace pipeline {
 

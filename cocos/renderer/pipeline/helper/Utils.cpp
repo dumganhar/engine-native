@@ -51,9 +51,9 @@ void decideProfilerCamera(const vector<scene::Camera *> &cameras) {
 void renderProfiler(gfx::RenderPass *renderPass, gfx::CommandBuffer *cmdBuff, scene::Model *profiler, const scene::Camera *camera) {
     if (profiler && profiler->isEnabled() && camera == profilerCamera) {
         const auto &submodel = profiler->getSubModels()[0];
-        auto *pass     = submodel->getPass(0);
-        auto *ia       = submodel->getInputAssembler();
-        auto *pso      = PipelineStateManager::getOrCreatePipelineState(pass, submodel->getShader(0), ia, renderPass);
+        auto       *pass     = submodel->getPass(0);
+        auto       *ia       = submodel->getInputAssembler();
+        auto       *pso      = PipelineStateManager::getOrCreatePipelineState(pass, submodel->getShader(0), ia, renderPass);
 
         gfx::Viewport profilerViewport;
         gfx::Rect     profilerScissor;

@@ -64,6 +64,25 @@ void SkyboxInfo::setApplyDiffuseMap(bool val) {
     }
 }
 
+void SkyboxInfo::setUseHDR(bool val) {
+    Root::getInstance()->getPipeline()->getPipelineSceneData()->setHDR(val);
+    _useHDR = val;
+
+    // Switch UI to and from LDR/HDR textures depends on HDR state
+    if (_resource) {
+        setEnvmap(_resource->getEnvmap());
+        setDiffuseMap(_resource->getDiffuseMap());
+
+        if (getDiffuseMap() == nullptr) {
+            setApplyDiffuseMap(false);
+        }
+    }
+
+    if (_resource) {
+        _resource->setUseHDR(_useHDR);
+    }
+}
+
 void SkyboxInfo::setEnvmap(TextureCube *val) {
     const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {

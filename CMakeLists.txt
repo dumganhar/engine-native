@@ -871,6 +871,7 @@ cocos_source_files(
                  cocos/renderer/pipeline/UIPhase.h
 
                  cocos/renderer/pipeline/helper/Utils.h
+                 cocos/renderer/pipeline/helper/Utils.cpp
 )
 
 ##### terrain
@@ -2533,10 +2534,12 @@ target_compile_definitions(cocos2d
 if(NOT APPLE)
     target_include_directories(cocos2d PUBLIC
         ${CWD}/external/sources/EGL
-        ${CWD}/external/sources/khronos
     )
 endif()
 
+target_include_directories(cocos2d PUBLIC
+    ${CWD}/external/sources/khronos
+)
 
 if(WIN32)
     target_link_libraries(cocos2d PUBLIC

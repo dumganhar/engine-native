@@ -76,6 +76,7 @@ public:
     inline Mat4                                                                getMatShadowViewProj() const { return _matShadowViewProj; }
     inline void                                                                setMatShadowViewProj(const Mat4 &matShadowViewProj) { _matShadowViewProj = matShadowViewProj; }
     inline bool                                                                isHDR() const { return _isHDR; }
+    inline void                                                                setHDR(bool val) { _isHDR = val; }
     inline scene::Shadows                                                     *getShadow() const { return _shadow; }
     inline scene::Ambient                                                     *getAmbient() const { return _ambient; }
     inline scene::Skybox                                                      *getSkybox() const { return _skybox; }

@@ -24,11 +24,7 @@
  THE SOFTWARE.
 ****************************************************************************/
 
-#include "PostProcessStage.h"
-#include "../PipelineStateManager.h"
-#include "../RenderPipeline.h"
-#include "../RenderQueue.h"
-#include "pipeline/UIPhase.h"
+#include "renderer/pipeline/deferred/PostProcessStage.h"
 #include "frame-graph/DevicePass.h"
 #include "frame-graph/PassNodeBuilder.h"
 #include "frame-graph/Resource.h"
@@ -37,6 +33,11 @@
 #include "gfx-base/GFXFramebuffer.h"
 #include "pipeline/Define.h"
 #include "pipeline/helper/Utils.h"
+#include "renderer/pipeline/PipelineStateManager.h"
+#include "renderer/pipeline/RenderPipeline.h"
+#include "renderer/pipeline/RenderQueue.h"
+#include "renderer/pipeline/UIPhase.h"
+#include "scene/RenderWindow.h"
 #include "scene/SubModel.h"
 
 namespace cc {
@@ -111,7 +112,7 @@ void PostProcessStage::render(scene::Camera *camera) {
     _clearColors[0].w = camera->getClearColor().w;
     _renderArea       = RenderPipeline::getRenderArea(camera);
     _inputAssembler   = _pipeline->getIAByRenderArea(_renderArea);
-    auto *pipeline = _pipeline;
+    auto *pipeline    = _pipeline;
     float shadingScale{_pipeline->getPipelineSceneData()->getShadingScale()};
     auto  postSetup = [&](framegraph::PassNodeBuilder &builder, RenderData &data) {
         if (pipeline->isBloomEnabled()) {
@@ -190,10 +191,10 @@ void PostProcessStage::render(scene::Camera *camera) {
     };
 
     auto postExec = [this, camera](RenderData const &data, const framegraph::DevicePassResourceTable &table) {
-        auto *           pipeline   = _pipeline;
+        auto            *pipeline   = _pipeline;
         gfx::RenderPass *renderPass = table.getRenderPass();
 
-        auto *                    cmdBuff       = pipeline->getCommandBuffers()[0];
+        auto                     *cmdBuff       = pipeline->getCommandBuffers()[0];
         const std::array<uint, 1> globalOffsets = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
         cmdBuff->bindDescriptorSet(globalSet, pipeline->getDescriptorSet(), utils::toUint(globalOffsets.size()), globalOffsets.data());
 
@@ -204,9 +205,9 @@ void PostProcessStage::render(scene::Camera *camera) {
             gfx::Shader *sd        = nullptr; // TODO(cjh): sceneData->getSharedData()->pipelinePostPassShader;
             float        shadingScale{sceneData->getShadingScale()};
             // get pso and draw quad
-            gfx::PipelineState *       pso      = PipelineStateManager::getOrCreatePipelineState(pv, sd, _inputAssembler, renderPass);
+            gfx::PipelineState        *pso      = PipelineStateManager::getOrCreatePipelineState(pv, sd, _inputAssembler, renderPass);
             pipeline::GlobalDSManager *globalDS = pipeline->getGlobalDSManager();
-            gfx::Sampler *             sampler  = shadingScale < 1.F ? globalDS->getPointSampler() : globalDS->getLinearSampler();
+            gfx::Sampler              *sampler  = shadingScale < 1.F ? globalDS->getPointSampler() : globalDS->getLinearSampler();
 
             pv->getDescriptorSet()->bindTexture(0, table.getRead(data.outColorTex));
             pv->getDescriptorSet()->bindSampler(0, sampler);

@@ -479,6 +479,17 @@ inline bool nativevalue_to_se(const cc::any &from, se::Value &to, se::Object *ct
     return true;
 }
 
+using void_p = void *;
+inline bool nativevalue_to_se(const void_p &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    if(!from) {
+        to.setUndefined();
+    } else {
+        auto ptr = reinterpret_cast<uintptr_t>(from);
+        sizeof(from) == 8 ? to.setUint64(static_cast<uint64_t>(ptr)) : to.setUint32(static_cast<uint32_t>(ptr));
+    }
+    return true;
+}
+
 // Spine conversions
 #if USE_SPINE
 

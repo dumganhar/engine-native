@@ -122,6 +122,7 @@ public:
     RawRefPrivateObject() = default;
     explicit RawRefPrivateObject(T *p) : _ptr(p) {}
     ~RawRefPrivateObject() override {
+        static_assert(!std::is_same<T, void>::value, "void is not allowed!");
         if (_allowGC) {
             delete _ptr;
         }

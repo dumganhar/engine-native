@@ -182,8 +182,9 @@ void Scheduler::schedule(const ccSchedulerFunc &callback, void *target, float in
     }
 
     auto *timer = new (std::nothrow) TimerTargetCallback();
+    timer->addRef();
     timer->initWithCallback(this, callback, target, key, interval, repeat, delay);
-    element->timers.pushBack(timer);
+    element->timers.emplace_back(timer);
 }
 
 void Scheduler::unschedule(const std::string &key, void *target) {

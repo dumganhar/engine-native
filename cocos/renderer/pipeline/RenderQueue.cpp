@@ -31,8 +31,8 @@
 #include "gfx-base/GFXCommandBuffer.h"
 #include "gfx-base/GFXDevice.h"
 #include "gfx-base/GFXShader.h"
-#include "scene/SubModel.h"
 #include "scene/Model.h"
+#include "scene/SubModel.h"
 
 namespace cc {
 namespace pipeline {
@@ -69,9 +69,9 @@ void RenderQueue::sort() {
 }
 
 void RenderQueue::recordCommandBuffer(gfx::Device * /*device*/, scene::Camera *camera, gfx::RenderPass *renderPass, gfx::CommandBuffer *cmdBuff, uint32_t subpassIndex) {
-    PipelineSceneData *const              sceneData            = _pipeline->getPipelineSceneData();
-    bool                                  enableOcclusionQuery = _pipeline->isOcclusionQueryEnabled() && _useOcclusionQuery;
-    auto *                                queryPool            = _pipeline->getQueryPools()[0];
+    PipelineSceneData *const sceneData            = _pipeline->getPipelineSceneData();
+    bool                     enableOcclusionQuery = _pipeline->isOcclusionQueryEnabled() && _useOcclusionQuery;
+    auto *                   queryPool            = _pipeline->getQueryPools()[0];
     for (auto &i : _queue) {
         const auto *subModel = i.subModel;
         if (enableOcclusionQuery) {
@@ -79,10 +79,10 @@ void RenderQueue::recordCommandBuffer(gfx::Device * /*device*/, scene::Camera *c
         }
 
         if (enableOcclusionQuery && _pipeline->isOccluded(camera, subModel)) {
-            gfx::InputAssembler *      inputAssembler = nullptr; // TODO(cjh): sharedData->occlusionQueryInputAssembler;
-            const scene::Pass *pass           = nullptr; // TODO(cjh): sharedData->occlusionQueryPass;
-            gfx::Shader *      shader         = nullptr; // TODO(cjh): sharedData->occlusionQueryShader;
-            auto *      pso            = PipelineStateManager::getOrCreatePipelineState(pass, shader, inputAssembler, renderPass, subpassIndex);
+            gfx::InputAssembler *inputAssembler = sceneData->getOcclusionQueryInputAssembler();
+            const scene::Pass *  pass           = sceneData->getOcclusionQueryPass();
+            gfx::Shader *        shader         = sceneData->getOcclusionQueryShader();
+            auto *               pso            = PipelineStateManager::getOrCreatePipelineState(pass, shader, inputAssembler, renderPass, subpassIndex);
 
             cmdBuff->bindPipelineState(pso);
             cmdBuff->bindDescriptorSet(materialSet, pass->getDescriptorSet());

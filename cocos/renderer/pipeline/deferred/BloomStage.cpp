@@ -28,7 +28,6 @@
 #include "../PipelineStateManager.h"
 #include "../RenderPipeline.h"
 #include "../RenderQueue.h"
-#include "pipeline/UIPhase.h"
 #include "frame-graph/DevicePass.h"
 #include "frame-graph/PassNodeBuilder.h"
 #include "frame-graph/Resource.h"
@@ -39,8 +38,10 @@
 #include "gfx-base/GFXFramebuffer.h"
 #include "gfx-base/states/GFXSampler.h"
 #include "pipeline/Define.h"
-#include "scene/SubModel.h"
+#include "pipeline/UIPhase.h"
+#include "renderer/pipeline/deferred/DeferredPipelineSceneData.h"
 #include "scene/RenderScene.h"
+#include "scene/SubModel.h"
 
 namespace cc {
 namespace pipeline {
@@ -164,7 +165,7 @@ void BloomStage::render(scene::Camera *camera) {
     float intensity  = stage->getIntensity();
     float threshold  = stage->getThreshold();
 
-    _renderArea =  RenderPipeline::getRenderArea(camera);
+    _renderArea     = RenderPipeline::getRenderArea(camera);
     _inputAssembler = pipeline->getIAByRenderArea(_renderArea);
     _renderArea.width >>= 1;
     _renderArea.height >>= 1;
@@ -215,10 +216,10 @@ void BloomStage::render(scene::Camera *camera) {
         const std::array<uint, 1> globalOffsets = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
         cmdBf->bindDescriptorSet(globalSet, pipeline->getDescriptorSet(), utils::toUint(globalOffsets.size()), globalOffsets.data());
 
-        auto *const          sceneData     = pipeline->getPipelineSceneData();
-        scene::Pass *        pass           = nullptr; // TODO(cjh): sceneData->getBloomPrefilterPass();
-        gfx::Shader *        shader         = nullptr; // TODO(cjh): sceneData->getBloomPrefilterPassShader();
-        gfx::PipelineState * pso            = PipelineStateManager::getOrCreatePipelineState(
+        auto *              sceneData = static_cast<DeferredPipelineSceneData *>(pipeline->getPipelineSceneData());
+        scene::Pass *       pass      = sceneData->getBloomPrefilterPass();
+        gfx::Shader *       shader    = sceneData->getBloomPrefilterPassShader();
+        gfx::PipelineState *pso       = PipelineStateManager::getOrCreatePipelineState(
             pass, shader, _inputAssembler, renderPass);
         CC_ASSERT(pso != nullptr);
 
@@ -293,10 +294,10 @@ void BloomStage::render(scene::Camera *camera) {
             const std::array<uint, 1> globalOffsets = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
             cmdBf->bindDescriptorSet(globalSet, pipeline->getDescriptorSet(), utils::toUint(globalOffsets.size()), globalOffsets.data());
 
-            auto *const          sceneData     = pipeline->getPipelineSceneData();
-            scene::Pass *        pass           = nullptr;// TODO(cjh): sceneData->bloomDownsamplePass[data.index];
-            gfx::Shader *        shader         = nullptr;// TODO(cjh): sceneData->bloomDownsamplePassShader;
-            gfx::PipelineState * pso            = PipelineStateManager::getOrCreatePipelineState(
+            auto *const         sceneData = static_cast<DeferredPipelineSceneData *>(pipeline->getPipelineSceneData());
+            scene::Pass *       pass      = sceneData->getBloomDownSamplePasses()[data.index];
+            gfx::Shader *       shader    = sceneData->getBloomDownSamplePassShader();
+            gfx::PipelineState *pso       = PipelineStateManager::getOrCreatePipelineState(
                 pass, shader, _inputAssembler, renderPass);
             CC_ASSERT(pso != nullptr);
 
@@ -365,10 +366,10 @@ void BloomStage::render(scene::Camera *camera) {
             const std::array<uint, 1> globalOffsets = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
             cmdBf->bindDescriptorSet(globalSet, pipeline->getDescriptorSet(), utils::toUint(globalOffsets.size()), globalOffsets.data());
 
-            auto *const          sceneData     = pipeline->getPipelineSceneData();
-            scene::Pass *        pass           = nullptr;// TODO(cjh): sceneData->bloomUpsamplePass[data.index];
-            gfx::Shader *        shader         = nullptr;// TODO(cjh): sceneData->bloomUpsamplePassShader;
-            gfx::PipelineState * pso            = PipelineStateManager::getOrCreatePipelineState(
+            auto *const         sceneData = static_cast<DeferredPipelineSceneData *>(pipeline->getPipelineSceneData());
+            scene::Pass *       pass      = sceneData->getBloomUpSamplePasses()[data.index];
+            gfx::Shader *       shader    = sceneData->getBloomUpSamplePassShader();
+            gfx::PipelineState *pso       = PipelineStateManager::getOrCreatePipelineState(
                 pass, shader, _inputAssembler, renderPass);
             CC_ASSERT(pso != nullptr);
 
@@ -442,10 +443,10 @@ void BloomStage::render(scene::Camera *camera) {
         const std::array<uint, 1> globalOffsets = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
         cmdBf->bindDescriptorSet(globalSet, pipeline->getDescriptorSet(), utils::toUint(globalOffsets.size()), globalOffsets.data());
 
-        auto *const          sceneData     = pipeline->getPipelineSceneData();
-        scene::Pass *        pass           = nullptr;// TODO(cjh): sharedData->bloomCombinePass;
-        gfx::Shader *        shader         = nullptr;// TODO(cjh): sharedData->bloomCombinePassShader;
-        gfx::PipelineState * pso            = PipelineStateManager::getOrCreatePipelineState(
+        auto *const         sceneData = static_cast<DeferredPipelineSceneData *>(pipeline->getPipelineSceneData());
+        scene::Pass *       pass      = sceneData->getBloomCombinePass();
+        gfx::Shader *       shader    = sceneData->getBloomCombinePassShader();
+        gfx::PipelineState *pso       = PipelineStateManager::getOrCreatePipelineState(
             pass, shader, _inputAssembler, renderPass);
         CC_ASSERT(pso != nullptr);
 

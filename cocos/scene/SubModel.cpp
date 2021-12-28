@@ -89,8 +89,8 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
     }
     _inputAssembler                          = _device->createInputAssembler(subMesh->getIaInfo());
     _descriptorSet                           = _device->createDescriptorSet(dsInfo);
-    auto                      *pipeline      = Root::getInstance()->getPipeline();
-    auto                      *occlusionPass = pipeline->getPipelineSceneData()->getOcclusionQueryPass();
+    auto *                     pipeline      = Root::getInstance()->getPipeline();
+    auto *                     occlusionPass = pipeline->getPipelineSceneData()->getOcclusionQueryPass();
     cc::gfx::DescriptorSetInfo occlusionDSInfo;
     occlusionDSInfo.layout   = occlusionPass->getLocalSetLayout();
     _worldBoundDescriptorSet = _device->createDescriptorSet(occlusionDSInfo);
@@ -106,7 +106,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
 
     // initialize resources for reflection material
     if (passes[0]->getPhase() == pipeline::getPhaseID("reflection")) {
-        auto          *mainWindow = Root::getInstance()->getMainWindow();
+        auto *         mainWindow = Root::getInstance()->getMainWindow();
         uint32_t       texWidth   = mainWindow->getWidth();
         uint32_t       texHeight  = mainWindow->getHeight();
         const uint32_t minSize    = 512;
@@ -144,10 +144,10 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowShader() {
-    auto    *pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
-    Shadows *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
-    if (shadowInfo != nullptr) {
-        _planarShader = shadowInfo->getPlanarShader(_patches);
+    auto *   pipeline = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
+    Shadows *shadows  = pipeline->getPipelineSceneData()->getShadows();
+    if (shadows != nullptr) {
+        _planarShader = shadows->getPlanarShader(_patches);
     } else {
         _planarShader = nullptr;
     }
@@ -157,10 +157,10 @@ void SubModel::initPlanarShadowShader() {
 // This is a temporary solution
 // It should not be written in a fixed way, or modified by the user
 void SubModel::initPlanarShadowInstanceShader() {
-    auto    *pipeline   = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
-    Shadows *shadowInfo = pipeline->getPipelineSceneData()->getShadow();
-    if (shadowInfo != nullptr) {
-        _planarInstanceShader = shadowInfo->getPlanarInstanceShader(_patches);
+    auto *   pipeline = static_cast<pipeline::ForwardPipeline *>(Root::getInstance()->getPipeline());
+    Shadows *shadows  = pipeline->getPipelineSceneData()->getShadows();
+    if (shadows != nullptr) {
+        _planarInstanceShader = shadows->getPlanarInstanceShader(_patches);
     } else {
         _planarInstanceShader = nullptr;
     }

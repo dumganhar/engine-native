@@ -17,27 +17,25 @@ void DeferredPipelineSceneData::onGlobalPipelineStateChanged() {
 
 void DeferredPipelineSceneData::initPipelinePassInfo() {
     // builtin deferred material
-    auto *deferredMat = new Material();
-    deferredMat->setUuid("builtin-deferred-material");
+    _lightingMaterial = new Material();
+    _lightingMaterial->setUuid("builtin-deferred-material");
     IMaterialInfo materialInfo;
     materialInfo.effectName = "deferred-lighting";
-    deferredMat->initialize(materialInfo);
-    for (const auto &pass : deferredMat->getPasses()) {
+    _lightingMaterial->initialize(materialInfo);
+    for (const auto &pass : _lightingMaterial->getPasses()) {
         pass->tryCompile();
     }
-    _deferredLightingMaterial = deferredMat;
 
-    auto *bloomMat = new Material();
-    bloomMat->setUuid("builtin-bloom-material");
+    _bloomMaterial = new Material();
+    _bloomMaterial->setUuid("builtin-bloom-material");
     materialInfo.effectName = "bloom";
-    bloomMat->initialize(materialInfo);
-    for (const auto &pass : bloomMat->getPasses()) {
+    _bloomMaterial->initialize(materialInfo);
+    for (const auto &pass : _bloomMaterial->getPasses()) {
         pass->tryCompile();
     }
-    _bloomMaterial = bloomMat;
 
-    auto *postMat = new Material();
-    postMat->setUuid("builtin-post-process-material");
+    _postProcessMaterial = new Material();
+    _postProcessMaterial->setUuid("builtin-post-process-material");
     //TODO(minggo):
     //    if (macro.ENABLE_ANTIALIAS_FXAA) {
     //        _antiAliasing = AntiAliasing::FXAA;
@@ -45,10 +43,9 @@ void DeferredPipelineSceneData::initPipelinePassInfo() {
     materialInfo.effectName = "post-process";
     MacroRecord record{{"ANTIALIAS_TYPE", static_cast<int32_t>(_antiAliasing)}};
     materialInfo.defines = record;
-    for (const auto &pass : postMat->getPasses()) {
+    for (const auto &pass : _postProcessMaterial->getPasses()) {
         pass->tryCompile();
     }
-    _postProcessMaterial = postMat;
 
     updatePipelinePassInfo();
 }
@@ -75,10 +72,11 @@ void DeferredPipelineSceneData::updateBloomPass() {
         return;
     }
 
-    scene::Pass *prefilterPass = _bloomMaterial->getPasses()[BLOOM_PREFILTERPASS_INDEX];
-    prefilterPass->beginChangeStatesSilently();
-    prefilterPass->tryCompile();
-    prefilterPass->endChangeStatesSilently();
+    _bloomPrefilterPass = _bloomMaterial->getPasses()[BLOOM_PREFILTERPASS_INDEX];
+    _bloomPrefilterPass->beginChangeStatesSilently();
+    _bloomPrefilterPass->tryCompile();
+    _bloomPrefilterPass->endChangeStatesSilently();
+    _bloomPrefilterPassShader = _bloomPrefilterPass->getShaderVariant();
 
     for (uint32_t i = 0; i < MAX_BLOOM_FILTER_PASS_NUM; ++i) {
         scene::Pass *downsamplePass = _bloomMaterial->getPasses()[BLOOM_DOWNSAMPLEPASS_INDEX + i];
@@ -90,12 +88,21 @@ void DeferredPipelineSceneData::updateBloomPass() {
         upsamplePass->beginChangeStatesSilently();
         upsamplePass->tryCompile();
         upsamplePass->endChangeStatesSilently();
+
+        _bloomUpSamplePasses.emplace_back(upsamplePass);
+        _bloomDownSamplePasses.emplace_back(downsamplePass);
     }
 
-    scene::Pass *combinePass = _bloomMaterial->getPasses()[BLOOM_COMBINEPASS_INDEX];
-    combinePass->beginChangeStatesSilently();
-    combinePass->tryCompile();
-    combinePass->endChangeStatesSilently();
+    auto &bloomPasses = _bloomMaterial->getPasses();
+    _bloomCombinePass = bloomPasses[BLOOM_COMBINEPASS_INDEX];
+    _bloomCombinePass->beginChangeStatesSilently();
+    _bloomCombinePass->tryCompile();
+    _bloomCombinePass->endChangeStatesSilently();
+    _bloomCombinePassShader = _bloomCombinePass->getShaderVariant();
+
+    _bloomUpSamplePassShader   = bloomPasses[BLOOM_UPSAMPLEPASS_INDEX]->getShaderVariant();
+    _bloomDownSamplePassShader = bloomPasses[BLOOM_DOWNSAMPLEPASS_INDEX]->getShaderVariant();
+    ;
 }
 
 void DeferredPipelineSceneData::updatePostProcessPass() {
@@ -103,10 +110,12 @@ void DeferredPipelineSceneData::updatePostProcessPass() {
         return;
     }
 
-    scene::Pass *passPost = _postProcessMaterial->getPasses()[0];
-    passPost->beginChangeStatesSilently();
-    passPost->tryCompile();
-    passPost->endChangeStatesSilently();
+    _postPass = _postProcessMaterial->getPasses()[0];
+    _postPass->beginChangeStatesSilently();
+    _postPass->tryCompile();
+    _postPass->endChangeStatesSilently();
+
+    _postPassShader = _postPass->getShaderVariant();
 }
 
 void DeferredPipelineSceneData::updatePipelinePassInfo() {
@@ -120,7 +129,7 @@ void DeferredPipelineSceneData::updateDeferredPassInfo() {
 }
 
 void DeferredPipelineSceneData::updateDeferredLightPass() {
-    if (!_deferredLightingMaterial) {
+    if (!_lightingMaterial) {
         return;
     }
 
@@ -129,10 +138,12 @@ void DeferredPipelineSceneData::updateDeferredLightPass() {
         _pipeline->setValue("CC_RECEIVE_SHADOW", 1);
     }
 
-    scene::Pass *passLit = _deferredLightingMaterial->getPasses()[0];
-    passLit->beginChangeStatesSilently();
-    passLit->tryCompile();
-    passLit->endChangeStatesSilently();
+    _lightPass = _lightingMaterial->getPasses()[0];
+    _lightPass->beginChangeStatesSilently();
+    _lightPass->tryCompile();
+    _lightPass->endChangeStatesSilently();
+
+    _lightPassShader = _lightPass->getShaderVariant();
 }
 
 } // namespace pipeline

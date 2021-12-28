@@ -79,14 +79,13 @@ void PipelineSceneData::initOcclusionQuery() {
     }
 
     if (!_occlusionQueryMaterial) {
-        auto *mat = new Material();
-        mat->initDefault(std::string{"default-occlusion-query-material"});
+        _occlusionQueryMaterial = new Material();
+        _occlusionQueryMaterial->initDefault(std::string{"default-occlusion-query-material"});
         IMaterialInfo info;
         info.effectName = "occlusion-query";
-        mat->initialize(info);
-        _occlusionQueryMaterial = mat;
-        const auto &passes      = mat->getPasses();
-        _occlusionQueryShader   = passes[0].get()->getShaderVariant();
+        _occlusionQueryMaterial->initialize(info);
+        _occlusionQueryPass   = _occlusionQueryMaterial->getPasses()[0];
+        _occlusionQueryShader = _occlusionQueryPass->getShaderVariant();
     }
 }
 

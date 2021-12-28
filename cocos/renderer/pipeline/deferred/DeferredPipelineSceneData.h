@@ -50,22 +50,21 @@ public:
         updatePipelinePassInfo();
     }
 
-    inline Material *getDeferredPostMaterial() const { return _deferredPostMaterial; }
-    inline void      setDeferredPostMaterial(Material *mat) {
-        if (mat == _deferredPostMaterial.get()) {
-            return;
-        }
-        _deferredPostMaterial = mat;
-        updatePipelinePassInfo();
-    }
+    inline void                              setLightingMaterial(Material *mat) { _lightingMaterial = mat; }
+    inline Material *                        getLightingMaterial() const { return _lightingMaterial; }
+    inline gfx::Shader *                     getLightPassShader() const { return _lightPassShader; }
+    inline scene::Pass *                     getLightPass() const { return _lightPass; }
+    inline gfx::Shader *                     getBloomPrefilterPassShader() const { return _bloomPrefilterPassShader; }
+    inline scene::Pass *                     getBloomPrefilterPass() const { return _bloomPrefilterPass; }
+    inline const std::vector<scene::Pass *> &getBloomUpSamplePasses() const { return _bloomUpSamplePasses; }
+    inline gfx::Shader *                     getBloomUpSamplePassShader() const { return _bloomUpSamplePassShader; }
+    inline const std::vector<scene::Pass *> &getBloomDownSamplePasses() const { return _bloomDownSamplePasses; }
+    inline gfx::Shader *                     getBloomDownSamplePassShader() const { return _bloomDownSamplePassShader; }
+    inline scene::Pass *                     getBloomCombinePass() const { return _bloomCombinePass; }
+    inline gfx::Shader *                     getBloomCombinePassShader() const { return _bloomCombinePassShader; }
 
-    inline void      setDeferredLightingMaterial(Material *mat) { _deferredLightingMaterial = mat; }
-    inline Material *getDeferredLightingMaterial() const { return _deferredLightingMaterial; }
-
-    inline gfx::Shader *getDeferredLightPassShader() const { return _deferredLightPassShader; }
-    inline gfx::Shader *getDeferredPostPassShader() const { return _deferredPostPassShader; }
-    inline scene::Pass *getDeferredLightPass() const { return _deferredLightPass; }
-    inline scene::Pass *getDeferredPostPass() const { return _deferredPostPass; }
+    inline gfx::Shader *getPostPassShader() const { return _postPassShader; }
+    inline scene::Pass *getPostPass() const { return _postPass; }
 
 private:
     void updateBloomPass();
@@ -74,16 +73,23 @@ private:
     void updateDeferredPassInfo();
     void updateDeferredLightPass();
 
-    SharedPtr<Material> _deferredLightingMaterial;
-    SharedPtr<Material> _deferredPostMaterial;
-    SharedPtr<Material> _bloomMaterial;
     SharedPtr<Material> _postProcessMaterial;
+    gfx::Shader *       _postPassShader{nullptr}; // weak reference
+    scene::Pass *       _postPass{nullptr};       // weak reference
 
-    SharedPtr<gfx::Shader> _deferredLightPassShader;
-    SharedPtr<scene::Pass> _deferredLightPass;
-    SharedPtr<gfx::Shader> _deferredPostPassShader;
+    SharedPtr<Material> _lightingMaterial;
+    gfx::Shader *       _lightPassShader{nullptr}; // weak reference
+    scene::Pass *       _lightPass{nullptr};       // weak reference
 
-    SharedPtr<scene::Pass> _deferredPostPass;
+    SharedPtr<Material>        _bloomMaterial;
+    scene::Pass *              _bloomPrefilterPass{nullptr};        // weak reference
+    gfx::Shader *              _bloomPrefilterPassShader{nullptr};  // weak reference
+    scene::Pass *              _bloomCombinePass{nullptr};          // weak reference
+    gfx::Shader *              _bloomCombinePassShader{nullptr};    // weak reference
+    std::vector<scene::Pass *> _bloomUpSamplePasses;                // weak reference
+    gfx::Shader *              _bloomUpSamplePassShader{nullptr};   // weak reference
+    std::vector<scene::Pass *> _bloomDownSamplePasses;              // weak reference
+    gfx::Shader *              _bloomDownSamplePassShader{nullptr}; // weak reference
 
     AntiAliasing _antiAliasing{AntiAliasing::NONE};
 };

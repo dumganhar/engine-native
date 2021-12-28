@@ -36,14 +36,12 @@
 #include "gfx-base/GFXDevice.h"
 #include "math/Quaternion.h"
 #include "platform/Application.h"
+#include "scene/DirectionalLight.h"
 #include "scene/Light.h"
 #include "scene/Octree.h"
-#include "scene/Skybox.h"
 #include "scene/RenderScene.h"
-#include "core/geometry/Sphere.h"
+#include "scene/Skybox.h"
 #include "scene/SpotLight.h"
-#include "scene/DirectionalLight.h"
-
 
 namespace cc {
 namespace pipeline {
@@ -51,7 +49,7 @@ namespace pipeline {
 RenderObject genRenderObject(const scene::Model *model, const scene::Camera *camera) {
     float depth = 0;
     if (model->getNode()) {
-        auto    *node = model->getTransform();
+        auto *   node = model->getTransform();
         cc::Vec3 position;
         cc::Vec3::subtract(node->getWorldPosition(), camera->getPosition(), &position);
         depth = position.dot(camera->getForward());
@@ -88,7 +86,7 @@ void updateSphereLight(scene::Shadows *shadows, const scene::Light *light, std::
     const auto  nx       = normal.x;
     const auto  ny       = normal.y;
     const auto  nz       = normal.z;
-    auto       &matLight = shadows->getMatLight();
+    auto &      matLight = shadows->getMatLight();
     matLight.m[0]        = ndL - distance - lx * nx;
     matLight.m[1]        = -ly * nx;
     matLight.m[2]        = -lz * nx;
@@ -110,8 +108,8 @@ void updateSphereLight(scene::Shadows *shadows, const scene::Light *light, std::
 }
 
 void updateDirLight(scene::Shadows *shadows, const scene::Light *light, std::array<float, UBOShadow::COUNT> *shadowUBO) {
-    const auto      *node     = light->getNode();
-    const auto      &rotation = node->getWorldRotation();
+    const auto *     node     = light->getNode();
+    const auto &     rotation = node->getWorldRotation();
     const Quaternion qt(rotation.x, rotation.y, rotation.z, rotation.w);
     Vec3             forward(0, 0, -1.0F);
     forward.transformQuat(qt);
@@ -150,7 +148,7 @@ void updateDirLight(scene::Shadows *shadows, const scene::Light *light, std::arr
 
 void validPunctualLightsCulling(RenderPipeline *pipeline, scene::Camera *camera) {
     const auto *const            scene               = camera->getScene();
-    PipelineSceneData           *sceneData           = pipeline->getPipelineSceneData();
+    PipelineSceneData *          sceneData           = pipeline->getPipelineSceneData();
     vector<const scene::Light *> validPunctualLights = sceneData->getValidPunctualLights();
     validPunctualLights.clear();
 
@@ -188,8 +186,8 @@ Mat4 getCameraWorldMatrix(const scene::Camera *camera) {
         return out;
     }
 
-    const Node       *cameraNode = camera->getNode();
-    const Vec3       &position   = cameraNode->getWorldPosition();
+    const Node *      cameraNode = camera->getNode();
+    const Vec3 &      position   = cameraNode->getWorldPosition();
     const Quaternion &rotation   = cameraNode->getWorldRotation();
 
     Mat4::fromRT(rotation, position, &out);
@@ -213,21 +211,21 @@ void updateDirFrustum(const geometry::Sphere *cameraBoundingSphere, const Quater
 }
 
 void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera *camera, scene::Frustum *out) {
-    const gfx::Device              *device                  = gfx::Device::getInstance();
+    const gfx::Device *             device                  = gfx::Device::getInstance();
     PipelineSceneData *const        sceneData               = pipeline->getPipelineSceneData();
-    const scene::Shadows           *shadowInfo              = sceneData->getShadow();
+    const scene::Shadows *          shadows                 = sceneData->getShadows();
     const scene::RenderScene *const scene                   = camera->getScene();
-    const scene::DirectionalLight  *mainLight               = scene->getMainLight();
-    const float                     invisibleOcclusionRange = shadowInfo->getInvisibleOcclusionRange();
-    const float                     shadowMapWidth          = shadowInfo->getSize().x;
-    const auto                     *node                    = mainLight->getNode();
-    const Quaternion               &rotation                = node->getWorldRotation();
+    const scene::DirectionalLight * mainLight               = scene->getMainLight();
+    const float                     invisibleOcclusionRange = shadows->getInvisibleOcclusionRange();
+    const float                     shadowMapWidth          = shadows->getSize().x;
+    const auto *                    node                    = mainLight->getNode();
+    const Quaternion &              rotation                = node->getWorldRotation();
 
     // Raw data.
     const Mat4     matWorldTrans = getCameraWorldMatrix(camera);
     scene::Frustum validFrustum;
     validFrustum.setType(geometry::ShapeEnum::SHAPE_FRUSTUM_ACCURATE);
-    validFrustum.split(0.1F, shadowInfo->getShadowDistance(), camera->getAspect(), camera->getFov(), matWorldTrans);
+    validFrustum.split(0.1F, shadows->getShadowDistance(), camera->getAspect(), camera->getFov(), matWorldTrans);
     scene::Frustum lightViewFrustum = validFrustum.clone();
 
     // view matrix with range back.
@@ -245,7 +243,7 @@ void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera 
 
     const float r = castLightViewBounds.getHalfExtents().z * 2.0F;
     Vec3        shadowPos(castLightViewBounds.getCenter().x, castLightViewBounds.getCenter().y,
-                          castLightViewBounds.getCenter().z + castLightViewBounds.getHalfExtents().z + invisibleOcclusionRange);
+                   castLightViewBounds.getCenter().z + castLightViewBounds.getHalfExtents().z + invisibleOcclusionRange);
     shadowPos.transformMat4(shadowPos, matShadowViewInv);
 
     Mat4::fromRT(rotation, shadowPos, &matShadowTrans);
@@ -303,16 +301,16 @@ void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera 
     sceneData->setMatShadowViewProj(matShadowViewProj);
 }
 void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
-    PipelineSceneData *const        sceneData  = pipeline->getPipelineSceneData();
-    const scene::Shadows           *shadowInfo = sceneData->getShadow();
-    const scene::Skybox            *skyBox     = sceneData->getSkybox();
-    const scene::RenderScene *const scene      = camera->getScene();
-    const scene::DirectionalLight  *mainLight  = scene->getMainLight();
+    PipelineSceneData *const        sceneData = pipeline->getPipelineSceneData();
+    const scene::Shadows *          shadows   = sceneData->getShadows();
+    const scene::Skybox *           skyBox    = sceneData->getSkybox();
+    const scene::RenderScene *const scene     = camera->getScene();
+    const scene::DirectionalLight * mainLight = scene->getMainLight();
     scene::Frustum                  dirLightFrustum;
 
     RenderObjectList dirShadowObjects;
     bool             isShadowMap = false;
-    if (shadowInfo != nullptr && shadowInfo->isEnabled() && shadowInfo->getType() == scene::ShadowType::SHADOW_MAP) {
+    if (shadows != nullptr && shadows->isEnabled() && shadows->getType() == scene::ShadowType::SHADOW_MAP) {
         isShadowMap = true;
 
         // update dirLightFrustum
@@ -358,7 +356,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
         if (isShadowMap) {
             std::vector<scene::Model *> casters;
             casters.reserve(scene->getModels().size() / 4);
-            if (shadowInfo->isFixedArea()) {
+            if (shadows->isFixedArea()) {
                 octree->queryVisibility(camera, camera->getFrustum(), true, casters);
             } else {
                 octree->queryVisibility(camera, dirLightFrustum, true, casters);
@@ -397,8 +395,8 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
 
                     // dir shadow render Object
                     if (isShadowMap && model->isCastShadow()) {
-                        if (shadowInfo->isFixedArea()) {
-                            model->getWorldBounds()->transform(shadowInfo->getMatLight(), &ab);
+                        if (shadows->isFixedArea()) {
+                            model->getWorldBounds()->transform(shadows->getMatLight(), &ab);
                             if (ab.aabbFrustum(camera->getFrustum())) {
                                 dirShadowObjects.emplace_back(genRenderObject(model, camera));
                             }

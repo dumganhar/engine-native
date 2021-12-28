@@ -113,7 +113,7 @@ struct IGameConfig {
         WEB_GL = 2,
     };
 
-    RenderMode renderMode{0};
+    RenderMode renderMode{RenderMode::AUTO};
 
     /**
      * @zh

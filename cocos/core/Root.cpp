@@ -77,13 +77,13 @@ void Root::initialize(gfx::Swapchain *swapchain) {
     depthStencilAttachment.depthStoreOp   = gfx::StoreOp::DISCARD;
     depthStencilAttachment.stencilStoreOp = gfx::StoreOp::DISCARD;
 
-    scene::IRenderWindowInfo info{
-        std::string{"rootMainWindow"},
-        swapchain->getWidth(),
-        swapchain->getHeight(),
-        renderPassInfo,
-        swapchain};
-    _mainWindow = createWindow(info);
+    scene::IRenderWindowInfo info;
+    info.title          = std::string{"rootMainWindow"};
+    info.width          = swapchain->getWidth();
+    info.height         = swapchain->getHeight();
+    info.renderPassInfo = renderPassInfo;
+    info.swapchain      = swapchain;
+    _mainWindow         = createWindow(info);
 
     _curWindow = _mainWindow;
 

@@ -39,6 +39,14 @@ namespace cc {
 namespace scene {
 
 struct IRenderWindowInfo {
+    IRenderWindowInfo() = default;
+
+    IRenderWindowInfo(uint32_t width, uint32_t height, gfx::RenderPassInfo &renderPassInfo) {
+        this->width = width;
+        this->height = height;
+        this->renderPassInfo = renderPassInfo;
+    }
+
     cc::optional<std::string> title;
     uint32_t                   width{0};
     uint32_t                   height{0};

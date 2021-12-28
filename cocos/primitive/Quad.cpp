@@ -29,13 +29,12 @@ IGeometry quad(cc::optional<IGeometryOptions> options) {
     if (!options.has_value()) {
         options = IGeometryOptions();
     }
-    IGeometry result{
-        .positions      = std::vector<float>{-0.5, -0.5, 0, -0.5, 0.5, 0, 0.5, 0.5, 0, 0.5, -0.5, 0},
-        .boundingRadius = sqrt(0.5 * 0.5 + 0.5 * 0.5),
-        .minPos         = Vec3(-0.5, -0.5, 0),
-        .maxPos         = Vec3(0.5, 0.5, 0),
-        .indices        = std::vector<uint32_t>{0, 3, 1, 3, 2, 1},
-    };
+    IGeometry result;
+    result.positions      = std::vector<float>{-0.5, -0.5, 0, -0.5, 0.5, 0, 0.5, 0.5, 0, 0.5, -0.5, 0};
+    result.boundingRadius = sqrt(0.5 * 0.5 + 0.5 * 0.5);
+    result.minPos         = Vec3(-0.5, -0.5, 0);
+    result.maxPos         = Vec3(0.5, 0.5, 0);
+    result.indices        = std::vector<uint32_t>{0, 3, 1, 3, 2, 1};
     if (options->includeNormal) {
         result.normals = std::vector<float>{
             0, 0, 1,

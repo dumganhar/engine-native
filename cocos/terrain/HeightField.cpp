@@ -25,6 +25,7 @@
 #include "terrain/HeightField.h"
 
 #include <algorithm>
+#include "cocos/math/Utils.h"
 
 namespace cc {
 
@@ -38,8 +39,8 @@ HeightField::HeightField(int32_t w, int32_t h)
 }
 
 uint16_t HeightField::getClamp(int32_t i, int32_t j) const {
-    i = std::clamp(i, 0, _w - 1);
-    j = std::clamp(j, 0, _h - 1);
+    i = cc::mathutils::clamp(i, 0, _w - 1);
+    j = cc::mathutils::clamp(j, 0, _h - 1);
 
     return get(i, j);
 }
@@ -56,10 +57,10 @@ uint16_t HeightField::getAt(float x, float y) {
     const float dx = fx - static_cast<float>(ix0);
     const float dz = fy - static_cast<float>(iz0);
 
-    ix0 = std::clamp(ix0, 0, _w - 1);
-    iz0 = std::clamp(iz0, 0, _h - 1);
-    ix1 = std::clamp(ix1, 0, _w - 1);
-    iz1 = std::clamp(iz1, 0, _h - 1);
+    ix0 = cc::mathutils::clamp(ix0, 0, _w - 1);
+    iz0 = cc::mathutils::clamp(iz0, 0, _h - 1);
+    ix1 = cc::mathutils::clamp(ix1, 0, _w - 1);
+    iz1 = cc::mathutils::clamp(iz1, 0, _h - 1);
 
     uint16_t       a = get(ix0, iz0);
     const uint16_t b = get(ix1, iz0);

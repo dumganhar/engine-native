@@ -48,7 +48,8 @@ public:
 
     template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<Asset, T>::value>>
     T *get(const std::string &uuid) {
-        if (auto iter = _resources.find(uuid); iter != _resources.end()) {
+        auto iter = _resources.find(uuid);
+        if (iter != _resources.end()) {
             return static_cast<T *>(iter->second.get());
         }
 

@@ -63,7 +63,7 @@ void deserializeArray(const rapidjson::Value &valArray, std::vector<bool> &cValA
     }
 }
 
-template <typename T, typename Enabled = std::enable_if_t<!std::is_same_v<std::string, T> && !std::is_same_v<bool, T>, T>>
+template <typename T, typename Enabled = std::enable_if_t<!std::is_same<std::string, T>::value && !std::is_same<bool, T>::value, T>>
 void deserializeArray(const rapidjson::Value &valArray, std::vector<T> &cValArray) {
     DeserializeArrayElementCallback<T> cb{[](const rapidjson::Value &val, T &cVal) {
         cVal = val.Get<T>();

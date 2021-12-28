@@ -83,7 +83,8 @@ const IGeometricInfo &RenderingSubMesh::getGeometricInfo() {
     auto index = static_cast<index_t>(_subMeshIdx.value());
 
     const auto &positionsVar = _mesh->readAttribute(index, gfx::ATTR_NAME_POSITION);
-    if (const auto *pPositions = cc::get_if<Float32Array>(&positionsVar); pPositions != nullptr) {
+    const auto *pPositions   = cc::get_if<Float32Array>(&positionsVar);
+    if (pPositions != nullptr) {
         const auto &positions  = *pPositions;
         const auto &indicesVar = _mesh->readIndices(index);
 
@@ -189,8 +190,8 @@ void RenderingSubMesh::enableVertexIdChannel(gfx::Device *device) {
     _iaInfo.vertexBuffers = _vertexBuffers.get();
 
     _vertexIdChannel = VertexIdChannel{
-        .stream = streamIndex,
-        .index  = attributeIndex,
+        streamIndex,
+        attributeIndex,
     };
 }
 

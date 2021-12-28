@@ -291,7 +291,10 @@ float narrowphase(float *minDis, const std::vector<float> &vb, const std::vector
 //TODO(PatriceJiang)
 float raySubMesh(const Ray & /*ray*/, const RenderingSubMesh & /*submesh*/, IRaySubMeshOptions * /*options*/) {
     Triangle           tri;
-    IRaySubMeshOptions deOpt  = {.mode = ERaycastMode::ANY, .distance = FLT_MAX, .doubleSided = false};
+    IRaySubMeshOptions deOpt;
+    deOpt.mode = ERaycastMode::ANY;
+    deOpt.distance = FLT_MAX;
+    deOpt.doubleSided = false;
     float              minDis = 0.F;
 
     minDis = 0;

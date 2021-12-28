@@ -521,7 +521,8 @@ static std::unordered_map<String, uint32_t> phases; //cjh how to clear this glob
 static uint32_t                             phaseNum = 0;
 
 uint getPhaseID(const String &phaseName) {
-    if (auto iter = phases.find(phaseName); iter == phases.end()) {
+    auto iter = phases.find(phaseName);
+    if (iter == phases.end()) {
         phases.emplace(phaseName, 1 << phaseNum);
         ++phaseNum;
     }

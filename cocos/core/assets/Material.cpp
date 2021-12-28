@@ -273,8 +273,8 @@ void Material::update(bool keepProps /* = true*/) {
                     props = _props[pass->getPropertyIndex()];
                 }
 
-                for (const auto &[key, value] : props) {
-                    uploadProperty(pass, key, value);
+                for (const auto &prop : props) {
+                    uploadProperty(pass, prop.first, prop.second);
                 }
             };
 
@@ -420,9 +420,9 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
 void Material::initDefault(const cc::optional<std::string> &uuid) {
     Super::initDefault(uuid);
     MacroRecord   defines{{"USE_COLOR", true}};
-    IMaterialInfo info{
-        .effectName = std::string{"unlit"},
-        .defines    = IMaterialInfo::DefinesType{defines}};
+    IMaterialInfo info;
+    info.effectName = std::string{"unlit"};
+    info.defines    = IMaterialInfo::DefinesType { defines };
     initialize(info);
     setProperty("mainColor", Color{0xFF, 0x00, 0xFF, 0xFF});
 }

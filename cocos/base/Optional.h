@@ -50,7 +50,7 @@ template <typename T>
 using optional = boost::optional<T>;
 using nullopt_t = boost::none_t;
 
-inline const nullopt_t nullopt((boost::none_t::init_tag()));
+const nullopt_t nullopt((boost::none_t::init_tag()));
 
 }; // namespace cc
 

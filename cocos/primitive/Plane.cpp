@@ -85,13 +85,12 @@ IGeometry plane(cc::optional<IPlaneOptions> options) {
         }
     }
 
-    IGeometry result = {
-        .positions      = positions,
-        .boundingRadius = boundingRadius,
-        .minPos         = minPos,
-        .maxPos         = maxPos,
-        .indices        = indices,
-    };
+    IGeometry result;
+    result.positions      = positions;
+    result.boundingRadius = boundingRadius;
+    result.minPos         = minPos;
+    result.maxPos         = maxPos;
+    result.indices        = indices;
 
     if (options->includeNormal) {
         const uint32_t     nVertex = (vSegments + 1) * (uSegments + 1);

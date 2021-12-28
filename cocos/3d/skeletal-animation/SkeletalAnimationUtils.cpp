@@ -136,9 +136,15 @@ JointTexturePool::JointTexturePool(gfx::Device *device) {
     _formatSize        = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(format)].size;
     _pixelsPerJoint    = 48.F / static_cast<float>(_formatSize);
     _pool              = new TextureBufferPool(device);
-    _pool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpType{roundUpTextureSize}});
+    ITextureBufferPoolInfo poolInfo;
+    poolInfo.format    = format;
+    poolInfo.roundUpFn = roundUpType{roundUpTextureSize};
+    _pool->initialize(poolInfo);
     _customPool = new TextureBufferPool(device);
-    _customPool->initialize(ITextureBufferPoolInfo{.format = format, .roundUpFn = roundUpType{roundUpTextureSize}});
+    ITextureBufferPoolInfo customPoolInfo;
+    customPoolInfo.format    = format;
+    customPoolInfo.roundUpFn = roundUpType{roundUpTextureSize};
+    _customPool->initialize(customPoolInfo);
 }
 
 void JointTexturePool::clear() {
@@ -180,16 +186,16 @@ cc::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skelet
             handle = _pool->alloc(bufSize * Float32Array::BYTES_PER_ELEMENT);
             return texture;
         }
-        texture = IJointTextureHandle{
-            .pixelOffset      = handle.start / _formatSize,
-            .refCount         = 1,
-            .clipHash         = 0,
-            .skeletonHash     = skeleton->getHash(),
-            .readyToBeDeleted = false,
-            .handle           = handle,
-        };
-        textureBuffer = Float32Array(bufSize);
-        buildTexture  = true;
+        IJointTextureHandle textureHandle;
+        textureHandle.pixelOffset      = handle.start / _formatSize;
+        textureHandle.refCount         = 1;
+        textureHandle.clipHash         = 0;
+        textureHandle.skeletonHash     = skeleton->getHash();
+        textureHandle.readyToBeDeleted = false;
+        textureHandle.handle           = handle;
+        texture                        = textureHandle;
+        textureBuffer                  = Float32Array(bufSize);
+        buildTexture                   = true;
     } else {
         texture->refCount++;
     }
@@ -461,10 +467,10 @@ IAnimInfo JointAnimationInfo::getData(const std::string &nodeID) {
 
     Float32Array data;
     buffer->update(data.buffer()->getData());
-    IAnimInfo info{
-        .buffer = buffer,
-        .data   = data,
-        .dirty  = false};
+    IAnimInfo info;
+    info.buffer   = buffer;
+    info.data     = data;
+    info.dirty    = false;
     _pool[nodeID] = info;
 
     return info;

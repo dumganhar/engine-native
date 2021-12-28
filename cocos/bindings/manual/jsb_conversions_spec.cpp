@@ -42,13 +42,31 @@
 
 ///////////////////////// utils /////////////////////////
 
-template <class... Ts>
-struct overloaded : Ts... { using Ts::operator()...; }; // NOLINT
-template <class... Ts>
-overloaded(Ts...) -> overloaded<Ts...>;
+template <class... Fs>
+struct overloaded;
+
+template <class F0, class... Fs>
+struct overloaded<F0, Fs...> : F0, overloaded<Fs...> {
+    overloaded(F0 f0, Fs... rest) : F0(f0), overloaded<Fs...>(rest...) {}
+
+    using F0::                  operator();
+    using overloaded<Fs...>::operator();
+};
+
+template <class F0>
+struct overloaded<F0> : F0 {
+    overloaded(F0 f0) : F0(f0) {}
+
+    using F0::operator();
+};
+
+template <class... Fs>
+auto make_overloaded(Fs... fs) {
+    return overloaded<Fs...>(fs...);
+}
 
 template <typename A, typename T, typename F>
-bool set_member_field(se::Object *obj, T *to, const std::string_view &property, F f, se::Value &tmp) { // NOLINT
+bool set_member_field(se::Object *obj, T *to, const std::string &property, F f, se::Value &tmp) { // NOLINT
     bool ok = obj->getProperty(property.data(), &tmp, true);
     SE_PRECONDITION2(ok, false, "Property '%s' is not set", property.data());
     if constexpr (std::is_member_function_pointer<F>::value) {
@@ -63,7 +81,7 @@ bool set_member_field(se::Object *obj, T *to, const std::string_view &property, 
         SE_PRECONDITION2(ok, false, "Convert property '%s' failed", property.data());
         return true;
     }
-    static_assert(std::is_member_pointer_v<F>, "only member pointer allowed!");
+    static_assert(std::is_member_pointer<F>::value, "only member pointer allowed!");
 
     return false;
 }
@@ -1115,10 +1133,11 @@ bool sevalue_to_native(const se::Value &from, cc::TypedArray *to, se::Object * /
         }
     }
 
-    cc::visit(overloaded{[&](auto &typedArray) {
-                             typedArray.setJSTypedArray(from.toObject());
-                         },
-                         [](cc::monostate /*unused*/) {}},
+    cc::visit(make_overloaded(
+                  [&](auto &typedArray) {
+                      typedArray.setJSTypedArray(from.toObject());
+                  },
+                  [](cc::monostate /*unused*/) {}),
               *to);
     return true;
 }

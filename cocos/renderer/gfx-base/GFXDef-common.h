@@ -1072,6 +1072,25 @@ struct ShaderStage {
 using ShaderStageList = vector<ShaderStage>;
 
 struct Attribute {
+    Attribute() = default;
+
+    Attribute(const String &name, Format format, bool isNormalized = false, uint stream = 0, bool isInstanced = false, uint location = 0) {
+        this->name         = name;
+        this->format       = format;
+        this->isNormalized = isNormalized;
+        this->stream       = stream;
+        this->isInstanced  = isInstanced;
+        this->location     = location;
+    }
+
+    Attribute(const char *name, Format format, bool isNormalized = false, uint stream = 0, bool isInstanced = false, uint location = 0) {
+        this->name         = name;
+        this->format       = format;
+        this->isNormalized = isNormalized;
+        this->stream       = stream;
+        this->isInstanced  = isInstanced;
+        this->location     = location;
+    }
     String   name;
     Format   format{Format::UNKNOWN};
     bool     isNormalized{false};
@@ -1124,6 +1143,24 @@ struct InputAssemblerInfo {
 };
 
 struct ColorAttachment {
+    ColorAttachment() = default;
+
+    ColorAttachment(Format format, std::vector<AccessType> &beginAccesses, std::vector<AccessType> &endAccesses) {
+        this->format        = format;
+        this->beginAccesses = beginAccesses;
+        this->endAccesses   = endAccesses;
+    }
+
+    ColorAttachment(Format format, SampleCount sampleCount, LoadOp loadOp, StoreOp storeOp, std::vector<AccessType> &beginAccesses, std::vector<AccessType> &endAccesses, bool isGeneralLayout = false) {
+        this->format          = format;
+        this->sampleCount     = sampleCount;
+        this->loadOp          = loadOp;
+        this->storeOp         = storeOp;
+        this->beginAccesses   = beginAccesses;
+        this->endAccesses     = endAccesses;
+        this->isGeneralLayout = isGeneralLayout;
+    }
+
     Format                  format{Format::UNKNOWN};
     SampleCount             sampleCount{SampleCount::ONE};
     LoadOp                  loadOp{LoadOp::CLEAR};
@@ -1136,6 +1173,15 @@ struct ColorAttachment {
 using ColorAttachmentList = vector<ColorAttachment>;
 
 struct DepthStencilAttachment {
+    DepthStencilAttachment() = default;
+
+    DepthStencilAttachment(Format format) {
+        this->format = format;
+    }
+
+    DepthStencilAttachment(Format format, SampleCount sampleCount, LoadOp loadOp, StoreOp storeOp, std::vector<AccessType> &beginAccesses, std::vector<AccessType> &endAccesses, bool isGeneralLayout = false) {
+        this->format = format;
+    }
     Format                  format{Format::UNKNOWN};
     SampleCount             sampleCount{SampleCount::ONE};
     LoadOp                  depthLoadOp{LoadOp::CLEAR};
@@ -1171,6 +1217,13 @@ struct SubpassDependency {
 using SubpassDependencyList = vector<SubpassDependency>;
 
 struct RenderPassInfo {
+    RenderPassInfo() = default;
+
+    RenderPassInfo(ColorAttachmentList &colorAttachmentList, DepthStencilAttachment &depthStencilAttachment) {
+        this->colorAttachments       = colorAttachmentList;
+        this->depthStencilAttachment = depthStencilAttachment;
+    }
+
     ColorAttachmentList    colorAttachments;
     DepthStencilAttachment depthStencilAttachment;
     SubpassInfoList        subpasses;

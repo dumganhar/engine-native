@@ -76,10 +76,10 @@ void TextureCube::setMipmaps(const std::vector<ITextureCubeMipmap> &value) {
     if (!_mipmaps.empty()) {
         ImageAsset *imageAsset = _mipmaps[0].front;
         reset({
-            .width       = imageAsset->getWidth(),
-            .height      = imageAsset->getHeight(),
-            .format      = imageAsset->getFormat(),
-            .mipmapLevel = static_cast<uint32_t>(_mipmaps.size()),
+            imageAsset->getWidth(),
+            imageAsset->getHeight(),
+            imageAsset->getFormat(),
+            static_cast<uint32_t>(_mipmaps.size()),
         });
 
         for (size_t level = 0, len = _mipmaps.size(); level < len; ++level) {
@@ -91,9 +91,10 @@ void TextureCube::setMipmaps(const std::vector<ITextureCubeMipmap> &value) {
 
     } else {
         reset({
-            .width       = 0,
-            .height      = 0,
-            .mipmapLevel = static_cast<uint32_t>(_mipmaps.size()),
+            0,
+            0,
+            cc::nullopt,
+            static_cast<uint32_t>(_mipmaps.size()),
         });
     }
 }
@@ -176,14 +177,14 @@ void TextureCube::deserialize(const cc::any &serializedData, const cc::any &hand
     _mipmaps.resize(data->mipmaps.size());
     for (size_t i = 0; i < data->mipmaps.size(); ++i) {
         // Prevent resource load failed
-        _mipmaps[i] = {
-            .front  = new ImageAsset(),
-            .back   = new ImageAsset(),
-            .left   = new ImageAsset(),
-            .right  = new ImageAsset(),
-            .top    = new ImageAsset(),
-            .bottom = new ImageAsset(),
-        };
+        ITextureCubeMipmap mipmap;
+        mipmap.front  = new ImageAsset(),
+        mipmap.back   = new ImageAsset(),
+        mipmap.left   = new ImageAsset(),
+        mipmap.right  = new ImageAsset(),
+        mipmap.top    = new ImageAsset(),
+        mipmap.bottom = new ImageAsset();
+        _mipmaps[i]   = mipmap;
         //        auto* mipmap = data->mipmaps[i];
 
         //cjh TODO: what's handle.result??        const imageAssetClassId = js._getClassId(ImageAsset);

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include "cocos/math/Vec3.h"
+#include "cocos/math/Utils.h"
 
 namespace cc {
 namespace geometry {
@@ -25,9 +26,9 @@ Vec3 *ptPointPlane(Vec3 *out, const Vec3 &point, const Plane &plane) {
 Vec3 *ptPointAabb(Vec3 *out, const Vec3 &point, const AABB &aabb) {
     auto min = aabb.getCenter() - aabb.getHalfExtents();
     auto max = aabb.getCenter() + aabb.getHalfExtents();
-    *out     = {std::clamp(point.x, min.x, max.x),
-            std::clamp(point.y, min.y, max.y),
-            std::clamp(point.z, min.z, max.z)};
+    *out     = {cc::mathutils::clamp(point.x, min.x, max.x),
+            cc::mathutils::clamp(point.y, min.y, max.y),
+            cc::mathutils::clamp(point.z, min.z, max.z)};
     return out;
 }
 
@@ -51,7 +52,7 @@ Vec3 *ptPointObb(Vec3 *out, const Vec3 &point, const OBB &obb) {
         // along the axis of d from the obb center
         dist = Vec3::dot(d, u[i]);
         // if distance farther than the obb extents, clamp to the obb
-        dist = std::clamp(dist, -e[i], e[i]);
+        dist = cc::mathutils::clamp(dist, -e[i], e[i]);
 
         // Step that distance along the axis to get world coordinate
         *out += (dist * u[i]);
@@ -70,7 +71,7 @@ Vec3 *ptPointLine(Vec3 *out, const Vec3 &point, const Vec3 &linePointA, const Ve
         // Calculate the projection of the point onto the line extending through the segment.
         auto ap = point - linePointA;
         auto t  = Vec3::dot(ap, dir) / dirSquared;
-        *out    = linePointA + std::clamp(t, 0.0F, 1.0F) * dir;
+        *out    = linePointA + cc::mathutils::clamp(t, 0.0F, 1.0F) * dir;
     }
     return out;
 }

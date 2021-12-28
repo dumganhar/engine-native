@@ -9,11 +9,11 @@
 namespace cc {
 namespace {
 gfx::AttributeList defAttrs = {
-    gfx::Attribute{.name = gfx::ATTR_NAME_POSITION, .format = gfx::Format::RGB32F},
-    gfx::Attribute{.name = gfx::ATTR_NAME_NORMAL, .format = gfx::Format::RGB32F},
-    gfx::Attribute{.name = gfx::ATTR_NAME_TEX_COORD, .format = gfx::Format::RG32F},
-    gfx::Attribute{.name = gfx::ATTR_NAME_TANGENT, .format = gfx::Format::RGBA32F},
-    gfx::Attribute{.name = gfx::ATTR_NAME_COLOR, .format = gfx::Format::RGBA32F},
+    gfx::Attribute{gfx::ATTR_NAME_POSITION, gfx::Format::RGB32F},
+    gfx::Attribute{gfx::ATTR_NAME_NORMAL, gfx::Format::RGB32F},
+    gfx::Attribute{gfx::ATTR_NAME_TEX_COORD, gfx::Format::RG32F},
+    gfx::Attribute{gfx::ATTR_NAME_TANGENT, gfx::Format::RGBA32F},
+    gfx::Attribute{gfx::ATTR_NAME_COLOR, gfx::Format::RGBA32F},
 };
 
 // TODO(xwx): temporary usage and need to adjustment future
@@ -129,7 +129,7 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
         attributes.emplace_back(*attr);
         const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attr->format)];
         vertCount        = std::max(vertCount, static_cast<uint32_t>(std::floor(positions.size() / info.count)));
-        channels.emplace_back(Channel{.offset = stride, .data = positions, .attribute = *attr});
+        channels.emplace_back(Channel{stride, positions, *attr});
         stride += info.size;
     }
 
@@ -151,7 +151,7 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
         attributes.emplace_back(*attr);
         const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attr->format)];
         vertCount        = std::max(vertCount, static_cast<uint32_t>(std::floor(geometry.normals->size() / info.count)));
-        channels.emplace_back(Channel{.offset = stride, .data = geometry.normals.value(), .attribute = *attr});
+        channels.emplace_back(Channel{stride, geometry.normals.value(), *attr});
         stride += info.size;
     }
 
@@ -173,7 +173,7 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
         attributes.emplace_back(*attr);
         const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attr->format)];
         vertCount        = std::max(vertCount, static_cast<uint32_t>(std::floor(geometry.uvs->size() / info.count)));
-        channels.emplace_back(Channel{.offset = stride, .data = geometry.uvs.value(), .attribute = *attr});
+        channels.emplace_back(Channel{stride, geometry.uvs.value(), *attr});
         stride += info.size;
     }
 
@@ -195,7 +195,7 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
         attributes.emplace_back(*attr);
         const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attr->format)];
         vertCount        = std::max(vertCount, static_cast<uint32_t>(std::floor(geometry.tangents->size() / info.count)));
-        channels.emplace_back(Channel{.offset = stride, .data = geometry.tangents.value(), .attribute = *attr});
+        channels.emplace_back(Channel{stride, geometry.tangents.value(), *attr});
         stride += info.size;
     }
 
@@ -217,7 +217,7 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
         attributes.emplace_back(*attr);
         const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attr->format)];
         vertCount        = std::max(vertCount, static_cast<uint32_t>(std::floor(geometry.colors->size() / info.count)));
-        channels.emplace_back(Channel{.offset = stride, .data = geometry.colors.value(), .attribute = *attr});
+        channels.emplace_back(Channel{stride, geometry.colors.value(), *attr});
         stride += info.size;
     }
 
@@ -226,7 +226,7 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
             const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attr->format)];
             attributes.emplace_back(ca.attr);
             vertCount = std::max(vertCount, static_cast<uint32_t>(std::floor(ca.values.size() / info.count)));
-            channels.emplace_back(Channel{.offset = stride, .data = ca.values, .attribute = ca.attr});
+            channels.emplace_back(Channel{stride, ca.values, ca.attr});
             stride += info.size;
         }
     }
@@ -241,13 +241,16 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
         writeBuffer(vertexBufferView, channel.data, channel.attribute.format, channel.offset, stride);
     }
     bufferBlob.setNextAlignment(0);
-    Mesh::IVertexBundle vertexBundle{
-        .view = Mesh::IBufferView{
-            .offset = bufferBlob.getLength(),
-            .length = static_cast<uint32_t>(vertexBuffer->byteLength()),
-            .count  = vertCount,
-            .stride = stride},
-        .attributes = attributes};
+    Mesh::IVertexBundle vertexBundle;
+    Mesh::IBufferView   buffferView;
+
+    buffferView.offset      = bufferBlob.getLength();
+    buffferView.length      = static_cast<uint32_t>(vertexBuffer->byteLength());
+    buffferView.count       = vertCount;
+    buffferView.stride      = stride;
+    vertexBundle.attributes = attributes;
+    vertexBundle.view       = buffferView;
+
     bufferBlob.addBuffer(vertexBuffer);
 
     // Fill index buffer.
@@ -263,17 +266,18 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
     }
 
     // Create primitive.
-    Mesh::ISubMesh primitive{
-        .vertexBundelIndices = {0},
-        .primitiveMode       = geometry.primitiveMode.has_value() ? geometry.primitiveMode.value() : gfx::PrimitiveMode::TRIANGLE_LIST};
+    Mesh::ISubMesh primitive;
+    primitive.vertexBundelIndices = {0};
+    primitive.primitiveMode       = geometry.primitiveMode.has_value() ? geometry.primitiveMode.value() : gfx::PrimitiveMode::TRIANGLE_LIST;
 
     if (indexBuffer) {
         bufferBlob.setNextAlignment(idxStride);
-        primitive.indexView = Mesh::IBufferView{
-            .offset = bufferBlob.getLength(),
-            .length = indexBuffer->byteLength(),
-            .count  = idxCount,
-            .stride = idxStride};
+        Mesh::IBufferView bufferView;
+        bufferView.offset   = bufferBlob.getLength();
+        bufferView.length   = indexBuffer->byteLength();
+        bufferView.count    = idxCount;
+        bufferView.stride   = idxStride;
+        primitive.indexView = std::move(bufferView);
         bufferBlob.addBuffer(indexBuffer);
     }
 
@@ -294,9 +298,9 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
     }
 
     // Create mesh struct
-    Mesh::IStruct meshStruct{
-        .vertexBundles = {vertexBundle},
-        .primitives    = {primitive}};
+    Mesh::IStruct meshStruct;
+    meshStruct.vertexBundles = {vertexBundle};
+    meshStruct.primitives    = {primitive};
 
     if (minPosition.has_value()) {
         meshStruct.minPosition = minPosition.value();
@@ -311,8 +315,8 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
     return createInfo;
 }
 
-Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options/* = {}*/) {
-    auto* out = new Mesh();
+Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options /* = {}*/) {
+    auto *out = new Mesh();
     out->reset(createMeshInfo(geometry, options));
     return out;
 }

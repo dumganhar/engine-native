@@ -106,7 +106,11 @@ std::vector<IMacroInfo> prepareDefines(const MacroRecord &records, const std::ve
         // TODO(PatriceJiang): v === '0' can be bool ?
 
         bool isDefault = it == records.end() || (cc::holds_alternative<std::string>(it->second) && cc::get<std::string>(it->second) == "0");
-        macros.emplace_back(IMacroInfo{.name = name, .value = value, .isDefault = isDefault});
+        macros.emplace_back();
+        auto &info     = macros.back();
+        info.name      = name;
+        info.value     = value;
+        info.isDefault = isDefault;
     }
     return macros;
 }
@@ -381,43 +385,47 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
         tmplInfo.blockSizes          = {};
         for (const auto &block : tmpl.blocks) {
             tmplInfo.blockSizes.emplace_back(getSize(block));
-            tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
-                .binding        = static_cast<uint>(block.binding),
-                .descriptorType = gfx::DescriptorType::UNIFORM_BUFFER,
-                .count          = 1,
-                .stageFlags     = block.stageFlags});
+            tmplInfo.bindings.emplace_back();
+            auto &bindingsInfo          = tmplInfo.bindings.back();
+            bindingsInfo.binding        = static_cast<uint>(block.binding);
+            bindingsInfo.descriptorType = gfx::DescriptorType::UNIFORM_BUFFER;
+            bindingsInfo.count          = 1;
+            bindingsInfo.stageFlags     = block.stageFlags;
             std::vector<gfx::Uniform> uniforms;
             {
                 // construct uniforms
-                uniforms.resize(block.members.size());
+                uniforms.reserve(block.members.size());
                 for (int i = 0; i < block.members.size(); i++) {
-                    uniforms[i] = gfx::Uniform{
-                        .name  = block.members[i].name,
-                        .type  = block.members[i].type,
-                        .count = block.members[i].count,
-                    };
+                    uniforms.emplace_back();
+                    auto &info = uniforms.back();
+                    info.name  = block.members[i].name;
+                    info.type  = block.members[i].type;
+                    info.count = block.members[i].count;
                 }
             }
-            tmplInfo.shaderInfo.blocks.emplace_back(gfx::UniformBlock{
-                .set     = static_cast<uint>(pipeline::SetIndex::MATERIAL),
-                .binding = static_cast<uint>(block.binding),
-                .name    = block.name,
-                .members = uniforms,
-                .count   = 1}); // effect compiler guarantees block count = 1
+            tmplInfo.shaderInfo.blocks.emplace_back();
+            auto &blocksInfo   = tmplInfo.shaderInfo.blocks.back();
+            blocksInfo.set     = static_cast<uint>(pipeline::SetIndex::MATERIAL);
+            blocksInfo.binding = static_cast<uint>(block.binding);
+            blocksInfo.name    = block.name;
+            blocksInfo.members = uniforms;
+            blocksInfo.count   = 1; // effect compiler guarantees block count = 1
         }
         for (const auto &samplerTexture : tmpl.samplerTextures) {
-            tmplInfo.bindings.emplace_back(gfx::DescriptorSetLayoutBinding{
-                .binding        = static_cast<uint>(samplerTexture.binding),
-                .descriptorType = gfx::DescriptorType::SAMPLER_TEXTURE,
-                .count          = samplerTexture.count,
-                .stageFlags     = samplerTexture.stageFlags});
+            tmplInfo.bindings.emplace_back();
+            auto &descriptorLayoutBindingInfo          = tmplInfo.bindings.back();
+            descriptorLayoutBindingInfo.binding        = static_cast<uint>(samplerTexture.binding);
+            descriptorLayoutBindingInfo.descriptorType = gfx::DescriptorType::SAMPLER_TEXTURE;
+            descriptorLayoutBindingInfo.count          = samplerTexture.count;
+            descriptorLayoutBindingInfo.stageFlags     = samplerTexture.stageFlags;
 
-            tmplInfo.shaderInfo.samplerTextures.emplace_back(gfx::UniformSamplerTexture{
-                .set     = static_cast<uint>(pipeline::SetIndex::MATERIAL),
-                .binding = static_cast<uint>(samplerTexture.binding),
-                .name    = samplerTexture.name,
-                .type    = samplerTexture.type,
-                .count   = samplerTexture.count});
+            tmplInfo.shaderInfo.samplerTextures.emplace_back();
+            auto &samplerTextureInfo   = tmplInfo.shaderInfo.samplerTextures.back();
+            samplerTextureInfo.set     = static_cast<uint>(pipeline::SetIndex::MATERIAL);
+            samplerTextureInfo.binding = static_cast<uint>(samplerTexture.binding);
+            samplerTextureInfo.name    = samplerTexture.name;
+            samplerTextureInfo.type    = samplerTexture.type;
+            samplerTextureInfo.count   = samplerTexture.count;
         }
 
         for (const auto &sampler : tmpl.samplers) {
@@ -498,24 +506,27 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
 
         tmplInfo.gfxAttributes = {};
         for (auto &attr : tmpl.attributes) {
-            tmplInfo.gfxAttributes.emplace_back(gfx::Attribute{
-                .name         = attr.name,
-                .format       = attr.format,
-                .isNormalized = attr.isNormalized,
-                .stream       = 0,
-                .isInstanced  = attr.isInstanced,
-                .location     = attr.location});
+            tmplInfo.gfxAttributes.emplace_back();
+            auto &info        = tmplInfo.gfxAttributes.back();
+            info.name         = attr.name;
+            info.format       = attr.format;
+            info.isNormalized = attr.isNormalized;
+            info.stream       = 0;
+            info.isInstanced  = attr.isInstanced;
+            info.location     = attr.location;
         }
         insertBuiltinBindings(tmpl, tmplInfo, pipeline::localDescriptorSetLayout, "locals", nullptr);
 
-        tmplInfo.shaderInfo.stages.emplace_back(gfx::ShaderStage{
-            .stage  = gfx::ShaderStageFlagBit::VERTEX,
-            .source = ""});
-        tmplInfo.shaderInfo.stages.emplace_back(gfx::ShaderStage{
-            .stage  = gfx::ShaderStageFlagBit::FRAGMENT,
-            .source = ""});
-        tmplInfo.handleMap  = genHandles(tmpl);
-        tmplInfo.setLayouts = {};
+        tmplInfo.shaderInfo.stages.emplace_back();
+        auto &vertexShaderInfo  = tmplInfo.shaderInfo.stages.back();
+        vertexShaderInfo.stage  = gfx::ShaderStageFlagBit::VERTEX;
+        vertexShaderInfo.source = "";
+        tmplInfo.shaderInfo.stages.emplace_back();
+        auto &fragmentShaderInfo  = tmplInfo.shaderInfo.stages.back();
+        fragmentShaderInfo.stage  = gfx::ShaderStageFlagBit::FRAGMENT;
+        fragmentShaderInfo.source = "";
+        tmplInfo.handleMap        = genHandles(tmpl);
+        tmplInfo.setLayouts       = {};
 
         _templateInfos[tmpl.hash] = tmplInfo;
     }

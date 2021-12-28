@@ -87,6 +87,7 @@ public:
     inline gfx::Shader *                                                       getOcclusionQueryShader() const { return _occlusionQueryShader; }
 
     inline float getShadingScale() const { return _shadingScale; }
+    inline void  setShadingScale(float val) { _shadingScale = val; } // TODO(cjh): needs to emit event to JS or hack this method in JS.
 
     scene::Pass *getOcclusionQueryPass();
 
@@ -118,7 +119,7 @@ protected:
     scene::Skybox * _skybox{nullptr};
     scene::Shadows *_shadow{nullptr};
     scene::Octree * _octree{nullptr};
-    bool            _isHDR{false};
+    bool            _isHDR{true};
     float           _shadingScale{1.0F};
 
     std::unordered_map<const scene::Light *, gfx::Framebuffer *> _shadowFrameBufferMap;

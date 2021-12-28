@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -44,17 +44,6 @@ namespace cc {
 namespace scene {
 
 namespace {
-
-gfx::BufferInfo bufferInfo{
-    (gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST),
-    gfx::MemoryUsageBit::DEVICE,
-    0U,
-    0U,
-    gfx::BufferFlagBit::NONE};
-
-gfx::BufferViewInfo bufferViewInfo;
-
-gfx::DescriptorSetInfo dsInfo;
 
 std::string serializeBlendState(const gfx::BlendState &bs) {
     std::stringstream res;
@@ -234,7 +223,7 @@ void Pass::overridePipelineStates(const IPassInfo & /*original*/, const PassOver
 
 void Pass::update() {
     if (_descriptorSet == nullptr) {
-        //cjh        errorID(12006);
+        // cjh        errorID(12006);
         return;
     }
 
@@ -417,14 +406,14 @@ gfx::Shader *Pass::getShaderVariant(const std::vector<IMacroPatch> &patches) {
         return _shader;
     }
 
-    //cjh    if (EDITOR) {
-    //        for (let i = 0; i < patches.length; i++) {
-    //            if (!patches[i].name.startsWith('CC_')) {
-    //                console.warn('cannot patch non-builtin macros');
-    //                return null;
-    //            }
-    //        }
-    //    }
+    // cjh    if (EDITOR) {
+    //         for (let i = 0; i < patches.length; i++) {
+    //             if (!patches[i].name.startsWith('CC_')) {
+    //                 console.warn('cannot patch non-builtin macros');
+    //                 return null;
+    //             }
+    //         }
+    //     }
 
     auto *pipeline = _root->getPipeline();
     for (const auto &patch : patches) {
@@ -473,7 +462,7 @@ IPassInfoFull Pass::getPassInfoFull() const {
 }
 
 void Pass::setState(const gfx::BlendState &bs, const gfx::DepthStencilState &dss, const gfx::RasterizerState &rs, gfx::DescriptorSet *ds) {
-    //cjh how to control lifecycle?
+    // cjh how to control lifecycle?
     _blendState        = bs;
     _depthStencilState = dss;
     _rs                = rs;
@@ -491,7 +480,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     _passIndex     = info.passIndex;
     _propertyIndex = info.propertyIndex != CC_INVALID_INDEX ? info.propertyIndex : info.passIndex;
     _programName   = info.program;
-    _defines       = info.defines; //cjh c++ always does copy by assignment.  copyDefines ? ({ ...info.defines }) : info.defines;
+    _defines       = info.defines; // cjh c++ always does copy by assignment.  copyDefines ? ({ ...info.defines }) : info.defines;
     _shaderInfo    = programLib->getTemplate(info.program);
     if (info.properties.has_value()) {
         _properties = info.properties.value();
@@ -504,6 +493,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     }
 
     // init descriptor set
+    gfx::DescriptorSetInfo dsInfo;
     dsInfo.layout  = programLib->getDescriptorSetLayout(_device, info.program);
     _descriptorSet = _device->createDescriptorSet(dsInfo);
 
@@ -528,11 +518,17 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     // create gfx buffer resource
     uint32_t totalSize = !startOffsets.empty() ? (startOffsets[startOffsets.size() - 1] + lastSize) : 0;
     if (totalSize > 0) {
+        gfx::BufferInfo bufferInfo;
+        bufferInfo.usage    = gfx::BufferUsageBit::UNIFORM | gfx::BufferUsageBit::TRANSFER_DST;
+        bufferInfo.memUsage = gfx::MemoryUsageBit::DEVICE;
         // https://bugs.chromium.org/p/chromium/issues/detail?id=988988
         bufferInfo.size = static_cast<int32_t>(std::ceil(static_cast<float>(totalSize) / 16.F)) * 16;
         _rootBuffer     = device->createBuffer(bufferInfo);
         _rootBlock      = new ArrayBuffer(totalSize);
     }
+
+    gfx::BufferViewInfo bufferViewInfo;
+
     // create buffer views
     for (size_t i = 0, count = 0; i < blocks.size(); i++) {
         int32_t binding       = blocks[i].binding;
@@ -593,7 +589,7 @@ void Pass::initPassFromTarget(Pass *target, const gfx::DepthStencilState &dss, c
     _batchingScheme    = target->_batchingScheme;
     _primitive         = target->_primitive;
     _dynamicStates     = target->_dynamicStates;
-    _blendState        = bs; //cjh lifecycle?
+    _blendState        = bs; // cjh lifecycle?
     _depthStencilState = dss;
     _descriptorSet     = target->_descriptorSet;
     _rs                = *target->getRasterizerState();
@@ -601,7 +597,7 @@ void Pass::initPassFromTarget(Pass *target, const gfx::DepthStencilState &dss, c
     _propertyIndex     = target->_propertyIndex;
     _programName       = target->getProgram();
     _defines           = target->_defines;
-    _shaderInfo        = target->_shaderInfo; //cjh how to release?
+    _shaderInfo        = target->_shaderInfo; // cjh how to release?
     _properties        = target->_properties;
 
     _blocks   = target->_blocks;

@@ -275,7 +275,7 @@ public:
 private:
     // Hash Element used for "selectors with interval"
     struct HashTimerEntry {
-        std::vector<Timer *>      timers;
+        std::vector<Timer *> timers;
         void *               target;
         int                  timerIndex;
         Timer *              currentTimer;

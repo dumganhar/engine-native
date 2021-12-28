@@ -804,6 +804,23 @@ sevalue_to_native(const se::Value &from, T **to, se::Object * /*ctx*/) { // NOLI
 }
 
 template <typename T>
+typename std::enable_if_t<!std::is_pointer<T>::value && std::is_arithmetic<T>::value, bool>
+sevalue_to_native(const se::Value &from, T **to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    se::Object *data = from.toObject();
+    uint8_t *   tmp;
+    if (data->isArrayBuffer()) {
+        data->getArrayBufferData(&tmp, nullptr);
+    } else if (data->isTypedArray()) {
+        data->getTypedArrayData(&tmp, nullptr);
+    } else {
+        assert(false); // bad type
+        return false;
+    }
+    *to = reinterpret_cast<T *>(tmp);
+    return true;
+}
+
+template <typename T>
 typename std::enable_if_t<!std::is_pointer<T>::value && is_jsb_object_v<T>, bool>
 sevalue_to_native(const se::Value &from, T ***to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     if (from.isNullOrUndefined()) {
@@ -854,7 +871,7 @@ bool sevalue_to_native(const se::Value &from, std::vector<T, allocator> *to, se:
     return false;
 }
 
-///////////////////// TypedArray
+///////////////////// function
 
 template <typename R, typename... Args>
 inline bool sevalue_to_native(const se::Value &from, std::function<R(Args...)> *func, se::Object *self) { // NOLINT(readability-identifier-naming)

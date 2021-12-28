@@ -1,8 +1,8 @@
 /****************************************************************************
  Copyright (c) 2021 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos.com
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated engine source code (the "Software"), a limited,
  worldwide, royalty-free, non-assignable, revocable and non-exclusive license
@@ -10,10 +10,10 @@
  not use Cocos Creator software for developing other software or tools that's
  used for developing games. You are not granted to publish, distribute,
  sublicense, and/or sell copies of Cocos Creator.
- 
+
  The software or tools in this License Agreement are licensed, not sold.
  Xiamen Yaji Software Co., Ltd. reserves all rights not expressly granted to you.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -72,8 +72,8 @@ void Root::initialize(gfx::Swapchain *swapchain) {
     colorAttachment.format = swapchain->getColorTexture()->getFormat();
     renderPassInfo.colorAttachments.emplace_back(colorAttachment);
 
-    auto& depthStencilAttachment = renderPassInfo.depthStencilAttachment;
-    depthStencilAttachment.format = swapchain->getDepthStencilTexture()->getFormat();
+    auto &depthStencilAttachment          = renderPassInfo.depthStencilAttachment;
+    depthStencilAttachment.format         = swapchain->getDepthStencilTexture()->getFormat();
     depthStencilAttachment.depthStoreOp   = gfx::StoreOp::DISCARD;
     depthStencilAttachment.stencilStoreOp = gfx::StoreOp::DISCARD;
 
@@ -88,7 +88,7 @@ void Root::initialize(gfx::Swapchain *swapchain) {
     _curWindow = _mainWindow;
 
     // TODO(minggo):
-    //return Promise.resolve(builtinResMgr.initBuiltinRes(this._device));
+    // return Promise.resolve(builtinResMgr.initBuiltinRes(this._device));
 }
 
 void Root::destroy() {
@@ -193,7 +193,7 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
         scene->removeBatches();
     }
 
-    _eventProcessor->emit(EventTypesToJS::ROOT_BATCH2D_UPDATE, this); //cjh added for sync logic in ts.
+    _eventProcessor->emit(EventTypesToJS::ROOT_BATCH2D_UPDATE, this); // cjh added for sync logic in ts.
 
     // TODO(minggo):
     //    if (_batcher) {
@@ -210,7 +210,7 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
         _swapchains.clear();
         _swapchains.emplace_back(_swapchain);
         _device->acquire(_swapchains);
-        //cjh TODO:        const stamp = legacyCC.director.getTotalFrames();
+        // cjh TODO:        const stamp = legacyCC.director.getTotalFrames();
         uint32_t stamp = totalFrames;
 
         _eventProcessor->emit(EventTypesToJS::ROOT_BATCH2D_UPLOAD_BUFFERS, this);
@@ -232,7 +232,7 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
     }
 
     _eventProcessor->emit(EventTypesToJS::ROOT_BATCH2D_RESET, this);
-    //cjh TODO:    if (this._batcher) this._batcher.reset();
+    // cjh TODO:    if (this._batcher) this._batcher.reset();
 }
 
 scene::RenderWindow *Root::createWindow(scene::IRenderWindowInfo &info) {

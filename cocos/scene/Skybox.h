@@ -151,7 +151,7 @@ public:
     // @serializable
     bool _useIBL{false};
     // @serializable
-    bool _useHDR{false};
+    bool _useHDR{true};
 
     Skybox *_resource{nullptr};
 };

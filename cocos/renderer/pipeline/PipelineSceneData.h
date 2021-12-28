@@ -115,7 +115,7 @@ protected:
     scene::Skybox  *_skybox{nullptr};
     scene::Shadows *_shadow{nullptr};
     scene::Octree  *_octree{nullptr};
-    bool            _isHDR{false};
+    bool            _isHDR{true};
     float           _shadingScale{1.0F};
 
     std::unordered_map<const scene::Light *, gfx::Framebuffer *> _shadowFrameBufferMap;

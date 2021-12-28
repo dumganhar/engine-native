@@ -296,7 +296,7 @@ void Material::update(bool keepProps /* = true*/) {
 
 std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
     std::vector<SharedPtr<scene::Pass>> passes;
-    ITechniqueInfo                     *tech = nullptr;
+    ITechniqueInfo *                    tech = nullptr;
     if (_techIdx < _effectAsset->_techniques.size()) {
         tech = &_effectAsset->_techniques[_techIdx];
     }
@@ -307,7 +307,7 @@ std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
 
     size_t passNum = tech->passes.size();
     for (size_t k = 0; k < passNum; ++k) {
-        auto   &passInfo = tech->passes[k];
+        auto &  passInfo = tech->passes[k];
         index_t propIdx = passInfo.passIndex = static_cast<index_t>(k);
 
         if (propIdx >= _defines.size()) {
@@ -397,7 +397,7 @@ void Material::bindTexture(scene::Pass *pass, uint32_t handle, const MaterialPro
     if (const auto *pTexture = cc::get_if<gfx::Texture *>(&val)) {
         pass->bindTexture(binding, const_cast<gfx::Texture *>(*pTexture), index);
     } else if (const auto *pTextureBase = cc::get_if<TextureBase *>(&val)) {
-        auto         *textureBase = *pTextureBase;
+        auto *        textureBase = *pTextureBase;
         gfx::Texture *texture     = nullptr;
         if (textureBase != nullptr) {
             texture = textureBase->getGFXTexture();

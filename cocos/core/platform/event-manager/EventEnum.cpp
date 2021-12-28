@@ -51,4 +51,17 @@ const std::string SystemEventType::PARENT_CHANGED{"parent-changed"};
 const std::string SystemEventType::NODE_DESTROYED{"node-destroyed"};
 const std::string SystemEventType::LAYER_CHANGED{"layer-changed"};
 const std::string SystemEventType::SIBLING_ORDER_CHANGED{"sibling-order-changed"};
+
+const std::string InputEventType::TOUCH_START{"touch-start"};
+const std::string InputEventType::TOUCH_MOVE{"touch-move"};
+const std::string InputEventType::TOUCH_END{"touch-end"};
+const std::string InputEventType::TOUCH_CANCEL{"touch-cancel"};
+const std::string InputEventType::MOUSE_DOWN{"mouse-down"};
+const std::string InputEventType::MOUSE_MOVE{"mouse-move"};
+const std::string InputEventType::MOUSE_UP{"mouse-up"};
+const std::string InputEventType::MOUSE_WHEEL{"mouse-wheel"};
+const std::string InputEventType::KEY_DOWN{"keydown"};
+const std::string InputEventType::KEY_PRESSING{"key-pressing"};
+const std::string InputEventType::KEY_UP{"keyup"};
+const std::string InputEventType::DEVICEMOTION{"devicemotion"};
 } // namespace cc

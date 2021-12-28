@@ -161,7 +161,7 @@ void insertBuiltinBindings(const IProgramInfo &tmpl, ITemplateInfo &tmplInfo, co
         const auto &info    = infoIt->second;
         const auto  binding = std::find_if(source.bindings.begin(), source.bindings.end(), [&info](const auto &bd) {
             return bd.binding == info.binding;
-         });
+        });
         if (binding == source.bindings.end() || !(binding->descriptorType & gfx::DESCRIPTOR_SAMPLER_TYPE)) {
             CC_LOG_WARNING("builtin samplerTexture '%s' not available !", s.name.c_str());
             continue;
@@ -227,8 +227,8 @@ bool dependencyCheck(const std::vector<std::string> &dependencies, const MacroRe
 
 std::vector<gfx::Attribute> getActiveAttributes(const IProgramInfo &tmpl, const ITemplateInfo &tmplInfo, const MacroRecord &defines) {
     std::vector<gfx::Attribute> out{};
-    const auto                 &attributes    = tmpl.attributes;
-    const auto                 &gfxAttributes = tmplInfo.gfxAttributes;
+    const auto &                attributes    = tmpl.attributes;
+    const auto &                gfxAttributes = tmplInfo.gfxAttributes;
     for (auto i = 0; i < attributes.size(); i++) {
         if (!dependencyCheck(attributes[i].defines, defines)) {
             continue;
@@ -678,7 +678,7 @@ gfx::Shader *ProgramLib::getGFXShader(gfx::Device *device, const std::string &na
     auto prefix = pipeline->getConstantMacros() + tmpl.constantMacros + ss.str();
 
     const IShaderSource *src                 = &tmpl.glsl3;
-    const auto          *deviceShaderVersion = getDeviceShaderVersion(device);
+    const auto *         deviceShaderVersion = getDeviceShaderVersion(device);
     if (deviceShaderVersion) {
         src = tmpl.getSource(deviceShaderVersion);
     } else {

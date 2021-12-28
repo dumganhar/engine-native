@@ -46,7 +46,7 @@ void UITransform::onEnable() {}
 void UITransform::onDisable() {}
 void UITransform::onDestroy() {}
 
-bool UITransform::isHit(const Vec2 &point, event::EventListener *listener) const { return false; } //cjh TODO:
+bool UITransform::isHit(const Vec2 &point) const { return false; } //cjh TODO:
 
 Vec3 UITransform::convertToNodeSpaceAR(const Vec3 &worldPoint) const { return Vec3::ZERO; }
 

@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "3d/assets/MorphRendering.h"
 #include "3d/assets/Types.h"
 #include "cocos/base/Optional.h"
 #include "core/TypedArray.h"
@@ -38,7 +39,6 @@ namespace cc {
 
 class Skeleton;
 class RenderingSubMesh;
-class MorphRendering;
 
 /**
  * @en Mesh asset

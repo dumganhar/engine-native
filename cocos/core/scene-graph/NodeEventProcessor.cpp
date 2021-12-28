@@ -47,7 +47,7 @@ bool touchStartHandler(cc::event::EventListener *listener, cc::event::Touch *tou
 
     pos = touch->getUILocation();
 
-    if (node->getUIProps()->getUITransformComp()->isHit(pos, listener)) {
+    if (node->getUIProps()->getUITransformComp()->isHit(pos)) {
         touchEvent->setEventName(cc::NodeEventType::TOUCH_START);
         touchEvent->setTouch(touch);
         touchEvent->setUseBubbles(true);
@@ -80,7 +80,7 @@ void touchEndHandler(cc::event::EventListener *listener, cc::event::Touch *touch
 
     pos = touch->getUILocation();
 
-    if (node->getUIProps()->getUITransformComp()->isHit(pos, listener)) {
+    if (node->getUIProps()->getUITransformComp()->isHit(pos)) {
         event->setEventName(cc::NodeEventType::TOUCH_END);
     } else {
         event->setEventName(cc::NodeEventType::TOUCH_CANCEL);
@@ -112,7 +112,7 @@ void mouseDownHandler(cc::event::EventListener *listener, cc::event::EventMouse 
 
     pos = mouseEvent->getUILocation();
 
-    if (node->getUIProps()->getUITransformComp()->isHit(pos, listener)) {
+    if (node->getUIProps()->getUITransformComp()->isHit(pos)) {
         mouseEvent->setEventName(cc::NodeEventType::MOUSE_DOWN);
         mouseEvent->setUseBubbles(true);
         node->dispatchEvent(mouseEvent);
@@ -127,7 +127,7 @@ void mouseMoveHandler(cc::event::EventListener *listener, cc::event::EventMouse 
 
     pos = mouseEvent->getUILocation();
 
-    if (node->getUIProps()->getUITransformComp()->isHit(pos, listener)) {
+    if (node->getUIProps()->getUITransformComp()->isHit(pos)) {
         if (!listener->_previousIn) {
             // Fix issue when hover node switched, previous hovered node won't get MOUSE_LEAVE notification
             if (currentHovered && currentHovered->getEventProcessor()->getMouseListener()) {
@@ -166,7 +166,7 @@ void mouseUpHandler(cc::event::EventListener *listener, cc::event::EventMouse *m
 
     pos = mouseEvent->getUILocation();
 
-    if (node->getUIProps()->getUITransformComp()->isHit(pos, listener)) {
+    if (node->getUIProps()->getUITransformComp()->isHit(pos)) {
         mouseEvent->setEventName(cc::NodeEventType::MOUSE_UP);
         mouseEvent->setUseBubbles(true);
         node->dispatchEvent(mouseEvent);
@@ -182,7 +182,7 @@ void mouseWheelHandler(cc::event::EventListener *listener, cc::event::EventMouse
 
     pos = mouseEvent->getUILocation();
 
-    if (node->getUIProps()->getUITransformComp()->isHit(pos, listener)) {
+    if (node->getUIProps()->getUITransformComp()->isHit(pos)) {
         mouseEvent->setEventName(cc::NodeEventType::MOUSE_WHEEL);
         mouseEvent->setUseBubbles(true);
         node->dispatchEvent(mouseEvent);

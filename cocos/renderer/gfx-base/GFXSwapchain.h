@@ -55,7 +55,7 @@ public:
     inline void destroySurface();
     inline void createSurface(void *windowHandle);
 
-    inline void     *getWindowHandle() const { return _windowHandle; }
+    inline void *    getWindowHandle() const { return _windowHandle; }
     inline VsyncMode getVSyncMode() const { return _vsyncMode; }
 
     inline Texture *getColorTexture() const { return _colorTexture; }
@@ -74,7 +74,7 @@ protected:
 
     static inline void initTexture(const SwapchainTextureInfo &info, Texture *texture);
 
-    void            *_windowHandle{nullptr};
+    void *           _windowHandle{nullptr};
     VsyncMode        _vsyncMode{VsyncMode::RELAXED};
     SurfaceTransform _transform{SurfaceTransform::IDENTITY};
     bool             _preRotationEnabled{false};

@@ -126,7 +126,7 @@ bool RenderPipeline::destroy() {
     _descriptorSet = nullptr;
     CC_SAFE_DESTROY_AND_DELETE(_globalDSManager);
     CC_SAFE_DESTROY_AND_DELETE(_pipelineUBO);
-    CC_SAFE_DESTROY_AND_DELETE(_pipelineSceneData);
+    CC_SAFE_DESTROY_NULL(_pipelineSceneData);
 
     for (auto *const queryPool : _queryPools) {
         queryPool->destroy();
@@ -178,7 +178,7 @@ gfx::InputAssembler *RenderPipeline::getIAByRenderArea(const gfx::Rect &renderAr
         return iter->second;
     }
 
-    gfx::Buffer         *vb = nullptr;
+    gfx::Buffer *        vb = nullptr;
     gfx::InputAssembler *ia = nullptr;
     createQuadInputAssembler(_quadIB, &vb, &ia);
     _quadVB.push_back(vb);

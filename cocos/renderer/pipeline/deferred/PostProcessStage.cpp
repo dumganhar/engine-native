@@ -37,6 +37,7 @@
 #include "renderer/pipeline/RenderPipeline.h"
 #include "renderer/pipeline/RenderQueue.h"
 #include "renderer/pipeline/UIPhase.h"
+#include "renderer/pipeline/deferred/DeferredPipelineSceneData.h"
 #include "scene/RenderWindow.h"
 #include "scene/SubModel.h"
 
@@ -191,23 +192,23 @@ void PostProcessStage::render(scene::Camera *camera) {
     };
 
     auto postExec = [this, camera](RenderData const &data, const framegraph::DevicePassResourceTable &table) {
-        auto            *pipeline   = _pipeline;
+        auto *           pipeline   = _pipeline;
         gfx::RenderPass *renderPass = table.getRenderPass();
 
-        auto                     *cmdBuff       = pipeline->getCommandBuffers()[0];
+        auto *                    cmdBuff       = pipeline->getCommandBuffers()[0];
         const std::array<uint, 1> globalOffsets = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
         cmdBuff->bindDescriptorSet(globalSet, pipeline->getDescriptorSet(), utils::toUint(globalOffsets.size()), globalOffsets.data());
 
         if (!pipeline->getPipelineSceneData()->getRenderObjects().empty()) {
             // post process
-            auto *const  sceneData = pipeline->getPipelineSceneData();
-            scene::Pass *pv        = nullptr; // TODO(cjh): sceneData->getSharedData()->pipelinePostPass;
-            gfx::Shader *sd        = nullptr; // TODO(cjh): sceneData->getSharedData()->pipelinePostPassShader;
+            auto *const  sceneData = static_cast<DeferredPipelineSceneData *>(pipeline->getPipelineSceneData());
+            scene::Pass *pv        = sceneData->getPostPass();
+            gfx::Shader *sd        = sceneData->getPostPassShader();
             float        shadingScale{sceneData->getShadingScale()};
             // get pso and draw quad
-            gfx::PipelineState        *pso      = PipelineStateManager::getOrCreatePipelineState(pv, sd, _inputAssembler, renderPass);
+            gfx::PipelineState *       pso      = PipelineStateManager::getOrCreatePipelineState(pv, sd, _inputAssembler, renderPass);
             pipeline::GlobalDSManager *globalDS = pipeline->getGlobalDSManager();
-            gfx::Sampler              *sampler  = shadingScale < 1.F ? globalDS->getPointSampler() : globalDS->getLinearSampler();
+            gfx::Sampler *             sampler  = shadingScale < 1.F ? globalDS->getPointSampler() : globalDS->getLinearSampler();
 
             pv->getDescriptorSet()->bindTexture(0, table.getRead(data.outColorTex));
             pv->getDescriptorSet()->bindSampler(0, sampler);

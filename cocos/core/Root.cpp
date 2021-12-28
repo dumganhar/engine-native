@@ -65,14 +65,17 @@ Root::~Root() {
 
 void Root::initialize(gfx::Swapchain *swapchain) {
     _swapchain = swapchain;
+
+    gfx::RenderPassInfo renderPassInfo;
+
     gfx::ColorAttachment colorAttachment;
     colorAttachment.format = swapchain->getColorTexture()->getFormat();
-    gfx::DepthStencilAttachment depthStencilAttachment;
-    depthStencilAttachment.format = swapchain->getDepthStencilTexture()->getFormat();
-    gfx::RenderPassInfo renderPassInfo;
     renderPassInfo.colorAttachments.emplace_back(colorAttachment);
-    renderPassInfo.depthStencilAttachment.depthStoreOp   = gfx::StoreOp::DISCARD;
-    renderPassInfo.depthStencilAttachment.stencilStoreOp = gfx::StoreOp::DISCARD;
+
+    auto& depthStencilAttachment = renderPassInfo.depthStencilAttachment;
+    depthStencilAttachment.format = swapchain->getDepthStencilTexture()->getFormat();
+    depthStencilAttachment.depthStoreOp   = gfx::StoreOp::DISCARD;
+    depthStencilAttachment.stencilStoreOp = gfx::StoreOp::DISCARD;
 
     scene::IRenderWindowInfo info{
         std::string{"rootMainWindow"},

@@ -47,9 +47,9 @@ framegraph::StringHandle RenderPipeline::fgStrHandleOutColorTexture = framegraph
 framegraph::StringHandle RenderPipeline::fgStrHandlePostprocessPass = framegraph::FrameGraph::stringToHandle("pipelinePostPass");
 framegraph::StringHandle RenderPipeline::fgStrHandleBloomOutTexture = framegraph::FrameGraph::stringToHandle("combineTex");
 
-RenderPipeline * RenderPipeline::instance = nullptr;
+RenderPipeline *RenderPipeline::instance = nullptr;
 
-RenderPipeline * RenderPipeline::getInstance() {
+RenderPipeline *RenderPipeline::getInstance() {
     return RenderPipeline::instance;
 }
 
@@ -65,7 +65,7 @@ RenderPipeline::~RenderPipeline() {
     RenderPipeline::instance = nullptr;
 }
 
-bool RenderPipeline::initialize(const RenderPipelineInfo & info) {
+bool RenderPipeline::initialize(const RenderPipelineInfo &info) {
     _flows = info.flows;
     _tag   = info.tag;
     return true;
@@ -86,16 +86,16 @@ bool RenderPipeline::activate(gfx::Swapchain * /*swapchain*/) {
     // pipeline construct.
     generateConstantMacros();
 
-    for (auto * const flow : _flows) {
+    for (auto *const flow : _flows) {
         flow->activate(this);
     }
 
     return true;
 }
 
-void RenderPipeline::render(const vector<scene::Camera *> & cameras) {
-    for (auto * const flow : _flows) {
-        for (auto * camera : cameras) {
+void RenderPipeline::render(const vector<scene::Camera *> &cameras) {
+    for (auto *const flow : _flows) {
+        for (auto *camera : cameras) {
             flow->render(camera);
         }
     }
@@ -106,7 +106,7 @@ void RenderPipeline::render(const vector<scene::Camera *> & cameras) {
 void RenderPipeline::destroyQuadInputAssembler() {
     CC_SAFE_DESTROY(_quadIB);
 
-    for (auto * node : _quadVB) {
+    for (auto *node : _quadVB) {
         CC_SAFE_DESTROY(node);
     }
 
@@ -118,7 +118,7 @@ void RenderPipeline::destroyQuadInputAssembler() {
 }
 
 bool RenderPipeline::destroy() {
-    for (auto * flow : _flows) {
+    for (auto *flow : _flows) {
         flow->destroy();
     }
     _flows.clear();
@@ -128,12 +128,12 @@ bool RenderPipeline::destroy() {
     CC_SAFE_DESTROY(_pipelineUBO);
     CC_SAFE_DESTROY_NULL(_pipelineSceneData);
 
-    for (auto * const queryPool : _queryPools) {
+    for (auto *const queryPool : _queryPools) {
         queryPool->destroy();
     }
     _queryPools.clear();
 
-    for (auto * const cmdBuffer : _commandBuffers) {
+    for (auto *const cmdBuffer : _commandBuffers) {
         cmdBuffer->destroy();
     }
     _commandBuffers.clear();
@@ -146,9 +146,9 @@ bool RenderPipeline::destroy() {
     return Super::destroy();
 }
 
-gfx::Color RenderPipeline::getClearcolor(scene::Camera * camera) const {
-    auto * const sceneData = getPipelineSceneData();
-    gfx::Color   clearColor{0.0F, 0.0F, 0.0F, 1.0F};
+gfx::Color RenderPipeline::getClearcolor(scene::Camera *camera) const {
+    auto *const sceneData = getPipelineSceneData();
+    gfx::Color  clearColor{0.0F, 0.0F, 0.0F, 1.0F};
     if (static_cast<uint32_t>(camera->getClearFlag()) & static_cast<uint32_t>(gfx::ClearFlagBit::COLOR)) {
         clearColor = camera->getClearColor();
     }
@@ -157,13 +157,13 @@ gfx::Color RenderPipeline::getClearcolor(scene::Camera * camera) const {
     return clearColor;
 }
 
-void RenderPipeline::updateQuadVertexData(const Vec4 & viewport, gfx::Buffer * buffer) {
+void RenderPipeline::updateQuadVertexData(const Vec4 &viewport, gfx::Buffer *buffer) {
     float vbData[16] = {0.F};
     genQuadVertexData(viewport, vbData);
     buffer->update(vbData, sizeof(vbData));
 }
 
-gfx::InputAssembler * RenderPipeline::getIAByRenderArea(const gfx::Rect & renderArea) {
+gfx::InputAssembler *RenderPipeline::getIAByRenderArea(const gfx::Rect &renderArea) {
     auto bufferWidth{static_cast<float>(_width)};
     auto bufferHeight{static_cast<float>(_height)};
     Vec4 viewport{
@@ -178,8 +178,8 @@ gfx::InputAssembler * RenderPipeline::getIAByRenderArea(const gfx::Rect & render
         return iter->second;
     }
 
-    gfx::Buffer *         vb = nullptr;
-    gfx::InputAssembler * ia = nullptr;
+    gfx::Buffer *        vb = nullptr;
+    gfx::InputAssembler *ia = nullptr;
     createQuadInputAssembler(_quadIB, &vb, &ia);
     _quadVB.push_back(vb);
     _quadIA[viewport] = ia;
@@ -189,7 +189,7 @@ gfx::InputAssembler * RenderPipeline::getIAByRenderArea(const gfx::Rect & render
     return ia;
 }
 
-bool RenderPipeline::createQuadInputAssembler(gfx::Buffer * quadIB, gfx::Buffer ** quadVB, gfx::InputAssembler ** quadIA) {
+bool RenderPipeline::createQuadInputAssembler(gfx::Buffer *quadIB, gfx::Buffer **quadVB, gfx::InputAssembler **quadIA) {
     // step 1 create vertex buffer
     uint vbStride = sizeof(float) * 4;
     uint vbSize   = vbStride * 4;
@@ -209,16 +209,16 @@ bool RenderPipeline::createQuadInputAssembler(gfx::Buffer * quadIB, gfx::Buffer 
     return (*quadIA) != nullptr;
 }
 
-void RenderPipeline::ensureEnoughSize(const vector<scene::Camera *> & cameras) {
-    for (auto * camera : cameras) {
+void RenderPipeline::ensureEnoughSize(const vector<scene::Camera *> &cameras) {
+    for (auto *camera : cameras) {
         _width  = std::max(camera->getWindow()->getWidth(), _width);
         _height = std::max(camera->getWindow()->getHeight(), _height);
     }
 }
 
-gfx::Viewport RenderPipeline::getViewport(scene::Camera * camera) {
-    auto              scale{_pipelineSceneData->getShadingScale()};
-    const gfx::Rect & rect = getRenderArea(camera);
+gfx::Viewport RenderPipeline::getViewport(scene::Camera *camera) {
+    auto             scale{_pipelineSceneData->getShadingScale()};
+    const gfx::Rect &rect = getRenderArea(camera);
     return {
         static_cast<int>(rect.x * scale),
         static_cast<int>(rect.y * scale),
@@ -226,9 +226,9 @@ gfx::Viewport RenderPipeline::getViewport(scene::Camera * camera) {
         static_cast<uint>(rect.height * scale)};
 }
 
-gfx::Rect RenderPipeline::getScissor(scene::Camera * camera) {
-    auto              scale{_pipelineSceneData->getShadingScale()};
-    const gfx::Rect & rect = getRenderArea(camera);
+gfx::Rect RenderPipeline::getScissor(scene::Camera *camera) {
+    auto             scale{_pipelineSceneData->getShadingScale()};
+    const gfx::Rect &rect = getRenderArea(camera);
     return {
         static_cast<int>(rect.x * scale),
         static_cast<int>(rect.y * scale),
@@ -236,11 +236,11 @@ gfx::Rect RenderPipeline::getScissor(scene::Camera * camera) {
         static_cast<uint>(rect.height * scale)};
 }
 
-gfx::Rect RenderPipeline::getRenderArea(scene::Camera * camera) {
+gfx::Rect RenderPipeline::getRenderArea(scene::Camera *camera) {
     float w{static_cast<float>(camera->getWindow()->getWidth())};
     float h{static_cast<float>(camera->getWindow()->getHeight())};
 
-    const auto & vp = camera->getViewport();
+    const auto &vp = camera->getViewport();
     return {
         static_cast<int32_t>(vp.x * w),
         static_cast<int32_t>(vp.y * h),
@@ -249,7 +249,7 @@ gfx::Rect RenderPipeline::getRenderArea(scene::Camera * camera) {
     };
 }
 
-void RenderPipeline::genQuadVertexData(const Vec4 & viewport, float * vbData) {
+void RenderPipeline::genQuadVertexData(const Vec4 &viewport, float *vbData) {
     auto minX = static_cast<float>(viewport.x);
     auto maxX = static_cast<float>(viewport.x + viewport.z);
     auto minY = static_cast<float>(viewport.y);
@@ -292,9 +292,9 @@ void RenderPipeline::generateConstantMacros() {
         _device->hasFeature(gfx::Feature::INPUT_ATTACHMENT_BENEFIT));
 }
 
-RenderStage * RenderPipeline::getRenderstageByName(const String & name) const {
-    for (auto * flow : _flows) {
-        auto * val = flow->getRenderstageByName(name);
+RenderStage *RenderPipeline::getRenderstageByName(const String &name) const {
+    for (auto *flow : _flows) {
+        auto *val = flow->getRenderstageByName(name);
         if (val) {
             return val;
         }
@@ -302,9 +302,9 @@ RenderStage * RenderPipeline::getRenderstageByName(const String & name) const {
     return nullptr;
 }
 
-bool RenderPipeline::isOccluded(const scene::Camera * camera, const scene::SubModel * subModel) {
-    auto * model      = subModel->getOwner();
-    auto * worldBound = model->getWorldBounds();
+bool RenderPipeline::isOccluded(const scene::Camera *camera, const scene::SubModel *subModel) {
+    auto *model      = subModel->getOwner();
+    auto *worldBound = model->getWorldBounds();
 
     // assume visible if there is no worldBound.
     if (!worldBound) {

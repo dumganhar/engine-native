@@ -61,15 +61,15 @@ public:
      * @en min pos of scene bounding box
      * @zh 场景包围盒最小值
      */
-    void                setMinPos(const Vec3 & val);
-    inline const Vec3 & getMinPos() const { return _minPos; }
+    void               setMinPos(const Vec3 &val);
+    inline const Vec3 &getMinPos() const { return _minPos; }
 
     /**
      * @en max pos of scene bounding box
      * @zh 场景包围盒最大值
      */
-    void                setMaxPos(const Vec3 & val);
-    inline const Vec3 & getMaxPos() const { return _maxPos; }
+    void               setMaxPos(const Vec3 &val);
+    inline const Vec3 &getMaxPos() const { return _maxPos; }
 
     /**
      * @en depth of octree
@@ -78,7 +78,7 @@ public:
     void            setDepth(uint32_t val);
     inline uint32_t getDepth() const { return _depth; }
 
-    void activate(Octree * resource);
+    void activate(Octree *resource);
 
     // JS deserialization require the properties to be public
     // private:
@@ -87,7 +87,7 @@ public:
     Vec3     _maxPos;
     uint32_t _depth{0};
 
-    Octree * _resource{nullptr};
+    Octree *_resource{nullptr};
 };
 
 // Axis aligned bounding box
@@ -97,11 +97,11 @@ struct CC_DLL BBox final {
 
     BBox() = default;
 
-    explicit BBox(const geometry::AABB & aabb)
+    explicit BBox(const geometry::AABB &aabb)
     : min(aabb.getCenter() - aabb.getHalfExtents()), max(aabb.getCenter() + aabb.getHalfExtents()) {
     }
 
-    BBox(const cc::Vec3 & minPos, const cc::Vec3 & maxPos)
+    BBox(const cc::Vec3 &minPos, const cc::Vec3 &maxPos)
     : min(minPos), max(maxPos) {
     }
 
@@ -109,17 +109,17 @@ struct CC_DLL BBox final {
         return (min + max) * 0.5F;
     }
 
-    inline bool operator==(const BBox & box) const {
+    inline bool operator==(const BBox &box) const {
         return min == box.min && max == box.max;
     }
 
-    inline bool contain(const cc::Vec3 & point) const {
+    inline bool contain(const cc::Vec3 &point) const {
         return !(point.x > max.x || point.x < min.x ||
                  point.y > max.y || point.y < min.y ||
                  point.z > max.z || point.z < min.z);
     }
 
-    inline bool contain(const BBox & box) const {
+    inline bool contain(const BBox &box) const {
         return contain(box.min) && contain(box.max);
     }
 };
@@ -129,26 +129,26 @@ struct CC_DLL BBox final {
  */
 class CC_DLL OctreeNode final {
 private:
-    OctreeNode(Octree * owner, OctreeNode * parent);
+    OctreeNode(Octree *owner, OctreeNode *parent);
     ~OctreeNode();
 
-    inline void setBox(const BBox & aabb) { _aabb = aabb; }
+    inline void setBox(const BBox &aabb) { _aabb = aabb; }
     inline void setDepth(uint32_t depth) { _depth = depth; }
     inline void setIndex(uint32_t index) { _index = index; }
 
-    inline Octree *     getOwner() const { return _owner; }
-    inline const BBox & getBox() const { return _aabb; }
-    BBox                getChildBox(uint32_t index) const;
-    OctreeNode *        getOrCreateChild(uint32_t index);
-    void                deleteChild(uint32_t index);
-    void                insert(Model * model);
-    void                add(Model * model);
-    void                remove(Model * model);
-    void                onRemoved();
-    void                gatherModels(std::vector<Model *> & results) const;
-    void                doQueryVisibility(const Camera * camera, const geometry::Frustum & frustum, bool isShadow, std::vector<Model *> & results) const;
-    void                queryVisibilityParallelly(const Camera * camera, const geometry::Frustum & frustum, bool isShadow, std::vector<Model *> & results) const;
-    void                queryVisibilitySequentially(const Camera * camera, const geometry::Frustum & frustum, bool isShadow, std::vector<Model *> & results) const;
+    inline Octree *    getOwner() const { return _owner; }
+    inline const BBox &getBox() const { return _aabb; }
+    BBox               getChildBox(uint32_t index) const;
+    OctreeNode *       getOrCreateChild(uint32_t index);
+    void               deleteChild(uint32_t index);
+    void               insert(Model *model);
+    void               add(Model *model);
+    void               remove(Model *model);
+    void               onRemoved();
+    void               gatherModels(std::vector<Model *> &results) const;
+    void               doQueryVisibility(const Camera *camera, const geometry::Frustum &frustum, bool isShadow, std::vector<Model *> &results) const;
+    void               queryVisibilityParallelly(const Camera *camera, const geometry::Frustum &frustum, bool isShadow, std::vector<Model *> &results) const;
+    void               queryVisibilitySequentially(const Camera *camera, const geometry::Frustum &frustum, bool isShadow, std::vector<Model *> &results) const;
 
     Octree *                                      _owner{nullptr};
     OctreeNode *                                  _parent{nullptr};
@@ -169,7 +169,7 @@ public:
     Octree();
     ~Octree();
 
-    void initialize(const OctreeInfo & info);
+    void initialize(const OctreeInfo &info);
 
     /**
      * @en Whether activate octree
@@ -182,27 +182,27 @@ public:
      * @en min pos of scene bounding box
      * @zh 场景包围盒最小值
      */
-    void                setMinPos(const Vec3 & val);
-    inline const Vec3 & getMinPos() const { return _minPos; }
+    void               setMinPos(const Vec3 &val);
+    inline const Vec3 &getMinPos() const { return _minPos; }
 
     /**
      * @en max pos of scene bounding box
      * @zh 场景包围盒最大值
      */
-    void                setMaxPos(const Vec3 & val);
-    inline const Vec3 & getMaxPos() const { return _maxPos; }
+    void               setMaxPos(const Vec3 &val);
+    inline const Vec3 &getMaxPos() const { return _maxPos; }
 
     // reinsert all models in the tree when you change the aabb or max depth in editor
-    void resize(const Vec3 & minPos, const Vec3 & maxPos, uint32_t maxDepth);
+    void resize(const Vec3 &minPos, const Vec3 &maxPos, uint32_t maxDepth);
 
     // insert a model to tree.
-    void insert(Model * model);
+    void insert(Model *model);
 
     // remove a model from tree.
-    void remove(Model * model);
+    void remove(Model *model);
 
     // update model's location in the tree.
-    void update(Model * model);
+    void update(Model *model);
 
     /**
      * @en depth of octree
@@ -213,14 +213,14 @@ public:
     inline uint32_t getMaxDepth() const { return _maxDepth; }
 
     // view frustum culling
-    void queryVisibility(Camera * camera, const geometry::Frustum & frustum, bool isShadow, std::vector<Model *> & results) const;
+    void queryVisibility(Camera *camera, const geometry::Frustum &frustum, bool isShadow, std::vector<Model *> &results) const;
 
 private:
-    bool isInside(Model * model) const;
+    bool isInside(Model *model) const;
 
-    OctreeNode * _root{nullptr};
-    uint32_t     _maxDepth{DEFAULT_OCTREE_DEPTH};
-    uint32_t     _totalCount{0};
+    OctreeNode *_root{nullptr};
+    uint32_t    _maxDepth{DEFAULT_OCTREE_DEPTH};
+    uint32_t    _totalCount{0};
 
     bool _enabled{false};
     Vec3 _minPos;

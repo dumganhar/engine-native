@@ -91,14 +91,14 @@ public:
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
-    SharedPtr(T * p) : _ptr(p) { // NOLINT(runtime/explicit)
+    SharedPtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
     }
 
-    SharedPtr(const SharedPtr<T> & r) : _ptr(r._ptr) {
+    SharedPtr(const SharedPtr<T> &r) : _ptr(r._ptr) {
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
@@ -106,7 +106,7 @@ public:
     }
 
     template <typename U>
-    SharedPtr(const SharedPtr<U> & r) : _ptr(r.get()) {
+    SharedPtr(const SharedPtr<U> &r) : _ptr(r.get()) {
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
@@ -114,12 +114,12 @@ public:
     }
 
     // Move constructors.
-    SharedPtr(SharedPtr<T> && r) noexcept : _ptr(r.release()) {
+    SharedPtr(SharedPtr<T> &&r) noexcept : _ptr(r.release()) {
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
     template <typename U>
-    SharedPtr(SharedPtr<U> && r) noexcept : _ptr(r.release()) {
+    SharedPtr(SharedPtr<U> &&r) noexcept : _ptr(r.release()) {
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
@@ -129,25 +129,25 @@ public:
         }
     }
 
-    T * get() const { return _ptr; }
-        operator T *() const { return _ptr; }
-    T & operator*() const { return *_ptr; }
-    T * operator->() const { return _ptr; }
+    T *get() const { return _ptr; }
+       operator T *() const { return _ptr; }
+    T &operator*() const { return *_ptr; }
+    T *operator->() const { return _ptr; }
 
     // Returns the (possibly null) raw pointer, and makes the scoped_refptr hold a
     // null pointer, all without touching the reference count of the underlying
     // pointed-to object. The object is still reference counted, and the caller of
     // release() is now the proud owner of one reference, so it is responsible for
     // calling Release() once on the object when no longer using it.
-    T * release() {
-        T * retVal = _ptr;
-        _ptr       = nullptr;
+    T *release() {
+        T *retVal = _ptr;
+        _ptr      = nullptr;
         return retVal;
     }
 
     // As reference count is 1 after creating a RefCounted object, so do not have to
     // invoke p->addRef();
-    SharedPtr<T> & operator=(T * p) {
+    SharedPtr<T> &operator=(T *p) {
         // AddRef first so that self assignment should work
         if (p) {
             reinterpret_cast<RefCounted *>(p)->addRef();
@@ -159,22 +159,22 @@ public:
         return *this;
     }
 
-    SharedPtr<T> & operator=(const SharedPtr<T> & r) {
+    SharedPtr<T> &operator=(const SharedPtr<T> &r) {
         return *this = r._ptr;
     }
 
     template <typename U>
-    SharedPtr<T> & operator=(const SharedPtr<U> & r) {
+    SharedPtr<T> &operator=(const SharedPtr<U> &r) {
         return *this = r.get();
     }
 
-    SharedPtr<T> & operator=(SharedPtr<T> && r) noexcept {
+    SharedPtr<T> &operator=(SharedPtr<T> &&r) noexcept {
         SharedPtr<T>(std::move(r)).swap(*this);
         return *this;
     }
 
     template <typename U>
-    SharedPtr<T> & operator=(SharedPtr<U> && r) noexcept {
+    SharedPtr<T> &operator=(SharedPtr<U> &&r) noexcept {
         SharedPtr<T>(std::move(r)).swap(*this);
         return *this;
     }
@@ -183,7 +183,7 @@ public:
         return _ptr == nullptr;
     }
 
-    bool operator==(T * r) {
+    bool operator==(T *r) {
         return _ptr == r;
     }
 
@@ -191,20 +191,20 @@ public:
         return _ptr != nullptr;
     }
 
-    bool operator!=(T * r) {
+    bool operator!=(T *r) {
         return _ptr != r;
     }
 
-    void swap(T ** pp) noexcept {
-        T * p = _ptr;
-        _ptr  = *pp;
-        *pp   = p;
+    void swap(T **pp) noexcept {
+        T *p = _ptr;
+        _ptr = *pp;
+        *pp  = p;
     }
 
-    void swap(SharedPtr<T> & r) noexcept { swap(&r._ptr); }
+    void swap(SharedPtr<T> &r) noexcept { swap(&r._ptr); }
 
 protected:
-    T * _ptr{nullptr};
+    T *_ptr{nullptr};
 };
 
 } // namespace cc

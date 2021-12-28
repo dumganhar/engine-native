@@ -165,12 +165,12 @@ public:
     ~Mesh() override = default;
 
     cc::any getNativeAsset() const override;
-    void    setNativeAsset(const cc::any & obj) override;
+    void    setNativeAsset(const cc::any &obj) override;
 
-    void setAssetData(cc::ArrayBuffer * data) {
+    void setAssetData(cc::ArrayBuffer *data) {
         _data = Uint8Array(data);
     }
-    const Uint8Array & getAssetData() {
+    const Uint8Array &getAssetData() {
         return _data;
     }
 
@@ -186,24 +186,24 @@ public:
      * @zh （各分量都）小于等于此网格任何顶点位置的最大位置。
      * @deprecated Please use [[struct.minPosition]] instead
      */
-    const Vec3 & getMinPosition() const;
+    const Vec3 &getMinPosition() const;
 
     /**
      * @en The maximum position of all vertices in the mesh
      * @zh （各分量都）大于等于此网格任何顶点位置的最大位置。
      * @deprecated Please use [[struct.maxPosition]] instead
      */
-    const Vec3 & getMaxPosition() const;
+    const Vec3 &getMaxPosition() const;
 
     /**
      * @en The struct of the mesh
      * @zh 此网格的结构。
      */
-    inline const IStruct & getStruct() const {
+    inline const IStruct &getStruct() const {
         return _struct;
     }
 
-    inline void setStruct(const IStruct & input) {
+    inline void setStruct(const IStruct &input) {
         _struct = input;
     }
 
@@ -216,11 +216,11 @@ public:
     //        return _data;
     //    }
 
-    inline Uint8Array & getData() {
+    inline Uint8Array &getData() {
         return _data;
     }
 
-    inline void setData(const Uint8Array & data) {
+    inline void setData(const Uint8Array &data) {
         _data = data;
     }
 
@@ -244,14 +244,14 @@ public:
     /**
      * The index of the joint buffer of all sub meshes in the joint map buffers
      */
-    const JointBufferIndicesType & getJointBufferIndices();
+    const JointBufferIndicesType &getJointBufferIndices();
 
     using RenderingSubMeshList = std::vector<SharedPtr<RenderingSubMesh>>;
     /**
      * @en The sub meshes for rendering. Mesh could be split into different sub meshes for rendering.
      * @zh 此网格创建的渲染网格。
      */
-    inline const RenderingSubMeshList & getRenderingSubMeshes() {
+    inline const RenderingSubMeshList &getRenderingSubMeshes() {
         initialize();
         return _renderingSubMeshes;
     }
@@ -284,14 +284,14 @@ public:
      * @param data The new data
      * @deprecated Will be removed in v3.0.0, please use [[reset]] instead
      */
-    void assign(const IStruct & structInfo, const Uint8Array & data);
+    void assign(const IStruct &structInfo, const Uint8Array &data);
 
     /**
      * @en Reset the mesh with mesh creation information
      * @zh 重置此网格。
      * @param info Mesh creation information including struct and data
      */
-    void reset(ICreateInfo && info);
+    void reset(ICreateInfo &&info);
 
     using BoneSpaceBounds = std::vector<SharedPtr<geometry::AABB>>;
     /**
@@ -299,7 +299,7 @@ public:
      * @zh 获取骨骼变换空间内下的 [[AABB]] 包围盒
      * @param skeleton
      */
-    BoneSpaceBounds getBoneSpaceBounds(Skeleton * skeleton);
+    BoneSpaceBounds getBoneSpaceBounds(Skeleton *skeleton);
 
     /**
      * @en Merge the given mesh into the current mesh
@@ -309,7 +309,7 @@ public:
      * @param [validate=false] Whether to validate the mesh
      * @returns Check the mesh state and return the validation result.
      */
-    bool merge(Mesh * mesh, const Mat4 * worldMatrix = nullptr, bool validate = false);
+    bool merge(Mesh *mesh, const Mat4 *worldMatrix = nullptr, bool validate = false);
 
     /**
      * @en Validation for whether the given mesh can be merged into the current mesh.
@@ -334,7 +334,7 @@ public:
      *  - 要么都需要索引绘制，要么都不需要索引绘制。
      * @param mesh The other mesh to be validated
      */
-    bool validateMergingMesh(Mesh * mesh);
+    bool validateMergingMesh(Mesh *mesh);
 
     /**
      * @en Read the requested attribute of the given sub mesh
@@ -344,7 +344,7 @@ public:
      * @returns Return null if not found or can't read, otherwise, will create a large enough typed array to contain all data of the attribute,
      * the array type will match the data type of the attribute.
      */
-    TypedArray readAttribute(index_t primitiveIndex, const char * attributeName);
+    TypedArray readAttribute(index_t primitiveIndex, const char *attributeName);
 
     /**
      * @en Read the requested attribute of the given sub mesh and fill into the given buffer.
@@ -356,7 +356,7 @@ public:
      * @param offset The offset of the first attribute in the target buffer
      * @returns Return false if failed to access attribute, return true otherwise.
      */
-    bool copyAttribute(index_t primitiveIndex, const char * attributeName, ArrayBuffer * buffer, uint32_t stride, uint32_t offset);
+    bool copyAttribute(index_t primitiveIndex, const char *attributeName, ArrayBuffer *buffer, uint32_t stride, uint32_t offset);
 
     /**
      * @en Read the indices data of the given sub mesh
@@ -374,16 +374,16 @@ public:
      * @param outputArray The target output array
      * @returns Return false if failed to access the indices data, return true otherwise.
      */
-    bool copyIndices(index_t primitiveIndex, TypedArray & outputArray);
+    bool copyIndices(index_t primitiveIndex, TypedArray &outputArray);
 
 private:
-    using AccessorType = std::function<void(const IVertexBundle & vertexBundle, int32_t iAttribute)>;
+    using AccessorType = std::function<void(const IVertexBundle &vertexBundle, int32_t iAttribute)>;
 
-    void accessAttribute(index_t primitiveIndex, const char * attributeName, const AccessorType & accessor);
+    void accessAttribute(index_t primitiveIndex, const char *attributeName, const AccessorType &accessor);
 
-    gfx::BufferList createVertexBuffers(gfx::Device * gfxDevice, ArrayBuffer * data);
+    gfx::BufferList createVertexBuffers(gfx::Device *gfxDevice, ArrayBuffer *data);
 
-    void initDefault(const cc::optional<std::string> & uuid) override;
+    void initDefault(const cc::optional<std::string> &uuid) override;
     bool validate() const override;
 
     static TypedArray createTypedArrayWithGFXFormat(gfx::Format format, uint32_t count);

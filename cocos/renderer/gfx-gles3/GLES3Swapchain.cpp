@@ -46,10 +46,10 @@ GLES3Swapchain::~GLES3Swapchain() {
     destroy();
 }
 
-void GLES3Swapchain::doInit(const SwapchainInfo & info) {
-    const auto * context = GLES3Device::getInstance()->context();
-    _gpuSwapchain        = CC_NEW(GLES3GPUSwapchain);
-    auto * window        = reinterpret_cast<EGLNativeWindowType>(info.windowHandle);
+void GLES3Swapchain::doInit(const SwapchainInfo &info) {
+    const auto *context = GLES3Device::getInstance()->context();
+    _gpuSwapchain       = CC_NEW(GLES3GPUSwapchain);
+    auto *window        = reinterpret_cast<EGLNativeWindowType>(info.windowHandle);
 
 #if CC_PLATFORM == CC_PLATFORM_ANDROID || CC_PLATFORM == CC_PLATFORM_OHOS
     EGLint nFmt;
@@ -121,16 +121,16 @@ void GLES3Swapchain::doResize(uint32_t width, uint32_t height, SurfaceTransform 
 
 void GLES3Swapchain::doDestroySurface() {
     if (_gpuSwapchain->eglSurface != EGL_NO_SURFACE) {
-        auto * context = GLES3Device::getInstance()->context();
+        auto *context = GLES3Device::getInstance()->context();
         eglDestroySurface(context->eglDisplay, _gpuSwapchain->eglSurface);
         _gpuSwapchain->eglSurface = EGL_NO_SURFACE;
         context->bindContext(false);
     }
 }
 
-void GLES3Swapchain::doCreateSurface(void * windowHandle) {
-    auto * context = GLES3Device::getInstance()->context();
-    auto * window  = reinterpret_cast<EGLNativeWindowType>(windowHandle);
+void GLES3Swapchain::doCreateSurface(void *windowHandle) {
+    auto *context = GLES3Device::getInstance()->context();
+    auto *window  = reinterpret_cast<EGLNativeWindowType>(windowHandle);
 
     EGLint nFmt = 0;
     if (eglGetConfigAttrib(context->eglDisplay, context->eglConfig, EGL_NATIVE_VISUAL_ID, &nFmt) == EGL_FALSE) {

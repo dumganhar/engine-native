@@ -102,7 +102,6 @@ void DeferredPipelineSceneData::updateBloomPass() {
 
     _bloomUpSamplePassShader   = bloomPasses[BLOOM_UPSAMPLEPASS_INDEX]->getShaderVariant();
     _bloomDownSamplePassShader = bloomPasses[BLOOM_DOWNSAMPLEPASS_INDEX]->getShaderVariant();
-    ;
 }
 
 void DeferredPipelineSceneData::updatePostProcessPass() {

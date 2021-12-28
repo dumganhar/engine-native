@@ -82,7 +82,7 @@ void SwapchainValidator::doDestroy() {
 
     /////////// execute ///////////
     _depthStencilTexture = nullptr;
-    _colorTexture = nullptr;
+    _colorTexture        = nullptr;
 
     _actor->destroy();
 }

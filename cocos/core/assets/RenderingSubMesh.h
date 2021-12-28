@@ -130,7 +130,7 @@ public:
      * @en The geometric info of the sub mesh, used for raycast.
      * @zh （用于射线检测的）几何信息。
      */
-    const IGeometricInfo &geometricInfo();
+    const IGeometricInfo &getGeometricInfo();
 
     /**
      * @en Primitive mode used by the sub mesh

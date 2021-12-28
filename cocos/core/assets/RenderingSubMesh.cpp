@@ -66,7 +66,7 @@ RenderingSubMesh::RenderingSubMesh(const gfx::BufferList &   vertexBuffers,
 
 RenderingSubMesh::~RenderingSubMesh() = default;
 
-const IGeometricInfo &RenderingSubMesh::geometricInfo() {
+const IGeometricInfo &RenderingSubMesh::getGeometricInfo() {
     if (_geometricInfo.has_value()) {
         return _geometricInfo.value();
     }

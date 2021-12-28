@@ -48,7 +48,7 @@ namespace pipeline {
 
 class RenderPipeline;
 
-class CC_DLL PipelineSceneData : public RefCounted, public Object {
+class CC_DLL PipelineSceneData : public Object {
 public:
     PipelineSceneData();
     ~PipelineSceneData() override;

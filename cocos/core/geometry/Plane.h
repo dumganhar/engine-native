@@ -26,7 +26,7 @@ class Plane final : public ShapeBase {
      * @return
      */
 public:
-    static Plane* create(float nx, float ny, float nz, float d);
+    static Plane *create(float nx, float ny, float nz, float d);
 
     /**
      * @en
@@ -36,7 +36,7 @@ public:
      * @param p 克隆的来源。
      * @return 克隆出的对象。
      */
-    static Plane* clone(const Plane& p);
+    static Plane *clone(const Plane &p);
 
     /**
      * @en
@@ -48,7 +48,7 @@ public:
      * @return 接受操作的对象。
      */
 
-    static Plane* copy(Plane* out, const Plane& p);
+    static Plane *copy(Plane *out, const Plane &p);
 
     /**
      * @en
@@ -61,10 +61,10 @@ public:
      * @param c 点 c。
      * @return out 接受操作的对象。
      */
-    static Plane* fromPoints(Plane*      out,
-                             const Vec3& a,
-                             const Vec3& b,
-                             const Vec3& c);
+    static Plane *fromPoints(Plane *     out,
+                             const Vec3 &a,
+                             const Vec3 &b,
+                             const Vec3 &c);
 
     /**
      * @en
@@ -78,7 +78,7 @@ public:
      * @param d 与原点的距离。
      * @return out 接受操作的对象。
      */
-    static Plane* set(Plane* out, float nx, float ny, float nz, float d);
+    static Plane *set(Plane *out, float nx, float ny, float nz, float d);
 
     /**
      * @en
@@ -90,7 +90,7 @@ public:
      * @param point 平面上的一点。
      * @return out 接受操作的对象。
      */
-    static Plane* fromNormalAndPoint(Plane* out, const Vec3& normal, const Vec3& point);
+    static Plane *fromNormalAndPoint(Plane *out, const Vec3 &normal, const Vec3 &point);
 
     /**
      * @en
@@ -101,7 +101,7 @@ public:
      * @param a 操作的源数据。
      * @return out 接受操作的对象。
      */
-    static Plane* normalize(Plane* out, const Plane& a);
+    static Plane *normalize(Plane *out, const Plane &a);
 
     // compatibility with vector interfaces
     inline void  setX(float val) { n.x = val; }
@@ -139,7 +139,7 @@ public:
      * 变换一个平面。
      * @param mat
      */
-    void transform(const Mat4& mat);
+    void transform(const Mat4 &mat);
 
     /**
      * @en
@@ -157,9 +157,9 @@ public:
      */
     float d{0.0F};
 
-    void  define(const Vec3& v0, const Vec3& v1, const Vec3& v2);
-    void  define(const Vec3& normal, const Vec3& point);
-    float distance(const Vec3& point) const;
+    void  define(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2);
+    void  define(const Vec3 &normal, const Vec3 &point);
+    float distance(const Vec3 &point) const;
     Plane clone() const;
 };
 

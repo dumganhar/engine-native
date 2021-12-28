@@ -546,8 +546,8 @@ private:
             return nullptr;
         }
         std::string strValue = cc::StringUtils::getStringUTFCharsJNI(env, jstr);
-        size_t size = strValue.size() + 1;
-        char* retVal = static_cast<char *>(malloc(size));
+        size_t      size     = strValue.size() + 1;
+        char *      retVal   = static_cast<char *>(malloc(size));
         if (retVal == nullptr) {
             return nullptr;
         }
@@ -584,7 +584,7 @@ private:
 
 // Process Response
 void HttpClient::processResponse(HttpResponse *response, char *responseMessage) {
-    auto*              request    = response->getHttpRequest();
+    auto *            request     = response->getHttpRequest();
     HttpRequest::Type requestType = request->getRequestType();
 
     if (HttpRequest::Type::GET != requestType &&

@@ -83,9 +83,9 @@ public:
     // JS deserialization require the properties to be public
     // private:
     bool     _enabled{false};
-    Vec3     _minPos;
-    Vec3     _maxPos;
-    uint32_t _depth{0};
+    Vec3     _minPos{DEFAULT_WORLD_MIN_POS};
+    Vec3     _maxPos{DEFAULT_WORLD_MAX_POS};
+    uint32_t _depth{DEFAULT_OCTREE_DEPTH};
 
     Octree *_resource{nullptr};
 };

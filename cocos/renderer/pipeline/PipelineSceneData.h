@@ -84,7 +84,7 @@ public:
     inline scene::Octree                                                      *getOctree() const { return _octree; }
 
     inline float getShadingScale() const { return _shadingScale; }
-    inline void setShadingScale(float val) { _shadingScale = val; } // TODO(cjh): needs to emit event to JS or hack this method in JS.
+    inline void  setShadingScale(float val) { _shadingScale = val; } // TODO(cjh): needs to emit event to JS or hack this method in JS.
 
     scene::Pass *getOcclusionQueryPass();
 

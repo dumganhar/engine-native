@@ -48,31 +48,29 @@ bool RenderWindow::initialize(gfx::Device *device, IRenderWindowInfo &info) {
         _colorTextures.pushBack(info.swapchain->getColorTexture());
         _depthStencilTexture = info.swapchain->getDepthStencilTexture();
     } else {
-        for (uint32_t i = 0; i < info.renderPassInfo.colorAttachments.size(); ++i) {
+        for (auto &colorAttachment : info.renderPassInfo.colorAttachments) {
             _colorTextures.pushBack(
-                    device->createTexture({gfx::TextureType::TEX2D,
-                              gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED | gfx::TextureUsageBit::TRANSFER_SRC,
-                              info.renderPassInfo.colorAttachments[i].format,
-                              _width,
-                              _height})
-            );
+                device->createTexture({gfx::TextureType::TEX2D,
+                                       gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED | gfx::TextureUsageBit::TRANSFER_SRC,
+                                       colorAttachment.format,
+                                       _width,
+                                       _height}));
         }
     }
 
     // Use the sign bit to indicate depth attachment
     if (info.renderPassInfo.depthStencilAttachment.format != gfx::Format::UNKNOWN) {
-            _depthStencilTexture = device->createTexture({gfx::TextureType::TEX2D,
-                                                          gfx::TextureUsageBit::DEPTH_STENCIL_ATTACHMENT | gfx::TextureUsageBit::SAMPLED,
-                                                          info.renderPassInfo.depthStencilAttachment.format,
-                                                          _width,
-                                                          _height});
+        _depthStencilTexture = device->createTexture({gfx::TextureType::TEX2D,
+                                                      gfx::TextureUsageBit::DEPTH_STENCIL_ATTACHMENT | gfx::TextureUsageBit::SAMPLED,
+                                                      info.renderPassInfo.depthStencilAttachment.format,
+                                                      _width,
+                                                      _height});
     }
 
     _frameBuffer = device->createFramebuffer(gfx::FramebufferInfo{
-                _renderPass,
-                _colorTextures.get(),
-                _depthStencilTexture
-    });
+        _renderPass,
+        _colorTextures.get(),
+        _depthStencilTexture});
     return true;
 }
 
@@ -93,7 +91,7 @@ void RenderWindow::destroy() {
 void RenderWindow::resize(uint32_t width, uint32_t height, gfx::SurfaceTransform surfaceTransform) {
     if (_swapchain != nullptr) {
         _swapchain->resize(width, height, surfaceTransform);
-        _width = _swapchain->getWidth();
+        _width  = _swapchain->getWidth();
         _height = _swapchain->getHeight();
     } else {
         for (auto *colorTexture : _colorTextures) {
@@ -102,10 +100,9 @@ void RenderWindow::resize(uint32_t width, uint32_t height, gfx::SurfaceTransform
         if (_depthStencilTexture != nullptr) {
             _depthStencilTexture->resize(width, height);
         }
-        _width = width;
+        _width  = width;
         _height = height;
     }
-
 
     if (_frameBuffer != nullptr) {
         _frameBuffer->destroy();

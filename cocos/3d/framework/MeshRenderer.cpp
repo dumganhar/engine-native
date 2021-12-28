@@ -78,6 +78,8 @@ void MeshRenderer::onEnable() {
     if (!_model) {
         updateModels();
     }
+    updateCastShadow();
+    updateReceiveShadow();
     attachToScene();
 }
 

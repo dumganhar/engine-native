@@ -282,7 +282,7 @@ void Mesh::initialize() {
             gfxAttributes.resize(attrs.size());
             for (size_t j = 0; j < attrs.size(); ++j) {
                 const auto &attr = attrs[j];
-                gfxAttributes[j] = gfx::Attribute(attr.name, attr.format, attr.isNormalized, attr.stream, attr.isInstanced, attr.location);
+                gfxAttributes[j] = gfx::Attribute{attr.name, attr.format, attr.isNormalized, attr.stream, attr.isInstanced, attr.location};
             }
         }
 

@@ -32,10 +32,14 @@ namespace cc {
 
 namespace {
 
+
 gfx::ColorAttachment colorAttachment = {
     gfx::Format::RGBA8,
-    std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE},
-    std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}};
+    gfx::SampleCount::ONE,
+    gfx::LoadOp::CLEAR,
+    gfx::StoreOp::STORE,
+    {cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE},
+    {cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}};
 
 gfx::RenderPassInfo passInfo{
     std::vector<gfx::ColorAttachment>{colorAttachment},

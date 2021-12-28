@@ -104,14 +104,14 @@ void RenderPipeline::render(const vector<scene::Camera *> &cameras) {
 }
 
 void RenderPipeline::destroyQuadInputAssembler() {
-    CC_SAFE_DESTROY(_quadIB);
+    CC_SAFE_DESTROY_AND_DELETE(_quadIB);
 
     for (auto *node : _quadVB) {
-        CC_SAFE_DESTROY(node);
+        CC_SAFE_DESTROY_AND_DELETE(node);
     }
 
     for (auto node : _quadIA) {
-        CC_SAFE_DESTROY(node.second);
+        CC_SAFE_DESTROY_AND_DELETE(node.second);
     }
     _quadVB.clear();
     _quadIA.clear();
@@ -124,9 +124,9 @@ bool RenderPipeline::destroy() {
     _flows.clear();
 
     _descriptorSet = nullptr;
-    CC_SAFE_DESTROY(_globalDSManager);
-    CC_SAFE_DESTROY(_pipelineUBO);
-    CC_SAFE_DESTROY(_pipelineSceneData);
+    CC_SAFE_DESTROY_AND_DELETE(_globalDSManager);
+    CC_SAFE_DESTROY_AND_DELETE(_pipelineUBO);
+    CC_SAFE_DESTROY_AND_DELETE(_pipelineSceneData);
 
     for (auto *const queryPool : _queryPools) {
         queryPool->destroy();

@@ -61,7 +61,7 @@ Director::~Director() {
     CC_SAFE_DELETE(_compScheduler);
     CC_SAFE_DELETE(_nodeActivator);
     CC_SAFE_DELETE(_scheduler);
-    CC_SAFE_DESTROY(_root);
+    CC_SAFE_DESTROY_AND_DELETE(_root);
 
     instance = nullptr;
 }

@@ -53,7 +53,7 @@ void TextureBufferPool::initialize(const ITextureBufferPoolInfo &info) {
 
 void TextureBufferPool::destroy() {
     for (auto &chunk : _chunks) {
-        CC_SAFE_DESTROY(chunk.texture);
+        CC_SAFE_DESTROY_AND_DELETE(chunk.texture);
     }
     _chunks.clear();
     _handles.clear();

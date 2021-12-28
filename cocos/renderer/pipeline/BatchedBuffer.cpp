@@ -65,16 +65,16 @@ BatchedBuffer::~BatchedBuffer() = default;
 void BatchedBuffer::destroy() {
     for (auto &batch : _batches) {
         for (auto *vb : batch.vbs) {
-            CC_SAFE_DESTROY(vb);
+            CC_SAFE_DESTROY_AND_DELETE(vb);
         }
 
         for (auto *data : batch.vbDatas) {
             CC_FREE(data);
         }
 
-        CC_SAFE_DESTROY(batch.indexBuffer);
-        CC_SAFE_DESTROY(batch.ia);
-        CC_SAFE_DESTROY(batch.ubo);
+        CC_SAFE_DESTROY_AND_DELETE(batch.indexBuffer);
+        CC_SAFE_DESTROY_AND_DELETE(batch.ia);
+        CC_SAFE_DESTROY_AND_DELETE(batch.ubo);
 
         CC_FREE(batch.indexData);
     }

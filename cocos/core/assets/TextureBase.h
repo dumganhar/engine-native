@@ -180,7 +180,7 @@ public:
      * @zh 获取此贴图内部使用的 GFX 采样器信息。
      * @private
      */
-    virtual gfx::SamplerInfo getSamplerInfo() const {
+    virtual const gfx::SamplerInfo &getSamplerInfo() const {
         return _samplerInfo;
     }
 

@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include "cocos/base/Any.h"
-#include "cocos/base/Optional.h"
 #include <unordered_map>
 #include <vector>
 #include "base/Ptr.h"
 #include "base/Value.h"
 #include "bindings/jswrapper/SeApi.h"
+#include "cocos/base/Any.h"
+#include "cocos/base/Optional.h"
 #include "cocos/base/Variant.h"
 #include "cocos/core/assets/AssetsModuleHeader.h"
 #include "core/TypedArray.h"
@@ -228,10 +228,10 @@ inline bool sevalue_to_native(const se::Value &from, double *to, se::Object * /*
     return true;
 }
 
-inline bool sevalue_to_native(const se::Value & /*from*/, void * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    assert(false);                                                                               // void not supported
-    return false;
-}
+//inline bool sevalue_to_native(const se::Value & /*from*/, void * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+//    assert(false);                                                                               // void not supported
+//    return false;
+//}
 
 inline bool sevalue_to_native(const se::Value &from, cc::Data *to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     return seval_to_Data(from, to);
@@ -481,7 +481,7 @@ inline bool nativevalue_to_se(const cc::any &from, se::Value &to, se::Object *ct
 
 using void_p = void *;
 inline bool nativevalue_to_se(const void_p &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    if(!from) {
+    if (!from) {
         to.setUndefined();
     } else {
         auto ptr = reinterpret_cast<uintptr_t>(from);

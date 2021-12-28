@@ -87,17 +87,19 @@ class SharedPtr {
 public:
     using element_type = T;
 
-    SharedPtr() = default;
+    SharedPtr() {
+        static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
+    }
 
     SharedPtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)
-        static_assert(std::is_base_of<RefCounted, T>::value, "");
+        static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
     }
 
     SharedPtr(const SharedPtr<T> &r) : _ptr(r._ptr) {
-        static_assert(std::is_base_of<RefCounted, T>::value, "");
+        static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
@@ -105,7 +107,7 @@ public:
 
     template <typename U>
     SharedPtr(const SharedPtr<U> &r) : _ptr(r.get()) {
-        static_assert(std::is_base_of<RefCounted, T>::value, "");
+        static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
@@ -113,12 +115,12 @@ public:
 
     // Move constructors.
     SharedPtr(SharedPtr<T> &&r) noexcept : _ptr(r.release()) {
-        static_assert(std::is_base_of<RefCounted, T>::value, "");
+        static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
     template <typename U>
     SharedPtr(SharedPtr<U> &&r) noexcept : _ptr(r.release()) {
-        static_assert(std::is_base_of<RefCounted, T>::value, "");
+        static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
     ~SharedPtr() {
@@ -128,7 +130,7 @@ public:
     }
 
     T *get() const { return _ptr; }
-    operator T *() const { return _ptr; }
+       operator T *() const { return _ptr; }
     T &operator*() const { return *_ptr; }
     T *operator->() const { return _ptr; }
 

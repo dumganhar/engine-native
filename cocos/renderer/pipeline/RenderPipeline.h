@@ -25,19 +25,19 @@
 
 #pragma once
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 #include "Define.h"
 #include "GlobalDescriptorSetManager.h"
 #include "PipelineSceneData.h"
 #include "PipelineUBO.h"
 #include "base/CoreStd.h"
+#include "core/assets/Asset.h"
 #include "frame-graph/FrameGraph.h"
 #include "frame-graph/Handle.h"
+#include "renderer/core/PassUtils.h"
 #include "scene/Camera.h"
 #include "scene/Model.h"
-#include "renderer/core/PassUtils.h"
-#include "core/assets/Asset.h"
 
 namespace cc {
 namespace gfx {
@@ -72,7 +72,7 @@ public:
     ~RenderPipeline() override;
 
     virtual bool activate(gfx::Swapchain *swapchain);
-    bool destroy() override;
+    bool         destroy() override;
     virtual bool initialize(const RenderPipelineInfo &info);
     virtual void render(const vector<scene::Camera *> &cameras);
 
@@ -136,12 +136,12 @@ protected:
     uint                             _tag = 0;
     String                           _constantMacros;
 
-    gfx::Device *       _device{nullptr};
-    GlobalDSManager *   _globalDSManager{nullptr};
-    gfx::DescriptorSet *_descriptorSet{nullptr};
-    PipelineUBO *       _pipelineUBO{nullptr};
-    scene::Model *      _profiler{nullptr};
-    PipelineSceneData * _pipelineSceneData{nullptr};
+    gfx::Device *                _device{nullptr};
+    GlobalDSManager *            _globalDSManager{nullptr};
+    gfx::DescriptorSet *         _descriptorSet{nullptr};
+    PipelineUBO *                _pipelineUBO{nullptr};
+    scene::Model *               _profiler{nullptr};
+    SharedPtr<PipelineSceneData> _pipelineSceneData{nullptr};
     // has not initBuiltinRes,
     // create temporary default Texture to binding sampler2d
     uint                                                          _width{0};

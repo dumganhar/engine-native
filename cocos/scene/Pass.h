@@ -326,7 +326,7 @@ protected:
     SharedPtr<ArrayBuffer>        _rootBlock;
     std::vector<IBlockRef>        _blocks; // Point to position in _rootBlock
 
-    IProgramInfo *                                        _shaderInfo;
+    IProgramInfo *                                        _shaderInfo; // weakref to template of ProgramLib
     MacroRecord                                           _defines;
     Record<std::string, IPropertyInfo>                    _properties;
     SharedPtr<gfx::Shader>                                _shader;

@@ -297,7 +297,7 @@ void ShadowFlow::destroy() {
     renderPassHashMap.clear();
 
     for (auto *texture : _usedTextures) {
-        CC_SAFE_DESTROY(texture);
+        CC_SAFE_DESTROY_AND_DELETE(texture);
     }
     _usedTextures.clear();
 

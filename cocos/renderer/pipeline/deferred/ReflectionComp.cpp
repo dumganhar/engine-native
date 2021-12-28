@@ -5,25 +5,25 @@ namespace cc {
 
 ReflectionComp::~ReflectionComp() {
 
-    CC_SAFE_DESTROY(_compShader[0]);
-    CC_SAFE_DESTROY(_compShader[1]);
-    CC_SAFE_DESTROY(_compDescriptorSetLayout);
-    CC_SAFE_DESTROY(_compPipelineLayout);
-    CC_SAFE_DESTROY(_compPipelineState[0]);
-    CC_SAFE_DESTROY(_compPipelineState[1]);
-    CC_SAFE_DESTROY(_compDescriptorSet);
+    CC_SAFE_DESTROY_AND_DELETE(_compShader[0]);
+    CC_SAFE_DESTROY_AND_DELETE(_compShader[1]);
+    CC_SAFE_DESTROY_AND_DELETE(_compDescriptorSetLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_compPipelineLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_compPipelineState[0]);
+    CC_SAFE_DESTROY_AND_DELETE(_compPipelineState[1]);
+    CC_SAFE_DESTROY_AND_DELETE(_compDescriptorSet);
 
-    CC_SAFE_DESTROY(_compDenoiseShader[0]);
-    CC_SAFE_DESTROY(_compDenoiseShader[1]);
-    CC_SAFE_DESTROY(_compDenoiseDescriptorSetLayout);
-    CC_SAFE_DESTROY(_compDenoisePipelineLayout);
-    CC_SAFE_DESTROY(_compDenoisePipelineState[0]);
-    CC_SAFE_DESTROY(_compDenoisePipelineState[1]);
-    CC_SAFE_DESTROY(_compDenoiseDescriptorSet);
+    CC_SAFE_DESTROY_AND_DELETE(_compDenoiseShader[0]);
+    CC_SAFE_DESTROY_AND_DELETE(_compDenoiseShader[1]);
+    CC_SAFE_DESTROY_AND_DELETE(_compDenoiseDescriptorSetLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_compDenoisePipelineLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_compDenoisePipelineState[0]);
+    CC_SAFE_DESTROY_AND_DELETE(_compDenoisePipelineState[1]);
+    CC_SAFE_DESTROY_AND_DELETE(_compDenoiseDescriptorSet);
 
-    CC_SAFE_DESTROY(_localDescriptorSetLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_localDescriptorSetLayout);
 
-    CC_SAFE_DESTROY(_compConstantsBuffer);
+    CC_SAFE_DESTROY_AND_DELETE(_compConstantsBuffer);
 }
 
 namespace {

@@ -387,7 +387,7 @@ void PipelineUBO::activate(gfx::Device *device, RenderPipeline *pipeline) {
 
 void PipelineUBO::destroy() {
     for (auto &ubo : _ubos) {
-        CC_SAFE_DESTROY(ubo)
+        CC_SAFE_DESTROY_AND_DELETE(ubo)
     }
     _ubos.clear();
 }

@@ -70,7 +70,7 @@ gfx::PipelineState *PipelineStateManager::getOrCreatePipelineState(const scene::
 
 void PipelineStateManager::destroyAll() {
     for (auto &pair : psoHashMap) {
-        CC_SAFE_DESTROY(pair.second);
+        CC_SAFE_DESTROY_NULL(pair.second);
     }
     psoHashMap.clear();
 }

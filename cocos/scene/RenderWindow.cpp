@@ -85,7 +85,6 @@ void RenderWindow::destroy() {
 
     for (auto *colorTexture : _colorTextures) {
         CC_SAFE_DESTROY(colorTexture);
-        CC_SAFE_RELEASE(colorTexture);
     }
     _colorTextures.clear();
 }

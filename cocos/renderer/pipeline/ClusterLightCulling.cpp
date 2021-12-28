@@ -43,25 +43,25 @@ framegraph::StringHandle fgStrHandleClusterBuildPass   = framegraph::FrameGraph:
 framegraph::StringHandle fgStrHandleClusterCullingPass = framegraph::FrameGraph::stringToHandle("clusterCullingPass");
 
 ClusterLightCulling::~ClusterLightCulling() {
-    CC_SAFE_DESTROY(_buildingShader);
-    CC_SAFE_DESTROY(_buildingDescriptorSetLayout);
-    CC_SAFE_DESTROY(_buildingPipelineLayout);
-    CC_SAFE_DESTROY(_buildingPipelineState);
-    CC_SAFE_DESTROY(_buildingDescriptorSet);
+    CC_SAFE_DESTROY_AND_DELETE(_buildingShader);
+    CC_SAFE_DESTROY_AND_DELETE(_buildingDescriptorSetLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_buildingPipelineLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_buildingPipelineState);
+    CC_SAFE_DESTROY_AND_DELETE(_buildingDescriptorSet);
 
-    CC_SAFE_DESTROY(_resetCounterShader);
-    CC_SAFE_DESTROY(_resetCounterDescriptorSetLayout);
-    CC_SAFE_DESTROY(_resetCounterPipelineLayout);
-    CC_SAFE_DESTROY(_resetCounterPipelineState);
-    CC_SAFE_DESTROY(_resetCounterDescriptorSet);
+    CC_SAFE_DESTROY_AND_DELETE(_resetCounterShader);
+    CC_SAFE_DESTROY_AND_DELETE(_resetCounterDescriptorSetLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_resetCounterPipelineLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_resetCounterPipelineState);
+    CC_SAFE_DESTROY_AND_DELETE(_resetCounterDescriptorSet);
 
-    CC_SAFE_DESTROY(_cullingShader);
-    CC_SAFE_DESTROY(_cullingDescriptorSetLayout);
-    CC_SAFE_DESTROY(_cullingPipelineLayout);
-    CC_SAFE_DESTROY(_cullingPipelineState);
-    CC_SAFE_DESTROY(_cullingDescriptorSet);
+    CC_SAFE_DESTROY_AND_DELETE(_cullingShader);
+    CC_SAFE_DESTROY_AND_DELETE(_cullingDescriptorSetLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_cullingPipelineLayout);
+    CC_SAFE_DESTROY_AND_DELETE(_cullingPipelineState);
+    CC_SAFE_DESTROY_AND_DELETE(_cullingDescriptorSet);
 
-    CC_SAFE_DESTROY(_constantsBuffer);
+    CC_SAFE_DESTROY_AND_DELETE(_constantsBuffer);
 }
 
 void ClusterLightCulling::initialize(gfx::Device* dev) {

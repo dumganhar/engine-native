@@ -79,7 +79,7 @@ void GbufferStage::activate(RenderPipeline *pipeline, RenderFlow *flow) {
 void GbufferStage::destroy() {
     CC_SAFE_DELETE(_batchedQueue);
     CC_SAFE_DELETE(_instancedQueue);
-    CC_SAFE_DESTROY(_planarShadowQueue);
+    CC_SAFE_DESTROY_AND_DELETE(_planarShadowQueue);
     RenderStage::destroy();
 }
 

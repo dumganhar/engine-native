@@ -210,7 +210,7 @@ void updateDirFrustum(const geometry::Sphere *cameraBoundingSphere, const Quater
     dirLightFrustum->createOrtho(radius, radius, -range, radius, matWorldTrans);
 }
 
-void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera *camera, scene::Frustum *out) {
+void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera *camera, geometry::Frustum *out) {
     const gfx::Device *             device                  = gfx::Device::getInstance();
     PipelineSceneData *const        sceneData               = pipeline->getPipelineSceneData();
     const scene::Shadows *          shadows                 = sceneData->getShadows();
@@ -306,7 +306,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
     const scene::Skybox *           skyBox    = sceneData->getSkybox();
     const scene::RenderScene *const scene     = camera->getScene();
     const scene::DirectionalLight * mainLight = scene->getMainLight();
-    scene::Frustum                  dirLightFrustum;
+    geometry::Frustum               dirLightFrustum;
 
     RenderObjectList dirShadowObjects;
     bool             isShadowMap = false;

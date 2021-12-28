@@ -78,6 +78,8 @@ void MeshRenderer::onEnable() {
     if (!_model) {
         updateModels();
     }
+    updateCastShadow();
+    updateReceiveShadow();
     attachToScene();
 }
 
@@ -94,7 +96,7 @@ void MeshRenderer::onDestroy() {
         _models.clear();
     }
 
-    CC_SAFE_DESTROY(_morphInstance);
+    CC_SAFE_DESTROY_AND_DELETE(_morphInstance);
 }
 
 float MeshRenderer::getWeight(index_t subMeshIndex, index_t shapeIndex) const {
@@ -352,7 +354,7 @@ bool MeshRenderer::isBatchingEnabled() {
 }
 
 void MeshRenderer::watchMorphInMesh() {
-    CC_SAFE_DESTROY(_morphInstance);
+    CC_SAFE_DESTROY_AND_DELETE(_morphInstance);
 
     if (!_enableMorph) return;
 

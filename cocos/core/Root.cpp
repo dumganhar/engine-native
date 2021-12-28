@@ -94,7 +94,7 @@ void Root::initialize(gfx::Swapchain *swapchain) {
 void Root::destroy() {
     destroyScenes();
 
-    CC_SAFE_DESTROY(_pipeline);
+    CC_SAFE_DESTROY_AND_DELETE(_pipeline);
     // TODO(minggo):
     //    CC_SAFE_DESTROY(_batcher2D);
 
@@ -133,7 +133,7 @@ bool Root::setRenderPipeline(pipeline::RenderPipeline *rppl /* = nullptr*/) {
 
     if (!_pipeline->activate(_mainWindow->getSwapchain())) {
         if (isCreateDefaultPipeline) {
-            CC_SAFE_DESTROY(_pipeline);
+            CC_SAFE_DESTROY_AND_DELETE(_pipeline);
         }
 
         _pipeline = nullptr;

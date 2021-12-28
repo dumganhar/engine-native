@@ -108,9 +108,9 @@ uint32_t roundUpTextureSize(uint32_t targetLength, uint32_t formatSize) {
     return static_cast<uint32_t>(std::ceil(std::max(MINIMUM_JOINT_TEXTURE_SIZE * formatScale, static_cast<double>(targetLength)) / 12) * 12);
 }
 
-const cc::gfx::SamplerInfo jointTextureSamplerInfo{
-    cc::gfx::Filter::LINEAR,
-    cc::gfx::Filter::LINEAR,
+const cc::gfx::SamplerInfo JOINT_TEXTURE_SAMPLER_INFO{
+    cc::gfx::Filter::POINT,
+    cc::gfx::Filter::POINT,
     cc::gfx::Filter::NONE,
     cc::gfx::Address::CLAMP,
     cc::gfx::Address::CLAMP,
@@ -148,7 +148,7 @@ void JointTexturePool::clear() {
 
 void JointTexturePool::registerCustomTextureLayouts(const std::vector<ICustomJointTextureLayout> &layouts) {
     for (const auto &layout : layouts) {
-        index_t chunkIdx = _customPool->createChunk(layout.textureLength);
+        auto chunkIdx = static_cast<index_t>(_customPool->createChunk(layout.textureLength));
         for (const auto &content : layout.contents) {
             auto skeleton          = content.skeleton;
             _chunkIdxMap[skeleton] = chunkIdx; // include default pose too
@@ -160,7 +160,7 @@ void JointTexturePool::registerCustomTextureLayouts(const std::vector<ICustomJoi
 }
 
 cc::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skeleton *skeleton, Mesh *mesh, Node *skinningRoot) {
-    uint64_t                           hash = skeleton->getHash() ^ 0; // may not equal to skeleton.hash
+    uint64_t                          hash = skeleton->getHash() ^ 0; // may not equal to skeleton.hash
     cc::optional<IJointTextureHandle> texture;
     if (_textureBuffers.find(hash) != _textureBuffers.end()) {
         texture = _textureBuffers[hash];
@@ -472,7 +472,7 @@ IAnimInfo JointAnimationInfo::getData(const std::string &nodeID) {
 
 void JointAnimationInfo::destroy(const std::string &nodeID) {
     if (_pool.find(nodeID) != _pool.end()) {
-        CC_SAFE_DESTROY(_pool[nodeID].buffer);
+        CC_SAFE_DESTROY_AND_DELETE(_pool[nodeID].buffer);
         _pool.erase(nodeID);
     }
 }
@@ -486,7 +486,7 @@ const IAnimInfo &JointAnimationInfo::switchClip(IAnimInfo &info /*, AnimationCli
 
 void JointAnimationInfo::clear() {
     for (auto pool : _pool) {
-        CC_SAFE_DESTROY(pool.second.buffer);
+        CC_SAFE_DESTROY_AND_DELETE(pool.second.buffer);
     }
     _pool.clear();
 }

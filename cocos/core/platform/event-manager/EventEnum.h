@@ -127,13 +127,13 @@ public:
     static const std::string MOUSE_LEAVE;
 
     /**
-     * @en The event type for press the key down event, the event will be continuously dispatched in the key pressed state
+     * @en The event type for the key down event, the event will be continuously dispatched in the key pressed state
      * @zh 当按下按键时触发的事件, 该事件在按下状态会持续派发
     */
     static const std::string KEY_DOWN;
 
     /**
-     * @en The event type for press the key up event
+     * @en The event type for the key up event
      * @zh 当松开按键时触发的事件
     */
     static const std::string KEY_UP;
@@ -271,6 +271,110 @@ public:
     static const std::string SIBLING_ORDER_CHANGED;
 };
 
+/**
+ * @en The input event type
+ * @zh 输入事件类型
+ */
+class InputEventType {
+public:
+    /**
+     * @en
+     * The event type for touch start event
+     *
+     * @zh
+     * 手指开始触摸事件。
+    */
+    static const std::string TOUCH_START;
+
+    /**
+     * @en
+     * The event type for touch move event
+     *
+     * @zh
+     * 当手指在屏幕上移动时。
+    */
+    static const std::string TOUCH_MOVE;
+
+    /**
+     * @en
+     * The event type for touch end event
+     *
+     * @zh
+     * 手指结束触摸事件。
+    */
+    static const std::string TOUCH_END;
+
+    /**
+     * @en
+     * The event type for touch end event
+     *
+     * @zh
+     * 当手指在目标节点区域外离开屏幕时。
+    */
+    static const std::string TOUCH_CANCEL;
+
+    /**
+     * @en
+     * The event type for mouse down events
+     *
+     * @zh
+     * 当鼠标按下时触发一次。
+    */
+    static const std::string MOUSE_DOWN;
+
+    /**
+     * @en
+     * The event type for mouse move events
+     *
+     * @zh
+     * 当鼠标在目标节点在目标节点区域中移动时，不论是否按下。
+    */
+    static const std::string MOUSE_MOVE;
+
+    /**
+     * @en
+     * The event type for mouse up events
+     *
+     * @zh
+     * 当鼠标从按下状态松开时触发一次。
+    */
+    static const std::string MOUSE_UP;
+
+    /**
+     * @en
+     * The event type for mouse wheel events
+     *
+     * @zh 手指开始触摸事件
+    */
+    static const std::string MOUSE_WHEEL;
+
+    /**
+     * @en The event type for the key pressing event, the event will be continuously dispatched in the key pressed state
+     * @zh 当按着按键时触发的事件, 该事件在按下状态会持续派发
+    */
+    static const std::string KEY_DOWN;
+
+    /**
+     * @en The event type for the key pressing event, the event will be continuously dispatched in the key pressed state
+     * @zh 当按着按键时触发的事件, 该事件在按下状态会持续派发
+     */
+    static const std::string KEY_PRESSING;
+
+    /**
+     * @en The event type for the key up event
+     * @zh 当松开按键时触发的事件
+    */
+    static const std::string KEY_UP;
+
+    /**
+     * @en
+     * The event type for the devicemotion event
+     *
+     * @zh
+     * 重力感应
+    */
+    static const std::string DEVICEMOTION;
+};
 using SystemEventTypeUnion = cc::variant<SystemEventType, NodeEventType>;
 
 } // namespace cc

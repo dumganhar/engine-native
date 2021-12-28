@@ -75,7 +75,7 @@ public:
      * @param point - 屏幕点。
      * @param listener - 事件监听器。
      */
-    bool isHit(const Vec2 &point, event::EventListener *listener) const;
+    bool isHit(const Vec2 &point) const;
 
     /**
      * @en

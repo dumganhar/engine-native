@@ -93,7 +93,7 @@ void ShadowStage::destroy() {
     _globalDS    = nullptr;
     _light       = nullptr;
 
-    CC_SAFE_DESTROY(_additiveShadowQueue);
+    CC_SAFE_DESTROY_AND_DELETE(_additiveShadowQueue);
 
     RenderStage::destroy();
 }

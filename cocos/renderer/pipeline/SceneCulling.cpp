@@ -198,7 +198,7 @@ Mat4 getCameraWorldMatrix(const scene::Camera *camera) {
     return out;
 }
 
-void updateDirFrustum(const geometry::Sphere *cameraBoundingSphere, const Quaternion &rotation, float range, scene::Frustum *dirLightFrustum) {
+void updateDirFrustum(const geometry::Sphere *cameraBoundingSphere, const Quaternion &rotation, float range, geometry::Frustum *dirLightFrustum) {
     const float radius   = cameraBoundingSphere->getRadius();
     const Vec3 &position = cameraBoundingSphere->getCenter();
     Mat4        matWorldTrans;
@@ -210,7 +210,7 @@ void updateDirFrustum(const geometry::Sphere *cameraBoundingSphere, const Quater
     dirLightFrustum->createOrtho(radius, radius, -range, radius, matWorldTrans);
 }
 
-void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera *camera, scene::Frustum *out) {
+void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera *camera, geometry::Frustum *out) {
     const gfx::Device *             device                  = gfx::Device::getInstance();
     PipelineSceneData *const        sceneData               = pipeline->getPipelineSceneData();
     const scene::Shadows *          shadows                 = sceneData->getShadows();
@@ -223,10 +223,10 @@ void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera 
 
     // Raw data.
     const Mat4     matWorldTrans = getCameraWorldMatrix(camera);
-    scene::Frustum validFrustum;
+    geometry::Frustum validFrustum;
     validFrustum.setType(geometry::ShapeEnum::SHAPE_FRUSTUM_ACCURATE);
     validFrustum.split(0.1F, shadows->getShadowDistance(), camera->getAspect(), camera->getFov(), matWorldTrans);
-    scene::Frustum lightViewFrustum = validFrustum.clone();
+    geometry::Frustum lightViewFrustum = validFrustum.clone();
 
     // view matrix with range back.
     Mat4 matShadowTrans;
@@ -306,7 +306,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
     const scene::Skybox *           skyBox    = sceneData->getSkybox();
     const scene::RenderScene *const scene     = camera->getScene();
     const scene::DirectionalLight * mainLight = scene->getMainLight();
-    scene::Frustum                  dirLightFrustum;
+    geometry::Frustum               dirLightFrustum;
 
     RenderObjectList dirShadowObjects;
     bool             isShadowMap = false;
@@ -373,7 +373,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
             renderObjects.emplace_back(genRenderObject(model, camera));
         }
     } else {
-        scene::AABB ab;
+        geometry::AABB ab;
         for (const auto &model : scene->getModels()) {
             // filter model by view visibility
             if (model->isEnabled()) {

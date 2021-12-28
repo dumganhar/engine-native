@@ -81,8 +81,8 @@ void SwapchainAgent::doInit(const SwapchainInfo &info) {
 }
 
 void SwapchainAgent::doDestroy() {
-    _depthStencilTexture.release();
-    _colorTexture.release();
+    _depthStencilTexture = nullptr;
+    _colorTexture = nullptr;
 
     ENQUEUE_MESSAGE_1(
         DeviceAgent::getInstance()->getMessageQueue(), SwapchainDestroy,

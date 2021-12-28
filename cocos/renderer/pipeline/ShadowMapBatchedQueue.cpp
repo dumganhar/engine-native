@@ -53,10 +53,10 @@ void ShadowMapBatchedQueue::gatherLightPasses(const scene::Camera *camera, const
     clear();
 
     const PipelineSceneData *sceneData         = _pipeline->getPipelineSceneData();
-    const scene::Shadows    *shadowInfo        = sceneData->getShadow();
-    const RenderObjectList  &dirShadowObjects  = sceneData->getDirShadowObjects();
-    const RenderObjectList  &castShadowObjects = sceneData->isCastShadowObjects();
-    if (light && shadowInfo->isEnabled() && shadowInfo->getType() == scene::ShadowType::SHADOW_MAP) {
+    const scene::Shadows *   shadows           = sceneData->getShadows();
+    const RenderObjectList & dirShadowObjects  = sceneData->getDirShadowObjects();
+    const RenderObjectList & castShadowObjects = sceneData->isCastShadowObjects();
+    if (light && shadows->isEnabled() && shadows->getType() == scene::ShadowType::SHADOW_MAP) {
         switch (light->getType()) {
             case scene::LightType::DIRECTIONAL: {
                 for (const auto ro : dirShadowObjects) {
@@ -144,7 +144,7 @@ void ShadowMapBatchedQueue::recordCommandBuffer(gfx::Device *device, gfx::Render
     for (size_t i = 0; i < _subModels.size(); i++) {
         const auto *const subModel = _subModels[i];
         auto *const       shader   = _shaders[i];
-        const auto       *pass     = _passes[i];
+        const auto *      pass     = _passes[i];
         auto *const       ia       = subModel->getInputAssembler();
         auto *const       pso      = PipelineStateManager::getOrCreatePipelineState(pass, shader, ia, renderPass);
 

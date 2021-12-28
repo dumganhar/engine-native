@@ -163,7 +163,7 @@ void Pass::setUniform(uint32_t handle, const MaterialProperty &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    auto           &block   = _blocks[binding];
+    auto &          block   = _blocks[binding];
     if (auto iter = type2writer.find(type); iter != type2writer.end()) {
         iter->second(block.data, value, static_cast<int>(ofs));
     }
@@ -175,7 +175,7 @@ MaterialProperty &Pass::getUniform(uint32_t handle, MaterialProperty &out) const
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
-    const auto     &block   = _blocks[binding];
+    const auto &    block   = _blocks[binding];
     if (auto iter = type2reader.find(type); iter != type2reader.end()) {
         iter->second(block.data, out, static_cast<int>(ofs));
     }
@@ -186,7 +186,7 @@ void Pass::setUniformArray(uint32_t handle, const MaterialPropertyList &value) {
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  stride  = gfx::getTypeSize(type) >> 2;
-    auto           &block   = _blocks[binding];
+    auto &          block   = _blocks[binding];
     uint32_t        ofs     = Pass::getOffsetFromHandle(handle);
     for (size_t i = 0; i < value.size(); i++, ofs += stride) {
         if (value[i].index() == 0) {
@@ -288,7 +288,7 @@ void Pass::resetUniform(const std::string &name) {
     const uint32_t                                                                   binding = Pass::getBindingFromHandle(handle);
     const uint32_t                                                                   ofs     = Pass::getOffsetFromHandle(handle);
     const uint32_t                                                                   count   = Pass::getCountFromHandle(handle);
-    auto                                                                            &block   = _blocks[binding];
+    auto &                                                                           block   = _blocks[binding];
     cc::optional<cc::variant<std::vector<float>, std::vector<int32_t>, std::string>> givenDefaultOpt;
     auto                                                                             iter = _properties.find(name);
     if (iter != _properties.end()) {
@@ -316,7 +316,7 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     std::string     texName;
-    IPropertyInfo  *info = nullptr;
+    IPropertyInfo * info = nullptr;
     if (auto iter = _properties.find(name); iter != _properties.end()) {
         if (iter->second.value.has_value()) {
             info                 = &iter->second;
@@ -331,8 +331,8 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
         texName = getDefaultStringFromType(type);
     }
 
-    auto                          *textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
-    gfx::Texture                  *texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
+    auto *                         textureBase = BuiltinResMgr::getInstance()->get<TextureBase>(texName);
+    gfx::Texture *                 texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
     cc::optional<gfx::SamplerInfo> samplerInfo;
     if (info != nullptr && info->samplerHash.has_value()) {
         samplerInfo = gfx::Sampler::unpackFromHash(info->samplerHash.value());
@@ -353,10 +353,10 @@ void Pass::resetUBOs() {
     for (auto &u : _shaderInfo->blocks) {
         uint32_t ofs = 0;
         for (auto &cur : u.members) {
-            const auto    &block        = _blocks[u.binding];
-            const auto    &info         = _properties[cur.name];
-            const auto    &givenDefault = info.value;
-            const auto    &value        = (givenDefault.has_value() ? cc::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
+            const auto &   block        = _blocks[u.binding];
+            const auto &   info         = _properties[cur.name];
+            const auto &   givenDefault = info.value;
+            const auto &   value        = (givenDefault.has_value() ? cc::get<std::vector<float>>(givenDefault.value()) : getDefaultFloatArrayFromType(cur.type));
             const uint32_t size         = (gfx::getTypeSize(cur.type) >> 2) * cur.count;
             for (size_t k = 0; (k + value.size()) <= size; k += value.size()) {
                 std::copy(value.begin(), value.end(), block.data + ofs + k);
@@ -498,10 +498,10 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     _descriptorSet = _device->createDescriptorSet(dsInfo);
 
     // calculate total size required
-    const auto                 &blocks     = _shaderInfo->blocks;
-    const auto                 *tmplInfo   = programLib->getTemplateInfo(info.program);
+    const auto &                blocks     = _shaderInfo->blocks;
+    const auto *                tmplInfo   = programLib->getTemplateInfo(info.program);
     const std::vector<int32_t> &blockSizes = tmplInfo->blockSizes;
-    const auto                 &handleMap  = tmplInfo->handleMap;
+    const auto &                handleMap  = tmplInfo->handleMap;
 
     const auto            alignment = device->getCapabilities().uboOffsetAlignment;
     std::vector<uint32_t> startOffsets;
@@ -553,7 +553,7 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     }
     // store handles
     _propertyHandleMap                            = handleMap;
-    auto                         &directHandleMap = _propertyHandleMap;
+    auto &                        directHandleMap = _propertyHandleMap;
     Record<std::string, uint32_t> indirectHandleMap;
     for (const auto &[name, prop] : _properties) {
         if (!prop.handleInfo.has_value()) {

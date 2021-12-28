@@ -52,7 +52,7 @@ void SceneGlobals::activate() {
     }
 
     if (_shadowInfo != nullptr) {
-        _shadowInfo->activate(sceneData->getShadow());
+        _shadowInfo->activate(sceneData->getShadows());
     }
 
     if (_fogInfo != nullptr) {

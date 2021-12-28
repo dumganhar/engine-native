@@ -27,6 +27,7 @@
 
 #include "GFXTexture.h"
 #include "gfx-base/GFXDef-common.h"
+#include "base/Ptr.h"
 
 namespace cc {
 namespace gfx {
@@ -78,8 +79,8 @@ protected:
     SurfaceTransform _transform{SurfaceTransform::IDENTITY};
     bool             _preRotationEnabled{false};
 
-    Texture *_colorTexture{nullptr};
-    Texture *_depthStencilTexture{nullptr};
+    SharedPtr<Texture> _colorTexture;
+    SharedPtr<Texture> _depthStencilTexture;
 };
 
 ///////////////////////////////////////////////////////////

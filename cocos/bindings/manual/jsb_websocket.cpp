@@ -297,6 +297,7 @@ static bool webSocketConstructor(se::State &s) {
 
             cobj           = new (std::nothrow) cc::network::WebSocket();
             auto *delegate = new (std::nothrow) JsbWebSocketDelegate();
+            delegate->addRef();
             if (cobj->init(*delegate, url, &protocols, caFilePath)) {
                 delegate->setJSDelegate(se::Value(obj, true));
                 cobj->addRef();     // release in finalize function and onClose delegate method
@@ -310,6 +311,7 @@ static bool webSocketConstructor(se::State &s) {
         } else {
             cobj           = new (std::nothrow) cc::network::WebSocket();
             auto *delegate = new (std::nothrow) JsbWebSocketDelegate();
+            delegate->addRef();
             if (cobj->init(*delegate, url)) {
                 delegate->setJSDelegate(se::Value(obj, true));
                 cobj->addRef();     // release in finalize function and onClose delegate method

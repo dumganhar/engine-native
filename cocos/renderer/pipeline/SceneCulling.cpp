@@ -222,7 +222,7 @@ void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera 
     const Quaternion &              rotation                = node->getWorldRotation();
 
     // Raw data.
-    const Mat4     matWorldTrans = getCameraWorldMatrix(camera);
+    const Mat4        matWorldTrans = getCameraWorldMatrix(camera);
     geometry::Frustum validFrustum;
     validFrustum.setType(geometry::ShapeEnum::SHAPE_FRUSTUM_ACCURATE);
     validFrustum.split(0.1F, shadows->getShadowDistance(), camera->getAspect(), camera->getFov(), matWorldTrans);
@@ -238,7 +238,7 @@ void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera 
     lightViewFrustum.transform(matShadowView);
     // bounding box in light space.
     geometry::AABB castLightViewBounds;
-    geometry::AABB::fromPoints(Vec3(10000000.0F, 10000000.0F, 10000000.0F), Vec3(-10000000.0F, -10000000.0F, -10000000.0F), &castLightViewBounds);
+    geometry::AABB::fromPoints(Vec3(-10000000.0F, -10000000.0F, -10000000.0F), Vec3(10000000.0F, 10000000.0F, 10000000.0F), &castLightViewBounds);
     castLightViewBounds.merge(lightViewFrustum);
 
     const float r = castLightViewBounds.getHalfExtents().z * 2.0F;
@@ -332,7 +332,7 @@ void sceneCulling(RenderPipeline *pipeline, scene::Camera *camera) {
     }
 
     const scene::Octree *octree = scene->getOctree();
-    if (octree) {
+    if (octree && octree->isEnabled()) {
         for (const auto &model : scene->getModels()) {
             // filter model by view visibility
             if (model->isEnabled()) {

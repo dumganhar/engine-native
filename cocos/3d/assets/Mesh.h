@@ -28,7 +28,6 @@
 #include "3d/assets/MorphRendering.h"
 #include "3d/assets/Types.h"
 #include "cocos/base/Optional.h"
-#include "core/TypedArray.h"
 #include "core/assets/Asset.h"
 #include "core/geometry/AABB.h"
 #include "math/Mat4.h"
@@ -365,7 +364,7 @@ public:
      * @returns Return null if not found or can't read, otherwise, will create a large enough typed array to contain all indices data,
      * the array type will use the corresponding stride size.
      */
-    TypedArray readIndices(index_t primitiveIndex);
+    IBArray readIndices(index_t primitiveIndex);
 
     /**
      * @en Read the indices data of the given sub mesh and fill into the given array

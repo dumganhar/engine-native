@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "3d/assets/Types.h"
 #include "base/Vector.h"
 #include "cocos/base/Variant.h"
 #include "core/TypedArray.h"
@@ -34,12 +35,6 @@
 namespace cc {
 
 class Mesh;
-
-/**
- * @en Array views for index buffer
- * @zh 允许存储索引的数组视图。
- */
-using IBArray = cc::variant<Uint8Array, Uint16Array, Uint32Array>;
 
 /**
  * @en The interface of geometric information

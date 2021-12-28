@@ -28,6 +28,8 @@
 #include "3d/assets/Mesh.h"
 #include "3d/misc/Buffer.h"
 #include "core/DataView.h"
+#include "core/TypedArray.h"
+#include "math/Vec3.h"
 #include "renderer/gfx-base/GFXBuffer.h"
 #include "renderer/gfx-base/GFXDevice.h"
 
@@ -68,7 +70,7 @@ const IGeometricInfo &RenderingSubMesh::geometricInfo() {
     if (_geometricInfo.has_value()) {
         return _geometricInfo.value();
     }
-
+    // NOLINTNEXTLINE
     static const IGeometricInfo EMPTY_GEOMETRIC_INFO;
     if (_mesh == nullptr) {
         return EMPTY_GEOMETRIC_INFO;
@@ -84,46 +86,43 @@ const IGeometricInfo &RenderingSubMesh::geometricInfo() {
     if (const auto *pPositions = cc::get_if<Float32Array>(&positionsVar); pPositions != nullptr) {
         const auto &positions  = *pPositions;
         const auto &indicesVar = _mesh->readIndices(index);
-        if (const auto *pIndices = cc::get_if<Uint16Array>(&indicesVar); pIndices != nullptr) {
-            const auto &indices = *pIndices;
 
-            Vec3 max;
-            Vec3 min;
+        Vec3 max;
+        Vec3 min;
 
-            if (auto iter = std::find_if(_attributes.cbegin(), _attributes.cend(), [](const gfx::Attribute &element) -> bool {
-                    return element.name == gfx::ATTR_NAME_POSITION;
-                });
-                iter != _attributes.cend()) {
-                const auto &   attri = *iter;
-                const uint32_t count = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attri.format)].count;
+        if (auto iter = std::find_if(_attributes.cbegin(), _attributes.cend(), [](const gfx::Attribute &element) -> bool {
+                return element.name == gfx::ATTR_NAME_POSITION;
+            });
+            iter != _attributes.cend()) {
+            const auto &   attri = *iter;
+            const uint32_t count = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attri.format)].count;
+            if (count == 2) {
+                max.set(positions[0], positions[1], 0);
+                min.set(positions[0], positions[1], 0);
+            } else {
+                max.set(positions[0], positions[1], positions[2]);
+                min.set(positions[0], positions[1], positions[2]);
+            }
+
+            for (int i = 0; i < positions.length(); i += static_cast<int>(count)) {
                 if (count == 2) {
-                    max.set(positions[0], positions[1], 0);
-                    min.set(positions[0], positions[1], 0);
+                    max.x = positions[i] > max.x ? positions[i] : max.x;
+                    max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
+                    min.x = positions[i] < min.x ? positions[i] : min.x;
+                    min.y = positions[i + 1] < min.y ? positions[i + 1] : min.y;
                 } else {
-                    max.set(positions[0], positions[1], positions[2]);
-                    min.set(positions[0], positions[1], positions[2]);
-                }
-
-                for (int i = 0; i < positions.length(); i += static_cast<int>(count)) {
-                    if (count == 2) {
-                        max.x = positions[i] > max.x ? positions[i] : max.x;
-                        max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
-                        min.x = positions[i] < min.x ? positions[i] : min.x;
-                        min.y = positions[i + 1] < min.y ? positions[i + 1] : min.y;
-                    } else {
-                        max.x = positions[i] > max.x ? positions[i] : max.x;
-                        max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
-                        max.z = positions[i + 2] > max.z ? positions[i + 2] : max.z;
-                        min.x = positions[i] < min.x ? positions[i] : min.x;
-                        min.y = positions[i + 1] < min.y ? positions[i + 1] : min.y;
-                        min.z = positions[i + 2] < min.z ? positions[i + 2] : min.z;
-                    }
+                    max.x = positions[i] > max.x ? positions[i] : max.x;
+                    max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
+                    max.z = positions[i + 2] > max.z ? positions[i + 2] : max.z;
+                    min.x = positions[i] < min.x ? positions[i] : min.x;
+                    min.y = positions[i + 1] < min.y ? positions[i + 1] : min.y;
+                    min.z = positions[i + 2] < min.z ? positions[i + 2] : min.z;
                 }
             }
 
             IGeometricInfo info;
             info.positions       = positions;
-            info.indices         = indices;
+            info.indices         = indicesVar;
             info.boundingBox.max = max;
             info.boundingBox.min = min;
 

@@ -29,6 +29,7 @@
 #include <string>
 #include <vector>
 #include "cocos/base/Optional.h"
+#include "core/TypedArray.h"
 namespace cc {
 
 struct IMeshBufferView {
@@ -39,6 +40,12 @@ struct IMeshBufferView {
 };
 
 using MeshWeightsType = std::vector<float>;
+
+/**
+ * @en Array views for index buffer
+ * @zh 允许存储索引的数组视图
+ */
+using IBArray = cc::variant<Uint8Array, Uint16Array, Uint32Array>;
 
 struct MorphTarget {
     /**

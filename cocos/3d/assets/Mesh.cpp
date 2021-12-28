@@ -691,10 +691,8 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
     }
 
     // Create mesh.
-    reset({
-        std::move(meshStruct),
-        std::move(Uint8Array(bufferBlob.getCombined()))
-    });
+    reset({std::move(meshStruct),
+           std::move(Uint8Array(bufferBlob.getCombined()))});
     initialize();
     return true;
 }
@@ -825,7 +823,7 @@ bool Mesh::copyAttribute(index_t primitiveIndex, const char *attributeName, Arra
     return written;
 }
 
-TypedArray Mesh::readIndices(index_t primitiveIndex) {
+IBArray Mesh::readIndices(index_t primitiveIndex) {
     if (primitiveIndex >= _struct.primitives.size()) {
         return {};
     }
@@ -836,7 +834,7 @@ TypedArray Mesh::readIndices(index_t primitiveIndex) {
     const uint32_t stride     = primitive.indexView.value().stride;
     const uint32_t count      = primitive.indexView.value().count;
     const uint32_t byteOffset = primitive.indexView.value().offset;
-    TypedArray     ret;
+    IBArray        ret;
     if (stride == 1) {
         ret = Uint8Array(_data.buffer(), byteOffset, count);
     } else if (stride == 2) {

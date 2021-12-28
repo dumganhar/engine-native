@@ -47,15 +47,15 @@ public:
 
     inline scene::AmbientInfo *getAmbientInfo() const { return _ambientInfo.get(); }
     inline scene::ShadowsInfo *getShadowsInfo() const { return _shadowInfo.get(); }
-    inline scene::SkyboxInfo  *getSkyboxInfo() const { return _skyboxInfo.get(); }
-    inline scene::FogInfo     *getFogInfo() const { return _fogInfo.get(); }
-    inline scene::OctreeInfo  *getOctreeInfo() const { return _octreeInfo.get(); }
+    inline scene::SkyboxInfo * getSkyboxInfo() const { return _skyboxInfo.get(); }
+    inline scene::FogInfo *    getFogInfo() const { return _fogInfo.get(); }
+    inline scene::OctreeInfo * getOctreeInfo() const { return _octreeInfo.get(); }
 
     inline void setAmbientInfo(scene::AmbientInfo *info) { _ambientInfo = info; }
     inline void setShadowsInfo(scene::ShadowsInfo *info) { _shadowInfo = info; }
     inline void setSkyboxInfo(scene::SkyboxInfo *info) { _skyboxInfo = info; }
     inline void setFogInfo(scene::FogInfo *info) { _fogInfo = info; }
-    inline void setOctreeInfo(scene::OctreeInfo *info) { _octreeInfo = info; } // TODO(cjh): Need to update scene.ini
+    inline void setOctreeInfo(scene::OctreeInfo *info) { _octreeInfo = info; }
 
 private:
     SharedPtr<scene::AmbientInfo> _ambientInfo;

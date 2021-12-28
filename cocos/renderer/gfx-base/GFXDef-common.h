@@ -1145,13 +1145,13 @@ struct InputAssemblerInfo {
 struct ColorAttachment {
     ColorAttachment() = default;
 
-    ColorAttachment(Format format, std::vector<AccessType> &beginAccesses, std::vector<AccessType> &endAccesses) {
+    ColorAttachment(Format format, std::vector<AccessType> beginAccesses, std::vector<AccessType> endAccesses) {
         this->format        = format;
         this->beginAccesses = beginAccesses;
         this->endAccesses   = endAccesses;
     }
 
-    ColorAttachment(Format format, SampleCount sampleCount, LoadOp loadOp, StoreOp storeOp, std::vector<AccessType> &beginAccesses, std::vector<AccessType> &endAccesses, bool isGeneralLayout = false) {
+    ColorAttachment(Format format, SampleCount sampleCount, LoadOp loadOp, StoreOp storeOp, std::vector<AccessType> beginAccesses, std::vector<AccessType> endAccesses, bool isGeneralLayout = false) {
         this->format          = format;
         this->sampleCount     = sampleCount;
         this->loadOp          = loadOp;
@@ -1173,15 +1173,6 @@ struct ColorAttachment {
 using ColorAttachmentList = vector<ColorAttachment>;
 
 struct DepthStencilAttachment {
-    DepthStencilAttachment() = default;
-
-    DepthStencilAttachment(Format format) {
-        this->format = format;
-    }
-
-    DepthStencilAttachment(Format format, SampleCount sampleCount, LoadOp loadOp, StoreOp storeOp, std::vector<AccessType> &beginAccesses, std::vector<AccessType> &endAccesses, bool isGeneralLayout = false) {
-        this->format = format;
-    }
     Format                  format{Format::UNKNOWN};
     SampleCount             sampleCount{SampleCount::ONE};
     LoadOp                  depthLoadOp{LoadOp::CLEAR};
@@ -1219,7 +1210,7 @@ using SubpassDependencyList = vector<SubpassDependency>;
 struct RenderPassInfo {
     RenderPassInfo() = default;
 
-    RenderPassInfo(ColorAttachmentList &colorAttachmentList, DepthStencilAttachment &depthStencilAttachment) {
+    RenderPassInfo(ColorAttachmentList colorAttachmentList, DepthStencilAttachment depthStencilAttachment) {
         this->colorAttachments       = colorAttachmentList;
         this->depthStencilAttachment = depthStencilAttachment;
     }

@@ -58,9 +58,9 @@ bool Device::initialize(const DeviceInfo &info) {
     }
 
 #if CC_CPU_ARCH == CC_CPU_ARCH_32
-    static_assert(sizeof(void*) == 4, "pointer size assumption broken");
+    static_assert(sizeof(void *) == 4, "pointer size assumption broken");
 #else
-    static_assert(sizeof(void*) == 8, "pointer size assumption broken");
+    static_assert(sizeof(void *) == 8, "pointer size assumption broken");
 #endif
 
     bool result = doInit(info);
@@ -71,18 +71,9 @@ bool Device::initialize(const DeviceInfo &info) {
 }
 
 void Device::destroy() {
-    for (auto pair : _samplers) {
-        CC_SAFE_DELETE(pair.second);
-    }
-
-    for (auto pair : _globalBarriers) {
-        CC_SAFE_DELETE(pair.second);
-    }
-
-    for (auto pair : _textureBarriers) {
-        CC_SAFE_DELETE(pair.second);
-    }
-
+    _samplers.clear();
+    _globalBarriers.clear();
+    _textureBarriers.clear();
     _bindingMappingInfo.bufferOffsets.clear();
     _bindingMappingInfo.samplerOffsets.clear();
 
@@ -90,7 +81,7 @@ void Device::destroy() {
 }
 
 void Device::destroySurface(void *windowHandle) {
-    for (auto *swapchain :_swapchains) {
+    for (const auto &swapchain : _swapchains) {
         if (swapchain->getWindowHandle() == windowHandle) {
             swapchain->destroySurface();
             break;
@@ -99,7 +90,7 @@ void Device::destroySurface(void *windowHandle) {
 }
 
 void Device::createSurface(void *windowHandle) {
-    for (auto *swapchain :_swapchains) {
+    for (const auto &swapchain : _swapchains) {
         if (!swapchain->getWindowHandle()) {
             swapchain->createSurface(windowHandle);
             break;

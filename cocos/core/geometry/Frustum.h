@@ -125,6 +125,10 @@ public:
 
     Frustum() {
         setType(ShapeEnum::SHAPE_FRUSTUM);
+        // NOTE: Hack logic, avoid JS finalizer delete plane objects which be owned by Frustum
+        for (auto &plane : planes) {
+            plane.addRef();
+        }
     }
 
     /**

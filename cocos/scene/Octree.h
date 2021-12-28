@@ -48,6 +48,8 @@ constexpr int USE_MULTI_THRESHOLD    = 1024; // use parallel culling if greater 
 
 class CC_DLL OctreeInfo final : public RefCounted {
 public:
+    OctreeInfo()           = default;
+    ~OctreeInfo() override = default;
     /**
      * @en Whether activate octree
      * @zh 是否启用八叉树加速剔除？

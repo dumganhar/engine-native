@@ -41,14 +41,14 @@ class BakedSkinningModel;
 namespace scene {
 
 class Octree;
-class DrawBatch2D;
+struct DrawBatch2D;
 class DirectionalLight;
 class SphereLight;
 class SpotLight;
 
 struct IRaycastResult {
-    Node *node{nullptr};
-    float distance{0.F};
+    Node * node{nullptr};
+    float  distance{0.F};
 };
 
 struct IRenderSceneInfo {
@@ -60,19 +60,19 @@ public:
     RenderScene() = default;
     ~RenderScene() override;
 
-    bool initialize(const IRenderSceneInfo &info);
+    bool initialize(const IRenderSceneInfo & info);
     void update(uint32_t stamp);
     void destroy();
 
     void activate();
 
-    void addCamera(Camera *camera);
-    void removeCamera(Camera *camera);
+    void addCamera(Camera * camera);
+    void removeCamera(Camera * camera);
     void removeCameras();
 
-    void unsetMainLight(DirectionalLight *dl);
-    void addDirectionalLight(DirectionalLight *dl);
-    void removeDirectionalLight(DirectionalLight *dl);
+    void unsetMainLight(DirectionalLight * dl);
+    void addDirectionalLight(DirectionalLight * dl);
+    void removeDirectionalLight(DirectionalLight * dl);
 
     void addSphereLight(SphereLight *);
     void removeSphereLight(SphereLight *);
@@ -84,7 +84,7 @@ public:
 
     void addModel(Model *);
     void removeModel(index_t idx);
-    void removeModel(Model *model);
+    void removeModel(Model * model);
     void removeModels();
 
     void addBatch(DrawBatch2D *);
@@ -93,20 +93,20 @@ public:
 
     void onGlobalPipelineStateChanged();
 
-    inline DirectionalLight *getMainLight() const { return _mainLight.get(); }
-    void                     setMainLight(DirectionalLight *dl);
+    inline DirectionalLight * getMainLight() const { return _mainLight.get(); }
+    void                      setMainLight(DirectionalLight * dl);
 
-    inline uint64_t                                   generateModelId() { return _modelId++; }
-    inline const std::string                         &getName() const { return _name; }
-    inline const std::vector<SharedPtr<Camera>>      &getCameras() const { return _cameras; }
-    inline const std::vector<SharedPtr<SphereLight>> &getSphereLights() const { return _sphereLights; }
-    inline const std::vector<SharedPtr<SpotLight>>   &getSpotLights() const { return _spotLights; }
-    inline const std::vector<SharedPtr<Model>>       &getModels() const { return _models; }
-    inline Octree                                    *getOctree() const { return _octree; }
-    void                                              updateOctree(Model *model);
+    inline uint64_t                                    generateModelId() { return _modelId++; }
+    inline const std::string &                         getName() const { return _name; }
+    inline const std::vector<SharedPtr<Camera>> &      getCameras() const { return _cameras; }
+    inline const std::vector<SharedPtr<SphereLight>> & getSphereLights() const { return _sphereLights; }
+    inline const std::vector<SharedPtr<SpotLight>> &   getSpotLights() const { return _spotLights; }
+    inline const std::vector<SharedPtr<Model>> &       getModels() const { return _models; }
+    inline Octree *                                    getOctree() const { return _octree; }
+    void                                               updateOctree(Model * model);
     // FIXME: remove getDrawBatch2Ds
-    inline const std::vector<DrawBatch2D *> &getBatches() const { return _batches; }
-    inline const std::vector<DrawBatch2D *> &getDrawBatch2Ds() const { return _batches; }
+    inline const std::vector<DrawBatch2D *> & getBatches() const { return _batches; }
+    inline const std::vector<DrawBatch2D *> & getDrawBatch2Ds() const { return _batches; }
 
 private:
     std::string                              _name;
@@ -118,7 +118,7 @@ private:
     std::vector<SharedPtr<SphereLight>>      _sphereLights;
     std::vector<SharedPtr<SpotLight>>        _spotLights;
     std::vector<DrawBatch2D *>               _batches;
-    Octree                                  *_octree{nullptr};
+    Octree *                                 _octree{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderScene);
 };

@@ -16,3 +16,7 @@ SpacesBeforeTrailingComments:         1
 
 ObjCBlockIndentWidth:                 4
 ObjCSpaceAfterProperty:               true
+
+Language: Cpp
+DerivePointerAlignment:               false
+PointerAlignment:                     Middle

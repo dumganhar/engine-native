@@ -44,11 +44,13 @@ namespace cc {
 
 using IPropertyHandleInfo = std::tuple<std::string, uint32_t, gfx::Type>;
 
+using IPropertyValue = cc::optional<cc::variant<std::vector<float>, std::string>>;
+
 struct IPropertyInfo {
     int32_t                                                    type;        // auto-extracted from shader
     cc::optional<IPropertyHandleInfo>                          handleInfo;  // auto-generated from 'target'
     cc::optional<uint64_t>                                     samplerHash; // auto-generated from 'sampler'
-    cc::optional<cc::variant<std::vector<float>, std::string>> value; // default value
+    IPropertyValue                                             value; // default value
     cc::optional<bool> linear; // whether to convert the input to linear space first before applying
 };
 

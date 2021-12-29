@@ -289,7 +289,7 @@ void Pass::resetUniform(const std::string &name) {
     const uint32_t                                                                   ofs     = Pass::getOffsetFromHandle(handle);
     const uint32_t                                                                   count   = Pass::getCountFromHandle(handle);
     auto &                                                                           block   = _blocks[binding];
-    cc::optional<cc::variant<std::vector<float>, std::vector<int32_t>, std::string>> givenDefaultOpt;
+    IPropertyValue givenDefaultOpt;
     auto                                                                             iter = _properties.find(name);
     if (iter != _properties.end()) {
         givenDefaultOpt = iter->second.value;

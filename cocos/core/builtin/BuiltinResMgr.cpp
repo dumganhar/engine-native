@@ -173,7 +173,8 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
     }
     //
     const ShaderSource *shaderSources = nullptr;
-    if (const auto iter = ShaderSourceAssembly::get().find(shaderVersionKey); iter != ShaderSourceAssembly::get().cend()) {
+    const auto          iter          = ShaderSourceAssembly::get().find(shaderVersionKey);
+    if (iter != ShaderSourceAssembly::get().cend()) {
         shaderSources = iter->second;
     }
 
@@ -231,18 +232,19 @@ void BuiltinResMgr::initMaterials() {
     // standard material
     auto *standardMtl = new Material();
     standardMtl->setUuid("standard-material");
-    IMaterialInfo standardInfo{
-        .effectName = std::string{"standard"},
-    };
+    IMaterialInfo standardInfo;
+    standardInfo.effectName = std::string{"standard"};
     standardMtl->initialize(standardInfo);
     resources[standardMtl->getUuid()] = standardMtl;
     _materialsToBeCompiled.emplace_back(standardMtl);
 
     // material indicating missing effect (yellow)
     auto *        missingEfxMtl = new Material();
-    IMaterialInfo missingEfxInfo{
-        .effectName = std::string{"unlit"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_COLOR", true}}}};
+    IMaterialInfo missingEfxInfo;
+    missingEfxInfo.effectName = std::string{"unlit"};
+    missingEfxInfo.defines    = IMaterialInfo::DefinesType{
+        MacroRecord{
+            {"USE_COLOR", true}}};
     missingEfxMtl->setUuid("missing-effect-material");
     missingEfxMtl->initialize(missingEfxInfo);
     missingEfxMtl->setProperty("mainColor", Color{255, 255, 0, 255}); // #ffff00;
@@ -251,10 +253,10 @@ void BuiltinResMgr::initMaterials() {
 
     // material indicating missing material (purple)
     auto *        missingMtl = new Material();
-    IMaterialInfo missingInfo{
-        .effectName = std::string{"unlit"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{
-            {"USE_COLOR", true}}}};
+    IMaterialInfo missingInfo;
+    missingInfo.effectName = std::string{"unlit"},
+    missingInfo.defines    = IMaterialInfo::DefinesType{MacroRecord{
+        {"USE_COLOR", true}}};
     missingMtl->setUuid("missing-material");
     missingMtl->initialize(missingInfo);
     missingMtl->setProperty("mainColor", Color{255, 0, 255, 255}); // #ff00ff
@@ -262,10 +264,10 @@ void BuiltinResMgr::initMaterials() {
     _materialsToBeCompiled.emplace_back(missingMtl);
 
     auto *        clearStencilMtl = new Material();
-    IMaterialInfo clearStencilInfo{
-        .effectName = std::string{"clear-stencil"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{
-            {"USE_TEXTURE", false}}}};
+    IMaterialInfo clearStencilInfo;
+    clearStencilInfo.effectName = std::string{"clear-stencil"},
+    clearStencilInfo.defines    = IMaterialInfo::DefinesType{MacroRecord{
+        {"USE_TEXTURE", false}}};
     clearStencilMtl->setUuid("default-clear-stencil");
     clearStencilMtl->initialize(clearStencilInfo);
     resources[clearStencilMtl->getUuid()] = clearStencilMtl;
@@ -274,9 +276,9 @@ void BuiltinResMgr::initMaterials() {
     // sprite material
     auto *spriteMtl = new Material();
     spriteMtl->setUuid("ui-base-material");
-    IMaterialInfo spriteInfo{
-        .effectName = std::string{"sprite"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", false}}}};
+    IMaterialInfo spriteInfo;
+    spriteInfo.effectName = std::string{"sprite"},
+    spriteInfo.defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", false}}};
     spriteMtl->initialize(spriteInfo);
     resources[spriteMtl->getUuid()] = spriteMtl;
     _materialsToBeCompiled.emplace_back(spriteMtl);
@@ -284,19 +286,19 @@ void BuiltinResMgr::initMaterials() {
     // sprite material
     auto *spriteColorMtl = new Material();
     spriteColorMtl->setUuid("ui-sprite-material");
-    IMaterialInfo spriteColorInfo{
-        .effectName = std::string{"sprite"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}}};
+    IMaterialInfo spriteColorInfo;
+    spriteColorInfo.effectName = std::string{"sprite"},
+    spriteColorInfo.defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}};
     spriteColorMtl->initialize(spriteColorInfo);
     resources[spriteColorMtl->getUuid()] = spriteColorMtl;
     _materialsToBeCompiled.emplace_back(spriteColorMtl);
 
     // sprite alpha test material
     auto *        alphaTestMaskMtl = new Material();
-    IMaterialInfo alphaTestMaskInfo{
-        .effectName = std::string{"sprite"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{
-            {"USE_TEXTURE", true}, {"USE_ALPHA_TEST", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}}};
+    IMaterialInfo alphaTestMaskInfo;
+    alphaTestMaskInfo.effectName = std::string{"sprite"},
+    alphaTestMaskInfo.defines    = IMaterialInfo::DefinesType{MacroRecord{
+        {"USE_TEXTURE", true}, {"USE_ALPHA_TEST", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}};
     alphaTestMaskMtl->setUuid("ui-alpha-test-material");
     alphaTestMaskMtl->initialize(alphaTestMaskInfo);
     resources[alphaTestMaskMtl->getUuid()] = alphaTestMaskMtl;
@@ -305,9 +307,9 @@ void BuiltinResMgr::initMaterials() {
     // sprite gray material
     auto *spriteGrayMtl = new Material();
     spriteGrayMtl->setUuid("ui-sprite-gray-material");
-    IMaterialInfo spriteGrayInfo{
-        .effectName = std::string{"sprite"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", true}}}};
+    IMaterialInfo spriteGrayInfo;
+    spriteGrayInfo.effectName = std::string{"sprite"},
+    spriteGrayInfo.defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", true}}};
     spriteGrayMtl->initialize(spriteGrayInfo);
     resources[spriteGrayMtl->getUuid()] = spriteGrayMtl;
     _materialsToBeCompiled.emplace_back(spriteGrayMtl);
@@ -315,19 +317,19 @@ void BuiltinResMgr::initMaterials() {
     // sprite alpha material
     auto *spriteAlphaMtl = new Material();
     spriteAlphaMtl->setUuid("ui-sprite-alpha-sep-material");
-    IMaterialInfo spriteAlphaInfo{
-        .effectName = std::string{"sprite"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", false}}}};
+    IMaterialInfo spriteAlphaInfo;
+    spriteAlphaInfo.effectName = std::string{"sprite"},
+    spriteAlphaInfo.defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", false}}};
     spriteAlphaMtl->initialize(spriteAlphaInfo);
     resources[spriteAlphaMtl->getUuid()] = spriteAlphaMtl;
     _materialsToBeCompiled.emplace_back(spriteAlphaMtl);
 
     // sprite alpha & gray material
     auto *        spriteAlphaGrayMtl = new Material();
-    IMaterialInfo spriteAlphaGrayInfo{
-        .effectName = std::string{"sprite"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{
-            {"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", true}}}};
+    IMaterialInfo spriteAlphaGrayInfo;
+    spriteAlphaGrayInfo.effectName = std::string{"sprite"},
+    spriteAlphaGrayInfo.defines    = IMaterialInfo::DefinesType{MacroRecord{
+        {"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", true}}};
     spriteAlphaGrayMtl->setUuid("ui-sprite-gray-alpha-sep-material");
     spriteAlphaGrayMtl->initialize(spriteAlphaGrayInfo);
     resources[spriteAlphaGrayMtl->getUuid()] = spriteAlphaGrayMtl;
@@ -336,64 +338,59 @@ void BuiltinResMgr::initMaterials() {
     // ui graphics material
     auto *defaultGraphicsMtl = new Material();
     defaultGraphicsMtl->setUuid("ui-graphics-material");
-    IMaterialInfo defaultGraphicsInfo{.effectName = std::string{"graphics"}};
+    IMaterialInfo defaultGraphicsInfo;
+    defaultGraphicsInfo.effectName = std::string{"graphics"};
     defaultGraphicsMtl->initialize(defaultGraphicsInfo);
     resources[defaultGraphicsMtl->getUuid()] = defaultGraphicsMtl;
     _materialsToBeCompiled.emplace_back(defaultGraphicsMtl);
 
 #if UI_GPU_DRIVEN
     // sprite material
-    auto* spriteGPUMtl = new Material();
+    auto *spriteGPUMtl = new Material();
     spriteGPUMtl->setUuid("ui-base-gpu-material");
-    IMaterialInfo spriteGPUMtlInfo { 
-        .defines = IMaterialInfo::DefinesType{MacroRecord{ { "USE_TEXTURE", false } } },
-        .effectName = std::string{"sprite-gpu"}
-    };
+    IMaterialInfo spriteGPUMtlInfo{
+        .defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", false}}},
+        .effectName = std::string{"sprite-gpu"}};
     spriteGPUMtl->initialize(spriteGPUMtlInfo);
     resources[spriteGPUMtl->getUuid()] = spriteGPUMtl;
     _materialsToBeCompiled.emplace_back(spriteGPUMtl);
 
     // sprite material
-    auto* spriteColorGPUMtl = new Material();
+    auto *spriteColorGPUMtl = new Material();
     spriteColorGPUMtl->setUuid("ui-sprite-gpu-material");
-    IMaterialInfo spriteColorGPUMtlInfo {
-        .defines = IMaterialInfo::DefinesType{MacroRecord{ { "USE_TEXTURE", true}, { "CC_USE_EMBEDDED_ALPHA", false }, { "IS_GRAY", false } }},
-        .effectName = std::string{"sprite-gpu"}
-    };
+    IMaterialInfo spriteColorGPUMtlInfo{
+        .defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", false}}},
+        .effectName = std::string{"sprite-gpu"}};
     spriteColorGPUMtl->initialize(spriteColorGPUMtlInfo);
     resources[spriteColorGPUMtl->getUuid()] = spriteColorGPUMtl;
     _materialsToBeCompiled.emplace_back(spriteColorGPUMtl);
 
     // sprite gray material
-    auto* spriteGrayGPUMtl = new Material();
+    auto *spriteGrayGPUMtl = new Material();
     spriteGrayGPUMtl->setUuid("ui-sprite-gray-gpu-material");
     IMaterialInfo spriteGrayGPUMtlInfo{
-        .defines = IMaterialInfo::DefinesType{MacroRecord{ { "USE_TEXTURE", true} , { "CC_USE_EMBEDDED_ALPHA", false }, { "IS_GRAY", true } }},
-        .effectName = std::string{"sprite-gpu"}
-    };
+        .defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", false}, {"IS_GRAY", true}}},
+        .effectName = std::string{"sprite-gpu"}};
     spriteGrayGPUMtl->initialize(spriteGrayGPUMtlInfo);
     resources[spriteGrayGPUMtl->getUuid()] = spriteGrayGPUMtl;
     _materialsToBeCompiled.emplace_back(spriteGrayGPUMtl);
 
     // sprite alpha material
-    auto* spriteAlphaGPUMtl = new Material();
+    auto *spriteAlphaGPUMtl = new Material();
     spriteAlphaGPUMtl->setUuid("ui-sprite-alpha-sep-gpu-material");
 
-    IMaterialInfo spriteAlphaGPUMtlInfo {
-        .defines = IMaterialInfo::DefinesType{MacroRecord{ { "USE_TEXTURE", true }, { "CC_USE_EMBEDDED_ALPHA", true }, { "IS_GRAY", false } }},
-        .effectName = std::string{"sprite-gpu"}
-    };
+    IMaterialInfo spriteAlphaGPUMtlInfo{
+        .defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", false}}},
+        .effectName = std::string{"sprite-gpu"}};
     spriteAlphaGPUMtl->initialize(spriteAlphaGPUMtlInfo);
     resources[spriteAlphaGPUMtl->getUuid()] = spriteAlphaGPUMtl;
     _materialsToBeCompiled.emplace_back(spriteAlphaGPUMtl);
 
     // sprite alpha & gray material
-    auto* spriteAlphaGrayGPUMtl = new Material();
+    auto *spriteAlphaGrayGPUMtl = new Material();
     spriteAlphaGrayGPUMtl->setUuid("ui-sprite-gray-alpha-sep-gpu-material");
-    spriteAlphaGrayGPUMtl->initialize({
-        .defines = IMaterialInfo::DefinesType{MacroRecord{ { "USE_TEXTURE", true }, { "CC_USE_EMBEDDED_ALPHA", true }, { "IS_GRAY", true } } },
-        .effectName = std::string{"sprite-gpu"}
-    });
+    spriteAlphaGrayGPUMtl->initialize({.defines    = IMaterialInfo::DefinesType{MacroRecord{{"USE_TEXTURE", true}, {"CC_USE_EMBEDDED_ALPHA", true}, {"IS_GRAY", true}}},
+                                       .effectName = std::string{"sprite-gpu"}});
     resources[spriteAlphaGrayGPUMtl->getUuid()] = spriteAlphaGrayGPUMtl;
     _materialsToBeCompiled.emplace_back(spriteAlphaGrayGPUMtl);
 #endif
@@ -401,7 +398,8 @@ void BuiltinResMgr::initMaterials() {
     // default particle material
     auto *defaultParticleMtl = new Material();
     defaultParticleMtl->setUuid("default-particle-material");
-    IMaterialInfo defaultParticleInfo{.effectName = std::string{"particle"}};
+    IMaterialInfo defaultParticleInfo;
+    defaultParticleInfo.effectName = std::string{"particle"};
     defaultParticleMtl->initialize(defaultParticleInfo);
     resources[defaultParticleMtl->getUuid()] = defaultParticleMtl;
     _materialsToBeCompiled.emplace_back(defaultParticleMtl);
@@ -409,7 +407,8 @@ void BuiltinResMgr::initMaterials() {
     // default particle gpu material
     auto *defaultParticleGPUMtl = new Material();
     defaultParticleGPUMtl->setUuid("default-particle-gpu-material");
-    IMaterialInfo defaultParticleGPUInfo{.effectName = std::string{"particle-gpu"}};
+    IMaterialInfo defaultParticleGPUInfo;
+    defaultParticleGPUInfo.effectName = std::string{"particle-gpu"};
     defaultParticleGPUMtl->initialize(defaultParticleGPUInfo);
     resources[defaultParticleGPUMtl->getUuid()] = defaultParticleGPUMtl;
     _materialsToBeCompiled.emplace_back(defaultParticleGPUMtl);
@@ -417,7 +416,8 @@ void BuiltinResMgr::initMaterials() {
     // default particle material
     auto *defaultTrailMtl = new Material();
     defaultTrailMtl->setUuid("default-trail-material");
-    IMaterialInfo defaultTrailInfo{.effectName = std::string{"particle-trail"}};
+    IMaterialInfo defaultTrailInfo;
+    defaultTrailInfo.effectName = std::string{"particle-trail"};
     defaultTrailMtl->initialize(defaultTrailInfo);
     resources[defaultTrailMtl->getUuid()] = defaultTrailMtl;
     _materialsToBeCompiled.emplace_back(defaultTrailMtl);
@@ -425,7 +425,8 @@ void BuiltinResMgr::initMaterials() {
     // default particle material
     auto *defaultBillboardMtl = new Material();
     defaultBillboardMtl->setUuid("default-billboard-material");
-    IMaterialInfo defaultBillboardInfo{.effectName = std::string{"billboard"}};
+    IMaterialInfo defaultBillboardInfo;
+    defaultBillboardInfo.effectName = std::string{"billboard"};
     defaultBillboardMtl->initialize(defaultBillboardInfo);
     resources[defaultBillboardMtl->getUuid()] = defaultBillboardMtl;
     _materialsToBeCompiled.emplace_back(defaultBillboardMtl);
@@ -433,13 +434,13 @@ void BuiltinResMgr::initMaterials() {
     // ui spine two color material
     auto *spineTwoColorMtl = new Material();
     spineTwoColorMtl->setUuid("default-spine-material");
-    IMaterialInfo spineTwoColorInfo{
-        .effectName = std::string{"spine"},
-        .defines    = IMaterialInfo::DefinesType{MacroRecord{
-            {"USE_TEXTURE", true},
-            {"CC_USE_EMBEDDED_ALPHA", false},
-            {"IS_GRAY", false},
-        }}};
+    IMaterialInfo spineTwoColorInfo;
+    spineTwoColorInfo.effectName = std::string{"spine"},
+    spineTwoColorInfo.defines    = IMaterialInfo::DefinesType{MacroRecord{
+        {"USE_TEXTURE", true},
+        {"CC_USE_EMBEDDED_ALPHA", false},
+        {"IS_GRAY", false},
+    }};
     spineTwoColorMtl->initialize(spineTwoColorInfo);
     resources[spineTwoColorMtl->getUuid()] = spineTwoColorMtl;
     _materialsToBeCompiled.emplace_back(spineTwoColorMtl);

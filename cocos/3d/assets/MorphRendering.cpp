@@ -640,21 +640,24 @@ public:
             {"CC_USE_MORPH", true},
             {"CC_MORPH_TARGET_COUNT", static_cast<int32_t>(subMeshMorph.targets.size())}};
 
-        if (auto iter = std::find(subMeshMorph.attributes.begin(), subMeshMorph.attributes.end(), gfx::ATTR_NAME_POSITION); iter != subMeshMorph.attributes.end()) {
+        auto posIter = std::find(subMeshMorph.attributes.begin(), subMeshMorph.attributes.end(), gfx::ATTR_NAME_POSITION);
+        if (posIter != subMeshMorph.attributes.end()) {
             patches.emplace_back(scene::IMacroPatch{
                 "CC_MORPH_TARGET_HAS_POSITION",
                 true,
             });
         }
 
-        if (auto iter = std::find(subMeshMorph.attributes.begin(), subMeshMorph.attributes.end(), gfx::ATTR_NAME_NORMAL); iter != subMeshMorph.attributes.end()) {
+        auto normalIter = std::find(subMeshMorph.attributes.begin(), subMeshMorph.attributes.end(), gfx::ATTR_NAME_NORMAL);
+        if (normalIter != subMeshMorph.attributes.end()) {
             patches.emplace_back(scene::IMacroPatch{
                 "CC_MORPH_TARGET_HAS_NORMAL",
                 true,
             });
         }
 
-        if (auto iter = std::find(subMeshMorph.attributes.begin(), subMeshMorph.attributes.end(), gfx::ATTR_NAME_TANGENT); iter != subMeshMorph.attributes.end()) {
+        auto tangentIter = std::find(subMeshMorph.attributes.begin(), subMeshMorph.attributes.end(), gfx::ATTR_NAME_TANGENT);
+        if (tangentIter != subMeshMorph.attributes.end()) {
             patches.emplace_back(scene::IMacroPatch{
                 "CC_MORPH_TARGET_HAS_TANGENT",
                 true,

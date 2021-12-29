@@ -247,7 +247,7 @@ void doDispatchEvent(cc::Node *owner, cc::event::Event *event) {
     cachedArray.clear();
 }
 
-template <typename T, typename Enabled = std::enable_if_t<std::is_base_of_v<cc::Component, T>, T>>
+template <typename T, typename Enabled = std::enable_if_t<std::is_base_of<cc::Component, T>::value, T>>
 std::vector<cc::event::IListenerMask> searchComponentsInParent(cc::Node *node) {
     index_t                               index = 0;
     std::vector<cc::event::IListenerMask> list;
@@ -255,11 +255,10 @@ std::vector<cc::event::IListenerMask> searchComponentsInParent(cc::Node *node) {
     for (cc::Node *curr = node; curr != nullptr && cc::Node::isNode(curr); curr = curr->getParent(), ++index) {
         auto *comp = curr->getComponent<T>();
         if (comp != nullptr) {
-            cc::event::IListenerMask next{
-                .index = index,
-                .comp  = comp,
-            };
-            list.emplace_back(next);
+            list.emplace_back();
+            auto &info = list.back();
+            info.index = index;
+            info.comp  = comp;
         }
     }
     return list.empty() ? std::vector<cc::event::IListenerMask>() : list;

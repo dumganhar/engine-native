@@ -825,7 +825,7 @@ Vec3 Terrain::getPosition(int32_t i, int32_t j) {
 }
 
 void Terrain::setHeight(int32_t i, int32_t j, float h) {
-    h                                     = std::clamp(h, TERRAIN_HEIGHT_FMIN, TERRAIN_HEIGHT_FMAX);
+    h                                     = cc::mathutils::clamp(h, TERRAIN_HEIGHT_FMIN, TERRAIN_HEIGHT_FMAX);
     _heights[j * getVertexCount()[0] + i] = TERRAIN_HEIGHT_BASE + h / TERRAIN_HEIGHT_FACTORY;
 }
 
@@ -835,8 +835,8 @@ float Terrain::getHeight(int32_t i, int32_t j) const {
 
 float Terrain::getHeightClamp(int32_t i, int32_t j) const {
     auto vertexCount = getVertexCount();
-    i                = std::clamp(i, 0, vertexCount[0] - 1);
-    j                = std::clamp(j, 0, vertexCount[1] - 1);
+    i                = cc::mathutils::clamp(i, 0, vertexCount[0] - 1);
+    j                = cc::mathutils::clamp(j, 0, vertexCount[1] - 1);
 
     return getHeight(i, j);
 }
@@ -858,10 +858,10 @@ cc::optional<float> Terrain::getHeightAt(float x, float y) const {
         return cc::nullopt;
     }
 
-    ix0 = std::clamp(ix0, 0, vertexCount[0] - 1);
-    iz0 = std::clamp(iz0, 0, vertexCount[1] - 1);
-    ix1 = std::clamp(ix1, 0, vertexCount[0] - 1);
-    iz1 = std::clamp(iz1, 0, vertexCount[1] - 1);
+    ix0 = cc::mathutils::clamp(ix0, 0, vertexCount[0] - 1);
+    iz0 = cc::mathutils::clamp(iz0, 0, vertexCount[1] - 1);
+    ix1 = cc::mathutils::clamp(ix1, 0, vertexCount[0] - 1);
+    iz1 = cc::mathutils::clamp(iz1, 0, vertexCount[1] - 1);
 
     float       a = getHeight(ix0, iz0);
     float       b = getHeight(ix1, iz0);
@@ -919,10 +919,10 @@ cc::optional<Vec3> Terrain::getNormalAt(float x, float y) const {
         return cc::nullopt;
     }
 
-    ix0 = std::clamp(ix0, 0, vertexCount[0] - 1);
-    iz0 = std::clamp(iz0, 0, vertexCount[1] - 1);
-    ix1 = std::clamp(ix1, 0, vertexCount[0] - 1);
-    iz1 = std::clamp(iz1, 0, vertexCount[1] - 1);
+    ix0 = cc::mathutils::clamp(ix0, 0, vertexCount[0] - 1);
+    iz0 = cc::mathutils::clamp(iz0, 0, vertexCount[1] - 1);
+    ix1 = cc::mathutils::clamp(ix1, 0, vertexCount[0] - 1);
+    iz1 = cc::mathutils::clamp(iz1, 0, vertexCount[1] - 1);
 
     Vec3 a = getNormal(ix0, iz0);
     Vec3 b = getNormal(ix1, iz0);
@@ -993,10 +993,10 @@ cc::optional<Vec4> Terrain::getWeightAt(float x, float y) const {
         return cc::nullopt;
     }
 
-    ix0 = std::clamp(ix0, 0, uWeigthComplexity - 1);
-    iz0 = std::clamp(iz0, 0, vWeigthComplexity - 1);
-    ix1 = std::clamp(ix1, 0, uWeigthComplexity - 1);
-    iz1 = std::clamp(iz1, 0, vWeigthComplexity - 1);
+    ix0 = cc::mathutils::clamp(ix0, 0, uWeigthComplexity - 1);
+    iz0 = cc::mathutils::clamp(iz0, 0, vWeigthComplexity - 1);
+    ix1 = cc::mathutils::clamp(ix1, 0, uWeigthComplexity - 1);
+    iz1 = cc::mathutils::clamp(iz1, 0, vWeigthComplexity - 1);
 
     Vec4 a = getWeight(ix0, iz0);
     Vec4 b = getWeight(ix1, iz0);

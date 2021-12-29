@@ -53,12 +53,13 @@ IGeometry circle(cc::optional<ICircleOptions> &options) {
         indices[indices.size() - 1] = 1;
     }
 
-    return IGeometry{
-        .positions      = positions,
-        .boundingRadius = 1,
-        .minPos         = Vec3(1, 1, 0),
-        .maxPos         = Vec3(-1, -1, 0),
-        .indices        = indices,
-        .primitiveMode  = gfx::PrimitiveMode::TRIANGLE_FAN};
+    IGeometry info;
+    info.positions      = positions;
+    info.boundingRadius = 1;
+    info.minPos         = Vec3(1, 1, 0);
+    info.maxPos         = Vec3(-1, -1, 0);
+    info.indices        = indices;
+    info.primitiveMode  = gfx::PrimitiveMode::TRIANGLE_FAN;
+    return info;
 }
 } // namespace cc

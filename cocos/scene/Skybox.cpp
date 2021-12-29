@@ -37,7 +37,7 @@
 #include "scene/Model.h"
 
 namespace {
-cc::Mesh     *skyboxMesh{nullptr}; // TODO(cjh): How to release ?
+cc::Mesh *    skyboxMesh{nullptr}; // TODO(cjh): How to release ?
 cc::Material *skyboxMaterial{nullptr};
 } // namespace
 namespace cc {
@@ -181,7 +181,7 @@ void Skybox::activate() {
     bool  isRGBE = envmap != nullptr ? envmap->isRGBE : _default->isRGBE;
 
     if (!skyboxMaterial) {
-        auto         *mat = new Material();
+        auto *        mat = new Material();
         MacroRecord   defines{{"USE_RGBE_CUBEMAP", isRGBE}};
         IMaterialInfo matInfo;
         matInfo.effectName = std::string{"skybox"};
@@ -199,9 +199,9 @@ void Skybox::activate() {
             options.height = 2;
             options.length = 2;
             skyboxMesh     = createMesh(
-                    createGeometry(
-                        PrimitiveType::BOX,
-                        PrimitiveOptions{options}));
+                createGeometry(
+                    PrimitiveType::BOX,
+                    PrimitiveOptions{options}));
         }
         _model->initSubModel(0, skyboxMesh->getRenderingSubMeshes()[0], skyboxMaterial);
     }
@@ -227,7 +227,7 @@ void Skybox::updatePipeline() const {
         _model->setSubModelMaterial(0, skyboxMaterial);
     }
 
-    Root                     *root     = Root::getInstance();
+    Root *                    root     = Root::getInstance();
     pipeline::RenderPipeline *pipeline = root->getPipeline();
 
     const bool    useRGBE            = isRGBE();
@@ -235,18 +235,20 @@ void Skybox::updatePipeline() const {
     const int32_t useDiffuseMapValue = (isUseIBL() && isUseDiffuseMap() && getDiffuseMap() != nullptr) ? (useRGBE ? 2 : 1) : 0;
     const bool    useHDRValue        = isUseHDR();
 
-    if (auto iter = pipeline->getMacros().find("CC_USE_IBL"); iter != pipeline->getMacros().end()) {
+    auto iter = pipeline->getMacros().find("CC_USE_IBL");
+    if (iter != pipeline->getMacros().end()) {
         const MacroValue &macroIBL    = iter->second;
-        const int32_t    *macroIBLPtr = cc::get_if<int32_t>(&macroIBL);
+        const int32_t *   macroIBLPtr = cc::get_if<int32_t>(&macroIBL);
         if (macroIBLPtr != nullptr && (*macroIBLPtr == useIBLValue)) {
             auto iter = pipeline->getMacros().find("CC_USE_DIFFUSEMAP");
             if (iter != pipeline->getMacros().end()) {
                 const MacroValue &macroDIFFUSEMAP    = iter->second;
-                const int32_t    *macroDIFFUSEMAPPtr = cc::get_if<int32_t>(&macroDIFFUSEMAP);
+                const int32_t *   macroDIFFUSEMAPPtr = cc::get_if<int32_t>(&macroDIFFUSEMAP);
                 if (macroDIFFUSEMAPPtr != nullptr && (*macroDIFFUSEMAPPtr == useDiffuseMapValue)) {
-                    if (auto iter = pipeline->getMacros().find("CC_USE_HDR"); iter != pipeline->getMacros().end()) {
+                    auto iter = pipeline->getMacros().find("CC_USE_HDR");
+                    if (iter != pipeline->getMacros().end()) {
                         const MacroValue &macroHDR    = iter->second;
-                        const int32_t    *macroHDRPtr = cc::get_if<int32_t>(&macroHDR);
+                        const int32_t *   macroHDRPtr = cc::get_if<int32_t>(&macroHDR);
                         if (macroHDRPtr != nullptr && (*macroHDRPtr == useHDRValue)) {
                             return;
                         }

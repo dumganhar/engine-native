@@ -164,7 +164,8 @@ void Pass::setUniform(uint32_t handle, const MaterialProperty &value) {
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
     auto &          block   = _blocks[binding];
-    if (auto iter = type2writer.find(type); iter != type2writer.end()) {
+    auto            iter    = type2writer.find(type);
+    if (iter != type2writer.end()) {
         iter->second(block.data, value, static_cast<int>(ofs));
     }
 
@@ -176,7 +177,8 @@ MaterialProperty &Pass::getUniform(uint32_t handle, MaterialProperty &out) const
     const gfx::Type type    = Pass::getTypeFromHandle(handle);
     const uint32_t  ofs     = Pass::getOffsetFromHandle(handle);
     const auto &    block   = _blocks[binding];
-    if (auto iter = type2reader.find(type); iter != type2reader.end()) {
+    auto            iter    = type2reader.find(type);
+    if (iter != type2reader.end()) {
         iter->second(block.data, out, static_cast<int>(ofs));
     }
     return out;
@@ -192,7 +194,8 @@ void Pass::setUniformArray(uint32_t handle, const MaterialPropertyList &value) {
         if (value[i].index() == 0) {
             continue;
         }
-        if (auto iter = type2writer.find(type); iter != type2writer.end()) {
+        auto iter = type2writer.find(type);
+        if (iter != type2writer.end()) {
             iter->second(block.data, value[i], static_cast<int>(ofs));
         }
     }
@@ -299,7 +302,8 @@ void Pass::resetUniform(const std::string &name) {
         const auto &value = givenDefaultOpt.value();
         if (cc::holds_alternative<std::vector<float>>(value)) {
             const auto &floatArr = cc::get<std::vector<float>>(value);
-            if (auto iter = type2writer.find(type); iter != type2writer.end()) {
+            auto        iter     = type2writer.find(type);
+            if (iter != type2writer.end()) {
                 iter->second(block.data, floatArr.data(), ofs);
             }
         }
@@ -317,7 +321,8 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
     const uint32_t  binding = Pass::getBindingFromHandle(handle);
     std::string     texName;
     IPropertyInfo * info = nullptr;
-    if (auto iter = _properties.find(name); iter != _properties.end()) {
+    auto            iter = _properties.find(name);
+    if (iter != _properties.end()) {
         if (iter->second.value.has_value()) {
             info                 = &iter->second;
             std::string *pStrVal = cc::get_if<std::string>(&iter->second.value.value());
@@ -423,7 +428,8 @@ gfx::Shader *Pass::getShaderVariant(const std::vector<IMacroPatch> &patches) {
     auto *shader = ProgramLib::getInstance()->getGFXShader(_device, _programName, _defines, pipeline);
 
     for (const auto &patch : patches) {
-        if (auto iter = _defines.find(patch.name); iter != _defines.end()) {
+        auto iter = _defines.find(patch.name);
+        if (iter != _defines.end()) {
             _defines.erase(iter);
         }
     }
@@ -555,30 +561,34 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
     _propertyHandleMap                            = handleMap;
     auto &                        directHandleMap = _propertyHandleMap;
     Record<std::string, uint32_t> indirectHandleMap;
-    for (const auto &[name, prop] : _properties) {
-        if (!prop.handleInfo.has_value()) {
+    for (const auto &properties : _properties) {
+        if (!properties.second.handleInfo.has_value()) {
             continue;
         }
 
-        const auto &propVal     = prop.handleInfo.value();
-        indirectHandleMap[name] = getHandle(std::get<0>(propVal), std::get<1>(propVal), std::get<2>(propVal));
+        const auto &propVal                 = properties.second.handleInfo.value();
+        indirectHandleMap[properties.first] = getHandle(std::get<0>(propVal), std::get<1>(propVal), std::get<2>(propVal));
     }
 
     utils::mergeToMap(directHandleMap, indirectHandleMap);
 }
 
 void Pass::syncBatchingScheme() {
-    if (auto iter = _defines.find("USE_INSTANCING"); iter != _defines.end()) {
+    auto iter = _defines.find("USE_INSTANCING");
+    if (iter != _defines.end()) {
         if (_device->hasFeature(gfx::Feature::INSTANCED_ARRAYS)) {
             _batchingScheme = BatchingSchemes::INSTANCING;
         } else {
             iter->second    = false;
             _batchingScheme = BatchingSchemes::NONE;
         }
-    } else if (auto iter = _defines.find("USE_BATCHING"); iter != _defines.end()) {
-        _batchingScheme = BatchingSchemes::VB_MERGING;
     } else {
-        _batchingScheme = BatchingSchemes::NONE;
+        auto iter = _defines.find("USE_BATCHING");
+        if (iter != _defines.end()) {
+            _batchingScheme = BatchingSchemes::VB_MERGING;
+        } else {
+            _batchingScheme = BatchingSchemes::NONE;
+        }
     }
 }
 

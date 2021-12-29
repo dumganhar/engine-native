@@ -85,15 +85,15 @@ IGeometry sphere(float radius, const cc::optional<ISphereOptions> &opts) {
         }
     }
 
-    return IGeometry{
-        .positions      = positions,
-        .normals        = normals,
-        .uvs            = uvs,
-        .boundingRadius = boundingRadius,
-        .minPos         = minPos,
-        .maxPos         = maxPos,
-        .indices        = indices,
-    };
+    IGeometry info;
+    info.positions      = positions;
+    info.normals        = normals;
+    info.uvs            = uvs;
+    info.boundingRadius = boundingRadius;
+    info.minPos         = minPos;
+    info.maxPos         = maxPos;
+    info.indices        = indices;
+    return info;
 }
 
 } // namespace cc

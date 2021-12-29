@@ -315,6 +315,15 @@ bool seval_to_Map_string_key(const se::Value &v, cc::Map<std::string, T> *ret) {
     return true;
 }
 
+template <typename T>
+typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, void>::type cc_tmp_set_private_data(se::Object *obj, T *v) {
+    obj->setPrivateData(v);
+}
+template <typename T>
+typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, void>::type cc_tmp_set_private_data(se::Object *obj, T *v) {
+    obj->setPrivateObject(se::rawref_private_object(v));
+}
+
 //handle reference
 template <typename T>
 typename std::enable_if<!std::is_pointer<T>::value, bool>::type
@@ -336,11 +345,7 @@ native_ptr_to_seval(T &v_ref, se::Value *ret, bool *isReturnCachedValue = nullpt
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        if CC_CONSTEXPR (std::is_base_of<cc::RefCounted, DecayT>::value) {
-            obj->setPrivateData(v);
-        } else {
-            obj->setPrivateObject(se::rawref_private_object(v));
-        }
+        cc_tmp_set_private_data(obj, v);
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -407,11 +412,7 @@ bool native_ptr_to_seval(T *vp, se::Class *cls, se::Value *ret, bool *isReturnCa
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        if CC_CONSTEXPR (std::is_base_of<cc::RefCounted, DecayT>::value) {
-            obj->setPrivateData(v);
-        } else {
-            obj->setPrivateObject(se::rawref_private_object(v));
-        }
+        cc_tmp_set_private_data(obj, v);
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -478,11 +479,7 @@ bool native_ptr_to_seval(T *vp, se::Value *ret, bool *isReturnCachedValue = null
         assert(cls != nullptr);
         obj = se::Object::createObjectWithClass(cls);
         ret->setObject(obj, true);
-        if CC_CONSTEXPR (std::is_base_of<cc::RefCounted, DecayT>::value) {
-            obj->setPrivateData(v);
-        } else {
-            obj->setPrivateObject(se::rawref_private_object(v));
-        }
+        cc_tmp_set_private_data(obj, v);
         if (isReturnCachedValue != nullptr) {
             *isReturnCachedValue = false;
         }
@@ -1054,20 +1051,30 @@ bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *
 }
 
 /////////////////// std::tuple
-template <typename T, T... S, typename F>
-constexpr void se_for_each(std::integer_sequence<T, S...> index, F &&f) { // NOLINT
-    (static_cast<void>(f(std::integral_constant<T, S>{})), ...);
+
+
+template<typename T, size_t N>
+struct foreach_struct {
+
+};
+
+
+template <typename T, typename F, size_t... S>
+void for_each_tuple_internal(T &&tuple, F &&consumer, size_t argsize) {
+    std::initializer_list<int>{(consumer(std::get<S>(tuple)), 0)...};
 }
 
 template <typename... Args>
 bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx) { // NOLINT
     constexpr size_t argsize = std::tuple_size<std::tuple<Args...>>::value;
     bool             result  = true;
-    se_for_each(std::make_index_sequence<argsize>{}, [&](auto i) {
-        se::Value tmp;
-        from.toObject()->getArrayElement(i, &tmp);
-        result &= sevalue_to_native(tmp, &std::get<i>(*to), ctx);
-    });
+    for_each_tuple_internal(
+        to, [&](auto i) {
+            se::Value tmp;
+            from.toObject()->getArrayElement(i, &tmp);
+            result &= sevalue_to_native(tmp, &std::get<i>(*to), ctx);
+        },
+        argsize);
     return result;
 }
 
@@ -1170,12 +1177,6 @@ nativevalue_to_se(const T &from, se::Value &to, se::Object *ctx) {
     return native_ptr_to_seval(from, &to);
 }
 
-template <typename T>
-inline typename std::enable_if<!std::is_enum<T>::value && !std::is_pointer<T>::value && !is_jsb_object_v<T>, bool>::type
-nativevalue_to_se(const T &from, se::Value &to, se::Object *ctx) {
-    return nativevalue_to_se<typename std::conditional_t<std::is_const<T>::value, T, typename std::add_const<T>::type>>(from, to, ctx);
-}
-
 #endif // HAS_CONSTEXPR
 
 //////////////////////////////// forward declaration: nativevalue_to_se ////////////////////////////////
@@ -1236,6 +1237,15 @@ inline bool nativevalue_to_se(const std::vector<bool, A> &from, se::Value &to, s
     return true;
 }
 
+template <typename T>
+typename std::enable_if<std::is_convertible<T, std::string>::value, void>::type cc_tmp_set_property(se::Object *obj, T &key, se::Value &value) {
+    obj->setProperty(key, value);
+}
+template <typename T>
+typename std::enable_if<!std::is_convertible<T, std::string>::value, void>::type cc_tmp_set_property(se::Object *obj, T &str, se::Value &value) {
+    obj->setProperty(std::to_string(str), value);
+}
+
 template <typename K, typename V>
 inline bool nativevalue_to_se(const std::unordered_map<K, V> &from, se::Value &to, se::Object *ctx) { // NOLINT
     se::Object *ret = se::Object::createPlainObject();
@@ -1243,11 +1253,7 @@ inline bool nativevalue_to_se(const std::unordered_map<K, V> &from, se::Value &t
     bool        ok = true;
     for (auto &it : from) {
         ok &= nativevalue_to_se(it.second, value, ctx);
-        if CC_CONSTEXPR (std::is_convertible<K, std::string>::value) {
-            ret->setProperty(it.first, value);
-        } else {
-            ret->setProperty(std::to_string(it.first), value);
-        }
+        cc_tmp_set_property(ret, it.first, value);
     }
     to.setObject(ret);
     ret->decRef();
@@ -1409,13 +1415,9 @@ inline bool nativevalue_to_se(T &&from, se::Value &to) { // NOLINT(readability-i
 template <typename... ARGS>
 bool nativevalue_to_se(const cc::variant<ARGS...> &from, se::Value &to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     bool ok = false;
-    se_for_each(std::make_index_sequence<sizeof...(ARGS)>{}, [&](auto i) {
-        if (i != from.index()) {
-            return;
-        }
-
-        ok = nativevalue_to_se(cc::get<i>(from), to, ctx);
-    });
+    cc::visit([&](auto param) {
+        ok = nativevalue_to_se(param, to, ctx);
+    },from);
     return ok;
 }
 template <typename T>
@@ -1465,10 +1467,12 @@ bool nativevalue_to_se(const std::tuple<ARGS...> &from, se::Value &to, se::Objec
     bool        ok = true;
     se::Value   tmp;
     se::Object *array = se::Object::createArrayObject(sizeof...(ARGS));
-    se_for_each(std::make_index_sequence<sizeof...(ARGS)>{}, [&](auto i) {
-        ok &= nativevalue_to_se(std::get<i>(from), tmp, ctx);
-        array->setArrayElement(i, tmp);
-    });
+    for_each_tuple_internal(
+        from, [&](auto i) {
+            ok &= nativevalue_to_se(std::get<i>(from), tmp, ctx);
+            array->setArrayElement(i, tmp);
+        },
+        sizeof...(ARGS));
     to.setObject(array);
     return ok;
 }

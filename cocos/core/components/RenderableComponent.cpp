@@ -81,7 +81,8 @@ void RenderableComponent::setMaterial(Material *material, index_t index) {
     _materials[index] = material;
 
     if (index < _materialInstances.size()) {
-        if (auto *inst = _materialInstances[index]; inst != nullptr) {
+        auto *inst = _materialInstances[index];
+        if (inst != nullptr) {
             inst->destroy();
             _materialInstances[index] = nullptr;
         }

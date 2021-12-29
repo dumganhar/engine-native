@@ -32,20 +32,24 @@ namespace cc {
 
 namespace {
 
-gfx::ColorAttachment colorAttachment{
-    .format        = gfx::Format::RGBA8,
-    .beginAccesses = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE},
-    .endAccesses   = std::vector<cc::gfx::AccessType>{cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}};
+
+gfx::ColorAttachment colorAttachment = {
+    gfx::Format::RGBA8,
+    gfx::SampleCount::ONE,
+    gfx::LoadOp::CLEAR,
+    gfx::StoreOp::STORE,
+    {cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE},
+    {cc::gfx::AccessType::FRAGMENT_SHADER_READ_TEXTURE}};
 
 gfx::RenderPassInfo passInfo{
     std::vector<gfx::ColorAttachment>{colorAttachment},
-    gfx::DepthStencilAttachment{
-        .format = gfx::Format::DEPTH_STENCIL}};
+    gfx::DepthStencilAttachment{gfx::Format::DEPTH_STENCIL}};
 
 cc::scene::IRenderWindowInfo windowInfo{
-    .width          = 1,
-    .height         = 1,
-    .renderPassInfo = passInfo};
+    cc::nullopt,
+    1,
+    1,
+    passInfo};
 
 } // namespace
 

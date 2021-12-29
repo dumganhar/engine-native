@@ -28,13 +28,13 @@
 namespace cc {
 
 uint32_t getTypedArrayLength(const TypedArray &arr) {
-#define TYPEDARRAY_GET_SIZE(type)                         \
-    do { \
+#define TYPEDARRAY_GET_SIZE(type)         \
+    do {                                  \
         auto *p = cc::get_if<type>(&arr); \
-        if (p != nullptr) { \
-            return p->length();                               \
-        } \
-    } while(false)
+        if (p != nullptr) {               \
+            return p->length();           \
+        }                                 \
+    } while (false)
 
     TYPEDARRAY_GET_SIZE(Float32Array);
     TYPEDARRAY_GET_SIZE(Uint32Array);
@@ -50,13 +50,13 @@ uint32_t getTypedArrayLength(const TypedArray &arr) {
 }
 
 uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
-#define TYPEDARRAY_GET_BYTES_PER_ELEMENT(type)            \
-    do { \
-        auto *p = cc::get_if<type>(&arr);  \
-        if (p != nullptr) { \
-            return type::BYTES_PER_ELEMENT;                   \
-        } \
-    } while(false)
+#define TYPEDARRAY_GET_BYTES_PER_ELEMENT(type) \
+    do {                                       \
+        auto *p = cc::get_if<type>(&arr);      \
+        if (p != nullptr) {                    \
+            return type::BYTES_PER_ELEMENT;    \
+        }                                      \
+    } while (false)
 
     TYPEDARRAY_GET_BYTES_PER_ELEMENT(Float32Array);
     TYPEDARRAY_GET_BYTES_PER_ELEMENT(Uint32Array);
@@ -72,10 +72,10 @@ uint32_t getTypedArrayBytesPerElement(const TypedArray &arr) {
 }
 
 void setTypedArrayValue(TypedArray &arr, uint32_t idx, const TypedArrayElementType &value) {
-#define TYPEDARRAY_SET_VALUE(type, elemType)                            \
-    do { \
-        auto *p = cc::get_if<elemType>(&value); \
-        if (p != nullptr) {         \
+#define TYPEDARRAY_SET_VALUE(type, elemType)                                \
+    do {                                                                    \
+        auto *p = cc::get_if<elemType>(&value);                             \
+        if (p != nullptr) {                                                 \
             if (cc::holds_alternative<Float32Array>(arr)) {                 \
                 cc::get<Float32Array>(arr)[idx] = static_cast<float>(*p);   \
                 return;                                                     \
@@ -108,8 +108,8 @@ void setTypedArrayValue(TypedArray &arr, uint32_t idx, const TypedArrayElementTy
                 cc::get<Float64Array>(arr)[idx] = static_cast<double>(*p);  \
                 return;                                                     \
             }                                                               \
-        } \
-    } while(false)
+        }                                                                   \
+    } while (false)
 
     TYPEDARRAY_SET_VALUE(Float32Array, float);
     TYPEDARRAY_SET_VALUE(Uint32Array, uint32_t);

@@ -47,7 +47,7 @@ public:
     explicit WeakCache(const Record<std::string, T> &map) : ICache<T>() {
         if (map) {
             for (const auto &e : map) {
-                _weakMap[e.first] = new WeakRef(e.second);
+                _weakMap[e.first] = new WeakRef<T>(e.second);
             }
         }
     }
@@ -57,7 +57,7 @@ public:
     }
 
     void add(const std::string &key, T val) {
-        _weakMap[key] = new WeakRef(val);
+        _weakMap[key] = new WeakRef<T>(val);
     }
 
     bool has(const std::string &key) {

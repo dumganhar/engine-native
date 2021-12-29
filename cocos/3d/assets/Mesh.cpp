@@ -174,7 +174,8 @@ cc::any Mesh::getNativeAsset() const {
 }
 
 void Mesh::setNativeAsset(const cc::any &obj) {
-    if (auto *p = cc::any_cast<ArrayBuffer *>(obj); p != nullptr) {
+    auto *p = cc::any_cast<ArrayBuffer *>(obj);
+    if (p != nullptr) {
         _data = Uint8Array(p);
     }
 }
@@ -321,7 +322,8 @@ void Mesh::reset(ICreateInfo &&info) {
 }
 
 Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
-    if (auto iter = _boneSpaceBounds.find(skeleton->getHash()); iter != _boneSpaceBounds.end()) {
+    auto iter = _boneSpaceBounds.find(skeleton->getHash());
+    if (iter != _boneSpaceBounds.end()) {
         return iter->second;
     }
     Vec3              v32;

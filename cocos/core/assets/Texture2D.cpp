@@ -40,20 +40,24 @@ void Texture2D::setMipmaps(const std::vector<SharedPtr<ImageAsset>> &value) {
     _mipmaps = value;
     setMipmapLevel(_mipmaps.size());
     if (!_mipmaps.empty()) {
-        ImageAsset *imageAsset = _mipmaps[0];
-        reset({.width       = imageAsset->getWidth(),
-               .height      = imageAsset->getHeight(),
-               .format      = imageAsset->getFormat(),
-               .mipmapLevel = static_cast<uint32_t>(_mipmaps.size())});
+        ImageAsset *         imageAsset = _mipmaps[0];
+        ITexture2DCreateInfo info;
+        info.width       = imageAsset->getWidth();
+        info.height      = imageAsset->getHeight();
+        info.format      = imageAsset->getFormat();
+        info.mipmapLevel = static_cast<uint32_t>(_mipmaps.size());
+        reset(info);
 
         for (size_t i = 0, len = _mipmaps.size(); i < len; ++i) {
             assignImage(_mipmaps[i], i);
         }
 
     } else {
-        reset({.width       = 0,
-               .height      = 0,
-               .mipmapLevel = static_cast<uint32_t>(_mipmaps.size())});
+        ITexture2DCreateInfo info;
+        info.width       = 0;
+        info.height      = 0;
+        info.mipmapLevel = static_cast<uint32_t>(_mipmaps.size());
+        reset(info);
     }
 }
 

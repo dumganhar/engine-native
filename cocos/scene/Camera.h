@@ -238,7 +238,7 @@ public:
     inline const Mat4 &       getMatViewProj() const { return _matViewProj; }
     inline const Mat4 &       getMatViewProjInv() const { return _matViewProjInv; }
 
-    inline void                     setFrustum(const geometry::Frustum &val) {
+    inline void setFrustum(const geometry::Frustum &val) {
         _frustum = val;
         // NOTE: Hacking logic, _frustum is owned by Camera, so it should not be released by JS garbage collector.
         _frustum.addRef();

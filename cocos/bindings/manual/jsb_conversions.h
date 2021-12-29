@@ -1052,16 +1052,16 @@ bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *
 
 /////////////////// std::tuple
 template <typename Tuple, typename F, std::size_t... Indices>
-void for_each_impl(Tuple &&tuple, F &&f, std::index_sequence<Indices...>) {
+void se_for_each_tuple_impl(Tuple &&tuple, F &&f, std::index_sequence<Indices...>) {
     using swallow = int[];
     (void)swallow{1,
                   (f(Indices, std::get<Indices>(std::forward<Tuple>(tuple))), void(), int{})...};
 }
 
 template <typename Tuple, typename F>
-void for_each(Tuple &&tuple, F &&f) {
+void se_for_each_tuple(Tuple &&tuple, F &&f) {
     constexpr std::size_t N = std::tuple_size<std::remove_reference_t<Tuple>>::value;
-    for_each_impl(std::forward<Tuple>(tuple), std::forward<F>(f),
+    se_for_each_tuple_impl(std::forward<Tuple>(tuple), std::forward<F>(f),
                   std::make_index_sequence<N>{});
 }
 
@@ -1069,7 +1069,7 @@ template <typename... Args>
 bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx) { // NOLINT
     constexpr size_t argsize = std::tuple_size<std::tuple<Args...>>::value;
     bool             result  = true;
-    for_each(*to, [&](auto i, auto &param) {
+    se_for_each_tuple(*to, [&](auto i, auto &param) {
         se::Value tmp;
         from.toObject()->getArrayElement(i, &tmp);
         result &= sevalue_to_native(tmp, &param, ctx);
@@ -1468,7 +1468,7 @@ bool nativevalue_to_se(const std::tuple<ARGS...> &from, se::Value &to, se::Objec
     bool        ok = true;
     se::Value   tmp;
     se::Object *array = se::Object::createArrayObject(sizeof...(ARGS));
-    for_each(
+    se_for_each_tuple(
         from, [&](auto i, auto &param) {
             ok &= nativevalue_to_se(param, tmp, ctx);
             array->setArrayElement(i, tmp);

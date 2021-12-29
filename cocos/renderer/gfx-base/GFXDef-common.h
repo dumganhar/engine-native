@@ -1072,17 +1072,6 @@ struct ShaderStage {
 using ShaderStageList = vector<ShaderStage>;
 
 struct Attribute {
-    Attribute() = default;
-
-    Attribute(const String &name, Format format, bool isNormalized = false, uint stream = 0, bool isInstanced = false, uint location = 0) {
-        this->name         = name;
-        this->format       = format;
-        this->isNormalized = isNormalized;
-        this->stream       = stream;
-        this->isInstanced  = isInstanced;
-        this->location     = location;
-    }
-
     String   name;
     Format   format{Format::UNKNOWN};
     bool     isNormalized{false};
@@ -1182,13 +1171,6 @@ struct SubpassDependency {
 using SubpassDependencyList = vector<SubpassDependency>;
 
 struct RenderPassInfo {
-    RenderPassInfo() = default;
-
-    RenderPassInfo(const ColorAttachmentList &colorAttachmentList, const DepthStencilAttachment &depthStencilAttachment) {
-        this->colorAttachments       = colorAttachmentList;
-        this->depthStencilAttachment = depthStencilAttachment;
-    }
-
     ColorAttachmentList    colorAttachments;
     DepthStencilAttachment depthStencilAttachment;
     SubpassInfoList        subpasses;

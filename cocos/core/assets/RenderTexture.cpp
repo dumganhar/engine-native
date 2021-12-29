@@ -46,6 +46,7 @@ gfx::RenderPassInfo passInfo{
     gfx::DepthStencilAttachment{gfx::Format::DEPTH_STENCIL}};
 
 cc::scene::IRenderWindowInfo windowInfo{
+    cc::nullopt,
     1,
     1,
     passInfo};

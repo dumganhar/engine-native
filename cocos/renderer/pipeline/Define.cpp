@@ -278,12 +278,12 @@ const gfx::UniformBlock UBOMorph::LAYOUT = {
     UBOMorph::NAME,
     {
         {"cc_displacementWeights", gfx::Type::FLOAT4, static_cast<uint>(UBOMorph::MAX_MORPH_TARGET_COUNT / 4)},
-        {"cc_displacementWeights", gfx::Type::FLOAT4, 1},
+        {"cc_displacementTextureInfo", gfx::Type::FLOAT4, 1},
     },
     1,
 };
 
-const String                          UBOUILocal::NAME       = "CCMorph";
+const String                          UBOUILocal::NAME       = "CCUILocal";
 const gfx::DescriptorSetLayoutBinding UBOUILocal::DESCRIPTOR = {
     UBOUILocal::BINDING,
     gfx::DescriptorType::DYNAMIC_UNIFORM_BUFFER,

@@ -912,6 +912,11 @@ bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Obje
                 *to = reinterpret_cast<cc::TextureCube *>(obj->getPrivateData());
                 return true;
             }
+
+            if (0 == strcmp(obj->_getClass()->getName(), "RenderTexture")) {
+                *to = reinterpret_cast<cc::RenderTexture *>(obj->getPrivateData());
+                return true;
+            }
         }
 
         // gfx::Texture?

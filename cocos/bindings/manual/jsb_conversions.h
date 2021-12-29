@@ -1051,23 +1051,29 @@ bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *
 }
 
 /////////////////// std::tuple
-template <typename T, typename F, size_t... S>
-constexpr void for_each_tuple_internal(T &&tuple, F &&consumer, std::index_sequence<S...>) {
-    (void)std::initializer_list<int>{(consumer(S, std::get<S>(tuple)), 0)...};
+template <typename Tuple, typename F, std::size_t... Indices>
+void for_each_impl(Tuple &&tuple, F &&f, std::index_sequence<Indices...>) {
+    using swallow = int[];
+    (void)swallow{1,
+                  (f(Indices, std::get<Indices>(std::forward<Tuple>(tuple))), void(), int{})...};
+}
+
+template <typename Tuple, typename F>
+void for_each(Tuple &&tuple, F &&f) {
+    constexpr std::size_t N = std::tuple_size<std::remove_reference_t<Tuple>>::value;
+    for_each_impl(std::forward<Tuple>(tuple), std::forward<F>(f),
+                  std::make_index_sequence<N>{});
 }
 
 template <typename... Args>
 bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx) { // NOLINT
     constexpr size_t argsize = std::tuple_size<std::tuple<Args...>>::value;
     bool             result  = true;
-    for_each_tuple_internal(
-        *to, [&](auto i, auto &param) {
-            se::Value tmp;
-            from.toObject()->getArrayElement(i, &tmp);
-            result &= sevalue_to_native(tmp, &param, ctx);
-        },
-        std::make_index_sequence<argsize>{});
-
+    for_each(*to, [&](auto i, auto &param) {
+        se::Value tmp;
+        from.toObject()->getArrayElement(i, &tmp);
+        result &= sevalue_to_native(tmp, &param, ctx);
+    });
     return result;
 }
 
@@ -1461,14 +1467,12 @@ template <typename... ARGS>
 bool nativevalue_to_se(const std::tuple<ARGS...> &from, se::Value &to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     bool        ok = true;
     se::Value   tmp;
-    constexpr size_t argsize = sizeof...(ARGS);
-    se::Object *array   = se::Object::createArrayObject(argsize);
-    for_each_tuple_internal(
+    se::Object *array = se::Object::createArrayObject(sizeof...(ARGS));
+    for_each(
         from, [&](auto i, auto &param) {
             ok &= nativevalue_to_se(param, tmp, ctx);
             array->setArrayElement(i, tmp);
-        },
-        std::make_index_sequence<argsize>{});
+        });
     to.setObject(array);
     return ok;
 }

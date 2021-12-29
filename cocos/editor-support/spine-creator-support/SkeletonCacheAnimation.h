@@ -37,7 +37,7 @@
 
 namespace spine {
 
-class SkeletonCacheAnimation : public cc::middleware::IMiddleware, public cc::RefCounted {
+class SkeletonCacheAnimation : public cc::RefCounted, public cc::middleware::IMiddleware {
 public:
     SkeletonCacheAnimation(const std::string &uuid, bool isShare);
     virtual ~SkeletonCacheAnimation();

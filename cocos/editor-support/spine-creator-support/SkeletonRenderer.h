@@ -46,7 +46,7 @@ class AttachmentVertices;
 
 /** Draws a skeleton.
      */
-class SkeletonRenderer : public cc::middleware::IMiddleware, public cc::RefCounted {
+class SkeletonRenderer : public cc::RefCounted, public cc::middleware::IMiddleware {
 public:
     static SkeletonRenderer *create();
     static SkeletonRenderer *createWithSkeleton(Skeleton *skeleton, bool ownsSkeleton = false, bool ownsSkeletonData = false);

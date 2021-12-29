@@ -91,10 +91,10 @@ const IGeometricInfo &RenderingSubMesh::getGeometricInfo() {
         Vec3 max;
         Vec3 min;
 
-        if (auto iter = std::find_if(_attributes.cbegin(), _attributes.cend(), [](const gfx::Attribute &element) -> bool {
-                return element.name == gfx::ATTR_NAME_POSITION;
-            });
-            iter != _attributes.cend()) {
+        auto iter = std::find_if(_attributes.cbegin(), _attributes.cend(), [](const gfx::Attribute &element) -> bool {
+            return element.name == gfx::ATTR_NAME_POSITION;
+        });
+        if (iter != _attributes.cend()) {
             const auto &   attri = *iter;
             const uint32_t count = gfx::GFX_FORMAT_INFOS[static_cast<uint32_t>(attri.format)].count;
             if (count == 2) {

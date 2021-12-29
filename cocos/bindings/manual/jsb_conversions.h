@@ -1051,30 +1051,30 @@ bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *
 }
 
 /////////////////// std::tuple
+template <typename Tuple, typename F, std::size_t... Indices>
+void for_each_impl(Tuple &&tuple, F &&f, std::index_sequence<Indices...>) {
+    using swallow = int[];
+    (void)swallow{1,
+                  (f(Indices, std::get<Indices>(std::forward<Tuple>(tuple))), void(), int{})...};
+}
 
-
-template<typename T, size_t N>
-struct foreach_struct {
-
-};
-
-
-template <typename T, typename F, size_t... S>
-void for_each_tuple_internal(T &&tuple, F &&consumer, size_t argsize) {
-    std::initializer_list<int>{(consumer(std::get<S>(tuple)), 0)...};
+template <typename Tuple, typename F>
+void for_each(Tuple &&tuple, F &&f) {
+    constexpr std::size_t N = std::tuple_size<std::remove_reference_t<Tuple>>::value;
+    for_each_impl(std::forward<Tuple>(tuple), std::forward<F>(f),
+                  std::make_index_sequence<N>{});
 }
 
 template <typename... Args>
 bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx) { // NOLINT
     constexpr size_t argsize = std::tuple_size<std::tuple<Args...>>::value;
     bool             result  = true;
-    for_each_tuple_internal(
-        to, [&](auto i) {
-            se::Value tmp;
-            from.toObject()->getArrayElement(i, &tmp);
-            result &= sevalue_to_native(tmp, &std::get<i>(*to), ctx);
-        },
-        argsize);
+    for_each(*to, [&](auto i, auto &param) {
+        CC_LOG_DEBUG("bf test i=%d", i);
+        se::Value tmp;
+        from.toObject()->getArrayElement(i, &tmp);
+        result &= sevalue_to_native(tmp, &param, ctx);
+    });
     return result;
 }
 
@@ -1415,9 +1415,11 @@ inline bool nativevalue_to_se(T &&from, se::Value &to) { // NOLINT(readability-i
 template <typename... ARGS>
 bool nativevalue_to_se(const cc::variant<ARGS...> &from, se::Value &to, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     bool ok = false;
-    cc::visit([&](auto param) {
-        ok = nativevalue_to_se(param, to, ctx);
-    },from);
+    cc::visit(
+        [&](auto param) {
+            ok = nativevalue_to_se(param, to, ctx);
+        },
+        from);
     return ok;
 }
 template <typename T>
@@ -1467,12 +1469,11 @@ bool nativevalue_to_se(const std::tuple<ARGS...> &from, se::Value &to, se::Objec
     bool        ok = true;
     se::Value   tmp;
     se::Object *array = se::Object::createArrayObject(sizeof...(ARGS));
-    for_each_tuple_internal(
-        from, [&](auto i) {
-            ok &= nativevalue_to_se(std::get<i>(from), tmp, ctx);
+    for_each(
+        from, [&](auto i, auto &param) {
+            ok &= nativevalue_to_se(param, tmp, ctx);
             array->setArrayElement(i, tmp);
-        },
-        sizeof...(ARGS));
+        });
     to.setObject(array);
     return ok;
 }

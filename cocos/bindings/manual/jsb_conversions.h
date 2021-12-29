@@ -1070,7 +1070,6 @@ bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Objec
     constexpr size_t argsize = std::tuple_size<std::tuple<Args...>>::value;
     bool             result  = true;
     for_each(*to, [&](auto i, auto &param) {
-        CC_LOG_DEBUG("bf test i=%d", i);
         se::Value tmp;
         from.toObject()->getArrayElement(i, &tmp);
         result &= sevalue_to_native(tmp, &param, ctx);

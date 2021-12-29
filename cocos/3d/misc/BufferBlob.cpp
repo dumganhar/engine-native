@@ -45,7 +45,7 @@ uint32_t BufferBlob::addBuffer(ArrayBuffer *arrayBuffer) {
     return result;
 }
 
-ArrayBuffer *BufferBlob::getCombined() {
+ArrayBuffer::Ptr BufferBlob::getCombined() {
     Int8Array result(_length);
     uint32_t  counter = 0;
 

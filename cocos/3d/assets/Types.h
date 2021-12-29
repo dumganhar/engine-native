@@ -47,6 +47,25 @@ using MeshWeightsType = std::vector<float>;
  */
 using IBArray = cc::variant<Uint8Array, Uint16Array, Uint32Array>;
 
+template <typename T>
+T getIBArrayValue(const IBArray &arr, uint32_t idx) {
+#define IBARRAY_GET_VALUE(type)                        \
+    do {\
+        auto *p = cc::get_if<type>(&arr); \
+        if (p != nullptr) { \
+            return static_cast<T>((*p)[idx]);                 \
+        } \
+    } while(false)
+
+    IBARRAY_GET_VALUE(Uint16Array);
+    IBARRAY_GET_VALUE(Uint32Array);
+    IBARRAY_GET_VALUE(Uint8Array);
+
+#undef IBARRAY_GET_VALUE
+
+    return 0;
+}
+
 struct MorphTarget {
     /**
      * Displacement of each target attribute.

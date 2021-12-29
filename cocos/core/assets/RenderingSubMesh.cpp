@@ -159,10 +159,10 @@ void RenderingSubMesh::genFlatBuffers() {
             continue;
         }
 
-        TypedArray ibView = _mesh->readIndices(static_cast<int>(_subMeshIdx.value()));
+        IBArray ibView = _mesh->readIndices(static_cast<int>(_subMeshIdx.value()));
         // transform to flat buffer
         for (uint32_t n = 0; n < idxCount; ++n) {
-            auto     idx       = getTypedArrayValue<int32_t>(ibView, static_cast<int>(n));
+            auto     idx       = getIBArrayValue<int32_t>(ibView, static_cast<int>(n));
             uint32_t offset    = n * vbStride;
             uint32_t srcOffset = idx * vbStride;
             for (uint32_t m = 0; m < vbStride; ++m) {

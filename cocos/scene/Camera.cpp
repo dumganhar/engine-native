@@ -66,6 +66,9 @@ Camera::Camera(gfx::Device *device)
     _isoValue      = Camera::ISOS[static_cast<int>(_iso)];
 
     _aspect = _screenScale = 1.F;
+    // NOTE: Hacking logic, _frustum is owned by Camera, so it should not be released by JS garbage collector.
+    _frustum.addRef();
+    //
     _frustum.setAccurate(true);
 
     if (correctionMatrices.empty()) {

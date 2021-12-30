@@ -422,13 +422,10 @@ static bool scene_Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(r
     return true;
 }
 
-static bool js_scene_Camera_screenPointToRay(se::State &s) // NOLINT(readability-identifier-naming)
+static bool js_scene_Camera_screenPointToRay(void* nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = SE_THIS_OBJECT<cc::scene::Camera>(s);
-    SE_PRECONDITION2(cobj, false, "js_scene_Camera_screenPointToRay : Invalid Native Object");
-
-    cc::geometry::Ray ray;
-    cobj->screenPointToRay(&ray, _tempFloatArray[0], _tempFloatArray[1]);
+    auto *cobj = reinterpret_cast<cc::scene::Camera*>(nativeObject);
+    cc::geometry::Ray ray = cobj->screenPointToRay(_tempFloatArray[0], _tempFloatArray[1]);
     _tempFloatArray[0] = ray.o.x;
     _tempFloatArray[1] = ray.o.y;
     _tempFloatArray[2] = ray.o.z;
@@ -437,7 +434,41 @@ static bool js_scene_Camera_screenPointToRay(se::State &s) // NOLINT(readability
     _tempFloatArray[5] = ray.d.z;
     return true;
 }
-SE_BIND_FUNC(js_scene_Camera_screenPointToRay)
+SE_BIND_FUNC_FAST(js_scene_Camera_screenPointToRay)
+
+static bool js_scene_Camera_screenToWorld(void* nativeObject) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = reinterpret_cast<cc::scene::Camera*>(nativeObject);
+    cc::Vec3 ret = cobj->screenToWorld(cc::Vec3{_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2]});
+    _tempFloatArray[0] = ret.x;
+    _tempFloatArray[1] = ret.y;
+    _tempFloatArray[2] = ret.z;
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Camera_screenToWorld)
+
+static bool js_scene_Camera_worldToScreen(void* nativeObject) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = reinterpret_cast<cc::scene::Camera*>(nativeObject);
+    cc::Vec3 ret = cobj->worldToScreen(cc::Vec3{_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2]});
+    _tempFloatArray[0] = ret.x;
+    _tempFloatArray[1] = ret.y;
+    _tempFloatArray[2] = ret.z;
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Camera_worldToScreen)
+
+static bool js_scene_Camera_worldMatrixToScreen(void* nativeObject) // NOLINT(readability-identifier-naming)
+{
+    auto *cobj = reinterpret_cast<cc::scene::Camera*>(nativeObject);
+
+    cc::Mat4 worldMatrix;
+    memcpy(worldMatrix.m, _tempFloatArray, sizeof(float) * 16);
+    cc::Mat4 ret = cobj->worldMatrixToScreen(worldMatrix, _tempFloatArray[16], _tempFloatArray[17]);
+    memcpy(_tempFloatArray, ret.m, sizeof(float) * 16);
+    return true;
+}
+SE_BIND_FUNC_FAST(js_scene_Camera_worldMatrixToScreen)
 
 static bool js_scene_Node_getPosition(void *nativeObj) // NOLINT(readability-identifier-naming)
 {
@@ -906,6 +937,9 @@ bool register_all_scene_manual(se::Object *obj) // NOLINT(readability-identifier
     __jsb_cc_Root_proto->defineFunction("_registerListeners", _SE(js_root_registerListeners));
 
     __jsb_cc_scene_Camera_proto->defineFunction("screenPointToRay", _SE(js_scene_Camera_screenPointToRay));
+    __jsb_cc_scene_Camera_proto->defineFunction("screenToWorld", _SE(js_scene_Camera_screenToWorld));
+    __jsb_cc_scene_Camera_proto->defineFunction("worldToScreen", _SE(js_scene_Camera_worldToScreen));
+    __jsb_cc_scene_Camera_proto->defineFunction("worldMatrixToScreen", _SE(js_scene_Camera_worldMatrixToScreen));
 
     // Node TS wrapper will invoke this function to let native object listen some events.
     __jsb_cc_Node_proto->defineFunction("_registerListeners", _SE(js_scene_Node_registerListeners));

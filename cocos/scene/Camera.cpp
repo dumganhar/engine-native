@@ -215,11 +215,8 @@ void Camera::detachCamera() {
     }
 }
 
-geometry::Ray *Camera::screenPointToRay(geometry::Ray *out, float x, float y) {
-    if (!_node) {
-        return nullptr;
-    }
-
+geometry::Ray Camera::screenPointToRay(float x, float y) {
+    CC_ASSERT(_node != nullptr);
     const float                 cx           = _orientedViewport.x * static_cast<float>(_width);
     const float                 cy           = _orientedViewport.y * static_cast<float>(_height);
     const float                 cw           = _orientedViewport.z * static_cast<float>(_width);
@@ -235,30 +232,32 @@ geometry::Ray *Camera::screenPointToRay(geometry::Ray *out, float x, float y) {
     tmpVec3.x = tmpVec3.x * preTransform[0] + tmpVec3.y * preTransform[2] * ySign;
     tmpVec3.y = tmpVec3.x * preTransform[1] + tmpVec3.y * preTransform[3] * ySign;
 
+    geometry::Ray out;
     if (isProj) {
         tmpVec3.transformMat4(tmpVec3, _matViewProjInv);
     } else {
-        out->o.transformMat4(tmpVec3, _matViewProjInv);
+        out.o.transformMat4(tmpVec3, _matViewProjInv);
     }
 
     if (isProj) {
         // camera origin
-        geometry::Ray::fromPoints(out, _node->getWorldPosition(), tmpVec3);
+        geometry::Ray::fromPoints(&out, _node->getWorldPosition(), tmpVec3);
     } else {
-        out->d.set(0, 0, -1.F);
-        out->d.transformQuat(_node->getRotation());
+        out.d.set(0, 0, -1.F);
+        out.d.transformQuat(_node->getRotation());
     }
 
     return out;
 }
 
-const Vec3 &Camera::screenToWorld(Vec3 &out, const Vec3 &screenPos) {
+Vec3 Camera::screenToWorld(const Vec3 &screenPos) {
     const float                 cx           = _orientedViewport.x * static_cast<float>(_width);
     const float                 cy           = _orientedViewport.y * static_cast<float>(_height);
     const float                 cw           = _orientedViewport.z * static_cast<float>(_width);
     const float                 ch           = _orientedViewport.w * static_cast<float>(_height);
     const float                 ySign        = _device->getCapabilities().clipSpaceSignY;
     const std::array<float, 4> &preTransform = PRE_TRANSFORMS[static_cast<int>(_curTransform)];
+    Vec3 out;
 
     if (_proj == CameraProjection::PERSPECTIVE) {
         // calculate screen pos in far clip plane
@@ -294,11 +293,11 @@ const Vec3 &Camera::screenToWorld(Vec3 &out, const Vec3 &screenPos) {
     return out;
 }
 
-const Vec3 &Camera::worldToScreen(Vec3 &out, const Vec3 &worldPos) {
+Vec3 Camera::worldToScreen(const Vec3 &worldPos) {
     const float                 ySign        = _device->getCapabilities().clipSpaceSignY;
     const std::array<float, 4> &preTransform = PRE_TRANSFORMS[static_cast<int>(_curTransform)];
-
-    _matViewProj.transformPoint(const_cast<Vec3 *>(&worldPos));
+    Vec3 out;
+    Vec3::transformMat4(worldPos, _matViewProj, &out);
 
     out.x = out.x * preTransform[0] + out.y * preTransform[2] * ySign;
     out.y = out.x * preTransform[1] + out.y * preTransform[3] * ySign;
@@ -315,7 +314,8 @@ const Vec3 &Camera::worldToScreen(Vec3 &out, const Vec3 &worldPos) {
     return out;
 }
 
-const Mat4 &Camera::worldMatrixToScreen(Mat4 &out, const Mat4 &worldMatrix, uint32_t width, uint32_t height) {
+Mat4 Camera::worldMatrixToScreen(const Mat4 &worldMatrix, uint32_t width, uint32_t height) {
+    Mat4 out;
     Mat4::multiply(_matViewProj, worldMatrix, &out);
     Mat4::multiply(correctionMatrices[static_cast<int>(_curTransform)], out, &out);
 

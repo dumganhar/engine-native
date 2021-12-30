@@ -189,7 +189,7 @@ public:
      * @zh
      * 渲染管线
      */
-    inline pipeline::RenderPipeline *getPipeline() const { return _pipeline; }
+    inline pipeline::RenderPipeline *getPipeline() const { return _pipeline.get(); }
 
     /**
      * @zh

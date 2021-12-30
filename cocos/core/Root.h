@@ -189,7 +189,7 @@ public:
      * @zh
      * 渲染管线
      */
-    inline pipeline::RenderPipeline *getPipeline() const { return _pipeline; }
+    inline pipeline::RenderPipeline *getPipeline() const { return _pipeline.get(); }
 
     /**
      * @zh
@@ -249,7 +249,7 @@ private:
     SharedPtr<scene::RenderWindow>              _curWindow;
     SharedPtr<scene::RenderWindow>              _tempWindow;
     std::vector<SharedPtr<scene::RenderWindow>> _windows;
-    pipeline::RenderPipeline *                  _pipeline{nullptr};
+    SharedPtr<pipeline::RenderPipeline>         _pipeline{nullptr};
     scene::DrawBatch2D *                        _batcher2D{nullptr};
     SharedPtr<DataPoolManager>                  _dataPoolMgr;
     std::vector<SharedPtr<scene::RenderScene>>  _scenes;

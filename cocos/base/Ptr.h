@@ -134,17 +134,6 @@ public:
     T &operator*() const { return *_ptr; }
     T *operator->() const { return _ptr; }
 
-    // Returns the (possibly null) raw pointer, and makes the scoped_refptr hold a
-    // null pointer, all without touching the reference count of the underlying
-    // pointed-to object. The object is still reference counted, and the caller of
-    // release() is now the proud owner of one reference, so it is responsible for
-    // calling Release() once on the object when no longer using it.
-    T *release() {
-        T *retVal = _ptr;
-        _ptr      = nullptr;
-        return retVal;
-    }
-
     // As reference count is 1 after creating a RefCounted object, so do not have to
     // invoke p->addRef();
     SharedPtr<T> &operator=(T *p) {
@@ -202,6 +191,18 @@ public:
     }
 
     void swap(SharedPtr<T> &r) noexcept { swap(&r._ptr); }
+
+private:
+    // Returns the (possibly null) raw pointer, and makes the scoped_refptr hold a
+    // null pointer, all without touching the reference count of the underlying
+    // pointed-to object. The object is still reference counted, and the caller of
+    // release() is now the proud owner of one reference, so it is responsible for
+    // calling Release() once on the object when no longer using it.
+    T *release() {
+        T *retVal = _ptr;
+        _ptr      = nullptr;
+        return retVal;
+    }
 
 protected:
     T *_ptr{nullptr};

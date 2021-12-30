@@ -43,6 +43,7 @@ void DeferredPipelineSceneData::initPipelinePassInfo() {
     materialInfo.effectName = "post-process";
     MacroRecord record{{"ANTIALIAS_TYPE", static_cast<int32_t>(_antiAliasing)}};
     materialInfo.defines = record;
+    _postProcessMaterial->initialize(materialInfo);
     for (const auto &pass : *_postProcessMaterial->getPasses()) {
         pass->tryCompile();
     }

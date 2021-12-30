@@ -114,10 +114,10 @@ void TerrainRenderable::invalidMaterial() {
         return;
     }
 
-    if (_brushMaterial != nullptr && !_brushMaterial->getPasses().empty()) {
-        auto &passes = _currentMaterial->getPasses();
+    if (_brushMaterial != nullptr && !_brushMaterial->getPasses()->empty()) {
+        auto &passes = *_currentMaterial->getPasses();
         for (size_t i = 0; i < passes.size(); ++i) {
-            if (passes[i] == _brushMaterial->getPasses()[0]) {
+            if (passes[i] == (*_brushMaterial->getPasses())[0]) {
                 passes.pop_back();
                 break;
             }
@@ -146,9 +146,9 @@ void TerrainRenderable::updateMaterial(TerrainBlock *block, bool init) {
         info.defines     = block->getMaterialDefines(nLayers);
         _currentMaterial->initialize(info);
 
-        if (_brushMaterial != nullptr && !_brushMaterial->getPasses().empty()) {
-            auto &passes = _currentMaterial->getPasses();
-            passes.emplace_back(_brushMaterial->getPasses()[0]);
+        if (_brushMaterial != nullptr && !_brushMaterial->getPasses()->empty()) {
+            auto &passes = *_currentMaterial->getPasses();
+            passes.emplace_back((*_brushMaterial->getPasses())[0]);
         }
 
         if (init) {

@@ -103,7 +103,7 @@ public:
         return static_cast<double>(getHashForMaterial(material));
     }
 
-    Material()           = default;
+    Material();
     ~Material() override = default;
 
     /**
@@ -239,7 +239,7 @@ public:
     //
 
 protected:
-    std::vector<SharedPtr<scene::Pass>> _passes;
+    std::shared_ptr<std::vector<SharedPtr<scene::Pass>>> _passes;
 
     uint64_t _hash{0};
 
@@ -280,7 +280,7 @@ public:
      * @en The passes defined in this material.
      * @zh 当前正在使用的 pass 数组。
      */
-    std::vector<SharedPtr<scene::Pass>> &getPasses() {
+    std::shared_ptr<std::vector<SharedPtr<scene::Pass>>> &getPasses() {
         return _passes;
     }
 

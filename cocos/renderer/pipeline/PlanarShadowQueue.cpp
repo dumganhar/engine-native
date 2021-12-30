@@ -73,7 +73,8 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
         }
     }
 
-    InstancedBuffer *instancedBuffer = shadows->getInstancingMaterial()->getPasses()[0]->getInstancedBuffer();
+    auto &           passes          = *shadows->getInstancingMaterial()->getPasses();
+    InstancedBuffer *instancedBuffer = passes[0]->getInstancedBuffer();
 
     geometry::AABB ab;
     for (const auto *model : _castModels) {
@@ -117,7 +118,7 @@ void PlanarShadowQueue::recordCommandBuffer(gfx::Device *device, gfx::RenderPass
         return;
     }
 
-    const scene::Pass *pass = shadows->getMaterial()->getPasses()[0];
+    const scene::Pass *pass = (*shadows->getMaterial()->getPasses())[0];
     cmdBuffer->bindDescriptorSet(materialSet, pass->getDescriptorSet());
 
     for (const auto *model : _pendingModels) {

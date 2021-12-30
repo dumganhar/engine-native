@@ -698,6 +698,8 @@ template <typename... Args>
 bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 // std::shared_ptr
 template <typename T>
+bool sevalue_to_native(const se::Value &from, std::shared_ptr<std::vector<T>> *out, se::Object *ctx); // NOLINT(readability-identifier-naming)
+template <typename T>
 bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Object *ctx); // NOLINT(readability-identifier-naming)
 // std::vector
 template <typename T, typename Allocator>
@@ -1011,6 +1013,17 @@ sevalue_to_native(const se::Value &from, HolderType<std::vector<T, allocator>, t
 /////////////////// std::shared_ptr
 
 template <typename T>
+bool sevalue_to_native(const se::Value &from, std::shared_ptr<std::vector<T>> *out, se::Object *ctx) {
+    if (from.isNullOrUndefined()) {
+        out->reset();
+        return true;
+    }
+
+    *out = std::make_shared<std::vector<T>>();
+    return sevalue_to_native(from, out->get(), ctx);
+}
+
+template <typename T>
 bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Object *ctx) {
     if (from.isNullOrUndefined()) {
         out->reset();
@@ -1062,7 +1075,7 @@ template <typename Tuple, typename F>
 void se_for_each_tuple(Tuple &&tuple, F &&f) {
     constexpr std::size_t N = std::tuple_size<std::remove_reference_t<Tuple>>::value;
     se_for_each_tuple_impl(std::forward<Tuple>(tuple), std::forward<F>(f),
-                  std::make_index_sequence<N>{});
+                           std::make_index_sequence<N>{});
 }
 
 template <typename... Args>
@@ -1421,6 +1434,12 @@ bool nativevalue_to_se(const cc::variant<ARGS...> &from, se::Value &to, se::Obje
         from);
     return ok;
 }
+
+template <typename T>
+inline bool nativevalue_to_se(const std::shared_ptr<std::vector<T>> &from, se::Value &to, se::Object *ctx) { //NOLINT
+    return nativevalue_to_se(*from, to, ctx);
+}
+
 template <typename T>
 inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se::Object *ctx) { //NOLINT
 

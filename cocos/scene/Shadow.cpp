@@ -25,9 +25,9 @@
 
 #include "scene/Shadow.h"
 #include <cmath>
+#include "core/Root.h"
 #include "core/scene-graph/Node.h"
 #include "scene/Pass.h"
-#include "core/Root.h"
 
 namespace cc {
 namespace scene {
@@ -185,8 +185,8 @@ void ShadowsInfo::activate(Shadows *resource) {
 const float Shadows::COEFFICIENT_OF_EXPANSION{2.0F * std::sqrt(3.0F)};
 
 void Shadows::initialize(const ShadowsInfo &shadowsInfo) {
-    _near      = shadowsInfo.getNear();
-    _far       = shadowsInfo.getFar();
+    _near = shadowsInfo.getNear();
+    _far  = shadowsInfo.getFar();
     setInvisibleOcclusionRange(shadowsInfo.getInvisibleOcclusionRange());
     setShadowDistance(shadowsInfo.getShadowDistance());
     _orthoSize = shadowsInfo.getOrthoSize();
@@ -221,7 +221,8 @@ gfx::Shader *Shadows::getPlanarShader(const std::vector<IMacroPatch> &patches) {
         createMaterial();
     }
 
-    return _material->getPasses()[0]->getShaderVariant(patches);
+    const auto &passes = *_material->getPasses();
+    return passes[0]->getShaderVariant(patches);
 }
 
 gfx::Shader *Shadows::getPlanarInstanceShader(const std::vector<IMacroPatch> &patches) {
@@ -229,7 +230,8 @@ gfx::Shader *Shadows::getPlanarInstanceShader(const std::vector<IMacroPatch> &pa
         createInstanceMaterial();
     }
 
-    return _instancingMaterial->getPasses()[0]->getShaderVariant(patches);
+    const auto &passes = *_instancingMaterial->getPasses();
+    return passes[0]->getShaderVariant(patches);
 }
 
 void Shadows::activate() {

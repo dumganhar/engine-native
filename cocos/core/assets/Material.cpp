@@ -43,18 +43,24 @@ uint64_t Material::getHashForMaterial(Material *material) {
         return 0;
     }
 
-    uint64_t hash = 0;
-    for (const auto &pass : material->_passes) {
+    uint64_t    hash   = 0;
+    const auto &passes = *material->_passes;
+    for (const auto &pass : passes) {
         hash ^= pass->getHash();
     }
     return hash;
+}
+
+Material::Material() {
+    _passes = std::make_shared<std::vector<SharedPtr<scene::Pass>>>();
 }
 
 void Material::initialize(const IMaterialInfo &info) {
     // cjh FIXME: remove hacking code here
     BuiltinResMgr::getInstance();
     //
-    if (!_passes.empty()) {
+    auto &passes = *_passes;
+    if (!passes.empty()) {
         // cjh TODO:        warnID(12005);
         return;
     }
@@ -99,12 +105,14 @@ bool Material::destroy() {
 }
 
 void Material::doDestroy() {
-    if (!_passes.empty()) {
-        for (const auto &pass : _passes) {
+    auto &passes = *_passes;
+    if (!passes.empty()) {
+        for (const auto &pass : passes) {
             pass->destroy();
         }
     }
-    _passes.clear();
+    passes.clear();
+    emit(EventTypesToJS::MATERIAL_PASSES_UPDATED);
 }
 
 void Material::recompileShaders(const MacroRecord & /*overrides*/, index_t /*passIdx*/) {
@@ -122,36 +130,38 @@ void Material::onLoaded() {
 }
 
 void Material::resetUniforms(bool clearPasses /* = true */) {
-    _props.resize(_passes.size());
+    const auto &passes = *_passes;
+    _props.resize(passes.size());
 
     if (!clearPasses) {
         return;
     }
 
-    for (const auto &pass : _passes) {
+    for (const auto &pass : passes) {
         pass->resetUBOs();
         pass->resetTextures();
     }
 }
 
 void Material::setProperty(const std::string &name, const MaterialPropertyVariant &val, index_t passIdx /* = CC_INVALID_INDEX */) {
-    bool success = false;
+    const auto &passes  = *_passes;
+    bool        success = false;
     if (passIdx == CC_INVALID_INDEX) { // try set property for all applicable passes
-        size_t len = _passes.size();
+        size_t len = passes.size();
         for (size_t i = 0; i < len; i++) {
-            const auto &pass = _passes[i];
+            const auto &pass = passes[i];
             if (uploadProperty(pass, name, val)) {
                 _props[pass->getPropertyIndex()][name] = val;
                 success                                = true;
             }
         }
     } else {
-        if (passIdx >= _passes.size()) {
+        if (passIdx >= passes.size()) {
             CC_LOG_WARNING("illegal pass index: %d.", passIdx);
             return;
         }
 
-        const auto &pass = _passes[passIdx];
+        const auto &pass = passes[passIdx];
         if (uploadProperty(pass, name, val)) {
             _props[pass->getPropertyIndex()][name] = val;
             success                                = true;
@@ -223,8 +233,9 @@ const MaterialPropertyVariant *Material::getProperty(const std::string &name, in
             return nullptr;
         }
 
-        const auto &props = _props[_passes[passIdx]->getPropertyIndex()];
-        auto        iter  = props.find(name);
+        const auto &passes = *_passes;
+        const auto &props  = _props[passes[passIdx]->getPropertyIndex()];
+        auto        iter   = props.find(name);
         if (iter != props.end()) {
             return &iter->second;
         }
@@ -256,7 +267,7 @@ void Material::copy(const Material *mat) {
 
 void Material::update(bool keepProps /* = true*/) {
     if (_effectAsset) {
-        _passes = createPasses();
+        *_passes = createPasses();
         CC_ASSERT(!_effectAsset->_techniques.empty());
         // handle property values
         size_t totalPasses = _effectAsset->_techniques[_techIdx].passes.size();
@@ -278,8 +289,9 @@ void Material::update(bool keepProps /* = true*/) {
                 }
             };
 
-            for (size_t i = 0, len = _passes.size(); i < len; ++i) {
-                cb(_passes[i].get(), i);
+            const auto &passes = *_passes;
+            for (size_t i = 0, len = passes.size(); i < len; ++i) {
+                cb(passes[i].get(), i);
             }
         }
         // cjh FIXME: no need since we resize _props?
@@ -422,13 +434,13 @@ void Material::initDefault(const cc::optional<std::string> &uuid) {
     MacroRecord   defines{{"USE_COLOR", true}};
     IMaterialInfo info;
     info.effectName = std::string{"unlit"};
-    info.defines    = IMaterialInfo::DefinesType { defines };
+    info.defines    = IMaterialInfo::DefinesType{defines};
     initialize(info);
     setProperty("mainColor", Color{0xFF, 0x00, 0xFF, 0xFF});
 }
 
 bool Material::validate() const {
-    return _effectAsset != nullptr && !_effectAsset->isDefault() && !_passes.empty();
+    return _effectAsset != nullptr && !_effectAsset->isDefault() && !_passes->empty();
 }
 
 } // namespace cc

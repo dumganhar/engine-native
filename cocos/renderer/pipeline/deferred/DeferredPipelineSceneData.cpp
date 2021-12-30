@@ -22,7 +22,7 @@ void DeferredPipelineSceneData::initPipelinePassInfo() {
     IMaterialInfo materialInfo;
     materialInfo.effectName = "deferred-lighting";
     _lightingMaterial->initialize(materialInfo);
-    for (const auto &pass : _lightingMaterial->getPasses()) {
+    for (const auto &pass : *_lightingMaterial->getPasses()) {
         pass->tryCompile();
     }
 
@@ -30,7 +30,7 @@ void DeferredPipelineSceneData::initPipelinePassInfo() {
     _bloomMaterial->setUuid("builtin-bloom-material");
     materialInfo.effectName = "bloom";
     _bloomMaterial->initialize(materialInfo);
-    for (const auto &pass : _bloomMaterial->getPasses()) {
+    for (const auto &pass : *_bloomMaterial->getPasses()) {
         pass->tryCompile();
     }
 
@@ -44,7 +44,7 @@ void DeferredPipelineSceneData::initPipelinePassInfo() {
     MacroRecord record{{"ANTIALIAS_TYPE", static_cast<int32_t>(_antiAliasing)}};
     materialInfo.defines = record;
     _postProcessMaterial->initialize(materialInfo);
-    for (const auto &pass : _postProcessMaterial->getPasses()) {
+    for (const auto &pass : *_postProcessMaterial->getPasses()) {
         pass->tryCompile();
     }
 
@@ -54,14 +54,14 @@ void DeferredPipelineSceneData::initPipelinePassInfo() {
 void DeferredPipelineSceneData::setAntiAliasing(AntiAliasing value) {
     _antiAliasing = value;
     if (_postProcessMaterial) {
-        auto &defines = _postProcessMaterial->getPasses()[0]->getDefines();
+        auto &defines = (*_postProcessMaterial->getPasses())[0]->getDefines();
         defines.emplace("ANTIALIAS_TYPE", static_cast<int32_t>(value));
         auto *        renderMat = new Material();
         IMaterialInfo materialInfo;
         materialInfo.effectAsset = _postProcessMaterial->getEffectAsset();
         materialInfo.defines     = defines;
         renderMat->initialize(materialInfo);
-        for (const auto &pass : renderMat->getPasses()) {
+        for (const auto &pass : *renderMat->getPasses()) {
             pass->tryCompile();
         }
         _postProcessMaterial = renderMat;
@@ -73,19 +73,20 @@ void DeferredPipelineSceneData::updateBloomPass() {
         return;
     }
 
-    _bloomPrefilterPass = _bloomMaterial->getPasses()[BLOOM_PREFILTERPASS_INDEX];
+    auto &bloomPasses   = *_bloomMaterial->getPasses();
+    _bloomPrefilterPass = bloomPasses[BLOOM_PREFILTERPASS_INDEX];
     _bloomPrefilterPass->beginChangeStatesSilently();
     _bloomPrefilterPass->tryCompile();
     _bloomPrefilterPass->endChangeStatesSilently();
     _bloomPrefilterPassShader = _bloomPrefilterPass->getShaderVariant();
 
     for (uint32_t i = 0; i < MAX_BLOOM_FILTER_PASS_NUM; ++i) {
-        scene::Pass *downsamplePass = _bloomMaterial->getPasses()[BLOOM_DOWNSAMPLEPASS_INDEX + i];
+        scene::Pass *downsamplePass = bloomPasses[BLOOM_DOWNSAMPLEPASS_INDEX + i];
         downsamplePass->beginChangeStatesSilently();
         downsamplePass->tryCompile();
         downsamplePass->endChangeStatesSilently();
 
-        scene::Pass *upsamplePass = _bloomMaterial->getPasses()[BLOOM_UPSAMPLEPASS_INDEX + i];
+        scene::Pass *upsamplePass = bloomPasses[BLOOM_UPSAMPLEPASS_INDEX + i];
         upsamplePass->beginChangeStatesSilently();
         upsamplePass->tryCompile();
         upsamplePass->endChangeStatesSilently();
@@ -94,7 +95,6 @@ void DeferredPipelineSceneData::updateBloomPass() {
         _bloomDownSamplePasses.emplace_back(downsamplePass);
     }
 
-    auto &bloomPasses = _bloomMaterial->getPasses();
     _bloomCombinePass = bloomPasses[BLOOM_COMBINEPASS_INDEX];
     _bloomCombinePass->beginChangeStatesSilently();
     _bloomCombinePass->tryCompile();
@@ -110,7 +110,7 @@ void DeferredPipelineSceneData::updatePostProcessPass() {
         return;
     }
 
-    _postPass = _postProcessMaterial->getPasses()[0];
+    _postPass = (*_postProcessMaterial->getPasses())[0];
     _postPass->beginChangeStatesSilently();
     _postPass->tryCompile();
     _postPass->endChangeStatesSilently();
@@ -138,7 +138,7 @@ void DeferredPipelineSceneData::updateDeferredLightPass() {
         _pipeline->setValue("CC_RECEIVE_SHADOW", 1);
     }
 
-    _lightPass = _lightingMaterial->getPasses()[0];
+    _lightPass = (*_lightingMaterial->getPasses())[0];
     _lightPass->beginChangeStatesSilently();
     _lightPass->tryCompile();
     _lightPass->endChangeStatesSilently();

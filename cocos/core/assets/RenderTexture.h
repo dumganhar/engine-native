@@ -117,6 +117,9 @@ public:
     inline void setWidth(uint32_t width) { _width = width; }
     inline void setHeight(uint32_t height) { _height = height; }
 
+    inline uint32_t getWidth() const { return _width; }
+    inline uint32_t getHeight() const { return _height; }
+
 private:
     scene::RenderWindow *_window{nullptr};
 

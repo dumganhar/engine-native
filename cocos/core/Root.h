@@ -249,7 +249,7 @@ private:
     SharedPtr<scene::RenderWindow>              _curWindow;
     SharedPtr<scene::RenderWindow>              _tempWindow;
     std::vector<SharedPtr<scene::RenderWindow>> _windows;
-    pipeline::RenderPipeline *                  _pipeline{nullptr};
+    SharedPtr<pipeline::RenderPipeline>         _pipeline{nullptr};
     scene::DrawBatch2D *                        _batcher2D{nullptr};
     SharedPtr<DataPoolManager>                  _dataPoolMgr;
     std::vector<SharedPtr<scene::RenderScene>>  _scenes;

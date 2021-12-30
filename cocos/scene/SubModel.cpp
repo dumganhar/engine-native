@@ -182,7 +182,7 @@ void SubModel::destroy() {
 
     _patches.clear();
     _subMesh = nullptr;
-    _passes->clear();
+    _passes.reset();
     _shaders.clear();
 
     CC_SAFE_DESTROY_NULL(_reflectionTex);

@@ -84,14 +84,14 @@ void PipelineSceneData::initOcclusionQuery() {
         IMaterialInfo info;
         info.effectName = "occlusion-query";
         _occlusionQueryMaterial->initialize(info);
-        _occlusionQueryPass   = _occlusionQueryMaterial->getPasses()[0];
+        _occlusionQueryPass   = (*_occlusionQueryMaterial->getPasses())[0];
         _occlusionQueryShader = _occlusionQueryPass->getShaderVariant();
     }
 }
 
 scene::Pass *PipelineSceneData::getOcclusionQueryPass() {
     if (_occlusionQueryMaterial) {
-        const auto &passes = _occlusionQueryMaterial->getPasses();
+        const auto &passes = *_occlusionQueryMaterial->getPasses();
         return passes[0].get();
     }
 

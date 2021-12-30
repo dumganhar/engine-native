@@ -221,7 +221,8 @@ gfx::Shader *Shadows::getPlanarShader(const std::vector<IMacroPatch> &patches) {
         createMaterial();
     }
 
-    return _material->getPasses()[0]->getShaderVariant(patches);
+    const auto& passes = *_material->getPasses();
+    return passes[0]->getShaderVariant(patches);
 }
 
 gfx::Shader *Shadows::getPlanarInstanceShader(const std::vector<IMacroPatch> &patches) {
@@ -229,7 +230,8 @@ gfx::Shader *Shadows::getPlanarInstanceShader(const std::vector<IMacroPatch> &pa
         createInstanceMaterial();
     }
 
-    return _instancingMaterial->getPasses()[0]->getShaderVariant(patches);
+    const auto& passes = *_instancingMaterial->getPasses();
+    return passes[0]->getShaderVariant(patches);
 }
 
 void Shadows::activate() {

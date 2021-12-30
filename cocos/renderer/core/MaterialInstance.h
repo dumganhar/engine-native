@@ -70,8 +70,6 @@ public:
 
     bool destroy() override;
 
-    void doDestroy() override;
-
     void onPassStateChange(bool dontNotify);
 
     // For JS

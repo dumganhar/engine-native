@@ -41,21 +41,25 @@ const static uint32_t  MAX_PASS_COUNT = 8;
 gfx::DescriptorSetInfo dsInfo         = gfx::DescriptorSetInfo();
 
 void SubModel::update() {
-    for (Pass *pass : _passes) {
+    auto& passes = *_passes;
+    for (Pass *pass : passes) {
         pass->update();
     }
     _descriptorSet->update();
     _worldBoundDescriptorSet->update();
 }
 
-void SubModel::setPasses(const std::vector<SharedPtr<Pass>> &passes) {
-    if (passes.size() > MAX_PASS_COUNT) {
+void SubModel::setPasses(const std::shared_ptr<std::vector<SharedPtr<Pass>>> &pPasses) {
+    if (!pPasses || pPasses->size() > MAX_PASS_COUNT) {
         // errorID(12004, MAX_PASS_COUNT); //errorID not implemented
         return;
     }
-    _passes = passes;
+
+    _passes = pPasses;
     flushPassInfo();
-    if (_passes[0].get()->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
+
+    const auto& passes = *_passes;
+    if (passes[0].get()->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
         _subMesh->genFlatBuffers();
     }
     // DS layout might change too
@@ -75,17 +79,18 @@ gfx::Shader *SubModel::getShader(uint index) const {
 }
 
 Pass *SubModel::getPass(uint index) const {
-    if (index >= _passes.size()) {
+    auto& passes = *_passes;
+    if (index >= passes.size()) {
         return nullptr;
     }
 
-    return _passes[index];
+    return passes[index];
 }
 
-void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr<Pass>> &passes, const std::vector<IMacroPatch> &patches) {
+void SubModel::initialize(RenderingSubMesh *subMesh, const std::shared_ptr<std::vector<SharedPtr<Pass>>> &pPasses, const std::vector<IMacroPatch> &patches) {
     _device = Root::getInstance()->getDevice();
-    if (!passes.empty()) {
-        dsInfo.layout = passes[0]->getLocalSetLayout();
+    if (!pPasses->empty()) {
+        dsInfo.layout = (*pPasses)[0]->getLocalSetLayout();
     }
     _inputAssembler                          = _device->createInputAssembler(subMesh->getIaInfo());
     _descriptorSet                           = _device->createDescriptorSet(dsInfo);
@@ -96,9 +101,11 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::vector<SharedPtr
     _worldBoundDescriptorSet = _device->createDescriptorSet(occlusionDSInfo);
     _subMesh                 = subMesh;
     _patches                 = patches;
-    _passes                  = passes;
+    _passes                  = pPasses;
 
     flushPassInfo();
+
+    const auto& passes = *_passes;
     if (passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
         subMesh->genFlatBuffers();
     }
@@ -175,7 +182,7 @@ void SubModel::destroy() {
 
     _patches.clear();
     _subMesh = nullptr;
-    _passes.clear();
+    _passes->clear();
     _shaders.clear();
 
     CC_SAFE_DESTROY_NULL(_reflectionTex);
@@ -183,9 +190,10 @@ void SubModel::destroy() {
 }
 
 void SubModel::onPipelineStateChanged() {
-    if (_passes.empty()) return;
+    auto& passes = *_passes;
+    if (passes.empty()) return;
 
-    for (Pass *pass : _passes) {
+    for (Pass *pass : passes) {
         pass->beginChangeStatesSilently();
         pass->tryCompile(); // force update shaders
         pass->endChangeStatesSilently();
@@ -195,8 +203,9 @@ void SubModel::onPipelineStateChanged() {
 
 void SubModel::onMacroPatchesStateChanged(const std::vector<IMacroPatch> &patches) {
     _patches = patches;
-    if (_passes.empty()) return;
-    for (Pass *pass : _passes) {
+    auto& passes = *_passes;
+    if (passes.empty()) return;
+    for (Pass *pass : passes) {
         pass->beginChangeStatesSilently();
         pass->tryCompile(); // force update shaders
         pass->endChangeStatesSilently();
@@ -205,20 +214,22 @@ void SubModel::onMacroPatchesStateChanged(const std::vector<IMacroPatch> &patche
 }
 
 void SubModel::flushPassInfo() {
-    if (_passes.empty()) return;
+    auto& passes = *_passes;
+    if (passes.empty()) return;
     if (!_shaders.empty()) {
         _shaders.clear();
     }
-    _shaders.resize(_passes.size());
-    for (uint i = 0; i < _passes.size(); ++i) {
-        _shaders[i] = _passes[i]->getShaderVariant(_patches);
+    _shaders.resize(passes.size());
+    for (uint i = 0; i < passes.size(); ++i) {
+        _shaders[i] = passes[i]->getShaderVariant(_patches);
     }
 }
 
 void SubModel::setSubMesh(RenderingSubMesh *subMesh) {
+    auto& passes = *_passes;
     _inputAssembler->destroy();
     _inputAssembler->initialize(subMesh->getIaInfo());
-    if (_passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
+    if (passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
         subMesh->genFlatBuffers();
     }
     _subMesh = subMesh;

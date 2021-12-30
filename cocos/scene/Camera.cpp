@@ -257,7 +257,7 @@ Vec3 Camera::screenToWorld(const Vec3 &screenPos) {
     const float                 ch           = _orientedViewport.w * static_cast<float>(_height);
     const float                 ySign        = _device->getCapabilities().clipSpaceSignY;
     const std::array<float, 4> &preTransform = PRE_TRANSFORMS[static_cast<int>(_curTransform)];
-    Vec3 out;
+    Vec3                        out;
 
     if (_proj == CameraProjection::PERSPECTIVE) {
         // calculate screen pos in far clip plane
@@ -296,7 +296,7 @@ Vec3 Camera::screenToWorld(const Vec3 &screenPos) {
 Vec3 Camera::worldToScreen(const Vec3 &worldPos) {
     const float                 ySign        = _device->getCapabilities().clipSpaceSignY;
     const std::array<float, 4> &preTransform = PRE_TRANSFORMS[static_cast<int>(_curTransform)];
-    Vec3 out;
+    Vec3                        out;
     Vec3::transformMat4(worldPos, _matViewProj, &out);
 
     out.x = out.x * preTransform[0] + out.y * preTransform[2] * ySign;

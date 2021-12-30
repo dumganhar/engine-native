@@ -73,7 +73,7 @@ Vec3 Camera::convertToUINode(const Vec3 &wpos, Node *uiNode) {
         return out;
     }
 
-    Vec3 tempVec3 = worldToScreen(wpos);
+    Vec3  tempVec3   = worldToScreen(wpos);
     auto *cmp        = uiNode->getComponent<UITransform>();
     auto &view       = View::getInstance(); //cjh TODO: Is view implemented?
     auto  designSize = view.getVisibleSize();

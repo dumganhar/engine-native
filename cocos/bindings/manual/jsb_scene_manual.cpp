@@ -161,19 +161,18 @@ static void registerOnBatchCreated(cc::Node *node, se::Object *jsObject) {
 }
 
 static void registerOnUiTransformDirty(cc::Node *node, se::Object *jsObject) {
-    se::Value           uiPropsVal;
+    se::Value uiPropsVal;
     jsObject->getProperty("_uiProps", &uiPropsVal, true);
     SE_PRECONDITION2_VOID(uiPropsVal.isObject(), "Not property named _uiProps.");
     se::Value uiTransformDirtyVal;
     uiPropsVal.toObject()->getProperty("_uiTransformDirty", &uiTransformDirtyVal, true);
-    SE_PRECONDITION2_VOID(uiTransformDirtyVal.isObject() && uiTransformDirtyVal.toObject()->isTypedArray()
-                          && uiTransformDirtyVal.toObject()->getTypedArrayType() == se::Object::TypedArrayType::UINT32,
+    SE_PRECONDITION2_VOID(uiTransformDirtyVal.isObject() && uiTransformDirtyVal.toObject()->isTypedArray() && uiTransformDirtyVal.toObject()->getTypedArrayType() == se::Object::TypedArrayType::UINT32,
                           "_uiTransformDirtyVal is not a TypedArray");
-    uint8_t* pDirty{nullptr};
-    size_t dirtyArrBytes{0};
-    bool ok = uiTransformDirtyVal.toObject()->getTypedArrayData(&pDirty, &dirtyArrBytes);
+    uint8_t *pDirty{nullptr};
+    size_t   dirtyArrBytes{0};
+    bool     ok = uiTransformDirtyVal.toObject()->getTypedArrayData(&pDirty, &dirtyArrBytes);
     CC_ASSERT(ok && pDirty != nullptr && dirtyArrBytes == 4);
-    node->setUIPropsTransformDirtyPtr(reinterpret_cast<uint32_t*>(pDirty));
+    node->setUIPropsTransformDirtyPtr(reinterpret_cast<uint32_t *>(pDirty));
 }
 
 static void registerActiveInHierarchyArr(cc::Node *node, se::Object *jsObject) {
@@ -422,24 +421,24 @@ static bool scene_Mat4_to_seval(const cc::Mat4 &v, se::Value *ret) { // NOLINT(r
     return true;
 }
 
-static bool js_scene_Camera_screenPointToRay(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Camera_screenPointToRay(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::scene::Camera*>(nativeObject);
-    cc::geometry::Ray ray = cobj->screenPointToRay(_tempFloatArray[0], _tempFloatArray[1]);
-    _tempFloatArray[0] = ray.o.x;
-    _tempFloatArray[1] = ray.o.y;
-    _tempFloatArray[2] = ray.o.z;
-    _tempFloatArray[3] = ray.d.x;
-    _tempFloatArray[4] = ray.d.y;
-    _tempFloatArray[5] = ray.d.z;
+    auto *            cobj = reinterpret_cast<cc::scene::Camera *>(nativeObject);
+    cc::geometry::Ray ray  = cobj->screenPointToRay(_tempFloatArray[0], _tempFloatArray[1]);
+    _tempFloatArray[0]     = ray.o.x;
+    _tempFloatArray[1]     = ray.o.y;
+    _tempFloatArray[2]     = ray.o.z;
+    _tempFloatArray[3]     = ray.d.x;
+    _tempFloatArray[4]     = ray.d.y;
+    _tempFloatArray[5]     = ray.d.z;
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Camera_screenPointToRay)
 
-static bool js_scene_Camera_screenToWorld(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Camera_screenToWorld(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::scene::Camera*>(nativeObject);
-    cc::Vec3 ret = cobj->screenToWorld(cc::Vec3{_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2]});
+    auto *   cobj      = reinterpret_cast<cc::scene::Camera *>(nativeObject);
+    cc::Vec3 ret       = cobj->screenToWorld(cc::Vec3{_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2]});
     _tempFloatArray[0] = ret.x;
     _tempFloatArray[1] = ret.y;
     _tempFloatArray[2] = ret.z;
@@ -447,10 +446,10 @@ static bool js_scene_Camera_screenToWorld(void* nativeObject) // NOLINT(readabil
 }
 SE_BIND_FUNC_FAST(js_scene_Camera_screenToWorld)
 
-static bool js_scene_Camera_worldToScreen(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Camera_worldToScreen(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::scene::Camera*>(nativeObject);
-    cc::Vec3 ret = cobj->worldToScreen(cc::Vec3{_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2]});
+    auto *   cobj      = reinterpret_cast<cc::scene::Camera *>(nativeObject);
+    cc::Vec3 ret       = cobj->worldToScreen(cc::Vec3{_tempFloatArray[0], _tempFloatArray[1], _tempFloatArray[2]});
     _tempFloatArray[0] = ret.x;
     _tempFloatArray[1] = ret.y;
     _tempFloatArray[2] = ret.z;
@@ -458,9 +457,9 @@ static bool js_scene_Camera_worldToScreen(void* nativeObject) // NOLINT(readabil
 }
 SE_BIND_FUNC_FAST(js_scene_Camera_worldToScreen)
 
-static bool js_scene_Camera_worldMatrixToScreen(void* nativeObject) // NOLINT(readability-identifier-naming)
+static bool js_scene_Camera_worldMatrixToScreen(void *nativeObject) // NOLINT(readability-identifier-naming)
 {
-    auto *cobj = reinterpret_cast<cc::scene::Camera*>(nativeObject);
+    auto *cobj = reinterpret_cast<cc::scene::Camera *>(nativeObject);
 
     cc::Mat4 worldMatrix;
     memcpy(worldMatrix.m, _tempFloatArray, sizeof(float) * 16);

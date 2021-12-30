@@ -25,7 +25,9 @@
 
 #include "DeferredPipeline.h"
 #include "../SceneCulling.h"
+#include "../helper/Utils.h"
 #include "../shadow/ShadowFlow.h"
+#include "DeferredPipelineSceneData.h"
 #include "MainFlow.h"
 #include "gfx-base/GFXBuffer.h"
 #include "gfx-base/GFXCommandBuffer.h"
@@ -35,8 +37,6 @@
 #include "gfx-base/GFXSwapchain.h"
 #include "gfx-base/states/GFXTextureBarrier.h"
 #include "platform/Application.h"
-#include "../helper/Utils.h"
-#include "DeferredPipelineSceneData.h"
 #include "scene/RenderWindow.h"
 
 namespace cc {
@@ -51,7 +51,6 @@ namespace pipeline {
     (dst)[(offset) + 1] = (src).y; \
     (dst)[(offset) + 2] = (src).z; \
     (dst)[(offset) + 3] = (src).w;
-
 
 DeferredPipeline::DeferredPipeline() {
     _pipelineSceneData = new DeferredPipelineSceneData();
@@ -84,7 +83,7 @@ bool DeferredPipeline::initialize(const RenderPipelineInfo &info) {
 }
 
 bool DeferredPipeline::activate(gfx::Swapchain *swapchain) {
-    _macros["CC_PIPELINE_TYPE"] = static_cast<float>(1.0F);
+    _macros["CC_PIPELINE_TYPE"] = 1;
 
     if (!RenderPipeline::activate(swapchain)) {
         CC_LOG_ERROR("RenderPipeline active failed.");
@@ -157,7 +156,7 @@ bool DeferredPipeline::activeRenderer(gfx::Swapchain *swapchain) {
     _descriptorSet->update();
 
     // update global defines when all states initialized.
-    _macros["CC_USE_HDR"] = static_cast<bool>(_pipelineSceneData->isHDR());
+    _macros["CC_USE_HDR"]               = static_cast<bool>(_pipelineSceneData->isHDR());
     _macros["CC_SUPPORT_FLOAT_TEXTURE"] = _device->hasFeature(gfx::Feature::TEXTURE_FLOAT);
 
     // step 2 create index buffer

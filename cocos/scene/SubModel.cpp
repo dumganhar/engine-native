@@ -41,7 +41,7 @@ const static uint32_t  MAX_PASS_COUNT = 8;
 gfx::DescriptorSetInfo dsInfo         = gfx::DescriptorSetInfo();
 
 void SubModel::update() {
-    auto& passes = *_passes;
+    auto &passes = *_passes;
     for (Pass *pass : passes) {
         pass->update();
     }
@@ -58,7 +58,7 @@ void SubModel::setPasses(const std::shared_ptr<std::vector<SharedPtr<Pass>>> &pP
     _passes = pPasses;
     flushPassInfo();
 
-    const auto& passes = *_passes;
+    const auto &passes = *_passes;
     if (passes[0].get()->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
         _subMesh->genFlatBuffers();
     }
@@ -79,7 +79,7 @@ gfx::Shader *SubModel::getShader(uint index) const {
 }
 
 Pass *SubModel::getPass(uint index) const {
-    auto& passes = *_passes;
+    auto &passes = *_passes;
     if (index >= passes.size()) {
         return nullptr;
     }
@@ -105,7 +105,7 @@ void SubModel::initialize(RenderingSubMesh *subMesh, const std::shared_ptr<std::
 
     flushPassInfo();
 
-    const auto& passes = *_passes;
+    const auto &passes = *_passes;
     if (passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {
         subMesh->genFlatBuffers();
     }
@@ -190,7 +190,7 @@ void SubModel::destroy() {
 }
 
 void SubModel::onPipelineStateChanged() {
-    auto& passes = *_passes;
+    auto &passes = *_passes;
     if (passes.empty()) return;
 
     for (Pass *pass : passes) {
@@ -202,8 +202,8 @@ void SubModel::onPipelineStateChanged() {
 }
 
 void SubModel::onMacroPatchesStateChanged(const std::vector<IMacroPatch> &patches) {
-    _patches = patches;
-    auto& passes = *_passes;
+    _patches     = patches;
+    auto &passes = *_passes;
     if (passes.empty()) return;
     for (Pass *pass : passes) {
         pass->beginChangeStatesSilently();
@@ -214,7 +214,7 @@ void SubModel::onMacroPatchesStateChanged(const std::vector<IMacroPatch> &patche
 }
 
 void SubModel::flushPassInfo() {
-    auto& passes = *_passes;
+    auto &passes = *_passes;
     if (passes.empty()) return;
     if (!_shaders.empty()) {
         _shaders.clear();
@@ -226,7 +226,7 @@ void SubModel::flushPassInfo() {
 }
 
 void SubModel::setSubMesh(RenderingSubMesh *subMesh) {
-    auto& passes = *_passes;
+    auto &passes = *_passes;
     _inputAssembler->destroy();
     _inputAssembler->initialize(subMesh->getIaInfo());
     if (passes[0]->getBatchingScheme() == BatchingSchemes::VB_MERGING) {

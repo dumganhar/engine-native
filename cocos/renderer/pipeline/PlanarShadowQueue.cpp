@@ -73,7 +73,7 @@ void PlanarShadowQueue::gatherShadowPasses(scene::Camera *camera, gfx::CommandBu
         }
     }
 
-    auto& passes = *shadows->getInstancingMaterial()->getPasses();
+    auto &           passes          = *shadows->getInstancingMaterial()->getPasses();
     InstancedBuffer *instancedBuffer = passes[0]->getInstancedBuffer();
 
     geometry::AABB ab;

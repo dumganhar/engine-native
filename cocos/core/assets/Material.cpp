@@ -43,8 +43,8 @@ uint64_t Material::getHashForMaterial(Material *material) {
         return 0;
     }
 
-    uint64_t hash = 0;
-    const auto& passes = *material->_passes;
+    uint64_t    hash   = 0;
+    const auto &passes = *material->_passes;
     for (const auto &pass : passes) {
         hash ^= pass->getHash();
     }
@@ -59,7 +59,7 @@ void Material::initialize(const IMaterialInfo &info) {
     // cjh FIXME: remove hacking code here
     BuiltinResMgr::getInstance();
     //
-    auto& passes = *_passes;
+    auto &passes = *_passes;
     if (!passes.empty()) {
         // cjh TODO:        warnID(12005);
         return;
@@ -105,7 +105,7 @@ bool Material::destroy() {
 }
 
 void Material::doDestroy() {
-    auto& passes = *_passes;
+    auto &passes = *_passes;
     if (!passes.empty()) {
         for (const auto &pass : passes) {
             pass->destroy();
@@ -130,7 +130,7 @@ void Material::onLoaded() {
 }
 
 void Material::resetUniforms(bool clearPasses /* = true */) {
-    const auto& passes = *_passes;
+    const auto &passes = *_passes;
     _props.resize(passes.size());
 
     if (!clearPasses) {
@@ -144,8 +144,8 @@ void Material::resetUniforms(bool clearPasses /* = true */) {
 }
 
 void Material::setProperty(const std::string &name, const MaterialPropertyVariant &val, index_t passIdx /* = CC_INVALID_INDEX */) {
-    const auto& passes = *_passes;
-    bool success = false;
+    const auto &passes  = *_passes;
+    bool        success = false;
     if (passIdx == CC_INVALID_INDEX) { // try set property for all applicable passes
         size_t len = passes.size();
         for (size_t i = 0; i < len; i++) {
@@ -233,9 +233,9 @@ const MaterialPropertyVariant *Material::getProperty(const std::string &name, in
             return nullptr;
         }
 
-        const auto& passes = *_passes;
-        const auto &props = _props[passes[passIdx]->getPropertyIndex()];
-        auto        iter  = props.find(name);
+        const auto &passes = *_passes;
+        const auto &props  = _props[passes[passIdx]->getPropertyIndex()];
+        auto        iter   = props.find(name);
         if (iter != props.end()) {
             return &iter->second;
         }
@@ -289,7 +289,7 @@ void Material::update(bool keepProps /* = true*/) {
                 }
             };
 
-            const auto& passes = *_passes;
+            const auto &passes = *_passes;
             for (size_t i = 0, len = passes.size(); i < len; ++i) {
                 cb(passes[i].get(), i);
             }
@@ -434,7 +434,7 @@ void Material::initDefault(const cc::optional<std::string> &uuid) {
     MacroRecord   defines{{"USE_COLOR", true}};
     IMaterialInfo info;
     info.effectName = std::string{"unlit"};
-    info.defines    = IMaterialInfo::DefinesType { defines };
+    info.defines    = IMaterialInfo::DefinesType{defines};
     initialize(info);
     setProperty("mainColor", Color{0xFF, 0x00, 0xFF, 0xFF});
 }

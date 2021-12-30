@@ -88,16 +88,17 @@ protected:
     SharedPtr<gfx::DescriptorSet>  _descriptorSet;
     SharedPtr<gfx::DescriptorSet>  _worldBoundDescriptorSet;
 
-    SharedPtr<gfx::Texture>             _reflectionTex;
-    SharedPtr<gfx::Sampler>             _reflectionSampler;
-    pipeline::RenderPriority            _priority{pipeline::RenderPriority::DEFAULT};
-    SharedPtr<gfx::Shader>              _planarShader;
-    SharedPtr<gfx::Shader>              _planarInstanceShader;
-    SharedPtr<RenderingSubMesh>         _subMesh;
-    std::shared_ptr<std::vector<SharedPtr<Pass>>>        _passes;
-    std::vector<SharedPtr<gfx::Shader>> _shaders;
-    Model *                             _owner{nullptr};
-    int32_t                            _id{-1};
+    SharedPtr<gfx::Texture>                       _reflectionTex;
+    SharedPtr<gfx::Sampler>                       _reflectionSampler;
+    pipeline::RenderPriority                      _priority{pipeline::RenderPriority::DEFAULT};
+    SharedPtr<gfx::Shader>                        _planarShader;
+    SharedPtr<gfx::Shader>                        _planarInstanceShader;
+    SharedPtr<RenderingSubMesh>                   _subMesh;
+    std::shared_ptr<std::vector<SharedPtr<Pass>>> _passes;
+    std::vector<SharedPtr<gfx::Shader>>           _shaders;
+    Model *                                       _owner{nullptr};
+    int32_t                                       _id{-1};
+
 private:
     static inline uint32_t generateId() {
         static uint32_t generator = 0;

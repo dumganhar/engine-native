@@ -12,7 +12,7 @@ MaterialInstance::MaterialInstance(const IMaterialInstanceInfo &info) {
 }
 
 void MaterialInstance::recompileShaders(const MacroRecord &overrides, index_t passIdx /* = CC_INVALID_INDEX */) {
-    auto& passes = *_passes;
+    auto &passes = *_passes;
     if (passes.empty() || _effectAsset == nullptr) {
         return;
     }
@@ -30,7 +30,7 @@ void MaterialInstance::recompileShaders(const MacroRecord &overrides, index_t pa
 }
 
 void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, index_t passIdx /* = CC_INVALID_INDEX */) {
-    auto& passes = *_passes;
+    auto &passes = *_passes;
     if (passes.empty() || _effectAsset == nullptr) {
         return;
     }

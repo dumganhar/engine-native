@@ -452,7 +452,7 @@ void BuiltinResMgr::initMaterials() {
 
 void BuiltinResMgr::tryCompileAllPasses() {
     for (auto &mat : _materialsToBeCompiled) {
-        auto& passes = *mat->getPasses();
+        auto &passes = *mat->getPasses();
         for (auto &pass : passes) {
             pass->tryCompile();
         }

@@ -1075,7 +1075,7 @@ template <typename Tuple, typename F>
 void se_for_each_tuple(Tuple &&tuple, F &&f) {
     constexpr std::size_t N = std::tuple_size<std::remove_reference_t<Tuple>>::value;
     se_for_each_tuple_impl(std::forward<Tuple>(tuple), std::forward<F>(f),
-                  std::make_index_sequence<N>{});
+                           std::make_index_sequence<N>{});
 }
 
 template <typename... Args>

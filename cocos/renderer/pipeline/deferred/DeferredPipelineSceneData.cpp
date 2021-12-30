@@ -72,7 +72,7 @@ void DeferredPipelineSceneData::updateBloomPass() {
         return;
     }
 
-    auto& bloomPasses = *_bloomMaterial->getPasses();
+    auto &bloomPasses   = *_bloomMaterial->getPasses();
     _bloomPrefilterPass = bloomPasses[BLOOM_PREFILTERPASS_INDEX];
     _bloomPrefilterPass->beginChangeStatesSilently();
     _bloomPrefilterPass->tryCompile();

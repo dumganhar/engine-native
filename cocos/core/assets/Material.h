@@ -68,7 +68,7 @@ struct IMaterialInfo {
      * @zh
      * 这个材质将使用第几个 technique，默认为 0。
      */
-    cc::optional<uint32_t> technique{0};
+    cc::optional<uint32_t> technique;
 
     using DefinesType = cc::variant<MacroRecord, std::vector<MacroRecord>>;
     /**

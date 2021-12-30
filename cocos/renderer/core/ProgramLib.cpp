@@ -281,6 +281,11 @@ void IProgramInfo::copyFrom(const IShaderInfo &o) {
     blocks          = o.blocks;
     samplerTextures = o.samplerTextures;
     attributes      = o.attributes;
+    samplers        = o.samplers;
+    textures        = o.textures;
+    buffers         = o.buffers;
+    images          = o.images;
+    subpassInputs   = o.subpassInputs;
 }
 
 //
@@ -323,9 +328,14 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             auto &range = def.range.value();
             cnt         = getBitCount(range[1] - range[0] + 1); // inclusive on both ends
             def.map     = [=](const MacroValue &value) -> int32_t {
-                const auto *pValue = cc::get_if<int32_t>(&value);
-                if (pValue != nullptr) {
-                    return *pValue - range[0];
+                if (cc::holds_alternative<int32_t>(value)) {
+                    return cc::get<int32_t>(value) - range[0];
+                }
+                if (cc::holds_alternative<float>(value)) {
+                    return static_cast<int32_t>(cc::get<float>(value)) - range[0];
+                }
+                if (cc::holds_alternative<bool>(value)) {
+                    return (cc::get<bool>(value) ? 1 : 0) - range[0];
                 }
                 CC_ASSERT(false); // We only support macro with int32_t type now.
                 return 0;

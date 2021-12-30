@@ -94,7 +94,7 @@ void Root::initialize(gfx::Swapchain *swapchain) {
 void Root::destroy() {
     destroyScenes();
 
-    CC_SAFE_RELEASE_NULL(_pipeline);
+    CC_SAFE_DESTROY_NULL(_pipeline);
     // TODO(minggo):
     //    CC_SAFE_DESTROY(_batcher2D);
 

@@ -39,7 +39,6 @@ Sphere *AABB::toBoundingSphere(Sphere *out, const AABB &a) {
 }
 
 AABB *AABB::fromPoints(const Vec3 &minPos, const Vec3 &maxPos, AABB *dst) {
-    assert(minPos <= maxPos); // minPos must be not larger than maxPos
     Vec3 center{(minPos + maxPos) * 0.5F};
     Vec3 halfExtents{(maxPos - minPos) * 0.5F};
     dst->setCenter(center);

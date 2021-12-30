@@ -335,7 +335,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
                     return static_cast<int32_t>(cc::get<float>(value)) - range[0];
                 }
                 if (cc::holds_alternative<bool>(value)) {
-                    return static_cast<int32_t>(cc::get<bool>(value)) - range[0];
+                    return (cc::get<bool>(value) ? 1 : 0) - range[0];
                 }
                 CC_ASSERT(false); // We only support macro with int32_t type now.
                 return 0;

@@ -153,17 +153,17 @@ public:
     /**
      * transform a screen position (in oriented space) to a world space ray
      */
-    geometry::Ray *screenPointToRay(geometry::Ray *out, float x, float y);
+    geometry::Ray screenPointToRay(float x, float y);
 
     /**
      * transform a screen position (in oriented space) to world space
      */
-    const Vec3 &screenToWorld(Vec3 &out, const Vec3 &screenPos);
+    Vec3 screenToWorld(const Vec3 &screenPos);
 
     /**
      * transform a world space position to screen space
      */
-    const Vec3 &worldToScreen(Vec3 &out, const Vec3 &worldPos);
+    Vec3 worldToScreen(const Vec3 &worldPos);
 
     /**
      * transform a world space matrix to screen space
@@ -173,7 +173,7 @@ public:
      * @param {number} height framebuffer height
      * @returns {Mat4} the resulting vector
      */
-    const Mat4 &worldMatrixToScreen(Mat4 &out, const Mat4 &worldMatrix, uint32_t width, uint32_t height);
+    Mat4 worldMatrixToScreen(const Mat4 &worldMatrix, uint32_t width, uint32_t height);
 
     inline void  setNode(Node *val) { _node = val; }
     inline Node *getNode() const { return _node.get(); }

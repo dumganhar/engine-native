@@ -281,6 +281,11 @@ void IProgramInfo::copyFrom(const IShaderInfo &o) {
     blocks          = o.blocks;
     samplerTextures = o.samplerTextures;
     attributes      = o.attributes;
+    samplers        = o.samplers;
+    textures        = o.textures;
+    buffers         = o.buffers;
+    images          = o.images;
+    subpassInputs   = o.subpassInputs;
 }
 
 //

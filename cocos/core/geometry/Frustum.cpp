@@ -50,14 +50,14 @@ void Frustum::createOrtho(Frustum *out, float width,
                           const Mat4 &transform) {
     auto halfWidth  = width / 2.0F;
     auto halfHeight = height / 2.0F;
-    Vec3::transformMat4({halfWidth, halfHeight, near}, transform, &out->vertices[0]);
-    Vec3::transformMat4({-halfWidth, halfHeight, near}, transform, &out->vertices[1]);
-    Vec3::transformMat4({-halfWidth, -halfHeight, near}, transform, &out->vertices[2]);
-    Vec3::transformMat4({halfWidth, -halfHeight, near}, transform, &out->vertices[3]);
-    Vec3::transformMat4({halfWidth, halfHeight, far}, transform, &out->vertices[4]);
-    Vec3::transformMat4({-halfWidth, halfHeight, far}, transform, &out->vertices[5]);
-    Vec3::transformMat4({-halfWidth, -halfHeight, far}, transform, &out->vertices[6]);
-    Vec3::transformMat4({halfWidth, -halfHeight, far}, transform, &out->vertices[7]);
+    Vec3::transformMat4({halfWidth, halfHeight, -near}, transform, &out->vertices[0]);
+    Vec3::transformMat4({-halfWidth, halfHeight, -near}, transform, &out->vertices[1]);
+    Vec3::transformMat4({-halfWidth, -halfHeight, -near}, transform, &out->vertices[2]);
+    Vec3::transformMat4({halfWidth, -halfHeight, -near}, transform, &out->vertices[3]);
+    Vec3::transformMat4({halfWidth, halfHeight, -far}, transform, &out->vertices[4]);
+    Vec3::transformMat4({-halfWidth, halfHeight, -far}, transform, &out->vertices[5]);
+    Vec3::transformMat4({-halfWidth, -halfHeight, -far}, transform, &out->vertices[6]);
+    Vec3::transformMat4({halfWidth, -halfHeight, -far}, transform, &out->vertices[7]);
 
     Plane::fromPoints(&out->planes[0], out->vertices[1], out->vertices[6], out->vertices[5]);
     Plane::fromPoints(&out->planes[1], out->vertices[3], out->vertices[4], out->vertices[7]);

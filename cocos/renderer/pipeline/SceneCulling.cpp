@@ -238,7 +238,7 @@ void quantizeDirLightShadowCamera(RenderPipeline *pipeline, const scene::Camera 
     lightViewFrustum.transform(matShadowView);
     // bounding box in light space.
     geometry::AABB castLightViewBounds;
-    geometry::AABB::fromPoints(Vec3(-10000000.0F, -10000000.0F, -10000000.0F), Vec3(10000000.0F, 10000000.0F, 10000000.0F), &castLightViewBounds);
+    geometry::AABB::fromPoints(Vec3(10000000.0F, 10000000.0F, 10000000.0F), Vec3(-10000000.0F, -10000000.0F, -10000000.0F), &castLightViewBounds);
     castLightViewBounds.merge(lightViewFrustum);
 
     const float r = castLightViewBounds.getHalfExtents().z * 2.0F;

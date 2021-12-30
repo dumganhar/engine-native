@@ -368,10 +368,10 @@ public:
     void onDisable() override;
     void onDestroy() override;
 
-    geometry::Ray *screenPointToRay(geometry::Ray *out, float x, float y);
+    geometry::Ray screenPointToRay(float x, float y);
 
-    const Vec3 &worldToScreen(Vec3 &out, const Vec3 &worldPos);
-    const Vec3 &screenToWorld(Vec3 &out, const Vec3 &screenPos);
+    Vec3 worldToScreen(const Vec3 &worldPos);
+    Vec3 screenToWorld(const Vec3 &screenPos);
 
     /**
      * @en 3D node to UI local node coordinates. The converted value is the offset under the UI node.

@@ -43,26 +43,28 @@ void Camera::onDestroy() {
     }
 }
 
-geometry::Ray *Camera::screenPointToRay(geometry::Ray *out, float x, float y) {
+geometry::Ray Camera::screenPointToRay(float x, float y) {
+    geometry::Ray ret;
     if (_camera != nullptr) {
-        _camera->screenPointToRay(out, x, y);
+        ret = _camera->screenPointToRay(x, y);
     }
-
-    return out;
+    return ret;
 }
 
-const Vec3 &Camera::worldToScreen(Vec3 &out, const Vec3 &worldPos) {
+Vec3 Camera::worldToScreen(const Vec3 &worldPos) {
+    Vec3 ret;
     if (_camera != nullptr) {
-        _camera->worldToScreen(out, worldPos);
+        ret = _camera->worldToScreen(worldPos);
     }
-    return out;
+    return ret;
 }
 
-const Vec3 &Camera::screenToWorld(Vec3 &out, const Vec3 &screenPos) {
+Vec3 Camera::screenToWorld(const Vec3 &screenPos) {
+    Vec3 ret;
     if (_camera != nullptr) {
-        _camera->screenToWorld(out, screenPos);
+        ret = _camera->screenToWorld(screenPos);
     }
-    return out;
+    return ret;
 }
 
 Vec3 Camera::convertToUINode(const Vec3 &wpos, Node *uiNode) {
@@ -71,8 +73,7 @@ Vec3 Camera::convertToUINode(const Vec3 &wpos, Node *uiNode) {
         return out;
     }
 
-    Vec3 tempVec3;
-    worldToScreen(tempVec3, wpos);
+    Vec3 tempVec3 = worldToScreen(wpos);
     auto *cmp        = uiNode->getComponent<UITransform>();
     auto &view       = View::getInstance(); //cjh TODO: Is view implemented?
     auto  designSize = view.getVisibleSize();

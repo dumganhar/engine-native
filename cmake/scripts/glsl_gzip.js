@@ -1,10 +1,11 @@
 const zlib = require('zlib');
 const fs = require('fs');
 const process = require('process');
+const writeIfDifferent = require('./utils').writeIfDifferent;
 
 const VERBOSE = false;
 
-if(process.argv.length != 6) {
+if (process.argv.length !== 6) {
     console.error('bad argument');
     console.error(' - input file');
     console.error(' - export var');
@@ -45,7 +46,7 @@ if(VERBOSE) {
 }
 
 let replaceData = fs.readFileSync(template).toString('utf-8').replace("${PLACE_HOLDER}", encoded);
-fs.writeFileSync(outputFile, replaceData, {encoding: 'utf-8'});
+writeIfDifferent(outputFile, replaceData, {encoding: 'utf-8'});
 
 if(VERBOSE) {
     console.log(`--done ${outputFile} : ${exportVar}`);

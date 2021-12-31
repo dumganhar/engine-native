@@ -158,5 +158,5 @@ function(cc_win32_definations target)
 endfunction()
 
 
-find_program(NODE_EXECUTABLE NAMES node REQUIRED)
-find_program(TSC_EXECUTABLE NAMES tsc REQUIRED)
+find_program(NODE_EXECUTABLE NAMES node)
+find_program(TSC_EXECUTABLE NAMES tsc)

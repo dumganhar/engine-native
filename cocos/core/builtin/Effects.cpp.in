@@ -23,6 +23,7 @@
  THE SOFTWARE.
 ****************************************************************************/
 
+// clang-format off
 #include "core/builtin/Effects.h"
 #include "base/StringUtil.h"
 namespace cc {

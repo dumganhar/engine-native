@@ -23,6 +23,7 @@
  THE SOFTWARE.
 ****************************************************************************/
 
+// clang-format off
 #include "core/builtin/shader-sources/glsl4.h"
 
 namespace cc {

@@ -2242,40 +2242,10 @@ macro(compile_ts file_without_ext)
     )
 endmacro()
 
-macro(generate_glsl ver)
-    compile_ts(${CWD}/cocos/core/builtin/shader-sources/${ver})
-    add_custom_command(
-        OUTPUT ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp
-        COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/glsl_gzip.js
-            ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
-            ${ver}
-            ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp.in
-            ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp
-        DEPENDS
-            ${CWD}/cocos/core/builtin/shader-sources/${ver}.js
-            ${CWD}/cocos/core/builtin/shader-sources/${ver}.cpp.in
-            ${CWD}/cmake/scripts/glsl_gzip.js
-        VERBATIM USES_TERMINAL)
-endmacro()
-
 compile_ts(${CWD}/cocos/core/builtin/effects)
-add_custom_command(
-    OUTPUT ${CWD}/cocos/core/builtin/Effects.cpp
-    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/effects_gzip.js
-        ${CWD}/cocos/core/builtin/effects.js
-        effects
-        ${CWD}/cocos/core/builtin/Effects.cpp.in
-        ${CWD}/cocos/core/builtin/Effects.cpp
-    DEPENDS
-        ${CWD}/cocos/core/builtin/Effects.cpp.in
-        ${CWD}/cocos/core/builtin/effects.js
-        ${CWD}/cmake/scripts/effects_gzip.js
-    VERBATIM USES_TERMINAL)
-
-
-generate_glsl(glsl1)
-generate_glsl(glsl3)
-generate_glsl(glsl4)
+compile_ts(${CWD}/cocos/core/builtin/shader-sources/glsl1)
+compile_ts(${CWD}/cocos/core/builtin/shader-sources/glsl3)
+compile_ts(${CWD}/cocos/core/builtin/shader-sources/glsl4)
 
 set(CC_GENERATED_FILES
     ${CWD}/cocos/core/builtin/Effects.cpp
@@ -2283,6 +2253,44 @@ set(CC_GENERATED_FILES
     ${CWD}/cocos/core/builtin/shader-sources/glsl3.cpp
     ${CWD}/cocos/core/builtin/shader-sources/glsl4.cpp
 )
+
+add_custom_target(builtin-res
+    COMMAND ${CMAKE_COMMAND} -E echo "Generate builtin resources ..."
+    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/glsl_gzip.js
+            ${CWD}/cocos/core/builtin/shader-sources/glsl1.js
+            glsl1
+            ${CWD}/cocos/core/builtin/shader-sources/glsl1.cpp.in
+            ${CWD}/cocos/core/builtin/shader-sources/glsl1.cpp
+    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/glsl_gzip.js
+            ${CWD}/cocos/core/builtin/shader-sources/glsl3.js
+            glsl3
+            ${CWD}/cocos/core/builtin/shader-sources/glsl3.cpp.in
+            ${CWD}/cocos/core/builtin/shader-sources/glsl3.cpp
+    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/glsl_gzip.js
+            ${CWD}/cocos/core/builtin/shader-sources/glsl4.js
+            glsl4
+            ${CWD}/cocos/core/builtin/shader-sources/glsl4.cpp.in
+            ${CWD}/cocos/core/builtin/shader-sources/glsl4.cpp
+    COMMAND ${NODE_EXECUTABLE} ${CWD}/cmake/scripts/effects_gzip.js
+            ${CWD}/cocos/core/builtin/effects.js
+            effects
+            ${CWD}/cocos/core/builtin/Effects.cpp.in
+            ${CWD}/cocos/core/builtin/Effects.cpp
+    DEPENDS 
+            ${CWD}/cocos/core/builtin/shader-sources/glsl1.js
+            ${CWD}/cocos/core/builtin/shader-sources/glsl3.js
+            ${CWD}/cocos/core/builtin/shader-sources/glsl4.js
+            ${CWD}/cocos/core/builtin/shader-sources/glsl1.cpp.in
+            ${CWD}/cocos/core/builtin/shader-sources/glsl3.cpp.in
+            ${CWD}/cocos/core/builtin/shader-sources/glsl4.cpp.in
+            ${CWD}/cocos/core/builtin/effects.js
+            ${CWD}/cocos/core/builtin/Effects.cpp.in
+            ${CWD}/cmake/scripts/glsl_gzip.js
+            ${CWD}/cmake/scripts/effects_gzip.js
+    VERBATIM USES_TERMINAL
+)
+set_target_properties(builtin-res PROPERTIES FOLDER Utils)
+
 
 list(APPEND COCOS2D_SOURCE_LIST ${CC_GENERATED_FILES})
 

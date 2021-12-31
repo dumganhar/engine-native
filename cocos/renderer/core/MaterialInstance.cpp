@@ -5,8 +5,8 @@
 namespace cc {
 
 MaterialInstance::MaterialInstance(const IMaterialInstanceInfo &info) {
-    _parent      = info.parent;
-//    _owner       = info.owner;
+    _parent = info.parent;
+    //    _owner       = info.owner;
     _subModelIdx = info.subModelIdx;
     copy(_parent);
 }
@@ -79,9 +79,9 @@ void MaterialInstance::onPassStateChange(bool dontNotify) {
             _rebuildPSOCallback(_subModelIdx, this);
         }
 
-//        if (_owner != nullptr) {
-//            _owner->onRebuildPSO(_subModelIdx, this);
-//        }
+        //        if (_owner != nullptr) {
+        //            _owner->onRebuildPSO(_subModelIdx, this);
+        //        }
     }
 }
 

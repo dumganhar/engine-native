@@ -33,9 +33,9 @@
 namespace cc {
 
 struct IMaterialInstanceInfo {
-    Material *           parent{nullptr};
-//    RenderableComponent *owner{nullptr};
-    index_t              subModelIdx{0};
+    Material *parent{nullptr};
+    //    RenderableComponent *owner{nullptr};
+    index_t subModelIdx{0};
 };
 
 class PassInstance;
@@ -54,9 +54,9 @@ public:
         return _parent.get();
     }
 
-//    RenderableComponent *getOwner() const override {
-//        return _owner;
-//    }
+    //    RenderableComponent *getOwner() const override {
+    //        return _owner;
+    //    }
 
     void recompileShaders(const MacroRecord &overrides) override {
         MaterialInstance::recompileShaders(overrides, CC_INVALID_INDEX);
@@ -81,9 +81,9 @@ protected:
     std::vector<IntrusivePtr<scene::Pass>> createPasses() override;
 
 private:
-    IntrusivePtr<Material>  _parent;
-//    RenderableComponent *_owner{nullptr};
-    index_t              _subModelIdx{0};
+    IntrusivePtr<Material> _parent;
+    //    RenderableComponent *_owner{nullptr};
+    index_t _subModelIdx{0};
 
     RebuildPSOCallback _rebuildPSOCallback{nullptr};
 };

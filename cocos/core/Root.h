@@ -236,32 +236,32 @@ public:
 
     inline uint32_t getFixedFPS() const { return _fixedFPS; }
 
-//    inline DataPoolManager *getDataPoolManager() { return _dataPoolMgr.get(); }
+    //    inline DataPoolManager *getDataPoolManager() { return _dataPoolMgr.get(); }
 
     inline bool isUsingDeferredPipeline() const { return _useDeferredPipeline; }
 
     inline CallbacksInvoker *getEventProcessor() const { return _eventProcessor; }
 
 private:
-    gfx::Device *                               _device{nullptr};
-    gfx::Swapchain *                            _swapchain{nullptr};
+    gfx::Device *                                  _device{nullptr};
+    gfx::Swapchain *                               _swapchain{nullptr};
     IntrusivePtr<scene::RenderWindow>              _mainWindow;
     IntrusivePtr<scene::RenderWindow>              _curWindow;
     IntrusivePtr<scene::RenderWindow>              _tempWindow;
     std::vector<IntrusivePtr<scene::RenderWindow>> _windows;
     IntrusivePtr<pipeline::RenderPipeline>         _pipeline{nullptr};
-    scene::DrawBatch2D *                        _batcher2D{nullptr};
-//    IntrusivePtr<DataPoolManager>                  _dataPoolMgr;
-    std::vector<IntrusivePtr<scene::RenderScene>>  _scenes;
-    memop::Pool<scene::Camera> *                _cameraPool{nullptr};
-    float                                       _cumulativeTime{0.F};
-    float                                       _frameTime{0.F};
-    float                                       _fpsTime{0.F};
-    uint32_t                                    _frameCount{0};
-    uint32_t                                    _fps{0};
-    uint32_t                                    _fixedFPS{0};
-    bool                                        _useDeferredPipeline{false};
-    CallbacksInvoker *                          _eventProcessor{nullptr};
+    scene::DrawBatch2D *                           _batcher2D{nullptr};
+    //    IntrusivePtr<DataPoolManager>                  _dataPoolMgr;
+    std::vector<IntrusivePtr<scene::RenderScene>> _scenes;
+    memop::Pool<scene::Camera> *                  _cameraPool{nullptr};
+    float                                         _cumulativeTime{0.F};
+    float                                         _frameTime{0.F};
+    float                                         _fpsTime{0.F};
+    uint32_t                                      _frameCount{0};
+    uint32_t                                      _fps{0};
+    uint32_t                                      _fixedFPS{0};
+    bool                                          _useDeferredPipeline{false};
+    CallbacksInvoker *                            _eventProcessor{nullptr};
 
     // Cache std::vector to avoid allocate every frame in frameMove
     std::vector<scene::Camera *>  _cameraList;

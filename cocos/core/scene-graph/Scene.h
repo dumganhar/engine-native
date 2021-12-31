@@ -62,8 +62,8 @@ protected:
      * @zh 场景级别的渲染信息
      */
     //    @serializable
-    SharedPtr<SceneGlobals> _globals;
-    bool                    _inited{false};
+    IntrusivePtr<SceneGlobals> _globals;
+    bool                       _inited{false};
 
     /**
      * @en Indicates whether all (directly or indirectly) static referenced assets of this scene are releasable by default after scene unloading.

@@ -61,9 +61,9 @@ bool MaterialInstance::destroy() {
     return true;
 }
 
-std::vector<SharedPtr<scene::Pass>> MaterialInstance::createPasses() {
-    std::vector<SharedPtr<scene::Pass>> passes;
-    auto &                              parentPasses = _parent->getPasses();
+std::vector<IntrusivePtr<scene::Pass>> MaterialInstance::createPasses() {
+    std::vector<IntrusivePtr<scene::Pass>> passes;
+    auto &                                 parentPasses = _parent->getPasses();
 
     passes.reserve(parentPasses->size());
     for (auto &parentPass : *parentPasses) {

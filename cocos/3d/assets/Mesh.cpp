@@ -221,12 +221,12 @@ void Mesh::initialize() {
         return;
     }
 
-    _initialized                                           = true;
-    auto &                                   buffer        = _data;
-    gfx::Device *                            gfxDevice     = gfx::Device::getInstance();
-    auto                                     vertexBuffers = createVertexBuffers(gfxDevice, buffer.buffer());
-    gfx::BufferList                          indexBuffers;
-    std::vector<SharedPtr<RenderingSubMesh>> subMeshes;
+    _initialized                                              = true;
+    auto &                                      buffer        = _data;
+    gfx::Device *                               gfxDevice     = gfx::Device::getInstance();
+    auto                                        vertexBuffers = createVertexBuffers(gfxDevice, buffer.buffer());
+    gfx::BufferList                             indexBuffers;
+    std::vector<IntrusivePtr<RenderingSubMesh>> subMeshes;
 
     for (size_t i = 0; i < _struct.primitives.size(); i++) {
         auto &prim = _struct.primitives[i];

@@ -183,7 +183,7 @@ public:
      * @zh
      * 窗口列表
      */
-    inline const std::vector<SharedPtr<scene::RenderWindow>> &getWindows() const { return _windows; }
+    inline const std::vector<IntrusivePtr<scene::RenderWindow>> &getWindows() const { return _windows; }
 
     /**
      * @zh
@@ -202,7 +202,7 @@ public:
      * @zh
      * 场景列表
      */
-    inline const std::vector<SharedPtr<scene::RenderScene>> &getScenes() const { return _scenes; }
+    inline const std::vector<IntrusivePtr<scene::RenderScene>> &getScenes() const { return _scenes; }
 
     /**
      * @zh
@@ -245,14 +245,14 @@ public:
 private:
     gfx::Device *                               _device{nullptr};
     gfx::Swapchain *                            _swapchain{nullptr};
-    SharedPtr<scene::RenderWindow>              _mainWindow;
-    SharedPtr<scene::RenderWindow>              _curWindow;
-    SharedPtr<scene::RenderWindow>              _tempWindow;
-    std::vector<SharedPtr<scene::RenderWindow>> _windows;
-    SharedPtr<pipeline::RenderPipeline>         _pipeline{nullptr};
+    IntrusivePtr<scene::RenderWindow>              _mainWindow;
+    IntrusivePtr<scene::RenderWindow>              _curWindow;
+    IntrusivePtr<scene::RenderWindow>              _tempWindow;
+    std::vector<IntrusivePtr<scene::RenderWindow>> _windows;
+    IntrusivePtr<pipeline::RenderPipeline>         _pipeline{nullptr};
     scene::DrawBatch2D *                        _batcher2D{nullptr};
-//    SharedPtr<DataPoolManager>                  _dataPoolMgr;
-    std::vector<SharedPtr<scene::RenderScene>>  _scenes;
+//    IntrusivePtr<DataPoolManager>                  _dataPoolMgr;
+    std::vector<IntrusivePtr<scene::RenderScene>>  _scenes;
     memop::Pool<scene::Camera> *                _cameraPool{nullptr};
     float                                       _cumulativeTime{0.F};
     float                                       _frameTime{0.F};

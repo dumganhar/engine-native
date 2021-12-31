@@ -34,7 +34,7 @@ namespace cc {
 
 class ArrayBuffer : public RefCounted {
 public:
-    using Ptr = SharedPtr<ArrayBuffer>;
+    using Ptr = IntrusivePtr<ArrayBuffer>;
 
     explicit ArrayBuffer(uint32_t length) : _byteLength{length} {
         _jsArrayBuffer = se::Object::createArrayBufferObject(nullptr, length);

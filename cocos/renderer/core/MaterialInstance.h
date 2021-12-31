@@ -78,10 +78,10 @@ public:
     //
 
 protected:
-    std::vector<SharedPtr<scene::Pass>> createPasses() override;
+    std::vector<IntrusivePtr<scene::Pass>> createPasses() override;
 
 private:
-    SharedPtr<Material>  _parent;
+    IntrusivePtr<Material>  _parent;
 //    RenderableComponent *_owner{nullptr};
     index_t              _subModelIdx{0};
 

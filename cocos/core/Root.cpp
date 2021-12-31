@@ -236,7 +236,7 @@ void Root::frameMove(float deltaTime, int32_t totalFrames) {
 }
 
 scene::RenderWindow *Root::createWindow(scene::IRenderWindowInfo &info) {
-    SharedPtr<scene::RenderWindow> window = new scene::RenderWindow();
+    IntrusivePtr<scene::RenderWindow> window = new scene::RenderWindow();
 
     window->initialize(_device, info);
     _windows.emplace_back(window);
@@ -259,7 +259,7 @@ void Root::destroyWindows() {
 }
 
 scene::RenderScene *Root::createScene(const scene::IRenderSceneInfo &info) {
-    SharedPtr<scene::RenderScene> scene = new scene::RenderScene();
+    IntrusivePtr<scene::RenderScene> scene = new scene::RenderScene();
     scene->initialize(info);
     _scenes.emplace_back(scene);
     return scene.get();

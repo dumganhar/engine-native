@@ -321,7 +321,7 @@ private:
     float                 _screenScale{0.F};
     gfx::Device *         _device{nullptr};
     RenderScene *         _scene{nullptr};
-    SharedPtr<Node>       _node;
+    IntrusivePtr<Node>    _node;
     std::string           _name;
     bool                  _enabled{false};
     CameraProjection      _proj{CameraProjection::UNKNOWN};

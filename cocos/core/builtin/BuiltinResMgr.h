@@ -63,9 +63,9 @@ private:
     void initTexture2DWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel);
     void initTextureCubeWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel);
 
-    gfx::Device *                         _device{nullptr};
-    Record<std::string, SharedPtr<Asset>> _resources;
-    std::vector<SharedPtr<Material>>      _materialsToBeCompiled;
+    gfx::Device *                            _device{nullptr};
+    Record<std::string, IntrusivePtr<Asset>> _resources;
+    std::vector<IntrusivePtr<Material>>      _materialsToBeCompiled;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(BuiltinResMgr);
 };

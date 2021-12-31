@@ -256,13 +256,13 @@ private:
     void updatePipeline() const;
     void updateGlobalBinding();
 
-    SharedPtr<TextureCube>     _envmapLDR;
-    SharedPtr<TextureCube>     _envmapHDR;
-    SharedPtr<TextureCube>     _diffuseMapLDR;
-    SharedPtr<TextureCube>     _diffuseMapHDR;
+    IntrusivePtr<TextureCube>  _envmapLDR;
+    IntrusivePtr<TextureCube>  _envmapHDR;
+    IntrusivePtr<TextureCube>  _diffuseMapLDR;
+    IntrusivePtr<TextureCube>  _diffuseMapHDR;
     pipeline::GlobalDSManager *_globalDSManager{nullptr};
-    SharedPtr<Model>           _model;
-    SharedPtr<TextureCube>     _default;
+    IntrusivePtr<Model>        _model;
+    IntrusivePtr<TextureCube>  _default;
     bool                       _enabled{false};
     bool                       _useIBL{false};
     bool                       _useHDR{true};

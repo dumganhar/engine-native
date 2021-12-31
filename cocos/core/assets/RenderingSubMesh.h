@@ -182,7 +182,7 @@ private:
 
     std::vector<IFlatBuffer> _flatBuffers;
 
-    // As gfx::InputAssemblerInfo needs the data structure, so not use SharedPtr.
+    // As gfx::InputAssemblerInfo needs the data structure, so not use IntrusivePtr.
     Vector<gfx::Buffer *> _jointMappedBuffers;
 
     std::vector<uint32_t> _jointMappedBufferIndices;
@@ -191,14 +191,14 @@ private:
 
     cc::optional<IGeometricInfo> _geometricInfo;
 
-    // As gfx::InputAssemblerInfo needs the data structure, so not use SharedPtr.
+    // As gfx::InputAssemblerInfo needs the data structure, so not use IntrusivePtr.
     Vector<gfx::Buffer *> _vertexBuffers;
 
     gfx::AttributeList _attributes;
 
-    SharedPtr<gfx::Buffer> _indexBuffer;
+    IntrusivePtr<gfx::Buffer> _indexBuffer;
 
-    SharedPtr<gfx::Buffer> _indirectBuffer;
+    IntrusivePtr<gfx::Buffer> _indirectBuffer;
 
     gfx::PrimitiveMode _primitiveMode{gfx::PrimitiveMode::TRIANGLE_LIST};
 

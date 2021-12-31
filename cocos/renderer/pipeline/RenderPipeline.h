@@ -136,12 +136,12 @@ protected:
     uint                             _tag = 0;
     String                           _constantMacros;
 
-    gfx::Device *                _device{nullptr};
-    GlobalDSManager *            _globalDSManager{nullptr};
-    gfx::DescriptorSet *         _descriptorSet{nullptr};
-    PipelineUBO *                _pipelineUBO{nullptr};
-    scene::Model *               _profiler{nullptr};
-    SharedPtr<PipelineSceneData> _pipelineSceneData{nullptr};
+    gfx::Device *                   _device{nullptr};
+    GlobalDSManager *               _globalDSManager{nullptr};
+    gfx::DescriptorSet *            _descriptorSet{nullptr};
+    PipelineUBO *                   _pipelineUBO{nullptr};
+    scene::Model *                  _profiler{nullptr};
+    IntrusivePtr<PipelineSceneData> _pipelineSceneData{nullptr};
     // has not initBuiltinRes,
     // create temporary default Texture to binding sampler2d
     uint                                                          _width{0};

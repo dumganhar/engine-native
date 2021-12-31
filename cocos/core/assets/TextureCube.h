@@ -40,12 +40,12 @@ using ITextureCubeCreateInfo = ITexture2DCreateInfo;
  * @zh 立方体贴图的 Mipmap 接口。
  */
 struct ITextureCubeMipmap {
-    SharedPtr<ImageAsset> front;
-    SharedPtr<ImageAsset> back;
-    SharedPtr<ImageAsset> left;
-    SharedPtr<ImageAsset> right;
-    SharedPtr<ImageAsset> top;
-    SharedPtr<ImageAsset> bottom;
+    IntrusivePtr<ImageAsset> front;
+    IntrusivePtr<ImageAsset> back;
+    IntrusivePtr<ImageAsset> left;
+    IntrusivePtr<ImageAsset> right;
+    IntrusivePtr<ImageAsset> top;
+    IntrusivePtr<ImageAsset> bottom;
 };
 
 struct ITextureCubeSerializeMipmapData {

@@ -103,9 +103,9 @@ protected:
     gfx::Buffer *                _occlusionQueryIndicesBuffer{nullptr};
     gfx::InputAssembler *        _occlusionQueryInputAssembler{nullptr};
 
-    SharedPtr<Material> _occlusionQueryMaterial{nullptr};
-    gfx::Shader *       _occlusionQueryShader{nullptr};
-    scene::Pass *       _occlusionQueryPass{nullptr};
+    IntrusivePtr<Material> _occlusionQueryMaterial{nullptr};
+    gfx::Shader *          _occlusionQueryShader{nullptr};
+    scene::Pass *          _occlusionQueryPass{nullptr};
 
     RenderPipeline *_pipeline{nullptr};
     gfx::Device *   _device{nullptr};

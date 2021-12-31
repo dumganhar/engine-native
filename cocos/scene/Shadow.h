@@ -267,7 +267,7 @@ public:
      * @en get or set shadow camera far
      * @zh 获取或者设置潜在阴影产生的范围
      */
-    void setInvisibleOcclusionRange(float val);
+    void         setInvisibleOcclusionRange(float val);
     inline float getInvisibleOcclusionRange() const {
         return _invisibleOcclusionRange;
     }
@@ -312,7 +312,7 @@ public:
     uint32_t   _maxReceived{4};
     PCFType    _pcf{PCFType::HARD};
     ShadowType _type{ShadowType::PLANAR};
-    Shadows *   _resource{nullptr};
+    Shadows *  _resource{nullptr};
     Color      _shadowColor{0, 0, 0, 76};
     Vec3       _normal{0.F, 1.F, 0.F};
     Vec2       _size{512.F, 512.F};
@@ -493,10 +493,10 @@ public:
     inline void setFixedArea(bool val) { _fixedArea = val; }
 
     inline const Mat4 &getMatLight() const { return _matLight; }
-    inline Mat4 &getMatLight() { return _matLight; }
+    inline Mat4 &      getMatLight() { return _matLight; }
 
-    inline Material *  getMaterial() const { return _material.get(); }
-    inline Material *  getInstancingMaterial() const { return _instancingMaterial.get(); }
+    inline Material *getMaterial() const { return _material.get(); }
+    inline Material *getInstancingMaterial() const { return _instancingMaterial.get(); }
 
     /**
      * @en get or set shadow max received
@@ -529,33 +529,33 @@ private:
     uint32_t _maxReceived{4};
 
     // local set
-    bool _firstSetCSM{false};
+    bool  _firstSetCSM{false};
     float _shadowCameraFar{0.F};
-    Mat4 _matShadowView;
-    Mat4 _matShadowProj;
-    Mat4 _matShadowViewProj;
+    Mat4  _matShadowView;
+    Mat4  _matShadowProj;
+    Mat4  _matShadowViewProj;
 
-    Vec3                 _normal{0.F, 1.F, 0.F};
-    Color                _shadowColor{0, 0, 0, 76};
-    std::array<float, 4> _shadowColor4f{0.F, 0.F, 0.F, 76.F / 255.F};
-    Mat4                 _matLight;
-    SharedPtr<Material>  _material;
-    SharedPtr<Material>  _instancingMaterial;
-    Vec2                 _size{512.F, 512.F};
-    bool                 _enabled{false};
-    float                _distance{0.F};
-    ShadowType           _type{ShadowType::NONE};
-    float                _near{0.1F};
-    float                _far{10.F};
-    float                _invisibleOcclusionRange{200.F};
-    float                _shadowDistance{100.F};
-    float                _orthoSize{1.F};
-    PCFType              _pcf{PCFType::HARD};
-    bool                 _shadowMapDirty{false};
-    float                _bias{0.F};
-    float                _normalBias{0.F};
-    bool                 _fixedArea{false};
-    float                _saturation{0.75F};
+    Vec3                   _normal{0.F, 1.F, 0.F};
+    Color                  _shadowColor{0, 0, 0, 76};
+    std::array<float, 4>   _shadowColor4f{0.F, 0.F, 0.F, 76.F / 255.F};
+    Mat4                   _matLight;
+    IntrusivePtr<Material> _material;
+    IntrusivePtr<Material> _instancingMaterial;
+    Vec2                   _size{512.F, 512.F};
+    bool                   _enabled{false};
+    float                  _distance{0.F};
+    ShadowType             _type{ShadowType::NONE};
+    float                  _near{0.1F};
+    float                  _far{10.F};
+    float                  _invisibleOcclusionRange{200.F};
+    float                  _shadowDistance{100.F};
+    float                  _orthoSize{1.F};
+    PCFType                _pcf{PCFType::HARD};
+    bool                   _shadowMapDirty{false};
+    float                  _bias{0.F};
+    float                  _normalBias{0.F};
+    bool                   _fixedArea{false};
+    float                  _saturation{0.75F};
 };
 
 } // namespace scene

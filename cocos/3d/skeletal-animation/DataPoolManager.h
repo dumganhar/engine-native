@@ -35,8 +35,8 @@ public:
     explicit DataPoolManager(gfx::Device *device);
     ~DataPoolManager() override = default;
 
-    SharedPtr<JointTexturePool>   jointTexturePool;
-    SharedPtr<JointAnimationInfo> jointAnimationInfo;
+    IntrusivePtr<JointTexturePool>   jointTexturePool;
+    IntrusivePtr<JointAnimationInfo> jointAnimationInfo;
 
     void releaseSkeleton(Skeleton *skeleton) const;
 

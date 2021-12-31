@@ -53,7 +53,7 @@ protected:
 private:
     inline Material *launderMaterial(Material *material) { return material; } //NOLINT(readability-convert-member-functions-to-static)
 
-    SharedPtr<MorphRenderingInstance> _morphRenderingInstance;
+    IntrusivePtr<MorphRenderingInstance> _morphRenderingInstance;
 };
 
 } // namespace cc

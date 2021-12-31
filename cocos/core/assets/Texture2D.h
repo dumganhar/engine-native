@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include "cocos/base/Optional.h"
 #include "base/Ptr.h"
+#include "cocos/base/Optional.h"
 #include "core/assets/Asset.h"
 #include "core/assets/AssetEnum.h"
 #include "core/assets/ImageAsset.h"
@@ -88,7 +88,7 @@ public:
      * @zh 所有层级 Mipmap，注意，这里不包含自动生成的 Mipmap。
      * 当设置 Mipmap 时，贴图的尺寸以及像素格式可能会改变。
      */
-    const std::vector<SharedPtr<ImageAsset>> &getMipmaps() const {
+    const std::vector<IntrusivePtr<ImageAsset>> &getMipmaps() const {
         return _mipmaps;
     }
 
@@ -97,9 +97,9 @@ public:
     }
 
     //cjh TODO: TextureCube also needs this method.
-    void syncMipmapsForJS(const std::vector<SharedPtr<ImageAsset>> &value);
+    void syncMipmapsForJS(const std::vector<IntrusivePtr<ImageAsset>> &value);
 
-    void setMipmaps(const std::vector<SharedPtr<ImageAsset>> &value);
+    void setMipmaps(const std::vector<IntrusivePtr<ImageAsset>> &value);
 
     /**
      * @en Level 0 mipmap image.
@@ -115,7 +115,7 @@ public:
 
     void setImage(ImageAsset *value) {
         value->addAssetRef();
-        std::vector<SharedPtr<ImageAsset>> mipmaps;
+        std::vector<IntrusivePtr<ImageAsset>> mipmaps;
         if (value != nullptr) {
             mipmaps.emplace_back(value);
         }
@@ -200,7 +200,7 @@ public:
     bool validate() const override;
 
 private:
-    std::vector<SharedPtr<ImageAsset>> _mipmaps;
+    std::vector<IntrusivePtr<ImageAsset>> _mipmaps;
 
     std::vector<std::string> _mipmapsUuids; // TODO(xwx): temporary use _mipmaps as UUIDs string array
 

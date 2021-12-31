@@ -24,8 +24,8 @@
 ****************************************************************************/
 
 #pragma once
-#include "cocos/base/Optional.h"
 #include <unordered_map>
+#include "cocos/base/Optional.h"
 
 #include "3d/assets/Skeleton.h"
 #include "core/TypedArray.h"
@@ -53,7 +53,7 @@ struct ICustomJointTextureLayout {
 struct IInternalJointAnimInfo {
     cc::optional<Mat4>              downstream;         // downstream default pose, if present
     cc::optional<std::vector<Mat4>> curveData;          // the nearest animation curve, if present
-    index_t                          bindposeIdx{0};     // index of the actual bindpose to use
+    index_t                         bindposeIdx{0};     // index of the actual bindpose to use
     cc::optional<Mat4>              bindposeCorrection; // correction factor from the original bindpose
 };
 
@@ -65,7 +65,7 @@ struct IJointTextureHandle {
     bool                                                      readyToBeDeleted{false};
     ITextureBufferHandle                                      handle;
     std::unordered_map<uint32_t, std::vector<geometry::AABB>> bounds;
-    cc::optional<std::vector<IInternalJointAnimInfo>>        animInfos;
+    cc::optional<std::vector<IInternalJointAnimInfo>>         animInfos;
 };
 
 class JointTexturePool : public RefCounted {
@@ -106,11 +106,11 @@ private:
     // const IInternalJointAnimInfo &createAnimInfos(Skeleton *skeleton, AnimationClip *clip, Node *skinningRoot); // TODO(xwx): AnimationClip not define
 
     gfx::Device *                                     _device{nullptr};
-    SharedPtr<TextureBufferPool>                      _pool;
+    IntrusivePtr<TextureBufferPool>                   _pool;
     std::unordered_map<uint64_t, IJointTextureHandle> _textureBuffers;
     uint32_t                                          _formatSize{0};
     float                                             _pixelsPerJoint{0}; // TODO(xwx): int or float?
-    SharedPtr<TextureBufferPool>                      _customPool;
+    IntrusivePtr<TextureBufferPool>                   _customPool;
     std::unordered_map<uint64_t, index_t>             _chunkIdxMap; // hash -> chunkIdx
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(JointTexturePool);

@@ -32,11 +32,11 @@
 
 namespace cc {
 
-void Texture2D::syncMipmapsForJS(const std::vector<SharedPtr<ImageAsset>> &value) {
+void Texture2D::syncMipmapsForJS(const std::vector<IntrusivePtr<ImageAsset>> &value) {
     _mipmaps = value;
 }
 
-void Texture2D::setMipmaps(const std::vector<SharedPtr<ImageAsset>> &value) {
+void Texture2D::setMipmaps(const std::vector<IntrusivePtr<ImageAsset>> &value) {
     _mipmaps = value;
     setMipmapLevel(_mipmaps.size());
     if (!_mipmaps.empty()) {

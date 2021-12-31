@@ -203,8 +203,8 @@ public:
     void reuse(const std::string &type, bool bubbles = false) {} //cjh TODO:
 
 protected:
-    SharedPtr<CCObject>       _target;
-    SharedPtr<CCObject>       _currentTarget;
+    IntrusivePtr<CCObject>    _target;
+    IntrusivePtr<CCObject>    _currentTarget;
     Phase                     _eventPhase{Phase::NONE};
     Type                      _eventType;
     CallbacksInvoker::KeyType _eventName;

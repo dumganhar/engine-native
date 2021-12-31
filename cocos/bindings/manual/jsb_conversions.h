@@ -709,7 +709,7 @@ template <typename T, size_t N>
 bool sevalue_to_native(const se::Value &from, std::array<T, N> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 template <typename T>
-bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::IntrusivePtr<T> *to, se::Object *ctx); // NOLINT(readability-identifier-naming)
 
 //////////////////// std::array
 
@@ -1037,14 +1037,14 @@ bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Objec
 
 template <typename T>
 inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
-sevalue_to_native(const se::Value &from, cc::SharedPtr<cc::TypedArrayTemp<T>> *out, se::Object *ctx) { // NOLINT(readability-identifier-naming)
+sevalue_to_native(const se::Value &from, cc::IntrusivePtr<cc::TypedArrayTemp<T>> *out, se::Object *ctx) { // NOLINT(readability-identifier-naming)
     *out = new cc::TypedArrayTemp<T>();
     sevalue_to_native(from, out->get(), ctx);
     return true;
 }
 
 template <typename T>
-bool sevalue_to_native(const se::Value &from, cc::SharedPtr<T> *to, se::Object *ctx) {
+bool sevalue_to_native(const se::Value &from, cc::IntrusivePtr<T> *to, se::Object *ctx) {
     if (from.isNullOrUndefined()) {
         to = nullptr;
         return true;
@@ -1197,7 +1197,7 @@ template <typename T>
 inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se::Object *ctx); // NOLINT
 
 template <typename T>
-inline bool nativevalue_to_se(const cc::SharedPtr<T> &from, se::Value &to, se::Object *ctx); // NOLINT
+inline bool nativevalue_to_se(const cc::IntrusivePtr<T> &from, se::Value &to, se::Object *ctx); // NOLINT
 
 template <typename T>
 bool nativevalue_to_se(const std::reference_wrapper<T> ref, se::Value &to, se::Object *ctx); // NOLINT
@@ -1462,7 +1462,7 @@ inline bool nativevalue_to_se(const std::shared_ptr<T> &from, se::Value &to, se:
 }
 
 template <typename T>
-inline bool nativevalue_to_se(const cc::SharedPtr<T> &from, se::Value &to, se::Object *ctx) { //NOLINT
+inline bool nativevalue_to_se(const cc::IntrusivePtr<T> &from, se::Value &to, se::Object *ctx) { //NOLINT
 
     auto *nativePtr = from.get();
     if (!nativePtr) {

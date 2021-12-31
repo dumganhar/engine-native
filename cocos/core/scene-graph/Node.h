@@ -82,7 +82,7 @@ public:
     static index_t                          stackId;
 
     static void    setScene(Node *);
-    static index_t getIdxOfChild(const std::vector<SharedPtr<Node>> &, Node *);
+    static index_t getIdxOfChild(const std::vector<IntrusivePtr<Node>> &, Node *);
 
     static bool isStatic; // cjh TODO: add getter / setter
 
@@ -261,10 +261,10 @@ public:
     inline void setActiveInHierarchy(bool v) { _activeInHierarchyArr[0] = (v ? 1 : 0); }
     inline void setActiveInHierarchyPtr(uint8_t *ptr) { _activeInHierarchyArr = ptr; }
 
-    virtual void                               onPostActivated(bool active) {}
-    inline const std::vector<SharedPtr<Node>> &getChildren() const { return _children; }
-    inline Node *                              getParent() const { return _parent; }
-    inline NodeEventProcessor *                getEventProcessor() const { return _eventProcessor; }
+    virtual void                                  onPostActivated(bool active) {}
+    inline const std::vector<IntrusivePtr<Node>> &getChildren() const { return _children; }
+    inline Node *                                 getParent() const { return _parent; }
+    inline NodeEventProcessor *                   getEventProcessor() const { return _eventProcessor; }
 
     Node *           getChildByUuid(const std::string &) const;
     Node *           getChildByName(const std::string &) const;
@@ -611,7 +611,7 @@ public:
     //    Node *   _getChild(index_t i);
     //    void     _setChildrenSize(uint32_t size);
     //    uint32_t _getChildrenSize();
-    void _setChildren(std::vector<SharedPtr<Node>> &&children); // NOLINT
+    void _setChildren(std::vector<IntrusivePtr<Node>> &&children); // NOLINT
     // For JS wrapper.
     inline uint32_t getEventMask() const { return _eventMask; }
     inline void     setEventMask(uint32_t mask) { _eventMask = mask; }
@@ -665,8 +665,8 @@ protected:
     uint32_t _flagChange{0};
     uint32_t _dirtyFlag{0};
 
-    bool                        _eulerDirty{false};
-    SharedPtr<NodeUiProperties> _uiProps;
+    bool                           _eulerDirty{false};
+    IntrusivePtr<NodeUiProperties> _uiProps;
     //    bool _activeInHierarchy{false};
     // Shared memory with JS.
     uint8_t * _activeInHierarchyArr{nullptr};
@@ -676,10 +676,10 @@ public:
     std::function<void(index_t)> onSiblingIndexChanged{nullptr};
     index_t                      _siblingIndex{0};
     // For deserialization
-    std::string                  _id;
-    std::vector<SharedPtr<Node>> _children;
-    Node *                       _parent{nullptr};
-    bool                         _active{true};
+    std::string                     _id;
+    std::vector<IntrusivePtr<Node>> _children;
+    Node *                          _parent{nullptr};
+    bool                            _active{true};
 
 private:
     // local transform
@@ -695,7 +695,7 @@ private:
 
     //
 
-    SharedPtr<UserData> _userData;
+    IntrusivePtr<UserData> _userData;
     friend class NodeActivator;
     friend class Scene;
 

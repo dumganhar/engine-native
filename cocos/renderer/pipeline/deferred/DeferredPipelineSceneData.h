@@ -73,15 +73,15 @@ private:
     void updateDeferredPassInfo();
     void updateDeferredLightPass();
 
-    SharedPtr<Material> _postProcessMaterial;
-    gfx::Shader *       _postPassShader{nullptr}; // weak reference
-    scene::Pass *       _postPass{nullptr};       // weak reference
+    IntrusivePtr<Material> _postProcessMaterial;
+    gfx::Shader *          _postPassShader{nullptr}; // weak reference
+    scene::Pass *          _postPass{nullptr};       // weak reference
 
-    SharedPtr<Material> _lightingMaterial;
-    gfx::Shader *       _lightPassShader{nullptr}; // weak reference
-    scene::Pass *       _lightPass{nullptr};       // weak reference
+    IntrusivePtr<Material> _lightingMaterial;
+    gfx::Shader *          _lightPassShader{nullptr}; // weak reference
+    scene::Pass *          _lightPass{nullptr};       // weak reference
 
-    SharedPtr<Material>        _bloomMaterial;
+    IntrusivePtr<Material>     _bloomMaterial;
     scene::Pass *              _bloomPrefilterPass{nullptr};        // weak reference
     gfx::Shader *              _bloomPrefilterPassShader{nullptr};  // weak reference
     scene::Pass *              _bloomCombinePass{nullptr};          // weak reference

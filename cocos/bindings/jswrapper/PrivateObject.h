@@ -71,9 +71,9 @@ public:
 template <typename T>
 class TypedPrivateObject : public PrivateObjectBase {
 public:
-    inline std::shared_ptr<T> share();
-    inline cc::SharedPtr<T> & ccShared();
-    inline const char *       getName() const override {
+    inline std::shared_ptr<T>   share();
+    inline cc::IntrusivePtr<T> &ccShared();
+    inline const char *         getName() const override {
         static_assert(!std::is_base_of<PrivateObjectBase, T>::value, "");
         return typeid(T).name();
     }
@@ -101,8 +101,8 @@ template <typename T>
 class CCSharedPtrPrivateObject final : public TypedPrivateObject<T> {
 public:
     CCSharedPtrPrivateObject() = default;
-    explicit CCSharedPtrPrivateObject(const cc::SharedPtr<T> &p) : _ptr(p) {}
-    explicit CCSharedPtrPrivateObject(cc::SharedPtr<T> &&p) : _ptr(std::move(p)) {}
+    explicit CCSharedPtrPrivateObject(const cc::IntrusivePtr<T> &p) : _ptr(p) {}
+    explicit CCSharedPtrPrivateObject(cc::IntrusivePtr<T> &&p) : _ptr(std::move(p)) {}
     ~CCSharedPtrPrivateObject() override = default;
 
     inline void *getRaw() const override {
@@ -111,7 +111,7 @@ public:
     inline bool isCCShared() const override { return true; }
 
 private:
-    cc::SharedPtr<T> _ptr;
+    cc::IntrusivePtr<T> _ptr;
 
     friend TypedPrivateObject<T>;
 };
@@ -158,7 +158,7 @@ inline std::shared_ptr<T> TypedPrivateObject<T>::share() {
     return std::shared_ptr<T>(nullptr);
 }
 template <typename T>
-inline cc::SharedPtr<T> &TypedPrivateObject<T>::ccShared() {
+inline cc::IntrusivePtr<T> &TypedPrivateObject<T>::ccShared() {
     assert(isCCShared());
     return reinterpret_cast<CCSharedPtrPrivateObject<T> *>(this)->_ptr;
 }
@@ -183,7 +183,7 @@ inline PrivateObjectBase *make_shared_private_object(T *cobj) { // NOLINT
 #endif
     if constexpr (std::is_base_of<cc::RefCounted, T>::value) {
         // return new RawPrivateData<T>(cobj);
-        return new CCSharedPtrPrivateObject<T>(cc::SharedPtr<T>(cobj));
+        return new CCSharedPtrPrivateObject<T>(cc::IntrusivePtr<T>(cobj));
     } else {
         return new SharedPrivateObject<T>(std::shared_ptr<T>(cobj));
     }
@@ -211,13 +211,13 @@ inline PrivateObjectBase *rawref_private_object(T *ptr) { // NOLINT
 }
 
 template <typename T>
-inline PrivateObjectBase *ccshared_private_object(const cc::SharedPtr<T> &ptr) { // NOLINT
+inline PrivateObjectBase *ccshared_private_object(const cc::IntrusivePtr<T> &ptr) { // NOLINT
     static_assert(std::is_base_of<cc::RefCounted, T>::value, "cc::RefCounted expected!");
     return new CCSharedPtrPrivateObject<T>(ptr);
 }
 template <typename T>
 inline PrivateObjectBase *ccshared_private_object(T *cobj) { // NOLINT
     static_assert(std::is_base_of<cc::RefCounted, T>::value, "cc::RefCounted expected!");
-    return new CCSharedPtrPrivateObject<T>(cc::SharedPtr<T>(cobj));
+    return new CCSharedPtrPrivateObject<T>(cc::IntrusivePtr<T>(cobj));
 }
 } // namespace se

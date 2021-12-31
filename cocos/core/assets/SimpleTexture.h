@@ -130,7 +130,7 @@ protected:
     void tryDestroyTexture();
     void notifyTextureUpdated();
 
-    SharedPtr<gfx::Texture> _gfxTexture{nullptr};
+    IntrusivePtr<gfx::Texture> _gfxTexture{nullptr};
 
     uint32_t _mipmapLevel{1};
     // Cache these data to reduce JSB invoking.

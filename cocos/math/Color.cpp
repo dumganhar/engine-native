@@ -1,9 +1,9 @@
 /****************************************************************************
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
-Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+Copyright (c) 2017-2021 Xiamen Yaji Software Co., Ltd.
 
-http://www.cocos2d-x.org
+http://www.cocos.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -94,7 +94,7 @@ void Color::set(const Color &p1, const Color &p2) {
 }
 
 Vec4 Color::toVec4() const {
-    return {r / 255.F, g / 255.F, b / 255.F, a / 255.F};
+    return {static_cast<float>(r) / 255.F, static_cast<float>(g) / 255.F, static_cast<float>(b) / 255.F, static_cast<float>(a) / 255.F};
 }
 
 } // namespace cc

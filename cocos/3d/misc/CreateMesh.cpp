@@ -277,7 +277,7 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
         bufferView.length   = indexBuffer->byteLength();
         bufferView.count    = idxCount;
         bufferView.stride   = idxStride;
-        primitive.indexView = std::move(bufferView);
+        primitive.indexView = bufferView;
         bufferBlob.addBuffer(indexBuffer);
     }
 

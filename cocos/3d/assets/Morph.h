@@ -48,7 +48,7 @@ MorphRendering *createMorphRendering(Mesh *mesh, gfx::Device *gfxDevice);
  */
 class MorphRendering : public RefCounted {
 public:
-    virtual ~MorphRendering()                        = default;
+    ~MorphRendering() override                       = default;
     virtual MorphRenderingInstance *createInstance() = 0;
 };
 

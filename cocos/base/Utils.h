@@ -64,7 +64,7 @@ CC_DLL double atof(const char *str);
 
 CC_DLL uint alignTo(uint size, uint alignment);
 
-template<uint size, uint alignment>
+template <uint size, uint alignment>
 constexpr uint ALIGN_TO = ((size - 1) / alignment + 1) * alignment;
 
 template <class T>
@@ -135,7 +135,7 @@ bool removeAt(std::vector<T> &array, int32_t index) {
  */
 template <typename T>
 bool fastRemoveAt(std::vector<T> &array, int32_t index) {
-    const int32_t length = static_cast<int32_t>(array.size());
+    const auto length = static_cast<int32_t>(array.size());
     if (index < 0 || index >= length) {
         return false;
     }

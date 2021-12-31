@@ -131,10 +131,10 @@ public:
     explicit JointAnimationInfo(gfx::Device *device);
     ~JointAnimationInfo() override = default;
 
-    IAnimInfo        getData(const std::string &nodeID = "-1");
-    void             destroy(const std::string &nodeID);
-    const IAnimInfo &switchClip(IAnimInfo &info /*, AnimationClip *clip */);
-    void             clear();
+    IAnimInfo               getData(const std::string &nodeID = "-1");
+    void                    destroy(const std::string &nodeID);
+    static const IAnimInfo &switchClip(IAnimInfo &info /*, AnimationClip *clip */);
+    void                    clear();
 
 private:
     std::unordered_map<std::string, IAnimInfo> _pool; // pre node

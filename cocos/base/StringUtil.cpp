@@ -63,7 +63,7 @@ int StringUtil::vprintf(char *buf, const char *last, const char *fmt, va_list ar
     }
 
     auto count = static_cast<int>(last - buf);
-    int ret   = vsnprintf(buf, count, fmt, args);
+    int  ret   = vsnprintf(buf, count, fmt, args);
     if (ret >= count - 1) {
         return count - 1;
     }
@@ -130,15 +130,13 @@ StringArray StringUtil::split(const String &str, const String &delims, uint maxS
 
 String &StringUtil::replace(String &str, const String &findStr, const String &replaceStr) {
     size_t startPos = str.find(findStr);
-    if (startPos == std::string::npos)
-        return str;
+    if (startPos == std::string::npos) return str;
     str.replace(startPos, findStr.length(), replaceStr);
     return str;
 }
 
 String &StringUtil::replaceAll(String &str, const String &findStr, const String &replaceStr) {
-    if (findStr.empty())
-        return str;
+    if (findStr.empty()) return str;
     size_t startPos = 0;
     while ((startPos = str.find(findStr, startPos)) != std::string::npos) {
         str.replace(startPos, findStr.length(), replaceStr);

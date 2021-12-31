@@ -30,8 +30,7 @@
 namespace se {
 
 State::State()
-: _privateObject(nullptr),
-  _thisObject(nullptr),
+: _thisObject(nullptr),
   _args(nullptr) {
 }
 

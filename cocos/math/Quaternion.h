@@ -1,7 +1,7 @@
 /**
  Copyright 2013 BlackBerry Inc.
  Copyright (c) 2014-2016 Chukong Technologies Inc.
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2017-2021 Xiamen Yaji Software Co., Ltd.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -106,14 +106,14 @@ public:
      *
      * @param array The values for the new quaternion.
      */
-    Quaternion(float *array);
+    explicit Quaternion(float *array);
 
     /**
      * Constructs a quaternion equal to the rotational part of the specified matrix.
      *
      * @param m The matrix.
      */
-    Quaternion(const Mat4 &m);
+    explicit Quaternion(const Mat4 &m);
 
     /**
      * Constructs a quaternion equal to the rotation from the specified axis and angle.
@@ -133,7 +133,7 @@ public:
     /**
      * Destructor.
      */
-    ~Quaternion();
+    ~Quaternion() = default;
 
     /**
      * Returns the identity quaternion.
@@ -318,7 +318,7 @@ public:
      *
      * @return The angle (in radians).
      */
-    float toAxisAngle(Vec3 *e) const;
+    float toAxisAngle(Vec3 *axis) const;
 
     /**
      * Interpolates between two quaternions using linear interpolation.

@@ -31,7 +31,7 @@
 
 namespace cc {
 
-static const char *NonUuidMark = ".";
+static const char *nonUuidMark = ".";
 
 /**
  * ID generator for runtime.
@@ -55,6 +55,6 @@ private:
 * The global id generator might have a conflict problem once every 365 days,
 * if the game runs at 60 FPS and each frame 4760273 counts of new id are requested.
 */
-extern IDGenerator __globalIDGenerator;
+extern IDGenerator globalIdGenerator;
 
 } // namespace cc

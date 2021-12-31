@@ -405,12 +405,12 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             {
                 // construct uniforms
                 uniforms.reserve(block.members.size());
-                for (int i = 0; i < block.members.size(); i++) {
+                for (const auto & member : block.members) {
                     uniforms.emplace_back();
                     auto &info = uniforms.back();
-                    info.name  = block.members[i].name;
-                    info.type  = block.members[i].type;
-                    info.count = block.members[i].count;
+                    info.name  = member.name;
+                    info.type  = member.type;
+                    info.count = member.count;
                 }
             }
             tmplInfo.shaderInfo.blocks.emplace_back();

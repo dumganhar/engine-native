@@ -126,29 +126,29 @@ using variant = boost::variant2::variant<T...>;
 using monostate = boost::variant2::monostate;
 
 template <class U, class... T>
-inline constexpr bool holds_alternative(variant<T...> const& v) noexcept {
+inline constexpr bool holds_alternative(variant<T...> const& v) noexcept { // NOLINT // use std style
     return boost::variant2::holds_alternative<U, T...>(v);
 }
 
 // get_if
 
 template <std::size_t I, class... T>
-inline constexpr typename std::add_pointer<boost::variant2::variant_alternative_t<I, variant<T...>>>::type get_if(variant<T...>* v) noexcept {
+inline constexpr typename std::add_pointer<boost::variant2::variant_alternative_t<I, variant<T...>>>::type get_if(variant<T...>* v) noexcept { // NOLINT // use std style
     return boost::variant2::get_if<I, T...>(v);
 }
 
 template <std::size_t I, class... T>
-inline constexpr typename std::add_pointer<const boost::variant2::variant_alternative_t<I, variant<T...>>>::type get_if(variant<T...> const* v) noexcept {
+inline constexpr typename std::add_pointer<const boost::variant2::variant_alternative_t<I, variant<T...>>>::type get_if(variant<T...> const* v) noexcept { // NOLINT // use std style
     return boost::variant2::get_if<I, T...>(v);
 }
 
 template <class U, class... T>
-inline constexpr typename std::add_pointer<U>::type get_if(variant<T...>* v) noexcept {
+inline constexpr typename std::add_pointer<U>::type get_if(variant<T...>* v) noexcept { // NOLINT // use std style
     return boost::variant2::get_if<U, T...>(v);
 }
 
 template <class U, class... T>
-inline constexpr typename std::add_pointer<U const>::type get_if(variant<T...> const* v) noexcept {
+inline constexpr typename std::add_pointer<U const>::type get_if(variant<T...> const* v) noexcept { // NOLINT // use std style
     return boost::variant2::get_if<U, T...>(v);
 }
 

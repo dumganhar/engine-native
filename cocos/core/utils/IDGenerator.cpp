@@ -3,12 +3,12 @@
 
 namespace cc {
 
-IDGenerator __globalIDGenerator("global");
+IDGenerator globalIdGenerator("global");
 
 IDGenerator::IDGenerator(const std::string &category) {
     // Tnit with a random id to emphasize that the returns id should not be stored in persistence data.
     _id     = static_cast<uint32_t>(RandomHelper::randomInt(0, 998));
-    _prefix = (category + NonUuidMark);
+    _prefix = (category + nonUuidMark);
 }
 
 std::string IDGenerator::getNewId() {

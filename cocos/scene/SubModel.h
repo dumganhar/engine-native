@@ -100,8 +100,8 @@ protected:
     int32_t                                          _id{-1};
 
 private:
-    static inline uint32_t generateId() {
-        static uint32_t generator = 0;
+    static inline int32_t generateId() {
+        static int32_t generator = 0;
         return generator++;
     }
 

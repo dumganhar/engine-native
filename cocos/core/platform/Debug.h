@@ -139,7 +139,7 @@ void error(cc::any message, Args... optionalParams);
  */
 
 template <typename... Args>
-void _assert(cc::any value, std::string message, Args... optionalParams); //assert is a reserved word
+void _assert(cc::any value, std::string message, Args... optionalParams); // NOLINT //assert is a reserved word
 
 /**
  * @en Outputs a message at the "debug" log level.
@@ -182,7 +182,7 @@ void errorID(uint32_t id, Args... optionalParams);
 template <typename... Args>
 void assertID(uint32_t id, Args... optionalParams);
 
-void _throw(); // throw is a reserved word
+void _throw(); // NOLINT // throw is a reserved word
 } // namespace debug
 
 } // namespace cc

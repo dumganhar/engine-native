@@ -42,7 +42,7 @@
 
 namespace cc {
 
-class RenderableComponent;
+//class RenderableComponent;
 
 /**
  * @en The basic infos for material initialization.
@@ -308,9 +308,9 @@ public:
      * @en The owner render component
      * @zh 该材质所归属的渲染组件
      */
-    virtual RenderableComponent *getOwner() const {
-        return nullptr;
-    }
+    //    virtual RenderableComponent *getOwner() const {
+    //        return nullptr;
+    //    }
 
     void update(bool keepProps = true); // TODO(xwx): temporary use as public by demo
 

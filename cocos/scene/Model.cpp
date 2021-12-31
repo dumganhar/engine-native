@@ -24,7 +24,8 @@
  ****************************************************************************/
 #include <array>
 
-#include "core/Director.h"
+// #include "core/Director.h"
+#include "core/Root.h"
 #include "core/TypedArray.h"
 #include "core/assets/Material.h"
 #include "core/event/EventTypesToJS.h"

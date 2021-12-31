@@ -26,7 +26,6 @@
 #include "scene/Skybox.h"
 #include "3d/assets/Mesh.h"
 #include "3d/misc/CreateMesh.h"
-#include "core/Director.h"
 #include "core/builtin/BuiltinResMgr.h"
 #include "core/scene-graph/SceneGlobals.h"
 #include "primitive/Primitive.h"

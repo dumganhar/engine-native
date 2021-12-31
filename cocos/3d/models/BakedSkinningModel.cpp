@@ -24,8 +24,7 @@
  ****************************************************************************/
 #include "3d/models/BakedSkinningModel.h"
 #include "3d/assets/Mesh.h"
-#include "3d/skeletal-animation/DataPoolManager.h"
-#include "3d/skeletal-animation/SkeletalAnimationUtils.h"
+//#include "3d/skeletal-animation/DataPoolManager.h"
 #include "core/Root.h"
 #include "scene/Model.h"
 #include "scene/SubModel.h"
@@ -49,7 +48,9 @@ const std::string INST_JOINT_ANIM_INFO = "a_jointAnimInfo";
 namespace cc {
 
 BakedSkinningModel::BakedSkinningModel()
-: Super(), _dataPoolManager(Root::getInstance()->getDataPoolManager()) {
+: Super()
+//, _dataPoolManager(Root::getInstance()->getDataPoolManager())
+{
     _type = Model::Type::BAKED_SKINNING;
     _jointMedium.jointTextureInfo.reset(4);
     // JSB uses _dataPoolManager in JS and the data is synchronized by syncDataForJS & syncAnimInfoForJS
@@ -127,7 +128,7 @@ void BakedSkinningModel::updateUBOs(uint32_t stamp) {
 void BakedSkinningModel::applyJointTexture(const cc::optional<IJointTextureHandle> &texture) {
     auto oldTex = _jointMedium.texture;
     if (oldTex.has_value() && texture.has_value() && (&oldTex.value() != &texture.value())) {
-        _dataPoolManager->jointTexturePool->releaseHandle(oldTex.value());
+//        _dataPoolManager->jointTexturePool->releaseHandle(oldTex.value());
     }
     _jointMedium.texture = texture;
     if (!texture.has_value()) {

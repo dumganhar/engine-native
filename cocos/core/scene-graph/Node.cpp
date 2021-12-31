@@ -25,13 +25,14 @@
 
 #include "core/scene-graph/Node.h"
 #include "base/CachedArray.h"
-#include "core/Director.h"
-#include "core/Game.h"
+#include "base/StringUtil.h"
+// #include "core/Director.h"
+// #include "core/Game.h"
 #include "core/data/Object.h"
-#include "core/scene-graph/Find.h"
-#include "core/scene-graph/NodeActivator.h"
+//#include "core/scene-graph/Find.h"
+//#include "core/scene-graph/NodeActivator.h"
 #include "core/scene-graph/NodeEnum.h"
-#include "core/scene-graph/NodeUIProperties.h"
+//#include "core/scene-graph/NodeUIProperties.h"
 #include "core/scene-graph/Scene.h"
 #include "core/utils/IDGenerator.h"
 
@@ -191,9 +192,9 @@ void Node::off(const CallbacksInvoker::KeyType &type, void *target, bool useCapt
     }
 }
 
-void Node::dispatchEvent(event::Event *eve) {
-    _eventProcessor->dispatchEvent(eve);
-}
+//void Node::dispatchEvent(event::Event *eve) {
+//    _eventProcessor->dispatchEvent(eve);
+//}
 
 bool Node::hasEventListener(const CallbacksInvoker::KeyType &type) const {
     return _eventProcessor->hasEventListener(type);
@@ -369,23 +370,23 @@ void Node::walk(const std::function<void(Node *)> &preFunc, const std::function<
     stackId--;
 }
 
-Component *Node::addComponent(Component *comp) {
-    comp->_node = this; // cjh TODO: shared_ptr
-    _components.emplace_back(comp);
-
-    if (isActiveInHierarchy()) {
-        NodeActivator::activateComp(comp);
-    }
-
-    return comp;
-}
-
-void Node::removeComponent(Component *comp) {
-    auto iteComp = std::find(_components.begin(), _components.end(), comp);
-    if (iteComp != _components.end()) {
-        _components.erase(iteComp);
-    }
-}
+//Component *Node::addComponent(Component *comp) {
+//    comp->_node = this; // cjh TODO: shared_ptr
+//    _components.emplace_back(comp);
+//
+//    if (isActiveInHierarchy()) {
+//        NodeActivator::activateComp(comp);
+//    }
+//
+//    return comp;
+//}
+//
+//void Node::removeComponent(Component *comp) {
+//    auto iteComp = std::find(_components.begin(), _components.end(), comp);
+//    if (iteComp != _components.end()) {
+//        _components.erase(iteComp);
+//    }
+//}
 
 bool Node::onPreDestroyBase() {
     Flags destroyingFlag = Flags::DESTROYING;
@@ -989,9 +990,9 @@ void Node::onHierarchyChanged(Node *oldParent) {
 }
 
 /* static */
-Node *Node::find(const std::string &path, Node *referenceNode /* = nullptr*/) {
-    return cc::find(path, referenceNode);
-}
+//Node *Node::find(const std::string &path, Node *referenceNode /* = nullptr*/) {
+//    return cc::find(path, referenceNode);
+//}
 
 // For deserialization
 // void Node::_setChild(index_t i, Node *child) {

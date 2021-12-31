@@ -132,7 +132,9 @@ bool Quaternion::inverse() {
     }
 
     // Too close to zero.
-    if (n < 0.000001F) return false;
+    if (n < 0.000001F) {
+        return false;
+    }
 
     n = 1.F / n;
     x = -x * n;
@@ -171,11 +173,15 @@ void Quaternion::normalize() {
     float n = x * x + y * y + z * z + w * w;
 
     // Already normalized.
-    if (n == 1.F) return;
+    if (n == 1.F) {
+        return;
+    }
 
     n = std::sqrt(n);
     // Too close to zero.
-    if (n < 0.000001F) return;
+    if (n < 0.000001F) {
+        return;
+    }
 
     n = 1.F / n;
     x *= n;

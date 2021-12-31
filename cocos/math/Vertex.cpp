@@ -111,7 +111,9 @@ bool ccVertexLineIntersect(float ax, float ay,
     float newX;
 
     // FAIL: Line undefined
-    if ((ax == bx && ay == by) || (cx == dx && cy == dy)) return false;
+    if ((ax == bx && ay == by) || (cx == dx && cy == dy)) {
+        return false;
+    }
 
     //  Translate system to make A the origin
     bx -= ax;
@@ -135,7 +137,9 @@ bool ccVertexLineIntersect(float ax, float ay,
     dx     = newX;
 
     // FAIL: Lines are parallel.
-    if (cy == dy) return false;
+    if (cy == dy) {
+        return false;
+    }
 
     // Discover the relative position of the intersection in the line AB
     *t = (dx + (cx - dx) * dy / (dy - cy)) / distAB;

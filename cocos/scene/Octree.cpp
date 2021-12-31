@@ -33,7 +33,9 @@ namespace cc {
 namespace scene {
 
 void OctreeInfo::setEnabled(bool val) {
-    if (_enabled == val) return;
+    if (_enabled == val) {
+        return;
+    }
     _enabled = val;
     if (_resource) {
         _resource->setEnabled(val);
@@ -316,7 +318,9 @@ void Octree::initialize(const OctreeInfo &info) {
 }
 
 void Octree::setEnabled(bool val) {
-    if (_enabled == val) return;
+    if (_enabled == val) {
+        return;
+    }
     _enabled = val;
 }
 

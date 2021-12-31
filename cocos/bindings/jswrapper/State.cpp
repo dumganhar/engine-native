@@ -29,30 +29,22 @@
 
 namespace se {
 
-State::State()
-: _thisObject(nullptr),
-  _args(nullptr) {
-}
+State::State() = default;
 
 State::~State() {
     SAFE_DEC_REF(_thisObject);
 }
 
 State::State(PrivateObjectBase *privateObject)
-: _privateObject(privateObject),
-  _thisObject(nullptr),
-  _args(nullptr) {
-}
+: _privateObject(privateObject) {}
 
 State::State(PrivateObjectBase *privateObject, const ValueArray &args)
 : _privateObject(privateObject),
-  _thisObject(nullptr),
   _args(&args) {
 }
 
 State::State(Object *thisObject, const ValueArray &args)
-: _privateObject(nullptr),
-  _thisObject(thisObject),
+: _thisObject(thisObject),
   _args(&args) {
     if (_thisObject != nullptr) {
         _thisObject->incRef();
@@ -61,15 +53,14 @@ State::State(Object *thisObject, const ValueArray &args)
 
 State::State(Object *thisObject, PrivateObjectBase *privateObject)
 : _privateObject(privateObject),
-  _thisObject(thisObject),
-  _args(nullptr) {
+  _thisObject(thisObject) {
     if (_thisObject != nullptr) {
         _thisObject->incRef();
     }
 }
 
-State::State(Object *thisObject, PrivateObjectBase *nativeThisObject, const ValueArray &args)
-: _privateObject(nativeThisObject),
+State::State(Object *thisObject, PrivateObjectBase *privateObject, const ValueArray &args)
+: _privateObject(privateObject),
   _thisObject(thisObject),
   _args(&args) {
     if (_thisObject != nullptr) {

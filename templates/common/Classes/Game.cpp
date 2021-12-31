@@ -29,7 +29,6 @@
 #include "cocos/bindings/manual/jsb_classtype.h"
 #include "cocos/bindings/manual/jsb_global.h"
 #include "cocos/bindings/manual/jsb_module_register.h"
-#include "cocos/core/Director.h"
 #include "cocos/renderer/pipeline/GlobalDescriptorSetManager.h"
 
 #if (CC_PLATFORM == CC_PLATFORM_MAC_IOS)
@@ -43,9 +42,6 @@ bool Game::init() {
 
     //TODO: Is here the correct place to invoke setDescriptorSetLayout?
     cc::pipeline::GlobalDSManager::setDescriptorSetLayout();
-    //cjh FIXME: Initialize director
-    auto *director = new cc::Director();
-    director->init();
     //
 
     se::ScriptEngine *se = se::ScriptEngine::getInstance();

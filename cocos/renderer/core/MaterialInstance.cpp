@@ -1,12 +1,12 @@
 #include "renderer/core/MaterialInstance.h"
-#include "core/components/RenderableComponent.h"
+//#include "core/components/RenderableComponent.h"
 #include "renderer/core/PassInstance.h"
 
 namespace cc {
 
 MaterialInstance::MaterialInstance(const IMaterialInstanceInfo &info) {
     _parent      = info.parent;
-    _owner       = info.owner;
+//    _owner       = info.owner;
     _subModelIdx = info.subModelIdx;
     copy(_parent);
 }
@@ -79,9 +79,9 @@ void MaterialInstance::onPassStateChange(bool dontNotify) {
             _rebuildPSOCallback(_subModelIdx, this);
         }
 
-        if (_owner != nullptr) {
-            _owner->onRebuildPSO(_subModelIdx, this);
-        }
+//        if (_owner != nullptr) {
+//            _owner->onRebuildPSO(_subModelIdx, this);
+//        }
     }
 }
 

@@ -24,7 +24,7 @@
  ****************************************************************************/
 
 #include "core/Root.h"
-#include "core/Director.h"
+// #include "core/Director.h"
 #include "core/event/CallbacksInvoker.h"
 #include "core/event/EventTypesToJS.h"
 #include "renderer/gfx-base/GFXDef.h"
@@ -141,10 +141,10 @@ bool Root::setRenderPipeline(pipeline::RenderPipeline *rppl /* = nullptr*/) {
     }
 
     // TODO(minggo):
-    auto *scene = Director::getInstance()->getScene();
-    if (scene) {
-        scene->getSceneGlobals()->activate();
-    }
+//    auto *scene = Director::getInstance()->getScene();
+//    if (scene) {
+//        scene->getSceneGlobals()->activate();
+//    }
 
     onGlobalPipelineStateChanged();
 

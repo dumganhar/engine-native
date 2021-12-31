@@ -93,7 +93,7 @@ protected:
 private:
     BakedJointInfo             _jointMedium;
     index_t                    _instAnimInfoIdx{CC_INVALID_INDEX};
-    SharedPtr<DataPoolManager> _dataPoolManager;
+//    SharedPtr<DataPoolManager> _dataPoolManager;
     SharedPtr<Skeleton>        _skeleton;
     SharedPtr<Mesh>            _mesh;
     // AnimationClip* uploadedAnim;

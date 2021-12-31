@@ -58,11 +58,11 @@ public:
     inline void setOctreeInfo(scene::OctreeInfo *info) { _octreeInfo = info; }
 
 private:
-    SharedPtr<scene::AmbientInfo> _ambientInfo;
-    SharedPtr<scene::ShadowsInfo> _shadowInfo;
-    SharedPtr<scene::SkyboxInfo>  _skyboxInfo;
-    SharedPtr<scene::FogInfo>     _fogInfo;
-    SharedPtr<scene::OctreeInfo>  _octreeInfo;
+    IntrusivePtr<scene::AmbientInfo> _ambientInfo;
+    IntrusivePtr<scene::ShadowsInfo> _shadowInfo;
+    IntrusivePtr<scene::SkyboxInfo>  _skyboxInfo;
+    IntrusivePtr<scene::FogInfo>     _fogInfo;
+    IntrusivePtr<scene::OctreeInfo>  _octreeInfo;
 };
 
 } // namespace cc

@@ -42,10 +42,10 @@ class Texture;
 class DataPoolManager;
 
 struct BakedJointInfo {
-    SharedPtr<gfx::Buffer>                     buffer;
-    Float32Array                               jointTextureInfo;
+    IntrusivePtr<gfx::Buffer>                 buffer;
+    Float32Array                              jointTextureInfo;
     cc::optional<IJointTextureHandle>         texture;
-    IAnimInfo                                  animInfo;
+    IAnimInfo                                 animInfo;
     std::vector<cc::optional<geometry::AABB>> boundsInfo;
 };
 
@@ -78,12 +78,12 @@ public:
     void syncAnimInfoForJS(gfx::Buffer *buffer, const Float32Array &data, Uint8Array &dirty);
     void syncDataForJS(const std::vector<cc::optional<geometry::AABB>> &boundsInfo,
                        const cc::optional<geometry::AABB> &             modelBound,
-                       float                                             jointTextureInfo0,
-                       float                                             jointTextureInfo1,
-                       float                                             jointTextureInfo2,
-                       float                                             jointTextureInfo3,
-                       gfx::Texture *                                    tex,
-                       const Float32Array &                              animInfoData);
+                       float                                            jointTextureInfo0,
+                       float                                            jointTextureInfo1,
+                       float                                            jointTextureInfo2,
+                       float                                            jointTextureInfo3,
+                       gfx::Texture *                                   tex,
+                       const Float32Array &                             animInfoData);
 
     void setUploadedAnimForJS(bool value) { _isUploadedAnim = value; }
 
@@ -91,11 +91,11 @@ protected:
     void applyJointTexture(const cc::optional<IJointTextureHandle> &texture);
 
 private:
-    BakedJointInfo             _jointMedium;
-    index_t                    _instAnimInfoIdx{CC_INVALID_INDEX};
-    SharedPtr<DataPoolManager> _dataPoolManager;
-    SharedPtr<Skeleton>        _skeleton;
-    SharedPtr<Mesh>            _mesh;
+    BakedJointInfo                _jointMedium;
+    index_t                       _instAnimInfoIdx{CC_INVALID_INDEX};
+    IntrusivePtr<DataPoolManager> _dataPoolManager;
+    IntrusivePtr<Skeleton>        _skeleton;
+    IntrusivePtr<Mesh>            _mesh;
     // AnimationClip* uploadedAnim;
     bool _isUploadedAnim{false};
 

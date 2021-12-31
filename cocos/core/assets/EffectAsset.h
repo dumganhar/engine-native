@@ -551,7 +551,7 @@ public:
      */
     static EffectAsset *get(const std::string &name);
 
-    using RegisteredEffectAssetMap = std::unordered_map<std::string, SharedPtr<EffectAsset>>;
+    using RegisteredEffectAssetMap = std::unordered_map<std::string, IntrusivePtr<EffectAsset>>;
     /**
      * @en Get all registered effect assets.
      * @zh 获取所有已注册的 effect 资源。

@@ -52,7 +52,7 @@ uint64_t Material::getHashForMaterial(Material *material) {
 }
 
 Material::Material() {
-    _passes = std::make_shared<std::vector<SharedPtr<scene::Pass>>>();
+    _passes = std::make_shared<std::vector<IntrusivePtr<scene::Pass>>>();
 }
 
 void Material::initialize(const IMaterialInfo &info) {
@@ -306,9 +306,9 @@ void Material::update(bool keepProps /* = true*/) {
     _hash = Material::getHashForMaterial(this);
 }
 
-std::vector<SharedPtr<scene::Pass>> Material::createPasses() {
-    std::vector<SharedPtr<scene::Pass>> passes;
-    ITechniqueInfo *                    tech = nullptr;
+std::vector<IntrusivePtr<scene::Pass>> Material::createPasses() {
+    std::vector<IntrusivePtr<scene::Pass>> passes;
+    ITechniqueInfo *                       tech = nullptr;
     if (_techIdx < _effectAsset->_techniques.size()) {
         tech = &_effectAsset->_techniques[_techIdx];
     }

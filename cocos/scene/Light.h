@@ -92,16 +92,16 @@ public:
     static float nt2lm(float size);
 
 protected:
-    bool            _useColorTemperature{false};
-    bool            _baked{false};
-    SharedPtr<Node> _node;
-    float           _colorTemp{6550.F};
-    LightType       _type{LightType::UNKNOWN};
-    std::string     _name;
-    RenderScene *   _scene{nullptr};
-    Vec3            _color{1, 1, 1};
-    Vec3            _colorTemperatureRGB;
-    Vec3            _forward{0, 0, -1};
+    bool               _useColorTemperature{false};
+    bool               _baked{false};
+    IntrusivePtr<Node> _node;
+    float              _colorTemp{6550.F};
+    LightType          _type{LightType::UNKNOWN};
+    std::string        _name;
+    RenderScene *      _scene{nullptr};
+    Vec3               _color{1, 1, 1};
+    Vec3               _colorTemperatureRGB;
+    Vec3               _forward{0, 0, -1};
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(Light);

@@ -245,7 +245,7 @@ public:
      */
     const JointBufferIndicesType &getJointBufferIndices();
 
-    using RenderingSubMeshList = std::vector<SharedPtr<RenderingSubMesh>>;
+    using RenderingSubMeshList = std::vector<IntrusivePtr<RenderingSubMesh>>;
     /**
      * @en The sub meshes for rendering. Mesh could be split into different sub meshes for rendering.
      * @zh 此网格创建的渲染网格。
@@ -292,7 +292,7 @@ public:
      */
     void reset(ICreateInfo &&info);
 
-    using BoneSpaceBounds = std::vector<SharedPtr<geometry::AABB>>;
+    using BoneSpaceBounds = std::vector<IntrusivePtr<geometry::AABB>>;
     /**
      * @en Get [[AABB]] bounds in the skeleton's bone space
      * @zh 获取骨骼变换空间内下的 [[AABB]] 包围盒
@@ -388,7 +388,7 @@ private:
     static TypedArray createTypedArrayWithGFXFormat(gfx::Format format, uint32_t count);
 
 public:
-    SharedPtr<MorphRendering> morphRendering;
+    IntrusivePtr<MorphRendering> morphRendering;
 
 private:
     //cjh howto ? @serializable

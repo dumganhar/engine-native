@@ -51,28 +51,28 @@ public:
     inline void setWorldBoundDescriptorSet(gfx::DescriptorSet *descriptorSet) { _worldBoundDescriptorSet = descriptorSet; }
     inline void setDescriptorSet(gfx::DescriptorSet *descriptorSet) { _descriptorSet = descriptorSet; }
     inline void setInputAssembler(gfx::InputAssembler *ia) { _inputAssembler = ia; }
-    inline void setShaders(const std::vector<SharedPtr<gfx::Shader>> &shaders) { _shaders = shaders; }
-    void        setPasses(const std::shared_ptr<std::vector<SharedPtr<Pass>>> &passes);
+    inline void setShaders(const std::vector<IntrusivePtr<gfx::Shader>> &shaders) { _shaders = shaders; }
+    void        setPasses(const std::shared_ptr<std::vector<IntrusivePtr<Pass>>> &passes);
     inline void setPlanarInstanceShader(gfx::Shader *shader) { _planarInstanceShader = shader; }
     inline void setPlanarShader(gfx::Shader *shader) { _planarShader = shader; }
     inline void setPriority(pipeline::RenderPriority priority) { _priority = priority; }
     inline void setOwner(Model *model) { _owner = model; }
     void        setSubMesh(RenderingSubMesh *subMesh);
 
-    inline gfx::DescriptorSet *                       getDescriptorSet() const { return _descriptorSet; }
-    inline gfx::DescriptorSet *                       getWorldBoundDescriptorSet() const { return _worldBoundDescriptorSet; }
-    inline gfx::InputAssembler *                      getInputAssembler() const { return _inputAssembler; }
-    inline const std::vector<SharedPtr<gfx::Shader>> &getShaders() const { return _shaders; }
-    inline const std::vector<SharedPtr<Pass>> &       getPasses() const { return *_passes; }
-    inline const std::vector<IMacroPatch> &           getPatches() const { return _patches; }
-    inline gfx::Shader *                              getPlanarInstanceShader() const { return _planarInstanceShader; }
-    inline gfx::Shader *                              getPlanarShader() const { return _planarShader; }
-    inline pipeline::RenderPriority                   getPriority() const { return _priority; }
-    inline RenderingSubMesh *                         getSubMesh() const { return _subMesh; }
-    inline Model *                                    getOwner() const { return _owner; }
-    inline uint32_t                                   getId() const { return _id; }
+    inline gfx::DescriptorSet *                          getDescriptorSet() const { return _descriptorSet; }
+    inline gfx::DescriptorSet *                          getWorldBoundDescriptorSet() const { return _worldBoundDescriptorSet; }
+    inline gfx::InputAssembler *                         getInputAssembler() const { return _inputAssembler; }
+    inline const std::vector<IntrusivePtr<gfx::Shader>> &getShaders() const { return _shaders; }
+    inline const std::vector<IntrusivePtr<Pass>> &       getPasses() const { return *_passes; }
+    inline const std::vector<IMacroPatch> &              getPatches() const { return _patches; }
+    inline gfx::Shader *                                 getPlanarInstanceShader() const { return _planarInstanceShader; }
+    inline gfx::Shader *                                 getPlanarShader() const { return _planarShader; }
+    inline pipeline::RenderPriority                      getPriority() const { return _priority; }
+    inline RenderingSubMesh *                            getSubMesh() const { return _subMesh; }
+    inline Model *                                       getOwner() const { return _owner; }
+    inline uint32_t                                      getId() const { return _id; }
 
-    void initialize(RenderingSubMesh *subMesh, const std::shared_ptr<std::vector<SharedPtr<Pass>>> &passes, const std::vector<IMacroPatch> &patches);
+    void initialize(RenderingSubMesh *subMesh, const std::shared_ptr<std::vector<IntrusivePtr<Pass>>> &passes, const std::vector<IMacroPatch> &patches);
     void initPlanarShadowShader();
     void initPlanarShadowInstanceShader();
     void destroy();
@@ -82,22 +82,22 @@ public:
 protected:
     void flushPassInfo();
 
-    gfx::Device *                  _device{nullptr};
-    std::vector<IMacroPatch>       _patches;
-    SharedPtr<gfx::InputAssembler> _inputAssembler;
-    SharedPtr<gfx::DescriptorSet>  _descriptorSet;
-    SharedPtr<gfx::DescriptorSet>  _worldBoundDescriptorSet;
+    gfx::Device *                     _device{nullptr};
+    std::vector<IMacroPatch>          _patches;
+    IntrusivePtr<gfx::InputAssembler> _inputAssembler;
+    IntrusivePtr<gfx::DescriptorSet>  _descriptorSet;
+    IntrusivePtr<gfx::DescriptorSet>  _worldBoundDescriptorSet;
 
-    SharedPtr<gfx::Texture>                       _reflectionTex;
-    SharedPtr<gfx::Sampler>                       _reflectionSampler;
-    pipeline::RenderPriority                      _priority{pipeline::RenderPriority::DEFAULT};
-    SharedPtr<gfx::Shader>                        _planarShader;
-    SharedPtr<gfx::Shader>                        _planarInstanceShader;
-    SharedPtr<RenderingSubMesh>                   _subMesh;
-    std::shared_ptr<std::vector<SharedPtr<Pass>>> _passes;
-    std::vector<SharedPtr<gfx::Shader>>           _shaders;
-    Model *                                       _owner{nullptr};
-    int32_t                                       _id{-1};
+    IntrusivePtr<gfx::Texture>                       _reflectionTex;
+    IntrusivePtr<gfx::Sampler>                       _reflectionSampler;
+    pipeline::RenderPriority                         _priority{pipeline::RenderPriority::DEFAULT};
+    IntrusivePtr<gfx::Shader>                        _planarShader;
+    IntrusivePtr<gfx::Shader>                        _planarInstanceShader;
+    IntrusivePtr<RenderingSubMesh>                   _subMesh;
+    std::shared_ptr<std::vector<IntrusivePtr<Pass>>> _passes;
+    std::vector<IntrusivePtr<gfx::Shader>>           _shaders;
+    Model *                                          _owner{nullptr};
+    int32_t                                          _id{-1};
 
 private:
     static inline uint32_t generateId() {

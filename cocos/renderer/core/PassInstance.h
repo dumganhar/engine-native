@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include "cocos/base/Optional.h"
 #include "MaterialInstance.h"
+#include "cocos/base/Optional.h"
 #include "scene/Pass.h"
 
 namespace cc {
@@ -75,7 +75,7 @@ protected:
     void onStateChange();
 
 private:
-    SharedPtr<scene::Pass> _parent;
+    IntrusivePtr<scene::Pass> _parent;
     // Weak reference.
     MaterialInstance *_owner{nullptr};
     bool              _dontNotify{false};

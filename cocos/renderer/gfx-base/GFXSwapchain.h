@@ -79,8 +79,8 @@ protected:
     SurfaceTransform _transform{SurfaceTransform::IDENTITY};
     bool             _preRotationEnabled{false};
 
-    SharedPtr<Texture> _colorTexture;
-    SharedPtr<Texture> _depthStencilTexture;
+    IntrusivePtr<Texture> _colorTexture;
+    IntrusivePtr<Texture> _depthStencilTexture;
 };
 
 ///////////////////////////////////////////////////////////

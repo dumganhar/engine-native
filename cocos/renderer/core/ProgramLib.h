@@ -58,7 +58,7 @@ struct ITemplateInfo {
     gfx::ShaderInfo                              shaderInfo;
     std::vector<int32_t>                         blockSizes;
     Vector<gfx::DescriptorSetLayout *>           setLayouts;
-    SharedPtr<gfx::PipelineLayout>               pipelineLayout{nullptr};
+    IntrusivePtr<gfx::PipelineLayout>            pipelineLayout{nullptr};
     Record<std::string, uint32_t>                handleMap;
     std::vector<gfx::DescriptorSetLayoutBinding> bindings;
     int32_t                                      samplerStartBinding{-1};
@@ -156,9 +156,9 @@ public:
                               pipeline::RenderPipeline *pipeline, std::string *key = nullptr);
 
 protected:
-    Record<std::string, IProgramInfo>           _templates; // per shader
-    Record<std::string, SharedPtr<gfx::Shader>> _cache;
-    Record<uint64_t, ITemplateInfo>             _templateInfos;
+    Record<std::string, IProgramInfo>              _templates; // per shader
+    Record<std::string, IntrusivePtr<gfx::Shader>> _cache;
+    Record<uint64_t, ITemplateInfo>                _templateInfos;
 
 private:
     CC_DISALLOW_COPY_MOVE_ASSIGN(ProgramLib);

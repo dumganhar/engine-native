@@ -152,17 +152,17 @@ public:
     }
 
 private:
-    SharedPtr<Texture2D>    _textureAsset;
-    SharedPtr<gfx::Sampler> _sampler;
-    ArrayBuffer::Ptr        _arrayBuffer;
-    Float32Array            _valueView;
+    IntrusivePtr<Texture2D>    _textureAsset;
+    IntrusivePtr<gfx::Sampler> _sampler;
+    ArrayBuffer::Ptr           _arrayBuffer;
+    Float32Array               _valueView;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(MorphTexture);
 };
 
 struct GpuMorphAttribute {
-    std::string             attributeName;
-    SharedPtr<MorphTexture> morphTexture;
+    std::string                attributeName;
+    IntrusivePtr<MorphTexture> morphTexture;
 };
 
 struct CpuMorphAttributeTarget {
@@ -320,9 +320,9 @@ public:
     }
 
 private:
-    uint32_t               _targetCount{0};
-    DataView *             _localBuffer{nullptr};
-    SharedPtr<gfx::Buffer> _remoteBuffer;
+    uint32_t                  _targetCount{0};
+    DataView *                _localBuffer{nullptr};
+    IntrusivePtr<gfx::Buffer> _remoteBuffer;
 };
 
 class CpuComputing final : public SubMeshMorphRendering {
@@ -438,8 +438,8 @@ public:
 
 private:
     std::vector<GpuMorphAttribute> _attributes;
-    SharedPtr<CpuComputing>        _owner;
-    SharedPtr<MorphUniforms>       _morphUniforms;
+    IntrusivePtr<CpuComputing>     _owner;
+    IntrusivePtr<MorphUniforms>    _morphUniforms;
 };
 
 class GpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance {
@@ -492,8 +492,8 @@ public:
 
 private:
     std::vector<GpuMorphAttribute> *_attributes{nullptr};
-    SharedPtr<GpuComputing>         _owner;
-    SharedPtr<MorphUniforms>        _morphUniforms;
+    IntrusivePtr<GpuComputing>      _owner;
+    IntrusivePtr<MorphUniforms>     _morphUniforms;
 };
 
 CpuComputing::CpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph, gfx::Device *gfxDevice) {
@@ -681,8 +681,8 @@ public:
     }
 
 private:
-    SharedPtr<StdMorphRendering>                          _owner;
-    std::vector<SharedPtr<SubMeshMorphRenderingInstance>> _subMeshInstances;
+    IntrusivePtr<StdMorphRendering>                          _owner;
+    std::vector<IntrusivePtr<SubMeshMorphRenderingInstance>> _subMeshInstances;
 };
 
 StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {

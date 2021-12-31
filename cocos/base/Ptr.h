@@ -37,13 +37,13 @@
 //   };
 //
 //   void some_function() {
-//     SharedPtr<MyFoo> foo = new MyFoo();
+//     IntrusivePtr<MyFoo> foo = new MyFoo();
 //     foo->Method(param);
 //     // `foo` is released when this function returns
 //   }
 //
 //   void some_other_function() {
-//     SharedPtr<MyFoo> foo = new MyFoo();
+//     IntrusivePtr<MyFoo> foo = new MyFoo();
 //     ...
 //     foo = nullptr;  // explicitly releases `foo`
 //     ...
@@ -51,13 +51,13 @@
 //       foo->Method(param);
 //   }
 //
-// The above examples show how SharedPtr<T> acts like a pointer to T.
-// Given two SharedPtr<T> classes, it is also possible to exchange
+// The above examples show how IntrusivePtr<T> acts like a pointer to T.
+// Given two IntrusivePtr<T> classes, it is also possible to exchange
 // references between the two objects, like so:
 //
 //   {
-//     SharedPtr<MyFoo> a = new MyFoo();
-//     SharedPtr<MyFoo> b;
+//     IntrusivePtr<MyFoo> a = new MyFoo();
+//     IntrusivePtr<MyFoo> b;
 //
 //     b.swap(a);
 //     // now, `b` references the MyFoo object, and `a` references null.
@@ -67,8 +67,8 @@
 // object, simply use the assignment operator:
 //
 //   {
-//     SharedPtr<MyFoo> a = new MyFoo();
-//     SharedPtr<MyFoo> b;
+//     IntrusivePtr<MyFoo> a = new MyFoo();
+//     IntrusivePtr<MyFoo> b;
 //
 //     b = a;
 //     // now, `a` and `b` each own a reference to the same MyFoo object.
@@ -83,22 +83,22 @@
 namespace cc {
 
 template <class T>
-class SharedPtr {
+class IntrusivePtr {
 public:
     using element_type = T;
 
-    SharedPtr() {
+    IntrusivePtr() {
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
-    SharedPtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)
+    IntrusivePtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
         }
     }
 
-    SharedPtr(const SharedPtr<T> &r) : _ptr(r._ptr) {
+    IntrusivePtr(const IntrusivePtr<T> &r) : _ptr(r._ptr) {
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
@@ -106,7 +106,7 @@ public:
     }
 
     template <typename U>
-    SharedPtr(const SharedPtr<U> &r) : _ptr(r.get()) {
+    IntrusivePtr(const IntrusivePtr<U> &r) : _ptr(r.get()) {
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
@@ -114,16 +114,16 @@ public:
     }
 
     // Move constructors.
-    SharedPtr(SharedPtr<T> &&r) noexcept : _ptr(r.release()) {
+    IntrusivePtr(IntrusivePtr<T> &&r) noexcept : _ptr(r.release()) {
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
     template <typename U>
-    SharedPtr(SharedPtr<U> &&r) noexcept : _ptr(r.release()) {
+    IntrusivePtr(IntrusivePtr<U> &&r) noexcept : _ptr(r.release()) {
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
-    ~SharedPtr() {
+    ~IntrusivePtr() {
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->release();
         }
@@ -136,7 +136,7 @@ public:
 
     // As reference count is 1 after creating a RefCounted object, so do not have to
     // invoke p->addRef();
-    SharedPtr<T> &operator=(T *p) {
+    IntrusivePtr<T> &operator=(T *p) {
         // AddRef first so that self assignment should work
         if (p) {
             reinterpret_cast<RefCounted *>(p)->addRef();
@@ -148,23 +148,23 @@ public:
         return *this;
     }
 
-    SharedPtr<T> &operator=(const SharedPtr<T> &r) {
+    IntrusivePtr<T> &operator=(const IntrusivePtr<T> &r) {
         return *this = r._ptr;
     }
 
     template <typename U>
-    SharedPtr<T> &operator=(const SharedPtr<U> &r) {
+    IntrusivePtr<T> &operator=(const IntrusivePtr<U> &r) {
         return *this = r.get();
     }
 
-    SharedPtr<T> &operator=(SharedPtr<T> &&r) noexcept {
-        SharedPtr<T>(std::move(r)).swap(*this);
+    IntrusivePtr<T> &operator=(IntrusivePtr<T> &&r) noexcept {
+        IntrusivePtr<T>(std::move(r)).swap(*this);
         return *this;
     }
 
     template <typename U>
-    SharedPtr<T> &operator=(SharedPtr<U> &&r) noexcept {
-        SharedPtr<T>(std::move(r)).swap(*this);
+    IntrusivePtr<T> &operator=(IntrusivePtr<U> &&r) noexcept {
+        IntrusivePtr<T>(std::move(r)).swap(*this);
         return *this;
     }
 
@@ -190,7 +190,7 @@ public:
         *pp  = p;
     }
 
-    void swap(SharedPtr<T> &r) noexcept { swap(&r._ptr); }
+    void swap(IntrusivePtr<T> &r) noexcept { swap(&r._ptr); }
 
 private:
     // Returns the (possibly null) raw pointer, and makes the scoped_refptr hold a

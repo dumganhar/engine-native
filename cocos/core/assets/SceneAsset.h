@@ -55,7 +55,7 @@ private:
 
     @editable
     @serializable*/
-    SharedPtr<Scene> _scene;
+    IntrusivePtr<Scene> _scene;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(SceneAsset);
 };

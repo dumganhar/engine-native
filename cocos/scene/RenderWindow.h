@@ -25,14 +25,14 @@
 
 #pragma once
 
-#include "cocos/base/Optional.h"
 #include "base/Macros.h"
 #include "base/Vector.h"
+#include "cocos/base/Optional.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 #include "renderer/gfx-base/GFXDevice.h"
 #include "renderer/gfx-base/GFXFramebuffer.h"
-#include "renderer/gfx-base/GFXTexture.h"
 #include "renderer/gfx-base/GFXSwapchain.h"
+#include "renderer/gfx-base/GFXTexture.h"
 #include "scene/Camera.h"
 
 namespace cc {
@@ -40,10 +40,10 @@ namespace scene {
 
 struct IRenderWindowInfo {
     cc::optional<std::string> title;
-    uint32_t                   width{0};
-    uint32_t                   height{0};
-    gfx::RenderPassInfo        renderPassInfo;
-    gfx::Swapchain*    swapchain{nullptr};
+    uint32_t                  width{0};
+    uint32_t                  height{0};
+    gfx::RenderPassInfo       renderPassInfo;
+    gfx::Swapchain *          swapchain{nullptr};
 };
 
 /**
@@ -109,7 +109,7 @@ public:
      * @en Get the swapchain for this window, if there is one
      * @zh 如果存在的话，获取此窗口的交换链
      */
-    inline gfx::Swapchain* getSwapchain() {
+    inline gfx::Swapchain *getSwapchain() {
         return _swapchain;
     }
 
@@ -119,18 +119,18 @@ public:
      */
     inline gfx::Framebuffer *getFramebuffer() const { return _frameBuffer; }
 
-    inline const std::vector<SharedPtr<Camera>> &getCameras() const { return _cameras; }
+    inline const std::vector<IntrusivePtr<Camera>> &getCameras() const { return _cameras; }
 
 private:
-    uint32_t                       _width{1};
-    uint32_t                       _height{1};
-    gfx::Swapchain*                _swapchain{nullptr};
-    std::string                    _title;
-    SharedPtr<gfx::RenderPass>     _renderPass;
-    SharedPtr<gfx::Texture>        _depthStencilTexture;
-    SharedPtr<gfx::Framebuffer>    _frameBuffer;
-    std::vector<SharedPtr<Camera>> _cameras;
-    Vector<gfx::Texture *> _colorTextures;
+    uint32_t                          _width{1};
+    uint32_t                          _height{1};
+    gfx::Swapchain *                  _swapchain{nullptr};
+    std::string                       _title;
+    IntrusivePtr<gfx::RenderPass>     _renderPass;
+    IntrusivePtr<gfx::Texture>        _depthStencilTexture;
+    IntrusivePtr<gfx::Framebuffer>    _frameBuffer;
+    std::vector<IntrusivePtr<Camera>> _cameras;
+    Vector<gfx::Texture *>            _colorTextures;
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(RenderWindow);
 };

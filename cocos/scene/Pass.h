@@ -313,35 +313,35 @@ protected:
     virtual void syncBatchingScheme();
 
     // internal resources
-    SharedPtr<gfx::Buffer>              _rootBuffer;
-    std::vector<SharedPtr<gfx::Buffer>> _buffers;
-    SharedPtr<gfx::DescriptorSet>       _descriptorSet;
-    SharedPtr<gfx::PipelineLayout>      _pipelineLayout;
+    IntrusivePtr<gfx::Buffer>              _rootBuffer;
+    std::vector<IntrusivePtr<gfx::Buffer>> _buffers;
+    IntrusivePtr<gfx::DescriptorSet>       _descriptorSet;
+    IntrusivePtr<gfx::PipelineLayout>      _pipelineLayout;
     // internal data
     index_t                       _passIndex{0};
     index_t                       _propertyIndex{0};
     std::string                   _programName;
     IPassDynamics                 _dynamics;
     Record<std::string, uint32_t> _propertyHandleMap;
-    SharedPtr<ArrayBuffer>        _rootBlock;
+    IntrusivePtr<ArrayBuffer>     _rootBlock;
     std::vector<IBlockRef>        _blocks; // Point to position in _rootBlock
 
-    IProgramInfo *                                        _shaderInfo; // weakref to template of ProgramLib
-    MacroRecord                                           _defines;
-    Record<std::string, IPropertyInfo>                    _properties;
-    SharedPtr<gfx::Shader>                                _shader;
-    gfx::BlendState                                       _blendState{};
-    gfx::DepthStencilState                                _depthStencilState{};
-    gfx::RasterizerState                                  _rs{};
-    pipeline::RenderPriority                              _priority{pipeline::RenderPriority::DEFAULT};
-    pipeline::RenderPassStage                             _stage{pipeline::RenderPassStage::DEFAULT};
-    uint32_t                                              _phase{0};
-    std::string                                           _phaseString;
-    gfx::PrimitiveMode                                    _primitive{gfx::PrimitiveMode::TRIANGLE_LIST};
-    BatchingSchemes                                       _batchingScheme{BatchingSchemes::NONE};
-    gfx::DynamicStateFlagBit                              _dynamicStates{gfx::DynamicStateFlagBit::NONE};
-    Record<int32_t, SharedPtr<pipeline::InstancedBuffer>> _instancedBuffers;
-    Record<int32_t, SharedPtr<pipeline::BatchedBuffer>>   _batchedBuffers;
+    IProgramInfo *                                           _shaderInfo; // weakref to template of ProgramLib
+    MacroRecord                                              _defines;
+    Record<std::string, IPropertyInfo>                       _properties;
+    IntrusivePtr<gfx::Shader>                                _shader;
+    gfx::BlendState                                          _blendState{};
+    gfx::DepthStencilState                                   _depthStencilState{};
+    gfx::RasterizerState                                     _rs{};
+    pipeline::RenderPriority                                 _priority{pipeline::RenderPriority::DEFAULT};
+    pipeline::RenderPassStage                                _stage{pipeline::RenderPassStage::DEFAULT};
+    uint32_t                                                 _phase{0};
+    std::string                                              _phaseString;
+    gfx::PrimitiveMode                                       _primitive{gfx::PrimitiveMode::TRIANGLE_LIST};
+    BatchingSchemes                                          _batchingScheme{BatchingSchemes::NONE};
+    gfx::DynamicStateFlagBit                                 _dynamicStates{gfx::DynamicStateFlagBit::NONE};
+    Record<int32_t, IntrusivePtr<pipeline::InstancedBuffer>> _instancedBuffers;
+    Record<int32_t, IntrusivePtr<pipeline::BatchedBuffer>>   _batchedBuffers;
 
     uint64_t _hash{0};
     // external references

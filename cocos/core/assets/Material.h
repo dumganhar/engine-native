@@ -223,7 +223,7 @@ public:
 
     // For deserialization, we need to make the following properties public
     /* @type(EffectAsset) */
-    SharedPtr<EffectAsset> _effectAsset;
+    IntrusivePtr<EffectAsset> _effectAsset;
 
     /* @serializable */
     uint32_t _techIdx{0};
@@ -239,7 +239,7 @@ public:
     //
 
 protected:
-    std::shared_ptr<std::vector<SharedPtr<scene::Pass>>> _passes;
+    std::shared_ptr<std::vector<IntrusivePtr<scene::Pass>>> _passes;
 
     uint64_t _hash{0};
 
@@ -280,7 +280,7 @@ public:
      * @en The passes defined in this material.
      * @zh 当前正在使用的 pass 数组。
      */
-    std::shared_ptr<std::vector<SharedPtr<scene::Pass>>> &getPasses() {
+    std::shared_ptr<std::vector<IntrusivePtr<scene::Pass>>> &getPasses() {
         return _passes;
     }
 
@@ -351,7 +351,7 @@ protected:
 
     virtual void doDestroy();
 
-    virtual std::vector<SharedPtr<scene::Pass>> createPasses();
+    virtual std::vector<IntrusivePtr<scene::Pass>> createPasses();
 
 private:
     friend class MaterialDeserializer;

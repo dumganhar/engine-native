@@ -284,11 +284,11 @@ void Node::walk(const std::function<void(Node *)> &preFunc) {
 }
 
 void Node::walk(const std::function<void(Node *)> &preFunc, const std::function<void(Node *)> &postFunc) {
-    index_t                             index{1};
-    index_t                             i{0};
-    const std::vector<SharedPtr<Node>> *children = nullptr;
-    Node *                              curr{nullptr};
-    auto                                stacksCount = static_cast<index_t>(Node::stacks.size());
+    index_t                                index{1};
+    index_t                                i{0};
+    const std::vector<IntrusivePtr<Node>> *children = nullptr;
+    Node *                                 curr{nullptr};
+    auto                                   stacksCount = static_cast<index_t>(Node::stacks.size());
     if (stackId >= stacksCount) {
         stacks.resize(stackId + 1);
     }
@@ -445,7 +445,7 @@ void Node::updateScene() {
     emit(EventTypesToJS::NODE_SCENE_UPDATED, _scene);
 }
 
-index_t Node::getIdxOfChild(const std::vector<SharedPtr<Node>> &child, Node *target) {
+index_t Node::getIdxOfChild(const std::vector<IntrusivePtr<Node>> &child, Node *target) {
     auto iteChild = std::find(child.begin(), child.end(), target);
     if (iteChild != child.end()) {
         return iteChild - child.begin();
@@ -494,9 +494,9 @@ void Node::setSiblingIndex(index_t index) {
         // TODO(): errorID(3821);
         return;
     }
-    std::vector<SharedPtr<Node>> &siblings = _parent->_children;
-    index                                  = index != -1 ? index : static_cast<index_t>(siblings.size()) - 1;
-    index_t oldIdx                         = getIdxOfChild(siblings, this);
+    std::vector<IntrusivePtr<Node>> &siblings = _parent->_children;
+    index                                     = index != -1 ? index : static_cast<index_t>(siblings.size()) - 1;
+    index_t oldIdx                            = getIdxOfChild(siblings, this);
     if (index != oldIdx) {
         if (oldIdx != CC_INVALID_INDEX) {
             siblings.erase(siblings.begin() + oldIdx);
@@ -659,7 +659,7 @@ void Node::updateWorldTransform() {
 }
 
 const Mat4 &Node::getWorldMatrix() const {
-    const_cast<Node*>(this)->updateWorldTransform();
+    const_cast<Node *>(this)->updateWorldTransform();
     return _worldMatrix;
 }
 
@@ -722,7 +722,7 @@ void Node::setWorldPosition(float x, float y, float z) {
 }
 
 const Vec3 &Node::getWorldPosition() const {
-    const_cast<Node*>(this)->updateWorldTransform();
+    const_cast<Node *>(this)->updateWorldTransform();
     return _worldPosition;
 }
 
@@ -748,7 +748,7 @@ void Node::setWorldRotation(float x, float y, float z, float w) {
 }
 
 const Quaternion &Node::getWorldRotation() const {
-    const_cast<Node*>(this)->updateWorldTransform();
+    const_cast<Node *>(this)->updateWorldTransform();
     return _worldRotation;
 }
 
@@ -784,7 +784,7 @@ void Node::setWorldScale(float x, float y, float z) {
 }
 
 const Vec3 &Node::getWorldScale() const {
-    const_cast<Node*>(this)->updateWorldTransform();
+    const_cast<Node *>(this)->updateWorldTransform();
     return _worldScale;
 }
 
@@ -1018,7 +1018,7 @@ Node *Node::find(const std::string &path, Node *referenceNode /* = nullptr*/) {
 //    return _children.size();
 //}
 //
-void Node::_setChildren(std::vector<SharedPtr<Node>> &&children) {
+void Node::_setChildren(std::vector<IntrusivePtr<Node>> &&children) {
     _children = std::move(children);
 }
 

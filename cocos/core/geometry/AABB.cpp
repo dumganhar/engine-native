@@ -82,7 +82,7 @@ void AABB::merge(const cc::Vec3 &point) {
 }
 
 void AABB::merge(const std::vector<cc::Vec3> &points) {
-    for (auto &p : points) {
+    for (const auto &p : points) {
         merge(p);
     }
 }

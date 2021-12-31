@@ -1,7 +1,7 @@
 /**
  Copyright 2013 BlackBerry Inc.
  Copyright (c) 2013-2016 Chukong Technologies Inc.
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2017-2021 Xiamen Yaji Software Co., Ltd.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ NS_CC_MATH_BEGIN
 
 namespace  {
 
-const std::array<std::array<float, 4>, 4> preTransforms = {{
+const std::array<std::array<float, 4>, 4> PRE_TRANSFORMS = {{
     {{1,  0,  0,  1}}, // SurfaceTransform.IDENTITY
     {{0,  1, -1,  0}}, // SurfaceTransform.ROTATE_90
     {{-1,  0,  0, -1}}, // SurfaceTransform.ROTATE_180
@@ -119,7 +119,7 @@ void Mat4::createPerspective(float fieldOfView, float aspectRatio, float zNearPl
     const float x = isFieldOfViewY ? f / aspectRatio : f;
     const float y = (isFieldOfViewY ? f : f * aspectRatio) * projectionSignY;
 
-    const std::array<float, 4> &preTransform = preTransforms[orientation];
+    const std::array<float, 4> &preTransform = PRE_TRANSFORMS[orientation];
 
     dst->m[0]  = x * preTransform[0];
     dst->m[1]  = x * preTransform[1];
@@ -154,7 +154,7 @@ void Mat4::createOrthographicOffCenter(float left, float right, float bottom, fl
     GP_ASSERT(top != bottom);
     GP_ASSERT(zFarPlane != zNearPlane);
 
-    const std::array<float, 4> &preTransform = preTransforms[orientation];
+    const std::array<float, 4> &preTransform = PRE_TRANSFORMS[orientation];
     const float lr = 1.F / (left - right);
     const float bt = 1.F / (bottom - top) * projectionSignY;
     const float nf = 1.F / (zNearPlane - zFarPlane);

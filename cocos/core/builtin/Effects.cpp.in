@@ -29,7 +29,7 @@
 namespace cc {
 
 // absolute essential effects
-const GzipedString builtinEffects { 
+const GzipedString BUILTIN_EFFECTS { 
 ${PLACE_HOLDER}
 };
 } // namespace cc

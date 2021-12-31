@@ -40,13 +40,13 @@ static void trackRef(RefCounted *ref);
 static void untrackRef(RefCounted *ref);
 #endif
 
-RefCounted::RefCounted() {
+RefCounted::RefCounted() { // NOLINT(modernize-use-equals-default)
 #if CC_REF_LEAK_DETECTION
     trackRef(this);
 #endif
 }
 
-RefCounted::~RefCounted() {
+RefCounted::~RefCounted() { // NOLINT(modernize-use-equals-default)
 #if CC_REF_LEAK_DETECTION
     untrackRef(this);
 #endif

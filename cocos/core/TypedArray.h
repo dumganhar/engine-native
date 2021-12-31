@@ -35,8 +35,6 @@
 
 namespace cc {
 
-namespace {
-
 template <typename T>
 se::Object::TypedArrayType toTypedArrayType() {
     return se::Object::TypedArrayType::NONE;
@@ -81,8 +79,6 @@ template <>
 inline se::Object::TypedArrayType toTypedArrayType<double>() {
     return se::Object::TypedArrayType::FLOAT64;
 }
-
-} // namespace
 
 template <typename T>
 class TypedArrayTemp {

@@ -33,22 +33,23 @@ namespace cc {
 namespace scene {
 
 void OctreeInfo::setEnabled(bool val) {
-    if (_enabled == val)
+    if (_enabled == val) {
         return;
+    }
     _enabled = val;
     if (_resource) {
         _resource->setEnabled(val);
     }
 }
 
-void OctreeInfo::setMinPos(const Vec3& val) {
+void OctreeInfo::setMinPos(const Vec3 &val) {
     _minPos = val;
     if (_resource) {
         _resource->setMinPos(val);
     }
 }
 
-void OctreeInfo::setMaxPos(const Vec3& val) {
+void OctreeInfo::setMaxPos(const Vec3 &val) {
     _maxPos = val;
     if (_resource) {
         _resource->setMaxPos(val);
@@ -62,7 +63,7 @@ void OctreeInfo::setDepth(uint32_t val) {
     }
 }
 
-void OctreeInfo::activate(Octree* resource) {
+void OctreeInfo::activate(Octree *resource) {
     _resource = resource;
     _resource->initialize(*this);
 }
@@ -86,7 +87,7 @@ void OctreeInfo::activate(Octree* resource) {
 /**
  * OctreeNode class
  */
-OctreeNode::OctreeNode(Octree* owner, OctreeNode* parent)
+OctreeNode::OctreeNode(Octree *owner, OctreeNode *parent)
 : _owner(owner), _parent(parent) {
 }
 
@@ -122,10 +123,10 @@ BBox OctreeNode::getChildBox(uint32_t index) const {
     return {min, max};
 }
 
-OctreeNode* OctreeNode::getOrCreateChild(uint32_t index) {
+OctreeNode *OctreeNode::getOrCreateChild(uint32_t index) {
     if (!_children[index]) {
         BBox  childBox = getChildBox(index);
-        auto* child = _children[index] = new OctreeNode(_owner, this);
+        auto *child = _children[index] = new OctreeNode(_owner, this);
         child->setBox(childBox);
         child->setDepth(_depth + 1);
         child->setIndex(index);
@@ -141,12 +142,12 @@ void OctreeNode::deleteChild(uint32_t index) {
     }
 }
 
-void OctreeNode::insert(Model* model) { // NOLINT(misc-no-recursion)
+void OctreeNode::insert(Model *model) { // NOLINT(misc-no-recursion)
     bool split = false;
     if (_depth < _owner->getMaxDepth() - 1) {
         BBox            modelBox(*model->getWorldBounds());
-        const cc::Vec3& modelCenter = modelBox.getCenter();
-        const cc::Vec3& nodeCenter  = _aabb.getCenter();
+        const cc::Vec3 &modelCenter = modelBox.getCenter();
+        const cc::Vec3 &nodeCenter  = _aabb.getCenter();
 
         uint32_t index = modelCenter.x < nodeCenter.x ? 0 : 1;
         index += modelCenter.y < nodeCenter.y ? 0 : 2;
@@ -157,14 +158,14 @@ void OctreeNode::insert(Model* model) { // NOLINT(misc-no-recursion)
             split = true;
 
             // insert to child node recursively
-            OctreeNode* child = getOrCreateChild(index);
+            OctreeNode *child = getOrCreateChild(index);
             child->insert(model);
         }
     }
 
     if (!split) {
         // insert to this node
-        OctreeNode* lastNode = model->getOctreeNode();
+        OctreeNode *lastNode = model->getOctreeNode();
         if (lastNode != this) {
             add(model);
 
@@ -175,12 +176,12 @@ void OctreeNode::insert(Model* model) { // NOLINT(misc-no-recursion)
     }
 }
 
-void OctreeNode::add(Model* model) {
+void OctreeNode::add(Model *model) {
     _models.push_back(model);
     model->setOctreeNode(this);
 }
 
-void OctreeNode::remove(Model* model) {
+void OctreeNode::remove(Model *model) {
     auto iter = std::find(_models.begin(), _models.end(), model);
     if (iter != _models.end()) {
         _models.erase(iter);
@@ -195,43 +196,43 @@ void OctreeNode::onRemoved() { // NOLINT(misc-no-recursion)
         return;
     }
 
-    for (auto* child : _children) {
+    for (auto *child : _children) {
         if (child) {
             return;
         }
     }
 
     // delete recursively
-    OctreeNode* parent = _parent;
+    OctreeNode *parent = _parent;
     if (parent) {
         parent->deleteChild(_index);
         parent->onRemoved();
     }
 }
 
-void OctreeNode::gatherModels(std::vector<Model*>& results) const { // NOLINT(misc-no-recursion)
-    for (auto* model : _models) {
+void OctreeNode::gatherModels(std::vector<Model *> &results) const { // NOLINT(misc-no-recursion)
+    for (auto *model : _models) {
         results.push_back(model);
     }
 
-    for (auto* child : _children) {
+    for (auto *child : _children) {
         if (child) {
             child->gatherModels(results);
         }
     }
 }
 
-void OctreeNode::doQueryVisibility(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
+void OctreeNode::doQueryVisibility(const Camera *camera, const geometry::Frustum &frustum, bool isShadow, std::vector<Model *> &results) const {
     const auto visibility = camera->getVisibility();
-    for (auto* model : _models) {
+    for (auto *model : _models) {
         if (!model->isEnabled()) {
             continue;
         }
 
-        const Node* node = model->getNode();
+        const Node *node = model->getNode();
         if ((node && ((visibility & node->getLayer()) == node->getLayer())) ||
             (visibility & static_cast<uint32_t>(model->getVisFlags()))) {
-            const geometry::AABB* modelWorldBounds = model->getWorldBounds();
+            const geometry::AABB *modelWorldBounds = model->getWorldBounds();
             if (!modelWorldBounds) {
                 continue;
             }
@@ -249,18 +250,18 @@ void OctreeNode::doQueryVisibility(const Camera* camera, const geometry::Frustum
     }
 }
 
-void OctreeNode::queryVisibilityParallelly(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
+void OctreeNode::queryVisibilityParallelly(const Camera *camera, const geometry::Frustum &frustum, bool isShadow, std::vector<Model *> &results) const {
     geometry::AABB box;
     geometry::AABB::fromPoints(_aabb.min, _aabb.max, &box);
     if (!box.aabbFrustum(frustum)) {
         return;
     }
 
-    std::array<std::future<std::vector<Model*>>, OCTREE_CHILDREN_NUM> futures{};
+    std::array<std::future<std::vector<Model *>>, OCTREE_CHILDREN_NUM> futures{};
     for (auto i = 0; i < OCTREE_CHILDREN_NUM; i++) {
         if (_children[i]) {
             futures[i] = std::async(std::launch::async, [=, &frustum] {
-                std::vector<Model*> models;
+                std::vector<Model *> models;
                 _children[i]->queryVisibilitySequentially(camera, frustum, isShadow, models);
                 return models;
             });
@@ -277,7 +278,7 @@ void OctreeNode::queryVisibilityParallelly(const Camera* camera, const geometry:
     }
 }
 
-void OctreeNode::queryVisibilitySequentially(const Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const { // NOLINT(misc-no-recursion)
+void OctreeNode::queryVisibilitySequentially(const Camera *camera, const geometry::Frustum &frustum, bool isShadow, std::vector<Model *> &results) const { // NOLINT(misc-no-recursion)
     geometry::AABB box;
     geometry::AABB::fromPoints(_aabb.min, _aabb.max, &box);
     if (!box.aabbFrustum(frustum)) {
@@ -287,7 +288,7 @@ void OctreeNode::queryVisibilitySequentially(const Camera* camera, const geometr
     doQueryVisibility(camera, frustum, isShadow, results);
 
     // query recursively.
-    for (auto* child : _children) {
+    for (auto *child : _children) {
         if (child) {
             child->queryVisibilitySequentially(camera, frustum, isShadow, results);
         }
@@ -305,7 +306,7 @@ Octree::~Octree() {
     delete _root;
 }
 
-void Octree::initialize(const OctreeInfo& info) {
+void Octree::initialize(const OctreeInfo &info) {
     const Vec3 expand{OCTREE_BOX_EXPAND_SIZE, OCTREE_BOX_EXPAND_SIZE, OCTREE_BOX_EXPAND_SIZE};
     _minPos   = info.getMinPos();
     _maxPos   = info.getMaxPos();
@@ -317,16 +318,17 @@ void Octree::initialize(const OctreeInfo& info) {
 }
 
 void Octree::setEnabled(bool val) {
-    if (_enabled == val)
+    if (_enabled == val) {
         return;
+    }
     _enabled = val;
 }
 
-void Octree::setMinPos(const Vec3& val) {
+void Octree::setMinPos(const Vec3 &val) {
     _minPos = val;
 }
 
-void Octree::setMaxPos(const Vec3& val) {
+void Octree::setMaxPos(const Vec3 &val) {
     _maxPos = val;
 }
 
@@ -334,14 +336,14 @@ void Octree::setMaxDepth(uint32_t val) {
     _maxDepth = val;
 }
 
-void Octree::resize(const Vec3& minPos, const Vec3& maxPos, uint32_t maxDepth) {
+void Octree::resize(const Vec3 &minPos, const Vec3 &maxPos, uint32_t maxDepth) {
     const Vec3 expand{OCTREE_BOX_EXPAND_SIZE, OCTREE_BOX_EXPAND_SIZE, OCTREE_BOX_EXPAND_SIZE};
     BBox       rootBox = _root->getBox();
     if ((minPos - expand) == rootBox.min && maxPos == rootBox.max && maxDepth == _maxDepth) {
         return;
     }
 
-    std::vector<Model*> models;
+    std::vector<Model *> models;
     _root->gatherModels(models);
 
     delete _root;
@@ -352,13 +354,13 @@ void Octree::resize(const Vec3& minPos, const Vec3& maxPos, uint32_t maxDepth) {
 
     _maxDepth = std::max(maxDepth, 1U);
 
-    for (auto* model : models) {
+    for (auto *model : models) {
         model->setOctreeNode(nullptr);
         insert(model);
     }
 }
 
-void Octree::insert(Model* model) {
+void Octree::insert(Model *model) {
     CCASSERT(model, "Octree insert: model is nullptr.");
 
     if (!model->getWorldBounds()) {
@@ -378,10 +380,10 @@ void Octree::insert(Model* model) {
     _root->insert(model);
 }
 
-void Octree::remove(Model* model) {
+void Octree::remove(Model *model) {
     CCASSERT(model, "Octree remove: model is nullptr.");
 
-    OctreeNode* node = model->getOctreeNode();
+    OctreeNode *node = model->getOctreeNode();
     if (node) {
         node->remove(model);
         model->setOctreeNode(nullptr);
@@ -389,11 +391,11 @@ void Octree::remove(Model* model) {
     }
 }
 
-void Octree::update(Model* model) {
+void Octree::update(Model *model) {
     insert(model);
 }
 
-void Octree::queryVisibility(Camera* camera, const geometry::Frustum& frustum, bool isShadow, std::vector<Model*>& results) const {
+void Octree::queryVisibility(Camera *camera, const geometry::Frustum &frustum, bool isShadow, std::vector<Model *> &results) const {
     if (_totalCount > USE_MULTI_THRESHOLD) {
         _root->queryVisibilityParallelly(camera, frustum, isShadow, results);
     } else {
@@ -401,8 +403,8 @@ void Octree::queryVisibility(Camera* camera, const geometry::Frustum& frustum, b
     }
 }
 
-bool Octree::isInside(Model* model) const {
-    const BBox& rootBox  = _root->getBox();
+bool Octree::isInside(Model *model) const {
+    const BBox &rootBox  = _root->getBox();
     BBox        modelBox = BBox(*model->getWorldBounds());
 
     return rootBox.contain(modelBox);

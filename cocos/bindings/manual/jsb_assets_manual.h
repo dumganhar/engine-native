@@ -31,4 +31,4 @@ namespace se {
 class Object;
 }
 
-bool register_all_assets_manual(se::Object *obj);
+bool register_all_assets_manual(se::Object *obj); // NOLINT(readability-identifier-naming)

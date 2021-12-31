@@ -1,7 +1,7 @@
 /****************************************************************************
- Copyright (c) 2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2018-2021 Xiamen Yaji Software Co., Ltd.
  
- http://www.cocos2d-x.org
+ http://www.cocos.com
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -47,9 +47,6 @@ Mat3::Mat3(const float *mat) {
 
 Mat3::Mat3(const Mat3 &copy) {
     memcpy(m, copy.m, MATRIX3_SIZE);
-}
-
-Mat3::~Mat3() {
 }
 
 void Mat3::set(float m11, float m12, float m13, float m21, float m22, float m23, float m31, float m32, float m33) {
@@ -111,7 +108,9 @@ void Mat3::fromViewUp(const Vec3 &view, const Vec3 &up, Mat3 *out) {
 }
 
 void Mat3::transpose() {
-    float a01 = m[1], a02 = m[2], a12 = m[5];
+    float a01 = m[1];
+    float a02 = m[2];
+    float a12 = m[5];
     m[1] = m[3];
     m[2] = m[6];
     m[3] = a01;
@@ -134,9 +133,15 @@ void Mat3::transpose(const Mat3 &mat, Mat3 *out) {
 }
 
 void Mat3::inverse() {
-    float a00 = m[0], a01 = m[1], a02 = m[2];
-    float a10 = m[3], a11 = m[4], a12 = m[5];
-    float a20 = m[6], a21 = m[7], a22 = m[8];
+    float a00 = m[0];
+    float a01 = m[1];
+    float a02 = m[2];
+    float a10 = m[3];
+    float a11 = m[4];
+    float a12 = m[5];
+    float a20 = m[6];
+    float a21 = m[7];
+    float a22 = m[8];
 
     float b01 = a22 * a11 - a12 * a21;
     float b11 = -a22 * a10 + a12 * a20;
@@ -159,9 +164,15 @@ void Mat3::inverse() {
 
 void Mat3::adjoint(const Mat3 &mat, Mat3 *out) {
     GP_ASSERT(out);
-    float a00 = mat.m[0], a01 = mat.m[1], a02 = mat.m[2];
-    float a10 = mat.m[3], a11 = mat.m[4], a12 = mat.m[5];
-    float a20 = mat.m[6], a21 = mat.m[7], a22 = mat.m[8];
+    float a00 = mat.m[0];
+    float a01 = mat.m[1];
+    float a02 = mat.m[2];
+    float a10 = mat.m[3];
+    float a11 = mat.m[4];
+    float a12 = mat.m[5];
+    float a20 = mat.m[6];
+    float a21 = mat.m[7];
+    float a22 = mat.m[8];
 
     out->m[0] = (a11 * a22 - a12 * a21);
     out->m[1] = (a02 * a21 - a01 * a22);
@@ -180,13 +191,25 @@ float Mat3::determinant() {
 
 void Mat3::multiply(const Mat3 &a, const Mat3 &b, Mat3 *out) {
     GP_ASSERT(out);
-    float a00 = a.m[0], a01 = a.m[1], a02 = a.m[2];
-    float a10 = a.m[3], a11 = a.m[4], a12 = a.m[5];
-    float a20 = a.m[6], a21 = a.m[7], a22 = a.m[8];
+    float a00 = a.m[0];
+    float a01 = a.m[1];
+    float a02 = a.m[2];
+    float a10 = a.m[3];
+    float a11 = a.m[4];
+    float a12 = a.m[5];
+    float a20 = a.m[6];
+    float a21 = a.m[7];
+    float a22 = a.m[8];
 
-    float b00 = b.m[0], b01 = b.m[1], b02 = b.m[2];
-    float b10 = b.m[3], b11 = b.m[4], b12 = b.m[5];
-    float b20 = b.m[6], b21 = b.m[7], b22 = b.m[8];
+    float b00 = b.m[0];
+    float b01 = b.m[1];
+    float b02 = b.m[2];
+    float b10 = b.m[3];
+    float b11 = b.m[4];
+    float b12 = b.m[5];
+    float b20 = b.m[6];
+    float b21 = b.m[7];
+    float b22 = b.m[8];
 
     out->m[0] = b00 * a00 + b01 * a10 + b02 * a20;
     out->m[1] = b00 * a01 + b01 * a11 + b02 * a21;
@@ -203,10 +226,17 @@ void Mat3::multiply(const Mat3 &a, const Mat3 &b, Mat3 *out) {
 
 void Mat3::translate(const Mat3 &mat, const Vec2 &vec, Mat3 *out) {
     GP_ASSERT(out);
-    float a00 = mat.m[0], a01 = mat.m[1], a02 = mat.m[2];
-    float a10 = mat.m[3], a11 = mat.m[4], a12 = mat.m[5];
-    float a20 = mat.m[6], a21 = mat.m[7], a22 = mat.m[8];
-    float x = vec.x, y = vec.y;
+    float a00 = mat.m[0];
+    float a01 = mat.m[1];
+    float a02 = mat.m[2];
+    float a10 = mat.m[3];
+    float a11 = mat.m[4];
+    float a12 = mat.m[5];
+    float a20 = mat.m[6];
+    float a21 = mat.m[7];
+    float a22 = mat.m[8];
+    float x = vec.x;
+    float y = vec.y;
 
     out->m[0] = a00;
     out->m[1] = a01;
@@ -223,9 +253,15 @@ void Mat3::translate(const Mat3 &mat, const Vec2 &vec, Mat3 *out) {
 
 void Mat3::rotate(const Mat3 &mat, float rad, Mat3 *out) {
     GP_ASSERT(out);
-    float a00 = mat.m[0], a01 = mat.m[1], a02 = mat.m[2];
-    float a10 = mat.m[3], a11 = mat.m[4], a12 = mat.m[5];
-    float a20 = mat.m[6], a21 = mat.m[7], a22 = mat.m[8];
+    float a00 = mat.m[0];
+    float a01 = mat.m[1];
+    float a02 = mat.m[2];
+    float a10 = mat.m[3];
+    float a11 = mat.m[4];
+    float a12 = mat.m[5];
+    float a20 = mat.m[6];
+    float a21 = mat.m[7];
+    float a22 = mat.m[8];
 
     float s = sin(rad);
     float c = cos(rad);
@@ -245,7 +281,8 @@ void Mat3::rotate(const Mat3 &mat, float rad, Mat3 *out) {
 
 void Mat3::scale(const Mat3 &mat, const Vec2 &vec, Mat3 *out) {
     GP_ASSERT(out);
-    float x = vec.x, y = vec.y;
+    float x = vec.x;
+    float y = vec.y;
 
     out->m[0] = x * mat.m[0];
     out->m[1] = x * mat.m[1];
@@ -321,7 +358,10 @@ void Mat3::fromScaling(const Vec2 &vec, Mat3 *out) {
 
 void Mat3::fromQuat(const Quaternion &quat, Mat3 *out) {
     GP_ASSERT(out);
-    float x = quat.x, y = quat.y, z = quat.z, w = quat.w;
+    float x = quat.x;
+    float y = quat.y;
+    float z = quat.z;
+    float w = quat.w;
     float x2 = x + x;
     float y2 = y + y;
     float z2 = z + z;
@@ -376,9 +416,9 @@ void Mat3::subtract(const Mat3 &a, const Mat3 &b, Mat3 *out) {
 }
 
 const Mat3 Mat3::IDENTITY = Mat3(
-    1.0f, 0.0f, 0.0f,
-    0.0f, 1.0f, 0.0f,
-    0.0f, 0.0f, 1.0f);
+    1.F, 0.F, 0.F,
+    0.F, 1.F, 0.F,
+    0.F, 0.F, 1.F);
 
 const Mat3 Mat3::ZERO = Mat3(
     0, 0, 0,

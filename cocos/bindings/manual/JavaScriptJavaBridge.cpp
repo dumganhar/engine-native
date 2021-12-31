@@ -478,7 +478,7 @@ bool JavaScriptJavaBridge::convertReturnValue(ReturnValue retValue, ValueType ty
 
 se::Class *__jsb_JavaScriptJavaBridge_class = nullptr; // NOLINT
 
-static bool JavaScriptJavaBridge_finalize(se::State &s) { //NOLINT(readability-identifier-naming)
+static bool JavaScriptJavaBridge_finalize(se::State &s) { //NOLINT(readability-identifier-naming, misc-unused-parameters)
     return true;
 }
 SE_BIND_FINALIZE_FUNC(JavaScriptJavaBridge_finalize)

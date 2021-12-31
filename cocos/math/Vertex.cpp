@@ -2,9 +2,9 @@
  Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2011 ForzeField Studios S.L
  Copyright (c) 2013-2016 Chukong Technologies Inc.
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2017-2021 Xiamen Yaji Software Co., Ltd.
 
- http://www.cocos2d-x.org
+ http://www.cocos.com
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -88,52 +88,61 @@ void ccVertexLineToPolygon(const std::vector<Vec2> &points, float stroke, unsign
         float s;
         //BOOL fixVertex = !ccpLineIntersect(Vec2(p1.x, p1.y), Vec2(p4.x, p4.y), Vec2(p2.x, p2.y), Vec2(p3.x, p3.y), &s, &t);
         bool fixVertex = !ccVertexLineIntersect(p1.x, p1.y, p4.x, p4.y, p2.x, p2.y, p3.x, p3.y, &s);
-        if (!fixVertex)
-            if (s < 0.0f || s > 1.0f)
+        if (!fixVertex) {
+            if (s < 0.F || s > 1.F) {
                 fixVertex = true;
+            }
+        }
 
         if (fixVertex) {
-            (*vertices)[idx1]  = p4;
+            (*vertices)[idx1]     = p4;
             (*vertices)[idx1 + 1] = p3;
         }
     }
 }
 
-bool ccVertexLineIntersect(float Ax, float Ay,
-                           float Bx, float By,
-                           float Cx, float Cy,
-                           float Dx, float Dy, float *T) {
-    float distAB, theCos, theSin, newX;
+bool ccVertexLineIntersect(float ax, float ay,
+                           float bx, float by,
+                           float cx, float cy,
+                           float dx, float dy, float *t) {
+    float distAB;
+    float theCos;
+    float theSin;
+    float newX;
 
     // FAIL: Line undefined
-    if ((Ax == Bx && Ay == By) || (Cx == Dx && Cy == Dy)) return false;
+    if ((ax == bx && ay == by) || (cx == dx && cy == dy)) {
+        return false;
+    }
 
     //  Translate system to make A the origin
-    Bx -= Ax;
-    By -= Ay;
-    Cx -= Ax;
-    Cy -= Ay;
-    Dx -= Ax;
-    Dy -= Ay;
+    bx -= ax;
+    by -= ay;
+    cx -= ax;
+    cy -= ay;
+    dx -= ax;
+    dy -= ay;
 
     // Length of segment AB
-    distAB = sqrtf(Bx * Bx + By * By);
+    distAB = sqrtf(bx * bx + by * by);
 
     // Rotate the system so that point B is on the positive X axis.
-    theCos = Bx / distAB;
-    theSin = By / distAB;
-    newX   = Cx * theCos + Cy * theSin;
-    Cy     = Cy * theCos - Cx * theSin;
-    Cx     = newX;
-    newX   = Dx * theCos + Dy * theSin;
-    Dy     = Dy * theCos - Dx * theSin;
-    Dx     = newX;
+    theCos = bx / distAB;
+    theSin = by / distAB;
+    newX   = cx * theCos + cy * theSin;
+    cy     = cy * theCos - cx * theSin;
+    cx     = newX;
+    newX   = dx * theCos + dy * theSin;
+    dy     = dy * theCos - dx * theSin;
+    dx     = newX;
 
     // FAIL: Lines are parallel.
-    if (Cy == Dy) return false;
+    if (cy == dy) {
+        return false;
+    }
 
     // Discover the relative position of the intersection in the line AB
-    *T = (Dx + (Cx - Dx) * Dy / (Dy - Cy)) / distAB;
+    *t = (dx + (cx - dx) * dy / (dy - cy)) / distAB;
 
     // Success.
     return true;

@@ -47,21 +47,21 @@ struct overloaded;
 
 template <class F0, class... Fs>
 struct overloaded<F0, Fs...> : F0, overloaded<Fs...> {
-    overloaded(F0 f0, Fs... rest) : F0(f0), overloaded<Fs...>(rest...) {}
+    overloaded(F0 f0, Fs... rest) : F0(f0), overloaded<Fs...>(rest...) {} // NOLINT(google-explicit-constructor)
 
-    using F0::                  operator();
+    using F0::               operator();
     using overloaded<Fs...>::operator();
 };
 
 template <class F0>
 struct overloaded<F0> : F0 {
-    overloaded(F0 f0) : F0(f0) {}
+    overloaded(F0 f0) : F0(f0) {} // NOLINT(google-explicit-constructor)
 
     using F0::operator();
 };
 
 template <class... Fs>
-auto make_overloaded(Fs... fs) {
+auto make_overloaded(Fs... fs) { // NOLINT(readability-identifier-naming)
     return overloaded<Fs...>(fs...);
 }
 
@@ -87,7 +87,7 @@ bool set_member_field(se::Object *obj, T *to, const std::string &property, F f, 
 }
 
 static bool isNumberString(const std::string &str) {
-    for (const auto &c : str) {
+    for (const auto &c : str) { // NOLINT(readability-use-anyofallof) // remove after using c++20
         if (!isdigit(c)) {
             return false;
         }
@@ -441,7 +441,7 @@ bool seval_to_Data(const se::Value &v, cc::Data *ret) {
     size_t   length = 0;
     bool     ok     = v.toObject()->getTypedArrayData(&ptr, &length);
     if (ok) {
-        ret->copy(ptr, length);
+        ret->copy(ptr, static_cast<int32_t>(length));
     } else {
         ret->clear();
     }
@@ -919,7 +919,7 @@ bool sevalue_to_native(const se::Value &from, cc::MaterialProperty *to, se::Obje
             return true;
         }
 
-        // TODO: optimize the the performance?
+        // TODO(): optimize the the performance?
         if (obj->_getClass() != nullptr) {
             if (0 == strcmp(obj->_getClass()->getName(), "Texture2D")) {
                 *to = reinterpret_cast<cc::Texture2D *>(obj->getPrivateData());

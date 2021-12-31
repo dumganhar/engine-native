@@ -28,6 +28,7 @@
 #include "cocos/base/Optional.h"
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <cstdint>
@@ -57,12 +58,12 @@ struct VertexIdChannel {
 struct NativeDep {
     std::string uuid;
     std::string ext;
-    bool        __isNative__{false};
+    bool        __isNative__{false}; // NOLINT(bugprone-reserved-identifier)
 
     explicit NativeDep() = default;
 
-    explicit NativeDep(bool isNative_, const std::string &uuid_, const std::string &ext_)
-    : uuid(uuid_), ext(ext_), __isNative__(isNative_), _isValid(true) {}
+    explicit NativeDep(bool isNative, std::string uuid, std::string ext)
+    : uuid(std::move(uuid)), ext(std::move(ext)), __isNative__(isNative), _isValid(true) {}
 
     inline bool isValid() const { return _isValid; }
 

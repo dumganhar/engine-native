@@ -92,13 +92,13 @@ public:
 private:
     // Disable copy/move constructor, copy/move assigment
     State(const State &);
-    explicit State(State &&);
+    State(State &&) noexcept;
     State &operator=(const State &);
-    State &operator=(State &&);
+    State &operator=(State &&) noexcept;
 
     PrivateObjectBase *_privateObject{nullptr};
-    Object *          _thisObject; //weak ref
-    const ValueArray *_args;       //weak ref
-    Value             _retVal;     //weak ref
+    Object *           _thisObject{nullptr}; //weak ref
+    const ValueArray * _args{nullptr};       //weak ref
+    Value              _retVal;              //weak ref
 };
 } // namespace se

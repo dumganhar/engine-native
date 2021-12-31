@@ -74,7 +74,7 @@ public:
     inline std::shared_ptr<T>   share();
     inline cc::IntrusivePtr<T> &ccShared();
     inline const char *         getName() const override {
-        static_assert(!std::is_base_of<PrivateObjectBase, T>::value, "");
+        static_assert(!std::is_base_of<PrivateObjectBase, T>::value, ""); // NOLINT // remove after using c++17
         return typeid(T).name();
     }
 };

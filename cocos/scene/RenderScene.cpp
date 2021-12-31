@@ -42,8 +42,7 @@
 namespace cc {
 namespace scene {
 
-RenderScene::~RenderScene() {
-}
+RenderScene::~RenderScene() = default;
 
 void RenderScene::activate() {
     const auto *sceneData = pipeline::RenderPipeline::getInstance()->getPipelineSceneData();

@@ -44,7 +44,7 @@ void DeferredReleasePool::clear() {
 }
 
 bool DeferredReleasePool::contains(RefCounted *object) {
-    for (const auto &obj : DeferredReleasePool::managedObjectArray) {
+    for (const auto &obj : DeferredReleasePool::managedObjectArray) { // NOLINT(readability-use-anyofallof) // remove after using C++20
         if (obj == object) {
             return true;
         }

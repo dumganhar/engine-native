@@ -316,11 +316,11 @@ bool seval_to_Map_string_key(const se::Value &v, cc::Map<std::string, T> *ret) {
 }
 
 template <typename T>
-typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, void>::type cc_tmp_set_private_data(se::Object *obj, T *v) {
+typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, void>::type cc_tmp_set_private_data(se::Object *obj, T *v) { // NOLINT(readability-identifier-naming)
     obj->setPrivateData(v);
 }
 template <typename T>
-typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, void>::type cc_tmp_set_private_data(se::Object *obj, T *v) {
+typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, void>::type cc_tmp_set_private_data(se::Object *obj, T *v) { // NOLINT(readability-identifier-naming)
     obj->setPrivateObject(se::rawref_private_object(v));
 }
 
@@ -1024,7 +1024,7 @@ bool sevalue_to_native(const se::Value &from, std::shared_ptr<std::vector<T>> *o
 }
 
 template <typename T>
-bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Object *ctx) {
+bool sevalue_to_native(const se::Value &from, std::shared_ptr<T> *out, se::Object * /*ctx*/) {
     if (from.isNullOrUndefined()) {
         out->reset();
         return true;
@@ -1065,17 +1065,17 @@ bool sevalue_to_native(const se::Value &from, cc::IntrusivePtr<T> *to, se::Objec
 
 /////////////////// std::tuple
 template <typename Tuple, typename F, std::size_t... Indices>
-void se_for_each_tuple_impl(Tuple &&tuple, F &&f, std::index_sequence<Indices...>) {
+void se_for_each_tuple_impl(Tuple &&tuple, F &&f, std::index_sequence<Indices...>  /*seq*/) { // NOLINT(readability-identifier-naming)
     using swallow = int[];
     (void)swallow{1,
                   (f(Indices, std::get<Indices>(std::forward<Tuple>(tuple))), void(), int{})...};
 }
 
 template <typename Tuple, typename F>
-void se_for_each_tuple(Tuple &&tuple, F &&f) {
-    constexpr std::size_t N = std::tuple_size<std::remove_reference_t<Tuple>>::value;
+void se_for_each_tuple(Tuple &&tuple, F &&f) { // NOLINT(readability-identifier-naming)
+    constexpr std::size_t n = std::tuple_size<std::remove_reference_t<Tuple>>::value;
     se_for_each_tuple_impl(std::forward<Tuple>(tuple), std::forward<F>(f),
-                           std::make_index_sequence<N>{});
+                           std::make_index_sequence<n>{});
 }
 
 template <typename... Args>
@@ -1090,7 +1090,7 @@ bool sevalue_to_native(const se::Value &from, std::tuple<Args...> *to, se::Objec
     return result;
 }
 
-////////////// std::unorderd_map
+////////////// std::unordered_map
 template <typename V>
 bool sevalue_to_native(const se::Value &from, std::unordered_map<std::string, V> *to, se::Object *ctx) { //NOLINT
     se::Object *             jsmap = from.toObject();
@@ -1250,11 +1250,11 @@ inline bool nativevalue_to_se(const std::vector<bool, A> &from, se::Value &to, s
 }
 
 template <typename T>
-typename std::enable_if<std::is_convertible<T, std::string>::value, void>::type cc_tmp_set_property(se::Object *obj, T &key, se::Value &value) {
+typename std::enable_if<std::is_convertible<T, std::string>::value, void>::type cc_tmp_set_property(se::Object *obj, T &key, se::Value &value) { // NOLINT(readability-identifier-naming)
     obj->setProperty(key, value);
 }
 template <typename T>
-typename std::enable_if<!std::is_convertible<T, std::string>::value, void>::type cc_tmp_set_property(se::Object *obj, T &str, se::Value &value) {
+typename std::enable_if<!std::is_convertible<T, std::string>::value, void>::type cc_tmp_set_property(se::Object *obj, T &str, se::Value &value) { // NOLINT(readability-identifier-naming)
     obj->setProperty(std::to_string(str), value);
 }
 
@@ -1502,5 +1502,5 @@ bool nativevalue_to_se(const std::reference_wrapper<T> ref, se::Value &to, se::O
 }
 
 #if __clang__
-    #pragma clang diagnostic pop
+    #pragma clang diagnostic pop // NOLINT
 #endif

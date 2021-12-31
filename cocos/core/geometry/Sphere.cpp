@@ -83,7 +83,7 @@ Sphere *Sphere::mergePoint(Sphere *out, const Sphere &s, const Vec3 &point) {
 void Sphere::merge(const std::vector<cc::Vec3> &points) {
     if (points.empty()) return;
     _radius = -1.0F;
-    for (auto &p : points) {
+    for (const auto &p : points) {
         merge(p);
     }
 }

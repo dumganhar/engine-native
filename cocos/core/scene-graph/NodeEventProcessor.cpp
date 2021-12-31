@@ -334,7 +334,7 @@ void NodeEventProcessor::destroy() {
     if (_bubblingTargets) _bubblingTargets->offAll();
 }
 
-void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, void *target, bool useCapture /* = false*/) {
+void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, void *target, bool  /*useCapture*/ /* = false*/) {
 //    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
 //    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
 //    if (touchEventExist || mouseEventExist) {
@@ -357,7 +357,7 @@ void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, void *target
     }
 }
 
-void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID, bool useCapture) {
+void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID, bool  /*useCapture*/) {
 //    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
 //    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
 //    if (touchEventExist || mouseEventExist) {

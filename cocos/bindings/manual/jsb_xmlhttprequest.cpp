@@ -285,11 +285,11 @@ void XMLHttpRequest::sendBinary(const Data &data) {
 
 void XMLHttpRequest::setTimeout(uint32_t timeoutInMilliseconds) {
     _timeoutInMilliseconds = timeoutInMilliseconds;
-    _httpRequest->setTimeout(timeoutInMilliseconds / 1000.0F + 2.0F); // Add 2 seconds more to ensure the timeout scheduler is invoked before http response.
+    _httpRequest->setTimeout(static_cast<float>(timeoutInMilliseconds) / 1000.0F + 2.0F); // Add 2 seconds more to ensure the timeout scheduler is invoked before http response.
 }
 
 uint32_t XMLHttpRequest::getTimeout() const {
-    return _httpRequest->getTimeout() * 1000;
+    return static_cast<uint32_t>(_httpRequest->getTimeout() * 1000);
 }
 
 void XMLHttpRequest::abort() {
@@ -439,7 +439,7 @@ void XMLHttpRequest::onResponse(HttpClient * /*client*/, HttpResponse *response)
     if (_responseType == ResponseType::STRING || _responseType == ResponseType::JSON) {
         _responseText.append(buffer->data(), buffer->size());
     } else {
-        _responseData.copy(reinterpret_cast<unsigned char *>(buffer->data()), buffer->size());
+        _responseData.copy(reinterpret_cast<unsigned char *>(buffer->data()), static_cast<ssize_t>(buffer->size()));
     }
 
     _status = statusCode;
@@ -484,7 +484,7 @@ void XMLHttpRequest::sendRequest() {
             _isTimeout  = true;
             _readyState = ReadyState::UNSENT;
         },
-                                                             this, _timeoutInMilliseconds / 1000.0F, 0, 0.0F, false, "XMLHttpRequest");
+                                                             this, static_cast<float>(_timeoutInMilliseconds) / 1000.0F, 0, 0.0F, false, "XMLHttpRequest");
     }
     setHttpRequestHeader();
 
@@ -692,7 +692,7 @@ static bool XMLHttpRequest_send(se::State &s) { //NOLINT(readability-identifier-
                 size_t   len = 0;
                 if (obj->getTypedArrayData(&ptr, &len)) {
                     Data data;
-                    data.copy(ptr, len);
+                    data.copy(ptr, static_cast<ssize_t>(len));
                     request->sendBinary(data);
                 } else {
                     SE_REPORT_ERROR("Failed to get data of TypedArray!");
@@ -703,7 +703,7 @@ static bool XMLHttpRequest_send(se::State &s) { //NOLINT(readability-identifier-
                 size_t   len = 0;
                 if (obj->getArrayBufferData(&ptr, &len)) {
                     Data data;
-                    data.copy(ptr, len);
+                    data.copy(ptr, static_cast<ssize_t>(len));
                     request->sendBinary(data);
                 } else {
                     SE_REPORT_ERROR("Failed to get data of ArrayBufferObject!");

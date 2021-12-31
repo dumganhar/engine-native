@@ -29,7 +29,7 @@
 namespace cc {
 
 // absolute essential effects
-const GzipedString builtinEffects { 
+const GzipedString BUILTIN_EFFECTS { 
 "H4sIAAAAAAAACu1dbXPiuLL+Pr9iNp8nW5i3hPlGwCTUIZACMjl7T225HDCJzzg21zaZzd7sf7+ywcYvsi3ZkjHQqdodsI3V3ZJarae71f/58vXr/6H/vn"
 "690OU35eL714tnVdOeDdlcXnzb3rCVxauu/u9GsdDt/7jXvB+FfigvvZ+4l9eyZYV+Ev6Z+4wpW7Ziqn8r5syWbect4QfQI4uNpt0bS+deLXTvn2/hdz1r"
 "ir5MfI0tmy+KHSUHR1Twdehx29wo3xIfmJkL9Ew9+YG+ZaMHhNQ3dLX1q5z5Gu8pIfbQP5Erf6bKaW0aL6b8Furqz3fFtL+/W9KbrOqftqrbyvJyZX0Pd6"

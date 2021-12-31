@@ -186,7 +186,7 @@ bool BuiltinResMgr::initBuiltinRes(gfx::Device *device) {
     //    return Promise.resolve().then(() => {
 
     rapidjson::Document doc;
-    doc.Parse(builtinEffects.value().c_str());
+    doc.Parse(BUILTIN_EFFECTS.value().c_str());
 
     index_t         effectIndex       = 0;
     rapidjson::Type type              = doc.GetType();
@@ -462,7 +462,7 @@ void BuiltinResMgr::tryCompileAllPasses() {
 void BuiltinResMgr::initTexture2DWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel) {
     auto *image = new (std::nothrow) Image();
     if (image != nullptr) {
-        image->initWithRawData(data, dataBytes, width, height, bytesPerPixel);
+        image->initWithRawData(data, static_cast<ssize_t>(dataBytes), static_cast<int32_t>(width), static_cast<int32_t>(height), static_cast<int32_t>(bytesPerPixel));
         auto *texture = new (std::nothrow) Texture2D();
         texture->setUuid(uuid);
 
@@ -480,7 +480,7 @@ void BuiltinResMgr::initTexture2DWithUuid(const std::string &uuid, const uint8_t
 void BuiltinResMgr::initTextureCubeWithUuid(const std::string &uuid, const uint8_t *data, size_t dataBytes, uint32_t width, uint32_t height, uint32_t bytesPerPixel) {
     auto *image = new (std::nothrow) Image();
     if (image != nullptr) {
-        image->initWithRawData(data, dataBytes, width, height, bytesPerPixel);
+        image->initWithRawData(data, static_cast<ssize_t>(dataBytes), static_cast<int32_t>(width), static_cast<int32_t>(height), static_cast<int32_t>(bytesPerPixel));
         auto *texture = new (std::nothrow) TextureCube();
         texture->setUuid(uuid);
         texture->setMipFilter(TextureCube::Filter::NEAREST);

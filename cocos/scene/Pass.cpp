@@ -304,7 +304,7 @@ void Pass::resetUniform(const std::string &name) {
             const auto &floatArr = cc::get<std::vector<float>>(value);
             auto        iter     = type2writer.find(type);
             if (iter != type2writer.end()) {
-                iter->second(block.data, floatArr.data(), ofs);
+                iter->second(block.data, floatArr.data(), static_cast<int32_t>(ofs));
             }
         }
     }

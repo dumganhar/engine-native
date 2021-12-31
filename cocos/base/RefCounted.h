@@ -91,7 +91,6 @@ protected:
      */
     RefCounted();
 
-protected:
     /// count of references
     unsigned int _referenceCount{0};
 

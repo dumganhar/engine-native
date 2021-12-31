@@ -60,9 +60,10 @@ inline
 namespace {
 
 bool isInteger(const std::string &str) {
-    for (const char &c : str) {
-        if (std::isdigit(c) == 0)
+    for (const char &c : str) { // NOLINT //remvoe after using c++20
+        if (std::isdigit(c) == 0) {
             return false;
+        }
     }
     return true;
 }
@@ -463,7 +464,7 @@ double Value::toDouble() const {
         return static_cast<double>(_u._bigint);
     }
 
-    // TODO: Only supports to convert integer string to integer now.
+    // TODO(): Only supports to convert integer string to integer now.
     if (_type == Type::String && isInteger(*_u._string)) {
         return atoi(_u._string->c_str());
     }

@@ -28,6 +28,6 @@
 #include "cocos/base/StringUtil.h"
 namespace cc {
 
-extern const GzipedString builtinEffects;
+extern const GzipedString BUILTIN_EFFECTS;
 
 }

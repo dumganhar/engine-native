@@ -65,37 +65,37 @@ inline ValueType any_cast(any&& operand) {
     #include "boost/any.hpp"
 
 namespace cc {
-class any : public boost::any {
+class any : public boost::any {// NOLINT // use std style
 public:
     using boost::any::any;
 
-    inline bool has_value() const noexcept {
+    inline bool has_value() const noexcept { // NOLINT // use std style
         return !this->empty();
     }
 };
 
 template <typename ValueType>
-inline ValueType* any_cast(any* operand) noexcept {
+inline ValueType* any_cast(any* operand) noexcept { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline const ValueType* any_cast(const any* operand) noexcept {
+inline const ValueType* any_cast(const any* operand) noexcept { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline ValueType any_cast(any& operand) {
+inline ValueType any_cast(any& operand) { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline ValueType any_cast(const any& operand) {
+inline ValueType any_cast(const any& operand) { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline ValueType any_cast(any&& operand) {
+inline ValueType any_cast(any&& operand) { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 

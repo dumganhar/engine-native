@@ -32,8 +32,8 @@
 #include <vector>
 
 #include "base/RefCounted.h"
-#include "extensions/ExtensionMacros.h"
 #include "extensions/ExtensionExport.h"
+#include "extensions/ExtensionMacros.h"
 #include "network/Downloader.h"
 #include "platform/FileUtils.h"
 
@@ -45,18 +45,18 @@ struct DownloadUnit {
     std::string srcUrl;
     std::string storagePath;
     std::string customId;
-    float size;
+    float       size;
 };
 
 struct ManifestAsset {
     std::string md5;
     std::string path;
-    bool compressed;
-    float size;
-    int downloadState;
+    bool        compressed;
+    float       size;
+    int         downloadState;
 };
 
-typedef std::unordered_map<std::string, DownloadUnit> DownloadUnits;
+using DownloadUnits = std::unordered_map<std::string, DownloadUnit>;
 
 class CC_EX_DLL Manifest : public RefCounted {
 public:
@@ -77,11 +77,11 @@ public:
     };
 
     //! Asset object
-    typedef ManifestAsset Asset;
+    using Asset = ManifestAsset;
 
     //! Object indicate the difference between two Assets
     struct AssetDiff {
-        Asset asset;
+        Asset    asset;
         DiffType type;
     };
 
@@ -122,7 +122,7 @@ public:
     /** @brief Constructor for Manifest class, create manifest by parsing a json file
      * @param manifestUrl Url of the local manifest
      */
-    Manifest(const std::string &manifestUrl = "");
+    explicit Manifest(const std::string &manifestUrl = "");
 
     /** @brief Constructor for Manifest class, create manifest by parsing a json string
      * @param content Json string content

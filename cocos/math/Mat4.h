@@ -415,6 +415,11 @@ public:
     static void fromRTS(const Quaternion &rotation, const Vec3 &translation, const Vec3 &scale, Mat4 *dst);
 
     /**
+     *  Decomposes the scale, rotation and translation components of this matrix.
+     */
+    static void toRTS(Quaternion &rotation, Vec3 &translation, Vec3 &scale, Mat4 *dst);
+
+    /**
      * Decomposes the scale, rotation and translation components of this matrix.
      *
      * @param scale The scale.

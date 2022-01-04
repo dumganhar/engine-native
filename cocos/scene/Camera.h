@@ -299,8 +299,8 @@ public:
     inline float getClearDepth() const { return _clearDepth; }
     inline void  setClearDepth(float depth) { _clearDepth = depth; }
 
-    inline float getClearStencil() const { return _clearStencil; }
-    inline void  setClearStencil(float stencil) { _clearStencil = stencil; }
+    inline uint32_t getClearStencil() const { return _clearStencil; }
+    inline void     setClearStencil(uint32_t stencil) { _clearStencil = stencil; }
 
     inline bool isWindowSize() const { return _isWindowSize; }
     inline void setWindowSize(bool val) { _isWindowSize = val; }
@@ -364,7 +364,7 @@ private:
 
     uint32_t _visibility = pipeline::CAMERA_DEFAULT_MASK;
     float    _exposure{0.F};
-    float    _clearStencil{0.F};
+    uint32_t _clearStencil{0};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(Camera);
 };

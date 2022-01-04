@@ -143,9 +143,9 @@ void BatchedBuffer::merge(const scene::SubModel *subModel, uint passIdx, const s
                 const auto start      = batch.vbCount;
                 const auto end        = start + vbCount;
                 const auto mergeCount = batch.mergeCount;
-                if (indexData[start] != mergeCount || indexData[end - 1] != mergeCount) {
+                if (indexData[start] != static_cast<float>(mergeCount) || indexData[end - 1] != static_cast<float>(mergeCount)) {
                     for (auto j = start; j < end; j++) {
-                        indexData[j] = mergeCount + 0.1F; // guard against underflow
+                        indexData[j] = static_cast<float>(mergeCount) + 0.1F; // guard against underflow
                     }
                 }
 

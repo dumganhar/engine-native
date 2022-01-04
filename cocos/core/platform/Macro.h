@@ -53,7 +53,7 @@ enum class KEY {
     * @zh 没有分配
     * @readonly
     */
-    none = 0,
+    NONE = 0,
 
     // android
     /**
@@ -62,35 +62,35 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3
     */
-    back = 6,
+    BACK = 6,
     /**
     * @en The menu key on mobile phone
     * @zh 移动端菜单键
     * @readonly
     * @deprecated since v3.3
     */
-    menu = 18,
+    MENU = 18,
 
     /**
     * @en The backspace key
     * @zh 退格键
     * @readonly
     */
-    backspace = 8,
+    BACKSPACE = 8,
 
     /**
     * @en The tab key
     * @zh Tab 键
     * @readonly
     */
-    tab = 9,
+    TAB = 9,
 
     /**
     * @en The enter key
     * @zh 回车键
     * @readonly
     */
-    enter = 13,
+    ENTER = 13,
 
     /**
     * @en The shift key
@@ -98,7 +98,7 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3, please use KeyCode.SHIFT_LEFT instead.
     */
-    shift = 16, // should use shiftkey instead
+    SHIFT = 16, // should use shiftkey instead
 
     /**
     * @en The ctrl key
@@ -106,7 +106,7 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3, please use KeyCode.CTRL_LEFT instead.
     */
-    ctrl = 17, // should use ctrlkey
+    CTRL = 17, // should use ctrlkey
 
     /**
     * @en The alt key
@@ -114,91 +114,91 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3, please use KeyCode.ALT_LEFT instead.
     */
-    alt = 18, // should use altkey
+    ALT = 18, // should use altkey
 
     /**
     * @en The pause key
     * @zh 暂停键
     * @readonly
     */
-    pause = 19,
+    PAUSE = 19,
 
     /**
     * @en The caps lock key
     * @zh 大写锁定键
     * @readonly
     */
-    capslock = 20,
+    CAPSLOCK = 20,
 
     /**
     * @en The esc key
     * @zh ESC 键
     * @readonly
     */
-    escape = 27,
+    ESCAPE = 27,
 
     /**
     * @en The space key
     * @zh 空格键
     * @readonly
     */
-    space = 32,
+    SPACE = 32,
 
     /**
     * @en The page up key
     * @zh 向上翻页键
     * @readonly
     */
-    pageup = 33,
+    PAGEUP = 33,
 
     /**
     * @en The page down key
     * @zh 向下翻页键
     * @readonly
     */
-    pagedown = 34,
+    PAGEDOWN = 34,
 
     /**
     * @en The end key
     * @zh 结束键
     * @readonly
     */
-    end = 35,
+    END = 35,
 
     /**
     * @en The home key
     * @zh 主菜单键
     * @readonly
     */
-    home = 36,
+    HOME = 36,
 
     /**
     * @en The left key
     * @zh 向左箭头键
     * @readonly
     */
-    left = 37,
+    LEFT = 37,
 
     /**
     * @en The up key
     * @zh 向上箭头键
     * @readonly
     */
-    up = 38,
+    UP = 38,
 
     /**
     * @en The right key
     * @zh 向右箭头键
     * @readonly
     */
-    right = 39,
+    RIGHT = 39,
 
     /**
     * @en The down key
     * @zh 向下箭头键
     * @readonly
     */
-    down = 40,
+    DOWN = 40,
 
     /**
     * @en The select key
@@ -206,455 +206,455 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3
     */
-    select = 41,
+    SELECT = 41,
 
     /**
     * @en The insert key
     * @zh 插入键
     * @readonly
     */
-    insert = 45,
+    INSERT = 45,
 
     /**
     * @en The Delete key
     * @zh 删除键
     * @readonly
     */
-    Delete = 46,
+    DELETE = 46,
 
     /**
     * @en The a key
     * @zh A 键
     * @readonly
     */
-    a = 65,
+    A = 65,
 
     /**
     * @en The b key
     * @zh B 键
     * @readonly
     */
-    b = 66,
+    B = 66,
 
     /**
     * @en The c key
     * @zh C 键
     * @readonly
     */
-    c = 67,
+    C = 67,
 
     /**
     * @en The d key
     * @zh D 键
     * @readonly
     */
-    d = 68,
+    D = 68,
 
     /**
     * @en The e key
     * @zh E 键
     * @readonly
     */
-    e = 69,
+    E = 69,
 
     /**
     * @en The f key
     * @zh F 键
     * @readonly
     */
-    f = 70,
+    F = 70,
 
     /**
     * @en The g key
     * @zh G 键
     * @readonly
     */
-    g = 71,
+    G = 71,
 
     /**
     * @en The h key
     * @zh H 键
     * @readonly
     */
-    h = 72,
+    H = 72,
 
     /**
     * @en The i key
     * @zh I 键
     * @readonly
     */
-    i = 73,
+    I = 73,
 
     /**
     * @en The j key
     * @zh J 键
     * @readonly
     */
-    j = 74,
+    J = 74,
 
     /**
     * @en The k key
     * @zh K 键
     * @readonly
     */
-    k = 75,
+    K = 75,
 
     /**
     * @en The l key
     * @zh L 键
     * @readonly
     */
-    l = 76,
+    L = 76,
 
     /**
     * @en The m key
     * @zh M 键
     * @readonly
     */
-    m = 77,
+    M = 77,
 
     /**
     * @en The n key
     * @zh N 键
     * @readonly
     */
-    n = 78,
+    N = 78,
 
     /**
     * @en The o key
     * @zh O 键
     * @readonly
     */
-    o = 79,
+    O = 79,
 
     /**
     * @en The p key
     * @zh P 键
     * @readonly
     */
-    p = 80,
+    P = 80,
 
     /**
     * @en The q key
     * @zh Q 键
     * @readonly
     */
-    q = 81,
+    Q = 81,
 
     /**
     * @en The r key
     * @zh R 键
     * @readonly
     */
-    r = 82,
+    R = 82,
 
     /**
     * @en The s key
     * @zh S 键
     * @readonly
     */
-    s = 83,
+    S = 83,
 
     /**
     * @en The t key
     * @zh T 键
     * @readonly
     */
-    t = 84,
+    T = 84,
 
     /**
     * @en The u key
     * @zh U 键
     * @readonly
     */
-    u = 85,
+    U = 85,
 
     /**
     * @en The v key
     * @zh V 键
     * @readonly
     */
-    v = 86,
+    V = 86,
 
     /**
     * @en The w key
     * @zh W 键
     * @readonly
     */
-    w = 87,
+    W = 87,
 
     /**
     * @en The x key
     * @zh X 键
     * @readonly
     */
-    x = 88,
+    X = 88,
 
     /**
     * @en The y key
     * @zh Y 键
     * @readonly
     */
-    y = 89,
+    Y = 89,
 
     /**
     * @en The z key
     * @zh Z 键
     * @readonly
     */
-    z = 90,
+    Z = 90,
 
     /**
     * @en The numeric keypad 0
     * @zh 数字键盘 0
     * @readonly
     */
-    num0 = 96,
+    NUM0 = 96,
 
     /**
     * @en The numeric keypad 1
     * @zh 数字键盘 1
     * @readonly
     */
-    num1 = 97,
+    NUM1 = 97,
 
     /**
     * @en The numeric keypad 2
     * @zh 数字键盘 2
     * @readonly
     */
-    num2 = 98,
+    NUM2 = 98,
 
     /**
     * @en The numeric keypad 3
     * @zh 数字键盘 3
     * @readonly
     */
-    num3 = 99,
+    NUM3 = 99,
 
     /**
     * @en The numeric keypad 4
     * @zh 数字键盘 4
     * @readonly
     */
-    num4 = 100,
+    NUM4 = 100,
 
     /**
     * @en The numeric keypad 5
     * @zh 数字键盘 5
     * @readonly
     */
-    num5 = 101,
+    NUM5 = 101,
 
     /**
     * @en The numeric keypad 6
     * @zh 数字键盘 6
     * @readonly
     */
-    num6 = 102,
+    NUM6 = 102,
 
     /**
     * @en The numeric keypad 7
     * @zh 数字键盘 7
     * @readonly
     */
-    num7 = 103,
+    NUM7 = 103,
 
     /**
     * @en The numeric keypad 8
     * @zh 数字键盘 8
     * @readonly
     */
-    num8 = 104,
+    NUM8 = 104,
 
     /**
     * @en The numeric keypad 9
     * @zh 数字键盘 9
     * @readonly
     */
-    num9 = 105,
+    NUM9 = 105,
 
     /**
     * @en The numeric keypad 'delete'
     * @zh 数字键盘删除键
     * @readonly
     */
-    numdel = 110,
+    NUMDEL = 110,
 
     /**
     * @en The F1 function key
     * @zh F1 功能键
     * @readonly
     */
-    f1 = 112, // f1-f12 dont work on ie
+    F1 = 112, // f1-f12 dont work on ie
 
     /**
     * @en The F2 function key
     * @zh F2 功能键
     * @readonly
     */
-    f2 = 113,
+    F2 = 113,
 
     /**
     * @en The F3 function key
     * @zh F3 功能键
     * @readonly
     */
-    f3 = 114,
+    F3 = 114,
 
     /**
     * @en The F4 function key
     * @zh F4 功能键
     * @readonly
     */
-    f4 = 115,
+    F4 = 115,
 
     /**
     * @en The F5 function key
     * @zh F5 功能键
     * @readonly
     */
-    f5 = 116,
+    F5 = 116,
 
     /**
     * @en The F6 function key
     * @zh F6 功能键
     * @readonly
     */
-    f6 = 117,
+    F6 = 117,
 
     /**
     * @en The F7 function key
     * @zh F7 功能键
     * @readonly
     */
-    f7 = 118,
+    F7 = 118,
 
     /**
     * @en The F8 function key
     * @zh F8 功能键
     * @readonly
     */
-    f8 = 119,
+    F8 = 119,
 
     /**
     * @en The F9 function key
     * @zh F9 功能键
     * @readonly
     */
-    f9 = 120,
+    F9 = 120,
 
     /**
     * @en The F10 function key
     * @zh F10 功能键
     * @readonly
     */
-    f10 = 121,
+    F10 = 121,
 
     /**
     * @en The F11 function key
     * @zh F11 功能键
     * @readonly
     */
-    f11 = 122,
+    F11 = 122,
 
     /**
     * @en The F12 function key
     * @zh F12 功能键
     * @readonly
     */
-    f12 = 123,
+    F12 = 123,
 
     /**
     * @en The numlock key
     * @zh 数字锁定键
     * @readonly
     */
-    numlock = 144,
+    NUMLOCK = 144,
 
     /**
     * @en The scroll lock key
     * @zh 滚动锁定键
     * @readonly
     */
-    scrolllock = 145,
+    SCROLLLOCK = 145,
 
     /**
     * @en The ';' key.
     * @zh 分号键
     * @readonly
     */
-    semicolon = 186,
+    SEMICOLON = 186,
 
     /**
     * @en The '=' key.
     * @zh 等于号键
     * @readonly
     */
-    equal = 187,
+    EQUAL = 187,
 
     /**
     * @en The ',' key.
     * @zh 逗号键
     * @readonly
     */
-    comma = 188,
+    COMMA = 188,
 
     /**
     * @en The dash '-' key.
     * @zh 中划线键
     * @readonly
     */
-    dash = 189,
+    DASH = 189,
 
     /**
     * @en The '.' key
     * @zh 句号键
     * @readonly
     */
-    period = 190,
+    PERIOD = 190,
 
     /**
     * @en The forward slash key
     * @zh 正斜杠键
     * @readonly
     */
-    forwardslash = 191,
+    FORWARDSLASH = 191,
 
     /**
     * @en The grave key
     * @zh 按键 `
     * @readonly
     */
-    grave = 192,
+    GRAVE = 192,
 
     /**
     * @en The '[' key
     * @zh 按键 [
     * @readonly
     */
-    openbracket = 219,
+    OPENBRACKET = 219,
 
     /**
     * @en The '\' key
     * @zh 反斜杠键
     * @readonly
     */
-    backslash = 220,
+    BACKSLASH = 220,
 
     /**
     * @en The ']' key
     * @zh 按键 ]
     * @readonly
     */
-    closebracket = 221,
+    CLOSEBRACKET = 221,
 
     /**
     * @en The quote key
     * @zh 单引号键
     * @readonly
     */
-    quote = 222,
+    QUOTE = 222,
 
     /**
     * @en The dpad left key
@@ -662,7 +662,7 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3
     */
-    dpadLeft = 1000,
+    DPAD_LEFT = 1000,
 
     /**
     * @en The dpad right key
@@ -670,7 +670,7 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3
     */
-    dpadRight = 1001,
+    DPAD_RIGHT = 1001,
 
     /**
     * @en The dpad up key
@@ -678,7 +678,7 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3
     */
-    dpadUp = 1003,
+    DPAD_UP = 1003,
 
     /**
     * @en The dpad down key
@@ -686,7 +686,7 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3
     */
-    dpadDown = 1004,
+    DPAD_DOWN = 1004,
 
     /**
     * @en The dpad center key
@@ -694,7 +694,7 @@ enum class KEY {
     * @readonly
     * @deprecated since v3.3
     */
-    dpadCenter = 1005,
+    DPAD_CENTER = 1005,
 };
 
 /**

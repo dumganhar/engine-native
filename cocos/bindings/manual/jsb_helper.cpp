@@ -28,7 +28,7 @@
 
 /* static */
 void CleanupTask::pushTaskToAutoReleasePool(const std::function<void()> &cb) {
-    auto ret = new (std::nothrow) CleanupTask();
+    auto *ret = new (std::nothrow) CleanupTask();
     ret->_cb = cb;
     cc::DeferredReleasePool::add(ret);
 }

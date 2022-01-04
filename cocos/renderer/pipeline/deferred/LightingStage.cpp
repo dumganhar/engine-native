@@ -367,8 +367,8 @@ void LightingStage::fgLightingPass(scene::Camera *camera) {
         framegraph::Texture::Descriptor colorTexInfo;
         colorTexInfo.format = gfx::Format::RGBA16F;
         colorTexInfo.usage  = gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED;
-        colorTexInfo.width  = static_cast<uint>(pipeline->getWidth() * shadingScale);
-        colorTexInfo.height = static_cast<uint>(pipeline->getHeight() * shadingScale);
+        colorTexInfo.width  = static_cast<uint>(static_cast<float>(pipeline->getWidth()) * shadingScale);
+        colorTexInfo.height = static_cast<uint>(static_cast<float>(pipeline->getHeight()) * shadingScale);
         data.outputTex      = builder.create(RenderPipeline::fgStrHandleOutColorTexture, colorTexInfo);
 
         framegraph::RenderTargetAttachment::Descriptor colorAttachmentInfo;
@@ -450,8 +450,8 @@ void LightingStage::fgTransparent(scene::Camera *camera) {
             framegraph::Texture::Descriptor colorTexInfo;
             colorTexInfo.format = gfx::Format::RGBA16F;
             colorTexInfo.usage  = gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED;
-            colorTexInfo.width  = static_cast<uint>(pipeline->getWidth() * shadingScale);
-            colorTexInfo.height = static_cast<uint>(pipeline->getHeight() * shadingScale);
+            colorTexInfo.width  = static_cast<uint>(static_cast<float>(pipeline->getWidth()) * shadingScale);
+            colorTexInfo.height = static_cast<uint>(static_cast<float>(pipeline->getHeight()) * shadingScale);
 
             colorAttachmentInfo.loadOp     = gfx::LoadOp::CLEAR;
             colorAttachmentInfo.clearColor = clearColor;
@@ -474,8 +474,8 @@ void LightingStage::fgTransparent(scene::Camera *camera) {
                 gfx::TextureType::TEX2D,
                 gfx::TextureUsageBit::DEPTH_STENCIL_ATTACHMENT,
                 gfx::Format::DEPTH_STENCIL,
-                static_cast<uint>(pipeline->getWidth() * shadingScale),
-                static_cast<uint>(pipeline->getHeight() * shadingScale),
+                static_cast<uint>(static_cast<float>(pipeline->getWidth()) * shadingScale),
+                static_cast<uint>(static_cast<float>(pipeline->getHeight()) * shadingScale),
             };
             data.depth                 = builder.create(DeferredPipeline::fgStrHandleOutDepthTexture, depthTexInfo);
             depthAttachmentInfo.loadOp = gfx::LoadOp::CLEAR;
@@ -746,7 +746,7 @@ void LightingStage::fgSsprPass(scene::Camera *camera) {
         cmdBuff->bindPipelineState(const_cast<gfx::PipelineState *>(_reflectionComp->getDenoisePipelineState(useEnvmap)));
         cmdBuff->bindDescriptorSet(globalSet, const_cast<gfx::DescriptorSet *>(_reflectionComp->getDenoiseDescriptorSet()));
         cmdBuff->bindDescriptorSet(materialSet, elem.set);
-        cmdBuff->dispatch(_reflectionComp->getDenioseDispatchInfo());
+        cmdBuff->dispatch(_reflectionComp->getDenoiseDispatchInfo());
 
         // pipeline barrier
         // dispatch -> fragment

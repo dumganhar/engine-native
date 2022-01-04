@@ -282,7 +282,7 @@ public:
      *
      * @param array An array containing the elements of the quaternion in the order x, y, z, w.
      */
-    void set(float *array);
+    void set(const float *array);
 
     /**
      * Sets the quaternion equal to the rotational part of the specified matrix.

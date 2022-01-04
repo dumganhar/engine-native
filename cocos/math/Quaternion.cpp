@@ -203,9 +203,8 @@ void Quaternion::set(float xx, float yy, float zz, float ww) {
     this->w = ww;
 }
 
-void Quaternion::set(float *array) {
+void Quaternion::set(const float *array) {
     GP_ASSERT(array);
-
     x = array[0];
     y = array[1];
     z = array[2];

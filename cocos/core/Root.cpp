@@ -273,7 +273,7 @@ void Root::destroyScene(scene::RenderScene *scene) {
     }
 }
 
-void Root::destroyModel(scene::Model *model) {
+void Root::destroyModel(scene::Model *model) { // NOLINT(readability-convert-member-functions-to-static)
     if (model == nullptr) {
         return;
     }
@@ -283,7 +283,7 @@ void Root::destroyModel(scene::Model *model) {
     }
 }
 
-void Root::destroyLight(scene::Light *light) {
+void Root::destroyLight(scene::Light *light) { // NOLINT(readability-convert-member-functions-to-static)
     if (light == nullptr) {
         return;
     }

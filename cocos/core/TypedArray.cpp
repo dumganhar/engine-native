@@ -117,7 +117,7 @@ void setTypedArrayValue(TypedArray &arr, uint32_t idx, const TypedArrayElementTy
     TYPEDARRAY_SET_VALUE(Uint8Array, uint8_t);
     TYPEDARRAY_SET_VALUE(Int32Array, int32_t);
     TYPEDARRAY_SET_VALUE(Int16Array, int16_t);
-    TYPEDARRAY_SET_VALUE(Int8Array, int8_t);
+    TYPEDARRAY_SET_VALUE(Int8Array, int8_t); // NOLINT
     TYPEDARRAY_SET_VALUE(Float64Array, double);
 #undef TYPEDARRAY_SET_VALUE
 }

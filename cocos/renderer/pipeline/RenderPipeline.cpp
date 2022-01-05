@@ -60,6 +60,7 @@ RenderPipeline::RenderPipeline()
 
     _globalDSManager = new GlobalDSManager();
     _pipelineUBO     = new PipelineUBO();
+    _geometryRenderer = new GeometryRenderer();
 }
 
 RenderPipeline::~RenderPipeline() {

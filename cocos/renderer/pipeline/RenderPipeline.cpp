@@ -58,8 +58,9 @@ RenderPipeline::RenderPipeline()
 : _device(gfx::Device::getInstance()) {
     RenderPipeline::instance = this;
 
-    _globalDSManager = new GlobalDSManager();
-    _pipelineUBO     = new PipelineUBO();
+    _globalDSManager  = new GlobalDSManager();
+    _pipelineUBO      = new PipelineUBO();
+    _geometryRenderer = new GeometryRenderer();
 }
 
 RenderPipeline::~RenderPipeline() {
@@ -129,7 +130,7 @@ bool RenderPipeline::destroy() {
     CC_SAFE_DESTROY_AND_DELETE(_globalDSManager);
     CC_SAFE_DESTROY_AND_DELETE(_pipelineUBO);
     CC_SAFE_DESTROY_NULL(_pipelineSceneData);
-    _geometryRenderer->destroy();
+    CC_SAFE_DESTROY_AND_DELETE(_geometryRenderer);
 
     for (auto *const queryPool : _queryPools) {
         queryPool->destroy();

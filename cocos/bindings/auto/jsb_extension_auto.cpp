@@ -721,7 +721,7 @@ static bool js_extension_AssetsManagerEx_getMaxConcurrentTask(se::State& s) // N
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        int result = cobj->getMaxConcurrentTask();
+        const int result = cobj->getMaxConcurrentTask();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_extension_AssetsManagerEx_getMaxConcurrentTask : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -1151,7 +1151,7 @@ static bool js_extension_AssetsManagerEx_constructor(se::State& s) // NOLINT(rea
             HolderType<std::string, true> arg1 = {};
             ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
             if (!ok) { ok = true; break; }
-            HolderType<std::function<int (const std::string, const std::string)>, false> arg2 = {};
+            HolderType<std::function<int (const std::string, const std::string)>, true> arg2 = {};
             do {
                 if (args[2].isObject() && args[2].toObject()->isFunction())
                 {

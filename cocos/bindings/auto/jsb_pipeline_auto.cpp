@@ -722,63 +722,6 @@ static bool js_pipeline_PipelineSceneData_getFog(se::State& s) // NOLINT(readabi
 }
 SE_BIND_FUNC_AS_PROP_GET(js_pipeline_PipelineSceneData_getFog)
 
-static bool js_pipeline_PipelineSceneData_getGeometryRendererMaterials(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::pipeline::PipelineSceneData>(s);
-    SE_PRECONDITION2(cobj, false, "js_pipeline_PipelineSceneData_getGeometryRendererMaterials : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const std::vector<cc::IntrusivePtr<cc::Material>>& result = cobj->getGeometryRendererMaterials();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_PipelineSceneData_getGeometryRendererMaterials : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_pipeline_PipelineSceneData_getGeometryRendererMaterials)
-
-static bool js_pipeline_PipelineSceneData_getGeometryRendererPasses(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::pipeline::PipelineSceneData>(s);
-    SE_PRECONDITION2(cobj, false, "js_pipeline_PipelineSceneData_getGeometryRendererPasses : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const std::vector<cc::scene::Pass *>& result = cobj->getGeometryRendererPasses();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_PipelineSceneData_getGeometryRendererPasses : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_pipeline_PipelineSceneData_getGeometryRendererPasses)
-
-static bool js_pipeline_PipelineSceneData_getGeometryRendererShaders(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::pipeline::PipelineSceneData>(s);
-    SE_PRECONDITION2(cobj, false, "js_pipeline_PipelineSceneData_getGeometryRendererShaders : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        const std::vector<cc::gfx::Shader *>& result = cobj->getGeometryRendererShaders();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_PipelineSceneData_getGeometryRendererShaders : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC(js_pipeline_PipelineSceneData_getGeometryRendererShaders)
-
 static bool js_pipeline_PipelineSceneData_getMatShadowProj(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::pipeline::PipelineSceneData>(s);
@@ -1272,18 +1215,15 @@ bool js_register_pipeline_PipelineSceneData(se::Object* obj) // NOLINT(readabili
 {
     auto* cls = se::Class::create("PipelineSceneData", obj, nullptr, _SE(js_pipeline_PipelineSceneData_constructor));
 
+    cls->defineProperty("shadows", _SE(js_pipeline_PipelineSceneData_getShadows_asGetter), nullptr);
     cls->defineProperty("isHDR", _SE(js_pipeline_PipelineSceneData_isHDR_asGetter), _SE(js_pipeline_PipelineSceneData_setHDR_asSetter));
     cls->defineProperty("shadingScale", _SE(js_pipeline_PipelineSceneData_getShadingScale_asGetter), _SE(js_pipeline_PipelineSceneData_setShadingScale_asSetter));
     cls->defineProperty("fog", _SE(js_pipeline_PipelineSceneData_getFog_asGetter), nullptr);
     cls->defineProperty("ambient", _SE(js_pipeline_PipelineSceneData_getAmbient_asGetter), nullptr);
     cls->defineProperty("skybox", _SE(js_pipeline_PipelineSceneData_getSkybox_asGetter), nullptr);
-    cls->defineProperty("shadows", _SE(js_pipeline_PipelineSceneData_getShadows_asGetter), nullptr);
     cls->defineFunction("activate", _SE(js_pipeline_PipelineSceneData_activate));
     cls->defineFunction("destroy", _SE(js_pipeline_PipelineSceneData_destroy));
     cls->defineFunction("getDirShadowObjects", _SE(js_pipeline_PipelineSceneData_getDirShadowObjects));
-    cls->defineFunction("getGeometryRendererMaterials", _SE(js_pipeline_PipelineSceneData_getGeometryRendererMaterials));
-    cls->defineFunction("getGeometryRendererPasses", _SE(js_pipeline_PipelineSceneData_getGeometryRendererPasses));
-    cls->defineFunction("getGeometryRendererShaders", _SE(js_pipeline_PipelineSceneData_getGeometryRendererShaders));
     cls->defineFunction("getMatShadowProj", _SE(js_pipeline_PipelineSceneData_getMatShadowProj));
     cls->defineFunction("getMatShadowView", _SE(js_pipeline_PipelineSceneData_getMatShadowView));
     cls->defineFunction("getMatShadowViewProj", _SE(js_pipeline_PipelineSceneData_getMatShadowViewProj));
@@ -2242,14 +2182,14 @@ bool js_register_pipeline_RenderPipeline(se::Object* obj) // NOLINT(readability-
 {
     auto* cls = se::Class::create("RenderPipeline", obj, __jsb_cc_Asset_proto, nullptr);
 
-    cls->defineProperty("globalDSManager", _SE(js_pipeline_RenderPipeline_getGlobalDSManager_asGetter), nullptr);
     cls->defineProperty("descriptorSet", _SE(js_pipeline_RenderPipeline_getDescriptorSet_asGetter), nullptr);
-    cls->defineProperty("descriptorSetLayout", _SE(js_pipeline_RenderPipeline_getDescriptorSetLayout_asGetter), nullptr);
-    cls->defineProperty("constantMacros", _SE(js_pipeline_RenderPipeline_getConstantMacros_asGetter), nullptr);
+    cls->defineProperty("pipelineSceneData", _SE(js_pipeline_RenderPipeline_getPipelineSceneData_asGetter), nullptr);
     cls->defineProperty("clusterEnabled", nullptr, _SE(js_pipeline_RenderPipeline_setClusterEnabled_asSetter));
     cls->defineProperty("bloomEnabled", nullptr, _SE(js_pipeline_RenderPipeline_setBloomEnabled_asSetter));
-    cls->defineProperty("pipelineSceneData", _SE(js_pipeline_RenderPipeline_getPipelineSceneData_asGetter), nullptr);
+    cls->defineProperty("constantMacros", _SE(js_pipeline_RenderPipeline_getConstantMacros_asGetter), nullptr);
     cls->defineProperty("profiler", _SE(js_pipeline_RenderPipeline_getProfiler_asGetter), _SE(js_pipeline_RenderPipeline_setProfiler_asSetter));
+    cls->defineProperty("globalDSManager", _SE(js_pipeline_RenderPipeline_getGlobalDSManager_asGetter), nullptr);
+    cls->defineProperty("descriptorSetLayout", _SE(js_pipeline_RenderPipeline_getDescriptorSetLayout_asGetter), nullptr);
     cls->defineFunction("activate", _SE(js_pipeline_RenderPipeline_activate));
     cls->defineFunction("createQuadInputAssembler", _SE(js_pipeline_RenderPipeline_createQuadInputAssembler));
     cls->defineFunction("ensureEnoughSize", _SE(js_pipeline_RenderPipeline_ensureEnoughSize));
@@ -3565,24 +3505,24 @@ static bool js_pipeline_BloomStage_getCombineUBO(se::State& s) // NOLINT(readabi
 }
 SE_BIND_FUNC(js_pipeline_BloomStage_getCombineUBO)
 
-static bool js_pipeline_BloomStage_getDownsampleUBO(se::State& s) // NOLINT(readability-identifier-naming)
+static bool js_pipeline_BloomStage_getDownsampelUBO(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::pipeline::BloomStage>(s);
-    SE_PRECONDITION2(cobj, false, "js_pipeline_BloomStage_getDownsampleUBO : Invalid Native Object");
+    SE_PRECONDITION2(cobj, false, "js_pipeline_BloomStage_getDownsampelUBO : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        std::array<cc::gfx::Buffer *, 6>& result = cobj->getDownsampleUBO();
+        std::array<cc::gfx::Buffer *, 6>& result = cobj->getDownsampelUBO();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_pipeline_BloomStage_getDownsampleUBO : Error processing arguments");
+        SE_PRECONDITION2(ok, false, "js_pipeline_BloomStage_getDownsampelUBO : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
     return false;
 }
-SE_BIND_FUNC(js_pipeline_BloomStage_getDownsampleUBO)
+SE_BIND_FUNC(js_pipeline_BloomStage_getDownsampelUBO)
 
 static bool js_pipeline_BloomStage_getIntensity(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -3796,7 +3736,7 @@ bool js_register_pipeline_BloomStage(se::Object* obj) // NOLINT(readability-iden
     cls->defineProperty("intensity", _SE(js_pipeline_BloomStage_getIntensity_asGetter), _SE(js_pipeline_BloomStage_setIntensity_asSetter));
     cls->defineProperty("iterations", _SE(js_pipeline_BloomStage_getIterations_asGetter), _SE(js_pipeline_BloomStage_setIterations_asSetter));
     cls->defineFunction("getCombineUBO", _SE(js_pipeline_BloomStage_getCombineUBO));
-    cls->defineFunction("getDownsampleUBO", _SE(js_pipeline_BloomStage_getDownsampleUBO));
+    cls->defineFunction("getDownsampelUBO", _SE(js_pipeline_BloomStage_getDownsampelUBO));
     cls->defineFunction("getPrefilterUBO", _SE(js_pipeline_BloomStage_getPrefilterUBO));
     cls->defineFunction("getSampler", _SE(js_pipeline_BloomStage_getSampler));
     cls->defineFunction("getUpsampleUBO", _SE(js_pipeline_BloomStage_getUpsampleUBO));

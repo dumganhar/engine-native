@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 #pragma once
 
+#include <cstddef>
 #include "../Macros.h"
 #include "base/RefCounted.h"
 

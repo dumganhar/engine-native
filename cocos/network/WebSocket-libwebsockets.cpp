@@ -35,7 +35,7 @@
 #include "uv.h"
 // clang-format on
 
-#if __OHOS__
+#if __OHOS__ || __LINUX__ || __QNX__
     #include "libwebsockets.h"
 #else
     #include "websockets/libwebsockets.h"
@@ -53,10 +53,11 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include "application/ApplicationManager.h"
 #include "base/Scheduler.h"
 #include "network/Uri.h"
 #include "network/WebSocket.h"
-#include "platform/Application.h"
+
 #include "platform/FileUtils.h"
 #include "platform/StdC.h"
 
@@ -140,7 +141,7 @@ static void wsLog(const char *format, ...) {
 }
 
 #else
-    #define WS_LOG printf
+    #define wsLog printf //NOLINT
 #endif
 
 #define DO_QUOTEME(x) #x
@@ -510,7 +511,9 @@ void WsThreadHelper::wsThreadEntryFunc() const {
 }
 
 void WsThreadHelper::sendMessageToCocosThread(const std::function<void()> &cb) {
-    cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread(cb);
+    if (CC_CURRENT_APPLICATION() != nullptr) {
+        CC_CURRENT_APPLICATION()->getEngine()->getScheduler()->performFunctionInCocosThread(cb);
+    }
 }
 
 void WsThreadHelper::sendMessageToWebSocketThread(WsMessage *msg) {

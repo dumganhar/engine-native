@@ -33,7 +33,6 @@ namespace cc {
 namespace scene {
 
 class SphereLight final : public Light {
-
 public:
     SphereLight();
     ~SphereLight() override = default;

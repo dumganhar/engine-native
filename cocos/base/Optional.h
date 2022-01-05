@@ -47,7 +47,7 @@ namespace cc {
 
 template <typename T>
 
-using optional = boost::optional<T>;
+using optional  = boost::optional<T>;
 using nullopt_t = boost::none_t;
 
 const nullopt_t nullopt((boost::none_t::init_tag())); // NOLINT // use std style

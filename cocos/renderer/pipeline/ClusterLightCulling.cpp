@@ -64,7 +64,7 @@ ClusterLightCulling::~ClusterLightCulling() {
     CC_SAFE_DESTROY_AND_DELETE(_constantsBuffer);
 }
 
-void ClusterLightCulling::initialize(gfx::Device* dev) {
+void ClusterLightCulling::initialize(gfx::Device *dev) {
     _device = dev;
     if (!_device->hasFeature(gfx::Feature::COMPUTE_SHADER)) return;
 
@@ -111,11 +111,11 @@ void ClusterLightCulling::initialize(gfx::Device* dev) {
 void ClusterLightCulling::update() {
     if (!_initialized) return;
 
-    auto* const sceneData = _pipeline->getPipelineSceneData();
+    auto *const sceneData = _pipeline->getPipelineSceneData();
 
     _constants[NEAR_FAR_OFFSET + 0]  = static_cast<float>(_camera->getNearClip());
     _constants[NEAR_FAR_OFFSET + 1]  = static_cast<float>(_camera->getFarClip());
-    const auto& viewport             = _camera->getViewport();
+    const auto &viewport             = _camera->getViewport();
     _constants[VIEW_PORT_OFFSET + 0] = viewport.x * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
     _constants[VIEW_PORT_OFFSET + 1] = viewport.y * static_cast<float>(_camera->getHeight()) * sceneData->getShadingScale();
     _constants[VIEW_PORT_OFFSET + 2] = viewport.z * static_cast<float>(_camera->getWidth()) * sceneData->getShadingScale();
@@ -147,26 +147,26 @@ void ClusterLightCulling::updateLights() {
     _validLights.clear();
 
     geometry::Sphere  sphere;
-    const auto* const scene = _camera->getScene();
-    for (const auto& light : scene->getSphereLights()) {
+    const auto *const scene = _camera->getScene();
+    for (const auto &light : scene->getSphereLights()) {
         sphere.setCenter(light->getPosition());
         sphere.setRadius(light->getRange());
         if (sphere.sphereFrustum(_camera->getFrustum())) {
-            _validLights.emplace_back(static_cast<scene::Light*>(light));
+            _validLights.emplace_back(static_cast<scene::Light *>(light));
         }
     }
 
-    for (const auto& light : scene->getSpotLights()) {
+    for (const auto &light : scene->getSpotLights()) {
         sphere.setCenter(light->getPosition());
         sphere.setRadius(light->getRange());
         if (sphere.sphereFrustum(_camera->getFrustum())) {
-            _validLights.emplace_back(static_cast<scene::Light*>(light));
+            _validLights.emplace_back(static_cast<scene::Light *>(light));
         }
     }
 
     const auto  exposure        = _camera->getExposure();
     const auto  validLightCount = _validLights.size();
-    auto* const sceneData       = _pipeline->getPipelineSceneData();
+    auto *const sceneData       = _pipeline->getPipelineSceneData();
 
     if (validLightCount > _lightBufferCount) {
         _lightBufferResized = true;
@@ -175,13 +175,13 @@ void ClusterLightCulling::updateLights() {
     }
 
     for (unsigned l = 0, offset = 0; l < validLightCount; l++, offset += 16) {
-        auto*       light       = _validLights[l];
+        auto *      light       = _validLights[l];
         const bool  isSpotLight = scene::LightType::SPOT == light->getType();
-        const auto* spotLight   = isSpotLight ? static_cast<scene::SpotLight*>(light) : nullptr;
-        const auto* sphereLight = isSpotLight ? nullptr : static_cast<scene::SphereLight*>(light);
+        const auto *spotLight   = isSpotLight ? static_cast<scene::SpotLight *>(light) : nullptr;
+        const auto *sphereLight = isSpotLight ? nullptr : static_cast<scene::SphereLight *>(light);
 
         auto        index         = offset + UBOForwardLight::LIGHT_POS_OFFSET;
-        const auto& position      = isSpotLight ? spotLight->getPosition() : sphereLight->getPosition();
+        const auto &position      = isSpotLight ? spotLight->getPosition() : sphereLight->getPosition();
         _lightBufferData[index++] = position.x;
         _lightBufferData[index++] = position.y;
         _lightBufferData[index]   = position.z;
@@ -191,9 +191,9 @@ void ClusterLightCulling::updateLights() {
         _lightBufferData[index]   = isSpotLight ? spotLight->getRange() : sphereLight->getRange();
 
         index             = offset + UBOForwardLight::LIGHT_COLOR_OFFSET;
-        const auto& color = light->getColor();
+        const auto &color = light->getColor();
         if (light->isUseColorTemperature()) {
-            const auto& tempRGB       = light->getColorTemperatureRGB();
+            const auto &tempRGB       = light->getColorTemperatureRGB();
             _lightBufferData[index++] = color.x * tempRGB.x;
             _lightBufferData[index++] = color.y * tempRGB.y;
             _lightBufferData[index++] = color.z * tempRGB.z;
@@ -221,7 +221,7 @@ void ClusterLightCulling::updateLights() {
                 _lightBufferData[offset + UBOForwardLight::LIGHT_SIZE_RANGE_ANGLE_OFFSET + 2] = spotLight->getSpotAngle();
 
                 index                     = offset + UBOForwardLight::LIGHT_DIR_OFFSET;
-                const auto& direction     = spotLight->getDirection();
+                const auto &direction     = spotLight->getDirection();
                 _lightBufferData[index++] = direction.x;
                 _lightBufferData[index++] = direction.y;
                 _lightBufferData[index]   = direction.z;
@@ -658,7 +658,7 @@ void ClusterLightCulling::initCullingStage() {
     _cullingPipelineState = _device->createPipelineState(pipelineInfo);
 }
 
-void ClusterLightCulling::clusterLightCulling(scene::Camera* camera) {
+void ClusterLightCulling::clusterLightCulling(scene::Camera *camera) {
     if (!_initialized || _pipeline->getPipelineUBO()->getCurrentCameraUBOOffset() != 0) return;
     _camera = camera;
     update(); // update ubo and light data
@@ -668,7 +668,7 @@ void ClusterLightCulling::clusterLightCulling(scene::Camera* camera) {
         framegraph::BufferHandle globalIndexBuffer; // global light index storage buffer
     };
 
-    auto clusterBuildSetup = [&](framegraph::PassNodeBuilder& builder, DataClusterBuild& data) {
+    auto clusterBuildSetup = [&](framegraph::PassNodeBuilder &builder, DataClusterBuild &data) {
         data.clusterBuffer = framegraph::BufferHandle(builder.readFromBlackboard(fgStrHandleClusterBuffer));
         if (!data.clusterBuffer.isValid()) {
             // each cluster has 2 vec4, min + max position for AABB
@@ -708,22 +708,22 @@ void ClusterLightCulling::clusterLightCulling(scene::Camera* camera) {
         builder.writeToBlackboard(fgStrHandleClusterGlobalIndexBuffer, data.globalIndexBuffer);
     };
 
-    auto clusterBuildExec = [&](DataClusterBuild const& data, const framegraph::DevicePassResourceTable& table) {
-        auto* cmdBuff = _pipeline->getCommandBuffers()[0];
+    auto clusterBuildExec = [&](DataClusterBuild const &data, const framegraph::DevicePassResourceTable &table) {
+        auto *cmdBuff = _pipeline->getCommandBuffers()[0];
         if (_rebuildClusters) {
             // building cluster
             _buildingDescriptorSet->bindBuffer(0, _constantsBuffer);
             _buildingDescriptorSet->bindBuffer(1, table.getWrite(data.clusterBuffer));
             _buildingDescriptorSet->update();
-            cmdBuff->bindPipelineState(const_cast<gfx::PipelineState*>(_buildingPipelineState));
-            cmdBuff->bindDescriptorSet(0, const_cast<gfx::DescriptorSet*>(_buildingDescriptorSet));
+            cmdBuff->bindPipelineState(const_cast<gfx::PipelineState *>(_buildingPipelineState));
+            cmdBuff->bindDescriptorSet(0, const_cast<gfx::DescriptorSet *>(_buildingDescriptorSet));
             cmdBuff->dispatch(_buildingDispatchInfo);
         }
         // reset global index
         _resetCounterDescriptorSet->bindBuffer(0, table.getWrite(data.globalIndexBuffer));
         _resetCounterDescriptorSet->update();
-        cmdBuff->bindPipelineState(const_cast<gfx::PipelineState*>(_resetCounterPipelineState));
-        cmdBuff->bindDescriptorSet(0, const_cast<gfx::DescriptorSet*>(_resetCounterDescriptorSet));
+        cmdBuff->bindPipelineState(const_cast<gfx::PipelineState *>(_resetCounterPipelineState));
+        cmdBuff->bindDescriptorSet(0, const_cast<gfx::DescriptorSet *>(_resetCounterDescriptorSet));
         cmdBuff->dispatch(_resetDispatchInfo);
         cmdBuff->pipelineBarrier(_resetBarrier);
     };
@@ -736,7 +736,7 @@ void ClusterLightCulling::clusterLightCulling(scene::Camera* camera) {
         framegraph::BufferHandle globalIndexBuffer; // global light index storage buffer
     };
 
-    auto lightCullingSetup = [&](framegraph::PassNodeBuilder& builder, DataLightCulling& data) {
+    auto lightCullingSetup = [&](framegraph::PassNodeBuilder &builder, DataLightCulling &data) {
         data.lightBuffer = framegraph::BufferHandle(builder.readFromBlackboard(fgStrHandleClusterLightBuffer));
         if (!data.lightBuffer.isValid() || _lightBufferResized) {
             framegraph::Buffer::Descriptor bufferInfo;
@@ -796,8 +796,8 @@ void ClusterLightCulling::clusterLightCulling(scene::Camera* camera) {
         builder.writeToBlackboard(fgStrHandleClusterGlobalIndexBuffer, data.globalIndexBuffer);
     };
 
-    auto lightCullingExec = [&](DataLightCulling const& data, const framegraph::DevicePassResourceTable& table) {
-        auto* cmdBuff = _pipeline->getCommandBuffers()[0];
+    auto lightCullingExec = [&](DataLightCulling const &data, const framegraph::DevicePassResourceTable &table) {
+        auto *cmdBuff = _pipeline->getCommandBuffers()[0];
         cmdBuff->updateBuffer(table.getRead(data.lightBuffer), _lightBufferData.data(),
                               static_cast<uint>(_lightBufferData.size() * sizeof(float)));
 
@@ -809,18 +809,18 @@ void ClusterLightCulling::clusterLightCulling(scene::Camera* camera) {
         _cullingDescriptorSet->bindBuffer(5, table.getRead(data.globalIndexBuffer));
         _cullingDescriptorSet->update();
         // light culling
-        cmdBuff->bindPipelineState(const_cast<gfx::PipelineState*>(_cullingPipelineState));
-        cmdBuff->bindDescriptorSet(0, const_cast<gfx::DescriptorSet*>(_cullingDescriptorSet));
+        cmdBuff->bindPipelineState(const_cast<gfx::PipelineState *>(_cullingPipelineState));
+        cmdBuff->bindDescriptorSet(0, const_cast<gfx::DescriptorSet *>(_cullingDescriptorSet));
         cmdBuff->dispatch(_cullingDispatchInfo);
     };
 
-    auto* pipeline    = static_cast<DeferredPipeline*>(_pipeline);
+    auto *pipeline    = static_cast<DeferredPipeline *>(_pipeline);
     uint  insertPoint = static_cast<uint>(DeferredInsertPoint::DIP_CLUSTER);
     pipeline->getFrameGraph().addPass<DataClusterBuild>(insertPoint++, fgStrHandleClusterBuildPass, clusterBuildSetup, clusterBuildExec);
     pipeline->getFrameGraph().addPass<DataLightCulling>(insertPoint++, fgStrHandleClusterCullingPass, lightCullingSetup, lightCullingExec);
 }
 
-String& ClusterLightCulling::getShaderSource(ShaderStrings& sources) {
+String &ClusterLightCulling::getShaderSource(ShaderStrings &sources) {
     switch (_device->getGfxAPI()) {
         case gfx::API::GLES2:
             return sources.glsl1;

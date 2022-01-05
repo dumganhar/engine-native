@@ -49,19 +49,18 @@ constexpr uint32_t BINDING_MASK = 0x03f00000; //  6 bits => 64 bindings
 constexpr uint32_t COUNT_MASK   = 0x000ff000; //  8 bits => 256 vectors
 constexpr uint32_t OFFSET_MASK  = 0x00000fff; // 12 bits => 1024 vectors
 
-
 constexpr uint32_t genHandle(uint32_t binding, gfx::Type type, uint32_t count, uint32_t offset = 0) {
     return ((static_cast<uint32_t>(type) << 26) & TYPE_MASK) |
-             ((binding << 20) & BINDING_MASK) |
-             ((count << 12) & COUNT_MASK) |
-             (offset & OFFSET_MASK);
+           ((binding << 20) & BINDING_MASK) |
+           ((count << 12) & COUNT_MASK) |
+           (offset & OFFSET_MASK);
 }
 
-constexpr gfx::Type    getTypeFromHandle(uint32_t handle) { return static_cast<gfx::Type>((handle & TYPE_MASK) >> 26); }
-constexpr uint32_t     getBindingFromHandle(uint32_t handle) { return (handle & BINDING_MASK) >> 20; }
-constexpr uint32_t     getCountFromHandle(uint32_t handle) { return (handle & COUNT_MASK) >> 12; }
-constexpr uint32_t     getOffsetFromHandle(uint32_t handle) { return (handle & OFFSET_MASK); }
-constexpr uint32_t     customizeType(uint32_t handle, gfx::Type type) {
+constexpr gfx::Type getTypeFromHandle(uint32_t handle) { return static_cast<gfx::Type>((handle & TYPE_MASK) >> 26); }
+constexpr uint32_t  getBindingFromHandle(uint32_t handle) { return (handle & BINDING_MASK) >> 20; }
+constexpr uint32_t  getCountFromHandle(uint32_t handle) { return (handle & COUNT_MASK) >> 12; }
+constexpr uint32_t  getOffsetFromHandle(uint32_t handle) { return (handle & OFFSET_MASK); }
+constexpr uint32_t  customizeType(uint32_t handle, gfx::Type type) {
     return (handle & ~TYPE_MASK) | ((static_cast<uint32_t>(type) << 26) & TYPE_MASK);
 }
 

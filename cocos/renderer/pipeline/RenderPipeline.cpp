@@ -26,6 +26,7 @@
 #include <boost/functional/hash.hpp>
 
 #include "BatchedBuffer.h"
+#include "GeometryRenderer.h"
 #include "InstancedBuffer.h"
 #include "PipelineStateManager.h"
 #include "RenderFlow.h"
@@ -80,6 +81,7 @@ bool RenderPipeline::activate(gfx::Swapchain * /*swapchain*/) {
     _descriptorSet = _globalDSManager->getGlobalDescriptorSet();
     _pipelineUBO->activate(_device, this);
     _pipelineSceneData->activate(_device, this);
+    _geometryRenderer->activate(_device, this);
 
     // generate macros here rather than construct func because _clusterEnabled
     // switch may be changed in root.ts setRenderPipeline() function which is after
@@ -127,6 +129,7 @@ bool RenderPipeline::destroy() {
     CC_SAFE_DESTROY_AND_DELETE(_globalDSManager);
     CC_SAFE_DESTROY_AND_DELETE(_pipelineUBO);
     CC_SAFE_DESTROY_NULL(_pipelineSceneData);
+    _geometryRenderer->destroy();
 
     for (auto *const queryPool : _queryPools) {
         queryPool->destroy();

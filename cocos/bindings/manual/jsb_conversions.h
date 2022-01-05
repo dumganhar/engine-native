@@ -92,7 +92,7 @@
     }
 
 #if __clang__
-    #if defined(__has_feature) && __has_feature(cxx_static_assert) && __has_feature(cxx_relaxed_constexpr)
+    #if defined(__has_feature) && __has_feature(cxx_static_assert) && __has_feature(cxx_relaxed_constexpr) && (__cplusplus > 201402L)
         #define HAS_CONSTEXPR 1
     #else
         #define HAS_CONSTEXPR 0
@@ -108,23 +108,24 @@
     #define CC_CONSTEXPR     constexpr
 #else
     #define CC_CONSTEXPR
-    #define CC_STATIC_ASSERT(cond, msg) assert(cond)
+    #define CC_STATIC_ASSERT(cond, ...) assert(cond)
 #endif
 
-#define SE_STR1(x)               #x
-#define SE_STR(x)                SE_STR1(x)
-#define SE_FN_CONCAT(prefix, fn) prefix SE_STR(fn)
+#if __clang__ && (__cplusplus > 201402L)
+    #define HAS_PUSH_DIAGNOSTI
+    #define SE_STR1(x)               #x
+    #define SE_STR(x)                SE_STR1(x)
+    #define SE_FN_CONCAT(prefix, fn) prefix SE_STR(fn)
 
-#if CC_ENABLE_CACHE_JSB_FUNC_RESULT
-    #define SE_HOLD_RETURN_VALUE(retCXXValue, thisObject, jsValue)                            \
-        if CC_CONSTEXPR (is_jsb_object_v<typename std::decay<decltype(retCXXValue)>::type>) { \
-            (thisObject)->setProperty(SE_FN_CONCAT("__cache", __FUNCTION__), (jsValue));      \
-        }
-#else
-    #define SE_HOLD_RETURN_VALUE(...)
-#endif
+    #if CC_ENABLE_CACHE_JSB_FUNC_RESULT
+        #define SE_HOLD_RETURN_VALUE(retCXXValue, thisObject, jsValue)                            \
+            if CC_CONSTEXPR (is_jsb_object_v<typename std::decay<decltype(retCXXValue)>::type>) { \
+                (thisObject)->setProperty(SE_FN_CONCAT("__cache", __FUNCTION__), (jsValue));      \
+            }
+    #else
+        #define SE_HOLD_RETURN_VALUE(...)
+    #endif
 
-#if __clang__
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wc++17-extensions"
 #endif
@@ -1065,7 +1066,7 @@ bool sevalue_to_native(const se::Value &from, cc::IntrusivePtr<T> *to, se::Objec
 
 /////////////////// std::tuple
 template <typename Tuple, typename F, std::size_t... Indices>
-void se_for_each_tuple_impl(Tuple &&tuple, F &&f, std::index_sequence<Indices...>  /*seq*/) { // NOLINT(readability-identifier-naming)
+void se_for_each_tuple_impl(Tuple &&tuple, F &&f, std::index_sequence<Indices...> /*seq*/) { // NOLINT(readability-identifier-naming)
     using swallow = int[];
     (void)swallow{1,
                   (f(Indices, std::get<Indices>(std::forward<Tuple>(tuple))), void(), int{})...};
@@ -1336,6 +1337,10 @@ template <typename... Args>
 bool nativevalue_to_se_args_v(se::ValueArray &array, Args &...args) { // NOLINT(readability-identifier-naming)
     return nativevalue_to_se_args<0, Args...>(array, args...);
 }
+
+#if __clang__ && defined(HAS_PUSH_DIAGNOSTI)
+    #pragma clang diagnostic pop
+#endif
 
 // Spine conversions
 #if USE_SPINE

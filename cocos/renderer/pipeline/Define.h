@@ -25,8 +25,8 @@
 
 #pragma once
 
+#include <cmath>
 #include <functional>
-
 #include "base/Object.h"
 #include "base/TypeDef.h"
 #include "base/Value.h"
@@ -54,7 +54,7 @@ class RenderFlow;
 constexpr int JOINT_UNIFORM_CAPACITY = 30;
 
 constexpr float SHADOW_CAMERA_MAX_FAR    = 2000.0F;
-const float     COEFFICIENT_OF_EXPANSION = 2.0F * std::sqrtf(3.0F);
+const float     COEFFICIENT_OF_EXPANSION = 2.0F * sqrtf(3.0F);
 
 struct CC_DLL RenderObject {
     float               depth = 0;
@@ -138,8 +138,8 @@ struct CC_DLL InternalBindingInst : public InternalBindingDesc {
 };
 
 struct CC_DLL RenderQueueCreateInfo {
-    bool                                                          isTransparent     = false;
-    uint                                                          phases            = 0;
+    bool                                                          isTransparent = false;
+    uint                                                          phases        = 0;
     std::function<bool(const RenderPass &a, const RenderPass &b)> sortFunc;
 };
 
@@ -157,8 +157,8 @@ enum class CC_DLL RenderQueueSortMode {
 CC_ENUM_CONVERSION_OPERATOR(RenderQueueSortMode)
 
 struct CC_DLL RenderQueueDesc {
-    bool                isTransparent     = false;
-    RenderQueueSortMode sortMode          = RenderQueueSortMode::FRONT_TO_BACK;
+    bool                isTransparent = false;
+    RenderQueueSortMode sortMode      = RenderQueueSortMode::FRONT_TO_BACK;
     StringArray         stages;
 };
 using RenderQueueDescList = std::vector<RenderQueueDesc>;

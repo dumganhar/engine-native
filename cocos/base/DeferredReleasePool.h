@@ -27,18 +27,16 @@
 
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 #include "base/RefCounted.h"
 
 namespace cc {
 
 class CC_DLL DeferredReleasePool {
 public:
-
     static void add(RefCounted *object);
     static void clear();
-
 
     /**
      * Checks whether the autorelease pool contains the specified object.

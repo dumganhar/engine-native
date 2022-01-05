@@ -28,12 +28,12 @@
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_global_init.h"
 #if CC_PLATFORM == CC_PLATFORM_WINDOWS
-    #include "platform/win32/View-win32.h"
-extern std::shared_ptr<cc::View> cc_get_application_view();
+    #include "cocos/application/ApplicationManager.h"
+    #include "cocos/platform/interfaces/modules/ISystemWindow.h"
 #endif
 namespace {
 se::Value                 tickVal;
-se::ValueArray tickArgsValArr(1);
+se::ValueArray            tickArgsValArr(1);
 std::vector<se::Object *> jsTouchObjPool;
 se::Object *              jsTouchObjArray       = nullptr;
 se::Object *              jsMouseEventObj       = nullptr;
@@ -49,7 +49,7 @@ std::unordered_map<std::string, EventDispatcher::Node *> EventDispatcher::listen
 uint32_t                                                 EventDispatcher::hashListenerId = 1;
 
 bool EventDispatcher::initialized() {
-    return inited;
+    return inited && se::ScriptEngine::getInstance()->isValid();
 };
 
 void EventDispatcher::init() {
@@ -95,7 +95,7 @@ void EventDispatcher::destroy() {
     tickVal.setUndefined();
 }
 
-void EventDispatcher::dispatchTouchEvent(const struct TouchEvent &touchEvent) {
+void EventDispatcher::dispatchTouchEvent(const TouchEvent &touchEvent) {
     se::AutoHandleScope scope;
     if (!jsTouchObjArray) {
         jsTouchObjArray = se::Object::createArrayObject(0);
@@ -148,7 +148,7 @@ void EventDispatcher::dispatchTouchEvent(const struct TouchEvent &touchEvent) {
     EventDispatcher::doDispatchEvent(nullptr, eventName, args);
 }
 
-void EventDispatcher::dispatchMouseEvent(const struct MouseEvent &mouseEvent) {
+void EventDispatcher::dispatchMouseEvent(const MouseEvent &mouseEvent) {
     se::AutoHandleScope scope;
     if (!jsMouseEventObj) {
         jsMouseEventObj = se::Object::createPlainObject();
@@ -199,7 +199,7 @@ void EventDispatcher::dispatchMouseEvent(const struct MouseEvent &mouseEvent) {
     EventDispatcher::doDispatchEvent(eventName, jsFunctionName, args);
 }
 
-void EventDispatcher::dispatchKeyboardEvent(const struct KeyboardEvent &keyboardEvent) {
+void EventDispatcher::dispatchKeyboardEvent(const KeyboardEvent &keyboardEvent) {
     se::AutoHandleScope scope;
     if (!jsKeyboardEventObj) {
         jsKeyboardEventObj = se::Object::createPlainObject();
@@ -244,7 +244,7 @@ void EventDispatcher::dispatchTickEvent(float /*dt*/) {
     static std::chrono::steady_clock::time_point prevTime;
     prevTime = std::chrono::steady_clock::now();
 
-    int64_t        milliSeconds = std::chrono::duration_cast<std::chrono::milliseconds>(prevTime - se::ScriptEngine::getInstance()->getStartTime()).count();
+    int64_t milliSeconds = std::chrono::duration_cast<std::chrono::milliseconds>(prevTime - se::ScriptEngine::getInstance()->getStartTime()).count();
     tickArgsValArr[0].setDouble(static_cast<double>(milliSeconds));
 
     if (!tickVal.isUndefined()) {
@@ -295,7 +295,7 @@ void EventDispatcher::dispatchEnterBackgroundEvent() {
 }
 
 void EventDispatcher::dispatchEnterForegroundEvent() {
-    EventDispatcher::doDispatchEvent(EVENT_COME_TO_FOREGROUND, "onResume", se::EmptyValueArray); 
+    EventDispatcher::doDispatchEvent(EVENT_COME_TO_FOREGROUND, "onResume", se::EmptyValueArray);
 }
 
 void EventDispatcher::dispatchMemoryWarningEvent() {
@@ -318,7 +318,6 @@ void EventDispatcher::dispatchRecreateWindowEvent() {
     EventDispatcher::doDispatchEvent(EVENT_RECREATE_WINDOW, "", se::EmptyValueArray);
 }
 
-
 void EventDispatcher::doDispatchEvent(const char *eventName, const char *jsFunctionName, const std::vector<se::Value> &args) {
     if (!se::ScriptEngine::getInstance()->isValid()) {
         return;
@@ -327,9 +326,10 @@ void EventDispatcher::doDispatchEvent(const char *eventName, const char *jsFunct
     if (eventName) {
         CustomEvent event;
         event.name = eventName;
-        #if CC_PLATFORM == CC_PLATFORM_WINDOWS
-        event.args->ptrVal = cc_get_application_view()->getWindowHandler();
-        #endif
+#if CC_PLATFORM == CC_PLATFORM_WINDOWS
+        CCASSERT(CC_GET_PLATFORM_INTERFACE(ISystemWindow) != nullptr, "System window interface does not exist");
+        event.args->ptrVal = reinterpret_cast<void *>(CC_GET_PLATFORM_INTERFACE(ISystemWindow)->getWindowHandler());
+#endif
         EventDispatcher::dispatchCustomEvent(event);
     }
 

@@ -146,8 +146,8 @@ void GbufferStage::render(scene::Camera *camera) {
         framegraph::TextureHandle depth;
     };
 
-    auto  *pipeline = static_cast<DeferredPipeline *>(_pipeline);
-    float  shadingScale{_pipeline->getPipelineSceneData()->getShadingScale()};
+    auto *pipeline = static_cast<DeferredPipeline *>(_pipeline);
+    float shadingScale{_pipeline->getPipelineSceneData()->getShadingScale()};
     _renderArea = RenderPipeline::getRenderArea(camera);
 
     auto gbufferSetup = [&](framegraph::PassNodeBuilder &builder, RenderData &data) {

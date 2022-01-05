@@ -38,7 +38,7 @@ Record<gfx::FormatType, std::string> typeMap{
     {gfx::FormatType::FLOAT, "Float"},
 };
 
-std::string getDataViewType(const gfx::FormatInfo& info) {
+std::string getDataViewType(const gfx::FormatInfo &info) {
     std::string type;
     auto        iter = typeMap.find(info.type);
     if (iter != typeMap.end()) {
@@ -54,15 +54,15 @@ std::string getDataViewType(const gfx::FormatInfo& info) {
 } // namespace
 
 using DataVariant       = cc::variant<int32_t, float>;
-using MapBufferCallback = std::function<DataVariant(const DataVariant& cur, uint32_t idx, const DataView& view)>;
+using MapBufferCallback = std::function<DataVariant(const DataVariant &cur, uint32_t idx, const DataView &view)>;
 
-DataView mapBuffer(DataView&                 target,
-                   const MapBufferCallback&  callback,
+DataView mapBuffer(DataView &                target,
+                   const MapBufferCallback & callback,
                    cc::optional<gfx::Format> aFormat,
                    cc::optional<uint32_t>    aOffset,
                    cc::optional<uint32_t>    aLength,
                    cc::optional<uint32_t>    aStride,
-                   DataView*                 out) {
+                   DataView *                out) {
     gfx::Format format = aFormat.has_value() ? aFormat.value() : gfx::Format::R32F;
     uint32_t    offset = aOffset.has_value() ? aOffset.value() : 0;
     uint32_t    length = aLength.has_value() ? aLength.value() : target.byteLength() - offset;
@@ -74,7 +74,7 @@ DataView mapBuffer(DataView&                 target,
         dataView.assign(target.buffer()->slice(target.byteOffset(), target.byteOffset() + target.byteLength()));
     }
 
-    const auto& info = gfx::GFX_FORMAT_INFOS[static_cast<int32_t>(format)];
+    const auto &info = gfx::GFX_FORMAT_INFOS[static_cast<int32_t>(format)];
     if (stride == 0) {
         stride = info.size;
     }

@@ -26,6 +26,7 @@
 #include "LightingStage.h"
 #include "../BatchedBuffer.h"
 #include "../Define.h"
+#include "../GeometryRenderer.h"
 #include "../InstancedBuffer.h"
 #include "../PipelineStateManager.h"
 #include "../PlanarShadowQueue.h"
@@ -239,7 +240,7 @@ void LightingStage::initLightingBuffer() {
     auto *const device = _pipeline->getDevice();
 
     // color/pos/dir/angle 都是vec4存储, 最后一个vec4只要x存储光源个数
-    uint stride    = utils::alignTo(sizeof(Vec4) * 4, device->getCapabilities().uboOffsetAlignment);
+    uint stride    = utils::alignTo<uint32_t>(sizeof(Vec4) * 4, device->getCapabilities().uboOffsetAlignment);
     uint totalSize = stride * _maxDeferredLights;
 
     // create lighting buffer and view
@@ -504,6 +505,7 @@ void LightingStage::fgTransparent(scene::Camera *camera) {
         }
 
         _planarShadowQueue->recordCommandBuffer(_device, table.getRenderPass(), cmdBuff);
+        _pipeline->getGeometryRenderer()->render(table.getRenderPass(), cmdBuff);
     };
 
     if (!_isTransparentQueueEmpty) {

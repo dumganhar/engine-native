@@ -405,7 +405,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             {
                 // construct uniforms
                 uniforms.reserve(block.members.size());
-                for (const auto & member : block.members) {
+                for (const auto &member : block.members) {
                     uniforms.emplace_back();
                     auto &info = uniforms.back();
                     info.name  = member.name;

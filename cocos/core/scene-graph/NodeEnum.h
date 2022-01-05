@@ -33,7 +33,7 @@ enum class NodeSpace {
     WORLD
 };
 
-enum class TransformBit: uint32_t {
+enum class TransformBit : uint32_t {
     NONE     = 0,
     POSITION = (1 << 0),
     ROTATION = (1 << 1),

@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include <functional>
 #include <cstdint>
+#include <functional>
 #include <vector>
 
 namespace cc {

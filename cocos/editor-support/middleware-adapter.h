@@ -25,20 +25,20 @@
 
 #pragma once
 
+#include <functional>
 #include "MiddlewareMacro.h"
 #include "base/RefCounted.h"
 #include "math/Geometry.h"
 #include "math/Vec3.h"
-#include <functional>
 
 MIDDLEWARE_BEGIN
 
 struct Color4B {
     Color4B(uint32_t r, uint32_t g, uint32_t b, uint32_t a);
     Color4B();
-    bool operator==(const Color4B &right) const;
-    bool operator!=(const Color4B &right) const;
-    Color4B& operator=(const Color4B &right);
+    bool     operator==(const Color4B &right) const;
+    bool     operator!=(const Color4B &right) const;
+    Color4B &operator=(const Color4B &right);
 
     uint32_t r = 0;
     uint32_t g = 0;
@@ -227,11 +227,11 @@ public:
     void setTexture(Texture2D *pobTexture);
 
 protected:
-    cc::Vec2 _anchorPoint;
-    cc::Rect _rectInPixels;
-    bool _rotated = false;
-    cc::Vec2 _offsetInPixels;
-    cc::Size _originalSizeInPixels;
+    cc::Vec2   _anchorPoint;
+    cc::Rect   _rectInPixels;
+    bool       _rotated = false;
+    cc::Vec2   _offsetInPixels;
+    cc::Size   _originalSizeInPixels;
     Texture2D *_texture = nullptr;
 };
 MIDDLEWARE_END

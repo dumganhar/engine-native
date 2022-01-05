@@ -27,13 +27,8 @@
 
 namespace cc {
 
-class Any
-{
+class Any {
 public:
-    
 };
 
-
-} // namespace cc {
-
-
+} // namespace cc

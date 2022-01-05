@@ -4,7 +4,6 @@
 #include <type_traits>
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
-#include "cocos/renderer/gfx-base/GFXBase.h"
 #include "cocos/renderer/GFXDeviceManager.h"
 
 bool register_all_gfx(se::Object *obj);                   // NOLINT

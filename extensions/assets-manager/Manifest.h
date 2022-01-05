@@ -24,8 +24,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __Manifest__
-#define __Manifest__
+#pragma once
 
 #include <string>
 #include <unordered_map>
@@ -209,7 +208,7 @@ protected:
 
     void saveToFile(const std::string &filepath);
 
-    Asset parseAsset(const std::string &path, const rapidjson::Value &json);
+    static Asset parseAsset(const std::string &path, const rapidjson::Value &json);
 
     void clear();
 
@@ -289,4 +288,3 @@ private:
 };
 
 NS_CC_EXT_END
-#endif /* defined(__Manifest__) */

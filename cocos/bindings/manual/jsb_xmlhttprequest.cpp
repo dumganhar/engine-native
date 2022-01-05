@@ -42,7 +42,8 @@
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/network/HttpClient.h"
-#include "platform/Application.h"
+
+#include "application/ApplicationManager.h"
 
 using namespace cc;          //NOLINT
 using namespace cc::network; //NOLINT
@@ -227,7 +228,7 @@ XMLHttpRequest::XMLHttpRequest()
 }
 
 XMLHttpRequest::~XMLHttpRequest() {
-    Application::getInstance()->getScheduler()->unscheduleAllForTarget(this);
+    CC_CURRENT_ENGINE()->getScheduler()->unscheduleAllForTarget(this);
     // Avoid HttpClient response call a released object!
     _httpRequest->setResponseCallback(nullptr);
     CC_SAFE_RELEASE(_httpRequest);
@@ -376,7 +377,7 @@ void XMLHttpRequest::getHeader(const std::string &header) {
 }
 
 void XMLHttpRequest::onResponse(HttpClient * /*client*/, HttpResponse *response) {
-    Application::getInstance()->getScheduler()->unscheduleAllForTarget(this);
+    CC_CURRENT_ENGINE()->getScheduler()->unscheduleAllForTarget(this);
     _isSending = false;
 
     if (_isTimeout) {
@@ -477,14 +478,14 @@ void XMLHttpRequest::sendRequest() {
     _isSending = true;
     _isTimeout = false;
     if (_timeoutInMilliseconds > 0) {
-        Application::getInstance()->getScheduler()->schedule([this](float /* dt */) {
+        CC_CURRENT_ENGINE()->getScheduler()->schedule([this](float /* dt */) {
             if (ontimeout != nullptr) {
                 ontimeout();
             }
             _isTimeout  = true;
             _readyState = ReadyState::UNSENT;
         },
-                                                             this, static_cast<float>(_timeoutInMilliseconds) / 1000.0F, 0, 0.0F, false, "XMLHttpRequest");
+                                                      this, static_cast<float>(_timeoutInMilliseconds) / 1000.0F, 0, 0.0F, false, "XMLHttpRequest");
     }
     setHttpRequestHeader();
 

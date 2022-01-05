@@ -25,12 +25,11 @@
 
 #include "ForwardPipeline.h"
 #include "../SceneCulling.h"
+#include "../helper/Utils.h"
 #include "../shadow/ShadowFlow.h"
 #include "ForwardFlow.h"
 #include "gfx-base/GFXDevice.h"
-#include "platform/Application.h"
 #include "scene/RenderScene.h"
-#include "../helper/Utils.h"
 
 namespace cc {
 namespace pipeline {
@@ -139,7 +138,7 @@ bool ForwardPipeline::activeRenderer(gfx::Swapchain *swapchain) {
     _descriptorSet->update();
 
     // update global defines when all states initialized.
-    _macros["CC_USE_HDR"] = static_cast<bool>(_pipelineSceneData->isHDR());
+    _macros["CC_USE_HDR"]               = static_cast<bool>(_pipelineSceneData->isHDR());
     _macros["CC_SUPPORT_FLOAT_TEXTURE"] = _device->hasFeature(gfx::Feature::TEXTURE_FLOAT);
 
     // step 2 create index buffer

@@ -25,12 +25,12 @@
 
 #pragma once
 
+#include <map>
+#include <vector>
 #include "MeshBuffer.h"
 #include "MiddlewareMacro.h"
 #include "SharedBufferManager.h"
 #include "base/RefCounted.h"
-#include <map>
-#include <vector>
 
 MIDDLEWARE_BEGIN
 
@@ -100,9 +100,9 @@ public:
 
     se_object_ptr getVBTypedArray(int format, int bufferPos);
     se_object_ptr getIBTypedArray(int format, int bufferPos);
-    std::size_t getBufferCount(int format);
-    std::size_t getVBTypedArrayLength(int format, std::size_t bufferPos);
-    std::size_t getIBTypedArrayLength(int format, std::size_t bufferPos);
+    std::size_t   getBufferCount(int format);
+    std::size_t   getVBTypedArrayLength(int format, std::size_t bufferPos);
+    std::size_t   getIBTypedArrayLength(int format, std::size_t bufferPos);
 
     SharedBufferManager *getRenderInfoMgr();
     SharedBufferManager *getAttachInfoMgr();
@@ -112,11 +112,10 @@ public:
 
     // If manager is traversing _updateMap, will set the flag untill traverse is finished.
     bool isRendering = false;
-    bool isUpdating = false;
+    bool isUpdating  = false;
 
 private:
     void clearRemoveList();
-
 
     std::vector<IMiddleware *> _updateList;
     std::vector<IMiddleware *> _removeList;

@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "cocos/bindings/manual/jsb_module_register.h"
+#include "cocos/base/DeferredReleasePool.h"
 #include "cocos/bindings/auto/jsb_assets_auto.h"
 #include "cocos/bindings/auto/jsb_cocos_auto.h"
 #include "cocos/bindings/auto/jsb_extension_auto.h"
@@ -44,7 +45,6 @@
 #include "cocos/bindings/manual/jsb_platform.h"
 #include "cocos/bindings/manual/jsb_scene_manual.h"
 #include "cocos/bindings/manual/jsb_xmlhttprequest.h"
-#include "cocos/base/DeferredReleasePool.h"
 
 #if USE_GFX_RENDERER
 #endif

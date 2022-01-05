@@ -24,40 +24,37 @@
 ****************************************************************************/
 
 #include "jsb_socketio.h"
-
+#include "application/ApplicationManager.h"
+#include "base/UTF8.h"
 #include "cocos/base/DeferredReleasePool.h"
 #include "cocos/bindings/jswrapper/SeApi.h"
 #include "cocos/bindings/manual/jsb_conversions.h"
 #include "cocos/bindings/manual/jsb_global.h"
-
-#include "base/UTF8.h"
 #include "cocos/network/SocketIO.h"
-#include "platform/Application.h"
 
-using namespace cc;
-using namespace cc::network;
+// using namespace cc;
+// using namespace cc::network;
 
-se::Class *__jsb_SocketIO_class = nullptr;
+se::Class *__jsb_SocketIO_class = nullptr; // NOLINT
 
-class JSB_SocketIODelegate : public RefCounted, public SocketIO::SIODelegate {
+class JSB_SocketIODelegate : public cc::RefCounted, public cc::network::SocketIO::SIODelegate {
 public:
     //c++11 map to callbacks
-    typedef std::unordered_map<std::string /* eventName */, se::ValueArray /* 0:callbackFunc, 1:target */> JSB_SIOCallbackRegistry;
+    using JSB_SIOCallbackRegistry = std::unordered_map<std::string /* eventName */, se::ValueArray /* 0:callbackFunc, 1:target */>;
 
-    JSB_SocketIODelegate() {
-    }
+    JSB_SocketIODelegate() = default;
 
-    virtual ~JSB_SocketIODelegate() {
+    ~JSB_SocketIODelegate() override {
         CC_LOG_INFO("In the destructor of JSB_SocketIODelegate(%p)", this);
     }
 
-    virtual void onConnect(SIOClient *client) override {
+    void onConnect(cc::network::SIOClient * /*client*/) override {
     }
 
-    virtual void onMessage(SIOClient *client, const std::string &data) override {
+    void onMessage(cc::network::SIOClient * /*client*/, const std::string & /*data*/) override {
     }
 
-    virtual void onClose(SIOClient *client) override {
+    void onClose(cc::network::SIOClient *client) override { // NOLINT
         CC_LOG_DEBUG("JSB SocketIO::SIODelegate->onClose method called from native");
         this->fireEventToScript(client, "disconnect", "");
 
@@ -73,7 +70,7 @@ public:
         }
     }
 
-    virtual void onError(SIOClient *client, const std::string &data) override {
+    void onError(cc::network::SIOClient *client, const std::string &data) override { // NOLINT
         CC_LOG_DEBUG("JSB SocketIO::SIODelegate->onError method called from native with data: %s", data.c_str());
         this->fireEventToScript(client, "error", data);
 
@@ -83,18 +80,20 @@ public:
         }
     }
 
-    virtual void fireEventToScript(SIOClient *client, const std::string &eventName, const std::string &data) override {
+    void fireEventToScript(cc::network::SIOClient *client, const std::string &eventName, const std::string &data) override { // NOLINT
         CC_LOG_DEBUG("JSB SocketIO::SIODelegate->fireEventToScript method called from native with name '%s' data: %s", eventName.c_str(), data.c_str());
 
         se::ScriptEngine::getInstance()->clearException();
         se::AutoHandleScope hs;
 
-        if (cc::Application::getInstance() == nullptr)
+        if (!CC_CURRENT_APPLICATION()) {
             return;
+        }
 
         auto iter = se::NativePtrToObjectMap::find(client); //IDEA: client probably be a new value with the same address as the old one, it may cause undefined result.
-        if (iter == se::NativePtrToObjectMap::end())
+        if (iter == se::NativePtrToObjectMap::end()) {
             return;
+        }
 
         se::Value dataVal;
         if (data.empty()) {
@@ -103,7 +102,7 @@ public:
             dataVal.setString(data);
         }
 
-        JSB_SIOCallbackRegistry::iterator it = _eventRegistry.find(eventName);
+        auto it = _eventRegistry.find(eventName);
 
         if (it != _eventRegistry.end()) {
             const se::ValueArray &cbStruct = it->second;
@@ -135,11 +134,11 @@ private:
     JSB_SIOCallbackRegistry _eventRegistry;
 };
 
-static bool SocketIO_finalize(se::State &s) {
-    SIOClient *cobj = (SIOClient *)s.nativeThisObject();
+static bool SocketIO_finalize(se::State &s) { // NOLINT(readability-identifier-naming)
+    auto *cobj = static_cast<cc::network::SIOClient *>(s.nativeThisObject());
     CC_LOG_INFO("jsbindings: finalizing JS object %p (SocketIO)", cobj);
     cobj->disconnect();
-    JSB_SocketIODelegate *delegate = static_cast<JSB_SocketIODelegate *>(cobj->getDelegate());
+    auto *delegate = static_cast<JSB_SocketIODelegate *>(cobj->getDelegate());
     if (delegate->getRefCount() == 1) {
         cc::DeferredReleasePool::add(delegate);
     } else {
@@ -147,26 +146,26 @@ static bool SocketIO_finalize(se::State &s) {
     }
     return true;
 }
-SE_BIND_FINALIZE_FUNC(SocketIO_finalize)
+SE_BIND_FINALIZE_FUNC(SocketIO_finalize) // NOLINT(readability-identifier-naming)
 
-static bool SocketIO_prop_getTag(se::State &s) {
-    SIOClient *cobj = (SIOClient *)s.nativeThisObject();
+static bool SocketIO_prop_getTag(se::State &s) { // NOLINT(readability-identifier-naming)
+    auto *cobj = static_cast<cc::network::SIOClient *>(s.nativeThisObject());
     s.rval().setString(cobj->getTag());
     return true;
 }
-SE_BIND_PROP_GET(SocketIO_prop_getTag)
+SE_BIND_PROP_GET(SocketIO_prop_getTag) // NOLINT(readability-identifier-naming)
 
-static bool SocketIO_prop_setTag(se::State &s) {
-    SIOClient *cobj = (SIOClient *)s.nativeThisObject();
+static bool SocketIO_prop_setTag(se::State &s) { // NOLINT(readability-identifier-naming)
+    auto *cobj = static_cast<cc::network::SIOClient *>(s.nativeThisObject());
     cobj->setTag(s.args()[0].toString().c_str());
     return true;
 }
-SE_BIND_PROP_SET(SocketIO_prop_setTag)
+SE_BIND_PROP_SET(SocketIO_prop_setTag) // NOLINT(readability-identifier-naming)
 
-static bool SocketIO_send(se::State &s) {
+static bool SocketIO_send(se::State &s) { // NOLINT(readability-identifier-naming)
     const auto &args = s.args();
-    int         argc = (int)args.size();
-    SIOClient * cobj = (SIOClient *)s.nativeThisObject();
+    int         argc = static_cast<int>(args.size());
+    auto *      cobj = static_cast<cc::network::SIOClient *>(s.nativeThisObject());
 
     if (argc == 1) {
         std::string payload;
@@ -180,12 +179,12 @@ static bool SocketIO_send(se::State &s) {
     SE_REPORT_ERROR("Wrong number of arguments: %d, expected: %d", argc, 1);
     return false;
 }
-SE_BIND_FUNC(SocketIO_send)
+SE_BIND_FUNC(SocketIO_send) // NOLINT(readability-identifier-naming)
 
-static bool SocketIO_emit(se::State &s) {
+static bool SocketIO_emit(se::State &s) { // NOLINT(readability-identifier-naming)
     const auto &args = s.args();
-    int         argc = (int)args.size();
-    SIOClient * cobj = (SIOClient *)s.nativeThisObject();
+    int         argc = static_cast<int>(args.size());
+    auto *      cobj = static_cast<cc::network::SIOClient *>(s.nativeThisObject());
 
     if (argc >= 1) {
         bool        ok = false;
@@ -213,12 +212,12 @@ static bool SocketIO_emit(se::State &s) {
     SE_REPORT_ERROR("Wrong number of arguments: %d, expected: %d", argc, 2);
     return false;
 }
-SE_BIND_FUNC(SocketIO_emit)
+SE_BIND_FUNC(SocketIO_emit) // NOLINT(readability-identifier-naming)
 
-static bool SocketIO_disconnect(se::State &s) {
+static bool SocketIO_disconnect(se::State &s) { // NOLINT(readability-identifier-naming)
     const auto &args = s.args();
-    int         argc = (int)args.size();
-    SIOClient * cobj = (SIOClient *)s.nativeThisObject();
+    int         argc = static_cast<int>(args.size());
+    auto *      cobj = static_cast<cc::network::SIOClient *>(s.nativeThisObject());
 
     if (argc == 0) {
         cobj->disconnect();
@@ -228,12 +227,12 @@ static bool SocketIO_disconnect(se::State &s) {
     SE_REPORT_ERROR("Wrong number of arguments: %d, expected: %d", argc, 0);
     return false;
 }
-SE_BIND_FUNC(SocketIO_disconnect)
+SE_BIND_FUNC(SocketIO_disconnect) // NOLINT(readability-identifier-naming)
 
-static bool SocketIO_on(se::State &s) {
+static bool SocketIO_on(se::State &s) { // NOLINT(readability-identifier-naming)
     const auto &args = s.args();
-    int         argc = (int)args.size();
-    SIOClient * cobj = (SIOClient *)s.nativeThisObject();
+    int         argc = static_cast<int>(args.size());
+    auto *      cobj = static_cast<cc::network::SIOClient *>(s.nativeThisObject());
 
     if (argc == 2) {
         bool        ok = false;
@@ -243,19 +242,19 @@ static bool SocketIO_on(se::State &s) {
 
         CC_LOG_DEBUG("JSB SocketIO eventName to: '%s'", eventName.c_str());
 
-        ((JSB_SocketIODelegate *)cobj->getDelegate())->addEvent(eventName, args[1], se::Value(s.thisObject()));
+        (static_cast<JSB_SocketIODelegate *>(cobj->getDelegate()))->addEvent(eventName, args[1], se::Value(s.thisObject()));
         return true;
     }
 
     SE_REPORT_ERROR("Wrong number of arguments: %d, expected: %d", argc, 2);
     return false;
 }
-SE_BIND_FUNC(SocketIO_on)
+SE_BIND_FUNC(SocketIO_on) // NOLINT(readability-identifier-naming)
 
 // static
-static bool SocketIO_connect(se::State &s) {
+static bool SocketIO_connect(se::State &s) { // NOLINT(readability-identifier-naming)
     const auto &args = s.args();
-    int         argc = (int)args.size();
+    int         argc = static_cast<int>(args.size());
     CC_LOG_DEBUG("JSB SocketIO.connect method called");
 
     if (argc >= 1 && argc <= 3) {
@@ -286,10 +285,10 @@ static bool SocketIO_connect(se::State &s) {
             }
         }
 
-        JSB_SocketIODelegate *siodelegate = new (std::nothrow) JSB_SocketIODelegate();
+        auto *siodelegate = new (std::nothrow) JSB_SocketIODelegate();
 
         CC_LOG_DEBUG("Calling native SocketIO.connect method");
-        SIOClient *ret = SocketIO::connect(url, *siodelegate, caFilePath);
+        cc::network::SIOClient *ret = cc::network::SocketIO::connect(url, *siodelegate, caFilePath);
         if (ret != nullptr) {
             ret->addRef();
             siodelegate->addRef();
@@ -301,21 +300,20 @@ static bool SocketIO_connect(se::State &s) {
             obj->root();
 
             return true;
-        } else {
-            siodelegate->release();
-            SE_REPORT_ERROR("SocketIO.connect return nullptr!");
-            return false;
         }
+        siodelegate->release();
+        SE_REPORT_ERROR("SocketIO.connect return nullptr!");
+        return false;
     }
     SE_REPORT_ERROR("JSB SocketIO.connect: Wrong number of arguments");
     return false;
 }
-SE_BIND_FUNC(SocketIO_connect)
+SE_BIND_FUNC(SocketIO_connect) // NOLINT(readability-identifier-naming)
 
 // static
-static bool SocketIO_close(se::State &s) {
+static bool SocketIO_close(se::State &s) { // NOLINT(readability-identifier-naming)
     const auto &args = s.args();
-    int         argc = (int)args.size();
+    int         argc = static_cast<int>(args.size());
     if (argc == 0) {
         return true;
     }
@@ -323,7 +321,7 @@ static bool SocketIO_close(se::State &s) {
     SE_REPORT_ERROR("Wrong number of arguments: %d, expected: %d", argc, 0);
     return false;
 }
-SE_BIND_FUNC(SocketIO_close)
+SE_BIND_FUNC(SocketIO_close) // NOLINT(readability-identifier-naming)
 
 bool register_all_socketio(se::Object *obj) {
     se::Class *cls = se::Class::create("SocketIO", obj, nullptr, nullptr);
@@ -338,7 +336,7 @@ bool register_all_socketio(se::Object *obj) {
 
     cls->install();
 
-    JSBClassType::registerClass<SocketIO>(cls);
+    JSBClassType::registerClass<cc::network::SocketIO>(cls);
 
     se::Value ctorVal;
     obj->getProperty("SocketIO", &ctorVal);

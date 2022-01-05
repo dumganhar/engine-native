@@ -30,7 +30,7 @@
 #include "scene/SubModel.h"
 
 namespace {
-const cc::gfx::SamplerInfo JOINT_TEXTURE_SAMPLER_INFO {
+const cc::gfx::SamplerInfo JOINT_TEXTURE_SAMPLER_INFO{
     cc::gfx::Filter::POINT,
     cc::gfx::Filter::POINT,
     cc::gfx::Filter::NONE,
@@ -128,7 +128,7 @@ void BakedSkinningModel::updateUBOs(uint32_t stamp) {
 void BakedSkinningModel::applyJointTexture(const cc::optional<IJointTextureHandle> &texture) {
     auto oldTex = _jointMedium.texture;
     if (oldTex.has_value() && texture.has_value() && (&oldTex.value() != &texture.value())) {
-//        _dataPoolManager->jointTexturePool->releaseHandle(oldTex.value());
+        //        _dataPoolManager->jointTexturePool->releaseHandle(oldTex.value());
     }
     _jointMedium.texture = texture;
     if (!texture.has_value()) {

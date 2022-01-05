@@ -32,17 +32,17 @@ namespace cc {
 class Node;
 
 struct IJointTransform {
-    Node*                   node{nullptr};
+    Node *                  node{nullptr};
     Mat4                    local;
     Mat4                    world;
     int                     stamp{-1};
-    struct IJointTransform* parent{nullptr};
+    struct IJointTransform *parent{nullptr};
 };
 
-Mat4 getWorldMatrix(IJointTransform* transform, int32_t stamp);
+Mat4 getWorldMatrix(IJointTransform *transform, int32_t stamp);
 
-IJointTransform* getTransform(Node* node, Node* root);
+IJointTransform *getTransform(Node *node, Node *root);
 
-void deleteTransform(Node* node);
+void deleteTransform(Node *node);
 
 } // namespace cc

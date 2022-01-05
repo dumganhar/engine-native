@@ -83,10 +83,10 @@ public:
     bool validate() const override;
 
 private:
-    std::vector<std::string>         _joints;
-    std::vector<Mat4>                _bindposes;
+    std::vector<std::string>        _joints;
+    std::vector<Mat4>               _bindposes;
     cc::optional<std::vector<Mat4>> _invBindposes;
-    uint64_t                         _hash{0};
+    uint64_t                        _hash{0};
 };
 
 } // namespace cc

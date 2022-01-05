@@ -32,15 +32,15 @@ namespace cc {
 namespace gfx {
 
 template <typename T, typename Enable = std::enable_if_t<std::is_class<T>::value>>
-struct Hasher final { size_t operator()(const T& info) const; };
+struct Hasher final { size_t operator()(const T &info) const; };
 
 // make this boost::hash compatible
 template <typename T, typename Enable = std::enable_if_t<std::is_class<T>::value>>
-size_t hash_value(const T& info) { return Hasher<T>()(info); } // NOLINT(readability-identifier-naming)
+size_t hash_value(const T &info) { return Hasher<T>()(info); } // NOLINT(readability-identifier-naming)
 
-#define DEFINE_CMP_OP(type)                            \
-    bool operator==(const type& lhs, const type& rhs); \
-    inline bool operator!=(const type& lhs, const type& rhs) { return !(lhs == rhs); }
+#define DEFINE_CMP_OP(type)                                   \
+    bool        operator==(const type &lhs, const type &rhs); \
+    inline bool operator!=(const type &lhs, const type &rhs) { return !(lhs == rhs); }
 
 DEFINE_CMP_OP(DepthStencilAttachment)
 DEFINE_CMP_OP(SubpassInfo)
@@ -62,8 +62,28 @@ DEFINE_CMP_OP(TextureBarrierInfo)
 
 #undef DEFINE_CMP_OP
 
+class Executable {
+public:
+    virtual ~Executable()  = default;
+    virtual void execute() = 0;
+};
+
+template <typename ExecuteMethodType>
+class CallbackExecutable final : public Executable {
+public:
+    using ExecuteMethod = std::remove_reference_t<ExecuteMethodType>;
+
+    explicit CallbackExecutable(ExecuteMethod &execute) : Executable(), _execute(execute) {}
+    explicit CallbackExecutable(ExecuteMethod &&execute) : Executable(), _execute(execute) {}
+
+    void execute() override { _execute(); }
+
+private:
+    ExecuteMethod _execute;
+};
+
 struct SwapchainTextureInfo final {
-    Swapchain* swapchain{nullptr};
+    Swapchain *swapchain{nullptr};
     Format     format{Format::UNKNOWN};
     uint32_t   width{0};
     uint32_t   height{0};

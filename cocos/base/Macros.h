@@ -162,7 +162,7 @@ It should work same as apples CFSwapInt32LittleToHost(..)
             (p) = nullptr;      \
         }                       \
     } while (0)
-#define CC_SAFE_ADD_REF(p)  \
+#define CC_SAFE_ADD_REF(p) \
     do {                   \
         if (p) {           \
             (p)->addRef(); \
@@ -300,7 +300,11 @@ It should work same as apples CFSwapInt32LittleToHost(..)
     #elif (CC_PLATFORM == CC_PLATFORM_MAC_IOS)
         #include <Endian.h>
     #else
-        #include <endian.h>
+        #if !defined(__QNX__)
+            #include <endian.h>
+        #else
+            #define CC_ENDIAN CC_ENDIAN_LITTLE
+        #endif
     #endif // (CC_PLATFORM == CC_PLATFORM_MAC_OSX)
     #
     #if __BYTE_ORDER == __LITTLE_ENDIAN
@@ -415,17 +419,21 @@ It should work same as apples CFSwapInt32LittleToHost(..)
     cls(const cls &) = default;    \
     cls &operator=(const cls &) = default;
 
-#define DISABLE_COPY_SEMANTICS(cls) \
-    cls(const cls &) = delete;      \
+#define CC_DISABLE_COPY_SEMANTICS(cls) \
+    cls(const cls &) = delete;         \
     cls &operator=(const cls &) = delete;
 
-#define ENABLE_MOVE_SEMANTICS(cls)  \
-    cls(cls &&) noexcept = default; \
+#define CC_ENABLE_MOVE_SEMANTICS(cls) \
+    cls(cls &&) noexcept = default;   \
     cls &operator=(cls &&) noexcept = default;
 
-#define DISABLE_MOVE_SEMANTICS(cls) \
-    cls(cls &&) noexcept = delete;  \
+#define CC_DISABLE_MOVE_SEMANTICS(cls) \
+    cls(cls &&) noexcept = delete;     \
     cls &operator=(cls &&) noexcept = delete;
+
+#define CC_DISABLE_COPY_AND_MOVE_SEMANTICS(cls) \
+    CC_DISABLE_COPY_SEMANTICS(cls)              \
+    CC_DISABLE_MOVE_SEMANTICS(cls)
 
 #if (CC_COMPILER == CC_COMPILER_MSVC)
     #define CC_ALIGN(N)        __declspec(align(N))
@@ -625,9 +633,9 @@ It should work same as apples CFSwapInt32LittleToHost(..)
 #if defined(_MSC_VER)
     #define CC_FORCE_INLINE __forceinline
 #elif defined(__GNUC__) || defined(__clang__)
-    #define CC_FORCE_INLINE inline __attribute__ ((always_inline))
+    #define CC_FORCE_INLINE inline __attribute__((always_inline))
 #else
-    #if defined (__cplusplus) || defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L   /* C99 */
+    #if defined(__cplusplus) || defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L /* C99 */
         #define CC_FORCE_INLINE static inline
     #elif
         #define CC_FORCE_INLINE inline

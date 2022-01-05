@@ -30,7 +30,7 @@
 #include "MemTracker.h"
 #include "StlAlloc.h"
 #if (CC_PLATFORM == CC_PLATFORM_MAC_IOS)
-#include <Availability.h>
+    #include <Availability.h>
 #endif
 
 // Global Interface Definitions
@@ -125,10 +125,10 @@
     }
 
 #define CC_SAFE_DESTROY_AND_DELETE(ptr) \
-    if (ptr) {               \
-        (ptr)->destroy();    \
-        CC_DELETE(ptr);      \
-        ptr = nullptr;       \
+    if (ptr) {                          \
+        (ptr)->destroy();               \
+        CC_DELETE(ptr);                 \
+        ptr = nullptr;                  \
     }
 
 #define CC_SAFE_DESTROY_NULL(ptr) \
@@ -156,7 +156,7 @@ inline void operator delete(void *ptr) throw() { free(ptr); }
 #endif
 
 #if (CC_PLATFORM == CC_PLATFORM_MAC_IOS) && (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_11_0)
-#define ALIGNAS(x)
+    #define ALIGNAS(x)
 #else
-#define ALIGNAS(x) alignas(x)
+    #define ALIGNAS(x) alignas(x)
 #endif

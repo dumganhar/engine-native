@@ -25,6 +25,7 @@
 
 #include "ForwardStage.h"
 #include "../BatchedBuffer.h"
+#include "../GeometryRenderer.h"
 #include "../InstancedBuffer.h"
 #include "../PlanarShadowQueue.h"
 #include "../RenderAdditiveLightQueue.h"
@@ -137,8 +138,8 @@ void ForwardStage::render(scene::Camera *camera) {
         framegraph::TextureHandle outputTex;
         framegraph::TextureHandle depth;
     };
-    auto *      pipeline   = static_cast<ForwardPipeline *>(_pipeline);
-    auto *const sceneData  = _pipeline->getPipelineSceneData();
+    auto *      pipeline  = static_cast<ForwardPipeline *>(_pipeline);
+    auto *const sceneData = _pipeline->getPipelineSceneData();
 
     float shadingScale{sceneData->getShadingScale()};
     _renderArea = RenderPipeline::getRenderArea(camera);
@@ -173,7 +174,7 @@ void ForwardStage::render(scene::Camera *camera) {
         colorAttachmentInfo.clearColor = _clearColors[0];
         colorAttachmentInfo.loadOp     = gfx::LoadOp::CLEAR;
         auto clearFlags                = static_cast<gfx::ClearFlagBit>(camera->getClearFlag());
-        bool isSwapchain = !!camera->getWindow()->getSwapchain();
+        bool isSwapchain               = !!camera->getWindow()->getSwapchain();
         if (isSwapchain && !hasFlag(clearFlags, gfx::ClearFlagBit::COLOR)) {
             if (hasFlag(clearFlags, static_cast<gfx::ClearFlagBit>(skyboxFlag))) {
                 colorAttachmentInfo.loadOp = gfx::LoadOp::DISCARD;
@@ -195,14 +196,13 @@ void ForwardStage::render(scene::Camera *camera) {
         };
 
         framegraph::RenderTargetAttachment::Descriptor depthAttachmentInfo;
-        depthAttachmentInfo.usage        = framegraph::RenderTargetAttachment::Usage::DEPTH_STENCIL;
-        depthAttachmentInfo.loadOp       = gfx::LoadOp::CLEAR;
-        depthAttachmentInfo.clearDepth   = camera->getClearDepth();
-        depthAttachmentInfo.clearStencil = camera->getClearStencil();
-        depthAttachmentInfo.beginAccesses  = {gfx::AccessType::DEPTH_STENCIL_ATTACHMENT_WRITE};
-        depthAttachmentInfo.endAccesses  = {gfx::AccessType::DEPTH_STENCIL_ATTACHMENT_WRITE};
-        if (isSwapchain && static_cast<gfx::ClearFlagBit>(clearFlags & gfx::ClearFlagBit::DEPTH_STENCIL) != gfx::ClearFlagBit::DEPTH_STENCIL
-            && (!hasFlag(clearFlags, gfx::ClearFlagBit::DEPTH) || !hasFlag(clearFlags, gfx::ClearFlagBit::STENCIL))) {
+        depthAttachmentInfo.usage         = framegraph::RenderTargetAttachment::Usage::DEPTH_STENCIL;
+        depthAttachmentInfo.loadOp        = gfx::LoadOp::CLEAR;
+        depthAttachmentInfo.clearDepth    = camera->getClearDepth();
+        depthAttachmentInfo.clearStencil  = camera->getClearStencil();
+        depthAttachmentInfo.beginAccesses = {gfx::AccessType::DEPTH_STENCIL_ATTACHMENT_WRITE};
+        depthAttachmentInfo.endAccesses   = {gfx::AccessType::DEPTH_STENCIL_ATTACHMENT_WRITE};
+        if (isSwapchain && static_cast<gfx::ClearFlagBit>(clearFlags & gfx::ClearFlagBit::DEPTH_STENCIL) != gfx::ClearFlagBit::DEPTH_STENCIL && (!hasFlag(clearFlags, gfx::ClearFlagBit::DEPTH) || !hasFlag(clearFlags, gfx::ClearFlagBit::STENCIL))) {
             depthAttachmentInfo.loadOp = gfx::LoadOp::LOAD;
         }
         data.depth = builder.create(RenderPipeline::fgStrHandleOutDepthTexture, depthTexInfo);
@@ -227,6 +227,7 @@ void ForwardStage::render(scene::Camera *camera) {
             _planarShadowQueue->recordCommandBuffer(_device, renderPass, cmdBuff);
             _renderQueues[1]->recordCommandBuffer(_device, camera, renderPass, cmdBuff);
         }
+        _pipeline->getGeometryRenderer()->render(renderPass, cmdBuff);
         _uiPhase->render(camera, renderPass);
         renderProfiler(renderPass, cmdBuff, _pipeline->getProfiler(), camera);
     };

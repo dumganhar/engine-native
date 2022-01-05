@@ -269,8 +269,8 @@ NodeEventProcessor::NodeEventProcessor(Node *node) : _node(node) {}
 NodeEventProcessor::~NodeEventProcessor() {
     delete _bubblingTargets;
     delete _capturingTargets;
-//    delete _touchListener;
-//    delete _mouseListener;
+    //    delete _touchListener;
+    //    delete _mouseListener;
 }
 
 bool NodeEventProcessor::checkListeners(cc::Node *node, const std::vector<CallbacksInvoker::KeyType> &events) {
@@ -295,19 +295,19 @@ bool NodeEventProcessor::checkListeners(cc::Node *node, const std::vector<Callba
 }
 
 void NodeEventProcessor::reattach() {
-//    std::vector<event::IListenerMask> currMask;
-//    _node->walk(
-//        [&](Node *node) {
-//            if (currMask.empty()) {
-//                currMask = searchComponentsInParent<Component>(node);
-//            }
-//            if (node->getEventProcessor()->_touchListener != nullptr) {
-//                node->getEventProcessor()->_touchListener->mask = currMask;
-//            }
-//            if (node->getEventProcessor()->_mouseListener != nullptr) {
-//                node->getEventProcessor()->_mouseListener->mask = currMask;
-//            }
-//        });
+    //    std::vector<event::IListenerMask> currMask;
+    //    _node->walk(
+    //        [&](Node *node) {
+    //            if (currMask.empty()) {
+    //                currMask = searchComponentsInParent<Component>(node);
+    //            }
+    //            if (node->getEventProcessor()->_touchListener != nullptr) {
+    //                node->getEventProcessor()->_touchListener->mask = currMask;
+    //            }
+    //            if (node->getEventProcessor()->_mouseListener != nullptr) {
+    //                node->getEventProcessor()->_mouseListener->mask = currMask;
+    //            }
+    //        });
 }
 
 void NodeEventProcessor::destroy() {
@@ -316,65 +316,65 @@ void NodeEventProcessor::destroy() {
     }
 
     // Remove all event listeners if necessary
-//    if (_touchListener || _mouseListener) {
-//        event::EventManager::getInstance()->removeEventListenersForTarget(_node);
-//        if (_touchListener) {
-//            _touchListener->owner = nullptr;
-//            _touchListener->mask.clear();
-//            _touchListener = nullptr;
-//        }
-//        if (_mouseListener) {
-//            _mouseListener->owner = nullptr;
-//            _mouseListener->mask.clear();
-//            _mouseListener = nullptr;
-//        }
-//    }
+    //    if (_touchListener || _mouseListener) {
+    //        event::EventManager::getInstance()->removeEventListenersForTarget(_node);
+    //        if (_touchListener) {
+    //            _touchListener->owner = nullptr;
+    //            _touchListener->mask.clear();
+    //            _touchListener = nullptr;
+    //        }
+    //        if (_mouseListener) {
+    //            _mouseListener->owner = nullptr;
+    //            _mouseListener->mask.clear();
+    //            _mouseListener = nullptr;
+    //        }
+    //    }
 
     if (_capturingTargets) _capturingTargets->offAll();
     if (_bubblingTargets) _bubblingTargets->offAll();
 }
 
-void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, void *target, bool  /*useCapture*/ /* = false*/) {
-//    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
-//    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
-//    if (touchEventExist || mouseEventExist) {
-//        offDispatch(type, target, useCapture);
-//
-//        if (touchEventExist) {
-//            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
-//                event::EventManager::getInstance()->removeEventListener(_touchListener);
-//                _touchListener = nullptr;
-//            }
-//        } else if (mouseEventExist) {
-//            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
-//                event::EventManager::getInstance()->removeEventListener(_mouseListener);
-//                _mouseListener = nullptr;
-//            }
-//        }
-//    } else
+void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, void *target, bool /*useCapture*/ /* = false*/) {
+    //    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
+    //    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
+    //    if (touchEventExist || mouseEventExist) {
+    //        offDispatch(type, target, useCapture);
+    //
+    //        if (touchEventExist) {
+    //            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
+    //                event::EventManager::getInstance()->removeEventListener(_touchListener);
+    //                _touchListener = nullptr;
+    //            }
+    //        } else if (mouseEventExist) {
+    //            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
+    //                event::EventManager::getInstance()->removeEventListener(_mouseListener);
+    //                _mouseListener = nullptr;
+    //            }
+    //        }
+    //    } else
     if (_bubblingTargets != nullptr) {
         _bubblingTargets->offAll(type, target);
     }
 }
 
-void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID, bool  /*useCapture*/) {
-//    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
-//    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
-//    if (touchEventExist || mouseEventExist) {
-//        offDispatch(type, cbID, useCapture);
-//
-//        if (touchEventExist) {
-//            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
-//                event::EventManager::getInstance()->removeEventListener(_touchListener);
-//                _touchListener = nullptr;
-//            }
-//        } else if (mouseEventExist) {
-//            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
-//                event::EventManager::getInstance()->removeEventListener(_mouseListener);
-//                _mouseListener = nullptr;
-//            }
-//        }
-//    } else
+void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, CallbackInfoBase::ID cbID, bool /*useCapture*/) {
+    //    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
+    //    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
+    //    if (touchEventExist || mouseEventExist) {
+    //        offDispatch(type, cbID, useCapture);
+    //
+    //        if (touchEventExist) {
+    //            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
+    //                event::EventManager::getInstance()->removeEventListener(_touchListener);
+    //                _touchListener = nullptr;
+    //            }
+    //        } else if (mouseEventExist) {
+    //            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
+    //                event::EventManager::getInstance()->removeEventListener(_mouseListener);
+    //                _mouseListener = nullptr;
+    //            }
+    //        }
+    //    } else
     if (_bubblingTargets != nullptr) {
         _bubblingTargets->off(type, cbID);
     }
@@ -436,14 +436,14 @@ void NodeEventProcessor::targetOff(const CallbacksInvoker::KeyType &target) {
         _bubblingTargets->offAll(target);
     }
 
-//    if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
-//        event::EventManager::getInstance()->removeEventListener(_touchListener);
-//        _touchListener = nullptr;
-//    }
-//    if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
-//        event::EventManager::getInstance()->removeEventListener(_mouseListener);
-//        _mouseListener = nullptr;
-//    }
+    //    if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
+    //        event::EventManager::getInstance()->removeEventListener(_touchListener);
+    //        _touchListener = nullptr;
+    //    }
+    //    if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
+    //        event::EventManager::getInstance()->removeEventListener(_mouseListener);
+    //        _mouseListener = nullptr;
+    //    }
 }
 
 void NodeEventProcessor::getCapturingTargets(const CallbacksInvoker::KeyType &type, std::vector<Node *> &targets) const {

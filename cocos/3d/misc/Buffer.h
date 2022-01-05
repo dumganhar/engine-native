@@ -24,21 +24,21 @@
 ****************************************************************************/
 #pragma once
 
+#include "cocos/base/Optional.h"
 #include "core/DataView.h"
 #include "renderer/gfx-base/GFXDef.h"
-#include "cocos/base/Optional.h"
 
 namespace cc {
 
 using DataVariant       = cc::variant<int32_t, float>;
-using MapBufferCallback = std::function<DataVariant(const DataVariant& cur, uint32_t idx, const DataView& view)>;
+using MapBufferCallback = std::function<DataVariant(const DataVariant &cur, uint32_t idx, const DataView &view)>;
 
-DataView mapBuffer(DataView&                  target,
-                   const MapBufferCallback&   callback,
+DataView mapBuffer(DataView &                target,
+                   const MapBufferCallback & callback,
                    cc::optional<gfx::Format> aFormat,
                    cc::optional<uint32_t>    aOffset,
                    cc::optional<uint32_t>    aLength,
                    cc::optional<uint32_t>    aStride,
-                   DataView*                  out);
+                   DataView *                out);
 
 } // namespace cc

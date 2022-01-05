@@ -65,7 +65,7 @@ public:
      *
      * @param event - 分派到事件流中的事件对象。
      */
-//    void dispatchEvent(event::Event *event);
+    //    void dispatchEvent(event::Event *event);
 
     bool hasEventListener(const CallbacksInvoker::KeyType &type) const;
 
@@ -136,10 +136,10 @@ public:
     void getCapturingTargets(const CallbacksInvoker::KeyType &type, std::vector<Node *> &targets) const;
     void getBubblingTargets(const CallbacksInvoker::KeyType &type, std::vector<Node *> &targets) const;
 
-    inline CallbacksInvoker *    getBubblingTargets() const { return _bubblingTargets; }
-    inline CallbacksInvoker *    getCapturingTargets() const { return _capturingTargets; }
-//    inline event::EventListener *getTouchListener() const { return _touchListener; }
-//    inline event::EventListener *getMouseListener() const { return _mouseListener; }
+    inline CallbacksInvoker *getBubblingTargets() const { return _bubblingTargets; }
+    inline CallbacksInvoker *getCapturingTargets() const { return _capturingTargets; }
+    //    inline event::EventListener *getTouchListener() const { return _touchListener; }
+    //    inline event::EventListener *getMouseListener() const { return _mouseListener; }
 
 private:
     /**
@@ -154,21 +154,21 @@ private:
      */
     CallbacksInvoker *_capturingTargets{nullptr};
 
-//    /**
-//     * @zh
-//     * 触摸监听器
-//     */
-//    event::EventListenerTouchOneByOne *_touchListener{nullptr};
-//
-//    /**
-//     * @zh
-//     * 鼠标监听器
-//     */
-//    event::EventListenerMouse *_mouseListener{nullptr};
+    //    /**
+    //     * @zh
+    //     * 触摸监听器
+    //     */
+    //    event::EventListenerTouchOneByOne *_touchListener{nullptr};
+    //
+    //    /**
+    //     * @zh
+    //     * 鼠标监听器
+    //     */
+    //    event::EventListenerMouse *_mouseListener{nullptr};
 
     Node *_node{nullptr};
 
-//    bool checknSetupSysEvent(const CallbacksInvoker::KeyType &type);
+    //    bool checknSetupSysEvent(const CallbacksInvoker::KeyType &type);
 
     template <typename... Args>
     void onDispatch(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool useCapture = false);
@@ -252,11 +252,11 @@ void NodeEventProcessor::onDispatch(const CallbacksInvoker::KeyType &type, void 
 }
 
 template <typename... Args>
-void NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool  /*useCapture*/) {
-//    bool forDispatch = checknSetupSysEvent(type);
-//    if (forDispatch) {
-//        onDispatch(type, std::forward<std::function<void(Args...)>>(callback), cbID, useCapture);
-//    } else
+void NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &cbID, bool /*useCapture*/) {
+    //    bool forDispatch = checknSetupSysEvent(type);
+    //    if (forDispatch) {
+    //        onDispatch(type, std::forward<std::function<void(Args...)>>(callback), cbID, useCapture);
+    //    } else
     {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
@@ -266,11 +266,11 @@ void NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, std::function
 }
 
 template <typename Target, typename... Args>
-void NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target * /*target*/, CallbackInfoBase::ID &cbID, bool  /*useCapture*/) {
-//    bool forDispatch = checknSetupSysEvent(type);
-//    if (forDispatch) {
-//        onDispatch(type, std::forward<std::function<void(Args...)>>(callback), target, cbID, useCapture);
-//    } else
+void NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target * /*target*/, CallbackInfoBase::ID &cbID, bool /*useCapture*/) {
+    //    bool forDispatch = checknSetupSysEvent(type);
+    //    if (forDispatch) {
+    //        onDispatch(type, std::forward<std::function<void(Args...)>>(callback), target, cbID, useCapture);
+    //    } else
     {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
@@ -281,11 +281,11 @@ void NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, std::function
 
 template <typename Target, typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool  /*useCapture*/) {
-//    bool forDispatch = checknSetupSysEvent(type);
-//    if (forDispatch) {
-//        onDispatch(type, CallbacksInvoker::toFunction(std::forward<LambdaType>(callback)), target, cbID, useCapture);
-//    } else
+NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, Target *target, CallbackInfoBase::ID &cbID, bool /*useCapture*/) {
+    //    bool forDispatch = checknSetupSysEvent(type);
+    //    if (forDispatch) {
+    //        onDispatch(type, CallbacksInvoker::toFunction(std::forward<LambdaType>(callback)), target, cbID, useCapture);
+    //    } else
     {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
@@ -296,11 +296,11 @@ NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, LambdaType &&callb
 
 template <typename LambdaType>
 std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
-NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool  /*useCapture*/) {
-//    bool forDispatch = checknSetupSysEvent(type);
-//    if (forDispatch) {
-//        onDispatch(type, CallbacksInvoker::toFunction(std::forward<LambdaType>(callback)), cbID, useCapture);
-//    } else
+NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, LambdaType &&callback, CallbackInfoBase::ID &cbID, bool /*useCapture*/) {
+    //    bool forDispatch = checknSetupSysEvent(type);
+    //    if (forDispatch) {
+    //        onDispatch(type, CallbacksInvoker::toFunction(std::forward<LambdaType>(callback)), cbID, useCapture);
+    //    } else
     {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
@@ -310,12 +310,12 @@ NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, LambdaType &&callb
 }
 
 template <typename Target, typename... Args>
-void NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool  /*useCapture*/) {
+void NodeEventProcessor::on(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool /*useCapture*/) {
     using CallbackInfoType = CallbackInfo<Args...>;
-//    bool forDispatch       = checknSetupSysEvent(type);
-//    if (forDispatch) {
-//        onDispatch(type, memberFn, target, useCapture);
-//    } else
+    //    bool forDispatch       = checknSetupSysEvent(type);
+    //    if (forDispatch) {
+    //        onDispatch(type, memberFn, target, useCapture);
+    //    } else
     {
         if (_bubblingTargets == nullptr) {
             _bubblingTargets = new CallbacksInvoker();
@@ -331,7 +331,7 @@ void NodeEventProcessor::once(const CallbacksInvoker::KeyType &type, std::functi
 
 template <typename Target, typename... Args>
 void NodeEventProcessor::once(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool useCapture) {
-    CallbacksInvoker *listeners   = nullptr;
+    CallbacksInvoker *listeners = nullptr;
     if (useCapture) {
         if (_capturingTargets == nullptr) {
             _capturingTargets = new CallbacksInvoker();
@@ -351,7 +351,7 @@ void NodeEventProcessor::once(const CallbacksInvoker::KeyType &type, void (Targe
 
 template <typename Target, typename... Args>
 void NodeEventProcessor::once(const CallbacksInvoker::KeyType &type, std::function<void(Args...)> &&callback, Target *target, CallbackInfoBase::ID &cbID, bool useCapture) {
-    CallbacksInvoker *listeners   = nullptr;
+    CallbacksInvoker *listeners = nullptr;
     if (useCapture) {
         if (_capturingTargets == nullptr) {
             _capturingTargets = new CallbacksInvoker();
@@ -382,24 +382,24 @@ NodeEventProcessor::once(const CallbacksInvoker::KeyType &type, LambdaType &&cal
 }
 
 template <typename Target, typename... Args>
-void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool  /*useCapture*/) {
-//    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
-//    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
-//    if (touchEventExist || mouseEventExist) {
-//        offDispatch(type, memberFn, target, useCapture);
-//
-//        if (touchEventExist) {
-//            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
-//                event::EventManager::getInstance()->removeEventListener(_touchListener);
-//                _touchListener = nullptr;
-//            }
-//        } else if (mouseEventExist) {
-//            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
-//                event::EventManager::getInstance()->removeEventListener(_mouseListener);
-//                _mouseListener = nullptr;
-//            }
-//        }
-//    } else
+void NodeEventProcessor::off(const CallbacksInvoker::KeyType &type, void (Target::*memberFn)(Args...), Target *target, bool /*useCapture*/) {
+    //    bool touchEventExist = std::find(TOUCH_EVENTS.begin(), TOUCH_EVENTS.end(), type) != TOUCH_EVENTS.end();
+    //    bool mouseEventExist = std::find(MOUSE_EVENTS.begin(), MOUSE_EVENTS.end(), type) != MOUSE_EVENTS.end();
+    //    if (touchEventExist || mouseEventExist) {
+    //        offDispatch(type, memberFn, target, useCapture);
+    //
+    //        if (touchEventExist) {
+    //            if (_touchListener && !checkListeners(_node, TOUCH_EVENTS)) {
+    //                event::EventManager::getInstance()->removeEventListener(_touchListener);
+    //                _touchListener = nullptr;
+    //            }
+    //        } else if (mouseEventExist) {
+    //            if (_mouseListener && !checkListeners(_node, MOUSE_EVENTS)) {
+    //                event::EventManager::getInstance()->removeEventListener(_mouseListener);
+    //                _mouseListener = nullptr;
+    //            }
+    //        }
+    //    } else
     if (_bubblingTargets != nullptr) {
         _bubblingTargets->off(type, memberFn, target);
     }

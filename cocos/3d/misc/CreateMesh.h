@@ -26,8 +26,8 @@
 
 #include "cocos/base/Optional.h"
 
-#include "primitive/PrimitiveDefine.h"
 #include "3d/assets/Mesh.h"
+#include "primitive/PrimitiveDefine.h"
 
 namespace cc {
 
@@ -35,7 +35,7 @@ struct ICreateMeshOptions {
     cc::optional<bool> calculateBounds;
 };
 
-Mesh *createMesh(const IGeometry &geometry, const ICreateMeshOptions &options = {});
+Mesh *            createMesh(const IGeometry &geometry, const ICreateMeshOptions &options = {});
 Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOptions &options = {});
 
 } // namespace cc

@@ -44,7 +44,7 @@ namespace cc {
 namespace scene {
 
 void AmbientInfo::setSkyLightingColor(const Color &val) {
-    Vec4 v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
+    Vec4       v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
     const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         _skyColorHDR.set(v4);
@@ -58,7 +58,7 @@ void AmbientInfo::setSkyLightingColor(const Color &val) {
 
 const Color &AmbientInfo::getSkyLightingColor() const {
     const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
-    Vec4 v4(isHDR ? _skyColorHDR : _skyColorLDR);
+    Vec4       v4(isHDR ? _skyColorHDR : _skyColorLDR);
     normalizeHDRColor(v4);
     col.set(static_cast<uint8_t>(v4.x) * 255, static_cast<uint8_t>(v4.y) * 255, static_cast<uint8_t>(v4.z) * 255, 255);
     return col;
@@ -91,7 +91,7 @@ void AmbientInfo::setSkyIllum(float val) {
 }
 
 void AmbientInfo::setGroundLightingColor(const Color &val) {
-    Vec4 v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
+    Vec4       v4(static_cast<float>(val.r) / 255.F, static_cast<float>(val.g) / 255.F, static_cast<float>(val.b) / 255.F, static_cast<float>(val.a) / 255.F);
     const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
     if (isHDR) {
         _groundAlbedoHDR.set(v4);
@@ -106,7 +106,7 @@ void AmbientInfo::setGroundLightingColor(const Color &val) {
 
 const Color &AmbientInfo::getGroundLightingColor() const {
     const bool isHDR = Root::getInstance()->getPipeline()->getPipelineSceneData()->isHDR();
-    Vec4 v4(isHDR ? _groundAlbedoHDR : _groundAlbedoLDR);
+    Vec4       v4(isHDR ? _groundAlbedoHDR : _groundAlbedoLDR);
     normalizeHDRColor(v4);
     col.set(static_cast<uint8_t>(v4.x) * 255, static_cast<uint8_t>(v4.y) * 255, static_cast<uint8_t>(v4.z) * 255, 255);
     return col;

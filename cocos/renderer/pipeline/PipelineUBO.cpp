@@ -26,10 +26,10 @@
 #include "PipelineUBO.h"
 #include "RenderPipeline.h"
 #include "SceneCulling.h"
+#include "application/ApplicationManager.h"
 #include "core/Root.h"
 #include "forward/ForwardPipeline.h"
 #include "gfx-base/GFXDevice.h"
-#include "platform/Application.h"
 #include "scene/DirectionalLight.h"
 #include "scene/Fog.h"
 #include "scene/RenderScene.h"
@@ -62,7 +62,7 @@ void PipelineUBO::updateGlobalUBOView(const scene::Camera *camera, std::array<fl
     // update UBOGlobal
     uboGlobalView[UBOGlobal::TIME_OFFSET + 0] = root->getCumulativeTime();
     uboGlobalView[UBOGlobal::TIME_OFFSET + 1] = root->getFrameTime();
-    uboGlobalView[UBOGlobal::TIME_OFFSET + 2] = static_cast<float>(Application::getInstance()->getTotalFrames());
+    uboGlobalView[UBOGlobal::TIME_OFFSET + 2] = static_cast<float>(CC_CURRENT_ENGINE()->getTotalFrames());
 
     uboGlobalView[UBOGlobal::SCREEN_SIZE_OFFSET + 0] = static_cast<float>(shadingWidth);
     uboGlobalView[UBOGlobal::SCREEN_SIZE_OFFSET + 1] = static_cast<float>(shadingHeight);

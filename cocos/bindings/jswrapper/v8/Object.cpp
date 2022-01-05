@@ -44,9 +44,9 @@ namespace se {
 std::unique_ptr<std::unordered_map<Object *, void *>> __objectMap; // Currently, the value `void*` is always nullptr
 
 namespace {
-v8::Isolate *__isolate      = nullptr; //NOLINT
+v8::Isolate *__isolate = nullptr; //NOLINT
     #if CC_DEBUG_JS_OBJECT_ID && CC_DEBUG
-uint32_t     nativeObjectId = 0;
+uint32_t nativeObjectId = 0;
     #endif
 } // namespace
 

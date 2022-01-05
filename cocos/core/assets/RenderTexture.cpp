@@ -32,7 +32,6 @@ namespace cc {
 
 namespace {
 
-
 gfx::ColorAttachment colorAttachment = {
     gfx::Format::RGBA8,
     gfx::SampleCount::ONE,

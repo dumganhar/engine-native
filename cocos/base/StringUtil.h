@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <cstdarg>
 #include <cstddef>
 #include "Macros.h"
 #include "TypeDef.h"

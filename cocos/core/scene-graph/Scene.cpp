@@ -63,7 +63,7 @@ void Scene::activate(bool active /* = true */) {
     //        // register all nodes to editor
     //        _registerIfAttached!(active);
     //    }
-//    Director::getInstance()->getNodeActivator()->activateNode(this, active);
+    //    Director::getInstance()->getNodeActivator()->activateNode(this, active);
     //     The test environment does not currently support the renderer
     //        if (!TEST) {
     _globals->activate();

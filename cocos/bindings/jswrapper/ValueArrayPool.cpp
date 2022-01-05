@@ -25,8 +25,8 @@
 ****************************************************************************/
 
 #include "ValueArrayPool.h"
-#include "config.h"
 #include <cassert>
+#include "config.h"
 
 namespace se {
 
@@ -41,24 +41,24 @@ ValueArrayPool::ValueArrayPool() {
     }
 }
 
-ValueArray& ValueArrayPool::get(uint32_t argc) {
+ValueArray &ValueArrayPool::get(uint32_t argc) {
     if (SE_UNLIKELY(_depth >= _pools.size())) {
-        auto* ptr = _pools.data();
+        auto *ptr = _pools.data();
         _pools.resize(_depth + 1);
         assert(_pools.data() == ptr);
         initPool(_depth);
     }
 
     assert(argc <= MAX_ARGS);
-    auto& ret = _pools[_depth][argc];
+    auto &ret = _pools[_depth][argc];
     assert(ret.size() == argc);
     return ret;
 }
 
 void ValueArrayPool::initPool(uint32_t index) {
-    auto&    pool = _pools[index];
+    auto &   pool = _pools[index];
     uint32_t i    = 0;
-    for (auto& arr : pool) {
+    for (auto &arr : pool) {
         arr.resize(i);
         ++i;
     }

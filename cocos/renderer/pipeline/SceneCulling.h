@@ -25,13 +25,13 @@
 
 #pragma once
 
+#include "core/geometry/Frustum.h"
 #include "core/geometry/Sphere.h"
 #include "pipeline/Define.h"
 #include "scene/Camera.h"
 #include "scene/Define.h"
 #include "scene/Light.h"
 #include "scene/Shadow.h"
-#include "core/geometry/Frustum.h"
 
 namespace cc {
 class Mat4;

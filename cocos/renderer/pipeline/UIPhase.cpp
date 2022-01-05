@@ -26,9 +26,9 @@
 #include "UIPhase.h"
 #include "gfx-base/GFXCommandBuffer.h"
 #include "pipeline/PipelineStateManager.h"
+#include "scene/DrawBatch2D.h"
 #include "scene/RenderScene.h"
 #include "scene/SubModel.h"
-#include "scene/DrawBatch2D.h"
 
 namespace cc {
 namespace pipeline {

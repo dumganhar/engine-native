@@ -40,21 +40,21 @@ std::shared_ptr<IAssetDeserializer> AssetDeserializerFactory::createAssetDeseria
         case DeserializeAssetType::EFFECT:
             deserializer = std::make_shared<EffectAssetDeserializer>();
             break;
-//        case DeserializeAssetType::MESH:
-//            deserializer = std::make_shared<MeshDeserializer>();
-//            break;
-//        case DeserializeAssetType::MATERIAL:
-//            deserializer = std::make_shared<MaterialDeserializer>();
-//            break;
-//        case DeserializeAssetType::TEXTUREBASE:
-//            deserializer = std::make_shared<TextureBaseDeserializer>();
-//            break;
-//        case DeserializeAssetType::TEXTURE2D:
-//            deserializer = std::make_shared<Texture2DDeserializer>();
-//            break;
-//        case DeserializeAssetType::TERRAIN:
-//            deserializer = std::make_shared<TerrainAssetDeserializer>();
-//            break;
+            //        case DeserializeAssetType::MESH:
+            //            deserializer = std::make_shared<MeshDeserializer>();
+            //            break;
+            //        case DeserializeAssetType::MATERIAL:
+            //            deserializer = std::make_shared<MaterialDeserializer>();
+            //            break;
+            //        case DeserializeAssetType::TEXTUREBASE:
+            //            deserializer = std::make_shared<TextureBaseDeserializer>();
+            //            break;
+            //        case DeserializeAssetType::TEXTURE2D:
+            //            deserializer = std::make_shared<Texture2DDeserializer>();
+            //            break;
+            //        case DeserializeAssetType::TERRAIN:
+            //            deserializer = std::make_shared<TerrainAssetDeserializer>();
+            //            break;
         default:
             break;
     }

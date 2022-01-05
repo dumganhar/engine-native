@@ -1452,9 +1452,9 @@ bool nativevalue_to_se(const cc::Vec4 &from, se::Value &to, se::Object * /*unuse
     return Vec4_to_seval(from, &to);
 }
 
-// bool nativevalue_to_se(const cc::Vec2 &from, se::Value &to, se::Object * /*unused*/) {
-//     return Vec2_to_seval(from, &to);
-// }
+bool nativevalue_to_se(const cc::Vec2 &from, se::Value &to, se::Object * /*unused*/) {
+    return Vec2_to_seval(from, &to);
+}
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 bool nativevalue_to_se(const cc::Vec3 &from, se::Value &to, se::Object * /*unused*/) {

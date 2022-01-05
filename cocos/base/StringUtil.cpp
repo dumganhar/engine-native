@@ -25,6 +25,7 @@
 
 #include "StringUtil.h"
 
+#include <cstdarg>
 #include <string>
 
 #include "base/ZipUtils.h"

@@ -30,8 +30,8 @@
 #include "3d/assets/Mesh.h"
 #include "core/scene-graph/Node.h"
 #include "renderer/gfx-base/GFXDevice.h"
-#include "scene/RenderScene.h"
 #include "scene/Pass.h"
+#include "scene/RenderScene.h"
 
 namespace {
 void getRelevantBuffers(std::vector<index_t> &outIndices, std::vector<int32_t> &outBuffers, const std::vector<std::vector<int32_t>> &jointMaps, int32_t targetJoint) {
@@ -199,7 +199,6 @@ void SkinningModel::updateInstancedAttributes(const std::vector<gfx::Attribute> 
     }
     Super::updateInstancedAttributes(attributes, pass);
 }
-
 
 void SkinningModel::ensureEnoughBuffers(index_t count) {
     for (index_t i = 0; i < count; i++) {

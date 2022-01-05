@@ -25,11 +25,11 @@
 
 #pragma once
 
-#include "cocos/base/Optional.h"
 #include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include "cocos/base/Optional.h"
 
 #include <cstdint>
 
@@ -40,7 +40,7 @@
 namespace cc {
 
 struct Error {
-     cc::optional<std::string> msg;
+    cc::optional<std::string> msg;
 };
 
 using HTMLElement = void *;

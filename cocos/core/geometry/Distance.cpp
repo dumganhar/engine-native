@@ -7,8 +7,8 @@
 
 #include <algorithm>
 #include <array>
-#include "cocos/math/Vec3.h"
 #include "cocos/math/Utils.h"
+#include "cocos/math/Vec3.h"
 
 namespace cc {
 namespace geometry {

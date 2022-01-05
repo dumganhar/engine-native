@@ -32,4 +32,4 @@ namespace cc {
 class BaseNode : public CCObject {
 };
 
-}
+} // namespace cc

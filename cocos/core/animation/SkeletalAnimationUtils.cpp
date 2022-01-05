@@ -29,13 +29,13 @@
 namespace cc {
 
 namespace {
-std::vector<IJointTransform*>                     stack; //cjh TODO: how to release ?
-std::unordered_map<std::string, IJointTransform*> pool;
+std::vector<IJointTransform *>                     stack; //cjh TODO: how to release ?
+std::unordered_map<std::string, IJointTransform *> pool;
 } // namespace
 
-Mat4 getWorldMatrix(IJointTransform* transform, int32_t stamp) {
+Mat4 getWorldMatrix(IJointTransform *transform, int32_t stamp) {
     uint32_t i   = 0;
-    Mat4*    res = nullptr;
+    Mat4 *   res = nullptr;
     while (transform != nullptr) {
         if ((transform->stamp == stamp || transform->stamp + 1 == stamp) && !transform->node->getChangedFlags()) {
             res              = &transform->world;
@@ -50,7 +50,7 @@ Mat4 getWorldMatrix(IJointTransform* transform, int32_t stamp) {
     while (i > 0) {
         transform        = stack[--i];
         stack[i]         = nullptr;
-        const auto* node = transform->node;
+        const auto *node = transform->node;
         CC_ASSERT(node != nullptr);
         Mat4::fromRTS(node->getRotation(), node->getPosition(), node->getScale(), &transform->local);
         if (res != nullptr) {
@@ -63,11 +63,11 @@ Mat4 getWorldMatrix(IJointTransform* transform, int32_t stamp) {
     return res != nullptr ? *res : Mat4::IDENTITY;
 }
 
-IJointTransform* getTransform(Node* node, Node* root) {
-    IJointTransform* joint = nullptr;
+IJointTransform *getTransform(Node *node, Node *root) {
+    IJointTransform *joint = nullptr;
     uint32_t         i     = 0;
     while (node != root) {
-        const std::string& id   = node->getUuid();
+        const std::string &id   = node->getUuid();
         auto               iter = pool.find(id);
         if (iter != pool.end()) {
             joint = iter->second;
@@ -86,7 +86,7 @@ IJointTransform* getTransform(Node* node, Node* root) {
         node       = node->getParent();
         joint      = nullptr;
     }
-    IJointTransform* child;
+    IJointTransform *child;
     while (i > 0) {
         child         = stack[--i];
         stack[i]      = nullptr;
@@ -96,8 +96,8 @@ IJointTransform* getTransform(Node* node, Node* root) {
     return joint;
 }
 
-void deleteTransform(Node* node) {
-    IJointTransform* transform = nullptr;
+void deleteTransform(Node *node) {
+    IJointTransform *transform = nullptr;
     auto             iter      = pool.find(node->getUuid());
     if (iter != pool.end()) {
         transform = iter->second;

@@ -113,7 +113,7 @@ void Mat4::createPerspective(float fieldOfView, float aspectRatio, float zNearPl
     GP_ASSERT(zFarPlane != zNearPlane);
     GP_ASSERT(fieldOfView != 0.0f);
 
-    const float f  = 1.0F / std::tanf(fieldOfView / 2.0F);
+    const float f  = 1.0F / tanf(fieldOfView / 2.0F);
     const float nf = 1.0F / (zNearPlane - zFarPlane);
 
     const float x = isFieldOfViewY ? f / aspectRatio : f;

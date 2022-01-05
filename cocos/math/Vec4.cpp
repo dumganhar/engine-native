@@ -224,13 +224,13 @@ void Vec4::normalize() {
     // Already normalized.
     if (n == 1.0F) {
         return;
-}
+    }
 
     n = std::sqrt(n);
     // Too close to zero.
     if (n < MATH_TOLERANCE) {
         return;
-}
+    }
 
     n = 1.0F / n;
     x *= n;

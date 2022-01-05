@@ -63,7 +63,7 @@ TEST(NodeTest, inverseTransformPoint) {
 }
 
 TEST(NodeTest, activeInHierarchyChanged) {
-    // TODO(xwx): need fix Director usage in setActive() 
+    // TODO(xwx): need fix Director usage in setActive()
     initCocos(100, 100);
     static CallbackInfoBase::ID id{0};
     static CallbackInfoBase::ID id1{0};

@@ -31,8 +31,8 @@
     #include "cocos/bindings/manual/jsb_conversions.h"
     #include "cocos/bindings/manual/jsb_global.h"
 
+    #include "application/ApplicationManager.h"
     #include "base/UTF8.h"
-    #include "platform/Application.h"
 
 /*
  [Constructor(in DOMString url, in optional DOMString protocols)]
@@ -72,7 +72,7 @@ void JsbWebSocketDelegate::onOpen(cc::network::WebSocket *ws) {
     se::ScriptEngine::getInstance()->clearException();
     se::AutoHandleScope hs;
 
-    if (cc::Application::getInstance() == nullptr) {
+    if (CC_CURRENT_APPLICATION() == nullptr) {
         return;
     }
 
@@ -105,7 +105,7 @@ void JsbWebSocketDelegate::onMessage(cc::network::WebSocket *ws, const cc::netwo
     se::ScriptEngine::getInstance()->clearException();
     se::AutoHandleScope hs;
 
-    if (cc::Application::getInstance() == nullptr) {
+    if (CC_CURRENT_APPLICATION() == nullptr) {
         return;
     }
 
@@ -156,7 +156,7 @@ void JsbWebSocketDelegate::onClose(cc::network::WebSocket *ws) {
     se::ScriptEngine::getInstance()->clearException();
     se::AutoHandleScope hs;
 
-    if (cc::Application::getInstance() == nullptr) {
+    if (CC_CURRENT_APPLICATION() == nullptr) {
         return;
     }
 
@@ -201,7 +201,7 @@ void JsbWebSocketDelegate::onError(cc::network::WebSocket *ws, const cc::network
     se::ScriptEngine::getInstance()->clearException();
     se::AutoHandleScope hs;
 
-    if (cc::Application::getInstance() == nullptr) {
+    if (CC_CURRENT_APPLICATION() == nullptr) {
         return;
     }
 

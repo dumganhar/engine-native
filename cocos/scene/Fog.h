@@ -109,7 +109,7 @@ public:
      * @zh 全局雾颜色
      * @en Global fog color
      */
-    void         setFogColor(const Color &val);
+    void                setFogColor(const Color &val);
     inline const Color &getFogColor() const { return _fogColor; }
 
     /**

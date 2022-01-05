@@ -34,27 +34,27 @@ namespace cc {
 using any = std::any;
 
 template <typename ValueType>
-inline ValueType* any_cast(any* operand) noexcept {
+inline ValueType *any_cast(any *operand) noexcept {
     return std::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline const ValueType* any_cast(const any* operand) noexcept {
+inline const ValueType *any_cast(const any *operand) noexcept {
     return std::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline ValueType any_cast(any& operand) {
+inline ValueType any_cast(any &operand) {
     return std::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline ValueType any_cast(const any& operand) {
+inline ValueType any_cast(const any &operand) {
     return std::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline ValueType any_cast(any&& operand) {
+inline ValueType any_cast(any &&operand) {
     return std::any_cast<ValueType>(operand);
 }
 
@@ -65,7 +65,7 @@ inline ValueType any_cast(any&& operand) {
     #include "boost/any.hpp"
 
 namespace cc {
-class any : public boost::any {// NOLINT // use std style
+class any : public boost::any { // NOLINT // use std style
 public:
     using boost::any::any;
 
@@ -75,27 +75,27 @@ public:
 };
 
 template <typename ValueType>
-inline ValueType* any_cast(any* operand) noexcept { // NOLINT // use std style
+inline ValueType *any_cast(any *operand) noexcept { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline const ValueType* any_cast(const any* operand) noexcept { // NOLINT // use std style
+inline const ValueType *any_cast(const any *operand) noexcept { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline ValueType any_cast(any& operand) { // NOLINT // use std style
+inline ValueType any_cast(any &operand) { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline ValueType any_cast(const any& operand) { // NOLINT // use std style
+inline ValueType any_cast(const any &operand) { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 
 template <typename ValueType>
-inline ValueType any_cast(any&& operand) { // NOLINT // use std style
+inline ValueType any_cast(any &&operand) { // NOLINT // use std style
     return boost::any_cast<ValueType>(operand);
 }
 

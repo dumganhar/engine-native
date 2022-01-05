@@ -64,12 +64,12 @@ private:
     static bool cullSphereLight(const scene::SphereLight *light, const scene::Model *model);
     static bool cullSpotLight(const scene::SpotLight *light, const scene::Model *model);
 
-    void                clear();
-    void                addRenderQueue(const scene::Pass *pass, const scene::SubModel *subModel, const scene::Model *model, uint lightPassIdx);
-    void                updateUBOs(const scene::Camera *camera, gfx::CommandBuffer *cmdBuffer);
-    void                updateLightDescriptorSet(const scene::Camera *camera, gfx::CommandBuffer *cmdBuffer);
-    bool                getLightPassIndex(const scene::Model *model, vector<uint> *lightPassIndices) const;
-    void                lightCulling(const scene::Model *model);
+    void clear();
+    void addRenderQueue(const scene::Pass *pass, const scene::SubModel *subModel, const scene::Model *model, uint lightPassIdx);
+    void updateUBOs(const scene::Camera *camera, gfx::CommandBuffer *cmdBuffer);
+    void updateLightDescriptorSet(const scene::Camera *camera, gfx::CommandBuffer *cmdBuffer);
+    bool getLightPassIndex(const scene::Model *model, vector<uint> *lightPassIndices) const;
+    void lightCulling(const scene::Model *model);
 
     RenderPipeline *                  _pipeline = nullptr;
     vector<vector<scene::SubModel *>> _sortedSubModelsArray;

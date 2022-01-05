@@ -8357,7 +8357,7 @@ static bool js_scene_Camera_getClearStencil(se::State& s) // NOLINT(readability-
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 0) {
-        float result = cobj->getClearStencil();
+        unsigned int result = cobj->getClearStencil();
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_scene_Camera_getClearStencil : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
@@ -9103,7 +9103,7 @@ static bool js_scene_Camera_setClearStencil(se::State& s) // NOLINT(readability-
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<float, false> arg0 = {};
+        HolderType<unsigned int, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_scene_Camera_setClearStencil : Error processing arguments");
         cobj->setClearStencil(arg0.value());

@@ -99,6 +99,9 @@ bool js_register_cc_pipeline_PipelineSceneData(se::Object *obj); // NOLINT
 SE_DECLARE_FUNC(js_pipeline_PipelineSceneData_activate);
 SE_DECLARE_FUNC(js_pipeline_PipelineSceneData_destroy);
 SE_DECLARE_FUNC(js_pipeline_PipelineSceneData_getDirShadowObjects);
+SE_DECLARE_FUNC(js_pipeline_PipelineSceneData_getGeometryRendererMaterials);
+SE_DECLARE_FUNC(js_pipeline_PipelineSceneData_getGeometryRendererPasses);
+SE_DECLARE_FUNC(js_pipeline_PipelineSceneData_getGeometryRendererShaders);
 SE_DECLARE_FUNC(js_pipeline_PipelineSceneData_getMatShadowProj);
 SE_DECLARE_FUNC(js_pipeline_PipelineSceneData_getMatShadowView);
 SE_DECLARE_FUNC(js_pipeline_PipelineSceneData_getMatShadowViewProj);
@@ -286,7 +289,7 @@ extern se::Class * __jsb_cc_pipeline_BloomStage_class; // NOLINT
 bool js_register_cc_pipeline_BloomStage(se::Object *obj); // NOLINT
 
 SE_DECLARE_FUNC(js_pipeline_BloomStage_getCombineUBO);
-SE_DECLARE_FUNC(js_pipeline_BloomStage_getDownsampelUBO);
+SE_DECLARE_FUNC(js_pipeline_BloomStage_getDownsampleUBO);
 SE_DECLARE_FUNC(js_pipeline_BloomStage_getPrefilterUBO);
 SE_DECLARE_FUNC(js_pipeline_BloomStage_getSampler);
 SE_DECLARE_FUNC(js_pipeline_BloomStage_getUpsampleUBO);

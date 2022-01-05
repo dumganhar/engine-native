@@ -5547,10 +5547,6 @@ static bool js_dragonbones_CCArmatureDisplay_dispose(se::State& s) // NOLINT(rea
     const auto& args = s.args();
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        cobj->dispose();
-        return true;
-    }
     if (argc == 1) {
         HolderType<bool, false> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());

@@ -1,11 +1,12 @@
 #include "core/geometry/Intersect.h"
 
-#include "base/Macros.h"
-
 #include <array>
 #include <cmath>
 #include <limits>
 #include <vector>
+#include "3d/assets/Mesh.h"
+#include "base/Macros.h"
+#include "core/TypedArray.h"
 #include "core/assets/RenderingSubMesh.h"
 #include "core/geometry/AABB.h"
 #include "core/geometry/Capsule.h"
@@ -23,6 +24,7 @@
 #include "math/Math.h"
 #include "math/Vec3.h"
 #include "renderer/gfx-base/GFXDef.h"
+#include "scene/Model.h"
 
 namespace cc {
 namespace geometry {
@@ -215,7 +217,7 @@ float rayCapsule(const Ray &ray, const Capsule &capsule) {
 }
 
 namespace {
-void fillResult(float *minDis, ERaycastMode m, float d, float i0, float i1, float i2, std::vector<IRaySubMeshResult> *r) {
+void fillResult(float *minDis, ERaycastMode m, float d, float i0, float i1, float i2, cc::optional<std::vector<IRaySubMeshResult>> &r) {
     if (m == ERaycastMode::CLOSEST) {
         if (*minDis > d || *minDis == 0.0F) {
             *minDis = d;
@@ -236,193 +238,176 @@ void fillResult(float *minDis, ERaycastMode m, float d, float i0, float i1, floa
     }
 }
 
-// TODO(PatriceJiang): index buffer type
-float narrowphase(float *minDis, const std::vector<float> &vb, const std::vector<uint16_t> &ib, gfx::PrimitiveMode pm, const Ray &ray, IRaySubMeshOptions &opt) {
+float narrowphase(float *minDis, const Float32Array &vb, const IBArray &ib, gfx::PrimitiveMode pm, const Ray &ray, IRaySubMeshOptions *opt) {
     Triangle tri;
-    if (pm == gfx::PrimitiveMode::TRIANGLE_LIST) {
-        auto cnt = ib.size();
-        for (auto j = 0; j < cnt; j += 3) {
-            auto i0   = ib[j] * 3;
-            auto i1   = ib[j + 1] * 3;
-            auto i2   = ib[j + 2] * 3;
-            tri.a     = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
-            tri.b     = {vb[i1], vb[i1 + 1], vb[i1 + 2]};
-            tri.c     = {vb[i2], vb[i2 + 1], vb[i2 + 2]};
-            auto dist = rayTriangle(ray, tri, opt.doubleSided);
-            if (dist == 0.0F || dist > opt.distance) continue;
-            fillResult(minDis, opt.mode, dist, static_cast<float>(i0), static_cast<float>(i1), static_cast<float>(i2), &opt.result);
-            if (opt.mode == ERaycastMode::ANY) return dist;
+    auto     ibSize = cc::visit([](auto &arr) { return arr.length(); }, ib);
+    return cc::visit([&](auto &ib) {
+        if (pm == gfx::PrimitiveMode::TRIANGLE_LIST) {
+            auto cnt = ibSize;
+            for (auto j = 0; j < cnt; j += 3) {
+                auto i0   = ib[j] * 3;
+                auto i1   = ib[j + 1] * 3;
+                auto i2   = ib[j + 2] * 3;
+                tri.a     = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
+                tri.b     = {vb[i1], vb[i1 + 1], vb[i1 + 2]};
+                tri.c     = {vb[i2], vb[i2 + 1], vb[i2 + 2]};
+                auto dist = rayTriangle(ray, tri, opt->doubleSided);
+                if (dist == 0.0F || dist > opt->distance) continue;
+                fillResult(minDis, opt->mode, dist, static_cast<float>(i0), static_cast<float>(i1), static_cast<float>(i2), opt->result);
+                if (opt->mode == ERaycastMode::ANY) return dist;
+            }
+        } else if (pm == gfx::PrimitiveMode::TRIANGLE_STRIP) {
+            auto    cnt = ibSize - 2;
+            int32_t rev = 0;
+            for (auto j = 0; j < cnt; j += 1) {
+                auto i0   = ib[j - rev] * 3;
+                auto i1   = ib[j + rev + 1] * 3;
+                auto i2   = ib[j + 2] * 3;
+                tri.a     = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
+                tri.b     = {vb[i1], vb[i1 + 1], vb[i1 + 2]};
+                tri.c     = {vb[i2], vb[i2 + 1], vb[i2 + 2]};
+                rev       = ~rev;
+                auto dist = rayTriangle(ray, tri, opt->doubleSided);
+                if (dist == 0.0F || dist > opt->distance) continue;
+                fillResult(minDis, opt->mode, dist, static_cast<float>(i0), static_cast<float>(i1), static_cast<float>(i2), opt->result);
+                if (opt->mode == ERaycastMode::ANY) return dist;
+            }
+        } else if (pm == gfx::PrimitiveMode::TRIANGLE_FAN) {
+            auto cnt = ibSize - 1;
+            auto i0  = ib[0] * 3;
+            tri.a    = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
+            for (auto j = 1; j < cnt; j += 1) {
+                auto i1   = ib[j] * 3;
+                auto i2   = ib[j + 1] * 3;
+                tri.b     = {vb[i1], vb[i1 + 1], vb[i1 + 2]};
+                tri.c     = {vb[i2], vb[i2 + 1], vb[i2 + 2]};
+                auto dist = rayTriangle(ray, tri, opt->doubleSided);
+                if (dist == 0.0 || dist > opt->distance) continue;
+                fillResult(minDis, opt->mode, dist, static_cast<float>(i0), static_cast<float>(i1), static_cast<float>(i2), opt->result);
+                if (opt->mode == ERaycastMode::ANY) return dist;
+            }
         }
-    } else if (pm == gfx::PrimitiveMode::TRIANGLE_STRIP) {
-        auto cnt = ib.size() - 2;
-        auto rev = 0;
-        for (auto j = 0; j < cnt; j += 1) {
-            auto i0   = ib[j - rev] * 3;
-            auto i1   = ib[j + rev + 1] * 3;
-            auto i2   = ib[j + 2] * 3;
-            tri.a     = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
-            tri.b     = {vb[i1], vb[i1 + 1], vb[i1 + 2]};
-            tri.c     = {vb[i2], vb[i2 + 1], vb[i2 + 2]};
-            rev       = ~rev;
-            auto dist = rayTriangle(ray, tri, opt.doubleSided);
-            if (dist == 0.0F || dist > opt.distance) continue;
-            fillResult(minDis, opt.mode, dist, static_cast<float>(i0), static_cast<float>(i1), static_cast<float>(i2), &opt.result);
-            if (opt.mode == ERaycastMode::ANY) return dist;
-        }
-    } else if (pm == gfx::PrimitiveMode::TRIANGLE_FAN) {
-        auto cnt = ib.size() - 1;
-        auto i0  = ib[0] * 3;
-        tri.a    = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
-        for (auto j = 1; j < cnt; j += 1) {
-            auto i1   = ib[j] * 3;
-            auto i2   = ib[j + 1] * 3;
-            tri.b     = {vb[i1], vb[i1 + 1], vb[i1 + 2]};
-            tri.c     = {vb[i2], vb[i2 + 1], vb[i2 + 2]};
-            auto dist = rayTriangle(ray, tri, opt.doubleSided);
-            if (dist == 0.0 || dist > opt.distance) continue;
-            fillResult(minDis, opt.mode, dist, static_cast<float>(i0), static_cast<float>(i1), static_cast<float>(i2), &opt.result);
-            if (opt.mode == ERaycastMode::ANY) return dist;
-        }
-    }
-    return *minDis;
+        return *minDis;
+    },
+                     ib);
 }
 } // namespace
 
-//TODO(PatriceJiang)
-float raySubMesh(const Ray & /*ray*/, const RenderingSubMesh & /*submesh*/, IRaySubMeshOptions * /*options*/) {
+float raySubMesh(const Ray &ray, const RenderingSubMesh &submesh, IRaySubMeshOptions *options) {
     Triangle           tri;
     IRaySubMeshOptions deOpt;
     deOpt.mode        = ERaycastMode::ANY;
     deOpt.distance    = FLT_MAX;
     deOpt.doubleSided = false;
-    float minDis      = 0.F;
-
-    minDis = 0;
-
-    //TODO(PatriceJiang): Need impl after submesh
-
-    // if (submesh.geometricInfo.positions.length == = 0) return minDis;
-    // const opt = options == = undefined ? deOpt : options;
-    // const min              = submesh.geometricInfo.boundingBox.min;
-    // const max              = submesh.geometricInfo.boundingBox.max;
-    // if (rayAABB2(ray, min, max)) {
-    //     const pm                             = submesh.primitiveMode;
-    //     const {positions : vb, indices : ib} = submesh.geometricInfo;
-    //     narrowphase(vb, ib !, pm, ray, opt);
-    // }
+    float minDis      = 0.0F;
+    auto &mesh        = const_cast<RenderingSubMesh &>(submesh);
+    if (mesh.getGeometricInfo().positions.empty()) return minDis;
+    IRaySubMeshOptions *opt = options ? options : &deOpt;
+    auto                min = mesh.getGeometricInfo().boundingBox.min;
+    auto                max = mesh.getGeometricInfo().boundingBox.max;
+    if (rayAABB2(ray, min, max) != 0.0F) {
+        const auto &pm   = mesh.getPrimitiveMode();
+        const auto &info = mesh.getGeometricInfo();
+        narrowphase(&minDis, info.positions, info.indices.value(), pm, ray, opt);
+    }
     return minDis;
 }
 
-/**
- * @en
- * ray-mesh intersect detect, in model space.
- * @zh
- * 在模型空间中，射线和三角网格资源的相交性检测。
- * @param {Ray} ray
- * @param {Mesh} mesh
- * @param {IRayMeshOptions} options
- * @return {number} 0 or !0
- */
-//TODO(PatriceJiang)
-// const rayMesh = (function() {
-//     let minDis                    = 0;
-//     const deOpt : IRayMeshOptions = {distance : Infinity, doubleSided : false, mode : ERaycastMode.ANY};
-//     return function(ray
-//                     : Ray, mesh
-//                     : Mesh, options ?: IRayMeshOptions) {
-//         minDis    = 0;
-//         const opt = options == = undefined ? deOpt : options;
-//         const length           = mesh.renderingSubMeshes.length;
-//         const min              = mesh.struct.minPosition;
-//         const max              = mesh.struct.maxPosition;
-//         if (min && max && !rayAABB2(ray, min, max)) return minDis;
-//         for (let i = 0; i < length; i++) {
-//             const sm  = mesh.renderingSubMeshes[i];
-//             const dis = raySubMesh(ray, sm, opt);
-//             if (dis) {
-//                 if (opt.mode == = ERaycastMode.CLOSEST) {
-//                     if (minDis == = 0 || minDis > dis) {
-//                         minDis = dis;
-//                         if (opt.subIndices) opt.subIndices[0] = i;
-//                     }
-//                 } else {
-//                     minDis = dis;
-//                     if (opt.subIndices) opt.subIndices.push(i);
-//                     if (opt.mode == = ERaycastMode.ANY) {
-//                         return dis;
-//                     }
-//                 }
-//             }
-//         }
-//         if (minDis&& opt.mode == = ERaycastMode.CLOSEST) {
-//             if (opt.result) {
-//                 opt.result[0].distance = minDis;
-//                 opt.result.length      = 1;
-//             }
-//             if (opt.subIndices) opt.subIndices.length = 1;
-//         }
-//         return minDis;
-//     };
-// }());
+float rayMesh(const Ray &ray, const Mesh &mesh, IRayMeshOptions *option) {
+    float           minDis = 0.0F;
+    IRayMeshOptions deOpt;
+    deOpt.distance          = std::numeric_limits<float>::max();
+    deOpt.doubleSided       = false;
+    deOpt.mode              = ERaycastMode::ANY;
+    IRayMeshOptions *opt    = option ? option : &deOpt;
+    auto             length = mesh.getSubMeshCount();
+    auto             min    = mesh.getStruct().minPosition;
+    auto             max    = mesh.getStruct().maxPosition;
+    if (min.has_value() && max.has_value() && rayAABB2(ray, min.value(), max.value()) == 0.0F) return minDis;
+    for (uint32_t i = 0; i < length; i++) {
+        const auto &sm  = const_cast<Mesh &>(mesh).getRenderingSubMeshes()[i];
+        float       dis = raySubMesh(ray, *sm, opt);
+        if (dis != 0.0F) {
+            if (opt->mode == ERaycastMode::CLOSEST) {
+                if (minDis == 0.0F || minDis > dis) {
+                    minDis = dis;
+                    if (opt->subIndices.has_value()) {
+                        if (opt->subIndices->empty()) {
+                            opt->subIndices->resize(1);
+                        }
+                        opt->subIndices.value()[0] = i;
+                    }
+                }
+            } else {
+                minDis = dis;
+                if (opt->subIndices.has_value()) opt->subIndices->emplace_back(i);
+                if (opt->mode == ERaycastMode::ANY) {
+                    return dis;
+                }
+            }
+        }
+    }
+    if (minDis != 0.0F && opt->mode == ERaycastMode::CLOSEST) {
+        if (opt->result.has_value()) {
+            opt->result.value()[0].distance = minDis;
+            opt->result.value().resize(1);
+        }
+        if (opt->subIndices.has_value()) opt->subIndices.value().resize(1);
+    }
+    return minDis;
+}
 
-/**
- * @en
- * ray-model intersect detect, in world space.
- * @zh
- * 在世界空间中，射线和渲染模型的相交性检测。
- * @param ray
- * @param model
- * @param options
- * @return 0 or !0
- */
-//TODO(PatriceJiang)
-// const rayModel = (function() {
-//     let minDis                     = 0;
-//     const deOpt : IRayModelOptions = {distance : Infinity, doubleSided : false, mode : ERaycastMode.ANY};
-//     const modelRay                 = new Ray();
-//     const m4                       = new Mat4();
-//     return function(r
-//                     : Ray, model
-//                     : scene.Model, options ?: IRayModelOptions) {
-//         minDis    = 0;
-//         const opt = options == = undefined ? deOpt : options;
-//         const wb               = model.worldBounds;
-//         if (wb && !rayAABB(r, wb)) return minDis;
-//         Ray.copy(modelRay, r);
-//         if (model.node) {
-//             Mat4.invert(m4, model.node.getWorldMatrix(m4));
-//             Vec3.transformMat4(modelRay.o, r.o, m4);
-//             Vec3.transformMat4Normal(modelRay.d, r.d, m4);
-//         }
-//         const subModels = model.subModels;
-//         for (let i = 0; i < subModels.length; i++) {
-//             const subMesh = subModels[i].subMesh;
-//             const dis     = raySubMesh(modelRay, subMesh, opt);
-//             if (dis) {
-//                 if (opt.mode == = ERaycastMode.CLOSEST) {
-//                     if (minDis == = 0 || minDis > dis) {
-//                         minDis = dis;
-//                         if (opt.subIndices) opt.subIndices[0] = i;
-//                     }
-//                 } else {
-//                     minDis = dis;
-//                     if (opt.subIndices) opt.subIndices.push(i);
-//                     if (opt.mode == = ERaycastMode.ANY) {
-//                         return dis;
-//                     }
-//                 }
-//             }
-//         }
-//         if (minDis&& opt.mode == = ERaycastMode.CLOSEST) {
-//             if (opt.result) {
-//                 opt.result[0].distance = minDis;
-//                 opt.result.length      = 1;
-//             }
-//             if (opt.subIndices) opt.subIndices.length = 1;
-//         }
-//         return minDis;
-//     };
-// }());
+float rayModel(const Ray &ray, const scene::Model &model, IRayModelOptions *option) {
+    float            minDis = 0.0F;
+    IRayModelOptions deOpt;
+    deOpt.distance    = std::numeric_limits<float>::max();
+    deOpt.doubleSided = false;
+    deOpt.mode        = ERaycastMode::ANY;
+
+    IRayModelOptions *opt = option ? option : &deOpt;
+    const auto *      wb  = model.getWorldBounds();
+    if (wb && rayAABB(ray, *wb) == 0.0F) {
+        return minDis;
+    }
+    Ray modelRay{ray};
+    if (model.getNode()) {
+        Mat4 m4 = model.getNode()->getWorldMatrix().getInversed();
+        Vec3::transformMat4(ray.o, m4, &modelRay.o);
+        Vec3::transformMat4Normal(ray.d, m4, &modelRay.d);
+    }
+    const auto &subModels = model.getSubModels();
+    for (auto i = 0; i < subModels.size(); i++) {
+        const auto &subMesh = subModels[i]->getSubMesh();
+        float       dis     = raySubMesh(modelRay, *subMesh, opt);
+        if (dis != 0.0F) {
+            if (opt->mode == ERaycastMode::CLOSEST) {
+                if (minDis == 0.0F || minDis > dis) {
+                    minDis = dis;
+                    if (opt->subIndices.has_value()) {
+                        if (opt->subIndices->empty()) {
+                            opt->subIndices->resize(1);
+                        }
+                        opt->subIndices.value()[0] = i;
+                    }
+                }
+            } else {
+                minDis = dis;
+                if (opt->subIndices.has_value()) opt->subIndices->emplace_back(i);
+                if (opt->mode == ERaycastMode::ANY) {
+                    return dis;
+                }
+            }
+        }
+    }
+    if (minDis != 0.0F && opt->mode == ERaycastMode::CLOSEST) {
+        if (opt->result.has_value()) {
+            opt->result.value()[0].distance = minDis;
+            opt->result.value().resize(1);
+        }
+        if (opt->subIndices.has_value()) opt->subIndices->resize(1);
+    }
+    return minDis;
+}
 
 float linePlane(const Line &line, const Plane &plane) {
     auto ab = line.e - line.s;

@@ -245,12 +245,18 @@ public:
 
     /**
      * Transforms vector v by the specified Mat4 and stores the result in dst vector.
-     *
+     * @zh 向量与四维矩阵乘法，默认向量第四位为 1。
      * @param v The Vec3 to transform.
      * @param m The matrix.
      * @param dst The destination vector
      */
     static void transformMat4(const Vec3 &v, const Mat4 &m, Vec3 *dst);
+
+    /**
+     * @en Vector and fourth order matrix multiplication, will complete the vector with a fourth element as one
+     * @zh 向量与四维矩阵乘法，默认向量第四位为 0。
+     */
+    static void transformMat4Normal(const Vec3 &v, const Mat4 &m, Vec3 *dst);
 
     /**
      * Transforms this vector by the specified quaternion and stores the result in this vector.

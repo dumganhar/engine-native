@@ -617,7 +617,7 @@ struct HolderType<cc::ArrayBuffer, true> {
     using local_type = cc::ArrayBuffer;
     local_type                 data;
     std::remove_const_t<type> *ptr = nullptr;
-    inline type &              value() { return data; /* TODO(PatriceJiang): use std::move() */ }
+    inline type &              value() { return data; }
 };
 
 template <typename R, typename... ARGS>

@@ -100,12 +100,10 @@ std::string mapDefine(const IDefineInfo &info, const cc::optional<MacroRecord::m
 std::vector<IMacroInfo> prepareDefines(const MacroRecord &records, const std::vector<IDefineRecord> &defList) {
     std::vector<IMacroInfo> macros{};
     for (const auto &tmp : defList) {
-        const auto &name  = tmp.name;
-        auto        it    = records.find(name);
-        auto        value = mapDefine(tmp, it == records.end() ? cc::nullopt : cc::optional<MacroValue>(it->second));
-        // TODO(PatriceJiang): v === '0' can be bool ?
-
-        bool isDefault = it == records.end() || (cc::holds_alternative<std::string>(it->second) && cc::get<std::string>(it->second) == "0");
+        const auto &name      = tmp.name;
+        auto        it        = records.find(name);
+        auto        value     = mapDefine(tmp, it == records.end() ? cc::nullopt : cc::optional<MacroValue>(it->second));
+        bool        isDefault = it == records.end() || (cc::holds_alternative<std::string>(it->second) && cc::get<std::string>(it->second) == "0");
         macros.emplace_back();
         auto &info     = macros.back();
         info.name      = name;
@@ -222,7 +220,6 @@ bool dependencyCheck(const std::vector<std::string> &dependencies, const MacroRe
                 return false;
             }
         } else if (defines.count(d) == 0 ? true : !recordAsBool(defines.at(d))) {
-            // TODO(PatriceJiang): !defines[d] : checked: undefine, false, 0
             return false;
         }
     }
@@ -652,7 +649,7 @@ void ProgramLib::destroyShaderByDefines(const MacroRecord &defines) {
     }
     for (const auto &key : matchedKeys) {
         CC_LOG_DEBUG("destroyed shader %s", key.c_str());
-        _cache[key]->destroy(); // TODO(PatriceJiang): unref ?
+        _cache[key]->destroy();
         _cache.erase(key);
     }
 }

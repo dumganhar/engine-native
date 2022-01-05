@@ -18,6 +18,10 @@ namespace cc {
 class Vec3;
 class Mat3;
 
+namespace scene {
+class Model;
+}
+
 namespace geometry {
 
 class Ray;
@@ -121,47 +125,7 @@ float raySubMesh(const Ray &ray, const RenderingSubMesh &submesh, IRaySubMeshOpt
  * @param {IRayMeshOptions} options
  * @return {number} 0 or !0
  */
-//TODO(PatriceJiang)
-// const rayMesh = (function() {
-//     let minDis                    = 0;
-//     const deOpt : IRayMeshOptions = {distance : Infinity, doubleSided : false, mode : ERaycastMode.ANY};
-//     return function(ray
-//                     : Ray, mesh
-//                     : Mesh, options ?: IRayMeshOptions) {
-//         minDis    = 0;
-//         const opt = options == = undefined ? deOpt : options;
-//         const length           = mesh.renderingSubMeshes.length;
-//         const min              = mesh.struct.minPosition;
-//         const max              = mesh.struct.maxPosition;
-//         if (min && max && !rayAABB2(ray, min, max)) return minDis;
-//         for (let i = 0; i < length; i++) {
-//             const sm  = mesh.renderingSubMeshes[i];
-//             const dis = raySubMesh(ray, sm, opt);
-//             if (dis) {
-//                 if (opt.mode == = ERaycastMode.CLOSEST) {
-//                     if (minDis == = 0 || minDis > dis) {
-//                         minDis = dis;
-//                         if (opt.subIndices) opt.subIndices[0] = i;
-//                     }
-//                 } else {
-//                     minDis = dis;
-//                     if (opt.subIndices) opt.subIndices.push(i);
-//                     if (opt.mode == = ERaycastMode.ANY) {
-//                         return dis;
-//                     }
-//                 }
-//             }
-//         }
-//         if (minDis&& opt.mode == = ERaycastMode.CLOSEST) {
-//             if (opt.result) {
-//                 opt.result[0].distance = minDis;
-//                 opt.result.length      = 1;
-//             }
-//             if (opt.subIndices) opt.subIndices.length = 1;
-//         }
-//         return minDis;
-//     };
-// }());
+float rayMesh(const Ray &ray, const Mesh &mesh, IRayMeshOptions *option);
 
 /**
  * @en
@@ -173,54 +137,7 @@ float raySubMesh(const Ray &ray, const RenderingSubMesh &submesh, IRaySubMeshOpt
  * @param options
  * @return 0 or !0
  */
-//TODO(PatriceJiang)
-// const rayModel = (function() {
-//     let minDis                     = 0;
-//     const deOpt : IRayModelOptions = {distance : Infinity, doubleSided : false, mode : ERaycastMode.ANY};
-//     const modelRay                 = new Ray();
-//     const m4                       = new Mat4();
-//     return function(r
-//                     : Ray, model
-//                     : scene.Model, options ?: IRayModelOptions) {
-//         minDis    = 0;
-//         const opt = options == = undefined ? deOpt : options;
-//         const wb               = model.worldBounds;
-//         if (wb && !rayAABB(r, wb)) return minDis;
-//         Ray.copy(modelRay, r);
-//         if (model.node) {
-//             Mat4.invert(m4, model.node.getWorldMatrix(m4));
-//             Vec3.transformMat4(modelRay.o, r.o, m4);
-//             Vec3.transformMat4Normal(modelRay.d, r.d, m4);
-//         }
-//         const subModels = model.subModels;
-//         for (let i = 0; i < subModels.length; i++) {
-//             const subMesh = subModels[i].subMesh;
-//             const dis     = raySubMesh(modelRay, subMesh, opt);
-//             if (dis) {
-//                 if (opt.mode == = ERaycastMode.CLOSEST) {
-//                     if (minDis == = 0 || minDis > dis) {
-//                         minDis = dis;
-//                         if (opt.subIndices) opt.subIndices[0] = i;
-//                     }
-//                 } else {
-//                     minDis = dis;
-//                     if (opt.subIndices) opt.subIndices.push(i);
-//                     if (opt.mode == = ERaycastMode.ANY) {
-//                         return dis;
-//                     }
-//                 }
-//             }
-//         }
-//         if (minDis&& opt.mode == = ERaycastMode.CLOSEST) {
-//             if (opt.result) {
-//                 opt.result[0].distance = minDis;
-//                 opt.result.length      = 1;
-//             }
-//             if (opt.subIndices) opt.subIndices.length = 1;
-//         }
-//         return minDis;
-//     };
-// }());
+float rayModel(const Ray &ray, const scene::Model &model, IRayModelOptions *option);
 
 /**
  * @en

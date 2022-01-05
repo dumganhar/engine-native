@@ -25,6 +25,7 @@
 #define DRAGONBONES_CC_ARMATURE_DISPLAY_CONTAINER_H
 
 #include <map>
+#include <utility>
 #include <vector>
 #include "IOTypedArray.h"
 #include "MiddlewareManager.h"
@@ -52,7 +53,7 @@ public:
     static CCArmatureDisplay *create();
 
 private:
-    void traverseArmature(Armature *armature, float parentOpacity = 1.0f);
+    void traverseArmature(Armature *armature, float parentOpacity = 1.0F);
 
 protected:
     bool      _debugDraw = false;
@@ -60,64 +61,64 @@ protected:
 
 public:
     CCArmatureDisplay();
-    virtual ~CCArmatureDisplay();
+    ~CCArmatureDisplay() override;
 
     /**
      * @inheritDoc
      */
-    virtual void dbInit(Armature *armature) override;
+    void dbInit(Armature *armature) override;
     /**
      * @inheritDoc
      */
-    virtual void dbClear() override;
+    void dbClear() override;
     /**
      * @inheritDoc
      */
-    virtual void dbUpdate() override;
+    void dbUpdate() override;
     /**
      * @inheritDoc
      */
-    virtual void dbRender() override;
+    void dbRender() override;
     /**
      * @inheritDoc
      */
-    virtual void dispose(bool disposeProxy = true) override;
+    void dispose(bool disposeProxy) override;
     /**
      * @inheritDoc
      */
-    virtual bool hasDBEventListener(const std::string &type) const override;
+    bool hasDBEventListener(const std::string &type) const override;
     /**
      * @inheritDoc
      */
-    virtual void dispatchDBEvent(const std::string &type, EventObject *value) override;
+    void dispatchDBEvent(const std::string &type, EventObject *value) override;
     /**
      * @inheritDoc
      */
-    virtual void addDBEventListener(const std::string &type, const std::function<void(EventObject *)> &listener) override;
+    void addDBEventListener(const std::string &type, const std::function<void(EventObject *)> &listener) override;
     /**
      * @inheritDoc
      */
-    virtual void removeDBEventListener(const std::string &type, const std::function<void(EventObject *)> &listener) override;
+    void removeDBEventListener(const std::string &type, const std::function<void(EventObject *)> &listener) override;
     /**
      * @inheritDoc
      */
-    virtual uint32_t getRenderOrder() const override;
+    uint32_t getRenderOrder() const override;
 
-    typedef std::function<void(EventObject *)> dbEventCallback;
-    void                                       setDBEventCallback(dbEventCallback callback) {
-        _dbEventCallback = callback;
+    using dbEventCallback = std::function<void(EventObject *)>;
+    void setDBEventCallback(dbEventCallback callback) {
+        _dbEventCallback = std::move(callback);
     }
 
     /**
      * @inheritDoc
      */
-    inline virtual Armature *getArmature() const override {
+    inline Armature *getArmature() const override {
         return _armature;
     }
     /**
      * @inheritDoc
      */
-    inline virtual Animation *getAnimation() const override {
+    inline Animation *getAnimation() const override {
         return _armature->getAnimation();
     }
 

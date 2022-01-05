@@ -91,7 +91,7 @@ public:
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
-    IntrusivePtr(T *p) : _ptr(p) { // NOLINT(runtime/explicit)
+    IntrusivePtr(T *p) : _ptr(p) { // NOLINT
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
@@ -106,7 +106,7 @@ public:
     }
 
     template <typename U>
-    IntrusivePtr(const IntrusivePtr<U> &r) : _ptr(r.get()) {
+    IntrusivePtr(const IntrusivePtr<U> &r) : _ptr(r.get()) { // NOLINT
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
         if (_ptr) {
             reinterpret_cast<RefCounted *>(_ptr)->addRef();
@@ -119,7 +119,7 @@ public:
     }
 
     template <typename U>
-    IntrusivePtr(IntrusivePtr<U> &&r) noexcept : _ptr(r.release()) {
+    IntrusivePtr(IntrusivePtr<U> &&r) noexcept : _ptr(r.release()) { // NOLINT
         static_assert(std::is_base_of<RefCounted, T>::value, "RefCounted required!");
     }
 
@@ -130,7 +130,7 @@ public:
     }
 
     T *get() const { return _ptr; }
-       operator T *() const { return _ptr; }
+       operator T *() const { return _ptr; } // NOLINT
     T &operator*() const { return *_ptr; }
     T *operator->() const { return _ptr; }
 
@@ -148,13 +148,13 @@ public:
         return *this;
     }
 
-    IntrusivePtr<T> &operator=(const IntrusivePtr<T> &r) {
-        return *this = r._ptr;
+    IntrusivePtr<T> &operator=(const IntrusivePtr<T> &r) { // NOLINT
+        return *this = r._ptr;                             // NOLINT
     }
 
     template <typename U>
     IntrusivePtr<T> &operator=(const IntrusivePtr<U> &r) {
-        return *this = r.get();
+        return *this = r.get(); // NOLINT
     }
 
     IntrusivePtr<T> &operator=(IntrusivePtr<T> &&r) noexcept {

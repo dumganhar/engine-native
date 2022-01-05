@@ -34,7 +34,7 @@ public:
     static void pushTaskToAutoReleasePool(const std::function<void()> &cb);
 
     CleanupTask();
-    virtual ~CleanupTask();
+    ~CleanupTask() override;
 
 private:
     std::function<void()> _cb;

@@ -223,20 +223,20 @@ gfx::Viewport RenderPipeline::getViewport(scene::Camera *camera) {
     auto             scale{_pipelineSceneData->getShadingScale()};
     const gfx::Rect &rect = getRenderArea(camera);
     return {
-        static_cast<int>(rect.x * scale),
-        static_cast<int>(rect.y * scale),
-        static_cast<uint>(rect.width * scale),
-        static_cast<uint>(rect.height * scale)};
+        static_cast<int>(static_cast<float>(rect.x) * scale),
+        static_cast<int>(static_cast<float>(rect.y) * scale),
+        static_cast<uint>(static_cast<float>(rect.width) * scale),
+        static_cast<uint>(static_cast<float>(rect.height) * scale)};
 }
 
 gfx::Rect RenderPipeline::getScissor(scene::Camera *camera) {
     auto             scale{_pipelineSceneData->getShadingScale()};
     const gfx::Rect &rect = getRenderArea(camera);
     return {
-        static_cast<int>(rect.x * scale),
-        static_cast<int>(rect.y * scale),
-        static_cast<uint>(rect.width * scale),
-        static_cast<uint>(rect.height * scale)};
+        static_cast<int>(static_cast<float>(rect.x) * scale),
+        static_cast<int>(static_cast<float>(rect.y) * scale),
+        static_cast<uint>(static_cast<float>(rect.width) * scale),
+        static_cast<uint>(static_cast<float>(rect.height) * scale)};
 }
 
 gfx::Rect RenderPipeline::getRenderArea(scene::Camera *camera) {

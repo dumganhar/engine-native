@@ -153,7 +153,6 @@ public:
 protected:
     ~VideoPlayer() override;
 
-protected:
     enum class Source {
         FILENAME = 0,
         URL

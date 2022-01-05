@@ -126,8 +126,8 @@ void PostProcessStage::render(scene::Camera *camera) {
             framegraph::Texture::Descriptor colorTexInfo;
             colorTexInfo.format = gfx::Format::RGBA16F;
             colorTexInfo.usage  = gfx::TextureUsageBit::COLOR_ATTACHMENT | gfx::TextureUsageBit::SAMPLED;
-            colorTexInfo.width  = static_cast<uint>(pipeline->getWidth() * shadingScale);
-            colorTexInfo.height = static_cast<uint>(pipeline->getHeight() * shadingScale);
+            colorTexInfo.width  = static_cast<uint>(static_cast<float>(pipeline->getWidth()) * shadingScale);
+            colorTexInfo.height = static_cast<uint>(static_cast<float>(pipeline->getHeight()) * shadingScale);
 
             data.outColorTex = builder.create(RenderPipeline::fgStrHandleOutColorTexture, colorTexInfo);
         }
@@ -157,8 +157,8 @@ void PostProcessStage::render(scene::Camera *camera) {
             gfx::TextureType::TEX2D,
             gfx::TextureUsageBit::COLOR_ATTACHMENT,
             gfx::Format::RGBA8,
-            static_cast<uint>(camera->getWindow()->getWidth() * shadingScale),
-            static_cast<uint>(camera->getWindow()->getHeight() * shadingScale),
+            static_cast<uint>(static_cast<float>(camera->getWindow()->getWidth()) * shadingScale),
+            static_cast<uint>(static_cast<float>(camera->getWindow()->getHeight()) * shadingScale),
         };
         if (shadingScale != 1.F) {
             textureInfo.usage |= gfx::TextureUsageBit::TRANSFER_SRC;
@@ -180,8 +180,8 @@ void PostProcessStage::render(scene::Camera *camera) {
                 gfx::TextureType::TEX2D,
                 gfx::TextureUsageBit::DEPTH_STENCIL_ATTACHMENT,
                 gfx::Format::DEPTH_STENCIL,
-                static_cast<uint>(pipeline->getWidth() * shadingScale),
-                static_cast<uint>(pipeline->getHeight() * shadingScale),
+                static_cast<uint>(static_cast<float>(pipeline->getWidth()) * shadingScale),
+                static_cast<uint>(static_cast<float>(pipeline->getHeight()) * shadingScale),
             };
             data.depth = builder.create(RenderPipeline::fgStrHandleOutDepthTexture, depthTexInfo);
         }

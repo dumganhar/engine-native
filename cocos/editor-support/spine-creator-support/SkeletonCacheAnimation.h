@@ -40,11 +40,11 @@ namespace spine {
 class SkeletonCacheAnimation : public cc::RefCounted, public cc::middleware::IMiddleware {
 public:
     SkeletonCacheAnimation(const std::string &uuid, bool isShare);
-    virtual ~SkeletonCacheAnimation();
+    ~SkeletonCacheAnimation() override;
 
-    virtual void     update(float dt) override;
-    virtual void     render(float dt) override;
-    virtual uint32_t getRenderOrder() const override;
+    void     update(float dt) override;
+    void     render(float dt) override;
+    uint32_t getRenderOrder() const override;
 
     Skeleton *getSkeleton() const;
 
@@ -79,12 +79,12 @@ public:
     void       addAnimation(const std::string &name, bool loop, float delay = 0);
     Animation *findAnimation(const std::string &name) const;
 
-    typedef std::function<void(std::string animationName)> CacheFrameEvent;
-    void                                                   setStartListener(const CacheFrameEvent &listener);
-    void                                                   setEndListener(const CacheFrameEvent &listener);
-    void                                                   setCompleteListener(const CacheFrameEvent &listener);
-    void                                                   updateAnimationCache(const std::string &animationName);
-    void                                                   updateAllAnimationCache();
+    using CacheFrameEvent = std::function<void(std::string)>;
+    void setStartListener(const CacheFrameEvent &listener);
+    void setEndListener(const CacheFrameEvent &listener);
+    void setCompleteListener(const CacheFrameEvent &listener);
+    void updateAnimationCache(const std::string &animationName);
+    void updateAllAnimationCache();
 
     void setToSetupPose();
     void setBonesToSetupPose();
@@ -117,17 +117,17 @@ private:
     SkeletonCache::AnimationData *_animationData = nullptr;
     int                           _curFrameIndex = -1;
 
-    float       _accTime       = 0.0f;
+    float       _accTime       = 0.0F;
     int         _playCount     = 0;
     int         _playTimes     = 0;
     bool        _isAniComplete = true;
-    std::string _animationName = "";
-    bool        _useTint       = true;
+    std::string _animationName;
+    bool        _useTint = true;
 
     struct AniQueueData {
-        std::string animationName = "";
-        bool        loop          = false;
-        float       delay         = 0.0f;
+        std::string animationName;
+        bool        loop  = false;
+        float       delay = 0.0F;
     };
     std::queue<AniQueueData *> _animationQueue;
     AniQueueData *             _headAnimation = nullptr;

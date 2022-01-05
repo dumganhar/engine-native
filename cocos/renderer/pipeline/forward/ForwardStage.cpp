@@ -163,8 +163,8 @@ void ForwardStage::render(scene::Camera *camera) {
         framegraph::Texture::Descriptor colorTexInfo;
         colorTexInfo.format = sceneData->isHDR() ? gfx::Format::RGBA16F : gfx::Format::RGBA8;
         colorTexInfo.usage  = gfx::TextureUsageBit::COLOR_ATTACHMENT;
-        colorTexInfo.width  = static_cast<uint>(pipeline->getWidth() * shadingScale);
-        colorTexInfo.height = static_cast<uint>(pipeline->getHeight() * shadingScale);
+        colorTexInfo.width  = static_cast<uint>(static_cast<float>(pipeline->getWidth()) * shadingScale);
+        colorTexInfo.height = static_cast<uint>(static_cast<float>(pipeline->getHeight()) * shadingScale);
         if (shadingScale != 1.F) {
             colorTexInfo.usage |= gfx::TextureUsageBit::TRANSFER_SRC;
         }
@@ -191,8 +191,8 @@ void ForwardStage::render(scene::Camera *camera) {
             gfx::TextureType::TEX2D,
             gfx::TextureUsageBit::DEPTH_STENCIL_ATTACHMENT,
             gfx::Format::DEPTH_STENCIL,
-            static_cast<uint>(pipeline->getWidth() * shadingScale),
-            static_cast<uint>(pipeline->getHeight() * shadingScale),
+            static_cast<uint>(static_cast<float>(pipeline->getWidth()) * shadingScale),
+            static_cast<uint>(static_cast<float>(pipeline->getHeight()) * shadingScale),
         };
 
         framegraph::RenderTargetAttachment::Descriptor depthAttachmentInfo;

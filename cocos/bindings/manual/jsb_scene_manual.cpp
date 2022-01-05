@@ -42,7 +42,7 @@
 static se::Object *nodeVec3CacheObj{nullptr};
 static se::Object *nodeQuatCacheObj{nullptr};
 static se::Object *nodeMat4CacheObj{nullptr};
-static float *     tempFloatArray = nullptr;
+static float *     tempFloatArray{nullptr};
 
 static bool js_root_registerListeners(se::State &s) // NOLINT(readability-identifier-naming)
 {

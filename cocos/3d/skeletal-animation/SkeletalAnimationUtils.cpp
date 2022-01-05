@@ -72,7 +72,7 @@ void multiplyScalar(const cc::Quaternion &a, float b, cc::Quaternion *out) {
 
 // Dual Quaternion Skinning
 void uploadJointDataDQS(cc::Float32Array out, uint32_t base, cc::Mat4 &mat, bool firstBone) {
-    // Mat4.toRTS(mat, qt_1, v3_1, v3_2); // TODO(xwx):not found toRTS function in cpp
+    cc::Mat4::toRTS(qt1, v31, v32, &mat);
     // // sign consistency
     if (firstBone) {
         dq0 = qt1;

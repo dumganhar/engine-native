@@ -49,8 +49,8 @@ namespace cc {
 template <class Alloc>
 class CC_DLL AllocatedObject : public RefCounted {
 public:
-    explicit AllocatedObject() = default;
-    virtual ~AllocatedObject() = default;
+    explicit AllocatedObject()  = default;
+    ~AllocatedObject() override = default;
 
     // operator new, with debug line info
     void *operator new(size_t sz, const char *file, int line, const char *func) {

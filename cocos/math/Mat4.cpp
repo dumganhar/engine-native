@@ -522,6 +522,13 @@ void Mat4::fromRTS(const Quaternion &rotation, const Vec3 &translation, const Ve
     dst->m[15] = 1;
 }
 
+void Mat4::toRTS(Quaternion &rotation, Vec3 &translation, Vec3 &scale, Mat4 *dst) {
+    if (dst == nullptr) {
+        return;
+    }
+    dst->decompose(&scale, &rotation, &translation);
+}
+
 bool Mat4::decompose(Vec3 *scale, Quaternion *rotation, Vec3 *translation) const {
     if (translation) {
         // Extract the translation.

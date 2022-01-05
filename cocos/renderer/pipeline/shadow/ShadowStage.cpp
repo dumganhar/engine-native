@@ -79,7 +79,7 @@ void ShadowStage::render(scene::Camera *camera) {
     auto *renderPass = _framebuffer->getRenderPass();
 
     cmdBuffer->beginRenderPass(renderPass, _framebuffer, _renderArea,
-                               _clearColors, camera->getClearDepth(), static_cast<uint32_t>(camera->getClearStencil()));
+                               _clearColors, camera->getClearDepth(), camera->getClearStencil());
 
     const std::array<uint, 1> globalOffsets = {_pipeline->getPipelineUBO()->getCurrentCameraUBOOffset()};
     cmdBuffer->bindDescriptorSet(globalSet, _globalDS, utils::toUint(globalOffsets.size()), globalOffsets.data());
@@ -109,7 +109,7 @@ void ShadowStage::clearFramebuffer(scene::Camera *camera) {
     auto *renderPass = _framebuffer->getRenderPass();
 
     cmdBuffer->beginRenderPass(renderPass, _framebuffer, _renderArea,
-                               _clearColors, camera->getClearDepth(), static_cast<uint32_t>(camera->getClearStencil()));
+                               _clearColors, camera->getClearDepth(), camera->getClearStencil());
 
     cmdBuffer->endRenderPass();
 }

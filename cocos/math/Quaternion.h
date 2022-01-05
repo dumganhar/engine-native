@@ -72,27 +72,27 @@ public:
     /**
      * The x-value of the quaternion's vector component.
      */
-    float x;
+    float x{0.0F};
     /**
      * The y-value of the quaternion's vector component.
      */
-    float y;
+    float y{0.0F};
     /**
      * The z-value of the quaternion's vector component.
      */
-    float z;
+    float z{0.0F};
     /**
      * The scalar component of the quaternion.
      */
-    float w;
+    float w{1.0F};
 
     /**
      * Constructs a quaternion initialized to (0, 0, 0, 1).
      */
-    Quaternion();
+    Quaternion() = default;
 
     /**
-     * Constructs a quaternion initialized to (0, 0, 0, 1).
+     * Constructs a quaternion.
      *
      * @param xx The x component of the quaternion.
      * @param yy The y component of the quaternion.
@@ -122,18 +122,6 @@ public:
      * @param angle The angle of rotation (in radians).
      */
     Quaternion(const Vec3 &axis, float angle);
-
-    /**
-     * Constructs a new quaternion that is a copy of the specified one.
-     *
-     * @param copy The quaternion to copy.
-     */
-    Quaternion(const Quaternion &copy);
-
-    /**
-     * Destructor.
-     */
-    ~Quaternion() = default;
 
     /**
      * Returns the identity quaternion.

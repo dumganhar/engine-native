@@ -317,4 +317,4 @@ SE_DECLARE_FUNC(js_physics_DistanceJoint_setEnableCollision);
 SE_DECLARE_FUNC(js_physics_DistanceJoint_setPivotA);
 SE_DECLARE_FUNC(js_physics_DistanceJoint_setPivotB);
 SE_DECLARE_FUNC(js_physics_DistanceJoint_DistanceJoint);
-// clang-format on
+    // clang-format on

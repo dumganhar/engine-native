@@ -56,6 +56,7 @@ PipelineSceneData::~PipelineSceneData() {
 void PipelineSceneData::activate(gfx::Device *device, RenderPipeline *pipeline) {
     _device   = device;
     _pipeline = pipeline;
+    initGeometryRendererMaterials();
     initOcclusionQuery();
 }
 
@@ -86,6 +87,30 @@ void PipelineSceneData::initOcclusionQuery() {
         _occlusionQueryMaterial->initialize(info);
         _occlusionQueryPass   = (*_occlusionQueryMaterial->getPasses())[0];
         _occlusionQueryShader = _occlusionQueryPass->getShaderVariant();
+    }
+}
+
+void PipelineSceneData::initGeometryRendererMaterials() {
+    _geometryRendererMaterials.resize(GEOMETRY_RENDERER_TECHNIQUE_COUNT);
+    _geometryRendererPasses.resize(GEOMETRY_RENDERER_TECHNIQUE_COUNT);
+    _geometryRendererShaders.resize(GEOMETRY_RENDERER_TECHNIQUE_COUNT);
+    for (uint32_t tech = 0; tech < GEOMETRY_RENDERER_TECHNIQUE_COUNT; tech++) {
+        _geometryRendererMaterials[tech] = new Material();
+
+        std::stringstream ss;
+        ss << "geometry-renderer-material-" << tech;
+        _geometryRendererMaterials[tech]->setUuid(ss.str());
+
+        IMaterialInfo materialInfo;
+        materialInfo.effectName = "geometry-renderer";
+        materialInfo.technique  = tech;
+        _geometryRendererMaterials[tech]->initialize(materialInfo);
+
+        const auto &passes = _geometryRendererMaterials[tech]->getPasses().get();
+        for (const auto &pass : *passes) {
+            _geometryRendererPasses.emplace_back(pass);
+            _geometryRendererShaders.emplace_back(pass->getShaderVariant());
+        }
     }
 }
 

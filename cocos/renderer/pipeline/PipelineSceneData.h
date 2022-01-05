@@ -85,6 +85,9 @@ public:
     inline gfx::InputAssembler *                                               getOcclusionQueryInputAssembler() const { return _occlusionQueryInputAssembler; }
     inline scene::Pass *                                                       getOcclusionQueryPass() const { return _occlusionQueryPass; }
     inline gfx::Shader *                                                       getOcclusionQueryShader() const { return _occlusionQueryShader; }
+    inline const std::vector<IntrusivePtr<Material>> &                         getGeometryRendererMaterials() const { return _geometryRendererMaterials; }
+    inline const std::vector<scene::Pass *> &                                  getGeometryRendererPasses() const { return _geometryRendererPasses; }
+    inline const std::vector<gfx::Shader *> &                                  getGeometryRendererShaders() const { return _geometryRendererShaders; }
 
     inline float getShadingScale() const { return _shadingScale; }
     inline void  setShadingScale(float val) { _shadingScale = val; } // TODO(cjh): needs to emit event to JS or hack this method in JS.
@@ -93,7 +96,10 @@ public:
 
 protected:
     void                 initOcclusionQuery();
+    void                 initGeometryRendererMaterials();
     gfx::InputAssembler *createOcclusionQueryIA();
+
+    static constexpr uint32_t GEOMETRY_RENDERER_TECHNIQUE_COUNT{6};
 
     RenderObjectList             _renderObjects;
     RenderObjectList             _dirShadowObjects;
@@ -106,6 +112,10 @@ protected:
     IntrusivePtr<Material> _occlusionQueryMaterial{nullptr};
     gfx::Shader *          _occlusionQueryShader{nullptr};
     scene::Pass *          _occlusionQueryPass{nullptr};
+
+    std::vector<IntrusivePtr<Material>> _geometryRendererMaterials;
+    std::vector<scene::Pass *>          _geometryRendererPasses;  // weak reference
+    std::vector<gfx::Shader *>          _geometryRendererShaders; // weak reference
 
     RenderPipeline *_pipeline{nullptr};
     gfx::Device *   _device{nullptr};

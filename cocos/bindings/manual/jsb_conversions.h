@@ -91,6 +91,15 @@
         break;                                                                                           \
     }
 
+#if CC_ENABLE_CACHE_JSB_FUNC_RESULT
+    #define SE_HOLD_RETURN_VALUE(retCXXValue, thisObject, jsValue)                       \
+        if (is_jsb_object_v<typename std::decay<decltype(retCXXValue)>::type>) {         \
+            (thisObject)->setProperty(std::string("__cache") + __FUNCTION__, (jsValue)); \
+        }
+#else
+    #define SE_HOLD_RETURN_VALUE(...)
+#endif
+
 #if __clang__
     #if defined(__has_feature) && __has_feature(cxx_static_assert) && __has_feature(cxx_relaxed_constexpr) && (__cplusplus > 201402L)
         #define HAS_CONSTEXPR 1
@@ -113,19 +122,6 @@
 
 #if __clang__ && (__cplusplus > 201402L)
     #define HAS_PUSH_DIAGNOSTI
-    #define SE_STR1(x)               #x
-    #define SE_STR(x)                SE_STR1(x)
-    #define SE_FN_CONCAT(prefix, fn) prefix SE_STR(fn)
-
-    #if CC_ENABLE_CACHE_JSB_FUNC_RESULT
-        #define SE_HOLD_RETURN_VALUE(retCXXValue, thisObject, jsValue)                            \
-            if CC_CONSTEXPR (is_jsb_object_v<typename std::decay<decltype(retCXXValue)>::type>) { \
-                (thisObject)->setProperty(SE_FN_CONCAT("__cache", __FUNCTION__), (jsValue));      \
-            }
-    #else
-        #define SE_HOLD_RETURN_VALUE(...)
-    #endif
-
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wc++17-extensions"
 #endif

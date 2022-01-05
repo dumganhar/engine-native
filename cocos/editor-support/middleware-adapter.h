@@ -25,20 +25,20 @@
 
 #pragma once
 
+#include <functional>
 #include "MiddlewareMacro.h"
-#include "base/Ref.h"
+#include "base/RefCounted.h"
 #include "math/Geometry.h"
 #include "math/Vec3.h"
-#include <functional>
 
 MIDDLEWARE_BEGIN
 
 struct Color4B {
     Color4B(uint32_t _r, uint32_t _g, uint32_t _b, uint32_t _a);
     Color4B();
-    bool operator==(const Color4B &right) const;
-    bool operator!=(const Color4B &right) const;
-    Color4B& operator=(const Color4B &right);
+    bool     operator==(const Color4B &right) const;
+    bool     operator!=(const Color4B &right) const;
+    Color4B &operator=(const Color4B &right);
 
     uint32_t r = 0;
     uint32_t g = 0;
@@ -51,10 +51,10 @@ struct Color4B {
 struct Color4F {
     Color4F(float _r, float _g, float _b, float _a);
     Color4F();
-    bool operator==(const Color4F &right) const;
-    bool operator!=(const Color4F &right) const;
-    Color4F& operator=(const Color4B &right);
-    
+    bool     operator==(const Color4F &right) const;
+    bool     operator!=(const Color4F &right) const;
+    Color4F &operator=(const Color4B &right);
+
     float r = 0.0f;
     float g = 0.0f;
     float b = 0.0f;
@@ -127,7 +127,7 @@ struct TwoColorTriangles {
 ///////////////////////////////////////////////////////////////////////
 // adapt to editor texture,this is a texture delegate,not real texture
 ///////////////////////////////////////////////////////////////////////
-class Texture2D : public cc::Ref {
+class Texture2D : public cc::RefCounted {
 public:
     Texture2D();
     virtual ~Texture2D();
@@ -197,7 +197,7 @@ private:
 ///////////////////////////////////////////////////////////////////////
 // adapt to editor sprite frame
 ///////////////////////////////////////////////////////////////////////
-class SpriteFrame : public cc::Ref {
+class SpriteFrame : public cc::RefCounted {
 public:
     static SpriteFrame *createWithTexture(Texture2D *pobTexture, const cc::Rect &rect);
     static SpriteFrame *createWithTexture(Texture2D *pobTexture, const cc::Rect &rect, bool rotated, const cc::Vec2 &offset, const cc::Size &originalSize);
@@ -227,11 +227,11 @@ public:
     void setTexture(Texture2D *pobTexture);
 
 protected:
-    cc::Vec2 _anchorPoint;
-    cc::Rect _rectInPixels;
-    bool _rotated = false;
-    cc::Vec2 _offsetInPixels;
-    cc::Size _originalSizeInPixels;
+    cc::Vec2   _anchorPoint;
+    cc::Rect   _rectInPixels;
+    bool       _rotated = false;
+    cc::Vec2   _offsetInPixels;
+    cc::Size   _originalSizeInPixels;
     Texture2D *_texture = nullptr;
 };
 MIDDLEWARE_END

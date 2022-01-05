@@ -31,14 +31,14 @@
 #include <unordered_map>
 #include <vector>
 
-#include "platform/FileUtils.h"
 #include "network/Downloader.h"
+#include "platform/FileUtils.h"
 
 #include "EventAssetsManagerEx.h"
 
 #include "Manifest.h"
-#include "extensions/ExtensionMacros.h"
 #include "extensions/ExtensionExport.h"
+#include "extensions/ExtensionMacros.h"
 #include "json/document-wrapper.h"
 
 NS_CC_EXT_BEGIN
@@ -46,7 +46,7 @@ NS_CC_EXT_BEGIN
 /**
  * @brief   This class is used to auto update resources, such as pictures or scripts.
  */
-class CC_EX_DLL AssetsManagerEx : public Ref {
+class CC_EX_DLL AssetsManagerEx : public RefCounted {
 public:
     //! Update states
     enum class State {
@@ -70,8 +70,8 @@ public:
     const static std::string MANIFEST_ID;
 
     typedef std::function<int(const std::string &versionA, const std::string &versionB)> VersionCompareHandle;
-    typedef std::function<bool(const std::string &path, Manifest::Asset asset)> VerifyCallback;
-    typedef std::function<void(EventAssetsManagerEx *event)> EventCallback;
+    typedef std::function<bool(const std::string &path, Manifest::Asset asset)>          VerifyCallback;
+    typedef std::function<void(EventAssetsManagerEx *event)>                             EventCallback;
 
     /** @brief Create function for creating a new AssetsManagerEx
      @param manifestUrl   The url for the local manifest file
@@ -267,9 +267,9 @@ protected:
      * @lua NA
      */
     virtual void onError(const network::DownloadTask &task,
-                         int errorCode,
-                         int errorCodeInternal,
-                         const std::string &errorStr);
+                         int                          errorCode,
+                         int                          errorCodeInternal,
+                         const std::string &          errorStr);
 
     /** @brief  Call back function for recording downloading percent of the current asset,
      the progression will then be reported to user's listener registed in addUpdateProgressEventListener

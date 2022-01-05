@@ -79,7 +79,7 @@ void GbufferStage::activate(RenderPipeline *pipeline, RenderFlow *flow) {
 void GbufferStage::destroy() {
     CC_SAFE_DELETE(_batchedQueue);
     CC_SAFE_DELETE(_instancedQueue);
-    CC_SAFE_DESTROY(_planarShadowQueue);
+    CC_SAFE_DESTROY_AND_DELETE(_planarShadowQueue);
     RenderStage::destroy();
 }
 
@@ -146,8 +146,8 @@ void GbufferStage::render(scene::Camera *camera) {
         framegraph::TextureHandle depth;
     };
 
-    auto  *pipeline = static_cast<DeferredPipeline *>(_pipeline);
-    float  shadingScale{_pipeline->getPipelineSceneData()->getSharedData()->shadingScale};
+    auto *pipeline = static_cast<DeferredPipeline *>(_pipeline);
+    float shadingScale{_pipeline->getPipelineSceneData()->getShadingScale()};
     _renderArea = RenderPipeline::getRenderArea(camera);
 
     auto gbufferSetup = [&](framegraph::PassNodeBuilder &builder, RenderData &data) {
@@ -210,8 +210,8 @@ void GbufferStage::render(scene::Camera *camera) {
         framegraph::RenderTargetAttachment::Descriptor depthInfo;
         depthInfo.usage        = framegraph::RenderTargetAttachment::Usage::DEPTH_STENCIL;
         depthInfo.loadOp       = gfx::LoadOp::CLEAR;
-        depthInfo.clearDepth   = camera->clearDepth;
-        depthInfo.clearStencil = camera->clearStencil;
+        depthInfo.clearDepth   = camera->getClearDepth();
+        depthInfo.clearStencil = camera->getClearStencil();
         depthInfo.endAccesses  = {gfx::AccessType::DEPTH_STENCIL_ATTACHMENT_WRITE};
         data.depth             = builder.write(data.depth, depthInfo);
         builder.writeToBlackboard(DeferredPipeline::fgStrHandleOutDepthTexture, data.depth);

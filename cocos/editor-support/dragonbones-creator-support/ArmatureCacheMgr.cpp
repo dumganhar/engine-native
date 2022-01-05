@@ -22,16 +22,18 @@
  */
 
 #include "ArmatureCacheMgr.h"
+#include "base/DeferredReleasePool.h"
 
 DRAGONBONES_NAMESPACE_BEGIN
 
 ArmatureCacheMgr *ArmatureCacheMgr::_instance = nullptr;
-ArmatureCache *ArmatureCacheMgr::buildArmatureCache(const std::string &armatureName, const std::string &armatureKey, const std::string &atlasUUID) {
+ArmatureCache *   ArmatureCacheMgr::buildArmatureCache(const std::string &armatureName, const std::string &armatureKey, const std::string &atlasUUID) {
     ArmatureCache *animation = _caches.at(armatureKey);
     if (!animation) {
         animation = new ArmatureCache(armatureName, armatureKey, atlasUUID);
+        animation->addRef();
         _caches.insert(armatureKey, animation);
-        animation->autorelease();
+        cc::DeferredReleasePool::add(animation);
     }
     return animation;
 }

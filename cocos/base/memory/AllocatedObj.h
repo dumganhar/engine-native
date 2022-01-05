@@ -26,8 +26,9 @@ THE SOFTWARE.
 
 #pragma once
 
-#include "../Macros.h"
 #include <cstddef>
+#include "../Macros.h"
+#include "base/RefCounted.h"
 
 // Anything that has done a #define new <blah> will screw operator new definitions up
 // so undefine
@@ -46,7 +47,7 @@ namespace cc {
  to use (e.g. see StdAllocPolicy).
  */
 template <class Alloc>
-class CC_DLL AllocatedObject {
+class CC_DLL AllocatedObject : public RefCounted {
 public:
     explicit AllocatedObject() = default;
     virtual ~AllocatedObject() = default;

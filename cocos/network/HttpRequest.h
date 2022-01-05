@@ -28,12 +28,12 @@
 #ifndef __HTTP_REQUEST_H__
 #define __HTTP_REQUEST_H__
 
-#include "base/Ref.h"
 #include "base/Macros.h"
+#include "base/RefCounted.h"
 
+#include <functional>
 #include <string>
 #include <vector>
-#include <functional>
 
 /**
  * @addtogroup network
@@ -63,7 +63,7 @@ typedef std::function<void(HttpClient *, HttpResponse *)> ccHttpRequestCallback;
     #endif
 #endif
 
-class CC_DLL HttpRequest : public Ref {
+class CC_DLL HttpRequest : public RefCounted {
 public:
     /**
      * The HttpRequest type enum used in the HttpRequest::setRequestType.
@@ -101,8 +101,9 @@ public:
      *
      * @return Ref* always return nullptr.
      */
-    Ref *autorelease() {
-        CCASSERT(false, "HttpResponse is used between network thread and ui thread \
+    RefCounted *autorelease() {
+        CCASSERT(false,
+                 "HttpResponse is used between network thread and ui thread \
                  therefore, autorelease is forbidden here");
         return nullptr;
     }
@@ -265,14 +266,14 @@ public:
 
 protected:
     // properties
-    Type _requestType;                 /// kHttpRequestGet, kHttpRequestPost or other enums
-    std::string _url;                  /// target url that this request is sent to
-    std::vector<char> _requestData;    /// used for POST
-    std::string _tag;                  /// user defined tag, to identify different requests in response callback
-    ccHttpRequestCallback _callback;   /// C++11 style callbacks
-    void *_userData;                   /// You can add your customed data here
-    std::vector<std::string> _headers; /// custom http headers
-    float _timeoutInSeconds;
+    Type                     _requestType; /// kHttpRequestGet, kHttpRequestPost or other enums
+    std::string              _url;         /// target url that this request is sent to
+    std::vector<char>        _requestData; /// used for POST
+    std::string              _tag;         /// user defined tag, to identify different requests in response callback
+    ccHttpRequestCallback    _callback;    /// C++11 style callbacks
+    void *                   _userData;    /// You can add your customed data here
+    std::vector<std::string> _headers;     /// custom http headers
+    float                    _timeoutInSeconds;
 };
 
 } // namespace network

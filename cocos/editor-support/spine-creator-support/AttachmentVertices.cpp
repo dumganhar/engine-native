@@ -35,12 +35,12 @@ namespace spine {
 
 AttachmentVertices::AttachmentVertices(middleware::Texture2D *texture, int verticesCount, unsigned short *triangles, int trianglesCount) {
     _texture = texture;
-    if (_texture) _texture->retain();
+    if (_texture) _texture->addRef();
 
-    _triangles = new middleware::Triangles();
-    _triangles->verts = new middleware::V2F_T2F_C4F[verticesCount];
-    _triangles->vertCount = verticesCount;
-    _triangles->indices = triangles;
+    _triangles             = new middleware::Triangles();
+    _triangles->verts      = new middleware::V2F_T2F_C4F[verticesCount];
+    _triangles->vertCount  = verticesCount;
+    _triangles->indices    = triangles;
     _triangles->indexCount = trianglesCount;
 }
 

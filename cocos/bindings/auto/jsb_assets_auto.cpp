@@ -1162,6 +1162,25 @@ static bool js_assets_TextureBase_setFilters(se::State& s) // NOLINT(readability
 }
 SE_BIND_FUNC(js_assets_TextureBase_setFilters)
 
+static bool js_assets_TextureBase_setHeight(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::TextureBase>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_TextureBase_setHeight : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<unsigned int, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_TextureBase_setHeight : Error processing arguments");
+        cobj->setHeight(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC_AS_PROP_SET(js_assets_TextureBase_setHeight)
+
 static bool js_assets_TextureBase_setMipFilter(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::TextureBase>(s);
@@ -1180,6 +1199,25 @@ static bool js_assets_TextureBase_setMipFilter(se::State& s) // NOLINT(readabili
     return false;
 }
 SE_BIND_FUNC(js_assets_TextureBase_setMipFilter)
+
+static bool js_assets_TextureBase_setWidth(se::State& s) // NOLINT(readability-identifier-naming)
+{
+    auto* cobj = SE_THIS_OBJECT<cc::TextureBase>(s);
+    SE_PRECONDITION2(cobj, false, "js_assets_TextureBase_setWidth : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        HolderType<unsigned int, false> arg0 = {};
+        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
+        SE_PRECONDITION2(ok, false, "js_assets_TextureBase_setWidth : Error processing arguments");
+        cobj->setWidth(arg0.value());
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC_AS_PROP_SET(js_assets_TextureBase_setWidth)
 
 static bool js_assets_TextureBase_setWrapMode(se::State& s) // NOLINT(readability-identifier-naming)
 {
@@ -1513,9 +1551,9 @@ bool js_register_assets_TextureBase(se::Object* obj) // NOLINT(readability-ident
     cls->defineProperty("_anisotropy", _SE(js_assets_TextureBase_get__anisotropy), _SE(js_assets_TextureBase_set__anisotropy));
     cls->defineProperty("_width", _SE(js_assets_TextureBase_get__width), _SE(js_assets_TextureBase_set__width));
     cls->defineProperty("_height", _SE(js_assets_TextureBase_get__height), _SE(js_assets_TextureBase_set__height));
-    cls->defineProperty("width", _SE(js_assets_TextureBase_getWidth_asGetter), nullptr);
+    cls->defineProperty({"_height", "height"}, _SE(js_assets_TextureBase_getHeight_asGetter), _SE(js_assets_TextureBase_setHeight_asSetter));
     cls->defineProperty("isCompressed", _SE(js_assets_TextureBase_isCompressed_asGetter), nullptr);
-    cls->defineProperty("height", _SE(js_assets_TextureBase_getHeight_asGetter), nullptr);
+    cls->defineProperty({"_width", "width"}, _SE(js_assets_TextureBase_getWidth_asGetter), _SE(js_assets_TextureBase_setWidth_asSetter));
     cls->defineFunction("getAnisotropy", _SE(js_assets_TextureBase_getAnisotropy));
     cls->defineFunction("getGFXSampler", _SE(js_assets_TextureBase_getGFXSampler));
     cls->defineFunction("getGFXTexture", _SE(js_assets_TextureBase_getGFXTexture));
@@ -11046,44 +11084,6 @@ bool js_register_assets_IRenderTextureCreateInfo(se::Object* obj) // NOLINT(read
 se::Object* __jsb_cc_RenderTexture_proto = nullptr; // NOLINT
 se::Class* __jsb_cc_RenderTexture_class = nullptr;  // NOLINT
 
-static bool js_assets_RenderTexture_getHeight(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::RenderTexture>(s);
-    SE_PRECONDITION2(cobj, false, "js_assets_RenderTexture_getHeight : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        unsigned int result = cobj->getHeight();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_assets_RenderTexture_getHeight : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC_AS_PROP_GET(js_assets_RenderTexture_getHeight)
-
-static bool js_assets_RenderTexture_getWidth(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::RenderTexture>(s);
-    SE_PRECONDITION2(cobj, false, "js_assets_RenderTexture_getWidth : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 0) {
-        unsigned int result = cobj->getWidth();
-        ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
-        SE_PRECONDITION2(ok, false, "js_assets_RenderTexture_getWidth : Error processing arguments");
-        SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
-    return false;
-}
-SE_BIND_FUNC_AS_PROP_GET(js_assets_RenderTexture_getWidth)
-
 static bool js_assets_RenderTexture_getWindow(se::State& s) // NOLINT(readability-identifier-naming)
 {
     auto* cobj = SE_THIS_OBJECT<cc::RenderTexture>(s);
@@ -11221,44 +11221,6 @@ static bool js_assets_RenderTexture_resize(se::State& s) // NOLINT(readability-i
 }
 SE_BIND_FUNC(js_assets_RenderTexture_resize)
 
-static bool js_assets_RenderTexture_setHeight(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::RenderTexture>(s);
-    SE_PRECONDITION2(cobj, false, "js_assets_RenderTexture_setHeight : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<unsigned int, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_assets_RenderTexture_setHeight : Error processing arguments");
-        cobj->setHeight(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC_AS_PROP_SET(js_assets_RenderTexture_setHeight)
-
-static bool js_assets_RenderTexture_setWidth(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    auto* cobj = SE_THIS_OBJECT<cc::RenderTexture>(s);
-    SE_PRECONDITION2(cobj, false, "js_assets_RenderTexture_setWidth : Invalid Native Object");
-    const auto& args = s.args();
-    size_t argc = args.size();
-    CC_UNUSED bool ok = true;
-    if (argc == 1) {
-        HolderType<unsigned int, false> arg0 = {};
-        ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
-        SE_PRECONDITION2(ok, false, "js_assets_RenderTexture_setWidth : Error processing arguments");
-        cobj->setWidth(arg0.value());
-        return true;
-    }
-    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
-    return false;
-}
-SE_BIND_FUNC_AS_PROP_SET(js_assets_RenderTexture_setWidth)
-
 SE_DECLARE_FINALIZE_FUNC(js_cc_RenderTexture_finalize)
 
 static bool js_assets_RenderTexture_constructor(se::State& s) // NOLINT(readability-identifier-naming) constructor.c
@@ -11279,9 +11241,7 @@ bool js_register_assets_RenderTexture(se::Object* obj) // NOLINT(readability-ide
 {
     auto* cls = se::Class::create("RenderTexture", obj, __jsb_cc_TextureBase_proto, _SE(js_assets_RenderTexture_constructor));
 
-    cls->defineProperty({"_height", "height"}, _SE(js_assets_RenderTexture_getHeight_asGetter), _SE(js_assets_RenderTexture_setHeight_asSetter));
     cls->defineProperty("window", _SE(js_assets_RenderTexture_getWindow_asGetter), nullptr);
-    cls->defineProperty({"_width", "width"}, _SE(js_assets_RenderTexture_getWidth_asGetter), _SE(js_assets_RenderTexture_setWidth_asSetter));
     cls->defineFunction("initWindow", _SE(js_assets_RenderTexture_initWindow));
     cls->defineFunction("initialize", _SE(js_assets_RenderTexture_initialize));
     cls->defineFunction("readPixels", _SE(js_assets_RenderTexture_readPixels));

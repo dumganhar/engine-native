@@ -55,7 +55,7 @@ public:
      * 交错排列是指在实际数据的缓冲区中，每个顶点的所有属性总是依次排列，并总是出现在下一个顶点的所有属性之前。
      */
     struct IVertexBundle {
-        cc::optional<uint8_t> _padding; // TODO(PatriceJiang): avoid jsb cache map
+        cc::optional<uint8_t> _padding; // NOTE: avoid jsb cache map
         /**
          * @en The actual value for all vertex attributes.
          * You must use DataView to access the data.
@@ -205,15 +205,6 @@ public:
     inline void setStruct(const IStruct &input) {
         _struct = input;
     }
-
-    /**
-     * @en The actual data of the mesh
-     * @zh 此网格的数据。
-     */
-    // TODO(PatriceJiang); binding generator does not support override function
-    //    inline const Uint8Array &getData() const {
-    //        return _data;
-    //    }
 
     inline Uint8Array &getData() {
         return _data;

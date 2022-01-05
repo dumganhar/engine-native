@@ -113,13 +113,6 @@ public:
      */
     std::vector<uint8_t> readPixels(uint32_t x, uint32_t y, uint32_t width, uint32_t height) const;
 
-    // Functions for TS deserialization.
-    inline void setWidth(uint32_t width) { _width = width; }
-    inline void setHeight(uint32_t height) { _height = height; }
-
-    inline uint32_t getWidth() const { return _width; }
-    inline uint32_t getHeight() const { return _height; }
-
 private:
     scene::RenderWindow *_window{nullptr};
 

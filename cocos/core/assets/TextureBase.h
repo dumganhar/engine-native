@@ -88,6 +88,11 @@ public:
     uint32_t getHeight() const {
         return _height;
     }
+
+    // Functions for TS deserialization.
+    inline void setWidth(uint32_t width) { _width = width; }
+    inline void setHeight(uint32_t height) { _height = height; }
+
     /**
      * @en Gets the id of the texture
      * @zh 获取标识符。

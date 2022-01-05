@@ -34,6 +34,8 @@
 #include "scene/Shadow.h"
 #include "scene/Skybox.h"
 
+#include <sstream>
+
 namespace cc {
 namespace pipeline {
 

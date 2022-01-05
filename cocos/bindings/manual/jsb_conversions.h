@@ -617,7 +617,7 @@ struct HolderType<cc::ArrayBuffer, true> {
     using local_type = cc::ArrayBuffer;
     local_type                 data;
     std::remove_const_t<type> *ptr = nullptr;
-    inline type &              value() { return data; /* TODO(PatriceJiang): use std::move() */ }
+    inline type &              value() { return data; }
 };
 
 template <typename R, typename... ARGS>
@@ -1338,10 +1338,6 @@ bool nativevalue_to_se_args_v(se::ValueArray &array, Args &...args) { // NOLINT(
     return nativevalue_to_se_args<0, Args...>(array, args...);
 }
 
-#if __clang__ && defined(HAS_PUSH_DIAGNOSTI)
-    #pragma clang diagnostic pop
-#endif
-
 // Spine conversions
 #if USE_SPINE
 
@@ -1506,6 +1502,6 @@ bool nativevalue_to_se(const std::reference_wrapper<T> ref, se::Value &to, se::O
     return nativevalue_to_se(ref.get(), to, ctx);
 }
 
-#if __clang__
-    #pragma clang diagnostic pop // NOLINT
+#if __clang__ && defined(HAS_PUSH_DIAGNOSTI)
+    #pragma clang diagnostic pop
 #endif

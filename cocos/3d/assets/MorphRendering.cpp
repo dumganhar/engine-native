@@ -410,11 +410,11 @@ public:
             const auto &           attributeName = attribute.attributeName;
             cc::optional<uint32_t> binding;
             if (attributeName == gfx::ATTR_NAME_POSITION) {
-                binding = pipeline::POSITIONMORPH::BINDING;
+                binding = uint32_t{pipeline::POSITIONMORPH::BINDING};
             } else if (attributeName == gfx::ATTR_NAME_NORMAL) {
-                binding = pipeline::NORMALMORPH::BINDING;
+                binding = uint32_t{pipeline::NORMALMORPH::BINDING};
             } else if (attributeName == gfx::ATTR_NAME_TANGENT) {
-                binding = pipeline::TANGENTMORPH::BINDING;
+                binding = uint32_t{pipeline::TANGENTMORPH::BINDING};
             } else {
                 CC_LOG_WARNING("Unexpected attribute!");
             }
@@ -468,11 +468,11 @@ public:
             const auto &           attributeName = attribute.attributeName;
             cc::optional<uint32_t> binding;
             if (attributeName == gfx::ATTR_NAME_POSITION) {
-                binding = pipeline::POSITIONMORPH::BINDING;
+                binding = uint32_t{pipeline::POSITIONMORPH::BINDING};
             } else if (attributeName == gfx::ATTR_NAME_NORMAL) {
-                binding = pipeline::NORMALMORPH::BINDING;
+                binding = uint32_t{pipeline::NORMALMORPH::BINDING};
             } else if (attributeName == gfx::ATTR_NAME_TANGENT) {
-                binding = pipeline::TANGENTMORPH::BINDING;
+                binding = uint32_t{pipeline::TANGENTMORPH::BINDING};
             } else {
                 CC_LOG_WARNING("Unexpected attribute!");
             }

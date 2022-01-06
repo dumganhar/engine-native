@@ -141,21 +141,21 @@ void ShadowsInfo::setNear(float val) {
 }
 
 void ShadowsInfo::setFar(float val) {
-    _far = std::min(val, Shadows::MAX_FAR);
+    _far = CC_MIN(val, Shadows::MAX_FAR);
     if (_resource != nullptr) {
         _resource->setFar(val);
     }
 }
 
 void ShadowsInfo::setInvisibleOcclusionRange(float val) {
-    _invisibleOcclusionRange = std::min(val, Shadows::MAX_FAR);
+    _invisibleOcclusionRange = CC_MIN(val, Shadows::MAX_FAR);
     if (_resource) {
         _resource->setInvisibleOcclusionRange(_invisibleOcclusionRange);
     }
 }
 
 void ShadowsInfo::setShadowDistance(float val) {
-    _shadowDistance = std::min(val, Shadows::MAX_FAR);
+    _shadowDistance = CC_MIN(val, Shadows::MAX_FAR);
     if (_resource) {
         _resource->setShadowDistance(_shadowDistance);
     }

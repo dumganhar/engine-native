@@ -385,58 +385,59 @@ inline bool nativevalue_to_se(const std::vector<uint8_t> &from, se::Value &to, s
     return true;
 }
 
-inline bool nativevalue_to_se(const int64_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(int64_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setInt64(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const uint64_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(uint64_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUint64(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const int32_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(int32_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setInt32(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const uint32_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(uint32_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUint32(from);
     return true;
 }
-inline bool nativevalue_to_se(const int16_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(int16_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setInt16(from);
     return true;
 }
-inline bool nativevalue_to_se(const uint16_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(uint16_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUint16(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const int8_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(int8_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setInt8(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const uint8_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(uint8_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUint8(from);
+    return true;
+}
+
+inline bool nativevalue_to_se(float from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    to.setFloat(from);
+    return true;
+}
+inline bool nativevalue_to_se(double from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    to.setDouble(from);
+    return true;
+}
+inline bool nativevalue_to_se(bool from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    to.setBoolean(from);
     return true;
 }
 
 inline bool nativevalue_to_se(const std::string &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setString(from);
-    return true;
-}
-inline bool nativevalue_to_se(const float &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    to.setFloat(from);
-    return true;
-}
-inline bool nativevalue_to_se(const double &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    to.setDouble(from);
-    return true;
-}
-inline bool nativevalue_to_se(const bool &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    to.setBoolean(from);
     return true;
 }
 // template <>

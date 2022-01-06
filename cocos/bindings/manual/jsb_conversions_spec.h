@@ -345,6 +345,7 @@ bool sevalue_to_native(const se::Value &from, cc::geometry::Ray *, se::Object * 
 bool sevalue_to_native(const se::Value &from, cc::geometry::Sphere *, se::Object * /*ctx*/);       // NOLINT(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::geometry::Triangle *, se::Object * /*ctx*/);     // NOLINT(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::geometry::Plane *to, se::Object * /*unused*/);   // NOLINT(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::geometry::Plane **to, se::Object * /*unused*/);  // NOLINT(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::geometry::Frustum *to, se::Object * /*unused*/); // NOLINT(readability-identifier-naming)
 
 ////////////////////////////////////////////////////////////////////////////

@@ -705,6 +705,11 @@ bool sevalue_to_native(const se::Value &from, cc::geometry::Plane *to, se::Objec
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
+bool sevalue_to_native(const se::Value &from, cc::geometry::Plane **to, se::Object * ctx) {
+    return sevalue_to_native(from, *to, ctx);
+}
+
+// NOLINTNEXTLINE(readability-identifier-naming)
 bool sevalue_to_native(const se::Value &from, cc::geometry::Frustum *to, se::Object * /*unused*/) {
     SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Frustum failed!");
     se::Object *obj = from.toObject();

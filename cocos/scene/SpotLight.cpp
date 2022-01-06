@@ -31,9 +31,20 @@
 
 namespace cc {
 namespace scene {
+
 SpotLight::SpotLight() {
     _type = LightType::SPOT;
+    _aabb = new geometry::AABB();
+    _aabb->addRef();
+    _frustum = new geometry::Frustum();
+    _frustum->addRef();
 }
+
+SpotLight::~SpotLight() {
+    _aabb->release();
+    _frustum->release();
+}
+
 void SpotLight::initialize() {
     Light::initialize();
 
@@ -71,7 +82,7 @@ void SpotLight::update() {
         _dir = _forward;
         _dir.transformQuat(_node->getWorldRotation());
         _dir.normalize();
-        _aabb.set(_pos, {_range, _range, _range});
+        _aabb->set(_pos, {_range, _range, _range});
 
         // view matrix
         matView = _node->getWorldRT();
@@ -81,7 +92,7 @@ void SpotLight::update() {
 
         Mat4::multiply(matProj, matView, &matViewProj);
 
-        _frustum.update(matViewProj, matViewProjInv);
+        _frustum->update(matViewProj, matViewProjInv);
 
         _needUpdate = false;
     }

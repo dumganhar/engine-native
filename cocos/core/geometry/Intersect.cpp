@@ -610,7 +610,7 @@ int aabbPlane(const AABB &aabb, const Plane &plane) {
 int aabbFrustum(const AABB &aabb, const Frustum &frustum) {
     for (const auto &plane : frustum.planes) {
         // frustum plane normal points to the inside
-        if (aabbPlane(aabb, plane) == -1) {
+        if (aabbPlane(aabb, *plane) == -1) {
             return 0;
         }
     } // completely outside
@@ -626,7 +626,7 @@ int aabbFrustumAccurate(const AABB &aabb, const Frustum &frustum) {
     bool                intersects = false;
     // 1. aabb inside/outside frustum test
     for (const auto &plane : frustum.planes) {
-        result = aabbPlane(aabb, plane);
+        result = aabbPlane(aabb, *plane);
         // frustum plane normal points to the inside
         if (result == -1) {
             return 0; // completely outside
@@ -716,7 +716,7 @@ int obbPlane(const OBB &obb, const Plane &plane) {
 int obbFrustum(const OBB &obb, const Frustum &frustum) {
     for (const auto &plane : frustum.planes) {
         // frustum plane normal points to the inside
-        if (obbPlane(obb, plane) == -1) {
+        if (obbPlane(obb, *plane) == -1) {
             return 0;
         }
     } // completely outside
@@ -736,7 +736,7 @@ int obbFrustumAccurate(const OBB &obb, const Frustum &frustum) {
     auto intersects = false;
     // 1. obb inside/outside frustum test
     for (const auto &plane : frustum.planes) {
-        result = obbPlane(obb, plane);
+        result = obbPlane(obb, *plane);
         // frustum plane normal points to the inside
         if (result == -1) {
             return 0; // completely outside
@@ -891,7 +891,7 @@ int spherePlane(const Sphere &sphere, const Plane &plane) {
 int sphereFrustum(const Sphere &sphere, const Frustum &frustum) {
     for (const auto &plane : frustum.planes) {
         // frustum plane normal points to the inside
-        if (spherePlane(sphere, plane) == -1) {
+        if (spherePlane(sphere, *plane) == -1) {
             return 0;
         }
     } // completely outside
@@ -902,8 +902,8 @@ int sphereFrustumAccurate(const Sphere &sphere, const Frustum &frustum) {
     const static std::array<int, 6> MAP = {1, -1, 1, -1, 1, -1};
     for (auto i = 0; i < 6; i++) {
         const auto &plane = frustum.planes[i];
-        const auto &n     = plane.n;
-        const auto &d     = plane.d;
+        const auto &n     = plane->n;
+        const auto &d     = plane->d;
         auto        r     = sphere.getRadius();
         const auto &c     = sphere.getCenter();
         auto        dot   = Vec3::dot(n, c);
@@ -922,7 +922,7 @@ int sphereFrustumAccurate(const Sphere &sphere, const Frustum &frustum) {
                 continue;
             }
             const auto &test = frustum.planes[j];
-            if (Vec3::dot(test.n, pt) < test.d) {
+            if (Vec3::dot(test->n, pt) < test->d) {
                 return 0;
             }
         }

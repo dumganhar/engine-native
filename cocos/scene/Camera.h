@@ -125,6 +125,7 @@ public:
     static constexpr int32_t SKYBOX_FLAG{static_cast<int32_t>(gfx::ClearFlagBit::STENCIL) << 1};
 
     explicit Camera(gfx::Device *device);
+    ~Camera() override;
 
     /**
      * this exposure value corresponding to default standard camera exposure parameters
@@ -239,12 +240,9 @@ public:
     inline const Mat4 &       getMatViewProjInv() const { return _matViewProjInv; }
 
     inline void setFrustum(const geometry::Frustum &val) {
-        _frustum = val;
-        // NOTE: Hacking logic, _frustum is owned by Camera, so it should not be released by JS garbage collector.
-        _frustum.addRef();
-        //
+        *_frustum = val;
     }
-    inline const geometry::Frustum &getFrustum() const { return _frustum; }
+    inline const geometry::Frustum &getFrustum() const { return *_frustum; }
 
     inline void          setWindow(RenderWindow *val) { _window = val; }
     inline RenderWindow *getWindow() const { return _window; }
@@ -341,7 +339,7 @@ private:
     Mat4                  _matProjInv;
     Mat4                  _matViewProj;
     Mat4                  _matViewProjInv;
-    geometry::Frustum     _frustum;
+    geometry::Frustum    *_frustum{nullptr};
     Vec3                  _forward;
     Vec3                  _position;
     uint32_t              _priority{0};

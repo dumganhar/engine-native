@@ -138,7 +138,7 @@ bool Sphere::interset(const Frustum &frustum) const {
     return std::all_of(planes.begin(),
                        planes.end(),
                        // frustum plane normal points to the inside
-                       [self](const Plane &plane) { return self->interset(plane) != -1; });
+                       [self](const Plane *plane) { return self->interset(*plane) != -1; });
 }
 
 void Sphere::mergePoint(const Vec3 &point) {
@@ -203,8 +203,9 @@ bool Sphere::sphereFrustum(const Frustum &frustum) const {
     return std::all_of(planes.begin(),
                        planes.end(),
                        // frustum plane normal points to the inside
-                       [self](const Plane &plane) { return self->interset(plane) != -1; });
+                       [self](const Plane *plane) { return self->interset(*plane) != -1; });
 }
+
 void Sphere::mergeFrustum(const Frustum &frustum) {
     const std::array<Vec3, 8> &vertices = frustum.vertices;
     for (size_t i = 0; i < vertices.max_size(); ++i) {

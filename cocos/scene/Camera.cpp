@@ -66,10 +66,9 @@ Camera::Camera(gfx::Device *device)
     _isoValue      = Camera::ISOS[static_cast<int>(_iso)];
 
     _aspect = _screenScale = 1.F;
-    // NOTE: Hacking logic, _frustum is owned by Camera, so it should not be released by JS garbage collector.
-    _frustum.addRef();
-    //
-    _frustum.setAccurate(true);
+    _frustum = new geometry::Frustum();
+    _frustum->addRef();
+    _frustum->setAccurate(true);
 
     if (correctionMatrices.empty()) {
         float ySign = _device->getCapabilities().clipSpaceSignY;
@@ -78,6 +77,10 @@ Camera::Camera(gfx::Device *device)
         assignMat4(correctionMatrices[static_cast<int>(gfx::SurfaceTransform::ROTATE_180)], -1, 0, 0, 0, 0, -ySign);
         assignMat4(correctionMatrices[static_cast<int>(gfx::SurfaceTransform::ROTATE_270)], 0, -1, 0, 0, ySign, 0);
     }
+}
+
+Camera::~Camera() {
+    _frustum->release();
 }
 
 bool Camera::initialize(const ICameraInfo &info) {
@@ -186,7 +189,7 @@ void Camera::update(bool forceUpdate /*false*/) {
     if (viewProjDirty) {
         Mat4::multiply(_matProj, _matView, &_matViewProj);
         _matViewProjInv = _matViewProj.getInversed();
-        _frustum.update(_matViewProj, _matViewProjInv);
+        _frustum->update(_matViewProj, _matViewProjInv);
     }
 }
 void Camera::changeTargetWindow(RenderWindow *window) {

@@ -108,7 +108,9 @@ public:
      */
     static Frustum *copy(Frustum *out, const Frustum &f) {
         out->setType(f.getType());
-        out->planes   = f.planes;
+        for (size_t i = 0; i < 6; ++i) {
+            Plane::copy(out->planes[i],  *(f.planes[i]));
+        }
         out->vertices = f.vertices;
         return out;
     }
@@ -125,9 +127,15 @@ public:
 
     Frustum() {
         setType(ShapeEnum::SHAPE_FRUSTUM);
-        // NOTE: Hack logic, avoid JS finalizer delete plane objects which be owned by Frustum
-        for (auto &plane : planes) {
-            plane.addRef();
+        for (size_t i = 0; i < planes.size(); ++i) {
+            planes[i] = new Plane();
+            planes[i]->addRef();
+        }
+    }
+
+    ~Frustum() override {
+        for (auto* plane : planes) {
+            plane->release();
         }
     }
 
@@ -141,7 +149,7 @@ public:
     void transform(const Mat4 &);
 
     std::array<Vec3, 8>  vertices;
-    std::array<Plane, 6> planes;
+    std::array<Plane*, 6> planes;
     void                 createOrtho(float width, float height, float near, float far, const Mat4 &transform);
     void                 split(float start, float end, float aspect, float fov, const Mat4 &transform);
     void                 updatePlanes();

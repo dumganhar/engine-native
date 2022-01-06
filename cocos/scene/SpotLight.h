@@ -36,7 +36,7 @@ namespace scene {
 class SpotLight final : public Light {
 public:
     SpotLight();
-    ~SpotLight() override = default;
+    ~SpotLight() override;
 
     void initialize() override;
     void update() override;
@@ -75,13 +75,13 @@ public:
         _needUpdate = true;
     }
 
-    inline const geometry::AABB &getAABB() const { return _aabb; }
+    inline const geometry::AABB &getAABB() const { return *_aabb; }
 
-    inline const geometry::Frustum &getFrustum() const { return _frustum; }
+    inline const geometry::Frustum &getFrustum() const { return *_frustum; }
     inline float                    getLuminanceHDR() const { return _luminanceHDR; }
     inline float                    getLuminanceLDR() const { return _luminanceLDR; }
 
-    inline void setFrustum(geometry::Frustum frustum) { _frustum = std::move(frustum); }
+    inline void setFrustum(const geometry::Frustum &frustum) { *_frustum = frustum; }
 
 private:
     bool              _needUpdate{false};
@@ -94,8 +94,8 @@ private:
     float             _aspect{0.F};
     Vec3              _dir;
     Vec3              _pos;
-    geometry::AABB    _aabb;
-    geometry::Frustum _frustum;
+    geometry::AABB*    _aabb{nullptr};
+    geometry::Frustum* _frustum{nullptr};
 
     CC_DISALLOW_COPY_MOVE_ASSIGN(SpotLight);
 };

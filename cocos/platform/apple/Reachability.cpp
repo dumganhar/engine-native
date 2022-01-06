@@ -110,6 +110,7 @@ Reachability *Reachability::createWithHostName(const std::string &hostName) {
     SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(nullptr, hostName.c_str());
     if (reachability != nullptr) {
         returnValue = new (std::nothrow) Reachability();
+        returnValue->addRef();
         if (returnValue != nullptr) {
             cc::DeferredReleasePool::add(returnValue);
             returnValue->_reachabilityRef = reachability;
@@ -127,6 +128,7 @@ Reachability *Reachability::createWithAddress(const struct sockaddr *hostAddress
 
     if (reachability != nullptr) {
         returnValue = new (std::nothrow) Reachability();
+        returnValue->addRef();
         if (returnValue != nullptr) {
             cc::DeferredReleasePool::add(returnValue);
             returnValue->_reachabilityRef = reachability;

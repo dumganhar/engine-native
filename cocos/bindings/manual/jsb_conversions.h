@@ -313,11 +313,14 @@ bool seval_to_Map_string_key(const se::Value &v, cc::Map<std::string, T> *ret) {
 }
 
 template <typename T>
-typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, void>::type cc_tmp_set_private_data(se::Object *obj, T *v) { // NOLINT(readability-identifier-naming)
+typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, void>::type
+cc_tmp_set_private_data(se::Object *obj, T *v) { // NOLINT(readability-identifier-naming)
     obj->setPrivateData(v);
 }
+
 template <typename T>
-typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, void>::type cc_tmp_set_private_data(se::Object *obj, T *v) { // NOLINT(readability-identifier-naming)
+typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, void>::type
+cc_tmp_set_private_data(se::Object *obj, T *v) { // NOLINT(readability-identifier-naming)
     obj->setPrivateObject(se::rawref_private_object(v));
 }
 
@@ -902,7 +905,7 @@ inline bool sevalue_to_native(const se::Value &from, std::function<R(Args...)> *
 
 template <typename... Args>
 inline bool sevalue_to_native(const se::Value & /*from*/, cc::variant<Args...> * /*to*/, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    static_assert(sizeof...(Args) == 0);                                                                         //TODO(PatriceJiang): should not pass variant from js -> native
+    static_assert(sizeof...(Args) == 0, "");                                                                     //TODO(PatriceJiang): should not pass variant from js -> native
     assert(false);
     return false;
 }
@@ -1114,7 +1117,7 @@ bool sevalue_to_native(const se::Value &from, cc::optional<T> *to, se::Object *c
     }
     T    tmp{};
     bool ret = sevalue_to_native(from, &tmp, ctx);
-    if constexpr (std::is_move_assignable<T>::value) {
+    if CC_CONSTEXPR (std::is_move_assignable<T>::value) {
         *to = std::move(tmp);
     } else {
         *to = tmp;

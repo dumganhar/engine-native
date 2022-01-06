@@ -27,6 +27,7 @@
 
 #include <vector>
 #include "base/Macros.h"
+#include "base/RefCounted.h"
 #include "gfx-base/GFXDef-common.h"
 #include "gfx-base/GFXDevice.h"
 #include "math/Vec2.h"
@@ -64,10 +65,10 @@ struct GeometryConfig {
     uint32_t maxTriangles{0U};
 };
 
-class GeometryRenderer {
+class GeometryRenderer : public RefCounted {
 public:
     GeometryRenderer();
-    ~GeometryRenderer();
+    ~GeometryRenderer() override;
     GeometryRenderer(const GeometryRenderer &) = delete;
     GeometryRenderer(GeometryRenderer &&)      = delete;
     GeometryRenderer &operator=(const GeometryRenderer &) = delete;

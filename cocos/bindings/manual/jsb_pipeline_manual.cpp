@@ -102,5 +102,7 @@ bool register_all_pipeline_manual(se::Object *obj) { // NOLINT(readability-ident
     nr->setProperty("PipelineStateManager", psmVal);
     psmVal.toObject()->defineFunction("getOrCreatePipelineState", _SE(JSB_getOrCreatePipelineState));
 
+    __jsb_cc_pipeline_GeometryRenderer_proto->defineFunction("flushFromJSB", _SE(js_pipeline_GeometryRenderer_flushFromJSB));
+
     return true;
 }

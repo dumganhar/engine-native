@@ -60,7 +60,6 @@ RenderPipeline::RenderPipeline()
 
     _globalDSManager  = new GlobalDSManager();
     _pipelineUBO      = new PipelineUBO();
-    _geometryRenderer = new GeometryRenderer();
 }
 
 RenderPipeline::~RenderPipeline() {
@@ -82,6 +81,8 @@ bool RenderPipeline::activate(gfx::Swapchain * /*swapchain*/) {
     _descriptorSet = _globalDSManager->getGlobalDescriptorSet();
     _pipelineUBO->activate(_device, this);
     _pipelineSceneData->activate(_device, this);
+
+    CC_ASSERT(_geometryRenderer != nullptr);
     _geometryRenderer->activate(_device, this);
 
     // generate macros here rather than construct func because _clusterEnabled

@@ -145,8 +145,8 @@ protected:
     gfx::DescriptorSet *            _descriptorSet{nullptr};
     PipelineUBO *                   _pipelineUBO{nullptr};
     scene::Model *                  _profiler{nullptr};
-    IntrusivePtr<PipelineSceneData> _pipelineSceneData{nullptr};
-    GeometryRenderer *              _geometryRenderer{nullptr};
+    IntrusivePtr<PipelineSceneData> _pipelineSceneData;
+    IntrusivePtr<GeometryRenderer>  _geometryRenderer;
     // has not initBuiltinRes,
     // create temporary default Texture to binding sampler2d
     uint                                                          _width{0};

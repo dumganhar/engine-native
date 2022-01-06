@@ -94,8 +94,9 @@ void PipelineSceneData::initOcclusionQuery() {
 
 void PipelineSceneData::initGeometryRendererMaterials() {
     _geometryRendererMaterials.resize(GEOMETRY_RENDERER_TECHNIQUE_COUNT);
-    _geometryRendererPasses.resize(GEOMETRY_RENDERER_TECHNIQUE_COUNT);
-    _geometryRendererShaders.resize(GEOMETRY_RENDERER_TECHNIQUE_COUNT);
+    _geometryRendererPasses.reserve(GEOMETRY_RENDERER_TECHNIQUE_COUNT);
+    _geometryRendererShaders.reserve(GEOMETRY_RENDERER_TECHNIQUE_COUNT);
+
     for (uint32_t tech = 0; tech < GEOMETRY_RENDERER_TECHNIQUE_COUNT; tech++) {
         _geometryRendererMaterials[tech] = new Material();
 

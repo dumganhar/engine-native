@@ -1186,6 +1186,13 @@ nativevalue_to_se(const T &from, se::Value &to, se::Object *ctx) {
     return native_ptr_to_seval(from, &to);
 }
 
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
+nativevalue_to_se(const T &from, se::Value &to, se::Object *ctx) {
+    to.setDouble(static_cast<double>(from));
+    return true;
+}
+
 #endif // HAS_CONSTEXPR
 
 //////////////////////////////// forward declaration: nativevalue_to_se ////////////////////////////////

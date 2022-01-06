@@ -540,7 +540,7 @@ public:
      *  @param filepath The path of the file, it could be a relative or absolute path.
      *  @return The file size.
      */
-    virtual int32_t getFileSize(const std::string &filepath); //NOLINT(google-runtime-int)
+    virtual long getFileSize(const std::string &filepath); //NOLINT(google-runtime-int)
 
     /** Returns the full path cache. */
     const std::unordered_map<std::string, std::string> &getFullPathCache() const { return _fullPathCache; }

@@ -107,7 +107,7 @@ std::string FileUtilsWin32::getSuitableFOpen(const std::string &filenameUtf8) co
     return UTF8StringToMultiByte(filenameUtf8);
 }
 
-int32_t FileUtilsWin32::getFileSize(const std::string &filepath) {
+long FileUtilsWin32::getFileSize(const std::string &filepath) {
     WIN32_FILE_ATTRIBUTE_DATA fad;
     if (!GetFileAttributesEx(StringUtf8ToWideChar(filepath).c_str(), GetFileExInfoStandard, &fad)) {
         return 0; // error condition, could call GetLastError to find out more

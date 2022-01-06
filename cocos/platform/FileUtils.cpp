@@ -948,7 +948,7 @@ std::string FileUtils::getSuitableFOpen(const std::string &filenameUtf8) const {
     return filenameUtf8;
 }
 
-int32_t FileUtils::getFileSize(const std::string &filepath) {
+long FileUtils::getFileSize(const std::string &filepath) {
     CCASSERT(false, "getFileSize should be override by platform FileUtils");
     return 0;
 }
@@ -1088,7 +1088,7 @@ std::string FileUtils::getSuitableFOpen(const std::string &filenameUtf8) const {
     return filenameUtf8;
 }
 
-int32_t FileUtils::getFileSize(const std::string &filepath) { //NOLINT(google-runtime-int)
+long FileUtils::getFileSize(const std::string &filepath) { //NOLINT(google-runtime-int)
     CCASSERT(!filepath.empty(), "Invalid path");
 
     std::string fullpath{filepath};

@@ -194,7 +194,7 @@ static bool js_engine_FileUtils_getFileSize(se::State& s) // NOLINT(readability-
         HolderType<std::string, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_engine_FileUtils_getFileSize : Error processing arguments");
-        int32_t result = cobj->getFileSize(arg0.value());
+        long result = cobj->getFileSize(arg0.value());
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_engine_FileUtils_getFileSize : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());

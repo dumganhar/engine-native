@@ -58,8 +58,8 @@ RenderPipeline::RenderPipeline()
 : _device(gfx::Device::getInstance()) {
     RenderPipeline::instance = this;
 
-    _globalDSManager  = new GlobalDSManager();
-    _pipelineUBO      = new PipelineUBO();
+    _globalDSManager = new GlobalDSManager();
+    _pipelineUBO     = new PipelineUBO();
 }
 
 RenderPipeline::~RenderPipeline() {

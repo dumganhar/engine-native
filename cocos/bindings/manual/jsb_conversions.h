@@ -654,7 +654,7 @@ inline typename std::enable_if_t<!std::is_enum<T>::value && !std::is_pointer<T>:
 sevalue_to_native(const se::Value & /*from*/, T * /*to*/, se::Object * /*unused*/) { // NOLINT(readability-identifier-naming)
     SE_LOGE("Can not convert type ???\n - [[ %s ]]\n", typeid(T).name());
     CC_STATIC_ASSERT(!is_variant<T>::value, "should not match cc::variant");
-    CC_STATIC_ASSERT(std::is_same<T, void>::value, "sevalue_to_native not implemented for T");
+    CC_STATIC_ASSERT((std::is_same<T, void>::value), "sevalue_to_native not implemented for T");
     return false;
 }
 
@@ -1184,6 +1184,13 @@ template <typename T>
 inline typename std::enable_if<is_jsb_object_v<T>, bool>::type
 nativevalue_to_se(const T &from, se::Value &to, se::Object *ctx) {
     return native_ptr_to_seval(from, &to);
+}
+
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
+nativevalue_to_se(const T &from, se::Value &to, se::Object *ctx) {
+    to.setDouble(static_cast<double>(from));
+    return true;
 }
 
 #endif // HAS_CONSTEXPR

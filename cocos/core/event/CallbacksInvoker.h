@@ -77,13 +77,13 @@ struct CallbackInfo final : public CallbackInfoBase {
         _callback   = std::forward<CallbackFn>(callback);
         _target     = target;
         _once       = once;
-        _isCCObject = std::is_base_of_v<CCObject, Target>;
+        _isCCObject = std::is_base_of<CCObject, Target>::value;
 #if CC_DEBUG
         _argTypes = {(typeid(Args).name())...};
 #endif
     }
 
-    template <typename Target, typename = std::enable_if_t<std::is_base_of_v<CCObject, Target>>>
+    template <typename Target, typename = std::enable_if_t<std::is_base_of<CCObject, Target>::value>>
     void set(CallbackMemberFn memberFn, Target *target, bool once) {
         _memberFn   = memberFn;
         _target     = target;
@@ -200,11 +200,11 @@ public:
     void on(const KeyType &key, std::function<void(Args...)> &&callback, bool once = false);
 
     template <typename Target, typename LambdaType>
-    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    std::enable_if_t<!std::is_member_function_pointer<LambdaType>::value, void>
     on(const KeyType &key, LambdaType &&callback, Target *target, bool once = false);
 
     template <typename LambdaType>
-    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    std::enable_if_t<!std::is_member_function_pointer<LambdaType>::value, void>
     on(const KeyType &key, LambdaType &&callback, bool once = false);
 
     //
@@ -215,11 +215,11 @@ public:
     void on(const KeyType &key, std::function<void(Args...)> &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     template <typename Target, typename LambdaType>
-    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    std::enable_if_t<!std::is_member_function_pointer<LambdaType>::value, void>
     on(const KeyType &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     template <typename LambdaType>
-    std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+    std::enable_if_t<!std::is_member_function_pointer<LambdaType>::value, void>
     on(const KeyType &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once = false);
 
     /**
@@ -292,7 +292,7 @@ private:
 
 template <typename Target, typename... Args>
 void CallbacksInvoker::on(const KeyType &key, void (Target::*memberFn)(Args...), Target *target, bool once) {
-    static_assert(std::is_base_of_v<CCObject, Target>, "Target must be the subclass of CCObject");
+    static_assert(std::is_base_of<CCObject, Target>::value, "Target must be the subclass of CCObject");
     using CallbackInfoType    = CallbackInfo<Args...>;
     auto &list                = _callbackTable[key];
     auto  info                = std::make_shared<CallbackInfoType>();
@@ -319,13 +319,13 @@ void CallbacksInvoker::on(const KeyType &key, std::function<void(Args...)> &&cal
 }
 
 template <typename Target, typename LambdaType>
-std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+std::enable_if_t<!std::is_member_function_pointer<LambdaType>::value, void>
 CallbacksInvoker::on(const KeyType &key, LambdaType &&callback, Target *target, CallbackInfoBase::ID &outCallbackID, bool once) {
     on(key, toFunction(std::forward<LambdaType>(callback)), target, outCallbackID, once);
 }
 
 template <typename LambdaType>
-std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+std::enable_if_t<!std::is_member_function_pointer<LambdaType>::value, void>
 CallbacksInvoker::on(const KeyType &key, LambdaType &&callback, CallbackInfoBase::ID &outCallbackID, bool once) {
     on(key, toFunction(std::forward<LambdaType>(callback)), outCallbackID, once);
 }
@@ -343,14 +343,14 @@ void CallbacksInvoker::on(const KeyType &key, std::function<void(Args...)> &&cal
 }
 
 template <typename Target, typename LambdaType>
-std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+std::enable_if_t<!std::is_member_function_pointer<LambdaType>::value, void>
 CallbacksInvoker::on(const KeyType &key, LambdaType &&callback, Target *target, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on(key, toFunction(std::forward<LambdaType>(callback)), target, unusedID, once);
 }
 
 template <typename LambdaType>
-std::enable_if_t<!std::is_member_function_pointer_v<LambdaType>, void>
+std::enable_if_t<!std::is_member_function_pointer<LambdaType>::value, void>
 CallbacksInvoker::on(const KeyType &key, LambdaType &&callback, bool once) {
     CallbackInfoBase::ID unusedID{0};
     on(key, toFunction(std::forward<LambdaType>(callback)), unusedID, once);
@@ -358,7 +358,7 @@ CallbacksInvoker::on(const KeyType &key, LambdaType &&callback, bool once) {
 
 template <typename Target, typename... Args>
 void CallbacksInvoker::off(const KeyType &key, void (Target::*memberFn)(Args...), Target *target) {
-    static_assert(std::is_base_of_v<CCObject, Target>, "Target must be the subclass of CCObject");
+    static_assert(std::is_base_of<CCObject, Target>::value, "Target must be the subclass of CCObject");
     using CallbackFn = void (CCObject::*)(Args...);
     auto iter        = _callbackTable.find(key);
     if (iter != _callbackTable.end()) {

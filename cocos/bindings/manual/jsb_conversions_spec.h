@@ -33,6 +33,11 @@
 #include "core/TypedArray.h"
 #include "core/assets/RenderingSubMesh.h"
 
+#if USE_PHYSICS_PHYSX
+#include "physics/spec/IWorld.h"
+#include "physics/spec/IShape.h"
+#endif
+
 namespace cc {
 class Data;
 class Vec4;
@@ -512,3 +517,21 @@ inline bool nativevalue_to_se(const se_object_ptr &from, se::Value &to, se::Obje
     return true;
 }
 #endif //USE_MIDDLEWARE
+
+
+#if USE_PHYSICS_PHYSX
+
+bool nativevalue_to_se(const std::vector<std::shared_ptr<cc::physics::TriggerEventPair>> &from, se::Value &to, se::Object * /*ctx*/);
+bool nativevalue_to_se(const std::vector<cc::physics::ContactPoint> &from, se::Value &to, se::Object * /*ctx*/);
+bool nativevalue_to_se(const std::vector<std::shared_ptr<cc::physics::ContactEventPair>> &from, se::Value &to, se::Object *ctx);
+bool nativevalue_to_se(const cc::physics::RaycastResult &from, se::Value &to, se::Object *ctx);
+
+bool sevalue_to_native(const se::Value &from, cc::physics::ConvexDesc *to, se::Object *ctx);
+bool sevalue_to_native(const se::Value &from, cc::physics::TrimeshDesc *to, se::Object *ctx);
+bool sevalue_to_native(const se::Value &from, cc::physics::HeightFieldDesc *to, se::Object *ctx);
+bool sevalue_to_native(const se::Value &from, cc::physics::RaycastOptions *to, se::Object *ctx);
+
+bool nativevalue_to_se(const cc::geometry::AABB &from, se::Value &to, se::Object *ctx);
+bool nativevalue_to_se(const cc::geometry::Sphere &from, se::Value &to, se::Object *ctx);
+
+#endif //USE_PHYSICS_PHYSX

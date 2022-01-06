@@ -26,7 +26,6 @@
 #pragma once
 
 #include <cstdint>
-#include "bindings/manual/jsb_conversions.h"
 #include "core/geometry/AABB.h"
 #include "core/geometry/Sphere.h"
 #include "core/scene-graph/Node.h"
@@ -130,23 +129,3 @@ public:
 
 } // namespace physics
 } // namespace cc
-
-template <>
-inline bool nativevalue_to_se(const cc::geometry::AABB &from, se::Value &to, se::Object *ctx) {
-    se::HandleObject obj(se::Object::createPlainObject());
-    se::Value        tmp;
-    if (nativevalue_to_se(from.getCenter(), tmp, ctx)) obj->setProperty("center", tmp);
-    if (nativevalue_to_se(from.getHalfExtents(), tmp, ctx)) obj->setProperty("halfExtents", tmp);
-    to.setObject(obj);
-    return true;
-}
-
-template <>
-inline bool nativevalue_to_se(const cc::geometry::Sphere &from, se::Value &to, se::Object *ctx) {
-    se::HandleObject obj(se::Object::createPlainObject());
-    se::Value        tmp(from.getRadius());
-    obj->setProperty("radius", tmp);
-    if (nativevalue_to_se(from.getCenter(), tmp, ctx)) obj->setProperty("center", tmp);
-    to.setObject(obj);
-    return true;
-}

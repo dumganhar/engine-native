@@ -106,6 +106,9 @@ typedef SSIZE_T ssize_t;
     #define FLT_EPSILON 1.192092896e-07F
 #endif // FLT_EPSILON
 
+#define CC_MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define CC_MAX(a, b) (((a) < (b)) ? (b) : (a))
+
 /**
 Helper macros which converts 4-byte little/big endian
 integral number to the machine native number representation

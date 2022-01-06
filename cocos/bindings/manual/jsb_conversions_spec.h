@@ -33,6 +33,11 @@
 #include "core/TypedArray.h"
 #include "core/assets/RenderingSubMesh.h"
 
+#if USE_PHYSICS_PHYSX
+    #include "physics/spec/IShape.h"
+    #include "physics/spec/IWorld.h"
+#endif
+
 namespace cc {
 class Data;
 class Vec4;
@@ -380,58 +385,59 @@ inline bool nativevalue_to_se(const std::vector<uint8_t> &from, se::Value &to, s
     return true;
 }
 
-inline bool nativevalue_to_se(const int64_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(int64_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setInt64(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const uint64_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(uint64_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUint64(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const int32_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(int32_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setInt32(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const uint32_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(uint32_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUint32(from);
     return true;
 }
-inline bool nativevalue_to_se(const int16_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(int16_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setInt16(from);
     return true;
 }
-inline bool nativevalue_to_se(const uint16_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(uint16_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUint16(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const int8_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(int8_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setInt8(from);
     return true;
 }
 
-inline bool nativevalue_to_se(const uint8_t &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+inline bool nativevalue_to_se(uint8_t from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setUint8(from);
+    return true;
+}
+
+inline bool nativevalue_to_se(float from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    to.setFloat(from);
+    return true;
+}
+inline bool nativevalue_to_se(double from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    to.setDouble(from);
+    return true;
+}
+inline bool nativevalue_to_se(bool from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
+    to.setBoolean(from);
     return true;
 }
 
 inline bool nativevalue_to_se(const std::string &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
     to.setString(from);
-    return true;
-}
-inline bool nativevalue_to_se(const float &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    to.setFloat(from);
-    return true;
-}
-inline bool nativevalue_to_se(const double &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    to.setDouble(from);
-    return true;
-}
-inline bool nativevalue_to_se(const bool &from, se::Value &to, se::Object * /*ctx*/) { // NOLINT(readability-identifier-naming)
-    to.setBoolean(from);
     return true;
 }
 // template <>
@@ -512,3 +518,20 @@ inline bool nativevalue_to_se(const se_object_ptr &from, se::Value &to, se::Obje
     return true;
 }
 #endif //USE_MIDDLEWARE
+
+#if USE_PHYSICS_PHYSX
+
+bool nativevalue_to_se(const std::vector<std::shared_ptr<cc::physics::TriggerEventPair>> &from, se::Value &to, se::Object * /*ctx*/);
+bool nativevalue_to_se(const std::vector<cc::physics::ContactPoint> &from, se::Value &to, se::Object * /*ctx*/);
+bool nativevalue_to_se(const std::vector<std::shared_ptr<cc::physics::ContactEventPair>> &from, se::Value &to, se::Object *ctx);
+bool nativevalue_to_se(const cc::physics::RaycastResult &from, se::Value &to, se::Object *ctx);
+
+bool sevalue_to_native(const se::Value &from, cc::physics::ConvexDesc *to, se::Object *ctx);
+bool sevalue_to_native(const se::Value &from, cc::physics::TrimeshDesc *to, se::Object *ctx);
+bool sevalue_to_native(const se::Value &from, cc::physics::HeightFieldDesc *to, se::Object *ctx);
+bool sevalue_to_native(const se::Value &from, cc::physics::RaycastOptions *to, se::Object *ctx);
+
+bool nativevalue_to_se(const cc::geometry::AABB &from, se::Value &to, se::Object *ctx);
+bool nativevalue_to_se(const cc::geometry::Sphere &from, se::Value &to, se::Object *ctx);
+
+#endif //USE_PHYSICS_PHYSX

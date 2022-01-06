@@ -16647,7 +16647,7 @@ static bool js_scene_SpotLight_setFrustum(se::State& s) // NOLINT(readability-id
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
-        HolderType<cc::geometry::Frustum, false> arg0 = {};
+        HolderType<cc::geometry::Frustum, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_scene_SpotLight_setFrustum : Error processing arguments");
         cobj->setFrustum(arg0.value());

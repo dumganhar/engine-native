@@ -34,8 +34,8 @@
 #include "core/assets/RenderingSubMesh.h"
 
 #if USE_PHYSICS_PHYSX
-#include "physics/spec/IWorld.h"
-#include "physics/spec/IShape.h"
+    #include "physics/spec/IShape.h"
+    #include "physics/spec/IWorld.h"
 #endif
 
 namespace cc {
@@ -517,7 +517,6 @@ inline bool nativevalue_to_se(const se_object_ptr &from, se::Value &to, se::Obje
     return true;
 }
 #endif //USE_MIDDLEWARE
-
 
 #if USE_PHYSICS_PHYSX
 

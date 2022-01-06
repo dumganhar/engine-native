@@ -705,7 +705,7 @@ bool sevalue_to_native(const se::Value &from, cc::geometry::Plane *to, se::Objec
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
-bool sevalue_to_native(const se::Value &from, cc::geometry::Plane **to, se::Object * ctx) {
+bool sevalue_to_native(const se::Value &from, cc::geometry::Plane **to, se::Object *ctx) {
     return sevalue_to_native(from, *to, ctx);
 }
 
@@ -1753,6 +1753,5 @@ bool nativevalue_to_se(const cc::geometry::Sphere &from, se::Value &to, se::Obje
     to.setObject(obj);
     return true;
 }
-
 
 #endif //USE_PHYSICS_PHYSX

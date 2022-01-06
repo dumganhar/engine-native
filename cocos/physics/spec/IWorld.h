@@ -91,18 +91,18 @@ struct HeightFieldDesc {
 };
 
 struct RaycastOptions {
-    Vec3 origin;
+    Vec3     origin;
     float    distance;
-    Vec3 unitDir;
+    Vec3     unitDir;
     uint32_t mask;
     bool     queryTrigger;
 };
 
 struct RaycastResult {
     uintptr_t shape{0};
-    Vec3  hitPoint;
+    Vec3      hitPoint;
     float     distance;
-    Vec3  hitNormal;
+    Vec3      hitNormal;
     RaycastResult() = default;
 };
 
@@ -133,5 +133,3 @@ public:
 
 } // namespace physics
 } // namespace cc
-
-

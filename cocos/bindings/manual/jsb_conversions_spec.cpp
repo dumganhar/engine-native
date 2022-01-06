@@ -66,24 +66,27 @@ auto make_overloaded(Fs... fs) { // NOLINT(readability-identifier-naming)
 }
 
 template <typename A, typename T, typename F>
-bool set_member_field(se::Object *obj, T *to, const std::string &property, F f, se::Value &tmp) { // NOLINT
+typename std::enable_if<std::is_member_function_pointer<F>::value, bool>::type
+set_member_field(se::Object *obj, T *to, const std::string &property, F f, se::Value &tmp) { // NOLINT
     bool ok = obj->getProperty(property.data(), &tmp, true);
     SE_PRECONDITION2(ok, false, "Property '%s' is not set", property.data());
-    if constexpr (std::is_member_function_pointer<F>::value) {
-        A m;
-        ok = sevalue_to_native(tmp, &m, obj);
-        SE_PRECONDITION2(ok, false, "Convert property '%s' failed", property.data());
-        (to->*f)(m);
-        return true;
-    }
-    if constexpr (std::is_member_object_pointer<F>::value) {
-        ok = sevalue_to_native(tmp, &(to->*f), obj);
-        SE_PRECONDITION2(ok, false, "Convert property '%s' failed", property.data());
-        return true;
-    }
-    static_assert(std::is_member_pointer<F>::value, "only member pointer allowed!");
 
-    return false;
+    A m;
+    ok = sevalue_to_native(tmp, &m, obj);
+    SE_PRECONDITION2(ok, false, "Convert property '%s' failed", property.data());
+    (to->*f)(m);
+    return true;
+}
+
+template <typename A, typename T, typename F>
+typename std::enable_if<std::is_member_object_pointer<F>::value, bool>::type
+set_member_field(se::Object *obj, T *to, const std::string &property, F f, se::Value &tmp) { // NOLINT
+    bool ok = obj->getProperty(property.data(), &tmp, true);
+    SE_PRECONDITION2(ok, false, "Property '%s' is not set", property.data());
+
+    ok = sevalue_to_native(tmp, &(to->*f), obj);
+    SE_PRECONDITION2(ok, false, "Convert property '%s' failed", property.data());
+    return true;
 }
 
 static bool isNumberString(const std::string &str) {

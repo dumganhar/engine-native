@@ -175,18 +175,24 @@ inline void inHeap(void *ptr) {
 #endif
 
 template <typename T>
+typename std::enable_if<std::is_base_of<cc::RefCounted, T>::value, PrivateObjectBase *>::type
+cc_tmp_new_ptr(T *cobj) {
+    return new CCSharedPtrPrivateObject<T>(cc::IntrusivePtr<T>(cobj));
+}
+template <typename T>
+typename std::enable_if<!std::is_base_of<cc::RefCounted, T>::value, PrivateObjectBase *>::type
+cc_tmp_new_ptr(T *cobj) {
+    return new SharedPrivateObject<T>(std::shared_ptr<T>(cobj));
+}
+
+template <typename T>
 inline PrivateObjectBase *make_shared_private_object(T *cobj) { // NOLINT
     static_assert(!std::is_same<T, void>::value, "void * is not allowed");
 // static_assert(!std::is_pointer_v<T> && !std::is_null_pointer_v<decltype(cobj)>, "bad pointer");
 #if CC_DEBUG
     inHeap(cobj);
 #endif
-    if constexpr (std::is_base_of<cc::RefCounted, T>::value) {
-        // return new RawPrivateData<T>(cobj);
-        return new CCSharedPtrPrivateObject<T>(cc::IntrusivePtr<T>(cobj));
-    } else {
-        return new SharedPrivateObject<T>(std::shared_ptr<T>(cobj));
-    }
+    return cc_tmp_new_ptr(cobj);
 }
 template <typename T>
 inline PrivateObjectBase *shared_private_object(std::shared_ptr<T> &&ptr) { // NOLINT

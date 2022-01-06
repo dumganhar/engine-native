@@ -654,7 +654,7 @@ inline typename std::enable_if_t<!std::is_enum<T>::value && !std::is_pointer<T>:
 sevalue_to_native(const se::Value & /*from*/, T * /*to*/, se::Object * /*unused*/) { // NOLINT(readability-identifier-naming)
     SE_LOGE("Can not convert type ???\n - [[ %s ]]\n", typeid(T).name());
     CC_STATIC_ASSERT(!is_variant<T>::value, "should not match cc::variant");
-    CC_STATIC_ASSERT(std::is_same<T, void>::value, "sevalue_to_native not implemented for T");
+    CC_STATIC_ASSERT((std::is_same<T, void>::value), "sevalue_to_native not implemented for T");
     return false;
 }
 

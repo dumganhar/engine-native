@@ -91,7 +91,6 @@ public:
     MorphTexture() = default;
 
     ~MorphTexture() override {
-        delete _textureAsset;
     }
     /**
      * Gets the GFX texture.

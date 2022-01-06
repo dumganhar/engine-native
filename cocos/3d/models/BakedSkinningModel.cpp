@@ -97,7 +97,7 @@ void BakedSkinningModel::updateTransform(uint32_t stamp) {
     const float *   curFrame  = animInfo.curFrame;
     //    float curFrame = info.data[0];
     auto index = static_cast<index_t>(std::roundf(*curFrame));
-    if (!_jointMedium.boundsInfo.empty() && index < _jointMedium.boundsInfo.size()) {
+    if (!_jointMedium.boundsInfo.empty() && index < static_cast<index_t>(_jointMedium.boundsInfo.size())) {
         skelBound = &_jointMedium.boundsInfo[index].value();
     }
 

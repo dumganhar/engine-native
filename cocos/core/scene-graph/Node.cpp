@@ -58,8 +58,8 @@ IDGenerator         idGenerator("Node");
 
 std::vector<Node *>  dirtyNodes;
 CC_FORCE_INLINE void setDirtyNode(const index_t idx, Node *node) {
-    if (idx >= dirtyNodes.size()) {
-        if (idx >= dirtyNodes.capacity()) {
+    if (idx >= static_cast<index_t>(dirtyNodes.size())) {
+        if (idx >= static_cast<index_t>(dirtyNodes.capacity())) {
             size_t minCapacity = std::max((idx + 1) * 2, 32);
             if (minCapacity > dirtyNodes.capacity()) {
                 dirtyNodes.reserve(minCapacity); // Make a pre-allocated size for dirtyNode vector for better grow performance.
@@ -341,7 +341,7 @@ void Node::walk(const std::function<void(Node *)> &preFunc, const std::function<
 
         if (children != nullptr && !children->empty()) {
             i++;
-            if (i < children->size() && children->at(i) != nullptr) {
+            if (i < static_cast<index_t>(children->size()) && children->at(i) != nullptr) {
                 stack[index] = children->at(i);
                 stack.resize(++index);
             } else if (parent) {
@@ -502,7 +502,7 @@ void Node::setSiblingIndex(index_t index) {
         if (oldIdx != CC_INVALID_INDEX) {
             siblings.erase(siblings.begin() + oldIdx);
         }
-        if (index < siblings.size()) {
+        if (index < static_cast<index_t>(siblings.size())) {
             siblings.insert(siblings.begin() + index, this);
         } else {
             siblings.emplace_back(this);

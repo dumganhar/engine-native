@@ -230,7 +230,7 @@ std::vector<gfx::Attribute> getActiveAttributes(const IProgramInfo &tmpl, const 
     std::vector<gfx::Attribute> out{};
     const auto &                attributes    = tmpl.attributes;
     const auto &                gfxAttributes = tmplInfo.gfxAttributes;
-    for (auto i = 0; i < attributes.size(); i++) {
+    for (size_t i = 0; i < attributes.size(); i++) {
         if (!dependencyCheck(attributes[i].defines, defines)) {
             continue;
         }

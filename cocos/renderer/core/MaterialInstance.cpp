@@ -22,7 +22,7 @@ void MaterialInstance::recompileShaders(const MacroRecord &overrides, index_t pa
             pass->tryCompile(overrides);
         }
     } else {
-        if (passIdx < passes.size()) {
+        if (passIdx < static_cast<index_t>(passes.size())) {
             auto *pass = passes[passIdx].get();
             pass->tryCompile(overrides);
         }
@@ -47,7 +47,7 @@ void MaterialInstance::overridePipelineStates(const PassOverrides &overrides, in
             pass->overridePipelineStates(passInfos[pass->getPassIndex()], state);
         }
     } else {
-        if (passIdx >= _states.size()) {
+        if (passIdx >= static_cast<index_t>(_states.size())) {
             _states.resize(passIdx + 1);
         }
         auto &state = _states[passIdx];

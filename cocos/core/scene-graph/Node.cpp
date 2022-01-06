@@ -449,7 +449,7 @@ void Node::updateScene() {
 index_t Node::getIdxOfChild(const std::vector<IntrusivePtr<Node>> &child, Node *target) {
     auto iteChild = std::find(child.begin(), child.end(), target);
     if (iteChild != child.end()) {
-        return iteChild - child.begin();
+        return static_cast<index_t>(iteChild - child.begin());
     }
     return CC_INVALID_INDEX;
 }
@@ -515,7 +515,6 @@ void Node::setSiblingIndex(index_t index) {
 }
 
 Node *Node::getChildByPath(const std::string &path) const {
-    size_t                   start;
     size_t                   end      = 0;
     std::vector<std::string> segments = StringUtil::split(path, "/");
     auto *                   lastNode = const_cast<Node *>(this);
@@ -828,7 +827,7 @@ void Node::onSetParent(Node *oldParent, bool keepWorldTransform) {
     invalidateChildren(TransformBit::TRS);
 }
 
-void Node::rotate(const Quaternion &rot, NodeSpace ns/* = NodeSpace::LOCAL*/, bool calledFromJS/* = false*/) {
+void Node::rotate(const Quaternion &rot, NodeSpace ns /* = NodeSpace::LOCAL*/, bool calledFromJS /* = false*/) {
     Quaternion qTempA{rot};
     qTempA.normalize();
     if (ns == NodeSpace::LOCAL) {

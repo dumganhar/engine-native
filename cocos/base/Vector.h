@@ -212,7 +212,7 @@ public:
      *  @return The number of elements in the Vector.
      */
     uint32_t size() const {
-        return _data.size();
+        return static_cast<uint32_t>(_data.size());
     }
 
     /** @brief Returns whether the Vector is empty (i.e. whether its size is 0).
@@ -436,7 +436,7 @@ public:
 
     /** Replace value at index with given object. */
     void replace(uint32_t index, T object) {
-        CC_ASSERT(index < size());
+        CC_ASSERT(index < static_cast<uint32_t>(size()));
         CC_ASSERT(object != nullptr);
 
         CC_SAFE_RELEASE(_data[index]);

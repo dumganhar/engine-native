@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <limits>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -500,7 +501,7 @@ struct IShaderSource {
 
 struct IShaderInfo {
     std::string                       name;
-    uint64_t                          hash{-1ULL}; //cjh hash is 64 bit?
+    uint64_t                          hash{std::numeric_limits<uint64_t>::max()}; //cjh hash is 64 bit?
     IShaderSource                     glsl4;
     IShaderSource                     glsl3;
     IShaderSource                     glsl1;

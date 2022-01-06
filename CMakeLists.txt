@@ -2763,7 +2763,7 @@ if(MSVC)
             ${CWD}/external/win64/libs/glslang/*.dll
         )
     endif()
-    target_compile_options(cocos2d PUBLIC /MP /wd4309)
+    target_compile_options(cocos2d PUBLIC /MP /wd4309 /wd4819 /wd4996)
 endif()
 
 if(CC_USE_VULKAN)

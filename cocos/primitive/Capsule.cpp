@@ -34,9 +34,9 @@ IGeometry capsule(float radiusTop, float radiusBottom, float height, const cc::o
     const float    bottomProp     = radiusBottom / height;
     const float    torProp        = torsoHeight / height;
     const float    topProp        = radiusTop / height;
-    const uint32_t bottomSegments = floor(static_cast<float>(heightSegments) * bottomProp);
-    const uint32_t topSegments    = floor(static_cast<float>(heightSegments) * topProp);
-    const uint32_t torSegments    = floor(static_cast<float>(heightSegments) * torProp);
+    const uint32_t bottomSegments = static_cast<uint32_t>(floor(static_cast<float>(heightSegments) * bottomProp));
+    const uint32_t topSegments    = static_cast<uint32_t>(floor(static_cast<float>(heightSegments) * topProp));
+    const uint32_t torSegments    = static_cast<uint32_t>(floor(static_cast<float>(heightSegments) * torProp));
     const float    topOffset      = torsoHeight + radiusBottom - height / 2;
     const float    torOffset      = radiusBottom - height / 2;
     const float    bottomOffset   = radiusBottom - height / 2;

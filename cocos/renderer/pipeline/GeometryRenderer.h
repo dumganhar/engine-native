@@ -45,7 +45,7 @@ class CommandBuffer;
 
 namespace geometry {
 class AABB;
-struct Frustum;
+class Frustum;
 } // namespace geometry
 
 namespace scene {

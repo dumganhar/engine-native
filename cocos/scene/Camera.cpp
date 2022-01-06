@@ -66,7 +66,7 @@ Camera::Camera(gfx::Device *device)
     _isoValue      = Camera::ISOS[static_cast<int>(_iso)];
 
     _aspect = _screenScale = 1.F;
-    _frustum = new geometry::Frustum();
+    _frustum               = new geometry::Frustum();
     _frustum->addRef();
     _frustum->setAccurate(true);
 
@@ -85,8 +85,8 @@ Camera::~Camera() {
 
 bool Camera::initialize(const ICameraInfo &info) {
     _node       = info.node;
-    _width      = 1.F;
-    _height     = 1.F;
+    _width      = 1;
+    _height     = 1;
     _clearFlag  = gfx::ClearFlagBit::NONE;
     _clearDepth = 1.0F;
     _visibility = pipeline::CAMERA_DEFAULT_MASK;

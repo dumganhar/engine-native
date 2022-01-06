@@ -828,13 +828,13 @@ void Node::onSetParent(Node *oldParent, bool keepWorldTransform) {
     invalidateChildren(TransformBit::TRS);
 }
 
-void Node::rotate(const Quaternion &rot, NodeSpace ns) {
+void Node::rotate(const Quaternion &rot, NodeSpace ns/* = NodeSpace::LOCAL*/, bool calledFromJS/* = false*/) {
     Quaternion qTempA{rot};
-    Quaternion qTempB{Quaternion::identity()};
     qTempA.normalize();
     if (ns == NodeSpace::LOCAL) {
         _localRotation *= qTempA;
     } else if (ns == NodeSpace::WORLD) {
+        Quaternion qTempB{Quaternion::identity()};
         qTempB = qTempA * _worldRotation;
         qTempA = _worldRotation;
         qTempA.inverse();
@@ -847,7 +847,9 @@ void Node::rotate(const Quaternion &rot, NodeSpace ns) {
         emit(NodeEventType::TRANSFORM_CHANGED, TransformBit::ROTATION);
     }
 
-    notifyLocalRotationUpdated();
+    if (!calledFromJS) {
+        notifyLocalRotationUpdated();
+    }
 }
 
 void Node::lookAt(const Vec3 &pos, const Vec3 &up) {

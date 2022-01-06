@@ -280,9 +280,9 @@ public:
     void invalidateChildren(TransformBit dirtyBit);
 
     void        translate(const Vec3 &, NodeSpace ns = NodeSpace::LOCAL);
-    void        rotate(const Quaternion &rot, NodeSpace ns = NodeSpace::LOCAL);
+    void        rotate(const Quaternion &rot, NodeSpace ns = NodeSpace::LOCAL, bool calledFromJS = false);
     inline void rotateForJS(float x, float y, float z, float w, NodeSpace ns = NodeSpace::LOCAL) {
-        rotate(Quaternion(x, y, z, w), ns);
+        rotate(Quaternion(x, y, z, w), ns, true);
     }
     void lookAt(const Vec3 &pos, const Vec3 &up = Vec3::UNIT_Y);
 

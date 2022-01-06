@@ -632,6 +632,12 @@ static bool js_scene_Node_rotateForJS(void *s) // NOLINT(readability-identifier-
         auto size = static_cast<int32_t>(tempFloatArray[5]);
         cobj->rotateForJS(tempFloatArray[1], tempFloatArray[2], tempFloatArray[3], tempFloatArray[4], size == 0 ? cc::NodeSpace::LOCAL : static_cast<cc::NodeSpace>(std::roundf(tempFloatArray[5])));
     }
+
+    const auto& lrot = cobj->getRotation();
+    tempFloatArray[0] = lrot.x;
+    tempFloatArray[1] = lrot.y;
+    tempFloatArray[2] = lrot.z;
+    tempFloatArray[3] = lrot.w;
     return true;
 }
 SE_BIND_FUNC_FAST(js_scene_Node_rotateForJS)

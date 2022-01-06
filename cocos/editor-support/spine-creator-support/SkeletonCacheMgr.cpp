@@ -31,7 +31,7 @@
 #include "base/DeferredReleasePool.h"
 
 namespace spine {
-SkeletonCacheMgr *SkeletonCacheMgr::_instance = nullptr;
+SkeletonCacheMgr *SkeletonCacheMgr::instance = nullptr;
 SkeletonCache *   SkeletonCacheMgr::buildSkeletonCache(const std::string &uuid) {
     SkeletonCache *animation = _caches.at(uuid);
     if (!animation) {

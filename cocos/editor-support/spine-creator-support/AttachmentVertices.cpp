@@ -29,11 +29,11 @@
 
 #include "spine-creator-support/AttachmentVertices.h"
 
-using namespace cc;
+using namespace cc; // NOLINT(google-build-using-namespace)
 
 namespace spine {
 
-AttachmentVertices::AttachmentVertices(middleware::Texture2D *texture, int verticesCount, unsigned short *triangles, int trianglesCount) {
+AttachmentVertices::AttachmentVertices(middleware::Texture2D *texture, int verticesCount, uint16_t *triangles, int trianglesCount) {
     _texture = texture;
     if (_texture) _texture->addRef();
 

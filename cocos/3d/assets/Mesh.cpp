@@ -181,7 +181,7 @@ void Mesh::setNativeAsset(const cc::any &obj) {
 }
 
 uint32_t Mesh::getSubMeshCount() const {
-    return _renderingSubMeshes.size();
+    return static_cast<uint32_t>(_renderingSubMeshes.size());
 }
 
 const Vec3 &Mesh::getMinPosition() const {
@@ -288,7 +288,7 @@ void Mesh::initialize() {
 
         auto *subMesh = new RenderingSubMesh(vbReference, gfxAttributes, prim.primitiveMode, indexBuffer);
         subMesh->setMesh(this);
-        subMesh->setSubMeshIdx(i);
+        subMesh->setSubMeshIdx(static_cast<uint32_t>(i));
 
         subMeshes.emplace_back(subMesh);
     }
@@ -882,7 +882,7 @@ void Mesh::accessAttribute(index_t primitiveIndex, const char *attributeName, co
         if (iter == vertexBundle.attributes.end()) {
             continue;
         }
-        accessor(vertexBundle, iter - vertexBundle.attributes.begin());
+        accessor(vertexBundle, static_cast<int32_t>(iter - vertexBundle.attributes.begin()));
         break;
     }
 }

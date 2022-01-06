@@ -79,13 +79,13 @@ IGeometry box(const cc::optional<IBoxOptions> &options) {
     auto buildPlane = [&](uint32_t side, uint32_t uSegments, uint32_t vSegments) {
         float                  u           = 0;
         float                  v           = 0;
-        const uint32_t         offset      = positions.size() / 3;
+        const uint32_t         offset      = static_cast<uint32_t>(positions.size() / 3);
         const vector<uint32_t> faceAxe     = FACE_AXES[side];
         const vector<float>    faceNormal  = FACE_NORMALS[side];
         const vector<float>    faceTangent = FACE_TANGENTS[side];
 
-        for (index_t iy = 0; iy <= vSegments; ++iy) {
-            for (index_t ix = 0; ix <= uSegments; ++ix) {
+        for (index_t iy = 0; iy <= static_cast<index_t>(vSegments); ++iy) {
+            for (index_t ix = 0; ix <= static_cast<index_t>(uSegments); ++ix) {
                 u          = static_cast<float>(ix) / static_cast<float>(uSegments);
                 v          = static_cast<float>(iy) / static_cast<float>(vSegments);
                 Vec3 temp1 = corners[faceAxe[0]].lerp(corners[faceAxe[1]], u);
@@ -107,7 +107,7 @@ IGeometry box(const cc::optional<IBoxOptions> &options) {
                 tangents.emplace_back(faceTangent[2]);
                 tangents.emplace_back(faceTangent[3]);
 
-                if ((ix < uSegments) && (iy < vSegments)) {
+                if ((ix < static_cast<index_t>(uSegments)) && (iy < static_cast<index_t>(vSegments))) {
                     auto       uSeg1 = uSegments + 1;
                     const auto a     = ix + iy * uSeg1;
                     const auto b     = ix + (iy + 1) * uSeg1;

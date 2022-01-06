@@ -31,7 +31,7 @@ IGeometry translate(IGeometry &geometry, const cc::optional<Vec3> &offset) {
     const float y = offset.has_value() ? offset->y : 0;
     const float z = offset.has_value() ? offset->z : 0;
 
-    const uint32_t nVertex = floor(geometry.positions.size() / 3);
+    const uint32_t nVertex = static_cast<uint32_t>(floor(geometry.positions.size() / 3));
 
     for (uint32_t iVertex = 0; iVertex < nVertex; ++iVertex) {
         const uint32_t iX = iVertex * 3;
@@ -62,7 +62,7 @@ IGeometry scale(IGeometry &geometry, const cc::optional<Vec3> &value) {
     const float y = value.has_value() ? value->y : 0;
     const float z = value.has_value() ? value->z : 0;
 
-    const uint32_t nVertex = floor(geometry.positions.size() / 3);
+    const uint32_t nVertex = static_cast<uint32_t>(floor(geometry.positions.size() / 3));
 
     for (uint32_t iVertex = 0; iVertex < nVertex; ++iVertex) {
         const uint32_t iX = iVertex * 3;

@@ -68,7 +68,7 @@ ITextureBufferHandle TextureBufferPool::alloc(uint32_t size) {
     index_t index = CC_INVALID_INDEX;
     index_t start = CC_INVALID_INDEX;
     if (start < 0) {
-        for (index_t i = 0; i < _chunkCount; ++i) {
+        for (index_t i = 0; i < static_cast<index_t>(_chunkCount); ++i) {
             index = i;
             start = findAvailableSpace(size, index);
             if (start >= 0) break;
@@ -108,7 +108,7 @@ ITextureBufferHandle TextureBufferPool::alloc(uint32_t size, index_t chunkIdx) {
     index_t start = findAvailableSpace(size, index);
 
     if (start < 0) {
-        for (index_t i = 0; i < _chunkCount; ++i) {
+        for (index_t i = 0; i < static_cast<index_t>(_chunkCount); ++i) {
             index = i;
             start = findAvailableSpace(size, index);
             if (start >= 0) break;
@@ -176,7 +176,7 @@ void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *
 
     uint32_t remainSize = buffer->byteLength() / _formatSize;
     int32_t  offsetX    = start % static_cast<int32_t>(handle.texture->getWidth());
-    int32_t  offsetY    = std::floor(start / handle.texture->getWidth());
+    int32_t  offsetY    = static_cast<int32_t>(std::floor(start / handle.texture->getWidth()));
     uint32_t copySize   = std::min(handle.texture->getWidth() - offsetX, remainSize);
     uint32_t begin      = 0;
 
@@ -199,7 +199,7 @@ void TextureBufferPool::update(const ITextureBufferHandle &handle, ArrayBuffer *
 
         if (remainSize > handle.texture->getWidth()) {
             _region1.texExtent.width  = handle.texture->getWidth();
-            _region1.texExtent.height = std::floor(remainSize / handle.texture->getWidth());
+            _region1.texExtent.height = static_cast<uint32_t>(std::floor(remainSize / handle.texture->getWidth()));
             copySize                  = _region1.texExtent.width * _region1.texExtent.height;
         } else {
             copySize                  = remainSize;
@@ -244,7 +244,7 @@ index_t TextureBufferPool::findAvailableSpace(uint32_t size, index_t chunkIdx) c
         }
         std::sort(handles.begin(), handles.end(), [](const ITextureBufferHandle &a, const ITextureBufferHandle &b) { return a.start - b.start; });
         for (auto handle : handles) {
-            if ((start + size) <= handle.start) {
+            if (static_cast<index_t>(start + size) <= handle.start) {
                 isFound = true;
                 break;
             }
@@ -259,16 +259,16 @@ index_t TextureBufferPool::findAvailableSpace(uint32_t size, index_t chunkIdx) c
 
 ITextureBufferHandle TextureBufferPool::mcDonaldAlloc(uint32_t size) {
     size = roundUp(size, _alignment);
-    for (index_t i = 0; i < _chunkCount; ++i) {
+    for (index_t i = 0; i < static_cast<index_t>(_chunkCount); ++i) {
         auto    chunk   = _chunks[i];
         bool    isFound = false;
         index_t start   = chunk.start;
-        if ((start + size) <= chunk.end) {
+        if (static_cast<index_t>(start + size) <= chunk.end) {
             isFound = true;
         } else if (start > chunk.end) {
             if ((start + size) <= chunk.size) {
                 isFound = true;
-            } else if (size <= chunk.end) {
+            } else if (static_cast<index_t>(size) <= chunk.end) {
                 // Try to find from head again.
                 start       = 0;
                 chunk.start = 0;
@@ -278,7 +278,7 @@ ITextureBufferHandle TextureBufferPool::mcDonaldAlloc(uint32_t size) {
             start       = 0;
             chunk.start = 0;
             chunk.end   = static_cast<index_t>(chunk.size);
-            if (size <= chunk.end) {
+            if (static_cast<index_t>(size) <= chunk.end) {
                 isFound = true;
             }
         }

@@ -105,7 +105,7 @@ const IGeometricInfo &RenderingSubMesh::getGeometricInfo() {
                 min.set(positions[0], positions[1], positions[2]);
             }
 
-            for (int i = 0; i < positions.length(); i += static_cast<int>(count)) {
+            for (int i = 0, l = static_cast<int>(positions.length()); i < l; i += static_cast<int>(count)) {
                 if (count == 2) {
                     max.x = positions[i] > max.x ? positions[i] : max.x;
                     max.y = positions[i + 1] > max.y ? positions[i + 1] : max.y;
@@ -272,7 +272,7 @@ const gfx::BufferList &RenderingSubMesh::getJointMappedBuffers() {
 
             buffer->update(dataView.buffer()->getData());
             buffers.pushBack(buffer);
-            indices.emplace_back(i);
+            indices.emplace_back(static_cast<uint32_t>(i));
         } else {
             buffers.pushBack(_vertexBuffers.at(static_cast<int32_t>(prim.vertexBundelIndices[i])));
         }
@@ -291,7 +291,7 @@ gfx::Buffer *RenderingSubMesh::allocVertexIdBuffer(gfx::Device *device) {
                                      : _vertexBuffers.at(0)->getSize() / _vertexBuffers.at(0)->getStride();
 
     std::vector<float> vertexIds(vertexCount);
-    for (int iVertex = 0; iVertex < vertexCount; ++iVertex) {
+    for (uint32_t iVertex = 0; iVertex < vertexCount; ++iVertex) {
         // `+0.5` because on some platforms, the "fetched integer" may have small error.
         // For example `26` may yield `25.99999`, which is convert to `25` instead of `26` using `int()`.
         vertexIds[iVertex] = static_cast<float>(iVertex) + 0.5F;

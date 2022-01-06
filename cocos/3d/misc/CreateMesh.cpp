@@ -25,7 +25,7 @@ void writeBuffer(DataView &target, const std::vector<T> &data, const gfx::Format
         stride = info.size;
     }
     const uint32_t componentBytesLength = info.size / info.count;
-    const uint32_t nSeg                 = std::floor(data.size() / info.count);
+    const uint32_t nSeg                 = static_cast<uint32_t>(std::floor(data.size() / info.count));
 
     const uint32_t bytes = info.size / info.count * 8;
 
@@ -39,13 +39,13 @@ void writeBuffer(DataView &target, const std::vector<T> &data, const gfx::Format
                 case gfx::FormatType::UNORM:
                     switch (bytes) {
                         case 8:
-                            target.setUint8(y, data[info.count * iSeg + iComponent]);
+                            target.setUint8(y, static_cast<uint8_t>(data[info.count * iSeg + iComponent]));
                             break;
                         case 16:
-                            target.setUint16(y, data[info.count * iSeg + iComponent]);
+                            target.setUint16(y, static_cast<uint16_t>(data[info.count * iSeg + iComponent]));
                             break;
                         case 32:
-                            target.setUint32(y, data[info.count * iSeg + iComponent]);
+                            target.setUint32(y, static_cast<uint32_t>(data[info.count * iSeg + iComponent]));
                             break;
                         default:
                             CC_ASSERT(false);
@@ -56,13 +56,13 @@ void writeBuffer(DataView &target, const std::vector<T> &data, const gfx::Format
                 case gfx::FormatType::SNORM:
                     switch (bytes) {
                         case 8:
-                            target.setInt8(y, data[info.count * iSeg + iComponent]);
+                            target.setInt8(y, static_cast<int8_t>(data[info.count * iSeg + iComponent]));
                             break;
                         case 16:
-                            target.setInt16(y, data[info.count * iSeg + iComponent]);
+                            target.setInt16(y, static_cast<int16_t>(data[info.count * iSeg + iComponent]));
                             break;
                         case 32:
-                            target.setInt32(y, data[info.count * iSeg + iComponent]);
+                            target.setInt32(y, static_cast<int32_t>(data[info.count * iSeg + iComponent]));
                             break;
                         default:
                             CC_ASSERT(false);
@@ -73,13 +73,13 @@ void writeBuffer(DataView &target, const std::vector<T> &data, const gfx::Format
                 case gfx::FormatType::FLOAT:
                     switch (bytes) {
                         case 8:
-                            target.setFloat32(y, data[info.count * iSeg + iComponent]);
+                            target.setFloat32(y, static_cast<float>(data[info.count * iSeg + iComponent]));
                             break;
                         case 16:
-                            target.setFloat32(y, data[info.count * iSeg + iComponent]);
+                            target.setFloat32(y, static_cast<float>(data[info.count * iSeg + iComponent]));
                             break;
                         case 32:
-                            target.setFloat32(y, data[info.count * iSeg + iComponent]);
+                            target.setFloat32(y, static_cast<float>(data[info.count * iSeg + iComponent]));
                             break;
                         default:
                             CC_ASSERT(false);
@@ -259,7 +259,7 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
     const uint32_t idxStride = 2;
     if (geometry.indices.has_value()) {
         const std::vector<uint32_t> &indices = geometry.indices.value();
-        idxCount                             = indices.size();
+        idxCount                             = static_cast<uint32_t>(indices.size());
         indexBuffer                          = new ArrayBuffer(idxStride * idxCount);
         DataView indexBufferView(indexBuffer);
         writeBuffer(indexBufferView, indices, gfx::Format::R16UI);

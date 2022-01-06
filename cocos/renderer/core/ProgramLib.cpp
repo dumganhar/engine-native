@@ -48,7 +48,7 @@ namespace cc {
 namespace {
 
 int32_t getBitCount(int32_t cnt) {
-    return std::ceil(std::log2(std::max(cnt, 2))); // std::max checks number types
+    return static_cast<int32_t>(std::ceil(std::log2(std::max(cnt, 2)))); // std::max checks number types
 }
 
 bool recordAsBool(const MacroRecord::mapped_type &v) {
@@ -342,7 +342,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             def.map = [=](const MacroValue &value) -> int32_t {
                 const auto *pValue = cc::get_if<std::string>(&value);
                 if (pValue != nullptr) {
-                    int32_t idx = std::find(def.options.value().begin(), def.options.value().end(), *pValue) - def.options.value().begin();
+                    int32_t idx = static_cast<int32_t>(std::find(def.options.value().begin(), def.options.value().end(), *pValue) - def.options.value().begin());
                     return std::max(0, idx);
                 }
                 return 0;

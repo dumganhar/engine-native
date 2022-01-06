@@ -22,7 +22,6 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 ****************************************************************************/
-
 #include "core/data/deserializer/AssetDeserializerFactory.h"
 #include "core/data/deserializer/EffectAssetDeserializer.h"
 //#include "core/data/deserializer/MaterialDeserializer.h"

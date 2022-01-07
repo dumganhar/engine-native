@@ -500,7 +500,7 @@ struct IShaderSource {
 
 struct IShaderInfo {
     std::string                       name;
-    uint64_t                          hash{-1ULL}; //cjh hash is 64 bit?
+    uint64_t                          hash{0xFFFFFFFFFFFFFFFFULL}; //cjh hash is 64 bit?
     IShaderSource                     glsl4;
     IShaderSource                     glsl3;
     IShaderSource                     glsl1;

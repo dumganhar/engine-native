@@ -243,12 +243,12 @@ void Skybox::updatePipeline() const {
             if (iter != pipeline->getMacros().end()) {
                 const MacroValue &macroDIFFUSEMAP    = iter->second;
                 const int32_t *   macroDIFFUSEMAPPtr = cc::get_if<int32_t>(&macroDIFFUSEMAP);
-                if (macroDIFFUSEMAPPtr != nullptr && (*macroDIFFUSEMAPPtr == useDiffuseMapValue)) {
+                if (macroDIFFUSEMAPPtr != nullptr && ((*macroDIFFUSEMAPPtr != 0) == useDiffuseMapValue)) {
                     auto iter = pipeline->getMacros().find("CC_USE_HDR");
                     if (iter != pipeline->getMacros().end()) {
                         const MacroValue &macroHDR    = iter->second;
                         const int32_t *   macroHDRPtr = cc::get_if<int32_t>(&macroHDR);
-                        if (macroHDRPtr != nullptr && (*macroHDRPtr == useHDRValue)) {
+                        if (macroHDRPtr != nullptr && ((*macroHDRPtr != 0) == useHDRValue)) {
                             return;
                         }
                     }

@@ -515,7 +515,6 @@ void Node::setSiblingIndex(index_t index) {
 }
 
 Node *Node::getChildByPath(const std::string &path) const {
-    size_t                   start;
     size_t                   end      = 0;
     std::vector<std::string> segments = StringUtil::split(path, "/");
     auto *                   lastNode = const_cast<Node *>(this);

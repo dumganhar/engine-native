@@ -357,7 +357,7 @@ private:
 class CpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance {
 public:
     explicit CpuComputingRenderingInstance(CpuComputing *owner, uint32_t nVertices, gfx::Device *gfxDevice) {
-        _owner         = owner; //cjh TODO: lifecycle, dangerous?
+        _owner         = owner; //NOTE: release by mesh`s destroy, it`ll call current instance`s destroy method
         _morphUniforms = new MorphUniforms(gfxDevice, 0 /* TODO? */);
 
         auto vec4TextureFactory = createVec4TextureFactory(gfxDevice, nVertices);

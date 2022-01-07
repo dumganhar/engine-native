@@ -212,7 +212,7 @@ public:
      *  @return The number of elements in the Vector.
      */
     uint32_t size() const {
-        return _data.size();
+        return static_cast<uint32_t>(_data.size());
     }
 
     /** @brief Returns whether the Vector is empty (i.e. whether its size is 0).

@@ -342,7 +342,7 @@ IProgramInfo *ProgramLib::define(IShaderInfo &shader) {
             def.map = [=](const MacroValue &value) -> int32_t {
                 const auto *pValue = cc::get_if<std::string>(&value);
                 if (pValue != nullptr) {
-                    int32_t idx = std::find(def.options.value().begin(), def.options.value().end(), *pValue) - def.options.value().begin();
+                    auto idx = static_cast<int32_t>(std::find(def.options.value().begin(), def.options.value().end(), *pValue) - def.options.value().begin());
                     return std::max(0, idx);
                 }
                 return 0;

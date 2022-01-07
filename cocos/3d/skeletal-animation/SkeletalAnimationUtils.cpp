@@ -176,7 +176,7 @@ cc::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skelet
     const std::vector<Mat4> &       bindPoses = skeleton->getBindposes();
     Float32Array                    textureBuffer;
     bool                            buildTexture = false;
-    uint32_t                        jointCount   = joints.size();
+    auto                            jointCount   = static_cast<uint32_t>(joints.size());
     if (!texture.has_value()) {
         uint32_t             bufSize = jointCount * 12;
         ITextureBufferHandle handle;

@@ -72,7 +72,7 @@ TextureCube *TextureCube::fromTexture2DArray(const std::vector<Texture2D *> &tex
 
 void TextureCube::setMipmaps(const std::vector<ITextureCubeMipmap> &value) {
     _mipmaps = value;
-    setMipmapLevel(_mipmaps.size());
+    setMipmapLevel(static_cast<uint32_t>(_mipmaps.size()));
     if (!_mipmaps.empty()) {
         ImageAsset *imageAsset = _mipmaps[0].front;
         reset({
@@ -84,7 +84,7 @@ void TextureCube::setMipmaps(const std::vector<ITextureCubeMipmap> &value) {
 
         for (size_t level = 0, len = _mipmaps.size(); level < len; ++level) {
             forEachFace(_mipmaps[level], [this, level](ImageAsset *face, TextureCube::FaceIndex faceIndex) {
-                assignImage(face, level, static_cast<uint32_t>(faceIndex));
+                assignImage(face, static_cast<uint32_t>(level), static_cast<uint32_t>(faceIndex));
             });
             ;
         }
@@ -116,9 +116,9 @@ void TextureCube::updateMipmaps(uint32_t firstLevel, uint32_t count) {
         return;
     }
 
-    uint32_t nUpdate = std::min(
+    auto nUpdate = static_cast<uint32_t>(std::min(
         count == 0 ? _mipmaps.size() : count,
-        _mipmaps.size() - firstLevel);
+        _mipmaps.size() - firstLevel));
 
     for (uint32_t i = 0; i < nUpdate; ++i) {
         uint32_t level = firstLevel + i;

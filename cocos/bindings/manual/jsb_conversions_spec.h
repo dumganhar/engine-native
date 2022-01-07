@@ -61,7 +61,7 @@ class ArrayBuffer;
 // class IBArray;
 
 namespace network {
-class DownloaderHints;
+struct DownloaderHints;
 class DownloadTask;
 } // namespace network
 
@@ -83,7 +83,7 @@ class Frustum;
 } // namespace geometry
 
 namespace extension {
-class ManifestAsset;
+struct ManifestAsset;
 }
 
 namespace middleware {

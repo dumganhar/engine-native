@@ -204,7 +204,7 @@ static void registerLocalPositionRotationScaleUpdated(cc::Node *node, se::Object
         nativevalue_to_se(x, args[0]);
         nativevalue_to_se(y, args[1]);
         nativevalue_to_se(z, args[2]);
-        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalPositionUpdated", args.size(), args.data());
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalPositionUpdated", static_cast<uint32_t>(args.size()), args.data());
     });
 
     node->on(cc::EventTypesToJS::NODE_LOCAL_ROTATION_UPDATED, [jsObject](float x, float y, float z, float w) {
@@ -214,7 +214,7 @@ static void registerLocalPositionRotationScaleUpdated(cc::Node *node, se::Object
         nativevalue_to_se(y, args[1]);
         nativevalue_to_se(z, args[2]);
         nativevalue_to_se(w, args[3]);
-        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalRotationUpdated", args.size(), args.data());
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalRotationUpdated", static_cast<uint32_t>(args.size()), args.data());
     });
 
     node->on(cc::EventTypesToJS::NODE_LOCAL_SCALE_UPDATED, [jsObject](float x, float y, float z) {
@@ -223,7 +223,7 @@ static void registerLocalPositionRotationScaleUpdated(cc::Node *node, se::Object
         nativevalue_to_se(x, args[0]);
         nativevalue_to_se(y, args[1]);
         nativevalue_to_se(z, args[2]);
-        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalScaleUpdated", args.size(), args.data());
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalScaleUpdated", static_cast<uint32_t>(args.size()), args.data());
     });
 
     node->on(cc::EventTypesToJS::NODE_LOCAL_POSITION_ROTATION_SCALE_UPDATED, [jsObject](float px, float py, float pz, float rx, float ry, float rz, float rw, float sx, float sy, float sz) {
@@ -242,7 +242,7 @@ static void registerLocalPositionRotationScaleUpdated(cc::Node *node, se::Object
         nativevalue_to_se(sy, args[8]);
         nativevalue_to_se(sz, args[9]);
 
-        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalPositionRotationScaleUpdated", args.size(), args.data());
+        se::ScriptEngine::getInstance()->callFunction(jsObject, "_onLocalPositionRotationScaleUpdated", static_cast<uint32_t>(args.size()), args.data());
     });
 }
 
@@ -867,7 +867,7 @@ static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-ident
         std::array<se::Value, 2> args;
         nativevalue_to_se(subModelIndex, args[0]);
         nativevalue_to_se(descriptorSet, args[1]);
-        se::ScriptEngine::getInstance()->callFunction(thiz, "_updateLocalDescriptors", args.size(), args.data());
+        se::ScriptEngine::getInstance()->callFunction(thiz, "_updateLocalDescriptors", static_cast<uint32_t>(args.size()), args.data());
     });
 
     cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_UPDATE_INSTANCED_ATTRIBUTES, [=](const std::vector<cc::gfx::Attribute> &attributes, cc::scene::Pass *pass) {
@@ -877,7 +877,7 @@ static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-ident
         std::array<se::Value, 2> args;
         nativevalue_to_se(attributes, args[0]);
         nativevalue_to_se(pass, args[1]);
-        se::ScriptEngine::getInstance()->callFunction(thiz, "_updateInstancedAttributes", args.size(), args.data());
+        se::ScriptEngine::getInstance()->callFunction(thiz, "_updateInstancedAttributes", static_cast<uint32_t>(args.size()), args.data());
     });
 
     cobj->getEventProcessor().on(cc::EventTypesToJS::MODEL_GET_MACRO_PATCHES, [=](index_t subModelIndex, std::vector<cc::scene::IMacroPatch> *pPatches) {
@@ -887,7 +887,7 @@ static bool js_Model_registerListeners(se::State &s) // NOLINT(readability-ident
         se::Value                rval;
         std::array<se::Value, 1> args;
         nativevalue_to_se(subModelIndex, args[0]);
-        bool ok = se::ScriptEngine::getInstance()->callFunction(thiz, "getMacroPatches", args.size(), args.data(), &rval);
+        bool ok = se::ScriptEngine::getInstance()->callFunction(thiz, "getMacroPatches", static_cast<uint32_t>(args.size()), args.data(), &rval);
 
         if (ok) {
             sevalue_to_native(rval, pPatches);

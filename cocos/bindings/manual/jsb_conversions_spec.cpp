@@ -680,7 +680,6 @@ bool sevalue_to_native(const se::Value &from, cc::geometry::Sphere *to, se::Obje
     SE_PRECONDITION2(from.isObject(), false, "Convert parameter to Sphere failed!");
     se::Object *obj = from.toObject();
     se::Value   tmp;
-    bool        ok;
     set_member_field<float>(obj, to, "radius", &cc::geometry::Sphere::setRadius, tmp);
     set_member_field<cc::Vec3>(obj, to, "center", &cc::geometry::Sphere::setCenter, tmp);
     return true;

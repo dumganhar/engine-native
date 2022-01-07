@@ -53,7 +53,7 @@ class Rect;
 template <typename K, typename V>
 class Map;
 
-struct NativeDep;
+class NativeDep;
 
 class ArrayBuffer;
 

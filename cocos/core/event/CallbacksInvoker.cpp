@@ -30,7 +30,7 @@ namespace cc {
 CallbackInfoBase::ID CallbacksInvoker::cbIDCounter{0};
 
 void CallbackList::removeByCallbackID(CallbackInfoBase::ID cbID) {
-    for (int32_t i = 0; i < static_cast<int32_t>(_callbackInfos.size()); ++i) {
+    for (int32_t i = 0; i < _callbackInfos.size(); ++i) {
         auto &info = _callbackInfos[i];
         if (info->_id == cbID) {
             utils::array::fastRemoveAt(_callbackInfos, i);
@@ -40,7 +40,7 @@ void CallbackList::removeByCallbackID(CallbackInfoBase::ID cbID) {
 }
 
 void CallbackList::removeByTarget(void *target) {
-    for (int32_t i = 0; i < static_cast<int32_t>(_callbackInfos.size()); ++i) {
+    for (int32_t i = 0; i < _callbackInfos.size(); ++i) {
         auto &info = _callbackInfos[i];
         if (info->_target == target) {
             utils::array::fastRemoveAt(_callbackInfos, i);
@@ -51,7 +51,7 @@ void CallbackList::removeByTarget(void *target) {
 
 void CallbackList::cancel(index_t index) {
     std::shared_ptr<CallbackInfoBase> *info = nullptr;
-    if (index >= 0 && index < static_cast<index_t>(_callbackInfos.size())) {
+    if (index >= 0 && index < _callbackInfos.size()) {
         info = &_callbackInfos[index];
     }
 

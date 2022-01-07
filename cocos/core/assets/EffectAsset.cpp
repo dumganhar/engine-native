@@ -159,7 +159,7 @@ bool EffectAsset::validate() const {
 
 void EffectAsset::precompile() {
     Root *root = Root::getInstance();
-    for (size_t i = 0; i < _shaders.size(); ++i) {
+    for (index_t i = 0; i < _shaders.size(); ++i) {
         auto shader = _shaders[i];
         if (i >= _combinations.size()) {
             continue;

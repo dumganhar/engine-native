@@ -340,7 +340,7 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
     gfx::Texture *                 texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
     cc::optional<gfx::SamplerInfo> samplerInfo;
     if (info != nullptr && info->samplerHash.has_value()) {
-        samplerInfo = gfx::Sampler::unpackFromHash(static_cast<size_t>(info->samplerHash.value()));
+        samplerInfo = gfx::Sampler::unpackFromHash(info->samplerHash.value());
     } else if (textureBase != nullptr) {
         samplerInfo = textureBase->getSamplerInfo();
     }
@@ -542,14 +542,14 @@ void Pass::doInit(const IPassInfoFull &info, bool /*copyDefines*/ /* = false */)
         bufferViewInfo.buffer = _rootBuffer;
         bufferViewInfo.offset = startOffsets[count++];
         bufferViewInfo.range  = static_cast<int32_t>(std::ceil(static_cast<float>(size) / 16.F)) * 16;
-        if (static_cast<size_t>(binding) >= _buffers.size()) {
+        if (binding >= _buffers.size()) {
             _buffers.resize(binding + 1);
         }
         auto *bufferView  = device->createBuffer(bufferViewInfo);
         _buffers[binding] = bufferView;
         // non-builtin UBO data pools, note that the effect compiler
         // guarantees these bindings to be consecutive, starting from 0 and non-array-typed
-        if (binding >= static_cast<int32_t>(_blocks.size())) {
+        if (binding >= _blocks.size()) {
             _blocks.resize(binding + 1);
         }
         _blocks[binding].data   = reinterpret_cast<float *>(const_cast<uint8_t *>(_rootBlock->getData()) + bufferViewInfo.offset);

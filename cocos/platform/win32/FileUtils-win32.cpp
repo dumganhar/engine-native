@@ -48,8 +48,8 @@ static std::string s_resourcePath = "";
 // D:\aaa\bbb\ccc\ddd\abc.txt --> D:/aaa/bbb/ccc/ddd/abc.txt
 static inline std::string convertPathFormatToUnixStyle(const std::string &path) {
     std::string ret = path;
-    size_t      len = ret.length();
-    for (size_t i = 0; i < len; ++i) {
+    auto        len = ret.length();
+    for (auto i = 0; i < len; ++i) {
         if (ret[i] == '\\') {
             ret[i] = '/';
         }

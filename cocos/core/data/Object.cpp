@@ -37,7 +37,7 @@ std::vector<CCObject *> objectsToDestroy;
 void CCObject::deferredDestroy() {
     if (objectsToDestroy.empty()) return;
     auto deleteCount = static_cast<int32_t>(objectsToDestroy.size());
-    for (int32_t i = 0; i < deleteCount; ++i) {
+    for (size_t i = 0; i < deleteCount; ++i) {
         CCObject *obj = objectsToDestroy[i];
         if (!(obj->_objFlags & Flags::DESTROYED)) {
             obj->destroyImmediate();

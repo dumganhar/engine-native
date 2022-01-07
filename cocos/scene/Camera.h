@@ -329,7 +329,7 @@ private:
     float                 _fov{static_cast<float>(mathutils::toRadian(45.F))};
     float                 _nearClip{1.0F};
     float                 _farClip{1000.0F};
-    gfx::Color            _clearColor{0.2F, 0.2F, 0.2F, 1.0F};
+    gfx::Color            _clearColor{0.2, 0.2, 0.2, 1};
     Vec4                  _viewport{0, 0, 1, 1};
     Vec4                  _orientedViewport{0, 0, 1, 1};
     gfx::SurfaceTransform _curTransform{gfx::SurfaceTransform::IDENTITY};

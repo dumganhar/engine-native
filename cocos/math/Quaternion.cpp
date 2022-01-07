@@ -90,7 +90,7 @@ void Quaternion::createFromAxisAngle(const Vec3 &axis, float angle, Quaternion *
 void Quaternion::createFromAngleZ(float z, Quaternion *dst) {
     GP_ASSERT(dst);
 
-    z *= static_cast<float>(mathutils::HALF_TO_RAD);
+    z *= mathutils::HALF_TO_RAD;
     dst->x = dst->y = 0.F;
     dst->z          = sinf(z);
     dst->w          = cosf(z);

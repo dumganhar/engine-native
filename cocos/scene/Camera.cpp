@@ -85,8 +85,8 @@ Camera::~Camera() {
 
 bool Camera::initialize(const ICameraInfo &info) {
     _node       = info.node;
-    _width      = 1;
-    _height     = 1;
+    _width      = 1.F;
+    _height     = 1.F;
     _clearFlag  = gfx::ClearFlagBit::NONE;
     _clearDepth = 1.0F;
     _visibility = pipeline::CAMERA_DEFAULT_MASK;

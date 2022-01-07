@@ -374,8 +374,8 @@ void Pass::resetUBOs() {
 
 void Pass::resetTextures() {
     for (auto &u : _shaderInfo->samplerTextures) {
-        for (uint32_t j = 0; j < u.count; j++) {
-            resetTexture(u.name, static_cast<index_t>(j));
+        for (int32_t j = 0; j < u.count; j++) {
+            resetTexture(u.name, j);
         }
     }
 }

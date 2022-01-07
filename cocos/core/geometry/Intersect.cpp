@@ -244,7 +244,7 @@ float narrowphase(float *minDis, const Float32Array &vb, const IBArray &ib, gfx:
     return cc::visit([&](auto &ib) {
         if (pm == gfx::PrimitiveMode::TRIANGLE_LIST) {
             auto cnt = ibSize;
-            for (uint32_t j = 0; j < cnt; j += 3) {
+            for (auto j = 0; j < cnt; j += 3) {
                 auto i0   = ib[j] * 3;
                 auto i1   = ib[j + 1] * 3;
                 auto i2   = ib[j + 2] * 3;
@@ -257,10 +257,9 @@ float narrowphase(float *minDis, const Float32Array &vb, const IBArray &ib, gfx:
                 if (opt->mode == ERaycastMode::ANY) return dist;
             }
         } else if (pm == gfx::PrimitiveMode::TRIANGLE_STRIP) {
-            assert(ibSize > 2);
-            uint32_t cnt = ibSize - 2;
-            int32_t  rev = 0;
-            for (uint32_t j = 0; j < cnt; j += 1) {
+            auto    cnt = ibSize - 2;
+            int32_t rev = 0;
+            for (auto j = 0; j < cnt; j += 1) {
                 auto i0   = ib[j - rev] * 3;
                 auto i1   = ib[j + rev + 1] * 3;
                 auto i2   = ib[j + 2] * 3;
@@ -274,11 +273,10 @@ float narrowphase(float *minDis, const Float32Array &vb, const IBArray &ib, gfx:
                 if (opt->mode == ERaycastMode::ANY) return dist;
             }
         } else if (pm == gfx::PrimitiveMode::TRIANGLE_FAN) {
-            assert(ibSize > 1);
-            uint32_t cnt = ibSize - 1;
-            auto     i0  = ib[0] * 3;
-            tri.a        = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
-            for (uint32_t j = 1; j < cnt; j += 1) {
+            auto cnt = ibSize - 1;
+            auto i0  = ib[0] * 3;
+            tri.a    = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
+            for (auto j = 1; j < cnt; j += 1) {
                 auto i1   = ib[j] * 3;
                 auto i2   = ib[j + 1] * 3;
                 tri.b     = {vb[i1], vb[i1 + 1], vb[i1 + 2]};
@@ -766,7 +764,7 @@ int obbFrustumAccurate(const OBB &obb, const Frustum &frustum) {
         }
     }
     if (out1 == frustum.vertices.size() || out2 == frustum.vertices.size()) {
-        return 0;
+        return 0.0F;
     }
     out1 = 0;
     out2 = 0;

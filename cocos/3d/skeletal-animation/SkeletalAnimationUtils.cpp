@@ -227,7 +227,7 @@ cc::optional<IJointTextureHandle> JointTexturePool::getDefaultPoseTexture(Skelet
     }
 
     std::vector<geometry::AABB> bounds;
-    texture->bounds[mesh->getHash()] = bounds;
+    texture->bounds[static_cast<uint32_t>(mesh->getHash())] = bounds;
     geometry::AABB::fromPoints(v3Min, v3Max, &bounds[0]);
     if (buildTexture) {
         _pool->update(texture->handle, textureBuffer.buffer());

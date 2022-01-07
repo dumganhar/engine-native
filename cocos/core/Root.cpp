@@ -105,7 +105,7 @@ void Root::destroy() {
 void Root::resize(uint32_t width, uint32_t height) {
     for (const auto &window : _windows) {
         if (window->getSwapchain()) {
-            window->resize(width, height, gfx::SurfaceTransform::IDENTITY); // TODO(cjh): don't hardcode surfaceTransform
+            window->resize(width, height);
         }
     }
 }

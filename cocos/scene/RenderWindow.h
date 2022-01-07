@@ -63,9 +63,8 @@ public:
      * @zh 重置窗口大小。
      * @param width The new width.
      * @param height The new height.
-     * @param surfaceTransform The new surface transform.
      */
-    void resize(uint32_t width, uint32_t height, gfx::SurfaceTransform surfaceTransform);
+    void resize(uint32_t width, uint32_t height);
 
     void extractRenderCameras(std::vector<Camera *> &cameras);
 

@@ -192,7 +192,7 @@ std::string normalize(const std::string &url) {
                 newUrl = newUrl.substr(index + strlen("../"));
             }
         } else if (previousSlashIndex != std::string::npos) {
-            newUrl = newUrl.substr(0, previousTwiceSlashIndex) + getSeperator() + newUrl.substr(index + strlen("../"));
+            newUrl = newUrl.substr(0, previousTwiceSlashIndex) + '/' + newUrl.substr(index + strlen("../"));
         }
     } while (oldUrl.length() != newUrl.length());
 

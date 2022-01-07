@@ -16,6 +16,7 @@
     #undef CC_USE_GLES2
 #endif
 
+/*
 #include "core/Director.h"
 #include "core/Root.h"
 #include "core/scene-graph/SceneGraphModuleHeader.h"
@@ -64,3 +65,5 @@ void destroyCocos() {
     CC_SAFE_DELETE(director);
     DeviceManager::destroy();
 }
+*/
+

@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
+/*
 #include "core/Director.h"
 #include "core/Root.h"
 #include "core/platform/event-manager/Events.h"
@@ -359,3 +360,4 @@ TEST(CoreNodeEventProcessor, test_function_args) {
 
     delete node;
 }
+*/

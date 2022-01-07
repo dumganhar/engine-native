@@ -21,9 +21,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
+/*
 #include "core/Director.h"
 #include "core/Root.h"
 #include "core/scene-graph/SceneGraphModuleHeader.h"
+#include "core/event/CallbacksInvoker.h"
 #include "gtest/gtest.h"
 #include "renderer/GFXDeviceManager.h"
 #include "renderer/gfx-base/GFXDef.h"
@@ -864,3 +866,5 @@ TEST(CoreEventCallbacksInvoker, remove_many_during_nest_invoke) {
     EXPECT_EQ(actualSequence[4], 3);
     EXPECT_EQ(actualSequence[5], 3);
 }
+
+*/

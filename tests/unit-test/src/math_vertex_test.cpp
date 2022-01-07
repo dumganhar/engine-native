@@ -38,7 +38,7 @@ TEST(mathVertexTest, test8) {
     points[2] = {0, -10};
     points[3] = {20, 70};
     std::vector<cc::Vec2> outP{8};
-    cc::ccVertexLineToPolygon(points, 1, outP, 0, 4);
+    cc::ccVertexLineToPolygon(points, 1, 0, 4, &outP);
     ExpectEq(IsEqualF(outP[5].x, -0.468942523) && IsEqualF(outP[5].y, -9.82652664), true);
     // ccVertexLineIntersect
     logLabel = "test the vertex ccVertexLineIntersect function";

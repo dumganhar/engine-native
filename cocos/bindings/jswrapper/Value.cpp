@@ -25,6 +25,7 @@
 ****************************************************************************/
 
 #include "Value.h"
+#include <cctype>
 #include <cmath>
 #include <cstdint>
 #include <sstream>

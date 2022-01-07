@@ -378,7 +378,7 @@ float rayModel(const Ray &ray, const scene::Model &model, IRayModelOptions *opti
         Vec3::transformMat4Normal(ray.d, m4, &modelRay.d);
     }
     const auto &subModels = model.getSubModels();
-    for (auto i = 0; i < subModels.size(); i++) {
+    for (size_t i = 0; i < subModels.size(); i++) {
         const auto &subMesh = subModels[i]->getSubMesh();
         float       dis     = raySubMesh(modelRay, *subMesh, opt);
         if (dis != 0.0F) {
@@ -389,12 +389,12 @@ float rayModel(const Ray &ray, const scene::Model &model, IRayModelOptions *opti
                         if (opt->subIndices->empty()) {
                             opt->subIndices->resize(1);
                         }
-                        opt->subIndices.value()[0] = i;
+                        opt->subIndices.value()[0] = static_cast<uint32_t>(i);
                     }
                 }
             } else {
                 minDis = dis;
-                if (opt->subIndices.has_value()) opt->subIndices->emplace_back(i);
+                if (opt->subIndices.has_value()) opt->subIndices->emplace_back(static_cast<uint32_t>(i));
                 if (opt->mode == ERaycastMode::ANY) {
                     return dis;
                 }
@@ -642,12 +642,12 @@ int aabbFrustumAccurate(const AABB &aabb, const Frustum &frustum) {
     } // completely inside
     // in case of false positives
     // 2. frustum inside/outside aabb test
-    for (auto i = 0; i < frustum.vertices.size(); i++) {
+    for (size_t i = 0; i < frustum.vertices.size(); i++) {
         tmp[i] = frustum.vertices[i] - aabb.getCenter();
     }
     out1 = 0;
     out2 = 0;
-    for (auto i = 0; i < frustum.vertices.size(); i++) {
+    for (size_t i = 0; i < frustum.vertices.size(); i++) {
         if (tmp[i].x > aabb.getHalfExtents().x) {
             out1++;
         } else if (tmp[i].x < -aabb.getHalfExtents().x) {
@@ -659,7 +659,7 @@ int aabbFrustumAccurate(const AABB &aabb, const Frustum &frustum) {
     }
     out1 = 0;
     out2 = 0;
-    for (auto i = 0; i < frustum.vertices.size(); i++) {
+    for (size_t i = 0; i < frustum.vertices.size(); i++) {
         if (tmp[i].y > aabb.getHalfExtents().y) {
             out1++;
         } else if (tmp[i].y < -aabb.getHalfExtents().y) {
@@ -671,7 +671,7 @@ int aabbFrustumAccurate(const AABB &aabb, const Frustum &frustum) {
     }
     out1 = 0;
     out2 = 0;
-    for (auto i = 0; i < frustum.vertices.size(); i++) {
+    for (size_t i = 0; i < frustum.vertices.size(); i++) {
         if (tmp[i].z > aabb.getHalfExtents().z) {
             out1++;
         } else if (tmp[i].z < -aabb.getHalfExtents().z) {
@@ -752,12 +752,12 @@ int obbFrustumAccurate(const OBB &obb, const Frustum &frustum) {
     } // completely inside
     // in case of false positives
     // 2. frustum inside/outside obb test
-    for (auto i = 0; i < frustum.vertices.size(); i++) {
+    for (size_t i = 0; i < frustum.vertices.size(); i++) {
         tmp[i] = frustum.vertices[i] - obb.center;
     }
     out1 = 0;
     out2 = 0;
-    for (auto i = 0; i < frustum.vertices.size(); i++) {
+    for (size_t i = 0; i < frustum.vertices.size(); i++) {
         dist = dot(tmp[i], obb.orientation.m[0], obb.orientation.m[1], obb.orientation.m[2]);
         if (dist > obb.halfExtents.x) {
             out1++;
@@ -770,7 +770,7 @@ int obbFrustumAccurate(const OBB &obb, const Frustum &frustum) {
     }
     out1 = 0;
     out2 = 0;
-    for (auto i = 0; i < frustum.vertices.size(); i++) {
+    for (size_t i = 0; i < frustum.vertices.size(); i++) {
         dist = dot(tmp[i], obb.orientation.m[3], obb.orientation.m[4], obb.orientation.m[5]);
         if (dist > obb.halfExtents.y) {
             out1++;
@@ -783,7 +783,7 @@ int obbFrustumAccurate(const OBB &obb, const Frustum &frustum) {
     }
     out1 = 0;
     out2 = 0;
-    for (auto i = 0; i < frustum.vertices.size(); i++) {
+    for (size_t i = 0; i < frustum.vertices.size(); i++) {
         dist = dot(tmp[i], obb.orientation.m[6], obb.orientation.m[7], obb.orientation.m[8]);
         if (dist > obb.halfExtents.z) {
             out1++;

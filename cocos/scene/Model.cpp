@@ -273,7 +273,7 @@ SubModel *Model::createSubModel() {
 void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Material *mat) {
     initialize();
     bool isNewSubModel = false;
-    if (idx >= _subModels.size()) {
+    if (idx >= static_cast<index_t>(_subModels.size())) {
         _subModels.resize(idx + 1, nullptr);
     }
 
@@ -290,13 +290,13 @@ void Model::initSubModel(index_t idx, cc::RenderingSubMesh *subMeshData, Materia
 }
 
 void Model::setSubModelMesh(index_t idx, cc::RenderingSubMesh *subMesh) const {
-    if (idx < _subModels.size()) {
+    if (idx < static_cast<index_t>(_subModels.size())) {
         _subModels[idx]->setSubMesh(subMesh);
     }
 }
 
 void Model::setSubModelMaterial(index_t idx, Material *mat) {
-    if (idx < _subModels.size()) {
+    if (idx < static_cast<index_t>(_subModels.size())) {
         _subModels[idx]->setPasses(mat->getPasses());
         updateAttributesAndBinding(idx);
     }
@@ -309,8 +309,8 @@ void Model::onGlobalPipelineStateChanged() const {
 }
 
 void Model::onMacroPatchesStateChanged() {
-    for (index_t i = 0; i < _subModels.size(); ++i) {
-        _subModels[i]->onMacroPatchesStateChanged(getMacroPatches(i));
+    for (size_t i = 0; i < _subModels.size(); ++i) {
+        _subModels[i]->onMacroPatchesStateChanged(getMacroPatches(static_cast<index_t>(i)));
     }
 }
 
@@ -358,7 +358,7 @@ std::vector<IMacroPatch> &Model::getMacroPatches(index_t subModelIndex) {
 }
 
 void Model::updateAttributesAndBinding(index_t subModelIndex) {
-    if (subModelIndex >= _subModels.size()) return;
+    if (subModelIndex >= static_cast<index_t>(_subModels.size())) return;
     SubModel *subModel = _subModels[subModelIndex];
     initLocalDescriptors(subModelIndex);
     updateLocalDescriptors(subModelIndex, subModel->getDescriptorSet());
@@ -372,7 +372,7 @@ void Model::updateAttributesAndBinding(index_t subModelIndex) {
 
 index_t Model::getInstancedAttributeIndex(const std::string &name) const {
     const auto &attributes = _instanceAttributeBlock.attributes;
-    for (index_t i = 0; i < attributes.size(); ++i) {
+    for (index_t i = 0; i < static_cast<index_t>(attributes.size()); ++i) {
         if (attributes[i].name == name) {
             return i;
         }

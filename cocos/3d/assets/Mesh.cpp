@@ -338,10 +338,10 @@ Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
         valid.emplace_back(false);
     }
     const auto &primitives = _struct.primitives;
-    for (index_t p = 0; p < primitives.size(); p++) {
-        const auto joints    = readAttribute(p, gfx::ATTR_NAME_JOINTS);
-        const auto weights   = readAttribute(p, gfx::ATTR_NAME_WEIGHTS);
-        const auto positions = readAttribute(p, gfx::ATTR_NAME_POSITION);
+    for (size_t p = 0; p < primitives.size(); p++) {
+        const auto joints    = readAttribute(static_cast<index_t>(p), gfx::ATTR_NAME_JOINTS);
+        const auto weights   = readAttribute(static_cast<index_t>(p), gfx::ATTR_NAME_WEIGHTS);
+        const auto positions = readAttribute(static_cast<index_t>(p), gfx::ATTR_NAME_POSITION);
         if (joints.index() == 0 || weights.index() == 0 || positions.index() == 0) {
             continue;
         }
@@ -359,7 +359,7 @@ Mesh::BoneSpaceBounds Mesh::getBoneSpaceBounds(Skeleton *skeleton) {
                 const uint32_t idx   = 4 * i + j;
                 const auto     joint = getTypedArrayValue<int32_t>(joints, idx);
 
-                if (std::fabs(getTypedArrayValue<float>(weights, idx)) < FLT_EPSILON || joint >= bindposes.size()) {
+                if (std::fabs(getTypedArrayValue<float>(weights, idx)) < FLT_EPSILON || joint >= static_cast<int32_t>(bindposes.size())) {
                     continue;
                 }
 
@@ -410,11 +410,11 @@ bool Mesh::merge(Mesh *mesh, const Mat4 *worldMatrix /* = nullptr */, bool valid
                 Vec3::subtract(boundingBox.center, boundingBox.halfExtents, &structInfo.minPosition.value());
             }
             for (auto &vtxBdl : structInfo.vertexBundles) {
-                for (int j = 0; j < vtxBdl.attributes.size(); j++) {
+                for (size_t j = 0; j < vtxBdl.attributes.size(); j++) {
                     if (vtxBdl.attributes[j].name == gfx::ATTR_NAME_POSITION || vtxBdl.attributes[j].name == gfx::ATTR_NAME_NORMAL) {
                         const gfx::Format format = vtxBdl.attributes[j].format;
 
-                        DataView inputView(data.buffer(), vtxBdl.view.offset + getOffset(vtxBdl.attributes, j));
+                        DataView inputView(data.buffer(), vtxBdl.view.offset + getOffset(vtxBdl.attributes, static_cast<index_t>(j)));
 
                         auto reader = getReader(inputView, format);
                         if (reader == nullptr) {
@@ -826,7 +826,7 @@ bool Mesh::copyAttribute(index_t primitiveIndex, const char *attributeName, Arra
 }
 
 IBArray Mesh::readIndices(index_t primitiveIndex) {
-    if (primitiveIndex >= _struct.primitives.size()) {
+    if (static_cast<size_t>(primitiveIndex) >= _struct.primitives.size()) {
         return {};
     }
     const auto &primitive = _struct.primitives[primitiveIndex];
@@ -849,7 +849,7 @@ IBArray Mesh::readIndices(index_t primitiveIndex) {
 }
 
 bool Mesh::copyIndices(index_t primitiveIndex, TypedArray &outputArray) {
-    if (primitiveIndex >= _struct.primitives.size()) {
+    if (static_cast<size_t>(primitiveIndex) >= _struct.primitives.size()) {
         return false;
     }
     const auto &primitive = _struct.primitives[primitiveIndex];
@@ -871,7 +871,7 @@ bool Mesh::copyIndices(index_t primitiveIndex, TypedArray &outputArray) {
 }
 
 void Mesh::accessAttribute(index_t primitiveIndex, const char *attributeName, const AccessorType &accessor) {
-    if (primitiveIndex >= _struct.primitives.size()) {
+    if (primitiveIndex >= static_cast<index_t>(_struct.primitives.size())) {
         return;
     }
 

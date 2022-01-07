@@ -156,7 +156,7 @@ void Material::setProperty(const std::string &name, const MaterialPropertyVarian
             }
         }
     } else {
-        if (passIdx >= passes.size()) {
+        if (passIdx >= static_cast<index_t>(passes.size())) {
             CC_LOG_WARNING("illegal pass index: %d.", passIdx);
             return;
         }
@@ -228,7 +228,7 @@ const MaterialPropertyVariant *Material::getProperty(const std::string &name, in
             }
         }
     } else {
-        if (passIdx >= _props.size()) {
+        if (passIdx >= static_cast<index_t>(_props.size())) {
             CC_LOG_WARNING("illegal pass index: %d.", passIdx);
             return nullptr;
         }
@@ -322,13 +322,13 @@ std::vector<IntrusivePtr<scene::Pass>> Material::createPasses() {
         auto &  passInfo = tech->passes[k];
         index_t propIdx = passInfo.passIndex = static_cast<index_t>(k);
 
-        if (propIdx >= _defines.size()) {
+        if (propIdx >= static_cast<index_t>(_defines.size())) {
             _defines.resize(propIdx + 1);
         }
         passInfo.defines = _defines[propIdx]; // cjh JS object assignment is weak reference but c++ container assignment is strong copy operation  // const defines = passInfo.defines = this._defines[propIdx] || (this._defines[propIdx] = {});
         auto &defines    = passInfo.defines;
 
-        if (propIdx >= _states.size()) {
+        if (propIdx >= static_cast<index_t>(_states.size())) {
             _states.resize(propIdx + 1);
         }
         passInfo.stateOverrides = _states[propIdx]; // cjh same question as described above

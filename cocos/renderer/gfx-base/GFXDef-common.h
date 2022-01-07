@@ -1323,7 +1323,7 @@ struct BlendState {
     BlendTargetList targets{1U};
 
     void setTarget(index_t index, const BlendTarget &target) {
-        if (index >= targets.size()) {
+        if (index >= static_cast<index_t>(targets.size())) {
             targets.resize(index + 1);
         }
         targets[index] = target;

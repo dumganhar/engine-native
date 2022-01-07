@@ -300,7 +300,7 @@ public:
     void setWeights(const std::vector<float> &weights) {
         CC_ASSERT(weights.size() == _targetCount);
         for (size_t iWeight = 0; iWeight < weights.size(); ++iWeight) {
-            _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_WEIGHTS + 4 * iWeight, weights[iWeight]); //cjh legacyCC.sys.isLittleEndian);
+            _localBuffer->setFloat32(static_cast<uint32_t>(pipeline::UBOMorph::OFFSET_OF_WEIGHTS + 4 * iWeight), weights[iWeight]); //cjh legacyCC.sys.isLittleEndian);
         }
     }
 
@@ -445,7 +445,7 @@ class GpuComputingRenderingInstance final : public SubMeshMorphRenderingInstance
 public:
     explicit GpuComputingRenderingInstance(GpuComputing *owner, gfx::Device *gfxDevice) {
         _owner         = owner;
-        _morphUniforms = new MorphUniforms(gfxDevice, _owner->_subMeshMorph->targets.size());
+        _morphUniforms = new MorphUniforms(gfxDevice, static_cast<uint32_t>(_owner->_subMeshMorph->targets.size()));
         _morphUniforms->setMorphTextureInfo(static_cast<float>(_owner->_textureWidth), static_cast<float>(_owner->_textureHeight));
         _morphUniforms->setVerticesCount(_owner->_verticesCount);
         _morphUniforms->commit();
@@ -543,7 +543,7 @@ GpuComputing::GpuComputing(Mesh *mesh, uint32_t subMeshIndex, const Morph *morph
 
     uint32_t nVertices    = mesh->getStruct().vertexBundles[mesh->getStruct().primitives[subMeshIndex].vertexBundelIndices[0]].view.count;
     _verticesCount        = nVertices;
-    uint32_t nTargets     = subMeshMorph.targets.size();
+    uint32_t nTargets     = static_cast<uint32_t>(subMeshMorph.targets.size());
     uint32_t vec4Required = nVertices * nTargets;
 
     auto vec4TextureFactory = createVec4TextureFactory(gfxDevice, vec4Required);
@@ -705,13 +705,13 @@ StdMorphRendering::StdMorphRendering(Mesh *mesh, gfx::Device *gfxDevice) {
         if (PREFER_CPU_COMPUTING || subMeshMorph.targets.size() > pipeline::UBOMorph::MAX_MORPH_TARGET_COUNT) {
             _subMeshRenderings[iSubMesh] = new CpuComputing(
                 _mesh,
-                iSubMesh,
+                static_cast<uint32_t>(iSubMesh),
                 &morph,
                 gfxDevice);
         } else {
             _subMeshRenderings[iSubMesh] = new GpuComputing(
                 _mesh,
-                iSubMesh,
+                static_cast<uint32_t>(iSubMesh),
                 &morph,
                 gfxDevice);
         }

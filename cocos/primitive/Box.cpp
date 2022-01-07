@@ -79,7 +79,7 @@ IGeometry box(const cc::optional<IBoxOptions> &options) {
     auto buildPlane = [&](uint32_t side, uint32_t uSegments, uint32_t vSegments) {
         float                  u           = 0;
         float                  v           = 0;
-        const uint32_t         offset      = positions.size() / 3;
+        const auto             offset      = static_cast<uint32_t>(positions.size() / 3);
         const vector<uint32_t> faceAxe     = FACE_AXES[side];
         const vector<float>    faceNormal  = FACE_NORMALS[side];
         const vector<float>    faceTangent = FACE_TANGENTS[side];

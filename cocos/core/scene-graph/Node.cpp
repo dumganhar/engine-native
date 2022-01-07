@@ -449,7 +449,7 @@ void Node::updateScene() {
 index_t Node::getIdxOfChild(const std::vector<IntrusivePtr<Node>> &child, Node *target) {
     auto iteChild = std::find(child.begin(), child.end(), target);
     if (iteChild != child.end()) {
-        return iteChild - child.begin();
+        return static_cast<index_t>(iteChild - child.begin());
     }
     return CC_INVALID_INDEX;
 }

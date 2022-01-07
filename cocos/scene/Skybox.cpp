@@ -118,7 +118,7 @@ void SkyboxInfo::setDiffuseMap(TextureCube *val) {
 }
 
 void SkyboxInfo::activate(Skybox *resource) {
-    _resource = resource; // cjh shared_ptr?
+    _resource = resource; // weak reference
     if (_resource != nullptr) {
         _resource->initialize(*this);
         _resource->setEnvMaps(_envmapHDR, _envmapLDR);

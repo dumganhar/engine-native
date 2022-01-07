@@ -90,7 +90,7 @@ public:
     inline const std::vector<gfx::Shader *> &                                  getGeometryRendererShaders() const { return _geometryRendererShaders; }
 
     inline float getShadingScale() const { return _shadingScale; }
-    inline void  setShadingScale(float val) { _shadingScale = val; } // TODO(cjh): needs to emit event to JS or hack this method in JS.
+    inline void  setShadingScale(float val) { _shadingScale = val; }
 
     scene::Pass *getOcclusionQueryPass();
 

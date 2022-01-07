@@ -382,12 +382,8 @@ public:
     IntrusivePtr<MorphRendering> morphRendering;
 
 private:
-    //cjh howto ? @serializable
     IStruct _struct;
-
-    //cjh howto ? @serializable
     uint64_t _hash{0};
-
     Uint8Array _data;
 
     bool _initialized{false};

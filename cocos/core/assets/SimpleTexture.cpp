@@ -80,21 +80,8 @@ void SimpleTexture::uploadData(const uint8_t *source, uint32_t level /* = 0 */, 
     region.texSubres.mipLevel       = level;
     region.texSubres.baseArrayLayer = arrayIndex;
 
-    //cjh    if (DEV) {
-    //        if (source instanceof HTMLElement) {
-    //            if (source.height > region.texExtent.height
-    //                || source.width > region.texExtent.width) {
-    //                error(`Image source(${name}) bounds override.`);
-    //            }
-    //        }
-    //    }
-
-    //cjh    if (ArrayBuffer.isView(source)) {
     const uint8_t *buffers[1]{source};
     gfxDevice->copyBuffersToTexture(buffers, _gfxTexture, &region, 1);
-    //    } else {
-    //        gfxDevice.copyTexImagesToTexture([source], _gfxTexture, _regions);
-    //    }
 }
 
 void SimpleTexture::assignImage(ImageAsset *image, uint32_t level, uint32_t arrayIndex /* = 0 */) {

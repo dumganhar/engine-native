@@ -80,7 +80,7 @@ void Material::initialize(const IMaterialInfo &info) {
     }
 
     if (info.effectAsset != nullptr) {
-        _effectAsset = info.effectAsset; // cjh TODO:
+        _effectAsset = info.effectAsset;
     } else if (info.effectName != cc::nullopt) {
         _effectAsset = EffectAsset::get(info.effectName.value());
     }
@@ -261,7 +261,7 @@ void Material::copy(const Material *mat) {
     for (size_t i = 0, len = mat->_states.size(); i < len; ++i) {
         _states[i] = mat->_states[i];
     }
-    _effectAsset = mat->_effectAsset; // cjh TODO: lifecycle
+    _effectAsset = mat->_effectAsset;
     update();
 }
 
@@ -294,12 +294,6 @@ void Material::update(bool keepProps /* = true*/) {
                 cb(passes[i].get(), i);
             }
         }
-        // cjh FIXME: no need since we resize _props?
-        //         else {
-        //             for (size_t i = 0; i < _props.size(); i++) {
-        //                 _props[i] = {};
-        //             }
-        //         }
 
         emit(EventTypesToJS::MATERIAL_PASSES_UPDATED);
     }
@@ -325,13 +319,13 @@ std::vector<IntrusivePtr<scene::Pass>> Material::createPasses() {
         if (propIdx >= _defines.size()) {
             _defines.resize(propIdx + 1);
         }
-        passInfo.defines = _defines[propIdx]; // cjh JS object assignment is weak reference but c++ container assignment is strong copy operation  // const defines = passInfo.defines = this._defines[propIdx] || (this._defines[propIdx] = {});
+        passInfo.defines = _defines[propIdx];
         auto &defines    = passInfo.defines;
 
         if (propIdx >= _states.size()) {
             _states.resize(propIdx + 1);
         }
-        passInfo.stateOverrides = _states[propIdx]; // cjh same question as described above
+        passInfo.stateOverrides = _states[propIdx];
 
         if (passInfo.propertyIndex != CC_INVALID_INDEX) {
             utils::mergeToMap(defines, _defines[passInfo.propertyIndex]);

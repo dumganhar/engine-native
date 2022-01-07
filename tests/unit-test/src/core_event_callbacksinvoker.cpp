@@ -24,8 +24,8 @@ THE SOFTWARE.
 /*
 #include "core/Director.h"
 #include "core/Root.h"
-#include "core/scene-graph/SceneGraphModuleHeader.h"
 #include "core/event/CallbacksInvoker.h"
+#include "core/scene-graph/SceneGraphModuleHeader.h"
 #include "gtest/gtest.h"
 #include "renderer/GFXDeviceManager.h"
 #include "renderer/gfx-base/GFXDef.h"

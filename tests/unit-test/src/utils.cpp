@@ -66,4 +66,3 @@ void destroyCocos() {
     DeviceManager::destroy();
 }
 */
-

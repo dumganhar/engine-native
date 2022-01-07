@@ -170,7 +170,7 @@ struct CpuMorphAttributeTarget {
 
 using CpuMorphAttributeTargetList = std::vector<CpuMorphAttributeTarget>;
 
-struct CpuMorphAttribute { //cjh TODO: implement move operation
+struct CpuMorphAttribute {
     std::string                 name;
     CpuMorphAttributeTargetList targets;
 };
@@ -260,7 +260,7 @@ Vec4TextureFactory createVec4TextureFactory(gfx::Device *gfxDevice, uint32_t vec
     ret.width  = width;
     ret.height = height;
     ret.create = [=]() -> MorphTexture * {
-        auto *texture = new MorphTexture(); //cjh how to release?
+        auto *texture = new MorphTexture(); // texture will be held by IntrusivePtr in GpuMorphAttribute
         texture->initialize(gfxDevice, width, height, pixelBytes, useFloat32Array, pixelFormat);
         return texture;
     };
@@ -300,17 +300,17 @@ public:
     void setWeights(const std::vector<float> &weights) {
         CC_ASSERT(weights.size() == _targetCount);
         for (size_t iWeight = 0; iWeight < weights.size(); ++iWeight) {
-            _localBuffer->setFloat32(static_cast<uint32_t>(pipeline::UBOMorph::OFFSET_OF_WEIGHTS + 4 * iWeight), weights[iWeight]); //cjh legacyCC.sys.isLittleEndian);
+            _localBuffer->setFloat32(static_cast<uint32_t>(pipeline::UBOMorph::OFFSET_OF_WEIGHTS + 4 * iWeight), weights[iWeight]);
         }
     }
 
     void setMorphTextureInfo(float width, float height) {
-        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_DISPLACEMENT_TEXTURE_WIDTH, width);   //cjh, legacyCC.sys.isLittleEndian);
-        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_DISPLACEMENT_TEXTURE_HEIGHT, height); //cjh, legacyCC.sys.isLittleEndian);
+        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_DISPLACEMENT_TEXTURE_WIDTH, width);
+        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_DISPLACEMENT_TEXTURE_HEIGHT, height);
     }
 
     void setVerticesCount(uint32_t count) {
-        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_VERTICES_COUNT, static_cast<float>(count)); //cjh , legacyCC.sys.isLittleEndian);
+        _localBuffer->setFloat32(pipeline::UBOMorph::OFFSET_OF_VERTICES_COUNT, static_cast<float>(count));
     }
 
     void commit() {

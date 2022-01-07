@@ -79,7 +79,6 @@ std::string changeExtname(const std::string &path, const std::string &extName = 
  */
 std::string changeBasename(const std::string &path, const std::string &baseName, bool isSameExt = false);
 
-// todo make public after verification
 std::string normalize(const std::string &url);
 
 std::string stripSep(const std::string &path);

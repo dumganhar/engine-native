@@ -244,7 +244,7 @@ float narrowphase(float *minDis, const Float32Array &vb, const IBArray &ib, gfx:
     return cc::visit([&](auto &ib) {
         if (pm == gfx::PrimitiveMode::TRIANGLE_LIST) {
             auto cnt = ibSize;
-            for (uint32_t j = 0; j < cnt; j += 3) {
+            for (auto j = 0; j < cnt; j += 3) {
                 auto i0   = ib[j] * 3;
                 auto i1   = ib[j + 1] * 3;
                 auto i2   = ib[j + 2] * 3;
@@ -257,10 +257,9 @@ float narrowphase(float *minDis, const Float32Array &vb, const IBArray &ib, gfx:
                 if (opt->mode == ERaycastMode::ANY) return dist;
             }
         } else if (pm == gfx::PrimitiveMode::TRIANGLE_STRIP) {
-            assert(ibSize > 2);
-            uint32_t cnt = ibSize - 2;
-            int32_t  rev = 0;
-            for (uint32_t j = 0; j < cnt; j += 1) {
+            auto    cnt = ibSize - 2;
+            int32_t rev = 0;
+            for (auto j = 0; j < cnt; j += 1) {
                 auto i0   = ib[j - rev] * 3;
                 auto i1   = ib[j + rev + 1] * 3;
                 auto i2   = ib[j + 2] * 3;
@@ -274,11 +273,10 @@ float narrowphase(float *minDis, const Float32Array &vb, const IBArray &ib, gfx:
                 if (opt->mode == ERaycastMode::ANY) return dist;
             }
         } else if (pm == gfx::PrimitiveMode::TRIANGLE_FAN) {
-            assert(ibSize > 1);
-            uint32_t cnt = ibSize - 1;
-            auto     i0  = ib[0] * 3;
-            tri.a        = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
-            for (uint32_t j = 1; j < cnt; j += 1) {
+            auto cnt = ibSize - 1;
+            auto i0  = ib[0] * 3;
+            tri.a    = {vb[i0], vb[i0 + 1], vb[i0 + 2]};
+            for (auto j = 1; j < cnt; j += 1) {
                 auto i1   = ib[j] * 3;
                 auto i2   = ib[j + 1] * 3;
                 tri.b     = {vb[i1], vb[i1 + 1], vb[i1 + 2]};
@@ -378,7 +376,7 @@ float rayModel(const Ray &ray, const scene::Model &model, IRayModelOptions *opti
         Vec3::transformMat4Normal(ray.d, m4, &modelRay.d);
     }
     const auto &subModels = model.getSubModels();
-    for (size_t i = 0; i < subModels.size(); i++) {
+    for (auto i = 0; i < subModels.size(); i++) {
         const auto &subMesh = subModels[i]->getSubMesh();
         float       dis     = raySubMesh(modelRay, *subMesh, opt);
         if (dis != 0.0F) {
@@ -389,12 +387,12 @@ float rayModel(const Ray &ray, const scene::Model &model, IRayModelOptions *opti
                         if (opt->subIndices->empty()) {
                             opt->subIndices->resize(1);
                         }
-                        opt->subIndices.value()[0] = static_cast<uint32_t>(i);
+                        opt->subIndices.value()[0] = i;
                     }
                 }
             } else {
                 minDis = dis;
-                if (opt->subIndices.has_value()) opt->subIndices->emplace_back(static_cast<uint32_t>(i));
+                if (opt->subIndices.has_value()) opt->subIndices->emplace_back(i);
                 if (opt->mode == ERaycastMode::ANY) {
                     return dis;
                 }
@@ -642,12 +640,12 @@ int aabbFrustumAccurate(const AABB &aabb, const Frustum &frustum) {
     } // completely inside
     // in case of false positives
     // 2. frustum inside/outside aabb test
-    for (size_t i = 0; i < frustum.vertices.size(); i++) {
+    for (auto i = 0; i < frustum.vertices.size(); i++) {
         tmp[i] = frustum.vertices[i] - aabb.getCenter();
     }
     out1 = 0;
     out2 = 0;
-    for (size_t i = 0; i < frustum.vertices.size(); i++) {
+    for (auto i = 0; i < frustum.vertices.size(); i++) {
         if (tmp[i].x > aabb.getHalfExtents().x) {
             out1++;
         } else if (tmp[i].x < -aabb.getHalfExtents().x) {
@@ -659,7 +657,7 @@ int aabbFrustumAccurate(const AABB &aabb, const Frustum &frustum) {
     }
     out1 = 0;
     out2 = 0;
-    for (size_t i = 0; i < frustum.vertices.size(); i++) {
+    for (auto i = 0; i < frustum.vertices.size(); i++) {
         if (tmp[i].y > aabb.getHalfExtents().y) {
             out1++;
         } else if (tmp[i].y < -aabb.getHalfExtents().y) {
@@ -671,7 +669,7 @@ int aabbFrustumAccurate(const AABB &aabb, const Frustum &frustum) {
     }
     out1 = 0;
     out2 = 0;
-    for (size_t i = 0; i < frustum.vertices.size(); i++) {
+    for (auto i = 0; i < frustum.vertices.size(); i++) {
         if (tmp[i].z > aabb.getHalfExtents().z) {
             out1++;
         } else if (tmp[i].z < -aabb.getHalfExtents().z) {
@@ -752,12 +750,12 @@ int obbFrustumAccurate(const OBB &obb, const Frustum &frustum) {
     } // completely inside
     // in case of false positives
     // 2. frustum inside/outside obb test
-    for (size_t i = 0; i < frustum.vertices.size(); i++) {
+    for (auto i = 0; i < frustum.vertices.size(); i++) {
         tmp[i] = frustum.vertices[i] - obb.center;
     }
     out1 = 0;
     out2 = 0;
-    for (size_t i = 0; i < frustum.vertices.size(); i++) {
+    for (auto i = 0; i < frustum.vertices.size(); i++) {
         dist = dot(tmp[i], obb.orientation.m[0], obb.orientation.m[1], obb.orientation.m[2]);
         if (dist > obb.halfExtents.x) {
             out1++;
@@ -766,11 +764,11 @@ int obbFrustumAccurate(const OBB &obb, const Frustum &frustum) {
         }
     }
     if (out1 == frustum.vertices.size() || out2 == frustum.vertices.size()) {
-        return 0;
+        return 0.0F;
     }
     out1 = 0;
     out2 = 0;
-    for (size_t i = 0; i < frustum.vertices.size(); i++) {
+    for (auto i = 0; i < frustum.vertices.size(); i++) {
         dist = dot(tmp[i], obb.orientation.m[3], obb.orientation.m[4], obb.orientation.m[5]);
         if (dist > obb.halfExtents.y) {
             out1++;
@@ -783,7 +781,7 @@ int obbFrustumAccurate(const OBB &obb, const Frustum &frustum) {
     }
     out1 = 0;
     out2 = 0;
-    for (size_t i = 0; i < frustum.vertices.size(); i++) {
+    for (auto i = 0; i < frustum.vertices.size(); i++) {
         dist = dot(tmp[i], obb.orientation.m[6], obb.orientation.m[7], obb.orientation.m[8]);
         if (dist > obb.halfExtents.z) {
             out1++;

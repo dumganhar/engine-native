@@ -560,7 +560,7 @@ struct HolderType {
     local_type data;
     type *     ptr = nullptr;
     struct alignas(T) EmbedField {
-        uint8_t inlineObject[is_reference && is_jsb_object_v<T> ? sizeof(T) : 0];
+        uint8_t inlineObject[is_reference && is_jsb_object_v<T> ? sizeof(T) : 1];
     } inlineObject;
 
     constexpr inline type &value() {

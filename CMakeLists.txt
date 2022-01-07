@@ -2763,7 +2763,15 @@ if(MSVC)
             ${CWD}/external/win64/libs/glslang/*.dll
         )
     endif()
-    target_compile_options(cocos2d PUBLIC /MP /wd4309 /wd4819 /wd4996)
+    target_compile_options(cocos2d PUBLIC /MP 
+        /wd4018 # signed/unsigned mismatch
+        /wd4244 # type conversion data lost
+        /wd4267 # conversion from 'size_t' to 'type', possible loss of data
+        /wd4305 # truncation from 'type1' to 'type2'
+        /wd4309 # truncation of constant value
+        /wd4819 # file contains a character that cannot be represented in the current code page
+        /wd4996 # deprecated
+    )
 endif()
 
 if(CC_USE_VULKAN)

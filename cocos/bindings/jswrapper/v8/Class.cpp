@@ -70,7 +70,7 @@ Class *Class::create(const std::initializer_list<const char *> &classPath, se::O
     se::AutoHandleScope scope;
     se::Object *        currentParent = parent;
     se::Value           tmp;
-    for (auto i = 0; i < static_cast<int>(classPath.size()) - 1; i++) {
+    for (auto i = 0; i < classPath.size() - 1; i++) {
         bool ok = currentParent->getProperty(*(classPath.begin() + i), &tmp);
         CCASSERT(ok, "class or namespace in path is not defined");
         currentParent = tmp.toObject();

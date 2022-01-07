@@ -65,7 +65,7 @@ void PVRFrameEnableControlWindow(bool bEnable) {
         || (ERROR_SUCCESS == status                  // or the hide_gui value is exist
             && 0 != wcscmp(wszNewData, wszOldData))) // but new data and old data not equal
     {
-        dwSize = static_cast<DWORD>(sizeof(WCHAR) * (wcslen(wszNewData) + 1));
+        dwSize = sizeof(WCHAR) * (wcslen(wszNewData) + 1);
         RegSetValueEx(hKey, wszValue, 0, REG_SZ, (const BYTE *)wszNewData, dwSize);
     }
 

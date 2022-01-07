@@ -38,7 +38,7 @@ void Texture2D::syncMipmapsForJS(const std::vector<IntrusivePtr<ImageAsset>> &va
 
 void Texture2D::setMipmaps(const std::vector<IntrusivePtr<ImageAsset>> &value) {
     _mipmaps = value;
-    setMipmapLevel(static_cast<uint32_t>(_mipmaps.size()));
+    setMipmapLevel(_mipmaps.size());
     if (!_mipmaps.empty()) {
         ImageAsset *         imageAsset = _mipmaps[0];
         ITexture2DCreateInfo info;
@@ -49,7 +49,7 @@ void Texture2D::setMipmaps(const std::vector<IntrusivePtr<ImageAsset>> &value) {
         reset(info);
 
         for (size_t i = 0, len = _mipmaps.size(); i < len; ++i) {
-            assignImage(_mipmaps[i], static_cast<uint32_t>(i));
+            assignImage(_mipmaps[i], i);
         }
 
     } else {
@@ -99,9 +99,9 @@ void Texture2D::updateMipmaps(uint32_t firstLevel, uint32_t count) {
         return;
     }
 
-    const auto nUpdate = static_cast<uint32_t>(std::min(
+    const uint32_t nUpdate = std::min(
         (count == 0 ? _mipmaps.size() : count),
-        (_mipmaps.size() - firstLevel)));
+        (_mipmaps.size() - firstLevel));
 
     for (uint32_t i = 0; i < nUpdate; ++i) {
         uint32_t level = firstLevel + i;

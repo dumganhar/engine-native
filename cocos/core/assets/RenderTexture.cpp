@@ -72,8 +72,8 @@ bool RenderTexture::destroy() {
 }
 
 void RenderTexture::resize(uint32_t width, uint32_t height) {
-    _width  = static_cast<uint32_t>(std::floor(clampf(static_cast<float>(width), 1.F, 2048.F)));
-    _height = static_cast<uint32_t>(std::floor(clampf(static_cast<float>(height), 1.F, 2048.F)));
+    _width  = std::floor(clampf(static_cast<float>(width), 1.F, 2048.F));
+    _height = std::floor(clampf(static_cast<float>(height), 1.F, 2048.F));
     if (_window != nullptr) {
         _window->resize(_width, _height, gfx::SurfaceTransform::IDENTITY); // TODO(cjh): don't hardcode transform here.
     }

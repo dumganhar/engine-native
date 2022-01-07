@@ -46,7 +46,7 @@ gfx::PipelineState *PipelineStateManager::getOrCreatePipelineState(const scene::
         hash = hash << subpass;
     }
 
-    auto *pso = psoHashMap[static_cast<size_t>(hash)].get();
+    auto *pso = psoHashMap[hash].get();
     if (!pso) {
         auto *pipelineLayout = pass->getPipelineLayout();
 
@@ -62,7 +62,7 @@ gfx::PipelineState *PipelineStateManager::getOrCreatePipelineState(const scene::
                                                                gfx::PipelineBindPoint::GRAPHICS,
                                                                subpass});
 
-        psoHashMap[static_cast<size_t>(hash)] = pso;
+        psoHashMap[hash] = pso;
     }
 
     return pso;

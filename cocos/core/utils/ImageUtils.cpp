@@ -66,7 +66,7 @@ void ImageUtils::convert2RGBA(Image *image) {
     if (!image->_isCompressed && image->_renderFormat != gfx::Format::RGBA8) {
         image->_dataLen = image->_width * image->_height * 4;
         uint8_t *dst    = nullptr;
-        uint32_t length = static_cast<uint32_t>(image->_dataLen);
+        uint32_t length = image->_dataLen;
         uint8_t *src    = image->_data;
         switch (image->_renderFormat) {
             case gfx::Format::A8:

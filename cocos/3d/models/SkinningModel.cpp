@@ -35,16 +35,16 @@
 
 namespace {
 void getRelevantBuffers(std::vector<index_t> &outIndices, std::vector<int32_t> &outBuffers, const std::vector<std::vector<int32_t>> &jointMaps, int32_t targetJoint) {
-    for (size_t i = 0; i < jointMaps.size(); i++) {
+    for (int32_t i = 0; i < jointMaps.size(); i++) {
         index_t index = CC_INVALID_INDEX;
-        for (int32_t j = 0; j < static_cast<int32_t>(jointMaps[i].size()); j++) {
+        for (int32_t j = 0; j < jointMaps[i].size(); j++) {
             if (jointMaps[i][j] == targetJoint) {
                 index = j;
                 break;
             }
         }
         if (index >= 0) {
-            outBuffers.emplace_back(static_cast<int32_t>(i));
+            outBuffers.emplace_back(i);
             outIndices.emplace_back(index);
         }
     }
@@ -89,7 +89,7 @@ void SkinningModel::bindSkeleton(Skeleton *skeleton, Node *skinningRoot, Mesh *m
     ensureEnoughBuffers((jointMaps.has_value() && !jointMaps->empty()) ? static_cast<int32_t>(jointMaps->size()) : 1);
     _bufferIndices = mesh->getJointBufferIndices();
 
-    for (index_t index = 0; index < static_cast<index_t>(skeleton->getJoints().size()); ++index) {
+    for (index_t index = 0; index < skeleton->getJoints().size(); ++index) {
         geometry::AABB *bound  = boneSpaceBounds[index];
         auto *          target = skinningRoot->getChildByPath(skeleton->getJoints()[index]);
         if (!bound || !target) continue;
@@ -202,7 +202,7 @@ void SkinningModel::updateInstancedAttributes(const std::vector<gfx::Attribute> 
 
 void SkinningModel::ensureEnoughBuffers(index_t count) {
     for (index_t i = 0; i < count; i++) {
-        if (static_cast<size_t>(i) >= _buffers.size()) {
+        if (i >= _buffers.size()) {
             _buffers.resize(i + 1);
         }
 
@@ -215,7 +215,7 @@ void SkinningModel::ensureEnoughBuffers(index_t count) {
             });
         }
 
-        if (static_cast<size_t>(i) >= _dataArray.size()) {
+        if (i >= _dataArray.size()) {
             _dataArray.resize(i + 1);
         }
 

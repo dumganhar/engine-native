@@ -156,7 +156,7 @@ IGeometry cylinder(float radiusTop, float radiusBottom, float height, const cc::
 
     auto generateCap = [&](bool top) {
         const float radius = top ? radiusTop : radiusBottom;
-        const float sign   = top ? 1.0F : -1.0F;
+        const float sign   = top ? 1 : -1;
 
         // save the index of the first center vertex
         const uint32_t centerIndexStart = index;

@@ -260,7 +260,7 @@ Vec4TextureFactory createVec4TextureFactory(gfx::Device *gfxDevice, uint32_t vec
     ret.width  = width;
     ret.height = height;
     ret.create = [=]() -> MorphTexture * {
-        auto *texture = new MorphTexture(); // texture will be hold by IntrusivePtr in GpuMorphAttribute
+        auto *texture = new MorphTexture(); // texture will be held by IntrusivePtr in GpuMorphAttribute
         texture->initialize(gfxDevice, width, height, pixelBytes, useFloat32Array, pixelFormat);
         return texture;
     };

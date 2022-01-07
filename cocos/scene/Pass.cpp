@@ -340,7 +340,7 @@ void Pass::resetTexture(const std::string &name, index_t index /* = CC_INVALID_I
     gfx::Texture *                 texture     = textureBase != nullptr ? textureBase->getGFXTexture() : nullptr;
     cc::optional<gfx::SamplerInfo> samplerInfo;
     if (info != nullptr && info->samplerHash.has_value()) {
-        samplerInfo = gfx::Sampler::unpackFromHash(info->samplerHash.value());
+        samplerInfo = gfx::Sampler::unpackFromHash(static_cast<size_t>(info->samplerHash.value()));
     } else if (textureBase != nullptr) {
         samplerInfo = textureBase->getSamplerInfo();
     }

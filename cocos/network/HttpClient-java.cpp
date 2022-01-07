@@ -634,7 +634,7 @@ void HttpClient::processResponse(HttpResponse *response, char *responseMessage) 
     if (0 != suc) {
         response->setSucceed(false);
         response->setErrorBuffer("connect failed");
-        response->setResponseCode(responseCode);
+        response->setResponseCode(static_cast<long>(responseCode));
         return;
     }
 
@@ -684,7 +684,7 @@ void HttpClient::processResponse(HttpResponse *response, char *responseMessage) 
     urlConnection.disconnect();
 
     // write data to HttpResponse
-    response->setResponseCode(responseCode);
+    response->setResponseCode(static_cast<long>(responseCode));
 
     if (responseCode == -1) {
         response->setSucceed(false);

@@ -382,8 +382,8 @@ public:
     IntrusivePtr<MorphRendering> morphRendering;
 
 private:
-    IStruct _struct;
-    uint64_t _hash{0};
+    IStruct    _struct;
+    uint64_t   _hash{0};
     Uint8Array _data;
 
     bool _initialized{false};

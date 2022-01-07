@@ -532,37 +532,37 @@ elseif(OHOS)
     )
 elseif(MACOSX)
    cocos_source_files(
-        cocos/platform/mac/modules/Accelerometer.mm
-        cocos/platform/mac/modules/Accelerometer.h
-        cocos/platform/mac/modules/Battery.mm
-        cocos/platform/mac/modules/Battery.h
-        cocos/platform/mac/modules/Screen.mm
-        cocos/platform/mac/modules/Screen.h
-        cocos/platform/mac/modules/Network.mm
-        cocos/platform/mac/modules/Network.h
-        cocos/platform/mac/modules/Vibrator.mm
-        cocos/platform/mac/modules/Vibrator.h
-        cocos/platform/mac/modules/System.mm
-        cocos/platform/mac/modules/System.h
-        cocos/platform/mac/modules/SystemWindow.mm
-        cocos/platform/mac/modules/SystemWindow.h
+    NO_WERROR   cocos/platform/mac/modules/Accelerometer.mm
+                cocos/platform/mac/modules/Accelerometer.h
+                cocos/platform/mac/modules/Battery.mm
+                cocos/platform/mac/modules/Battery.h
+    NO_WERROR   cocos/platform/mac/modules/Screen.mm
+                cocos/platform/mac/modules/Screen.h
+                cocos/platform/mac/modules/Network.mm
+                cocos/platform/mac/modules/Network.h
+                cocos/platform/mac/modules/Vibrator.mm
+                cocos/platform/mac/modules/Vibrator.h
+                cocos/platform/mac/modules/System.mm
+                cocos/platform/mac/modules/System.h
+                cocos/platform/mac/modules/SystemWindow.mm
+                cocos/platform/mac/modules/SystemWindow.h
    )
 elseif(IOS)
    cocos_source_files(
-        cocos/platform/ios/modules/Accelerometer.mm
-        cocos/platform/ios/modules/Accelerometer.h
-        cocos/platform/ios/modules/Battery.mm
-        cocos/platform/ios/modules/Battery.h
-        cocos/platform/ios/modules/Screen.mm
-        cocos/platform/ios/modules/Screen.h
-        cocos/platform/ios/modules/Network.mm
-        cocos/platform/ios/modules/Network.h
-        cocos/platform/ios/modules/Vibrator.mm
-        cocos/platform/ios/modules/Vibrator.h
-        cocos/platform/ios/modules/System.mm
-        cocos/platform/ios/modules/System.h
-        cocos/platform/ios/modules/SystemWindow.mm
-        cocos/platform/ios/modules/SystemWindow.h
+    NO_WERROR   cocos/platform/ios/modules/Accelerometer.mm
+                cocos/platform/ios/modules/Accelerometer.h
+                cocos/platform/ios/modules/Battery.mm
+                cocos/platform/ios/modules/Battery.h
+    NO_WERROR   cocos/platform/ios/modules/Screen.mm
+                cocos/platform/ios/modules/Screen.h
+                cocos/platform/ios/modules/Network.mm
+                cocos/platform/ios/modules/Network.h
+                cocos/platform/ios/modules/Vibrator.mm
+                cocos/platform/ios/modules/Vibrator.h
+                cocos/platform/ios/modules/System.mm
+                cocos/platform/ios/modules/System.h
+                cocos/platform/ios/modules/SystemWindow.mm
+                cocos/platform/ios/modules/SystemWindow.h
    )
 elseif(LINUX)
     cocos_source_files(
@@ -2475,7 +2475,7 @@ elseif(MACOSX)
 elseif(IOS)
     if(USE_EDIT_BOX)
         cocos_source_files(
-                         cocos/ui/edit-box/EditBox-ios.mm
+             NO_WERROR cocos/ui/edit-box/EditBox-ios.mm
         )
     endif()
     if(USE_VIDEO)

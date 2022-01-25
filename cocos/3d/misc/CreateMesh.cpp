@@ -5,6 +5,7 @@
 #include "3d/misc/BufferBlob.h"
 #include "core/ArrayBuffer.h"
 #include "core/DataView.h"
+#include "core/assets/RenderingSubMesh.h"
 #include "renderer/gfx-base/GFXDef-common.h"
 
 namespace cc {

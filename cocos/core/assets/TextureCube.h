@@ -74,7 +74,7 @@ public:
     using Super = SimpleTexture;
 
     explicit TextureCube()  = default;
-    ~TextureCube() override = default;
+    ~TextureCube() override;
 
     /**
      * @en The index for all faces of the cube

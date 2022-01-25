@@ -73,7 +73,7 @@ class TextureCube final : public SimpleTexture {
 public:
     using Super = SimpleTexture;
 
-    explicit TextureCube()  = default;
+    explicit TextureCube() = default;
     ~TextureCube() override;
 
     /**
@@ -122,7 +122,7 @@ public:
 
     void setMipmaps(const std::vector<ITextureCubeMipmap> &value);
 
-    void setMipmapsForJS(const std::vector<ITextureCubeMipmap>& value) {
+    void setMipmapsForJS(const std::vector<ITextureCubeMipmap> &value) {
         _mipmaps = value;
     }
 

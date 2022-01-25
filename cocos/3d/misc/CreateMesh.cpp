@@ -179,8 +179,8 @@ Mesh::ICreateInfo createMeshInfo(const IGeometry &geometry, const ICreateMeshOpt
 
     // Fill index buffer.
     ArrayBuffer::Ptr indexBuffer;
-    uint32_t       idxCount  = 0;
-    const uint32_t idxStride = 2;
+    uint32_t         idxCount  = 0;
+    const uint32_t   idxStride = 2;
     if (geometry.indices.has_value()) {
         const std::vector<uint32_t> &indices = geometry.indices.value();
         idxCount                             = static_cast<uint32_t>(indices.size());

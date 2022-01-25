@@ -78,7 +78,6 @@
 #pragma once
 
 #include <utility>
-//#include "base/RefCounted.h"
 
 namespace cc {
 
@@ -88,7 +87,6 @@ public:
     using element_type = T;
 
     IntrusivePtr() {
-
     }
 
     IntrusivePtr(T *p) : _ptr(p) { // NOLINT
@@ -112,12 +110,10 @@ public:
 
     // Move constructors.
     IntrusivePtr(IntrusivePtr<T> &&r) noexcept : _ptr(r.release()) {
-
     }
 
     template <typename U>
     IntrusivePtr(IntrusivePtr<U> &&r) noexcept : _ptr(r.release()) { // NOLINT
-
     }
 
     ~IntrusivePtr() {

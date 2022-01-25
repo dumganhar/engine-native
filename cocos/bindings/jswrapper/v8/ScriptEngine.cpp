@@ -471,9 +471,6 @@ bool ScriptEngine::postInit() {
     _globalObj->root();
     _globalObj->setProperty("window", Value(_globalObj));
 
-    se::Value tmp;
-    bool      myok = _globalObj->getProperty("window", &tmp);
-
     se::Value consoleVal;
     if (_globalObj->getProperty("console", &consoleVal) && consoleVal.isObject()) {
         consoleVal.toObject()->getProperty("log", &oldConsoleLog);

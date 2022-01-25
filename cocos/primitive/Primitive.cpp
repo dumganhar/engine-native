@@ -28,7 +28,7 @@
 
 namespace cc {
 
-Primitive::Primitive(PrimitiveType type): type(type) {
+Primitive::Primitive(PrimitiveType type) : type(type) {
 }
 
 Primitive::~Primitive() = default;

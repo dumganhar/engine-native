@@ -201,12 +201,10 @@ SE_BIND_FUNC(jsbConsoleAssert)
 /*
         * The unique V8 platform instance
         */
+#ifndef CC_EDITOR
 class ScriptEngineV8Context {
 public:
     ScriptEngineV8Context() {
-    #ifdef CC_EDITOR
-        // to-do
-    #else
         platform = v8::platform::NewDefaultPlatform().release();
         v8::V8::InitializePlatform(platform);
         std::string flags;
@@ -223,7 +221,7 @@ public:
 
         bool ok = v8::V8::Initialize();
         assert(ok);
-    #endif // CC_EDITOR
+    
     }
 
     ~ScriptEngineV8Context() {
@@ -235,7 +233,7 @@ public:
 };
 
 ScriptEngineV8Context *gSharedV8 = nullptr;
-
+#endif // CC_EDITOR
 } // namespace
 
 void ScriptEngine::callExceptionCallback(const char *location, const char *message, const char *stack) {
@@ -445,10 +443,11 @@ ScriptEngine::ScriptEngine()
   _isGarbageCollecting(false),
   _isInCleanup(false),
   _isErrorHandleWorking(false) {
-
+#ifndef CC_EDITOR
     if (!gSharedV8) {
         gSharedV8 = new ScriptEngineV8Context();
     }
+#endif
 }
 
 ScriptEngine::~ScriptEngine() = default;
@@ -696,7 +695,7 @@ bool ScriptEngine::start() {
     se::AutoHandleScope hs;
     // debugger
     if (isDebuggerEnabled()) {
-    #if SE_ENABLE_INSPECTOR
+    #if SE_ENABLE_INSPECTOR && !defined(CC_EDITOR)
         // V8 inspector stuff, most code are taken from NodeJS.
         _isolateData = node::CreateIsolateData(_isolate, uv_default_loop());
         _env         = node::CreateEnvironment(_isolateData, _context.Get(_isolate), 0, nullptr, 0, nullptr);
@@ -724,20 +723,8 @@ bool ScriptEngine::start(v8::Isolate *isolate) {
 void ScriptEngine::garbageCollect() {
     int objSize = __objectMap ? static_cast<int>(__objectMap->size()) : -1;
     SE_LOGD("GC begin ..., (js->native map) size: %d, all objects: %d\n", (int)NativePtrToObjectMap::size(), objSize);
-
-    if (_gcFunc == nullptr) {
-        const double kLongIdlePauseInSeconds = 1.0;
-        _isolate->ContextDisposedNotification();
-        _isolate->IdleNotificationDeadline(gSharedV8->platform->MonotonicallyIncreasingTime() + kLongIdlePauseInSeconds);
-        // By sending a low memory notifications, we will try hard to collect all
-        // garbage and will therefore also invoke all weak callbacks of actually
-        // unreachable persistent handles.
-        _isolate->LowMemoryNotification();
-    } else {
-        _gcFunc->call({}, nullptr);
-    }
+    _gcFunc->call({}, nullptr);    
     objSize = __objectMap ? static_cast<int>(__objectMap->size()) : -1;
-
     SE_LOGD("GC end ..., (js->native map) size: %d, all objects: %d\n", (int)NativePtrToObjectMap::size(), objSize);
 }
 

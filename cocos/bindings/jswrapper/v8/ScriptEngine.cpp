@@ -519,24 +519,7 @@ bool ScriptEngine::postInit() {
 }
 
 bool ScriptEngine::init() {
-    cleanup();
-    SE_LOGD("Initializing V8, version: %s\n", v8::V8::GetVersion());
-    ++_vmId;
-
-    _engineThreadId = std::this_thread::get_id();
-
-    for (const auto &hook : _beforeInitHookArray) {
-        hook();
-    }
-    _beforeInitHookArray.clear();
-    v8::Isolate::CreateParams createParams;
-    createParams.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
-    _isolate                            = v8::Isolate::New(createParams);
-    v8::HandleScope hs(_isolate);
-
-    _context.Reset(_isolate, v8::Context::New(_isolate));
-    _context.Get(_isolate)->Enter();
-    return postInit();
+    return init(nullptr);
 }
 
 bool ScriptEngine::init(v8::Isolate *isolate) {
@@ -550,12 +533,21 @@ bool ScriptEngine::init(v8::Isolate *isolate) {
         hook();
     }
     _beforeInitHookArray.clear();
-
-    _isolate = isolate;
     
-    v8::Local<v8::Context> context = isolate->GetCurrentContext();
-    _context.Reset(isolate, context);
-    _context.Get(isolate)->Enter();
+    if (isolate != nullptr) {
+        _isolate = isolate;
+        v8::Local<v8::Context> context = _isolate->GetCurrentContext();
+        _context.Reset(_isolate, context);
+        _context.Get(isolate)->Enter();
+    } else {
+        v8::Isolate::CreateParams createParams;
+        createParams.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
+        _isolate                            = v8::Isolate::New(createParams);
+        v8::HandleScope hs(_isolate);
+        _context.Reset(_isolate, v8::Context::New(_isolate));
+        _context.Get(_isolate)->Enter();
+    }
+ 
     return postInit();
 }
 

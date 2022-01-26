@@ -201,7 +201,7 @@ SE_BIND_FUNC(jsbConsoleAssert)
 /*
         * The unique V8 platform instance
         */
-#ifndef CC_EDITOR
+#if !CC_EDITOR
 class ScriptEngineV8Context {
 public:
     ScriptEngineV8Context() {
@@ -443,7 +443,7 @@ ScriptEngine::ScriptEngine()
   _isGarbageCollecting(false),
   _isInCleanup(false),
   _isErrorHandleWorking(false) {
-#ifndef CC_EDITOR
+#if !CC_EDITOR
     if (!gSharedV8) {
         gSharedV8 = new ScriptEngineV8Context();
     }
@@ -695,7 +695,7 @@ bool ScriptEngine::start() {
     se::AutoHandleScope hs;
     // debugger
     if (isDebuggerEnabled()) {
-    #if SE_ENABLE_INSPECTOR && !defined(CC_EDITOR)
+    #if SE_ENABLE_INSPECTOR && !CC_EDITOR
         // V8 inspector stuff, most code are taken from NodeJS.
         _isolateData = node::CreateIsolateData(_isolate, uv_default_loop());
         _env         = node::CreateEnvironment(_isolateData, _context.Get(_isolate), 0, nullptr, 0, nullptr);

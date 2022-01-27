@@ -55,7 +55,7 @@ void CCMTLSwapchain::doInit(const SwapchainInfo &info) {
     _gpuSwapchainObj = CC_NEW(CCMTLGPUSwapChainObject);
 
     //----------------------acquire layer-----------------------------------
-#ifdef CC_EDITOR
+#if CC_EDITOR	
     CAMetalLayer* layer = (CAMetalLayer*)info.windowHandle;
     if(!layer.device) {
         layer.device = MTLCreateSystemDefaultDevice();

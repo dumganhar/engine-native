@@ -39,7 +39,7 @@ public:
     }
 
     template <typename T>
-    static se::Class *findClass(const T * nativeObj) {
+    static se::Class *findClass(const T *nativeObj) {
         bool        found    = false;
         std::string typeName = typeid(*nativeObj).name();
         auto        iter     = jsbClassTypeMap.find(typeName);

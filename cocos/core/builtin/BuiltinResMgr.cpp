@@ -130,7 +130,7 @@ void BuiltinResMgr::destroyInstance() {
     CC_SAFE_RELEASE_NULL(BuiltinResMgr::instance);
 }
 
-Asset* BuiltinResMgr::getAsset(const std::string& uuid) {
+Asset *BuiltinResMgr::getAsset(const std::string &uuid) {
     auto iter = _resources.find(uuid);
     if (iter != _resources.end()) {
         return iter->second.get();

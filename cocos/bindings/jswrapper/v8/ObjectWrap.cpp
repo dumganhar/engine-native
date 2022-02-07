@@ -50,7 +50,7 @@
 namespace se {
 
 ObjectWrap::ObjectWrap() {
-    refs_          = 0;
+    _refs          = 0;
     _privateObject = nullptr;
     _finalizeCb    = nullptr;
 }
@@ -67,8 +67,9 @@ void ObjectWrap::setFinalizeCallback(V8FinalizeFunc finalizeCb) {
 }
 
 ObjectWrap::~ObjectWrap() {
-    if (persistent().IsEmpty())
+    if (persistent().IsEmpty()) {
         return;
+    }
     //cjh            assert(persistent().IsNearDeath());
     persistent().ClearWeak();
     persistent().Reset();
@@ -79,7 +80,7 @@ void *ObjectWrap::unwrap(v8::Local<v8::Object> handle, uint32_t fieldIndex) {
     assert(!handle.IsEmpty());
     assert(handle->InternalFieldCount() > 1);
     assert(fieldIndex >= 0 && fieldIndex < 2);
-    return handle->GetAlignedPointerFromInternalField(fieldIndex);
+    return handle->GetAlignedPointerFromInternalField(static_cast<int>(fieldIndex));
 }
 void ObjectWrap::wrap(void *nativeObj, uint32_t fieldIndex) {
     assert(handle()->InternalFieldCount() > 1);
@@ -89,7 +90,7 @@ void ObjectWrap::wrap(void *nativeObj, uint32_t fieldIndex) {
         delete _privateObject;
         _privateObject = reinterpret_cast<PrivateObjectBase *>(nativeObj);
     }
-    handle()->SetAlignedPointerInInternalField(fieldIndex, nativeObj);
+    handle()->SetAlignedPointerInInternalField(static_cast<int>(fieldIndex), nativeObj);
 }
 
 v8::Local<v8::Object> ObjectWrap::handle() {
@@ -101,7 +102,7 @@ v8::Local<v8::Object> ObjectWrap::handle(v8::Isolate *isolate) {
 }
 
 v8::Persistent<v8::Object> &ObjectWrap::persistent() {
-    return handle_;
+    return _handle;
 }
 
 void ObjectWrap::makeWeak() {
@@ -124,23 +125,24 @@ void ObjectWrap::makeWeak() {
 void ObjectWrap::ref() {
     assert(!persistent().IsEmpty());
     persistent().ClearWeak();
-    refs_++;
+    _refs++;
 }
 
 void ObjectWrap::unref() {
     assert(!persistent().IsEmpty());
     assert(!persistent().IsWeak());
-    assert(refs_ > 0);
-    if (--refs_ == 0)
+    assert(_refs > 0);
+    if (--_refs == 0) {
         makeWeak();
+    }
 }
 
 /*static*/
 void ObjectWrap::weakCallback(const v8::WeakCallbackInfo<ObjectWrap> &data) {
     ObjectWrap *wrap = data.GetParameter();
     //        SE_LOGD("weakCallback: %p, nativeObj = %p, finalize: %p\n", wrap, wrap->_nativeObj, wrap->_finalizeCb);
-    assert(wrap->refs_ == 0);
-    wrap->handle_.Reset();
+    assert(wrap->_refs == 0);
+    wrap->_handle.Reset();
     if (wrap->_finalizeCb != nullptr) {
         wrap->_finalizeCb(wrap->_privateObject);
     } else {

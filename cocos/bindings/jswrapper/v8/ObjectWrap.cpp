@@ -105,7 +105,19 @@ v8::Persistent<v8::Object> &ObjectWrap::persistent() {
 }
 
 void ObjectWrap::makeWeak() {
-    persistent().SetWeak(this, weakCallback, v8::WeakCallbackType::kFinalizer);
+    // V8 offical documentation said that:
+    // kParameter will pass a void* parameter back to the callback, kInternalFields
+    // will pass the first two internal fields back to the callback,
+    // kFinalizer will pass a void* parameter back, but is invoked before the object is
+    // actually collected, so it can be resurrected. In the last case, it is not
+    // possible to request a second pass callback.
+    // enum class WeakCallbackType { kParameter, kInternalFields, kFinalizer };
+    //
+    // NOTE: We get random crashes while previewing material in editor's inspector window,
+    // the reason is that kFinalizer will trigger weak callback when some assets are
+    // still being used, jsbinding code will get a dead se::Object pointer that was
+    // freed by weak callback. According V8 documentation, kParameter is a better option.
+    persistent().SetWeak(this, weakCallback, v8::WeakCallbackType::kParameter);
     //        persistent().MarkIndependent();
 }
 

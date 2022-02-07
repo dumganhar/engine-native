@@ -16,7 +16,6 @@
 namespace cc {
 
 namespace {
-BuiltinResMgr *instance = nullptr;
 
 constexpr uint8_t BLACK_IMAGE_RGBA_DATA_2X2[2 * 2 * 4] = {
     // r, g, b, a
@@ -117,7 +116,8 @@ const uint8_t DEFAULT_IMAGE_RGBA_DATA_16X16[16 * 16 * 4] = {
 
 } // namespace
 
-/* static */
+BuiltinResMgr *BuiltinResMgr::instance = nullptr;
+    /* static */
 BuiltinResMgr *BuiltinResMgr::getInstance() {
     if (BuiltinResMgr::instance == nullptr) {
         BuiltinResMgr::instance = new BuiltinResMgr();

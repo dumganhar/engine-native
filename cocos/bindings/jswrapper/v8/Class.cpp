@@ -43,8 +43,8 @@ namespace {
 v8::Isolate *        __isolate = nullptr; // NOLINT
 std::vector<Class *> __allClasses;        // NOLINT
 
-void invalidConstructor(const v8::FunctionCallbackInfo<v8::Value>& args) {
-    v8::Local<v8::Object> thisObj = args.This();
+void invalidConstructor(const v8::FunctionCallbackInfo<v8::Value> &args) {
+    v8::Local<v8::Object> thisObj         = args.This();
     v8::Local<v8::String> constructorName = thisObj->GetConstructorName();
     v8::String::Utf8Value strConstructorName{args.GetIsolate(), constructorName};
     SE_ASSERT(false, "%s 's constructor is not public!\n", *strConstructorName);

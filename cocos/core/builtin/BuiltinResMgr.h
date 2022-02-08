@@ -54,7 +54,7 @@ public:
 
 private:
     explicit BuiltinResMgr() = default;
-    ~BuiltinResMgr()         = default;
+    ~BuiltinResMgr() override = default;
 
     void initMaterials();
     void tryCompileAllPasses();

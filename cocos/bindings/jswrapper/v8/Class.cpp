@@ -28,6 +28,7 @@
 #include <initializer_list>
 #include "Value.h"
 #include "base/Macros.h"
+#include "v8/HelperMacros.h"
 
 #if SCRIPT_ENGINE_TYPE == SCRIPT_ENGINE_V8
 
@@ -47,7 +48,7 @@ void invalidConstructor(const v8::FunctionCallbackInfo<v8::Value> &args) {
     v8::Local<v8::Object> thisObj         = args.This();
     v8::Local<v8::String> constructorName = thisObj->GetConstructorName();
     v8::String::Utf8Value strConstructorName{args.GetIsolate(), constructorName};
-    SE_ASSERT(false, "%s 's constructor is not public!\n", *strConstructorName);
+    SE_ASSERT(false, "%s 's constructor is not public!", *strConstructorName); // NOLINT(misc-static-assert)
 }
 
 } // namespace
@@ -123,12 +124,12 @@ void Class::destroy() {
 }
 
 void Class::cleanup() {
-    for (auto cls : __allClasses) {
+    for (auto *cls : __allClasses) {
         cls->destroy();
     }
 
     se::ScriptEngine::getInstance()->addAfterCleanupHook([]() {
-        for (auto cls : __allClasses) {
+        for (auto *cls : __allClasses) {
             delete cls;
         }
         __allClasses.clear();
@@ -203,7 +204,7 @@ bool Class::defineProperty(const char *name, v8::AccessorNameGetterCallback gett
 
 bool Class::defineProperty(const std::initializer_list<const char *> &names, v8::AccessorNameGetterCallback getter, v8::AccessorNameSetterCallback setter) {
     bool ret = true;
-    for (auto name : names) {
+    for (const auto *name : names) {
         ret &= defineProperty(name, getter, setter);
     }
     return ret;

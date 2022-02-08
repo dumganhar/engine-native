@@ -42,6 +42,14 @@ namespace {
 //        std::unordered_map<std::string, Class *> __clsMap;
 v8::Isolate *        __isolate = nullptr; // NOLINT
 std::vector<Class *> __allClasses;        // NOLINT
+
+void invalidConstructor(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    v8::Local<v8::Object> thisObj = args.This();
+    v8::Local<v8::String> constructorName = thisObj->GetConstructorName();
+    v8::String::Utf8Value strConstructorName{args.GetIsolate(), constructorName};
+    SE_ASSERT(false, "%s 's constructor is not public!\n", *strConstructorName);
+}
+
 } // namespace
 
 Class::Class()
@@ -93,7 +101,9 @@ bool Class::init(const std::string &clsName, Object *parent, Object *parentProto
 
     _ctor = ctor;
 
-    _ctorTemplate.Reset(__isolate, v8::FunctionTemplate::New(__isolate, _ctor));
+    v8::FunctionCallback ctorToSet = _ctor != nullptr ? _ctor : invalidConstructor;
+
+    _ctorTemplate.Reset(__isolate, v8::FunctionTemplate::New(__isolate, ctorToSet));
     v8::MaybeLocal<v8::String> jsNameVal = v8::String::NewFromUtf8(__isolate, _name.c_str(), v8::NewStringType::kNormal);
     if (jsNameVal.IsEmpty()) {
         return false;

@@ -53,7 +53,7 @@ public:
     }
 
 private:
-    explicit BuiltinResMgr() = default;
+    explicit BuiltinResMgr()  = default;
     ~BuiltinResMgr() override = default;
 
     void initMaterials();

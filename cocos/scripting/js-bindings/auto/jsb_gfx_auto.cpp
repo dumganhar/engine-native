@@ -1219,6 +1219,21 @@ bool js_register_gfx_RenderTarget(se::Object* obj)
 se::Object* __jsb_cocos2d_renderer_RenderBuffer_proto = nullptr;
 se::Class* __jsb_cocos2d_renderer_RenderBuffer_class = nullptr;
 
+static bool js_gfx_RenderBuffer_destroy(se::State& s)
+{
+    cocos2d::renderer::RenderBuffer* cobj = (cocos2d::renderer::RenderBuffer*)s.nativeThisObject();
+    SE_PRECONDITION2(cobj, false, "js_gfx_RenderBuffer_destroy : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    if (argc == 0) {
+        cobj->destroy();
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);
+    return false;
+}
+SE_BIND_FUNC(js_gfx_RenderBuffer_destroy)
+
 static bool js_gfx_RenderBuffer_init(se::State& s)
 {
     cocos2d::renderer::RenderBuffer* cobj = (cocos2d::renderer::RenderBuffer*)s.nativeThisObject();
@@ -1323,6 +1338,7 @@ bool js_register_gfx_RenderBuffer(se::Object* obj)
 {
     auto cls = se::Class::create("RenderBuffer", obj, __jsb_cocos2d_renderer_RenderTarget_proto, _SE(js_gfx_RenderBuffer_constructor));
 
+    cls->defineFunction("destroy", _SE(js_gfx_RenderBuffer_destroy));
     cls->defineFunction("init", _SE(js_gfx_RenderBuffer_init));
     cls->defineFunction("update", _SE(js_gfx_RenderBuffer_update));
     cls->defineStaticFunction("create", _SE(js_gfx_RenderBuffer_create));
@@ -1715,4 +1731,4 @@ bool register_all_gfx(se::Object* obj)
     return true;
 }
 
-#endif //#if (USE_GFX_RENDERER > 0) && (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#endif //#if (USE_GFX_RENDERER > 0) && (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_OPENHARMONY)

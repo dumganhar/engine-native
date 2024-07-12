@@ -613,6 +613,14 @@ gfx.RenderTarget = {
 gfx.RenderBuffer = {
 
 /**
+ * @method destroy
+ */
+destroy : function (
+)
+{
+},
+
+/**
  * @method init
  * @param {cc.renderer::DeviceGraphics} arg0
  * @param {cc.renderer::RenderBuffer::Format} arg1

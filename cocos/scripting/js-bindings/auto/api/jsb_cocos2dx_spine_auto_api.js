@@ -2548,16 +2548,6 @@ bool
 },
 
 /**
- * @method setActive
- * @param {bool} arg0
- */
-setActive : function (
-bool 
-)
-{
-},
-
-/**
  * @method getBones
  * @return {sp.Vector<sp.Bone >}
  */
@@ -2623,6 +2613,16 @@ getBendDirection : function (
 )
 {
     return 0;
+},
+
+/**
+ * @method setActive
+ * @param {bool} arg0
+ */
+setActive : function (
+bool 
+)
+{
 },
 
 /**
@@ -3411,16 +3411,6 @@ getRotateMix : function (
 },
 
 /**
- * @method setActive
- * @param {bool} arg0
- */
-setActive : function (
-bool 
-)
-{
-},
-
-/**
  * @method getBones
  * @return {sp.Vector<sp.Bone >}
  */
@@ -3496,6 +3486,16 @@ isActive : function (
 )
 {
     return false;
+},
+
+/**
+ * @method setActive
+ * @param {bool} arg0
+ */
+setActive : function (
+bool 
+)
+{
 },
 
 /**
@@ -6474,6 +6474,14 @@ bool
 },
 
 /**
+ * @method destroy
+ */
+destroy : function (
+)
+{
+},
+
+/**
  * @method setAttachment
 * @param {String|String} str
 * @param {char|String} char
@@ -6964,6 +6972,14 @@ func
 },
 
 /**
+ * @method destroy
+ */
+destroy : function (
+)
+{
+},
+
+/**
  * @method getState
  * @return {sp.AnimationState}
  */
@@ -7304,6 +7320,14 @@ cachemodeattachutil
  */
 paused : function (
 bool 
+)
+{
+},
+
+/**
+ * @method destroy
+ */
+destroy : function (
 )
 {
 },

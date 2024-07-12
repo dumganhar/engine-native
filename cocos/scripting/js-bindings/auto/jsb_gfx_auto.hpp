@@ -97,6 +97,7 @@ extern se::Class* __jsb_cocos2d_renderer_RenderBuffer_class;
 
 bool js_register_cocos2d_renderer_RenderBuffer(se::Object* obj);
 bool register_all_gfx(se::Object* obj);
+SE_DECLARE_FUNC(js_gfx_RenderBuffer_destroy);
 SE_DECLARE_FUNC(js_gfx_RenderBuffer_init);
 SE_DECLARE_FUNC(js_gfx_RenderBuffer_update);
 SE_DECLARE_FUNC(js_gfx_RenderBuffer_create);
@@ -134,4 +135,4 @@ SE_DECLARE_FUNC(js_gfx_Program_init);
 SE_DECLARE_FUNC(js_gfx_Program_link);
 SE_DECLARE_FUNC(js_gfx_Program_Program);
 
-#endif //#if (USE_GFX_RENDERER > 0) && (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#endif //#if (USE_GFX_RENDERER > 0) && (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_OPENHARMONY)

@@ -38,28 +38,16 @@ RenderBuffer::RenderBuffer()
 
 RenderBuffer::~RenderBuffer()
 {
-    if (_glID == 0)
-    {
-        RENDERER_LOGE("The render-buffer (%p) is invalid!", this);
-        return;
-    }
-
-    GL_CHECK(glDeleteRenderbuffers(1, &_glID));
+    destroy();
 }
 
 bool RenderBuffer::init(DeviceGraphics* device, Format format, uint16_t width, uint16_t height)
 {
     _device = device;
     _format = format;
-    _width = width;
-    _height = height;
     
-    GLint oldRenderBuffer;
-    glGetIntegerv(GL_RENDERBUFFER_BINDING, &oldRenderBuffer);
     GL_CHECK(glGenRenderbuffers(1, &_glID));
-    GL_CHECK(glBindRenderbuffer(GL_RENDERBUFFER, _glID));
-    GL_CHECK(glRenderbufferStorage(GL_RENDERBUFFER, (GLenum)format, width, height));
-    GL_CHECK(glBindRenderbuffer(GL_RENDERBUFFER, oldRenderBuffer));
+    update(width, height);
     return true;
 }
 
@@ -73,6 +61,15 @@ bool RenderBuffer::update (uint16_t width, uint16_t height) {
     GL_CHECK(glRenderbufferStorage(GL_RENDERBUFFER, (GLenum)_format, width, height));
     GL_CHECK(glBindRenderbuffer(GL_RENDERBUFFER, oldRenderBuffer));
     return true;
+}
+
+void RenderBuffer::destroy() {
+    if (_glID == 0) {
+        return;
+    }
+
+    GL_CHECK(glDeleteRenderbuffers(1, &_glID));
+    _glID = 0;
 }
 
 RENDERER_END

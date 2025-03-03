@@ -40,7 +40,7 @@
         #if (SCRIPT_ENGINE_V8_ON_MAC == 0)
             #define SCRIPT_ENGINE_TYPE           SCRIPT_ENGINE_JSC
         #else
-            #define SCRIPT_ENGINE_TYPE           SCRIPT_ENGINE_V8
+            #define SCRIPT_ENGINE_TYPE           SCRIPT_ENGINE_JSVM
         #endif
     #endif
 

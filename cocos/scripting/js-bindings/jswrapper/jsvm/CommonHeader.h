@@ -24,7 +24,14 @@
 ****************************************************************************/
 
 #pragma once
+
+#include "platform/CCPlatformConfig.h"
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_OPENHARMONY
 #include "ark_runtime/jsvm.h"
+#else
+#include "jsvm.h"
+#endif
 #include "native_common.h"
 
 // Empty value so that macros here are able to return NULL or void

@@ -225,10 +225,11 @@ bool ScriptEngine::evalString(const char *scriptStr, ssize_t length, Value *ret,
        return false;
     }
 
-    if(!cachedData || cacheRejected) {
-        NODE_API_CALL(status, _env,
-                      OH_JSVM_CreateCodeCache(_env, compiledScript, (const uint8_t **)&cachedData, &cacheLength));
-    }
+    //TODO: CodeCache is not used now, doesn't need to create it.
+//    if(!cachedData || cacheRejected) {
+//        NODE_API_CALL(status, _env,
+//                      OH_JSVM_CreateCodeCache(_env, compiledScript, (const uint8_t **)&cachedData, &cacheLength));
+//    }
     
     if(ret) {
         internal::jsToSeValue(result, ret);
@@ -445,7 +446,7 @@ void ScriptEngine::clearException() {
 }
 
 void ScriptEngine::garbageCollect() {
-    SE_LOGD("GC begin ..., (js->native map) size: %d",(int)NativePtrToObjectMap::size());
+    SE_LOGD("GC begin ..., (js->native map) size: %d\n",(int)NativePtrToObjectMap::size());
 
     if(_gcFunc == nullptr) {
         JSVM_Status status;
@@ -454,7 +455,7 @@ void ScriptEngine::garbageCollect() {
         _gcFunc->call({}, nullptr);
     }
     
-    SE_LOGD("GC end ..., (js->native map) size: %d",(int)NativePtrToObjectMap::size());
+    SE_LOGD("GC end ..., (js->native map) size: %d\n",(int)NativePtrToObjectMap::size());
 }
 
 bool ScriptEngine::isGarbageCollecting() const {

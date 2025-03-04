@@ -226,10 +226,11 @@ bool ScriptEngine::evalString(const char *scriptStr, ssize_t length, Value *ret,
        return false;
     }
 
-    if(!cachedData || cacheRejected) {
-        NODE_API_CALL(status, _env,
-                      OH_JSVM_CreateCodeCache(_env, compiledScript, (const uint8_t **)&cachedData, &cacheLength));
-    }
+    //TODO: CodeCache is not used now, doesn't need to create it.
+//    if(!cachedData || cacheRejected) {
+//        NODE_API_CALL(status, _env,
+//                      OH_JSVM_CreateCodeCache(_env, compiledScript, (const uint8_t **)&cachedData, &cacheLength));
+//    }
     
     if(ret) {
         internal::jsToSeValue(result, ret);

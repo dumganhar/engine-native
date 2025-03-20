@@ -312,11 +312,11 @@ Object* Object::createTypedArrayWithBuffer(TypedArrayType type, const Object *ob
             sizeOfEle = 1;
             break;
         case TypedArrayType::INT16:
-            napiType  = napi_int8_array;
+            napiType  = napi_int16_array;
             sizeOfEle = 2;
             break;
         case TypedArrayType::UINT16:
-            napiType  = napi_uint8_array;
+            napiType  = napi_uint16_array;
             sizeOfEle = 2;
             break;
         case TypedArrayType::INT32:
